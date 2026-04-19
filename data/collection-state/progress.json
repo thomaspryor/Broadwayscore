@@ -89,7 +89,14 @@
     "an-enemy-of-the-people-2024/guardian--susannah-clapp.json",
     "a-dolls-house-2023/thestage--nicole-serratore.json",
     "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-    "topdog-underdog-2022/talkinbroadway--elyse-trevers.json"
+    "topdog-underdog-2022/talkinbroadway--elyse-trevers.json",
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/variety--helen-shaw.json",
+    "funny-girl-2022/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/nytimes--jesse-green.json",
+    "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json",
+    "skylight-2015/nbcny--robert-kahn.json",
+    "priscilla-queen-of-the-desert-2011/hollywood-reporter--unknown.json",
+    "bent-through-glass-off-broadway-2026/off-off-online--deirdre-donovan.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -1131,7 +1138,10 @@
       "an-enemy-of-the-people-2024/guardian--arifa-akbar.json",
       "an-enemy-of-the-people-2024/guardian--susannah-clapp.json",
       "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
-      "topdog-underdog-2022/talkinbroadway--elyse-trevers.json"
+      "topdog-underdog-2022/talkinbroadway--elyse-trevers.json",
+      "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json",
+      "skylight-2015/nbcny--robert-kahn.json",
+      "bent-through-glass-off-broadway-2026/off-off-online--deirdre-donovan.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1148,7 +1158,11 @@
       "data/review-texts/oh-mary-2024/variety--christian-lewis.json",
       "oh-mary-2024/variety--christian-lewis.json",
       "data/review-texts/the-great-gatsby-2024/variety--christian-lewis.json",
-      "the-great-gatsby-2024/variety--christian-lewis.json"
+      "the-great-gatsby-2024/variety--christian-lewis.json",
+      "data/review-texts/potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/variety--helen-shaw.json",
+      "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/variety--helen-shaw.json",
+      "data/review-texts/priscilla-queen-of-the-desert-2011/hollywood-reporter--unknown.json",
+      "priscilla-queen-of-the-desert-2011/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1164,7 +1178,8 @@
       "the-outsiders-2024/theatrely--kobi-kassal.json",
       "wicked-west-end-2021/independent--clarisse-loughrey.json",
       "high-noon-west-end-2025/times-uk--clive-davis.json",
-      "burlesque-west-end-2026/city-am--unknown.json"
+      "burlesque-west-end-2026/city-am--unknown.json",
+      "is-this-a-room-2021/nytimes--jesse-green.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
@@ -1216,11 +1231,12 @@
       "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
       "harvey-2012/huffpost--mark-kennedy.json",
       "the-outsiders-2024/vulture--sara-holdren.json",
-      "a-dolls-house-2023/thestage--nicole-serratore.json"
+      "a-dolls-house-2023/thestage--nicole-serratore.json",
+      "funny-girl-2022/thestage--nicole-serratore.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "topdog-underdog-2022/talkinbroadway--elyse-trevers.json",
+  "lastProcessed": "bent-through-glass-off-broadway-2026/off-off-online--deirdre-donovan.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1408,6 +1424,39 @@
       "t": "2026-04-19T18:23:33.774Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T18:33:36.080Z",
+      "event": "bb-session",
+      "session": "67a6cef7",
+      "url": "https://variety.com/2022/legit/reviews/potus-review-play-broadway-1235253436/"
+    },
+    {
+      "t": "2026-04-19T18:33:36.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T18:34:54.969Z",
+      "event": "bb-session",
+      "session": "c35edc29",
+      "url": "https://www.nytimes.com/2021/10/11/theater/is-this-a-room-review.html"
+    },
+    {
+      "t": "2026-04-19T18:34:55.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T18:35:50.547Z",
+      "event": "bb-session",
+      "session": "3ced981d",
+      "url": "http://www.hollywoodreporter.com/review/priscilla-queen-desert-theater-review-16"
+    },
+    {
+      "t": "2026-04-19T18:35:55.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
