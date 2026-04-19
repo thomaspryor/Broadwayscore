@@ -46,7 +46,9 @@
     "the-last-ship-2014/abc-news--mark-kennedy.json",
     "disgraced-2014/abc-news--mark-kennedy.json",
     "on-the-town-2014/abc-news--mark-kennedy.json",
-    "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json"
+    "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
+    "this-is-our-youth-2014/abc-news--mark-kennedy.json",
+    "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -939,7 +941,15 @@
     "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
     "constellations-2015/ap--jennifer-farrar.json",
     "the-last-ship-2014/talkinbroadway--matthew-murray.json",
-    "disgraced-2014/forward--jesse-green.json"
+    "disgraced-2014/forward--jesse-green.json",
+    "act-one-2014/abc-news--mark-kennedy.json",
+    "act-one-2014/timeout--david-cote.json",
+    "of-mice-and-men-2014/abc-news--mark-kennedy.json",
+    "of-mice-and-men-2014/ap--mark-kennedy.json",
+    "ifthen-2014/huffpost--mark-kennedy.json",
+    "mothers-and-sons-2014/washpost--mark-kennedy.json",
+    "rocky-2014/huffpost--huffington-poststeven-suskin.json",
+    "all-the-way-2014/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -997,7 +1007,10 @@
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
       "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
       "data/review-texts/therese-raquin-2015/abc-news--mark-kennedy.json",
-      "data/review-texts/something-rotten-2015/abc-news--mark-kennedy.json"
+      "data/review-texts/something-rotten-2015/abc-news--mark-kennedy.json",
+      "data/review-texts/act-one-2014/abc-news--mark-kennedy.json",
+      "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json",
+      "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -1010,11 +1023,13 @@
       "the-last-ship-2014/abc-news--mark-kennedy.json",
       "disgraced-2014/abc-news--mark-kennedy.json",
       "on-the-town-2014/abc-news--mark-kennedy.json",
-      "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json"
+      "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
+      "this-is-our-youth-2014/abc-news--mark-kennedy.json",
+      "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
+  "lastProcessed": "all-the-way-2014/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1046,6 +1061,17 @@
     },
     {
       "t": "2026-04-19T16:02:23.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:17:17.959Z",
+      "event": "bb-session",
+      "session": "345666d5",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-bways-mothers-a"
+    },
+    {
+      "t": "2026-04-19T16:17:18.782Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }

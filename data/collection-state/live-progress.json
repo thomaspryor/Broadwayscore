@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-19T16:11:38.976Z",
-  "processed": 47,
-  "failed": 891,
-  "successRate": "5.0%",
+  "updatedAt": "2026-04-19T16:17:29.024Z",
+  "processed": 49,
+  "failed": 899,
+  "successRate": "5.2%",
   "tierBreakdown": {
     "playwright": 27,
     "amp": 0,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 2,
-    "archiveToday": 7,
-    "archive": 11
+    "archiveToday": 10,
+    "archive": 13
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -45,6 +45,17 @@
     },
     {
       "t": "2026-04-19T16:02:23.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:17:17.959Z",
+      "event": "bb-session",
+      "session": "345666d5",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-bways-mothers-a"
+    },
+    {
+      "t": "2026-04-19T16:17:18.782Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
