@@ -154,7 +154,49 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
     }
     logger.log(`    rejected: ${v.reason}`);
   }
-  return { found: false, reason: `all ${candidates.length} candidates failed verification` };
+
+  // Fallback: TB always shows the latest review at /page/world/index.html.
+  // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
+  // Verify the quoted title matches the show before accepting.
+  if (!overrideUrl) {
+    const indexUrl = `${TB_HOST}/page/world/index.html`;
+    logger.log(`  Talkin' Broadway: trying index.html fallback...`);
+    try {
+      const page = await fetchPage(indexUrl, { renderJs: false });
+      if (page && page.content && page.content.length >= MIN_CONTENT_BYTES) {
+        const pageTitle = extractTitle(page.content);
+        const quotedMatch = pageTitle.match(/"([^"]+)"/);
+        const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
+        const normIndex = normalizeText(indexShowTitle);
+        const normShow = normalizeText(show.title);
+        const titleMatches = normIndex && normShow && (normIndex === normShow || normIndex.includes(normShow) || normShow.includes(normIndex));
+        if (titleMatches) {
+          // Run the same byline/date verification we run on the candidate URLs.
+          const v = verifyTbPage(page.content, {
+            showTitle: indexShowTitle, // Use the index's title since we already matched
+            openingDate: show.openingDate,
+            isRevival,
+          });
+          if (v.ok) {
+            logger.log(`  Talkin' Broadway: index.html matched — "${indexShowTitle}"`);
+            return {
+              found: true,
+              url: indexUrl,
+              source: 'direct-url-index-fallback',
+              publishDate: v.publishDate ? v.publishDate.toISOString() : null,
+            };
+          }
+          logger.log(`    index rejected: ${v.reason}`);
+        } else {
+          logger.log(`  Talkin' Broadway index: title "${indexShowTitle}" does not match show "${show.title}"`);
+        }
+      }
+    } catch (e) {
+      logger.log(`    index fetch error: ${e.message}`);
+    }
+  }
+
+  return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
 }
 
 module.exports = {
