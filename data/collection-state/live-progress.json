@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-19T16:36:17.520Z",
-  "processed": 25,
-  "failed": 714,
-  "successRate": "3.4%",
+  "updatedAt": "2026-04-19T15:40:49.368Z",
+  "processed": 29,
+  "failed": 719,
+  "successRate": "3.9%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 1,
-    "archiveToday": 2,
-    "archive": 2
+    "archiveToday": 4,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-19T15:38:59.207Z",
+      "event": "bb-session",
+      "session": "dbf8fb3b",
+      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle."
+    },
+    {
+      "t": "2026-04-19T15:39:00.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

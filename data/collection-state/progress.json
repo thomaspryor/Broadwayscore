@@ -24,7 +24,11 @@
     "just-in-time-2025/timeout--adam-feldman.json",
     "oh-mary-2024/culturesauce--thom-geier.json",
     "high-noon-west-end-2025/whatsonstage--unknown.json",
-    "proof-express-test-2026/ew--emlyn-travis.json"
+    "schmigadoon-2026/vulture--unknown.json",
+    "proof-2026/nytimes--unknown.json",
+    "avenue-q-west-end-2026/radio-times--joanna-magill.json",
+    "avenue-q-west-end-2026/telegraph--marianka-swain.json",
+    "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -740,7 +744,12 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "avenue-q-west-end-2026/the-recs--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -763,29 +772,49 @@
       "just-in-time-2025/timeout--adam-feldman.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
       "high-noon-west-end-2025/whatsonstage--unknown.json",
-      "proof-express-test-2026/ew--emlyn-travis.json"
+      "avenue-q-west-end-2026/radio-times--joanna-magill.json",
+      "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/proof-2026/nytimes--unknown.json",
+      "proof-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "hamlet-off-broadway-2026/front-row-center--vahni-kurra.json",
       "the-adding-machine-off-broadway-2026/nytimes--unknown.json",
-      "the-adding-machine-off-broadway-2026/another-eye-opens--don-shewey.json"
+      "the-adding-machine-off-broadway-2026/another-eye-opens--don-shewey.json",
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-      "data/review-texts/the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json"
+      "data/review-texts/the-adding-machine-off-broadway-2026/talkinbroadway--howard-miller.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
-      "rock-of-ages-2009/usatoday--unknown.json"
+      "rock-of-ages-2009/usatoday--unknown.json",
+      "schmigadoon-2026/vulture--unknown.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "proof-express-test-2026/ew--emlyn-travis.json",
-  "log": []
+  "lastProcessed": "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json",
+  "log": [
+    {
+      "t": "2026-04-19T15:38:59.207Z",
+      "event": "bb-session",
+      "session": "dbf8fb3b",
+      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle."
+    },
+    {
+      "t": "2026-04-19T15:39:00.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
