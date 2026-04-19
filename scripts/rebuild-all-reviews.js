@@ -2555,12 +2555,12 @@ showDirs.forEach(showId => {
       //   - Within-show misattribution (same Vulture review filed under multiple critic names)
       // Within-show wins go to the file with the better critic attribution: prefer files
       // without "(Pt. 2)" / "unknown" / lowercased typo variants in the critic name.
-      if (data.fullText && data.fullText.length > 200) {
+      if (data.fullText && data.fullText.length > 200 && !skipCrossShowDupeIds.has(showId)) {
         const cleanedForFp = (cleanText(data.fullText) || '').toLowerCase().replace(/\s+/g, '');
         if (cleanedForFp.length > 200) {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
           const existing = crossShowFingerprints.get(fp);
-          if (existing && existing.showId !== showId) {
+          if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)) {
             logExclusion("skippedCrossShowDupe", showId, file, data);
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
