@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T12:58:06.494Z",
+  "timestamp": "2026-04-19T13:20:26.480Z",
   "stats": {
-    "totalReviews": 34932,
-    "alreadyFlagged": 15313,
+    "totalReviews": 34931,
+    "alreadyFlagged": 15315,
     "dateGuardCatches": 91,
     "directorMismatch": 816,
-    "tvFilmSignals": 3149,
-    "londonSignals": 1010,
-    "offBroadwaySignals": 884,
+    "tvFilmSignals": 3150,
+    "londonSignals": 1011,
+    "offBroadwaySignals": 885,
     "yearMismatch": 67,
-    "noPublishDate": 3758
+    "noPublishDate": 3744
   },
   "findings": [
     {
@@ -43567,6 +43567,20 @@
       ]
     },
     {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": 78,
+      "publishDate": "2026-04-14",
+      "url": "https://frontmezzjunkies.com/2026/04/14/counting-the-cost-the-adding-machine-and-the-machinery-of-living/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "the-amazing-sex-life-of-rabbits-off-broadway-2026",
       "file": "nyt-theater--unknown.json",
       "score": 44,
@@ -72117,6 +72131,20 @@
       ]
     },
     {
+      "showId": "the-adding-machine-off-broadway-2026",
+      "file": "another-eye-opens--don-shewey.json",
+      "score": 79,
+      "publishDate": "2026-04-14",
+      "url": "https://donshewey.substack.com/p/culture-vulture-the-adding-machine",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "the-assembled-parties-2013",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 78,
@@ -72351,6 +72379,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-authenticator-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-authenticator-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
