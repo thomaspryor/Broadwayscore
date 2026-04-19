@@ -37,15 +37,7 @@
     "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
     "high-2011/bloomberg--jeremy-gerard.json",
     "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-    "high-2011/backstage--erik-haagensen.json",
-    "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
-    "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
-    "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
-    "gypsy-2003/variety--charles-isherwood.json",
-    "gypsy-2003/nydailynews--chris-jones.json",
-    "gypsy-2003/observer--david-cote.json",
-    "gypsy-2003/culturesauce--thom-geier.json",
-    "gypsy-2003/nytimes--ben-brantley.json"
+    "high-2011/backstage--erik-haagensen.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -2766,7 +2758,17 @@
     "the-boys-in-the-band-2018/theater-news-online--david-cote.json",
     "the-iceman-cometh-2018/theater-news-online--david-cote.json",
     "saint-joan-2018/theater-news-online--robert-cashill.json",
-    "saint-joan-2018/show-buzz-nyc--laura-heller.json"
+    "saint-joan-2018/show-buzz-nyc--laura-heller.json",
+    "travesties-2018/washpost--peter-marks.json",
+    "children-of-a-lesser-god-2018/theater-news-online--brian-scott-lipton.json",
+    "children-of-a-lesser-god-2018/gotham-playgoer--robert-sholiton.json",
+    "children-of-a-lesser-god-2018/journal-inquirer--tim-leininger.json",
+    "children-of-a-lesser-god-2018/melindas-malarky--melinda-pressler.json",
+    "three-tall-women-2018/theater-news-online--david-cote.json",
+    "three-tall-women-2018/usatoday--charles-isherwood.json",
+    "lobby-hero-2018/theater-news-online--brian-scott-lipton.json",
+    "angels-in-america-2018/theater-news-online--david-cote.json",
+    "frozen-2018/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2782,11 +2784,7 @@
       "beetlejuice-2022/pittsburgh-city-paper--jordana-rosenfeld.json",
       "marvins-room-2017/stageandcinema--dmitry-zvonkov.json",
       "a-gentlemans-guide-to-love-and-murder-2013/theatermania--david-gordon.json",
-      "high-2011/backstage--erik-haagensen.json",
-      "cats-the-jellicle-ball-2026/theatre-reviews-limited--david-roberts.json",
-      "cats-the-jellicle-ball-2026/theater-scene--victor-gluck.json",
-      "gypsy-2003/observer--david-cote.json",
-      "gypsy-2003/culturesauce--thom-geier.json"
+      "high-2011/backstage--erik-haagensen.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2799,11 +2797,7 @@
       "data/review-texts/the-anarchist-2012/variety--marilyn-stasio.json",
       "the-anarchist-2012/variety--marilyn-stasio.json",
       "data/review-texts/the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
-      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json",
-      "data/review-texts/gypsy-2003/variety--charles-isherwood.json",
-      "gypsy-2003/variety--charles-isherwood.json",
-      "data/review-texts/gypsy-2003/nytimes--ben-brantley.json",
-      "gypsy-2003/nytimes--ben-brantley.json"
+      "the-house-of-blue-leaves-2011/variety--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2813,9 +2807,7 @@
       "macbeth-2013/new-jersey-newsroom--michael-sommers.json",
       "hands-on-a-hardbody-2013/newsday--linda-winer.json",
       "high-2011/bloomberg--jeremy-gerard.json",
-      "avenue-q-west-end-2026/telegraph--marianka-swain.json",
-      "cats-the-jellicle-ball-2026/newyorker--emily-nussbaum.json",
-      "gypsy-2003/nydailynews--chris-jones.json"
+      "avenue-q-west-end-2026/telegraph--marianka-swain.json"
     ],
     "brightdata": [
       "the-fear-of-13-2026/talkinbroadway--unknown.json",
@@ -2831,8 +2823,7 @@
       "data/review-texts/proof-2000/newsday--unknown.json",
       "data/review-texts/proof-2000/nydailynews--unknown.json",
       "data/review-texts/rock-of-ages-2009/usatoday--unknown.json",
-      "data/review-texts/high-2011/backstage--erik-haagensen.json",
-      "data/review-texts/proof-2000/nydailynews--david-kaufman.json"
+      "data/review-texts/high-2011/backstage--erik-haagensen.json"
     ],
     "archive": [
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
@@ -2844,7 +2835,7 @@
     ]
   },
   "startTime": "2026-04-18T08:29:02.734Z",
-  "lastProcessed": "saint-joan-2018/show-buzz-nyc--laura-heller.json",
+  "lastProcessed": "frozen-2018/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-04-18T10:21:53.676Z",
@@ -2911,28 +2902,6 @@
       "t": "2026-04-18T19:19:39.704Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-19T03:41:53.219Z",
-      "event": "bb-session",
-      "session": "582b498e",
-      "url": "https://variety.com/2003/legit/reviews/gypsy-9-1200541916/"
-    },
-    {
-      "t": "2026-04-19T03:41:54.604Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-19T03:46:57.733Z",
-      "event": "bb-session",
-      "session": "1fd109a5",
-      "url": "https://www.nytimes.com/2003/05/04/theater/theater-gypsy-then-now-and-always.htm"
-    },
-    {
-      "t": "2026-04-19T03:46:58.987Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
