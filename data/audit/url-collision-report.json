@@ -1,48 +1,12 @@
 {
-  "generatedAt": "2026-04-19T18:38:36.100Z",
+  "generatedAt": "2026-04-19T19:36:39.140Z",
   "summary": {
-    "total": 15,
-    "high": 12,
-    "medium": 2,
-    "low": 1
+    "total": 22,
+    "high": 11,
+    "medium": 9,
+    "low": 2
   },
   "collisions": [
-    {
-      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27633",
-      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
-      "candidates": [
-        {
-          "showId": "avenue-q-west-end-2026",
-          "file": "london-theatre--unknown.json",
-          "publishDate": "2026-04-17",
-          "openingDate": "2026-04-16",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "london-theatre"
-        },
-        {
-          "showId": "i-was-a-teenage-shedevil-west-end-2026",
-          "file": "london-theatre--unknown.json",
-          "publishDate": "2026-04-10",
-          "openingDate": "2026-04-02",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre"
-        },
-        {
-          "showId": "the-play-that-goes-wrong-west-end-2021",
-          "file": "london-theatre--unknown.json",
-          "publishDate": "2020-12-14",
-          "openingDate": "2014-09-18",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre"
-        }
-      ],
-      "suggestedWinner": "avenue-q-west-end-2026",
-      "reason": "publishDate 2026-04-17 is 1 days from avenue-q-west-end-2026 but also 8 days from i-was-a-teenage-shedevil-west-end-2026",
-      "confidence": "medium"
-    },
     {
       "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
       "normalizedUrl": "https://bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
@@ -287,33 +251,6 @@
       "confidence": "high"
     },
     {
-      "url": "https://www.theatrereviews.com/broadway-mini-review-cats-the-jellicle-ball-at-the-broadhurst-theatre-currently-on/",
-      "normalizedUrl": "https://theatrereviews.com/broadway-mini-review-cats-the-jellicle-ball-at-the-broadhurst-theatre-currently-on",
-      "candidates": [
-        {
-          "showId": "cats-express-test-2026",
-          "file": "theatre-reviews-limited--david-roberts.json",
-          "publishDate": "2026-04-10",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatre-reviews-limited"
-        },
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "theatre-reviews-limited--david-roberts.json",
-          "publishDate": "2026-04-10",
-          "openingDate": "2026-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatre-reviews-limited"
-        }
-      ],
-      "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate 2026-04-10 is 3 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
       "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
       "candidates": [
@@ -393,6 +330,249 @@
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
       "confidence": "high"
+    },
+    {
+      "url": "https://cititour.com/NYC_Broadway/Proof/1371",
+      "normalizedUrl": "https://cititour.com/nyc_broadway/proof/1371",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "cititour--scott-lipton.json",
+          "publishDate": null,
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "cititour"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "cititour--brian-scott-lipton.json",
+          "publishDate": null,
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "cititour"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://culturesauce.com/2026/04/16/proof-ayo-edibiri-don-cheadle-broadway-review/",
+      "normalizedUrl": "https://culturesauce.com/2026/04/16/proof-ayo-edibiri-don-cheadle-broadway-review",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-04-16",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate 2026-04-16 is 0 days from proof-2026 but also 1 days from proof-express-test-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306/",
+      "normalizedUrl": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "deadline--greg-evans.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "deadline"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "deadline--greg-evans.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "deadline"
+        }
+      ],
+      "suggestedWinner": "proof-express-test-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.theguardian.com/stage/2026/apr/16/proof-broadway-revival-review-ayo-edebiri-kara-young",
+      "normalizedUrl": "https://theguardian.com/stage/2026/apr/16/proof-broadway-revival-review-ayo-edebiri-kara-young",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "guardian--richard-lawson.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "guardian--richard-lawson.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "guardian"
+        }
+      ],
+      "suggestedWinner": "proof-express-test-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://nypost.com/2026/04/16/entertainment/proof-review-ayo-edebiri-and-don-cheadle-star-in-underpowered-broadway-revival/",
+      "normalizedUrl": "https://nypost.com/2026/04/16/entertainment/proof-review-ayo-edebiri-and-don-cheadle-star-in-underpowered-broadway-revival",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        }
+      ],
+      "suggestedWinner": "proof-express-test-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/proof-broadway-review-ayo-edebiri-don-cheadle",
+      "normalizedUrl": "https://newyorktheatreguide.com/reviews/proof-broadway-review-ayo-edebiri-don-cheadle",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "nytg--joe-dziemianowicz.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytg"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "nytg--joe-dziemianowicz.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytg"
+        }
+      ],
+      "suggestedWinner": "proof-express-test-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-ayo-edebiri-and-don-cheadle-try-to-solve-a-precise-but-passionless-proof_1832726/",
+      "normalizedUrl": "https://theatermania.com/news/review-ayo-edebiri-and-don-cheadle-try-to-solve-a-precise-but-passionless-proof_1832726",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "theatermania--david-gordon.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "theatermania--david-gordon.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-2026 but also 0 days from proof-express-test-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-ayo-edebiri-shows-her-work-in-proof-041626",
+      "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-ayo-edebiri-shows-her-work-in-proof-041626",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "proof-express-test-2026",
+      "reason": "publishDate April 16, 2026 is 0 days from proof-express-test-2026 but also 1 days from proof-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-proof-auburn-cheadle-edebiri.html",
+      "normalizedUrl": "https://vulture.com/article/theater-review-proof-auburn-cheadle-edebiri.html",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": "2026-04-16",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "vulture"
+        },
+        {
+          "showId": "proof-express-test-2026",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": "April 16, 2026",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "vulture"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate 2026-04-16 is 0 days from proof-2026 but also 0 days from proof-express-test-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
