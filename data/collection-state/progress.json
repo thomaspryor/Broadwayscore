@@ -49,7 +49,8 @@
     "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
     "this-is-our-youth-2014/abc-news--mark-kennedy.json",
     "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
-    "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json"
+    "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json",
+    "harvey-2012/huffpost--mark-kennedy.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -979,7 +980,16 @@
     "elf-2012/new-jersey-newsroom--michael-sommers.json",
     "whos-afraid-of-virginia-woolf-2012/huffpost--mark-kennedy.json",
     "an-enemy-of-the-people-2012/bloomberg--jeremy-gerard.json",
-    "chaplin-2012/bloomberg--jeremy-gerard.json"
+    "chaplin-2012/bloomberg--jeremy-gerard.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
+    "fela-2012/variety--marilyn-stasio.json",
+    "fela-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json",
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1044,7 +1054,8 @@
       "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json",
       "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
       "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
-      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
+      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
+      "data/review-texts/nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -1059,11 +1070,12 @@
       "on-the-town-2014/abc-news--mark-kennedy.json",
       "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
       "this-is-our-youth-2014/abc-news--mark-kennedy.json",
-      "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
+      "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
+      "harvey-2012/huffpost--mark-kennedy.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "chaplin-2012/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1128,6 +1140,17 @@
     },
     {
       "t": "2026-04-19T16:23:45.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:26:52.407Z",
+      "event": "bb-session",
+      "session": "fcaa4137",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-matthew-brodericks-show"
+    },
+    {
+      "t": "2026-04-19T16:26:54.786Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
     }
