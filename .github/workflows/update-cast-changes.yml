@@ -54,6 +54,7 @@ jobs:
         run: npm ci
 
       - name: Scrape cast changes
+        timeout-minutes: 60
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}

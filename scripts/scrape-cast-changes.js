@@ -1726,7 +1726,10 @@ async function main() {
   console.log(`[Done] Completed in ${elapsed}s`);
 }
 
-main().catch(err => {
-  console.error('[Fatal]', err);
-  process.exit(1);
-});
+const { cleanup: scraperCleanup } = require('./lib/scraper');
+main()
+  .catch(err => {
+    console.error('[Fatal]', err);
+    process.exit(1);
+  })
+  .finally(() => scraperCleanup());
