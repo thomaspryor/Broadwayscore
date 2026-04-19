@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-19T22:41:39.447Z",
+  "timestamp": "2026-04-19T23:01:44.904Z",
   "stats": {
-    "totalReviews": 35566,
+    "totalReviews": 35567,
     "alreadyFlagged": 15878,
     "dateGuardCatches": 91,
     "directorMismatch": 826,
-    "tvFilmSignals": 3164,
+    "tvFilmSignals": 3165,
     "londonSignals": 1015,
     "offBroadwaySignals": 886,
     "yearMismatch": 71,
@@ -55721,6 +55721,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
+        }
+      ]
+    },
+    {
+      "showId": "what-happened-was-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "publishDate": "2026-04-19",
+      "url": "https://www.nysun.com/article/wht-happened-was-supplies-a-witty-and-mysterious-mediation-on-life-and-love",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
