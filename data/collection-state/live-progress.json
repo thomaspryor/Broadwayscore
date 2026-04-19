@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-04-19T16:36:17.520Z",
-  "processed": 25,
-  "failed": 714,
-  "successRate": "3.4%",
+  "updatedAt": "2026-04-19T16:39:44.609Z",
+  "processed": 54,
+  "failed": 984,
+  "successRate": "5.2%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 28,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
-    "archiveToday": 2,
-    "archive": 2
+    "scrapingbee": 8,
+    "brightdata": 3,
+    "archiveToday": 20,
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-04-19T15:38:59.207Z",
+      "event": "bb-session",
+      "session": "dbf8fb3b",
+      "url": "https://www.nytimes.com/2026/04/16/theater/proof-review-ayo-edebiri-don-cheadle."
+    },
+    {
+      "t": "2026-04-19T15:39:00.057Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T15:45:55.854Z",
+      "event": "bb-session",
+      "session": "56f10dfe",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html"
+    },
+    {
+      "t": "2026-04-19T15:45:56.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T16:02:22.294Z",
+      "event": "bb-session",
+      "session": "cc173633",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-josh-groban-cant-save-"
+    },
+    {
+      "t": "2026-04-19T16:02:23.377Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:17:17.959Z",
+      "event": "bb-session",
+      "session": "345666d5",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-bways-mothers-a"
+    },
+    {
+      "t": "2026-04-19T16:17:18.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:10.100Z",
+      "event": "bb-session",
+      "session": "7739eb41",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebecks"
+    },
+    {
+      "t": "2026-04-19T16:23:11.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:23:44.677Z",
+      "event": "bb-session",
+      "session": "897ed063",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviva"
+    },
+    {
+      "t": "2026-04-19T16:23:45.502Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:26:52.407Z",
+      "event": "bb-session",
+      "session": "fcaa4137",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-matthew-brodericks-show"
+    },
+    {
+      "t": "2026-04-19T16:26:54.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:27:45.671Z",
+      "event": "bb-session",
+      "session": "80278ecc",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-broadway-musical-of-gho"
+    },
+    {
+      "t": "2026-04-19T16:27:46.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:28:29.294Z",
+      "event": "bb-session",
+      "session": "5d5b1ef2",
+      "url": "http://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-ly"
+    },
+    {
+      "t": "2026-04-19T16:28:30.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-04-19T16:30:07.962Z",
+      "event": "bb-session",
+      "session": "29f70816",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-gleeful-comedy-"
+    },
+    {
+      "t": "2026-04-19T16:30:08.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
