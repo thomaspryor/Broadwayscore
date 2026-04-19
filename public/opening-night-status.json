@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T22:10:57.235Z",
+  "generatedAt": "2026-04-19T22:41:43.308Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1222,20 +1222,20 @@
       "status": "open",
       "slug": "proof",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 73.43,
+      "siteScore": 72.69,
       "liveScore": 73,
-      "scoreDrift": -0.4300000000000068,
-      "total": 20,
+      "scoreDrift": 0.3100000000000023,
+      "total": 21,
       "t1": 6,
       "t2": 12,
-      "t3": 2,
+      "t3": 3,
       "positive": 10,
       "mixed": 9,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 15,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1622,6 +1622,18 @@
           "p": 10,
           "m": 9,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T22:41:43.308Z",
+          "rc": 21,
+          "s": 72.69,
+          "t1": 6,
+          "t2": 12,
+          "t3": 3,
+          "p": 10,
+          "m": 9,
+          "n": 2,
           "bc": "waiting"
         }
       ]
@@ -2499,9 +2511,9 @@
       "status": "open",
       "slug": "proof-express-test",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 69.35,
+      "siteScore": 69.19,
       "liveScore": 69,
-      "scoreDrift": -0.3499999999999943,
+      "scoreDrift": -0.18999999999999773,
       "total": 16,
       "t1": 5,
       "t2": 9,
@@ -2757,6 +2769,18 @@
           "t": "2026-04-19T20:17:53.541Z",
           "rc": 16,
           "s": 69.35,
+          "t1": 5,
+          "t2": 9,
+          "t3": 2,
+          "p": 8,
+          "m": 6,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T22:41:43.308Z",
+          "rc": 16,
+          "s": 69.19,
           "t1": 5,
           "t2": 9,
           "t3": 2,
