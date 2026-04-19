@@ -385,12 +385,16 @@ async function lookupIBDBCast(title, options = {}) {
       return { ...notFound, ibdbUrl: bestMatch.url };
     }
 
-    // Title validation: MANDATORY — if we can't extract the page title, reject
+    // Title validation: skip when using a pre-known stored URL (already verified by prior lookup)
+    const usingStoredUrl = !!options.ibdbUrl;
     if (!castData.pageTitle) {
-      console.log(`  ⚠️  Could not extract IBDB page title — rejecting to prevent mismatch`);
-      return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+      if (!usingStoredUrl) {
+        console.log(`  ⚠️  Could not extract IBDB page title — rejecting to prevent mismatch`);
+        return { ...notFound, ibdbUrl: bestMatch.url, titleMismatch: true };
+      }
+      console.log(`  ℹ️  Could not extract page title — skipping title check (pre-known URL)`);
     }
-    {
+    if (castData.pageTitle) {
       const normalize = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/[^a-z0-9\s]/g, '').trim();
       const ourTitle = normalize(title);
