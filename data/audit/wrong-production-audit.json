@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T11:40:57.542Z",
+  "timestamp": "2026-04-19T12:33:15.367Z",
   "stats": {
-    "totalReviews": 34886,
+    "totalReviews": 34900,
     "alreadyFlagged": 15307,
-    "dateGuardCatches": 90,
+    "dateGuardCatches": 91,
     "directorMismatch": 816,
     "tvFilmSignals": 3149,
     "londonSignals": 1010,
     "offBroadwaySignals": 884,
     "yearMismatch": 67,
-    "noPublishDate": 3719
+    "noPublishDate": 3732
   },
   "findings": [
     {
@@ -74093,6 +74093,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 277d before show (June 26, 2023 vs 2024-03-29)"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "file": "nytimes--maya-phillips.json",
+      "score": 63,
+      "publishDate": "June 29, 2023",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 274d before show (June 29, 2023 vs 2024-03-29)"
         }
       ]
     },
