@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T19:40:54.004Z",
+  "generatedAt": "2026-04-19T20:17:53.541Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -300,10 +300,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -597,10 +593,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -916,10 +908,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -1221,10 +1209,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -1445,10 +1429,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -2193,10 +2173,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -2498,10 +2474,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ]
     },
@@ -2515,24 +2487,20 @@
       "status": "open",
       "slug": "proof-express-test",
       "thumbnail": "/images/shows/proof-2026/thumbnail.webp",
-      "siteScore": 68.29,
-      "liveScore": 68,
-      "scoreDrift": -0.29000000000000625,
-      "total": 6,
-      "t1": 2,
-      "t2": 4,
-      "t3": 0,
-      "positive": 3,
-      "mixed": 2,
-      "negative": 1,
+      "siteScore": 69.35,
+      "liveScore": 69,
+      "scoreDrift": -0.3499999999999943,
+      "total": 16,
+      "t1": 5,
+      "t2": 9,
+      "t3": 2,
+      "positive": 8,
+      "mixed": 6,
+      "negative": 2,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "6/12 total",
-          "T1:2/3",
-          "hi-conf:2/8"
-        ],
-        "highConfidence": 2,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2542,7 +2510,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -2746,10 +2714,6 @@
         {
           "name": "The Stage",
           "isDualMarket": true
-        },
-        {
-          "name": "The Nation",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -2775,6 +2739,18 @@
           "p": 3,
           "m": 2,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-19T20:17:53.541Z",
+          "rc": 16,
+          "s": 69.35,
+          "t1": 5,
+          "t2": 9,
+          "t3": 2,
+          "p": 8,
+          "m": 6,
+          "n": 2,
           "bc": "waiting"
         }
       ]
