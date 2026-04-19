@@ -64,6 +64,26 @@ try {
   console.warn('⚠ audience-buzz.json not found');
 }
 
+// Tony Award nominations — keyed by showId
+let tonyByShow = {};
+try {
+  const tonyData = JSON.parse(fs.readFileSync(path.join(dataDir, 'tony-nominations.json'), 'utf-8'));
+  for (const nom of (tonyData.nominations || [])) {
+    if (!nom.showId) continue;
+    if (!tonyByShow[nom.showId]) tonyByShow[nom.showId] = [];
+    tonyByShow[nom.showId].push({
+      yr: nom.ceremony,
+      cat: nom.category,
+      n: nom.name === '(show-level)' ? null : nom.name,
+      w: nom.won ? true : undefined,  // omit false to save bytes
+    });
+  }
+  const tonyShows = Object.keys(tonyByShow).length;
+  console.log(`✓ Tony nominations: ${tonyShows} shows`);
+} catch (err) {
+  console.warn('⚠ tony-nominations.json not found — Tony data will be skipped');
+}
+
 // Theater metadata: venue name → { seatingSections, venueScores }
 let theaterMeta = {};
 try {
@@ -291,6 +311,13 @@ for (const show of visibleShows) {
   // Audience detail
   if (audienceDetail) {
     detail.au = audienceDetail;
+  }
+
+  // Tony Award nominations/wins — wins first, then noms, cap at 25
+  const tonyNoms = tonyByShow[show.id];
+  if (tonyNoms && tonyNoms.length > 0) {
+    const sorted = [...tonyNoms].sort((a, b) => (b.w ? 1 : 0) - (a.w ? 1 : 0));
+    detail.tn = sorted.slice(0, 25);
   }
 
   // Hero image (not in mobile-shows.json)
