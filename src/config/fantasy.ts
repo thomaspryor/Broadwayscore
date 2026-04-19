@@ -165,6 +165,14 @@ export interface FantasyLeagueConfig {
     budget: number;
     teamSize: number;
     generatedAt: string;
+    pricing?: {
+      method: 'ev' | 'heuristic';
+      k?: number;
+      targetTopPrice?: number;
+      evSource?: string | null;
+      evLastUpdated?: string | null;
+      repricedAt?: string;
+    };
   };
   shows: Record<string, FantasyShow>;
   scoring: {

@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -3077,6 +3077,23 @@ function createReviewFile(showId, reviewData, options = {}) {
             review.wrongProductionNote = `Auto-flagged: published ${Math.round(daysBefore)} days before show earliest date ${earliest}`;
           }
         }
+      }
+    } catch (e) {}
+  }
+
+  // URL-path date fallback: when publishDate is null (common on Unknown-byline
+  // SERP hits), extract /YYYY/MM/DD/ from the URL and apply the same 30-day rule.
+  // Only fires on Unknown/Staff bylines — named critics get the benefit of the
+  // doubt (pre-transfer UK/OB coverage is a real category the URL-date rule
+  // can't distinguish from "different production"). See helper for detail.
+  // Was gap on Fallen Angels 2026 — 7 wrong files needed manual cleanup.
+  if (!review.wrongProduction && _showMeta) {
+    try {
+      const reason = getWrongProductionReasonForUnknownCritic(review, _showMeta);
+      if (reason) {
+        console.log(`    ⚠️  ${reason}`);
+        review.wrongProduction = true;
+        review.wrongProductionNote = reason;
       }
     } catch (e) {}
   }

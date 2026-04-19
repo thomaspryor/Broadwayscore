@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
-import { getFantasyShows } from '@/lib/data-fantasy';
+import { getFantasyShows, getFantasyConfig } from '@/lib/data-fantasy';
 import {
   FANTASY_BUDGET,
   FANTASY_TEAM_SIZE,
@@ -100,8 +100,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    // Compute total cost
+    // Compute total cost + snapshot per-pick prices at submission time.
+    // Prices refresh weekly via price-fantasy-league.js as Gold Derby odds shift;
+    // this snapshot ensures users see the prices they drafted at.
     const totalCost = picks.reduce((sum: number, id: string) => sum + shows[id].price, 0);
+    const picksPricesSnapshot: Record<string, number> = {};
+    for (const id of picks as string[]) {
+      picksPricesSnapshot[id] = shows[id].price;
+    }
+    const config = getFantasyConfig();
+    const priceVersion = config._meta.pricing?.repricedAt || config._meta.generatedAt;
 
     // Supabase upsert
     if (!supabase) {
@@ -111,20 +119,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { error: dbError } = await supabase
-      .from('fantasy_entries')
-      .upsert(
-        {
-          email: normalizedEmail,
-          team_name: cleanTeamName,
-          league_name: cleanLeagueName,
-          picks,
-          tiebreakers: tiebreakers && typeof tiebreakers === 'object' ? tiebreakers : null,
-          total_cost: totalCost,
-          season: FANTASY_SEASON,
-        },
-        { onConflict: 'email,season' }
-      );
+    const baseRow = {
+      email: normalizedEmail,
+      team_name: cleanTeamName,
+      league_name: cleanLeagueName,
+      picks,
+      tiebreakers: tiebreakers && typeof tiebreakers === 'object' ? tiebreakers : null,
+      total_cost: totalCost,
+      season: FANTASY_SEASON,
+    };
+    const fullRow = {
+      ...baseRow,
+      picks_prices_snapshot: picksPricesSnapshot,
+      price_version_at_submission: priceVersion,
+    };
+
+    // Try upsert with price-lock columns; fall back to base row if the migration
+    // hasn't been applied yet (so deploy can land before the migration runs).
+    let dbError = null;
+    {
+      const res = await supabase.from('fantasy_entries').upsert(fullRow, { onConflict: 'email,season' });
+      dbError = res.error;
+    }
+    if (dbError && /picks_prices_snapshot|price_version_at_submission|column/i.test(dbError.message || '')) {
+      console.warn('Fantasy draft: price-lock columns missing, falling back to base row. Run migration 20260419_fantasy_price_lock.sql.');
+      const res = await supabase.from('fantasy_entries').upsert(baseRow, { onConflict: 'email,season' });
+      dbError = res.error;
+    }
 
     if (dbError) {
       console.error('Fantasy draft insert error:', dbError);

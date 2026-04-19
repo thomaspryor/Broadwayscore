@@ -7,7 +7,7 @@ import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 export default function FooterBranding({ totalReviews }: { totalReviews: number }) {
   const marketId = useCurrentMarket();
   const isLondon = marketId === 'west-end' || marketId === 'off-west-end';
-  const logoPrefix = isLondon ? 'West End' : 'Broadway';
+  const logoPrefix = isLondon ? 'WestEnd' : 'Broadway';
 
   return (
     <>

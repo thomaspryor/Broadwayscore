@@ -1496,10 +1496,19 @@ showDirs.forEach(showId => {
         let refAlsoDupe = false;
         let refExcluded = false;
         let isCircular = false;
+        let circularSameText = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateOf || !!refData.duplicateTextOf;
           isCircular = refData.duplicateOf === file || refData.duplicateTextOf === file;
+          // Only tiebreak on TRUE duplicates — same content fingerprint.
+          // Named-critic pairs with DIFFERENT text are legitimate separate reviews;
+          // duplicateOf was wrongly set on them. Preserve them (pre-fix behavior).
+          if (isCircular && data.fullText && refData.fullText) {
+            const a = computeContentFingerprint(data.fullText);
+            const b = computeContentFingerprint(refData.fullText);
+            circularSameText = !!(a && b && a === b);
+          }
           // Check if reference would be excluded by later guards
           refExcluded = !isIncludableForRebuild(refData);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1519,15 +1528,16 @@ showDirs.forEach(showId => {
           stats.skippedDuplicateOf = (stats.skippedDuplicateOf || 0) + 1;
           return;
         }
-        // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A (and ref isn't excluded
-        // by other guards), both files would otherwise be included — double-counting the review.
-        // Exclude the lexicographically-greater filename; the other side will keep itself.
-        if (isCircular && !refExcluded && file > data.duplicateOf) {
+        // Circular tiebreaker: when A.duplicateOf=B AND B.duplicateOf=A AND texts match,
+        // both files would be double-counted. Exclude the lexicographically-greater filename;
+        // the other side keeps itself. Only applied when content fingerprints match —
+        // otherwise duplicateOf is wrongly set and we keep both to avoid regressing real reviews.
+        if (isCircular && circularSameText && !refExcluded && file > data.duplicateOf) {
           logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
           stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
           return;
         }
-        // Circular (kept side), stale, or ref excluded — let through
+        // Circular (kept side, different-text, stale, or ref excluded) — let through
         stats.circularDuplicateRecovered = (stats.circularDuplicateRecovered || 0) + 1;
       }
 
@@ -1541,10 +1551,16 @@ showDirs.forEach(showId => {
         let refWouldBeExcluded = false;
         let staleFlag = false;
         let isCircular = false;
+        let circularSameText = false;
         try {
           const refData = JSON.parse(fs.readFileSync(refPath, 'utf8'));
           refAlsoDupe = !!refData.duplicateTextOf || !!refData.duplicateOf;
           isCircular = refData.duplicateTextOf === file || refData.duplicateOf === file;
+          if (isCircular && data.fullText && refData.fullText) {
+            const a = computeContentFingerprint(data.fullText);
+            const b = computeContentFingerprint(refData.fullText);
+            circularSameText = !!(a && b && a === b);
+          }
           // Check if reference would be excluded by later guards
           refWouldBeExcluded = !isIncludableForRebuild(refData);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
@@ -1577,8 +1593,8 @@ showDirs.forEach(showId => {
           logExclusion("skippedDuplicateText", showId, file, data);
           stats.skippedDuplicateText = (stats.skippedDuplicateText || 0) + 1;
           return;
-        } else if (isCircular && !refWouldBeExcluded && file > data.duplicateTextOf) {
-          // Circular tiebreaker — exclude lexicographically-greater filename so we don't double-count
+        } else if (isCircular && circularSameText && !refWouldBeExcluded && file > data.duplicateTextOf) {
+          // Circular tiebreaker — only when texts truly match (avoid dropping legitimate separate critics)
           logExclusion("skippedCircularDuplicateTiebreak", showId, file, data);
           stats.skippedCircularDuplicateTiebreak = (stats.skippedCircularDuplicateTiebreak || 0) + 1;
           return;
