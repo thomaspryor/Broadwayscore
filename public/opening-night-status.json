@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T09:09:06.311Z",
+  "generatedAt": "2026-04-19T09:54:21.481Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -158,6 +158,10 @@
           "isDualMarket": true
         },
         {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
           "name": "The Daily Beast",
           "isDualMarket": false
         },
@@ -310,19 +314,19 @@
       "slug": "hamlet-off-broadway",
       "thumbnail": "/images/shows/hamlet-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 84,
       "scoreDrift": null,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:0/8"
@@ -590,6 +594,20 @@
           "name": "The Stage",
           "isDualMarket": true
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-19T09:54:21.481Z",
+          "rc": 1,
+          "s": 84,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -633,6 +651,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
         {
           "name": "Vulture",
           "isDualMarket": false

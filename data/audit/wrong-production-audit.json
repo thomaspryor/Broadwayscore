@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T09:09:02.430Z",
+  "timestamp": "2026-04-19T09:54:17.674Z",
   "stats": {
-    "totalReviews": 34881,
-    "alreadyFlagged": 15301,
+    "totalReviews": 34886,
+    "alreadyFlagged": 15306,
     "dateGuardCatches": 90,
     "directorMismatch": 816,
     "tvFilmSignals": 3149,
-    "londonSignals": 1011,
-    "offBroadwaySignals": 883,
+    "londonSignals": 1010,
+    "offBroadwaySignals": 884,
     "yearMismatch": 67,
-    "noPublishDate": 3722
+    "noPublishDate": 3720
   },
   "findings": [
     {
@@ -56808,20 +56808,6 @@
       ]
     },
     {
-      "showId": "agatha-christies-black-coffee-grounds-for-murder-off-broadway-2026",
-      "file": "nytimes--houman-barekat.json",
-      "score": null,
-      "publishDate": "2026-04-16",
-      "url": "https://www.nytimes.com/2026/04/16/theater/one-flew-over-the-cuckoos-nest-old-vic-london.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "aint-no-mo-2022",
       "file": "nysr--bart-greenberg.json",
       "score": 88,
@@ -62863,6 +62849,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-off-broadway-2026",
+      "file": "vulture--bilge-eberi.json",
+      "publishDate": "2026-04-14",
+      "url": "https://www.vulture.com/article/why-is-hamlet-everywhere-right-now.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
