@@ -325,7 +325,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: inputs.dry_run != true && steps.changes.outputs.has_changes == 'true'
+        if: inputs.dry_run != true && (steps.changes.outputs.has_changes == 'true' || steps.after.outputs.count > steps.before.outputs.count)
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -358,7 +358,11 @@ jobs:
           message: "data: Opening Night Express — ${{ inputs.show_id }}"
 
       - name: Deploy to Vercel
-        if: inputs.dry_run != true && steps.changes.outputs.has_changes == 'true'
+        # Deploy whenever reviews were actually added to the private repo — decoupled from
+        # the public-repo git diff (which often sees no changes because reviews flow through
+        # push-core-data, not the public repo commit). Validated via E2E test 2026-04-19:
+        # full run added 18 reviews but has_changes=false because public repo had no diff.
+        if: inputs.dry_run != true && steps.after.outputs.count > steps.before.outputs.count
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
