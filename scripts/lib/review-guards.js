@@ -123,11 +123,23 @@ function urlLooksLikeReview(url, showTitle) {
     .split(/\s+/)
     .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
 
+  // Talkin' Broadway uses CamelCase slugs concatenated with optional year suffix
+  // (e.g. /page/world/Proof26.html, /world/MeteorShower2017.html, /page/world/AllMySons2019.html).
+  // Word boundaries don't exist between title words OR before the year — use plain substring match.
+  // TB is a curated outlet on our allowlist, so substring match is safe here.
+  const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lower);
+  if (isTBWorldPath) {
+    const matchCountTB = titleWords.filter(w => lower.includes(w)).length;
+    const minMatchTB = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
+    return matchCountTB >= minMatchTB;
+  }
+
   // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
   // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
+  // Trailing digit is also a boundary — for year/sequel suffixes in URLs that DO use separators.
   const wordMatch = (haystack, word) => {
     const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
-    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
+    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
   };
   const matchCount = titleWords.filter(w => wordMatch(lower, w)).length;
   // Short titles (1-3 words) need ALL words to match — prevents "Shaw" in "Becky Shaw"

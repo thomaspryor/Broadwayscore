@@ -58,7 +58,14 @@ for (const arg of args) {
 const DRY_RUN = flags['dry-run'] === true;
 const SHOW_LIST = flags['shows'] ? flags['shows'].split(',') : null;
 const TOP_HISTORICAL = parseInt(flags['top-historical']) || 0;
-const MAX_PER_RUN = parseInt(flags['max-per-run']) || 30;
+// Preserve `0` as "cap at zero" — a literal "process no new shows" option is
+// useful for validating the cap gate. `parseInt(x) || 30` would silently
+// coerce 0 to 30 since 0 is falsy. Only fall back to 30 when the flag is
+// absent or a NaN-producing value.
+const MAX_PER_RUN_RAW = flags['max-per-run'];
+const MAX_PER_RUN = MAX_PER_RUN_RAW !== undefined && MAX_PER_RUN_RAW !== true && !isNaN(parseInt(MAX_PER_RUN_RAW, 10))
+  ? parseInt(MAX_PER_RUN_RAW, 10)
+  : 30;
 const SKIP_SEC = flags['skip-sec'] === true;
 const APPLY_MODE = flags['apply'] === true;
 
