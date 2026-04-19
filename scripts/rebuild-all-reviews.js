@@ -2373,7 +2373,7 @@ showDirs.forEach(showId => {
       // If a review in an OLDER production's directory mentions a NEWER production's director,
       // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
       // routedFromShowId: already rerouted — text may reference original show's era, skip re-evaluation
-      if (multiProdDirectorGuard[showId] && !data.routedFromShowId) {
+      if (multiProdDirectorGuard[showId] && !data.routedFromShowId && data.humanReviewedWrongProduction !== false) {
         const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
         if (text.length >= 30) {
           for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
