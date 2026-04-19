@@ -1104,8 +1104,13 @@ function isIncludableForRebuild(data) {
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
   // Only exclude if the stale flag is still legitimate (wrong flags not cleared yet).
   if (data.incompleteReason === 'wrong_content') {
-    // If wrongShow/wrongProduction still set, this is correct exclusion
-    if (data.wrongShow || data.wrongProduction) return false;
+    // Respect manual clears for wrongProduction (mirrors the check above at line 1072)
+    const wpCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false;
+    const wpBlocking = data.wrongProduction === true && !wpCleared;
+    if (data.wrongShow || wpBlocking) return false;
     // If no substantial text, also correct to exclude
     const hasText = !!(data.fullText && data.fullText.trim().length >= 200);
     const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
