@@ -161,16 +161,28 @@ function getShowYearMap() {
 // Global URL index for cross-production duplicate prevention
 // Maps URL → { showId, file } for all existing review files
 let _globalUrlIndex = null;
+let _skipCrossShowDupeIds = null;
 // Lazy-loaded outlet registry cache for domain validation in saveReview()
 let _outletRegistryCache = null;
+function getSkipCrossShowDupeIds() {
+  if (_skipCrossShowDupeIds) return _skipCrossShowDupeIds;
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    _skipCrossShowDupeIds = new Set(shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
+  } catch { _skipCrossShowDupeIds = new Set(); }
+  return _skipCrossShowDupeIds;
+}
 function getGlobalUrlIndex() {
   if (_globalUrlIndex) return _globalUrlIndex;
   _globalUrlIndex = new Map();
+  const skipIds = getSkipCrossShowDupeIds();
   try {
     const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
       try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
     });
     for (const d of dirs) {
+      if (skipIds.has(d)) continue; // _skipCrossShowDupe: excluded from global URL index
       const showDir = path.join(REVIEW_TEXTS_DIR, d);
       const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
       for (const f of files) {
@@ -2670,7 +2682,8 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // CROSS-PRODUCTION URL CHECK: prevent same URL in sibling production directories
   // Exceptions: roundup articles and combined reviews legitimately cover multiple shows
-  if (reviewData.url) {
+  // Also skip for _skipCrossShowDupe shows (E2E test simulation)
+  if (reviewData.url && !getSkipCrossShowDupeIds().has(showId)) {
     const urlIndex = getGlobalUrlIndex();
     const existing = urlIndex.get(normalizeUrl(reviewData.url));
     if (existing && existing.showId !== showId) {
