@@ -5940,8 +5940,11 @@ async function processReview(review) {
           // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
           // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
           // publishDate caused legitimate revival reviews to have their text nulled).
-          // Falls back to textFetchedAt as a proxy when publishDate is missing.
-          publishDate: reviewData.publishDate || reviewData.textFetchedAt || null,
+          // Falls back to textFetchedAt as a proxy, then to today's date as last resort.
+          // On opening night, fresh stubs have publishDate=null and textFetchedAt=null —
+          // without this fallback, temporal override never fires and the LLM's high-confidence
+          // wrongProduction FP (44% rate; Proof 2026-04-17) stamps the file immediately.
+          publishDate: reviewData.publishDate || reviewData.textFetchedAt || new Date().toISOString().slice(0, 10),
         });
 
         const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';

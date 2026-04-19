@@ -97,9 +97,15 @@ function getKnownUrls(showId) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
       // Skip wrongProduction/wrongShow files — their URLs shouldn't block fresh discovery
+      // EXCEPTION: if the file is already scored (llmScore present), the wrongProduction flag
+      // may be a false-positive from LLM contentVerification (44% FP on opening night).
+      // Keep scored files in knownUrls so their URLs don't get re-discovered and clobber them.
+      // (Proof 2026-04-17 P0: LLM FP set wrongProduction → URL excluded → second run clobbered 9 reviews)
+      const isScored = (data.llmScore && data.llmScore.score != null) || data.humanReviewScore != null;
       // Skip preview placeholders — post-opening discoveries must be allowed to replace them
       // Skip confirmed non-reviews — interviews/news/previews should not block the real review URL
-      if (data.wrongProduction || data.wrongShow || data.isPreviewPlaceholder || data.rejectionReason === 'not_a_review') continue;
+      if ((data.wrongProduction || data.wrongShow) && !isScored) continue;
+      if (data.isPreviewPlaceholder || data.rejectionReason === 'not_a_review') continue;
       if (data.url) urls.add(data.url);
       if (data.reviewUrl) urls.add(data.reviewUrl);
     } catch {}
