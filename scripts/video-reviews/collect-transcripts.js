@@ -89,7 +89,7 @@ function main() {
 
   for (const file of discoveryFiles) {
     const data = JSON.parse(fs.readFileSync(path.join(DISCOVERY_DIR, file), 'utf8'));
-    if (creatorFilter && data.handle !== creatorFilter) continue;
+    if (creatorFilter && data.handle.toLowerCase() !== creatorFilter.toLowerCase()) continue;
 
     // Collect videos flagged as review candidates (by title heuristics OR by LLM pre-classification)
     const candidates = data.videos.filter(v => v.isReviewCandidate || v.llmFlagged);
