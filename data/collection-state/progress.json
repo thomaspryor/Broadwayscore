@@ -62,7 +62,17 @@
     "dog-day-afternoon-2026/nytimes--jason-zinoman.json",
     "oh-mary-west-end-2025/guardian--arifa-akbar.json",
     "chess-2025/hollywood-reporter--richard-lawson.json",
-    "chess-2025/thewrap--josh-dickey.json"
+    "chess-2025/thewrap--josh-dickey.json",
+    "maybe-happy-ending-2024/washpost--naveen-kumar.json",
+    "oh-mary-2024/variety--christian-lewis.json",
+    "oh-mary-2024/observer--david-cote.json",
+    "oh-mary-2024/theatermania--zachary-stewart.json",
+    "the-great-gatsby-2024/nytimes--laura-collins-hughes.json",
+    "the-great-gatsby-2024/variety--christian-lewis.json",
+    "the-outsiders-2024/vulture--sara-holdren.json",
+    "the-outsiders-2024/theatrely--kobi-kassal.json",
+    "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json",
+    "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -1083,7 +1093,12 @@
       "long-days-journey-into-night-2016/theater-life--alix-cohen.json",
       "evita-2012/huffpost--mark-kennedy.json",
       "proof-2026/nysr--roma-torre.json",
-      "oh-mary-west-end-2025/guardian--arifa-akbar.json"
+      "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+      "maybe-happy-ending-2024/washpost--naveen-kumar.json",
+      "oh-mary-2024/observer--david-cote.json",
+      "oh-mary-2024/theatermania--zachary-stewart.json",
+      "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json",
+      "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1096,7 +1111,11 @@
       "data/review-texts/dog-day-afternoon-2026/nytimes--jason-zinoman.json",
       "dog-day-afternoon-2026/nytimes--jason-zinoman.json",
       "data/review-texts/chess-2025/hollywood-reporter--richard-lawson.json",
-      "chess-2025/hollywood-reporter--richard-lawson.json"
+      "chess-2025/hollywood-reporter--richard-lawson.json",
+      "data/review-texts/oh-mary-2024/variety--christian-lewis.json",
+      "oh-mary-2024/variety--christian-lewis.json",
+      "data/review-texts/the-great-gatsby-2024/variety--christian-lewis.json",
+      "the-great-gatsby-2024/variety--christian-lewis.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1107,7 +1126,9 @@
       "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
       "wit-2012/splash-magazines--david-cote.json",
-      "master-class-2011/splash-magazines--unknown.json"
+      "master-class-2011/splash-magazines--unknown.json",
+      "the-great-gatsby-2024/nytimes--laura-collins-hughes.json",
+      "the-outsiders-2024/theatrely--kobi-kassal.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
@@ -1154,11 +1175,12 @@
       "you-cant-take-it-with-you-2014/abc-news--mark-kennedy.json",
       "this-is-our-youth-2014/abc-news--mark-kennedy.json",
       "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
-      "harvey-2012/huffpost--mark-kennedy.json"
+      "harvey-2012/huffpost--mark-kennedy.json",
+      "the-outsiders-2024/vulture--sara-holdren.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "chess-2025/thewrap--josh-dickey.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/timeout-london--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -1313,6 +1335,39 @@
       "t": "2026-04-19T18:21:47.404Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-19T18:22:26.036Z",
+      "event": "bb-session",
+      "session": "b83d9a24",
+      "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-12360"
+    },
+    {
+      "t": "2026-04-19T18:22:26.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-19T18:23:01.408Z",
+      "event": "bb-session",
+      "session": "2d716d98",
+      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
+    },
+    {
+      "t": "2026-04-19T18:23:01.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-19T18:23:33.349Z",
+      "event": "bb-session",
+      "session": "bf429f78",
+      "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-"
+    },
+    {
+      "t": "2026-04-19T18:23:33.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
