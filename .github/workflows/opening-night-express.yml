@@ -103,7 +103,7 @@ jobs:
           # The orchestrator checks for any non-empty value (including "true" for manual pauses).
           gh variable set ORCHESTRATOR_PAUSED --body "express" \
             && echo "ORCHESTRATOR_PAUSED=express (new orchestrator crons will yield)" \
-            || echo "::warning::Could not set ORCHESTRATOR_PAUSED — orchestrator crons may race if a new one fires"
+            || { echo "::error::Could not set ORCHESTRATOR_PAUSED — aborting to prevent unguarded concurrent orchestrator writes"; exit 1; }
 
       - name: Checkout core data (shows.json, reviews.json, etc.)
         uses: ./.github/actions/checkout-core-data
@@ -248,7 +248,7 @@ jobs:
       - name: Re-cancel orchestrator/poller runs started during scoring
         if: inputs.dry_run != true
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           CANCELLED=0
           for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml; do
