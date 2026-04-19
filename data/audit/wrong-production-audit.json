@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T21:44:09.593Z",
+  "timestamp": "2026-04-19T22:10:53.402Z",
   "stats": {
-    "totalReviews": 35563,
+    "totalReviews": 35565,
     "alreadyFlagged": 15876,
     "dateGuardCatches": 91,
     "directorMismatch": 826,
-    "tvFilmSignals": 3165,
+    "tvFilmSignals": 3164,
     "londonSignals": 1015,
     "offBroadwaySignals": 886,
     "yearMismatch": 71,
-    "noPublishDate": 3722
+    "noPublishDate": 3721
   },
   "findings": [
     {
@@ -36788,20 +36788,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "ragtime-1998",
-      "file": "nytimes--ben-brantley.json",
-      "score": 72,
-      "publishDate": "1998-01-21",
-      "url": "https://www.newspapers.com/image/485910767/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
