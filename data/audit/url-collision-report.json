@@ -1,39 +1,12 @@
 {
-  "generatedAt": "2026-04-19T04:07:54.584Z",
+  "generatedAt": "2026-04-19T08:37:57.787Z",
   "summary": {
-    "total": 3,
-    "high": 1,
+    "total": 13,
+    "high": 11,
     "medium": 1,
     "low": 1
   },
   "collisions": [
-    {
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
-      "normalizedUrl": "https://wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-broadway-eb586d98",
-      "candidates": [
-        {
-          "showId": "an-ark-2026",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": "January 22nd, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        },
-        {
-          "showId": "an-ark-off-broadway-2026",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": "January 30, 2026",
-          "openingDate": "2026-01-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "wsj"
-        }
-      ],
-      "suggestedWinner": "an-ark-off-broadway-2026",
-      "reason": "publishDate January 30, 2026 is 21 days from an-ark-off-broadway-2026 opening (2026-01-09)",
-      "confidence": "high"
-    },
     {
       "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
       "normalizedUrl": "https://bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
@@ -60,6 +33,303 @@
       "suggestedWinner": "catch-me-if-you-can-2011",
       "reason": "publishDate 2011-04-11 is 1 days from catch-me-if-you-can-2011 but also 1 days from high-2011",
       "confidence": "medium"
+    },
+    {
+      "url": "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
+      "normalizedUrl": "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-04-08",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077/",
+      "normalizedUrl": "https://deadline.com/2026/04/cats-the-jellicle-ball-broadway-review-1236773077",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "deadline--greg-evans.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "deadline"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "deadline--greg-evans.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "deadline"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
+      "normalizedUrl": "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "ew--shania-russell.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "ew"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "ew--shania-russell.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "ew"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-07 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic/",
+      "normalizedUrl": "https://nypost.com/2026/04/07/entertainment/cats-the-jellicle-ball-review-a-euphoric-nyc-reinvention-of-a-broadway-classic",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review/",
+      "normalizedUrl": "https://newyorktheater.me/2026/04/07/cats-the-jellicle-ball-broadway-review",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-07 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+      "normalizedUrl": "https://newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "nytg--kyle-turner.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytg"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "nytg--unknown.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytg"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate April 7, 2026 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "normalizedUrl": "https://nytimes.com/2026/04/07/theater/cats-jellicle-ball-review-broadway.html",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate April 7, 2026 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978/",
+      "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-party-of-the-broadway-season_1831978",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+      "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "2026-04-08",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007/",
+      "normalizedUrl": "https://usatoday.com/story/entertainment/music/2026/04/07/cats-jellicle-ball-broadway-review/89488390007",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "usatoday--patrick-ryan.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "usatoday"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "usatoday--patrick-ryan.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "usatoday"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate April 7, 2026 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
+      "normalizedUrl": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562",
+      "candidates": [
+        {
+          "showId": "cats-express-test-2026",
+          "file": "variety--frank-rizzo.json",
+          "publishDate": "April 7, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "variety"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "variety--frank-rizzo.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "variety"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
+      "confidence": "high"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
