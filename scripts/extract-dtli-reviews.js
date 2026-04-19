@@ -240,6 +240,19 @@ function saveReview(review, overwrite = false) {
   const filename = generateReviewFilename(review.outletId, review.criticName);
   let filepath = path.join(showDir, filename);
 
+  // Guard: if the canonical path already exists and is a known syndicated duplicate
+  // or has a duplicateOf reference, do not overwrite — findExistingReviewFile skips
+  // duplicateOf files (they're not merge targets), so without this check a new DTLI
+  // entry would blindly overwrite the file and lose isSyndicatedDuplicate/duplicateOf.
+  if (!overwrite && fs.existsSync(filepath)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+      if (existing.isSyndicatedDuplicate === true || existing.duplicateOf) {
+        return null; // Skip — preserves manual dedup flags
+      }
+    } catch { /* corrupt file — fall through and let normal logic handle */ }
+  }
+
   // Check for existing file under any outlet ID variant (canonical or legacy)
   const existingFile = !overwrite ? findExistingReviewFile(showDir, review.outletId, review.criticName) : null;
   if (existingFile && existingFile.data) {
