@@ -3140,8 +3140,13 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Pattern Card #4: route --unknown.json files with a URL to _pending/ instead of
   // the main show directory. Unknown bylines from SERP often duplicate already-ingested
   // reviews. They'll be resolved by a named-critic discovery pass or manual review.
+  // Carve-out: SERP-discovered URLs from multi-critic outlets are saved to the main
+  // directory so collect-review-texts.js AUTHOR ENRICHMENT (line ~4519) can extract
+  // the byline from the page HTML. Without this, multi-critic outlets (NYT, NYSR,
+  // Vulture, Theatrely) are stranded in _pending and never reach the scoring pipeline.
   const isUnknownCritic = normalizedCriticName === 'unknown';
-  if (isUnknownCritic && review.url) {
+  const isSerpDiscovery = review.source === 'serp-discovery';
+  if (isUnknownCritic && review.url && !isSerpDiscovery) {
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     const urlHash = (() => {
@@ -4009,9 +4014,28 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       health.serp.skipped = true;
       console.log(`\n[2/4] SKIPPED SERP search (no SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN)`);
     } else {
-      // Build set of outlets already found by aggregators to skip
+      // Build set of outlets already found by aggregators to skip.
+      // Only count an outlet as "found" if the URL actually matches the outlet's expected domain.
+      // Aggregators sometimes misattribute URLs (e.g. labeling a NYSR URL as "WSJ"), and trusting
+      // that misattribution suppresses SERP re-discovery of the real outlet's review.
+      const outletDomainMap = new Map(outlets.map(o => [o.id.toLowerCase(), (o.domain || '').toLowerCase()]));
       const foundOutletIds = new Set(
-        foundReviews.map(r => (r.outletId || '').toLowerCase())
+        foundReviews
+          .filter(r => {
+            const oid = (r.outletId || '').toLowerCase();
+            const expectedDomain = outletDomainMap.get(oid);
+            if (!expectedDomain || !r.url) return true; // no domain to validate against — keep
+            try {
+              const urlHost = new URL(r.url).hostname.toLowerCase().replace(/^www\./, '');
+              const exp = expectedDomain.replace(/^www\./, '');
+              const matches = urlHost === exp || urlHost.endsWith('.' + exp);
+              if (!matches) {
+                console.log(`  ⚠ Aggregator outlet/URL mismatch: ${oid} URL ${urlHost} ≠ expected ${exp} — will re-search via SERP`);
+              }
+              return matches;
+            } catch { return true; }
+          })
+          .map(r => (r.outletId || '').toLowerCase())
       );
 
       // Tier 1 first, then Tier 2, then Tier 3 — filtered by market
@@ -4056,12 +4080,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
         if (result && result.url) {
           health.serp.hits++;
-          console.log('✓ Found');
+          // For single-critic outlets, default to that critic so saveReview doesn't route
+          // to _pending (where reviews never get scored). For multi-critic outlets, leave
+          // criticName as Unknown — collect will extract the real byline from the page.
+          const isSingleCriticOutlet = outlet.critics && outlet.critics.length === 1;
+          const defaultCritic = isSingleCriticOutlet ? outlet.critics[0] : 'Unknown';
+          console.log(isSingleCriticOutlet ? `✓ Found (default critic: ${defaultCritic})` : '✓ Found');
           foundReviews.push({
             showId,
             outletId: outlet.id,
             outlet: outlet.name,
-            criticName: 'Unknown',
+            criticName: defaultCritic,
             url: result.url,
             source: 'serp-discovery'
           });

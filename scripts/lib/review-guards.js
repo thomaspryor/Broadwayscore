@@ -112,7 +112,9 @@ function urlLooksLikeReview(url, showTitle) {
   const lower = url.toLowerCase();
   // Reject non-article URLs
   if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
-  if (lower.includes('/search') || lower.includes('/page/') || lower.includes('/obituar')) return false;
+  if (lower.includes('/search') || lower.includes('/obituar')) return false;
+  // Reject /page/ pagination URLs but exempt Talkin' Broadway whose review URLs use /page/world/
+  if (lower.includes('/page/') && !lower.includes('talkinbroadway.com/page/')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
   // Check if URL contains words from show title
@@ -371,7 +373,8 @@ function urlOrTitleLooksLikeReview(url, showTitle, articleTitle, options = {}) {
   const lower = url.toLowerCase();
   // Reject obviously non-article URLs even with trustedSource (defense in depth)
   if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
-  if (lower.includes('/search') || lower.includes('/page/') || lower.includes('/obituar')) return false;
+  if (lower.includes('/search') || lower.includes('/obituar')) return false;
+  if (lower.includes('/page/') && !lower.includes('talkinbroadway.com/page/')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
   if (options.trustedSource === true) return true;
