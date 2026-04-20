@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-20T18:36:04.533Z",
-  "processed": 29,
-  "failed": 911,
-  "successRate": "3.1%",
+  "updatedAt": "2026-04-20T18:39:54.962Z",
+  "processed": 32,
+  "failed": 918,
+  "successRate": "3.4%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 22,
     "amp": 2,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 1,
     "archiveToday": 7,
-    "archive": 2
+    "archive": 3
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -102,6 +102,17 @@
       "t": "2026-04-20T18:33:51.807Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T18:39:07.518Z",
+      "event": "bb-session",
+      "session": "d764a59f",
+      "url": "http://www.hollywoodreporter.com/movie/august-osage-county/review/624967"
+    },
+    {
+      "t": "2026-04-20T18:39:07.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

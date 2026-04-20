@@ -28,7 +28,10 @@
     "oliver-west-end-2024/standard--unknown.json",
     "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
     "a-little-night-music-2009/nydailynews--unknown.json",
-    "the-philanthropist-2009/variety--david-rooney.json"
+    "the-philanthropist-2009/variety--david-rooney.json",
+    "south-pacific-2008/ap--michael-kuchwara.json",
+    "the-little-mermaid-2008/av-club--leigh-monson.json",
+    "august-osage-county-2007/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
@@ -941,7 +944,14 @@
     "impressionism-2009/variety--david-rooney.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/variety--charles-isherwood.json",
-    "33-variations-2009/newsday--unknown.json"
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "a-tale-of-two-cities-2008/variety--david-rooney.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "in-the-heights-2008/ap--michael-kuchwara.json",
+    "the-little-mermaid-2008/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -966,7 +976,8 @@
       "mrs-warrens-profession-2010/ap--unknown.json",
       "11-to-midnight-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "oliver-west-end-2024/standard--unknown.json",
-      "the-last-five-years-2025/one-minute-critic--matthew-wexler.json"
+      "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
+      "south-pacific-2008/ap--michael-kuchwara.json"
     ],
     "amp": [
       "data/review-texts/the-philanthropist-2009/variety--david-rooney.json",
@@ -978,7 +989,9 @@
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json",
       "dog-day-afternoon-2026/deadline--greg-evans.json",
       "data/review-texts/mexodus-off-broadway-2026/nytimes--unknown.json",
-      "mexodus-off-broadway-2026/nytimes--unknown.json"
+      "mexodus-off-broadway-2026/nytimes--unknown.json",
+      "data/review-texts/august-osage-county-2007/hollywood-reporter--david-rooney.json",
+      "august-osage-county-2007/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -999,11 +1012,12 @@
     ],
     "archive": [
       "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json",
-      "schmigadoon-2026/playbill--unknown.json"
+      "schmigadoon-2026/playbill--unknown.json",
+      "the-little-mermaid-2008/av-club--leigh-monson.json"
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "33-variations-2009/newsday--unknown.json",
+  "lastProcessed": "august-osage-county-2007/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -1092,6 +1106,17 @@
       "t": "2026-04-20T18:33:51.807Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T18:39:07.518Z",
+      "event": "bb-session",
+      "session": "d764a59f",
+      "url": "http://www.hollywoodreporter.com/movie/august-osage-county/review/624967"
+    },
+    {
+      "t": "2026-04-20T18:39:07.891Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
