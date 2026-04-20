@@ -1,29 +1,48 @@
 {
   "meta": {
-    "generatedAt": "2026-04-20T20:27:23.089Z",
+    "generatedAt": "2026-04-20T21:47:25.341Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36328,
-      "inReviewsJson": 16657,
+      "totalFiles": 36326,
+      "inReviewsJson": 16656,
       "skippedExcluded": 68,
       "withFullText": 37,
       "excerptOnly": 1590,
-      "llmClassified": 0,
+      "llmClassified": 2,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 0,
       "budgetUsed": 0.0036999999999999976,
       "llmCalls": 37,
-      "rateLimitHits": 111,
-      "errors": 37,
-      "skippedAlreadyClassified": 14962
+      "rateLimitHits": 106,
+      "errors": 35,
+      "skippedAlreadyClassified": 14961
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "home-2024/wsj--unknown.json",
+      "showId": "home-2024",
+      "outlet": "The Wall Street Journal",
+      "outletId": "wsj",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This appears to be a CAPTCHA page, not an article about the show.",
+      "currentScore": 66
+    }
+  ],
   "uncertainCases": [],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
-  "perShowSummary": []
+  "reviewsConfirmed": [
+    "burnout-paradise-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+  ],
+  "perShowSummary": [
+    {
+      "showId": "home-2024",
+      "currentCount": 25,
+      "removed": 1
+    }
+  ]
 }
