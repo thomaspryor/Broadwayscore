@@ -225,7 +225,9 @@
     "fallen-angels-2026/amny--matt-windman.json",
     "fallen-angels-2026/chicagotribune--chris-jones.json",
     "fallen-angels-2026/culturesauce--thom-geier.json",
-    "fallen-angels-2026/nysr--melissa-rose-bernardo.json"
+    "fallen-angels-2026/nysr--melissa-rose-bernardo.json",
+    "fallen-angels-2026/nypost--unknown.json",
+    "fallen-angels-2026/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -1867,6 +1869,8 @@
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "fallen-angels-2026/wsj--charles-isherwood.json",
     "fallen-angels-2026/cote-notices--david-cote.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
     "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
@@ -2098,7 +2102,9 @@
       "accidental-death-of-an-anarchist-1984/guardian--kate-wyver.json",
       "the-corn-is-green-1983/guardian--arifa-akbar.json",
       "fallen-angels-2026/vulture--sara-holdren.json",
-      "fallen-angels-2026/amny--matt-windman.json"
+      "fallen-angels-2026/amny--matt-windman.json",
+      "fallen-angels-2026/nypost--unknown.json",
+      "fallen-angels-2026/cititour--brian-scott-lipton.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
@@ -2134,6 +2140,7 @@
       "data/review-texts/the-corn-is-green-1983/thestage--tim-bano.json",
       "data/review-texts/into-the-woods-west-end-2025/thestage--sam-marlowe.json",
       "data/review-texts/fallen-angels-2026/cote-notices--david-cote.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
@@ -2421,6 +2428,17 @@
     },
     {
       "t": "2026-04-20T00:33:17.992Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-20T02:02:02.995Z",
+      "event": "bb-session",
+      "session": "22f9547f",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-20T02:02:04.083Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
