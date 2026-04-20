@@ -227,7 +227,16 @@
     "fallen-angels-2026/culturesauce--thom-geier.json",
     "fallen-angels-2026/nysr--melissa-rose-bernardo.json",
     "fallen-angels-2026/nypost--unknown.json",
-    "fallen-angels-2026/cititour--brian-scott-lipton.json"
+    "fallen-angels-2026/cititour--brian-scott-lipton.json",
+    "every-brilliant-thing-2026/ew--unknown.json",
+    "dracula-west-end-2025/variety--owen-gleiberman.json",
+    "dracula-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+    "into-the-woods-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+    "the-producers-west-end-2025/variety--ellise-shafer.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
+    "six-2021/whatsonstage--unknown.json",
+    "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
+    "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -1873,7 +1882,8 @@
     "fallen-angels-2026/wsj--charles-isherwood.json",
     "hamlet-off-broadway-2026/here--unknown.json",
     "fallen-angels-2026/wsj--charles-isherwood.json",
-    "hamlet-off-broadway-2026/here--unknown.json"
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1988,7 +1998,13 @@
       "fallen-angels-2026/nyt-theater--jonathan-mandell.json",
       "fallen-angels-2026/guardian--juan-a-ramirez.json",
       "fallen-angels-2026/culturesauce--thom-geier.json",
-      "fallen-angels-2026/nysr--melissa-rose-bernardo.json"
+      "fallen-angels-2026/nysr--melissa-rose-bernardo.json",
+      "every-brilliant-thing-2026/ew--unknown.json",
+      "dracula-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+      "into-the-woods-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+      "six-2021/whatsonstage--unknown.json",
+      "les-miserables-west-end-2021/i-paper--fiona-mountford.json",
+      "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2013,7 +2029,11 @@
       "data/review-texts/fallen-angels-2026/variety--brent-lang.json",
       "fallen-angels-2026/variety--brent-lang.json",
       "data/review-texts/fallen-angels-2026/deadline--greg-evans.json",
-      "fallen-angels-2026/deadline--greg-evans.json"
+      "fallen-angels-2026/deadline--greg-evans.json",
+      "data/review-texts/dracula-west-end-2025/variety--owen-gleiberman.json",
+      "dracula-west-end-2025/variety--owen-gleiberman.json",
+      "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
+      "the-producers-west-end-2025/variety--ellise-shafer.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2164,11 +2184,12 @@
       "the-outsiders-2024/vulture--sara-holdren.json",
       "a-dolls-house-2023/thestage--nicole-serratore.json",
       "funny-girl-2022/thestage--nicole-serratore.json",
-      "schmigadoon-2026/vulture--rhoda-feng.json"
+      "schmigadoon-2026/vulture--rhoda-feng.json",
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
+  "lastProcessed": "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2455,6 +2476,28 @@
       "t": "2026-04-20T02:59:55.444Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-20T03:10:57.461Z",
+      "event": "bb-session",
+      "session": "d9d660a1",
+      "url": "https://variety.com/2026/film/reviews/dracula-review-caleb-landry-jones-luc-bess"
+    },
+    {
+      "t": "2026-04-20T03:10:58.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T03:12:19.227Z",
+      "event": "bb-session",
+      "session": "79af7fa1",
+      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
+    },
+    {
+      "t": "2026-04-20T03:12:20.317Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
