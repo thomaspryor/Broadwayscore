@@ -248,7 +248,14 @@
     "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
     "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
     "gypsy-2003/culturesauce--thom-geier.json",
-    "ragtime-1998/nydailynews--fintan-otoole.json"
+    "ragtime-1998/nydailynews--fintan-otoole.json",
+    "les-miserables-1987/musical-theatre-review--unknown.json",
+    "les-miserables-1987/broadwayworld--unknown.json",
+    "les-miserables-1987/telegraph--unknown.json",
+    "les-miserables-1987/whatsonstage--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "hamlet-2026/nytimes--charles-isherwood.json",
+    "the-car-man-west-end-2026/musical-theatre-review--unknown.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -2023,7 +2030,10 @@
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
     "proof-2000/newsday--unknown.json",
-    "ragtime-1998/nytimes--ben-brantley.json"
+    "ragtime-1998/nytimes--ben-brantley.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/thestage--unknown.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2150,7 +2160,10 @@
       "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
       "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
       "cabaret-2014/musical-theatre-review--unknown.json",
-      "gypsy-2003/culturesauce--thom-geier.json"
+      "gypsy-2003/culturesauce--thom-geier.json",
+      "les-miserables-1987/musical-theatre-review--unknown.json",
+      "les-miserables-1987/whatsonstage--unknown.json",
+      "the-car-man-west-end-2026/musical-theatre-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2233,7 +2246,9 @@
       "fallen-angels-2026/chicagotribune--chris-jones.json",
       "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
       "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
-      "sister-act-2011/new-jersey-newsroom--michael-sommers.json"
+      "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "hamlet-2026/nytimes--charles-isherwood.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
@@ -2317,7 +2332,8 @@
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/thestage--unknown.json",
       "data/review-texts/cabaret-2014/thestage--unknown.json",
       "data/review-texts/proof-2000/newsday--unknown.json",
-      "data/review-texts/ragtime-1998/nytimes--ben-brantley.json"
+      "data/review-texts/ragtime-1998/nytimes--ben-brantley.json",
+      "data/review-texts/les-miserables-1987/thestage--unknown.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -2341,11 +2357,13 @@
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
       "an-enemy-of-the-people-2024/times-uk--clive-davis.json",
       "funny-girl-2022/times-uk--clive-davis.json",
-      "ragtime-1998/nydailynews--fintan-otoole.json"
+      "ragtime-1998/nydailynews--fintan-otoole.json",
+      "les-miserables-1987/broadwayworld--unknown.json",
+      "les-miserables-1987/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "ragtime-1998/nydailynews--fintan-otoole.json",
+  "lastProcessed": "the-car-man-west-end-2026/musical-theatre-review--unknown.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2663,6 +2681,28 @@
     },
     {
       "t": "2026-04-20T03:35:49.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T03:41:01.431Z",
+      "event": "bb-session",
+      "session": "b01f8d3d",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-04-20T03:41:02.577Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T03:41:33.977Z",
+      "event": "bb-session",
+      "session": "64b11495",
+      "url": "http://www.nytimes.com/2015/04/15/theater/review-hamlet-as-an-after-party-that-g"
+    },
+    {
+      "t": "2026-04-20T03:41:35.080Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
