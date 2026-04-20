@@ -596,6 +596,7 @@ jobs:
           # Exclude ensemble.test.mjs (pre-existing ts-node compilation issue with scripts/tsconfig.json)
           npx tsx --test \
             tests/unit/biz-data-functions.test.mjs \
+            tests/unit/bww-roundup-extractor.test.mjs \
             tests/unit/commercial-changes.test.mjs \
             tests/unit/cote-notices-registry.test.mjs \
             tests/unit/deep-research-guardian.test.mjs \

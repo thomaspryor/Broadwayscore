@@ -4,6 +4,11 @@ on:
   schedule:
     # 5 AM UTC = midnight EST — reviews published ~10-11 PM, aggregators indexed by midnight
     - cron: '0 5 * * *'
+    # 15 UTC = 11 AM ET / 4 PM BST — same-day late-population sweep.
+    # DTLI/BWW RR frequently add reviews 6-12h after opening as outlets trickle in.
+    # The orchestrator's 6h window ends too early for these; this cron catches them
+    # on the same day before the next evening cron.
+    - cron: '0 15 * * *'
   workflow_dispatch:
     inputs:
       lookback_days:
