@@ -1217,6 +1217,19 @@ function isIncludableForRebuild(data) {
   // Garbage text flagged by collection pipeline or LLM ensemble
   if (data.rejectionReason) return false;
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
+  // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
+  // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
+  // cleared by a re-scrape (collect-review-texts.js line 4247) or explicit manual reset.
+  // Without this check, reviews whose rejectionReason was later cleared by clear-failure-flags
+  // could slip back into reviews.json — which is what happened with the Vulture FILM review
+  // of Hamlet (wrong_production) on 2026-04-20.
+  // Exception: if text was re-scraped AFTER rejection, treat as revalidated and let downstream
+  // scoring decide. collect-review-texts should have cleared rejectedAt in that case but
+  // only does so when rejectionReason is still set, so this guard handles the leak.
+  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
+    if (!reFetched) return false;
+  }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.

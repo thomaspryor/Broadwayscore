@@ -91,7 +91,7 @@ describe('clearFailureFlags — other incompleteReasons', () => {
 });
 
 describe('clearFailureFlags — rejectionReason', () => {
-  it('clears rejectionReason when text is long enough', () => {
+  it('clears garbage_text rejection when text is long enough (re-scrape fixed it)', () => {
     const data = { fullText: LONG_TEXT, rejectionReason: 'garbage_text' };
     const cleared = clearFailureFlags(data);
     assert.strictEqual(data.rejectionReason, null);
@@ -102,6 +102,28 @@ describe('clearFailureFlags — rejectionReason', () => {
     const data = { fullText: 'Short text.', rejectionReason: 'garbage_text' };
     clearFailureFlags(data);
     assert.strictEqual(data.rejectionReason, 'garbage_text');
+  });
+
+  it('does NOT clear wrong_production (semantic rejection) regardless of text length', () => {
+    // Regression: a film review of Hamlet (Vulture 2026-04-20) had its 'wrong_production'
+    // rejection cleared by text-length heuristic, leaking into reviews.json. Semantic
+    // rejections describe content mismatches that more text cannot resolve.
+    const data = { fullText: LONG_TEXT, rejectionReason: 'wrong_production', rejectedBy: ['ensemble'] };
+    clearFailureFlags(data);
+    assert.strictEqual(data.rejectionReason, 'wrong_production');
+    assert.deepStrictEqual(data.rejectedBy, ['ensemble']);
+  });
+
+  it('does NOT clear wrong_show (semantic rejection)', () => {
+    const data = { fullText: LONG_TEXT, rejectionReason: 'wrong_show' };
+    clearFailureFlags(data);
+    assert.strictEqual(data.rejectionReason, 'wrong_show');
+  });
+
+  it('does NOT clear not_a_review (semantic rejection)', () => {
+    const data = { fullText: LONG_TEXT, rejectionReason: 'not_a_review' };
+    clearFailureFlags(data);
+    assert.strictEqual(data.rejectionReason, 'not_a_review');
   });
 });
 
