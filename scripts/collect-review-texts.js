@@ -4468,6 +4468,42 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
+  // 1A-bis. HIGH-CONFIDENCE AUTHOR OVERRIDE (runs before byline cross-check)
+  // ------------------------------------------------------------------------
+  // When the article's own per-article metadata (article:author meta or a
+  // JSON-LD Person author node) disagrees with the stored criticName, the
+  // stored name is almost certainly wrong — typically a SERP-derived site
+  // masthead (NYTG "Gillian Russo", Vulture editor, etc.) that overwrote the
+  // real review author. article:author and JSON-LD Person are the strongest
+  // per-article signals available from the HTML.
+  //
+  // This fires BEFORE the byline text cross-check because extractByline reads
+  // cleanedText (stripped of HTML) and fails on outlets that format the byline
+  // in HTML that doesn't survive stripping (NYTG is one — its byline was
+  // invisible to the text-based extractor in the 2026-04-19 FA case).
+  //
+  // Guards: HTML available, not manually set, stored name is concrete (not
+  // Unknown), HC author differs from stored.
+  if (html && !data.criticNameManual) {
+    const hcAuthor = extractHighConfidenceAuthor(html);
+    const storedCritic = data.criticName || review.critic || '';
+    if (hcAuthor &&
+        storedCritic &&
+        storedCritic !== 'Unknown' &&
+        !matchesCritic(hcAuthor.name, storedCritic)) {
+      console.log(`    → HC author override: "${storedCritic}" → "${hcAuthor.name}" (${hcAuthor.source})`);
+      data.criticName = hcAuthor.name;
+      data.criticEnrichedFrom = `html-override:${hcAuthor.source}`;
+      data._priorCriticName = storedCritic;
+      // Clear any stale mismatch flags — stored name is now consistent with HTML
+      delete data.misattributedFullText;
+      delete data.extractedByline;
+      delete data.expectedCritic;
+      delete data.fullTextWrongAuthor;
+      delete data._authorMismatch;
+    }
+  }
+
   // 1B. Byline cross-check (exclude cast/creative names to avoid false positives)
   const showIdForByline = data.showId || review.showId || '';
   let bylineExcludeNames = [];
