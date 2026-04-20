@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-20T07:27:21.794Z",
+  "timestamp": "2026-04-20T19:32:31.526Z",
   "stats": {
-    "totalReviews": 35596,
-    "alreadyFlagged": 15894,
+    "totalReviews": 35676,
+    "alreadyFlagged": 15901,
     "dateGuardCatches": 90,
     "directorMismatch": 826,
-    "tvFilmSignals": 3175,
-    "londonSignals": 1019,
+    "tvFilmSignals": 3181,
+    "londonSignals": 1023,
     "offBroadwaySignals": 889,
     "yearMismatch": 71,
-    "noPublishDate": 3709
+    "noPublishDate": 3777
   },
   "findings": [
     {
@@ -4906,7 +4906,7 @@
       "file": "london-theatre--unknown.json",
       "score": 88,
       "publishDate": "2026-04-17",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/avenue-q-review-shaftesbury-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -4931,6 +4931,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "theupcoming--benedetta-mancusi.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -16673,6 +16687,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/glengarry-glen-ross-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -32651,6 +32678,19 @@
     },
     {
       "showId": "oh-mary-2024",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/oh-mary-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
       "file": "theatermania--jesse-green.json",
       "score": 90,
       "publishDate": "July 10, 2024",
@@ -38426,6 +38466,19 @@
       ]
     },
     {
+      "showId": "seagull-true-story-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/seagull-true-story-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "seminar-2011",
       "file": "amny--matt-windman.json",
       "score": 38,
@@ -40236,6 +40289,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "south-pacific-2008",
+      "file": "ap--michael-kuchwara.json",
+      "score": 88,
+      "publishDate": "2008-04-03",
+      "url": "https://apnews.com/article/mitzi-gaynor-dead-south-pacific-320eb99fe0824091babafac794dc2320",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -58377,7 +58444,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 50,
+      "score": 79,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -63493,6 +63560,7 @@
     {
       "showId": "hamlet-off-broadway-2026",
       "file": "vulture--bilge-eberi.json",
+      "score": 71,
       "publishDate": "2026-04-14",
       "url": "https://www.vulture.com/article/why-is-hamlet-everywhere-right-now.html",
       "findings": [
@@ -68981,6 +69049,20 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 73,
+      "publishDate": "2026-04-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ONE-FLEW-OVER-THE-CUCKOOS-NEST-starring-Giles-Terera-The-Old-Vic-20260416",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "guardian--david-jays.json",
       "score": 68,
       "publishDate": "2026-04-16",
@@ -68990,6 +69072,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.londontheatre.co.uk/reviews/one-flew-over-the-cuckoos-nest-review-aaron-pierre-giles-terera-clint-dyer",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 45,
+      "publishDate": "2026-04-15",
+      "url": "https://www.timeout.com/london/theatre/one-flew-over-the-cuckoos-nest-8-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -70229,6 +70338,20 @@
       ]
     },
     {
+      "showId": "schmigadoon-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 76,
+      "publishDate": "2026-04-09",
+      "url": "https://www.theatermania.com/news/from-screen-to-stage-the-reinvention-of-schmigadoon-for-broadway_1832297/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "sea-wall-a-life-2019",
       "file": "amny--matt-windman.json",
       "score": 78,
@@ -71032,6 +71155,19 @@
       "score": 57,
       "publishDate": "April 8, 2025",
       "url": "https://nystagereview.com/2025/04/08/sondheims-old-friends-musical-cornucopia-makes-an-overstuffed-banquet/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/sondheims-old-friends-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
