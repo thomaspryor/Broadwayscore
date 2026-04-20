@@ -1,16 +1,33 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-20T02:08:30.110Z",
+    "generatedAt": "2026-04-20T03:52:43.426Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 71,
-    "classified": 0,
-    "wrongProduction": 0,
+    "classified": 1,
+    "wrongProduction": 1,
     "correctProduction": 0,
     "uncertain": 0,
     "errors": 0,
-    "wrongHighConfidence": 0,
+    "wrongHighConfidence": 1,
     "wrongMediumConfidence": 0
   },
-  "results": []
+  "results": [
+    {
+      "showId": "les-miserables-1987",
+      "showTitle": "Les Miserables",
+      "showYear": 1987,
+      "file": "musical-theatre-review--unknown.json",
+      "outlet": "Musical Theatre Review",
+      "criticName": null,
+      "publishDate": null,
+      "originalSignals": [
+        "revival text signals: new production, back on broadway, current production"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": null,
+      "reasoning": "The review mentions the 1987 production, a 2006 production, and a \"current production\" with Ramin Karimloo and Will Swenson. These actors were in the 2014 revival, not the original 1987 production."
+    }
+  ]
 }

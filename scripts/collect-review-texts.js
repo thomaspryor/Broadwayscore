@@ -90,7 +90,7 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -4487,17 +4487,39 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (bylineResult.found) {
     const expectedCritic = data.criticName || review.critic || '';
     if (expectedCritic && expectedCritic !== 'Unknown' && !matchesCritic(bylineResult.name, expectedCritic)) {
-      data.misattributedFullText = true;
-      data.extractedByline = bylineResult.name;
-      data.expectedCritic = expectedCritic;
-      console.log(`    ⚠ Byline mismatch: found "${bylineResult.name}", expected "${expectedCritic}"`);
-      // Strong mismatch at start of text = high confidence the fullText is from someone else.
-      // Flag as fullTextWrongAuthor so rebuild keeps excerpts but distrusts fullText.
-      // Only flag on position='start' (byline at top of article = strongest signal).
-      if (bylineResult.position === 'start' && !data.fullTextWrongAuthor) {
-        data.fullTextWrongAuthor = true;
-        data._authorMismatch = `Byline at ${bylineResult.position}: "${bylineResult.name}", expected "${expectedCritic}"`;
-        console.log(`    → Flagged fullTextWrongAuthor (byline at start of text)`);
+      // HIGH-CONFIDENCE OVERRIDE: If the article's own metadata (article:author
+      // meta or JSON-LD Person.@type) confirms the start-position byline name,
+      // the stored criticName is wrong (typically a SERP-derived site-masthead
+      // name like NYTG's "Gillian Russo" overwriting review-author "Allison
+      // Considine"). Rewrite criticName rather than merely flagging the
+      // fullText as misattributed. Guarded: only fire when (a) start-position
+      // byline, (b) HC author matches byline, (c) manual flag not set.
+      const hcAuthor = html ? extractHighConfidenceAuthor(html) : null;
+      const hcConfirmsByline = hcAuthor && matchesCritic(hcAuthor.name, bylineResult.name);
+      if (bylineResult.position === 'start' && hcConfirmsByline && !data.criticNameManual) {
+        console.log(`    → Author override: "${expectedCritic}" → "${hcAuthor.name}" (byline=start + ${hcAuthor.source})`);
+        data.criticName = hcAuthor.name;
+        data.criticEnrichedFrom = `html-override:${hcAuthor.source}`;
+        data._priorCriticName = expectedCritic;
+        // Clear mismatch flags — now consistent
+        delete data.misattributedFullText;
+        delete data.extractedByline;
+        delete data.expectedCritic;
+        delete data.fullTextWrongAuthor;
+        delete data._authorMismatch;
+      } else {
+        data.misattributedFullText = true;
+        data.extractedByline = bylineResult.name;
+        data.expectedCritic = expectedCritic;
+        console.log(`    ⚠ Byline mismatch: found "${bylineResult.name}", expected "${expectedCritic}"`);
+        // Strong mismatch at start of text = high confidence the fullText is from someone else.
+        // Flag as fullTextWrongAuthor so rebuild keeps excerpts but distrusts fullText.
+        // Only flag on position='start' (byline at top of article = strongest signal).
+        if (bylineResult.position === 'start' && !data.fullTextWrongAuthor) {
+          data.fullTextWrongAuthor = true;
+          data._authorMismatch = `Byline at ${bylineResult.position}: "${bylineResult.name}", expected "${expectedCritic}"`;
+          console.log(`    → Flagged fullTextWrongAuthor (byline at start of text)`);
+        }
       }
     } else {
       delete data.misattributedFullText;

@@ -41,6 +41,11 @@ data/review-texts/
 
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
+# Audit HTML caches (copyrighted source HTML — used by audit-opening-night-extraction.js)
+data/review-sources/
+# Live HTML test fixtures (copyrighted aggregator snapshots used to reproduce
+# extraction bugs locally; unit tests use synthetic HTML instead)
+tests/fixtures/opening-night/
 
 # Cleanup backups (contain copyrighted review text)
 data/audit/cleanup-backups/

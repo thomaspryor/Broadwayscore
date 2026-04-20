@@ -2082,15 +2082,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
   if (reviews.length > 0) {
     // Extract thumb data from HTML img tags and pair with reviews by position
-    // BWW new-format uses: uptrans.png (Up), middletrans.png (Meh), downtrans.png (Down)
-    const thumbPattern = /(?:uptrans|middletrans|downtrans)\.png/g;
+    // New format: uptrans.png / middletrans.png / downtrans.png (lowercase, .png)
+    // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
+    // Fallen Angels 2026-04-19: roundup still used BigThumbs_* so thumbs came through as null.
+    const thumbPattern = /(?:(?:uptrans|middletrans|downtrans)\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi;
     const thumbMatches = [];
     let thumbMatch;
     while ((thumbMatch = thumbPattern.exec(html)) !== null) {
       const img = thumbMatch[0];
-      if (img.includes('uptrans')) thumbMatches.push('Up');
-      else if (img.includes('middletrans')) thumbMatches.push('Meh');
-      else if (img.includes('downtrans')) thumbMatches.push('Down');
+      if (/uptrans|BigThumbs_UP/i.test(img)) thumbMatches.push('Up');
+      else if (/middletrans|BigThumbs_MEH/i.test(img)) thumbMatches.push('Meh');
+      else if (/downtrans|BigThumbs_DOWN/i.test(img)) thumbMatches.push('Down');
     }
     if (thumbMatches.length > 0) {
       // Pair thumbs with reviews — they appear in the same order
@@ -2103,7 +2105,12 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    const urlByOutlet = {};
+    // Multi-critic outlets (NYSR, NYT, TimeOut): a single outletId appears
+    // multiple times in anchor order. Use a per-outlet queue so each review
+    // slot gets a DIFFERENT URL. Previous first-URL-wins behavior (fixed
+    // 2026-04-19) caused all NYSR reviews for Fallen Angels to share the
+    // first NYSR URL found in the roundup.
+    const urlsByOutlet = {};
     const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
     let aMatch;
     while ((aMatch = anchorRe.exec(html)) !== null) {
@@ -2111,13 +2118,21 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       const text = aMatch[2].replace(/:$/, '').trim();
       if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
       const oid = normalizeOutlet(text);
-      if (oid && !urlByOutlet[oid]) urlByOutlet[oid] = href;
+      if (!oid) continue;
+      if (!urlsByOutlet[oid]) urlsByOutlet[oid] = [];
+      if (!urlsByOutlet[oid].includes(href)) urlsByOutlet[oid].push(href);
     }
+    const urlIdxByOutlet = {};
     let urlsPopulated = 0;
     let urlsRejected = 0;
     for (const review of reviews) {
-      if (!review.url && review.outletId && urlByOutlet[review.outletId]) {
-        const candidateUrl = urlByOutlet[review.outletId];
+      if (!review.url && review.outletId) {
+        const queue = urlsByOutlet[review.outletId];
+        if (!queue || queue.length === 0) continue;
+        const idx = urlIdxByOutlet[review.outletId] || 0;
+        if (idx >= queue.length) continue;
+        urlIdxByOutlet[review.outletId] = idx + 1;
+        const candidateUrl = queue[idx];
         // BWW Review Roundup is manually curated by BWW editors — trust the
         // outlet→URL mapping. The cross-show URL slug guard at line 2357
         // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
@@ -2277,7 +2292,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   if (reviews.length > 0) {
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    const urlByOutlet2 = {};
+    // Same per-outlet queue as Method 1 post-pass — see comment above.
+    const urlsByOutlet2 = {};
     const anchorRe2 = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
     let aMatch2;
     while ((aMatch2 = anchorRe2.exec(html)) !== null) {
@@ -2285,13 +2301,21 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       const text = aMatch2[2].replace(/:$/, '').trim();
       if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
       const oid = normalizeOutlet(text);
-      if (oid && !urlByOutlet2[oid]) urlByOutlet2[oid] = href;
+      if (!oid) continue;
+      if (!urlsByOutlet2[oid]) urlsByOutlet2[oid] = [];
+      if (!urlsByOutlet2[oid].includes(href)) urlsByOutlet2[oid].push(href);
     }
+    const urlIdxByOutlet2 = {};
     let urlsPopulated2 = 0;
     let urlsRejected2 = 0;
     for (const review of reviews) {
-      if (!review.url && review.outletId && urlByOutlet2[review.outletId]) {
-        const candidateUrl = urlByOutlet2[review.outletId];
+      if (!review.url && review.outletId) {
+        const queue = urlsByOutlet2[review.outletId];
+        if (!queue || queue.length === 0) continue;
+        const idx = urlIdxByOutlet2[review.outletId] || 0;
+        if (idx >= queue.length) continue;
+        urlIdxByOutlet2[review.outletId] = idx + 1;
+        const candidateUrl = queue[idx];
         // Same trustedSource bypass as Method 1 — BWW Roundup curation is trusted,
         // detectCrossShowUrlMismatch (line 2357) catches misattributions downstream.
         if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
@@ -2313,6 +2337,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     }
     if (urlsPopulated2 > 0) {
       console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML${urlsRejected2 > 0 ? ` (${urlsRejected2} rejected as non-article)` : ''}`);
+    }
+    // Count-drift detection: anchor tag count is the "ground truth" for the
+    // number of reviewed outlets on the page (one <a href> per review entry,
+    // plus a small number of unrelated links). If the reviews array is
+    // materially smaller, we silently dropped entries — often because BWW
+    // added new reviews to the DOM but didn't re-emit the JSON-LD, or a
+    // format change prevented our parsers from matching. Warn loudly so the
+    // post-opening audit can flag the show for human review.
+    const anchorReviewCount = Object.values(urlsByOutlet2).reduce((a, q) => a + q.length, 0);
+    if (anchorReviewCount > reviews.length + 2) {
+      console.log(`    ⚠️  BWW roundup count drift: ${anchorReviewCount} outlet URLs in HTML but only ${reviews.length} reviews extracted (delta=${anchorReviewCount - reviews.length})`);
     }
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {

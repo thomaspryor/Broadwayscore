@@ -2074,6 +2074,52 @@ function extractAuthorFromHtml(html, text, options = {}) {
   return null;
 }
 
+/**
+ * Extract a high-confidence author name from HTML.
+ *
+ * High-confidence = the article itself declares the author via structured data
+ * that CMSs emit per-article (not per-site). The site-masthead meta name="author"
+ * is EXCLUDED because it's commonly the outlet's editor-in-chief, not the piece's
+ * byline (failure mode observed 2026-04-19: NYTG masthead name "Gillian Russo"
+ * kept overriding the real review author "Allison Considine").
+ *
+ * Sources checked (in priority order):
+ *   1. <meta property="article:author"> — OG/FB-standard per-article field
+ *   2. JSON-LD  "author":{"@type":"Person","name":...}  — schema.org per-article
+ *
+ * Returns { name, source } on match, null otherwise.
+ */
+function extractHighConfidenceAuthor(html) {
+  if (!html) return null;
+
+  const articleAuthorPatterns = [
+    /<meta\s+property="article:author"\s+content="([^"]+)"/i,
+    /<meta\s+content="([^"]+)"\s+property="article:author"/i,
+  ];
+  for (const pattern of articleAuthorPatterns) {
+    const m = html.match(pattern);
+    if (m && isValidAuthorName(m[1])) {
+      return { name: cleanAuthorName(m[1]), source: 'article:author' };
+    }
+  }
+
+  // JSON-LD @type=Person anchored tightly — requires the Person type to appear
+  // before the name inside the author object. Looser jsonLdPatterns in
+  // extractAuthorFromHtml include a catch-all that matches editor@graph nodes
+  // and sidebar widgets; those aren't safe overrides.
+  const personJsonLd = html.match(/"author"\s*:\s*\{\s*"@type"\s*:\s*"Person"[^}]*"name"\s*:\s*"([^"]+)"/i);
+  if (personJsonLd && isValidAuthorName(personJsonLd[1])) {
+    return { name: cleanAuthorName(personJsonLd[1]), source: 'jsonld-person' };
+  }
+  // Also allow name-before-@type shape (order-agnostic) by bounding to short objects
+  const personJsonLd2 = html.match(/"author"\s*:\s*\{\s*"name"\s*:\s*"([^"]+)"[^}]*"@type"\s*:\s*"Person"/i);
+  if (personJsonLd2 && isValidAuthorName(personJsonLd2[1])) {
+    return { name: cleanAuthorName(personJsonLd2[1]), source: 'jsonld-person' };
+  }
+
+  return null;
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -2107,6 +2153,7 @@ module.exports = {
   detectHorrorFilmContent,
   // Author extraction from HTML
   extractAuthorFromHtml,
+  extractHighConfidenceAuthor,
   isValidAuthorName,
   cleanAuthorName,
   // Export constants for reference
