@@ -32,7 +32,9 @@
     "south-pacific-2008/ap--michael-kuchwara.json",
     "the-little-mermaid-2008/av-club--leigh-monson.json",
     "august-osage-county-2007/hollywood-reporter--david-rooney.json",
-    "the-ritz-2007/theatermania--unknown.json"
+    "the-ritz-2007/theatermania--unknown.json",
+    "les-miserables-1987/broadwayworld--stage-tube.json",
+    "les-miserables-1987/whatsonstage--tanyel-gumushan.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
@@ -961,7 +963,15 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
-    "festen-2006/variety--charles-isherwood.json"
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "proof-2000/newsday--unknown.json",
+    "ragtime-1998/nytimes--ben-brantley.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -988,7 +998,10 @@
       "oliver-west-end-2024/standard--unknown.json",
       "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
       "south-pacific-2008/ap--michael-kuchwara.json",
-      "the-ritz-2007/theatermania--unknown.json"
+      "the-ritz-2007/theatermania--unknown.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json",
+      "les-miserables-1987/broadwayworld--stage-tube.json",
+      "les-miserables-1987/whatsonstage--tanyel-gumushan.json"
     ],
     "amp": [
       "data/review-texts/the-philanthropist-2009/variety--david-rooney.json",
@@ -1020,7 +1033,10 @@
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/proof-2000/newsday--unknown.json",
+      "data/review-texts/ragtime-1998/nytimes--ben-brantley.json",
+      "data/review-texts/les-miserables-1987/thestage--unknown.json"
     ],
     "archive": [
       "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json",
@@ -1029,7 +1045,7 @@
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "festen-2006/variety--charles-isherwood.json",
+  "lastProcessed": "les-miserables-1987/whatsonstage--tanyel-gumushan.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -1129,6 +1145,17 @@
       "t": "2026-04-20T18:39:07.891Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-20T18:43:00.527Z",
+      "event": "bb-session",
+      "session": "9776498f",
+      "url": "https://www.nytimes.com/1998/01/19/theater/theater-review-a-diorama-with-nostalg"
+    },
+    {
+      "t": "2026-04-20T18:43:00.878Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
