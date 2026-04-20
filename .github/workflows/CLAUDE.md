@@ -165,7 +165,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Opening Night Reviews" -f lookback_days=7`
 
 ## `opening-night-broadcast.yml`
-- **Runs:** No cron. Dispatched by: (1) `update-show-status.yml` when a show opens, (2) `workflow_run` after `LLM Ensemble Score Reviews` completes (auto-retry), (3) manual `workflow_dispatch`
+- **Runs:** Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) with `send_to_all=true` semantics — creates Resend draft AND emails owner a preview. Also dispatched by: (1) `update-show-status.yml` when a show opens (preview only), (2) `workflow_run` after `LLM Ensemble Score Reviews` completes (preview only, auto-retry), (3) manual `workflow_dispatch`
 - **Does:** Thin "check & send" workflow — reads existing scored data, generates consensus, sends broadcast email. Heavy lifting (gather, rebuild, score) handled by independent data pipeline.
 - **Pipeline:** Find recently opened BW+WE shows → check already broadcast → sync subscribers (Formspree) → generate consensus → send broadcast → commit → deploy → indexing
 - **Data dependency:** Relies on data pipeline chain: `update-show-status` → `gather-reviews` → `rebuild` → `llm-ensemble-score`. The 5 AM run catches shows scored overnight; 8 AM catches shows scored between 5-8 AM.
@@ -181,7 +181,10 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
   2. Rolling-window dedup via `scripts/lib/preview-dedup.js`: `checkPreviewDedup` (script-side, 24h + 3-new-review exception) and `hasRecentPreviewForShow` (workflow-side "Check already broadcast" step, 24h). Replaced the old UTC-day key that failed at UTC rollover (2026-04-11 incident). Overdue alerts use `hasRecentOverdueAlert`.
   3. Cross-session advisory lock via `scripts/lib/send-lock.js`. All 3 audience-facing email paths (Resend preview `--send-to`, Buttondown draft creation, Resend owner notification) acquire a sha-CAS'd lock at `data/email-send.lock` before the network call and release on success + failure. Workflow's broadcast step MUST have `GH_TOKEN: ${{ github.token }}` in env or the lock helper exits(1) and blocks the send (fail-safe).
   4. `opening-night-sent.json` is force-added to git (`git add --force`) to persist across cron runs despite being gitignored. CLI preview runs additionally sync it to origin/main via `gh api contents PUT` through `syncTrackerToOrigin()`.
-- **Preview mode:** Cron runs always send to owner only. Manual dispatch with `send_to_all=true` sends to all subscribers.
+- **Preview vs approval mode:**
+  - `workflow_dispatch` with `send_to=<email>`: single transactional preview to that address only (no draft).
+  - `workflow_dispatch` with `send_to_all=true` OR the 12:30 UTC scheduled run: preview to owner AND creates a Resend draft for owner to click Send in Resend UI. Bypasses preview dedup so the draft can still fire even if an earlier preview went out.
+  - All other triggers (`update-show-status`, `workflow_run` from scoring, default `workflow_dispatch`): preview to owner only, subject to 24h rolling preview dedup.
 - **Scripts:** `scripts/send-opening-night-broadcast.js`, `scripts/generate-critic-consensus.js`
 - **Requires:** ANTHROPIC_API_KEY, RESEND_API_KEY, FORMSPREE_FOLLOW_API_KEY, FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_FOLLOW_FORM_ID, FORMSPREE_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID, FORMSPREE_WESTEND_SUBSCRIBER_API_KEY
 - **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
