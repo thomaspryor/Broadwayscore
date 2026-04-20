@@ -165,7 +165,7 @@ export function getShowById(id: string): ComputedShow | undefined {
  * Get all show slugs (for static generation)
  */
 export function getAllShowSlugs(): string[] {
-  return shows.map(show => show.slug);
+  return shows.filter((show: any) => !show._devOnly).map(show => show.slug);
 }
 
 /**
