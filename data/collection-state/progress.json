@@ -27,7 +27,8 @@
     "11-to-midnight-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "oliver-west-end-2024/standard--unknown.json",
     "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
-    "a-little-night-music-2009/nydailynews--unknown.json"
+    "a-little-night-music-2009/nydailynews--unknown.json",
+    "the-philanthropist-2009/variety--david-rooney.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
@@ -921,7 +922,16 @@
     "race-2009/theatermania--charles-isherwood.json",
     "fela-2009/new-jersey-newsroom--michael-sommers.json",
     "the-royal-family-2009/washpost--peter-marks.json",
-    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json"
+    "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "the-norman-conquests-2009/variety--charles-isherwood.json",
+    "mary-stuart-2009/variety--marilyn-stasio.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -948,7 +958,10 @@
       "oliver-west-end-2024/standard--unknown.json",
       "the-last-five-years-2025/one-minute-critic--matthew-wexler.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/the-philanthropist-2009/variety--david-rooney.json",
+      "the-philanthropist-2009/variety--david-rooney.json"
+    ],
     "browserbase": [
       "data/review-texts/becky-shaw-2026/nytimes--unknown.json",
       "becky-shaw-2026/nytimes--unknown.json",
@@ -980,7 +993,7 @@
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "a-steady-rain-2009/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "next-to-normal-2009/newyorker--john-lahr.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -1058,6 +1071,17 @@
       "t": "2026-04-20T18:26:35.604Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T18:33:51.392Z",
+      "event": "bb-session",
+      "session": "77962929",
+      "url": "http://www.variety.com/review/VE1117940132.html?categoryid=3276&amp;cs=1&amp;nid"
+    },
+    {
+      "t": "2026-04-20T18:33:51.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

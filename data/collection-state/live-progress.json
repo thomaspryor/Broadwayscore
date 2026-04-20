@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-04-20T18:33:25.786Z",
-  "processed": 28,
-  "failed": 892,
-  "successRate": "3.0%",
+  "updatedAt": "2026-04-20T18:35:07.944Z",
+  "processed": 29,
+  "failed": 901,
+  "successRate": "3.1%",
   "tierBreakdown": {
     "playwright": 21,
-    "amp": 0,
+    "amp": 2,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 2,
@@ -13,7 +13,7 @@
     "archiveToday": 7,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -91,6 +91,17 @@
       "t": "2026-04-20T18:26:35.604Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T18:33:51.392Z",
+      "event": "bb-session",
+      "session": "77962929",
+      "url": "http://www.variety.com/review/VE1117940132.html?categoryid=3276&amp;cs=1&amp;nid"
+    },
+    {
+      "t": "2026-04-20T18:33:51.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
