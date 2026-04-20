@@ -35,6 +35,18 @@ const WE_EXPECTED = ['times-uk', 'telegraph', 'standard', 'thestage', 'timeout-l
 // Key T2 outlets for Broadway
 const BROADWAY_KEY_T2 = ['nypost', 'theatermania', 'deadline', 'thewrap', 'ew', 'nydailynews', 'observer'];
 
+// Opening-night floor: silent-failure detection for Broadway shows.
+// FA (2026-04-19) landed 14/17 reviews because the BWW extractor silently
+// dropped 3 outlets. The outlet-gap check didn't flag it because the missing
+// outlets weren't all in core T1. A total-count floor catches this class.
+// Window: 24-72h post-open (lets aggregators settle; flags before day-3 cron).
+const BROADWAY_FLOOR_REVIEWS = 10;   // critic files captured
+const BROADWAY_FLOOR_SCORED = 5;     // scored reviews
+const WE_FLOOR_REVIEWS = 6;
+const WE_FLOOR_SCORED = 3;
+const FLOOR_WINDOW_MIN_HOURS = 24;
+const FLOOR_WINDOW_MAX_HOURS = 72;
+
 function parseArgs() {
   const args = process.argv.slice(2);
   const opts = { days: 3, dispatch: false, alert: false, showId: null };
@@ -105,6 +117,7 @@ async function main() {
   console.log(`Checking ${targetShows.length} show(s) opened since ${cutoffStr}\n`);
 
   const gaps = [];
+  const floorBreaches = [];
 
   for (const show of targetShows) {
     const showId = show.id || show.slug;
@@ -129,6 +142,20 @@ async function main() {
     const hasMajorGaps = missingCore.length >= 3;
     const hasSomeGaps = missingCore.length >= 1;
 
+    // Floor check — silent-failure detection (catches broken extractors when
+    // no specific outlet gap stands out). Only runs in 24-72h post-open window.
+    const openingMs = show.openingDate ? Date.parse(show.openingDate + 'T23:00:00-04:00') : null;
+    const hoursSinceOpen = openingMs ? (now - openingMs) / (1000 * 60 * 60) : null;
+    const inFloorWindow = hoursSinceOpen != null
+      && hoursSinceOpen >= FLOOR_WINDOW_MIN_HOURS
+      && hoursSinceOpen <= FLOOR_WINDOW_MAX_HOURS;
+    const isBroadway = !isLondonMarket(category) && category !== 'off-broadway';
+    const floorReviews = isBroadway ? BROADWAY_FLOOR_REVIEWS : (isLondonMarket(category) ? WE_FLOOR_REVIEWS : null);
+    const floorScored = isBroadway ? BROADWAY_FLOOR_SCORED : (isLondonMarket(category) ? WE_FLOOR_SCORED : null);
+    const belowReviewFloor = floorReviews != null && showReviews.length < floorReviews;
+    const belowScoredFloor = floorScored != null && scoredReviews.length < floorScored;
+    const floorBreached = inFloorWindow && (belowReviewFloor || belowScoredFloor);
+
     console.log(`${show.title} (${showId})`);
     console.log(`  Category: ${category} | Opened: ${show.openingDate}`);
     console.log(`  Reviews: ${showReviews.length} total, ${scoredReviews.length} scored`);
@@ -144,7 +171,13 @@ async function main() {
       console.log(`  Missing key T2 (${missingKeyT2.length}): ${missingKeyT2.map(getName).join(', ')}`);
     }
 
-    if (missingCore.length === 0 && missingKeyT2.length <= 2) {
+    if (floorBreached) {
+      console.log(`  🚨 FLOOR BREACH: ${showReviews.length}/${floorReviews} reviews, ${scoredReviews.length}/${floorScored} scored at ${Math.round(hoursSinceOpen)}h post-open`);
+    }
+
+    if (floorBreached) {
+      console.log(`  Status: FLOOR BREACH (silent extractor failure likely)`);
+    } else if (missingCore.length === 0 && missingKeyT2.length <= 2) {
       console.log(`  Status: COMPLETE`);
     } else if (hasMajorGaps) {
       console.log(`  Status: MAJOR GAPS`);
@@ -152,6 +185,22 @@ async function main() {
       console.log(`  Status: MINOR GAPS`);
     }
     console.log('');
+
+    if (floorBreached) {
+      floorBreaches.push({
+        showId,
+        title: show.title,
+        category,
+        openingDate: show.openingDate,
+        hoursSinceOpen: Math.round(hoursSinceOpen),
+        reviewCount: showReviews.length,
+        scoredCount: scoredReviews.length,
+        reviewFloor: floorReviews,
+        scoredFloor: floorScored,
+        belowReviewFloor,
+        belowScoredFloor,
+      });
+    }
 
     if (hasSomeGaps) {
       gaps.push({
@@ -177,15 +226,22 @@ async function main() {
   if (majorGaps.length > 0) {
     console.log(`Major gaps (3+ core T1 missing): ${majorGaps.length}`);
   }
+  if (floorBreaches.length > 0) {
+    console.log(`🚨 Floor breaches (silent extractor failure): ${floorBreaches.length}`);
+  }
 
   // Discord alert
-  if (opts.alert && gaps.length > 0) {
-    await sendDiscordAlert(gaps);
+  if (opts.alert && (gaps.length > 0 || floorBreaches.length > 0)) {
+    await sendDiscordAlert(gaps, floorBreaches);
   }
 
   // Auto-dispatch collection
-  if (opts.dispatch && gaps.length > 0) {
-    await dispatchCollection(gaps);
+  if (opts.dispatch && (gaps.length > 0 || floorBreaches.length > 0)) {
+    const toDispatch = [
+      ...gaps,
+      ...floorBreaches.filter(b => !gaps.some(g => g.showId === b.showId)),
+    ];
+    await dispatchCollection(toDispatch);
   }
 
   // Machine-readable output
@@ -194,30 +250,48 @@ async function main() {
     daysChecked: opts.days,
     showsChecked: targetShows.length,
     gaps,
+    floorBreaches,
   };
   console.log('\n' + JSON.stringify(report, null, 2));
 
-  // Exit with non-zero if major gaps found (useful for CI)
-  if (majorGaps.length > 0) {
+  // Exit with non-zero if major gaps or floor breaches found (useful for CI)
+  if (majorGaps.length > 0 || floorBreaches.length > 0) {
     process.exit(1);
   }
 }
 
-async function sendDiscordAlert(gaps) {
+async function sendDiscordAlert(gaps, floorBreaches = []) {
   try {
     const { sendAlert } = require('./lib/discord-notify');
-    const fields = gaps.map(g => ({
-      name: `${g.title} (${g.openingDate})`,
-      value: `${g.reviewCount} reviews, ${g.scoredCount} scored\nMissing core T1: ${g.missingCore.join(', ') || 'none'}\nMissing key T2: ${g.missingKeyT2.join(', ') || 'none'}`,
-    }));
 
-    await sendAlert({
-      title: 'Opening-Night Coverage Gaps',
-      description: `${gaps.length} show(s) have missing T1/T2 reviews`,
-      severity: gaps.some(g => g.severity === 'major') ? 'error' : 'warning',
-      fields: fields.slice(0, 10), // Discord embed field limit
-    });
-    console.log('\nDiscord alert sent.');
+    // Floor breaches take priority — they indicate a silent extractor failure.
+    if (floorBreaches.length > 0) {
+      const fields = floorBreaches.map(b => ({
+        name: `🚨 ${b.title} (${b.openingDate})`,
+        value: `**${b.reviewCount}/${b.reviewFloor} reviews, ${b.scoredCount}/${b.scoredFloor} scored** at ${b.hoursSinceOpen}h post-open\nLikely silent extractor failure (BWW RR sanitizer, DTLI, aggregator parse). Check latest gather-reviews logs.`,
+      }));
+      await sendAlert({
+        title: '🚨 Opening-Night Review Floor Breach',
+        description: `${floorBreaches.length} show(s) below minimum review count 24-72h post-open`,
+        severity: 'error',
+        fields: fields.slice(0, 10),
+      });
+      console.log('\nDiscord floor-breach alert sent.');
+    }
+
+    if (gaps.length > 0) {
+      const fields = gaps.map(g => ({
+        name: `${g.title} (${g.openingDate})`,
+        value: `${g.reviewCount} reviews, ${g.scoredCount} scored\nMissing core T1: ${g.missingCore.join(', ') || 'none'}\nMissing key T2: ${g.missingKeyT2.join(', ') || 'none'}`,
+      }));
+      await sendAlert({
+        title: 'Opening-Night Coverage Gaps',
+        description: `${gaps.length} show(s) have missing T1/T2 reviews`,
+        severity: gaps.some(g => g.severity === 'major') ? 'error' : 'warning',
+        fields: fields.slice(0, 10),
+      });
+      console.log('\nDiscord gap alert sent.');
+    }
   } catch (e) {
     console.error('Failed to send Discord alert:', e.message);
   }
