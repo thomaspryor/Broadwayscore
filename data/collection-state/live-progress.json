@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-20T02:03:25.114Z",
+  "updatedAt": "2026-04-20T02:56:21.469Z",
   "processed": 228,
-  "failed": 1642,
+  "failed": 1644,
   "successRate": "12.2%",
   "tierBreakdown": {
     "playwright": 111,
@@ -10,22 +10,11 @@
     "directCookies": 0,
     "scrapingbee": 48,
     "brightdata": 40,
-    "archiveToday": 35,
+    "archiveToday": 36,
     "archive": 18
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-19T18:23:01.408Z",
-      "event": "bb-session",
-      "session": "2d716d98",
-      "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jor"
-    },
-    {
-      "t": "2026-04-19T18:23:01.795Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-19T18:23:33.349Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-20T02:02:04.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-20T02:54:35.188Z",
+      "event": "bb-session",
+      "session": "2ff11994",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-20T02:54:35.612Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
