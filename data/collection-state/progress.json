@@ -268,7 +268,8 @@
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--michael-davies.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/whatsonstage--sarah-crompton.json",
-    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json"
+    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
+    "evita-2012/variety--marilyn-stasio.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -2267,7 +2268,16 @@
     "leap-of-faith-2012/backstage--erik-haagensen.json",
     "the-columnist-2012/backstage--erik-haagensen.json",
     "nice-work-if-you-can-get-it-2012/backstage--david-sheward.json",
-    "ghost-the-musical-2012/variety--steven-suskin.json"
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "clybourne-park-2012/new-jersey-newsroom--michael-sommers.json",
+    "magicbird-2012/new-jersey-newsroom--michael-sommers.json",
+    "magicbird-2012/backstage--suzy-evans.json",
+    "end-of-the-rainbow-2012/backstage--david-sheward.json",
+    "newsies-the-musical-2012/new-jersey-newsroom--michael-sommers.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2437,7 +2447,9 @@
       "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
       "the-producers-west-end-2025/variety--ellise-shafer.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
-      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json"
+      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "data/review-texts/evita-2012/variety--marilyn-stasio.json",
+      "evita-2012/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2620,7 +2632,7 @@
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "ghost-the-musical-2012/variety--steven-suskin.json",
+  "lastProcessed": "once-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2984,6 +2996,17 @@
       "t": "2026-04-20T04:26:06.740Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-20T04:34:57.269Z",
+      "event": "bb-session",
+      "session": "652aa57f",
+      "url": "https://variety.com/2012/legit/reviews/evita-1117947355/"
+    },
+    {
+      "t": "2026-04-20T04:34:58.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

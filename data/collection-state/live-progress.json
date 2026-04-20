@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-20T04:34:27.513Z",
-  "processed": 269,
-  "failed": 1997,
+  "updatedAt": "2026-04-20T04:35:27.410Z",
+  "processed": 270,
+  "failed": 2006,
   "successRate": "11.9%",
   "tierBreakdown": {
     "playwright": 135,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 0,
     "scrapingbee": 55,
     "brightdata": 40,
     "archiveToday": 50,
     "archive": 25
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-20T00:33:17.189Z",
-      "event": "bb-session",
-      "session": "73edf255",
-      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
-    },
-    {
-      "t": "2026-04-20T00:33:17.992Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-20T02:02:02.995Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-20T04:26:06.740Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-20T04:34:57.269Z",
+      "event": "bb-session",
+      "session": "652aa57f",
+      "url": "https://variety.com/2012/legit/reviews/evita-1117947355/"
+    },
+    {
+      "t": "2026-04-20T04:34:58.375Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
