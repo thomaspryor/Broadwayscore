@@ -105,6 +105,10 @@ function info(msg) {
 function validateNoDuplicates(shows) {
   info('Checking for duplicate shows...');
 
+  // Exclude _devOnly test shows — they intentionally share IDs/slugs/titles with
+  // real shows for Express E2E pipeline testing and must not fail production validation.
+  shows = shows.filter(s => !s._devOnly);
+
   // Check duplicate IDs
   const ids = shows.map(s => s.id);
   const dupIds = ids.filter((id, i) => ids.indexOf(id) !== i);
