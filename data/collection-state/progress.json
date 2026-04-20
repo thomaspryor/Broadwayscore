@@ -34,7 +34,8 @@
     "august-osage-county-2007/hollywood-reporter--david-rooney.json",
     "the-ritz-2007/theatermania--unknown.json",
     "les-miserables-1987/broadwayworld--stage-tube.json",
-    "les-miserables-1987/whatsonstage--tanyel-gumushan.json"
+    "les-miserables-1987/whatsonstage--tanyel-gumushan.json",
+    "mexodus-off-broadway-2026/nytimes--rachel-sherman.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
@@ -974,7 +975,16 @@
     "les-miserables-1987/thestage--unknown.json",
     "working-1978/theater-news-online--joe-dziemianowicz.json",
     "cats-express-test-2026/usatoday--patrick-ryan.json",
-    "hold-on-to-your-butts-2026/thestage--oliver-jones.json"
+    "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1023,7 +1033,8 @@
     "directCookies": [],
     "scrapingbee": [
       "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
-      "a-little-night-music-2009/nydailynews--unknown.json"
+      "a-little-night-music-2009/nydailynews--unknown.json",
+      "mexodus-off-broadway-2026/nytimes--rachel-sherman.json"
     ],
     "brightdata": [
       "the-last-ship-2014/talkinbroadway--matthew-murray.json",
@@ -1048,7 +1059,7 @@
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "hold-on-to-your-butts-2026/thestage--oliver-jones.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -1157,6 +1168,17 @@
     },
     {
       "t": "2026-04-20T18:43:00.878Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T19:01:49.669Z",
+      "event": "bb-session",
+      "session": "83985b02",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-20T19:01:50.756Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
