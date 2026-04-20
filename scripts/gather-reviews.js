@@ -1953,6 +1953,40 @@ async function scrapeBWWRoundupWithPlaywright(url) {
  * Extract reviews from BWW Review Roundup HTML
  * Uses two methods: BlogPosting JSON-LD entries (newer articles) and articleBody parsing (older)
  */
+// BWW emits JSON-LD with unescaped inner double quotes inside headline/articleBody
+// strings (e.g. Show titles wrapped in quotes). A plain JSON.parse throws on these.
+// This scanner walks char-by-char tracking string state; when inside a string it
+// escapes any `"` whose next non-whitespace char is NOT a JSON structural token.
+function sanitizeBwwJsonLd(s) {
+  const out = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (!inString) {
+      out.push(c);
+      if (c === '"') inString = true;
+      continue;
+    }
+    if (escaped) { out.push(c); escaped = false; continue; }
+    if (c === '\\') { out.push(c); escaped = true; continue; }
+    if (c === '"') {
+      let j = i + 1;
+      while (j < s.length && /\s/.test(s[j])) j++;
+      const next = s[j];
+      if (next === ',' || next === '}' || next === ']' || next === ':') {
+        out.push(c);
+        inString = false;
+      } else {
+        out.push('\\"');
+      }
+      continue;
+    }
+    out.push(c);
+  }
+  return out.join('');
+}
+
 function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   let reviews = [];
   const method1Seen = new Set();
@@ -1973,7 +2007,16 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   for (const scriptMatch of scriptMatches) {
     try {
       const cleanedJson = scriptMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
-      const json = JSON.parse(cleanedJson);
+      let json;
+      try {
+        json = JSON.parse(cleanedJson);
+      } catch (firstErr) {
+        // BWW headlines often contain unescaped inner quotes like:
+        //   "headline":"Cote Notices - "Fallen Angels" on Broadway..."
+        // which breaks JSON.parse. Sanitize by scanning string state and escaping
+        // inner quotes that aren't followed by a JSON structural token.
+        json = JSON.parse(sanitizeBwwJsonLd(cleanedJson));
+      }
 
       // Collect BlogPosting entries from either format
       const postings = [];
@@ -2082,10 +2125,10 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
   if (reviews.length > 0) {
     // Extract thumb data from HTML img tags and pair with reviews by position
-    // New format: uptrans.png / middletrans.png / downtrans.png (lowercase, .png)
+    // New format: uptrans(N)?.png / middletrans(N)?.png / downtrans(N)?.png (optional numeric suffix, e.g. uptrans2.png)
     // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
-    // Fallen Angels 2026-04-19: roundup still used BigThumbs_* so thumbs came through as null.
-    const thumbPattern = /(?:(?:uptrans|middletrans|downtrans)\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi;
+    // Fallen Angels 2026-04-19: roundup used uptrans2.png/middletrans2.png — suffixed variant broke the pre-2 regex.
+    const thumbPattern = /(?:(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi;
     const thumbMatches = [];
     let thumbMatch;
     while ((thumbMatch = thumbPattern.exec(html)) !== null) {
@@ -2348,6 +2391,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     const anchorReviewCount = Object.values(urlsByOutlet2).reduce((a, q) => a + q.length, 0);
     if (anchorReviewCount > reviews.length + 2) {
       console.log(`    ⚠️  BWW roundup count drift: ${anchorReviewCount} outlet URLs in HTML but only ${reviews.length} reviews extracted (delta=${anchorReviewCount - reviews.length})`);
+    }
+    // Hard min-count floor: once a BWW RR loads with real content, it virtually
+    // always has ≥5 reviews. If we extract fewer, something is wrong (format
+    // change, broken JSON-LD, HTML truncation). Fail loudly with the HTML size
+    // so the orchestrator can re-fetch or flag for human review.
+    if (reviews.length < 5 && html && html.length > 20000) {
+      console.log(`    ❌ BWW roundup min-count assert: only ${reviews.length} reviews from ${html.length}-byte page — likely broken extraction`);
     }
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
@@ -4616,6 +4666,7 @@ module.exports = {
   extractDTLIReviews,
   extractShowScoreReviews,
   extractBWWRoundupReviews,
+  sanitizeBwwJsonLd,
   validateBWWRoundupYear,
   validateBWWRoundupGeography,
   createReviewFile,
