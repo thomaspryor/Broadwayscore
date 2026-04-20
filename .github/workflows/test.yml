@@ -597,6 +597,7 @@ jobs:
           npx tsx --test \
             tests/unit/biz-data-functions.test.mjs \
             tests/unit/commercial-changes.test.mjs \
+            tests/unit/cote-notices-registry.test.mjs \
             tests/unit/deep-research-guardian.test.mjs \
             tests/unit/outlet-id-mapper.test.mjs \
             tests/unit/parse-grosses-analysis.test.mjs \
