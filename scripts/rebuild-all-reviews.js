@@ -2475,6 +2475,23 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
+      // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). Unlike
+      // rejectionReason (which clear-failure-flags erases when text is substantial) and
+      // rejectedBy (which is often a single-string from the scoreability check rather than an
+      // array), rejectedAt is never cleared except by a successful re-scrape in
+      // collect-review-texts.js line 4247. Without this guard, the Vulture FILM review of
+      // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
+      // clear-failure-flags nulled its rejectionReason.
+      if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+        const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
+        if (!reFetched) {
+          logExclusion("skippedRejectedAt", showId, file, data);
+          stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
+          return;
+        }
+      }
+
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
       const reasoning = data.llmScore?.reasoning || '';
       if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
