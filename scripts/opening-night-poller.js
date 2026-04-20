@@ -1307,7 +1307,7 @@ async function pollCycle() {
         'theater-scene', 'theater-life', 'culturesauce', 'front-row-center',
         'pages-on-stages', 'one-minute-critic', 'theatre-reviews-limited',
         'cititour', 'digital-journal', 'stageandcinema', 'frontmezzjunkies',
-        'exeunt-magazine',
+        'exeunt-magazine', 'cote-notices',
       ];
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
