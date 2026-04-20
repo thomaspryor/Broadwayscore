@@ -647,6 +647,174 @@ function rangeForScore(score: number): string {
   return '< 55';
 }
 
+const SYSTEM_FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+
+function roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  const rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.lineTo(x + w - rr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+  ctx.lineTo(x + w, y + h - rr);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+  ctx.lineTo(x + rr, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+  ctx.lineTo(x, y + rr);
+  ctx.quadraticCurveTo(x, y, x + rr, y);
+  ctx.closePath();
+}
+
+function drawBadgeCanvas(opts: {
+  score: number;
+  transparent: boolean;
+  showLabel: boolean;
+  pixelRatio?: number;
+}): HTMLCanvasElement {
+  const { score, transparent, showLabel } = opts;
+  const dpr = opts.pixelRatio ?? 2;
+  const tier = tierForScore(score);
+  const range = rangeForScore(score);
+
+  const padX = 48;
+  const padTop = 40;
+  const padBottom = 32;
+  const badgeSize = 220;
+  const labelGap = 20;
+  const descGap = 4;
+  const rangeGap = 2;
+  const labelHeight = 18;
+  const descHeight = 14;
+  const rangeHeight = 12;
+
+  const cssWidth = badgeSize + padX * 2;
+  const labelBlock = showLabel ? labelGap + labelHeight + descGap + descHeight + rangeGap + rangeHeight : 0;
+  const cssHeight = padTop + badgeSize + labelBlock + padBottom;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(cssWidth * dpr);
+  canvas.height = Math.round(cssHeight * dpr);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+  ctx.scale(dpr, dpr);
+
+  if (!transparent) {
+    ctx.fillStyle = '#0f0f14';
+    ctx.fillRect(0, 0, cssWidth, cssHeight);
+  }
+
+  const badgeX = (cssWidth - badgeSize) / 2;
+  const badgeY = padTop;
+  const radius = 36;
+
+  ctx.save();
+  ctx.shadowColor = tier.key === 'critical-gold'
+    ? 'rgba(218,165,32,0.55)'
+    : tier.key === 'recommended' ? 'rgba(34,197,94,0.35)'
+    : tier.key === 'worth-seeing' ? 'rgba(20,184,166,0.35)'
+    : tier.key === 'skippable' ? 'rgba(217,119,6,0.35)'
+    : 'rgba(239,68,68,0.35)';
+  ctx.shadowBlur = tier.key === 'critical-gold' ? 24 : 10;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = tier.key === 'critical-gold' ? 4 : 2;
+
+  roundedRectPath(ctx, badgeX, badgeY, badgeSize, badgeSize, radius);
+
+  if (tier.key === 'critical-gold') {
+    const grad = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeSize, badgeY + badgeSize);
+    grad.addColorStop(0, '#DAA520');
+    grad.addColorStop(0.3, '#FFD700');
+    grad.addColorStop(0.5, '#FFF0A0');
+    grad.addColorStop(0.7, '#FFD700');
+    grad.addColorStop(1, '#DAA520');
+    ctx.fillStyle = grad;
+  } else {
+    ctx.fillStyle = tier.tint;
+  }
+  ctx.fill();
+  ctx.restore();
+
+  if (tier.key === 'critical-gold') {
+    ctx.save();
+    roundedRectPath(ctx, badgeX, badgeY, badgeSize, badgeSize, radius);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#C8960E';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  ctx.save();
+  ctx.fillStyle = tier.textColor;
+  ctx.font = `700 96px ${SYSTEM_FONT}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(String(score), badgeX + badgeSize / 2, badgeY + badgeSize / 2 + 4);
+  ctx.restore();
+
+  if (tier.crown) {
+    ctx.save();
+    const crownW = 38;
+    const crownH = 18;
+    const crownX = badgeX + badgeSize / 2 - crownW / 2;
+    const crownY = badgeY - 16;
+    const scale = crownW / 24;
+    ctx.translate(crownX, crownY);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = 'rgba(255,215,0,0.9)';
+    ctx.beginPath();
+    ctx.moveTo(2, 13);
+    ctx.lineTo(5, 5);
+    ctx.lineTo(9, 8);
+    ctx.lineTo(12, 1);
+    ctx.lineTo(15, 8);
+    ctx.lineTo(19, 5);
+    ctx.lineTo(22, 13);
+    ctx.closePath();
+    ctx.fill();
+    // suppress unused
+    void crownH;
+    ctx.restore();
+  }
+
+  if (showLabel) {
+    const labelY = badgeY + badgeSize + labelGap + labelHeight / 2;
+    const descY = labelY + labelHeight / 2 + descGap + descHeight / 2;
+    const rangeY = descY + descHeight / 2 + rangeGap + rangeHeight / 2;
+
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = tier.tint;
+    ctx.font = `700 18px ${SYSTEM_FONT}`;
+    const label = tier.label.toUpperCase();
+    const letterSpacing = 1.5;
+    const chars = label.split('');
+    let totalW = 0;
+    chars.forEach((ch, i) => {
+      totalW += ctx.measureText(ch).width;
+      if (i < chars.length - 1) totalW += letterSpacing;
+    });
+    let cx = cssWidth / 2 - totalW / 2;
+    chars.forEach((ch, i) => {
+      const w = ctx.measureText(ch).width;
+      ctx.fillText(ch, cx + w / 2, labelY);
+      cx += w + (i < chars.length - 1 ? letterSpacing : 0);
+    });
+
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = `400 14px ${SYSTEM_FONT}`;
+    ctx.fillText(tier.desc, cssWidth / 2, descY);
+
+    ctx.fillStyle = '#6b7280';
+    ctx.font = `400 12px ${SYSTEM_FONT}`;
+    ctx.fillText(range, cssWidth / 2, rangeY);
+
+    ctx.restore();
+  }
+
+  return canvas;
+}
+
 function BadgeBuilder() {
   const [score, setScore] = useState(85);
   const [transparent, setTransparent] = useState(false);
@@ -660,16 +828,11 @@ function BadgeBuilder() {
   const range = rangeForScore(clamped);
 
   const download = async () => {
-    if (!previewRef.current) return;
     setBusy(true);
     setErr(null);
     try {
-      const { toPng } = await import('html-to-image');
-      const dataUrl = await toPng(previewRef.current, {
-        pixelRatio: 2,
-        cacheBust: true,
-        backgroundColor: transparent ? undefined : '#0f0f14',
-      });
+      const canvas = drawBadgeCanvas({ score: clamped, transparent, showLabel, pixelRatio: 2 });
+      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       const variant = transparent ? 'transparent' : 'dark';
       link.download = `bwsc-score-${clamped}-${variant}.png`;
