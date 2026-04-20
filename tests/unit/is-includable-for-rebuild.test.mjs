@@ -229,6 +229,42 @@ describe('isIncludableForRebuild — garbage text flags (ship-check additions)',
   });
 });
 
+describe('isIncludableForRebuild — rejectedAt canonical signal', () => {
+  it('returns false when rejectedAt is set and text was fetched before rejection', () => {
+    // Regression test: Vulture FILM review of Hamlet (2026-04-20) — rejectionReason was
+    // cleared by clear-failure-flags (text was long), so the legacy rejectionReason check
+    // missed it. rejectedAt persists and is the canonical "excluded" signal.
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-04-20T11:15:36.117Z',
+        textFetchedAt: '2026-04-19T09:20:05.710Z',
+      }),
+      false
+    );
+  });
+
+  it('returns false when rejectedAt is set and no textFetchedAt recorded', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, rejectedAt: '2026-04-20T11:15:36.117Z' }),
+      false
+    );
+  });
+
+  it('returns true when textFetchedAt is newer than rejectedAt (successful re-scrape)', () => {
+    // Re-scrape brought in better content — collect-review-texts.js should have cleared
+    // rejectedAt but only does so when rejectionReason is still set. This handles the leak.
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-02-16T00:08:28.925Z',
+        textFetchedAt: '2026-04-04T01:21:59.594Z',
+      }),
+      true
+    );
+  });
+});
+
 describe('isIncludableForRebuild — fullTextWrongAuthor (ship-check additions)', () => {
   it('returns false when fullTextWrongAuthor: true and no excerpts', () => {
     // rebuild deletes fullText in memory and checks excerpts — on disk fullText still exists

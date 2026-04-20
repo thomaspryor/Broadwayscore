@@ -105,13 +105,16 @@ function clearFailureFlags(data) {
     }
   }
 
-  // rejectionReason/rejectedBy: clear when text is long enough to be a real review
-  // These fire on garbage/nav-chrome text but must not persist after a successful re-fetch
-  if (data.rejectionReason && hasText) {
+  // rejectionReason/rejectedBy: clear ONLY text-fetch rejections (garbage_text) —
+  // semantic rejections (wrong_production, wrong_show, not_a_review) describe content
+  // issues that text length does not resolve. Clearing them let a Vulture FILM review
+  // of Hamlet (rejected as wrong_production) back into reviews.json (2026-04-20).
+  const isTextFetchRejection = data.rejectionReason === 'garbage_text';
+  if (data.rejectionReason && hasText && isTextFetchRejection) {
     data.rejectionReason = null;
     cleared.push('rejectionReason');
   }
-  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length > 0 && hasText) {
+  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length > 0 && hasText && isTextFetchRejection) {
     // Keep the array but empty it — signals that prior rejection was re-evaluated
     data.rejectedBy = null;
     cleared.push('rejectedBy');
