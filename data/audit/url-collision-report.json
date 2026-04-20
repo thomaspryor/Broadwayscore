@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T21:29:48.931Z",
+  "generatedAt": "2026-04-20T03:46:48.366Z",
   "summary": {
-    "total": 19,
-    "high": 11,
-    "medium": 6,
+    "total": 21,
+    "high": 12,
+    "medium": 7,
     "low": 2
   },
   "collisions": [
@@ -332,6 +332,33 @@
       "confidence": "high"
     },
     {
+      "url": "https://1minutecritic.com/ayo-edebiri-proof-broadway-review/",
+      "normalizedUrl": "https://1minutecritic.com/ayo-edebiri-proof-broadway-review",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "one-minute-critic--matthew-wexler.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "one-minute-critic"
+        },
+        {
+          "showId": "proof-express-test-v2-2026",
+          "file": "one-minute-critic--matthew-wexler.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "one-minute-critic"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate 2026-04-17 is 1 days from proof-2026 but also 1 days from proof-express-test-v2-2026",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.theatrely.com/post/a-solid-proof-that-can-be-tricky-at-points-review",
       "normalizedUrl": "https://theatrely.com/post/a-solid-proof-that-can-be-tricky-at-points-review",
       "candidates": [
@@ -519,6 +546,33 @@
       "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
       "reason": "publishDate June 1st, 2004 is 6279+ days from all openings; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-broadway-review-aaron-sorkins-vigorous-version/",
+      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/kill-mockingbird-broadway-review-aaron-sorkins-vigorous-version",
+      "candidates": [
+        {
+          "showId": "to-kill-a-mockingbird-2018",
+          "file": "telegraph--diane-snyder.json",
+          "publishDate": "2018-12-16",
+          "openingDate": "2018-12-13",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        },
+        {
+          "showId": "to-kill-a-mockingbird-west-end-2026",
+          "file": "telegraph--diane-snyder.json",
+          "publishDate": "2018-12-16",
+          "openingDate": "2026-06-30",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        }
+      ],
+      "suggestedWinner": "to-kill-a-mockingbird-2018",
+      "reason": "publishDate 2018-12-16 is 3 days from to-kill-a-mockingbird-2018 opening (2018-12-13); next closest is 2753 days from to-kill-a-mockingbird-west-end-2026",
+      "confidence": "high"
     }
   ]
 }
