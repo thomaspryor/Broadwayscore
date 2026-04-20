@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-20T01:55:05.078Z",
+  "timestamp": "2026-04-20T02:18:30.806Z",
   "stats": {
-    "totalReviews": 35580,
+    "totalReviews": 35587,
     "alreadyFlagged": 15879,
     "dateGuardCatches": 90,
     "directorMismatch": 826,
-    "tvFilmSignals": 3169,
-    "londonSignals": 1017,
+    "tvFilmSignals": 3171,
+    "londonSignals": 1018,
     "offBroadwaySignals": 886,
     "yearMismatch": 71,
-    "noPublishDate": 3718
+    "noPublishDate": 3719
   },
   "findings": [
     {
@@ -5455,6 +5455,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": "2026-04-12",
+      "url": "https://1minutecritic.com/becky-shaw-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -16233,6 +16246,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": "2026-03-29",
+      "url": "https://1minutecritic.com/giant-john-lithgow-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -61438,6 +61464,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": "2026-04-19",
+      "url": "https://1minutecritic.com/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
