@@ -259,7 +259,13 @@
     "the-car-man-west-end-2026/whatsonstage--unknown.json",
     "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
     "six-2021/whatsonstage--alex-wood.json",
-    "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json"
+    "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+    "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+    "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+    "to-kill-a-mockingbird-west-end-2026/telegraph--diane-snyder.json",
+    "to-kill-a-mockingbird-west-end-2026/whatsonstage--alex-wood.json",
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/artsdesk--unknown.json",
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -2067,7 +2073,11 @@
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
     "wicked-2003/the-journal-news--jacques-le-sourd.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/thestage--unknown.json",
+    "manic-street-creature-west-end-2026/thestage--holly-o.json",
+    "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--sam-marlowe.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2200,7 +2210,10 @@
       "the-car-man-west-end-2026/musical-theatre-review--unknown.json",
       "the-car-man-west-end-2026/whatsonstage--unknown.json",
       "six-2021/whatsonstage--alex-wood.json",
-      "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json"
+      "matilda-the-musical-west-end-2021/i-paper--fiona-mountford.json",
+      "trainspotting-the-musical-west-end-2026/whatsonstage--alex-wood.json",
+      "to-kill-a-mockingbird-west-end-2026/whatsonstage--alex-wood.json",
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/artsdesk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2229,7 +2242,9 @@
       "data/review-texts/dracula-west-end-2025/variety--owen-gleiberman.json",
       "dracula-west-end-2025/variety--owen-gleiberman.json",
       "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
-      "the-producers-west-end-2025/variety--ellise-shafer.json"
+      "the-producers-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2286,7 +2301,8 @@
       "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
       "animal-wisdom-2022/nytimes--ben-brantley.json",
       "hamlet-2026/nytimes--charles-isherwood.json",
-      "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json"
+      "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/vulture--unknown.json",
@@ -2373,7 +2389,9 @@
       "data/review-texts/ragtime-1998/nytimes--ben-brantley.json",
       "data/review-texts/les-miserables-1987/thestage--unknown.json",
       "data/review-texts/hold-on-to-your-butts-2026/thestage--oliver-jones.json",
-      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/thestage--unknown.json",
+      "data/review-texts/manic-street-creature-west-end-2026/thestage--holly-o.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -2399,11 +2417,12 @@
       "funny-girl-2022/times-uk--clive-davis.json",
       "ragtime-1998/nydailynews--fintan-otoole.json",
       "les-miserables-1987/broadwayworld--unknown.json",
-      "les-miserables-1987/telegraph--unknown.json"
+      "les-miserables-1987/telegraph--unknown.json",
+      "to-kill-a-mockingbird-west-end-2026/telegraph--diane-snyder.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
+  "lastProcessed": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--sam-marlowe.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2745,6 +2764,17 @@
       "t": "2026-04-20T03:41:35.080Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T03:58:01.149Z",
+      "event": "bb-session",
+      "session": "8152daf2",
+      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
+    },
+    {
+      "t": "2026-04-20T03:58:02.297Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
