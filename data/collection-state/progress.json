@@ -194,7 +194,17 @@
     "the-gin-game-2015/vulture--jesse-green.json",
     "the-gin-game-2015/ap--mark-kennedy.json",
     "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
-    "something-rotten-2015/ap--mark-kennedy.json"
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "the-last-ship-2014/talkinbroadway--matthew-murray.json",
+    "disgraced-2014/forward--jesse-green.json",
+    "act-one-2014/timeout--david-cote.json",
+    "of-mice-and-men-2014/ap--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -236,7 +246,7 @@
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "something-rotten-2015/ap--mark-kennedy.json",
+  "lastProcessed": "of-mice-and-men-2014/ap--mark-kennedy.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -248,6 +258,17 @@
       "t": "2026-04-20T10:43:35.879Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T11:08:02.053Z",
+      "event": "bb-session",
+      "session": "1c8fbf5c",
+      "url": "https://hermes.talkinbroadway.com/page/world/LastShip2014a.html"
+    },
+    {
+      "t": "2026-04-20T11:08:02.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

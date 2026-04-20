@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-20T11:06:15.776Z",
+  "updatedAt": "2026-04-20T11:08:39.213Z",
   "processed": 19,
-  "failed": 174,
-  "successRate": "9.8%",
+  "failed": 184,
+  "successRate": "9.4%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
@@ -13,7 +13,7 @@
     "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -25,6 +25,17 @@
       "t": "2026-04-20T10:43:35.879Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T11:08:02.053Z",
+      "event": "bb-session",
+      "session": "1c8fbf5c",
+      "url": "https://hermes.talkinbroadway.com/page/world/LastShip2014a.html"
+    },
+    {
+      "t": "2026-04-20T11:08:02.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
