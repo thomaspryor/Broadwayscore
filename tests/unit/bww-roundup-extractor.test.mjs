@@ -90,7 +90,12 @@ test('FA BWW roundup: NYSR multi-critic entries have distinct URLs (Bernardo vs 
   );
 });
 
-test('FA BWW roundup: 1 Minute Critic, Cititour, TheWrap are all extracted', () => {
+test('FA BWW roundup: sanitizer-dependent outlets all extracted (1MC, Cititour, TheWrap, Cote, CultureSauce)', () => {
+  // Regression gate: these 5 outlets all landed AFTER the sanitizer fix.
+  // Cote Notices is the *cause* of the parse break (unescaped inner quotes
+  // in its headline); the other 4 are downstream casualties of the same
+  // JSON-LD parse failure. If any go missing, the sanitizer or fallback
+  // extraction paths regressed.
   const reviews = extractBWWRoundupReviews(
     FIXTURE,
     'fallen-angels-2026',
@@ -98,10 +103,10 @@ test('FA BWW roundup: 1 Minute Critic, Cititour, TheWrap are all extracted', () 
     'Fallen Angels'
   );
   const outletIds = reviews.map(r => r.outletId);
-  for (const id of ['one-minute-critic', 'cititour', 'thewrap']) {
+  for (const id of ['one-minute-critic', 'cititour', 'thewrap', 'cote-notices', 'culturesauce']) {
     assert.ok(
       outletIds.includes(id),
-      `Missing outlet ${id} — JSON-LD Method 1 likely failed to parse (pre-sanitizer behavior).`
+      `Missing outlet ${id} — JSON-LD Method 1 likely failed to parse (pre-sanitizer behavior). Outlets got: ${outletIds.join(', ')}`
     );
   }
 });
