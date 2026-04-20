@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-19T22:42:25.039Z",
+  "generatedAt": "2026-04-20T00:49:49.177Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -17854,6 +17854,92 @@
       "openingDate": "2026-04-18",
       "status": "open",
       "researchedAt": "2026-04-19T22:42:25.039Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "cat-cohen-broad-strokes-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Limited Off-Broadway run was planned but closed in previews without opening; no financial figures have been released.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/cat-cohens-broad-strokes-will-have-limited-off-broadway-run",
+          "date": "2026-04-16"
+        }
+      ],
+      "title": "Cat Cohen: Broad Strokes",
+      "slug": "cat-cohen-broad-strokes-off-broadway",
+      "openingDate": null,
+      "status": "previews",
+      "researchedAt": "2026-04-19T23:41:36.861Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "titanique": {
+      "capitalization": 9500000,
+      "capitalizationSource": "Broadway Journal (Feb 2026)",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Titanique was staged on a ~$9.5M budget and needed roughly ~$900K/week to break even ([www.broadwayjournal.com](https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?isFreemail=true&publication_id=7178918&triedRedirect=true#:~:text=Price%20called%20the%20Broadway%20production,Securities%20and%20Exchange%20Commission%20filings)).  It ran a fixed 16-week limited engagement and there is no public evidence of recoupment; it almost certainly did not recoup its capital.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?publication_id=7178918",
+          "date": "2026-02-20"
+        }
+      ],
+      "title": "Titanique",
+      "slug": "titanique",
+      "openingDate": "2026-04-12",
+      "status": "open",
+      "researchedAt": "2026-04-19T23:44:03.890Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "mamma-mia-west-end": {
+      "capitalization": 10000000,
+      "capitalizationSource": "Playbill (reporting that Mamma Mia! recouped its $10M Broadway investment) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2002-05",
+      "recoupedSource": "Playbill (reporting recoupment of the $10M investment in <28 weeks) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks))",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Miracle",
+      "notes": "Original Broadway production recouped $10M in under 28 weeks (by May 2002) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks)). No confirmed weekly nut found.",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
+          "date": "2002-05-29"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Mamma Mia!",
+      "slug": "mamma-mia-west-end",
+      "openingDate": "1999-04-06",
+      "status": "open",
+      "researchedAt": "2026-04-20T00:49:49.177Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "backlog"
     }
