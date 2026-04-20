@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-20T14:57:13.464Z",
+  "lastRunAt": "2026-04-20T16:43:09.162Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -31,7 +31,8 @@
     "news:30e91e2e5be73f61": true,
     "google:4a9736f7bcde67ed": true,
     "google:8a4d2c98e487621f": true,
-    "news:e48258797b7b0269": true
+    "news:e48258797b7b0269": true,
+    "news:c4924e53e4ada2dc": true
   },
   "mentions": [
     {
@@ -636,10 +637,30 @@
       "draftReason": "Just a URL share in a reviews thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
       "draftResponse": null,
       "dispatched": "2026-04-18T00:59:21.566Z"
+    },
+    {
+      "id": "news:c4924e53e4ada2dc",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews",
+      "title": "FALLEN ANGELS Reviews - BWW Forum",
+      "excerpt": "20 hours ago — While some note the play's thinness, most praise the slapstick performances and breakneck comic timing. https://broadwayscorecard.com/show/ ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-20T16:42:44.948Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is a news aggregation snippet with no human author to reply to and no conversational opening.",
+      "draftResponse": null,
+      "dispatched": "2026-04-20T16:43:09.162Z"
     }
   ],
   "stats": {
-    "totalSeen": 31,
+    "totalSeen": 32,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -673,6 +694,7 @@
     "https://forum.broadwayworld.com/thread/TITANQUE-Reviews/3": true,
     "https://forum.broadwayworld.com/thread/THE-FEAR-OF-13-Reviews": true,
     "https://secure.instagram.com/bwayscorecard?hl=bg": true,
-    "https://forum.broadwayworld.com/thread/PROOF-2026-Reviews/2": true
+    "https://forum.broadwayworld.com/thread/PROOF-2026-Reviews/2": true,
+    "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true
   }
 }
