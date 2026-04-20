@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-20T13:02:53.469Z",
-  "processed": 23,
-  "failed": 900,
+  "updatedAt": "2026-04-20T13:26:28.000Z",
+  "processed": 22,
+  "failed": 853,
   "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 18,
@@ -10,10 +10,10 @@
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 1,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -47,6 +47,17 @@
       "t": "2026-04-20T11:34:58.224Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-20T13:24:40.075Z",
+      "event": "bb-session",
+      "session": "f2b287ba",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-20T13:24:40.730Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
