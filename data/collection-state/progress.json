@@ -3,7 +3,14 @@
     "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json",
     "moulin-rouge-the-musical-west-end-2021/nytg--gillian-russo.json",
     "to-kill-a-mockingbird-west-end-2026/whatsonstage--alex-wood.json",
-    "high-noon-west-end-2025/whatsonstage--sarah-crompton.json"
+    "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+    "fallen-angels-2026/nytg--gillian-russo.json",
+    "hamlet-off-broadway-2026/playbill--unknown.json",
+    "avenue-q-west-end-2026/theupcoming--unknown.json",
+    "becky-shaw-2026/nytimes--unknown.json",
+    "becky-shaw-2026/ew--unknown.json",
+    "the-adding-machine-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+    "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json"
   ],
   "failed": [
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
@@ -24,17 +31,28 @@
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
     "avenue-q-west-end-2026/british-theatre--unknown.json",
     "avenue-q-west-end-2026/the-recs--unknown.json",
-    "avenue-q-west-end-2026/times-uk--matt-crocket.json"
+    "avenue-q-west-end-2026/times-uk--matt-crocket.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "moulin-rouge-the-musical-west-end-2021/nytg--gillian-russo.json",
       "to-kill-a-mockingbird-west-end-2026/whatsonstage--alex-wood.json",
-      "high-noon-west-end-2025/whatsonstage--sarah-crompton.json"
+      "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
+      "fallen-angels-2026/nytg--gillian-russo.json",
+      "hamlet-off-broadway-2026/playbill--unknown.json",
+      "avenue-q-west-end-2026/theupcoming--unknown.json",
+      "becky-shaw-2026/ew--unknown.json",
+      "the-adding-machine-off-broadway-2026/theater-pizzazz--ron-fassler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/becky-shaw-2026/nytimes--unknown.json",
+      "becky-shaw-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json"
@@ -45,9 +63,23 @@
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json"
+    ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "avenue-q-west-end-2026/times-uk--matt-crocket.json",
-  "log": []
+  "lastProcessed": "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-20T10:43:35.228Z",
+      "event": "bb-session",
+      "session": "b5d16f7f",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-20T10:43:35.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }

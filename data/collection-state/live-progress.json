@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-20T10:14:57.738Z",
-  "processed": 4,
-  "failed": 19,
-  "successRate": "17.4%",
+  "updatedAt": "2026-04-20T10:46:37.028Z",
+  "processed": 11,
+  "failed": 22,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-20T10:43:35.228Z",
+      "event": "bb-session",
+      "session": "b5d16f7f",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-20T10:43:35.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
