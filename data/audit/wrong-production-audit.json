@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-20T19:32:31.526Z",
+  "timestamp": "2026-04-20T19:56:39.593Z",
   "stats": {
-    "totalReviews": 35676,
-    "alreadyFlagged": 15901,
+    "totalReviews": 35677,
+    "alreadyFlagged": 15903,
     "dateGuardCatches": 90,
     "directorMismatch": 826,
-    "tvFilmSignals": 3181,
+    "tvFilmSignals": 3179,
     "londonSignals": 1023,
     "offBroadwaySignals": 889,
     "yearMismatch": 71,
-    "noPublishDate": 3777
+    "noPublishDate": 3766
   },
   "findings": [
     {
@@ -16692,19 +16692,6 @@
     },
     {
       "showId": "glengarry-glen-ross-2025",
-      "file": "one-minute-critic--matthew-wexler.json",
-      "publishDate": null,
-      "url": "https://1minutecritic.com/glengarry-glen-ross-broadway-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2025",
       "file": "theater-life--barry-gordin.json",
       "score": 76,
       "publishDate": "2025-04-05T14:33:17",
@@ -32673,19 +32660,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-2024",
-      "file": "one-minute-critic--matthew-wexler.json",
-      "publishDate": null,
-      "url": "https://1minutecritic.com/oh-mary-broadway-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -71166,7 +71140,8 @@
     {
       "showId": "stephen-sondheims-old-friends-2025",
       "file": "one-minute-critic--matthew-wexler.json",
-      "publishDate": null,
+      "score": 69,
+      "publishDate": "2025-04-09",
       "url": "https://1minutecritic.com/sondheims-old-friends-broadway-review/",
       "findings": [
         {
