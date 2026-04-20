@@ -1,49 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-04-20T07:10:49.031Z",
+    "generatedAt": "2026-04-20T19:20:09.003Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36248,
-      "inReviewsJson": 16612,
-      "skippedExcluded": 68,
-      "withFullText": 17,
-      "excerptOnly": 1559,
-      "llmClassified": 2,
+      "totalFiles": 36329,
+      "inReviewsJson": 16650,
+      "skippedExcluded": 69,
+      "withFullText": 20,
+      "excerptOnly": 1594,
+      "llmClassified": 0,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 2,
-      "budgetUsed": 0.0017000000000000006,
-      "llmCalls": 17,
-      "rateLimitHits": 47,
-      "errors": 15,
-      "skippedAlreadyClassified": 14968
+      "uncertainCases": 0,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
+      "rateLimitHits": 60,
+      "errors": 20,
+      "skippedAlreadyClassified": 14967
     },
     "calibration": null
   },
   "nonReviews": [],
-  "uncertainCases": [
-    {
-      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
-      "showId": "pippin-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
-      "currentScore": 80
-    },
-    {
-      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
-      "showId": "the-assembled-parties-2013",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
-      "currentScore": 42
-    }
-  ],
+  "uncertainCases": [],
   "heuristicFlags": [],
   "reviewsConfirmed": [],
   "perShowSummary": []
