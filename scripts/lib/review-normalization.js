@@ -1004,7 +1004,7 @@ function getOutletDisplayName(outletId) {
     'billboard': 'Billboard',
     'amny': 'amNewYork',
     'culturesauce': 'Culture Sauce',
-    'one-minute-critic': 'One Minute Critic',
+    'one-minute-critic': '1 Minute Critic',
     'artsfuse': 'The Arts Fuse',
     'jitney': 'The Jitney',
     'slantmagazine': 'Slant Magazine',
