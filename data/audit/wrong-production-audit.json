@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-20T06:05:11.624Z",
+  "timestamp": "2026-04-20T07:27:21.794Z",
   "stats": {
-    "totalReviews": 35588,
-    "alreadyFlagged": 15891,
+    "totalReviews": 35596,
+    "alreadyFlagged": 15894,
     "dateGuardCatches": 90,
     "directorMismatch": 826,
-    "tvFilmSignals": 3174,
+    "tvFilmSignals": 3175,
     "londonSignals": 1019,
-    "offBroadwaySignals": 888,
+    "offBroadwaySignals": 889,
     "yearMismatch": 71,
-    "noPublishDate": 3705
+    "noPublishDate": 3709
   },
   "findings": [
     {
@@ -4860,6 +4860,20 @@
       "score": 94,
       "publishDate": "December 5, 2007",
       "url": "https://variety.com/2007/legit/reviews/august-osage-county-3-1200554144/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 79,
+      "publishDate": "2026-04-17",
+      "url": "https://www.broadwayworld.com/westend/article/Review-AVENUE-Q-Shaftesbury-Theatre-20260417",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -61532,6 +61546,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 80,
+      "publishDate": "2026-04-19",
+      "url": "https://cititour.com/NYC_Broadway/Fallen-Angels/1372",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
