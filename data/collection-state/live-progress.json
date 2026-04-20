@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-20T03:33:38.297Z",
-  "processed": 247,
-  "failed": 1765,
+  "updatedAt": "2026-04-20T03:38:00.822Z",
+  "processed": 249,
+  "failed": 1773,
   "successRate": "12.3%",
   "tierBreakdown": {
-    "playwright": 122,
+    "playwright": 123,
     "amp": 0,
     "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 51,
     "brightdata": 40,
-    "archiveToday": 38,
-    "archive": 21
+    "archiveToday": 40,
+    "archive": 22
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-19T18:34:54.969Z",
-      "event": "bb-session",
-      "session": "c35edc29",
-      "url": "https://www.nytimes.com/2021/10/11/theater/is-this-a-room-review.html"
-    },
-    {
-      "t": "2026-04-19T18:34:55.358Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-19T18:35:50.547Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-20T03:12:20.317Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T03:35:48.666Z",
+      "event": "bb-session",
+      "session": "372cf4eb",
+      "url": "https://www.nytimes.com/1998/01/19/theater/theater-review-a-diorama-with-nostalg"
+    },
+    {
+      "t": "2026-04-20T03:35:49.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

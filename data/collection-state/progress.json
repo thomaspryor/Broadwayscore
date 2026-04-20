@@ -246,7 +246,9 @@
     "funny-girl-2022/times-uk--clive-davis.json",
     "cabaret-2014/musical-theatre-review--unknown.json",
     "born-yesterday-2011/new-jersey-newsroom--michael-sommers.json",
-    "sister-act-2011/new-jersey-newsroom--michael-sommers.json"
+    "sister-act-2011/new-jersey-newsroom--michael-sommers.json",
+    "gypsy-2003/culturesauce--thom-geier.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -2013,7 +2015,15 @@
     "xanadu-2007/variety--david-rooney.json",
     "talk-radio-2007/variety--charles-isherwood.json",
     "journeys-end-2007/variety--david-rooney.json",
-    "mary-poppins-2006/variety--charles-isherwood.json"
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "proof-2000/newsday--unknown.json",
+    "ragtime-1998/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2139,7 +2149,8 @@
       "to-kill-a-mockingbird-west-end-2026/theatre-weekly--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
       "all-my-sons-west-end-2025/theatre-weekly--unknown.json",
-      "cabaret-2014/musical-theatre-review--unknown.json"
+      "cabaret-2014/musical-theatre-review--unknown.json",
+      "gypsy-2003/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
@@ -2304,7 +2315,9 @@
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/to-kill-a-mockingbird-west-end-2026/thestage--unknown.json",
-      "data/review-texts/cabaret-2014/thestage--unknown.json"
+      "data/review-texts/cabaret-2014/thestage--unknown.json",
+      "data/review-texts/proof-2000/newsday--unknown.json",
+      "data/review-texts/ragtime-1998/nytimes--ben-brantley.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -2327,11 +2340,12 @@
       "schmigadoon-2026/vulture--rhoda-feng.json",
       "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
       "an-enemy-of-the-people-2024/times-uk--clive-davis.json",
-      "funny-girl-2022/times-uk--clive-davis.json"
+      "funny-girl-2022/times-uk--clive-davis.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json"
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "mary-poppins-2006/variety--charles-isherwood.json",
+  "lastProcessed": "ragtime-1998/nydailynews--fintan-otoole.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2640,6 +2654,17 @@
       "t": "2026-04-20T03:12:20.317Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T03:35:48.666Z",
+      "event": "bb-session",
+      "session": "372cf4eb",
+      "url": "https://www.nytimes.com/1998/01/19/theater/theater-review-a-diorama-with-nostalg"
+    },
+    {
+      "t": "2026-04-20T03:35:49.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
