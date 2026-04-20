@@ -1583,7 +1583,9 @@
     "avenue-q-west-end-2026/times-uk--matt-crocket.json",
     "avenue-q-west-end-2026/british-theatre--unknown.json",
     "avenue-q-west-end-2026/the-recs--unknown.json",
-    "avenue-q-west-end-2026/times-uk--matt-crocket.json"
+    "avenue-q-west-end-2026/times-uk--matt-crocket.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1664,7 +1666,8 @@
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
       "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
-      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
       "heathers-the-musical-off-broadway-2025/nydailynews--unknown.json",
@@ -1673,7 +1676,7 @@
     ]
   },
   "startTime": "2026-04-20T09:01:24.529Z",
-  "lastProcessed": "avenue-q-west-end-2026/times-uk--matt-crocket.json",
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
   "log": [
     {
       "t": "2026-04-20T10:43:35.228Z",
@@ -1795,6 +1798,17 @@
       "t": "2026-04-20T19:01:50.756Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-20T23:33:14.646Z",
+      "event": "bb-session",
+      "session": "b12de5f5",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-20T23:33:15.767Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
