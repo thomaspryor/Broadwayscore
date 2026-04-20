@@ -343,8 +343,18 @@ function getBestScore(data, opts = {}) {
   }
 
   // P0a: Adjudicated score (LLM re-evaluation of flagged reviews — beats LLM but not human)
+  // EXCEPTION: skip adjudication when the review has an outlet-verified originalScore
+  // from a KNOWN star outlet. Star ratings are authoritative ground truth per
+  // memory/feedback_star_score_cap.md — the adjudicator should not override them.
+  // Stale adjudicatedScore values sitting on files with explicit stars are bugs.
   if (data.adjudicatedScore && data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100) {
-    return { score: data.adjudicatedScore, source: 'adjudicated' };
+    const hasVerifiedStarScore = data.originalScore
+      && OUTLET_VERIFIED_SOURCES.has(data.scoreSource)
+      && KNOWN_STAR_OUTLETS.has(data.outletId);
+    if (!hasVerifiedStarScore) {
+      return { score: data.adjudicatedScore, source: 'adjudicated' };
+    }
+    inc('adjudicationSkippedExplicitStars');
   }
 
   // P0.5: originalScore (aggregator-provided)

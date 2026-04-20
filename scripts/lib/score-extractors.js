@@ -936,8 +936,11 @@ function extractGenericLetterGrade(html, text) {
  * Also appears as img alt text "1 minute critic N-star rating"
  */
 function extractOneMinuteCriticScore(html, text) {
-  // 1. Alt text in star rating images (most reliable when HTML available)
-  const altMatch = html.match(/1\s*minute\s*critic\s*(\d(?:\.\d)?)\s*-?\s*star/i);
+  // 1. Alt text in star rating images (most reliable when HTML available).
+  // Check both html and text — some pipelines store HTML fragments in fullText
+  // (collect-review-texts stores rendered article HTML, not plain text).
+  const altPattern = /1\s*minute\s*critic\s*(\d(?:\.\d)?)\s*-?\s*star/i;
+  const altMatch = html.match(altPattern) || text.match(altPattern);
   if (altMatch) {
     const rating = parseFloat(altMatch[1]);
     if (rating >= 1 && rating <= 5) {
@@ -1278,6 +1281,8 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
   'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
+  // 1 Minute Critic — alt-text image rating + "N out of 5 stars" text
+  'omc-alt-text', 'omc-star-rating',
 ]);
 
 // Outlets known to publish their own star ratings — shared between extractScore()
@@ -1300,6 +1305,8 @@ const KNOWN_STAR_OUTLETS = new Set([
   // NOTE: londontheatre1 REMOVED — has noScoreExtractor (same as london-theatre, no star ratings)
   'everything-theatre', 'thereviewshub',
   'shy-strange-manic', 'express-uk', 'theatre-weekly',
+  // NYC outlet publishing its own star ratings (alt-text + "N out of 5 stars" text)
+  'one-minute-critic',
 ]);
 
 module.exports = {
