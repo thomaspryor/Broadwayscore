@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-20T04:09:19.094Z",
+  "timestamp": "2026-04-20T05:09:58.108Z",
   "stats": {
     "totalReviews": 35588,
     "alreadyFlagged": 15891,
     "dateGuardCatches": 90,
     "directorMismatch": 826,
     "tvFilmSignals": 3174,
-    "londonSignals": 1018,
+    "londonSignals": 1019,
     "offBroadwaySignals": 888,
     "yearMismatch": 71,
     "noPublishDate": 3705
@@ -61485,6 +61485,20 @@
       "score": 42,
       "publishDate": "April 5, 2012",
       "url": "https://www.theatermania.com/news/review-evita_54031/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
+      "file": "variety--marilyn-stasio.json",
+      "score": 72,
+      "publishDate": "April 5, 2012",
+      "url": "https://variety.com/2012/legit/reviews/evita-1117947355/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
