@@ -2217,7 +2217,17 @@
     "therese-raquin-2015/timeout--adam-feldman.json",
     "the-gin-game-2015/vulture--jesse-green.json",
     "the-gin-game-2015/ap--mark-kennedy.json",
-    "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json"
+    "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
+    "something-rotten-2015/ap--mark-kennedy.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json",
+    "an-american-in-paris-2015/off-script-with-dan-dwyer--dan-dwyer.json",
+    "wolf-hall-parts-one-and-two-2015/ap--mark-kennedy.json",
+    "on-the-twentieth-century-2015/nytg--tulis-mccall.json",
+    "on-the-twentieth-century-2015/variety--marilyn-stasio.json",
+    "constellations-2015/ap--jennifer-farrar.json",
+    "the-last-ship-2014/talkinbroadway--matthew-murray.json",
+    "disgraced-2014/forward--jesse-green.json",
+    "cabaret-2014/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2537,7 +2547,8 @@
       "data/review-texts/manic-street-creature-west-end-2026/thestage--holly-o.json",
       "data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thestage--unknown.json",
-      "data/review-texts/bad-cinderella-2023/thestage--lane-williamson.json"
+      "data/review-texts/bad-cinderella-2023/thestage--lane-williamson.json",
+      "data/review-texts/the-last-ship-2014/talkinbroadway--matthew-murray.json"
     ],
     "archive": [
       "hamlet-off-broadway-2026/bnn-breaking--hadeel-hashem.json",
@@ -2568,7 +2579,7 @@
     ]
   },
   "startTime": "2026-04-19T09:19:42.023Z",
-  "lastProcessed": "fool-for-love-2015/bobs-theater-blog--robert-sholiton.json",
+  "lastProcessed": "cabaret-2014/thestage--unknown.json",
   "log": [
     {
       "t": "2026-04-19T15:38:59.207Z",
@@ -2921,6 +2932,17 @@
       "t": "2026-04-20T03:58:02.297Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-20T04:26:05.758Z",
+      "event": "bb-session",
+      "session": "34a94459",
+      "url": "https://hermes.talkinbroadway.com/page/world/LastShip2014a.html"
+    },
+    {
+      "t": "2026-04-20T04:26:06.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
