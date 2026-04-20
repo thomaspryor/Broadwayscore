@@ -392,8 +392,28 @@ async function runAggregators(show) {
   if (!isOffBroadway && !isWestEnd) {
     try {
       const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
-      const hasTbReview = fs.existsSync(showReviewDir)
-        && fs.readdirSync(showReviewDir).some(f => f.startsWith('talkinbroadway--'));
+      const tbFiles = fs.existsSync(showReviewDir)
+        ? fs.readdirSync(showReviewDir).filter(f => f.startsWith('talkinbroadway--'))
+        : [];
+      // Stale-URL guard: if every existing TB file has an empty URL OR its URL
+      // doesn't match TB's canonical CamelCase format (/page/world/CamelCase.html
+      // or /page/world/CamelCase2026.html), treat it as "no good URL yet" and
+      // re-run discovery. FA had fallenangels2026.html hand-entered but TB
+      // published it as FallenAngels.html — lowercased slugs are 404s on TB.
+      // Regex requires first slug char to be uppercase (TB's actual URL convention).
+      const TB_URL_PATTERN = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/world\/[A-Z][A-Za-z0-9]*\.html$/;
+      const looksOk = (url) => typeof url === 'string' && url && TB_URL_PATTERN.test(url);
+      let anyGoodUrl = false;
+      for (const f of tbFiles) {
+        try {
+          const rec = JSON.parse(fs.readFileSync(path.join(showReviewDir, f), 'utf8'));
+          if (looksOk(rec.url)) { anyGoodUrl = true; break; }
+        } catch { /* ignore parse errors, treat as no good URL */ }
+      }
+      const hasTbReview = tbFiles.length > 0 && anyGoodUrl;
+      if (tbFiles.length > 0 && !anyGoodUrl) {
+        console.log(`  Talkin' Broadway: ${tbFiles.length} existing file(s) but URL looks stale/invalid — re-running discovery`);
+      }
       if (hasTbReview) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
