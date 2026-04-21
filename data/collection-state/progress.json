@@ -611,7 +611,9 @@
     "priscilla-queen-of-the-desert-2011/new-jersey-newsroom--michael-sommers.json",
     "priscilla-queen-of-the-desert-2011/chicagotribune--contributed-content.json",
     "arcadia-2011/new-jersey-newsroom--michael-sommers.json",
-    "that-championship-season-2011/new-jersey-newsroom--michael-sommers.json"
+    "that-championship-season-2011/new-jersey-newsroom--michael-sommers.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -744,7 +746,8 @@
       "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/thestage--siobhan-murphy.json",
       "data/review-texts/paranormal-activity-west-end-2025/thestage--unknown.json",
       "data/review-texts/black-is-the-color-of-my-voice-west-end-2026/thestage--siobhan-murphy.json",
-      "data/review-texts/paranormal-activity-west-end-2025/thestage--unknown.json"
+      "data/review-texts/paranormal-activity-west-end-2025/thestage--unknown.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/metro--brooke-ivey-johnson.json",
@@ -752,7 +755,7 @@
     ]
   },
   "startTime": "2026-04-21T08:51:13.806Z",
-  "lastProcessed": "that-championship-season-2011/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
   "log": [
     {
       "t": "2026-04-21T10:51:17.059Z",
@@ -775,6 +778,17 @@
       "t": "2026-04-21T12:26:29.244Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-21T14:16:39.840Z",
+      "event": "bb-session",
+      "session": "c0eb6884",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T14:16:41.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
