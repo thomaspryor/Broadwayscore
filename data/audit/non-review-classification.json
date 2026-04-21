@@ -1,37 +1,47 @@
 {
   "meta": {
-    "generatedAt": "2026-04-20T22:39:36.925Z",
+    "generatedAt": "2026-04-21T02:21:50.788Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36326,
-      "inReviewsJson": 16656,
-      "skippedExcluded": 68,
-      "withFullText": 28,
+      "totalFiles": 36317,
+      "inReviewsJson": 16623,
+      "skippedExcluded": 70,
+      "withFullText": 17,
       "excerptOnly": 1590,
-      "llmClassified": 1,
+      "llmClassified": 2,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 1,
-      "budgetUsed": 0.002799999999999999,
-      "llmCalls": 28,
-      "rateLimitHits": 82,
-      "errors": 27,
-      "skippedAlreadyClassified": 14970
+      "uncertainCases": 2,
+      "budgetUsed": 0.0017000000000000006,
+      "llmCalls": 17,
+      "rateLimitHits": 45,
+      "errors": 15,
+      "skippedAlreadyClassified": 14946
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
     {
-      "file": "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
-      "showId": "prince-of-broadway-2017",
-      "outlet": "Stage Buddy",
-      "outletId": "stagebuddy",
-      "contentType": "feature",
-      "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
-      "currentScore": 83
+      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
+      "showId": "pippin-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "currentScore": 80
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
+      "currentScore": 64
     }
   ],
   "heuristicFlags": [],

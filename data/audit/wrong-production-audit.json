@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-20T22:53:46.986Z",
+  "timestamp": "2026-04-21T02:34:27.099Z",
   "stats": {
-    "totalReviews": 35675,
-    "alreadyFlagged": 15901,
+    "totalReviews": 35632,
+    "alreadyFlagged": 15885,
     "dateGuardCatches": 90,
-    "directorMismatch": 826,
-    "tvFilmSignals": 3179,
+    "directorMismatch": 822,
+    "tvFilmSignals": 3169,
     "londonSignals": 1023,
     "offBroadwaySignals": 889,
-    "yearMismatch": 71,
-    "noPublishDate": 3767
+    "yearMismatch": 67,
+    "noPublishDate": 3777
   },
   "findings": [
     {
@@ -36437,208 +36437,6 @@
       ]
     },
     {
-      "showId": "proof-express-test-2026",
-      "file": "culturesauce--thom-geier.json",
-      "score": 63,
-      "publishDate": "2026-04-17",
-      "url": null,
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-2026",
-      "file": "deadline--greg-evans.json",
-      "score": 82,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-2026",
-      "file": "nydailynews--chris-jones.json",
-      "score": 86,
-      "publishDate": "April 16, 2026",
-      "url": "https://www.nydailynews.com/2026/04/16/broadway-review-ayo-edebiri-is-spectacular-captivating-in-proof/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-2026",
-      "file": "theatermania--david-gordon.json",
-      "score": 67,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-2026",
-      "file": "thewrap--robert-hofler.json",
-      "score": 59,
-      "publishDate": "April 16, 2026",
-      "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-2026",
-      "file": "timeout--adam-feldman.json",
-      "score": 66,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 85,
-      "publishDate": "2026-04-17",
-      "url": "https://www.chicagotribune.com/2026/04/16/review-proof-broadway-edebiri/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "culturesauce--thom-geier.json",
-      "score": 63,
-      "publishDate": "2026-04-17",
-      "url": null,
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "deadline--greg-evans.json",
-      "score": 85,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "nydailynews--chris-jones.json",
-      "score": 86,
-      "publishDate": "April 16, 2026",
-      "url": "https://www.nydailynews.com/2026/04/16/broadway-review-ayo-edebiri-is-spectacular-captivating-in-proof/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "theatermania--david-gordon.json",
-      "score": 64,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "thewrap--robert-hofler.json",
-      "score": 49,
-      "publishDate": "April 16, 2026",
-      "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "proof-express-test-v2-2026",
-      "file": "timeout--adam-feldman.json",
-      "score": 73,
-      "publishDate": "April 16, 2026",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from proof-2000"
-        }
-      ]
-    },
-    {
       "showId": "public-charge-off-broadway-2026",
       "file": "one-minute-critic--jerry-portwood.json",
       "score": 79,
@@ -68938,6 +68736,19 @@
       ]
     },
     {
+      "showId": "oliver-west-end-2024",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "once-2012",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 82,
@@ -70308,20 +70119,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "schmigadoon-2026",
-      "file": "theatermania--david-gordon.json",
-      "score": 76,
-      "publishDate": "2026-04-09",
-      "url": "https://www.theatermania.com/news/from-screen-to-stage-the-reinvention-of-schmigadoon-for-broadway_1832297/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -76021,20 +75818,6 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 78,
       "publishDate": "2025-12-12",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-west-end-1986",
-      "file": "telegraph--serena-davies.json",
-      "score": 77,
-      "publishDate": "2021-08-11",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
       "findings": [
         {
