@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T14:38:17.559Z",
+  "generatedAt": "2026-04-21T17:07:32.933Z",
   "summary": {
-    "total": 16,
+    "total": 17,
     "high": 11,
-    "medium": 4,
+    "medium": 5,
     "low": 1
   },
   "collisions": [
@@ -332,30 +332,57 @@
       "confidence": "medium"
     },
     {
-      "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorP7l3j8IP68qdcMeBPMcw1s7odIwPXm7XDmhTEy1GhJqXV2vR1",
-      "normalizedUrl": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+      "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
       "candidates": [
         {
           "showId": "every-brilliant-thing-2026",
-          "file": "ew--dalton-ross.json",
-          "publishDate": "2026-03-12",
+          "file": "nytimes--adam-feldman.json",
+          "publishDate": "March 13th, 2026",
           "openingDate": "2026-03-12",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "ew"
+          "outletId": "nytimes"
         },
         {
           "showId": "schmigadoon-2026",
-          "file": "ew--dalton-ross.json",
-          "publishDate": "2026-03-12",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "April 20, 2026",
           "openingDate": "2026-04-20",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "ew"
+          "outletId": "timeout"
         }
       ],
-      "suggestedWinner": "every-brilliant-thing-2026",
-      "reason": "publishDate 2026-03-12 is 0 days from every-brilliant-thing-2026 but also 39 days from schmigadoon-2026",
+      "suggestedWinner": "schmigadoon-2026",
+      "reason": "publishDate April 20, 2026 is 0 days from schmigadoon-2026 but also 1 days from every-brilliant-thing-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+      "normalizedUrl": "https://wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "wsj"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": "2026-04-20T22:00:00-04:00",
+          "openingDate": "2026-04-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "wsj"
+        }
+      ],
+      "suggestedWinner": "schmigadoon-2026",
+      "reason": "publishDate 2026-04-20T22:00:00-04:00 is 0 days from schmigadoon-2026 but also 1 days from every-brilliant-thing-2026",
       "confidence": "medium"
     },
     {
