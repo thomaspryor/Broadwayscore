@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-21T03:17:34.848Z",
-  "processed": 8,
-  "failed": 2,
-  "successRate": "80.0%",
+  "updatedAt": "2026-04-21T03:21:03.533Z",
+  "processed": 11,
+  "failed": 9,
+  "successRate": "55.0%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 4,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-21T03:13:14.013Z",
@@ -36,6 +36,28 @@
       "t": "2026-04-21T03:14:12.408Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T03:17:38.735Z",
+      "event": "bb-session",
+      "session": "d068fdf1",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-21T03:17:39.795Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-21T03:18:45.717Z",
+      "event": "bb-session",
+      "session": "b8e11f81",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-21T03:18:46.877Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
