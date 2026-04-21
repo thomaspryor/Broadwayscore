@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T17:07:32.933Z",
+  "generatedAt": "2026-04-21T19:27:06.168Z",
   "summary": {
-    "total": 17,
-    "high": 11,
-    "medium": 5,
+    "total": 16,
+    "high": 9,
+    "medium": 6,
     "low": 1
   },
   "collisions": [
@@ -211,6 +211,15 @@
         },
         {
           "showId": "cats-the-jellicle-ball-2026",
+          "file": "theatermania--linda-buchwald.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
           "file": "theatermania--zachary-stewart.json",
           "publishDate": "2026-04-08",
           "openingDate": "2026-04-07",
@@ -220,8 +229,8 @@
         }
       ],
       "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
-      "confidence": "high"
+      "reason": "publishDate 2026-04-07 is 0 days from cats-the-jellicle-ball-2026 but also 1 days from cats-the-jellicle-ball-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
@@ -298,11 +307,20 @@
           "hasScore": true,
           "hasFullText": true,
           "outletId": "variety"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "variety--rebecca-rubin.json",
+          "publishDate": "2026-04-07",
+          "openingDate": "2026-04-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "variety"
         }
       ],
       "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
-      "confidence": "high"
+      "reason": "publishDate 2026-04-07 is 0 days from cats-the-jellicle-ball-2026 but also 1 days from cats-the-jellicle-ball-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
@@ -356,33 +374,6 @@
       ],
       "suggestedWinner": "schmigadoon-2026",
       "reason": "publishDate April 20, 2026 is 0 days from schmigadoon-2026 but also 1 days from every-brilliant-thing-2026",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
-      "normalizedUrl": "https://wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
-      "candidates": [
-        {
-          "showId": "every-brilliant-thing-2026",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": "2026-03-13",
-          "openingDate": "2026-03-12",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        },
-        {
-          "showId": "schmigadoon-2026",
-          "file": "wsj--charles-isherwood.json",
-          "publishDate": "2026-04-20T22:00:00-04:00",
-          "openingDate": "2026-04-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "wsj"
-        }
-      ],
-      "suggestedWinner": "schmigadoon-2026",
-      "reason": "publishDate 2026-04-20T22:00:00-04:00 is 0 days from schmigadoon-2026 but also 1 days from every-brilliant-thing-2026",
       "confidence": "medium"
     },
     {
