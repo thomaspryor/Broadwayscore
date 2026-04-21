@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-21T21:39:26.033Z",
+  "timestamp": "2026-04-21T23:41:25.552Z",
   "stats": {
     "totalReviews": 35679,
     "alreadyFlagged": 15924,
     "dateGuardCatches": 90,
     "directorMismatch": 822,
     "tvFilmSignals": 3182,
-    "londonSignals": 1028,
+    "londonSignals": 1029,
     "offBroadwaySignals": 889,
     "yearMismatch": 67,
     "noPublishDate": 3748
@@ -65115,6 +65115,19 @@
       "score": 75,
       "publishDate": "2026-04-07",
       "url": "https://www.londontheatre.co.uk/reviews/inter-alia-review-rosamund-pike-suzie-miller",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "the-daily--unknown.json",
+      "publishDate": null,
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-15713891/amp/PATRICK-MARMION-reviews-Inter-Alia.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
