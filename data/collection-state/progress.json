@@ -19,7 +19,16 @@
     "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/london-theatre--unknown.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--unknown.json"
+    "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--unknown.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--unknown.json",
+    "heart-wall-west-end-2026/financialtimes--unknown.json",
+    "heart-wall-west-end-2026/london-theatre--unknown.json",
+    "cats-the-jellicle-ball-2026/nytimes--unknown.json",
+    "copenhagen-west-end-2026/timeout--andrzej-lukowski.json",
+    "inter-alia-west-end-2026/timeout--andrzej-lukowski.json",
+    "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
+    "cats-the-jellicle-ball-2026/washpost--unknown.json",
+    "inter-alia-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
@@ -31,7 +40,8 @@
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/financialtimes--unknown.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/thestage--unknown.json"
+    "one-flew-over-the-cuckoos-nest-west-end-2026/thestage--unknown.json",
+    "cats-the-jellicle-ball-2026/theatrely--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -55,17 +65,41 @@
       "one-flew-over-the-cuckoos-nest-west-end-2026/independent--unknown.json",
       "one-flew-over-the-cuckoos-nest-west-end-2026/london-theatre--unknown.json",
       "one-flew-over-the-cuckoos-nest-west-end-2026/standard--unknown.json",
-      "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--unknown.json"
+      "one-flew-over-the-cuckoos-nest-west-end-2026/telegraph--unknown.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/times-uk--unknown.json",
+      "heart-wall-west-end-2026/financialtimes--unknown.json",
+      "heart-wall-west-end-2026/london-theatre--unknown.json",
+      "copenhagen-west-end-2026/timeout--andrzej-lukowski.json",
+      "inter-alia-west-end-2026/timeout--andrzej-lukowski.json",
+      "inter-alia-west-end-2026/timeout--caroline-mcginn.json",
+      "cats-the-jellicle-ball-2026/washpost--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cats-the-jellicle-ball-2026/nytimes--unknown.json",
+      "cats-the-jellicle-ball-2026/nytimes--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "inter-alia-west-end-2026/telegraph--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-04-21T08:51:13.806Z",
-  "lastProcessed": "one-flew-over-the-cuckoos-nest-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "inter-alia-west-end-2026/telegraph--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-21T10:51:17.059Z",
+      "event": "bb-session",
+      "session": "2bfc2d3b",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-21T10:51:18.308Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
