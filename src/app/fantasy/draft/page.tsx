@@ -138,7 +138,7 @@ function FantasyDraftInner() {
           <div className="text-6xl mb-6">🎭</div>
           <h1 className="text-3xl font-bold mb-4">You&apos;re In!</h1>
           <p className="text-gray-400 mb-2">
-            Your picks have been locked in{teamName ? ` as "${teamName}"` : ''}.
+            Your picks are locked in{teamName ? ` as "${teamName}"` : ''}. Picks are final — no changes.
             {leagueName && (
               <> You&apos;ve joined league <a href={`/fantasy/league/${leagueName}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
             )}
@@ -169,12 +169,6 @@ function FantasyDraftInner() {
             >
               View Leaderboard
             </a>
-            <button
-              onClick={() => { setSubmitted(false); setPicks(['']); }}
-              className="px-6 py-3 bg-surface-raised text-white rounded-lg hover:bg-surface-overlay transition-colors"
-            >
-              Change My Picks
-            </button>
           </div>
         </div>
       </div>
@@ -226,7 +220,7 @@ function FantasyDraftInner() {
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-600 mt-1">One entry per email. Re-submitting replaces your previous picks.</p>
+            <p className="text-xs text-gray-600 mt-1">One entry per email, final once submitted — no changes, no redrafts.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
