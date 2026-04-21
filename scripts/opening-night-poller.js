@@ -91,9 +91,16 @@ function getThresholds(market) {
  *
  * Returns one of: 'aggressive' | 'daily' | 'every-3d' | 'weekly' | 'skip'.
  *
- * Aggressive windows (SERP runs on every cron):
- *   - Broadway:      0-14h post-opening (same-evening review drops)
- *   - West End:      12-30h post-opening (next-morning UK drops)
+ * openingDate is stored as 'YYYY-MM-DD' and parses to UTC-midnight, but actual
+ * openings happen in the evening (BW ~23:00 UTC = 7pm ET; WE ~18:30 UTC =
+ * 7:30pm BST). The aggressive windows below are therefore expressed as UTC
+ * hour-offsets from the parsed midnight that LAND ON the real review-drop
+ * window, not nominal "hours post opening":
+ *
+ *   - Broadway:      h 22-36   → 22 UTC opening day through 12 UTC next day
+ *                                (covers 7pm ET opening → next-morning indexing)
+ *   - West End:      h 12-30   → noon UTC opening day through 06 UTC next day
+ *                                (covers press-night evening + next-morning drops)
  *   - Off-Broadway/Off-West-End: none — reviews trickle over weeks
  *
  * Tiered cadence (SERP gated to morning slot only via shouldRunSerpForMode):
@@ -101,7 +108,7 @@ function getThresholds(market) {
  *   - Days 15-60:    every 3 days
  *   - Days 61-90:    weekly
  *   - Day 90+:       skip
- *   - Pre-opening:   skip if >48h before opening
+ *   - Pre-opening:   skip if >48h before parsed opening
  *
  * Note: layers 1-3 (aggregators, RSS, SSR site search) still run unless mode='skip'.
  * Only layer 4 (SERP, the expensive BD-backed layer) is gated by mode.
@@ -117,7 +124,13 @@ function pollMode(show, now = new Date()) {
   if (h < -48) return 'skip';
   if (d > 90) return 'skip';
 
-  if (isBW && h >= 0 && h < 14) return 'aggressive';
+  // Aggressive windows cover the actual review-drop hours.
+  // BW reviews drop 01-03 UTC next day (9-11pm ET opening night) → window 22-36
+  //   captures the 23:00 + 00:00 + 08:00 UTC cron fires on opening night + next
+  //   morning before broadcast.
+  // WE reviews drop 06-10 UTC next day (next-morning BST) → window 12-30 captures
+  //   the 18:00 UTC press-night evening cron and the 05:00 UTC next-morning cron.
+  if (isBW && h >= 22 && h < 36) return 'aggressive';
   if (isWE && h >= 12 && h < 30) return 'aggressive';
 
   if (d < 14) return 'daily';
