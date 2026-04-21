@@ -6,6 +6,13 @@ import {
   BOX_OFFICE_POINTS_PER_100K,
   AWARDS_POINTS,
 } from '@/config/fantasy';
+import { SCORE_BUCKETS } from '@/config/score-buckets';
+
+const CRITIC_TIER_RANGES: Record<string, string> = Object.fromEntries(
+  SCORE_BUCKETS
+    .filter((b) => b.id !== 'pending')
+    .map((b) => [b.label, `${b.minScore}–${b.maxScore}`])
+);
 
 export const metadata: Metadata = {
   title: 'Broadway Fantasy League',
@@ -109,57 +116,7 @@ export default function FantasyLandingPage() {
       <section className="max-w-3xl mx-auto px-4 py-12">
         <h2 className="text-2xl font-bold mb-8 text-center">Four Ways to Score</h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          {/* CriticScore */}
-          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-yellow-400/15 text-yellow-400 text-sm">★</span> CriticScore
-            </h3>
-            <div className="space-y-1.5 text-sm">
-              {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (
-                <div key={tier} className="flex justify-between">
-                  <span className="text-gray-400">{tier}</span>
-                  <span className="font-mono text-gray-300">{pts} pts</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-gray-600 mt-3">
-              Based on Broadway Scorecard&apos;s critic composite score.
-              Shows that opened before the season start don&apos;t earn critic points.
-            </p>
-          </div>
-
-          {/* AudienceGrade */}
-          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-400/15 text-emerald-400 text-sm">♥</span> Audience Grade
-            </h3>
-            <div className="space-y-1.5 text-sm">
-              {Object.entries(AUDIENCE_GRADE_POINTS)
-                .filter(([, pts]) => pts > 0)
-                .map(([grade, pts]) => (
-                  <div key={grade} className="flex justify-between">
-                    <span className="text-gray-400">{grade}</span>
-                    <span className="font-mono text-gray-300">{pts} pts</span>
-                  </div>
-                ))}
-            </div>
-          </div>
-
-          {/* Box Office */}
-          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-400/15 text-green-400 text-sm font-bold">$</span> Box Office
-            </h3>
-            <p className="text-sm text-gray-400">
-              A hit musical grossing $1M/week earns about 3 pts per week.
-              Points accumulate every week through Tony Awards night.
-            </p>
-            <p className="text-xs text-gray-600 mt-2">
-              Broadway shows only. Off-Broadway shows don&apos;t report grosses.
-            </p>
-          </div>
-
-          {/* Awards */}
+          {/* Awards — highest ceiling, listed first */}
           <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-brand/15 text-brand text-sm">🏆</span> Awards
@@ -198,6 +155,61 @@ export default function FantasyLandingPage() {
             <p className="text-xs text-gray-600 mt-2">
               Scoring events across 6 weeks from mid-May through Tony night in June.
             </p>
+          </div>
+
+          {/* Box Office */}
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-green-400/15 text-green-400 text-sm font-bold">$</span> Box Office
+            </h3>
+            <p className="text-sm text-gray-400">
+              A hit musical grossing $1M/week earns about 3 pts per week.
+              Points accumulate every week through Tony Awards night.
+            </p>
+            <p className="text-xs text-gray-600 mt-2">
+              Broadway shows only. Off-Broadway shows don&apos;t report grosses.
+            </p>
+          </div>
+
+          {/* CriticScore */}
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-yellow-400/15 text-yellow-400 text-sm">★</span> CriticScore
+            </h3>
+            <div className="space-y-1.5 text-sm">
+              {Object.entries(CRITIC_SCORE_POINTS).map(([tier, pts]) => (
+                <div key={tier} className="flex justify-between items-baseline gap-2">
+                  <span className="text-gray-400">
+                    {tier}
+                    {CRITIC_TIER_RANGES[tier] && (
+                      <span className="text-gray-600 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
+                    )}
+                  </span>
+                  <span className="font-mono text-gray-300 whitespace-nowrap">{pts} pts</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-gray-600 mt-3">
+              Based on Broadway Scorecard&apos;s critic composite score.
+              Shows that opened before the season start don&apos;t earn critic points.
+            </p>
+          </div>
+
+          {/* AudienceGrade */}
+          <div className="bg-surface-raised/50 rounded-xl p-5 border border-white/5">
+            <h3 className="font-semibold mb-3 flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-400/15 text-emerald-400 text-sm">♥</span> Audience Grade
+            </h3>
+            <div className="space-y-1.5 text-sm">
+              {Object.entries(AUDIENCE_GRADE_POINTS)
+                .filter(([, pts]) => pts > 0)
+                .map(([grade, pts]) => (
+                  <div key={grade} className="flex justify-between">
+                    <span className="text-gray-400">{grade}</span>
+                    <span className="font-mono text-gray-300">{pts} pts</span>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       </section>
