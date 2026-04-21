@@ -39,12 +39,15 @@ const BROADWAY_KEY_T2 = ['nypost', 'theatermania', 'deadline', 'thewrap', 'ew', 
 // FA (2026-04-19) landed 14/17 reviews because the BWW extractor silently
 // dropped 3 outlets. The outlet-gap check didn't flag it because the missing
 // outlets weren't all in core T1. A total-count floor catches this class.
-// Window: 24-72h post-open (lets aggregators settle; flags before day-3 cron).
+// Window: 36-72h post-open. 36h lower bound chosen because late-drop T1s
+// (WSJ, Observer) routinely publish 24-36h after opening; a 24h floor
+// would false-alarm while the opening-night-poller is still ingesting.
+// OB shows are exempt (floor constants are null for that market).
 const BROADWAY_FLOOR_REVIEWS = 10;   // critic files captured
 const BROADWAY_FLOOR_SCORED = 5;     // scored reviews
 const WE_FLOOR_REVIEWS = 6;
 const WE_FLOOR_SCORED = 3;
-const FLOOR_WINDOW_MIN_HOURS = 24;
+const FLOOR_WINDOW_MIN_HOURS = 36;
 const FLOOR_WINDOW_MAX_HOURS = 72;
 
 function parseArgs() {
@@ -143,13 +146,20 @@ async function main() {
     const hasSomeGaps = missingCore.length >= 1;
 
     // Floor check — silent-failure detection (catches broken extractors when
-    // no specific outlet gap stands out). Only runs in 24-72h post-open window.
+    // no specific outlet gap stands out). Only runs in 36-72h post-open window.
+    // `-04:00` is EDT (summer Broadway openings). hoursSinceOpen reported in
+    // Discord may be off ±1h in winter; the 36h floor gives enough slack.
     const openingMs = show.openingDate ? Date.parse(show.openingDate + 'T23:00:00-04:00') : null;
-    const hoursSinceOpen = openingMs ? (now - openingMs) / (1000 * 60 * 60) : null;
+    if (show.openingDate && !Number.isFinite(openingMs)) {
+      console.warn(`  ⚠ Unparseable openingDate for ${showId}: "${show.openingDate}" — floor check skipped`);
+    }
+    const hoursSinceOpen = Number.isFinite(openingMs) ? (now - openingMs) / (1000 * 60 * 60) : null;
     const inFloorWindow = hoursSinceOpen != null
       && hoursSinceOpen >= FLOOR_WINDOW_MIN_HOURS
       && hoursSinceOpen <= FLOOR_WINDOW_MAX_HOURS;
-    const isBroadway = !isLondonMarket(category) && category !== 'off-broadway';
+    // Positive-match by market so regional/off-off/typos don't silently
+    // inherit the Broadway floor (10 reviews) and false-breach.
+    const isBroadway = category === 'broadway';
     const floorReviews = isBroadway ? BROADWAY_FLOOR_REVIEWS : (isLondonMarket(category) ? WE_FLOOR_REVIEWS : null);
     const floorScored = isBroadway ? BROADWAY_FLOOR_SCORED : (isLondonMarket(category) ? WE_FLOOR_SCORED : null);
     const belowReviewFloor = floorReviews != null && showReviews.length < floorReviews;
