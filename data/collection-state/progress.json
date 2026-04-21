@@ -301,7 +301,10 @@
     "the-peewee-herman-show-2010/variety--david-rooney.json",
     "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json"
+    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+    "schmigadoon-2026/wsj--charles-isherwood.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -330,14 +333,16 @@
     "brightdata": [
       "schmigadoon-2026/thewrap--robert-hofler.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+    ],
     "archive": [
       "schmigadoon-2026/wsj--john-anderson.json",
       "oliver-west-end-2024/sunday-telegraph--dominic-cavendish.json"
     ]
   },
   "startTime": "2026-04-21T03:09:19.045Z",
-  "lastProcessed": "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
   "log": [
     {
       "t": "2026-04-21T03:13:14.013Z",
@@ -382,6 +387,28 @@
       "t": "2026-04-21T03:18:46.877Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-21T04:15:58.267Z",
+      "event": "bb-session",
+      "session": "c8e4702e",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-21T04:15:59.435Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T04:16:37.689Z",
+      "event": "bb-session",
+      "session": "b1d5729a",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T04:16:38.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
