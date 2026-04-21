@@ -6,14 +6,12 @@
     "scoringEnd": "2026-06-15",
     "budget": 100,
     "teamSize": 8,
-    "generatedAt": "2026-04-19T19:01:12.570Z",
+    "generatedAt": "2026-04-21T01:51:35.684Z",
     "pricing": {
+      "source": "frozen",
+      "frozenAt": "2026-04-21T00:22:26.919Z",
       "method": "ev",
-      "k": 0.19255830237488572,
-      "targetTopPrice": 33,
-      "evSource": "goldderby",
-      "evLastUpdated": "2026-04-21T00:22:23.854Z",
-      "repricedAt": "2026-04-21T00:22:26.919Z"
+      "k": 0.19255830237488572
     }
   },
   "shows": {
@@ -138,8 +136,8 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-19",
-      "criticScore": null,
-      "audienceGrade": "B+",
+      "criticScore": 76.38,
+      "audienceGrade": "A-",
       "slug": "fallen-angels",
       "image": "/images/shows/fallen-angels-2026/thumbnail.webp"
     },
@@ -156,7 +154,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-16",
-      "criticScore": 74.43,
+      "criticScore": 73.3,
       "audienceGrade": "A-",
       "slug": "proof",
       "image": "/images/shows/proof-2026/thumbnail.webp"
@@ -192,7 +190,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-12",
-      "criticScore": 76.42,
+      "criticScore": 76.96,
       "audienceGrade": "A",
       "slug": "titanique",
       "image": "/images/shows/titanique-2026/thumbnail.webp"
@@ -228,7 +226,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-07",
-      "criticScore": 84.25,
+      "criticScore": 84.75,
       "audienceGrade": "A",
       "slug": "cats-the-jellicle-ball",
       "image": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp"
@@ -246,7 +244,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-06",
-      "criticScore": 82.97,
+      "criticScore": 80.84,
       "audienceGrade": "A-",
       "slug": "becky-shaw",
       "image": "/images/shows/becky-shaw-2026/thumbnail.webp"
@@ -282,7 +280,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-03-23",
-      "criticScore": 76.78,
+      "criticScore": 76.95,
       "audienceGrade": "B+",
       "slug": "giant",
       "image": "/images/shows/giant-2026/thumbnail.webp"
@@ -300,7 +298,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-03-12",
-      "criticScore": 81.48,
+      "criticScore": 81.56,
       "audienceGrade": "A+",
       "slug": "every-brilliant-thing",
       "image": "/images/shows/every-brilliant-thing-2026/thumbnail.webp"
@@ -390,7 +388,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2025-11-16",
-      "criticScore": 66.24,
+      "criticScore": 65.23,
       "audienceGrade": "B+",
       "slug": "chess",
       "image": "/images/shows/chess-2025/thumbnail.webp"
@@ -426,7 +424,7 @@
       "category": "broadway",
       "status": "closed",
       "openingDate": "2025-11-09",
-      "criticScore": 51.7,
+      "criticScore": 51.5,
       "audienceGrade": "F",
       "slug": "queen-of-versailles",
       "image": "/images/shows/queen-versailles-2025/thumbnail.webp"
@@ -480,7 +478,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2025-10-16",
-      "criticScore": 83.87,
+      "criticScore": 84.26,
       "audienceGrade": "A+",
       "slug": "ragtime",
       "image": "/images/shows/ragtime-2025/thumbnail.webp"
@@ -516,7 +514,7 @@
       "category": "broadway",
       "status": "closed",
       "openingDate": "2025-09-29",
-      "criticScore": 76.26,
+      "criticScore": 75.18,
       "audienceGrade": "B+",
       "slug": "punch",
       "image": "/images/shows/punch-2025/thumbnail.jpg"
@@ -593,24 +591,6 @@
       "slug": "call-me-izzy",
       "image": "/images/shows/call-me-izzy-2025/thumbnail.webp"
     },
-    "proof-express-test-2026": {
-      "price": 5,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": true,
-        "tonys": true
-      },
-      "title": "Proof",
-      "type": "play",
-      "category": "broadway",
-      "status": "open",
-      "openingDate": "2026-04-16",
-      "criticScore": null,
-      "audienceGrade": null,
-      "slug": "proof-express-test",
-      "image": "/images/shows/proof-2026/thumbnail.webp"
-    },
     "innocence-off-broadway-2026": {
       "price": 6,
       "eligible": {
@@ -647,6 +627,24 @@
       "slug": "the-25th-annual-putnam-county-spelling-bee-off-broadway",
       "image": "/images/shows/the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/thumbnail.webp"
     },
+    "what-happened-was-off-broadway-2026": {
+      "price": 14,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "What Happened Was",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "open",
+      "openingDate": "2026-04-14",
+      "criticScore": 90,
+      "audienceGrade": null,
+      "slug": "what-happened-was-off-broadway",
+      "image": "/images/shows/what-happened-was-off-broadway-2026/thumbnail.webp"
+    },
     "hamlet-off-broadway-2026": {
       "price": 7,
       "eligible": {
@@ -658,7 +656,7 @@
       "title": "Hamlet",
       "type": "play",
       "category": "off-broadway",
-      "status": "previews",
+      "status": "open",
       "openingDate": "2026-04-19",
       "criticScore": 84,
       "audienceGrade": "B",
@@ -768,28 +766,10 @@
       "category": "off-broadway",
       "status": "open",
       "openingDate": "2025-06-22",
-      "criticScore": 78.4,
+      "criticScore": 77.6,
       "audienceGrade": "A+",
       "slug": "heathers-the-musical-off-broadway",
       "image": "/images/shows/heathers-the-musical-off-broadway-2025/thumbnail.webp"
-    },
-    "my-joy-is-heavy-off-broadway-2025": {
-      "price": 6,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "My Joy Is Heavy",
-      "type": "musical",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2026-03-17",
-      "criticScore": 77.12,
-      "audienceGrade": "B+",
-      "slug": "my-joy-is-heavy-off-broadway",
-      "image": "/images/shows/my-joy-is-heavy-off-broadway-2025/thumbnail.webp"
     },
     "tristan-und-isolde-off-broadway-2026": {
       "price": 6,
