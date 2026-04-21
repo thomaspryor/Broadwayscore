@@ -32,6 +32,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_serp:
+        description: 'Force SERP to run regardless of poll-mode cadence gate (manual overrides outside aggressive/morning windows)'
+        required: false
+        type: boolean
+        default: false
       market:
         description: 'Filter to market (empty = all markets)'
         required: false
@@ -175,6 +180,10 @@ jobs:
           if [ "${{ inputs.skip_serp }}" = "true" ]; then
             SKIP_SERP_FLAG="--skip-serp"
           fi
+          FORCE_SERP_FLAG=""
+          if [ "${{ inputs.force_serp }}" = "true" ]; then
+            FORCE_SERP_FLAG="--force-serp"
+          fi
 
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             echo "════════════════════════════════════════"
@@ -188,7 +197,7 @@ jobs:
             if [ -n "${{ inputs.tb_review_url }}" ]; then
               TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
             fi
-            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
 
             # Check if files were created (review-texts is a separate git checkout)
             CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
