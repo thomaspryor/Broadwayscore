@@ -126,6 +126,7 @@ const TONY_SEASON_END = '2026-04-27';
 
 // ── Identify eligible shows ─────────────────────────────────────────
 function isEligible(show) {
+  if (show._devOnly) return false;
   const isBW = !show.category || show.category === 'broadway';
   const isOB = show.category === 'off-broadway';
   if (!isBW && !isOB) return false;
