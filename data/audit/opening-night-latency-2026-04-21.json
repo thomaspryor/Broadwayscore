@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-21T13:58:52.204Z",
+  "generatedAt": "2026-04-21T14:54:44.716Z",
   "date": "2026-04-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 11829,
+  "entryCount": 11830,
   "shows": [
     {
       "showId": "proof-2026",
@@ -3216,6 +3216,21 @@
     },
     {
       "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-listening-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
