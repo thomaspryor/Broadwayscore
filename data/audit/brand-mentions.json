@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-21T12:43:40.010Z",
+  "lastRunAt": "2026-04-21T14:55:24.424Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -32,7 +32,8 @@
     "google:4a9736f7bcde67ed": true,
     "google:8a4d2c98e487621f": true,
     "news:e48258797b7b0269": true,
-    "news:c4924e53e4ada2dc": true
+    "news:c4924e53e4ada2dc": true,
+    "google:b3603ef3b47a2cfa": true
   },
   "mentions": [
     {
@@ -657,10 +658,30 @@
       "draftReason": "This is a news aggregation snippet with no human author to reply to and no conversational opening.",
       "draftResponse": null,
       "dispatched": "2026-04-20T16:43:09.162Z"
+    },
+    {
+      "id": "google:b3603ef3b47a2cfa",
+      "source": "google",
+      "url": "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873",
+      "title": "Broadwayscore",
+      "excerpt": "Every show. Every review. One score. broadwayscorecard.com. Broadway Scorecard aggregates critic reviews from 420+ outlets and 870+ critics to generate a ...",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-21T14:54:33.808Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-21T14:55:24.424Z"
     }
   ],
   "stats": {
-    "totalSeen": 32,
+    "totalSeen": 33,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -695,6 +716,7 @@
     "https://forum.broadwayworld.com/thread/THE-FEAR-OF-13-Reviews": true,
     "https://secure.instagram.com/bwayscorecard?hl=bg": true,
     "https://forum.broadwayworld.com/thread/PROOF-2026-Reviews/2": true,
-    "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true
+    "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true,
+    "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true
   }
 }
