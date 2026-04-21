@@ -92,4 +92,77 @@ function isUrlYearOutsideWindow(url, openingYear, closingYear) {
   return urlYear < openingYear - 3 || urlYear > upper;
 }
 
-module.exports = { isNotBroadway, isUrlYearOutsideWindow };
+/**
+ * URL path markers indicating non-Broadway productions that share a show title.
+ * These are safe hard-rejects at SERP discovery time — if ANY of these strings
+ * appear in the URL (case-insensitive), the result is almost certainly a different
+ * production (tryout, TV, film, world premiere).
+ *
+ * Confirmed incidents:
+ *  - 2026-04-20 Schmigadoon opening: SERP returned Kennedy Center world-premiere
+ *    roundup (2025) instead of Broadway; 9 T1/T2 URLs scraped for Kennedy Center
+ *    tryout, 2021 Apple TV+ series, and an Off-Broadway Transfer.
+ *
+ * Used by:
+ *  - scripts/lib/url-discovery.js (general SERP prefilter, all outlets)
+ *  - scripts/lib/bww-roundup-validator.js (BWW RR slug validation)
+ *  - scripts/collect-review-texts.js (via url-discovery)
+ *
+ * Do NOT add generic words like "review" — this list is strictly for URL
+ * patterns that identify a DIFFERENT production of the same title.
+ */
+const TRYOUT_URL_MARKERS = [
+  'world-premiere',
+  'world_premiere',
+  'kennedy-center',
+  'kennedycenter',
+  'pre-broadway',
+  'prebroadway',
+  'out-of-town',
+  'tryout',
+  'try-out',
+  'tv-review',
+  'tv_review',
+  'television-review',
+  'film-review',
+  'film_review',
+  'movie-review',
+  'streaming-review',
+  'netflix-review',
+  'apple-tv',
+  'appletv',
+  'disney-plus',
+  'la-jolla',
+  'old-globe',
+  'old_globe',
+  'ahmanson',
+  'geffen-playhouse',
+  'national-tour',
+  'tour-review',
+  'on-tour',
+];
+
+/**
+ * Returns true if the URL contains any tryout/TV/film/pre-Broadway marker.
+ * Used as a SERP prefilter and BWW slug validator.
+ *
+ * @param {string} url - Full URL or URL slug
+ * @returns {{ rejected: boolean, marker?: string }}
+ */
+function hasTryoutUrlMarker(url) {
+  if (!url || typeof url !== 'string') return { rejected: false };
+  const lower = url.toLowerCase();
+  for (const marker of TRYOUT_URL_MARKERS) {
+    if (lower.includes(marker)) {
+      return { rejected: true, marker };
+    }
+  }
+  return { rejected: false };
+}
+
+module.exports = {
+  isNotBroadway,
+  isUrlYearOutsideWindow,
+  TRYOUT_URL_MARKERS,
+  hasTryoutUrlMarker,
+};

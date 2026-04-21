@@ -598,10 +598,12 @@ jobs:
             tests/unit/biz-data-functions.test.mjs \
             tests/unit/bww-roundup-extractor.test.mjs \
             tests/unit/commercial-changes.test.mjs \
+            tests/unit/content-verifier.test.mjs \
             tests/unit/cote-notices-registry.test.mjs \
             tests/unit/deep-research-guardian.test.mjs \
             tests/unit/outlet-id-mapper.test.mjs \
             tests/unit/parse-grosses-analysis.test.mjs \
+            tests/unit/review-write-guard.test.mjs \
             tests/unit/sample.test.mjs \
             tests/unit/sanity.test.mjs \
             tests/unit/score-conversion-rules.test.mjs \
@@ -609,6 +611,7 @@ jobs:
             tests/unit/source-validator.test.mjs \
             tests/unit/tb-direct-url.test.mjs \
             tests/unit/trade-press-scraper.test.mjs \
+            tests/unit/tryout-url-filter.test.mjs \
             tests/unit/url-date-wrongproduction.test.mjs \
             tests/unit/data-quality-pipeline.test.js \
             tests/unit/integrity-report.test.js \

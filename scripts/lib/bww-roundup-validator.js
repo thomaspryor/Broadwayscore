@@ -6,6 +6,8 @@
  * and scrape-bww-reviews.js.
  */
 
+const { TRYOUT_URL_MARKERS } = require('./content-filters');
+
 /**
  * Check if "Review Roundup" appears in the <title> tag (not just anywhere on the page).
  * The BWW homepage contains "Review Roundup" in teaser links but NOT in its title.
@@ -48,18 +50,9 @@ function isBWWRoundupContent(html) {
 // Stop words stripped before title matching — must be lowercase
 const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', 'this', 'its', 'a', 'an', 'of', 'in', 'on', 'at', 'by']);
 
-// Tryout / pre-Broadway / regional markers — BWW publishes Review Roundups for these
-// non-Broadway productions with identical title slugs. SERP returns them ahead of the
-// actual Broadway roundup on opening night when Google hasn't indexed the Broadway URL yet.
-// Confirmed incident: 2026-04-20 Schmigadoon opening night, SERP returned Kennedy Center
-// world-premiere roundup (2025) instead of the Broadway one.
-const TRYOUT_URL_MARKERS = [
-  'world-premiere',
-  'kennedy-center',
-  'pre-broadway',
-  'out-of-town',
-  'tryout',
-];
+// TRYOUT_URL_MARKERS lives in content-filters.js as a single source of truth.
+// Re-imported above so the BWW slug validator stays aligned with the general
+// SERP prefilter applied in url-discovery.js (Schmigadoon 2026 Bug #8).
 
 /**
  * Normalize a show title into matchable words: lowercase, strip punctuation, remove stop words.
