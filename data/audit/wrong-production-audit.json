@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-21T02:34:27.099Z",
+  "timestamp": "2026-04-21T19:52:02.905Z",
   "stats": {
-    "totalReviews": 35632,
-    "alreadyFlagged": 15885,
+    "totalReviews": 35681,
+    "alreadyFlagged": 15924,
     "dateGuardCatches": 90,
     "directorMismatch": 822,
-    "tvFilmSignals": 3169,
-    "londonSignals": 1023,
+    "tvFilmSignals": 3182,
+    "londonSignals": 1028,
     "offBroadwaySignals": 889,
     "yearMismatch": 67,
-    "noPublishDate": 3777
+    "noPublishDate": 3748
   },
   "findings": [
     {
@@ -8523,12 +8523,26 @@
       "file": "variety--frank-rizzo.json",
       "score": 90,
       "publishDate": "2026-04-08",
-      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "variety--rebecca-rubin.json",
+      "score": null,
+      "publishDate": "2026-04-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -12252,9 +12266,8 @@
     },
     {
       "showId": "dracula-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 61,
-      "publishDate": "2026-02-17",
+      "file": "timeout--paul-raven.json",
+      "publishDate": "2026-02-18",
       "url": "https://www.timeout.com/london/news/review-dracula-starring-cynthia-erivo-at-the-noel-coward-theatre-021726",
       "findings": [
         {
@@ -20118,6 +20131,19 @@
     },
     {
       "showId": "hercules-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "publishDate": "2025-06-28",
+      "url": "https://www.thetimes.com/article/8ea532e7-98a0-4100-b982-3e8323151aac",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "hercules-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 94,
       "publishDate": "2025-06-26",
@@ -22171,6 +22197,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "publishDate": "2026-04-07",
+      "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -33620,6 +33659,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "standard--julianna-barnaby.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -48378,7 +48435,7 @@
       "file": "daily-mail--michael-coveney.json",
       "score": 86,
       "publishDate": "1999-10-22",
-      "url": null,
+      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -48405,20 +48462,6 @@
       "showId": "the-lion-king-west-end-2021",
       "file": "financialtimes--sarah-hemming.json",
       "score": 78,
-      "publishDate": "1999-10-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "independent--paul-taylor.json",
-      "score": 76,
       "publishDate": "1999-10-21",
       "url": null,
       "findings": [
@@ -48510,20 +48553,6 @@
       "score": 88,
       "publishDate": "1999-10-20",
       "url": "https://www.standard.co.uk/go/london/theatre/lion-king-is-a-roaring-success-7435263.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-west-end-2021",
-      "file": "telegraph--charles-spencer.json",
-      "score": 88,
-      "publishDate": "1999-10-20",
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -50626,7 +50655,7 @@
       "file": "london-theatre--unknown.json",
       "score": 88,
       "publishDate": "2020-12-14",
-      "url": null,
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -58704,6 +58733,48 @@
       ]
     },
     {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 60,
+      "publishDate": "2026-04-21",
+      "url": "https://www.theguardian.com/stage/2026/apr/21/between-the-river-and-the-sea-review-royal-court-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 74,
+      "publishDate": "2026-04-20",
+      "url": "https://www.timeout.com/london/theatre/between-the-river-and-the-sea-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "west-end-best-friend--alexandra-tullah.json",
+      "score": null,
+      "publishDate": "2026-04-21",
+      "url": "https://www.westendbestfriend.co.uk/news/review-between-the-river-and-the-sea-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "big-fish-2013",
       "file": "usatoday--elysa-gardner.json",
       "score": 45,
@@ -59685,6 +59756,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"perelman\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "washpost--thomas-floyd.json",
+      "score": 78,
+      "publishDate": "2026-04-15",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -67932,7 +68017,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 60,
       "publishDate": "2022-01-21",
-      "url": null,
+      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68875,8 +68960,7 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 45,
+      "file": "timeout--andrzej-lukowski.json",
       "publishDate": "2026-04-15",
       "url": "https://www.timeout.com/london/theatre/one-flew-over-the-cuckoos-nest-8-review",
       "findings": [
@@ -70119,6 +70203,160 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "score": 76,
+      "publishDate": "2026-04-21",
+      "url": "https://www.chicagotribune.com/2026/04/20/review-schmigadoon-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "deadline--greg-evans.json",
+      "score": 77,
+      "publishDate": "2026-04-20T19:00:00-04:00",
+      "url": "https://deadline.com/2026/04/schmigadoon-broadway-review-1236864610/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "ew--patrick-gomez.json",
+      "score": 90,
+      "publishDate": "April 20, 2026",
+      "url": "https://ew.com/schmigadoon-review-broadway-adaptation-11954517",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 67,
+      "publishDate": "2026-04-21",
+      "url": "https://www.nysun.com/article/schmigadoon-gleefully-sends-up-broadway-classics-but-soon-runs-out-of-gas",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "nydailynews--chris-jones.json",
+      "score": 76,
+      "publishDate": "2026-04-21",
+      "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": 89,
+      "publishDate": "2026-04-21",
+      "url": "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "people--dave-quinn.json",
+      "score": 69,
+      "publishDate": "2026-04-20",
+      "url": "https://people.com/schmigadoon-broadway-review-11953679",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "theatrely--kobi-kassal.json",
+      "score": 91,
+      "publishDate": "2026-04-20T23:00:00-04:00",
+      "url": "https://www.theatrely.com/post/schmigadoon-is-pure-broadway-joy-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "timeout--adam-feldman.json",
+      "score": 79,
+      "publishDate": "April 20, 2026",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "variety--naveen-kumar.json",
+      "score": 85,
+      "publishDate": "2026-04-21",
+      "url": "https://variety.com/2026/legit/reviews/schmigadoon-broadway-review-apple-tv-adaptation-delightful-love-letter-to-musical-theater-1236726089/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },

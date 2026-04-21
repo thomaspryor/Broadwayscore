@@ -1,50 +1,43 @@
 {
   "meta": {
-    "generatedAt": "2026-04-21T02:21:50.788Z",
+    "generatedAt": "2026-04-21T19:39:49.682Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36317,
-      "inReviewsJson": 16623,
-      "skippedExcluded": 70,
-      "withFullText": 17,
-      "excerptOnly": 1590,
-      "llmClassified": 2,
+      "totalFiles": 36399,
+      "inReviewsJson": 16629,
+      "skippedExcluded": 66,
+      "withFullText": 51,
+      "excerptOnly": 1578,
+      "llmClassified": 3,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 2,
-      "budgetUsed": 0.0017000000000000006,
-      "llmCalls": 17,
-      "rateLimitHits": 45,
-      "errors": 15,
-      "skippedAlreadyClassified": 14946
+      "uncertainCases": 1,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
+      "rateLimitHits": 146,
+      "errors": 47,
+      "skippedAlreadyClassified": 14934
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
     {
-      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
-      "showId": "pippin-2013",
+      "file": "fences-2010/talkinbroadway--matthew-murray.json",
+      "showId": "fences-2010",
       "outlet": "Talkin' Broadway",
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
-      "currentScore": 80
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
-      "currentScore": 64
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review of a specific production. It seems more like advertising or search terms.",
+      "currentScore": 82
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "schmigadoon-2026/nytimes--elisabeth-vincentelli.json",
+    "schmigadoon-2026/wsj--charles-isherwood.json"
+  ],
   "perShowSummary": []
 }
