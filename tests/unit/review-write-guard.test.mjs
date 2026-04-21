@@ -8,7 +8,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { safeWriteReview, checkForDataLoss, checkUrlCollision } = require('../../scripts/lib/review-write-guard');
+const { safeWriteReview, checkForDataLoss, checkUrlCollision, coerceAssignedScore } = require('../../scripts/lib/review-write-guard');
 
 let tmpDir;
 beforeEach(() => {
@@ -268,6 +268,118 @@ describe('force=true audit trail', () => {
 
     const forceWarnings = warnings.filter(w => w.includes('[review-write-guard] FORCE write'));
     assert.equal(forceWarnings.length, 0, `Expected no FORCE write warning for new file, got: ${JSON.stringify(forceWarnings)}`);
+  });
+});
+
+describe('coerceAssignedScore (Schmigadoon 2026 Bug #6 — schema drift block)', () => {
+  test('passes through null assignedScore unchanged', () => {
+    const data = { assignedScore: null };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, false);
+    assert.equal(data.assignedScore, null);
+  });
+
+  test('passes through finite number unchanged', () => {
+    const data = { assignedScore: 85 };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, false);
+    assert.equal(data.assignedScore, 85);
+  });
+
+  test('coerces "2/4 stars" string (NY Post Schmigadoon bug) via parseRating → 50', () => {
+    const data = { assignedScore: '2/4 stars' };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, true);
+    assert.equal(data.assignedScore, 50);
+    assert.equal(data._assignedScoreCoercedFrom, '2/4 stars');
+  });
+
+  test('coerces "3/5 stars" Guardian-style string → 60', () => {
+    const data = { assignedScore: '3/5 stars' };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, true);
+    assert.equal(data.assignedScore, 60);
+  });
+
+  test('coerces letter grade "B+" → 80', () => {
+    const data = { assignedScore: 'B+' };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, true);
+    assert.equal(data.assignedScore, 80);
+  });
+
+  test('prefers originalScoreNormalized over string parse', () => {
+    const data = {
+      assignedScore: '2/4 stars',
+      originalScoreNormalized: 52,
+    };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, true);
+    assert.equal(data.assignedScore, 52);
+    assert.equal(result.reason, 'from-originalScoreNormalized');
+  });
+
+  test('ignores out-of-range originalScoreNormalized', () => {
+    const data = {
+      assignedScore: '2/4 stars',
+      originalScoreNormalized: 999,
+    };
+    const result = coerceAssignedScore(data);
+    assert.equal(data.assignedScore, 50);
+    assert.equal(result.reason, 'parsed-as-star_4');
+  });
+
+  test('unparseable string → null + needsReview flag', () => {
+    const data = { assignedScore: 'garbage data' };
+    const result = coerceAssignedScore(data);
+    assert.equal(result.changed, true);
+    assert.equal(data.assignedScore, null);
+    assert.equal(data._assignedScoreCoercionFailed, true);
+    assert.equal(data.needsReview, true);
+  });
+
+  test('safeWriteReview blocks schema-drifted string assignedScore from hitting disk', () => {
+    const filePath = path.join(tmpDir, 'schema-drift.json');
+    const warnings = [];
+    const originalWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      safeWriteReview(filePath, {
+        showId: 'schmigadoon-2026',
+        outletId: 'nypost',
+        criticName: 'Johnny Oleksinski',
+        assignedScore: '2/4 stars',
+        scoreSource: 'html-star',
+      });
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 50);
+    assert.equal(written._assignedScoreCoercedFrom, '2/4 stars');
+    assert.ok(warnings.some(w => w.includes('assignedScore coerced')));
+  });
+
+  test('safeWriteReview coercion survives through preservation logic (existing string value)', () => {
+    const filePath = path.join(tmpDir, 'existing-string.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'test',
+      assignedScore: '2/4 stars',
+      originalScoreNormalized: 50,
+    }, null, 2));
+
+    const warnings = [];
+    const originalWarn = console.warn;
+    console.warn = (...args) => warnings.push(args.join(' '));
+    try {
+      safeWriteReview(filePath, { showId: 'test', outletId: 'nypost' });
+    } finally {
+      console.warn = originalWarn;
+    }
+
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 50);
   });
 });
 

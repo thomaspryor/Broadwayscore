@@ -14,7 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const scraper = require('./scraper');
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
-const { isUrlYearOutsideWindow } = require('./content-filters');
+const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview } = require('./review-guards');
 
@@ -61,6 +61,28 @@ const DOMAIN_REDIRECTS = {
 };
 
 let _showsJsonCache = null;
+
+// Per-show tryout/TV/film/world-premiere URL rejection counter.
+// Keyed by showId (or '__global__' when no showId available).
+// Exposed via getTryoutRejectionStats() for instrumentation / broadcast-time audit.
+const _tryoutRejections = new Map();
+function _recordTryoutRejection(showId, marker, url) {
+  const key = showId || '__global__';
+  if (!_tryoutRejections.has(key)) _tryoutRejections.set(key, []);
+  _tryoutRejections.get(key).push({ marker, url });
+}
+
+function getTryoutRejectionStats() {
+  const out = {};
+  for (const [showId, entries] of _tryoutRejections.entries()) {
+    out[showId] = { count: entries.length, entries };
+  }
+  return out;
+}
+
+function resetTryoutRejectionStats() {
+  _tryoutRejections.clear();
+}
 
 /**
  * Look up show title and year from shows.json
@@ -554,6 +576,21 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // TheaterMania /shows/ pages are listing pages, not reviews
     if (urlLower.includes('theatermania.com/shows/')) continue;
 
+    // Tryout / TV / film / world-premiere URL prefilter (Schmigadoon 2026 Bug #8).
+    // Rejects SERP results whose URL slug names a non-Broadway production of the
+    // same title — Kennedy Center / Apple TV / pre-Broadway / Old Globe / etc.
+    // Category gate: only apply to broadway/west-end/off-broadway shows; for
+    // historical/touring lookups we may legitimately want those results.
+    const isBroadwayLike = ['broadway', 'west-end', 'off-broadway', 'off-west-end'].includes(showInfo.category);
+    if (isBroadwayLike) {
+      const tryoutCheck = hasTryoutUrlMarker(url);
+      if (tryoutCheck.rejected) {
+        _recordTryoutRejection(review.showId, tryoutCheck.marker, url);
+        log(`    [SKIP] Tryout/non-Broadway URL marker "${tryoutCheck.marker}": ${url.substring(0, 100)}`);
+        continue;
+      }
+    }
+
     // Skip URLs whose embedded year is outside the production window
     const openYear = showInfo.year ? parseInt(showInfo.year) : null;
     const closeYear = showInfo.closingDate ? new Date(showInfo.closingDate).getFullYear() : null;
@@ -728,4 +765,6 @@ module.exports = {
   calculateDateWindow,
   buildDateTbs,
   validateUrlDomain,
+  getTryoutRejectionStats,
+  resetTryoutRejectionStats,
 };

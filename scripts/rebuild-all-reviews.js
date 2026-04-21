@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -47,6 +47,7 @@ const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
+const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
@@ -736,6 +737,28 @@ function getBestScore(data) {
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');
 
+// Rebuild-pause guard (Schmigadoon 2026 Bug #12).
+// If a manual opening-night edit has set a tombstone, exit cleanly BEFORE any
+// reads or writes. This prevents a concurrent rebuild from overwriting a
+// hand-edited reviews.json during the 10am broadcast window.
+// Bypass with --ignore-pause if the tombstone is stale and you know what
+// you're doing. Tombstone format + write-side CLI: scripts/pause-rebuild.js.
+if (!process.argv.includes('--ignore-pause') && isRebuildPaused()) {
+  const entry = readRebuildPause();
+  console.log('⏸  REBUILD PAUSED by opening-night manual-edit tombstone');
+  console.log(`   File:      ${REBUILD_PAUSE_PATH}`);
+  console.log(`   Reason:    ${entry.reason || '(none given)'}`);
+  console.log(`   Paused by: ${entry.pausedBy || '(unknown)'}`);
+  console.log(`   Paused at: ${entry.pausedAt || '(unknown)'}`);
+  console.log(`   Until:     ${entry.until.toISOString()}`);
+  console.log('');
+  console.log('   Clear:   node scripts/pause-rebuild.js --clear');
+  console.log('   Bypass:  node scripts/rebuild-all-reviews.js --ignore-pause');
+  console.log('');
+  console.log('Exiting cleanly (exit 0) so CI does not alert — pause is intentional.');
+  process.exit(0);
+}
+
 // Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
 const showDateMap = {};
@@ -1209,7 +1232,14 @@ const crossShowFingerprints = new Map();
       try {
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         const cv = d.contentVerification;
-        if (!cv || (cv.confidence !== 'high' && cv.confidence !== 'medium')) continue;
+        if (!cv) continue;
+        // Schmigadoon 2026-04-21 bypass: CV rows with confidence='low' AND explicit
+        // "completely different show" markers are treated as eligible for promotion.
+        // The temporal override downgraded them, but the CV.issues evidence is definitive.
+        const cvLowButStrong = cv.confidence === 'low'
+          && cv.wrongProduction === true
+          && hasStrongDifferentShowSignal(cv.issues, cv.reasoning);
+        if (cv.confidence !== 'high' && cv.confidence !== 'medium' && !cvLowButStrong) continue;
         // Staleness check
         let stale = false;
         if (d.textFetchedAt && cv.verifiedAt) {
@@ -1232,8 +1262,12 @@ const crossShowFingerprints = new Map();
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
-          d.wrongProductionReason = d.wrongProductionReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+          const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
+          d.wrongProductionReason = d.wrongProductionReason || `${promotionPath}: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
+          if (cvLowButStrong) {
+            stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
+          }
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
@@ -1631,7 +1665,17 @@ showDirs.forEach(showId => {
       // (contentVerification may be set by a different pipeline than the one that creates the file)
       // IMPORTANT: Skip promotion if contentVerification is stale — i.e., the fullText was
       // fetched AFTER verification ran. The verification was done on old/bad content.
-      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium')) {
+      //
+      // Schmigadoon 2026-04-21 bypass: CV rows with confidence='low' AND explicit
+      // "completely different show" markers in issues/reasoning (e.g., EBT-as-Schmigadoon)
+      // are also promoted. The temporal override downgraded them to 'low' but the
+      // evidence is definitive, not a subtle LLM FP. hasStrongDifferentShowSignal
+      // identifies those rows.
+      const cvLowButStrong = data.contentVerification
+        && data.contentVerification.confidence === 'low'
+        && data.contentVerification.wrongProduction === true
+        && hasStrongDifferentShowSignal(data.contentVerification.issues, data.contentVerification.reasoning);
+      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium' || cvLowButStrong)) {
         const cv = data.contentVerification;
 
         // Staleness check: if text was fetched after verification, skip promotion
@@ -1668,15 +1712,22 @@ showDirs.forEach(showId => {
           // Only promote wrongProduction if:
           // 1. Not already flagged, no override/manual clear
           // 2. LLM confidence is high or medium (skip low — likely temporal proximity override)
+          //    EXCEPTION: low confidence + strong "different show" markers in issues/reasoning
+          //    still promote — that's definitive evidence, not a subtle FP near opening.
           const wpConfidence = cv.confidence || 'medium';
           const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
+          const promotionEligibleConfidence = isHighMediumConfidence || cvLowButStrong;
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
-              && isHighMediumConfidence && !data.allowEarlyDate && !data.allowCrossMarket) {
+              && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
-            data.wrongProductionReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+            const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
+            data.wrongProductionReason = `${promotionPath}: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
+            if (cvLowButStrong) {
+              stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
+            }
           }
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)

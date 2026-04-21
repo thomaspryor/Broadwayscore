@@ -369,6 +369,13 @@ Analyze the content and respond with ONLY valid JSON (no markdown fences):
 ${wrongProdList}
    A review of the ${mc.label} production that merely *mentions* other productions is NOT a wrong production — it must be *reviewing* a non-${mc.label} staging.
 
+   **"Reviews OF" vs "mentions OF" — the critical distinction (Schmigadoon 2026 FP class):**
+   Before flagging wrongProduction=true, ask yourself: is this critic evaluating the ${mc.label} run that just opened, or is the critic evaluating a different run?
+     - **Evaluates the ${mc.label} run** (NOT wrongProduction, even if other productions are named): critic attended the ${mc.label} performance, the opinion-bearing sentences describe the ${mc.label} cast/staging, phrases like "the show at [${mc.label} theatre]", "this ${mc.label} outing", "on Broadway/West End now", "in its new ${mc.label} incarnation".
+     - **Evaluates a different run** (IS wrongProduction): the opinion-bearing sentences describe a Kennedy Center / Almeida / La Jolla / TV / film / prior-revival cast and venue — the review was WRITTEN about that run and merely refiled on a ${mc.label} show page.
+   Background paragraphs that contextualize ("this is a transfer from the Kennedy Center pre-Broadway tryout"), historical asides ("the show was famously a 2021 Apple TV+ series"), or comparative references ("like NBC's Smash…") are NOT evidence of wrongProduction. Do not flag on mention alone.
+   **Confidence calibration for this flag:** Only set wrongProduction=true with confidence="high" when the review's opinion-bearing content evaluates a non-${mc.label} production. If the evidence is only a passing mention, contextual aside, or comparative reference, set wrongProduction=false. If you're uncertain whether the review is OF the ${mc.label} run or OF a different run, set confidence="low" — the rebuild gate requires confidence>=medium for promotion.
+
    **YEAR / PRODUCTION MATCHING (most common failure mode):** The showTitle may contain a year suffix (e.g. "Cats 1982", "A Christmas Carol 2001", "Art 1998"). Many shows have multiple revivals — Cats had a 1982 original and a 2016 Broadway revival at different venues. DO NOT assume the review matches the showTitle year just because the show name matches. Cross-check:
    - What year/run does the review actually describe? Look for opening-year mentions, cast names, venue names, and the review's publishDate.
    - If the showTitle says "Cats 1982" but the review describes a production at Neil Simon Theatre (the 2016 revival was at Neil Simon; the 1982 original was at Winter Garden), that is wrongProduction=true.
@@ -417,7 +424,13 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       // Call site keeps logging and wpReasoning annotation so CI output remains informative.
       let filmTvFlag = parsed.isFilmTv || false;
       let filmTvConfidence = parsed.confidence || 'medium';
-      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate);
+      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
+        issues: parsed.issues,
+        reasoning: parsed.reasoning,
+      });
+      if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
+        console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
+      }
       if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
         const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
         console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);

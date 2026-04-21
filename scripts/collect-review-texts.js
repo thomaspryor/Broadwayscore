@@ -90,11 +90,12 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
 // Do NOT check raw HTML (10% FP from NYT page chrome). URL match only.
@@ -4240,6 +4241,43 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
+  // Schmigadoon 2026 postmortem Bug #5: anticipatory pre-opening-night posts.
+  // For preview-heavy outlets (frontmezzjunkies, broadwaydirect, ...) require
+  // publishDate >= openingDate. For all other outlets allow a 2-day grace (matches
+  // the post-broadcast audit check at publish-date-pre-opening.check.js).
+  // Rejected reviews have their fetched text stripped and are flagged so the
+  // rebuild excludes them. Clearable via humanReviewedEarlyPublish=true.
+  {
+    let showOpeningDate = null;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
+      showOpeningDate = showMeta?.openingDate || null;
+    } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
+
+    const anticip = isAnticipatoryPreviewPost(
+      data.publishDate,
+      showOpeningDate,
+      data.outletId || review.outletId,
+      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
+    );
+    if (anticip.rejected) {
+      console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
+      data.fullText = null;
+      data.wrongProduction = true;
+      data.wrongProductionReason = 'anticipatory_pre_opening_post';
+      data.wrongProductionDetail = anticip.reason;
+      data.wrongProductionDetectedAt = new Date().toISOString();
+      data.wrongProductionDetectedBy = 'ingest-anticipatory-gate';
+      data.anticipatoryGateOutletCategory = anticip.outletCategory;
+      data.anticipatoryGateDaysBeforeOpening = anticip.daysBeforeOpening;
+      // Preserve archivePath so curators can still audit the HTML.
+      // Skip score routing and content verification — the rest of this
+      // function still runs but the flagged fullText=null causes downstream
+      // rebuild to exclude this review.
+    }
+  }
+
   // Clear previous LLM scoring rejection so re-scraped reviews can be scored again.
   // The scoring pipeline skips files with rejectionReason set.
   if (data.rejectionReason) {
@@ -5962,6 +6000,40 @@ async function processReview(review) {
     // Archive HTML
     const archivePath = result.html ? archiveHtml(result.html, review, result.method) : null;
 
+    // Post-fetch URL→content sanity check (Schmigadoon 2026 Bug #2).
+    // BrightData/ScrapingBee occasionally returns a completely different article
+    // under our target URL (CDN misroute, stale cache, slug redirect). The LLM
+    // verifier catches SOME of these but is expensive and can be defeated by
+    // adversarial text. A cheap deterministic mention-count + HTML-<title>
+    // guard catches the class before we persist fullText or burn CV tokens.
+    {
+      const canonicalTitle = _showsJsonCache
+        ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
+        : showTitle;
+      const sanity = validateContentMentionsShow(
+        result.text,
+        result.html || null,
+        canonicalTitle,
+        review.showId
+      );
+      if (!sanity.valid) {
+        console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
+        if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
+        recordFailedFetch(review, 'url_content_mismatch', {
+          method: result.method,
+          mismatchReason: sanity.reason,
+          mentionCount: sanity.mentionCount,
+          threshold: sanity.threshold,
+          htmlTitle: sanity.htmlTitle,
+          htmlTitleMatch: sanity.htmlTitleMatch,
+          textLength: result.text.length,
+          archivePath,
+        });
+        stats.totalFailed++;
+        return { success: false, error: 'url_content_mismatch', reason: sanity.reason };
+      }
+    }
+
     // Validate
     const validation = validateReviewText(result.text, review);
     console.log(`  Validation: ${validation.valid ? 'PASS' : 'ISSUES'} (${validation.wordCount} words)`);
@@ -6156,6 +6228,33 @@ async function processReview(review) {
           }
 
           const archivePath = retryResult.html ? archiveHtml(retryResult.html, review, retryResult.method) : null;
+
+          // Post-fetch URL→content sanity check (Bug #2) — also on retry path
+          const retryCanonicalTitle = _showsJsonCache
+            ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
+            : showTitle;
+          const retrySanity = validateContentMentionsShow(
+            retryResult.text,
+            retryResult.html || null,
+            retryCanonicalTitle,
+            review.showId
+          );
+          if (!retrySanity.valid) {
+            console.log(`  ✗ URL→CONTENT MISMATCH (retry): ${retrySanity.reason}`);
+            recordFailedFetch(review, 'url_content_mismatch', {
+              method: retryResult.method,
+              mismatchReason: retrySanity.reason,
+              mentionCount: retrySanity.mentionCount,
+              threshold: retrySanity.threshold,
+              htmlTitle: retrySanity.htmlTitle,
+              textLength: retryResult.text.length,
+              archivePath,
+              retry: true,
+            });
+            stats.totalFailed++;
+            return { success: false, error: 'url_content_mismatch_retry', reason: retrySanity.reason };
+          }
+
           const validation = validateReviewText(retryResult.text, review);
           await updateReviewJson(review, retryResult.text, validation, archivePath, retryResult.method, retryResult.attempts, retryResult.archiveData || {}, retryResult.html || '', null);
 
