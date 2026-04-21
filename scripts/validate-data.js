@@ -1313,8 +1313,27 @@ function validateReviewsJson() {
     ok('No duplicate URLs within same show+outlet in reviews.json');
   }
 
+  // Schema validation: assignedScore must be null or a finite number.
+  // Schmigadoon 2026 shipped with nypost assignedScore="2/4 stars" because the
+  // range check below uses `< 0` which silently passes for strings (NaN < 0 = false).
+  const badType = reviews.filter(r =>
+    r.assignedScore !== null &&
+    r.assignedScore !== undefined &&
+    (typeof r.assignedScore !== 'number' || !Number.isFinite(r.assignedScore))
+  );
+  if (badType.length) {
+    error(`${badType.length} reviews have non-numeric assignedScore (schema drift — must be null or finite number):`);
+    badType.slice(0, 10).forEach(r => error(`  ${r.showId}/${r.outletId}/${r.criticName}: ${typeof r.assignedScore} ${JSON.stringify(r.assignedScore)}`));
+  } else {
+    ok('All assignedScore values are numeric or null (no schema drift)');
+  }
+
   // Score range validation: assignedScore must be 0-100
-  const outOfRange = reviews.filter(r => r.assignedScore != null && (r.assignedScore < 0 || r.assignedScore > 100));
+  const outOfRange = reviews.filter(r =>
+    typeof r.assignedScore === 'number' &&
+    Number.isFinite(r.assignedScore) &&
+    (r.assignedScore < 0 || r.assignedScore > 100)
+  );
   if (outOfRange.length) {
     error(`${outOfRange.length} reviews have assignedScore outside 0-100 range`);
     outOfRange.slice(0, 5).forEach(r => error(`  ${r.showId}/${r.outletId}: ${r.assignedScore}`));
