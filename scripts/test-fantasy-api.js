@@ -219,7 +219,7 @@ async function main() {
     }
   });
 
-  await test('POST /api/fantasy/draft — re-submit replaces existing entry', async () => {
+  await test('POST /api/fantasy/draft — re-submit returns 409 (picks are final)', async () => {
     const email = testEmail('player7');
     const r1 = await post('/api/fantasy/draft', { email, picks: [VALID_PICKS[0]] });
     if (r1.status === 429) {
@@ -231,8 +231,10 @@ async function main() {
       email,
       picks: VALID_PICKS.length > 1 ? [VALID_PICKS[1]] : [VALID_PICKS[0]],
     });
-    assert(r2.status === 200 || r2.status === 429, `re-submit status: ${r2.status}`);
-    if (r2.status === 200) assertEqual(r2.data.success, true, 're-submit success');
+    assert(r2.status === 409 || r2.status === 429, `re-submit status: ${r2.status} (expected 409)`);
+    if (r2.status === 409) {
+      assert(r2.data.error?.match(/already submitted|final/i), `expected "already submitted" error, got: ${r2.data.error}`);
+    }
   });
 
   // ── Leaderboard ──────────────────────────────────────────────────────────────

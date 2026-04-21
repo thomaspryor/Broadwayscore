@@ -246,7 +246,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'Can I change my picks after submitting?',
-              a: 'Yes — re-submit with the same email before the draft deadline. Your new picks replace the old ones.',
+              a: 'No. Picks are final once submitted — one entry per email, locked in for the season. Draft carefully.',
             },
             {
               q: 'How do show prices work?',

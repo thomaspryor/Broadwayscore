@@ -224,11 +224,19 @@ async function main() {
     console.error(`  Send lock acquired: ${lock.sessionId.slice(0, 8)}`);
 
     try {
-      // Step 1: sync player emails into the fantasy audience (add-only, idempotent)
-      const entries = await fetchFantasyEntries({ season: leagueData._meta.season }).catch(() => []);
-      const playerEmails = [...new Set(entries.map(e => (e.email || '').toLowerCase().trim()).filter(Boolean))];
-      const syncResult = await syncAudienceContacts(playerEmails, RESEND_FANTASY_AUDIENCE_ID, RESEND_API_KEY);
-      console.error(`  Audience sync: ${syncResult.added} added, ${syncResult.existing} existing, ${syncResult.errors} errors`);
+      // Step 1: sync player emails into the fantasy audience (add-only, idempotent).
+      // Requires SUPABASE_SERVICE_ROLE_KEY — the public view masks emails which
+      // would make Resend contacts undeliverable. Skip sync if not configured.
+      let syncSummary = 'skipped (no service role)';
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const entries = await fetchFantasyEntries({ admin: true, season: leagueData._meta.season }).catch(() => []);
+        const playerEmails = [...new Set(entries.map(e => (e.email || '').toLowerCase().trim()).filter(Boolean))];
+        const syncResult = await syncAudienceContacts(playerEmails, RESEND_FANTASY_AUDIENCE_ID, RESEND_API_KEY);
+        syncSummary = `${syncResult.added} added, ${syncResult.existing} existing, ${syncResult.errors} errors`;
+      } else {
+        console.warn('  SUPABASE_SERVICE_ROLE_KEY not set — skipping Resend audience sync (add this secret to re-enable)');
+      }
+      console.error(`  Audience sync: ${syncSummary}`);
 
       // Step 2: create broadcast draft
       const result = await postJSON('https://api.resend.com/broadcasts', {
