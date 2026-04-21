@@ -2120,6 +2120,133 @@ function extractHighConfidenceAuthor(html) {
   return null;
 }
 
+/**
+ * Post-fetch URL→content sanity check (Schmigadoon 2026 Bug #2).
+ *
+ * Before persisting fullText fetched from a URL we believe is a review of SHOW_X,
+ * verify the content actually mentions SHOW_X enough to trust it. This catches
+ * the class of failure where BrightData/ScrapingBee returns a completely
+ * different article (e.g., Everybody's Talking About Jamie content served on
+ * a Schmigadoon URL due to CDN misrouting, stale cache, or wrong-slug redirect).
+ *
+ * Two independent checks, BOTH must pass:
+ *   1. Body mention count: the show title (or significant show-ID word) appears
+ *      at least N times, where N scales with text length.
+ *   2. HTML <title> match (when html provided): the <title> contains a
+ *      significant title word or ID word — a completely unrelated title is a
+ *      strong signal we fetched the wrong page.
+ *
+ * Returns { valid, reason, mentionCount, threshold, htmlTitle, htmlTitleMatch }.
+ *
+ * @param {string} text - The fetched fullText (post-cleaning)
+ * @param {string} [html] - Raw HTML (for <title> check, optional)
+ * @param {string} showTitle - Human-readable show title (e.g., "Schmigadoon")
+ * @param {string} [showId] - Show ID slug (e.g., "schmigadoon-2026")
+ * @param {Object} [opts]
+ * @param {number} [opts.minMentionsLong=3] - Threshold for text ≥1500 chars
+ * @param {number} [opts.minMentionsShort=1] - Threshold for text <1500 chars
+ * @returns {{ valid: boolean, reason?: string, mentionCount: number, threshold: number, htmlTitle: string|null, htmlTitleMatch: boolean|null }}
+ */
+function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
+  const minLong = opts.minMentionsLong != null ? opts.minMentionsLong : 3;
+  const minShort = opts.minMentionsShort != null ? opts.minMentionsShort : 1;
+
+  if (!text || typeof text !== 'string') {
+    return {
+      valid: false,
+      reason: 'empty text',
+      mentionCount: 0,
+      threshold: minShort,
+      htmlTitle: null,
+      htmlTitleMatch: null,
+    };
+  }
+
+  const lower = text.toLowerCase();
+  const threshold = text.length >= 1500 ? minLong : minShort;
+
+  // Build the set of title tokens to count — show title, title-without-"The",
+  // significant ID words. One occurrence of ANY token counts toward the total
+  // (we're asking "does this page really cover SHOW_X?", not "is the exact
+  // official title used 3 times"). De-duplicate tokens so "Schmigadoon" in
+  // both title and ID doesn't double-weight.
+  const tokens = new Set();
+  if (showTitle && showTitle.length > 2) {
+    tokens.add(showTitle.toLowerCase());
+    const noThe = showTitle.toLowerCase().replace(/^the\s+/, '');
+    if (noThe.length > 2) tokens.add(noThe);
+  }
+  if (showId) {
+    const idBase = showId.replace(/-\d{4}$/, '');
+    for (const w of idBase.split('-')) {
+      if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w)) {
+        tokens.add(w.toLowerCase());
+      }
+    }
+  }
+
+  let mentionCount = 0;
+  for (const token of tokens) {
+    if (!token) continue;
+    // Count non-overlapping occurrences, word-boundary when single word.
+    const isSingleWord = !/\s/.test(token);
+    const escaped = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = isSingleWord
+      ? new RegExp(`\\b${escaped}\\b`, 'gi')
+      : new RegExp(escaped, 'gi');
+    const matches = lower.match(re);
+    if (matches) mentionCount += matches.length;
+  }
+
+  // HTML <title> check (optional — only when html is provided)
+  let htmlTitle = null;
+  let htmlTitleMatch = null;
+  if (html && typeof html === 'string') {
+    const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    if (m) {
+      htmlTitle = m[1].replace(/\s+/g, ' ').trim();
+      const titleLower = htmlTitle.toLowerCase();
+      htmlTitleMatch = false;
+      for (const token of tokens) {
+        if (token && titleLower.includes(token)) {
+          htmlTitleMatch = true;
+          break;
+        }
+      }
+    }
+  }
+
+  if (mentionCount < threshold) {
+    return {
+      valid: false,
+      reason: `show mentioned ${mentionCount}× (below ${threshold} threshold for ${text.length}-char text)`,
+      mentionCount,
+      threshold,
+      htmlTitle,
+      htmlTitleMatch,
+    };
+  }
+
+  if (htmlTitleMatch === false) {
+    return {
+      valid: false,
+      reason: `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`,
+      mentionCount,
+      threshold,
+      htmlTitle,
+      htmlTitleMatch,
+    };
+  }
+
+  return {
+    valid: true,
+    mentionCount,
+    threshold,
+    htmlTitle,
+    htmlTitleMatch,
+  };
+}
+
 module.exports = {
   isGarbageContent,
   hasReviewContent,
@@ -2127,6 +2254,7 @@ module.exports = {
   detectGarbageFromReasoning,
   // New enhanced validation functions
   validateShowMentioned,
+  validateContentMentionsShow,
   detectMultiShowContent,
   detectConcatenatedArticles,
   // Content tier classification (5-tier taxonomy)
