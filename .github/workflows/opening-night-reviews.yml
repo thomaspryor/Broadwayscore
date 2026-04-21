@@ -212,8 +212,10 @@ jobs:
         run: |
           # --alert sends Discord on floor breaches (tier-1 silent extractor failure)
           # and on outlet gaps. Floor breach severity=error; outlet gap severity=warning.
+          # No `|| true` — exit 1 on breach is the signal. continue-on-error keeps the
+          # workflow green; the step shows yellow in GH summary so breaches are visible.
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert || true
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert
 
       - name: Notify on failure
         if: failure()
