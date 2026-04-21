@@ -28,14 +28,24 @@ describe('opening-night-orchestrator — Guardian dispatch', () => {
     assert.ok(dispatchIdx > 0, 'expected to find a fetch-guardian-reviews dispatch line');
 
     // Walk backward from the dispatch line. Every `fi` we pass opens a new
-    // nesting level; every `if` closes one. If any surviving unmatched `if`
-    // mentions $MARKET, the dispatch is nested inside a market conditional.
+    // nesting level; every `if` closes one. If any surviving unmatched `if` OR
+    // `elif` (within the current enclosing block, fiDepth===0) mentions $MARKET,
+    // the dispatch is nested inside a market conditional.
     let fiDepth = 0;
     const marketGated = [];
     for (let i = dispatchIdx - 1; i >= 0; i--) {
       const line = lines[i];
-      if (/^\s*fi\s*$/.test(line)) fiDepth++;
-      else if (/^\s*if\s+/.test(line)) {
+      if (/^\s*fi\s*$/.test(line)) {
+        fiDepth++;
+      } else if (/^\s*elif\s+/.test(line)) {
+        // An elif in the enclosing block (fiDepth===0) means the dispatch is
+        // inside this branch. An elif in a NESTED block (fiDepth>0) is not
+        // gating us. Unlike `if`, `elif` does NOT close a nesting level.
+        if (fiDepth === 0 && /\$MARKET/.test(line)) {
+          marketGated.push({ line: i + 1, text: line.trim() });
+          break;
+        }
+      } else if (/^\s*if\s+/.test(line)) {
         if (fiDepth > 0) {
           fiDepth--;
         } else {

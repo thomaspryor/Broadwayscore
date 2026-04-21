@@ -46,6 +46,7 @@ function run(show, context) {
   }
 
   const violations = [];
+  const shortWarnings = [];
   for (const filename of files) {
     let data;
     try {
@@ -63,7 +64,20 @@ function run(show, context) {
       data.criticsTake,
     ].filter(Boolean).join('\n\n');
 
-    if (!haystack || haystack.length < 80) continue; // too short to assess
+    // Too short to assert mention — but paywall stubs (~25 chars) that shipped
+    // are the exact failure class this check exists to catch. Legitimate stubs
+    // need explicit isPreviewPlaceholder/isFullReview=false to be waived.
+    if (!haystack || haystack.length < 80) {
+      if (data.isPreviewPlaceholder === true || data.isFullReview === false) continue;
+      shortWarnings.push({
+        filename,
+        url: data.url,
+        outletId: data.outletId,
+        criticName: data.criticName,
+        haystackLength: haystack ? haystack.length : 0,
+      });
+      continue;
+    }
 
     if (mentionRe.test(haystack)) continue;
 
@@ -81,11 +95,23 @@ function run(show, context) {
     });
   }
 
-  if (violations.length === 0) {
+  if (violations.length === 0 && shortWarnings.length === 0) {
     return {
       ok: true,
       severity: 'ok',
       message: `All shipped source files mention show title at least once`,
+    };
+  }
+
+  if (violations.length === 0) {
+    // Only short-review warnings — surface as warning, not error.
+    return {
+      ok: false,
+      severity: 'warning',
+      message: shortWarnings.map(v =>
+        `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED with fullText too short to assess title mention (${v.haystackLength} chars — paywall stub?): ${v.url}`
+      ).join('\n'),
+      details: { shortWarnings, showId: show.id, showTitle: show.title },
     };
   }
 
@@ -94,8 +120,10 @@ function run(show, context) {
     severity: 'error',
     message: violations.map(v =>
       `${v.outletId}/${v.criticName} (${v.filename}) SHIPPED but fullText never mentions '${show.title}' (${v.haystackLength} chars${v.textIssuesFlag ? ', textIssues flag set' : ''}): ${v.url}`
-    ).join('\n'),
-    details: { violations, showId: show.id, showTitle: show.title },
+    ).concat(shortWarnings.map(v =>
+      `⚠️  ${v.outletId}/${v.criticName} (${v.filename}) also too short to assess (${v.haystackLength} chars): ${v.url}`
+    )).join('\n'),
+    details: { violations, shortWarnings, showId: show.id, showTitle: show.title },
   };
 }
 
