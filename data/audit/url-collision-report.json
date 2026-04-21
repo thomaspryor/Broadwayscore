@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-04-21T07:14:13.958Z",
+  "generatedAt": "2026-04-21T12:14:07.522Z",
   "summary": {
-    "total": 17,
-    "high": 12,
-    "medium": 4,
-    "low": 1
+    "total": 18,
+    "high": 11,
+    "medium": 5,
+    "low": 2
   },
   "collisions": [
+    {
+      "url": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
+      "normalizedUrl": "https://westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london",
+      "candidates": [
+        {
+          "showId": "avenue-q-west-end-2026",
+          "file": "times-uk--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-04-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "times-uk"
+        },
+        {
+          "showId": "the-book-of-mormon-west-end-2024",
+          "file": "whatsonstage--rachel-agyekum.json",
+          "publishDate": null,
+          "openingDate": "2013-03-21",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "avenue-q-west-end-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
       "normalizedUrl": "https://bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
@@ -86,42 +113,6 @@
       ],
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
-      "normalizedUrl": "https://ew.com/cats-the-jellicle-ball-review-broadway-11944334",
-      "candidates": [
-        {
-          "showId": "cats-express-test-2026",
-          "file": "ew--shania-russell.json",
-          "publishDate": "April 7, 2026",
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "ew--shania-russell.json",
-          "publishDate": "April 7, 2026",
-          "openingDate": "2026-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ew"
-        },
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "ew--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-04-07",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "ew"
-        }
-      ],
-      "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate April 7, 2026 is 0 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
       "confidence": "high"
     },
     {
@@ -346,11 +337,11 @@
       "candidates": [
         {
           "showId": "cats-the-jellicle-ball-2026",
-          "file": "washpost--unknown.json",
-          "publishDate": null,
+          "file": "washpost--thomas-floyd.json",
+          "publishDate": "2026-04-15",
           "openingDate": "2026-04-07",
           "hasScore": false,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "washpost"
         },
         {
@@ -364,8 +355,8 @@
         }
       ],
       "suggestedWinner": "death-of-a-salesman-2026",
-      "reason": "publishDate 2026-04-15 is 6 days from death-of-a-salesman-2026 opening (2026-04-09)",
-      "confidence": "high"
+      "reason": "publishDate 2026-04-15 is 6 days from death-of-a-salesman-2026 but also 8 days from cats-the-jellicle-ball-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorP7l3j8IP68qdcMeBPMcw1s7odIwPXm7XDmhTEy1GhJqXV2vR1",
@@ -385,7 +376,7 @@
           "file": "ew--dalton-ross.json",
           "publishDate": "2026-03-12",
           "openingDate": "2026-04-20",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "ew"
         }
@@ -412,7 +403,7 @@
           "file": "nysr--steven-suskin.json",
           "publishDate": "2026-03-13",
           "openingDate": "2026-04-20",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": true,
           "outletId": "nysr"
         }
@@ -422,31 +413,58 @@
       "confidence": "medium"
     },
     {
-      "url": "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
-      "normalizedUrl": "https://thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe",
+      "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
+      "normalizedUrl": "https://dailymail.co.uk/tv/article-15340469/marmalade-magic-paddington-musical-scale-cuteness-patrick-marmion-reviews-opening-night-londons-savoy-theatre.html",
       "candidates": [
         {
-          "showId": "every-brilliant-thing-2026",
-          "file": "thewrap--robert-hofler.json",
-          "publishDate": "2026-03-13",
-          "openingDate": "2026-03-12",
+          "showId": "moulin-rouge-the-musical-west-end-2021",
+          "file": "daily-mail--patrick-marmion.json",
+          "publishDate": "2022-01-21",
+          "openingDate": "2022-01-19",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "thewrap"
+          "outletId": "daily-mail"
         },
         {
-          "showId": "schmigadoon-2026",
-          "file": "thewrap--robert-hofler.json",
-          "publishDate": "2026-03-13",
-          "openingDate": "2026-04-20",
-          "hasScore": false,
+          "showId": "paddington-the-musical-west-end-2025",
+          "file": "daily-mail--patrick-marmion.json",
+          "publishDate": "December 1, 2025",
+          "openingDate": "2025-11-29",
+          "hasScore": true,
           "hasFullText": true,
-          "outletId": "thewrap"
+          "outletId": "daily-mail"
         }
       ],
-      "suggestedWinner": "every-brilliant-thing-2026",
-      "reason": "publishDate 2026-03-13 is 1 days from every-brilliant-thing-2026 but also 38 days from schmigadoon-2026",
+      "suggestedWinner": "moulin-rouge-the-musical-west-end-2021",
+      "reason": "publishDate 2022-01-21 is 2 days from moulin-rouge-the-musical-west-end-2021 but also 2 days from paddington-the-musical-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
+      "normalizedUrl": "https://westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville",
+      "candidates": [
+        {
+          "showId": "six-the-musical-west-end-2021",
+          "file": "daily-mail--patrick-marmion.json",
+          "publishDate": "2021-11-12",
+          "openingDate": "2019-01-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "daily-mail"
+        },
+        {
+          "showId": "the-lion-king-west-end-2021",
+          "file": "daily-mail--michael-coveney.json",
+          "publishDate": "1999-10-22",
+          "openingDate": "1999-10-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "daily-mail"
+        }
+      ],
+      "suggestedWinner": "the-lion-king-west-end-2021",
+      "reason": "publishDate 1999-10-22 is 3 days from the-lion-king-west-end-2021 opening (1999-10-19); next closest is 1031 days from six-the-musical-west-end-2021",
+      "confidence": "high"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
