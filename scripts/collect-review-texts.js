@@ -95,6 +95,7 @@ const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, norm
 const { setExtractedScore } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
 // Do NOT check raw HTML (10% FP from NYT page chrome). URL match only.
@@ -4237,6 +4238,43 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.publishDate = extractedDate;
       data.dateSource = 'text-regex';
       console.log(`    → Extracted publishDate from text: ${extractedDate}`);
+    }
+  }
+
+  // Schmigadoon 2026 postmortem Bug #5: anticipatory pre-opening-night posts.
+  // For preview-heavy outlets (frontmezzjunkies, broadwaydirect, ...) require
+  // publishDate >= openingDate. For all other outlets allow a 2-day grace (matches
+  // the post-broadcast audit check at publish-date-pre-opening.check.js).
+  // Rejected reviews have their fetched text stripped and are flagged so the
+  // rebuild excludes them. Clearable via humanReviewedEarlyPublish=true.
+  {
+    let showOpeningDate = null;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
+      showOpeningDate = showMeta?.openingDate || null;
+    } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
+
+    const anticip = isAnticipatoryPreviewPost(
+      data.publishDate,
+      showOpeningDate,
+      data.outletId || review.outletId,
+      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
+    );
+    if (anticip.rejected) {
+      console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
+      data.fullText = null;
+      data.wrongProduction = true;
+      data.wrongProductionReason = 'anticipatory_pre_opening_post';
+      data.wrongProductionDetail = anticip.reason;
+      data.wrongProductionDetectedAt = new Date().toISOString();
+      data.wrongProductionDetectedBy = 'ingest-anticipatory-gate';
+      data.anticipatoryGateOutletCategory = anticip.outletCategory;
+      data.anticipatoryGateDaysBeforeOpening = anticip.daysBeforeOpening;
+      // Preserve archivePath so curators can still audit the HTML.
+      // Skip score routing and content verification — the rest of this
+      // function still runs but the flagged fullText=null causes downstream
+      // rebuild to exclude this review.
     }
   }
 

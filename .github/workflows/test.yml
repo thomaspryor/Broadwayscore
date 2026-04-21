@@ -595,6 +595,7 @@ jobs:
           # Run all unit tests with tsx (provides TypeScript import support)
           # Exclude ensemble.test.mjs (pre-existing ts-node compilation issue with scripts/tsconfig.json)
           npx tsx --test \
+            tests/unit/anticipatory-preview-gate.test.mjs \
             tests/unit/biz-data-functions.test.mjs \
             tests/unit/bww-roundup-extractor.test.mjs \
             tests/unit/commercial-changes.test.mjs \
