@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     const leagueName = request.nextUrl.searchParams.get('league')?.toLowerCase().trim() || null;
 
     let query = supabase
-      .from('fantasy_entries')
+      .from('fantasy_entries_public')
       .select('*')
       .eq('season', FANTASY_SEASON);
 
@@ -44,9 +44,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // display_email is server-side masked by the view (no raw emails cross the wire).
+    // maskEmail() is idempotent, so passing it through computeLeaderboard is safe.
     const typedEntries: FantasyEntry[] = (entries || []).map(e => ({
       id: e.id,
-      email: e.email,
+      email: e.display_email ?? '',
       team_name: e.team_name,
       league_name: e.league_name,
       picks: e.picks,

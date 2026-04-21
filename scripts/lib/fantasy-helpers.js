@@ -154,36 +154,51 @@ function computeAwardsPoints(showId, awardsData, scoringConfig) {
 
 /**
  * Fetch fantasy entries from Supabase REST API.
- * Uses anon key (RLS allows public SELECT on fantasy_entries).
+ *
+ * Reads via the public view `fantasy_entries_public` using the anon key —
+ * emails are server-side masked (display_email) and tiebreakers not exposed.
+ * For admin scripts that need raw email / tiebreakers, set
+ * SUPABASE_SERVICE_ROLE_KEY (falls back to anon→view if not set).
  *
  * @param {object} opts
- * @param {string} [opts.league]  — Filter by league_name
- * @param {string} [opts.email]   — Filter by email
- * @param {string} [opts.season]  — Season filter (default: current)
+ * @param {string} [opts.league]   — Filter by league_name
+ * @param {string} [opts.email]    — Filter by email (requires service role)
+ * @param {string} [opts.season]   — Season filter (default: current)
+ * @param {boolean} [opts.admin]   — Force service-role query against base table
  * @returns {Promise<Array>} Array of entry objects
  */
 async function fetchFantasyEntries(opts = {}) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !anonKey) {
     throw new Error('Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY');
   }
 
+  const wantsAdmin = opts.admin || opts.email;
+  const useAdmin = wantsAdmin && !!serviceKey;
+  const table = useAdmin ? 'fantasy_entries' : 'fantasy_entries_public';
+  const key = useAdmin ? serviceKey : anonKey;
+
+  if (wantsAdmin && !serviceKey) {
+    console.warn('fetchFantasyEntries: admin/email filter requested but SUPABASE_SERVICE_ROLE_KEY not set — falling back to public view (masked emails, no tiebreakers).');
+  }
+
   const params = new URLSearchParams({ select: '*', order: 'created_at.asc' });
   if (opts.season) params.append('season', `eq.${opts.season}`);
   if (opts.league) params.append('league_name', `eq.${opts.league}`);
-  if (opts.email) params.append('email', `eq.${opts.email}`);
+  if (opts.email && useAdmin) params.append('email', `eq.${opts.email}`);
 
-  const url = `${supabaseUrl}/rest/v1/fantasy_entries?${params}`;
+  const url = `${supabaseUrl}/rest/v1/${table}?${params}`;
 
   return new Promise((resolve, reject) => {
     const urlObj = new URL(url);
     const options = {
       method: 'GET',
       headers: {
-        'apikey': anonKey,
-        'Authorization': `Bearer ${anonKey}`,
+        'apikey': key,
+        'Authorization': `Bearer ${key}`,
         'Content-Type': 'application/json',
       },
     };
@@ -197,7 +212,16 @@ async function fetchFantasyEntries(opts = {}) {
           return;
         }
         try {
-          resolve(JSON.parse(body));
+          const rows = JSON.parse(body);
+          // View returns display_email (server-masked); normalize to email so
+          // downstream readers (computeLeaderboard etc.) don't need to branch.
+          // maskEmail() is idempotent, so code that re-masks is still safe.
+          if (!useAdmin && Array.isArray(rows)) {
+            for (const r of rows) {
+              if (r && r.display_email != null && r.email == null) r.email = r.display_email;
+            }
+          }
+          resolve(rows);
         } catch (e) {
           reject(new Error(`Invalid JSON from Supabase: ${body.substring(0, 200)}`));
         }

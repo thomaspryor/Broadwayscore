@@ -31,9 +31,9 @@ export async function GET(
     return NextResponse.json({ error: 'League not found' }, { status: 404 });
   }
 
-  // Count members — must include season filter to match RLS evaluation (mirrors leaderboard query)
+  // Count members via public view — anon no longer has SELECT on fantasy_entries.
   const { data: members } = await supabase
-    .from('fantasy_entries')
+    .from('fantasy_entries_public')
     .select('id')
     .eq('season', FANTASY_SEASON)
     .eq('league_name', code);
