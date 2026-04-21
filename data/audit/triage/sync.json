@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-04-20T07:37:35.383Z",
+  "lastChecked": "2026-04-21T07:36:26.301Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -23,13 +23,13 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "2 missing files: Proof, Proof"
+      "status": "pass",
+      "message": "40 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Open shows dropped by 3: 142 vs baseline 145"
+      "message": "Reviews dropped: 17107 vs baseline 17112"
     }
   ]
 }
