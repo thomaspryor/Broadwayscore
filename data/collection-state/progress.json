@@ -7,7 +7,17 @@
     "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/whatsonstage--unknown.json",
     "fallen-angels-2026/nytg--gillian-russo.json",
-    "hamlet-off-broadway-2026/playbill--unknown.json"
+    "hamlet-off-broadway-2026/playbill--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
+    "avenue-q-west-end-2026/timeout--paul-raven.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/financialtimes--unknown.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/thestage--unknown.json",
+    "copenhagen-west-end-2026/independent--laura-hall.json",
+    "copenhagen-west-end-2026/independent--unknown.json",
+    "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
+    "cats-the-jellicle-ball-2026/theatermania--linda-buchwald.json",
+    "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json"
   ],
   "failed": [
     "fallen-angels-2026/wsj--charles-isherwood.json",
@@ -22,12 +32,25 @@
       "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
       "between-the-river-and-the-sea-west-end-2026/whatsonstage--unknown.json",
       "fallen-angels-2026/nytg--gillian-russo.json",
-      "hamlet-off-broadway-2026/playbill--unknown.json"
+      "hamlet-off-broadway-2026/playbill--unknown.json",
+      "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+      "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
+      "avenue-q-west-end-2026/timeout--paul-raven.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/financialtimes--unknown.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/thestage--unknown.json",
+      "cats-the-jellicle-ball-2026/theatermania--linda-buchwald.json",
+      "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
+      "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "copenhagen-west-end-2026/independent--laura-hall.json",
+      "copenhagen-west-end-2026/independent--unknown.json"
+    ],
     "brightdata": [
       "schmigadoon-2026/thewrap--unknown.json"
     ],
@@ -37,7 +60,7 @@
     "archive": []
   },
   "startTime": "2026-04-21T16:58:13.270Z",
-  "lastProcessed": "hamlet-off-broadway-2026/playbill--unknown.json",
+  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json",
   "log": [
     {
       "t": "2026-04-21T17:03:30.709Z",
@@ -49,6 +72,17 @@
       "t": "2026-04-21T17:03:31.390Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T18:32:40.236Z",
+      "event": "bb-session",
+      "session": "20d63805",
+      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-an"
+    },
+    {
+      "t": "2026-04-21T18:32:41.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
