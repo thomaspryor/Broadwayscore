@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-04-13T03:45:26.791Z",
+    "lastUpdated": "2026-04-20T00:31:11.529Z",
     "version": "2.0.0"
   },
   "outlets": {
@@ -761,7 +761,7 @@
       "accessModel": "free"
     },
     "one-minute-critic": {
-      "displayName": "One-Minute Critic",
+      "displayName": "1 Minute Critic",
       "tier": 3,
       "aliases": [
         "one-minute-critic",
@@ -9329,9 +9329,12 @@
       "displayName": "Cote Notices",
       "tier": 3,
       "aliases": [
-        "cote-notices"
+        "cote-notices",
+        "david cote",
+        "davidcote1"
       ],
-      "domain": null
+      "domain": "davidcote1.substack.com",
+      "accessModel": "free"
     },
     "test-manual": {
       "displayName": "Test Manual",
@@ -9374,6 +9377,46 @@
       ],
       "domain": "aislesay.com",
       "accessModel": "free"
+    },
+    "chronicle-of-higher-education": {
+      "displayName": "Chronicle Of Higher Education",
+      "tier": 3,
+      "aliases": [
+        "chronicle-of-higher-education"
+      ],
+      "domain": "chronicle.com"
+    },
+    "commonweal": {
+      "displayName": "Commonweal",
+      "tier": 3,
+      "aliases": [
+        "commonweal"
+      ],
+      "domain": "commonwealmagazine.org"
+    },
+    "science-magazine": {
+      "displayName": "Science Magazine",
+      "tier": 3,
+      "aliases": [
+        "science-magazine"
+      ],
+      "domain": "science.org"
+    },
+    "the-nation": {
+      "displayName": "The Nation",
+      "tier": 3,
+      "aliases": [
+        "the-nation"
+      ],
+      "domain": "thenation.com"
+    },
+    "another-eye-opens": {
+      "displayName": "Another Eye Opens",
+      "tier": 3,
+      "aliases": [
+        "another-eye-opens"
+      ],
+      "domain": "donshewey.substack.com"
     }
   },
   "_aliasIndex": {

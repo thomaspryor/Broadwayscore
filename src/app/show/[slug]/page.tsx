@@ -44,7 +44,7 @@ import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
-import { hasEnoughReviews } from '@/config/score-buckets';
+import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
@@ -140,7 +140,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     : `${show.title} - ${siteName}`;
   const twitterTitle = ogShowsSentiment
     ? `${show.title} — ${sentimentLabel} (${roundedScore}/100)`
-    : `${show.title} - CriticScore ${roundedScore ? `${roundedScore}/100` : 'TBD'}`;
+    : `${show.title} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
 
   // Sentiment-aware description: lead with verdict, not database dump
   const statusPart = statusLabel ? ` ${statusLabel} at ${show.venue}.` : '';
@@ -668,14 +668,31 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
                         <div className="flex items-center gap-2 sm:gap-3 flex-wrap mt-0.5">
-                          {reviewCount > 0 && (
-                            <a
-                              href="#critic-reviews"
-                              className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors"
-                            >
-                              Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
-                            </a>
-                          )}
+                          {(() => {
+                            // When TBD is due to low review count (not previews/upcoming),
+                            // tell the user how many more reviews are needed rather than a
+                            // bare "Based on N Critic Reviews" (which sits next to "TBD" and
+                            // reads as contradictory).
+                            const remaining = showTBD
+                              ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count)
+                              : 0;
+                            const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && remaining > 0;
+                            if (isGatedByReviewCount) {
+                              return (
+                                <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
+                                  {reviewCount} {reviewCount === 1 ? 'review' : 'reviews'} · {remaining} more for a CriticScore
+                                </a>
+                              );
+                            }
+                            if (reviewCount > 0) {
+                              return (
+                                <a href="#critic-reviews" className="text-xs sm:text-sm text-gray-500 hover:text-brand transition-colors">
+                                  Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                                </a>
+                              );
+                            }
+                            return null;
+                          })()}
                           {/* Audience chip — inline on desktop where there's room */}
                           {hasAudience && audienceGrade && (
                             <a href="#audience" className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold hover:brightness-125 transition-all" style={{ background: `${audienceGrade.color}15`, color: audienceGrade.color }}>

@@ -3,16 +3,18 @@ name: Opening Night Broadcast
 # Thin "check & send" workflow — reads existing scored data, generates consensus, sends email.
 # Heavy lifting (gather, rebuild, score) is handled by the data pipeline:
 #   update-show-status → gather-reviews → rebuild → llm-ensemble-score
-#
-# NO CRON — only dispatched by update-show-status.yml when a show transitions to open,
-# or manually via workflow_dispatch. Always sends preview to owner only unless
-# explicitly re-dispatched with send_to_all=true.
 
 on:
-  # No cron — only fires when there's actually a show opening:
-  #   1. update-show-status.yml dispatches when a show transitions to open
-  #   2. Auto-retries after scoring completes (pipeline: gather → rebuild → score → broadcast)
-  #   3. Manual dispatch for testing or re-sends
+  # Triggers:
+  #   1. Daily cron at 12:30 UTC (8:30 AM EDT / 7:30 AM EST) — self-dispatched with
+  #      send_to_all=true. Creates the Resend draft AND emails the owner a preview so
+  #      they can review and hit Send from Resend. All existing gates still apply
+  #      (time ≥ 7 AM ET, readiness ≥ 15 reviews + aggregator, checklist clean).
+  #   2. update-show-status.yml dispatches when a show transitions to open (preview only)
+  #   3. Auto-retries after scoring completes (pipeline: gather → rebuild → score → broadcast)
+  #   4. Manual dispatch for testing or re-sends
+  schedule:
+    - cron: '30 12 * * *'
   workflow_run:
     workflows: ["LLM Ensemble Score Reviews"]
     types: [completed]
@@ -222,9 +224,12 @@ jobs:
             try { sent = JSON.parse(fs.readFileSync(sentPath, 'utf8')).shows || {}; } catch {}
 
             const shows = '$SHOWS'.split(',');
-            // When send_to_all=true (approval dispatch), skip the preview dedup check.
-            // The preview is expected to have already been sent recently — that's the whole point.
-            const sendToAll = '${{ inputs.send_to_all }}' === 'true';
+            // When send_to_all=true (approval dispatch) OR this is the scheduled
+            // 12:30 UTC daily run, skip the preview dedup check. In both cases an
+            // earlier preview may have already gone out (5 AM auto-dispatch after
+            // scoring), and we still want to create the owner-review draft.
+            const sendToAll = '${{ inputs.send_to_all }}' === 'true'
+              || '${{ github.event_name }}' === 'schedule';
 
             // Load reviews once for readiness pre-check
             let allReviews = [];
@@ -386,49 +391,63 @@ jobs:
           # lock helper would exit(1), blocking the send rather than risking a race.
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Code creates a Resend DRAFT broadcast — owner logs in and clicks Send manually.
-          # Use send_to input for preview testing (sends single transactional email, no draft).
+          # Modes:
+          #   - send_to=<email>: transactional preview to that address only (no draft)
+          #   - send_to_all=true OR scheduled run: send preview to owner AND create Resend draft
+          #   - default (workflow_run auto-retry / update-show-status dispatch): preview to owner only
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
+          CREATE_DRAFT="false"
 
           if [ -n "${{ inputs.send_to }}" ]; then
             SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
             echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
-          elif [ "${{ inputs.send_to_all }}" != "true" ]; then
-            # Automated run: send preview to owner for approval (no subscriber sends)
+          elif [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event_name }}" = "schedule" ]; then
+            # Approval dispatch or scheduled 12:30 UTC run: preview to owner + Resend draft
+            SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
+            CREATE_DRAFT="true"
+            echo "** APPROVAL MODE — sending preview to owner AND creating Resend draft **"
+          else
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             echo "** PREVIEW MODE — sending preview to owner for approval **"
-          else
-            echo "** DRAFT MODE — creating Resend draft for send_to_all dispatch **"
           fi
 
           SENT="false"
 
-          # Broadway draft (skip if no Broadway shows passed the readiness gate).
+          run_market() {
+            local market="$1"
+            local shows="$2"
+            echo "--- $market preview ---"
+            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $SEND_TO_FLAG 2>&1) || true
+            echo "$OUTPUT"
+            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
+              SENT="true"
+            fi
+            if [ "$CREATE_DRAFT" = "true" ]; then
+              echo "--- $market draft ---"
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" 2>&1) || true
+              echo "$OUTPUT"
+              if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
+                SENT="true"
+              fi
+            fi
+          }
+
+          # Broadway (skip if no Broadway shows passed the readiness gate).
           # Uses steps.check.outputs.broadway (post-gate filtered), NOT steps.find.outputs.broadway.
           # Passing --shows=ID,ID restricts the script to the exact ready set so its looser
           # internal MIN_REVIEWS threshold can't bypass the workflow's stricter gate.
           if [ -n "${{ steps.check.outputs.broadway }}" ]; then
-            echo "--- Broadway draft ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=broadway --lookback=$LOOKBACK --shows="${{ steps.check.outputs.broadway }}" $SEND_TO_FLAG 2>&1) || true
-            echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
-              SENT="true"
-            fi
+            run_market broadway "${{ steps.check.outputs.broadway }}"
           else
-            echo "No Broadway shows to draft"
+            echo "No Broadway shows to send"
           fi
 
-          # West End draft (skip if no WE shows passed the readiness gate)
+          # West End (skip if no WE shows passed the readiness gate)
           if [ -n "${{ steps.check.outputs.westend }}" ]; then
-            echo "--- West End draft ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market=west-end --lookback=$LOOKBACK --shows="${{ steps.check.outputs.westend }}" $SEND_TO_FLAG 2>&1) || true
-            echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
-              SENT="true"
-            fi
+            run_market west-end "${{ steps.check.outputs.westend }}"
           else
-            echo "No West End shows to draft"
+            echo "No West End shows to send"
           fi
 
           echo "broadcast_sent=$SENT" >> $GITHUB_OUTPUT

@@ -172,6 +172,33 @@ function getWrongProductionReasonFromUrl(url, show) {
 }
 
 /**
+ * Wrapper around getWrongProductionReasonFromUrl that only fires when the review
+ * has NO named critic (Unknown / Staff / empty). Used at ingest time in
+ * gather-reviews.js to catch Unknown-byline SERP pollution without false-positive
+ * risk on named-critic pre-transfer coverage (e.g. Jesse Green reviewing a
+ * Public Theater OB run before Broadway transfer).
+ *
+ * The base URL-date rule alone can't distinguish "different production" from
+ * "same production, pre-transfer venue" — named critics deserve the benefit of
+ * the doubt there. Unknown-byline SERP hits do not (that's the exact class of
+ * hit that caused the Fallen Angels 2026 opening-night cleanup).
+ *
+ * The raw helper (getWrongProductionReasonFromUrl) is still available for
+ * opt-in post-hoc audits where a human reviews each flag.
+ *
+ * @param {{ url?: string|null, criticName?: string|null }} review
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
+ * @returns {string|null}
+ */
+function getWrongProductionReasonForUnknownCritic(review, show) {
+  if (!review) return null;
+  const norm = String(review.criticName || '').trim().toLowerCase();
+  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
+  if (!criticIsUnknown) return null;
+  return getWrongProductionReasonFromUrl(review.url, show);
+}
+
+/**
  * Check if a URL looks like a review for the given show title.
  * Filters out tag pages, author pages, ticket links, etc.
  * Used in site-search-discovery.js to filter URLs returned by section-page scrapers.
@@ -1190,6 +1217,19 @@ function isIncludableForRebuild(data) {
   // Garbage text flagged by collection pipeline or LLM ensemble
   if (data.rejectionReason) return false;
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
+  // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
+  // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
+  // cleared by a re-scrape (collect-review-texts.js line 4247) or explicit manual reset.
+  // Without this check, reviews whose rejectionReason was later cleared by clear-failure-flags
+  // could slip back into reviews.json — which is what happened with the Vulture FILM review
+  // of Hamlet (wrong_production) on 2026-04-20.
+  // Exception: if text was re-scraped AFTER rejection, treat as revalidated and let downstream
+  // scoring decide. collect-review-texts should have cleared rejectedAt in that case but
+  // only does so when rejectionReason is still set, so this guard handles the leak.
+  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
+    if (!reFetched) return false;
+  }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
@@ -1250,6 +1290,7 @@ module.exports = {
   pickBestDtliSlug,
   applyTemporalOverrides,
   getWrongProductionReasonFromUrl,
+  getWrongProductionReasonForUnknownCritic,
   urlLooksLikeReview,
   isLikelyWrongProduction,
   isLikelyTourReview,

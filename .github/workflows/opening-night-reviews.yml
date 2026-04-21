@@ -4,6 +4,11 @@ on:
   schedule:
     # 5 AM UTC = midnight EST — reviews published ~10-11 PM, aggregators indexed by midnight
     - cron: '0 5 * * *'
+    # 15 UTC = 11 AM ET / 4 PM BST — same-day late-population sweep.
+    # DTLI/BWW RR frequently add reviews 6-12h after opening as outlets trickle in.
+    # The orchestrator's 6h window ends too early for these; this cron catches them
+    # on the same day before the next evening cron.
+    - cron: '0 15 * * *'
   workflow_dispatch:
     inputs:
       lookback_days:
@@ -202,10 +207,15 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: coverage
         continue-on-error: true
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
-          # Run coverage audit (results in console + audit files only, no Discord alert)
+          # --alert sends Discord on floor breaches (tier-1 silent extractor failure)
+          # and on outlet gaps. Floor breach severity=error; outlet gap severity=warning.
+          # No `|| true` — exit 1 on breach is the signal. continue-on-error keeps the
+          # workflow green; the step shows yellow in GH summary so breaches are visible.
           LOOKBACK=${{ inputs.lookback_days || 14 }}
-          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK || true
+          node scripts/audit-opening-night-coverage.js --days=$LOOKBACK --alert
 
       - name: Notify on failure
         if: failure()

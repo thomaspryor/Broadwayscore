@@ -25,6 +25,13 @@ const shows = Array.isArray(SHOWS.shows) ? SHOWS.shows : Object.values(SHOWS.sho
 const showMap = {};
 for (const s of shows) showMap[s.id] = s;
 
+// Word-month map so Guardian-style /YYYY/monthname/DD/ URLs are matched.
+// Mirrors URL_MONTH_NAMES in scripts/lib/review-guards.js.
+const URL_MONTH_NAMES = {
+  jan: '01', feb: '02', mar: '03', apr: '04', may: '05', jun: '06',
+  jul: '07', aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
+};
+
 const dirs = fs.readdirSync(REVIEW_DIR).filter(d => fs.statSync(path.join(REVIEW_DIR, d)).isDirectory());
 
 let flagged = 0;
@@ -51,10 +58,14 @@ for (const showId of dirs) {
     if (!d.assignedScore && !d.llmScore?.score) continue;
 
     const url = d.url || '';
-    const m = url.match(/\/(20\d{2})\/(\d{2})(?:\/(\d{2}))?\//);
+    // Match numeric months /YYYY/MM/ and Guardian word months /YYYY/monthname/
+    const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
     if (!m) continue;
-    const dayPart = m[3] || '15';
-    const urlDate = new Date(`${m[1]}-${m[2]}-${dayPart}`);
+    const rawMonth = m[2].toLowerCase();
+    const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
+    if (!month) continue;
+    const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
+    const urlDate = new Date(`${m[1]}-${month}-${dayPart}`);
     if (isNaN(urlDate.getTime())) continue;
     const daysBefore = Math.round((windowStart - urlDate) / 86400000);
     const daysAfter = Math.round((urlDate - closing) / 86400000);

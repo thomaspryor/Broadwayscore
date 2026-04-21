@@ -66,6 +66,7 @@ const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_SERP = process.argv.includes('--skip-serp');
+const FORCE_SERP = process.argv.includes('--force-serp');
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
 // Escape hatches: bypass SERP discovery when discovery fails (wrong Google result, unindexed page)
@@ -83,6 +84,82 @@ function getThresholds(market) {
     MIN_T2_REVIEWS: isWE ? 2 : 3,
     MIN_HIGH_CONFIDENCE: isWE ? 6 : 8,
   };
+}
+
+/**
+ * Market-gated + time-tiered polling cadence.
+ *
+ * Returns one of: 'aggressive' | 'daily' | 'every-3d' | 'weekly' | 'skip'.
+ *
+ * Aggressive windows (SERP runs on every cron):
+ *   - Broadway:      0-14h post-opening (same-evening review drops)
+ *   - West End:      12-30h post-opening (next-morning UK drops)
+ *   - Off-Broadway/Off-West-End: none — reviews trickle over weeks
+ *
+ * Tiered cadence (SERP gated to morning slot only via shouldRunSerpForMode):
+ *   - Days 1-14:     daily
+ *   - Days 15-60:    every 3 days
+ *   - Days 61-90:    weekly
+ *   - Day 90+:       skip
+ *   - Pre-opening:   skip if >48h before opening
+ *
+ * Note: layers 1-3 (aggregators, RSS, SSR site search) still run unless mode='skip'.
+ * Only layer 4 (SERP, the expensive BD-backed layer) is gated by mode.
+ */
+function pollMode(show, now = new Date()) {
+  if (!show.openingDate) return 'daily'; // conservative default
+  const h = (now.getTime() - new Date(show.openingDate).getTime()) / 3600000;
+  const d = h / 24;
+  const cat = show.category || show.market || 'broadway';
+  const isBW = cat === 'broadway';
+  const isWE = cat === 'west-end';
+
+  if (h < -48) return 'skip';
+  if (d > 90) return 'skip';
+
+  if (isBW && h >= 0 && h < 14) return 'aggressive';
+  if (isWE && h >= 12 && h < 30) return 'aggressive';
+
+  if (d < 14) return 'daily';
+  if (d < 60) return 'every-3d';
+  return 'weekly';
+}
+
+/**
+ * Decide whether the expensive SERP layer (Layer 4) should run this cron fire,
+ * given the show's poll mode and the current UTC hour.
+ *
+ * - 'aggressive': always (let the 3h-since-opening gate in pollCycle control freshness)
+ * - 'daily':      only on the market's morning-cron slot
+ * - 'every-3d':   morning slot AND (daysSinceOpening % 3 === 0)
+ * - 'weekly':     morning slot AND (daysSinceOpening % 7 === 0)
+ * - 'skip':       never
+ *
+ * Morning-slot windows account for GitHub cron delay (~1-2h):
+ *   BW morning cron at 08:00 UTC fires ~09:00-10:00 UTC → accept 07-13 UTC
+ *   WE morning cron at 05:00 UTC fires ~06:00-07:00 UTC → accept 04-09 UTC
+ */
+function shouldRunSerpForMode(mode, show, now = new Date()) {
+  if (mode === 'skip') return false;
+  if (mode === 'aggressive') return true;
+
+  const cronHour = now.getUTCHours();
+  const cat = show.category || show.market || 'broadway';
+  const isWE = cat === 'west-end' || cat === 'off-west-end';
+  const inMorningSlot = isWE
+    ? (cronHour >= 4 && cronHour <= 9)
+    : (cronHour >= 7 && cronHour <= 13);
+
+  if (mode === 'daily') return inMorningSlot;
+
+  if (!show.openingDate) return inMorningSlot;
+  const daysSince = Math.floor(
+    (now.getTime() - new Date(show.openingDate).getTime()) / 86400000
+  );
+  if (daysSince < 0) return false;
+  if (mode === 'every-3d') return inMorningSlot && (daysSince % 3 === 0);
+  if (mode === 'weekly') return inMorningSlot && (daysSince % 7 === 0);
+  return false;
 }
 
 /**
@@ -392,8 +469,28 @@ async function runAggregators(show) {
   if (!isOffBroadway && !isWestEnd) {
     try {
       const showReviewDir = path.join(REVIEW_TEXTS_DIR, show.id);
-      const hasTbReview = fs.existsSync(showReviewDir)
-        && fs.readdirSync(showReviewDir).some(f => f.startsWith('talkinbroadway--'));
+      const tbFiles = fs.existsSync(showReviewDir)
+        ? fs.readdirSync(showReviewDir).filter(f => f.startsWith('talkinbroadway--'))
+        : [];
+      // Stale-URL guard: if every existing TB file has an empty URL OR its URL
+      // doesn't match TB's canonical CamelCase format (/page/world/CamelCase.html
+      // or /page/world/CamelCase2026.html), treat it as "no good URL yet" and
+      // re-run discovery. FA had fallenangels2026.html hand-entered but TB
+      // published it as FallenAngels.html — lowercased slugs are 404s on TB.
+      // Regex requires first slug char to be uppercase (TB's actual URL convention).
+      const TB_URL_PATTERN = /^https?:\/\/(www\.)?talkinbroadway\.com\/page\/world\/[A-Z][A-Za-z0-9]*\.html$/;
+      const looksOk = (url) => typeof url === 'string' && url && TB_URL_PATTERN.test(url);
+      let anyGoodUrl = false;
+      for (const f of tbFiles) {
+        try {
+          const rec = JSON.parse(fs.readFileSync(path.join(showReviewDir, f), 'utf8'));
+          if (looksOk(rec.url)) { anyGoodUrl = true; break; }
+        } catch { /* ignore parse errors, treat as no good URL */ }
+      }
+      const hasTbReview = tbFiles.length > 0 && anyGoodUrl;
+      if (tbFiles.length > 0 && !anyGoodUrl) {
+        console.log(`  Talkin' Broadway: ${tbFiles.length} existing file(s) but URL looks stale/invalid — re-running discovery`);
+      }
       if (hasTbReview) {
         console.log('  Talkin\' Broadway: already have review file, skipping');
       } else {
@@ -1261,14 +1358,17 @@ async function pollCycle() {
 
   const siteSearchResults = [...ssrSiteSearchResults, ...jsSiteSearchResults];
 
-  // ── Layer 4: SERP — gated by time since opening ──
-  // SERP indexes major outlets ~3h after publication (measured: Giant/Proof opening nights).
-  // Skip entirely until 3h after openingDate — calls before then return nothing.
-  // After the gate, SERP runs every poll cycle. Each poller dispatch is a fresh CI runner
-  // so file-based interval tracking is ephemeral and unreliable. Instead, natural dedup
-  // handles redundancy: getFoundOutletIds() excludes already-found outlets from the SERP
-  // queue, so each outlet is only SERP'd until found, then never again.
+  // ── Layer 4: SERP — gated by (a) 3h since opening AND (b) market+time cadence ──
+  // (a) SERP indexes major outlets ~3h after publication (measured: Giant/Proof opening nights).
+  //     Skip entirely until 3h after openingDate — calls before then return nothing.
+  // (b) Beyond the 3h gate, market/time cadence (pollMode + shouldRunSerpForMode) decides.
+  //     Aggressive window (BW 0-14h, WE 12-30h): run every cron fire.
+  //     Outside aggressive: gate to morning-cron slot, with day-cadence thinning further
+  //     for older shows (days 15-60 every 3d, 61-90 weekly, 90+ skip).
+  //     Keeps layers 1-3 (aggregators/RSS/SSR) running; only expensive SERP is thinned.
   const SERP_MIN_HOURS_AFTER_OPENING = 3;
+  const _mode = pollMode(show);
+  console.log(`  Poll mode: ${_mode}`);
 
   function shouldRunSerp() {
     if (!show.openingDate) return true; // No opening date — can't gate, run normally
@@ -1276,6 +1376,14 @@ async function pollCycle() {
     if (hoursSinceOpening < SERP_MIN_HOURS_AFTER_OPENING) {
       console.log(`\n[Layer 4] SERP Backup... SKIPPED (${hoursSinceOpening.toFixed(1)}h since opening, gate is ${SERP_MIN_HOURS_AFTER_OPENING}h)`);
       return false;
+    }
+    if (!FORCE_SERP && !shouldRunSerpForMode(_mode, show)) {
+      const cronHour = new Date().getUTCHours();
+      console.log(`\n[Layer 4] SERP Backup... SKIPPED (mode=${_mode}, UTC hour=${cronHour} — not a SERP slot for this cadence; pass --force-serp to bypass)`);
+      return false;
+    }
+    if (FORCE_SERP && !shouldRunSerpForMode(_mode, show)) {
+      console.log(`  --force-serp: bypassing cadence gate (mode=${_mode})`);
     }
     return true;
   }
@@ -1295,6 +1403,35 @@ async function pollCycle() {
     const daysSinceOpening = show.openingDate
       ? (Date.now() - new Date(show.openingDate).getTime()) / 86400000
       : 999;
+
+    // Broadway T3 SERP: ~12 historically high-activity Broadway T3 outlets
+    // Curated by 2024-26 review count (covers ~85% of T3 volume vs 800+ total).
+    // One Minute Critic added after Proof opening-night miss (2026-04-17).
+    // Same 3h SERP gate as T1/T2 — Broadway T3 outlets DO publish opening night.
+    // Cost: T3 sorted last, capped by 30/cycle budget. Once found, getFoundOutletIds
+    // excludes them next cycle → natural decay.
+    if (market === 'broadway') {
+      const BROADWAY_T3_SERP_OUTLETS = [
+        'theater-scene', 'theater-life', 'culturesauce', 'front-row-center',
+        'pages-on-stages', 'one-minute-critic', 'theatre-reviews-limited',
+        'cititour', 'digital-journal', 'stageandcinema', 'frontmezzjunkies',
+        'exeunt-magazine', 'cote-notices',
+      ];
+      const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+      const allOutlets = reg.outlets || reg;
+      let added = 0;
+      for (const t3Id of BROADWAY_T3_SERP_OUTLETS) {
+        if (foundOutletIds.has(t3Id.toLowerCase())) continue;
+        const outlet = allOutlets[t3Id];
+        if (outlet) {
+          missingOutlets.push({ id: t3Id, name: outlet.displayName || t3Id, tier: outlet.tier || 3, domain: outlet.domain });
+          added++;
+        }
+      }
+      if (added > 0) console.log(`  [Broadway T3 SERP: queued ${added} high-activity outlets]`);
+      missingOutlets.sort((a, b) => (a.tier || 3) - (b.tier || 3));
+    }
+
     if (isLondonMarket(market) && daysSinceOpening < 1) {
       console.log(`  [T3 SERP skipped: opening night (${daysSinceOpening.toFixed(1)} days). T3 outlets added after 24h]`);
     }
@@ -1413,4 +1550,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode };

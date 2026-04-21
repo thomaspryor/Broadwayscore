@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-04T20:17:25.382Z",
+  "generatedAt": "2026-04-20T00:49:49.177Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -17794,97 +17794,154 @@
       "slug": "wicked",
       "openingDate": "2003-10-30",
       "status": "open",
-      "capitalization": 14000000,
-      "capitalizationSource": "Playbill article dated 2004-12-21 states 'whopping $14 million capitalization'; corroborated by BroadwayWorld article dated 2025-01-06",
-      "weeklyRunningCost": null,
+      "researchedAt": "2026-04-19T08:54:55.079Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
+    },
+    "death-of-a-salesman": {
+      "capitalization": 9058744,
+      "capitalizationSource": "NYC theatrical production tax credit listing ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Salesman%20Production%20Services%20Corporation%20,%242%2C264%2C686))",
+      "weeklyRunningCost": 600000,
       "costMethodology": "industry-estimate",
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Fizzle",
+      "notes": "Tax-credit data imply ~$9.06M budget ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=Salesman%20Production%20Services%20Corporation%20,%242%2C264%2C686)); limited 14-week run (Apr–Aug 2026) with no reported recoup.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        }
+      ],
+      "title": "Death of a Salesman",
+      "slug": "death-of-a-salesman",
+      "openingDate": "2026-04-09",
+      "status": "open",
+      "researchedAt": "2026-04-19T22:07:43.501Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "agatha-christies-black-coffee-grounds-for-murder-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "The production ran only Apr 18–26, 2026 ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Agatha-ChristiesBLACK-COFFEE-GROUNDS-FOR-MURDER-to-Runat-Players-Theatre-in-April-20260315#:~:text=Agatha%20Christie%27s%20Black%20Coffee%3A%20Grounds,April%2018%20through%2026%2C%202026)) ([broadwayscorecard.com](https://broadwayscorecard.com/show/agatha-christies-black-coffee-grounds-for-murder-off-broadway#:~:text=Opens%20Apr%2018%2C%202026)). No budget or cost data is available, and it closed after one week, indicating it did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/Agatha-ChristiesBLACK-COFFEE-GROUNDS-FOR-MURDER-to-Runat-Players-Theatre-in-April-20260315",
+          "date": "2026-03-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwayscorecard.com/show/agatha-christies-black-coffee-grounds-for-murder-off-broadway",
+          "date": "2026-03-27"
+        }
+      ],
+      "title": "Agatha Christie's Black Coffee: Grounds for Murder",
+      "slug": "agatha-christies-black-coffee-grounds-for-murder-off-broadway",
+      "openingDate": "2026-04-18",
+      "status": "open",
+      "researchedAt": "2026-04-19T22:42:25.039Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "cat-cohen-broad-strokes-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Limited Off-Broadway run was planned but closed in previews without opening; no financial figures have been released.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/cat-cohens-broad-strokes-will-have-limited-off-broadway-run",
+          "date": "2026-04-16"
+        }
+      ],
+      "title": "Cat Cohen: Broad Strokes",
+      "slug": "cat-cohen-broad-strokes-off-broadway",
+      "openingDate": null,
+      "status": "previews",
+      "researchedAt": "2026-04-19T23:41:36.861Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "titanique": {
+      "capitalization": 9500000,
+      "capitalizationSource": "Broadway Journal (Feb 2026)",
+      "weeklyRunningCost": 900000,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "Titanique was staged on a ~$9.5M budget and needed roughly ~$900K/week to break even ([www.broadwayjournal.com](https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?isFreemail=true&publication_id=7178918&triedRedirect=true#:~:text=Price%20called%20the%20Broadway%20production,Securities%20and%20Exchange%20Commission%20filings)).  It ran a fixed 16-week limited engagement and there is no public evidence of recoupment; it almost certainly did not recoup its capital.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?publication_id=7178918",
+          "date": "2026-02-20"
+        }
+      ],
+      "title": "Titanique",
+      "slug": "titanique",
+      "openingDate": "2026-04-12",
+      "status": "open",
+      "researchedAt": "2026-04-19T23:44:03.890Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
+    },
+    "mamma-mia-west-end": {
+      "capitalization": 10000000,
+      "capitalizationSource": "Playbill (reporting that Mamma Mia! recouped its $10M Broadway investment) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks))",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
       "recouped": true,
-      "recoupedDate": "2004-12",
-      "recoupedSource": "Playbill article dated 2004-12-21 headline states 'Wicked Within Days of Recouping Investment' and notes it 'will recoup its entire initial investment by the end of the year'",
-      "designation": "Miracle",
-      "notes": "Wicked opened October 30, 2003 at the Gershwin Theatre with a $14 million capitalization. It recouped its full investment by end of December 2004, roughly 14 months after opening. The show has continued its run for over 20 years, qualifying it as a mega-hit. No weekly running cost figure was explicitly stated in the evidence.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/wicked-within-days-of-recouping-investment-com-123211",
-          "date": "2004-12-21"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
-          "date": "2025-01-06"
-        }
+      "recoupedDate": "2002-05",
+      "recoupedSource": "Playbill (reporting recoupment of the $10M investment in <28 weeks) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks))",
+      "estimatedRecoupmentPct": [
+        100,
+        100
       ],
+      "designation": "Miracle",
+      "notes": "Original Broadway production recouped $10M in under 28 weeks (by May 2002) ([playbill.com](https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096#:~:text=Mamma%20Mia%21%20is%20officially%20a,less%20than%2028%20weeks)). No confirmed weekly nut found.",
       "confidence": "high",
-      "researchedAt": "2026-04-19T21:24:35.396Z"
-    },
-    "the-lion-king-1997": {
-      "title": "The Lion King",
-      "slug": "the-lion-king",
-      "openingDate": "1997-11-13",
-      "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Miracle",
-      "notes": "The Lion King has been running on Broadway since 1997 and remains one of the longest-running and highest-grossing shows in Broadway history. However, none of the evidence provided explicitly states the show's capitalization, weekly running costs, or specific recoupment date. The Facebook/Yahoo reference mentions Jason Weaver making back 'well above' an amount related to Lion King royalties, but this does not constitute explicit production financial data. The show's decades-long run and cultural status strongly support a 'Miracle' designation, but no specific financial figures can be confirmed from the evidence provided.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.nytix.com/articles/top-10-most-expensive-broadway-shows",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
-          "date": "2025-09-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://thehustle.co/the-economics-of-broadway-shows",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.facebook.com/yahoonews/posts/a-quarter-of-a-century-later-jason-weaver-has-made-back-well-above-the-19-millio/10158644350326037/",
-          "date": null
+          "url": "https://playbill.com/article/money-money-money-hit-mamma-mia-recoups-its-investment-com-106096",
+          "date": "2002-05-29"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-04-19T21:25:59.836Z"
-    },
-    "chicago-1996": {
-      "title": "Chicago",
-      "slug": "chicago",
-      "openingDate": "1996-11-14",
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "Mamma Mia!",
+      "slug": "mamma-mia-west-end",
+      "openingDate": "1999-04-06",
       "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "Miracle",
-      "notes": "Chicago (1996 revival) is the longest-running American musical in Broadway history, still running at the Ambassador Theatre since November 1996. However, none of the evidence provided contains explicit financial data regarding capitalization, weekly running costs, or recoupment. The show's extraordinary longevity strongly suggests recoupment many times over, but no specific financial figures can be extracted from the provided sources. The Miracle designation is applied based on the well-documented record-breaking run length, though no financial metrics are directly confirmed by the evidence.",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
-          "date": "2025-01-06"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.facebook.com/yahooentertainment/posts/chicago-on-broadway-is-seeing-historic-box-office-numbers-following-secret-lives/1306652791335245/",
-          "date": null
-        }
-      ],
-      "confidence": "low",
-      "researchedAt": "2026-04-19T21:26:42.863Z"
+      "researchedAt": "2026-04-20T00:49:49.177Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "backlog"
     }
   }
 }

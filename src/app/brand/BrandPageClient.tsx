@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 type Swatch = {
   name: string;
@@ -190,6 +190,7 @@ export default function BrandPageClient() {
           <a href="#canva" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Canva Setup</a>
           <a href="#buffer" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Buffer</a>
           <a href="#downloads" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Downloads</a>
+          <a href="#builder" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Badge Builder</a>
           <a href="#attribution" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Attribution</a>
           <a href="#code" className="px-3 py-1.5 bg-surface-raised rounded-pill border border-white/10 hover:border-white/20 transition-colors">Code</a>
         </div>
@@ -339,8 +340,31 @@ export default function BrandPageClient() {
 
         {/* Downloads */}
         <div id="downloads">
-          <Section title="Downloads" description="Raw assets for design tools. Right-click → Save As.">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <Section title="Downloads" description="Ready-made PNGs for social, press, partners. Click any tile to download, or grab the full kit as a zip.">
+            {/* Big kit-zip button */}
+            <a
+              href="/brand-kit/broadway-scorecard-brand-kit.zip"
+              download="broadway-scorecard-brand-kit.zip"
+              className="block mb-6 rounded-card bg-gradient-to-br from-brand/20 to-surface-raised border border-brand/30 hover:border-brand transition-colors p-5 sm:p-6 group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-brand/20 flex items-center justify-center">
+                  <svg className="w-6 h-6 sm:w-7 sm:h-7 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
+                  </svg>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-base sm:text-lg font-bold text-white group-hover:text-brand transition-colors">Download Entire Brand Kit</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-0.5">52 PNGs · logos, score/grade badges, social templates · 8.2 MB zip</div>
+                </div>
+                <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-pill bg-brand text-white text-xs font-bold group-hover:bg-brand-hover transition-colors">
+                  Get kit
+                </span>
+              </div>
+            </a>
+
+            {/* Reference downloads */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               <DownloadTile
                 title="Palette Reference (SVG)"
                 description="One-page color reference. Upload to Canva's Brand Kit as a logo asset."
@@ -353,19 +377,24 @@ export default function BrandPageClient() {
                 href="/brand-tokens.json"
                 filename="bwsc-brand-tokens.json"
               />
-              <DownloadTile
-                title="Fantasy League Logo (PNG)"
-                description="BFL shield for fantasy-league-related posts."
-                href="/images/fantasy/bfl-logo.png"
-                filename="bfl-logo.png"
-              />
-              <DownloadTile
-                title="OG Image (PNG)"
-                description="Default social card — 1200×630."
-                href="/og/home.png"
-                filename="bwsc-og.png"
-              />
             </div>
+
+            {/* Asset galleries */}
+            <AssetGallery title="Logos" assets={logoAssets} />
+            <AssetGallery title="Score Badges" assets={scoreBadgeAssets} columns="md" />
+            <AssetGallery title="Audience Grade Badges" assets={gradeBadgeAssets} columns="md" />
+            <AssetGallery title="Reference Sheets" assets={referenceAssets} />
+            <AssetGallery title="Social Templates" assets={socialAssets} />
+          </Section>
+        </div>
+
+        {/* Custom badge builder */}
+        <div id="builder">
+          <Section
+            title="Badge Builder"
+            description="Make a custom score badge for any show. Pick a score, pick a background, download the PNG."
+          >
+            <BadgeBuilder />
           </Section>
         </div>
 
@@ -458,6 +487,496 @@ function CanvaCopyRow({ name, hex }: { name: string; hex: string }) {
         {copied ? 'Copied' : 'Copy'}
       </span>
     </button>
+  );
+}
+
+type Asset = {
+  label: string;
+  filename: string;
+  sub?: string;
+  transparent?: boolean;
+  lightBg?: boolean;
+  aspect?: 'square' | 'wide' | 'tall';
+};
+
+const logoAssets: Asset[] = [
+  { label: 'Broadway Wordmark', sub: 'Dark background', filename: 'logos/broadway-wordmark-dark.png', aspect: 'wide' },
+  { label: 'Broadway Wordmark', sub: 'Transparent', filename: 'logos/broadway-wordmark-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'Broadway Wordmark', sub: 'Light background', filename: 'logos/broadway-wordmark-light.png', lightBg: true, aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Dark background', filename: 'logos/west-end-wordmark-dark.png', aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Transparent', filename: 'logos/west-end-wordmark-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'West End Wordmark', sub: 'Light background', filename: 'logos/west-end-wordmark-light.png', lightBg: true, aspect: 'wide' },
+  { label: 'App Icon', sub: 'Dark', filename: 'logos/icon-dark.png', aspect: 'square' },
+  { label: 'App Icon', sub: 'Transparent', filename: 'logos/icon-transparent.png', transparent: true, aspect: 'square' },
+];
+
+const scoreBadgeAssets: Asset[] = [
+  { label: 'Critical Gold', sub: 'Score 83–100', filename: 'score-badges/critical-gold-87-dark.png' },
+  { label: 'Critical Gold', sub: 'Transparent', filename: 'score-badges/critical-gold-87-transparent.png', transparent: true },
+  { label: 'Recommended', sub: 'Score 75–82', filename: 'score-badges/recommended-79-dark.png' },
+  { label: 'Recommended', sub: 'Transparent', filename: 'score-badges/recommended-79-transparent.png', transparent: true },
+  { label: 'Worth Seeing', sub: 'Score 65–74', filename: 'score-badges/worth-seeing-70-dark.png' },
+  { label: 'Worth Seeing', sub: 'Transparent', filename: 'score-badges/worth-seeing-70-transparent.png', transparent: true },
+  { label: 'Skippable', sub: 'Score 55–64', filename: 'score-badges/skippable-60-dark.png' },
+  { label: 'Skippable', sub: 'Transparent', filename: 'score-badges/skippable-60-transparent.png', transparent: true },
+  { label: 'Stay Away', sub: 'Score < 55', filename: 'score-badges/stay-away-45-dark.png' },
+  { label: 'Stay Away', sub: 'Transparent', filename: 'score-badges/stay-away-45-transparent.png', transparent: true },
+];
+
+const gradeLetters: Array<[string, string]> = [
+  ['Aplus', 'A+'], ['A', 'A'], ['Aminus', 'A−'],
+  ['Bplus', 'B+'], ['B', 'B'], ['Bminus', 'B−'],
+  ['Cplus', 'C+'], ['C', 'C'], ['Cminus', 'C−'],
+  ['D', 'D'], ['F', 'F'],
+];
+
+const gradeBadgeAssets: Asset[] = gradeLetters.flatMap(([slug, display]) => [
+  { label: `Grade ${display}`, sub: 'Dark', filename: `grade-badges/grade-${slug}-dark.png` as string },
+  { label: `Grade ${display}`, sub: 'Transparent', filename: `grade-badges/grade-${slug}-transparent.png` as string, transparent: true },
+]);
+
+const referenceAssets: Asset[] = [
+  { label: 'Score Tiers Overview', sub: 'All 5 critic tiers · dark', filename: 'references/score-tiers-dark.png', aspect: 'wide' },
+  { label: 'Score Tiers Overview', sub: 'Transparent', filename: 'references/score-tiers-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'Grade Tiers Overview', sub: 'All 11 audience grades · dark', filename: 'references/grade-tiers-dark.png', aspect: 'wide' },
+  { label: 'Grade Tiers Overview', sub: 'Transparent', filename: 'references/grade-tiers-transparent.png', transparent: true, aspect: 'wide' },
+];
+
+const socialAssets: Asset[] = [
+  { label: 'Instagram Square', sub: 'Broadway · 1080×1080', filename: 'social/broadway-instagram-square-1080x1080.png', aspect: 'square' },
+  { label: 'Instagram Story', sub: 'Broadway · 1080×1920', filename: 'social/broadway-instagram-story-1080x1920.png', aspect: 'tall' },
+  { label: 'OG / Link Preview', sub: 'Broadway · 1200×630', filename: 'social/broadway-og-1200x630.png', aspect: 'wide' },
+  { label: 'Twitter Header', sub: 'Broadway · 1500×500', filename: 'social/broadway-twitter-header-1500x500.png', aspect: 'wide' },
+  { label: 'Instagram Square', sub: 'West End · 1080×1080', filename: 'social/west-end-instagram-square-1080x1080.png', aspect: 'square' },
+  { label: 'Instagram Story', sub: 'West End · 1080×1920', filename: 'social/west-end-instagram-story-1080x1920.png', aspect: 'tall' },
+  { label: 'OG / Link Preview', sub: 'West End · 1200×630', filename: 'social/west-end-og-1200x630.png', aspect: 'wide' },
+  { label: 'Twitter Header', sub: 'West End · 1500×500', filename: 'social/west-end-twitter-header-1500x500.png', aspect: 'wide' },
+];
+
+function AssetGallery({ title, assets, columns = 'default' }: { title: string; assets: Asset[]; columns?: 'default' | 'md' }) {
+  const gridClass = columns === 'md'
+    ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'
+    : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
+  return (
+    <div className="mb-8">
+      <h3 className="text-sm font-bold uppercase tracking-wider text-gray-300 mb-3">{title} <span className="text-gray-500 font-normal">· {assets.length}</span></h3>
+      <div className={gridClass}>
+        {assets.map(a => <AssetTile key={a.filename} asset={a} />)}
+      </div>
+    </div>
+  );
+}
+
+function AssetTile({ asset }: { asset: Asset }) {
+  const href = `/brand-kit/${asset.filename}`;
+  const downloadName = asset.filename.split('/').pop()!;
+  const aspectClass = asset.aspect === 'tall'
+    ? 'aspect-[9/16]'
+    : asset.aspect === 'wide'
+    ? 'aspect-[16/9]'
+    : 'aspect-square';
+  const checker = asset.transparent
+    ? 'bg-[length:16px_16px] bg-[linear-gradient(45deg,rgba(255,255,255,0.04)_25%,transparent_25%),linear-gradient(-45deg,rgba(255,255,255,0.04)_25%,transparent_25%),linear-gradient(45deg,transparent_75%,rgba(255,255,255,0.04)_75%),linear-gradient(-45deg,transparent_75%,rgba(255,255,255,0.04)_75%)] bg-[position:0_0,0_8px,8px_-8px,-8px_0px]'
+    : '';
+  const tileBg = asset.lightBg ? 'bg-white' : 'bg-surface';
+  return (
+    <a
+      href={href}
+      download={downloadName}
+      className="block rounded-card overflow-hidden border border-white/5 hover:border-brand/50 bg-surface-raised transition-colors group"
+    >
+      <div className={`${aspectClass} ${checker} flex items-center justify-center overflow-hidden ${tileBg}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={href}
+          alt={`${asset.label}${asset.sub ? ' — ' + asset.sub : ''}`}
+          loading="lazy"
+          className="max-w-full max-h-full object-contain"
+        />
+      </div>
+      <div className="p-3 flex items-center justify-between gap-2">
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-semibold text-white truncate group-hover:text-brand transition-colors">{asset.label}</div>
+          {asset.sub && <div className="text-[10px] text-gray-500 truncate">{asset.sub}</div>}
+        </div>
+        <svg className="w-4 h-4 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M12 4v12m-4-4l4 4 4-4" />
+        </svg>
+      </div>
+    </a>
+  );
+}
+
+function tierForScore(score: number): { key: string; label: string; desc: string; tint: string; crown: boolean; badgeStyle: React.CSSProperties; textColor: string } {
+  if (score >= 83) return {
+    key: 'critical-gold', label: 'Critical Gold', desc: 'Drop-everything great', tint: '#DAA520', crown: true,
+    textColor: '#1a1a1a',
+    badgeStyle: {
+      background: 'linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%)',
+      boxShadow: '0 0 24px rgba(218,165,32,0.55),0 0 12px rgba(255,215,0,0.4),0 4px 12px rgba(0,0,0,0.3),inset 0 2px 0 rgba(255,255,255,0.3)',
+      border: '2px solid #C8960E',
+    },
+  };
+  if (score >= 75) return {
+    key: 'recommended', label: 'Recommended', desc: 'Strong choice', tint: '#22c55e', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#22c55e', boxShadow: '0 2px 8px rgba(34,197,94,0.3)' },
+  };
+  if (score >= 65) return {
+    key: 'worth-seeing', label: 'Worth Seeing', desc: 'Good, with caveats', tint: '#14b8a6', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#14b8a6', boxShadow: '0 2px 8px rgba(20,184,166,0.3)' },
+  };
+  if (score >= 55) return {
+    key: 'skippable', label: 'Skippable', desc: 'Fine to miss', tint: '#d97706', crown: false,
+    textColor: '#1a1a1a',
+    badgeStyle: { backgroundColor: '#d97706', boxShadow: '0 2px 8px rgba(217,119,6,0.3)' },
+  };
+  return {
+    key: 'stay-away', label: 'Stay Away', desc: 'Save your time', tint: '#ef4444', crown: false,
+    textColor: '#ffffff',
+    badgeStyle: { backgroundColor: '#ef4444', boxShadow: '0 2px 8px rgba(239,68,68,0.3)' },
+  };
+}
+
+function rangeForScore(score: number): string {
+  if (score >= 83) return '83\u2013100';
+  if (score >= 75) return '75\u201382';
+  if (score >= 65) return '65\u201374';
+  if (score >= 55) return '55\u201364';
+  return '< 55';
+}
+
+const SYSTEM_FONT = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif";
+
+function roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+  const rr = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + rr, y);
+  ctx.lineTo(x + w - rr, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+  ctx.lineTo(x + w, y + h - rr);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+  ctx.lineTo(x + rr, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+  ctx.lineTo(x, y + rr);
+  ctx.quadraticCurveTo(x, y, x + rr, y);
+  ctx.closePath();
+}
+
+function drawBadgeCanvas(opts: {
+  score: number;
+  transparent: boolean;
+  showLabel: boolean;
+  pixelRatio?: number;
+}): HTMLCanvasElement {
+  const { score, transparent, showLabel } = opts;
+  const dpr = opts.pixelRatio ?? 2;
+  const tier = tierForScore(score);
+  const range = rangeForScore(score);
+
+  const padX = 48;
+  const padTop = 40;
+  const padBottom = 32;
+  const badgeSize = 220;
+  const labelGap = 20;
+  const descGap = 4;
+  const rangeGap = 2;
+  const labelHeight = 18;
+  const descHeight = 14;
+  const rangeHeight = 12;
+
+  const cssWidth = badgeSize + padX * 2;
+  const labelBlock = showLabel ? labelGap + labelHeight + descGap + descHeight + rangeGap + rangeHeight : 0;
+  const cssHeight = padTop + badgeSize + labelBlock + padBottom;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(cssWidth * dpr);
+  canvas.height = Math.round(cssHeight * dpr);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return canvas;
+  ctx.scale(dpr, dpr);
+
+  if (!transparent) {
+    ctx.fillStyle = '#0f0f14';
+    ctx.fillRect(0, 0, cssWidth, cssHeight);
+  }
+
+  const badgeX = (cssWidth - badgeSize) / 2;
+  const badgeY = padTop;
+  const radius = 36;
+
+  ctx.save();
+  ctx.shadowColor = tier.key === 'critical-gold'
+    ? 'rgba(218,165,32,0.55)'
+    : tier.key === 'recommended' ? 'rgba(34,197,94,0.35)'
+    : tier.key === 'worth-seeing' ? 'rgba(20,184,166,0.35)'
+    : tier.key === 'skippable' ? 'rgba(217,119,6,0.35)'
+    : 'rgba(239,68,68,0.35)';
+  ctx.shadowBlur = tier.key === 'critical-gold' ? 24 : 10;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = tier.key === 'critical-gold' ? 4 : 2;
+
+  roundedRectPath(ctx, badgeX, badgeY, badgeSize, badgeSize, radius);
+
+  if (tier.key === 'critical-gold') {
+    const grad = ctx.createLinearGradient(badgeX, badgeY, badgeX + badgeSize, badgeY + badgeSize);
+    grad.addColorStop(0, '#DAA520');
+    grad.addColorStop(0.3, '#FFD700');
+    grad.addColorStop(0.5, '#FFF0A0');
+    grad.addColorStop(0.7, '#FFD700');
+    grad.addColorStop(1, '#DAA520');
+    ctx.fillStyle = grad;
+  } else {
+    ctx.fillStyle = tier.tint;
+  }
+  ctx.fill();
+  ctx.restore();
+
+  if (tier.key === 'critical-gold') {
+    ctx.save();
+    roundedRectPath(ctx, badgeX, badgeY, badgeSize, badgeSize, radius);
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#C8960E';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  ctx.save();
+  ctx.fillStyle = tier.textColor;
+  ctx.font = `700 96px ${SYSTEM_FONT}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(String(score), badgeX + badgeSize / 2, badgeY + badgeSize / 2 + 4);
+  ctx.restore();
+
+  if (tier.crown) {
+    ctx.save();
+    const crownW = 38;
+    const crownH = 18;
+    const crownX = badgeX + badgeSize / 2 - crownW / 2;
+    const crownY = badgeY - 16;
+    const scale = crownW / 24;
+    ctx.translate(crownX, crownY);
+    ctx.scale(scale, scale);
+    ctx.fillStyle = 'rgba(255,215,0,0.9)';
+    ctx.beginPath();
+    ctx.moveTo(2, 13);
+    ctx.lineTo(5, 5);
+    ctx.lineTo(9, 8);
+    ctx.lineTo(12, 1);
+    ctx.lineTo(15, 8);
+    ctx.lineTo(19, 5);
+    ctx.lineTo(22, 13);
+    ctx.closePath();
+    ctx.fill();
+    // suppress unused
+    void crownH;
+    ctx.restore();
+  }
+
+  if (showLabel) {
+    const labelY = badgeY + badgeSize + labelGap + labelHeight / 2;
+    const descY = labelY + labelHeight / 2 + descGap + descHeight / 2;
+    const rangeY = descY + descHeight / 2 + rangeGap + rangeHeight / 2;
+
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    ctx.fillStyle = tier.tint;
+    ctx.font = `700 18px ${SYSTEM_FONT}`;
+    const label = tier.label.toUpperCase();
+    const letterSpacing = 1.5;
+    const chars = label.split('');
+    let totalW = 0;
+    chars.forEach((ch, i) => {
+      totalW += ctx.measureText(ch).width;
+      if (i < chars.length - 1) totalW += letterSpacing;
+    });
+    let cx = cssWidth / 2 - totalW / 2;
+    chars.forEach((ch, i) => {
+      const w = ctx.measureText(ch).width;
+      ctx.fillText(ch, cx + w / 2, labelY);
+      cx += w + (i < chars.length - 1 ? letterSpacing : 0);
+    });
+
+    ctx.fillStyle = '#9ca3af';
+    ctx.font = `400 14px ${SYSTEM_FONT}`;
+    ctx.fillText(tier.desc, cssWidth / 2, descY);
+
+    ctx.fillStyle = '#6b7280';
+    ctx.font = `400 12px ${SYSTEM_FONT}`;
+    ctx.fillText(range, cssWidth / 2, rangeY);
+
+    ctx.restore();
+  }
+
+  return canvas;
+}
+
+function BadgeBuilder() {
+  const [score, setScore] = useState(85);
+  const [transparent, setTransparent] = useState(false);
+  const [showLabel, setShowLabel] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const previewRef = useRef<HTMLDivElement>(null);
+
+  const clamped = Math.max(0, Math.min(100, Math.round(score)));
+  const tier = tierForScore(clamped);
+  const range = rangeForScore(clamped);
+
+  const download = async () => {
+    setBusy(true);
+    setErr(null);
+    try {
+      const canvas = drawBadgeCanvas({ score: clamped, transparent, showLabel, pixelRatio: 2 });
+      const dataUrl = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      const variant = transparent ? 'transparent' : 'dark';
+      link.download = `bwsc-score-${clamped}-${variant}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : 'Download failed');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const checkerStyle: React.CSSProperties = transparent
+    ? {
+        backgroundImage:
+          'linear-gradient(45deg,rgba(255,255,255,0.06) 25%,transparent 25%),' +
+          'linear-gradient(-45deg,rgba(255,255,255,0.06) 25%,transparent 25%),' +
+          'linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.06) 75%),' +
+          'linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.06) 75%)',
+        backgroundSize: '16px 16px',
+        backgroundPosition: '0 0, 0 8px, 8px -8px, -8px 0px',
+      }
+    : {};
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4">
+      {/* Controls */}
+      <div className="rounded-card bg-surface-raised border border-white/5 p-5 space-y-5 self-start">
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-gray-400 block mb-2">Score</label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={score}
+              onChange={e => setScore(Number(e.target.value || 0))}
+              className="w-20 px-3 py-2 rounded-lg bg-surface border border-white/10 text-white text-lg font-bold text-center focus:outline-none focus:border-brand/60"
+            />
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={clamped}
+              onChange={e => setScore(Number(e.target.value))}
+              className="flex-1"
+              aria-label="Score slider"
+            />
+          </div>
+          <div className="text-[11px] text-gray-500 mt-2">Tier: <span style={{ color: tier.tint }} className="font-semibold">{tier.label}</span> · Range {range}</div>
+        </div>
+
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-gray-400 block mb-2">Background</label>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => setTransparent(false)}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${!transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+            >
+              Dark
+            </button>
+            <button
+              type="button"
+              onClick={() => setTransparent(true)}
+              className={`py-2 px-3 rounded-lg text-xs font-semibold transition-colors ${transparent ? 'bg-brand text-white' : 'bg-surface border border-white/10 text-gray-300 hover:border-white/20'}`}
+            >
+              Transparent
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label className="flex items-center gap-2 text-xs text-gray-300 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={showLabel}
+              onChange={e => setShowLabel(e.target.checked)}
+              className="accent-brand"
+            />
+            <span>Include tier label (Critical Gold, Recommended, &hellip;)</span>
+          </label>
+        </div>
+
+        <button
+          type="button"
+          onClick={download}
+          disabled={busy}
+          className="w-full py-3 px-4 rounded-lg bg-brand hover:bg-brand-hover text-white font-bold text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {busy ? 'Rendering\u2026' : 'Download PNG'}
+        </button>
+        {err && <div className="text-xs text-red-400">{err}</div>}
+        <div className="text-[11px] text-gray-500 leading-relaxed">
+          Rendered client-side at 2&times; pixel ratio. Matches the kit badges above but may differ very slightly in font anti-aliasing.
+        </div>
+      </div>
+
+      {/* Preview */}
+      <div
+        className="rounded-card border border-white/5 overflow-hidden min-h-[280px] flex items-center justify-center p-4"
+        style={{ background: transparent ? undefined : '#0f0f14', ...checkerStyle }}
+      >
+        <div ref={previewRef} style={{ padding: '40px 48px 32px', display: 'inline-block', background: transparent ? 'transparent' : '#0f0f14' }}>
+          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+            {tier.crown && (
+              <svg viewBox="0 0 24 14" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '-16px', width: 38, height: 18, zIndex: 2 }}>
+                <path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.9" />
+              </svg>
+            )}
+            <div
+              style={{
+                width: 220,
+                height: 220,
+                borderRadius: 36,
+                fontSize: 96,
+                fontWeight: 700,
+                color: tier.textColor,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif",
+                ...tier.badgeStyle,
+              }}
+            >
+              {clamped}
+            </div>
+          </div>
+          {showLabel && (
+            <>
+              <div style={{ marginTop: 20, textAlign: 'center', fontWeight: 700, fontSize: 18, letterSpacing: 1.5, textTransform: 'uppercase', color: tier.tint, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {tier.label}
+              </div>
+              <div style={{ textAlign: 'center', fontSize: 14, color: '#9ca3af', marginTop: 4, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {tier.desc}
+              </div>
+              <div style={{ textAlign: 'center', fontSize: 12, color: '#6b7280', marginTop: 2, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif" }}>
+                {range}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

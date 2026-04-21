@@ -190,6 +190,15 @@ export function getScoreBgColor(score: number | null, category?: string): string
  * T3-only shows (no T1/T2 reviews) require extra reviews for qualification.
  */
 export function hasEnoughReviews(reviewCount: number, category?: string, tier1And2Count?: number): boolean {
+  return reviewsRemainingForScore(reviewCount, category, tier1And2Count) === 0;
+}
+
+/**
+ * How many more reviews are needed before a score can be displayed.
+ * Returns 0 when the show already qualifies. Mirrors `hasEnoughReviews` —
+ * if you change the threshold logic, change it here too.
+ */
+export function reviewsRemainingForScore(reviewCount: number, category?: string, tier1And2Count?: number): number {
   let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
     : category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_OFF_WEST_END
     : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
@@ -197,7 +206,7 @@ export function hasEnoughReviews(reviewCount: number, category?: string, tier1An
   if (tier1And2Count !== undefined && tier1And2Count === 0) {
     min += T3_ONLY_EXTRA_REVIEWS;
   }
-  return reviewCount >= min;
+  return Math.max(0, min - reviewCount);
 }
 
 // ===========================================

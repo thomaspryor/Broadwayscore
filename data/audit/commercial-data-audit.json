@@ -1,15 +1,15 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-04-19T20:51:00.641Z",
+    "generatedAt": "2026-04-20T00:56:09.858Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 143,
+    "totalEntries": 182,
     "totalShowsInShowsJson": 2448,
     "matchStats": {
-      "matchedBySlug": 138,
-      "matchedById": 5,
+      "matchedBySlug": 169,
+      "matchedById": 13,
       "orphaned": 0
     },
     "designationDistribution": {
@@ -17,22 +17,22 @@
       "Windfall": 19,
       "Trickle": 3,
       "Fizzle": 22,
-      "Flop": 35,
+      "Flop": 65,
       "Easy Winner": 15,
-      "TBD": 17,
-      "Nonprofit": 21,
+      "TBD": 24,
+      "Nonprofit": 23,
       "Tour Stop": 2
     },
     "recoupmentStats": {
       "recouped": 46,
-      "notRecouped": 76,
-      "nullOrMissing": 21
+      "notRecouped": 108,
+      "nullOrMissing": 28
     },
     "dataCompleteness": {
-      "hasCapitalization": 101,
-      "hasWeeklyRunningCost": 81,
-      "hasCostMethodology": 108,
-      "hasSources": 81,
+      "hasCapitalization": 127,
+      "hasWeeklyRunningCost": 84,
+      "hasCostMethodology": 134,
+      "hasSources": 120,
       "hasDeepResearch": 92
     },
     "openShowCoverage": {
@@ -42,18 +42,18 @@
       "coveragePct": 20
     },
     "issuesSummary": {
-      "total": 219,
+      "total": 263,
       "bySeverity": {
         "high": 0,
-        "medium": 7,
-        "low": 212
+        "medium": 18,
+        "low": 245
       },
       "byType": {
-        "id-mismatch": 5,
-        "source-quality": 48,
+        "id-mismatch": 13,
+        "source-quality": 81,
         "financial-sanity": 1,
         "methodology": 8,
-        "closed-show-tbd": 1,
+        "closed-show-tbd": 4,
         "nonprofit-classification": 10,
         "recoupment-pct": 1,
         "coverage-gap": 144,
@@ -91,6 +91,54 @@
       "severity": "medium",
       "showId": "prayer-for-the-french-republic-2024",
       "detail": "Commercial key \"prayer-for-the-french-republic-2024\" matches show ID but not slug. Show slug is \"prayer-for-the-french-republic\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "boop-2025",
+      "detail": "Commercial key \"boop-2025\" matches show ID but not slug. Show slug is \"boop\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "operation-mincemeat-2025",
+      "detail": "Commercial key \"operation-mincemeat-2025\" matches show ID but not slug. Show slug is \"operation-mincemeat\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "death-becomes-her-2024",
+      "detail": "Commercial key \"death-becomes-her-2024\" matches show ID but not slug. Show slug is \"death-becomes-her\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "the-great-gatsby-2024",
+      "detail": "Commercial key \"the-great-gatsby-2024\" matches show ID but not slug. Show slug is \"the-great-gatsby\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "lempicka-2024",
+      "detail": "Commercial key \"lempicka-2024\" matches show ID but not slug. Show slug is \"lempicka\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "queen-versailles-2025",
+      "detail": "Commercial key \"queen-versailles-2025\" matches show ID but not slug. Show slug is \"queen-of-versailles\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "here-lies-love-2023",
+      "detail": "Commercial key \"here-lies-love-2023\" matches show ID but not slug. Show slug is \"here-lies-love\". Consider renaming the key to match the slug."
+    },
+    {
+      "type": "id-mismatch",
+      "severity": "medium",
+      "showId": "harry-potter-2021",
+      "detail": "Commercial key \"harry-potter-2021\" matches show ID but not slug. Show slug is \"harry-potter\". Consider renaming the key to match the slug."
     },
     {
       "type": "source-quality",
@@ -381,6 +429,204 @@
       "detail": "sources[1] missing date."
     },
     {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop-2025",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "boop-2025",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "lempicka-2024",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "queen-versailles-2025",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "a-strange-loop-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "dana-h-2021",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "harry-potter-2021",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "harry-potter-2021",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "sunset-boulevard-2017",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "on-the-town-2014",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "holler-if-ya-hear-me-2014",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "bullets-over-broadway-2014",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-bridges-of-madison-county-2014",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-bridges-of-madison-county-2014",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "betrayal-2013",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "betrayal-2013",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "betrayal-2013",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-testament-of-mary-2013",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-anarchist-2012",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "fela-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "leap-of-faith-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "leap-of-faith-2012",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-lyons-2012",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "godspell-2011",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "godspell-2011",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "jerusalem-2011",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "bloody-bloody-andrew-jackson-2010",
+      "detail": "sources[2] missing date."
+    },
+    {
       "type": "financial-sanity",
       "severity": "low",
       "showId": "call-me-izzy",
@@ -438,7 +684,25 @@
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "Show is closed (closed 22 days ago on 2026-03-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 23 days ago on 2026-03-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "a-christmas-carol-2019",
+      "detail": "Show is closed (closed 2297 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "the-lyons-2012",
+      "detail": "Show is closed (closed 5041 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "jerusalem-2011",
+      "detail": "Show is closed (closed 5356 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",

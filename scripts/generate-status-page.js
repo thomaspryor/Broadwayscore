@@ -41,6 +41,25 @@ function getSiteScore(showId) {
   return { score: data.cs, reviewCount: data.rc, positive: data.bd?.positive || 0, mixed: data.bd?.mixed || 0, negative: data.bd?.negative || 0 };
 }
 
+// Whether the show has a published JSON in /public/data/shows (even below the score threshold).
+// Used to distinguish "show isn't on site yet" from "show is on site but awaiting more reviews".
+function siteFileExists(showId) {
+  try { return fs.existsSync(path.join(SITE_SHOWS_DIR, `${showId}.json`)); }
+  catch { return false; }
+}
+
+// Mirrors src/config/score-buckets.ts::reviewsRemainingForScore — keep in sync.
+// Returns 0 when the show already qualifies for score display.
+function reviewsRemainingForScore(reviewCount, category, tier1And2Count) {
+  const MIN = category === 'off-broadway' ? 3
+    : category === 'off-west-end' ? 3
+    : category === 'west-end' ? 5
+    : 5;
+  const T3_ONLY_EXTRA = 2;
+  const min = (tier1And2Count === 0) ? MIN + T3_ONLY_EXTRA : MIN;
+  return Math.max(0, min - reviewCount);
+}
+
 function main() {
   const showsData = loadJSON(path.join(DATA_DIR, 'shows.json'));
   if (!showsData) { console.error('Cannot load shows.json'); process.exit(1); }
@@ -127,11 +146,19 @@ function main() {
       broadcastDetail = 'Ready — awaiting send';
     }
 
+    // Score-display threshold (mirrors the public show page, which gates the numeric score
+     // behind a minimum review count). Without this, the status page shows a big "84" for a
+     // show the public page correctly displays as TBD, making the dashboard misleading.
+    const reviewsNeeded = reviewsRemainingForScore(showRevs.length, show.category, t1 + t2);
+    const belowThreshold = reviewsNeeded > 0;
+    const fileExists = siteFileExists(show.id);
+
     return {
       id: show.id, title: show.title, market, category: show.category || market, type: show.type || 'show',
       openingDate: show.openingDate, status: show.status, slug: show.slug || show.id.replace(/-\d{4}$/, ''),
       thumbnail: show.images?.thumbnail || null,
       siteScore, liveScore, scoreDrift: (siteScore != null && liveScore != null) ? liveScore - siteScore : null,
+      belowThreshold, reviewsNeeded, siteFileExists: fileExists,
       total: showRevs.length, t1, t2, t3, positive, mixed, negative,
       readiness: {
         ready: readiness.ready, reasons: readiness.reasons, highConfidence: readiness.highConfidence,
@@ -515,7 +542,11 @@ function renderShows(data) {
   const filtered = data.shows.filter(s => activeFilters.has(s.category));
   if (!filtered.length) { el.innerHTML = '<div class="empty">No shows match current filters.</div>'; return; }
   el.innerHTML = filtered.map((s, idx) => {
-    const score = s.siteScore != null ? s.siteScore : s.liveScore;
+    // When the show has fewer reviews than the market threshold, the public site page
+    // shows "TBD" regardless of the computed score. Mirror that here so the dashboard
+    // doesn't flash a big "84" for a show the public page correctly hides.
+    const rawScore = s.siteScore != null ? s.siteScore : s.liveScore;
+    const score = s.belowThreshold ? null : rawScore;
     const tier = scoreTier(score);
     const th = s.readiness.thresholds || {};
     const minR = th.minReviews || 12, minT1 = th.minT1 || 3, minT2 = th.minT2 || 3, minH = th.minHiConf || 8;
@@ -523,15 +554,20 @@ function renderShows(data) {
       const ok = v >= req;
       return '<div class="gate"><span class="gate-icon ' + (ok?'gate-pass':'gate-fail') + '">' + (ok?'\\u2713':'\\u2717') + '</span>' + label + ': <b>' + v + '</b>/' + req + '</div>';
     }
+    // Drift badge:
+    //   - scoreDrift!=0 → live vs site delta (only meaningful once both scores exist)
+    //   - below threshold but show IS published → "Awaiting score (N more)"
+    //   - no site file at all → "Not yet on site"
     const drift = (s.scoreDrift != null && s.scoreDrift !== 0)
       ? '<div class="drift">Live: ' + s.liveScore + ' (' + (s.scoreDrift>0?'+':'') + s.scoreDrift + ' drift)</div>'
-      : (s.siteScore == null && s.liveScore != null ? '<div class="drift">Not yet on site</div>' : '');
+      : (s.belowThreshold && s.siteFileExists ? '<div class="drift">Awaiting score (' + s.reviewsNeeded + ' more)</div>'
+      : (s.siteFileExists === false && s.liveScore != null ? '<div class="drift">Not yet on site</div>' : ''));
 
     const imgEl = s.thumbnail
       ? '<img class="card-thumb" src="' + s.thumbnail + '" alt="" loading="lazy">'
       : '<div class="card-thumb-placeholder">\\u{1F3AD}</div>';
     const badgeEl = '<div><div class="score-badge score-' + tier + '">' + (score != null ? score : 'TBD') + '</div>'
-      + '<div class="score-sub">' + s.total + ' reviews</div></div>';
+      + '<div class="score-sub">' + s.total + ' review' + (s.total === 1 ? '' : 's') + '</div></div>';
     const showUrl = 'https://broadwayscorecard.com/show/' + (s.slug || s.id);
     const detId = 'det-' + idx;
 

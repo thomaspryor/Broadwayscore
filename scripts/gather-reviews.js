@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonFromUrl } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -1953,6 +1953,40 @@ async function scrapeBWWRoundupWithPlaywright(url) {
  * Extract reviews from BWW Review Roundup HTML
  * Uses two methods: BlogPosting JSON-LD entries (newer articles) and articleBody parsing (older)
  */
+// BWW emits JSON-LD with unescaped inner double quotes inside headline/articleBody
+// strings (e.g. Show titles wrapped in quotes). A plain JSON.parse throws on these.
+// This scanner walks char-by-char tracking string state; when inside a string it
+// escapes any `"` whose next non-whitespace char is NOT a JSON structural token.
+function sanitizeBwwJsonLd(s) {
+  const out = [];
+  let inString = false;
+  let escaped = false;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (!inString) {
+      out.push(c);
+      if (c === '"') inString = true;
+      continue;
+    }
+    if (escaped) { out.push(c); escaped = false; continue; }
+    if (c === '\\') { out.push(c); escaped = true; continue; }
+    if (c === '"') {
+      let j = i + 1;
+      while (j < s.length && /\s/.test(s[j])) j++;
+      const next = s[j];
+      if (next === ',' || next === '}' || next === ']' || next === ':') {
+        out.push(c);
+        inString = false;
+      } else {
+        out.push('\\"');
+      }
+      continue;
+    }
+    out.push(c);
+  }
+  return out.join('');
+}
+
 function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   let reviews = [];
   const method1Seen = new Set();
@@ -1973,7 +2007,16 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   for (const scriptMatch of scriptMatches) {
     try {
       const cleanedJson = scriptMatch[1].replace(/[\x00-\x1F\x7F]/g, ' ');
-      const json = JSON.parse(cleanedJson);
+      let json;
+      try {
+        json = JSON.parse(cleanedJson);
+      } catch (firstErr) {
+        // BWW headlines often contain unescaped inner quotes like:
+        //   "headline":"Cote Notices - "Fallen Angels" on Broadway..."
+        // which breaks JSON.parse. Sanitize by scanning string state and escaping
+        // inner quotes that aren't followed by a JSON structural token.
+        json = JSON.parse(sanitizeBwwJsonLd(cleanedJson));
+      }
 
       // Collect BlogPosting entries from either format
       const postings = [];
@@ -2082,15 +2125,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
   if (reviews.length > 0) {
     // Extract thumb data from HTML img tags and pair with reviews by position
-    // BWW new-format uses: uptrans.png (Up), middletrans.png (Meh), downtrans.png (Down)
-    const thumbPattern = /(?:uptrans|middletrans|downtrans)\.png/g;
+    // New format: uptrans(N)?.png / middletrans(N)?.png / downtrans(N)?.png (optional numeric suffix, e.g. uptrans2.png)
+    // Legacy format: BigThumbs_UP.gif / BigThumbs_MEH.gif / BigThumbs_DOWN.gif
+    // Fallen Angels 2026-04-19: roundup used uptrans2.png/middletrans2.png — suffixed variant broke the pre-2 regex.
+    const thumbPattern = /(?:(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi;
     const thumbMatches = [];
     let thumbMatch;
     while ((thumbMatch = thumbPattern.exec(html)) !== null) {
       const img = thumbMatch[0];
-      if (img.includes('uptrans')) thumbMatches.push('Up');
-      else if (img.includes('middletrans')) thumbMatches.push('Meh');
-      else if (img.includes('downtrans')) thumbMatches.push('Down');
+      if (/uptrans|BigThumbs_UP/i.test(img)) thumbMatches.push('Up');
+      else if (/middletrans|BigThumbs_MEH/i.test(img)) thumbMatches.push('Meh');
+      else if (/downtrans|BigThumbs_DOWN/i.test(img)) thumbMatches.push('Down');
     }
     if (thumbMatches.length > 0) {
       // Pair thumbs with reviews — they appear in the same order
@@ -2103,7 +2148,12 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    const urlByOutlet = {};
+    // Multi-critic outlets (NYSR, NYT, TimeOut): a single outletId appears
+    // multiple times in anchor order. Use a per-outlet queue so each review
+    // slot gets a DIFFERENT URL. Previous first-URL-wins behavior (fixed
+    // 2026-04-19) caused all NYSR reviews for Fallen Angels to share the
+    // first NYSR URL found in the roundup.
+    const urlsByOutlet = {};
     const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
     let aMatch;
     while ((aMatch = anchorRe.exec(html)) !== null) {
@@ -2111,13 +2161,21 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       const text = aMatch[2].replace(/:$/, '').trim();
       if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
       const oid = normalizeOutlet(text);
-      if (oid && !urlByOutlet[oid]) urlByOutlet[oid] = href;
+      if (!oid) continue;
+      if (!urlsByOutlet[oid]) urlsByOutlet[oid] = [];
+      if (!urlsByOutlet[oid].includes(href)) urlsByOutlet[oid].push(href);
     }
+    const urlIdxByOutlet = {};
     let urlsPopulated = 0;
     let urlsRejected = 0;
     for (const review of reviews) {
-      if (!review.url && review.outletId && urlByOutlet[review.outletId]) {
-        const candidateUrl = urlByOutlet[review.outletId];
+      if (!review.url && review.outletId) {
+        const queue = urlsByOutlet[review.outletId];
+        if (!queue || queue.length === 0) continue;
+        const idx = urlIdxByOutlet[review.outletId] || 0;
+        if (idx >= queue.length) continue;
+        urlIdxByOutlet[review.outletId] = idx + 1;
+        const candidateUrl = queue[idx];
         // BWW Review Roundup is manually curated by BWW editors — trust the
         // outlet→URL mapping. The cross-show URL slug guard at line 2357
         // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
@@ -2277,7 +2335,8 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   if (reviews.length > 0) {
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    const urlByOutlet2 = {};
+    // Same per-outlet queue as Method 1 post-pass — see comment above.
+    const urlsByOutlet2 = {};
     const anchorRe2 = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
     let aMatch2;
     while ((aMatch2 = anchorRe2.exec(html)) !== null) {
@@ -2285,13 +2344,21 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
       const text = aMatch2[2].replace(/:$/, '').trim();
       if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
       const oid = normalizeOutlet(text);
-      if (oid && !urlByOutlet2[oid]) urlByOutlet2[oid] = href;
+      if (!oid) continue;
+      if (!urlsByOutlet2[oid]) urlsByOutlet2[oid] = [];
+      if (!urlsByOutlet2[oid].includes(href)) urlsByOutlet2[oid].push(href);
     }
+    const urlIdxByOutlet2 = {};
     let urlsPopulated2 = 0;
     let urlsRejected2 = 0;
     for (const review of reviews) {
-      if (!review.url && review.outletId && urlByOutlet2[review.outletId]) {
-        const candidateUrl = urlByOutlet2[review.outletId];
+      if (!review.url && review.outletId) {
+        const queue = urlsByOutlet2[review.outletId];
+        if (!queue || queue.length === 0) continue;
+        const idx = urlIdxByOutlet2[review.outletId] || 0;
+        if (idx >= queue.length) continue;
+        urlIdxByOutlet2[review.outletId] = idx + 1;
+        const candidateUrl = queue[idx];
         // Same trustedSource bypass as Method 1 — BWW Roundup curation is trusted,
         // detectCrossShowUrlMismatch (line 2357) catches misattributions downstream.
         if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
@@ -2313,6 +2380,24 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     }
     if (urlsPopulated2 > 0) {
       console.log(`    Populated ${urlsPopulated2} source URLs from BWW roundup HTML${urlsRejected2 > 0 ? ` (${urlsRejected2} rejected as non-article)` : ''}`);
+    }
+    // Count-drift detection: anchor tag count is the "ground truth" for the
+    // number of reviewed outlets on the page (one <a href> per review entry,
+    // plus a small number of unrelated links). If the reviews array is
+    // materially smaller, we silently dropped entries — often because BWW
+    // added new reviews to the DOM but didn't re-emit the JSON-LD, or a
+    // format change prevented our parsers from matching. Warn loudly so the
+    // post-opening audit can flag the show for human review.
+    const anchorReviewCount = Object.values(urlsByOutlet2).reduce((a, q) => a + q.length, 0);
+    if (anchorReviewCount > reviews.length + 2) {
+      console.log(`    ⚠️  BWW roundup count drift: ${anchorReviewCount} outlet URLs in HTML but only ${reviews.length} reviews extracted (delta=${anchorReviewCount - reviews.length})`);
+    }
+    // Hard min-count floor: once a BWW RR loads with real content, it virtually
+    // always has ≥5 reviews. If we extract fewer, something is wrong (format
+    // change, broken JSON-LD, HTML truncation). Fail loudly with the HTML size
+    // so the orchestrator can re-fetch or flag for human review.
+    if (reviews.length < 5 && html && html.length > 20000) {
+      console.log(`    ❌ BWW roundup min-count assert: only ${reviews.length} reviews from ${html.length}-byte page — likely broken extraction`);
     }
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
@@ -3083,12 +3168,13 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // URL-path date fallback: when publishDate is null (common on Unknown-byline
   // SERP hits), extract /YYYY/MM/DD/ from the URL and apply the same 30-day rule.
-  // Catches off-topic NYT/Guardian/Variety/Playbill/Vulture articles ingested for
-  // shows they don't cover. Was gap on Fallen Angels 2026 — 7 wrong files needed
-  // manual cleanup before opening. Fail-safe: helper returns null on any error.
+  // Only fires on Unknown/Staff bylines — named critics get the benefit of the
+  // doubt (pre-transfer UK/OB coverage is a real category the URL-date rule
+  // can't distinguish from "different production"). See helper for detail.
+  // Was gap on Fallen Angels 2026 — 7 wrong files needed manual cleanup.
   if (!review.wrongProduction && _showMeta) {
     try {
-      const reason = getWrongProductionReasonFromUrl(review.url, _showMeta);
+      const reason = getWrongProductionReasonForUnknownCritic(review, _showMeta);
       if (reason) {
         console.log(`    ⚠️  ${reason}`);
         review.wrongProduction = true;
@@ -4580,6 +4666,7 @@ module.exports = {
   extractDTLIReviews,
   extractShowScoreReviews,
   extractBWWRoundupReviews,
+  sanitizeBwwJsonLd,
   validateBWWRoundupYear,
   validateBWWRoundupGeography,
   createReviewFile,

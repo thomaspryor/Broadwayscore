@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-04-19T07:32:39.063Z",
+  "lastChecked": "2026-04-20T07:37:35.383Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "33 open shows all have reviews and grosses"
+      "message": "36 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -22,9 +22,14 @@
       "message": "No phantom show candidates found"
     },
     {
+      "name": "Sync: cast coverage",
+      "status": "warn",
+      "message": "2 missing files: Proof, Proof"
+    },
+    {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 16978 vs baseline 16979"
+      "message": "Open shows dropped by 3: 142 vs baseline 145"
     }
   ]
 }

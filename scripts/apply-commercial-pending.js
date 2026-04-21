@@ -173,6 +173,12 @@ function main() {
   }
 
   if (!DRY_RUN && applied > 0) {
+    // Bump top-level freshness field. health-check.js line 221 reads
+    // commercial.json's _meta.lastUpdated to decide whether to flag staleness
+    // in the daily digest; without this bump it stayed frozen at the last
+    // full-catchup date even though shows were merging cleanly each run.
+    commercial._meta = commercial._meta || {};
+    commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
     fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
     console.log(`\n✅ Applied ${applied} shows, ${skipped} skipped`);
 

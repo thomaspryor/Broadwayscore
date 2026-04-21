@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-19T21:44:09.593Z",
+  "timestamp": "2026-04-20T22:53:46.986Z",
   "stats": {
-    "totalReviews": 35563,
-    "alreadyFlagged": 15876,
-    "dateGuardCatches": 91,
+    "totalReviews": 35675,
+    "alreadyFlagged": 15901,
+    "dateGuardCatches": 90,
     "directorMismatch": 826,
-    "tvFilmSignals": 3165,
-    "londonSignals": 1015,
-    "offBroadwaySignals": 886,
+    "tvFilmSignals": 3179,
+    "londonSignals": 1023,
+    "offBroadwaySignals": 889,
     "yearMismatch": 71,
-    "noPublishDate": 3722
+    "noPublishDate": 3767
   },
   "findings": [
     {
@@ -4870,6 +4870,20 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 79,
+      "publishDate": "2026-04-17",
+      "url": "https://www.broadwayworld.com/westend/article/Review-AVENUE-Q-Shaftesbury-Theatre-20260417",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
       "file": "independent--louis-chilton.json",
       "score": 80,
       "publishDate": "2026-04-17",
@@ -4892,7 +4906,7 @@
       "file": "london-theatre--unknown.json",
       "score": 88,
       "publishDate": "2026-04-17",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/avenue-q-review-shaftesbury-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -4917,6 +4931,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "theupcoming--benedetta-mancusi.json",
+      "score": null,
+      "publishDate": "2026-04-01",
+      "url": "https://www.theupcoming.co.uk/2026/04/17/avenue-q-at-shaftesbury-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -5455,6 +5483,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 42,
+      "publishDate": "2026-04-12",
+      "url": "https://1minutecritic.com/becky-shaw-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -6558,6 +6600,25 @@
     },
     {
       "showId": "born-yesterday-2011",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "http://www.newjerseynewsroom.com/movies/review-born-yesterday-revival-delivers-timely-laughter",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "born-yesterday-2011",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 83,
       "publishDate": "April 25, 2011",
@@ -7361,6 +7422,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold pinter\" from butley-1972"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-2014",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Cabaret-330703.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 1\""
         }
       ]
     },
@@ -12909,6 +12984,20 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
+      "file": "ew--dalton-ross.json",
+      "score": 83,
+      "publishDate": "2026-03-12",
+      "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorP7l3j8IP68qdcMeBPMcw1s7odIwPXm7XDmhTEy1GhJqXV2vR1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
       "file": "theater-scene--darryl-reilly.json",
       "score": 89,
       "publishDate": null,
@@ -13050,6 +13139,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "deadline--greg-evans.json",
+      "score": 84,
+      "publishDate": "2026-04-19T20:03:23-04:00",
+      "url": "https://deadline.com/2026/04/fallen-angels-broadway-review-rose-byrne-kelli-ohara-mark-consuelos-1236864235/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "guardian--juan-a-ramirez.json",
+      "score": 88,
+      "publishDate": "2026-04-19T20:03:23-04:00",
+      "url": "https://www.theguardian.com/stage/2026/apr/19/fallen-angels-review-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 80,
+      "publishDate": "2026-04-20",
+      "url": "https://www.nysun.com/article/timeless-star-quality-ensures-noel-cowards-1925-comedy-fallen-angels-soars-on-broadway",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -16167,6 +16308,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 78,
+      "publishDate": "2026-03-29",
+      "url": "https://1minutecritic.com/giant-john-lithgow-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -36793,20 +36948,6 @@
     },
     {
       "showId": "ragtime-1998",
-      "file": "nytimes--ben-brantley.json",
-      "score": 72,
-      "publishDate": "1998-01-21",
-      "url": "https://www.newspapers.com/image/485910767/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "ragtime-1998",
       "file": "nytimes--david-richards.json",
       "score": 88,
       "publishDate": "1998-03-08",
@@ -38299,6 +38440,19 @@
       ]
     },
     {
+      "showId": "seagull-true-story-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/seagull-true-story-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "seminar-2011",
       "file": "amny--matt-windman.json",
       "score": 38,
@@ -38898,6 +39052,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sister-act-2011",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 72,
+      "publishDate": null,
+      "url": "http://www.newjerseynewsroom.com/movies/review-sister-act-makes-a-joyful-noise",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"film review\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -40090,6 +40263,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "south-pacific-2008",
+      "file": "ap--michael-kuchwara.json",
+      "score": 88,
+      "publishDate": "2008-04-03",
+      "url": "https://apnews.com/article/mitzi-gaynor-dead-south-pacific-320eb99fe0824091babafac794dc2320",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -55739,6 +55926,20 @@
       ]
     },
     {
+      "showId": "what-happened-was-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 89,
+      "publishDate": "2026-04-19",
+      "url": "https://www.nysun.com/article/wht-happened-was-supplies-a-witty-and-mysterious-mediation-on-life-and-love",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "ew--allison-adato.json",
       "score": 75,
@@ -57771,7 +57972,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 72,
       "publishDate": "2024-02-20",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/an-enemy-of-the-people-duke-of-yorks-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -58217,7 +58418,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 50,
+      "score": 79,
       "publishDate": "2026-04-17",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/avenue-q-review/",
       "findings": [
@@ -61349,6 +61550,20 @@
     },
     {
       "showId": "evita-2012",
+      "file": "variety--marilyn-stasio.json",
+      "score": 72,
+      "publishDate": "April 5, 2012",
+      "url": "https://variety.com/2012/legit/reviews/evita-1117947355/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-2012",
       "file": "variety--steven-suskin.json",
       "score": 77,
       "publishDate": "April 5, 2012",
@@ -61372,6 +61587,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 80,
+      "publishDate": "2026-04-19",
+      "url": "https://cititour.com/NYC_Broadway/Fallen-Angels/1372",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 78,
+      "publishDate": "2026-04-19",
+      "url": "https://1minutecritic.com/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63291,6 +63534,7 @@
     {
       "showId": "hamlet-off-broadway-2026",
       "file": "vulture--bilge-eberi.json",
+      "score": 71,
       "publishDate": "2026-04-14",
       "url": "https://www.vulture.com/article/why-is-hamlet-everywhere-right-now.html",
       "findings": [
@@ -68779,6 +69023,20 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": 73,
+      "publishDate": "2026-04-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ONE-FLEW-OVER-THE-CUCKOOS-NEST-starring-Giles-Terera-The-Old-Vic-20260416",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "guardian--david-jays.json",
       "score": 68,
       "publishDate": "2026-04-16",
@@ -68788,6 +69046,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.londontheatre.co.uk/reviews/one-flew-over-the-cuckoos-nest-review-aaron-pierre-giles-terera-clint-dyer",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 45,
+      "publishDate": "2026-04-15",
+      "url": "https://www.timeout.com/london/theatre/one-flew-over-the-cuckoos-nest-8-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -69674,20 +69959,6 @@
       ]
     },
     {
-      "showId": "ragtime-1998",
-      "file": "newsday--linda-winer.json",
-      "score": 88,
-      "publishDate": "1997-06-17",
-      "url": "https://www.newspapers.com/image/155463924/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 192d before show (1997-06-17 vs 1997-12-26)"
-        }
-      ]
-    },
-    {
       "showId": "reasons-to-be-pretty-2009",
       "file": "theater-life--eric-march.json",
       "score": 88,
@@ -70037,6 +70308,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "theatermania--david-gordon.json",
+      "score": 76,
+      "publishDate": "2026-04-09",
+      "url": "https://www.theatermania.com/news/from-screen-to-stage-the-reinvention-of-schmigadoon-for-broadway_1832297/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -70844,6 +71129,20 @@
       "score": 57,
       "publishDate": "April 8, 2025",
       "url": "https://nystagereview.com/2025/04/08/sondheims-old-friends-musical-cornucopia-makes-an-overstuffed-banquet/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-sondheims-old-friends-2025",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 69,
+      "publishDate": "2025-04-09",
+      "url": "https://1minutecritic.com/sondheims-old-friends-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-19T21:29:48.931Z",
+  "generatedAt": "2026-04-20T20:21:10.701Z",
   "summary": {
-    "total": 19,
+    "total": 20,
     "high": 11,
-    "medium": 6,
+    "medium": 7,
     "low": 2
   },
   "collisions": [
@@ -330,6 +330,33 @@
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
       "confidence": "high"
+    },
+    {
+      "url": "https://1minutecritic.com/ayo-edebiri-proof-broadway-review/",
+      "normalizedUrl": "https://1minutecritic.com/ayo-edebiri-proof-broadway-review",
+      "candidates": [
+        {
+          "showId": "proof-2026",
+          "file": "one-minute-critic--matthew-wexler.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "one-minute-critic"
+        },
+        {
+          "showId": "proof-express-test-v2-2026",
+          "file": "one-minute-critic--matthew-wexler.json",
+          "publishDate": "2026-04-17",
+          "openingDate": "2026-04-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "one-minute-critic"
+        }
+      ],
+      "suggestedWinner": "proof-2026",
+      "reason": "publishDate 2026-04-17 is 1 days from proof-2026 but also 1 days from proof-express-test-v2-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.theatrely.com/post/a-solid-proof-that-can-be-tricky-at-points-review",
