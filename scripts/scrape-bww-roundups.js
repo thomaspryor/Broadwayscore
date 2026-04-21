@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
+const { fetchPage } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutletFull, slugify: canonicalSlugify } = require('./lib/review-normalization');
 const { excerptMentionsWrongShow } = require('./lib/excerpt-validation');
@@ -108,7 +109,9 @@ function loadShows() {
 }
 
 /**
- * HTTP GET with redirect handling
+ * HTTP GET with redirect handling (fast path — used for URL pattern scanning).
+ * Returns 403 often for BWW due to TLS fingerprinting; use httpGetUnblocked()
+ * for known-good URLs where we must succeed.
  */
 function httpGet(url, maxRedirects = 5) {
   return new Promise((resolve) => {
@@ -138,6 +141,24 @@ function httpGet(url, maxRedirects = 5) {
 }
 
 /**
+ * Use the scraper fallback chain (Bright Data → ScrapingBee → Playwright).
+ * Use this for known-good URLs (manual override, SERP result) where a 403
+ * from httpGet would leave us stuck. Schmig 2026-04-20 revealed that plain
+ * https.get() returns 403 for BWW article pages even when the URL is valid.
+ */
+async function httpGetUnblocked(url) {
+  try {
+    const result = await fetchPage(url, { skipVerify: true });
+    if (result && result.content) {
+      return { found: true, html: result.content, finalUrl: url, status: 200 };
+    }
+    return { found: false, status: 0, error: 'fetchPage returned no content' };
+  } catch (err) {
+    return { found: false, error: err.message };
+  }
+}
+
+/**
  * Search BWW for review roundup article
  */
 async function searchBWWRoundup(show) {
@@ -145,7 +166,7 @@ async function searchBWWRoundup(show) {
   if (bwwUrlOverrides[show.id]) {
     const url = bwwUrlOverrides[show.id];
     console.log(`  Using manual URL override: ${url}`);
-    const result = await httpGet(url);
+    const result = await httpGetUnblocked(url);
     if (result.found && result.html) {
       const validation = await validatePageMatchesShow(result.html, show.title, {
         openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
@@ -256,7 +277,7 @@ async function searchWebForBWWRoundup(show) {
       const url = result.url;
       if (url && url.includes('broadwayworld.com/article/') && url.toLowerCase().includes('review-roundup')) {
         console.log(`  Trying search result: ${url}`);
-        const pageResult = await httpGet(url);
+        const pageResult = await httpGetUnblocked(url);
 
         if (pageResult.found && pageResult.html && pageResult.html.includes('Review Roundup')) {
           // Validate page matches target show (LLM tiebreaker for edge cases)
