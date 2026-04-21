@@ -17,6 +17,12 @@ import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { createRequire } from 'module';
 
+// IMPORTANT: scraper.js caches BRIGHTDATA_TOKEN / SCRAPINGBEE_API_KEY at module
+// load time. Set placeholders here BEFORE requiring the module so each backend
+// will attempt an https call (which our monkey-patched stubs then capture).
+process.env.BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || 'test-bd-token';
+process.env.SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY || 'test-sb-key';
+
 const require = createRequire(import.meta.url);
 const https = require('https');
 const scraper = require('../../scripts/lib/scraper');
@@ -103,15 +109,11 @@ function clearBundleEnv() {
 describe('scraper cookie wiring', () => {
   beforeEach(() => {
     installStubs();
-    process.env.BRIGHTDATA_TOKEN = 'test-bd-token';
-    process.env.SCRAPINGBEE_API_KEY = 'test-sb-key';
   });
 
   afterEach(() => {
     restoreStubs();
     clearBundleEnv();
-    delete process.env.BRIGHTDATA_TOKEN;
-    delete process.env.SCRAPINGBEE_API_KEY;
   });
 
   describe('fetchWithCookiesPlain', () => {
