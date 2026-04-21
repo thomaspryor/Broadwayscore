@@ -911,7 +911,9 @@
     "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
     "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
     "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
-    "a-life-in-the-theatre-2010/bloomberg--john-simon.json"
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1004,14 +1006,15 @@
       "data/review-texts/john-proctor-is-the-villain-west-end-2026/thestage--paul-raven.json",
       "data/review-texts/shadowlands-west-end-2026/thestage--paul-raven.json",
       "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
-      "data/review-texts/mamma-mia-west-end-2021/thestage--sam-marlowe.json"
+      "data/review-texts/mamma-mia-west-end-2021/thestage--sam-marlowe.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-04-21T16:58:13.270Z",
-  "lastProcessed": "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
   "log": [
     {
       "t": "2026-04-21T17:03:30.709Z",
@@ -1034,6 +1037,17 @@
       "t": "2026-04-21T18:32:41.303Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-21T23:46:13.554Z",
+      "event": "bb-session",
+      "session": "6e4506e1",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T23:46:14.979Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
