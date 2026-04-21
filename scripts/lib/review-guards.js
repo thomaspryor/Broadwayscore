@@ -69,18 +69,49 @@ function pickBestDtliSlug(showId, slugs) {
  * this close to opening, we downgrade wrongProduction confidence to 'low' and clear
  * isFilmTv entirely. Low confidence prevents fullText nulling.
  *
+ * BYPASS (Schmigadoon 2026-04-21 EBT incident): when CV issues/reasoning contain
+ * explicit "completely different show" markers, the override does NOT fire. This
+ * is not an LLM false positive near opening — it's definitive evidence of wrong
+ * content (e.g., a scraper fetched Every Brilliant Thing URL instead of Schmigadoon).
+ * Those signals should override the opening-week safety net, not be overridden by it.
+ *
  * @param {boolean} wpFlag - LLM's wrongProduction flag
  * @param {boolean} filmTvFlag - LLM's isFilmTv flag
  * @param {string} wpConfidence - LLM's confidence level ('high'|'medium'|'low')
  * @param {string|null} openingDate - Show's opening date (YYYY-MM-DD)
  * @param {string|null} publishDate - Review's publish date (YYYY-MM-DD)
- * @returns {{ wpConfidence: string, filmTvFlag: boolean }}
+ * @param {object} [cvContext] - Optional CV signals. {issues: string[], reasoning: string}
+ * @returns {{ wpConfidence: string, filmTvFlag: boolean, bypassedForStrongSignal: boolean }}
  */
-function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate) {
+const STRONG_DIFFERENT_SHOW_MARKERS = [
+  /does not appear in/i,
+  /doesn'?t appear in/i,
+  /not appear(?: in| at all)/i,
+  /completely different show/i,
+  /different production entirely/i,
+  /wrong production entirely/i,
+  /reviews the wrong production/i,
+  /reviews? a different show/i,
+  /unrelated to the expected/i,
+  /not mentioned in/i,
+  /expected show[^.]*(?:does not|doesn'?t|not)[^.]*appear/i,
+];
+
+function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
+  const texts = [];
+  if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
+  if (cvReasoning) texts.push(String(cvReasoning));
+  if (texts.length === 0) return false;
+  return texts.some(t => STRONG_DIFFERENT_SHOW_MARKERS.some(re => re.test(t)));
+}
+
+function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
   let resultWpConfidence = wpConfidence;
   let resultFilmTvFlag = filmTvFlag;
 
-  if (openingDate && publishDate) {
+  const strongDifferent = !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning));
+
+  if (!strongDifferent && openingDate && publishDate) {
     const opening = new Date(openingDate);
     const publish = new Date(publishDate);
     if (!isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
@@ -92,7 +123,11 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
     }
   }
 
-  return { wpConfidence: resultWpConfidence, filmTvFlag: resultFilmTvFlag };
+  return {
+    wpConfidence: resultWpConfidence,
+    filmTvFlag: resultFilmTvFlag,
+    bypassedForStrongSignal: strongDifferent,
+  };
 }
 
 /**
@@ -1289,6 +1324,8 @@ module.exports = {
   shouldSkipScoredReview,
   pickBestDtliSlug,
   applyTemporalOverrides,
+  hasStrongDifferentShowSignal,
+  STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
   urlLooksLikeReview,

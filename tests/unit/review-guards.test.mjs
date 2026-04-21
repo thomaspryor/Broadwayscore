@@ -15,6 +15,8 @@ const {
   checkLlmVerificationAgainstKeywords,
   pickRerouteTarget,
   shouldSkipWrongProductionAudit,
+  applyTemporalOverrides,
+  hasStrongDifferentShowSignal,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -296,5 +298,102 @@ describe('shouldSkipWrongProductionAudit', () => {
 
   test('allowCrossMarket=false does not skip', () => {
     assert.strictEqual(shouldSkipWrongProductionAudit({ allowCrossMarket: false }), false);
+  });
+});
+
+describe('hasStrongDifferentShowSignal', () => {
+  test('empty/null inputs return false', () => {
+    assert.strictEqual(hasStrongDifferentShowSignal(null, null), false);
+    assert.strictEqual(hasStrongDifferentShowSignal([], ''), false);
+    assert.strictEqual(hasStrongDifferentShowSignal(undefined, undefined), false);
+  });
+
+  test('generic issues without strong markers return false', () => {
+    const issues = ['Text is truncated mid-sentence at 3678 characters', 'Review is short'];
+    assert.strictEqual(hasStrongDifferentShowSignal(issues, 'Generic LLM reasoning'), false);
+  });
+
+  test('"does not appear in" in issues → true', () => {
+    const issues = ["Expected show 'Schmigadoon!' does not appear in scraped content at all"];
+    assert.strictEqual(hasStrongDifferentShowSignal(issues, ''), true);
+  });
+
+  test('"completely different show" in issues → true', () => {
+    const issues = ['The production described is completely different show'];
+    assert.strictEqual(hasStrongDifferentShowSignal(issues, ''), true);
+  });
+
+  test('"reviews the wrong production" in reasoning → true', () => {
+    assert.strictEqual(
+      hasStrongDifferentShowSignal([], 'The critic reviews the wrong production entirely'),
+      true
+    );
+  });
+
+  test('"unrelated to the expected" in reasoning → true', () => {
+    assert.strictEqual(
+      hasStrongDifferentShowSignal([], 'The scraped content is unrelated to the expected Schmigadoon review'),
+      true
+    );
+  });
+
+  test('EBT-as-Schmigadoon fixture (real-world case)', () => {
+    // Exact issues/reasoning from 2026-04-21 Schmigadoon opening-night failure.
+    const issues = [
+      "Review is about 'Every Brilliant Thing' (Daniel Radcliffe one-person show), not 'Schmigadoon!'",
+      "Text is truncated mid-sentence at 3678 characters",
+      "Expected show 'Schmigadoon!' does not appear in scraped content at all",
+      "The production described features Daniel Radcliffe in a play by Duncan Macmillan and Jonny Donahoe — completely different show",
+    ];
+    assert.strictEqual(hasStrongDifferentShowSignal(issues, ''), true);
+  });
+});
+
+describe('applyTemporalOverrides — strong-signal bypass (Schmigadoon 2026-04-21 EBT class)', () => {
+  test('within-30d opening-week review without strong signal: downgrades as before', () => {
+    const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21');
+    assert.strictEqual(r.wpConfidence, 'low', 'opening-week FP is downgraded (preserves Giant safety net)');
+    assert.strictEqual(r.bypassedForStrongSignal, false);
+  });
+
+  test('within-30d opening-week review WITH strong "does not appear in" signal: bypass', () => {
+    const ebtIssues = [
+      "Expected show 'Schmigadoon!' does not appear in scraped content at all",
+      "completely different show",
+    ];
+    const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21', {
+      issues: ebtIssues,
+      reasoning: "reviews the wrong production entirely",
+    });
+    assert.strictEqual(r.wpConfidence, 'high', 'strong signal should NOT be downgraded');
+    assert.strictEqual(r.bypassedForStrongSignal, true);
+  });
+
+  test('within-30d + strong signal + medium confidence: retains medium', () => {
+    const r = applyTemporalOverrides(true, false, 'medium', '2026-04-20', '2026-04-21', {
+      issues: ['reviews the wrong production'],
+    });
+    assert.strictEqual(r.wpConfidence, 'medium');
+    assert.strictEqual(r.bypassedForStrongSignal, true);
+  });
+
+  test('strong signal but NOT wrongProduction flag: no-op', () => {
+    // If wpFlag=false, there's nothing to downgrade anyway. Just verify it doesn't throw.
+    const r = applyTemporalOverrides(false, false, 'high', '2026-04-20', '2026-04-21', {
+      issues: ['does not appear in content'],
+    });
+    assert.strictEqual(r.wpConfidence, 'high');
+    assert.strictEqual(r.bypassedForStrongSignal, true);
+  });
+
+  test('no cvContext: backward compat, old callers still work', () => {
+    const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21');
+    assert.strictEqual(r.wpConfidence, 'low');
+    assert.strictEqual(r.bypassedForStrongSignal, false);
+  });
+
+  test('outside-30d window: no downgrade regardless of signal', () => {
+    const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-02-01');
+    assert.strictEqual(r.wpConfidence, 'high');
   });
 });

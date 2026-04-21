@@ -417,7 +417,13 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       // Call site keeps logging and wpReasoning annotation so CI output remains informative.
       let filmTvFlag = parsed.isFilmTv || false;
       let filmTvConfidence = parsed.confidence || 'medium';
-      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate);
+      const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
+        issues: parsed.issues,
+        reasoning: parsed.reasoning,
+      });
+      if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
+        console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
+      }
       if (temporalOverrides.wpConfidence !== wpConfidence && wpFlag && openingDate && publishDate) {
         const daysDiff = Math.round(Math.abs((new Date(publishDate) - new Date(openingDate)) / 86400000));
         console.log(`    ⚠ LLM wrongProduction overridden: review published ${daysDiff}d from opening — downgrading to low confidence`);
