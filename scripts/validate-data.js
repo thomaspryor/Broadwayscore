@@ -2649,17 +2649,48 @@ function validateUnscoredReviewTexts() {
   const orphanedGaps = gaps.filter((g) => !g.pending);
 
   if (pendingGaps.length > 0) {
-    console.log('');
-    console.log('  Pending scoring (scoreExtractionPending=true) — first 5:');
-    for (const g of pendingGaps.slice(0, 5)) {
-      console.log(`    ${g.showDir}/${g.file} | ${g.outlet} / ${g.critic} | tier=${g.tier} age=${g.ageDays}d`);
-    }
-    if (pendingGaps.length > 5) console.log(`    ... and ${pendingGaps.length - 5} more`);
-    console.log('');
-    warn(
-      `${pendingGaps.length} review-text file(s) marked scoreExtractionPending ` +
-      `but not yet scored — pipeline should pick them up on next run`
+    // Split fresh vs stuck. Files that have been scoreExtractionPending for
+    // more than STUCK_PENDING_DAYS are a louder signal — the scorer should
+    // have picked them up by now. Schmigadoon 2026 Bug #11: pending files sat
+    // for weeks because nothing audited staleness.
+    const STUCK_PENDING_DAYS = 7;
+    const stuckPendingGaps = pendingGaps.filter(
+      (g) => g.ageDays != null && g.ageDays > STUCK_PENDING_DAYS
     );
+    const freshPendingGaps = pendingGaps.filter(
+      (g) => !(g.ageDays != null && g.ageDays > STUCK_PENDING_DAYS)
+    );
+
+    if (freshPendingGaps.length > 0) {
+      console.log('');
+      console.log(`  Pending scoring (scoreExtractionPending=true, age ≤ ${STUCK_PENDING_DAYS}d) — first 5:`);
+      for (const g of freshPendingGaps.slice(0, 5)) {
+        console.log(`    ${g.showDir}/${g.file} | ${g.outlet} / ${g.critic} | tier=${g.tier} age=${g.ageDays}d`);
+      }
+      if (freshPendingGaps.length > 5) console.log(`    ... and ${freshPendingGaps.length - 5} more`);
+      console.log('');
+      warn(
+        `${freshPendingGaps.length} review-text file(s) marked scoreExtractionPending ` +
+        `but not yet scored — pipeline should pick them up on next run`
+      );
+    }
+
+    if (stuckPendingGaps.length > 0) {
+      console.log('');
+      console.log(`  STUCK pending scoring (scoreExtractionPending=true, age > ${STUCK_PENDING_DAYS}d) — first 5:`);
+      for (const g of stuckPendingGaps.slice(0, 5)) {
+        console.log(`    ${g.showDir}/${g.file} | ${g.outlet} / ${g.critic} | tier=${g.tier} age=${g.ageDays}d`);
+      }
+      if (stuckPendingGaps.length > 5) console.log(`    ... and ${stuckPendingGaps.length - 5} more`);
+      console.log('');
+      warn(
+        `${stuckPendingGaps.length} review-text file(s) have been scoreExtractionPending ` +
+        `for more than ${STUCK_PENDING_DAYS} days — the pipeline has NOT picked them up. ` +
+        `Fix: run \`node scripts/retry-pending-scores.js --show=<show-id>\` or flag them ` +
+        `with rejectionReason/wrongProduction if they should be excluded. ` +
+        `Leaving stuck pending files accumulates silent scoring gaps.`
+      );
+    }
   }
 
   if (orphanedGaps.length > 0) {
