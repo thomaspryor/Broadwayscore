@@ -18,6 +18,39 @@ const { heuristicVerify, quickValidityCheck, contentHash } = require('../../scri
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.join(__dirname, '..', 'fixtures', 'content-verifier-golden', 'real-world-fixtures.json');
 
+describe('prompt language ship-check (Schmigadoon 2026 Bug #7)', () => {
+  // The LLM call sends the prompt built inside verifyContent; we read the function
+  // source to prove the "Reviews OF vs mentions OF" language is still present.
+  // This is a ship-check, not a behavior check — behavior lives in the eval harness.
+  const srcPath = path.join(__dirname, '..', '..', 'scripts', 'lib', 'content-verifier.js');
+  const source = fs.readFileSync(srcPath, 'utf8');
+
+  test('prompt contains the Kennedy-Center-mention FP guardrail', () => {
+    assert.ok(
+      source.includes('"Reviews OF" vs "mentions OF"'),
+      'CV prompt must include the "Reviews OF vs mentions OF" nuance'
+    );
+    assert.ok(
+      source.includes('Schmigadoon 2026 FP class'),
+      'CV prompt must cite the Schmigadoon 2026 FP class so future editors know why'
+    );
+  });
+
+  test('prompt tells the LLM not to flag on mention alone', () => {
+    assert.ok(
+      /Do not flag on mention alone/.test(source),
+      'CV prompt must explicitly say "Do not flag on mention alone"'
+    );
+  });
+
+  test('prompt demands high confidence when flagging wrongProduction', () => {
+    assert.ok(
+      /set wrongProduction=true with confidence="high"/.test(source),
+      'CV prompt must require confidence=high for wrongProduction=true'
+    );
+  });
+});
+
 describe('heuristicVerify fallback', () => {
   test('short content -> invalid', () => {
     const r = heuristicVerify({ scrapedText: 'tiny', showTitle: 'Wicked' });
