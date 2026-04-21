@@ -241,6 +241,13 @@ jobs:
             fi
           }
 
+          # Guardian reviews BOTH markets (Hassenger is the US critic). Its
+          # starRating is only in the Content API, not the HTML — opening-night
+          # SERP-discovery captures the URL but leaves originalScore=null. Run
+          # this for Broadway too, or Broadway stars are lost (Schmig 2026-04-20).
+          echo "  → Dispatching Guardian API for: $SHOWS"
+          dispatch "fetch-guardian-reviews" fetch-guardian-reviews.yml -f shows="$SHOWS"
+
           if [ "$MARKET" = "west-end" ] || [ -z "$MARKET" ]; then
             # West End audience scrapers (also dispatched when market is empty = all markets)
             echo "  → Dispatching SeatPlan for: $SHOWS"
@@ -248,9 +255,6 @@ jobs:
 
             echo "  → Dispatching LBO for: $SHOWS"
             dispatch "update-lbo" update-lbo.yml -f shows="$SHOWS"
-
-            echo "  → Dispatching Guardian API for: $SHOWS"
-            dispatch "fetch-guardian-reviews" fetch-guardian-reviews.yml -f shows="$SHOWS"
           fi
 
           if [ "$MARKET" != "west-end" ]; then
