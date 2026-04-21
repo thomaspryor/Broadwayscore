@@ -74,10 +74,14 @@ try {
 
 // ── Compute critic scores per show ──────────────────────────────────
 const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
+// Don't show a CriticScore until a show has at least this many reviews.
+// Matches the main app's "reliable score" floor — a single T3 review at 84
+// shouldn't be treated as equivalent to 10 reviews averaging 84.
+const MIN_REVIEWS_FOR_SCORE = 5;
 
 function computeCriticScore(showId) {
   const showReviews = reviews.filter(r => r.showId === showId && r.assignedScore != null);
-  if (showReviews.length === 0) return null;
+  if (showReviews.length < MIN_REVIEWS_FOR_SCORE) return null;
 
   let weightedSum = 0;
   let weightSum = 0;
