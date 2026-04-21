@@ -605,6 +605,8 @@
     "brief-encounter-2010/newyorker--uncredited.json",
     "brief-encounter-2010/nytheatre--martin-denton.json",
     "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
     "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
@@ -640,6 +642,7 @@
       "schmigadoon-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
@@ -714,6 +717,17 @@
     },
     {
       "t": "2026-04-21T05:24:45.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T06:24:19.032Z",
+      "event": "bb-session",
+      "session": "e28bf1f7",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T06:24:19.755Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
