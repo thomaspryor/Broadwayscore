@@ -174,7 +174,10 @@ describe('bypass corpus — Class 2: wrong-slug-in-url (tryout URL scraped)', ()
       criticName: 'Test Critic',
       url: 'https://dcmetrotheaterarts.com/2025/11/kennedy-center-world-premiere-of-some-other-show-review/',
       publishDate: OPENING_DATE,
-      fullText: ON_SHOW_FULLTEXT,
+      // OFF-show fullText: a real Kennedy Center tryout review of a different
+      // production wouldn't mention the eventual Broadway title. This exercises
+      // the REALISTIC case — both URL slug and fullText should fail.
+      fullText: OFF_SHOW_FULLTEXT,
       textWordCount: 300,
       isFullReview: true,
       contentTier: 'complete',
@@ -186,6 +189,8 @@ describe('bypass corpus — Class 2: wrong-slug-in-url (tryout URL scraped)', ()
   after(() => { if (tmpRoot) fs.rmSync(tmpRoot, { recursive: true, force: true }); });
 
   it('slug-mismatch fires', () => assertPluginFires('slug-mismatch', SHOW, ctx));
+  it('fulltext-mentions-show also fires (defense in depth)', () =>
+    assertPluginFires('fulltext-mentions-show', SHOW, ctx));
 });
 
 // ---- Class 3: Cross-show bwwRoundupUrl ---------------------------------

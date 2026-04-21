@@ -6,10 +6,11 @@ const path = require('path');
 const name = 'publish-date-pre-opening';
 const description = 'Shipped reviews with publishDate more than 1 day before openingDate are anticipatory posts, not actual reviews (catches the frontmezzjunkies 16-day-pre-opening class)';
 
-// How many days before openingDate we allow. A day covers early press embargoes
-// that lift the afternoon before opening. Two or more days out is an "anticipation"
-// post about casting/previews, not an opening-night review.
-const GRACE_DAYS_BEFORE_OPENING = 1;
+// How many days before openingDate we allow. Press embargoes routinely lift
+// the afternoon of the day before opening; some T1 outlets (NYT, Variety) have
+// published as early as 48h pre-opening for high-profile shows. Three or more
+// days out is an "anticipation" post about casting/previews.
+const GRACE_DAYS_BEFORE_OPENING = 2;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function parseDate(v) {
@@ -52,10 +53,26 @@ function run(show, context) {
   }
 
   const violations = [];
+  const missingDateWarnings = [];
   for (const review of reviews) {
     const published = parseDate(review.publishDate)
       || parseDate(sourceByUrl.get(review.url)?.data?.publishDate);
-    if (!published) continue;
+
+    // Missing publishDate on a shipped opening-night review is a yellow flag,
+    // not a silent pass. Manual reviews that intentionally lack a publishDate
+    // opt out via humanReviewedMissingPublishDate.
+    if (!published) {
+      const src = sourceByUrl.get(review.url)?.data || {};
+      if (src.humanReviewedMissingPublishDate === true) continue;
+      missingDateWarnings.push({
+        outletId: review.outletId,
+        criticName: review.criticName,
+        url: review.url,
+        filename: sourceByUrl.get(review.url)?.filename,
+      });
+      continue;
+    }
+
     if (published >= cutoff) continue;
 
     // Honor explicit manual clears for anticipatory posts — curator may decide
@@ -75,11 +92,23 @@ function run(show, context) {
     });
   }
 
-  if (violations.length === 0) {
+  if (violations.length === 0 && missingDateWarnings.length === 0) {
     return {
       ok: true,
       severity: 'ok',
       message: `All shipped reviews published within ${GRACE_DAYS_BEFORE_OPENING} day(s) of openingDate`,
+    };
+  }
+
+  if (violations.length === 0) {
+    // Only missing-date warnings — surface as warning, not error.
+    return {
+      ok: false,
+      severity: 'warning',
+      message: missingDateWarnings.map(v =>
+        `${v.outletId}/${v.criticName} SHIPPED with no publishDate — cannot confirm post-opening: ${v.url}`
+      ).join('\n'),
+      details: { missingDateWarnings, showId: show.id },
     };
   }
 
@@ -88,8 +117,10 @@ function run(show, context) {
     severity: 'error',
     message: violations.map(v =>
       `${v.outletId}/${v.criticName} SHIPPED with publishDate ${v.publishDate} (${v.daysBeforeOpening}d before openingDate ${v.openingDate}): ${v.url}`
-    ).join('\n'),
-    details: { violations, showId: show.id, graceDaysBeforeOpening: GRACE_DAYS_BEFORE_OPENING },
+    ).concat(missingDateWarnings.map(v =>
+      `⚠️  ${v.outletId}/${v.criticName} also missing publishDate: ${v.url}`
+    )).join('\n'),
+    details: { violations, missingDateWarnings, showId: show.id, graceDaysBeforeOpening: GRACE_DAYS_BEFORE_OPENING },
   };
 }
 

@@ -52,6 +52,19 @@ function buildAcceptSlugs(show) {
     }
   }
 
+  // Per-show URL-slug allowlist for revivals/renamed productions. Example:
+  // shows.json can declare `urlAliases: ['the-giant', 'giant-musical']` so a
+  // URL like `/giant-musical-review-broadway` is accepted even though the
+  // derived slug is `giant`.
+  if (Array.isArray(show.urlAliases)) {
+    for (const alias of show.urlAliases) {
+      if (typeof alias === 'string' && alias.trim()) {
+        slugs.add(titleToSlug(alias));
+        slugs.add(alias.toLowerCase());
+      }
+    }
+  }
+
   // Add meaningful single-word tokens from the title (length>=4, not stopwords).
   // This catches "schmigadoon" in longer URLs even if our slug is "schmigadoon".
   for (const token of (show.title || '').toLowerCase().split(/\s+/)) {
@@ -65,10 +78,18 @@ function buildAcceptSlugs(show) {
 /**
  * Return true if any accept-slug appears as a whole token in the URL search slug.
  */
+// Escape regex metacharacters so a slug (which may contain hyphens and unusual
+// punctuation via future aliases) can be embedded literally. The previous
+// version had `[\\]` which closed the char class early — `_` and friends were
+// left unescaped, and `$`/`|`/`(` in an alias would blow up the RegExp ctor.
+function escapeRegex(s) {
+  return s.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function urlMentionsAnySlug(urlSlug, acceptSlugs) {
   for (const slug of acceptSlugs) {
     // Word-boundary match against slug tokens (hyphen/space-delimited)
-    const re = new RegExp(`(^|[^a-z0-9])${slug.replace(/[-.*+?^${}()|[\\]\\\\]/g, c => '\\' + c)}($|[^a-z0-9])`, 'i');
+    const re = new RegExp(`(^|[^a-z0-9])${escapeRegex(slug)}($|[^a-z0-9])`, 'i');
     if (re.test(urlSlug)) return true;
   }
   return false;

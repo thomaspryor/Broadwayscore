@@ -23,10 +23,16 @@ function run(show, context) {
     return { ok: true, severity: 'ok', message: 'No review-texts dir — skipping' };
   }
 
-  const shippedByUrl = new Set(
-    (context.reviewsDoc[show.id] || []).map(r => r.url).filter(Boolean)
+  const shippedReviews = context.reviewsDoc[show.id] || [];
+  const shippedByUrl = new Set(shippedReviews.map(r => r.url).filter(Boolean));
+  // Fallback lookup for files that shipped but have no url field on disk
+  // (older imports, manually-curated stubs). Match on (outletId, criticName).
+  const shippedByOutletCritic = new Set(
+    shippedReviews
+      .filter(r => r.outletId && r.criticName)
+      .map(r => `${r.outletId}::${r.criticName}`)
   );
-  if (shippedByUrl.size === 0) {
+  if (shippedByUrl.size === 0 && shippedByOutletCritic.size === 0) {
     return { ok: true, severity: 'ok', message: 'No shipped reviews — skipping' };
   }
 
@@ -48,7 +54,10 @@ function run(show, context) {
 
     const cv = data.contentVerification;
     if (!cv || cv.wrongProduction !== true) continue;
-    if (!data.url || !shippedByUrl.has(data.url)) continue;
+    const urlMatch = data.url && shippedByUrl.has(data.url);
+    const outletCriticMatch = data.outletId && data.criticName
+      && shippedByOutletCritic.has(`${data.outletId}::${data.criticName}`);
+    if (!urlMatch && !outletCriticMatch) continue;
 
     // File shipped despite CV.wrongProduction=true. Is any clear flag set?
     const clears = CLEAR_FLAGS.filter(f => data[f] === true);
@@ -59,9 +68,10 @@ function run(show, context) {
 
     violations.push({
       filename,
-      url: data.url,
+      url: data.url || '(no url on file)',
       outletId: data.outletId,
       criticName: data.criticName,
+      matchedBy: urlMatch ? 'url' : 'outlet+critic',
       cvConfidence: cv.confidence,
       cvReasoning: cv.reasoning ? String(cv.reasoning).slice(0, 120) : null,
       cvIssues: Array.isArray(cv.issues) ? cv.issues.slice(0, 2) : null,
