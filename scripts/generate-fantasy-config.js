@@ -292,7 +292,7 @@ const config = {
     },
     boxOffice: { pointsPer100K: 0.30 },
     awards: {
-      tonyNom: 7, tonyWin: 14, tonyBestMusical: 30, tonyBestPlay: 30,
+      tonyNom: 5, tonyWin: 20, tonyBestMusical: 30, tonyBestPlay: 30,
       dramaLeagueNom: 2, dramaLeagueWin: 5,
       outerCriticsNom: 2, outerCriticsWin: 5,
       dramaDeskNom: 3, dramaDeskWin: 6,

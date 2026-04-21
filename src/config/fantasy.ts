@@ -83,9 +83,9 @@ export const BOX_OFFICE_POINTS_PER_100K = 0.30;
  * Obie Awards (late May): special citations, no nom/win format, OB + experimental
  */
 export const AWARDS_POINTS = {
-  // Tony Awards
-  tonyNom: 7,
-  tonyWin: 14,
+  // Tony Awards — wins weigh 4x a nom; Best Musical/Play 1.5x a regular win
+  tonyNom: 5,
+  tonyWin: 20,
   tonyBestMusical: 30,
   tonyBestPlay: 30,
   // Pre-Tony ceremonies
