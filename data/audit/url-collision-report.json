@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T02:07:25.938Z",
+  "generatedAt": "2026-04-21T03:54:28.858Z",
   "summary": {
-    "total": 13,
+    "total": 15,
     "high": 11,
-    "medium": 1,
+    "medium": 3,
     "low": 1
   },
   "collisions": [
@@ -330,6 +330,60 @@
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
       "confidence": "high"
+    },
+    {
+      "url": "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
+      "normalizedUrl": "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-04-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate 2026-03-13 is 1 days from every-brilliant-thing-2026 but also 38 days from schmigadoon-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+      "normalizedUrl": "https://timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "nytimes--adam-feldman.json",
+          "publishDate": "March 13th, 2026",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-04-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate March 13th, 2026 is 1 days from every-brilliant-thing-2026 but also 38 days from schmigadoon-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
