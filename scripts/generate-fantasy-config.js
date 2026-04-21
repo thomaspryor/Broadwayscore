@@ -38,6 +38,20 @@ const dataDir = path.join(__dirname, '..', 'data');
 const showsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf8'));
 const reviewsRaw = JSON.parse(fs.readFileSync(path.join(dataDir, 'reviews.json'), 'utf8'));
 
+// Frozen prices — set once at season open, never recomputed by the cron.
+// Shape: { _meta: { frozenAt, method, k }, prices: { [showId]: number } }
+let frozenPrices = null;
+let frozenMeta = null;
+try {
+  const frozenPath = path.join(dataDir, 'fantasy-league-frozen.json');
+  const frozenRaw = JSON.parse(fs.readFileSync(frozenPath, 'utf8'));
+  frozenPrices = frozenRaw.prices || {};
+  frozenMeta = frozenRaw._meta || null;
+  console.error(`Loaded ${Object.keys(frozenPrices).length} frozen prices (method: ${frozenMeta?.method ?? 'unknown'}, frozen: ${frozenMeta?.frozenAt ?? 'unknown'})`);
+} catch (e) {
+  console.error(`WARNING: Could not load fantasy-league-frozen.json (${e.message}). Falling back to heuristic pricing — season prices will drift run-to-run.`);
+}
+
 const shows = showsRaw.shows;
 const reviews = reviewsRaw.reviews;
 
@@ -217,8 +231,18 @@ for (const show of finalShows) {
   const audGrade = getAudienceGrade(show.id);
   const isBW = !show.category || show.category === 'broadway';
 
+  // Prices are frozen for the season. Fall back to heuristic only if the
+  // snapshot is missing (dev/first-run); log any show that needs a fallback.
+  let price;
+  if (frozenPrices && frozenPrices[show.id] != null) {
+    price = frozenPrices[show.id];
+  } else {
+    price = computePrice(show, criticScore);
+    if (frozenPrices) console.error(`  WARN: ${show.id} not in frozen snapshot — using heuristic $${price}`);
+  }
+
   showsConfig[show.id] = {
-    price: computePrice(show, criticScore),
+    price,
     eligible: {
       criticScore: true, // all shows opened this season — score not locked
       audienceGrade: true,
@@ -246,6 +270,9 @@ const config = {
     budget: BUDGET,
     teamSize: TEAM_SIZE,
     generatedAt: new Date().toISOString(),
+    pricing: frozenMeta
+      ? { source: 'frozen', frozenAt: frozenMeta.frozenAt, method: frozenMeta.method, k: frozenMeta.k ?? null }
+      : { source: 'heuristic', frozenAt: null, method: 'heuristic', k: null },
   },
   shows: showsConfig,
   scoring: {
