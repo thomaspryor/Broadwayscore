@@ -11,8 +11,14 @@ export const metadata: Metadata = {
 // (entries are dynamic, not available at build time)
 export const dynamic = 'force-dynamic';
 
+const STALE_SCORES_DAYS = 3;
+
 export default function FantasyLeaderboardPage() {
   const seasonInfo = getFantasySeasonInfo();
+
+  const lastScoredMs = seasonInfo.lastScored ? Date.parse(seasonInfo.lastScored) : null;
+  const ageDays = lastScoredMs ? Math.floor((Date.now() - lastScoredMs) / 86_400_000) : null;
+  const isStale = ageDays != null && ageDays > STALE_SCORES_DAYS;
 
   return (
     <div className="min-h-screen bg-surface text-white">
@@ -27,6 +33,16 @@ export default function FantasyLeaderboardPage() {
             {seasonInfo.season} Season &middot; Scores through week of {seasonInfo.latestGrossesWeek || 'N/A'}
           </p>
         </div>
+
+        {isStale && (
+          <div
+            role="status"
+            className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200"
+          >
+            <span className="font-semibold">Scores may be stale.</span>{' '}
+            Last updated {ageDays} days ago — the weekly refresh hasn&apos;t run. Standings below will catch up once it does.
+          </div>
+        )}
 
         {/* Leaderboard */}
         <FantasyLeaderboardTable />

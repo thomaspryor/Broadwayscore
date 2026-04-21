@@ -246,7 +246,8 @@ CREATE TABLE fantasy_entries (
   UNIQUE(email, season)
 );
 
--- RLS: allow public insert (via API route validation) and select (for leaderboard)
+-- RLS: anon can INSERT (via API route validation). Reads go through
+-- fantasy_entries_public (below) — base table is private to protect PII.
 ALTER TABLE fantasy_entries ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Anyone can insert fantasy entries"
@@ -254,7 +255,31 @@ CREATE POLICY "Anyone can insert fantasy entries"
   TO anon
   WITH CHECK (true);
 
-CREATE POLICY "Anyone can read fantasy entries"
-  ON fantasy_entries FOR SELECT
-  TO anon
-  USING (true);
+-- Public-safe view for leaderboard reads. Emails masked server-side,
+-- tiebreakers not exposed. See migration 20260420_fantasy_privacy_index.sql.
+CREATE OR REPLACE FUNCTION mask_email(email_in TEXT) RETURNS TEXT AS $$
+  SELECT CASE
+    WHEN email_in IS NULL OR position('@' IN email_in) = 0 THEN NULL
+    ELSE substr(email_in, 1, 1) || '***' || substr(email_in, position('@' IN email_in))
+  END
+$$ LANGUAGE SQL IMMUTABLE;
+
+CREATE OR REPLACE VIEW fantasy_entries_public AS
+SELECT
+  id,
+  mask_email(email) AS display_email,
+  team_name,
+  league_name,
+  picks,
+  total_cost,
+  picks_prices_snapshot,
+  price_version_at_submission,
+  season,
+  created_at
+FROM fantasy_entries;
+
+ALTER VIEW fantasy_entries_public SET (security_invoker = false);
+GRANT SELECT ON fantasy_entries_public TO anon;
+
+CREATE INDEX IF NOT EXISTS idx_fantasy_entries_season_league
+  ON fantasy_entries(season, league_name);

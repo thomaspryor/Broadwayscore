@@ -48,24 +48,12 @@ jobs:
             echo "in_season=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Regenerate fantasy config
+      # Prices are frozen for the season — generate-fantasy-config.js reads
+      # data/fantasy-league-frozen.json and emits those prices verbatim.
+      # No Gold Derby refresh, no EV projection, no repricing step.
+      - name: Regenerate fantasy config (frozen prices)
         if: steps.season-check.outputs.in_season == 'true'
         run: node scripts/generate-fantasy-config.js
-
-      - name: Refresh Gold Derby Tony odds
-        if: steps.season-check.outputs.in_season == 'true'
-        continue-on-error: true
-        run: node scripts/scrape-gold-derby-tonys.js
-
-      - name: Compute EV projections
-        if: steps.season-check.outputs.in_season == 'true'
-        continue-on-error: true
-        run: node scripts/compute-fantasy-scores.js --mode=projection
-
-      - name: Apply EV-based pricing
-        if: steps.season-check.outputs.in_season == 'true'
-        continue-on-error: true
-        run: node scripts/price-fantasy-league.js
 
       - name: Compute fantasy scores
         if: steps.season-check.outputs.in_season == 'true'
@@ -74,7 +62,7 @@ jobs:
       - name: Commit updated fantasy data
         if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
         run: |
-          git add data/fantasy-league.json data/fantasy-scores.json data/fantasy-ev.json data/tony-win-probabilities.json
+          git add data/fantasy-league.json data/fantasy-scores.json
           if git diff --staged --quiet; then
             echo "No fantasy data changes to commit"
           else
