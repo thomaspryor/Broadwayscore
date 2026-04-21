@@ -1,7 +1,10 @@
 {
   "processed": [
     "hamlet-off-broadway-2026/playbill--unknown.json",
-    "mexodus-off-broadway-2026/theatermania--david-gordon.json"
+    "mexodus-off-broadway-2026/theatermania--david-gordon.json",
+    "the-balusters-2026/playbill--unknown.json",
+    "fallen-angels-2026/nytg--gillian-russo.json",
+    "fallen-angels-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
@@ -11,23 +14,42 @@
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "titanique-off-broadway-2022/newyorker--dan-stahl.json"
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "hamlet-off-broadway-2026/playbill--unknown.json",
-      "mexodus-off-broadway-2026/theatermania--david-gordon.json"
+      "mexodus-off-broadway-2026/theatermania--david-gordon.json",
+      "the-balusters-2026/playbill--unknown.json",
+      "fallen-angels-2026/nytg--gillian-russo.json",
+      "fallen-angels-2026/pages-on-stages--mason-pilevsky.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-21T08:51:13.806Z",
-  "lastProcessed": "titanique-off-broadway-2022/newyorker--dan-stahl.json",
-  "log": []
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-21T10:54:02.552Z",
+      "event": "bb-session",
+      "session": "4e92e8e2",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T10:54:03.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
