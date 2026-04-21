@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T04:40:57.657Z",
+  "generatedAt": "2026-04-21T07:14:13.958Z",
   "summary": {
-    "total": 13,
-    "high": 11,
-    "medium": 1,
+    "total": 17,
+    "high": 12,
+    "medium": 4,
     "low": 1
   },
   "collisions": [
@@ -108,6 +108,15 @@
           "openingDate": "2026-04-07",
           "hasScore": true,
           "hasFullText": true,
+          "outletId": "ew"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "ew--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-04-07",
+          "hasScore": false,
+          "hasFullText": false,
           "outletId": "ew"
         }
       ],
@@ -330,6 +339,114 @@
       "suggestedWinner": "cats-the-jellicle-ball-2026",
       "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 opening (2026-04-07)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+      "normalizedUrl": "https://washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review",
+      "candidates": [
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "washpost--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-04-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "washpost"
+        },
+        {
+          "showId": "death-of-a-salesman-2026",
+          "file": "washpost--thomas-floyd.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "washpost"
+        }
+      ],
+      "suggestedWinner": "death-of-a-salesman-2026",
+      "reason": "publishDate 2026-04-15 is 6 days from death-of-a-salesman-2026 opening (2026-04-09)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829?srsltid=AfmBOorP7l3j8IP68qdcMeBPMcw1s7odIwPXm7XDmhTEy1GhJqXV2vR1",
+      "normalizedUrl": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "ew--dalton-ross.json",
+          "publishDate": "2026-03-12",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "ew"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "ew--dalton-ross.json",
+          "publishDate": "2026-03-12",
+          "openingDate": "2026-04-20",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "ew"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate 2026-03-12 is 0 days from every-brilliant-thing-2026 but also 39 days from schmigadoon-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe/",
+      "normalizedUrl": "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "nysr--steven-suskin.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nysr"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "nysr--steven-suskin.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-04-20",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "nysr"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate 2026-03-13 is 1 days from every-brilliant-thing-2026 but also 38 days from schmigadoon-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+      "normalizedUrl": "https://thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "thewrap--robert-hofler.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thewrap"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "file": "thewrap--robert-hofler.json",
+          "publishDate": "2026-03-13",
+          "openingDate": "2026-04-20",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "thewrap"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate 2026-03-13 is 1 days from every-brilliant-thing-2026 but also 38 days from schmigadoon-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
