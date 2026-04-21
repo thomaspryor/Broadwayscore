@@ -601,7 +601,9 @@
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
     "the-pitmen-painters-2010/bloomberg--john-simon.json",
     "brief-encounter-2010/newyorker--uncredited.json",
-    "brief-encounter-2010/nytheatre--martin-denton.json"
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -634,6 +636,7 @@
       "schmigadoon-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
@@ -642,7 +645,7 @@
     ]
   },
   "startTime": "2026-04-21T03:09:19.045Z",
-  "lastProcessed": "brief-encounter-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
   "log": [
     {
       "t": "2026-04-21T03:13:14.013Z",
@@ -696,6 +699,17 @@
     },
     {
       "t": "2026-04-21T04:03:04.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T05:20:14.860Z",
+      "event": "bb-session",
+      "session": "37207bf3",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T05:20:15.569Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
