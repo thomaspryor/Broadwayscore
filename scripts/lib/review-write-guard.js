@@ -21,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseRating } = require('./score-conversion-rules');
 
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
@@ -172,6 +173,15 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] originalScore is a number (${newData.originalScore}) in ${path.basename(filePath)} — should be a string. Caller: ${caller}`);
   }
 
+  // Schmigadoon 2026 bug #6 guard: assignedScore must be null or a finite number.
+  // Schema drift shipped "2/4 stars" (string) to reviews.json because some ingest
+  // path wrote the raw rating string into the numeric slot. Coerce known rating
+  // patterns via the shared parseRating() helper; null + log anything unparseable.
+  const coercion = coerceAssignedScore(newData, filePath);
+  if (coercion.changed) {
+    console.warn(`[review-write-guard] assignedScore coerced in ${path.basename(filePath)}: ${JSON.stringify(coercion.from)} → ${coercion.to} (${coercion.reason})`);
+  }
+
   // Pattern Card #4: URL collision detection — warn before writing a file whose URL
   // already exists in another file in the same show directory.
   if (!force && newData.url) {
@@ -279,4 +289,79 @@ function _normalizeUrlForCollision(url) {
   }
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, PROTECTED_FIELDS };
+/**
+ * Coerce a non-numeric assignedScore into a number, or null it if unparseable.
+ *
+ * Schmigadoon 2026 shipped the NY Post review with assignedScore="2/4 stars"
+ * (string) because schema drift let a raw rating string land in the numeric
+ * slot. validate-data.js catches this post-rebuild, but the gate is too late —
+ * the bad value had already gone to subscribers. Block it at write time.
+ *
+ * Recognized patterns (via shared parseRating()): "N/N stars", "N stars",
+ * "B+" / letter grades, sentiment words, bare numeric strings. Anything else
+ * becomes null + flag, and the caller's stderr shows the coercion.
+ *
+ * @param {object} data The review-text JSON object (mutated in place).
+ * @param {string} [filePath] Optional, only used for log context.
+ * @returns {{ changed: boolean, from?: any, to: number|null, reason?: string }}
+ */
+function coerceAssignedScore(data, filePath) {
+  const val = data.assignedScore;
+  // Already the right shape (null, undefined, or finite number) — no-op.
+  if (val === null || val === undefined) return { changed: false, to: val ?? null };
+  if (typeof val === 'number' && Number.isFinite(val)) return { changed: false, to: val };
+
+  const original = val;
+
+  // First preference: originalScoreNormalized is the authoritative 0-100 form
+  // that setExtractedScore() already wrote from the extractor's normalizedScore.
+  // If it's present and sane, trust it.
+  if (
+    typeof data.originalScoreNormalized === 'number' &&
+    Number.isFinite(data.originalScoreNormalized) &&
+    data.originalScoreNormalized >= 0 &&
+    data.originalScoreNormalized <= 100
+  ) {
+    data.assignedScore = data.originalScoreNormalized;
+    data._assignedScoreCoercedFrom = original;
+    data._assignedScoreCoercedAt = new Date().toISOString();
+    return {
+      changed: true,
+      from: original,
+      to: data.originalScoreNormalized,
+      reason: 'from-originalScoreNormalized',
+    };
+  }
+
+  // Second preference: string form that parseRating() understands (stars, grades, etc.).
+  if (typeof val === 'string') {
+    const parsed = parseRating(val);
+    if (
+      parsed &&
+      !parsed.unparseable &&
+      typeof parsed.expected === 'number' &&
+      Number.isFinite(parsed.expected)
+    ) {
+      data.assignedScore = parsed.expected;
+      data._assignedScoreCoercedFrom = original;
+      data._assignedScoreCoercedAt = new Date().toISOString();
+      return {
+        changed: true,
+        from: original,
+        to: parsed.expected,
+        reason: `parsed-as-${parsed.type}`,
+      };
+    }
+  }
+
+  // Unrecoverable: null the score and flag for human review so the bad value
+  // can't propagate to reviews.json. Rebuild will skip this review.
+  data.assignedScore = null;
+  data._assignedScoreCoercionFailed = true;
+  data._assignedScoreCoercedFrom = original;
+  data._assignedScoreCoercedAt = new Date().toISOString();
+  data.needsReview = true;
+  return { changed: true, from: original, to: null, reason: 'unparseable' };
+}
+
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, PROTECTED_FIELDS };
