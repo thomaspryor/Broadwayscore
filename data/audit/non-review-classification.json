@@ -1,50 +1,55 @@
 {
   "meta": {
-    "generatedAt": "2026-04-21T02:21:50.788Z",
+    "generatedAt": "2026-04-21T20:00:07.469Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36317,
-      "inReviewsJson": 16623,
-      "skippedExcluded": 70,
-      "withFullText": 17,
-      "excerptOnly": 1590,
-      "llmClassified": 2,
+      "totalFiles": 36333,
+      "inReviewsJson": 16621,
+      "skippedExcluded": 66,
+      "withFullText": 50,
+      "excerptOnly": 1578,
+      "llmClassified": 6,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 2,
-      "budgetUsed": 0.0017000000000000006,
-      "llmCalls": 17,
-      "rateLimitHits": 45,
-      "errors": 15,
-      "skippedAlreadyClassified": 14946
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
+      "rateLimitHits": 138,
+      "errors": 44,
+      "skippedAlreadyClassified": 14927
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
     {
-      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
-      "showId": "pippin-2013",
+      "file": "fences-2010/talkinbroadway--matthew-murray.json",
+      "showId": "fences-2010",
       "outlet": "Talkin' Broadway",
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
-      "currentScore": 80
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of Fences.",
+      "currentScore": 82
     },
     {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
+      "file": "parade-2023/wsj--terry-teachout.json",
+      "showId": "parade-2023",
+      "outlet": "The Wall Street Journal",
+      "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article provides production details and ticket information, resembling a news item or listing rather than a review with critical evaluation.",
-      "currentScore": 64
+      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "currentScore": 78
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "between-the-river-and-the-sea-west-end-2026/guardian--arifa-akbar.json",
+    "operation-mincemeat-west-end-2024/whatsonstage--theo-bosanquet.json",
+    "schmigadoon-2026/nysr--bob-verini.json",
+    "schmigadoon-2026/nytg--christian-lewis.json"
+  ],
   "perShowSummary": []
 }
