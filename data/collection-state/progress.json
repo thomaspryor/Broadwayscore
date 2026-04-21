@@ -16,6 +16,8 @@
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "fallen-angels-2026/wsj--charles-isherwood.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
     "hamlet-off-broadway-2026/here--unknown.json"
   ],
   "skipped": [],
@@ -33,6 +35,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": []
@@ -48,6 +51,17 @@
     },
     {
       "t": "2026-04-21T10:54:03.464Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T11:44:00.133Z",
+      "event": "bb-session",
+      "session": "e36d5b59",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T11:44:00.925Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
