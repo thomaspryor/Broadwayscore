@@ -16,7 +16,10 @@
     "maltby-and-shires-about-time-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
     "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
-    "glengarry-glen-ross-2025/one-minute-critic--matthew-wexler.json"
+    "glengarry-glen-ross-2025/one-minute-critic--matthew-wexler.json",
+    "the-balusters-2026/theatrely--andrew-martini.json",
+    "schmigadoon-2026/new-york-sun--unknown.json",
+    "schmigadoon-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "schmigadoon-2026/wsj--charles-isherwood.json",
@@ -301,7 +304,14 @@
     "the-peewee-herman-show-2010/variety--david-rooney.json",
     "the-peewee-herman-show-2010/new-jersey-newsroom--michael-sommers.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
-    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json"
+    "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bloodlove-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -316,7 +326,8 @@
       "maltby-and-shires-about-time-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "high-noon-west-end-2025/whatsonstage--sarah-crompton.json",
       "the-last-five-years-2025/one-minute-critic--matthew-wexler.json",
-      "glengarry-glen-ross-2025/one-minute-critic--matthew-wexler.json"
+      "glengarry-glen-ross-2025/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/new-york-sun--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -325,10 +336,12 @@
       "the-balusters-2026/theatrely--unknown.json",
       "schmigadoon-2026/timeout--adam-feldman.json",
       "mexodus-off-broadway-2026/nytimes--rachel-sherman.json",
-      "mexodus-off-broadway-2026/nytimes--unknown.json"
+      "mexodus-off-broadway-2026/nytimes--unknown.json",
+      "the-balusters-2026/theatrely--andrew-martini.json"
     ],
     "brightdata": [
-      "schmigadoon-2026/thewrap--robert-hofler.json"
+      "schmigadoon-2026/thewrap--robert-hofler.json",
+      "schmigadoon-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -337,7 +350,7 @@
     ]
   },
   "startTime": "2026-04-21T03:09:19.045Z",
-  "lastProcessed": "women-on-the-verge-of-a-nervous-breakdown-2010/new-jersey-newsroom--michael-sommers.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-21T03:13:14.013Z",
@@ -382,6 +395,17 @@
       "t": "2026-04-21T03:18:46.877Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-21T04:03:04.353Z",
+      "event": "bb-session",
+      "session": "02b442ee",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-21T04:03:04.784Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
