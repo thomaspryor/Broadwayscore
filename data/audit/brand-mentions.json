@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-21T16:39:30.546Z",
+  "lastRunAt": "2026-04-21T18:42:02.948Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -33,7 +33,8 @@
     "google:8a4d2c98e487621f": true,
     "news:e48258797b7b0269": true,
     "news:c4924e53e4ada2dc": true,
-    "google:b3603ef3b47a2cfa": true
+    "google:b3603ef3b47a2cfa": true,
+    "news:cdc732e5f342d769": true
   },
   "mentions": [
     {
@@ -678,10 +679,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-21T14:55:24.424Z"
+    },
+    {
+      "id": "news:cdc732e5f342d769",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2",
+      "title": "SCHMIGADOON! Reviews - Page 2",
+      "excerpt": "13 hours ago — https://broadwayscorecard.com/show/schmigadoon. \"When we die, we go bye bye.\" - Abe Lincolns. Rentaholic2. Broadway Legend Joined: 3/14/04. #39 ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-21T18:41:47.261Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is just a URL link drop in a forum thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
+      "draftResponse": null,
+      "dispatched": "2026-04-21T18:42:02.948Z"
     }
   ],
   "stats": {
-    "totalSeen": 33,
+    "totalSeen": 34,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -717,6 +738,7 @@
     "https://secure.instagram.com/bwayscorecard?hl=bg": true,
     "https://forum.broadwayworld.com/thread/PROOF-2026-Reviews/2": true,
     "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true,
-    "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true
+    "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true,
+    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true
   }
 }
