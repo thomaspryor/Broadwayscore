@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-21T06:59:24.448Z",
+  "generatedAt": "2026-04-21T07:58:47.100Z",
   "date": "2026-04-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 11694,
+  "entryCount": 11708,
   "shows": [
     {
       "showId": "proof-2026",
@@ -2081,7 +2081,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 721478,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2666,7 +2666,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 850379,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2902,6 +2902,21 @@
     {
       "showId": "glengarry-glen-ross-2025",
       "reviewCount": 30,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-balusters-2026",
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
