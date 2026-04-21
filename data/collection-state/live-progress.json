@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-21T12:12:00.550Z",
-  "processed": 102,
-  "failed": 208,
-  "successRate": "32.9%",
+  "updatedAt": "2026-04-21T12:35:14.911Z",
+  "processed": 5,
+  "failed": 14,
+  "successRate": "26.3%",
   "tierBreakdown": {
     "playwright": 89,
     "amp": 0,
@@ -10,8 +10,8 @@
     "directCookies": 0,
     "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 2
+    "archiveToday": 3,
+    "archive": 0
   },
   "browserbaseSessions": 1,
   "recentActivity": [
@@ -24,7 +24,29 @@
     {
       "t": "2026-04-21T10:51:18.308Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T11:44:00.133Z",
+      "event": "bb-session",
+      "session": "e36d5b59",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T11:44:00.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T12:33:25.337Z",
+      "event": "bb-session",
+      "session": "b2710f01",
+      "url": "https://www.wsj.com/articles/fallen-angels-review-rose-byrne-and-kelli-ohara-in-"
+    },
+    {
+      "t": "2026-04-21T12:33:25.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
