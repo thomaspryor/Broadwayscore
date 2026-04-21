@@ -21,6 +21,11 @@ const https = require('https');
 const path = require('path');
 const fs = require('fs');
 const { chromium } = require('playwright');
+const {
+  loadCookiesForDomain,
+  buildCookieHeaderForUrl,
+  hasCookiesForUrl,
+} = require('./cookie-loader');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -206,6 +211,74 @@ const _scraperStats = {
 function getScraperStats() { return { ..._scraperStats }; }
 
 /**
+ * Fetch page using plain HTTPS with subscriber Cookie header.
+ *
+ * Rationale: paywalled outlets (WSJ, FT, Telegraph, NYT, etc.) gate reviews behind
+ * subscriber cookies. For WSJ specifically, BD/Playwright trigger DataDome bot
+ * detection even WITH cookies — plain HTTP with cookies bypasses detection entirely
+ * (proven pattern from scripts/recover-wsj-subscriber.js).
+ *
+ * Returns null if no cookies for this domain — callers fall back to BD/SB/PW chain.
+ */
+async function fetchWithCookiesPlain(url) {
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (!cookieHeader) return null;
+
+  try {
+    const response = await new Promise((resolve, reject) => {
+      const opts = {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Cookie': cookieHeader,
+        },
+        timeout: 20000,
+      };
+
+      const doRequest = (targetUrl, redirectCount = 0) => {
+        if (redirectCount > 3) {
+          reject(new Error('Too many redirects'));
+          return;
+        }
+        const req = https.get(targetUrl, opts, (res) => {
+          if ((res.statusCode === 301 || res.statusCode === 302 || res.statusCode === 303 || res.statusCode === 307 || res.statusCode === 308) && res.headers.location) {
+            res.resume();
+            const nextUrl = new URL(res.headers.location, targetUrl).toString();
+            doRequest(nextUrl, redirectCount + 1);
+            return;
+          }
+          if (res.statusCode !== 200) {
+            res.resume();
+            reject(new Error(`HTTP ${res.statusCode}`));
+            return;
+          }
+          let data = '';
+          res.on('data', (c) => { data += c; });
+          res.on('end', () => resolve(data));
+        });
+        req.on('error', reject);
+        req.on('timeout', () => {
+          req.destroy(new Error('request timeout'));
+        });
+      };
+
+      doRequest(url);
+    });
+
+    return {
+      content: response,
+      format: 'html',
+      source: 'cookies-plain',
+    };
+  } catch (error) {
+    console.error(`⚠️  Cookie-plain fetch failed: ${error.message}`);
+    return null;
+  }
+}
+
+/**
  * Fetch page using Bright Data Web Unlocker API (raw HTML output)
  */
 async function fetchWithBrightData(url) {
@@ -215,11 +288,17 @@ async function fetchWithBrightData(url) {
 
   try {
     const apiUrl = 'https://api.brightdata.com/request';
-    const body = JSON.stringify({
+    const bodyObj = {
       zone: BRIGHTDATA_ZONE,
       url: url,
-      format: 'raw'
-    });
+      format: 'raw',
+    };
+    // Attach subscriber cookies (WSJ/FT/NYT/etc.) so BD's proxied request carries them
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (cookieHeader) {
+      bodyObj.headers = { Cookie: cookieHeader };
+    }
+    const body = JSON.stringify(bodyObj);
 
     const response = await new Promise((resolve, reject) => {
       const options = {
@@ -288,7 +367,14 @@ async function fetchWithScrapingBee(url, options = {}) {
   _scraperStats.sbCredits += creditCost;
 
   try {
-    const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
+    let apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
+    // Attach subscriber cookies so SB's proxied request carries them. SB expects
+    // semicolon-separated "name=value" pairs URL-encoded as one value. WSJ cookie
+    // payloads can be large (~1-2KB); SB caps URL length around 8KB so this is fine.
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (cookieHeader) {
+      apiUrl += `&cookies=${encodeURIComponent(cookieHeader)}`;
+    }
 
     const response = await new Promise((resolve, reject) => {
       https.get(apiUrl, (res) => {
@@ -324,6 +410,7 @@ async function fetchWithScrapingBee(url, options = {}) {
  */
 async function fetchWithPlaywright(url, options = {}) {
   _scraperStats.pwAttempts++;
+  let context = null;
   try {
     if (!playwright) {
       playwright = await chromium.launch({
@@ -331,11 +418,25 @@ async function fetchWithPlaywright(url, options = {}) {
       });
     }
 
-    const page = await playwright.newPage();
+    // Attach subscriber cookies (WSJ/FT/NYT/etc.) when available. Cookie-loader
+    // returns Playwright-compatible objects {name, value, domain, path, ...}.
+    const cookieDomain = hasCookiesForUrl(url);
+    if (cookieDomain) {
+      context = await playwright.newContext();
+      const cookies = loadCookiesForDomain(cookieDomain);
+      if (cookies && cookies.length > 0) {
+        await context.addCookies(cookies);
+      }
+    }
+
+    const page = context ? await context.newPage() : await playwright.newPage();
     const waitUntil = options.fast ? 'domcontentloaded' : 'networkidle';
     await page.goto(url, { waitUntil, timeout: 30000 });
     const content = await page.content();
     await page.close();
+    if (context) {
+      try { await context.close(); } catch (_) {}
+    }
 
     _scraperStats.pwSuccess++;
     return {
@@ -345,6 +446,9 @@ async function fetchWithPlaywright(url, options = {}) {
     };
   } catch (error) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
+    if (context) {
+      try { await context.close(); } catch (_) {}
+    }
     // If the browser is in a bad state (e.g. after a timeout), close and
     // reset so the next call can relaunch a fresh instance.
     if (playwright) {
@@ -368,6 +472,7 @@ async function fetchPage(url, options = {}) {
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const skips = _getDomainSkips(url);
+  const cookieDomain = hasCookiesForUrl(url);
 
   console.log(`Fetching: ${url}`);
 
@@ -394,6 +499,19 @@ async function fetchPage(url, options = {}) {
     }
     console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
     return null;
+  }
+
+  // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS with
+  // subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even with cookies,
+  // but plain HTTP + subscriber cookies bypasses it (the recover-wsj-subscriber.js
+  // pattern). For non-WSJ cookie outlets this just skips one proxy hop — cheap.
+  if (cookieDomain && !preferPlaywright && !skips.has('cookies-plain')) {
+    console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
+    const raw = await fetchWithCookiesPlain(url);
+    if (raw && raw.content && raw.content.length > 0) {
+      const checked = _checkAndReturn(raw, 'Cookie-plain');
+      if (checked) return checked;
+    }
   }
 
   // Playwright-first for known public sites (free, fast with domcontentloaded)
@@ -620,6 +738,7 @@ function verifyFetchedUrl(html, expectedUrl) {
 module.exports = {
   fetchPage,
   fetchJSON,
+  fetchWithCookiesPlain,
   fetchWithBrightData,
   fetchWithScrapingBee,
   fetchWithPlaywright,
