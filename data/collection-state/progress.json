@@ -1,0 +1,66 @@
+{
+  "processed": [
+    "the-balusters-2026/theatrely--unknown.json",
+    "the-balusters-2026/frontmezzjunkies--ross.json",
+    "the-balusters-2026/playbill--unknown.json",
+    "schmigadoon-2026/thewrap--robert-hofler.json",
+    "schmigadoon-2026/timeout--adam-feldman.json",
+    "schmigadoon-2026/culturesauce--thom-geier.json",
+    "schmigadoon-2026/playbill--unknown.json",
+    "hamlet-off-broadway-2026/playbill--unknown.json"
+  ],
+  "failed": [
+    "schmigadoon-2026/wsj--charles-isherwood.json",
+    "schmigadoon-2026/wsj--john-anderson.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "the-balusters-2026/frontmezzjunkies--ross.json",
+      "the-balusters-2026/playbill--unknown.json",
+      "schmigadoon-2026/culturesauce--thom-geier.json",
+      "schmigadoon-2026/playbill--unknown.json",
+      "hamlet-off-broadway-2026/playbill--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [
+      "the-balusters-2026/theatrely--unknown.json",
+      "schmigadoon-2026/timeout--adam-feldman.json"
+    ],
+    "brightdata": [
+      "schmigadoon-2026/thewrap--robert-hofler.json"
+    ],
+    "archiveToday": [],
+    "archive": [
+      "schmigadoon-2026/wsj--john-anderson.json"
+    ]
+  },
+  "startTime": "2026-04-21T03:09:19.045Z",
+  "lastProcessed": "hamlet-off-broadway-2026/playbill--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-21T03:13:14.013Z",
+      "event": "bb-session",
+      "session": "ca4c52c0",
+      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spir"
+    },
+    {
+      "t": "2026-04-21T03:13:15.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-21T03:14:11.397Z",
+      "event": "bb-session",
+      "session": "5e1492d7",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-musical-comedy-as-youve-never-se"
+    },
+    {
+      "t": "2026-04-21T03:14:12.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
+}
