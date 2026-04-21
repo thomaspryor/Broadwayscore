@@ -288,8 +288,8 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
     // Extract thumb from BigThumbs image
     const thumbMatch = reviewHtml.match(/BigThumbs_(UP|MEH|DOWN)/i);
 
-    // Extract critic name
-    const criticMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([^<]+)/i);
+    // Extract critic name (DTLI splits first/last name with <br />, e.g. "Patrick<br />Gomez")
+    const criticMatch = reviewHtml.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([\s\S]*?)(?:<\/a>|<\/h2>)/i);
 
     // Extract date
     const dateMatch = reviewHtml.match(/class="review-item-date"[^>]*>([^<]+)/i);
