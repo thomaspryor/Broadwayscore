@@ -47,6 +47,7 @@ const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
+const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
@@ -735,6 +736,28 @@ function getBestScore(data) {
 // Main execution
 console.log('=== REBUILDING ALL REVIEWS ===\n');
 console.log('NOTE: Reviews without valid scores are EXCLUDED (no default of 50)\n');
+
+// Rebuild-pause guard (Schmigadoon 2026 Bug #12).
+// If a manual opening-night edit has set a tombstone, exit cleanly BEFORE any
+// reads or writes. This prevents a concurrent rebuild from overwriting a
+// hand-edited reviews.json during the 10am broadcast window.
+// Bypass with --ignore-pause if the tombstone is stale and you know what
+// you're doing. Tombstone format + write-side CLI: scripts/pause-rebuild.js.
+if (!process.argv.includes('--ignore-pause') && isRebuildPaused()) {
+  const entry = readRebuildPause();
+  console.log('⏸  REBUILD PAUSED by opening-night manual-edit tombstone');
+  console.log(`   File:      ${REBUILD_PAUSE_PATH}`);
+  console.log(`   Reason:    ${entry.reason || '(none given)'}`);
+  console.log(`   Paused by: ${entry.pausedBy || '(unknown)'}`);
+  console.log(`   Paused at: ${entry.pausedAt || '(unknown)'}`);
+  console.log(`   Until:     ${entry.until.toISOString()}`);
+  console.log('');
+  console.log('   Clear:   node scripts/pause-rebuild.js --clear');
+  console.log('   Bypass:  node scripts/rebuild-all-reviews.js --ignore-pause');
+  console.log('');
+  console.log('Exiting cleanly (exit 0) so CI does not alert — pause is intentional.');
+  process.exit(0);
+}
 
 // Load show dates and status for production-date guard
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
