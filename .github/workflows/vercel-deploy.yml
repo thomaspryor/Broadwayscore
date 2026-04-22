@@ -33,6 +33,11 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # 15-minute job timeout. Typical deploy completes in 2-5 min. On 2026-04-22, deploy
+    # 24760225201 hung in_progress for 13+ min, blocking 3 subsequent deploys (Balusters
+    # postmortem CLASS 9). GitHub Actions default is 6 hours. 15 min is generous enough to
+    # absorb Vercel build variance without letting a hung run wedge the queue.
+    timeout-minutes: 15
     concurrency:
       group: vercel-production-deploy
       cancel-in-progress: false

@@ -1644,6 +1644,48 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
     console.log(`    Warning: Could not extract individual reviews (HTML structure may have changed)`);
   }
 
+  // Domain supplement (Balusters postmortem CLASS 2, 2026-04-21)
+  // DTLI block parser requires .review-item markup; if DTLI changes markup or the
+  // outlet isn't in our slug map, the outlet gets silently skipped. Catch missed
+  // outlets by walking every outbound href on the DTLI show page and matching
+  // domain→outletId via outlet-registry. Joey Sims/Theatrely and Vulture were
+  // both on the Balusters DTLI page but not extracted by the block parser.
+  try {
+    const existingOutletIds = new Set(reviews.map(r => (r.outletId || '').toLowerCase()).filter(Boolean));
+    const urlsByResolved = new Map();
+    const allAnchors = html.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>/gi);
+    for (const m of allAnchors) {
+      const href = m[1];
+      if (href.includes('didtheylikeit.com')) continue;
+      const resolved = resolveOutletFromUrl(href);
+      if (!resolved || !resolved.outletId) continue;
+      const oid = resolved.outletId.toLowerCase();
+      if (existingOutletIds.has(oid)) continue;
+      if (!urlsByResolved.has(oid)) urlsByResolved.set(oid, new Set());
+      urlsByResolved.get(oid).add(href);
+    }
+    let supplementAdded = 0;
+    for (const [oid, urls] of urlsByResolved) {
+      const firstUrl = urls.values().next().value;
+      if (showTitle && !urlLooksLikeReview(firstUrl, showTitle)) continue;
+      reviews.push({
+        showId,
+        outletId: oid,
+        outlet: getOutletDisplayName(oid) || oid,
+        criticName: 'Unknown',
+        url: firstUrl,
+        source: 'dtli-domain-supplement',
+        dtliUrl,
+      });
+      supplementAdded++;
+    }
+    if (supplementAdded > 0) {
+      console.log(`    [DTLI Method 2] domain supplement added ${supplementAdded} outlet(s) missed by block parser`);
+    }
+  } catch (e) {
+    console.log(`    [DTLI Method 2] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
+  }
+
   return reviews;
 }
 
@@ -2402,6 +2444,55 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    Extracted ${reviews.length} reviews from BWW roundup`);
   } else if (html && html.length > 5000) {
     console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
+  }
+
+  // Method 3: outlet-by-domain supplement (Balusters postmortem CLASS 2, 2026-04-21)
+  // JSON-LD + articleBody parsing missed 5 outlets on opening night (theatrely, theatermania,
+  // cote-notices, one-minute-critic, vulture) because they were linked with non-standard
+  // anchor text or absent from JSON-LD entirely. Walk every outbound href and ask
+  // resolveOutletFromUrl() — this maps domain→outletId via outlet-registry and catches
+  // links that the anchor-text matcher couldn't identify.
+  // Keeps existing reviews unchanged; only adds outlets not already represented.
+  try {
+    const existingOutletIds = new Set(reviews.map(r => (r.outletId || '').toLowerCase()).filter(Boolean));
+    const urlsByResolved = new Map(); // outletId → Set<url>
+    const allAnchors = html.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>/gi);
+    for (const m of allAnchors) {
+      const href = m[1];
+      if (href.includes('broadwayworld.com')) continue;
+      const resolved = resolveOutletFromUrl(href);
+      if (!resolved || !resolved.outletId) continue;
+      const oid = resolved.outletId.toLowerCase();
+      if (existingOutletIds.has(oid)) continue;
+      if (!urlsByResolved.has(oid)) urlsByResolved.set(oid, new Set());
+      urlsByResolved.get(oid).add(href);
+    }
+    let method3Added = 0;
+    for (const [oid, urls] of urlsByResolved) {
+      // Prefer first URL; create one stub per outlet (critic unknown — resolved
+      // by later collect-review-texts pass).
+      const firstUrl = urls.values().next().value;
+      if (showTitle && !urlOrTitleLooksLikeReview(firstUrl, showTitle, null, { trustedSource: true })) continue;
+      const cross = detectCrossShowUrlMismatch(showId, firstUrl);
+      if (cross) {
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, matchedTitle: cross.matchedTitle, method: 'bww-rr-domain-supplement' } });
+        continue;
+      }
+      reviews.push({
+        showId,
+        outletId: oid,
+        outlet: getOutletDisplayName(oid) || oid,
+        criticName: 'Unknown',
+        url: firstUrl,
+        source: 'bww-roundup-domain-supplement',
+      });
+      method3Added++;
+    }
+    if (method3Added > 0) {
+      console.log(`    [Method 3] domain supplement added ${method3Added} outlet(s) missed by JSON-LD + articleBody`);
+    }
+  } catch (e) {
+    console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
   }
 
   return reviews;

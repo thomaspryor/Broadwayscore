@@ -17,6 +17,7 @@ const {
   shouldSkipWrongProductionAudit,
   applyTemporalOverrides,
   hasStrongDifferentShowSignal,
+  hasHighConfidenceLlmScore,
 } = require('../../scripts/lib/review-guards.js');
 
 describe('isLikelyWrongProduction', () => {
@@ -395,5 +396,40 @@ describe('applyTemporalOverrides — strong-signal bypass (Schmigadoon 2026-04-2
   test('outside-30d window: no downgrade regardless of signal', () => {
     const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-02-01');
     assert.strictEqual(r.wpConfidence, 'high');
+  });
+});
+
+describe('hasHighConfidenceLlmScore — Balusters CLASS 1 contradiction guard', () => {
+  test('no llmScore → false', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({}), false);
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: null }), false);
+  });
+
+  test('llmScore with non-finite score → false', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: null, confidence: 'high' } }), false);
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 'low', confidence: 'high' } }), false);
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: NaN, confidence: 'high' } }), false);
+  });
+
+  test('llmScore with low confidence → false', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'low' } }), false);
+  });
+
+  test('llmScore with high confidence + finite score → true (Helen Shaw case)', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'high' } }), true);
+  });
+
+  test('llmScore with medium confidence + finite score → true (boundary)', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 65, confidence: 'medium' } }), true);
+  });
+
+  test('llmScore with score=0 (explicit pan) + high conf → true', () => {
+    // Score bounds intentionally don't filter — pans are valid scores too.
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 0, confidence: 'high' } }), true);
+  });
+
+  test('llmScore confidence case-insensitive', () => {
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'HIGH' } }), true);
+    assert.strictEqual(hasHighConfidenceLlmScore({ llmScore: { score: 80, confidence: 'Medium' } }), true);
   });
 });

@@ -1354,6 +1354,31 @@ function isVerifiedDiscoverySource(source) {
  * @returns {boolean} true if the review should be written to _pending/ instead of
  *   the main show directory.
  */
+/**
+ * Balusters postmortem Class #1 — CV/LLM contradiction check.
+ *
+ * If the LLM ensemble scored this file with a confident numeric score, it evaluated
+ * the article as a review. If CV later flags wrongArticle=true, that's a contradiction
+ * — either the ensemble was fooled or CV is wrong. The ensemble has more signal
+ * (reads full text, outputs structured score + bucket + reasoning) than CV (2-3 opening
+ * paragraphs, classifies type). Prefer the ensemble.
+ *
+ * Balusters 2026-04-21: Helen Shaw (NYT Critic's Pick, ensemble=80 high-conf) and
+ * Ron Fassler (Theater Pizzazz rave, ensemble=88 high-conf) were both CV-flagged
+ * wrongArticle=true because they open with historical framing. Without manual
+ * intervention they would have been excluded from reviews.json.
+ *
+ * @param {Object} data - Review data
+ * @returns {boolean} true if ensemble gave this a confident score — CV.wrongArticle should be advisory
+ */
+function hasHighConfidenceLlmScore(data) {
+  const llm = data && data.llmScore;
+  if (!llm) return false;
+  if (!Number.isFinite(llm.score)) return false;
+  const conf = String(llm.confidence || '').toLowerCase();
+  return conf === 'high' || conf === 'medium';
+}
+
 function shouldRouteUnknownCriticToPending(review) {
   if (!review || typeof review !== 'object') return false;
   const isUnknownCritic = (review.criticName || '').toString().toLowerCase().trim() === 'unknown';
@@ -1393,6 +1418,7 @@ module.exports = {
   isIncludableForRebuild,
   isVerifiedDiscoverySource,
   shouldRouteUnknownCriticToPending,
+  hasHighConfidenceLlmScore,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,
