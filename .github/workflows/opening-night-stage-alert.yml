@@ -43,6 +43,16 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TITLE="Opening-night stage-latency alert: scored entries missing"
+          # Dedup: skip if an open issue with this title already exists — the
+          # same show can sit in the 48h window across multiple daily runs
+          # and we don't want to spam the tracker.
+          EXISTING=$(gh issue list --label opening-night --state open --json title,number \
+            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -1)
+          if [ -n "$EXISTING" ]; then
+            echo "Issue #$EXISTING already open for this alert — adding comment instead"
+            gh issue comment "$EXISTING" --body "Stage-alert fired again at $(date -u +%FT%TZ). Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            exit 0
+          fi
           BODY=$(cat <<'EOF'
           The `opening-night-stage-alert` workflow detected shows that opened in the
           last 48h but have no `scored` entry in `data/audit/stage-latency.jsonl`.
