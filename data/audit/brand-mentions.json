@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-22T20:36:38.504Z",
+  "lastRunAt": "2026-04-22T22:35:27.835Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -35,7 +35,8 @@
     "news:c4924e53e4ada2dc": true,
     "google:b3603ef3b47a2cfa": true,
     "news:cdc732e5f342d769": true,
-    "google:2e1f7a4de10ff277": true
+    "google:2e1f7a4de10ff277": true,
+    "news:0ac605a57304b163": true
   },
   "mentions": [
     {
@@ -720,10 +721,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-22T10:45:56.745Z"
+    },
+    {
+      "id": "news:0ac605a57304b163",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3",
+      "title": "SCHMIGADOON! Reviews - Page 3",
+      "excerpt": "1 day ago — https://broadwayscorecard.com/show/two-strangers · https://broadwayscorecard.com/show/schmigadoon. saxpower. Profile. Featured Actor Joined: 9 ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-22T22:34:39.648Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is just a URL list with no discussion, question, or conversational opening — no human author to engage with.",
+      "draftResponse": null,
+      "dispatched": "2026-04-22T22:35:27.835Z"
     }
   ],
   "stats": {
-    "totalSeen": 35,
+    "totalSeen": 36,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -761,6 +782,7 @@
     "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true,
     "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true,
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true,
-    "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true
+    "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true,
+    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true
   }
 }
