@@ -397,6 +397,42 @@ jobs:
         run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
+      - name: Audit recovery state (non-blocking)
+        id: verify_recovery
+        if: inputs.fast_path && steps.fast_rebuild.outcome == 'success' && steps.find.outputs.has_shows == 'true'
+        # Runs verify-review-recovery.js per polled show to catch stranded/misflagged
+        # files that the pipeline produced. Non-blocking — surfaces findings to the
+        # step summary so they can be investigated before the morning broadcast.
+        # Deliberately omits --production to avoid network-dependent flakiness.
+        run: |
+          SHOWS="${{ steps.find.outputs.shows }}"
+          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+          FAIL_COUNT=0
+          FAIL_SUMMARY=""
+          echo "## Recovery audit" >> "$GITHUB_STEP_SUMMARY"
+          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
+            SHOW_ID="$(echo "$SHOW_ID" | xargs)"
+            [ -z "$SHOW_ID" ] && continue
+            echo "### $SHOW_ID" >> "$GITHUB_STEP_SUMMARY"
+            # Capture output + exit code separately
+            if node scripts/verify-review-recovery.js --show="$SHOW_ID" > "/tmp/verify-$SHOW_ID.log" 2>&1; then
+              echo "✓ all checks pass" >> "$GITHUB_STEP_SUMMARY"
+            else
+              FAIL_COUNT=$((FAIL_COUNT + 1))
+              FAIL_SUMMARY+="$SHOW_ID "
+              echo "::warning::verify-review-recovery found issues for $SHOW_ID — see step summary"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+              tail -50 "/tmp/verify-$SHOW_ID.log" >> "$GITHUB_STEP_SUMMARY"
+              echo '```' >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+          if [ "$FAIL_COUNT" -gt 0 ]; then
+            echo "::warning::Recovery audit: $FAIL_COUNT show(s) with issues: $FAIL_SUMMARY"
+          fi
+          echo "fail_count=$FAIL_COUNT" >> "$GITHUB_OUTPUT"
+        continue-on-error: true
+        timeout-minutes: 5
+
       - name: Commit and push rebuilt data (fast_path)
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
         run: |
