@@ -1168,6 +1168,29 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
   }
 }
 
+// Per-cycle SERP budget. Poller re-runs every iteration (~15 min), so a
+// smaller budget still covers missing outlets across ~20 iterations —
+// stragglers get picked up on the next cycle instead of in one expensive pass.
+const SERP_BUDGET = 12;
+
+/**
+ * Gate BrightData away from OB/OWE. Their reviews trickle over weeks so a
+ * 1-2h SERP discovery delay is invisible, and SB alone is enough. Cuts BD
+ * spend without affecting opening-night quality on BW/WE.
+ *
+ * Exclusion (not inclusion) is deliberate: shows sometimes ship with null
+ * category on opening day (Schmigadoon incident), and the conservative
+ * default is to keep BD available — better to overspend a couple dollars
+ * than silently drop opening-night SERP quality for a misclassified show.
+ *
+ * @param {{ category?: string, market?: string }} show
+ * @returns {boolean} true when BD should be used for this show
+ */
+function isBrightDataAllowedForShow(show) {
+  const showCategory = (show && (show.category || show.market)) || '';
+  return showCategory !== 'off-broadway' && showCategory !== 'off-west-end';
+}
+
 /**
  * Run Layer 4: SERP Backup
  */
@@ -1180,22 +1203,8 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
   }
 
   const results = [];
-  // Per-cycle SERP budget. Poller re-runs every iteration (~15 min), so a
-  // smaller budget still covers missing outlets across ~20 iterations —
-  // stragglers get picked up on the next cycle instead of in one expensive pass.
-  const SERP_BUDGET = 12;
   let calls = 0;
-
-  // Gate BrightData away from OB/OWE. Their reviews trickle over weeks so a
-  // 1-2h SERP discovery delay is invisible, and SB alone is enough. Cuts BD
-  // spend without affecting opening-night quality on BW/WE.
-  //
-  // Exclusion (not inclusion) is deliberate: shows sometimes ship with null
-  // category on opening day (Schmigadoon incident), and the conservative
-  // default is to keep BD available — better to overspend a couple dollars
-  // than silently drop opening-night SERP quality for a misclassified show.
-  const showCategory = show.category || show.market || '';
-  const bdAllowedForShow = showCategory !== 'off-broadway' && showCategory !== 'off-west-end';
+  const bdAllowedForShow = isBrightDataAllowedForShow(show);
 
   for (const outlet of missingOutlets) {
     if (calls >= SERP_BUDGET) {
@@ -1692,4 +1701,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode };
+module.exports = { pollCycle, checkReadiness, getMissingT1T2Outlets, getThresholds, preWipePreOpeningFiles, pollMode, shouldRunSerpForMode, isBrightDataAllowedForShow, SERP_BUDGET, runSERPBackup };

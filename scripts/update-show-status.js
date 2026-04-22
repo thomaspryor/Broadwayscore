@@ -120,8 +120,12 @@ async function refreshTodayTixDates(data, updates) {
   // doesn't immediately re-close them in the same run
   const reopenedIds = new Set();
 
+  // TodayTix location 2 covers all London venues, not just SOLT West End houses.
+  // Must include 'off-west-end' or fringe/subsidised shows (Bridge Theatre, Young Vic,
+  // Donmar, Almeida, Park, etc.) never get closing-date extensions refreshed and
+  // eventually cascade to status=closed once the stale date passes the grace period.
   const locations = [
-    { id: 2, label: 'London (West End)', categories: new Set(['west-end']) },
+    { id: 2, label: 'London (West End + Off-West End)', categories: new Set(['west-end', 'off-west-end']) },
     { id: 1, label: 'NYC (Broadway/OB)', categories: new Set(['broadway', 'off-broadway']) },
   ];
 

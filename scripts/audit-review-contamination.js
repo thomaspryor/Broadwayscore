@@ -243,12 +243,35 @@ for (const showId of showDirs) {
     }
 
     // ─── F: Empty --unknown junk ────
-    // Skip legitimate aggregator stubs (stagedoor, show-score, etc.) that carry
-    // aggregator star ratings and await SERP-based outlet URL discovery.
+    // Skip legitimate aggregator stubs (stagedoor, show-score, NYSR/NYC Theatre
+    // Roundups, Talkin' Broadway, etc.) that carry aggregator excerpts and await
+    // SERP-based outlet URL discovery. NYSR in particular publishes roundups with
+    // per-outlet excerpts that arrive with source='nyc-theatre' and url=null
+    // until the per-outlet URL is later resolved.
     if (shouldRunClass('F') && f.includes('--unknown')) {
       const noUrl = !d.url;
       const noText = !(d.fullText || '').trim();
-      const hasAggregatorData = !!(d.aggregatorStars || d.scoreSource || d.stagedoorUrl || d.stagedoorExcerpt || d.dtliExcerpt);
+      const AGGREGATOR_SOURCES = new Set([
+        'nyc-theatre', 'nyc-theatre-roundups', 'nysr',
+        'stagedoor', 'show-score', 'showscore',
+        'dtli', 'dont-tell-the-lovelies',
+        'talkinbroadway', 'talkin-broadway',
+        'west-end-theatre', 'theatre-reviews', 'the-stage',
+        'bww-roundup', 'playbill-verdict',
+      ]);
+      const EXCERPT_FIELDS = [
+        'aggregatorStars', 'scoreSource',
+        'stagedoorUrl', 'stagedoorExcerpt',
+        'dtliExcerpt', 'nycTheatreExcerpt', 'nysrExcerpt',
+        'talkinbroadwayExcerpt', 'nyTheatreGuideExcerpt',
+        'showScoreExcerpt', 'theatreReviewsExcerpt',
+        'bwwExcerpt', 'playbillVerdict',
+        'wetExcerpt', 'stageExcerpt',
+      ];
+      const hasAggregatorField = EXCERPT_FIELDS.some(k => d[k]);
+      const hasAggregatorSource = AGGREGATOR_SOURCES.has(d.source)
+        || (Array.isArray(d.sources) && d.sources.some(s => AGGREGATOR_SOURCES.has(s)));
+      const hasAggregatorData = hasAggregatorField || hasAggregatorSource;
       if (noUrl && noText && !hasAggregatorData) {
         hits.F_empty_unknown.push({ showId, file: f });
       }

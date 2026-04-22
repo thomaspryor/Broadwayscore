@@ -81,6 +81,21 @@ const CRITICAL_PATTERNS = [
       'Off-Broadway must be a distinct category set so the OB Critical Gold list ' +
       'only contains OB shows (added April 2026).',
   },
+  // TodayTix London feed (location id=2) covers ALL London venues — SOLT West End
+  // AND off-West End houses (Bridge, Young Vic, Donmar, Almeida, Park, Menier, etc.).
+  // If 'off-west-end' is dropped from the London categories Set in update-show-status.js,
+  // OWE shows stop getting closing-date extensions refreshed, their dates go stale, and
+  // the grace-period auto-closer silently flips them to status=closed while they are
+  // still running. Observed on 2026-04-22: Into the Woods (Bridge) stale-closed with
+  // April 18 date while actually extended to May 30 (user report from Pauline).
+  {
+    file: 'scripts/update-show-status.js',
+    pattern: /categories:\s*new\s+Set\(\[[^\]]*['"]off-west-end['"]/,
+    description:
+      "update-show-status.js London locations Set must include 'off-west-end'. " +
+      "Without it, OWE shows never get TodayTix extension refreshes and auto-close " +
+      "with stale dates. Observed for Into the Woods at Bridge Theatre on 2026-04-22.",
+  },
   // titleFamilies must include all markets (WE/OB), not just Broadway.
   // classify-wrong-production.js and audit-pre2005-reviews.js previously filtered
   // to !s.category (Broadway-only), missing WE/OB title families entirely.
