@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-22T08:51:37.121Z",
-  "processed": 1,
-  "failed": 15,
-  "successRate": "6.3%",
+  "updatedAt": "2026-04-22T10:41:30.637Z",
+  "processed": 4,
+  "failed": 62,
+  "successRate": "6.1%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-22T10:38:03.366Z",
+      "event": "bb-session",
+      "session": "45bf8387",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-22T10:38:04.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
