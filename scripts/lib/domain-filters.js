@@ -30,9 +30,14 @@ const AGGREGATOR_DOMAINS = new Set([
   // Listing pages (/production/, /show/) are caught by the path-based check below.
   // NOTE: broadwayworld.com NOT here — BWW publishes original reviews; roundups use isRoundupArticle flag
   'ibdb.com', 'broadway.com', 'broadway.org',
-  // NOTE: newyorktheatreguide.com removed — NYTG publishes original reviews (e.g., Kyle Turner)
-  // Was blocking Becky Shaw NYTG review despite passing all other guards.
-  'newyorktheaterguide.com', // US spelling variant — keep blocked (redirects to .theatre. anyway)
+  // NOTE: newyorktheatreguide.com and newyorktheaterguide.com both removed —
+  // NYTG publishes original reviews (Kyle Turner, Allison Considine, etc.).
+  // Was blocking Becky Shaw NYTG review despite passing all other guards
+  // (2026-04-07). The US spelling ("theater") was kept briefly on the theory
+  // that it redirects to the UK spelling, but isBlockedReviewUrl operates on
+  // the literal URL and will block before any redirect is followed — so any
+  // review we ingest whose source URL happens to be the US spelling also gets
+  // silently dropped. Bucket A, Tier 2 Fix 9.
   'lovelondonloveculture.com', 'westendtheatre.com',
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',

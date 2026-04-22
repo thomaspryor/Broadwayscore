@@ -138,11 +138,23 @@ function extractReviewsFromDTLI(content, showId) {
     const thumbMatch = part.match(/alt="(BigThumbs_[^"]+)"/);
     const thumb = thumbMatch ? parseThumb(thumbMatch[1]) : null;
 
-    // Extract critic name (First<br />Last or First<br/>Last)
-    const criticMatch = part.match(/class="review-item-critic-name"[^>]*><a[^>]*>([^<]+)<br\s*\/?>\s*([^<]+)<\/a>/);
+    // Extract critic name. DTLI formats vary:
+    //   "First<br/>Last" (most common — two-part name)
+    //   "First Middle<br/>Last" (three-part name, one br)
+    //   "Name" (single-line, no br — e.g., Madonna, or mononyms)
+    //   "First<br/>Middle<br/>Last" (rare multi-br)
+    //   wrapped in <a> or bare inside <h2>
+    // The old regex `[^<]+<br\s*\/?>[^<]+` required exactly one <br/> and
+    // truncated single-name critics to null. Mirrors scrape-dtli.js:292.
+    const criticMatch = part.match(/class="review-item-critic-name"[^>]*>(?:<a[^>]*>)?([\s\S]*?)(?:<\/a>|<\/h2>)/i);
     let criticName = null;
     if (criticMatch) {
-      criticName = `${criticMatch[1].trim()} ${criticMatch[2].trim()}`;
+      const cleaned = criticMatch[1]
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/<[^>]+>/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      criticName = cleaned || null;
     }
 
     // Extract date
@@ -284,6 +296,12 @@ function saveReview(review, overwrite = false) {
   fs.writeFileSync(filepath, JSON.stringify(review, null, 2));
   return filepath;
 }
+
+// Export pure functions for unit testing. Top-level runner below only runs
+// when invoked as a script (not when required from a test).
+module.exports = { extractReviewsFromDTLI };
+
+if (require.main !== module) return;
 
 // Main
 if (!fs.existsSync(dtliDir)) {
