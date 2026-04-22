@@ -3813,10 +3813,20 @@ try {
 try {
   fs.renameSync(reviewsTmpPath, reviewsRenameTarget);
 } catch (renameErr) {
-  // EXDEV: cross-device rename (e.g., tmp is on the worktree fs but the symlink
-  // target is on a different mount). Fall back to copy+unlink.
+  // EXDEV: cross-device rename (tmp is on the worktree fs but the symlink
+  // target is on a different mount — e.g., iCloud-synced directory under
+  // ~/Documents or /Volumes/...). Can't renameSync across devices.
+  //
+  // Naive `copyFileSync(tmp, target)` is NOT atomic on a multi-MB file —
+  // a concurrent reader (dev server, Next.js static export, another script)
+  // can see a truncated half-written reviews.json. Two-hop: copy to a tmp
+  // file ALONGSIDE the target (same FS → atomic rename possible), then
+  // renameSync over the target.
   if (renameErr.code === 'EXDEV') {
-    fs.copyFileSync(reviewsTmpPath, reviewsRenameTarget);
+    const targetDir = path.dirname(reviewsRenameTarget);
+    const targetTmp = path.join(targetDir, '.reviews.json.cross-dev.tmp');
+    fs.copyFileSync(reviewsTmpPath, targetTmp);
+    fs.renameSync(targetTmp, reviewsRenameTarget); // atomic on same FS
     fs.unlinkSync(reviewsTmpPath);
   } else {
     throw renameErr;
