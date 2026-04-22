@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-22T04:53:12.836Z",
+    "generatedAt": "2026-04-22T23:27:40.361Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36351,
-      "inReviewsJson": 16591,
-      "skippedExcluded": 66,
-      "withFullText": 59,
-      "excerptOnly": 1577,
-      "llmClassified": 50,
+      "totalFiles": 36422,
+      "inReviewsJson": 16605,
+      "skippedExcluded": 54,
+      "withFullText": 16,
+      "excerptOnly": 1583,
+      "llmClassified": 15,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 12,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "nonReviewsFound": 0,
+      "uncertainCases": 15,
+      "budgetUsed": 0.0016000000000000005,
+      "llmCalls": 16,
       "rateLimitHits": 0,
-      "errors": 0,
-      "skippedAlreadyClassified": 14889
+      "errors": 1,
+      "skippedAlreadyClassified": 14952
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "network-2018/wsj--terry-teachout.json",
-      "showId": "network-2018",
-      "outlet": "The Wall Street Journal",
-      "outletId": "wsj",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a CAPTCHA page, not an article about the show.",
-      "currentScore": 79
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -71,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -101,7 +90,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -111,7 +100,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a truncated news article snippet, possibly related to the Wall Street Journal, and does not contain any evaluative content about the show \"Parade\".",
+      "reasoning": "The article appears to be truncated and is promoting a WSJ subscription. There is no review content present.",
       "currentScore": 78
     },
     {
@@ -121,7 +110,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer a critical evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -141,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical relevance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
       "currentScore": 83
     },
     {
@@ -151,55 +140,41 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms, not an actual article. There is no evaluative content about 'The Assembled Parties' or any other show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific content type. It is likely a news aggregator or advertisement.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "between-the-river-and-the-sea-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "copenhagen-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "dracula-west-end-2025/timeout-london--paul-raven.json",
-    "hadestown-west-end-2024/timeout-london--andrzej-lukowski.json",
-    "heart-wall-west-end-2026/financialtimes--sarah-hemming.json",
-    "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
-    "les-liaisons-dangereuses-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "old-times-2015/timeout--david-cote.json",
-    "romeo-and-juliet-west-end-2026/telegraph--claire-allfree.json",
-    "schmigadoon-2026/amny--matt-windman.json",
-    "schmigadoon-2026/chicagotribune--chris-jones.json",
-    "schmigadoon-2026/deadline--greg-evans.json",
-    "schmigadoon-2026/ew--patrick-gomez.json",
-    "schmigadoon-2026/guardian--jesse-hassenger.json",
-    "schmigadoon-2026/new-york-sun--elysa-gardner.json",
-    "schmigadoon-2026/one-minute-critic--billy-mcentee.json",
-    "schmigadoon-2026/people--dave-quinn.json",
-    "schmigadoon-2026/theatermania--hayley-levitt.json",
-    "schmigadoon-2026/theatrely--kobi-kassal.json",
-    "schmigadoon-2026/thewrap--robert-hofler.json",
-    "schmigadoon-2026/timeout--adam-feldman.json",
-    "schmigadoon-2026/vulture--jackson-mchenry.json",
-    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "sunset-boulevard-2017/hollywood-reporter--frank-scheck.json",
-    "the-balusters-2026/chicagotribune--chris-jones.json",
-    "the-balusters-2026/culturesauce--thom-geier.json",
-    "the-balusters-2026/deadline--greg-evans.json",
-    "the-balusters-2026/ew--mekishana-pierre.json",
-    "the-balusters-2026/guardian--jesse-hassenger.json",
-    "the-balusters-2026/new-york-sun--elysa-gardner.json",
-    "the-balusters-2026/nysr--frank-scheck.json",
-    "the-balusters-2026/nyt-theater--jonathan-mandell.json",
-    "the-balusters-2026/nytg--christian-lewis.json",
-    "the-balusters-2026/nytimes--helen-shaw.json",
-    "the-balusters-2026/one-minute-critic--matthew-wexler.json",
-    "the-balusters-2026/theater-pizzazz--ron-fassler.json",
-    "the-balusters-2026/theatermania--rachel-graham.json"
-  ],
-  "perShowSummary": [
-    {
-      "showId": "network-2018",
-      "currentCount": 39,
-      "removed": 1
-    }
-  ]
+  "reviewsConfirmed": [],
+  "perShowSummary": []
 }
