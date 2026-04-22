@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-22T08:55:26.162Z",
+  "lastRunAt": "2026-04-22T10:45:56.745Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -34,7 +34,8 @@
     "news:e48258797b7b0269": true,
     "news:c4924e53e4ada2dc": true,
     "google:b3603ef3b47a2cfa": true,
-    "news:cdc732e5f342d769": true
+    "news:cdc732e5f342d769": true,
+    "google:2e1f7a4de10ff277": true
   },
   "mentions": [
     {
@@ -699,10 +700,30 @@
       "draftReason": "This is just a URL link drop in a forum thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
       "draftResponse": null,
       "dispatched": "2026-04-21T18:42:02.948Z"
+    },
+    {
+      "id": "google:2e1f7a4de10ff277",
+      "source": "google",
+      "url": "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408",
+      "title": "Updated Tony Eligibility, Broadway Casting, and New Shows... ...",
+      "excerpt": "BroadwayScoreCard.Com. This is a public episode. If you would like to discuss this with other subscribers or get access to bonus episodes, visit ...",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-22T10:45:46.460Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-22T10:45:56.745Z"
     }
   ],
   "stats": {
-    "totalSeen": 34,
+    "totalSeen": 35,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -739,6 +760,7 @@
     "https://forum.broadwayworld.com/thread/PROOF-2026-Reviews/2": true,
     "https://forum.broadwayworld.com/thread/FALLEN-ANGELS-Reviews": true,
     "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true,
-    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true
+    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true,
+    "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true
   }
 }
