@@ -47,7 +47,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
-const { normalizeOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
 const { matchTitleToShow } = require('./lib/show-matching');
@@ -1292,11 +1292,13 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
         // Only skip if the incoming URL matches an existing file's URL. Different URL =
         // almost certainly a different critic (Theatrely/andrew-martini interview on disk
         // shouldn't block Theatrely/joey-sims review at a distinct URL).
-        const incomingUrl = (review.url || '').toLowerCase().replace(/\/$/, '');
+        // Ship-check P1 #6: use canonical normalizeUrl (handles http/https, www., query
+        // tracking params, fragments). A UTM-tagged variant of the same URL should dedup.
+        const incomingUrl = normalizeUrlCanonical(review.url || '');
         const hasExactUrlMatch = namedFiles.some(f => {
           try {
             const rec = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-            const existingUrl = (rec.url || '').toLowerCase().replace(/\/$/, '');
+            const existingUrl = normalizeUrlCanonical(rec.url || '');
             return existingUrl && incomingUrl && existingUrl === incomingUrl;
           } catch { return false; }
         });

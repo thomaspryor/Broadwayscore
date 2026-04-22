@@ -235,6 +235,27 @@ jobs:
           gh workflow run fetch-guardian-reviews.yml -f shows="$SHOWS_CSV" \
             || echo "::warning::Guardian redispatch failed for $SHOWS_CSV"
 
+      # Balusters CLASS 7 follow-through: backoff state must persist across CI runs.
+      # Without this step, every fresh CI checkout starts with consecutiveNoOp=0 and
+      # backoff NEVER triggers. This commit runs regardless of whether new reviews
+      # were found — no-op runs are exactly when the counter matters.
+      - name: Commit poller backoff state
+        if: steps.find.outputs.has_shows == 'true' && always()
+        continue-on-error: true
+        run: |
+          # Backoff state lives in the core-data checkout (same as data/audit/*).
+          cd data || exit 0
+          if [ ! -d audit/poller-backoff ]; then
+            echo "No backoff state to commit"
+            exit 0
+          fi
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add audit/poller-backoff/
+          git diff --cached --quiet && { echo "No backoff changes"; exit 0; }
+          git commit -m "audit: Opening night poller — backoff state update [skip ci]"
+          bash ../scripts/lib/push-with-retry.sh 5 main || echo "::warning::Backoff state push failed (non-critical)"
+
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
         run: |
