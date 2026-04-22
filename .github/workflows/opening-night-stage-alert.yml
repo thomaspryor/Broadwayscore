@@ -1,0 +1,62 @@
+name: Opening Night Stage Alert
+
+# 6 of 8 recent Broadway openings had ZERO "scored" stage-latency entries on
+# opening day (bucket D, data-flow race). This workflow runs the morning after
+# an opening window and files a GitHub issue if that signature reappears.
+#
+# Timing: 13:00 UTC = 9 AM ET = covers both last-night ET openings (which
+# stage-log at ~02-05 UTC the next morning) and early West End morning reviews.
+
+on:
+  schedule:
+    - cron: '0 13 * * *'   # 9 AM ET — 48h window lookback
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Fetch private data repo
+        uses: actions/checkout@v4
+        with:
+          repository: thomaspryor/broadway-scorecard-data
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          path: .private-data
+
+      - name: Wire shows.json into data/
+        run: |
+          mkdir -p data
+          cp -f .private-data/shows.json data/shows.json
+
+      - name: Check scored-stage coverage
+        id: check
+        run: node scripts/check-opening-night-scored.js
+
+      - name: File GitHub issue on failure
+        if: failure() && steps.check.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Opening-night stage-latency alert: scored entries missing"
+          BODY=$(cat <<'EOF'
+          The `opening-night-stage-alert` workflow detected shows that opened in the
+          last 48h but have no `scored` entry in `data/audit/stage-latency.jsonl`.
+
+          This is the same failure signature as 6 of 8 recent Broadway opening
+          failures (bucket D, data-flow race). Broadcasts likely fired against
+          stale data.
+
+          See the workflow run logs for the specific show IDs.
+
+          Fix options:
+          - Re-dispatch `opening-night-orchestrator.yml` with the affected show_id
+          - Check `rebuild-reviews.yml` completed and emitted stage entries
+          - Manually run `node scripts/rebuild-all-reviews.js` locally and push
+          EOF
+          )
+          gh issue create --title "$TITLE" --body "$BODY" --label bug,opening-night

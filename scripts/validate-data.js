@@ -223,8 +223,14 @@ function validateStatus(shows) {
       invalid++;
     }
     // Active shows MUST have explicit category — implicit default to 'broadway'
-    // causes silent failures in market filtering (opening night orchestrator, poller)
-    if (['open', 'previews', 'upcoming'].includes(show.status) && !show.category) {
+    // causes silent failures in market filtering (opening night orchestrator, poller).
+    // Open shows = hard fail: Cats/Giant/Schmig all shipped opening night with
+    // status='open' + category=null, making the orchestrator fall back to broadway
+    // with warnings. See memory/feedback_shows_json_category_at_schedule.md.
+    if (show.status === 'open' && !show.category) {
+      error(`Open show "${show.title}" (${show.id}) missing category — opening-night pipeline will misroute. Set category to 'broadway' or 'west-end'.`);
+      invalid++;
+    } else if (['previews', 'upcoming'].includes(show.status) && !show.category) {
       warn(`Active show "${show.title}" (${show.id}) missing category field — pipeline will default to broadway`);
       invalid++;
     }
