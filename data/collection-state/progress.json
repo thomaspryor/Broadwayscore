@@ -983,7 +983,17 @@
     "xanadu-2007/variety--david-rooney.json",
     "talk-radio-2007/variety--charles-isherwood.json",
     "journeys-end-2007/variety--david-rooney.json",
-    "mary-poppins-2006/variety--charles-isherwood.json"
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "julius-caesar-2005/nytimes--paul-griffiths.json",
+    "oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+    "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+    "six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+    "master-haroldand-the-boys-2003/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1047,7 +1057,12 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
-      "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json"
+      "cats-the-jellicle-ball-2026/variety--rebecca-rubin.json",
+      "data/review-texts/julius-caesar-2005/nytimes--paul-griffiths.json",
+      "data/review-texts/oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+      "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+      "data/review-texts/six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+      "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1085,7 +1100,7 @@
     ]
   },
   "startTime": "2026-04-21T16:58:13.270Z",
-  "lastProcessed": "mary-poppins-2006/variety--charles-isherwood.json",
+  "lastProcessed": "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-21T17:03:30.709Z",
@@ -1119,6 +1134,61 @@
       "t": "2026-04-21T23:46:14.979Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-22T03:33:36.749Z",
+      "event": "bb-session",
+      "session": "84526b9d",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
+    },
+    {
+      "t": "2026-04-22T03:33:37.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:33:50.692Z",
+      "event": "bb-session",
+      "session": "8f7e5a13",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
+    },
+    {
+      "t": "2026-04-22T03:33:51.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:03.114Z",
+      "event": "bb-session",
+      "session": "2e586809",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-22T03:34:03.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:15.805Z",
+      "event": "bb-session",
+      "session": "9da3d5f2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-22T03:34:16.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:29.106Z",
+      "event": "bb-session",
+      "session": "ad7b8ef7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-22T03:34:29.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

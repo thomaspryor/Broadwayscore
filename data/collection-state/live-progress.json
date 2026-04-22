@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-22T03:32:18.203Z",
+  "updatedAt": "2026-04-22T03:34:40.917Z",
   "processed": 69,
-  "failed": 913,
+  "failed": 923,
   "successRate": "7.0%",
   "tierBreakdown": {
     "playwright": 55,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 11,
     "brightdata": 1,
     "archiveToday": 12,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-21T17:03:30.709Z",
@@ -47,6 +47,61 @@
       "t": "2026-04-21T23:46:14.979Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-22T03:33:36.749Z",
+      "event": "bb-session",
+      "session": "84526b9d",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
+    },
+    {
+      "t": "2026-04-22T03:33:37.118Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:33:50.692Z",
+      "event": "bb-session",
+      "session": "8f7e5a13",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
+    },
+    {
+      "t": "2026-04-22T03:33:51.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:03.114Z",
+      "event": "bb-session",
+      "session": "2e586809",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-22T03:34:03.457Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:15.805Z",
+      "event": "bb-session",
+      "session": "9da3d5f2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-22T03:34:16.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:29.106Z",
+      "event": "bb-session",
+      "session": "ad7b8ef7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-22T03:34:29.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
