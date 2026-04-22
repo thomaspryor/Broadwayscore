@@ -1180,8 +1180,22 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
   }
 
   const results = [];
-  const SERP_BUDGET = 30; // Conservative per-cycle budget
+  // Per-cycle SERP budget. Poller re-runs every iteration (~15 min), so a
+  // smaller budget still covers missing outlets across ~20 iterations —
+  // stragglers get picked up on the next cycle instead of in one expensive pass.
+  const SERP_BUDGET = 12;
   let calls = 0;
+
+  // Gate BrightData away from OB/OWE. Their reviews trickle over weeks so a
+  // 1-2h SERP discovery delay is invisible, and SB alone is enough. Cuts BD
+  // spend without affecting opening-night quality on BW/WE.
+  //
+  // Exclusion (not inclusion) is deliberate: shows sometimes ship with null
+  // category on opening day (Schmigadoon incident), and the conservative
+  // default is to keep BD available — better to overspend a couple dollars
+  // than silently drop opening-night SERP quality for a misclassified show.
+  const showCategory = show.category || show.market || '';
+  const bdAllowedForShow = showCategory !== 'off-broadway' && showCategory !== 'off-west-end';
 
   for (const outlet of missingOutlets) {
     if (calls >= SERP_BUDGET) {
@@ -1219,7 +1233,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
         reviewObj,
         process.env.SCRAPINGBEE_API_KEY || '',
         {
-          brightDataKey: process.env.BRIGHTDATA_TOKEN || '',
+          brightDataKey: bdAllowedForShow ? (process.env.BRIGHTDATA_TOKEN || '') : '',
           preferSpeed: false, // BD-first: SERP only runs after 3h gate so latency no longer critical
           dateRange: openingNightDateRange,
         }
