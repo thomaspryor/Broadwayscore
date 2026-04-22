@@ -151,12 +151,25 @@ function extractCreativeTeamFromHtml(html) {
   return filtered.length > 0 ? filtered : null;
 }
 
+// Build a TodayTix show URL for the correct location prefix.
+// Prefer the stored todaytixUrl (always has the right /london/ or /nyc/ prefix);
+// otherwise derive from show.category. Hardcoding /nyc/ caused WE/OWE shows to
+// fail JSON-LD fetches and fall back to LLM creative-team generation, which
+// hallucinated directors for same-title revivals (e.g. Into the Woods at the
+// Bridge Theatre credited to Terry Johnson instead of Jordan Fein on 2026-04-22).
+function todayTixUrl(show, todayTixInfo) {
+  if (show?.todaytixUrl) return show.todaytixUrl;
+  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const cat = show?.category || '';
+  const prefix = (cat === 'west-end' || cat === 'off-west-end') ? 'london' : 'nyc';
+  return `https://www.todaytix.com/${prefix}/shows/${todayTixInfo.id}-${slug}`;
+}
+
 // Fetch synopsis from TodayTix
 async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
   if (!todayTixInfo?.id) return null;
 
-  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+  const url = todayTixUrl(show, todayTixInfo);
 
   try {
     const html = await fetchUrl(url);
@@ -170,8 +183,7 @@ async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
 async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
   if (!todayTixInfo?.id) return null;
 
-  const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+  const url = todayTixUrl(show, todayTixInfo);
 
   try {
     const html = await fetchUrl(url);
