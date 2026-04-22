@@ -3,17 +3,17 @@
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-04-13T18:10:35.090Z",
+  "fetchedAt": "2026-04-22T09:25:19.219Z",
   "tier": "Steady",
-  "volume": 160,
+  "volume": 158,
   "positivePct": 62,
-  "weekOverWeekPct": 1,
-  "baselineMultiple": 1.15,
+  "weekOverWeekPct": -1,
+  "baselineMultiple": 1.1,
   "platformBreakdown": {
-    "x": 138,
-    "tiktok": 20,
-    "instagram": 1,
-    "reddit": 1
+    "x": 137,
+    "tiktok": 19,
+    "instagram": 0,
+    "reddit": 2
   },
   "topQuotes": [
     {
@@ -29,23 +29,28 @@
       "url": "https://www.tiktok.com/@aeronjamesuk/video/7567712813708283158"
     }
   ],
-  "xTrueVolume": 16,
+  "xTrueVolume": 25,
   "baseline": {
-    "mean": 144.25,
-    "weeksOfHistory": 4
+    "mean": 147,
+    "weeksOfHistory": 5
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.1355,
   "rawCounts": {
-    "reddit": 12,
+    "reddit": 13,
     "twitter": 160,
     "tiktok": 20,
-    "instagram": 15
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 408 {\n  \"error\": {\n    \"type\": \"run-timeout-exceeded\",\n    \"message\": \"Actor run exceeded the timeout of 300 seconds for this API endpoint\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 41,
-    "total": 52,
-    "text": "41/52 West End"
+    "position": 42,
+    "total": 53,
+    "text": "42/53 West End"
   },
-  "compositeScore": 99.2
+  "compositeScore": 97.96
 }

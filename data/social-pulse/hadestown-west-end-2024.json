@@ -3,49 +3,54 @@
   "showId": "hadestown-west-end-2024",
   "showTitle": "Hadestown",
   "market": "West End",
-  "fetchedAt": "2026-04-13T18:05:57.433Z",
+  "fetchedAt": "2026-04-22T09:12:18.134Z",
   "tier": "Steady",
-  "volume": 186,
-  "positivePct": 70,
-  "weekOverWeekPct": -2,
-  "baselineMultiple": 1.16,
+  "volume": 171,
+  "positivePct": 69,
+  "weekOverWeekPct": -8,
+  "baselineMultiple": 1.03,
   "platformBreakdown": {
-    "x": 143,
-    "tiktok": 20,
-    "instagram": 13,
-    "reddit": 10
+    "x": 148,
+    "tiktok": 19,
+    "instagram": 0,
+    "reddit": 4
   },
   "topQuotes": [
     {
-      "text": "had the best time designing for hades town at @thebritschool #hadestown #thebritschool #costumedesign #fypシ",
-      "platform": "instagram",
-      "author": "@costumewithkyla",
-      "url": "https://www.instagram.com/p/DXEk1OSDAm_/"
+      "text": "Bethany Antonia (Baela Targaryen) has taken her first bow in Hadestown as Eurydice for her West End debut!…",
+      "platform": "x",
+      "author": "@Jacaelaerys",
+      "url": "https://x.com/Jacaelaerys/status/2031499744971800737"
     },
     {
-      "text": "hadestown west end final show just saw desmonda post a few clips of the final show for the year 2 west end hadestown…",
-      "platform": "reddit",
-      "author": "u/itboay3622",
-      "url": "https://www.reddit.com/r/BootlegGifts/comments/1sg2gx9/hadestown_west_end_final_show/"
+      "text": "Dónal's last show💔💔 #hadestown #musicaltheater #broadway #westend #donalfinn",
+      "platform": "tiktok",
+      "author": "@forloverslp",
+      "url": "https://www.tiktok.com/@forloverslp/video/7595656216584539399"
     }
   ],
-  "xTrueVolume": 25,
+  "xTrueVolume": 33,
   "baseline": {
-    "mean": 166.5,
-    "weeksOfHistory": 4
+    "mean": 167.4,
+    "weeksOfHistory": 5
   },
-  "costUsd": 0.1255,
+  "costUsd": 0.101,
   "rawCounts": {
-    "reddit": 10,
+    "reddit": 4,
     "twitter": 160,
     "tiktok": 20,
-    "instagram": 15
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 408 {\n  \"error\": {\n    \"type\": \"run-timeout-exceeded\",\n    \"message\": \"Actor run exceeded the timeout of 300 seconds for this API endpoint\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 32,
-    "total": 52,
-    "text": "32/52 West End"
+    "position": 34,
+    "total": 53,
+    "text": "34/53 West End"
   },
-  "compositeScore": 130.2
+  "compositeScore": 117.99
 }
