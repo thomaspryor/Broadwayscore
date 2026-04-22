@@ -172,8 +172,15 @@ for (const review of reviews) {
 console.log('Reviews already had scores:', alreadyHasScore);
 console.log('Reviews updated with scores:', updated);
 
-// Save
-fs.writeFileSync('data/reviews.json', JSON.stringify(reviewsData, null, 2));
+// Save — write through symlinks so data/reviews.json stays a symlink to the
+// private repo in local dev. See memory/feedback_dual_repo_data_files.md +
+// the identical handling at scripts/rebuild-all-reviews.js:~3790.
+const reviewsPath = 'data/reviews.json';
+let targetPath = reviewsPath;
+try {
+  targetPath = fs.realpathSync(reviewsPath);
+} catch (_) { /* first-time write — no symlink to resolve */ }
+fs.writeFileSync(targetPath, JSON.stringify(reviewsData, null, 2));
 console.log('\nSaved to data/reviews.json');
 
 // Show sample of updated reviews
