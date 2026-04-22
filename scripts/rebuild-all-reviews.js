@@ -3767,6 +3767,12 @@ const output = {
 // Write output atomically (tmp + rename) to prevent torn writes if CI is killed
 // mid-write. Also validate the written file parses — catches encoding bugs.
 // (Postmortem audit fix: reviews.json direct writeFileSync was non-atomic.)
+//
+// Symlink safety: if reviewsJsonPath is a symlink to the private repo
+// (setup-local-data.sh default for local dev), fs.renameSync would REPLACE the
+// symlink with the tmp file — breaking the single-source-of-truth contract
+// (memory/feedback_dual_repo_data_files.md). Resolve through symlinks so local
+// rebuilds continue to write into the private repo's copy directly.
 const reviewsTmpPath = reviewsJsonPath + '.tmp';
 fs.writeFileSync(reviewsTmpPath, JSON.stringify(output, null, 2));
 // Validate the tmp file parses before renaming over the live file
@@ -3778,7 +3784,24 @@ try {
   console.error(`   Refusing to overwrite live reviews.json. Rebuild aborted.`);
   process.exit(1);
 }
-fs.renameSync(reviewsTmpPath, reviewsJsonPath);
+let reviewsRenameTarget = reviewsJsonPath;
+try {
+  // realpathSync throws ENOENT if the file doesn't exist (first-time write);
+  // in that case we fall through with the original path.
+  reviewsRenameTarget = fs.realpathSync(reviewsJsonPath);
+} catch (_) { /* file doesn't exist yet — rename writes through to reviewsJsonPath */ }
+try {
+  fs.renameSync(reviewsTmpPath, reviewsRenameTarget);
+} catch (renameErr) {
+  // EXDEV: cross-device rename (e.g., tmp is on the worktree fs but the symlink
+  // target is on a different mount). Fall back to copy+unlink.
+  if (renameErr.code === 'EXDEV') {
+    fs.copyFileSync(reviewsTmpPath, reviewsRenameTarget);
+    fs.unlinkSync(reviewsTmpPath);
+  } else {
+    throw renameErr;
+  }
+}
 
 // Sync deploy watermark so pre-deploy-check.js doesn't block on intentional count changes.
 // This prevents the scenario where a legitimate cleanup (e.g., excluding wrongProduction reviews)
