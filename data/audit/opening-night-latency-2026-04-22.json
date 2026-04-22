@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-22T10:46:00.070Z",
+  "generatedAt": "2026-04-22T11:42:03.133Z",
   "date": "2026-04-22",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 12933,
+  "entryCount": 12937,
   "shows": [
     {
       "showId": "proof-2026",
@@ -2081,7 +2081,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 721478,
+        "collected-to-scored": 1783914,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -3231,7 +3231,7 @@
     },
     {
       "showId": "the-listening-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
