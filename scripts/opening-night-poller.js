@@ -61,6 +61,43 @@ const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
+const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
+
+/**
+ * Balusters postmortem CLASS 7 — exponential backoff for no-op polls.
+ *
+ * After N consecutive no-op runs, skip the cycle based on schedule:
+ *   3 no-ops → next run 30 min out
+ *   5 no-ops → next run 60 min out
+ *   8+ no-ops → next run 120 min out
+ * Aggressive-window carve-out: first 6h after opening we always poll.
+ * On any successful discovery, reset the counter.
+ */
+function loadBackoffState(showId) {
+  const p = path.join(BACKOFF_DIR, `${showId}.json`);
+  if (!fs.existsSync(p)) return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 };
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
+  catch { return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 }; }
+}
+
+function saveBackoffState(showId, state) {
+  if (!fs.existsSync(BACKOFF_DIR)) fs.mkdirSync(BACKOFF_DIR, { recursive: true });
+  const p = path.join(BACKOFF_DIR, `${showId}.json`);
+  fs.writeFileSync(p, JSON.stringify(state, null, 2));
+}
+
+function computeNextBackoffDelayMs(consecutiveNoOp) {
+  if (consecutiveNoOp >= 8) return 120 * 60 * 1000;
+  if (consecutiveNoOp >= 5) return 60 * 60 * 1000;
+  if (consecutiveNoOp >= 3) return 30 * 60 * 1000;
+  return 0;
+}
+
+function isInAggressiveWindow(show) {
+  if (!show.openingDate) return true;
+  const hoursSinceOpening = (Date.now() - new Date(show.openingDate).getTime()) / 3600000;
+  return hoursSinceOpening >= 0 && hoursSinceOpening < 6;
+}
 
 // CLI args
 const SHOW_ID = (process.argv.find(a => a.startsWith('--show=')) || '').replace('--show=', '');
@@ -1308,6 +1345,19 @@ async function pollCycle() {
   console.log(`Title: ${show.title}`);
   console.log(`Market: ${market}`);
 
+  // Balusters postmortem CLASS 7 — backoff guard. Skip cycle if still in cooldown,
+  // unless we're in the first 6h after opening (aggressive window always runs).
+  // FORCE_SERP also bypasses the gate for manual dispatches that explicitly want to retry.
+  const backoff = loadBackoffState(SHOW_ID);
+  if (!FORCE_SERP && !isInAggressiveWindow(show) && backoff.nextRunAfter && Date.now() < backoff.nextRunAfter) {
+    const waitMinutes = Math.ceil((backoff.nextRunAfter - Date.now()) / 60000);
+    console.log(`\n[BACKOFF] Skipping poll — ${backoff.consecutiveNoOp} consecutive no-op runs; next run in ${waitMinutes}m. Pass --force-serp to bypass.`);
+    if (process.env.GITHUB_OUTPUT) {
+      fs.appendFileSync(process.env.GITHUB_OUTPUT, `backoff_skipped=true\nbackoff_wait_minutes=${waitMinutes}\n`);
+    }
+    process.exit(0);
+  }
+
   // Pre-wipe: mark preview-period stubs as placeholders before discovery runs.
   // Any unscored file modified >2h before opening is almost certainly contamination
   // (preview-period SERP/aggregator). Marking them lets mergeReviews replace wholesale.
@@ -1532,6 +1582,53 @@ async function pollCycle() {
     }
   }
 
+  // Balusters postmortem CLASS 7 — update backoff state.
+  // New reviews reset the counter; no-ops increment and schedule next run.
+  try {
+    const nextBackoff = {
+      consecutiveNoOp: created > 0 ? 0 : (backoff.consecutiveNoOp || 0) + 1,
+      lastNewReviewAt: created > 0 ? new Date().toISOString() : backoff.lastNewReviewAt || null,
+      lastRunAt: new Date().toISOString(),
+      nextRunAfter: 0,
+    };
+    nextBackoff.nextRunAfter = Date.now() + computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp);
+    saveBackoffState(SHOW_ID, nextBackoff);
+    if (nextBackoff.consecutiveNoOp > 0) {
+      console.log(`  [BACKOFF] ${nextBackoff.consecutiveNoOp} consecutive no-ops — next run after ${new Date(nextBackoff.nextRunAfter).toISOString()}`);
+    }
+  } catch (e) {
+    console.log(`  [BACKOFF] state update failed (non-fatal): ${e.message}`);
+  }
+
+  // Balusters postmortem CLASS 4 — Guardian per-show redispatch.
+  // If any discovered file is a Guardian URL and the existing guardian review file
+  // lacks an originalScore, emit GitHub Actions output so the workflow can dispatch
+  // fetch-guardian-reviews.yml for THIS show (normal cron may have already fired).
+  let guardianNeedsRedispatch = false;
+  try {
+    const guardianReviews = allDiscovered.filter(r => (r.outletId || '').toLowerCase() === 'guardian');
+    if (guardianReviews.length > 0) {
+      // Check on-disk Guardian file to see if originalScore is already set
+      const showDir = path.join(REVIEW_TEXTS_DIR, SHOW_ID);
+      if (fs.existsSync(showDir)) {
+        const guardianFiles = fs.readdirSync(showDir).filter(f => f.startsWith('guardian--'));
+        guardianNeedsRedispatch = guardianFiles.some(f => {
+          try {
+            const rec = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+            return !rec.originalScore && !rec.scoreSource;
+          } catch { return false; }
+        });
+      } else {
+        guardianNeedsRedispatch = true; // New discovery, no file yet
+      }
+      if (guardianNeedsRedispatch) {
+        console.log(`  [GUARDIAN] Guardian URL discovered without originalScore — redispatch fetch-guardian-reviews.yml for ${SHOW_ID}`);
+      }
+    }
+  } catch (e) {
+    console.log(`  [GUARDIAN] redispatch check failed (non-fatal): ${e.message}`);
+  }
+
   // GitHub Actions outputs
   console.log(`\n::set-output name=ready::${postStatus.ready}`);
   console.log(`::set-output name=new_reviews::${newReviews}`);
@@ -1549,6 +1646,7 @@ async function pollCycle() {
       `t1_count=${postStatus.t1}`,
       `t2_count=${postStatus.t2}`,
       `files_created=${created}`,
+      `guardian_redispatch_needed=${guardianNeedsRedispatch}`,
     ].join('\n');
     fs.appendFileSync(process.env.GITHUB_OUTPUT, outputLines + '\n');
   }

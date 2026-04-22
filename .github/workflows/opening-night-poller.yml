@@ -185,6 +185,7 @@ jobs:
             FORCE_SERP_FLAG="--force-serp"
           fi
 
+          GUARDIAN_REDISPATCH_SHOWS=""
           for SHOW_ID in "${SHOW_ARRAY[@]}"; do
             echo "════════════════════════════════════════"
             echo "Polling: $SHOW_ID"
@@ -197,7 +198,10 @@ jobs:
             if [ -n "${{ inputs.tb_review_url }}" ]; then
               TB_ARG="--tb-review-url=${{ inputs.tb_review_url }}"
             fi
-            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 || true
+            # Capture poller output to a per-show file so we can grep for
+            # guardian_redispatch_needed below. --force-serp is derived from workflow input.
+            PER_SHOW_OUT="$RUNNER_TEMP/poller-$SHOW_ID.log"
+            timeout 600 node scripts/opening-night-poller.js --show="$SHOW_ID" $SKIP_SERP_FLAG $FORCE_SERP_FLAG $BWW_ARG $TB_ARG 2>&1 | tee "$PER_SHOW_OUT" || true
 
             # Check if files were created (review-texts is a separate git checkout)
             CREATED=$(cd data/review-texts && git status --porcelain | wc -l | tr -d ' ')
@@ -205,9 +209,31 @@ jobs:
               ANY_NEW=true
               echo "  → $CREATED new review files"
             fi
+            # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
+            if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
+              GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
+            fi
           done
 
+          # Strip leading comma, expose as output
+          GUARDIAN_REDISPATCH_SHOWS="${GUARDIAN_REDISPATCH_SHOWS#,}"
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
+          echo "guardian_redispatch_shows=$GUARDIAN_REDISPATCH_SHOWS" >> $GITHUB_OUTPUT
+          if [ -n "$GUARDIAN_REDISPATCH_SHOWS" ]; then
+            echo "Guardian redispatch needed for: $GUARDIAN_REDISPATCH_SHOWS"
+          fi
+
+      - name: Dispatch Guardian API refetch for shows with new Guardian URLs
+        if: steps.poll.outputs.guardian_redispatch_shows != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # fetch-guardian-reviews.yml accepts `shows` as comma-separated IDs, so
+          # one dispatch covers every pending show in this poll run.
+          SHOWS_CSV="${{ steps.poll.outputs.guardian_redispatch_shows }}"
+          echo "→ Dispatching fetch-guardian-reviews.yml for: $SHOWS_CSV"
+          gh workflow run fetch-guardian-reviews.yml -f shows="$SHOWS_CSV" \
+            || echo "::warning::Guardian redispatch failed for $SHOWS_CSV"
 
       - name: Commit new review files
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'

@@ -222,11 +222,12 @@ function validateStatus(shows) {
       error(`Show "${show.title}" has invalid status: "${show.status}"`);
       invalid++;
     }
-    // Active shows MUST have explicit category — implicit default to 'broadway'
+    // Active shows MUST have explicit category AND market — implicit default to 'broadway'
     // causes silent failures in market filtering (opening night orchestrator, poller).
-    // Open shows = hard fail: Cats/Giant/Schmig all shipped opening night with
-    // status='open' + category=null, making the orchestrator fall back to broadway
-    // with warnings. See memory/feedback_shows_json_category_at_schedule.md.
+    // Open shows = hard fail: Cats/Giant/Schmig/Balusters all shipped opening night with
+    // status='open' + category=null (or market=null), making the orchestrator fall back
+    // to broadway with warnings. Balusters postmortem CLASS 5 (2026-04-21).
+    // See memory/feedback_shows_json_category_at_schedule.md.
     if (show.status === 'open' && !show.category) {
       error(`Open show "${show.title}" (${show.id}) missing category — opening-night pipeline will misroute. Set category to 'broadway' or 'west-end'.`);
       invalid++;
@@ -234,8 +235,20 @@ function validateStatus(shows) {
       warn(`Active show "${show.title}" (${show.id}) missing category field — pipeline will default to broadway`);
       invalid++;
     }
+    if (show.status === 'open' && show.category && !show.market) {
+      error(`Open show "${show.title}" (${show.id}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category.`);
+      invalid++;
+    }
     if (show.category && !validCategories.includes(show.category)) {
       error(`Show "${show.title}" has invalid category: "${show.category}"`);
+      invalid++;
+    }
+    // Market must be consistent with category when both present
+    const expectedMarket = show.category === 'off-broadway' ? 'broadway'
+      : show.category === 'off-west-end' ? 'west-end'
+      : show.category || null;
+    if (show.market && show.category && show.market !== expectedMarket) {
+      error(`Show "${show.title}" (${show.id}) has market="${show.market}" inconsistent with category="${show.category}" (expected market="${expectedMarket}").`);
       invalid++;
     }
   }

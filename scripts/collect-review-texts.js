@@ -110,7 +110,7 @@ function getNytCriticsPicks() {
   return _nytCriticsPicks;
 }
 const { isLondonMarket } = require('./lib/venue-classification');
-const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords } = require('./lib/review-guards');
+const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { logExclusion } = require('./lib/exclusion-logger');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
@@ -4763,7 +4763,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Text re-collection can fetch wrong content (paywalled, wrong page, wrong production) but
     // the LLM seeing garbage text is NOT a reason to destroy a review that was already scored.
     // Instead: flag for human review so the bad text can be investigated without losing the score.
-    const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100);
+    //
+    // Balusters postmortem CLASS 1: also guard if the ensemble scored this with confidence
+    // (llmScore.score finite + confidence ∈ {high, medium}) even before rebuild has written
+    // assignedScore. Helen Shaw + Ron Fassler had llmScore=80/88 high-conf when CV re-ran
+    // mid-session and would have nulled their fullText without this guard.
+    const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
+      || hasHighConfidenceLlmScore(data);
 
     // Auto-invalidate on HIGH confidence wrong article type (preview, interview, news, etc.)
     // Medium confidence → log warning only (21% LLM error rate on article classification)

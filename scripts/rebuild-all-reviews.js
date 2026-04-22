@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -1271,12 +1271,17 @@ const crossShowFingerprints = new Map();
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
-        if (cv.wrongArticle === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        // Balusters postmortem CLASS 1: If the ensemble scored this with confidence, CV.wrongArticle
+        // is advisory, not blocking. Don't promote to wrongShow.
+        const ensembleSaysReview = hasHighConfidenceLlmScore(d);
+        if (cv.wrongArticle === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
+        } else if (cv.wrongArticle === true && ensembleSaysReview) {
+          stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
-        if (cv.isFilmTv === true && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           d.wrongShow = true;
           d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
           promoted = true;
@@ -1320,10 +1325,14 @@ showDirs.forEach(showId => {
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-          if (ucv.wrongArticle === true && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          // Balusters CLASS 1: ensemble-scored reviews defeat CV's wrongArticle call
+          const uEnsembleSaysReview = hasHighConfidenceLlmScore(ud);
+          if (ucv.wrongArticle === true && !uEnsembleSaysReview && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             ud.wrongShow = true;
             ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
+          } else if (ucv.wrongArticle === true && uEnsembleSaysReview) {
+            stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
           if (promoted) {
             ud.contentVerificationPromoted = `rebuild: promoted from contentVerification (${ucv.verifiedBy}, ${ucv.confidence})`;
@@ -1732,12 +1741,17 @@ showDirs.forEach(showId => {
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          if (cv.wrongArticle === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          // Balusters postmortem CLASS 1: If the ensemble scored this with confidence, CV.wrongArticle
+          // is advisory, not blocking. Don't promote to wrongShow.
+          const ensembleSaysReview = hasHighConfidenceLlmScore(data);
+          if (cv.wrongArticle === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
+          } else if (cv.wrongArticle === true && ensembleSaysReview) {
+            stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
-          if (cv.isFilmTv === true && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          if (cv.isFilmTv === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
@@ -2544,8 +2558,15 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
+      // Guard: If we already have a humanReviewScore OR a numeric llmScore.score, the LLM did NOT
+      // refuse to score — so the regex below is inappropriate. It was originally added to catch
+      // cases where the LLM refused entirely and only wrote prose ("this is a press release").
+      // Balusters 2026 (David Cote) hit this: LLM reasoning quoted the critic verbatim
+      // ("The critic explicitly states 'This is not a review'"), regex matched the QUOTED phrase,
+      // review silently excluded despite valid humanReviewScore=63. See postmortem-balusters.
       const reasoning = data.llmScore?.reasoning || '';
-      if (reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
+      const hasScore = Number.isFinite(data.humanReviewScore) || Number.isFinite(data.llmScore?.score);
+      if (!hasScore && reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
         logExclusion("skippedWrongContent", showId, file, data);
         stats.skippedWrongContent = (stats.skippedWrongContent || 0) + 1;
         return;
