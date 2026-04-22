@@ -776,6 +776,32 @@ function buildDailyDigestHtml(changes, date) {
     sections.push(html);
   }
 
+  // Exclusion-trend section (Balusters follow-through). Surfaces silent-drop spikes
+  // and never-before-seen exclusion reasons so regressions don't accumulate unnoticed.
+  const trend = changes.exclusionTrend;
+  if (trend && (trend.spikes.length > 0 || trend.novelReasons.length > 0 || trend.todayTotal > 0)) {
+    let html = sectionHeader(`Pipeline Exclusions (today: ${trend.todayTotal})`);
+    if (trend.spikes.length > 0) {
+      html += row(`<strong style="color:#ef4444;">⚠️ Spike above 7-day baseline:</strong>`);
+      for (const s of trend.spikes.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(s.reason)} — <strong>${s.todayCount}</strong> today vs <span style="color:rgba(255,255,255,0.5);">7-day avg ${s.mean} ± ${s.stdev}</span>`);
+      }
+    }
+    if (trend.novelReasons.length > 0) {
+      html += row(`<strong style="color:${brandColor};">🆕 Novel reason (first seen within 7 days):</strong>`);
+      for (const n of trend.novelReasons.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(n.reason)} — <strong>${n.todayCount}</strong> today (first seen ${n.firstSeen})`);
+      }
+    }
+    if (trend.topToday.length > 0 && trend.spikes.length === 0 && trend.novelReasons.length === 0) {
+      html += row(`<span style="color:rgba(255,255,255,0.5);">Top reasons today:</span>`);
+      for (const t of trend.topToday.slice(0, 5)) {
+        html += row(`&nbsp;&nbsp;${escapeHtml(t.reason)}: ${t.todayCount}`);
+      }
+    }
+    sections.push(html);
+  }
+
   const totalChanges = changes.newShows.length + changes.newReviews.length +
     changes.scoreChanges.length + changes.audienceChanges.length;
 

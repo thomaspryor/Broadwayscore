@@ -1497,6 +1497,36 @@ function extractShowScoreReviews(html, showId, showTitle) {
     console.log(`    ⚠️  Show Score page loaded (${(html.length / 1024).toFixed(0)}KB) but 0 reviews extracted — HTML structure may have changed`);
   }
 
+  // Domain supplement — catches outlets not in the hand-maintained outletPatterns
+  // list above (outlet-registry coverage is broader than that ~25-outlet list).
+  try {
+    const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
+    const { added, newReviews } = supplementOutletsFromAnchors({
+      html,
+      reviews,
+      showId,
+      showTitle,
+      sourceName: 'show-score-domain-supplement',
+      excludeDomains: ['show-score.com', 'showscore.com'],
+      urlTitleCheck: urlLooksLikeReview,
+      crossShowCheck: detectCrossShowUrlMismatch,
+      makeStub: (oid, url) => ({
+        showId,
+        outletId: oid,
+        outlet: getOutletDisplayName(oid) || oid,
+        criticName: 'Unknown',
+        url,
+        source: 'show-score-domain-supplement',
+      }),
+    });
+    reviews.push(...newReviews);
+    if (added > 0) {
+      console.log(`    [Show Score supplement] added ${added} outlet(s) missed by hand-pattern list`);
+    }
+  } catch (e) {
+    console.log(`    [Show Score supplement] error (non-fatal): ${(e.message || '').substring(0, 100)}`);
+  }
+
   return reviews;
 }
 
@@ -1644,55 +1674,52 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
     console.log(`    Warning: Could not extract individual reviews (HTML structure may have changed)`);
   }
 
+  // Count-drift: DTLI thumb summary reports the TOTAL review count for the page.
+  // If the block parser extracted fewer reviews than summary says exist, markup
+  // drift is happening. Emit via exclusion-logger so the count-drift check plugin
+  // can surface it on opening night.
+  const summaryTotal = summary.up + summary.meh + summary.down;
+  if (summaryTotal > reviews.length + 2) {
+    const delta = summaryTotal - reviews.length;
+    console.log(`    ⚠️  DTLI count drift: summary says ${summaryTotal} reviews but block parser extracted ${reviews.length} (delta=${delta})`);
+    try {
+      logExclusion({
+        script: 'gather-reviews',
+        showId,
+        file: '-',
+        reason: 'countDrift',
+        details: { aggregator: 'dtli', summaryTotal, extracted: reviews.length, delta, url: dtliUrl },
+      });
+    } catch { /* non-fatal */ }
+  }
+
   // Domain supplement (Balusters postmortem CLASS 2, 2026-04-21)
-  // DTLI block parser requires .review-item markup; if DTLI changes markup or the
-  // outlet isn't in our slug map, the outlet gets silently skipped. Catch missed
-  // outlets by walking every outbound href on the DTLI show page and matching
-  // domain→outletId via outlet-registry. Joey Sims/Theatrely and Vulture were
-  // both on the Balusters DTLI page but not extracted by the block parser.
+  // Delegated to scripts/lib/outlet-domain-supplement.js. DTLI block parser misses
+  // outlets when markup changes or slug-map is stale; this catches them by domain.
   try {
-    const existingOutletIds = new Set(reviews.map(r => (r.outletId || '').toLowerCase()).filter(Boolean));
-    const urlsByResolved = new Map();
-    const allAnchors = html.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>/gi);
-    for (const m of allAnchors) {
-      const href = m[1];
-      if (href.includes('didtheylikeit.com')) continue;
-      const resolved = resolveOutletFromUrl(href);
-      if (!resolved || !resolved.outletId) continue;
-      const oid = resolved.outletId.toLowerCase();
-      if (existingOutletIds.has(oid)) continue;
-      if (!urlsByResolved.has(oid)) urlsByResolved.set(oid, new Set());
-      urlsByResolved.get(oid).add(href);
-    }
-    let supplementAdded = 0;
-    for (const [oid, urls] of urlsByResolved) {
-      // Ship-check follow-through: iterate all URLs, pick first that passes title+cross-show.
-      // Original "first URL wins" dropped real reviews when sidebar links appeared first.
-      let chosen = null;
-      for (const candidate of urls) {
-        if (showTitle && !urlLooksLikeReview(candidate, showTitle)) continue;
-        if (detectCrossShowUrlMismatch(showId, candidate)) continue;
-        chosen = candidate;
-        break;
-      }
-      if (!chosen) {
-        const firstUrl = urls.values().next().value;
-        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, method: 'dtli-domain-supplement', reason: 'no candidate passed title+cross-show guards' } });
-        continue;
-      }
-      reviews.push({
+    const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
+    const { added, newReviews } = supplementOutletsFromAnchors({
+      html,
+      reviews,
+      showId,
+      showTitle,
+      sourceName: 'dtli-domain-supplement',
+      excludeDomains: ['didtheylikeit.com'],
+      urlTitleCheck: urlLooksLikeReview,
+      crossShowCheck: detectCrossShowUrlMismatch,
+      makeStub: (oid, url) => ({
         showId,
         outletId: oid,
         outlet: getOutletDisplayName(oid) || oid,
         criticName: 'Unknown',
-        url: chosen,
+        url,
         source: 'dtli-domain-supplement',
         dtliUrl,
-      });
-      supplementAdded++;
-    }
-    if (supplementAdded > 0) {
-      console.log(`    [DTLI Method 2] domain supplement added ${supplementAdded} outlet(s) missed by block parser`);
+      }),
+    });
+    reviews.push(...newReviews);
+    if (added > 0) {
+      console.log(`    [DTLI Method 2] domain supplement added ${added} outlet(s) missed by block parser`);
     }
   } catch (e) {
     console.log(`    [DTLI Method 2] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
@@ -2444,7 +2471,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // post-opening audit can flag the show for human review.
     const anchorReviewCount = Object.values(urlsByOutlet2).reduce((a, q) => a + q.length, 0);
     if (anchorReviewCount > reviews.length + 2) {
-      console.log(`    ⚠️  BWW roundup count drift: ${anchorReviewCount} outlet URLs in HTML but only ${reviews.length} reviews extracted (delta=${anchorReviewCount - reviews.length})`);
+      const delta = anchorReviewCount - reviews.length;
+      console.log(`    ⚠️  BWW roundup count drift: ${anchorReviewCount} outlet URLs in HTML but only ${reviews.length} reviews extracted (delta=${delta})`);
+      // Emit to exclusion-logger so the opening-night count-drift plugin can surface it.
+      try {
+        logExclusion({
+          script: 'gather-reviews',
+          showId,
+          file: '-',
+          reason: 'countDrift',
+          details: { aggregator: 'bww-rr', anchorUrls: anchorReviewCount, extracted: reviews.length, delta, url: bwwUrl },
+        });
+      } catch { /* non-fatal */ }
     }
     // Hard min-count floor: once a BWW RR loads with real content, it virtually
     // always has ≥5 reviews. If we extract fewer, something is wrong (format
@@ -2458,58 +2496,32 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    ⚠️  BWW roundup page loaded but 0 reviews extracted from both JSON-LD and articleBody`);
   }
 
-  // Method 3: outlet-by-domain supplement (Balusters postmortem CLASS 2, 2026-04-21)
-  // JSON-LD + articleBody parsing missed 5 outlets on opening night (theatrely, theatermania,
-  // cote-notices, one-minute-critic, vulture) because they were linked with non-standard
-  // anchor text or absent from JSON-LD entirely. Walk every outbound href and ask
-  // resolveOutletFromUrl() — this maps domain→outletId via outlet-registry and catches
-  // links that the anchor-text matcher couldn't identify.
-  // Keeps existing reviews unchanged; only adds outlets not already represented.
+  // Method 3: outlet-by-domain supplement (Balusters postmortem CLASS 2, 2026-04-21).
+  // Delegated to scripts/lib/outlet-domain-supplement.js. Walks every outbound href,
+  // maps domain→outletId, adds stubs for outlets Method 1+2 missed.
   try {
-    const existingOutletIds = new Set(reviews.map(r => (r.outletId || '').toLowerCase()).filter(Boolean));
-    const urlsByResolved = new Map(); // outletId → Set<url>
-    const allAnchors = html.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>/gi);
-    for (const m of allAnchors) {
-      const href = m[1];
-      if (href.includes('broadwayworld.com')) continue;
-      const resolved = resolveOutletFromUrl(href);
-      if (!resolved || !resolved.outletId) continue;
-      const oid = resolved.outletId.toLowerCase();
-      if (existingOutletIds.has(oid)) continue;
-      if (!urlsByResolved.has(oid)) urlsByResolved.set(oid, new Set());
-      urlsByResolved.get(oid).add(href);
-    }
-    let method3Added = 0;
-    for (const [oid, urls] of urlsByResolved) {
-      // Ship-check follow-through: iterate all URLs for this outlet, pick the first
-      // that passes BOTH title-match AND cross-show checks. Original "first URL wins"
-      // dropped legitimate reviews when a sidebar link to the outlet's other-show
-      // coverage appeared before the real review in the DOM.
-      let chosen = null;
-      for (const candidate of urls) {
-        if (showTitle && !urlOrTitleLooksLikeReview(candidate, showTitle, null, { trustedSource: true })) continue;
-        if (detectCrossShowUrlMismatch(showId, candidate)) continue;
-        chosen = candidate;
-        break;
-      }
-      if (!chosen) {
-        // Log the first URL's rejection so audits can see outlets we considered but skipped
-        const firstUrl = urls.values().next().value;
-        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, method: 'bww-rr-domain-supplement', reason: 'no candidate passed title+cross-show guards' } });
-        continue;
-      }
-      reviews.push({
+    const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
+    const { added, newReviews } = supplementOutletsFromAnchors({
+      html,
+      reviews,
+      showId,
+      showTitle,
+      sourceName: 'bww-roundup-domain-supplement',
+      excludeDomains: ['broadwayworld.com'],
+      urlTitleCheck: (u, t) => urlOrTitleLooksLikeReview(u, t, null, { trustedSource: true }),
+      crossShowCheck: detectCrossShowUrlMismatch,
+      makeStub: (oid, url) => ({
         showId,
         outletId: oid,
         outlet: getOutletDisplayName(oid) || oid,
         criticName: 'Unknown',
-        url: chosen,
+        url,
         source: 'bww-roundup-domain-supplement',
-      });
-      method3Added++;
-    }
-    if (method3Added > 0) {
-      console.log(`    [Method 3] domain supplement added ${method3Added} outlet(s) missed by JSON-LD + articleBody`);
+      }),
+    });
+    reviews.push(...newReviews);
+    if (added > 0) {
+      console.log(`    [Method 3] domain supplement added ${added} outlet(s) missed by JSON-LD + articleBody`);
     }
   } catch (e) {
     console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);

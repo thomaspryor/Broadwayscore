@@ -146,6 +146,41 @@ function extractReviewsFromRoundup(html, showId) {
   const $ = cheerio.load(html);
   const reviews = [];
 
+  // Final-pass helper: after every pattern exits, walk <a> tags and add outlets the
+  // pattern-based walk missed. Must be invoked from every return path.
+  function finalize() {
+    try {
+      const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
+      const { resolveOutletFromUrl } = require('./lib/review-normalization');
+      // Translate reviews[] shape so the helper's "already represented" check works
+      const shaped = reviews.map(r => {
+        const resolved = r.url ? resolveOutletFromUrl(r.url) : null;
+        return { outletId: resolved ? resolved.outletId : (r.outlet || '').toLowerCase() };
+      });
+      const { added, newReviews } = supplementOutletsFromAnchors({
+        html,
+        reviews: shaped,
+        showId,
+        sourceName: 'nyc-theatre-domain-supplement',
+        excludeDomains: ['nyctheatre.com', 'nyc-theatre.com'],
+        urlTitleCheck: () => true, // NYC Theatre roundups are show-specific, no title check needed
+        makeStub: (oid, url) => ({
+          outlet: oid,
+          excerpt: '',
+          url,
+          showId,
+        }),
+      });
+      for (const nr of newReviews) reviews.push(nr);
+      if (added > 0) {
+        console.log(`    [NYC Theatre supplement] added ${added} outlet(s) missed by pattern walk`);
+      }
+    } catch (e) {
+      // Non-fatal
+    }
+    return reviews;
+  }
+
   // NYC Theatre roundups use three different HTML patterns:
   //
   // Pattern A: <h3>The Reviews</h3> → <h4>Outlet</h4> → <p>excerpt</p>
@@ -245,7 +280,7 @@ function extractReviewsFromRoundup(html, showId) {
     }
   });
 
-  if (reviews.length > 0) return reviews;
+  if (reviews.length > 0) return finalize();
 
   // --- Pattern B: "excerpt text" - Outlet Name (outlet at end after dash) ---
   // Only accept outlet names that match KNOWN_OUTLETS to prevent capturing
@@ -268,7 +303,7 @@ function extractReviewsFromRoundup(html, showId) {
     }
   });
 
-  if (reviews.length > 0) return reviews;
+  if (reviews.length > 0) return finalize();
 
   // --- Pattern C: Outlet Name: "excerpt text" (outlet at start before colon) ---
   $('p').each((_, el) => {
@@ -287,7 +322,7 @@ function extractReviewsFromRoundup(html, showId) {
     }
   });
 
-  return reviews;
+  return finalize();
 }
 
 // ---------------------------------------------------------------------------
