@@ -1666,14 +1666,26 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
     }
     let supplementAdded = 0;
     for (const [oid, urls] of urlsByResolved) {
-      const firstUrl = urls.values().next().value;
-      if (showTitle && !urlLooksLikeReview(firstUrl, showTitle)) continue;
+      // Ship-check follow-through: iterate all URLs, pick first that passes title+cross-show.
+      // Original "first URL wins" dropped real reviews when sidebar links appeared first.
+      let chosen = null;
+      for (const candidate of urls) {
+        if (showTitle && !urlLooksLikeReview(candidate, showTitle)) continue;
+        if (detectCrossShowUrlMismatch(showId, candidate)) continue;
+        chosen = candidate;
+        break;
+      }
+      if (!chosen) {
+        const firstUrl = urls.values().next().value;
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, method: 'dtli-domain-supplement', reason: 'no candidate passed title+cross-show guards' } });
+        continue;
+      }
       reviews.push({
         showId,
         outletId: oid,
         outlet: getOutletDisplayName(oid) || oid,
         criticName: 'Unknown',
-        url: firstUrl,
+        url: chosen,
         source: 'dtli-domain-supplement',
         dtliUrl,
       });
@@ -2469,13 +2481,21 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     }
     let method3Added = 0;
     for (const [oid, urls] of urlsByResolved) {
-      // Prefer first URL; create one stub per outlet (critic unknown — resolved
-      // by later collect-review-texts pass).
-      const firstUrl = urls.values().next().value;
-      if (showTitle && !urlOrTitleLooksLikeReview(firstUrl, showTitle, null, { trustedSource: true })) continue;
-      const cross = detectCrossShowUrlMismatch(showId, firstUrl);
-      if (cross) {
-        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, matchedTitle: cross.matchedTitle, method: 'bww-rr-domain-supplement' } });
+      // Ship-check follow-through: iterate all URLs for this outlet, pick the first
+      // that passes BOTH title-match AND cross-show checks. Original "first URL wins"
+      // dropped legitimate reviews when a sidebar link to the outlet's other-show
+      // coverage appeared before the real review in the DOM.
+      let chosen = null;
+      for (const candidate of urls) {
+        if (showTitle && !urlOrTitleLooksLikeReview(candidate, showTitle, null, { trustedSource: true })) continue;
+        if (detectCrossShowUrlMismatch(showId, candidate)) continue;
+        chosen = candidate;
+        break;
+      }
+      if (!chosen) {
+        // Log the first URL's rejection so audits can see outlets we considered but skipped
+        const firstUrl = urls.values().next().value;
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: firstUrl, outletId: oid, method: 'bww-rr-domain-supplement', reason: 'no candidate passed title+cross-show guards' } });
         continue;
       }
       reviews.push({
@@ -2483,7 +2503,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         outletId: oid,
         outlet: getOutletDisplayName(oid) || oid,
         criticName: 'Unknown',
-        url: firstUrl,
+        url: chosen,
         source: 'bww-roundup-domain-supplement',
       });
       method3Added++;

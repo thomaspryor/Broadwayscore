@@ -2,6 +2,14 @@
 
 const fs = require('fs');
 const path = require('path');
+// Balusters ship-check P1 #5: use canonical generateReviewFilename from review-normalization
+// so filenames match how rebuild and gather write them (handles aliases + prefix stripping).
+let _generateReviewFilename;
+try {
+  ({ generateReviewFilename: _generateReviewFilename } = require('../review-normalization'));
+} catch {
+  _generateReviewFilename = null;
+}
 
 const name = 'review-count-match';
 const description = 'Local review-texts file count matches reviews.json count (exclusion drift detection)';
@@ -87,8 +95,13 @@ function run(show, context) {
   for (const r of reviewsForShow) {
     if (r.__sourceFile) filenamesInBuild.add(r.__sourceFile);
     if (r.sourceFile) filenamesInBuild.add(r.sourceFile);
-    // Synthesize expected filename pattern outlet--critic.json for dedup
+    // Canonical filename (outlet--critic.json) via review-normalization so aliases
+    // and prefix-stripping match how the actual file was written. Falls back to
+    // naive slug if the lib is unavailable (unit-test environment).
     if (r.outletId && r.criticName) {
+      if (_generateReviewFilename) {
+        try { filenamesInBuild.add(_generateReviewFilename(r.outletId, r.criticName)); } catch { /* fall through */ }
+      }
       const slug = String(r.criticName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
       filenamesInBuild.add(`${r.outletId}--${slug}.json`);
     }
