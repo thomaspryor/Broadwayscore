@@ -160,8 +160,15 @@ if (modified > 0 && !DRY_RUN) {
     let pushed = false;
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
-        execSync('git pull --rebase origin main', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
-        execSync('git push origin main', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
+        const rtRoot = path.join(reviewTextsDir, '..');
+        execSync('git pull --rebase origin main', { cwd: rtRoot, stdio: 'pipe' });
+        // Restore protected fields that remote may have overwritten in our files
+        // (humanReviewScore etc.). Covers bucket H. See scripts/lib/restore-protected-fields.js.
+        try {
+          execSync(`node ${path.join(__dirname, 'lib', 'restore-protected-fields.js')} ORIG_HEAD`, { cwd: rtRoot, stdio: 'pipe' });
+          execSync('git add -A && git diff --cached --quiet || git commit --amend --no-edit', { cwd: rtRoot, stdio: 'pipe', shell: '/bin/bash' });
+        } catch {}
+        execSync('git push origin main', { cwd: rtRoot, stdio: 'pipe' });
         pushed = true;
         console.log('  ✓ Pushed to review-texts repo');
         break;

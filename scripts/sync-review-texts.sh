@@ -19,6 +19,15 @@ cd "$REVIEW_TEXTS_DIR"
 # that was fetched/committed by other processes while local changes were pending.
 git pull --rebase origin main -q 2>/dev/null || true
 
+# Restore protected fields (humanReviewScore, humanReviewedWrongProduction, etc.)
+# from pre-rebase HEAD. ORIG_HEAD is set by git when a rebase replayed commits.
+# If remote's version of a file overwrote a manual correction that only existed
+# in our pre-rebase HEAD, copy it back. Covers bucket H (fix-doesn't-propagate).
+RPF="$(cd "$(dirname "$0")" && pwd)/lib/restore-protected-fields.js"
+if [ -f "$RPF" ] && git rev-parse ORIG_HEAD >/dev/null 2>&1; then
+  node "$RPF" ORIG_HEAD >/dev/null 2>&1 || true
+fi
+
 # Check for changes
 git add -A
 if git diff --staged --quiet; then
@@ -84,6 +93,14 @@ for i in 1 2 3 4 5; do
         git add "$f"
       done
       GIT_EDITOR=true git rebase --continue 2>/dev/null || true
+    fi
+
+    # Restore protected fields after the retry rebase too.
+    if [ -f "$RPF" ] && git rev-parse ORIG_HEAD >/dev/null 2>&1; then
+      node "$RPF" ORIG_HEAD >/dev/null 2>&1 || true
+      # Re-stage anything restore-protected-fields rewrote
+      git add -A 2>/dev/null || true
+      git commit --amend --no-edit 2>/dev/null || true
     fi
 
     if git push origin main 2>&1; then
