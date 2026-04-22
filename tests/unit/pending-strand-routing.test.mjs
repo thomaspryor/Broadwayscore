@@ -57,11 +57,23 @@ describe('isVerifiedDiscoverySource', () => {
     assert.strictEqual(isVerifiedDiscoverySource({}), false);
   });
 
-  it('does not match prefix-only collisions like "direct-urlsomething"', () => {
-    // startsWith is intentional — discovery-source naming convention is "direct-url-*",
-    // and any future helper using a "direct-url" prefix should be deliberately verified.
-    assert.strictEqual(isVerifiedDiscoverySource('direct-urlbogus'), true,
-      'startsWith allows any direct-url* — if this becomes a problem, switch to a Set of allowed values');
+  it('rejects prefix-only lookalikes (explicit allowlist, not startsWith)', () => {
+    // Prior implementation used source.startsWith('direct-url') which accepted junk
+    // like 'direct-urlbogus'. Switched to Set membership so new helpers must be
+    // explicitly added — prevents a future 'direct-url-unverified' source from
+    // silently bypassing the _pending strand.
+    assert.strictEqual(isVerifiedDiscoverySource('direct-urlbogus'), false);
+    assert.strictEqual(isVerifiedDiscoverySource('direct-url'), false);
+    assert.strictEqual(isVerifiedDiscoverySource('direct-url-unverified'), false);
+  });
+
+  it('source contract is case-sensitive (documents current behavior)', () => {
+    // Source strings are emitted by internal code; they're a case-sensitive contract.
+    // If this test starts failing because someone normalized case in the helper,
+    // update the explicit allowlist to include the canonicalized form.
+    assert.strictEqual(isVerifiedDiscoverySource('SERP-Discovery'), false);
+    assert.strictEqual(isVerifiedDiscoverySource('Direct-URL-Construction'), false);
+    assert.strictEqual(isVerifiedDiscoverySource(' serp-discovery '), false); // whitespace not trimmed
   });
 });
 
@@ -120,5 +132,27 @@ describe('shouldRouteUnknownCriticToPending', () => {
     assert.strictEqual(shouldRouteUnknownCriticToPending(null), false);
     assert.strictEqual(shouldRouteUnknownCriticToPending(undefined), false);
     assert.strictEqual(shouldRouteUnknownCriticToPending({}), false);
+  });
+
+  it('whitespace-padded "Unknown" is still routed (trim)', () => {
+    const review = { criticName: '  Unknown  ', url: 'https://x', source: 'rss-discovery' };
+    assert.strictEqual(shouldRouteUnknownCriticToPending(review), true);
+  });
+
+  it('handles non-string criticName without throwing', () => {
+    // createReviewFile always passes a string, but guard against defensive callers.
+    assert.strictEqual(shouldRouteUnknownCriticToPending({ criticName: 42, url: 'https://x', source: 'rss-discovery' }), false);
+    assert.strictEqual(shouldRouteUnknownCriticToPending({ criticName: null, url: 'https://x', source: 'rss-discovery' }), false);
+  });
+
+  it('outlet-name-like critics (Staff / Editorial Board / Anonymous) bypass routing', () => {
+    // KNOWN LIMITATION: these bypass because they don't literally === "unknown". If a
+    // future outlet emits these as a default when byline extraction fails, they'd land
+    // in main regardless of source. Test documents current behavior; widen the helper
+    // if bypass-for-non-unknown-disguises becomes a real problem.
+    const staff = { criticName: 'Staff', url: 'https://x', source: 'rss-discovery' };
+    assert.strictEqual(shouldRouteUnknownCriticToPending(staff), false);
+    const board = { criticName: 'Editorial Board', url: 'https://x', source: 'rss-discovery' };
+    assert.strictEqual(shouldRouteUnknownCriticToPending(board), false);
   });
 });

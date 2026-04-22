@@ -1327,24 +1327,34 @@ function isIncludableForRebuild(data) {
  * reviews. The carve-out: trusted/verified discovery sources bypass the pending strand
  * so collect-review-texts.js AUTHOR ENRICHMENT can resolve the byline from page HTML.
  *
- * Sources that bypass _pending:
+ * Explicit allowlist (rather than a prefix match) so a new helper emitting a
+ * 'direct-urlsomething' / 'direct-url-unverified' source doesn't silently gain the
+ * bypass without a deliberate code change here. Any new trusted source must be
+ * added explicitly — tests/unit/pending-strand-routing.test.mjs asserts the set.
+ *
+ * Current members:
  *   - 'serp-discovery' — SERP hit at a multi-critic outlet (NYT, NYSR, Vulture, Theatrely).
  *     Original carve-out per Express coverage-gap fix #4 (commit f7005e28c3).
- *   - 'direct-url-*' — Helper-verified direct URL (e.g. scripts/lib/tb-direct-url.js).
- *     The helper already gates on title match + byline-or-verdict signal + date window,
- *     so the URL is legitimate even when no byline appears on the page (TB sometimes
- *     omits one). Added 2026-04-22 after Schmigadoon TB review was stranded by the
- *     original carve-out's serp-only check.
+ *   - 'direct-url-construction' / 'direct-url-index-fallback' / 'direct-url-override' —
+ *     Helper-verified direct URLs from scripts/lib/tb-direct-url.js. The helper gates
+ *     on title match + byline-or-verdict signal + date window, so the URL is trustworthy
+ *     even when the author-extraction regex can't recover a byline from the page HTML.
+ *     Added 2026-04-22 after Schmigadoon TB review was stranded by the original
+ *     carve-out's serp-only check.
  *
- * @param {string|undefined} source - The review.source field
- * @returns {boolean} true if the source has been verified upstream and the file should
- *   be saved to the main directory; false if it should follow the default _pending route.
+ * @param {string|undefined} source - The review.source field (case-sensitive contract)
+ * @returns {boolean}
  */
+const VERIFIED_DISCOVERY_SOURCES = new Set([
+  'serp-discovery',
+  'direct-url-construction',
+  'direct-url-index-fallback',
+  'direct-url-override',
+]);
+
 function isVerifiedDiscoverySource(source) {
   if (typeof source !== 'string' || !source) return false;
-  if (source === 'serp-discovery') return true;
-  if (source.startsWith('direct-url')) return true;
-  return false;
+  return VERIFIED_DISCOVERY_SOURCES.has(source);
 }
 
 /**
