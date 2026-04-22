@@ -1285,13 +1285,28 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
         // outletId from the pipeline is already a canonical slug (e.g., "nyt-theater",
         // "new-york-times"). Use it directly — don't strip hyphens or we miss collisions.
         const outletSlug = normalizeOutlet(review.outletId);
-        const hasNamedFile = fs.readdirSync(showDir).some(f =>
+        const namedFiles = fs.readdirSync(showDir).filter(f =>
           f.startsWith(outletSlug + '--') && !f.includes('--unknown') && f.endsWith('.json')
         );
-        if (hasNamedFile) {
-          console.log(`  [SKIP] ${outletSlug}--unknown: named-critic file already exists`);
+        // Balusters postmortem CLASS 2 — allow multi-critic-per-outlet.
+        // Only skip if the incoming URL matches an existing file's URL. Different URL =
+        // almost certainly a different critic (Theatrely/andrew-martini interview on disk
+        // shouldn't block Theatrely/joey-sims review at a distinct URL).
+        const incomingUrl = (review.url || '').toLowerCase().replace(/\/$/, '');
+        const hasExactUrlMatch = namedFiles.some(f => {
+          try {
+            const rec = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+            const existingUrl = (rec.url || '').toLowerCase().replace(/\/$/, '');
+            return existingUrl && incomingUrl && existingUrl === incomingUrl;
+          } catch { return false; }
+        });
+        if (hasExactUrlMatch) {
+          console.log(`  [SKIP] ${outletSlug}--unknown: named-critic file with same URL already exists`);
           skipped++;
           continue;
+        }
+        if (namedFiles.length > 0) {
+          console.log(`  [ALLOW] ${outletSlug}--unknown: ${namedFiles.length} existing named file(s) for outlet but URL is distinct — treating as new critic`);
         }
       }
     }
