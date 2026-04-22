@@ -68,7 +68,8 @@
     "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
     "copenhagen-west-end-2026/whatsonstage--maxwell-cooter.json",
     "the-book-of-mormon-west-end-2024/i-paper--fiona-mountford.json",
-    "the-miracle-worker-2010/newsday--linda-winer.json"
+    "the-miracle-worker-2010/newsday--linda-winer.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json"
   ],
   "failed": [
     "fallen-angels-2026/wsj--charles-isherwood.json",
@@ -993,7 +994,16 @@
     "oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
     "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
     "six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
-    "master-haroldand-the-boys-2003/nytimes--ben-brantley.json"
+    "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+    "urban-cowboy-2003/nytimes--ben-brantley.json",
+    "imaginary-friends-2002/nytimes--ben-brantley.json",
+    "hollywood-arms-2002/nytimes--bruce-weber.json",
+    "the-graduate-2002/nytimes--ben-brantley.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+    "ragtime-1998/nytimes--ben-brantley.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1052,7 +1062,8 @@
       "alice-in-wonderland-west-end-2026/standard--nick-curtis.json",
       "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/i-paper--fiona-mountford.json",
       "copenhagen-west-end-2026/whatsonstage--maxwell-cooter.json",
-      "the-book-of-mormon-west-end-2024/i-paper--fiona-mountford.json"
+      "the-book-of-mormon-west-end-2024/i-paper--fiona-mountford.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1062,7 +1073,12 @@
       "data/review-texts/oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
       "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
       "data/review-texts/six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
-      "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json"
+      "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+      "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json",
+      "data/review-texts/imaginary-friends-2002/nytimes--ben-brantley.json",
+      "data/review-texts/hollywood-arms-2002/nytimes--bruce-weber.json",
+      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json",
+      "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1093,14 +1109,15 @@
       "data/review-texts/shadowlands-west-end-2026/thestage--paul-raven.json",
       "data/review-texts/magic-mike-live-west-end-2021/thestage--dave-fargnoli.json",
       "data/review-texts/mamma-mia-west-end-2021/thestage--sam-marlowe.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/ragtime-1998/nytimes--ben-brantley.json"
     ],
     "archive": [
       "romeo-and-juliet-west-end-2026/telegraph--claire-allfree.json"
     ]
   },
   "startTime": "2026-04-21T16:58:13.270Z",
-  "lastProcessed": "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+  "lastProcessed": "les-miserables-1987/thestage--unknown.json",
   "log": [
     {
       "t": "2026-04-21T17:03:30.709Z",
@@ -1187,6 +1204,72 @@
     },
     {
       "t": "2026-04-22T03:34:29.500Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:41.743Z",
+      "event": "bb-session",
+      "session": "0cbbb7a6",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
+    },
+    {
+      "t": "2026-04-22T03:34:42.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:34:54.497Z",
+      "event": "bb-session",
+      "session": "d4ad082f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-22T03:34:54.920Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:35:07.302Z",
+      "event": "bb-session",
+      "session": "623bb722",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
+    },
+    {
+      "t": "2026-04-22T03:35:07.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:35:20.334Z",
+      "event": "bb-session",
+      "session": "42afa680",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9406e0dc1f3af936a35757c0"
+    },
+    {
+      "t": "2026-04-22T03:35:20.720Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:36:38.404Z",
+      "event": "bb-session",
+      "session": "c66b8e76",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-22T03:36:39.304Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-22T03:36:51.822Z",
+      "event": "bb-session",
+      "session": "ac47aed9",
+      "url": "https://www.nytimes.com/1998/01/19/theater/theater-review-a-diorama-with-nostalg"
+    },
+    {
+      "t": "2026-04-22T03:36:52.248Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
