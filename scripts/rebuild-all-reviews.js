@@ -1258,8 +1258,17 @@ const crossShowFingerprints = new Map();
         const trustWrongArticleDespiteStale = cv.wrongArticle === true && cv.confidence === 'high';
         if (stale && !trustWrongArticleDespiteStale) continue;
         let promoted = false;
+        // Balusters CLASS 1 generalization (2026-04-22): CV.wrongProduction is advisory
+        // when (a) the ensemble scored this file with confidence AND (b) CV itself is
+        // medium-confidence (not high) AND (c) this is NOT the cvLowButStrong path
+        // (strong "different show" markers in issues/reasoning still promote).
+        // High-conf CV continues to promote — that's the hard venue/tour/prior-production
+        // signal. Medium-conf CV vs confident ensemble = ensemble wins.
+        const ppEnsembleSaysReview = hasHighConfidenceLlmScore(d);
+        const ppCvWpAdvisory = ppEnsembleSaysReview && cv.confidence !== 'high' && !cvLowButStrong;
         if (cv.wrongProduction === true && d.wrongProduction !== true
-            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket) {
+            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
+            && !ppCvWpAdvisory) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1268,6 +1277,8 @@ const crossShowFingerprints = new Map();
           if (cvLowButStrong) {
             stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
           }
+        } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
+          stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
@@ -1319,14 +1330,18 @@ showDirs.forEach(showId => {
           const ucv = ud.contentVerification;
           if (!ucv || (ucv.confidence !== 'high' && ucv.confidence !== 'medium')) continue;
           let promoted = false;
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          // Balusters CLASS 1: ensemble-scored reviews defeat CV's wrongArticle/wrongProduction
+          // when CV is medium-confidence (high-conf CV still wins).
+          const uEnsembleSaysReview = hasHighConfidenceLlmScore(ud);
+          const uCvWpAdvisory = uEnsembleSaysReview && ucv.confidence !== 'high';
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
+          } else if (ucv.wrongProduction === true && uCvWpAdvisory) {
+            stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }
-          // Balusters CLASS 1: ensemble-scored reviews defeat CV's wrongArticle call
-          const uEnsembleSaysReview = hasHighConfidenceLlmScore(ud);
           if (ucv.wrongArticle === true && !uEnsembleSaysReview && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             ud.wrongShow = true;
             ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
@@ -1726,9 +1741,15 @@ showDirs.forEach(showId => {
           const wpConfidence = cv.confidence || 'medium';
           const isHighMediumConfidence = wpConfidence === 'high' || wpConfidence === 'medium';
           const promotionEligibleConfidence = isHighMediumConfidence || cvLowButStrong;
+          // Balusters CLASS 1 generalization (2026-04-22): ensemble-confident file + medium-conf
+          // CV → advisory for BOTH wrongArticle and wrongProduction. High-conf CV still
+          // promotes. cvLowButStrong still promotes for wrongProduction.
+          const ensembleSaysReview = hasHighConfidenceLlmScore(data);
+          const cvWpAdvisory = ensembleSaysReview && wpConfidence !== 'high' && !cvLowButStrong;
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
-              && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket) {
+              && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket
+              && !cvWpAdvisory) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1737,13 +1758,12 @@ showDirs.forEach(showId => {
             if (cvLowButStrong) {
               stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
             }
+          } else if (cv.wrongProduction === true && cvWpAdvisory) {
+            stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          // Balusters postmortem CLASS 1: If the ensemble scored this with confidence, CV.wrongArticle
-          // is advisory, not blocking. Don't promote to wrongShow.
-          const ensembleSaysReview = hasHighConfidenceLlmScore(data);
           if (cv.wrongArticle === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             data.wrongShow = true;
             data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
