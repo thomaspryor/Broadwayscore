@@ -36,8 +36,11 @@ const MANUAL_FIELDS = [
   'humanReviewScore',
   'manualContentTier',
   'wrongProductionManualClear',
+  'wrongArticleManualClear',
+  'wrongShowManualClear',
   'wrongProductionOverride',
   'humanReviewedWrongProduction',
+  'humanReviewedWrongArticle',
   'allowEarlyDate',
   'allowCrossMarket',
   // (b) Durable SERP retry state — must survive rebase

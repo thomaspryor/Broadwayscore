@@ -57,7 +57,9 @@ runs:
             'wrongProductionNote', 'incompleteReason', 'incompleteDetail',
             'originalScoreCleared', 'originalScoreClearedReason', 'previousOriginalScore',
             'humanReviewScore', 'humanReviewNote', 'humanReviewedWrongProduction',
-            'wrongProductionManualClear', 'wrongProductionOverride',
+            'humanReviewedWrongArticle',
+            'wrongProductionManualClear', 'wrongArticleManualClear', 'wrongShowManualClear',
+            'wrongProductionOverride',
             'designation', 'isCriticsPick', 'originalScore', 'duplicateOf', 'duplicateReason',
             'publishDateVerified', 'publishDateSource', 'allowEarlyDate',
             // SERP retry state — losing these on rebase resets the cooldown backoff
