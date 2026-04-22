@@ -1319,6 +1319,49 @@ function isIncludableForRebuild(data) {
   return true;
 }
 
+/**
+ * Pattern Card #4 (gather-reviews.js) — Pending-strand routing decision.
+ *
+ * `createReviewFile()` routes byline-less reviews (criticName="Unknown") with a URL
+ * to data/review-texts/_pending/ to avoid duplicating already-ingested named-critic
+ * reviews. The carve-out: trusted/verified discovery sources bypass the pending strand
+ * so collect-review-texts.js AUTHOR ENRICHMENT can resolve the byline from page HTML.
+ *
+ * Sources that bypass _pending:
+ *   - 'serp-discovery' — SERP hit at a multi-critic outlet (NYT, NYSR, Vulture, Theatrely).
+ *     Original carve-out per Express coverage-gap fix #4 (commit f7005e28c3).
+ *   - 'direct-url-*' — Helper-verified direct URL (e.g. scripts/lib/tb-direct-url.js).
+ *     The helper already gates on title match + byline-or-verdict signal + date window,
+ *     so the URL is legitimate even when no byline appears on the page (TB sometimes
+ *     omits one). Added 2026-04-22 after Schmigadoon TB review was stranded by the
+ *     original carve-out's serp-only check.
+ *
+ * @param {string|undefined} source - The review.source field
+ * @returns {boolean} true if the source has been verified upstream and the file should
+ *   be saved to the main directory; false if it should follow the default _pending route.
+ */
+function isVerifiedDiscoverySource(source) {
+  if (typeof source !== 'string' || !source) return false;
+  if (source === 'serp-discovery') return true;
+  if (source.startsWith('direct-url')) return true;
+  return false;
+}
+
+/**
+ * Pattern Card #4 — full routing decision for byline-less reviews.
+ *
+ * @param {Object} review - { criticName, url, source }
+ * @returns {boolean} true if the review should be written to _pending/ instead of
+ *   the main show directory.
+ */
+function shouldRouteUnknownCriticToPending(review) {
+  if (!review || typeof review !== 'object') return false;
+  const isUnknownCritic = (review.criticName || '').toString().toLowerCase().trim() === 'unknown';
+  if (!isUnknownCritic) return false;
+  if (!review.url) return false;
+  return !isVerifiedDiscoverySource(review.source);
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -1348,6 +1391,8 @@ module.exports = {
   recordSerpAttempt,
   pickRerouteTarget,
   isIncludableForRebuild,
+  isVerifiedDiscoverySource,
+  shouldRouteUnknownCriticToPending,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,

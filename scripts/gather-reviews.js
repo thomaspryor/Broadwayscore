@@ -58,7 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -3240,15 +3240,10 @@ function createReviewFile(showId, reviewData, options = {}) {
   }
 
   // Pattern Card #4: route --unknown.json files with a URL to _pending/ instead of
-  // the main show directory. Unknown bylines from SERP often duplicate already-ingested
-  // reviews. They'll be resolved by a named-critic discovery pass or manual review.
-  // Carve-out: SERP-discovered URLs from multi-critic outlets are saved to the main
-  // directory so collect-review-texts.js AUTHOR ENRICHMENT (line ~4519) can extract
-  // the byline from the page HTML. Without this, multi-critic outlets (NYT, NYSR,
-  // Vulture, Theatrely) are stranded in _pending and never reach the scoring pipeline.
-  const isUnknownCritic = normalizedCriticName === 'unknown';
-  const isSerpDiscovery = review.source === 'serp-discovery';
-  if (isUnknownCritic && review.url && !isSerpDiscovery) {
+  // the main show directory. Decision logic + carve-out rationale lives in
+  // scripts/lib/review-guards.js → shouldRouteUnknownCriticToPending().
+  // Tested at tests/unit/pending-strand-routing.test.mjs.
+  if (shouldRouteUnknownCriticToPending({ criticName: normalizedCriticName, url: review.url, source: review.source })) {
     const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', showId);
     if (!fs.existsSync(pendingDir)) fs.mkdirSync(pendingDir, { recursive: true });
     const urlHash = (() => {
