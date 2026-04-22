@@ -336,10 +336,22 @@ async function main() {
   // has already been sent (completed:true). This prevents repeated preview spam when a
   // newly-opened show with 0 reviews keeps the workflow running alongside a completed show.
   // --recreate-draft bypasses this gate so a corrected draft can replace a bad one.
+  // Exception: reconcile-broadcast-state.js may set draftStatus='cancelled'|'deleted'. If
+  // the drafting-cycle has aged past REQUEUE_AFTER_HOURS, shouldRequeueShow re-opens the
+  // slot so the next run can create a fresh draft. See scripts/lib/broadcast-state.js.
+  const { shouldRequeueShow } = require('./lib/broadcast-state');
   const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
     const individualSent = sentData.shows[showId];
-    if (individualSent && individualSent.completed && !RECREATE_DRAFT) {
+    if (!individualSent) return true;
+    if (RECREATE_DRAFT) return true;
+    if (shouldRequeueShow(individualSent)) {
+      if (individualSent.completed) {
+        console.log(`  Re-queueing ${s.title} — draft ${individualSent.draftStatus} at ${individualSent.draftCreatedAt}`);
+      }
+      return true;
+    }
+    if (individualSent.completed) {
       console.log(`  Skipping ${s.title} — already broadcast (completed)`);
       return false;
     }
@@ -707,7 +719,10 @@ async function main() {
         console.log(`  Draft URL: ${draftUrl}`);
       }
 
-      // Mark as complete from code's perspective — owner sends manually from Resend
+      // Mark as complete from code's perspective — owner sends manually from Resend.
+      // NEW 2026-04-22: also track draftStatus so reconcile-broadcast-state.js can
+      // round-trip the Resend API and detect cancelled/deleted drafts. completed:true
+      // stays for backwards-compat; shouldRequeueShow() gates the re-entry path.
       const completionData = {
         draftCreatedAt: new Date().toISOString(),
         draftId,
@@ -715,6 +730,9 @@ async function main() {
         method: 'resend-draft',
         reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
         completed: true,
+        draftStatus: 'draft',
+        sentAt: null,
+        recipientCount: null,
       };
       sentData.shows[broadcastKey] = completionData;
       for (const s of showsForEmail) {

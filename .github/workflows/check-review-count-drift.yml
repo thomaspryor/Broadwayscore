@@ -1,0 +1,139 @@
+# Review-count drift health check — compares data/reviews.json (derived) against
+# data/review-texts/ (source of truth). READ-ONLY: never triggers rebuild or scraping.
+#
+# Motivation: Schmigadoon 2026 postmortem finding #4 — manual opening-morning
+# edits to reviews.json can leave it out of sync with review-texts with no
+# automatic signal. This check runs daily and commits per-show deltas to
+# data/audit/review-count-drift.json.
+name: Check Review-Count Drift
+
+on:
+  schedule:
+    # Daily at 6 AM UTC (2 AM EDT / 1 AM EST). After the 4 AM rebuild cron + 5 AM
+    # scoring cron, so drift reflects the freshly-rebuilt reviews.json.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Audit a single show (slug)'
+        required: false
+        default: ''
+        type: string
+      strict:
+        description: 'Fail the job if threshold breached'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-review-count-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    name: Compare reviews.json vs review-texts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run drift check
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ "${{ inputs.strict }}" = "true" ]; then
+            ARGS="$ARGS --strict"
+          fi
+          node scripts/check-review-count-drift.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/audit/review-count-drift.json 2>/dev/null; then
+            if [ ! -f data/audit/review-count-drift.json ]; then
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            elif git ls-files --error-unmatch data/audit/review-count-drift.json 2>/dev/null; then
+              echo "has_changes=false" >> $GITHUB_OUTPUT
+            else
+              echo "has_changes=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push audit
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/review-count-drift.json
+
+          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); console.log(d.summary.showsOverThreshold + ' shows over threshold, global delta ' + d.summary.globalDelta)")
+
+          if [ -n "${{ inputs.show }}" ]; then
+            MSG="audit: Review-count drift for ${{ inputs.show }} ($SUMMARY)"
+          else
+            MSG="audit: Daily review-count drift check ($SUMMARY)"
+          fi
+
+          git commit -m "$MSG [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f data/audit/review-count-drift.json ]; then
+            echo "## Review-Count Drift" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const d = require('./data/audit/review-count-drift.json');
+              const s = d.summary;
+              console.log('**Shows scanned:** ' + s.showsScanned);
+              console.log('**Total expected:** ' + s.totalExpected);
+              console.log('**Total actual:** ' + s.totalActual);
+              console.log('**Global delta:** ' + s.globalDelta + ' (threshold ±' + d.thresholds.globalDelta + ')');
+              console.log('**Shows over threshold:** ' + s.showsOverThreshold);
+              console.log('**Orphan showIds in reviews.json:** ' + s.orphanReviews);
+              if (d.showsOverThreshold.length > 0) {
+                console.log('');
+                console.log('| Show | Expected | Actual | Delta |');
+                console.log('|------|----------|--------|-------|');
+                for (const r of d.showsOverThreshold.slice(0, 25)) {
+                  console.log('| ' + r.showDir + ' | ' + r.expected + ' | ' + r.actual + ' | ' + r.delta + ' |');
+                }
+                if (d.showsOverThreshold.length > 25) {
+                  console.log('_…and ' + (d.showsOverThreshold.length - 25) + ' more_');
+                }
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review-Count Drift Check Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

@@ -20,6 +20,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// Single source of truth for "would rebuild include this review-text file?"
+// Shared with scripts/check-review-count-drift.js so both stay in sync.
+const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./lib/review-text-scoreable');
+
+// Stuck-vs-fresh classification for pending-score gap records.
+// Extracted + unit-tested in tests/unit/pending-gap-classification.test.mjs.
+const { classifyPendingGapsByAge, DEFAULT_STUCK_PENDING_DAYS } = require('./lib/pending-gap-classification');
+
 // Import deduplication module for duplicate detection
 const { isLondonMarket, isWestEndVenue, isOffWestEndVenue } = require('./lib/venue-classification');
 let checkForDuplicate;
@@ -2586,57 +2594,11 @@ function validateUnscoredReviewTexts() {
         continue; // JSON parse errors caught elsewhere
       }
 
-      // Mirror of rebuild-all-reviews.js skip logic AND scripts/lib/is-scoreable.js.
-      // Anything rebuild or the LLM scorer would skip legitimately is not a silent
-      // gap — we only care about files that WOULD be included but have no score.
-      //
-      // NOTE: the dedup field naming is inconsistent across the codebase. Two
-      // separate dedup paths set DIFFERENT fields:
-      //   - `duplicateOf`    (used by scripts/lib/is-scoreable.js — older)
-      //   - `duplicateTextOf` (used by rebuild-all-reviews.js — newer)
-      // A file can have either or both. This validator must check BOTH or it
-      // undercounts legitimate skips and surfaces false orphans. The original
-      // version only checked duplicateTextOf and falsely flagged 39 `duplicateOf`
-      // files across the site as silent gaps (2026-04-11 discovery).
-      if (r.rejectionReason) continue;
-      if (Array.isArray(r.rejectedBy) && r.rejectedBy.length >= 2) continue;
-      if (r.isRoundupArticle === true) continue;
-      if (r.wrongAttribution === true) continue;
-      if (r.suspectedMisattribution === true) continue;
-      if (r.wrongProduction) continue;
-      if (r.wrongShow) continue;
-      if (r.duplicateTextOf) continue;
-      if (r.duplicateOf) continue; // NEW 2026-04-11: scorer's dedup field
-      if (r.humanReviewedWrongProduction) continue;
-      if (r.contentTier === 'invalid' || r.contentTier === 'stub') continue;
-      if (r.scoreStatus === 'TO_BE_CALCULATED') continue;
-      // showNotMentioned only skips when there are no aggregator excerpts to fall back on.
-      // Mirrors is-scoreable.js logic.
-      if (r.showNotMentioned) {
-        const hasExcerpt = !!(
-          r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
-          r.nycTheatreExcerpt || r.stagedoorExcerpt || r.lboRoundupExcerpt
-        );
-        if (!hasExcerpt) continue;
-      }
-      // fullTextWrongAuthor only skips when there are no aggregator excerpts to fall back on
-      if (r.fullTextWrongAuthor === true) {
-        const hasExcerpt = !!(
-          r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
-          r.nycTheatreExcerpt || r.stagedoorExcerpt || r.lboRoundupExcerpt
-        );
-        if (!hasExcerpt) continue;
-      }
-
-      // Any valid score path satisfies rebuild's getBestScore() — these are
-      // the same priority paths as scripts/lib/rebuild-helpers.js:getBestScore
-      const hasHuman = r.humanReviewScore >= 1 && r.humanReviewScore <= 100;
-      const hasAdj = r.adjudicatedScore >= 1 && r.adjudicatedScore <= 100;
-      const hasOrig = r.originalScore && !r.originalScoreCleared;
-      const hasLlm = r.llmScore && r.llmScore.score >= 1 && r.llmScore.score <= 100;
-      const hasAssigned = r.assignedScore >= 1 && r.assignedScore <= 100;
-      const hasAggStars = !!r.aggregatorStars;
-      if (hasHuman || hasAdj || hasOrig || hasLlm || hasAssigned || hasAggStars) continue;
+      // Skip filters + score-presence check live in scripts/lib/review-text-scoreable.js
+      // so this validator and scripts/check-review-count-drift.js never drift apart.
+      // See that file for the exact flag list and dedup-field-naming gotchas.
+      // A silent gap = passes every skip filter BUT has no valid score.
+      if (!passesFlagFilters(r) || hasValidScore(r)) continue;
 
       // This file passes every skip filter and has no score — silent gap.
       const ageDays = r.textFetchedAt
@@ -2668,17 +2630,14 @@ function validateUnscoredReviewTexts() {
   const orphanedGaps = gaps.filter((g) => !g.pending);
 
   if (pendingGaps.length > 0) {
-    // Split fresh vs stuck. Files that have been scoreExtractionPending for
-    // more than STUCK_PENDING_DAYS are a louder signal — the scorer should
-    // have picked them up by now. Schmigadoon 2026 Bug #11: pending files sat
-    // for weeks because nothing audited staleness.
-    const STUCK_PENDING_DAYS = 7;
-    const stuckPendingGaps = pendingGaps.filter(
-      (g) => g.ageDays != null && g.ageDays > STUCK_PENDING_DAYS
-    );
-    const freshPendingGaps = pendingGaps.filter(
-      (g) => !(g.ageDays != null && g.ageDays > STUCK_PENDING_DAYS)
-    );
+    // Split fresh vs stuck via scripts/lib/pending-gap-classification.js
+    // (unit-tested — see tests/unit/pending-gap-classification.test.mjs).
+    // Files pending more than STUCK_PENDING_DAYS are the louder signal that
+    // the scorer should have picked them up by now. Schmigadoon 2026 Bug #11:
+    // pending files sat for weeks because nothing audited staleness.
+    const STUCK_PENDING_DAYS = DEFAULT_STUCK_PENDING_DAYS;
+    const { stuck: stuckPendingGaps, fresh: freshPendingGaps } =
+      classifyPendingGapsByAge(pendingGaps, STUCK_PENDING_DAYS);
 
     if (freshPendingGaps.length > 0) {
       console.log('');
