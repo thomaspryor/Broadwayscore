@@ -1,572 +1,29 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-22T04:53:15.613Z",
+    "generatedAt": "2026-04-22T23:27:40.908Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 76,
+    "totalFlagged": 50,
     "highConfidence": 6,
-    "mediumConfidence": 70,
+    "mediumConfidence": 44,
     "lowConfidence": 0,
-    "reassignable": 31
+    "reassignable": 20
   },
   "results": [
     {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "chicago-sun-times--sheri-flanders.json",
-      "outlet": "Chicago Sun-Times",
-      "criticName": "Sheri Flanders",
-      "publishDate": "2022-09-30",
+      "showId": "the-phantom-of-the-opera-1988",
+      "showTitle": "The Phantom of the Opera",
+      "showYear": 1988,
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "outlet": "Broadway & Me",
+      "criticName": "Janice C. Simpson",
+      "publishDate": "2023-01-14",
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "publishDate 2022 is 19 years after original opening 2003"
+        "publishDate 2023 is 35 years after original opening 1988",
+        "modern references: hamilton"
       ],
-      "textSnippet": " The camaraderie between deGuzman and Newberry is palpable, and they're a fun pair to watch, sparring and sniping across the stage as Elphaba is brutally bullied by, well, everyone. Eventually Galinda"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "ew--alice-king.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Alice King",
-      "publishDate": "November 21, 2003",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production, new revival"
-      ],
-      "textSnippet": "Who says it’s not easy being green? Well, Kermit the Frog did actually, but if you’re literal high-flyer Elphaba in the musical Wicked, it’s pretty darn boss, especially give that the teen-adored Step"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "nyt-theater--jonathan-mandell.json",
-      "outlet": "New York Theater",
-      "criticName": "Jonathan Mandell",
-      "publishDate": "September 12, 2025",
-      "confidence": "medium",
-      "suggestedShowId": "wicked-west-end-2021",
-      "signals": [
-        "publishDate 2025 is 22 years after original opening 2003",
-        "year 2006 in text matches revival wicked-west-end-2021",
-        "modern references: twitter, social media, hamilton"
-      ],
-      "textSnippet": "“Wicked” endures on stage. I saw it on Broadway this week, and I enjoyed it anew .Yes, it is now inescapably viewed through the lens of the 2024 movie version. But a movie has always hovered over the "
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "nytimes--charles-isherwood.json",
-      "outlet": "The New York Times",
-      "criticName": "Charles Isherwood",
-      "publishDate": "August 21, 2014",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2014 is 11 years after original opening 2003"
-      ],
-      "textSnippet": "https://nyti.ms/1oVFIX7Advertisement\n\nThere’s a straightforward strategy for turning a hit musical into a long-running smash: Don’t mess with success.\n\nEasier said than done, of course. When “The Prod"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "village-voice--michael-feingold.json",
-      "outlet": "Village Voice",
-      "criticName": "Michael Feingold",
-      "publishDate": "November 4, 2003",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "Lorraine O'Grady's Hair Stare Fare\n\n\"christopher marlowe's chloroform dreams\"\n\n\"In Masks Outrageous and Austere\"\n\n\"Evita\": Sigh for Them, Argentina\n\nKansas, I think we're not in toto anymore. The Land"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "vulture--john-simon.json",
-      "outlet": "Vulture",
-      "criticName": "John Simon",
-      "publishDate": "March 7, 2014",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2014 is 11 years after original opening 2003"
-      ],
-      "textSnippet": "Two of the producers of the musical Wicked bear the name Platt, which (in German) means flat, and one the name Stone, which (in English) means heavy. Why not also one called Long, although it is too m"
-    },
-    {
-      "showId": "wicked-2003",
-      "showTitle": "Wicked",
-      "showYear": 2003,
-      "file": "wbur--sean-burns.json",
-      "outlet": "WBUR",
-      "criticName": "Sean Burns",
-      "publishDate": "2025-11-18",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2025 is 22 years after original opening 2003"
-      ],
-      "textSnippet": "It’s not easy being green. When we last saw Cynthia Erivo’s ostracized outcast Elphaba, she’d discovered that Jeff Goldblum’s Wizard of Oz wasn’t so wonderful after all, and that the man behind the cu"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "ap--michael-kuchwara.json",
-      "outlet": "Associated Press",
-      "criticName": "Michael Kuchwara",
-      "publishDate": "November 23rd, 1997",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "textSnippet": "New York Times Arts & Leisure review of The Lion King >> NEW YORK -- Make no mistake: The Lion King is a rare theater experience. The musical, which opened this month at Disney's restored New Amsterda"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "ew--bruce-handy.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Bruce Handy",
-      "publishDate": "November 21, 1997",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: twitter"
-      ],
-      "textSnippet": "Image Credit: Joan MarcusAfter return looks at The Phantom of the Opera and Chicago over the past two days, EW’s march toward re-reviewing the five longest-running shows currently playing Broadway con"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "ew--jess-cagle.json",
-      "outlet": "Entertainment Weekly",
-      "criticName": "Jess Cagle",
-      "publishDate": "December 5, 1997",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: twitter"
-      ],
-      "textSnippet": "Image Credit: Joan MarcusAfter return looks at The Phantom of the Opera and Chicago over the past two days, EW’s march toward re-reviewing the five longest-running shows currently playing Broadway con"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "hollywood-reporter--frank-scheck.json",
-      "outlet": "Hollywood Reporter",
-      "criticName": "Frank Scheck",
-      "publishDate": "1997-11-21",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "When it was announced that Disney had hired Julie Taymor, best known for her off-Broadway puppet tale Juan Darien, to direct its big-budget Broadway production of The Lion King, eyebrows were raised. "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "jasonraize--nelson-pressley.json",
-      "outlet": "jasonraize",
-      "criticName": "Nelson Pressley",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "textSnippet": "The Raize Resource: Washington Times Review of The Lion King\n\n\"...Mufasa's\n son, played\n with wide-eyed energy by Jason\n Raize...\"\n\n-- The\n Washington Times review\n of The\nLion\n King\n\nThe Washington\n "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "newsday--linda-winer.json",
-      "outlet": "Newsday",
-      "criticName": "Linda Winer",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "It is 15 minutes before curtain at just another midweek performance of Disney’s “The Lion King,” and people have begun zeroing in on their seats. As we watch them from a high catwalk near the control "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nysr--frank-scheck.json",
-      "outlet": "New York Stage Review",
-      "criticName": "Frank Scheck",
-      "publishDate": "November 21st, 1997",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "textSnippet": "The Raize Resource: St. Petersburg Times Review of The Lion\n King\n\n\"12-year-old\n Scott\n Irby-Ranniar and Jason Raize are\n appealing as, respectively, the young\n and older versions of Simba.\"\n\n-- St.\n "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nysr--jesse-oxfeld.json",
-      "outlet": "New York Stage Review",
-      "criticName": "Jesse Oxfeld",
-      "publishDate": "September 17, 2018",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2018 is 21 years after original opening 1997",
-        "modern references: twitter, masks"
-      ],
-      "textSnippet": "★★★☆☆ Long-Run Lookback: The Disney warhorse still looks spectacular, even if it's not entirely engaging All all this time—two decades, nearly 9,000 performances, a move from the gorgeously renovated "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nysr--steven-suskin.json",
-      "outlet": "New York Stage Review",
-      "criticName": "Steven Suskin",
-      "publishDate": "September 17, 2018",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "publishDate 2018 is 21 years after original opening 1997",
-        "year 1999 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "textSnippet": "★★★★★ Long-Run Lookback: Disney’s Tale of Simba Remains Awe-Inspiring The Lion King was altogether awe-inspiring when it first stormed the Broadway savanna in 1997. The second of nine Disney-produced "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "November 14, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revived, this production",
-        "modern references: masks"
-      ],
-      "textSnippet": "Get unlimited access to NYTimes.com and NYTimes apps.\n\nAll print options include free unlimited access to NYTimes.com and NYTimes apps.\n\nSuddenly, you're 4 years old again, and you've been taken to th"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "nytimes--unknown.json",
-      "outlet": "The New York Times",
-      "criticName": "Unknown",
-      "publishDate": "1997-11-23",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "AS AN AIR OF JUBILATION filled the meticulously restored New Amsterdam Theater following the final preview performance of ''The Lion King,'' I was somehow reminded of a comment attributed to Ethel Mer"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "press-enterprise--te-foreman.json",
-      "outlet": "The Press-Enterprise",
-      "criticName": "T.E. Foreman",
-      "publishDate": "1998-03-29",
-      "confidence": "high",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "publishDate 1998 matches revival the-lion-king-west-end-2021 (opened 1999)"
-      ],
-      "textSnippet": "   \"It is a wonderfully colorful spectacle with some of the most imaginative staging you are ever likely to see.\"\n\nRead more "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "streetdirectory--unknown.json",
-      "outlet": "streetdirectory",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "The Lion King In Broadway \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Entertainment Guide \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n eg: UK or Brides UK or Classical Art"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "timeout--jenna-scherer.json",
-      "outlet": "Time Out New York",
-      "criticName": "Jenna Scherer",
-      "publishDate": "June 18, 2014",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "publishDate 2014 is 17 years after original opening 1997",
-        "year 1998 in text matches revival the-lion-king-west-end-2021"
-      ],
-      "textSnippet": "At the start of The Lion King, Broadway director Julie Taymor creates a pageant that instantly transports the audience to a gorgeous world of African imagination unlike anything we've seen in Broadway"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "unknown--stephen-parry.json",
-      "outlet": "unknown",
-      "criticName": "Stephen Parry",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "During our time in New York City we knew there was one experience we could not miss – and that was to see The Lion King musical on Broadway. Read our review of one of the most popular musicals of all "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "variety--greg-evans.json",
-      "outlet": "Variety",
-      "criticName": "Greg Evans",
-      "publishDate": "November 13, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "A new generation of cats just took over Broadway. Simply said, Julie Taymor's staging of Disney's \"The Lion King\" is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity.\n\n"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "variety--matt-wolf.json",
-      "outlet": "Variety",
-      "criticName": "Matt Wolf",
-      "publishDate": "November 17, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "A new generation of cats just took over Broadway. Simply said, Julie Taymor’s staging of Disney’s “The Lion King” is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity.\n\n"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "vulture--john-simon.json",
-      "outlet": "Vulture",
-      "criticName": "John Simon",
-      "publishDate": "November 15, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "A new generation of cats just took over Broadway. Simply said, Julie Taymor‘s staging of Disney’s “The Lion King” is a marvel, a theatrical achievement unrivaled in its beauty, brains and ingenuity. L"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "washington-times--nelson-pressley.json",
-      "outlet": "Washington Times",
-      "criticName": "Nelson Pressley",
-      "publishDate": "1997-11-23",
-      "confidence": "medium",
-      "suggestedShowId": "the-lion-king-west-end-2021",
-      "signals": [
-        "year 1998 in text matches revival the-lion-king-west-end-2021",
-        "modern references: masks"
-      ],
-      "textSnippet": "Disney goes something like this: Love the animated features. Take the children five times, buy the videos and action figures. Hate the treatment of history (\"Pocahontas\") and literature (\"The Hunchbac"
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "washpost--lloyd-rose.json",
-      "outlet": "The Washington Post",
-      "criticName": "Lloyd Rose",
-      "publishDate": "November 14, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "  Julie Taymor has created a visual spectacular that is unlike anything else on Broadway, transforming the New Amsterdam Theater into an African savanna where actors become antelopes, birds, and lions"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "amny--matt-windman.json",
-      "outlet": "amNewYork",
-      "criticName": "Matt Windman",
-      "publishDate": "2016-07-20",
-      "confidence": "medium",
-      "suggestedShowId": "chicago-1975",
-      "signals": [
-        "publishDate 2016 is 20 years after original opening 1996",
-        "year 1975 in text matches revival chicago-1975"
-      ],
-      "textSnippet": "For a Broadway musical that has lasted thousands of performances, played three different theaters, gone through a head-spinning number of cast changes and is about to reach its 20-year anniversary, “C"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "curtainup--elyse-sommer.json",
-      "outlet": "CurtainUp",
-      "criticName": "Elyse Sommer",
-      "publishDate": "November 20, 1996",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, current production"
-      ],
-      "textSnippet": "Chicago Lyrics by Fred Ebb. Music by John Kander. Book by Fredd Ebb and Bob Fosse. Original Production Directed and Choreographed by Bob Fosse. Based on the play by Maurine Dallas Watkins. Scenic desi"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "nydailynews--howard-kissel.json",
-      "outlet": "New York Daily News",
-      "criticName": "Howard Kissel",
-      "publishDate": "November 14, 1996",
-      "confidence": "medium",
-      "suggestedShowId": "chicago-1975",
-      "signals": [
-        "revival text signals: revival, transferred from",
-        "year 1975 in text matches revival chicago-1975"
-      ],
-      "textSnippet": "(Originally published by the Daily News on Nov. 15, 1996)\n\nBecause the revival of “Chicago” is so wildly entertaining, I’m hesitant to call it important always an ugly adjective for a reviewer to use "
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "nytimes--ben-brantley.json",
-      "outlet": "The New York Times",
-      "criticName": "Ben Brantley",
-      "publishDate": "November 15, 1996",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, this production"
-      ],
-      "textSnippet": "https://www.nytimes.com/1996/11/15/theater/a-lively-legacy-a-come-hither-air.htmlShare full articleAdvertisement\n\nWHO would have thought there could be such bliss in being played for a patsy?\n\nIn the "
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "talkinbroadway--matthew-murray.json",
-      "outlet": "Talkin' Broadway",
-      "criticName": "Matthew Murray",
-      "publishDate": "November 14, 2002",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "revival text signals: revival, current production"
-      ],
-      "textSnippet": "Chicago Lyrics by Fred Ebb. Music by John Kander. Book by Fredd Ebb and Bob Fosse. Original Production Directed and Choreographed by Bob Fosse. Based on the play by Maurine Dallas Watkins. Scenic desi"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "theatermania--unknown.json",
-      "outlet": "TheaterMania",
-      "criticName": "Unknown",
-      "publishDate": "April 22, 2014",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "publishDate 2014 is 18 years after original opening 1996"
-      ],
-      "textSnippet": "Chicago\n(© Paul Kolnik)\" border=\"0\">Bianca Marroquin, Bryn Dowling, and Usher in Chicago\n(© Paul Kolnik)Broadway's busiest revolving door, better known as the nearly 10-year-old revival of Chicago, ha"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "theatermania--zachary-stewart.json",
-      "outlet": "TheaterMania",
-      "criticName": "Zachary Stewart",
-      "publishDate": "January 31, 2023",
-      "confidence": "medium",
-      "suggestedShowId": "chicago-1975",
-      "signals": [
-        "publishDate 2023 is 27 years after original opening 1996",
-        "revival text signals: revival, this production",
-        "year 1975 in text matches revival chicago-1975",
-        "modern references: social media"
-      ],
-      "textSnippet": "Barring another extension, The Phantom of the Opera will close in April and the torch will pass to Chicago as the longest-running show currently on Broadway. The bare-bones revival of this musical of "
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "time--richard-zoglin.json",
-      "outlet": "Time",
-      "criticName": "Richard Zoglin",
-      "publishDate": "April 22, 2014",
-      "confidence": "medium",
-      "suggestedShowId": "chicago-1975",
-      "signals": [
-        "publishDate 2014 is 18 years after original opening 1996",
-        "year 1975 in text matches revival chicago-1975"
-      ],
-      "textSnippet": "In that dicey district known as Broadway, there are no sure bets, but reviving a cherished old musical comes close. Find a Rodgers and Hammerstein gem that's been away for a while or dust off a fondly"
-    },
-    {
-      "showId": "chicago-1996",
-      "showTitle": "Chicago",
-      "showYear": 1996,
-      "file": "variety--greg-evans.json",
-      "outlet": "Variety",
-      "criticName": "Greg Evans",
-      "publishDate": "November 23, 1996",
-      "confidence": "medium",
-      "suggestedShowId": "chicago-1975",
-      "signals": [
-        "year 1975 in text matches revival chicago-1975"
-      ],
-      "textSnippet": "Any gripes about the producers of \"Chicago\" charging full-scale prices for a stripped-down show evaporate like vapors from bathtub gin the second Bebe Neuwirth & Co. open the show with a pulse-quicken"
+      "textSnippet": "January can be a quiet time on Broadway. Lots of shows close (click here for a list of some of them). Very few open. Which makes it a good time to catch up with the ones still running that you might h"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -703,6 +160,22 @@
         "year 1977 in text matches revival man-of-la-mancha-1977"
       ],
       "textSnippet": "CALL him brave. Call him foolhardy. Call him, if you must, quixotic. But you really can't blame Brian Stokes Mitchell for wanting to take on the title role in ''Man of La Mancha,'' which opened last n"
+    },
+    {
+      "showId": "medea-2002",
+      "showTitle": "Medea",
+      "showYear": 2002,
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "outlet": "Broadway & Me",
+      "criticName": "Janice C. Simpson",
+      "publishDate": "2020-02-01",
+      "confidence": "medium",
+      "suggestedShowId": "medea-1994",
+      "signals": [
+        "publishDate 2020 is 18 years after original opening 2002",
+        "year 1995 in text matches revival medea-1994"
+      ],
+      "textSnippet": "Just like Shakespeare, the great Greek playwrights staged their plays with all-male actors. But unlike the Bard, Aeschylus, Sophocles and Euripides centered many of their plays around great female cha"
     },
     {
       "showId": "tartuffe-2003",
@@ -907,6 +380,23 @@
       "textSnippet": "Tethered to a window washer's platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
+      "showId": "the-mystery-of-edwin-drood-1985",
+      "showTitle": "The Mystery of Edwin Drood",
+      "showYear": 1985,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: twitter",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Photo credit: Betsy Wolfe, left, and Will Chase in “The Mystery of Edwin Drood”\n\nThe Mystery of Edwin Drood 4 stars\n\n\"The Mystery of Edwin Drood,\" inspired by an unfinished Charles Dickens novel, is o"
+    },
+    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -940,6 +430,21 @@
       "textSnippet": "Josh Groban and Annaleigh Ashford | Photo: Matthew Murphy & Evan Zimmerman At long last, a full-scale production of Sweeney Todd returns to Broadway, allowing Stephen Sondheim’s gorgeous music and lyr"
     },
     {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-gin-game-2015",
+      "signals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "textSnippet": "Published: 2015-10-14 22:01:58 \n Updated: 2015-10-14 22:01:58\n\nBy MARK KENNEDY, AP Drama Writer\n\nNEW YORK — One thing you should probably not bet against at \"The Gin Game\" on Broadway is the little ol"
+    },
+    {
       "showId": "dracula-1977",
       "showTitle": "Dracula",
       "showYear": 1977,
@@ -954,6 +459,22 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
+    },
+    {
+      "showId": "that-championship-season-1972",
+      "showTitle": "That Championship Season",
+      "showYear": 1972,
+      "file": "hollywood-reporter--david-rooney.json",
+      "outlet": "The Hollywood Reporter",
+      "criticName": "David Rooney",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "A drama about the bitter recriminations of a generation of men stung by the reality of their diminished promise and feeling let down by both their leaders and their peers should strike chords in this "
     },
     {
       "showId": "democracy-2004",
@@ -1110,6 +631,22 @@
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
     },
     {
+      "showId": "the-rocky-horror-show-2000",
+      "showTitle": "The Rocky Horror Show",
+      "showYear": 2000,
+      "file": "times-uk--benedict-nightingale.json",
+      "outlet": "The Times (UK)",
+      "criticName": "Benedict Nightingale",
+      "publishDate": "1999-04-13",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revived, restaged",
+        "modern references: masks"
+      ],
+      "textSnippet": "Whydosomedeliber ately naff, jokily\nself-parodying musi\ncals end up as cult successes\nwhile others getquickly forgot\nten? Thequestion surfaced last\nyear when Birmingham Rep\nrestaged The Rocky Horror\nS"
+    },
+    {
       "showId": "true-west-2000",
       "showTitle": "True West",
       "showYear": 2000,
@@ -1124,6 +661,21 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "A mere 30 years or so after joining the front rank of American playwrights, Sam Shepard looks to have his first Broadway hit courtesy of Matthew Warchus’ blistering new revival of “True West.”\n\nMake t"
+    },
+    {
+      "showId": "jesus-christ-superstar-2000",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 2000,
+      "file": "ew--melissa-rose-bernardo.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Melissa Rose Bernardo",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "jesus-christ-superstar-2012",
+      "signals": [
+        "revival cast/director match for jesus-christ-superstar-2012: Des McAnuff, Paul Nolan, Josh Young, Chilina Kennedy, Stratford, director: Des McAnuff"
+      ],
+      "textSnippet": "Andrew Lloyd Webber has said he's never really been happy with Jesus Christ Superstar until now  41 years after its stage debut. That's high advance praise for the new Stratford (Ontario) Shakespeare"
     },
     {
       "showId": "jesus-christ-superstar-2000",
@@ -1172,6 +724,21 @@
       "textSnippet": "Your City, Your News. NYC’s 24-hour newschannel on the web.\n\nTime Warner Cable. The power of you ™\n\nTo view our videos, you need to\n enable JavaScript. Learn how.\n install Adobe Flash 9 or above. Inst"
     },
     {
+      "showId": "the-real-thing-1984",
+      "showTitle": "The Real Thing",
+      "showYear": 1984,
+      "file": "telegraph--matt-wolf.json",
+      "outlet": "Telegraph",
+      "criticName": "Matt Wolf",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-2000",
+      "signals": [
+        "year 2000 in text matches revival the-real-thing-2000"
+      ],
+      "textSnippet": "We no longer check to see whether Telegraph.co.uk displays properly in Internet Explorer version 6 or earlier.\n\nTo see our content at its best we recommend upgrading if you wish to continue using IE o"
+    },
+    {
       "showId": "sunday-in-the-park-with-george-1984",
       "showTitle": "Sunday in the Park with George",
       "showYear": 1984,
@@ -1185,6 +752,37 @@
         "revival text signals: revival, back on broadway"
       ],
       "textSnippet": "**Bernadette Peters Shows Off Her Serious Side in the Broadway Hit \"Sunday in the Park with George\"**\n\nBy HOWARD KISSEL\n\nWhen Bernadette Peters last appeared on Broadway ten years ago, it was nearly a"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNY",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "There’s really no middle ground when it comes to the late English playwright Harold Pinter. You’re either mesmerized by his mysterious, menacing, pause-filled psychological dramas or you find them puz"
+    },
+    {
+      "showId": "old-times-1971",
+      "showTitle": "Old Times",
+      "showYear": 1971,
+      "file": "nbcny--robert-kahn.json",
+      "outlet": "NBC New York",
+      "criticName": "Robert Kahn",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: twitter"
+      ],
+      "textSnippet": "Bright flashes of light and discomforting noises make for a jarring start to Harold Pinter’s 1971 “Old Times,\" which is now enjoying a carefully cultivated revival at Roundabout’s American Airlines Th"
     }
   ]
 }
