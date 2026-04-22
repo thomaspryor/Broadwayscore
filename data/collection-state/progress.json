@@ -1,6 +1,8 @@
 {
   "processed": [
-    "copenhagen-west-end-2026/independent--laura-hall.json"
+    "copenhagen-west-end-2026/independent--laura-hall.json",
+    "fallen-angels-2026/slantmagazine--unknown.json",
+    "hamlet-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -17,11 +19,21 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "inter-alia-west-end-2026/theupcoming--the-editorial-unit.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "fallen-angels-2026/slantmagazine--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -32,9 +44,11 @@
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "hamlet-off-broadway-2026/playbill--unknown.json"
+    ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
   "log": []
 }
