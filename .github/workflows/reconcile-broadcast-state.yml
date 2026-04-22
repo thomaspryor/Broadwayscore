@@ -1,0 +1,97 @@
+# Poll Resend for every draft in data/opening-night-sent.json and record the
+# actual delivery state. Catches cancelled/deleted drafts that used to leave
+# shows marked `completed: true` forever.
+#
+# Read-mostly: this workflow only mutates opening-night-sent.json fields
+# (draftStatus, sentAt, recipientCount, lastReconciledAt). It never creates
+# drafts or sends email.
+name: Reconcile Resend Broadcast State
+
+on:
+  schedule:
+    # Hourly from 11 UTC to 17 UTC — spans the 12:30 UTC draft-creation cron
+    # + the 7-9 EDT / 11-13 UTC send window when Tom actually clicks Send.
+    # One catch-up poll an hour later (18 UTC) closes the loop on late sends.
+    - cron: '0 11-18 * * *'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Reconcile a single show key (e.g. cats-2026)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'No-write mode (log changes only)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reconcile-broadcast-state
+  cancel-in-progress: false
+
+jobs:
+  reconcile:
+    name: Poll Resend + update opening-night-sent
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Reconcile
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/reconcile-broadcast-state.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/opening-night-sent.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit reconciled state
+        if: steps.changes.outputs.has_changes == 'true' && inputs.dry_run != true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add --force data/opening-night-sent.json
+          git commit -m "data: Reconcile Resend broadcast state [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Reconcile Broadcast State Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

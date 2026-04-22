@@ -1,0 +1,99 @@
+/**
+ * Single source of truth for "would a review-text file be included in reviews.json?"
+ *
+ * Used by:
+ *   - scripts/validate-data.js   (validateUnscoredReviewTexts — silent-gap audit)
+ *   - scripts/check-review-count-drift.js   (drift health check)
+ *
+ * This predicate mirrors the skip logic rebuild-all-reviews.js applies at ingest,
+ * PLUS a score-presence check (rebuild drops files with no valid score via
+ * stats.skippedNoScore). If both predicates pass we expect the file to contribute
+ * one entry to reviews.json for its showId.
+ *
+ * Known limitations — rebuild has context-dependent guards that cannot be
+ * expressed as pure predicates over a single file:
+ *   - showNotMentioned auto-clear via text scan + LLM CV
+ *   - cross-market + cross-show guards (need show category, outlet registry, slug index)
+ *   - pre-opening date guard (needs earliest show date)
+ *   - runtime syndication dedup (needs sibling JSON files)
+ *   - temporal overrides on wrongProduction (need shows.json context)
+ *
+ * Consequence: `wouldBeIncludedInRebuild()` is an UPPER bound on inclusion.
+ * In practice it over-estimates by a small number per show, which is fine for
+ * drift monitoring (a single-show delta > 3 is the alert threshold — noise from
+ * context guards is far below that).
+ *
+ * When rebuild adds a new pure-flag skip, mirror it here. When rebuild adds a
+ * new context-dependent skip, document it above instead of mirroring.
+ */
+
+/**
+ * Pure-flag exclusion check. Returns true iff the file passes every flag that
+ * rebuild checks against a single review-text object in isolation.
+ *
+ * NOTE: dedup fields are inconsistent across the codebase:
+ *   - `duplicateOf`     — older, used by scripts/lib/is-scoreable.js
+ *   - `duplicateTextOf` — newer, used by rebuild-all-reviews.js
+ * Both are checked to match validate-data.js behavior (2026-04-11 fix that
+ * stopped falsely flagging 39 duplicateOf files as silent gaps).
+ */
+function passesFlagFilters(data) {
+  if (!data) return false;
+  if (data.rejectionReason) return false;
+  if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
+  if (data.isRoundupArticle === true) return false;
+  if (data.wrongAttribution === true) return false;
+  if (data.suspectedMisattribution === true) return false;
+  if (data.wrongProduction) return false;
+  if (data.wrongShow) return false;
+  if (data.duplicateTextOf) return false;
+  if (data.duplicateOf) return false;
+  if (data.humanReviewedWrongProduction) return false;
+  if (data.contentTier === 'invalid' || data.contentTier === 'stub') return false;
+  if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
+
+  // showNotMentioned + fullTextWrongAuthor only skip when there are no aggregator
+  // excerpts to fall back on. Mirrors is-scoreable.js and validate-data.js logic.
+  if (data.showNotMentioned && !hasAggregatorExcerpt(data)) return false;
+  if (data.fullTextWrongAuthor === true && !hasAggregatorExcerpt(data)) return false;
+
+  return true;
+}
+
+function hasAggregatorExcerpt(data) {
+  return !!(
+    data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
+    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt
+  );
+}
+
+/**
+ * Does this review-text file have any valid score path? Mirrors
+ * rebuild-helpers.js:getBestScore priority list (human → adjudicated →
+ * originalScore → llmScore → assignedScore → aggregatorStars).
+ */
+function hasValidScore(data) {
+  if (!data) return false;
+  const hasHuman = data.humanReviewScore >= 1 && data.humanReviewScore <= 100;
+  const hasAdj = data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100;
+  const hasOrig = data.originalScore && !data.originalScoreCleared;
+  const hasLlm = data.llmScore && data.llmScore.score >= 1 && data.llmScore.score <= 100;
+  const hasAssigned = data.assignedScore >= 1 && data.assignedScore <= 100;
+  const hasAggStars = !!data.aggregatorStars;
+  return !!(hasHuman || hasAdj || hasOrig || hasLlm || hasAssigned || hasAggStars);
+}
+
+/**
+ * Main predicate. Returns true iff we expect rebuild to include this file in
+ * reviews.json for its showId (modulo the context-dependent guards noted above).
+ */
+function wouldBeIncludedInRebuild(data) {
+  return passesFlagFilters(data) && hasValidScore(data);
+}
+
+module.exports = {
+  wouldBeIncludedInRebuild,
+  passesFlagFilters,
+  hasValidScore,
+  hasAggregatorExcerpt,
+};
