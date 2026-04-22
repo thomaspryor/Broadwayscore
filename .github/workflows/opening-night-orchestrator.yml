@@ -388,11 +388,13 @@ jobs:
             # Dispatch the poller with show_id and market
             echo "Dispatching opening-night-poller..."
 
-            # SERP deferral: skip SERP for first 4 iterations (~80 min at 20-min intervals).
-            # On opening night, Google hasn't indexed reviews yet — SERP returns wrong URLs
-            # that contaminate the pipeline. Layers 1-3 (aggregators, RSS, site-search)
-            # handle discovery until SERP catches up. Budget override still takes precedence.
-            SERP_DEFER_ITERATIONS=4
+            # SERP deferral: skip SERP for first 8 iterations (~80-160 min at 10-20 min
+            # intervals). On opening night, Google hasn't indexed reviews yet — SERP
+            # returns wrong URLs that contaminate the pipeline. Layers 1-3 (aggregators,
+            # RSS, site-search) handle discovery until SERP catches up. Google indexing
+            # of major outlets takes 2-4h post-publication so the extra deferral is free.
+            # Budget override still takes precedence.
+            SERP_DEFER_ITERATIONS=8
             ITER_SKIP_SERP="$SKIP_SERP_FLAG"
             if [ "$ITERATION" -le "$SERP_DEFER_ITERATIONS" ] && [ -z "$SKIP_SERP_FLAG" ]; then
               echo "  ℹ️ SERP deferred (iteration $ITERATION <= $SERP_DEFER_ITERATIONS) — Layers 1-3 only"
