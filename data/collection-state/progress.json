@@ -2,7 +2,8 @@
   "processed": [
     "copenhagen-west-end-2026/independent--laura-hall.json",
     "fallen-angels-2026/slantmagazine--unknown.json",
-    "hamlet-off-broadway-2026/playbill--unknown.json"
+    "hamlet-off-broadway-2026/playbill--unknown.json",
+    "the-listening-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -27,7 +28,16 @@
     "mj-2022/broadwaynews--charles-isherwood.json",
     "mj-2022/nydailynews--karu-f-daniels.json",
     "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
-    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json"
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "wicked-2003/the-journal-news--jacques-le-sourd.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,7 +45,10 @@
       "fallen-angels-2026/slantmagazine--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+      "the-listening-off-broadway-2026/variety--rebecca-rubin.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "copenhagen-west-end-2026/independent--laura-hall.json"
@@ -49,6 +62,18 @@
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-  "log": []
+  "lastProcessed": "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+  "log": [
+    {
+      "t": "2026-04-22T10:38:03.366Z",
+      "event": "bb-session",
+      "session": "45bf8387",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-22T10:38:04.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
