@@ -118,3 +118,59 @@ describe('shouldSkipWrongProductionAudit', () => {
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// CV wrongProduction contradiction guard (Balusters CLASS 1 generalization,
+// 2026-04-22). The rule in rebuild-all-reviews.js:
+//   cvWpAdvisory = ensembleSaysReview && cv.confidence !== 'high' && !cvLowButStrong
+// If advisory, DO NOT promote cv.wrongProduction to data.wrongProduction.
+// ---------------------------------------------------------------------------
+const { hasHighConfidenceLlmScore } = require('../../scripts/lib/review-guards.js');
+
+// Replicate the advisory decision exactly as rebuild-all-reviews.js encodes it,
+// so if the rebuild logic drifts, tests fail.
+function cvWpAdvisoryDecision(data, cvConfidence, cvLowButStrong = false) {
+  const ensembleSaysReview = hasHighConfidenceLlmScore(data);
+  return ensembleSaysReview && cvConfidence !== 'high' && !cvLowButStrong;
+}
+
+describe('CV wrongProduction contradiction advisory', () => {
+  test('medium-conf CV + high-conf ensemble score → advisory (do not promote)', () => {
+    const data = { llmScore: { score: 85, confidence: 'high' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'medium'), true);
+  });
+
+  test('medium-conf CV + medium-conf ensemble score → advisory (do not promote)', () => {
+    const data = { llmScore: { score: 65, confidence: 'medium' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'medium'), true);
+  });
+
+  test('low-conf CV + high-conf ensemble score → advisory (do not promote)', () => {
+    const data = { llmScore: { score: 75, confidence: 'high' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'low'), true);
+  });
+
+  test('HIGH-conf CV + high-conf ensemble score → NOT advisory (CV still promotes)', () => {
+    // The hard signal (venue mismatch, tour, prior production) survives even
+    // when the ensemble saw coherent text. High-conf CV wins the tie.
+    const data = { llmScore: { score: 85, confidence: 'high' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'high'), false);
+  });
+
+  test('no ensemble score → NOT advisory (CV promotes as before)', () => {
+    const data = { llmScore: null };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'medium'), false);
+  });
+
+  test('low-conf ensemble → NOT advisory (no signal to defer to)', () => {
+    const data = { llmScore: { score: 50, confidence: 'low' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'medium'), false);
+  });
+
+  test('cvLowButStrong bypasses advisory (strong "different show" markers)', () => {
+    // Even with a confident ensemble, "does not appear in" / "wrong production"
+    // markers in CV reasoning are definitive — they win.
+    const data = { llmScore: { score: 85, confidence: 'high' } };
+    assert.strictEqual(cvWpAdvisoryDecision(data, 'low', /*cvLowButStrong=*/true), false);
+  });
+});

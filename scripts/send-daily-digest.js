@@ -18,7 +18,82 @@ const { postJSON, buildDailyDigestHtml } = require('./lib/email-templates');
 
 const MOBILE_DATA = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SNAPSHOT_FILE = path.join(__dirname, '..', 'data', 'audit', 'daily-snapshot.json');
+const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
 const DRY_RUN = process.argv.includes('--dry-run');
+
+/**
+ * Balusters postmortem follow-through: aggregate exclusion-logger JSONL entries
+ * from today + last 7 days (baseline) and surface:
+ *   - today's top N reasons (by count)
+ *   - reasons >2σ above the 7-day mean (spike detection)
+ *   - reasons first seen within 7 days (novel — investigate)
+ *
+ * The Cote Notices regex bug went undetected for weeks because no aggregation
+ * existed. Daily digest surfaces these patterns before they hit opening night.
+ */
+function computeExclusionTrend(now) {
+  const todayKey = new Date(now).toISOString().slice(0, 10);
+  const days = [];
+  for (let i = 0; i < 8; i++) {
+    days.push(new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10));
+  }
+
+  const perDay = new Map(); // day → Map<reason, count>
+  const firstSeen = new Map(); // reason → day
+
+  for (const day of days) {
+    const p = path.join(AUDIT_DIR, `exclusions-${day}.jsonl`);
+    if (!fs.existsSync(p)) continue;
+    let content;
+    try { content = fs.readFileSync(p, 'utf8'); } catch { continue; }
+    const dayCounts = new Map();
+    for (const line of content.split('\n')) {
+      if (!line.trim()) continue;
+      let rec;
+      try { rec = JSON.parse(line); } catch { continue; }
+      const reason = rec.reason || 'unknown';
+      dayCounts.set(reason, (dayCounts.get(reason) || 0) + 1);
+      if (!firstSeen.has(reason) || day < firstSeen.get(reason)) {
+        firstSeen.set(reason, day);
+      }
+    }
+    perDay.set(day, dayCounts);
+  }
+
+  const today = perDay.get(todayKey) || new Map();
+  const pastDays = days.slice(1).filter(d => perDay.has(d));
+  const allReasons = new Set([...today.keys(), ...pastDays.flatMap(d => [...perDay.get(d).keys()])]);
+
+  const trend = [];
+  for (const reason of allReasons) {
+    const todayCount = today.get(reason) || 0;
+    const pastCounts = pastDays.map(d => (perDay.get(d) || new Map()).get(reason) || 0);
+    const mean = pastCounts.length ? pastCounts.reduce((a, b) => a + b, 0) / pastCounts.length : 0;
+    const variance = pastCounts.length
+      ? pastCounts.reduce((a, b) => a + (b - mean) ** 2, 0) / pastCounts.length
+      : 0;
+    const stdev = Math.sqrt(variance);
+    const threshold = mean + 2 * stdev;
+    const spike = todayCount > threshold && todayCount >= 5;
+    const novel = firstSeen.get(reason) >= days[6]; // first seen within last 7 days
+    trend.push({
+      reason,
+      todayCount,
+      mean: Math.round(mean * 10) / 10,
+      stdev: Math.round(stdev * 10) / 10,
+      threshold: Math.round(threshold * 10) / 10,
+      spike,
+      novel,
+      firstSeen: firstSeen.get(reason),
+    });
+  }
+
+  const spikes = trend.filter(t => t.spike).sort((a, b) => b.todayCount - a.todayCount);
+  const novelReasons = trend.filter(t => t.novel && t.todayCount > 0).sort((a, b) => b.todayCount - a.todayCount);
+  const topToday = trend.filter(t => t.todayCount > 0).sort((a, b) => b.todayCount - a.todayCount).slice(0, 10);
+
+  return { spikes, novelReasons, topToday, todayTotal: [...today.values()].reduce((a, b) => a + b, 0) };
+}
 
 function loadSnapshot() {
   try {
@@ -144,6 +219,11 @@ async function main() {
   const currSnapshot = buildSnapshot(mobileData);
   const prevSnapshot = loadSnapshot();
 
+  // Compute exclusion trend (independent of show-snapshot changes).
+  // Emits a summary even if no show-level changes occurred — silent-drop trends
+  // still need to surface.
+  const exclusionTrend = computeExclusionTrend(new Date());
+
   // First run — save snapshot, skip email
   if (!prevSnapshot) {
     console.log('No previous snapshot found — saving initial snapshot, skipping email.');
@@ -153,9 +233,11 @@ async function main() {
 
   const changes = diffSnapshots(prevSnapshot, currSnapshot);
   const today = currSnapshot.date;
+  changes.exclusionTrend = exclusionTrend;
 
-  if (!hasChanges(changes)) {
-    console.log('No changes detected — skipping email.');
+  const hasExclusionSignal = exclusionTrend.spikes.length > 0 || exclusionTrend.novelReasons.length > 0;
+  if (!hasChanges(changes) && !hasExclusionSignal) {
+    console.log('No changes or exclusion signals detected — skipping email.');
     fs.writeFileSync(SNAPSHOT_FILE, JSON.stringify(currSnapshot, null, 2));
     return;
   }

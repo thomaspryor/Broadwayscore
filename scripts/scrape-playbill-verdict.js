@@ -311,6 +311,43 @@ function extractReviewLinksFromArticle(html, showId) {
     });
   });
 
+  // Domain supplement — catch outlets in outlet-registry that the anchor-text walk above
+  // missed because their href resolved but their LINK TEXT didn't pass the heuristic.
+  // Verified 2026-04-22 that resolveOutletFromUrl returns null for every domain in
+  // Playbill's hand-maintained blocklist (ticketmaster, todaytix, playbillstore, facebook,
+  // criterionticketing, yahoo), so the supplement cannot sidestep it.
+  try {
+    const { supplementOutletsFromAnchors } = require('./lib/outlet-domain-supplement');
+    const { resolveOutletFromUrl } = require('./lib/review-normalization');
+    const existingShape = reviews.map(r => ({ outletId: r.outletDomain ? resolveOutletFromUrl('https://' + r.outletDomain)?.outletId : null }));
+    const { added, newReviews } = supplementOutletsFromAnchors({
+      html,
+      reviews: existingShape,
+      showId,
+      sourceName: 'playbill-verdict-domain-supplement',
+      excludeDomains: ['playbill.com', 'playbillder.com', 'playbillstore.com', 'playbillvault.com'],
+      // Playbill Verdict accepts ANY review URL (it's a discovery aggregator); don't gate on title slug.
+      urlTitleCheck: () => true,
+      makeStub: (oid, url) => {
+        let outletDomain = '';
+        try { outletDomain = new URL(url).hostname.replace(/^www\./, ''); } catch {}
+        return {
+          url,
+          outlet: oid,
+          outletDomain,
+          critic: '',
+          showId,
+        };
+      },
+    });
+    reviews.push(...newReviews);
+    if (added > 0) {
+      console.log(`    [Playbill supplement] added ${added} outlet(s) missed by anchor-text walk`);
+    }
+  } catch (e) {
+    console.log(`    [Playbill supplement] error (non-fatal): ${(e.message || '').substring(0, 100)}`);
+  }
+
   return reviews;
 }
 
