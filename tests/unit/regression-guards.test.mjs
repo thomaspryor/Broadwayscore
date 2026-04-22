@@ -282,6 +282,17 @@ const FORBIDDEN_PATTERNS = [
     description:
       'Must not use .id.includes("off-broadway") for market detection. Use show.category instead.',
   },
+  // Never hardcode /nyc/ for TodayTix show URLs — WE/OWE shows live at /london/.
+  // Hardcoding /nyc/ makes the JSON-LD fetch 404 for London shows, forcing a
+  // fallback to LLM creative-team generation that hallucinates directors for
+  // famous same-title revivals. Use the todayTixUrl() helper instead.
+  {
+    file: 'scripts/auto-fix-show-data.js',
+    pattern: /['"`]https?:\/\/www\.todaytix\.com\/nyc\/shows\//,
+    description:
+      'Must not hardcode /nyc/ for TodayTix URLs. Use todayTixUrl(show, info) helper ' +
+      'so WE/OWE shows get /london/ and JSON-LD director extraction works.',
+  },
 ];
 
 describe('Regression Guards — must exist', () => {
