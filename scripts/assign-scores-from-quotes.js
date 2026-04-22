@@ -6,6 +6,7 @@
  */
 
 const fs = require('fs');
+const path = require('path');
 
 // Positive indicators (stronger = higher score)
 const strongPositive = [
@@ -175,11 +176,12 @@ console.log('Reviews updated with scores:', updated);
 // Save — write through symlinks so data/reviews.json stays a symlink to the
 // private repo in local dev. See memory/feedback_dual_repo_data_files.md +
 // the identical handling at scripts/rebuild-all-reviews.js:~3790.
-const reviewsPath = 'data/reviews.json';
+// Use path.resolve() so the fallback path is absolute (robust to process.cwd()).
+const reviewsPath = path.resolve(__dirname, '..', 'data/reviews.json');
 let targetPath = reviewsPath;
 try {
   targetPath = fs.realpathSync(reviewsPath);
-} catch (_) { /* first-time write — no symlink to resolve */ }
+} catch (_) { /* first-time write — no symlink to resolve, use absolute path */ }
 fs.writeFileSync(targetPath, JSON.stringify(reviewsData, null, 2));
 console.log('\nSaved to data/reviews.json');
 

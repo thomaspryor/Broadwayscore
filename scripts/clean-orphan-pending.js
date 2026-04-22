@@ -33,20 +33,11 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { normalizeUrl } = require('./lib/url-utils');
+const { decide } = require('./lib/orphan-pending-decision');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data/review-texts');
 const PENDING_DIR = path.join(REVIEW_TEXTS_DIR, '_pending');
-
-const CONTENT_TIER_RANK = {
-  complete: 5,
-  truncated: 4,
-  excerpt: 3,
-  stub: 2,
-  invalid: 1,
-  undefined: 0,
-};
 
 const args = process.argv.slice(2);
 const CONFIG = {
@@ -79,69 +70,7 @@ function loadMainReviewFiles(showId) {
     .filter(Boolean);
 }
 
-function decide(showId, pendingFile, pendingData, mainFiles, showsIndex) {
-  // Rule 1: show not in shows.json → synthetic test scaffold
-  if (!showsIndex.has(showId)) {
-    return { action: 'delete', reason: 'synthetic-test-show' };
-  }
-
-  if (CONFIG.onlySynthetic) {
-    return { action: 'keep', reason: 'not-synthetic (--only-synthetic mode)' };
-  }
-
-  const pendingUrl = pendingData.url ? normalizeUrl(pendingData.url) : null;
-  const pendingOutlet = pendingData.outletId;
-  const pendingTier = CONTENT_TIER_RANK[pendingData.contentTier] ?? 0;
-
-  // Rule 2: URL collision with a main file — compare content tier
-  if (pendingUrl) {
-    const urlMatch = mainFiles.find(m => {
-      const mu = m.data.url ? normalizeUrl(m.data.url) : null;
-      return mu && mu === pendingUrl;
-    });
-    if (urlMatch) {
-      const mainTier = CONTENT_TIER_RANK[urlMatch.data.contentTier] ?? 0;
-      if (pendingTier > mainTier) {
-        // Main may have been DELIBERATELY marked invalid/stub by a guard. Don't
-        // automatically promote — flag for manual review instead. Operator can
-        // use --allow-promote to override if they've audited the case.
-        if (CONFIG.allowPromote) {
-          return { action: 'promote', reason: `url-match: pending tier ${pendingData.contentTier} > main tier ${urlMatch.data.contentTier} (--allow-promote)`, target: urlMatch };
-        }
-        return { action: 'keep', reason: `url-match: pending has richer content than main (${pendingData.contentTier} > ${urlMatch.data.contentTier}) — manual review needed, re-run with --allow-promote to auto-promote` };
-      }
-      return { action: 'delete', reason: `url-match: main file ${urlMatch.filename} has same-or-better contentTier` };
-    }
-  }
-
-  // Rule 3: Outlet has a named-critic file AND pending is from a fuzzy source
-  // (RSS / site-search often produce false-positive URL matches to other articles
-  // at the same outlet — e.g., NYT rss-discovery catching unrelated arts articles).
-  // Deliberately NOT firing for source='serp-discovery' since SERP hits are verified
-  // and should reach collect-review-texts.js AUTHOR ENRICHMENT to resolve the byline
-  // rather than be discarded as duplicates.
-  const FUZZY_SOURCES = new Set(['rss-discovery', 'site-search', 'bww-roundup']);
-  if (pendingOutlet && FUZZY_SOURCES.has(pendingData.source)) {
-    const criticName = (pendingData.criticName || '').toString().toLowerCase().trim();
-    if (criticName === 'unknown' || !criticName) {
-      const namedCritic = mainFiles.find(m => {
-        if (m.data.outletId !== pendingOutlet) return false;
-        const mc = (m.data.criticName || '').toString().toLowerCase().trim();
-        return mc && mc !== 'unknown';
-      });
-      if (namedCritic) {
-        // Preserve if pending has fullText that named file lacks — don't lose content
-        const namedTier = CONTENT_TIER_RANK[namedCritic.data.contentTier] ?? 0;
-        if (pendingTier > namedTier && pendingData.fullText && !namedCritic.data.fullText) {
-          return { action: 'keep', reason: `outlet-dup but pending has fullText that named file lacks — preserve for manual review` };
-        }
-        return { action: 'delete', reason: `outlet-dup (fuzzy ${pendingData.source}): ${namedCritic.filename} exists with named critic` };
-      }
-    }
-  }
-
-  return { action: 'keep', reason: 'no-main-duplicate (legitimate unenriched)' };
-}
+// Decision logic extracted to scripts/lib/orphan-pending-decision.js (testable).
 
 function perShowCommit(showId, deleted, promoted) {
   if (!CONFIG.execute) return;
@@ -192,7 +121,7 @@ async function main() {
         console.log(`  ? ${file} — unreadable, skipping`);
         continue;
       }
-      const decision = decide(showId, file, data, mainFiles, showsIndex);
+      const decision = decide(showId, data, mainFiles, showsIndex, { onlySynthetic: CONFIG.onlySynthetic, allowPromote: CONFIG.allowPromote });
       if (decision.action === 'delete') {
         console.log(`  − ${file} → DELETE: ${decision.reason}`);
         totalDeleted++;
