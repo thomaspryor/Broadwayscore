@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-22T05:08:30.764Z",
+  "generatedAt": "2026-04-22T23:43:47.429Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "broadway",
       "type": "musical",
       "openingDate": "2026-04-22",
-      "status": "previews",
+      "status": "open",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
       "siteScore": null,
@@ -313,7 +313,7 @@
       "category": "off-west-end",
       "type": "musical",
       "openingDate": "2026-04-22",
-      "status": "previews",
+      "status": "open",
       "slug": "worlds-greatest-lover-west-end",
       "thumbnail": "/images/shows/worlds-greatest-lover-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -409,7 +409,7 @@
       "category": "off-broadway",
       "type": "special",
       "openingDate": "2026-04-22",
-      "status": "upcoming",
+      "status": "open",
       "slug": "juilliard-opera-presents-verdis-falstaff-off-broadway",
       "thumbnail": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -713,7 +713,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-22",
-      "status": "previews",
+      "status": "open",
       "slug": "clara-sex-love-and-classical-off-broadway",
       "thumbnail": "/images/shows/clara-sex-love-and-classical-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1020,23 +1020,23 @@
       "status": "open",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 76.8,
+      "siteScore": 76.89,
       "liveScore": 77,
-      "scoreDrift": 0.20000000000000284,
+      "scoreDrift": 0.10999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 24,
       "t1": 4,
-      "t2": 11,
-      "t3": 4,
-      "positive": 14,
-      "mixed": 4,
+      "t2": 12,
+      "t3": 8,
+      "positive": 18,
+      "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 18,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1045,8 +1045,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "complete",
+        "detail": "Sent Invalid Date"
       },
       "missingT1": [
         {
@@ -1125,10 +1125,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1260,6 +1256,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-22T23:43:47.429Z",
+          "rc": 24,
+          "s": 76.89,
+          "t1": 4,
+          "t2": 12,
+          "t3": 8,
+          "p": 18,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     },
@@ -1273,23 +1281,23 @@
       "status": "open",
       "slug": "schmigadoon",
       "thumbnail": "/images/shows/schmigadoon-2026/thumbnail.webp",
-      "siteScore": 74.59,
+      "siteScore": 75.05,
       "liveScore": 75,
-      "scoreDrift": 0.4099999999999966,
+      "scoreDrift": -0.04999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
+      "total": 23,
       "t1": 6,
-      "t2": 13,
+      "t2": 15,
       "t3": 2,
-      "positive": 13,
+      "positive": 15,
       "mixed": 6,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 13,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1362,14 +1370,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1497,6 +1497,18 @@
           "m": 6,
           "n": 2,
           "bc": "complete"
+        },
+        {
+          "t": "2026-04-22T23:43:47.429Z",
+          "rc": 23,
+          "s": 75.05,
+          "t1": 6,
+          "t2": 15,
+          "t3": 2,
+          "p": 15,
+          "m": 6,
+          "n": 2,
+          "bc": "complete"
         }
       ]
     },
@@ -1510,25 +1522,24 @@
       "status": "open",
       "slug": "between-the-river-and-the-sea-west-end",
       "thumbnail": "/images/shows/between-the-river-and-the-sea-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 63,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 66.37,
+      "liveScore": 66,
+      "scoreDrift": -0.37000000000000455,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 2,
-      "t2": 0,
-      "t3": 1,
-      "positive": 1,
-      "mixed": 2,
+      "total": 6,
+      "t1": 3,
+      "t2": 1,
+      "t3": 2,
+      "positive": 2,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:1/3",
-          "T2:1/2",
+          "6/8 total",
+          "T1:2/3",
           "hi-conf:2/6"
         ],
         "highConfidence": 2,
@@ -1557,10 +1568,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -1585,10 +1592,6 @@
         {
           "name": "The Independent",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -1601,6 +1604,18 @@
           "t3": 1,
           "p": 1,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-22T23:43:47.429Z",
+          "rc": 6,
+          "s": 66.37,
+          "t1": 3,
+          "t2": 1,
+          "t3": 2,
+          "p": 2,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
@@ -1920,23 +1935,23 @@
       "status": "open",
       "slug": "fallen-angels",
       "thumbnail": "/images/shows/fallen-angels-2026/thumbnail.webp",
-      "siteScore": 77.81,
+      "siteScore": 77.73,
       "liveScore": 78,
-      "scoreDrift": 0.18999999999999773,
+      "scoreDrift": 0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 24,
       "t1": 5,
-      "t2": 13,
+      "t2": 14,
       "t3": 5,
-      "positive": 16,
+      "positive": 17,
       "mixed": 7,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2017,10 +2032,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -2196,6 +2207,18 @@
           "m": 7,
           "n": 0,
           "bc": "complete"
+        },
+        {
+          "t": "2026-04-22T23:43:47.429Z",
+          "rc": 24,
+          "s": 77.73,
+          "t1": 5,
+          "t2": 14,
+          "t3": 5,
+          "p": 17,
+          "m": 7,
+          "n": 0,
+          "bc": "complete"
         }
       ]
     },
@@ -2352,6 +2375,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -2542,7 +2569,7 @@
       "category": "broadway",
       "type": "musical",
       "openingDate": "2026-04-23",
-      "status": "previews",
+      "status": "open",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
       "daysUntil": 1,
@@ -2581,7 +2608,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-04-23",
-      "status": "upcoming",
+      "status": "open",
       "slug": "a-midsummer-nights-dream-globe-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-globe-west-end-2026/thumbnail.webp",
       "daysUntil": 1,
