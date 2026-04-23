@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-23T18:43:05.644Z",
+  "lastRunAt": "2026-04-23T20:37:46.963Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -36,7 +36,8 @@
     "google:b3603ef3b47a2cfa": true,
     "news:cdc732e5f342d769": true,
     "google:2e1f7a4de10ff277": true,
-    "news:0ac605a57304b163": true
+    "news:0ac605a57304b163": true,
+    "news:67acdc3de5e1aa44": true
   },
   "mentions": [
     {
@@ -741,10 +742,30 @@
       "draftReason": "This is just a URL list with no discussion, question, or conversational opening — no human author to engage with.",
       "draftResponse": null,
       "dispatched": "2026-04-22T22:35:27.835Z"
+    },
+    {
+      "id": "news:67acdc3de5e1aa44",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews",
+      "title": "THE BALUSTERS Reviews - BWW Forum",
+      "excerpt": "2 days ago — https://broadwayscorecard.com/show/the-balusters. \"When we die, we go bye bye.\" - Abe Lincolns. VernonGersch Profile Photo. VernonGersch.Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-23T20:37:31.677Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "This is just a URL share in a reviews thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
+      "draftResponse": null,
+      "dispatched": "2026-04-23T20:37:46.963Z"
     }
   ],
   "stats": {
-    "totalSeen": 36,
+    "totalSeen": 37,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -783,6 +804,7 @@
     "https://eager-learn.netlify.app/?page=en-git-broadwayscore-1774431997873": true,
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true,
     "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true,
-    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true
+    "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true,
+    "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true
   }
 }
