@@ -64,7 +64,13 @@ const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { emitStage } = require('./lib/stage-latency');
-const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
+const {
+  llmFallbackExtract,
+  hasStructuralMarkers,
+  countExpectedReviews,
+  isPartialExtraction,
+  mergeAggregatorReviews,
+} = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -90,6 +96,8 @@ const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+
+const { shouldQueryPerCritic: _shouldQueryPerCritic } = require('./lib/multi-critic-serp');
 
 // Roundup/aggregator sources whose URLs come from positional matching
 // (carousel order, roundup page layout) and may be misattributed.
@@ -376,8 +384,12 @@ function getDomainMarketMap() {
 /**
  * Search for a review via real Google SERP (ScrapingBee / Bright Data).
  * Returns { url } on success, null on failure or no results.
+ *
+ * Pass options.criticName to target a specific critic at a multi-critic outlet —
+ * discoverCorrectUrl will append the name as an unquoted boost term so the SERP
+ * returns that critic's review URL rather than only the highest-ranked one.
  */
-async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false } = {}) {
+async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown' } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
     return null;
   }
@@ -387,7 +399,7 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     showId,
     outletId: outlet.id,
     outlet: outlet.name,
-    criticName: 'Unknown',
+    criticName,
     source: 'serp-discovery',
     url: '', // no existing URL
   };
@@ -3495,11 +3507,24 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   if (dtliResult) {
     health.dtli.found = true;
     let dtliReviews = extractDTLIReviews(dtliResult.html, showId, dtliResult.url, show.title);
-    // LLM fallback: if regex extracted 0 but page has review content markers
+    const dtliExpected = countExpectedReviews(dtliResult.html, 'dtli');
+    // LLM fallback, two triggers:
+    //   1. Regex extracted 0 but page has review markers — full site redesign case.
+    //   2. Regex extracted < expected (thumb-summary total) by >=3 — partial
+    //      parser miss, e.g. DTLI adds a new block variant and we silently drop
+    //      2 of 8 reviews. Merges LLM-found reviews into the regex baseline.
     if (dtliReviews.length === 0 && hasStructuralMarkers(dtliResult.html, 'dtli')) {
       dtliReviews = await llmFallbackExtract(dtliResult.html, {
         aggregator: 'dtli', showTitle: show.title, showId,
       });
+    } else if (isPartialExtraction(dtliReviews.length, dtliExpected) && hasStructuralMarkers(dtliResult.html, 'dtli')) {
+      console.log(`    ⚠ DTLI partial extraction: regex got ${dtliReviews.length}, thumb-summary says ~${dtliExpected} — running LLM for the gap`);
+      const llmReviews = await llmFallbackExtract(dtliResult.html, {
+        aggregator: 'dtli', showTitle: show.title, showId,
+      });
+      const before = dtliReviews.length;
+      dtliReviews = mergeAggregatorReviews(dtliReviews, llmReviews);
+      console.log(`    ✓ DTLI partial merge: ${before} regex + ${llmReviews.length} LLM → ${dtliReviews.length} after dedup`);
     }
     health.dtli.extracted = dtliReviews.length;
     foundReviews.push(...dtliReviews);
@@ -3678,11 +3703,25 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
-      // LLM fallback: if regex extracted 0 but page has roundup content markers
+      const bwwExpected = countExpectedReviews(bwwResult.html, 'bww');
+      // LLM fallback, two triggers:
+      //   1. Regex extracted 0 but page has roundup markers — BWW redesign case.
+      //   2. Regex extracted < expected (thumb image count) by >=3 — partial
+      //      parser miss, e.g. BWW adds a new format variant (Fallen Angels
+      //      `uptrans2.png` case class) and the JSON-LD/Method-2 pipeline drops
+      //      some critics. Merges LLM-found reviews into the regex baseline.
       if (bwwReviews.length === 0 && hasStructuralMarkers(bwwResult.html, 'bww')) {
         bwwReviews = await llmFallbackExtract(bwwResult.html, {
           aggregator: 'bww', showTitle: show.title, showId,
         });
+      } else if (isPartialExtraction(bwwReviews.length, bwwExpected) && hasStructuralMarkers(bwwResult.html, 'bww')) {
+        console.log(`    ⚠ BWW partial extraction: regex got ${bwwReviews.length}, thumb-count says ~${bwwExpected} — running LLM for the gap`);
+        const llmReviews = await llmFallbackExtract(bwwResult.html, {
+          aggregator: 'bww', showTitle: show.title, showId,
+        });
+        const before = bwwReviews.length;
+        bwwReviews = mergeAggregatorReviews(bwwReviews, llmReviews);
+        console.log(`    ✓ BWW partial merge: ${before} regex + ${llmReviews.length} LLM → ${bwwReviews.length} after dedup`);
       }
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
@@ -4290,6 +4329,76 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         // Skip outlets already found by aggregators
         if (foundOutletIds.has(outlet.id.toLowerCase())) {
           console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
+          continue;
+        }
+
+        const outletIdLower = outlet.id.toLowerCase();
+        const criticList = Array.isArray(outlet.critics) ? outlet.critics : [];
+        const isMultiCriticOutlet = _shouldQueryPerCritic(outletIdLower, criticList);
+
+        if (isMultiCriticOutlet) {
+          // Per-critic SERP queries: each named critic gets their own search so the
+          // non-primary critic isn't silently swallowed by Google's top-result bias.
+          // Dedup on URL — if two critic queries land on the same article, keep one.
+          console.log(`  ${outlet.name} (multi-critic: ${criticList.length} critics)...`);
+          const seenUrlsForOutlet = new Set();
+          let outletHits = 0;
+          for (const critic of criticList) {
+            if (serpCallCount >= SERP_BUDGET) {
+              console.log(`    ⚠ SERP budget exhausted mid-outlet`);
+              break;
+            }
+            process.stdout.write(`    ↳ ${critic}... `);
+            serpCallCount++;
+            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, {
+              historical: options.historical,
+              criticName: critic,
+            });
+            if (result && result.url) {
+              const urlKey = result.url.toLowerCase().replace(/\/$/, '');
+              if (seenUrlsForOutlet.has(urlKey)) {
+                console.log(`⟳ dup URL`);
+              } else {
+                seenUrlsForOutlet.add(urlKey);
+                outletHits++;
+                health.serp.hits++;
+                console.log(`✓`);
+                foundReviews.push({
+                  showId,
+                  outletId: outlet.id,
+                  outlet: outlet.name,
+                  criticName: critic,
+                  url: result.url,
+                  source: 'serp-discovery-per-critic',
+                });
+              }
+            } else {
+              console.log('✗');
+            }
+            await sleep(DELAY_MS);
+          }
+          // Fallback: if no critic-specific query hit, fire the legacy outlet-level
+          // query. Catches freelancer / guest critic reviews not in critic-outlets.json.
+          if (outletHits === 0 && serpCallCount < SERP_BUDGET) {
+            process.stdout.write(`    ↳ (outlet fallback)... `);
+            serpCallCount++;
+            const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
+            if (result && result.url) {
+              health.serp.hits++;
+              console.log('✓');
+              foundReviews.push({
+                showId,
+                outletId: outlet.id,
+                outlet: outlet.name,
+                criticName: 'Unknown',
+                url: result.url,
+                source: 'serp-discovery',
+              });
+            } else {
+              console.log('✗');
+            }
+            await sleep(DELAY_MS);
+          }
           continue;
         }
 
