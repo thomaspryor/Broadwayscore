@@ -31,6 +31,13 @@
  * The 3-layer double-send prevention (memory/feedback_send_lock_pattern.md)
  * still guards every audience-facing path — this module is purely about
  * deciding WHETHER to offer a show to the sender, not about actually sending.
+ *
+ * CANONICAL PATTERN for API state reconcilers: this file is the reference
+ * implementation for the rule "API 404 is not always terminal failure"
+ * (memory/feedback_404_not_terminal.md). When writing a new poller that
+ * reconciles local "completed"/"sent"/"processed" state against an external
+ * API, copy the prior-state differentiation in applyResendStatusUpdate —
+ * never flip a success flag on 404 alone.
  */
 
 const REQUEUE_AFTER_HOURS = 12;
