@@ -1894,13 +1894,23 @@ async function discoverShows() {
         showEntry.ibdbRevivalChecked = true;
       }
 
-      // Set category for non-Broadway shows
+      // Set category AND market for every new show — implicit Broadway default
+      // caused Schmigadoon (2026-04-19), Beaches (2026-04-22), Rocky Horror
+      // (2026-04-23) to ship with null category/market, which breaks the
+      // opening-night orchestrator's market filter (CLAUDE.md §14 step 5).
+      // Broadway shows are the largest cohort — NEVER leave them implicit.
       if (show.category === 'off-broadway') {
         showEntry.category = 'off-broadway';
+        showEntry.market = 'broadway';
       } else if (show.category === 'west-end') {
         showEntry.category = 'west-end';
+        showEntry.market = 'west-end';
       } else if (show.category === 'off-west-end') {
         showEntry.category = 'off-west-end';
+        showEntry.market = 'west-end';
+      } else {
+        showEntry.category = 'broadway';
+        showEntry.market = 'broadway';
       }
 
       data.shows.push(showEntry);
