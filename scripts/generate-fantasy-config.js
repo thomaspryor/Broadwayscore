@@ -30,7 +30,7 @@ function getCriticLabel(score) {
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
-  return 'Stay Away';
+  return 'Critical Miss';
 }
 
 // ── Load data ───────────────────────────────────────────────────────
@@ -183,7 +183,7 @@ function computePrice(show, criticScore) {
     else if (criticScore >= 75) base += 4;   // Recommended
     else if (criticScore >= 65) base += 0;   // Worth Seeing
     else if (criticScore >= 55) base -= 4;   // Skippable
-    else base -= 8;                           // Stay Away
+    else base -= 8;                           // Critical Miss
   } else if (isPreviews) {
     // Unknown CS — wildcard premium (upside if Gold, downside if weak).
     base += 3;
@@ -286,7 +286,7 @@ const config = {
       'Recommended': 20,
       'Worth Seeing': 12,
       'Skippable': 4,
-      'Stay Away': 0,
+      'Critical Miss': 0,
     },
     audienceGrade: {
       'A+': 25, 'A': 20, 'A-': 16,

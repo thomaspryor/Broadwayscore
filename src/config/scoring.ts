@@ -209,7 +209,7 @@ export const CRITIC_LABEL_THRESHOLDS = {
   'Recommended': 75,
   'Worth Seeing': 65,
   'Skippable': 55,
-  'Stay Away': 0,
+  'Critical Miss': 0,
 };
 
 export function getCriticLabel(score: number): string {
@@ -217,7 +217,7 @@ export function getCriticLabel(score: number): string {
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
-  return 'Stay Away';
+  return 'Critical Miss';
 }
 
 // ===========================================

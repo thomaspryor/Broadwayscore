@@ -64,14 +64,14 @@ export default function HomepageExplainerShelf({ totalShows, totalReviews, total
         <p className="text-sm text-gray-400 mb-5">How we turn hundreds of opinions into one number.</p>
 
         {/* Tier bar — gold on left, red on right (matches show-page ordering) */}
-        <div className="flex h-3 rounded-pill overflow-hidden mb-3" role="img" aria-label="Score tier color spectrum from Critical Gold to Stay Away">
+        <div className="flex h-3 rounded-pill overflow-hidden mb-3" role="img" aria-label="Score tier color spectrum from Critical Gold to Critical Miss">
           {tiers.map((t) => (
             <div key={t.label} className="flex-1" style={{ backgroundColor: t.color }} />
           ))}
         </div>
         <div className="flex justify-between text-[10px] sm:text-xs text-gray-500 mb-6 font-medium uppercase tracking-wide">
           <span>83+ Critical Gold</span>
-          <span>0 — Stay Away</span>
+          <span>0 — Critical Miss</span>
         </div>
 
         {/* Bullets + tier samples */}

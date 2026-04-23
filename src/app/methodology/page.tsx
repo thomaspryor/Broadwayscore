@@ -103,7 +103,7 @@ const faqSchema = {
       name: 'What do the score ranges mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Scores of 83+ indicate "Critical Gold" (drop-everything great), 75-82 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Stay Away" (not recommended). West End shows require 85+ for Critical Gold because UK outlets use star ratings almost exclusively, which compresses scores toward the top. Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
+        text: 'Scores of 83+ indicate "Critical Gold" (drop-everything great), 75-82 is "Recommended" (strong choice), 65-74 is "Worth Seeing" (good with caveats), 55-64 is "Skippable" (optional), and below 55 is "Critical Miss" (not recommended). West End shows require 85+ for Critical Gold because UK outlets use star ratings almost exclusively, which compresses scores toward the top. Shows with fewer than 5 reviews display "TBD" until more reviews are collected.',
       },
     },
     {
@@ -210,7 +210,7 @@ export default function MethodologyPage() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <div className="w-14 h-10 rounded-lg score-skip flex items-center justify-center font-bold text-sm flex-shrink-0">&lt;55</div>
               <div>
-                <span className="text-white font-medium">Stay Away</span>
+                <span className="text-white font-medium">Critical Miss</span>
                 <span className="text-gray-500 block sm:inline sm:ml-2">— Not recommended—save your time and money.</span>
               </div>
             </div>
@@ -488,7 +488,7 @@ export default function MethodologyPage() {
             <li>We monitor a curated list of verified video critics who regularly review Broadway and Off-Broadway shows</li>
             <li>When a creator posts a review video, we extract the transcript using platform captions</li>
             <li>The transcript is analyzed by AI (Claude) to determine the creator&apos;s overall sentiment — positive, mixed, or negative</li>
-            <li>A score from 0&ndash;100 is assigned using the same bucket system as CriticScore (Critical Gold, Recommended, Worth Seeing, Skippable, Stay Away)</li>
+            <li>A score from 0&ndash;100 is assigned using the same bucket system as CriticScore (Critical Gold, Recommended, Worth Seeing, Skippable, Critical Miss)</li>
           </ol>
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Important differences from CriticScore</h3>
           <ul className="text-gray-300 space-y-2 text-sm">

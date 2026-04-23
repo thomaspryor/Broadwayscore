@@ -65,7 +65,7 @@ const BRAND_COLORS = {
       text: '#1a1a1a',
     },
     skip: {
-      label: 'Stay Away',
+      label: 'Critical Miss',
       range: '0-54',
       solid: '#ef4444',
       text: '#ffffff',

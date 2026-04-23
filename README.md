@@ -28,7 +28,7 @@ Score tiers at a glance:
 | 75–82 | Recommended | Strong choice for most people |
 | 65–74 | Worth Seeing | Good, with caveats |
 | 55–64 | Skippable | Fine to miss |
-| < 55 | Stay Away | Not recommended |
+| < 55 | Critical Miss | Not recommended |
 
 Full methodology: [broadwayscorecard.com/methodology](https://broadwayscorecard.com/methodology)
 

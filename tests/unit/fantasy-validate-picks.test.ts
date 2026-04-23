@@ -93,8 +93,8 @@ describe('CRITIC_SCORE_POINTS — point table sanity', () => {
     assert.ok(others.every(v => v <= gold), 'Critical Gold should be highest or tied');
   });
 
-  test('Stay Away earns 0 points', () => {
-    assert.equal(CRITIC_SCORE_POINTS['Stay Away'], 0);
+  test('Critical Miss earns 0 points', () => {
+    assert.equal(CRITIC_SCORE_POINTS['Critical Miss'], 0);
   });
 
   test('all tier labels in point table match getCriticLabel output', () => {
@@ -156,8 +156,8 @@ describe('getCriticLabel — score → tier', () => {
     [65, 'Worth Seeing'],
     [64, 'Skippable'],
     [55, 'Skippable'],
-    [54, 'Stay Away'],
-    [0,  'Stay Away'],
+    [54, 'Critical Miss'],
+    [0,  'Critical Miss'],
   ];
 
   for (const [score, expected] of cases) {

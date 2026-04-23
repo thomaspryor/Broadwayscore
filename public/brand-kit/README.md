@@ -65,7 +65,7 @@ Brand-only placeholder cards at correct platform aspect ratios. Drop text/images
 | Recommended | `#22c55e` | Score 75–82, A grade |
 | Worth Seeing | `#14b8a6` | Score 65–74, A- grade |
 | Skippable | `#d97706` | Score 55–64 |
-| Stay Away | `#ef4444` | Score <55, C+ grade |
+| Critical Miss | `#ef4444` | Score <55, C+ grade |
 
 Typography: system stack (Inter on web, falls back to `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica`). For exports, any clean sans-serif works. Use weight 700–800 for display, 500–600 for body.
 

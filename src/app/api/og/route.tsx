@@ -32,7 +32,7 @@ function getScoreLabel(score: number, category?: string): string {
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
-  return 'Stay Away';
+  return 'Critical Miss';
 }
 
 export async function GET(request: NextRequest) {
