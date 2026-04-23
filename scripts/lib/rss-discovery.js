@@ -41,6 +41,16 @@ const WE_THEATER_FEEDS = [
   // BWW West End RSS is defunct (404 as of March 2026)
 ];
 
+// Individual-critic Substack feeds (tier-3 critics publishing outside aggregator coverage).
+// Substack feeds are standard RSS 2.0 — reuse parseRSSItems. These feeds always need
+// title-matching: the publication covers reviews mixed with research notes, picks
+// roundups, and off-topic culture posts ("Artgoing: Caravaggio..."). The existing
+// non-review pattern filter + title-match guard handles both.
+// To add a new Substack critic: drop one entry here (feed URL + outlet-registry id).
+const SUBSTACK_CRITIC_FEEDS = [
+  { url: 'https://davidcote1.substack.com/feed', outletId: 'cote-notices', name: 'Cote Notices', needsFilter: true, market: 'broadway' },
+];
+
 // General entertainment feeds (need title keyword filtering)
 const ENTERTAINMENT_FEEDS = [
   // Vulture RSS is defunct (404 as of March 2026) — kept for future reference
@@ -60,7 +70,7 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://www.rollingstone.com/tv-movies/feed/', outletId: 'rollingstone', name: 'Rolling Stone', needsFilter: true },
 ];
 
-const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...ENTERTAINMENT_FEEDS];
+const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...SUBSTACK_CRITIC_FEEDS, ...ENTERTAINMENT_FEEDS];
 
 /**
  * Fetch a URL and return the body text
@@ -245,11 +255,12 @@ async function checkRSSFeeds(showTitle, options = {}) {
           if (!titleMatchesShow(item.title, showTitle)) continue;
         }
 
-        // Reject non-review content: interviews, box office, cast news, photos
+        // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups
         const titleLower = item.title.toLowerCase();
         const nonReviewPatterns = ['interview', 'box office', 'grosses', 'begins previews',
           'first look', 'cast announced', 'full cast', 'meet the cast', 'photos:',
-          'tickets on sale', 'lottery', 'rush policy'];
+          'tickets on sale', 'lottery', 'rush policy',
+          'research notes', "critic's picks", 'critics picks'];
         if (nonReviewPatterns.some(t => titleLower.includes(t))) continue;
 
         // Check for review-like keywords in title (applied to all feeds)
@@ -288,4 +299,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems };
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems };
