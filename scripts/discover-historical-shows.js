@@ -19,6 +19,7 @@ const { JSDOM } = require('jsdom');
 const https = require('https');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
+const { classifyShow } = require('./lib/classify-show');
 const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
@@ -581,6 +582,12 @@ async function discoverHistoricalShows() {
         }
       }
 
+      // Stamp category+market — prevents the null-category creator bug documented in
+      // memory/feedback_recurring_backfill_means_broken_creator.md. Prefer the
+      // venue-derived category; fall back to classifyShow() for TBA/unknown venues.
+      const venueCat = validateVenue(show.venue)?.category;
+      const { category, market } = classifyShow({ category: show.category || venueCat });
+
       data.shows.push({
         id: show.id,
         title: show.title,
@@ -589,6 +596,8 @@ async function discoverHistoricalShows() {
         openingDate: show.openingDate || null,
         closingDate: show.closingDate || null,
         status: 'closed',
+        category,
+        market,
         type: show.type,
         runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
