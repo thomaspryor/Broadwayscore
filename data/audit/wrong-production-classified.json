@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-23T02:33:38.903Z",
+    "generatedAt": "2026-04-23T03:05:37.773Z",
     "description": "LLM-classified wrong-production results from medium-confidence audit flags",
     "provider": "gemini",
     "total": 43,
@@ -32,6 +32,22 @@
       "reasoning": "The review mentions cast members (Betsy Wolfe, Will Chase, Stephanie J. Block, Jim Norton, Chita Rivera, Andy Karl, Jessie Mueller, Gregg Edelman, Robert Creighton), director (Scott Ellis), and choreographer (Warren Carlyle) from the 2012 Broadway revival."
     },
     {
+      "showId": "the-gin-game-1977",
+      "showTitle": "The Gin Game",
+      "showYear": 1977,
+      "file": "ap--mark-kennedy.json",
+      "outlet": "Associated Press",
+      "criticName": "Mark Kennedy",
+      "publishDate": null,
+      "originalSignals": [
+        "year 2015 in text matches revival the-gin-game-2015"
+      ],
+      "verdict": "WRONG_PRODUCTION",
+      "confidence": "high",
+      "targetShowId": "the-gin-game-2015",
+      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
+    },
+    {
       "showId": "that-championship-season-1972",
       "showTitle": "That Championship Season",
       "showYear": 1972,
@@ -49,22 +65,6 @@
       "reasoning": "The review mentions the director (Gregory Mosher), venue (Bernard B. Jacobs Theatre), and cast (Brian Cox, Jim Gaffigan, Chris Noth, Jason Patric, Kiefer Sutherland) of the 2011 revival. It also mentions the production closing in May."
     },
     {
-      "showId": "the-gin-game-1977",
-      "showTitle": "The Gin Game",
-      "showYear": 1977,
-      "file": "ap--mark-kennedy.json",
-      "outlet": "Associated Press",
-      "criticName": "Mark Kennedy",
-      "publishDate": null,
-      "originalSignals": [
-        "year 2015 in text matches revival the-gin-game-2015"
-      ],
-      "verdict": "WRONG_PRODUCTION",
-      "confidence": "high",
-      "targetShowId": "the-gin-game-2015",
-      "reasoning": "The review mentions the 2015 revival starring James Earl Jones and Cicely Tyson, which opened at the John Golden Theatre. It also mentions the director Leonard Foglia and the set designer Riccardo Hernandez, all associated with the 2015 production."
-    },
-    {
       "showId": "the-rocky-horror-show-2000",
       "showTitle": "The Rocky Horror Show",
       "showYear": 2000,
@@ -78,8 +78,8 @@
       ],
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
-      "targetShowId": "null",
-      "reasoning": "The review is about a London production of The Rocky Horror Show at the Victoria Palace, and another show called Escape from Pterodactyl Island. It is not about the 2000 Broadway production."
+      "targetShowId": null,
+      "reasoning": "This review is about a London production of The Rocky Horror Show, not the 2000 Broadway revival. It mentions the Victoria Palace and Jason Donovan, who were involved in a London production."
     },
     {
       "showId": "the-real-thing-1984",
@@ -95,7 +95,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "the-real-thing-2014",
-      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 revival. It also mentions Cynthia Nixon, who was in the 1984 production but is in this production as Henry's wife."
+      "reasoning": "The review mentions Ewan McGregor and Maggie Gyllenhaal, who starred in the 2014 revival. It also mentions Cynthia Nixon, who was in the 1984 production but also appeared in the 2014 production."
     },
     {
       "showId": "old-times-1971",
@@ -128,7 +128,7 @@
       "verdict": "WRONG_PRODUCTION",
       "confidence": "high",
       "targetShowId": "old-times-2015",
-      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all of which are associated with the 2015 revival of Old Times."
+      "reasoning": "The review mentions the Roundabout's American Airlines Theatre, Clive Owen, Kelly Reilly, and Eve Best, all associated with the 2015 revival. It also mentions the play running through Nov. 29, which aligns with the 2015 production's dates."
     }
   ]
 }

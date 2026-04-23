@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T02:50:05.427Z",
+  "generatedAt": "2026-04-23T03:16:03.506Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1687,17 +1687,17 @@
       "status": "open",
       "slug": "schmigadoon",
       "thumbnail": "/images/shows/schmigadoon-2026/thumbnail.webp",
-      "siteScore": 75.05,
+      "siteScore": 75.27,
       "liveScore": 75,
-      "scoreDrift": -0.04999999999999716,
+      "scoreDrift": -0.269999999999996,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 25,
       "t1": 6,
       "t2": 15,
-      "t3": 2,
-      "positive": 15,
+      "t3": 4,
+      "positive": 17,
       "mixed": 6,
       "negative": 2,
       "readiness": {
@@ -1915,6 +1915,18 @@
           "m": 6,
           "n": 2,
           "bc": "complete"
+        },
+        {
+          "t": "2026-04-23T03:16:03.506Z",
+          "rc": 25,
+          "s": 75.27,
+          "t1": 6,
+          "t2": 15,
+          "t3": 4,
+          "p": 17,
+          "m": 6,
+          "n": 2,
+          "bc": "complete"
         }
       ]
     },
@@ -1946,9 +1958,9 @@
         "reasons": [
           "7/8 total",
           "T1:2/3",
-          "hi-conf:2/6"
+          "hi-conf:3/6"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
