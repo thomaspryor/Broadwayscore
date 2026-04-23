@@ -65,8 +65,8 @@ export const SCORE_BUCKETS: ScoreBucketConfig[] = [
   },
   {
     id: 'stay-away',
-    label: 'Stay Away',
-    shortLabel: 'Stay Away',
+    label: 'Critical Miss',
+    shortLabel: 'Critical Miss',
     minScore: 0,
     maxScore: 54,
     color: 'text-red-400',        // Red

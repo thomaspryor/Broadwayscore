@@ -123,7 +123,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     'Recommended': 'Positive Reviews',
     'Worth Seeing': 'Worth Seeing',
     'Skippable': 'Mixed Reviews',
-    'Stay Away': 'Poor Reviews',
+    'Critical Miss': 'Poor Reviews',
   };
   const sentimentLabel = tier ? (SEO_SENTIMENT[tier.label] ?? null) : null;
 
@@ -150,7 +150,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     'Recommended': `${show.title} earns positive reviews — ${roundedScore}/100 from ${reviewCount} critics.`,
     'Worth Seeing': `Critics say ${show.title} is worth seeing — ${roundedScore}/100 from ${reviewCount} reviews.`,
     'Skippable': `Critics are mixed on ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
-    'Stay Away': `${show.title} gets poor reviews from critics — ${roundedScore}/100 from ${reviewCount} reviews.`,
+    'Critical Miss': `${show.title} gets poor reviews from critics — ${roundedScore}/100 from ${reviewCount} reviews.`,
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
@@ -257,7 +257,7 @@ function LimitedRunBadge() {
 function getSentimentLabel(score: number, category?: string): { label: string; colorClass: string } {
   const tier = getScoreTier(score, category);
   return {
-    label: tier?.label ?? 'Stay Away',
+    label: tier?.label ?? 'Critical Miss',
     colorClass: getScoreTextColorClass(score, category),
   };
 }

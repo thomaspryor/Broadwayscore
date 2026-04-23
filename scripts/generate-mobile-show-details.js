@@ -214,7 +214,7 @@ for (const show of visibleShows) {
   const showReviews = Array.from(byCriticKey.values());
   const buzz = audienceBuzz[show.id];
 
-  // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Stay Away (<55)
+  // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
   const breakdown = { positive: 0, mixed: 0, negative: 0 };
   for (const r of showReviews) {
     if (r.assignedScore >= 75) breakdown.positive++;

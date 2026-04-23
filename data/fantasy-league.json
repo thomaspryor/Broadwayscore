@@ -6,12 +6,14 @@
     "scoringEnd": "2026-06-15",
     "budget": 100,
     "teamSize": 8,
-    "generatedAt": "2026-04-22T18:33:25.337Z",
+    "generatedAt": "2026-04-23T16:52:32.444Z",
     "pricing": {
-      "source": "frozen",
-      "frozenAt": "2026-04-21T00:22:26.919Z",
       "method": "ev",
-      "k": 0.19255830237488572
+      "k": 0.19255830237488572,
+      "targetTopPrice": 33,
+      "evSource": "goldderby",
+      "evLastUpdated": "2026-04-21T00:22:23.854Z",
+      "repricedAt": "2026-04-23T16:52:43.906Z"
     }
   },
   "shows": {
@@ -82,7 +84,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-22",
-      "criticScore": null,
+      "criticScore": 48,
       "audienceGrade": "B+",
       "slug": "beaches",
       "image": "/images/shows/beaches-2026/thumbnail.webp"
@@ -100,7 +102,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-21",
-      "criticScore": 77.58,
+      "criticScore": 76.91,
       "audienceGrade": "A-",
       "slug": "the-balusters",
       "image": "/images/shows/the-balusters-2026/thumbnail.webp"
@@ -118,7 +120,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-20",
-      "criticScore": 75.22,
+      "criticScore": 76.67,
       "audienceGrade": "A-",
       "slug": "schmigadoon",
       "image": "/images/shows/schmigadoon-2026/thumbnail.webp"
@@ -136,7 +138,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-19",
-      "criticScore": 76.92,
+      "criticScore": 76.96,
       "audienceGrade": "A-",
       "slug": "fallen-angels",
       "image": "/images/shows/fallen-angels-2026/thumbnail.webp"
@@ -154,7 +156,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-16",
-      "criticScore": 73.3,
+      "criticScore": 73.43,
       "audienceGrade": "A-",
       "slug": "proof",
       "image": "/images/shows/proof-2026/thumbnail.webp"
@@ -172,7 +174,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-15",
-      "criticScore": 60.81,
+      "criticScore": 60.25,
       "audienceGrade": "A-",
       "slug": "the-fear-of-13",
       "image": "/images/shows/the-fear-of-13-2026/thumbnail.webp"
@@ -244,7 +246,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-06",
-      "criticScore": 80.84,
+      "criticScore": 80.94,
       "audienceGrade": "A-",
       "slug": "becky-shaw",
       "image": "/images/shows/becky-shaw-2026/thumbnail.webp"
@@ -280,7 +282,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-03-23",
-      "criticScore": 76.69,
+      "criticScore": 76.82,
       "audienceGrade": "B+",
       "slug": "giant",
       "image": "/images/shows/giant-2026/thumbnail.webp"
@@ -532,7 +534,7 @@
       "category": "broadway",
       "status": "closed",
       "openingDate": "2025-09-28",
-      "criticScore": 64.61,
+      "criticScore": 64.32,
       "audienceGrade": "C+",
       "slug": "waiting-for-godot-2025",
       "image": "/images/shows/waiting-for-godot-2025/thumbnail.webp"
@@ -868,7 +870,7 @@
       "Recommended": 20,
       "Worth Seeing": 12,
       "Skippable": 4,
-      "Stay Away": 0
+      "Critical Miss": 0
     },
     "audienceGrade": {
       "A+": 25,

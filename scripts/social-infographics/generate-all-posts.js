@@ -65,7 +65,7 @@ function tierClass(score) {
 }
 
 function tierLabel(tier) {
-  return { gold: 'Critical Gold', recommended: 'Recommended', 'worth-seeing': 'Worth Seeing', skippable: 'Skippable', 'stay-away': 'Stay Away' }[tier];
+  return { gold: 'Critical Gold', recommended: 'Recommended', 'worth-seeing': 'Worth Seeing', skippable: 'Skippable', 'stay-away': 'Critical Miss' }[tier];
 }
 
 function scoreBadgeCSS() {

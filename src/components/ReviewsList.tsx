@@ -148,7 +148,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
   else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
   else if (review.reviewScore >= 55) scoreLabel = 'Skippable';
-  else scoreLabel = 'Stay Away';
+  else scoreLabel = 'Critical Miss';
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>

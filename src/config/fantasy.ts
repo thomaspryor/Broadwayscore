@@ -38,7 +38,7 @@ export const CRITIC_SCORE_POINTS: Record<string, number> = {
   'Recommended': 20,
   'Worth Seeing': 12,
   'Skippable': 4,
-  'Stay Away': 0,
+  'Critical Miss': 0,
 };
 
 /**

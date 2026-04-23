@@ -63,7 +63,7 @@ function getScoreColor(score) {
   if (score >= 75) return { bg: '#22c55e', text: '#ffffff', label: 'Recommended' };
   if (score >= 65) return { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' };
   if (score >= 55) return { bg: '#d97706', text: '#1a1a1a', label: 'Skippable' };
-  return { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' };
+  return { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' };
 }
 
 // Single source of truth for the 4-tier breakdown bar + label row.
@@ -385,12 +385,13 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
         <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.35);font-family:${FONT};">${escapeHtml(metaParts.join(' \u00B7 '))}</p>
       </td></tr>` : '';
 
+    const reviewsHref = `${escapeHtml(show.showUrl)}#critic-reviews`;
     return `
   ${shows.length > 1 ? `<tr><td style="padding:24px 0 8px;">
     <h2 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${escapeHtml(show.showTitle)}</h2>
   </td></tr>` : ''}${show.imageUrl ? `
   <tr><td style="padding:${shows.length > 1 ? '8' : '16'}px 0 0;">
-    <img src="${escapeHtml(show.imageUrl)}" alt="${escapeHtml(show.showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;" />
+    <a href="${reviewsHref}" style="display:block;text-decoration:none;"><img src="${escapeHtml(show.imageUrl)}" alt="${escapeHtml(show.showTitle)}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;border:0;" /></a>
   </td></tr>` : ''}
   <tr><td style="padding:16px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid ${brandFaint};">
@@ -398,11 +399,11 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
         <table cellpadding="0" cellspacing="0">
           <tr>
             <td width="72" height="72" bgcolor="${sc.bg}" style="width:72px;height:72px;background-color:${sc.bg};background:${sc.bgGradient || sc.bg};border-radius:12px;text-align:center;vertical-align:middle;">
-              <font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font>
+              <a href="${reviewsHref}" style="text-decoration:none;display:block;line-height:72px;"><font color="${sc.text}"><span style="font-size:32px;font-weight:800;color:${sc.text};font-family:${FONT};line-height:72px;">${scoreDisplay}</span></font></a>
             </td>
             <td style="padding-left:16px;vertical-align:middle;">
-              <p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
-              <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${reviewSubtitle}</p>
+              <a href="${reviewsHref}" style="text-decoration:none;color:inherit;"><p style="margin:0 0 4px;font-size:18px;font-weight:700;color:${sc.bg};font-family:${FONT};">${sc.label}</p>
+              <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${reviewSubtitle}</p></a>
             </td>
           </tr>
         </table>
@@ -430,7 +431,7 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
 <tr><td align="center" bgcolor="#0f0f14">
 <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
   <tr><td style="padding-bottom:20px;border-bottom:1px solid ${brandSubtle};">
-    <span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span>
+    <a href="${browseUrl}" style="text-decoration:none;"><span style="font-size:22px;font-weight:800;color:#ffffff;letter-spacing:-0.02em;font-family:${FONT};">${siteNameFirst}</span><span style="font-size:22px;font-weight:800;color:${brandColor};letter-spacing:-0.02em;font-family:${FONT};">Scorecard</span></a>
   </td></tr>
   <tr><td style="padding:28px 0 8px;">
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${h1}</h1>

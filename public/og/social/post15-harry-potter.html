@@ -1,47 +1,42 @@
 <!DOCTYPE html><html><head><meta charset="utf-8"><style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { width: 2160px; height: 2160px; background: #0f0f14; font-family: 'Inter', ui-sans-serif, -apple-system, sans-serif; color: #e5e7eb; overflow: hidden; -webkit-font-smoothing: antialiased; }
-  .page { padding: 96px 100px 80px; height: 100%; display: flex; flex-direction: column; }
-  .page-label { font-size: 28px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #4b5563; text-align: center; margin-bottom: 28px; }
-  .card { background: #1a1a24; border-radius: 40px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex: 1; overflow: hidden; min-height: 0; }
-  .card-poster { width: 520px; flex-shrink: 0; object-fit: cover; display: block; background: #2a2a38; }
-  .card-right { flex: 1; padding: 72px 80px; display: flex; flex-direction: column; justify-content: space-between; }
-  .show-headline { font-size: 34px; font-weight: 500; color: #6b7280; margin-bottom: 20px; line-height: 1.4; }
-  .show-title { font-size: 100px; font-weight: 900; color: #fff; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 40px; }
-  .show-meta { font-size: 28px; color: #6b7280; line-height: 1.8; }
-  .show-meta b { color: #9ca3af; font-weight: 500; }
+  body { width: 2160px; height: 2160px; background: #0f0f14; font-family: 'Inter', ui-sans-serif, -apple-system, sans-serif; color: #e5e7eb; overflow: hidden; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; }
+  .poster-wrap { position: relative; height: 1253px; flex-shrink: 0; }
+  .poster-img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: center top; }
+  .poster-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 300px; background: linear-gradient(to bottom, transparent, #0f0f14); }
+  .info { flex: 1; padding: 40px 120px 72px; display: flex; flex-direction: column; gap: 40px; }
+  .show-headline { font-size: 32px; font-weight: 500; color: #6b7280; }
+  .show-title { font-size: 112px; font-weight: 900; color: #fff; line-height: 1.0; letter-spacing: -0.02em; }
+  .show-meta { font-size: 28px; color: #6b7280; }
+  .bottom-row { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+  .footer-logo { font-size: 44px; font-weight: 900; letter-spacing: -0.5px; }
+  .footer-logo .white { color: #fff; }
+  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #6b7280; -webkit-text-fill-color: #6b7280; }
   .scores-row { display: flex; gap: 32px; }
-  .score-block { flex: 1; display: flex; flex-direction: column; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 24px; padding: 36px 16px; }
-  .score-label { font-size: 20px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin-bottom: 16px; }
-  .score-badge { width: 180px; height: 180px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 80px; font-weight: 700; }
+  .score-block { display: flex; flex-direction: column; align-items: center; background: #1a1a24; border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; padding: 32px 56px; }
+  .score-label { font-size: 22px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; margin-bottom: 16px; }
+  .score-badge { width: 176px; height: 176px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 80px; font-weight: 700; }
   .score-badge.gold { background: linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%); color: #1a1a1a; border: 4px solid #C8960E; box-shadow: 0 0 32px rgba(218,165,32,0.55), 0 0 16px rgba(255,215,0,0.4), inset 0 2px 0 rgba(255,255,255,0.3); }
   .score-badge.recommended { background: #22c55e; color: #fff; box-shadow: 0 2px 16px rgba(34,197,94,0.3); }
   .score-badge.worth-seeing { background: #14b8a6; color: #fff; box-shadow: 0 2px 16px rgba(20,184,166,0.3); }
   .score-badge.skippable { background: #d97706; color: #1a1a1a; box-shadow: 0 2px 16px rgba(217,119,6,0.3); }
   .score-badge.stay-away { background: #ef4444; color: #fff; box-shadow: 0 2px 16px rgba(239,68,68,0.3); }
-  .aud-badge { width: 180px; height: 180px; border-radius: 32px; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 700; }
-  .score-sub { font-size: 20px; color: #6b7280; margin-top: 12px; text-align: center; }
+  .aud-badge { width: 176px; height: 176px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 64px; font-weight: 700; }
+  .score-sub { font-size: 20px; color: #6b7280; margin-top: 12px; }
   .crown { margin-bottom: -8px; position: relative; z-index: 1; }
-  .footer { text-align: center; margin-top: 32px; flex-shrink: 0; }
-  .footer-logo { font-size: 44px; font-weight: 900; letter-spacing: -0.5px; }
-  .footer-logo .white { color: #fff; }
-  .footer-logo .gold { background: linear-gradient(135deg, #d4a574 0%, #b8956a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .footer-logo .tm { font-size: 16px; font-weight: 400; vertical-align: super; margin-left: 4px; color: #9ca3af; -webkit-text-fill-color: #9ca3af; }
-  </style></head><body><div class="page">
-    <div class="page-label">broadwayscorecard.com</div>
-    <div class="card">
-      <img class="card-poster" src="https://broadwayscorecard.com/images/shows/harry-potter-2021/poster.webp" alt="Harry Potter and the Cursed Child">
-      <div class="card-right">
-        <div>
-          <div class="show-headline">What Do 69 Critics Think<br>of Harry Potter?</div>
-          <div class="show-title">Harry Potter and the Cursed Child</div>
-          <div class="show-meta">
-            <b>Venue</b> Lyric Theatre<br>
-            <b>Opened</b> March 16, 2018<br>
-            <b>Status</b> Open
-          </div>
-        </div>
+  </style></head><body>
+    <div class="poster-wrap">
+      <img class="poster-img" src="https://broadwayscorecard.com/images/shows/harry-potter-2021/poster.webp" alt="Harry Potter and the Cursed Child">
+      <div class="poster-fade"></div>
+    </div>
+    <div class="info">
+      <div class="show-headline">What Do 69 Critics Think<br>of Harry Potter?</div>
+      <div class="show-title">Harry Potter and the Cursed Child</div>
+      <div class="show-meta">Lyric Theatre · Opened March 16, 2018 · Open</div>
+      <div class="bottom-row">
+        <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
         <div class="scores-row">
           <div class="score-block">
             <div class="score-label">CriticScore™</div>
@@ -57,7 +52,4 @@
         </div>
       </div>
     </div>
-    <div class="footer">
-      <div class="footer-logo"><span class="white">Broadway</span><span class="gold">Scorecard</span><span class="tm">™</span></div>
-    </div>
-  </div></body></html>
+  </body></html>

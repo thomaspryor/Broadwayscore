@@ -52,7 +52,7 @@ const tokens = {
       { name: 'Score: Recommended', hex: BRAND.scores.great.solid },
       { name: 'Score: Worth Seeing', hex: BRAND.scores.good.solid },
       { name: 'Score: Skippable', hex: BRAND.scores.tepid.solid },
-      { name: 'Score: Stay Away', hex: BRAND.scores.skip.solid },
+      { name: 'Score: Critical Miss', hex: BRAND.scores.skip.solid },
     ],
   },
 };

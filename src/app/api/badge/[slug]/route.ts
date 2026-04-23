@@ -26,7 +26,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; label: string }> = 
   'Recommended':   { bg: '#22c55e', text: '#ffffff', label: 'Recommended' },
   'Worth Seeing':  { bg: '#14b8a6', text: '#ffffff', label: 'Worth Seeing' },
   'Skippable':     { bg: '#d97706', text: '#1a1a1a', label: 'Skippable' },
-  'Stay Away':     { bg: '#ef4444', text: '#ffffff', label: 'Stay Away' },
+  'Critical Miss': { bg: '#ef4444', text: '#ffffff', label: 'Critical Miss' },
 };
 
 const CARD_BG = '#0f0f14';

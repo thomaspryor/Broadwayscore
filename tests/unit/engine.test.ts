@@ -228,7 +228,7 @@ describe('computeCriticScore', () => {
 
     const stayAway = computeCriticScore([makeReview({ assignedScore: 30 })]);
     assert.ok(stayAway);
-    assert.strictEqual(stayAway.label, 'Stay Away');
+    assert.strictEqual(stayAway.label, 'Critical Miss');
   });
 
   test('default score is 50 when no score source available', () => {

@@ -2,7 +2,7 @@ import { getGoldThreshold } from '@/config/score-buckets';
 
 /**
  * Breakdown bar tiers. Intentionally diverge from the 5-tier ScoreBadge taxonomy
- * (Critical Gold / Recommended / Worth Seeing / Skippable / Stay Away): a single
+ * (Critical Gold / Recommended / Worth Seeing / Skippable / Critical Miss): a single
  * review shows its full badge on the review card, but in the aggregate breakdown
  * we use four simpler sentiment labels.
  *

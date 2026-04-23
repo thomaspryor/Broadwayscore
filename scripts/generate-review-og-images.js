@@ -20,7 +20,7 @@ function getScoreColor(score) {
   if (score >= 75) return '#22c55e'; // Recommended (green)
   if (score >= 65) return '#14b8a6'; // Worth Seeing (teal)
   if (score >= 55) return '#f59e0b'; // Skippable (amber)
-  return '#ef4444';                  // Stay Away (red)
+  return '#ef4444';                  // Critical Miss (red)
 }
 
 function getScoreLabel(score) {
@@ -28,7 +28,7 @@ function getScoreLabel(score) {
   if (score >= 75) return 'Recommended';
   if (score >= 65) return 'Worth Seeing';
   if (score >= 55) return 'Skippable';
-  return 'Stay Away';
+  return 'Critical Miss';
 }
 
 // Wrap text to fit within maxWidth (approximate character limit per line)

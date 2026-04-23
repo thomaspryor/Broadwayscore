@@ -13,7 +13,7 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
   'Recommended':   { bg: '#22c55e', text: '#ffffff', glow: 'rgba(34, 197, 94, 0.35)' },
   'Worth Seeing':  { bg: '#14b8a6', text: '#ffffff', glow: 'rgba(20, 184, 166, 0.35)' },
   'Skippable':     { bg: '#d97706', text: '#1a1a1a', glow: 'rgba(217, 119, 6, 0.35)' },
-  'Stay Away':     { bg: '#ef4444', text: '#ffffff', glow: 'rgba(239, 68, 68, 0.35)' },
+  'Critical Miss': { bg: '#ef4444', text: '#ffffff', glow: 'rgba(239, 68, 68, 0.35)' },
 };
 
 function escapeHtml(s: string): string {

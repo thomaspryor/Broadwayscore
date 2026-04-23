@@ -32,7 +32,7 @@ export const SCORE_TIERS = {
     glow: false,
   },
   stayAway: {
-    label: 'Stay Away',
+    label: 'Critical Miss',
     tooltip: 'Not recommended—save your time and money.',
     range: '<55',
     color: '#ef4444',
@@ -57,7 +57,7 @@ const TIER_COLOR_CLASS: Record<string, string> = {
   'Recommended': 'score-great',
   'Worth Seeing': 'score-good',
   'Skippable': 'score-tepid',
-  'Stay Away': 'score-skip',
+  'Critical Miss': 'score-skip',
 };
 
 const TIER_TEXT_CLASS: Record<string, string> = {
@@ -65,7 +65,7 @@ const TIER_TEXT_CLASS: Record<string, string> = {
   'Recommended': 'text-score-great',
   'Worth Seeing': 'text-score-good',
   'Skippable': 'text-score-tepid',
-  'Stay Away': 'text-score-skip',
+  'Critical Miss': 'text-score-skip',
 };
 
 export function getScoreColorClass(score: number, category?: string): string {
@@ -143,7 +143,7 @@ export function ScoreBadge({ score, size = 'md', reviewCount, status, showCrown,
   const roundedScore = Math.round(score);
   const colorClass = getScoreColorClass(roundedScore, category);
   const tier = getScoreTier(roundedScore, category);
-  const label = tier?.label ?? 'Stay Away';
+  const label = tier?.label ?? 'Critical Miss';
 
   const badge = (
     <div className={`score-badge ${sizeClass} ${colorClass} font-bold`}>
