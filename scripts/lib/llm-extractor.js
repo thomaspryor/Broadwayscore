@@ -73,6 +73,115 @@ function hasStructuralMarkers(html, aggregator) {
   return found >= 2;
 }
 
+/**
+ * Count the expected number of reviews on an aggregator page based on structural
+ * signals that do not depend on the block parser. Used to detect PARTIAL regex
+ * extraction (e.g. BWW adds a new review format and we catch 5 of 8).
+ *
+ * DTLI: thumb summary images `thumbs-{up,meh,down}/thumb-N.png` carry the total;
+ * fallback to counting review-item blocks.
+ * BWW: each review gets one thumb image (`uptrans|middletrans|downtrans\d*\.png`
+ * or `BigThumbs_{UP,MEH,DOWN}\.(gif|png)`); fallback to BlogPosting entries.
+ *
+ * Returns 0 when no signal is available — callers should gate partial-fallback
+ * on `expected >= MIN_CONFIDENT_EXPECTED` to avoid acting on noise.
+ */
+function countExpectedReviews(html, aggregator) {
+  if (!html || typeof html !== 'string') return 0;
+  if (aggregator === 'dtli') {
+    const up = html.match(/thumbs-up\/thumb-(\d+)\.png/);
+    const meh = html.match(/thumbs-meh\/thumb-(\d+)\.png/);
+    const down = html.match(/thumbs-down\/thumb-(\d+)\.png/);
+    if (up || meh || down) {
+      return (up ? parseInt(up[1], 10) : 0)
+        + (meh ? parseInt(meh[1], 10) : 0)
+        + (down ? parseInt(down[1], 10) : 0);
+    }
+    // Fallback: block count
+    const blocks = html.match(/class="(?:poster-)?review-item"/gi);
+    return blocks ? blocks.length : 0;
+  }
+  if (aggregator === 'bww') {
+    // Count thumb images — each review has one in the rendered article.
+    const thumbs = html.match(/(?:(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi);
+    if (thumbs && thumbs.length) return thumbs.length;
+    // Fallback: JSON-LD BlogPosting entries
+    const blogs = html.match(/"@type"\s*:\s*"BlogPosting"/g);
+    return blogs ? blogs.length : 0;
+  }
+  return 0;
+}
+
+/**
+ * Is the regex extraction a partial miss relative to `expected`?
+ * Gate callers so the LLM only fires when there's a meaningful gap (not 1-off
+ * rounding from a missing thumb image) and the expected count is credible.
+ */
+function isPartialExtraction(extractedCount, expectedCount, {
+  minExpected = 5,
+  minGap = 3,
+} = {}) {
+  if (expectedCount < minExpected) return false;
+  if (extractedCount >= expectedCount) return false;
+  return (expectedCount - extractedCount) >= minGap;
+}
+
+function _normalizeCriticForDedup(name) {
+  if (!name || typeof name !== 'string') return '';
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
+}
+
+function _normalizeUrlForDedup(url) {
+  if (!url || typeof url !== 'string') return '';
+  return url.toLowerCase().replace(/#.*$/, '').replace(/\?.*$/, '').replace(/\/$/, '');
+}
+
+/**
+ * Merge LLM-extracted reviews into a regex-extracted baseline.
+ *
+ * The regex pass is authoritative — it knows the aggregator's markup and pulls
+ * reliable outlet/critic/URL pairs. The LLM pass is a safety net that catches
+ * reviews the regex missed when markup changes. Dedup prevents double-counting
+ * when the LLM re-extracts something the regex already has.
+ *
+ * Dedup key (in order): normalized URL → `${outletId}|${normalized criticName}`.
+ * A review with neither a usable URL nor a known outletId is dropped (can't be
+ * matched to anything anyway, and would pollute downstream pipelines).
+ */
+function mergeAggregatorReviews(regexReviews, llmReviews) {
+  const merged = Array.isArray(regexReviews) ? [...regexReviews] : [];
+  if (!Array.isArray(llmReviews) || llmReviews.length === 0) return merged;
+
+  const seenUrls = new Set();
+  const seenOutletCritic = new Set();
+  for (const r of merged) {
+    const u = _normalizeUrlForDedup(r.url);
+    if (u) seenUrls.add(u);
+    const oid = (r.outletId || '').toLowerCase();
+    const cn = _normalizeCriticForDedup(r.criticName);
+    if (oid && cn) seenOutletCritic.add(`${oid}|${cn}`);
+  }
+
+  let added = 0;
+  for (const r of llmReviews) {
+    const oid = (r.outletId || '').toLowerCase();
+    const u = _normalizeUrlForDedup(r.url);
+    const cn = _normalizeCriticForDedup(r.criticName);
+
+    if (!oid && !u) continue; // unanchorable — skip
+
+    if (u && seenUrls.has(u)) continue;
+    if (oid && cn && seenOutletCritic.has(`${oid}|${cn}`)) continue;
+
+    merged.push(r);
+    if (u) seenUrls.add(u);
+    if (oid && cn) seenOutletCritic.add(`${oid}|${cn}`);
+    added++;
+  }
+
+  return merged;
+}
+
 // ============================================================
 // Claude API (copied from classify-non-reviews.js pattern)
 // ============================================================
@@ -314,4 +423,7 @@ module.exports = {
   cleanHtmlForLLM,
   hasStructuralMarkers,
   llmFallbackExtract,
+  countExpectedReviews,
+  isPartialExtraction,
+  mergeAggregatorReviews,
 };
