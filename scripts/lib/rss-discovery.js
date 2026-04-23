@@ -46,9 +46,15 @@ const WE_THEATER_FEEDS = [
 // title-matching: the publication covers reviews mixed with research notes, picks
 // roundups, and off-topic culture posts ("Artgoing: Caravaggio..."). The existing
 // non-review pattern filter + title-match guard handles both.
-// To add a new Substack critic: drop one entry here (feed URL + outlet-registry id).
+//
+// defaultCritic: single-author publication — stamp the critic on every emitted hit
+// so the review bypasses the "Unknown + rss-discovery → _pending/" routing in
+// gather-reviews.js (see tests/unit/pending-strand-routing.test.mjs). Without this,
+// Cote's discoveries strand in _pending/ since rebuild-all-reviews.js never reads it.
+//
+// To add a new Substack critic: one entry here + matching outlet-registry.json entry.
 const SUBSTACK_CRITIC_FEEDS = [
-  { url: 'https://davidcote1.substack.com/feed', outletId: 'cote-notices', name: 'Cote Notices', needsFilter: true, market: 'broadway' },
+  { url: 'https://davidcote1.substack.com/feed', outletId: 'cote-notices', name: 'Cote Notices', needsFilter: true, market: 'broadway', defaultCritic: 'David Cote' },
 ];
 
 // General entertainment feeds (need title keyword filtering)
@@ -99,6 +105,20 @@ function fetchUrl(url, timeoutMs = 10000) {
  * Parse RSS 2.0 XML and extract items with title, link, pubDate.
  * Uses regex — no XML library dependency needed for simple RSS structure.
  */
+// Decode the HTML entities RSS titles actually ship. &amp;/&lt;/&gt; are the
+// obvious ones; numeric-coded curly quotes (&#8220;, &#8221;, &#8217;) and
+// &quot;/&#39;/&apos; appear in NYT Theater / Standard / Substack feeds and
+// break titleMatchesShow word-boundary matching when left raw.
+function decodeEntities(s) {
+  return s.replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+          .replace(/&#39;/g, "'")
+          .replace(/&#8216;/g, "‘").replace(/&#8217;/g, "’")
+          .replace(/&#8220;/g, "“").replace(/&#8221;/g, "”")
+          .replace(/&#8212;/g, '—').replace(/&#8211;/g, '–');
+}
+
 function parseRSSItems(xml) {
   const items = [];
   const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
@@ -110,7 +130,7 @@ function parseRSSItems(xml) {
     const pubDate = (itemXml.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
     if (title && link) {
       items.push({
-        title: title.trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+        title: decodeEntities(title.trim()),
         link: link.trim(),
         pubDate: pubDate.trim() ? new Date(pubDate.trim()) : null,
       });
@@ -137,7 +157,7 @@ function parseAtomItems(xml) {
       || (entryXml.match(/<published[^>]*>([\s\S]*?)<\/published>/) || [])[1] || '';
     if (title && linkHref) {
       items.push({
-        title: title.trim().replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>'),
+        title: decodeEntities(title.trim()),
         link: linkHref.trim(),
         pubDate: dateStr.trim() ? new Date(dateStr.trim()) : null,
       });
@@ -255,8 +275,10 @@ async function checkRSSFeeds(showTitle, options = {}) {
           if (!titleMatchesShow(item.title, showTitle)) continue;
         }
 
-        // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups
-        const titleLower = item.title.toLowerCase();
+        // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups.
+        // Normalize curly apostrophes (U+2019) → straight so "Critic's Picks" (curly) matches
+        // the straight-apostrophe pattern below. Substack + NYT titles routinely use U+2019.
+        const titleLower = item.title.toLowerCase().replace(/['']/g, "'");
         const nonReviewPatterns = ['interview', 'box office', 'grosses', 'begins previews',
           'first look', 'cast announced', 'full cast', 'meet the cast', 'photos:',
           'tickets on sale', 'lottery', 'rush policy',
@@ -269,14 +291,19 @@ async function checkRSSFeeds(showTitle, options = {}) {
           titleMatchesShow(item.title, showTitle);
 
         if (isReviewLike || !feed.needsFilter) {
-          results.push({
+          const hit = {
             url: item.link,
             outletId: feed.outletId,
             outlet: feed.name,
             title: item.title,
             publishDate: item.pubDate ? item.pubDate.toISOString().slice(0, 10) : null,
             source: 'rss-discovery',
-          });
+          };
+          // Stamp critic on single-author feeds (Substack critics). Prevents the
+          // Unknown+rss-discovery → _pending/ strand that rebuild-all-reviews
+          // never re-reads. See tests/unit/pending-strand-routing.test.mjs.
+          if (feed.defaultCritic) hit.criticName = feed.defaultCritic;
+          results.push(hit);
           feedResults++;
           if (verbose) {
             console.log(`    RSS [${feed.name}]: ${item.title}`);

@@ -61,4 +61,42 @@ describe("Talkin' Broadway byline extractor", () => {
       '<body><p>Theatre Review by <a href="mailto:x@y.com">Howard Miller</a> - Date</p></body></html>';
     assert.strictEqual(extractAuthorFromHtml(html, null), 'Allison Considine');
   });
+
+  test('hyphenated surname (Mary-Louise Parker)', () => {
+    const html = '<p>Theatre Review by <a href="mailto:x@y.com">Mary-Louise Parker</a> - Date</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), 'Mary-Louise Parker');
+  });
+
+  test("apostrophe surname ASCII (Sean O'Connor)", () => {
+    const html = '<p>Theatre Review by <a href="mailto:x@y.com">Sean O\'Connor</a> - Date</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), "Sean O'Connor");
+  });
+
+  test('apostrophe surname curly (Sean O’Connor)', () => {
+    const html = '<p>Theatre Review by <a href="mailto:x@y.com">Sean O’Connor</a> - Date</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), 'Sean O’Connor');
+  });
+
+  test('accented letters (Zoë Anderson)', () => {
+    const html = '<p>Theatre Review by <a href="mailto:x@y.com">Zoë Anderson</a> - Date</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), 'Zoë Anderson');
+  });
+
+  test('lowercase "theatre review by" in body prose does NOT match (case-sensitive)', () => {
+    // False-positive guard: a non-TB outlet quoting TB with lowercase "theatre
+    // review by Ben Brantley" in prose should not leak a byline. Without the
+    // case-sensitive anchor, /i would capture "Ben Brantley" here.
+    const html = '<p>This is a theatre review by Ben Brantley of The New York Times.</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), null);
+  });
+
+  test('NEGATIVE REGRESSION: removing "Theatre Review by" prefix returns null', () => {
+    // Motivation guard: proves the TB pattern is what catches the fixture. If
+    // someone later deletes the TB pattern from bylinePatterns, the positive
+    // tests might still pass via a different pattern. This strips the prefix
+    // that only the TB pattern recognizes — any match means something else is
+    // matching (and the Balusters fix isn't actually load-bearing).
+    const html = '<p><a href="mailto:hmiller@talkinbroadway.com">Howard Miller</a> - April 21, 2026</p>';
+    assert.strictEqual(extractAuthorFromHtml(html, null), null);
+  });
 });
