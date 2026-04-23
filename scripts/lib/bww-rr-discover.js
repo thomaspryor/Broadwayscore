@@ -40,10 +40,12 @@ const SESSION_TIMEOUT_MS = 30000;
 const STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'is']);
 
 // Strip marketing subtitle from a title. "Beaches: A New Musical" → "Beaches".
-// BWW slugs are hand-authored and routinely omit subtitles after `:` or `—`.
+// "Beaches, A New Musical" → "Beaches". BWW slugs are hand-authored and
+// routinely omit subtitles after `:`, `,`, or `—`/`–`/`-`. The canonical
+// shows.json entry for Beaches-2026 uses a comma; other shows use colons.
 function stripSubtitle(title) {
   if (!title) return '';
-  const stripped = title.split(/[:—–\-]/)[0].trim();
+  const stripped = title.split(/[:,—–\-]/)[0].trim();
   return stripped || title;
 }
 
