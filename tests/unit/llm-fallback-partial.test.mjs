@@ -65,6 +65,36 @@ test('countExpectedReviews BWW: counts thumb images across old + new variants', 
   assert.strictEqual(countExpectedReviews(html, 'bww'), 6);
 });
 
+test('countExpectedReviews BWW: retina @2x variant in same <img> counts as one thumb (P2 2026-04-22)', () => {
+  // P2 follow-up motivation: if BWW serves `<img src="uptrans.png"
+  // srcset="uptrans@2x.png 2x">`, the old raw-regex match counted twice per
+  // img (src + srcset) and spuriously tripped isPartialExtraction. The
+  // img-tag-scoped counter must see this as ONE review.
+  const html = `
+    <img src="uptrans.png" srcset="uptrans@2x.png 2x">
+    <img src="middletrans.png" srcset="middletrans@2x.png 2x">
+  `;
+  assert.strictEqual(countExpectedReviews(html, 'bww'), 2);
+});
+
+test('countExpectedReviews BWW: multiple thumb hits inside one <img> still count as one', () => {
+  // Transitional markup — e.g. `<img src="uptrans.png" data-fallback="BigThumbs_UP.gif">`
+  // — has two thumb matches in the same tag. Ground truth: one review. The
+  // old global-regex count would return 2 and burn an LLM call.
+  const html = `<img src="uptrans.png" data-fallback="BigThumbs_UP.gif">`;
+  assert.strictEqual(countExpectedReviews(html, 'bww'), 1);
+});
+
+test('countExpectedReviews BWW: thumbs in separate <img> tags each count (no false dedup)', () => {
+  // Guard against over-aggressive dedup — two genuinely distinct review
+  // images must still produce 2, not 1.
+  const html = `
+    <img src="uptrans.png">
+    <img src="uptrans.png">
+  `;
+  assert.strictEqual(countExpectedReviews(html, 'bww'), 2);
+});
+
 test('countExpectedReviews BWW: falls back to JSON-LD BlogPosting when thumbs missing', () => {
   const html = `
     <script type="application/ld+json">{"@type":"BlogPosting"}</script>
