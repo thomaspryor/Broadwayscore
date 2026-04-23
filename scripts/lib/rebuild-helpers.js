@@ -484,14 +484,36 @@ function getBestScore(data, opts = {}) {
   // (a) Non-KNOWN outlets with Tier 1.5 clearing (KNOWN outlets are handled above by P0.5 override)
   // (b) KNOWN_STAR_OUTLETS that never had originalScore extracted (only fullText available)
   // Respects scoreConfidence === 'low' (skip unreliable extractions).
+  //
+  // SAFETY: Inline recovery is lower-reliability than explicit originalScore — the stars
+  // may come from pull-quotes, ad copy, or unrelated content in fullText. So we apply
+  // the same LLM-bucket-conflict guard as P0.5's LOW_RELIABILITY path: if the LLM
+  // score disagrees strongly (>25pt delta AND different bucket) with high confidence,
+  // trust the LLM and flag for human review.
   if (!effectiveOriginalScore && (isKnownStarOutlet || isTier15Cleared) && data.fullText && data.scoreConfidence !== 'low') {
     const recovered = extractScore('', data.fullText, data.outletId);
     if (recovered && recovered.normalizedScore != null) {
       // Only trust unicode-stars and word-stars sources — these are unambiguous
       const TRUSTED_RECOVERY_SOURCES = new Set(['unicode-stars', 'unicode-stars-fallthrough', 'word-stars']);
       if (TRUSTED_RECOVERY_SOURCES.has(recovered.source)) {
+        const recoveredScore = recovered.normalizedScore;
+        const llm = data.llmScore && data.llmScore.score;
+        const llmConf = data.llmScore && data.llmScore.confidence;
+        if (llm && llmConf !== 'low' && Math.abs(recoveredScore - llm) > 25) {
+          const recBucket = recoveredScore >= 70 ? 'positive' : recoveredScore <= 40 ? 'negative' : 'mixed';
+          const llmBucket = llm >= 70 ? 'positive' : llm <= 40 ? 'negative' : 'mixed';
+          if (recBucket !== llmBucket) {
+            flagForHumanReview(data, 'inline-recovery-llm-conflict',
+              `inline-recovery (${recovered.source}=${recoveredScore}, bucket=${recBucket}) vs LLM ${llm} (bucket=${llmBucket}, conf=${llmConf})` +
+              ' [inline-recovery treated as LOW-reliability — LLM override on high conf]');
+            if (llmConf === 'high') {
+              inc('inlineRecoveryOverriddenByLLM');
+              return { score: maybeCalibrate(llm), source: 'llmScore-override-inline-recovery-conflict' };
+            }
+          }
+        }
         inc('inlineStarRecovery');
-        return { score: recovered.normalizedScore, source: 'originalScore-inline-recovery' };
+        return { score: recoveredScore, source: 'originalScore-inline-recovery' };
       }
     }
   }
