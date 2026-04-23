@@ -243,17 +243,28 @@
       "sentAt": "2026-04-22T12:52:46.250Z",
       "_migratedAt": "2026-04-22T18:29:55.786Z"
     },
-    "beaches-2026": {
-      "completed": true,
-      "completedAt": "2026-04-23T04:01:55.151Z",
-      "completedNote": "Broadcast manually blocked 2026-04-23 — opening-night reviews being ingested manually after BWW-fetch pipeline failure. Prevents auto-fire before 7-9am window.",
-      "draftStatus": "draft"
-    },
     "broadway:beaches-2026": {
+      "draftCreatedAt": "2026-04-23T12:54:43.210Z",
+      "draftId": "834eb0ba-c8c0-4f9a-8b81-638aa9b4f1a6",
+      "draftUrl": "https://resend.com/broadcasts/834eb0ba-c8c0-4f9a-8b81-638aa9b4f1a6",
+      "method": "resend-draft",
+      "reviewCount": 21,
       "completed": true,
-      "completedAt": "2026-04-23T04:01:55.151Z",
-      "completedNote": "See beaches-2026 entry",
-      "draftStatus": "draft"
+      "draftStatus": "draft",
+      "sentAt": null,
+      "recipientCount": null
+    },
+    "beaches-2026": {
+      "draftCreatedAt": "2026-04-23T12:54:43.210Z",
+      "draftId": "834eb0ba-c8c0-4f9a-8b81-638aa9b4f1a6",
+      "draftUrl": "https://resend.com/broadcasts/834eb0ba-c8c0-4f9a-8b81-638aa9b4f1a6",
+      "method": "resend-draft",
+      "reviewCount": 21,
+      "completed": true,
+      "draftStatus": "draft",
+      "sentAt": null,
+      "recipientCount": null,
+      "broadcastKey": "broadway:beaches-2026"
     }
   }
 }
