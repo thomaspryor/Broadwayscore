@@ -44,6 +44,29 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY;
 function log(...m) { console.log(...m); }
 function warn(...m) { console.warn(...m); }
 
+/**
+ * Pure parser for the Resend GET /broadcasts/{id} response.
+ *
+ * CRITICAL: 404 MUST route to `{ok: true, data: {status: 'deleted'}}` so that
+ * applyResendStatusUpdate's retention-reap protection engages (see
+ * scripts/lib/broadcast-state.js and memory/feedback_404_not_terminal.md).
+ *
+ * If a future refactor changes 404 to return null / `{ok: false}` / anything
+ * else, the retention-reap protection silently stops engaging and previously-
+ * sent broadcasts start getting re-queued 12h later. Test coverage lives in
+ * tests/unit/reconcile-broadcast-state.test.mjs.
+ */
+function parseBroadcastResponse(statusCode, body) {
+  if (statusCode === 200) {
+    try { return { ok: true, data: JSON.parse(body) }; }
+    catch (e) { return { ok: false, error: `parse:${e.message}` }; }
+  }
+  if (statusCode === 404) {
+    return { ok: true, data: { status: 'deleted' } };
+  }
+  return { ok: false, error: `HTTP ${statusCode}: ${(body || '').slice(0, 200)}` };
+}
+
 async function getBroadcast(broadcastId) {
   return new Promise((resolve) => {
     const req = https.request(
@@ -57,16 +80,7 @@ async function getBroadcast(broadcastId) {
       (res) => {
         let body = '';
         res.on('data', (chunk) => { body += chunk; });
-        res.on('end', () => {
-          if (res.statusCode === 200) {
-            try { resolve({ ok: true, data: JSON.parse(body) }); }
-            catch (e) { resolve({ ok: false, error: `parse:${e.message}` }); }
-          } else if (res.statusCode === 404) {
-            resolve({ ok: true, data: { status: 'deleted' } });
-          } else {
-            resolve({ ok: false, error: `HTTP ${res.statusCode}: ${body.slice(0, 200)}` });
-          }
-        });
+        res.on('end', () => resolve(parseBroadcastResponse(res.statusCode, body)));
       },
     );
     req.on('error', (e) => resolve({ ok: false, error: e.message }));
@@ -159,4 +173,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main };
+module.exports = { main, parseBroadcastResponse };

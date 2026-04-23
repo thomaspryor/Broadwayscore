@@ -137,11 +137,30 @@ test('applyResendStatusUpdate: does not mutate input', () => {
   assert.equal(rec.completed, true);
 });
 
+test('applyResendStatusUpdate: migrates unmigrated record inline (defensive)', () => {
+  // A legacy record without draftStatus reaches apply directly (startup
+  // migration skipped, or another script wrote to the tracker). apply must
+  // still correctly classify the 'deleted' retention-reap case.
+  const legacy = { draftId: 'd', completed: true, draftCreatedAt: '2026-04-22T12:30:00Z' };
+  const updated = applyResendStatusUpdate(legacy, { status: 'deleted' });
+  // migrateSentRecord inferred sent → 404 is retention reap → completed preserved.
+  assert.equal(updated.completed, true);
+  assert.equal(updated.draftStatus, 'deleted');
+});
+
 // ---- shouldRequeueShow ----
 test('shouldRequeueShow: never-sent record → requeue', () => {
   assert.equal(shouldRequeueShow(null), true);
   assert.equal(shouldRequeueShow({}), true);
   assert.equal(shouldRequeueShow({ completed: false }), true);
+});
+
+test('shouldRequeueShow: inconsistent completed=false + draftStatus=sent → do NOT requeue (trust reconciler)', () => {
+  // Guard against a broken external writer that produces this impossible
+  // state. applyResendStatusUpdate forces completed:true when status='sent',
+  // so the reconciler cannot produce this. Only a third-party script could.
+  const rec = { completed: false, draftStatus: 'sent', sentAt: '2026-04-22T13:00:00Z' };
+  assert.equal(shouldRequeueShow(rec), false);
 });
 
 test('shouldRequeueShow: completed=true + draft=sent → do NOT requeue', () => {

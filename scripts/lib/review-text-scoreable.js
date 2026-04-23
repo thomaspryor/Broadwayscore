@@ -52,6 +52,40 @@ function passesFlagFilters(data) {
   if (data.contentTier === 'invalid' || data.contentTier === 'stub') return false;
   if (data.scoreStatus === 'TO_BE_CALCULATED') return false;
 
+  // Additional rebuild-exclusion flags that the pre-2026-04-22 inline logic
+  // in validate-data.js was missing — mirrors scripts/lib/review-guards.js
+  // :isIncludableForRebuild so the drift check + silent-gap audit don't
+  // over-count files rebuild legitimately excludes.
+  if (
+    data.isNonReview === true ||
+    data.isNotReview === true ||
+    data.nonReviewFlag === true ||
+    data.nonReviewContent === true
+  ) return false;
+  if (data.fabricatedEntry === true) return false;
+  if (data.isSyndicatedDuplicate === true) return false;
+  if (data.crossOutletDuplicate === true) return false;
+  // High-confidence content-verification mismatch. Matches rebuild's gate at
+  // review-guards.js:1248 exactly — high-confidence only; lower confidences
+  // are merely advisory and rebuild still includes the file.
+  if (
+    data.contentVerification &&
+    data.contentVerification.wrongArticle === true &&
+    data.contentVerification.confidence === 'high'
+  ) return false;
+  // Canonical exclusion signal set by llm-scoring when the ensemble rejects
+  // a review (wrong_production, wrong_show, not_a_review, garbage_text).
+  // Cleared by a successful re-scrape (collect-review-texts.js). Exception:
+  // if text was re-fetched AFTER rejection, treat as revalidated and let
+  // downstream scoring decide.
+  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    const reFetched =
+      data.textFetchedAt &&
+      typeof data.textFetchedAt === 'string' &&
+      data.textFetchedAt > data.rejectedAt;
+    if (!reFetched) return false;
+  }
+
   // showNotMentioned + fullTextWrongAuthor only skip when there are no aggregator
   // excerpts to fall back on. Mirrors is-scoreable.js and validate-data.js logic.
   if (data.showNotMentioned && !hasAggregatorExcerpt(data)) return false;
