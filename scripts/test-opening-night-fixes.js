@@ -1510,14 +1510,28 @@ assert(
   'Fix A: isHumanFlagged check includes isLlmScored so scored files skip replacement branch'
 );
 
-// Verify the alreadyScored preserved fields block includes critical fields
+// Verify the alreadyScored preserved fields block includes critical fields.
+// 2026-04-22: the inline list was refactored into scripts/lib/wrongprod-replacement-preserve.js
+// (commit 30d3b27aa7). These assertions now exercise the helper directly —
+// the inline-literal grep was silently failing and the real assertion is
+// "does the helper return llmScore/fullText/publishDate for scored files."
+const { computeReplacementPreserve } = require('./lib/wrongprod-replacement-preserve');
+const scoredExisting = {
+  llmScore: { score: 85, confidence: 'high' },
+  humanReviewScore: null,
+  scoreStatus: 'scored',
+  fullText: 'Sample review text.',
+  publishDate: '2026-04-01',
+  criticName: 'Test Critic',
+};
+const preservedScored = computeReplacementPreserve(scoredExisting, { alreadyScored: true });
 assert(
-  gatherSrcCRF.includes("'llmScore', 'humanReviewScore', 'scoreStatus'"),
-  'Fix A: alreadyScored preserved fields includes llmScore, humanReviewScore, scoreStatus'
+  preservedScored.llmScore && preservedScored.humanReviewScore !== undefined && preservedScored.scoreStatus,
+  'Fix A: computeReplacementPreserve preserves llmScore, humanReviewScore, scoreStatus for scored files'
 );
 assert(
-  gatherSrcCRF.includes("'fullText'") && gatherSrcCRF.includes("'publishDate'"),
-  'Fix A: alreadyScored preserved fields includes fullText and publishDate'
+  preservedScored.fullText && preservedScored.publishDate,
+  'Fix A: computeReplacementPreserve preserves fullText and publishDate for scored files'
 );
 
 // Verify the condition fires BEFORE the wrongProd replacement branch
