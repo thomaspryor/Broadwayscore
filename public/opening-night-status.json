@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T03:16:03.506Z",
+  "generatedAt": "2026-04-23T03:35:33.953Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -317,24 +317,24 @@
       "slug": "a-midsummer-nights-dream-globe-west-end",
       "thumbnail": "/images/shows/a-midsummer-nights-dream-globe-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 60,
+      "liveScore": null,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 1,
-      "t2": 1,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
       "t3": 0,
       "positive": 0,
-      "mixed": 1,
-      "negative": 1,
+      "mixed": 0,
+      "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
-          "T1:1/3",
-          "T2:1/2",
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -367,6 +367,10 @@
           "isDualMarket": true
         },
         {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -382,6 +386,10 @@
         },
         {
           "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         },
         {
@@ -1426,23 +1434,23 @@
       "status": "open",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 76.89,
-      "liveScore": 77,
-      "scoreDrift": 0.10999999999999943,
+      "siteScore": 75.93,
+      "liveScore": 76,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
-      "t1": 4,
+      "total": 21,
+      "t1": 3,
       "t2": 12,
-      "t3": 8,
-      "positive": 18,
+      "t3": 6,
+      "positive": 15,
       "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 18,
+        "highConfidence": 16,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1671,6 +1679,18 @@
           "t2": 12,
           "t3": 8,
           "p": 18,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-23T03:35:33.953Z",
+          "rc": 21,
+          "s": 75.93,
+          "t1": 3,
+          "t2": 12,
+          "t3": 6,
+          "p": 15,
           "m": 5,
           "n": 1,
           "bc": "complete"
@@ -1940,9 +1960,9 @@
       "status": "open",
       "slug": "between-the-river-and-the-sea-west-end",
       "thumbnail": "/images/shows/between-the-river-and-the-sea-west-end-2026/thumbnail.webp",
-      "siteScore": 67.64,
+      "siteScore": 68.49,
       "liveScore": 68,
-      "scoreDrift": 0.35999999999999943,
+      "scoreDrift": -0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2041,6 +2061,18 @@
           "t": "2026-04-23T02:23:51.120Z",
           "rc": 7,
           "s": 67.64,
+          "t1": 3,
+          "t2": 1,
+          "t3": 3,
+          "p": 3,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-23T03:35:33.953Z",
+          "rc": 7,
+          "s": 68.49,
           "t1": 3,
           "t2": 1,
           "t3": 3,
