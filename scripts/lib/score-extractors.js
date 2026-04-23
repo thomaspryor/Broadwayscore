@@ -1184,22 +1184,23 @@ function extractScore(html, text, outletId) {
     }
   }
 
-  // Fallthrough for known star-rating outlets: when their outlet-specific extractor
-  // returned null (e.g. no HTML available, only fullText), try unicode star extraction
-  // on text. This catches cases where stars are in the fullText but the outlet extractor
-  // only looks at HTML structure (JSON-LD, CSS selectors, etc.).
+  // Fallthrough for known star-rating outlets: try unicode star extraction
+  // on text. This catches cases where stars are in the fullText but the outlet-
+  // specific extractor (if any) only looks at HTML structure (JSON-LD, CSS
+  // selectors, etc.) and missed them — OR the outlet has no extractor at all
+  // (e.g., latimes, amny, chicagotribune — 10 US outlets added 2026-04-22).
   //
   // ANCHOR: critics publish ratings at the opening line or verdict line, not mid-body.
   // Middle-of-text star sequences are usually pull-quotes from other outlets, ad copy,
   // or decorative separators. Only trust stars in the first or last 15% of the text.
-  // Pre-mortem (2026-04-22) flagged this as a P0 landmine for NY Post false positives.
-  if (OUTLET_EXTRACTORS[outletId] && KNOWN_STAR_OUTLETS.has(outletId)) {
+  // Pre-mortem (2026-04-22) flagged this as a P0 landmine for false positives.
+  if (KNOWN_STAR_OUTLETS.has(outletId)) {
     const matches = [...text.matchAll(/([★☆]{3,5})/g)];
     if (matches.length > 0) {
       const len = text.length;
       const anchoredMatch = matches.find(m => {
         const pos = m.index;
-        return pos < len * 0.15 || pos > len * 0.85;
+        return pos <= len * 0.15 || pos >= len * 0.85;
       });
       if (anchoredMatch) {
         const filled = (anchoredMatch[1].match(/★/g) || []).length;
@@ -1216,9 +1217,11 @@ function extractScore(html, text, outletId) {
     }
   }
 
-  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
-  // Only run these for outlets NOT in the explicit list
-  if (!OUTLET_EXTRACTORS[outletId]) {
+  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives.
+  // Skip for KNOWN_STAR_OUTLETS — they already had an anchored attempt above; if
+  // that didn't find anchored stars, unanchored generic extraction would defeat
+  // the anchor guard. Only non-KNOWN outlets fall through here.
+  if (!OUTLET_EXTRACTORS[outletId] && !KNOWN_STAR_OUTLETS.has(outletId)) {
     // Extract title/h1 text from HTML — many niche outlets put star ratings there
     // Title text is safe from CSS/JS false positives
     const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);

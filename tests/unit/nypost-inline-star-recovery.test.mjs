@@ -74,6 +74,30 @@ describe('extractScore anchor guard for KNOWN_STAR_OUTLETS fullText fallthrough'
     assert.strictEqual(result, null,
       'mid-text promotional ad stars must NOT extract');
   });
+
+  test('Anchor applies to outlets WITHOUT an OUTLET_EXTRACTORS entry (regression: 10 outlets)', () => {
+    // latimes, amny, chicagotribune, etc. have no entry in OUTLET_EXTRACTORS but are
+    // in KNOWN_STAR_OUTLETS. Prior to fix, they routed through extractGenericStarRating
+    // which had no anchor — mid-text pull-quote stars would false-positive.
+    const midQuote = LONG_MIDDLE.slice(0, 2000) +
+      '\n\n"★★★★★ — Variety" raved the Variety critic.\n\n' +
+      LONG_MIDDLE.slice(2000);
+    for (const outlet of ['latimes', 'amny', 'chicagotribune', 'boston-globe', 'newsday']) {
+      const result = extractScore('', midQuote, outlet);
+      assert.strictEqual(result, null,
+        `${outlet} mid-text pull-quote stars must NOT extract (anchor fix)`);
+    }
+  });
+
+  test('Byline stars DO extract for outlets without extractor entry', () => {
+    const text = BYLINE_OPENER + LONG_MIDDLE;
+    for (const outlet of ['latimes', 'amny', 'chicagotribune']) {
+      const result = extractScore('', text, outlet);
+      assert.ok(result, `${outlet} should extract opener stars`);
+      assert.strictEqual(result.source, 'unicode-stars-fallthrough');
+      assert.strictEqual(result.normalizedScore, 60);
+    }
+  });
 });
 
 describe('getBestScore P0.75 inline recovery for NY Post', () => {
