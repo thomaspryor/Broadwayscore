@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-23T02:06:50.421Z",
+    "generatedAt": "2026-04-23T02:33:34.758Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36423,
-      "inReviewsJson": 16620,
+      "totalFiles": 36425,
+      "inReviewsJson": 16623,
       "skippedExcluded": 55,
-      "withFullText": 24,
+      "withFullText": 18,
       "excerptOnly": 1586,
-      "llmClassified": 23,
+      "llmClassified": 17,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 15,
-      "budgetUsed": 0.0024,
-      "llmCalls": 24,
+      "budgetUsed": 0.0018000000000000006,
+      "llmCalls": 18,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14955
+      "skippedAlreadyClassified": 14964
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production itself. It also includes summaries of other theater-related news.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a collection of keywords and phrases related to theater, but it does not contain any evaluative content or opinion about a specific production. It seems to be a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be setting the stage for a review, but is not one itself.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature rather than a review.",
       "currentScore": 83
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article provides production details and cast information, resembling a news announcement or listing rather than a review with critical evaluation.",
       "currentScore": 64
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not an article about a specific show.",
       "currentScore": 78
     },
     {
@@ -176,14 +176,8 @@
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "avenue-q-west-end-2026/artsdesk--unknown.json",
-    "between-the-river-and-the-sea-west-end-2026/west-end-best-friend--alexandra-tullah.json",
-    "heart-wall-west-end-2026/theatre-weekly--jake-wiafe.json",
-    "heart-wall-west-end-2026/timeout-london--isobel-lewis.json",
-    "heart-wall-west-end-2026/times-uk--dominic-maxwell.json",
-    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/the-jewish-chronicle--john-nathan.json",
-    "inter-alia-west-end-2026/daily-mail--patrick-marmion.json",
-    "shadowlands-west-end-2026/guardian--mark-lawson.json"
+    "a-midsummer-nights-dream-unicorn-off-west-end-2026/british-theatre--keith-mckenna.json",
+    "dear-england-new-wimbledon-theatre-west-end-2026/london-box-office--stuart-king.json"
   ],
   "perShowSummary": []
 }
