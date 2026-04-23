@@ -24,6 +24,15 @@ on:
       - 'data/awards.json'
       - 'data/gold-lists-computed.json'
       # NOTE: data/audit/seo-* is NOT listed here, so SEO health check pushes won't trigger deploys
+  # Deploy-before-rebuild race fix (Beaches 2026-04-22 postmortem #9):
+  # When Rebuild Reviews Data finishes successfully, refresh production so the
+  # newly-rebuilt reviews.json actually ships. Without this, a deploy triggered
+  # by a public-repo push (e.g., src/ change) that races ahead of the rebuild
+  # clones stale core-data and serves yesterday's counts until the next deploy.
+  # Job-level guard (see deploy.if) skips failures.
+  workflow_run:
+    workflows: ["Rebuild Reviews Data"]
+    types: [completed]
   workflow_dispatch: # Manual trigger
 
 permissions:
@@ -33,6 +42,10 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Skip workflow_run triggers whose upstream run did not succeed. For all
+    # other events (push, workflow_dispatch), event.workflow_run is undefined
+    # which short-circuits to true. This is the Beaches #9 race guard.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     # 15-minute job timeout. Typical deploy completes in 2-5 min. On 2026-04-22, deploy
     # 24760225201 hung in_progress for 13+ min, blocking 3 subsequent deploys (Balusters
     # postmortem CLASS 9). GitHub Actions default is 6 hours. 15 min is generous enough to

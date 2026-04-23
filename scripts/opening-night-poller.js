@@ -468,21 +468,28 @@ async function runAggregators(show) {
   // SERP/Google indexing lags BWW publication by 1-6 hours — direct listing
   // updates within minutes, so it's the reliable path. Costs ~$0.10/call.
   // Skipped when a manual override is already present OR for off-Broadway (no BWW RR).
-  if (!BWW_ROUNDUP_URL && !isOffBroadway && !isWestEnd &&
-      process.env.BROWSERBASE_API_KEY && process.env.BROWSERBASE_PROJECT_ID) {
-    try {
-      const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
-      console.log('  Trying BWW reviews.php listing (Browserbase)...');
-      const discovery = await discoverBwwRoundupUrl(show);
-      if (discovery.url) {
-        BWW_ROUNDUP_URL = discovery.url;
-        bwwResolvedVia = 'reviews.php';
-        console.log(`  BWW RR URL auto-discovered: ${BWW_ROUNDUP_URL}`);
-      } else {
-        console.log('  reviews.php: no BWW RR for this show yet (will fall through to SERP)');
+  if (!BWW_ROUNDUP_URL && !isOffBroadway && !isWestEnd) {
+    if (!process.env.BROWSERBASE_API_KEY || !process.env.BROWSERBASE_PROJECT_ID) {
+      // Fail-loud: opening-night automation depends on this path. Silent skip
+      // on missing secrets is the Beaches-2026-04-22 failure mode — poller falls
+      // through to SERP/URL-guessing which hits wrong or unpublished URLs.
+      console.log('::warning::BWW reviews.php discovery SKIPPED — BROWSERBASE_API_KEY or BROWSERBASE_PROJECT_ID missing from env. Set secrets on this workflow.');
+    } else {
+      try {
+        const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover.js');
+        console.log('  Trying BWW reviews.php listing (Browserbase)...');
+        const discovery = await discoverBwwRoundupUrl(show);
+        if (discovery.url) {
+          BWW_ROUNDUP_URL = discovery.url;
+          bwwResolvedVia = 'reviews.php';
+          console.log(`  BWW RR URL auto-discovered: ${BWW_ROUNDUP_URL}`);
+        } else {
+          const tried = (discovery.candidates || []).length;
+          console.log(`  reviews.php: no matching BWW RR (${tried} anchors seen, 0 matched show) — falling through to SERP/guessing`);
+        }
+      } catch (err) {
+        console.log(`::warning::reviews.php discovery error (falling through to SERP): ${err.message}`);
       }
-    } catch (err) {
-      console.log(`  reviews.php discovery error (falling through to SERP): ${err.message}`);
     }
   }
 

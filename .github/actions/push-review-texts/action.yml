@@ -59,9 +59,17 @@ runs:
             'humanReviewScore', 'humanReviewNote', 'humanReviewedWrongProduction',
             'humanReviewedWrongArticle',
             'wrongProductionManualClear', 'wrongArticleManualClear', 'wrongShowManualClear',
-            'wrongProductionOverride',
+            'wrongProductionOverride', 'wrongShowOverride', 'wrongShowNote',
+            'wrongShowAutoCleared', 'wrongProductionAutoCleared',
+            'wrongProductionAutoClearedAt', 'wrongProductionReason', 'wrongAttribution',
+            'manualContentTier',
             'designation', 'isCriticsPick', 'originalScore', 'duplicateOf', 'duplicateReason',
-            'publishDateVerified', 'publishDateSource', 'allowEarlyDate',
+            'publishDateVerified', 'publishDateSource',
+            // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
+            'allowEarlyDate', 'allowLateDate', 'allowCrossMarket',
+            'allowTourSignal', 'allowFilmSignal', 'routedFromShowId',
+            // Per-file protection array — keeps ingest-manual-review's fields locked
+            'protectedFields',
             // SERP retry state — losing these on rebase resets the cooldown backoff
             'serpRetryAfter', 'serpRetryCount', 'serpDiscoveryAbandoned', 'wrongShowRetryAt'
           ];
