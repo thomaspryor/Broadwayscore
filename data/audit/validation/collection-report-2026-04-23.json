@@ -1,0 +1,99 @@
+{
+  "runDate": "2026-04-23T03:19:13.999Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 1000,
+    "priority": "all",
+    "showFilter": "schmigadoon-2026,fallen-angels-2026,proof-2026,the-fear-of-13-2026,becky-shaw-2026,dog-day-afternoon-2026,every-brilliant-thing-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 9,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "90.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "amp": 0,
+    "browserbase": 14,
+    "directCookies": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archiveToday": 1,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 7,
+    "tier1_5Success": 7,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 10,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 7,
+    "browserbaseMinutesUsed": 1.9,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "fallen-angels-2026/variety--unknown.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json",
+    "becky-shaw-2026/wsj--charles-isherwood.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/talkinbroadway--unknown.json"
+  ],
+  "failed": [
+    "dog-day-afternoon-2026/independent--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/fallen-angels-2026/variety--unknown.json",
+      "fallen-angels-2026/variety--unknown.json",
+      "data/review-texts/fallen-angels-2026/wsj--charles-isherwood.json",
+      "fallen-angels-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-fear-of-13-2026/wsj--charles-isherwood.json",
+      "the-fear-of-13-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-fear-of-13-2026/wsj--unknown.json",
+      "the-fear-of-13-2026/wsj--unknown.json",
+      "data/review-texts/becky-shaw-2026/wsj--charles-isherwood.json",
+      "becky-shaw-2026/wsj--charles-isherwood.json",
+      "data/review-texts/becky-shaw-2026/wsj--unknown.json",
+      "becky-shaw-2026/wsj--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/wsj--unknown.json",
+      "dog-day-afternoon-2026/wsj--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "dog-day-afternoon-2026/talkinbroadway--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/dog-day-afternoon-2026/independent--unknown.json"
+    ],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
