@@ -20,6 +20,7 @@ const require = createRequire(import.meta.url);
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const { isBlockedReviewUrl } = require(join(ROOT, 'scripts/lib/domain-filters.js'));
+const { resolveOutletFromUrl } = require(join(ROOT, 'scripts/lib/review-normalization.js'));
 
 const NYTG_URLS = [
   'https://www.newyorktheatreguide.com/reviews/becky-shaw-broadway-review',
@@ -36,6 +37,27 @@ for (const url of NYTG_URLS) {
       `NYTG URL got blocked — Bucket A regression. If you re-added NYTG to ` +
         `AGGREGATOR_DOMAINS, revert: NYTG publishes original reviews (Kyle Turner, ` +
         `Allison Considine, etc.) and blocking it silently drops them from rebuild.`
+    );
+  });
+}
+
+// End-to-end completeness: domain-filter unblock alone is insufficient if
+// resolveOutletFromUrl can't map the URL to an outletId. The initial Fix 9
+// shipped with the domain unblocked but no US-spelling domain alias on nytg,
+// so every US-spelling URL past the filter resolved to null downstream and
+// lost its outlet attribution. Assert both spellings resolve to nytg.
+for (const url of NYTG_URLS) {
+  test(`NYTG review URL must resolve to outletId=nytg: ${url}`, () => {
+    const resolved = resolveOutletFromUrl(url);
+    assert.ok(
+      resolved,
+      `resolveOutletFromUrl returned null for NYTG URL. The domain alias is ` +
+        `missing from outlet-registry.json. Add the hostname to nytg.domainAliases.`
+    );
+    assert.strictEqual(
+      resolved.outletId,
+      'nytg',
+      `Expected outletId=nytg, got ${resolved.outletId}. NYTG domain alias is wrong.`
     );
   });
 }
