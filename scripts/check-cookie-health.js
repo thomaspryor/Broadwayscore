@@ -19,6 +19,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { loadCookiesByFileKey, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
+const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 
 // --- Outlet Configuration ---
 
@@ -300,6 +301,35 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
   }
 }
 
+// --- Layer 3 (plain HTTPS): for outlets where proxies are blocked (WSJ/New Yorker) ---
+// Uses fetchWithCookiesPlain directly — the same code path gather/collect scripts take.
+// A pass here proves PR #260 cookie wiring actually reaches the paywalled article.
+
+async function checkLiveAccessPlain(fileKey, testUrl, authCookies) {
+  try {
+    const result = await fetchWithCookiesPlain(testUrl);
+    if (!result || !result.content) {
+      return { status: 'fail', message: 'Plain-HTTPS fetch returned null (cookies missing or request failed)' };
+    }
+
+    const html = result.content;
+    const isSoftPaywall = !authCookies || authCookies.length === 0;
+    if (isBlocked(html)) {
+      return { status: 'fail', message: `Blocked (${html.length} chars)` };
+    }
+    if (isPaywalled(html)) {
+      if (isSoftPaywall && html.length > 50000) {
+        return { status: 'pass', message: `OK soft-paywall (${html.length} chars)` };
+      }
+      return { status: 'fail', message: `Paywalled — subscriber cookies not authenticating (${html.length} chars)` };
+    }
+    if (html.length < 2000) return { status: 'warn', message: `Short (${html.length} chars)` };
+    return { status: 'pass', message: `OK plain-HTTPS (${html.length} chars)` };
+  } catch (err) {
+    return { status: 'fail', message: `Plain-HTTPS error: ${err.message}` };
+  }
+}
+
 // --- Main ---
 
 async function main() {
@@ -389,11 +419,12 @@ async function main() {
         return { name: fileKey, layer: 3, status: 'skip', message: msg, isCritical: true };
       }
 
-      let live = await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
-      // Proxy-blocked outlets: downgrade fail→warn (site blocks proxies, not a cookie issue)
-      if (config.proxyBlocked && live.status === 'fail') {
-        live = { ...live, status: 'warn', message: live.message + ' (proxy-blocked site)' };
-      }
+      // Proxy-blocked outlets (WSJ, New Yorker) use plain HTTPS + cookies instead of
+      // ScrapingBee. Post PR #260, fetchWithCookiesPlain is the primary path gather/collect
+      // take for these domains, so this is the real end-to-end verification.
+      const live = config.proxyBlocked
+        ? await checkLiveAccessPlain(fileKey, config.testUrl, config.authCookies)
+        : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies);
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
     });
