@@ -333,7 +333,13 @@
     "la-bete-2010/chicagotribune--ben-brantley.json",
     "bloody-bloody-andrew-jackson-2010/hollywood-reporter--frank-scheck.json",
     "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
-    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json"
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -376,12 +382,14 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-23T08:55:34.993Z",
-  "lastProcessed": "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-04-23T09:02:21.400Z",
@@ -468,6 +476,17 @@
     },
     {
       "t": "2026-04-23T11:20:09.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T11:49:27.639Z",
+      "event": "bb-session",
+      "session": "fb26e996",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T11:49:28.323Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
