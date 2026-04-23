@@ -21,11 +21,20 @@
  *   node scripts/check-review-count-drift.js --show=cats-2026 # single show, verbose
  *   node scripts/check-review-count-drift.js --json-only      # suppress per-show table
  *   node scripts/check-review-count-drift.js --strict         # exit non-zero on threshold breach
+ *   node scripts/check-review-count-drift.js --show=ID --single-show-delta=2 --strict
+ *                                                             # tighter threshold (opening-night gate)
  *
  * Thresholds (alert if ANY fire):
  *   - SHOW_DELTA_THRESHOLD        single show: |expected - actual| > 3
+ *                                 override with --single-show-delta=N
  *   - GLOBAL_DELTA_THRESHOLD      |sum(expected) - sum(actual)| > 15
  *   - SHOW_PERCENT_THRESHOLD      single show: |delta| / expected > 0.5
+ *
+ * Audit output:
+ *   - Default:                    data/audit/review-count-drift.json (whole-repo run)
+ *   - With --show=ID:             data/audit/review-count-drift-{show}.json
+ *                                 (per-show run never overwrites the daily one)
+ *   - Override with --audit-out=PATH
  *
  * Exit codes:
  *   0 — no threshold breach (or --strict off)
@@ -50,9 +59,19 @@ const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[
 const jsonOnly = args.includes('--json-only');
 const strict = args.includes('--strict');
 const verbose = args.includes('--verbose') || !!showFilter;
+const singleShowDeltaArg = (args.find((a) => a.startsWith('--single-show-delta=')) || '').split('=')[1];
+const auditOutArg = (args.find((a) => a.startsWith('--audit-out=')) || '').split('=')[1] || null;
 
 // Thresholds --------------------------------------------------
-const SHOW_DELTA_THRESHOLD = 3;
+// Per-show delta: daily run uses 3 (some noise from context-dependent guards
+// is acceptable). Opening-night pre-broadcast gate tightens to 2 — at the
+// moment of broadcast the source-of-truth and derived file should agree
+// near-exactly, and the user-visible cost of a missing review is highest.
+const SHOW_DELTA_THRESHOLD = singleShowDeltaArg !== undefined ? parseInt(singleShowDeltaArg, 10) : 3;
+if (Number.isNaN(SHOW_DELTA_THRESHOLD) || SHOW_DELTA_THRESHOLD < 0) {
+  console.error(`ERROR: --single-show-delta must be a non-negative integer, got "${singleShowDeltaArg}"`);
+  process.exit(1);
+}
 const GLOBAL_DELTA_THRESHOLD = 15;
 const SHOW_PERCENT_THRESHOLD = 0.5;
 
@@ -60,7 +79,14 @@ const SHOW_PERCENT_THRESHOLD = 0.5;
 const REPO_ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data', 'review-texts');
 const REVIEWS_JSON = path.join(REPO_ROOT, 'data', 'reviews.json');
-const OUTPUT_PATH = path.join(REPO_ROOT, 'data', 'audit', 'review-count-drift.json');
+// Per-show runs write to a show-scoped audit file so they never overwrite the
+// global file produced by the daily check-review-count-drift workflow.
+const DEFAULT_AUDIT_FILENAME = showFilter
+  ? `review-count-drift-${showFilter}.json`
+  : 'review-count-drift.json';
+const OUTPUT_PATH = auditOutArg
+  ? path.resolve(auditOutArg)
+  : path.join(REPO_ROOT, 'data', 'audit', DEFAULT_AUDIT_FILENAME);
 
 // Helpers -----------------------------------------------------
 function log(...msg) { if (!jsonOnly) console.log(...msg); }
@@ -185,6 +211,7 @@ function main() {
     log(`Total expected:         ${totalExpected}`);
     log(`Total actual:           ${totalActual}`);
     log(`Global delta:           ${globalDelta}  (threshold: ±${GLOBAL_DELTA_THRESHOLD})`);
+    log(`Per-show threshold:     ±${SHOW_DELTA_THRESHOLD} OR >${SHOW_PERCENT_THRESHOLD * 100}%`);
     log(`Shows over threshold:   ${showsOverThreshold.length}`);
     log(`Orphan review-ids:      ${orphanReviews.length}`);
   }

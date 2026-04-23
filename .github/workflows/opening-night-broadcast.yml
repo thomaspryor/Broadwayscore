@@ -338,6 +338,65 @@ jobs:
             echo "Checklist gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
+      - name: Drift gate — block send if reviews.json out of sync with review-texts (per-show)
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Per-show drift gate. Same predicate as the daily Check Review-Count Drift
+          # workflow, but with a tighter single-show threshold (>2 absolute, vs >3 daily).
+          # At broadcast time the source-of-truth (data/review-texts/) and the derived
+          # file (data/reviews.json) should agree near-exactly for the show we're about
+          # to email — a missing review here is the most user-visible failure mode.
+          # Audit output is show-scoped (data/audit/review-count-drift-{show}.json) so
+          # this never overwrites the daily run's audit file.
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          BREACHED_SHOWS=()
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            # Capture exit code WITHOUT a pipe (memory: pipe-masks-exit-code).
+            # --strict exits 2 on breach; everything else is exit 0/1.
+            set +e
+            node scripts/check-review-count-drift.js \
+              --show="$SHOW" \
+              --single-show-delta=2 \
+              --strict \
+              > /tmp/drift-"$SHOW".log 2>&1
+            STATUS=$?
+            set -e
+            cat /tmp/drift-"$SHOW".log
+            echo "Show $SHOW: drift check exit=$STATUS"
+            if [ "$STATUS" -eq 2 ]; then
+              BLOCKED=true
+              BREACHED_SHOWS+=("$SHOW")
+            elif [ "$STATUS" -ne 0 ]; then
+              # Non-2 non-zero = script crash. Don't block broadcast on infrastructure
+              # failure (review-texts dir missing, JSON parse error, etc.) — surface
+              # as a warning so the run still notifies, but proceed to the send path.
+              echo "::warning::Drift check for $SHOW crashed (exit $STATUS). Not blocking broadcast."
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
+            echo "::error::Drift gate blocked broadcast — review-count drift exceeds ±2 for: $BREACHED_LIST. Set force_broadcast=true to override."
+            BREACHED_LIST="$BREACHED_LIST" node -e "
+              const { sendAlert } = require('./scripts/lib/discord-notify');
+              sendAlert({
+                title: 'Opening Night Broadcast Blocked — Review-Count Drift',
+                description: 'Automated broadcast halted: data/reviews.json is out of sync with data/review-texts/ for one or more pending shows. Drift > 2 reviews (per-show pre-broadcast threshold).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
+                severity: 'warning',
+                email: true,
+                fields: [{ name: 'Shows', value: process.env.BREACHED_LIST || '(unknown)' }],
+              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+            "
+          else
+            echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
+          fi
+
       - uses: actions/setup-node@v5
         if: steps.check.outputs.pending_shows != ''
         with:
