@@ -1363,6 +1363,18 @@ const KNOWN_STAR_OUTLETS = new Set([
   'one-minute-critic',
 ]);
 
+// Outlets whose published star rating (when extracted by a dedicated extractor)
+// should be treated as ground truth by the scoring engine — adjudication and
+// LLM-override paths must not overwrite them. Superset of KNOWN_STAR_OUTLETS;
+// use this set (not KNOWN_STAR_OUTLETS) when you only need "outlet stars win"
+// semantics without opting in to fullText inline-recovery or aggregator relay,
+// both of which have known false-positive modes on some US outlets
+// (e.g. nypost fullText can contain stray ★ from unrelated article blurbs).
+const OUTLET_STAR_AUTHORITATIVE = new Set([
+  ...KNOWN_STAR_OUTLETS,
+  'nypost', 'ny-post', 'new-york-post',
+]);
+
 module.exports = {
   extractScore,
   extractDesignation,
@@ -1391,6 +1403,7 @@ module.exports = {
   scoreToThumb,
   OUTLET_VERIFIED_SOURCES,
   KNOWN_STAR_OUTLETS,
+  OUTLET_STAR_AUTHORITATIVE,
   OUTLET_EXTRACTORS,
   EXTRACTOR_VERSION
 };
