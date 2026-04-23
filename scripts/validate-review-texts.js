@@ -163,20 +163,26 @@ function validateReviewFile(filePath, validOutlets, seenReviews) {
     return { errors, warnings };
   }
 
-  // Validate duplicateOf target exists before skipping
-  if (data.duplicateOf) {
-    const targetPath = path.join(path.dirname(filePath), data.duplicateOf);
-    if (!fs.existsSync(targetPath)) {
-      errors.push({
-        file: relativePath,
-        check: 'broken_duplicate_ref',
-        message: `Broken duplicateOf reference: "${data.duplicateOf}" does not exist`
-      });
+  // Validate duplicateOf / duplicateTextOf targets exist before skipping
+  for (const field of ['duplicateOf', 'duplicateTextOf']) {
+    if (data[field]) {
+      const targetPath = path.join(path.dirname(filePath), data[field]);
+      if (!fs.existsSync(targetPath)) {
+        errors.push({
+          file: relativePath,
+          check: 'broken_duplicate_ref',
+          message: `Broken ${field} reference: "${data[field]}" does not exist`
+        });
+      }
     }
   }
 
   // Skip files excluded from rebuild (duplicates, wrong production, etc.)
-  if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle) {
+  // duplicateTextOf is a fingerprint-based dedup respected by rebuild-all-reviews.js
+  // and audit-review-duplicates.js — validator must match or it errors on legitimate
+  // duplicate-text flags (e.g. a Variety review filed under two critic names after
+  // criticEnrichedFrom: html-override:jsonld-person updates criticName post-ingest).
+  if (data.duplicateOf || data.duplicateTextOf || data.wrongProduction || data.wrongShow || data.wrongUrl || data.wrongAttribution || data.isRoundupArticle) {
     return { errors, warnings, skipped: true };
   }
 
