@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "pass",
-  "lastChecked": "2026-04-22T07:35:09.141Z",
+  "lastChecked": "2026-04-23T07:36:36.523Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "3h ago, cancelled"
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Collect Review Texts",
@@ -22,6 +22,11 @@
       "message": "2h ago, success"
     },
     {
+      "name": "Cron: Test Suite",
+      "status": "pass",
+      "message": "1h ago, success"
+    },
+    {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
       "message": "2h ago, success"
@@ -29,7 +34,7 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
@@ -39,7 +44,7 @@
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
@@ -49,12 +54,17 @@
     {
       "name": "Cron: Weekly NYT Critics Picks",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
+    },
+    {
+      "name": "Cron: Update Social Pulse",
+      "status": "pass",
+      "message": "1d ago, success"
     }
   ]
 }
