@@ -10,7 +10,9 @@
     "proof-2026/nypost--unknown.json",
     "proof-2026/timeout--unknown.json",
     "death-of-a-salesman-2026/ew--unknown.json",
-    "dog-day-afternoon-2026/talkinbroadway--howard-miller.json"
+    "dog-day-afternoon-2026/talkinbroadway--howard-miller.json",
+    "between-the-river-and-the-sea-west-end-2026/artsdesk--aleks-sierz.json",
+    "between-the-river-and-the-sea-west-end-2026/broadwayworld--cindy-marcolina.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
@@ -133,7 +135,13 @@
     "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
     "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
     "the-ferryman-2018/theater-news-online--jessica-branch.json",
-    "the-ferryman-2018/walterthinnes--walter-thinnes.json"
+    "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -141,7 +149,8 @@
       "schmigadoon-2026/ew--unknown.json",
       "proof-2026/nytg--unknown.json",
       "proof-2026/ew--unknown.json",
-      "death-of-a-salesman-2026/ew--unknown.json"
+      "death-of-a-salesman-2026/ew--unknown.json",
+      "between-the-river-and-the-sea-west-end-2026/artsdesk--aleks-sierz.json"
     ],
     "amp": [],
     "browserbase": [
@@ -151,11 +160,13 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/proof-2026/nytimes--unknown.json",
       "data/review-texts/proof-2026/deadline--unknown.json",
-      "proof-2026/deadline--unknown.json"
+      "proof-2026/deadline--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "proof-2026/timeout--unknown.json"
+      "proof-2026/timeout--unknown.json",
+      "between-the-river-and-the-sea-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "brightdata": [
       "the-balusters-2026/nypost--johnny-oleksinski.json",
@@ -169,12 +180,13 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json"
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-23T08:55:34.993Z",
-  "lastProcessed": "the-ferryman-2018/walterthinnes--walter-thinnes.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-04-23T09:02:21.400Z",
@@ -252,6 +264,17 @@
       "t": "2026-04-23T10:41:04.369Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-23T11:20:09.250Z",
+      "event": "bb-session",
+      "session": "2c05aad3",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T11:20:09.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
