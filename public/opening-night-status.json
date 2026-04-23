@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T04:13:47.190Z",
+  "generatedAt": "2026-04-23T05:20:47.175Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -426,23 +426,23 @@
       "status": "open",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "siteScore": 41.75,
-      "liveScore": 42,
-      "scoreDrift": 0.25,
+      "siteScore": 48.36,
+      "liveScore": 48,
+      "scoreDrift": -0.35999999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 21,
       "t1": 4,
-      "t2": 9,
-      "t3": 3,
-      "positive": 1,
-      "mixed": 0,
-      "negative": 15,
+      "t2": 13,
+      "t3": 4,
+      "positive": 3,
+      "mixed": 2,
+      "negative": 16,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 8,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -451,8 +451,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "complete",
+        "detail": "Sent Invalid Date"
       },
       "missingT1": [
         {
@@ -662,6 +662,18 @@
           "m": 0,
           "n": 15,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-23T05:20:47.175Z",
+          "rc": 21,
+          "s": 48.36,
+          "t1": 4,
+          "t2": 13,
+          "t3": 4,
+          "p": 3,
+          "m": 2,
+          "n": 16,
+          "bc": "complete"
         }
       ]
     },
@@ -1379,17 +1391,17 @@
       "status": "open",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 76.55,
+      "siteScore": 76.67,
       "liveScore": 77,
-      "scoreDrift": 0.45000000000000284,
+      "scoreDrift": 0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 23,
       "t1": 4,
-      "t2": 12,
+      "t2": 13,
       "t3": 6,
-      "positive": 16,
+      "positive": 17,
       "mixed": 5,
       "negative": 1,
       "readiness": {
@@ -1458,10 +1470,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
         {
           "name": "amNewYork",
           "isDualMarket": false
@@ -1648,6 +1656,18 @@
           "t2": 12,
           "t3": 6,
           "p": 16,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-23T05:20:47.175Z",
+          "rc": 23,
+          "s": 76.67,
+          "t1": 4,
+          "t2": 13,
+          "t3": 6,
+          "p": 17,
           "m": 5,
           "n": 1,
           "bc": "complete"

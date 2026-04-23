@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-23T04:03:12.302Z",
+    "generatedAt": "2026-04-23T05:06:41.171Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36437,
-      "inReviewsJson": 16626,
+      "totalFiles": 36438,
+      "inReviewsJson": 16636,
       "skippedExcluded": 55,
-      "withFullText": 27,
+      "withFullText": 35,
       "excerptOnly": 1575,
-      "llmClassified": 26,
+      "llmClassified": 34,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 15,
-      "budgetUsed": 0.0026999999999999993,
-      "llmCalls": 27,
+      "budgetUsed": 0.003499999999999998,
+      "llmCalls": 35,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14969
+      "skippedAlreadyClassified": 14971
     },
     "calibration": null
   },
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain any evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors'. It lacks any evaluative content about the show.",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
       "currentScore": 74
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "wsj",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article appears to be truncated, but the available text suggests it is a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "reasoning": "The article appears to be truncated and is displaying WSJ subscription information. Without the full text, it's difficult to classify, but the presence of '9 hours ago' suggests a news-related item rather than a review.",
       "currentScore": 78
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical relevance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -160,7 +160,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to news due to the mention of updates.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -170,23 +170,31 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women' or any other show.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
+    "beaches-2026/chicagotribune--chris-jones.json",
+    "beaches-2026/culturesauce--thom-geier.json",
     "beaches-2026/deadline--greg-evans.json",
+    "beaches-2026/ew--sarah-hearon.json",
     "beaches-2026/exeunt-magazine--cameron-kelsall.json",
+    "beaches-2026/guardian--richard-lawson.json",
+    "beaches-2026/nypost--johnny-oleksinski.json",
     "beaches-2026/nysr--bob-verini.json",
     "beaches-2026/nysr--david-finkle.json",
     "beaches-2026/nyt-theater--jonathan-mandell.json",
     "beaches-2026/nytg--joe-dziemianowicz.json",
     "beaches-2026/nytimes--laura-collins-hughes.json",
+    "beaches-2026/people--dave-quinn.json",
+    "beaches-2026/slantmagazine--dan-rubins.json",
+    "beaches-2026/theatermania--zachary-stewart.json",
     "beaches-2026/thewrap--robert-hofler.json",
     "beaches-2026/timeout--adam-feldman.json",
     "beaches-2026/variety--frank-rizzo.json",
-    "dog-day-afternoon-2026/wsj--charles-isherwood.json"
+    "schmigadoon-2026/theatre-reviews-limited--joseph-verlezza.json"
   ],
   "perShowSummary": []
 }
