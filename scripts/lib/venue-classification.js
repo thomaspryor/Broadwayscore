@@ -46,6 +46,25 @@ function isLondonMarket(category) {
 }
 
 /**
+ * Broadway category predicate — mirrors src/lib/data-core.ts:64 for Node scripts.
+ *
+ * CONVENTION: null/undefined category counts as Broadway. ~1700 historical-import
+ * shows (pre-2024) have null category because the creator scripts didn't stamp
+ * it; the live site treats null as Broadway and this helper keeps scripts
+ * consistent. Always use this predicate — never `s.category === 'broadway'`
+ * directly, or you'll exclude ~94% of the historical Broadway corpus.
+ */
+function isBroadwayCategory(show) {
+  if (!show) return false;
+  return !show.category || show.category === 'broadway';
+}
+
+/** Off-Broadway category predicate. */
+function isOffBroadwayCategory(show) {
+  return !!show && show.category === 'off-broadway';
+}
+
+/**
  * Returns true if a URL belongs to a UK or major theatre outlet.
  * Used to prevent wrongShow false positives on London-market shows
  * reviewed by UK outlets.
@@ -120,4 +139,4 @@ function isBroadwayUrl(url, outletId) {
   return null;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES };
