@@ -14,6 +14,12 @@
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
     "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
@@ -21,12 +27,14 @@
     "playwright": [],
     "amp": [],
     "browserbase": [
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
@@ -42,6 +50,17 @@
     },
     {
       "t": "2026-04-23T09:02:21.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T09:26:55.671Z",
+      "event": "bb-session",
+      "session": "c0288058",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T09:26:56.829Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
