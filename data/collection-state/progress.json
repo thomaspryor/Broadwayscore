@@ -8,20 +8,42 @@
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "the-little-mermaid-the-musical-off-broadway-2026/thestage--unknown.json",
-    "titanique-off-broadway-2022/newyorker--dan-stahl.json"
+    "titanique-off-broadway-2022/newyorker--dan-stahl.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-23T08:55:34.993Z",
-  "lastProcessed": "titanique-off-broadway-2022/newyorker--dan-stahl.json",
-  "log": []
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+  "log": [
+    {
+      "t": "2026-04-23T09:02:21.400Z",
+      "event": "bb-session",
+      "session": "3b440ff7",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T09:02:21.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
