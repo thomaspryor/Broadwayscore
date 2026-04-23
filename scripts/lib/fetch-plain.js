@@ -18,15 +18,33 @@ async function fetchWithCookiesPlain(url) {
   const cookieHeader = buildCookieHeaderForUrl(url);
   if (!cookieHeader) return null;
 
+  // Build Referer from article origin — WSJ's DataDome and Condé Nast both
+  // reject cookie-authenticated requests without Referer + Sec-Fetch-* signals,
+  // even with a full subscriber cookie jar (verified 2026-04-23 via CI live
+  // check: HTTP 401 without these, HTTP 200 with them).
+  // Pattern proven by scripts/recover-wsj-subscriber.js.
+  let referer;
+  try {
+    referer = new URL(url).origin + '/';
+  } catch {
+    return null;
+  }
+
   try {
     const response = await new Promise((resolve, reject) => {
       const opts = {
         method: 'GET',
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language': 'en-US,en;q=0.9',
           'Cookie': cookieHeader,
+          'Referer': referer,
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'same-origin',
+          'Sec-Fetch-User': '?1',
+          'Upgrade-Insecure-Requests': '1',
         },
         timeout: 20000,
       };
