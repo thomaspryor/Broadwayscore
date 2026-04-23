@@ -32,7 +32,9 @@ const PAYWALL_PATTERNS = [
   /sign\s+in\s+to\s+(continue|read|access|view)/i,
   /log\s+in\s+to\s+(continue|read|access|view)/i,
   /members?\s+only/i,
-  /subscriber(s)?(\s+only)?(\s+content)?/i,
+  // Require a qualifier after "subscriber(s)" — bare "Subscriber" appears in
+  // WSJ nav chrome ("Subscriber Sign-In") and is not a paywall signal on its own.
+  /subscribers?\s+(only|content|exclusive|access)/i,
   /premium\s+(content|article|access)/i,
   /create\s+(a\s+)?(free\s+)?account\s+to/i,
   /already\s+a\s+(member|subscriber)/i,
