@@ -3,7 +3,9 @@
     "schmigadoon-2026/ew--unknown.json",
     "schmigadoon-2026/wsj--unknown.json",
     "proof-2026/ew--unknown.json",
-    "death-of-a-salesman-2026/ew--unknown.json"
+    "death-of-a-salesman-2026/ew--unknown.json",
+    "the-balusters-2026/talkinbroadway--unknown.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "the-balusters-2026/talkinbroadway--unknown.json",
@@ -310,7 +312,15 @@
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
     "the-pitmen-painters-2010/bloomberg--john-simon.json",
     "brief-encounter-2010/newyorker--uncredited.json",
-    "brief-encounter-2010/nytheatre--martin-denton.json"
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "proof-2026/nytimes--unknown.json",
+    "flyby-off-west-end-2026/guardian--unknown.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -329,18 +339,21 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [
-      "the-balusters-2026/talkinbroadway--unknown.json"
+      "the-balusters-2026/talkinbroadway--unknown.json",
+      "the-balusters-2026/talkinbroadway--unknown.json",
+      "fallen-angels-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
       "data/review-texts/flyby-off-west-end-2026/guardian--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+      "data/review-texts/flyby-off-west-end-2026/guardian--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-23T16:42:29.240Z",
-  "lastProcessed": "brief-encounter-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-23T16:44:44.608Z",
@@ -385,6 +398,17 @@
       "t": "2026-04-23T18:47:04.329Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T19:20:53.837Z",
+      "event": "bb-session",
+      "session": "b4a7e825",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-23T19:20:54.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
