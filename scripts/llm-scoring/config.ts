@@ -401,7 +401,13 @@ Text: "The page you are looking for no longer exists. Perhaps you can return bac
 Response: { "scoreable": false, "rejection": "garbage_text", "reasoning": "This is a 404 error page, not a review." }
 `;
 
-export const SCORING_PROMPT_V5 = `Score this Broadway review.
+// Opening line is intentionally market-neutral — the market label ("Broadway",
+// "West End", "Off-Broadway", "Off-West End") is emitted by input-builder.ts
+// inside {context} on the "Show: X at Y (Market)" line. Earlier versions said
+// "Score this Broadway review." which primed the LLM toward Broadway even for
+// WE shows and collided with the wrong_production check in SYSTEM_PROMPT_V5.
+// Fixed 2026-04-23 (Notion 34b637c5-416f-81ad-8afb-e39b9de9e926).
+export const SCORING_PROMPT_V5 = `Score this theater review.
 
 {context}
 
