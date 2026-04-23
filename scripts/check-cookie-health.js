@@ -19,7 +19,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { loadCookiesByFileKey, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
-const { fetchWithCookiesPlain } = require('./lib/scraper');
+const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 
 // --- Outlet Configuration ---
 
