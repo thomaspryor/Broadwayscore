@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-23T03:28:26.546Z",
-  "processed": 17,
-  "failed": 690,
-  "successRate": "2.4%",
+  "updatedAt": "2026-04-23T03:29:46.969Z",
+  "processed": 19,
+  "failed": 695,
+  "successRate": "2.7%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 17,
+    "browserbase": 20,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 2,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-04-23T03:25:56.983Z",
-      "event": "bb-session",
-      "session": "545089b3",
-      "url": "http://hollywoodreporter.com/thr-esq/judge-overturns-jurys-verdict-jersey-boys-i"
-    },
-    {
-      "t": "2026-04-23T03:25:57.837Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-23T03:26:13.125Z",
-      "event": "bb-session",
-      "session": "2f5bc2a9",
-      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
-    },
-    {
-      "t": "2026-04-23T03:26:13.882Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-23T03:26:28.994Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-23T03:28:13.859Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:28:32.558Z",
+      "event": "bb-session",
+      "session": "31b4f48b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-23T03:28:33.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:29:29.751Z",
+      "event": "bb-session",
+      "session": "bbd1c86c",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-04-23T03:29:30.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

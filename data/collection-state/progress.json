@@ -16,7 +16,9 @@
     "between-the-river-and-the-sea-west-end-2026/london-theatre--matt-wolf.json",
     "fallen-angels-2026/variety--unknown.json",
     "fallen-angels-2026/talkinbroadway--unknown.json",
-    "jersey-boys-2005/hollywood-reporter--eriq-gardner.json"
+    "jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -708,7 +710,12 @@
     "urban-cowboy-2003/nytimes--ben-brantley.json",
     "imaginary-friends-2002/nytimes--ben-brantley.json",
     "hollywood-arms-2002/nytimes--bruce-weber.json",
-    "the-graduate-2002/nytimes--ben-brantley.json"
+    "the-graduate-2002/nytimes--ben-brantley.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/huffpost--mike-ryan.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -739,7 +746,10 @@
       "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json",
       "data/review-texts/imaginary-friends-2002/nytimes--ben-brantley.json",
       "data/review-texts/hollywood-arms-2002/nytimes--bruce-weber.json",
-      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json"
+      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json",
+      "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -755,11 +765,12 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "hamlet-off-broadway-2026/playbill--unknown.json"
+      "hamlet-off-broadway-2026/playbill--unknown.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json"
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "the-graduate-2002/nytimes--ben-brantley.json",
+  "lastProcessed": "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
   "log": [
     {
       "t": "2026-04-22T10:38:03.366Z",
@@ -903,6 +914,28 @@
       "t": "2026-04-23T03:28:13.859Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:28:32.558Z",
+      "event": "bb-session",
+      "session": "31b4f48b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-23T03:28:33.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:29:29.751Z",
+      "event": "bb-session",
+      "session": "bbd1c86c",
+      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+    },
+    {
+      "t": "2026-04-23T03:29:30.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
