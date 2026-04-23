@@ -394,6 +394,10 @@ jobs:
 
       - name: Regenerate mobile detail JSONs (fast_path)
         if: inputs.fast_path && steps.fast_rebuild.outcome == 'success'
+        # Calls the canonical script directly — the stage-2→3 invariant (pipeline-invariant-generator)
+        # lives inside generate-mobile-show-details.js and fires here automatically.
+        # continue-on-error is intentional: invariant failure is logged + exits 1 (loud), but
+        # opening-night deploys must not be blocked by an assertion (non-blocking by design).
         run: node scripts/generate-mobile-show-details.js
         continue-on-error: true
 
