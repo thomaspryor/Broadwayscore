@@ -1,20 +1,52 @@
 {
-  "updatedAt": "2026-04-23T03:19:08.096Z",
-  "processed": 9,
-  "failed": 1,
-  "successRate": "90.0%",
+  "processed": [
+    "fallen-angels-2026/variety--unknown.json",
+    "fallen-angels-2026/wsj--charles-isherwood.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "the-fear-of-13-2026/wsj--charles-isherwood.json",
+    "the-fear-of-13-2026/wsj--unknown.json",
+    "becky-shaw-2026/wsj--charles-isherwood.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/wsj--unknown.json",
+    "dog-day-afternoon-2026/talkinbroadway--unknown.json"
+  ],
+  "failed": [
+    "dog-day-afternoon-2026/independent--unknown.json"
+  ],
+  "skipped": [],
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 14,
-    "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 1,
-    "archive": 0
+    "playwright": [],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/fallen-angels-2026/variety--unknown.json",
+      "fallen-angels-2026/variety--unknown.json",
+      "data/review-texts/fallen-angels-2026/wsj--charles-isherwood.json",
+      "fallen-angels-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-fear-of-13-2026/wsj--charles-isherwood.json",
+      "the-fear-of-13-2026/wsj--charles-isherwood.json",
+      "data/review-texts/the-fear-of-13-2026/wsj--unknown.json",
+      "the-fear-of-13-2026/wsj--unknown.json",
+      "data/review-texts/becky-shaw-2026/wsj--charles-isherwood.json",
+      "becky-shaw-2026/wsj--charles-isherwood.json",
+      "data/review-texts/becky-shaw-2026/wsj--unknown.json",
+      "becky-shaw-2026/wsj--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/wsj--unknown.json",
+      "dog-day-afternoon-2026/wsj--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "dog-day-afternoon-2026/talkinbroadway--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/dog-day-afternoon-2026/independent--unknown.json"
+    ],
+    "archive": []
   },
-  "browserbaseSessions": 7,
-  "recentActivity": [
+  "startTime": "2026-04-23T03:14:08.309Z",
+  "lastProcessed": "dog-day-afternoon-2026/talkinbroadway--unknown.json",
+  "log": [
     {
       "t": "2026-04-23T03:14:09.376Z",
       "event": "bb-session",
