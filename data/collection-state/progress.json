@@ -726,6 +726,9 @@
     "working-1978/theater-news-online--joe-dziemianowicz.json",
     "beaches-2026/variety--frank-rizzo.json",
     "beaches-2026/theatrely--juan-a-ramirez.json",
+    "beaches-2026/nysr--bob-verini.json",
+    "beaches-2026/variety--frank-rizzo.json",
+    "beaches-2026/theatrely--juan-a-ramirez.json",
     "beaches-2026/nysr--bob-verini.json"
   ],
   "skipped": [],
@@ -767,7 +770,8 @@
       "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
       "data/review-texts/beaches-2026/variety--frank-rizzo.json",
       "data/review-texts/beaches-2026/deadline--greg-evans.json",
-      "beaches-2026/deadline--greg-evans.json"
+      "beaches-2026/deadline--greg-evans.json",
+      "data/review-texts/beaches-2026/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -791,7 +795,7 @@
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "beaches-2026/nysr--david-finkle.json",
+  "lastProcessed": "beaches-2026/nysr--bob-verini.json",
   "log": [
     {
       "t": "2026-04-23T03:14:09.376Z",
@@ -990,6 +994,17 @@
       "t": "2026-04-23T03:36:17.953Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T03:46:04.767Z",
+      "event": "bb-session",
+      "session": "44157232",
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-rem"
+    },
+    {
+      "t": "2026-04-23T03:46:06.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-23T03:37:48.665Z",
+  "updatedAt": "2026-04-23T03:46:29.355Z",
   "processed": 27,
-  "failed": 698,
+  "failed": 701,
   "successRate": "3.7%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 23,
+    "browserbase": 24,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 4,
     "archiveToday": 1,
     "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-23T03:27:13.814Z",
-      "event": "bb-session",
-      "session": "911d3739",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
-    },
-    {
-      "t": "2026-04-23T03:27:14.554Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-23T03:27:28.157Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-23T03:36:17.953Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T03:46:04.767Z",
+      "event": "bb-session",
+      "session": "44157232",
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-rem"
+    },
+    {
+      "t": "2026-04-23T03:46:06.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
