@@ -2058,6 +2058,11 @@ function extractAuthorFromHtml(html, text, options = {}) {
     /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
     // WordPress author vcard microformat
     /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    // Talkin' Broadway: "<p>Theatre Review by <a href="mailto:...">Name</a> - Date</p>"
+    // The anchor typically wraps a mailto: link; tolerate bio links and the
+    // no-anchor variant. Observed 2026-04-21 on Balusters (/page/world/TheBalusters.html)
+    // where extractor returned Unknown. See memory/feedback_tb_mailto_byline.md.
+    /Theatre Review by\s+(?:<a\b[^>]*>\s*)?([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})(?:\s*<\/a>)?/i,
   ];
   for (const pattern of bylinePatterns) {
     const match = html.match(pattern);
