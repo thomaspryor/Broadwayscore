@@ -68,7 +68,7 @@ FAIL if: 0. Fix: add `opening-night-orchestrator.yml` to CRITICAL_CRONS in `chec
 **Purpose:** Needs >25% remaining. Opening nights burn 100-300 credits.
 
 ```bash
-gh workflow run check-secrets-health.yml -f skip_formspree=true
+gh workflow run check-secrets-health.yml
 sleep 30
 gh run list --workflow=check-secrets-health.yml --limit 1 --json databaseId --jq '.[0].databaseId' | xargs -I{} gh run view {} --log | grep -i "scrapingbee\|SB credits\|credit" | tail -5
 ```
