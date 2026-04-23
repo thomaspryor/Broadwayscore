@@ -15,8 +15,17 @@
  *
  * Used by:
  * - scripts/sweep-we-aggregators.js
- * - scripts/gather-reviews.js (review file creation)
+ * - scripts/lib/review-file-writer.js (createOrMergeReviewFile, writeManualReview)
+ * - scripts/ingest-manual-review.js (via review-file-writer)
  * - Any future script that writes to data/review-texts/
+ *
+ * NOT used by (bespoke preservation, keep in sync with PROTECTED_FIELDS):
+ * - scripts/gather-reviews.js URL-replacement path (line ~3101). Imports
+ *   PROTECTED_FIELDS and intersects with REPLACE_CLEAR_FIELDS to derive its
+ *   own preserve list. If you add a field here that should be cleared on
+ *   URL replacement, also add it to REPLACE_CLEAR_FIELDS there.
+ * - scripts/collect-review-texts.js terminal-state gate updates (intentional
+ *   narrow patches that don't touch PROTECTED_FIELDS; see Notion P1 card).
  */
 
 const fs = require('fs');
