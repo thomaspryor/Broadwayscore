@@ -1184,28 +1184,44 @@ function extractScore(html, text, outletId) {
     }
   }
 
-  // Fallthrough for known star-rating outlets: when their outlet-specific extractor
-  // returned null (e.g. no HTML available, only fullText), try unicode star extraction
-  // on text. This catches cases where stars are in the fullText but the outlet extractor
-  // only looks at HTML structure (JSON-LD, CSS selectors, etc.).
-  if (OUTLET_EXTRACTORS[outletId] && KNOWN_STAR_OUTLETS.has(outletId)) {
-    const unicodeStarMatch = text.match(/([★☆]{3,5})/);
-    if (unicodeStarMatch) {
-      const filled = (unicodeStarMatch[1].match(/★/g) || []).length;
-      const hasEmpty = unicodeStarMatch[1].includes('☆');
-      const total = hasEmpty ? unicodeStarMatch[1].length : 5;
-      return {
-        originalScore: `${filled}/${total} stars`,
-        normalizedScore: starsToNumeric(filled, total),
-        source: 'unicode-stars-fallthrough',
-        outlet: outletId
-      };
+  // Fallthrough for known star-rating outlets: try unicode star extraction
+  // on text. This catches cases where stars are in the fullText but the outlet-
+  // specific extractor (if any) only looks at HTML structure (JSON-LD, CSS
+  // selectors, etc.) and missed them — OR the outlet has no extractor at all
+  // (e.g., latimes, amny, chicagotribune — 10 US outlets added 2026-04-22).
+  //
+  // ANCHOR: critics publish ratings at the opening line or verdict line, not mid-body.
+  // Middle-of-text star sequences are usually pull-quotes from other outlets, ad copy,
+  // or decorative separators. Only trust stars in the first or last 15% of the text.
+  // Pre-mortem (2026-04-22) flagged this as a P0 landmine for false positives.
+  if (KNOWN_STAR_OUTLETS.has(outletId)) {
+    const matches = [...text.matchAll(/([★☆]{3,5})/g)];
+    if (matches.length > 0) {
+      const len = text.length;
+      const anchoredMatch = matches.find(m => {
+        const pos = m.index;
+        return pos <= len * 0.15 || pos >= len * 0.85;
+      });
+      if (anchoredMatch) {
+        const filled = (anchoredMatch[1].match(/★/g) || []).length;
+        const hasEmpty = anchoredMatch[1].includes('☆');
+        const total = hasEmpty ? anchoredMatch[1].length : 5;
+        return {
+          originalScore: `${filled}/${total} stars`,
+          normalizedScore: starsToNumeric(filled, total),
+          source: 'unicode-stars-fallthrough',
+          outlet: outletId
+        };
+      }
+      // Found stars but all in middle 70% — likely pull-quote or ad. Do not recover.
     }
   }
 
-  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives
-  // Only run these for outlets NOT in the explicit list
-  if (!OUTLET_EXTRACTORS[outletId]) {
+  // Generic extractors: ONLY use text (not HTML) to avoid CSS false positives.
+  // Skip for KNOWN_STAR_OUTLETS — they already had an anchored attempt above; if
+  // that didn't find anchored stars, unanchored generic extraction would defeat
+  // the anchor guard. Only non-KNOWN outlets fall through here.
+  if (!OUTLET_EXTRACTORS[outletId] && !KNOWN_STAR_OUTLETS.has(outletId)) {
     // Extract title/h1 text from HTML — many niche outlets put star ratings there
     // Title text is safe from CSS/JS false positives
     const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
@@ -1337,10 +1353,17 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   'omc-alt-text', 'omc-star-rating',
 ]);
 
-// Outlets known to publish their own star ratings — shared between extractScore()
-// (for unicode-star fallthrough) and getBestScore() (for aggregator relay + inline recovery).
-// DO NOT add new outlets here without verifying they actually publish star ratings.
-// Changes here affect aggregator-relayed star treatment in getBestScore() P0.5.
+// Outlets known to publish their own star/letter/numeric ratings — shared between
+// extractScore() (for unicode-star fallthrough) and getBestScore() (for aggregator
+// relay + inline recovery). Single source of truth; adjudication-prompt.js imports
+// from here (see scripts/lib/adjudication-prompt.js).
+//
+// Naming note: "STAR" is historical. Set also includes letter-grade outlets (ew)
+// and numeric-rating outlets (rollingstone, time). What unifies them is that they
+// publish a critic-authored rating, so aggregator-relayed scores are authoritative.
+//
+// DO NOT add new outlets here without verifying they actually publish ratings.
+// Changes here affect aggregator-relayed score treatment in getBestScore() P0.5.
 const KNOWN_STAR_OUTLETS = new Set([
   'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
   // NOTE: nysr (New York Stage Review) publishes unicode stars ★★★☆☆ at start of each review.
@@ -1361,6 +1384,13 @@ const KNOWN_STAR_OUTLETS = new Set([
   'shy-strange-manic', 'express-uk', 'theatre-weekly',
   // NYC outlet publishing its own star ratings (alt-text + "N out of 5 stars" text)
   'one-minute-critic',
+  // --- US outlets (ported from adjudication-prompt.js 2026-04-22 to unify sources) ---
+  // NOTE: nytimes NOT here — NYT uses Critic's Pick (binary), see DESIGNATION_OUTLETS.
+  'observer', 'usatoday', 'nypost', 'nydailynews',
+  'chicagotribune', 'chicago-sun-times', 'washpost',
+  'san-francisco-chronicle', 'boston-globe', 'latimes', 'newsday', 'amny',
+  'theatrely', 'curtainup',
+  'ew', 'time', 'rollingstone',
 ]);
 
 // Outlets whose published star rating (when extracted by a dedicated extractor)
