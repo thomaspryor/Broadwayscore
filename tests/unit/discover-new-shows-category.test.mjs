@@ -1,89 +1,97 @@
 /**
- * discover-new-shows.js — category+market are mandatory on every new show.
+ * Every new show must get BOTH category and market set at discovery.
  *
  * Root cause of Schmigadoon (2026-04-19), Beaches (2026-04-22), Rocky Horror
- * (2026-04-23), Joe Turner (2026-04-25), Lost Boys (2026-04-26):
- * `discover-new-shows.js` only set `category` for the non-Broadway branches
- * (off-broadway / west-end / off-west-end) and left Broadway shows implicit,
- * and `market` was never set at all. The opening-night orchestrator
- * defaulted `cat || 'broadway'` but emitted warnings; per CLAUDE.md §14 step
- * 5, explicit fields are the readiness-check requirement.
- *
- * This test locks the invariant: the creator block at scripts/discover-new-shows.js
- * must set BOTH category AND market on every branch, including the implicit
- * Broadway default (else-clause).
+ * (2026-04-23), Joe Turner (2026-04-25), Lost Boys (2026-04-26): the creator
+ * had no explicit Broadway branch — Broadway shows fell through the if/else-if
+ * chain and shipped with null category+market. The fix extracts classification
+ * to scripts/lib/classify-show.js; this test asserts the real function behavior
+ * AND confirms discover-new-shows.js still calls it (CLAUDE.md §15: never copy
+ * logic into tests, always require the real thing).
  */
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 
 const ROOT = join(import.meta.dirname, '..', '..');
-const SRC = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
+const { classifyShow } = require(join(ROOT, 'scripts/lib/classify-show.js'));
 
-// Locate the category-assignment block. The canonical block is near the final
-// `data.shows.push(showEntry)` call. We extract the ~25 lines preceding that
-// push and assert both category and market are set for every branch.
-function extractAssignmentBlock() {
-  const pushIdx = SRC.indexOf('data.shows.push(showEntry)');
-  assert.ok(pushIdx > 0, 'could not find data.shows.push(showEntry) in discover-new-shows.js');
-  // Walk back ~40 lines — enough to capture the full if/else chain.
-  const start = SRC.lastIndexOf('\n', pushIdx - 1);
-  const lines = SRC.slice(0, start).split('\n');
-  return lines.slice(-40).join('\n');
-}
+// --- Functional tests: the real classifier must return non-null, consistent pairs ---
 
-test('Broadway branch (else) sets both category and market', () => {
-  const block = extractAssignmentBlock();
-  // Must contain an explicit Broadway assignment — no implicit default allowed.
-  assert.ok(
-    /showEntry\.category\s*=\s*['"]broadway['"]/.test(block),
-    'scripts/discover-new-shows.js no longer sets showEntry.category = "broadway" on the Broadway branch. ' +
-      'The implicit default caused Schmigadoon 2026-04-19 / Beaches 2026-04-22 / Rocky Horror ' +
-      '2026-04-23 / Joe Turner 2026-04-25 / Lost Boys 2026-04-26 to ship with null category.'
-  );
-  assert.ok(
-    /showEntry\.market\s*=\s*['"]broadway['"]/.test(block),
-    'scripts/discover-new-shows.js no longer sets showEntry.market = "broadway" on the Broadway branch.'
-  );
+test('classifyShow({category:"off-broadway"}) → Broadway market', () => {
+  assert.deepStrictEqual(classifyShow({ category: 'off-broadway' }),
+    { category: 'off-broadway', market: 'broadway' });
 });
 
-test('Off-Broadway branch sets category=off-broadway and market=broadway', () => {
-  const block = extractAssignmentBlock();
-  assert.ok(
-    /off-broadway['"][\s\S]*?showEntry\.category\s*=\s*['"]off-broadway['"][\s\S]*?showEntry\.market\s*=\s*['"]broadway['"]/
-      .test(block),
-    'off-broadway branch no longer sets category=off-broadway AND market=broadway together'
-  );
+test('classifyShow({category:"west-end"}) → West End market', () => {
+  assert.deepStrictEqual(classifyShow({ category: 'west-end' }),
+    { category: 'west-end', market: 'west-end' });
 });
 
-test('West End branch sets category=west-end and market=west-end', () => {
-  const block = extractAssignmentBlock();
-  assert.ok(
-    /['"]west-end['"][\s\S]*?showEntry\.category\s*=\s*['"]west-end['"][\s\S]*?showEntry\.market\s*=\s*['"]west-end['"]/
-      .test(block),
-    'west-end branch no longer sets category=west-end AND market=west-end together'
-  );
+test('classifyShow({category:"off-west-end"}) → West End market', () => {
+  assert.deepStrictEqual(classifyShow({ category: 'off-west-end' }),
+    { category: 'off-west-end', market: 'west-end' });
 });
 
-test('Off-West-End branch sets category=off-west-end and market=west-end', () => {
-  const block = extractAssignmentBlock();
-  assert.ok(
-    /off-west-end['"][\s\S]*?showEntry\.category\s*=\s*['"]off-west-end['"][\s\S]*?showEntry\.market\s*=\s*['"]west-end['"]/
-      .test(block),
-    'off-west-end branch no longer sets category=off-west-end AND market=west-end together'
-  );
+test('classifyShow({}) (Broadway default) → never null', () => {
+  // This is THE bug — Broadway shows arriving without an explicit category.
+  // Must default to {category:"broadway", market:"broadway"}, not leave either null.
+  const out = classifyShow({});
+  assert.strictEqual(out.category, 'broadway',
+    'Broadway default must set category="broadway" — the bug that bit Schmigadoon/Beaches/Rocky Horror.');
+  assert.strictEqual(out.market, 'broadway',
+    'Broadway default must set market="broadway" — null market breaks opening-night orchestrator.');
 });
 
-test('No branch is left without a market assignment', () => {
-  const block = extractAssignmentBlock();
-  // Count if/else-if branches vs. market assignments. There are exactly 4:
-  // off-broadway, west-end, off-west-end, and the else (Broadway default).
-  const ifCount = (block.match(/if\s*\(show\.category\s*===|^\s*\}\s*else\s*\{/gm) || []).length;
-  const marketAssignments = (block.match(/showEntry\.market\s*=/g) || []).length;
+test('classifyShow(null|undefined|{category:null}) → Broadway default, no crash', () => {
+  assert.deepStrictEqual(classifyShow(null),
+    { category: 'broadway', market: 'broadway' });
+  assert.deepStrictEqual(classifyShow(undefined),
+    { category: 'broadway', market: 'broadway' });
+  assert.deepStrictEqual(classifyShow({ category: null }),
+    { category: 'broadway', market: 'broadway' });
+});
+
+test('classifyShow always returns category+market consistent with validate-data.js rules', () => {
+  // validate-data.js:247-252 enforces:
+  //   category='off-broadway' ⇒ market='broadway'
+  //   category='off-west-end' ⇒ market='west-end'
+  //   otherwise market === category
+  for (const cat of ['broadway', 'off-broadway', 'west-end', 'off-west-end']) {
+    const out = classifyShow({ category: cat });
+    const expected = cat === 'off-broadway' ? 'broadway'
+                   : cat === 'off-west-end' ? 'west-end'
+                   : cat;
+    assert.strictEqual(out.market, expected,
+      `classifyShow({category:"${cat}"}) returned market="${out.market}", validate-data.js expects "${expected}"`);
+  }
+});
+
+// --- Wiring test: the creator must actually use the helper ---
+
+test('scripts/discover-new-shows.js calls classifyShow on every new show', () => {
+  const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
   assert.ok(
-    marketAssignments >= 4,
-    `Expected ≥4 showEntry.market assignments (one per branch), found ${marketAssignments}. ` +
-      `If you added a branch without setting market, a whole cohort of shows will ship with market=null.`
+    /require\(['"]\.\/lib\/classify-show['"]\)/.test(src)
+      || /require\(['"]\.\/lib\/classify-show\.js['"]\)/.test(src),
+    'discover-new-shows.js no longer requires ./lib/classify-show — someone inlined the logic again. ' +
+      'Keep classification in one place per CLAUDE.md §15.'
+  );
+  assert.ok(
+    /classifyShow\(\s*show\s*\)/.test(src),
+    'discover-new-shows.js imports classifyShow but never calls it with the show. ' +
+      'New shows will ship with null category+market again.'
+  );
+  // The call site must be immediately before `data.shows.push(showEntry)` —
+  // anywhere else and a later mutation could overwrite the fields.
+  const pushIdx = src.indexOf('data.shows.push(showEntry)');
+  const preceding = src.slice(Math.max(0, pushIdx - 400), pushIdx);
+  assert.ok(
+    /classifyShow\(\s*show\s*\)/.test(preceding),
+    'classifyShow() is no longer called in the ~400 chars before data.shows.push(showEntry). ' +
+      'The call must stay adjacent to the push so nothing can overwrite category/market between.'
   );
 });

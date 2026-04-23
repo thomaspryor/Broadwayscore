@@ -30,6 +30,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
+const { classifyShow } = require('./lib/classify-show');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -1894,24 +1895,12 @@ async function discoverShows() {
         showEntry.ibdbRevivalChecked = true;
       }
 
-      // Set category AND market for every new show — implicit Broadway default
-      // caused Schmigadoon (2026-04-19), Beaches (2026-04-22), Rocky Horror
-      // (2026-04-23) to ship with null category/market, which breaks the
-      // opening-night orchestrator's market filter (CLAUDE.md §14 step 5).
-      // Broadway shows are the largest cohort — NEVER leave them implicit.
-      if (show.category === 'off-broadway') {
-        showEntry.category = 'off-broadway';
-        showEntry.market = 'broadway';
-      } else if (show.category === 'west-end') {
-        showEntry.category = 'west-end';
-        showEntry.market = 'west-end';
-      } else if (show.category === 'off-west-end') {
-        showEntry.category = 'off-west-end';
-        showEntry.market = 'west-end';
-      } else {
-        showEntry.category = 'broadway';
-        showEntry.market = 'broadway';
-      }
+      // Single source of truth for category+market — see scripts/lib/classify-show.js.
+      // Extracted after Schmigadoon / Beaches / Rocky Horror / Joe Turner / Lost Boys
+      // all shipped with null category+market because the creator had no explicit
+      // Broadway branch. Do NOT inline this logic again; keep it require()-able so
+      // tests/unit/discover-new-shows-category.test.mjs can assert the real function.
+      Object.assign(showEntry, classifyShow(show));
 
       data.shows.push(showEntry);
     }
