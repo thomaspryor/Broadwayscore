@@ -3,32 +3,18 @@
  * Used by adjudicate-review-queue.js.
  */
 
-// Outlets known to publish their own star ratings — when an aggregator reports
-// a star rating for one of these outlets, it's relaying the outlet's own score.
-// Superset of rebuild-helpers.js (WE outlets) plus US outlets.
-// rebuild-helpers.js only needs WE outlets (gates on isWestEnd). Update both when adding WE outlets.
-const KNOWN_STAR_OUTLETS = new Set([
-  // --- WE outlets (matches rebuild-helpers.js exactly) ---
-  'timeout', 'timeout-london', 'guardian', 'telegraph', 'times-uk', 'standard',
-  'independent', 'i-paper', 'financialtimes', 'daily-mail', 'the-express',
-  'artsdesk', 'thestage', 'whatsonstage',
-  // NOTE: london-theatre REMOVED — confirmed they do not publish star ratings
-  // NOTE: london-box-office REMOVED — LBO is an aggregator, not an outlet
-  'metro', 'the-sun', 'digital-spy', 'radio-times',
-  'all-that-dazzles-uk', 'musical-theatre-review',
-  'west-end-wilma', 'west-end-best-friend', 'theatre-bee-uk',
-  'tim-talks-theatre-uk', 'city-am', 'plays-international',
-  'theatreandtonic', 'the-recs', 'broadwayworld',
-  'londontheatre1', 'everything-theatre', 'thereviewshub',
-  'shy-strange-manic', 'express-uk', 'theatre-weekly',
-  // --- US outlets (verified outletIds from reviews.json) ---
-  // NOTE: nytimes NOT here — NYT uses Critic's Pick (binary), not star ratings. See DESIGNATION_OUTLETS.
-  'observer', 'usatoday', 'nypost', 'nydailynews',
-  'chicagotribune', 'chicago-sun-times', 'washpost',
-  'san-francisco-chronicle', 'boston-globe', 'latimes', 'newsday', 'amny',
-  'theatrely', 'nysr', 'curtainup',
-  'ew', 'time', 'rollingstone',
-]);
+// Outlets known to publish their own star/letter/numeric ratings — when an aggregator
+// reports a rating for one of these outlets, it's relaying the outlet's own score.
+//
+// Imported from score-extractors.js as the single source of truth (unified 2026-04-22).
+// Previously this file maintained a duplicate Set that drifted silently across 17+
+// US outlets. rebuild-helpers.js, fix-p0-score-corruption.js, and this file now share
+// the same Set — changes propagate to all consumers from one place.
+//
+// Side effect of unification: 'londontheatre1' is no longer treated as a star outlet
+// by adjudication (score-extractors.js marks it noScoreExtractor). This matches the
+// outlet's actual behavior — LT reviews are text-only with no published ratings.
+const { KNOWN_STAR_OUTLETS } = require('./score-extractors');
 
 // Outlets that use binary designations (Critic's Pick, Critics' Choice) instead of
 // star/letter ratings. These are endorsements — they indicate positive sentiment but
