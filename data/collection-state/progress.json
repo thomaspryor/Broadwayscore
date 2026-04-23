@@ -4,7 +4,15 @@
     "fallen-angels-2026/slantmagazine--unknown.json",
     "hamlet-off-broadway-2026/playbill--unknown.json",
     "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
-    "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json"
+    "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/times-uk--ben-dowell.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json",
+    "the-balusters-2026/variety--unknown.json",
+    "the-balusters-2026/ew--unknown.json",
+    "the-balusters-2026/dc-theater-arts--deb-miller.json",
+    "the-balusters-2026/talkinbroadway--unknown.json",
+    "the-balusters-2026/the-recs--david-cook.json",
+    "the-balusters-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -618,24 +626,36 @@
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
     "the-pitmen-painters-2010/bloomberg--john-simon.json",
     "brief-encounter-2010/newyorker--uncredited.json",
-    "beaches-2026/playbill--unknown.json"
+    "beaches-2026/playbill--unknown.json",
+    "schmigadoon-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "fallen-angels-2026/slantmagazine--unknown.json"
+      "fallen-angels-2026/slantmagazine--unknown.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--alun-hood.json",
+      "the-balusters-2026/ew--unknown.json",
+      "the-balusters-2026/dc-theater-arts--deb-miller.json",
+      "the-balusters-2026/the-recs--david-cook.json",
+      "the-balusters-2026/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-listening-off-broadway-2026/variety--rebecca-rubin.json",
-      "the-listening-off-broadway-2026/variety--rebecca-rubin.json"
+      "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/the-balusters-2026/variety--unknown.json",
+      "the-balusters-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "copenhagen-west-end-2026/independent--laura-hall.json",
-      "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json"
+      "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/times-uk--ben-dowell.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-balusters-2026/talkinbroadway--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
@@ -644,7 +664,7 @@
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "beaches-2026/playbill--unknown.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
   "log": [
     {
       "t": "2026-04-22T10:38:03.366Z",
@@ -654,6 +674,17 @@
     },
     {
       "t": "2026-04-22T10:38:04.397Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-23T03:10:11.227Z",
+      "event": "bb-session",
+      "session": "4781edc8",
+      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose"
+    },
+    {
+      "t": "2026-04-23T03:10:12.032Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
