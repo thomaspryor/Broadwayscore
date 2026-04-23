@@ -99,6 +99,12 @@ function migrateSentRecord(record) {
  */
 function applyResendStatusUpdate(record, apiResponse, nowIso) {
   if (!record) return record;
+  // Defensive migration: migrateSentRecord is idempotent and the reconciler
+  // calls it at startup, but a partial write or a non-reconciler code path
+  // could hand us a record with no draftStatus. The prior-state checks below
+  // depend on draftStatus being set.
+  record = migrateSentRecord(record);
+
   const now = nowIso || new Date().toISOString();
   const status = parseResendStatus(apiResponse && apiResponse.status);
 
@@ -150,7 +156,14 @@ function applyResendStatusUpdate(record, apiResponse, nowIso) {
  * and fix it.
  */
 function shouldRequeueShow(record, nowMs) {
-  if (!record || !record.completed) return true; // never sent — definitely pending
+  if (!record) return true; // never recorded — definitely pending
+  // Belt-and-suspenders: if a broken external writer ever produced
+  // { completed:false, draftStatus:'sent' }, do NOT re-queue — the 'sent'
+  // status observed by the reconciler is authoritative. applyResendStatusUpdate
+  // never produces this state (it forces completed:true on 'sent'), so the
+  // guard only matters if something else wrote to the tracker directly.
+  if (!record.completed && record.draftStatus === 'sent') return false;
+  if (!record.completed) return true; // never sent — definitely pending
   const now = typeof nowMs === 'number' ? nowMs : Date.now();
   const status = record.draftStatus;
   if (!TERMINAL_FAILURE_STATUSES.has(status)) return false; // healthy completion

@@ -83,6 +83,77 @@ test('passesFlagFilters: humanReviewedWrongProduction excludes', () => {
   assert.equal(passesFlagFilters({ humanReviewedWrongProduction: true }), false);
 });
 
+// ---- rebuild-exclusion flags added 2026-04-22 ----
+test('passesFlagFilters: non-review flag variants exclude', () => {
+  assert.equal(passesFlagFilters({ isNonReview: true }), false);
+  assert.equal(passesFlagFilters({ isNotReview: true }), false);
+  assert.equal(passesFlagFilters({ nonReviewFlag: true }), false);
+  assert.equal(passesFlagFilters({ nonReviewContent: true }), false);
+});
+
+test('passesFlagFilters: fabricatedEntry excludes', () => {
+  assert.equal(passesFlagFilters({ fabricatedEntry: true }), false);
+});
+
+test('passesFlagFilters: isSyndicatedDuplicate excludes', () => {
+  assert.equal(passesFlagFilters({ isSyndicatedDuplicate: true }), false);
+});
+
+test('passesFlagFilters: crossOutletDuplicate excludes', () => {
+  assert.equal(passesFlagFilters({ crossOutletDuplicate: true }), false);
+});
+
+test('passesFlagFilters: contentVerification.wrongArticle high-confidence excludes', () => {
+  assert.equal(
+    passesFlagFilters({
+      contentVerification: { wrongArticle: true, confidence: 'high' },
+    }),
+    false,
+  );
+});
+
+test('passesFlagFilters: contentVerification.wrongArticle medium/low confidence does NOT exclude', () => {
+  // Rebuild gates on confidence:'high' only — lower confidences are advisory.
+  assert.equal(
+    passesFlagFilters({
+      contentVerification: { wrongArticle: true, confidence: 'medium' },
+    }),
+    true,
+  );
+  assert.equal(
+    passesFlagFilters({
+      contentVerification: { wrongArticle: true, confidence: 'low' },
+    }),
+    true,
+  );
+});
+
+test('passesFlagFilters: rejectedAt excludes UNLESS text was re-fetched after rejection', () => {
+  // Stale rejection, no re-fetch → excluded
+  assert.equal(
+    passesFlagFilters({
+      rejectedAt: '2026-04-01T00:00:00Z',
+    }),
+    false,
+  );
+  // Text was re-fetched AFTER rejection → include (revalidated)
+  assert.equal(
+    passesFlagFilters({
+      rejectedAt: '2026-04-01T00:00:00Z',
+      textFetchedAt: '2026-04-10T00:00:00Z',
+    }),
+    true,
+  );
+  // Text fetched BEFORE rejection → still excluded
+  assert.equal(
+    passesFlagFilters({
+      rejectedAt: '2026-04-10T00:00:00Z',
+      textFetchedAt: '2026-04-01T00:00:00Z',
+    }),
+    false,
+  );
+});
+
 // ----- hasValidScore -----
 test('hasValidScore: humanReviewScore 1-100 is valid', () => {
   assert.equal(hasValidScore({ humanReviewScore: 75 }), true);
