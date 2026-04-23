@@ -95,11 +95,32 @@ test('applyResendStatusUpdate: status=cancelled flips completed to false + clear
   assert.equal(updated.sentAt, null);
 });
 
-test('applyResendStatusUpdate: status=deleted flips completed to false (404 case)', () => {
+test('applyResendStatusUpdate: status=deleted on pre-send draft flips completed to false', () => {
   const rec = { draftId: 'd', draftStatus: 'draft', completed: true };
   const updated = applyResendStatusUpdate(rec, { status: 'deleted' });
   assert.equal(updated.draftStatus, 'deleted');
-  assert.equal(updated.completed, false);
+  assert.equal(updated.completed, false, 'draft deleted before send → requeue');
+});
+
+test('applyResendStatusUpdate: status=deleted on already-sent record PRESERVES completed (Resend retention reap)', () => {
+  // Real-world scenario (verified 2026-04-22): the-balusters-2026 was sent
+  // clean ~24h earlier and Resend already 404's the broadcast. Flipping
+  // completed:false here would fire shouldRequeueShow 12h later → duplicate
+  // send. This test guards against that regression.
+  const rec = { draftId: 'd', draftStatus: 'sent', completed: true, sentAt: '2026-04-22T13:00:00Z' };
+  const updated = applyResendStatusUpdate(rec, { status: 'deleted' });
+  assert.equal(updated.draftStatus, 'deleted');
+  assert.equal(updated.completed, true, '404 on sent record must NOT flip completed');
+  assert.equal(updated.sentAt, '2026-04-22T13:00:00Z');
+});
+
+test('applyResendStatusUpdate: status=deleted on legacy completed+draftId (no draftStatus) PRESERVES completed', () => {
+  // Legacy records from before the schema migration land here with no
+  // draftStatus field and completed:true. Safest assumption: already sent.
+  const rec = { draftId: 'legacy', completed: true, draftCreatedAt: '2026-03-24T12:30:00Z' };
+  const updated = applyResendStatusUpdate(rec, { status: 'deleted' });
+  assert.equal(updated.draftStatus, 'deleted');
+  assert.equal(updated.completed, true, 'legacy completed record must survive 404 reap');
 });
 
 test('applyResendStatusUpdate: intermediate status=queued does not modify completed', () => {
@@ -140,10 +161,21 @@ test('shouldRequeueShow: cancelled draft >= 12h ago → requeue', () => {
   assert.equal(shouldRequeueShow(rec), true);
 });
 
-test('shouldRequeueShow: deleted draft >= 12h ago → requeue', () => {
-  const createdAt = new Date(Date.now() - 20 * 3600 * 1000).toISOString();
-  const rec = { completed: true, draftStatus: 'deleted', draftCreatedAt: createdAt };
+test('shouldRequeueShow: deleted with completed=false (pre-send delete) → requeue immediately', () => {
+  // After applyResendStatusUpdate on a pre-send 'deleted' record, completed
+  // flips to false. The !completed branch triggers requeue with no 12h wait.
+  const createdAt = new Date(Date.now() - 1 * 3600 * 1000).toISOString();
+  const rec = { completed: false, draftStatus: 'deleted', draftCreatedAt: createdAt };
   assert.equal(shouldRequeueShow(rec), true);
+});
+
+test('shouldRequeueShow: deleted with completed=true (Resend retention on sent) → do NOT requeue', () => {
+  // After the 2026-04-22 fix, a prior-sent record whose draft was 404'd by
+  // Resend keeps completed:true and draftStatus:'deleted'. Guard: this must
+  // never requeue, or every sent broadcast eventually becomes a duplicate.
+  const createdAt = new Date(Date.now() - 48 * 3600 * 1000).toISOString(); // 2 days ago
+  const rec = { completed: true, draftStatus: 'deleted', draftCreatedAt: createdAt };
+  assert.equal(shouldRequeueShow(rec), false);
 });
 
 test('shouldRequeueShow: terminal failure with unparsable draftCreatedAt → do NOT requeue (fail-safe)', () => {
@@ -178,4 +210,20 @@ test('round-trip: Tom cancels the draft — record flips + 12h later show requeu
   assert.equal(afterPoll.completed, false);
   // completed=false → requeue is automatic
   assert.equal(shouldRequeueShow(afterPoll), true);
+});
+
+test('round-trip: Resend retention reaps a sent broadcast — never requeues', () => {
+  // 1. send-opening-night-broadcast.js writes a draft record.
+  const rec = { draftId: 'd', draftStatus: 'draft', completed: true, draftCreatedAt: '2026-04-22T12:30:00Z' };
+  // 2. Reconciler polls during send window, sees 'sent'.
+  const afterSent = applyResendStatusUpdate(rec, { status: 'sent', sent_at: '2026-04-22T13:05:00Z', total_recipients: 158 });
+  assert.equal(afterSent.draftStatus, 'sent');
+  assert.equal(afterSent.completed, true);
+  // 3. 24h later, Resend has reaped the broadcast — 404 → 'deleted'.
+  const afterReap = applyResendStatusUpdate(afterSent, { status: 'deleted' });
+  assert.equal(afterReap.draftStatus, 'deleted');
+  assert.equal(afterReap.completed, true, 'reap must not undo send');
+  assert.equal(afterReap.sentAt, '2026-04-22T13:05:00Z');
+  // 4. Even 30 days later, the show must never requeue for broadcast.
+  assert.equal(shouldRequeueShow(afterReap, Date.parse('2026-05-22T12:00:00Z')), false);
 });

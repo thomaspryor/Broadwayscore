@@ -35,7 +35,14 @@
 
 const REQUEUE_AFTER_HOURS = 12;
 
-const TERMINAL_FAILURE_STATUSES = new Set(['cancelled', 'deleted']);
+// Only 'cancelled' is a user-initiated terminal failure. 'deleted' comes from a
+// Resend 404, which ALSO fires on normal retention of successfully-sent
+// broadcasts (verified 2026-04-22: the-balusters-2026 was sent clean ~24h
+// earlier and already 404'd). Treating a retention 404 as failure and flipping
+// completed:false would re-queue the show and double-send after 12h. So
+// 'deleted' is a recognized status but NOT terminal failure — see
+// applyResendStatusUpdate for how 404s are handled.
+const TERMINAL_FAILURE_STATUSES = new Set(['cancelled']);
 const SUCCESS_STATUSES = new Set(['sent']);
 
 /**
@@ -104,6 +111,24 @@ function applyResendStatusUpdate(record, apiResponse, nowIso) {
   } else if (TERMINAL_FAILURE_STATUSES.has(status)) {
     next.completed = false;
     next.sentAt = null;
+  } else if (status === 'deleted') {
+    // 404 from Resend. Ambiguous: could be (a) post-send retention reap of a
+    // successful broadcast, or (b) the draft was manually deleted pre-send.
+    // Differentiate by prior state:
+    //   - if the record was previously sent (completed:true + draftStatus:'sent'
+    //     OR legacy completed:true), (a) is overwhelmingly the case — Resend
+    //     reaps sent broadcasts within hours. Preserve completed.
+    //   - otherwise treat it as cancelled so we can re-queue.
+    const priorSent =
+      record.completed === true &&
+      (record.draftStatus === 'sent' || record.draftStatus === undefined);
+    if (priorSent) {
+      next.completed = record.completed;
+      next.sentAt = record.sentAt || null;
+    } else {
+      next.completed = false;
+      next.sentAt = null;
+    }
   }
   // draft / queued / sending → leave completed as-is (legacy behavior keeps it
   // true to prevent aggressive re-queues; shouldRequeueShow gates actual re-entry).
