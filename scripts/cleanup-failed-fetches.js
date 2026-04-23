@@ -32,10 +32,13 @@ const DEAD_DOMAINS = new Set([
   'jasonraize.net', 'www.jasonraize.net',
 ]);
 
-// Aggregator domains whose entries are always index/roundup pages
-const AGGREGATOR_DOMAINS = new Set([
-  'newyorktheatreguide.com', 'www.newyorktheatreguide.com',
-]);
+// Aggregator domains whose entries are always index/roundup pages.
+// NYTG removed 2026-04-22 (Tier 2 Fix 9 completion): NYTG publishes original
+// reviews (Kyle Turner, Allison Considine, etc.) at /reviews/<slug>. A failed
+// fetch is a fetch failure, not evidence the URL is a listing page. Let the
+// retirement-threshold path handle genuinely dead URLs instead of silently
+// wrong_content-flagging every failed NYTG fetch.
+const AGGREGATOR_DOMAINS = new Set([]);
 
 // Retirement thresholds (must match collect-review-texts.js lines 4896-4901)
 const THRESHOLDS = {
