@@ -71,7 +71,10 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
-7. **Scoring-logic edits** (`scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`) → unit tests are NOT sufficient. Giant 2026-04-14 shipped with 276 unit tests green and would have excluded 183 T1 reviews from 46 flagship shows. **MUST run** `node scripts/scoring-delta.js` (lists T1 flips) AND `node scripts/test-temporal-override-regression.js` (fixture test). Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
+7. **Scoring-logic edits** — two watchlists, both trigger `scripts/scoring-delta.js`:
+   - Inclusion (Phase A): `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
+   - Score-source (Phase B, added 2026-04-22): `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
+   Unit tests are NOT sufficient. Giant 2026-04-14 shipped with 276 unit tests green and would have excluded 183 T1 reviews. **MUST run** `node scripts/scoring-delta.js` (lists T1 inclusion flips + score-source flips) AND `node scripts/test-temporal-override-regression.js` (fixture). Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)

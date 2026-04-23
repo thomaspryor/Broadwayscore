@@ -2,11 +2,21 @@
 /**
  * scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
  *
- * When a session edits review-guards.js, rebuild-all-reviews.js, or adjacent scoring
- * logic, unit tests alone are structurally insufficient. This script replays the
- * core inclusion decision (contentVerification → wrongProduction promotion chain
- * with temporal override) against every review-text file under BOTH HEAD's logic
- * and the working-tree logic, then reports which reviews would flip inclusion.
+ * Two independent replay phases, either of which can surface a change:
+ *
+ *   Phase A (inclusion): replays the contentVerification → wrongProduction
+ *   promotion chain with temporal override against every review-text file
+ *   under BOTH HEAD's logic and the working-tree logic. Watchlist:
+ *   review-guards.js, rebuild-all-reviews.js, scoring.ts, engine.ts, data-core.ts.
+ *
+ *   Phase B (score-source): replays getBestScore() on every review under both
+ *   HEAD's and the working-tree's rebuild-helpers and surfaces reviews whose
+ *   assignedScore or scoreSource would change. Watchlist: rebuild-helpers.js,
+ *   score-extractors.js, score-parsers.js, review-normalization.js, score-routing.js.
+ *   Added 2026-04-22 after the NY Post stars fix (f6cb1e3266) silently skipped
+ *   this gate because the original watchlist was inclusion-only. See
+ *   memory/feedback_outlet_star_authoritative_set.md for the underlying fix
+ *   and memory/feedback_scoring_delta_required.md for the gate's purpose.
  *
  * Background: 2026-04-14 incident. A "fix" to applyTemporalOverrides would have
  * newly excluded 183 T1 reviews across 46 flagship shows (Hamilton, Giant, Hadestown,
@@ -86,6 +96,42 @@ process.on('exit', () => {
   }
 });
 
+// ─── Watchlist definitions ───────────────────────────────────────────────────
+
+// Phase A — inclusion decision files. Changes here can flip a review from
+// included → excluded (or vice versa) in reviews.json.
+const INCLUSION_FILES = [
+  'scripts/lib/review-guards.js',
+  'scripts/rebuild-all-reviews.js',
+  'src/lib/scoring.ts',
+  'src/lib/engine.ts',
+  'src/lib/data-core.ts',
+];
+
+// Phase B — score-source files. Changes here can keep a review included but
+// change its assignedScore or scoreSource — silently moving a composite.
+// Historical miss: scripts/lib/rebuild-helpers.js (getBestScore) wasn't in
+// the watchlist; the NY Post stars fix 2026-04-22 slipped past this gate.
+const SCORE_VALUE_FILES = [
+  'scripts/lib/rebuild-helpers.js',
+  'scripts/lib/score-extractors.js',
+  'scripts/lib/score-parsers.js',
+  'scripts/lib/review-normalization.js',
+  'scripts/lib/score-routing.js',
+];
+
+function gitDiffHasChanges(files) {
+  try {
+    const out = execSync(
+      `git diff ${BASE_REF} -- ${files.map(f => `'${f}'`).join(' ')}`,
+      { cwd: REPO_ROOT, encoding: 'utf8' }
+    );
+    return out.trim().length > 0;
+  } catch (e) {
+    throw new Error(`git diff failed: ${e.message}`);
+  }
+}
+
 // ─── Load two versions of review-guards ──────────────────────────────────────
 
 function loadBaselineGuards() {
@@ -130,6 +176,58 @@ function loadBaselineGuards() {
 function loadWorkingTreeGuards() {
   const wtPath = path.resolve(REPO_ROOT, 'scripts/lib/review-guards.js');
   delete require.cache[require.resolve(wtPath)];
+  return require(wtPath);
+}
+
+// ─── Load two versions of rebuild-helpers (Phase B) ──────────────────────────
+
+// Dumps HEAD's scripts/lib + scripts/llm-scoring to a temp directory so
+// rebuild-helpers and its transitive deps (score-extractors, score-parsers,
+// review-normalization, text-cleaning, score-calibration, date-utils, etc.)
+// resolve against HEAD's copies — isolated from the working-tree versions.
+function loadBaselineScoring() {
+  const tmpDir = fs.mkdtempSync(path.join(require('os').tmpdir(), 'scoring-delta-b-'));
+  TMP_DIRS_TO_CLEAN.push(tmpDir);
+  const libDir = path.join(tmpDir, 'scripts', 'lib');
+  const llmDir = path.join(tmpDir, 'scripts', 'llm-scoring');
+  fs.mkdirSync(libDir, { recursive: true });
+  fs.mkdirSync(llmDir, { recursive: true });
+
+  // Stream HEAD's scripts/lib + scripts/llm-scoring into tmpDir via git archive.
+  // Using pipe/tar keeps the directory structure intact so relative require()
+  // paths inside rebuild-helpers ('./score-parsers', '../llm-scoring/...') all
+  // resolve to baseline copies, not working-tree copies.
+  try {
+    execSync(
+      `git archive ${BASE_REF} -- scripts/lib scripts/llm-scoring | tar -x -C '${tmpDir}'`,
+      { cwd: REPO_ROOT, stdio: ['ignore', 'pipe', 'pipe'], shell: '/bin/bash' }
+    );
+  } catch (e) {
+    throw new Error(`Could not archive ${BASE_REF}:scripts/lib + scripts/llm-scoring — ${e.message}`);
+  }
+
+  const baselinePath = path.join(libDir, 'rebuild-helpers.js');
+  if (!fs.existsSync(baselinePath)) {
+    throw new Error(`Baseline rebuild-helpers.js missing after git archive at ${baselinePath}`);
+  }
+  // Purge any previously cached module under this tmpDir path (should be none,
+  // but be defensive in case the script is imported in a long-running process).
+  for (const cached of Object.keys(require.cache)) {
+    if (cached.startsWith(tmpDir)) delete require.cache[cached];
+  }
+  return require(baselinePath);
+}
+
+function loadWorkingTreeScoring() {
+  const wtPath = path.resolve(REPO_ROOT, 'scripts/lib/rebuild-helpers.js');
+  // Clear wtPath AND its transitive deps so Phase B sees the working-tree
+  // versions even if Node cached them from an earlier require in this process.
+  for (const cached of Object.keys(require.cache)) {
+    if (cached.startsWith(path.resolve(REPO_ROOT, 'scripts/lib/'))
+        || cached.startsWith(path.resolve(REPO_ROOT, 'scripts/llm-scoring/'))) {
+      delete require.cache[cached];
+    }
+  }
   return require(wtPath);
 }
 
@@ -248,34 +346,81 @@ function decideInclusion(review, show, guards) {
 function main() {
   log(`[scoring-delta] Comparing working-tree vs ${BASE_REF}`);
 
-  // Guard 1: is there even a diff to scoring logic?
-  let diffStat = '';
+  // Guard 1: any diff in either watchlist?
+  let inclusionDiff = false;
+  let scoreValueDiff = false;
   try {
-    diffStat = execSync(
-      `git diff ${BASE_REF} -- scripts/lib/review-guards.js scripts/rebuild-all-reviews.js src/lib/scoring.ts src/lib/engine.ts src/lib/data-core.ts`,
-      { cwd: REPO_ROOT, encoding: 'utf8' }
-    );
+    inclusionDiff = gitDiffHasChanges(INCLUSION_FILES);
+    scoreValueDiff = gitDiffHasChanges(SCORE_VALUE_FILES);
   } catch (e) {
-    log(`[scoring-delta] git diff failed: ${e.message}`);
+    log(`[scoring-delta] ${e.message}`);
     process.exit(1);
   }
 
-  if (!diffStat.trim()) {
-    log('[scoring-delta] ✅ No changes to scoring/guard files vs ' + BASE_REF + ' — nothing to check.');
+  if (!inclusionDiff && !scoreValueDiff) {
+    log('[scoring-delta] ✅ No changes to inclusion or score-value files vs ' + BASE_REF + ' — nothing to check.');
     if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'no-diff' }));
     process.exit(0);
   }
 
-  const baseline = loadBaselineGuards();
-  const working = loadWorkingTreeGuards();
+  log(`[scoring-delta] Phase A (inclusion): ${inclusionDiff ? 'diff detected' : 'no diff'}`);
+  log(`[scoring-delta] Phase B (score-source): ${scoreValueDiff ? 'diff detected' : 'no diff'}`);
 
-  // Sanity: if both guards are string-identical, no delta to compute
-  if (baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
+  // ── Phase A prep: load inclusion guards if needed ──
+  let baseline = null;
+  let working = null;
+  let runPhaseA = false;
+
+  if (inclusionDiff) {
+    baseline = loadBaselineGuards();
+    working = loadWorkingTreeGuards();
+
+    // Sanity: if inclusion guards are string-identical, Phase A has nothing to replay
+    const guardsIdentical =
+      baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
       && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
       && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
-      && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()) {
-    log('[scoring-delta] ✅ review-guards.js decisions identical to ' + BASE_REF + ' — no delta.');
-    if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'guards-identical' }));
+      && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString();
+    if (guardsIdentical) {
+      log('[scoring-delta] Phase A: review-guards.js decisions identical — skipping inclusion replay.');
+    } else {
+      runPhaseA = true;
+    }
+  }
+
+  // ── Phase B prep: load baseline + working getBestScore if needed ──
+  let baselineScoring = null;
+  let workingScoring = null;
+  let runPhaseB = false;
+
+  if (scoreValueDiff) {
+    try {
+      baselineScoring = loadBaselineScoring();
+      workingScoring = loadWorkingTreeScoring();
+    } catch (e) {
+      log(`[scoring-delta] Phase B setup failed: ${e.message}`);
+      process.exit(1);
+    }
+    // Sanity: if getBestScore is byte-identical between baseline and working
+    // tree, no score-value replay is needed even if an adjacent helper changed.
+    if (baselineScoring.getBestScore.toString() === workingScoring.getBestScore.toString()) {
+      // Still proceed — a helper like score-extractors may have changed
+      // (OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS) which getBestScore
+      // closes over by name, not value. Only skip if ALL known score-value
+      // helpers are identical too.
+      const helpersIdentical =
+        baselineScoring.scoreToBucket?.toString() === workingScoring.scoreToBucket?.toString()
+        && baselineScoring.scoreToThumb?.toString() === workingScoring.scoreToThumb?.toString();
+      if (helpersIdentical) {
+        log('[scoring-delta] Phase B: getBestScore + helpers identical — running replay anyway (closed-over data may differ).');
+      }
+    }
+    runPhaseB = true;
+  }
+
+  if (!runPhaseA && !runPhaseB) {
+    log('[scoring-delta] ✅ Nothing meaningful to replay — decisions identical.');
+    if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'decisions-identical' }));
     process.exit(0);
   }
 
@@ -313,8 +458,9 @@ function main() {
 
   if (SAMPLE_LIMIT) showDirs = showDirs.slice(0, SAMPLE_LIMIT);
 
-  const flipsExcluded = [];   // newly excluded
-  const flipsIncluded = [];   // newly included
+  const flipsExcluded = [];   // newly excluded (Phase A)
+  const flipsIncluded = [];   // newly included (Phase A)
+  const scoreFlips = [];      // assignedScore/source flips (Phase B)
   let processed = 0;
 
   for (const showId of showDirs) {
@@ -332,6 +478,51 @@ function main() {
         review = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       } catch { continue; }
       processed++;
+
+      // ── Phase B: score-source replay ──
+      // getBestScore mutates via opts.stats/flagForHumanReview, so pass
+      // throwaway copies + a shallow clone so the review object itself is not
+      // modified between baseline and working calls.
+      if (runPhaseB) {
+        try {
+          const baseInput = { ...review };
+          delete baseInput.assignedScore;
+          const workInput = { ...review };
+          delete workInput.assignedScore;
+          if (!baseInput._showCategory) baseInput._showCategory = show.category;
+          if (!workInput._showCategory) workInput._showCategory = show.category;
+          const baseRes = baselineScoring.getBestScore(baseInput, { stats: {} });
+          const workRes = workingScoring.getBestScore(workInput, { stats: {} });
+          const baseScore = baseRes?.score ?? null;
+          const workScore = workRes?.score ?? null;
+          const baseSrc = baseRes?.source ?? null;
+          const workSrc = workRes?.source ?? null;
+          if (baseScore !== workScore || baseSrc !== workSrc) {
+            const outletKey = (review.outletId || review.outlet || '').toLowerCase().replace(/\s+/g, '-');
+            scoreFlips.push({
+              showId,
+              outlet: review.outletId || review.outlet || 'unknown',
+              critic: review.criticName || '',
+              url: review.url || '',
+              publishDate: review.publishDate || '',
+              tier: T1_OUTLETS.has(outletKey) ? 'T1' : 'other',
+              baselineScore: baseScore,
+              baselineSource: baseSrc,
+              workingScore: workScore,
+              workingSource: workSrc,
+              scoreSourceField: review.scoreSource || null,
+            });
+          }
+        } catch (e) {
+          // A getBestScore crash on a pathological review shouldn't abort the
+          // whole delta. Count it but keep going.
+          // (Pre-existing behavior for Phase A was to ignore bad JSON earlier;
+          // match that tolerance here.)
+        }
+      }
+
+      // ── Phase A: inclusion replay ──
+      if (!runPhaseA) continue;
 
       const baselineDecision = decideInclusion(review, show, baseline);
       const workingDecision = decideInclusion(review, show, working);
@@ -363,23 +554,30 @@ function main() {
 
   // ─── Summarize ──────────────────────────────────────────────────────────────
 
-  const t1Flips = flipsExcluded.filter(f => f.tier === 'T1').length
-                + flipsIncluded.filter(f => f.tier === 'T1').length;
-  const totalFlips = flipsExcluded.length + flipsIncluded.length;
+  const t1InclusionFlips = flipsExcluded.filter(f => f.tier === 'T1').length
+                          + flipsIncluded.filter(f => f.tier === 'T1').length;
+  const t1ScoreFlips = scoreFlips.filter(f => f.tier === 'T1').length;
+  const t1Flips = t1InclusionFlips + t1ScoreFlips;
+  const totalFlips = flipsExcluded.length + flipsIncluded.length + scoreFlips.length;
 
   const affectedShowsExcluded = new Set(flipsExcluded.map(f => f.showId));
   const affectedShowsIncluded = new Set(flipsIncluded.map(f => f.showId));
+  const affectedShowsScore = new Set(scoreFlips.map(f => f.showId));
 
   if (OUT_JSON) {
     console.log(JSON.stringify({
       base: BASE_REF,
       processed,
+      phasesRun: { inclusion: runPhaseA, scoreValue: runPhaseB },
       flipsExcluded: flipsExcluded.length,
       flipsIncluded: flipsIncluded.length,
+      scoreFlips: scoreFlips.length,
       t1Flips,
+      t1ScoreFlips,
       showsAffectedExcluded: affectedShowsExcluded.size,
       showsAffectedIncluded: affectedShowsIncluded.size,
-      t1Details: [...flipsExcluded, ...flipsIncluded].filter(f => f.tier === 'T1'),
+      showsAffectedScore: affectedShowsScore.size,
+      t1Details: [...flipsExcluded, ...flipsIncluded, ...scoreFlips].filter(f => f.tier === 'T1'),
     }, null, 2));
   } else {
     const significant = totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
@@ -388,11 +586,17 @@ function main() {
     console.log(header);
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(`Comparing working-tree vs ${BASE_REF}`);
+    console.log(`Phases run: ${[runPhaseA && 'inclusion', runPhaseB && 'score-source'].filter(Boolean).join(' + ') || 'none'}`);
     console.log(`Reviews processed: ${processed.toLocaleString()}`);
     console.log('');
-    console.log(`Newly EXCLUDED: ${flipsExcluded.length} reviews across ${affectedShowsExcluded.size} shows`);
-    console.log(`Newly INCLUDED: ${flipsIncluded.length} reviews across ${affectedShowsIncluded.size} shows`);
-    console.log(`T1 outlet flips: ${t1Flips}`);
+    if (runPhaseA) {
+      console.log(`Newly EXCLUDED:   ${flipsExcluded.length} reviews across ${affectedShowsExcluded.size} shows`);
+      console.log(`Newly INCLUDED:   ${flipsIncluded.length} reviews across ${affectedShowsIncluded.size} shows`);
+    }
+    if (runPhaseB) {
+      console.log(`SCORE CHANGED:    ${scoreFlips.length} reviews across ${affectedShowsScore.size} shows`);
+    }
+    console.log(`T1 outlet flips:  ${t1Flips}  (inclusion: ${t1InclusionFlips}, score: ${t1ScoreFlips})`);
     console.log('');
 
     if (flipsExcluded.length > 0) {
@@ -401,6 +605,16 @@ function main() {
       for (const f of flipsExcluded) byShow.set(f.showId, (byShow.get(f.showId) || 0) + 1);
       const sorted = [...byShow.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
       for (const [sid, count] of sorted) console.log(`  ${sid}: -${count}`);
+      if (byShow.size > 10) console.log(`  ...and ${byShow.size - 10} more shows`);
+      console.log('');
+    }
+
+    if (scoreFlips.length > 0) {
+      console.log('TOP SHOWS — score/source changed:');
+      const byShow = new Map();
+      for (const f of scoreFlips) byShow.set(f.showId, (byShow.get(f.showId) || 0) + 1);
+      const sorted = [...byShow.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10);
+      for (const [sid, count] of sorted) console.log(`  ${sid}: ${count}`);
       if (byShow.size > 10) console.log(`  ...and ${byShow.size - 10} more shows`);
       console.log('');
     }
@@ -415,11 +629,21 @@ function main() {
       console.log('');
     }
 
+    const t1Score = scoreFlips.filter(f => f.tier === 'T1');
+    if (t1Score.length > 0) {
+      console.log('T1 OUTLETS with score/source change:');
+      for (const f of t1Score.slice(0, 15)) {
+        console.log(`  - ${f.showId} · ${f.outlet} · ${f.critic}: ${f.baselineScore}/${f.baselineSource} → ${f.workingScore}/${f.workingSource}`);
+      }
+      if (t1Score.length > 15) console.log(`  ...and ${t1Score.length - 15} more T1 score flips`);
+      console.log('');
+    }
+
     if (significant) {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       console.log('BEFORE MERGING:');
       console.log('  1. Paste this summary to the user');
-      console.log('  2. For each affected flagship show, spot-check the review — is exclusion correct?');
+      console.log('  2. For each affected flagship show, spot-check the review — is the change correct?');
       console.log('  3. Get user confirmation that the delta is intentional');
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     } else {
