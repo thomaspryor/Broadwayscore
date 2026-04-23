@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-23T05:20:42.601Z",
+  "timestamp": "2026-04-23T19:32:31.925Z",
   "stats": {
-    "totalReviews": 35787,
-    "alreadyFlagged": 16009,
+    "totalReviews": 35796,
+    "alreadyFlagged": 16010,
     "dateGuardCatches": 94,
     "directorMismatch": 820,
     "tvFilmSignals": 3194,
-    "londonSignals": 1026,
-    "offBroadwaySignals": 898,
+    "londonSignals": 1027,
+    "offBroadwaySignals": 899,
     "yearMismatch": 68,
-    "noPublishDate": 3753
+    "noPublishDate": 3758
   },
   "findings": [
     {
@@ -36546,9 +36546,9 @@
     {
       "showId": "proof-2026",
       "file": "deadline--greg-evans.json",
-      "score": 85,
+      "score": 84,
       "publishDate": "2026-04-17",
-      "url": null,
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-young-1236861306/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -36612,9 +36612,9 @@
     {
       "showId": "proof-2026",
       "file": "timeout--adam-feldman.json",
-      "score": 67,
+      "score": 73,
       "publishDate": "2026-04-17",
-      "url": null,
+      "url": "https://www.timeout.com/newyork/news/broadway-review-ayo-edebiri-shows-her-work-in-proof-041626",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -58902,6 +58902,20 @@
     },
     {
       "showId": "between-the-river-and-the-sea-west-end-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 79,
+      "publishDate": "2026-04-21",
+      "url": "https://www.broadwayworld.com/westend/article/Review-BETWEEN-THE-RIVER-AND-THE-SEA-Royal-Court-Theatre-20260421",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "between-the-river-and-the-sea-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 60,
       "publishDate": "2026-04-21",
@@ -70418,9 +70432,9 @@
     {
       "showId": "schmigadoon-2026",
       "file": "ew--patrick-gomez.json",
-      "score": 90,
-      "publishDate": "April 20, 2026",
-      "url": "https://ew.com/schmigadoon-review-broadway-adaptation-11954517",
+      "score": 88,
+      "publishDate": "2026-04-20",
+      "url": "https://ew.com/schmigadoon-review-broadway-adaptation-11954517?srsltid=AfmBOop7iH2sIA8LB8qkBRLo2GF14bF8GiK6phFedkLVEeQqa9FNj24V",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -73064,6 +73078,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "that-championship-season-2011",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "score": 42,
+      "publishDate": "March 6, 2011",
+      "url": "http://www.newjerseynewsroom.com/movies/review-that-championship-season-looks-back-upon-former-glory-days",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
