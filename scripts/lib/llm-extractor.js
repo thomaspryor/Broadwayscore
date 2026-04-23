@@ -102,9 +102,20 @@ function countExpectedReviews(html, aggregator) {
     return blocks ? blocks.length : 0;
   }
   if (aggregator === 'bww') {
-    // Count thumb images — each review has one in the rendered article.
-    const thumbs = html.match(/(?:(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png))/gi);
-    if (thumbs && thumbs.length) return thumbs.length;
+    // Count thumb-bearing <img> tags rather than raw regex hits. A naive
+    // global match double-counts when BWW serves retina variants in the same
+    // tag (e.g. `<img src="uptrans.png" srcset="uptrans@2x.png 2x">`) or
+    // transitions between legacy BigThumbs_ and new uptrans formats inside a
+    // single tag. One thumb per <img> is the ground truth for "1 review".
+    const THUMB_RE = /(?:uptrans|middletrans|downtrans)\d*\.png|BigThumbs_(?:UP|MEH|DOWN)\.(?:gif|png)/i;
+    const imgTags = html.match(/<img\b[^>]*>/gi);
+    if (imgTags && imgTags.length) {
+      let count = 0;
+      for (const tag of imgTags) {
+        if (THUMB_RE.test(tag)) count++;
+      }
+      if (count > 0) return count;
+    }
     // Fallback: JSON-LD BlogPosting entries
     const blogs = html.match(/"@type"\s*:\s*"BlogPosting"/g);
     return blogs ? blogs.length : 0;

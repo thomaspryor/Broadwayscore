@@ -98,7 +98,11 @@ const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.jso
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 
-const { shouldQueryPerCritic: _shouldQueryPerCritic } = require('./lib/multi-critic-serp');
+const {
+  shouldQueryPerCritic: _shouldQueryPerCritic,
+  remainingCritics: _remainingCritics,
+  normalizeUrlForDedup: _normalizeUrlForDedup,
+} = require('./lib/multi-critic-serp');
 
 // Roundup/aggregator sources whose URLs come from positional matching
 // (carousel order, roundup page layout) and may be misattributed.
@@ -4330,12 +4334,6 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           break;
         }
 
-        // Skip outlets already found by aggregators
-        if (foundOutletIds.has(outlet.id.toLowerCase())) {
-          console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
-          continue;
-        }
-
         const outletIdLower = outlet.id.toLowerCase();
         const criticList = Array.isArray(outlet.critics) ? outlet.critics : [];
         const isMultiCriticOutlet = _shouldQueryPerCritic(outletIdLower, criticList);
@@ -4343,11 +4341,27 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         if (isMultiCriticOutlet) {
           // Per-critic SERP queries: each named critic gets their own search so the
           // non-primary critic isn't silently swallowed by Google's top-result bias.
-          // Dedup on URL — if two critic queries land on the same article, keep one.
-          console.log(`  ${outlet.name} (multi-critic: ${criticList.length} critics)...`);
-          const seenUrlsForOutlet = new Set();
+          // Aggregators may have already found 1 critic; compute which critics are
+          // still uncovered and only query those (blanket-skip on foundOutletIds
+          // would defeat the purpose of per-critic routing).
+          const foundForOutlet = foundReviews.filter(r => (r.outletId || '').toLowerCase() === outletIdLower);
+          const criticsToQuery = _remainingCritics(criticList, foundForOutlet);
+          const aggregatorCovered = foundForOutlet.length > 0;
+
+          if (criticsToQuery.length === 0) {
+            console.log(`  ${outlet.name}... ⟳ all ${criticList.length} critics already covered`);
+            continue;
+          }
+
+          const coverageSuffix = aggregatorCovered
+            ? `, ${criticList.length - criticsToQuery.length}/${criticList.length} already via aggregator`
+            : '';
+          console.log(`  ${outlet.name} (multi-critic: ${criticsToQuery.length} critics to query${coverageSuffix})...`);
+          const seenUrlsForOutlet = new Set(
+            foundForOutlet.map(r => _normalizeUrlForDedup(r.url)).filter(Boolean)
+          );
           let outletHits = 0;
-          for (const critic of criticList) {
+          for (const critic of criticsToQuery) {
             if (serpCallCount >= SERP_BUDGET) {
               console.log(`    ⚠ SERP budget exhausted mid-outlet`);
               break;
@@ -4364,7 +4378,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               break;
             }
             if (result && result.url) {
-              const urlKey = result.url.toLowerCase().replace(/\/$/, '');
+              const urlKey = _normalizeUrlForDedup(result.url);
               if (seenUrlsForOutlet.has(urlKey)) {
                 console.log(`⟳ dup URL`);
               } else {
@@ -4387,9 +4401,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             await sleep(DELAY_MS);
           }
           if (serpUnavailable) break;
-          // Fallback: if no critic-specific query hit, fire the legacy outlet-level
-          // query. Catches freelancer / guest critic reviews not in critic-outlets.json.
-          if (outletHits === 0 && serpCallCount < SERP_BUDGET) {
+          // Legacy outlet-level fallback: if no per-critic query hit AND the aggregator
+          // hadn't covered this outlet at all, fire a generic outlet query to catch
+          // freelancer / guest-critic reviews not in critic-outlets.json. Skip when
+          // the aggregator already provided coverage — that would just rediscover
+          // the same URL or attribute a duplicate to Unknown.
+          if (outletHits === 0 && !aggregatorCovered && serpCallCount < SERP_BUDGET) {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
@@ -4412,6 +4429,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             }
             await sleep(DELAY_MS);
           }
+          continue;
+        }
+
+        // Non-multi-critic outlets: blanket-skip when the aggregator already
+        // found any review. A second generic-query SERP would just rediscover
+        // the same URL and burn budget.
+        if (foundOutletIds.has(outlet.id.toLowerCase())) {
+          console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
           continue;
         }
 
