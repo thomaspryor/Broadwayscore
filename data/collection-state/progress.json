@@ -12,7 +12,10 @@
     "the-balusters-2026/dc-theater-arts--deb-miller.json",
     "the-balusters-2026/talkinbroadway--unknown.json",
     "the-balusters-2026/the-recs--david-cook.json",
-    "the-balusters-2026/times-square-chronicles--suzanna-bowling.json"
+    "the-balusters-2026/times-square-chronicles--suzanna-bowling.json",
+    "between-the-river-and-the-sea-west-end-2026/london-theatre--matt-wolf.json",
+    "fallen-angels-2026/variety--unknown.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -628,7 +631,14 @@
     "brief-encounter-2010/newyorker--uncredited.json",
     "beaches-2026/playbill--unknown.json",
     "schmigadoon-2026/theatre-reviews-limited--joseph-verlezza.json",
-    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json"
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+    "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
+    "wicked-west-end-2021/times-uk--kevin-maher.json",
+    "glengarry-glen-ross-2025/broadway-and-me--janice-c-simpson.json",
+    "the-picture-of-dorian-gray-2025/broadway-and-me--janice-c-simpson.json",
+    "othello-2025/broadway-and-me--janice-c-simpson.json",
+    "american-idiot-2010/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -638,14 +648,17 @@
       "the-balusters-2026/ew--unknown.json",
       "the-balusters-2026/dc-theater-arts--deb-miller.json",
       "the-balusters-2026/the-recs--david-cook.json",
-      "the-balusters-2026/times-square-chronicles--suzanna-bowling.json"
+      "the-balusters-2026/times-square-chronicles--suzanna-bowling.json",
+      "between-the-river-and-the-sea-west-end-2026/london-theatre--matt-wolf.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-listening-off-broadway-2026/variety--rebecca-rubin.json",
       "the-listening-off-broadway-2026/variety--rebecca-rubin.json",
       "data/review-texts/the-balusters-2026/variety--unknown.json",
-      "the-balusters-2026/variety--unknown.json"
+      "the-balusters-2026/variety--unknown.json",
+      "data/review-texts/fallen-angels-2026/variety--unknown.json",
+      "fallen-angels-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -654,7 +667,8 @@
       "a-midsummer-nights-dream-globe-west-end-2026/times-uk--ben-dowell.json"
     ],
     "brightdata": [
-      "the-balusters-2026/talkinbroadway--unknown.json"
+      "the-balusters-2026/talkinbroadway--unknown.json",
+      "fallen-angels-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
@@ -664,7 +678,7 @@
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+  "lastProcessed": "american-idiot-2010/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-22T10:38:03.366Z",
@@ -685,6 +699,17 @@
     },
     {
       "t": "2026-04-23T03:10:12.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-23T03:12:49.547Z",
+      "event": "bb-session",
+      "session": "1da51a4a",
+      "url": "https://variety.com/2026/legit/reviews/fallen-angels-broadway-review-rose-byrne-"
+    },
+    {
+      "t": "2026-04-23T03:12:50.292Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
