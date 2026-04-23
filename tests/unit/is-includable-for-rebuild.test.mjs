@@ -263,6 +263,62 @@ describe('isIncludableForRebuild — rejectedAt canonical signal', () => {
       true
     );
   });
+
+  // Notion 34b637c5-416f-81ff-a6d6-d453e7ed537c (2026-04-22):
+  // rejectedAt guard must respect manual clears — mirrors the existing manual-clear
+  // carve-outs on the wrongProduction guard (lines 1225-1230) and contentTier=invalid
+  // guard (lines 1289-1296). Discovered when 4 audit B-class false-positive clears
+  // stayed excluded because LLM ensemble had rejected them with wrong show-context.
+  it('returns true when rejectedAt is set but wrongProductionManualClear: true', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-04-20T11:15:36.117Z',
+        rejectedBy: 'ensemble-scoreability-check',
+        wrongProductionManualClear: true,
+      }),
+      true
+    );
+  });
+
+  it('returns true when rejectedAt is set but humanReviewedWrongProduction: false', () => {
+    // humanReviewedWrongProduction === false means "human verified this IS the correct production"
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-04-20T11:15:36.117Z',
+        rejectedBy: 'ensemble-scoreability-check',
+        humanReviewedWrongProduction: false,
+      }),
+      true
+    );
+  });
+
+  it('returns true when rejectedAt is set but wrongProductionOverride: true', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-04-20T11:15:36.117Z',
+        rejectedBy: 'ensemble-scoreability-check',
+        wrongProductionOverride: true,
+      }),
+      true
+    );
+  });
+
+  it('still excludes when rejectedAt is set and no manual-clear flags (Vulture Hamlet protection preserved)', () => {
+    // Manual-clear carve-out must not weaken the existing guard for genuine rejections.
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        rejectedAt: '2026-04-20T11:15:36.117Z',
+        rejectedBy: 'ensemble-scoreability-check',
+        wrongProductionManualClear: false,
+        humanReviewedWrongProduction: true,
+      }),
+      false
+    );
+  });
 });
 
 describe('isIncludableForRebuild — fullTextWrongAuthor (ship-check additions)', () => {

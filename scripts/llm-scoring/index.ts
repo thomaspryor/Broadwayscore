@@ -1185,6 +1185,26 @@ async function main(): Promise<void> {
         if (!options.dryRun) {
           const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
+          // Skip rejection write if a human has manually cleared wrongProduction.
+          // Discovered 2026-04-22 (Notion 34b637c5-416f-81ff-a6d6-d453e7ed537c):
+          // the ensemble rejected 4 audit B-class false-positive clears because the
+          // scoreability-check prompt told the LLM the market was Broadway even for
+          // WE shows. Without this carve-out, re-running llm-scoring after a manual
+          // clear would re-set rejectedAt/rejectedBy and the downstream
+          // isIncludableForRebuild rejectedAt guard would exclude them again.
+          // The guard at scripts/lib/review-guards.js also respects these flags as
+          // belt-and-suspenders, so dropping this write just avoids churn and
+          // preserves the human verdict as the source of truth.
+          const manuallyCleared =
+            fileData.wrongProductionManualClear === true ||
+            fileData.wrongProductionOverride === true ||
+            fileData.humanReviewedWrongProduction === false;
+          if (manuallyCleared && rejection === 'wrong_production') {
+            console.log(`SKIP-REJECT (wrong_production on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
+            skipped++;
+            continue;
+          }
+
           // Route rejection to appropriate flags
           // Off-Broadway shows are exempt from wrongProduction flagging:
           // OB shows commonly transfer from regional/fringe theaters, so LLM often
