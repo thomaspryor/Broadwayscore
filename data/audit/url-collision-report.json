@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-04-22T13:03:34.738Z",
+  "generatedAt": "2026-04-23T03:32:15.812Z",
   "summary": {
-    "total": 12,
+    "total": 17,
     "high": 9,
-    "medium": 2,
-    "low": 1
+    "medium": 6,
+    "low": 2
   },
   "collisions": [
+    {
+      "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
+      "normalizedUrl": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
+      "candidates": [
+        {
+          "showId": "boop-2025",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2025-04-12",
+          "openingDate": "2025-04-05",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        },
+        {
+          "showId": "smash-2025",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2025-04-12",
+          "openingDate": "2025-04-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        }
+      ],
+      "suggestedWinner": "smash-2025",
+      "reason": "publishDate 2025-04-12 is 2 days from smash-2025 but also 7 days from boop-2025",
+      "confidence": "medium"
+    },
     {
       "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
       "normalizedUrl": "https://bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
@@ -251,6 +278,60 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871",
+      "normalizedUrl": "https://talkinbroadway.com/allthatchat_new/d.php",
+      "candidates": [
+        {
+          "showId": "fallen-angels-2026",
+          "file": "talkinbroadway--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-04-19",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "talkinbroadway"
+        },
+        {
+          "showId": "the-balusters-2026",
+          "file": "talkinbroadway--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-04-21",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "talkinbroadway"
+        }
+      ],
+      "suggestedWinner": "the-balusters-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
+      "normalizedUrl": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
+      "candidates": [
+        {
+          "showId": "lempicka-2024",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2024-04-20",
+          "openingDate": "2024-04-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        },
+        {
+          "showId": "suffs-2024",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2024-04-20",
+          "openingDate": "2024-04-18",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        }
+      ],
+      "suggestedWinner": "suffs-2024",
+      "reason": "publishDate 2024-04-20 is 2 days from suffs-2024 but also 6 days from lempicka-2024",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.dailymail.co.uk/tv/article-15340469/Marmalade-magic-Paddington-Musical-scale-cuteness-PATRICK-MARMION-reviews-opening-night-Londons-Savoy-Theatre.html",
       "normalizedUrl": "https://dailymail.co.uk/tv/article-15340469/marmalade-magic-paddington-musical-scale-cuteness-patrick-marmion-reviews-opening-night-londons-savoy-theatre.html",
       "candidates": [
@@ -305,6 +386,33 @@
       "confidence": "high"
     },
     {
+      "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
+      "normalizedUrl": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
+      "candidates": [
+        {
+          "showId": "the-notebook-2024",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2024-03-23",
+          "openingDate": "2024-03-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        },
+        {
+          "showId": "water-for-elephants-2024",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2024-03-23",
+          "openingDate": "2024-03-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        }
+      ],
+      "suggestedWinner": "water-for-elephants-2024",
+      "reason": "publishDate 2024-03-23 is 2 days from water-for-elephants-2024 but also 9 days from the-notebook-2024",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
       "candidates": [
@@ -330,6 +438,33 @@
       "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
       "reason": "publishDate June 1st, 2004 is 6279+ days from all openings; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "https://broadwayandme.blogspot.com/2026/02/real-families-really-matter-in.html",
+      "normalizedUrl": "https://broadwayandme.blogspot.com/2026/02/real-families-really-matter-in.html",
+      "candidates": [
+        {
+          "showId": "the-reservoir-off-broadway-2026",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2026-02-28",
+          "openingDate": "2026-02-05",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        },
+        {
+          "showId": "you-got-older-off-broadway-2026",
+          "file": "broadway-and-me--janice-c-simpson.json",
+          "publishDate": "2026-02-28",
+          "openingDate": "2026-02-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadway-and-me"
+        }
+      ],
+      "suggestedWinner": "you-got-older-off-broadway-2026",
+      "reason": "publishDate 2026-02-28 is 16 days from you-got-older-off-broadway-2026 but also 23 days from the-reservoir-off-broadway-2026",
+      "confidence": "medium"
     }
   ]
 }
