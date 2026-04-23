@@ -72,6 +72,15 @@ describe('slugMatchesShow', () => {
       'candidate title forms must include subtitle-stripped "Beaches"');
   });
 
+  // The canonical shows.json entry for Beaches uses a COMMA separator, not
+  // a colon. A colon-only stripper would have left the production form broken.
+  it('matches comma-separated subtitle (canonical Beaches shows.json form)', () => {
+    const show = { title: 'Beaches, A New Musical', openingDate: '2026-04-22' };
+    const realUrl = 'https://www.broadwayworld.com/article/Review-Roundup-BEACHES-Opens-on-Broadway-20260422';
+    assert.ok(slugMatchesShow(realUrl, show),
+      'stripSubtitle must split on comma, not just colon');
+  });
+
   it('respects explicit shortTitle override on show record', () => {
     const show = { title: 'Ridiculous Marketing Title: The Legend of X', shortTitle: 'The Legend of X', openingDate: '2026-04-22' };
     const url = 'https://www.broadwayworld.com/article/Review-Roundup-THE-LEGEND-OF-X-Opens-on-Broadway-20260422';
