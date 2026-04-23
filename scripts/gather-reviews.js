@@ -72,6 +72,7 @@ const {
   mergeAggregatorReviews,
 } = require('./lib/llm-extractor');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
+const { computeReplacementPreserve } = require('./lib/wrongprod-replacement-preserve');
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
@@ -3097,26 +3098,16 @@ function createReviewFile(showId, reviewData, options = {}) {
               && (!existingReview.url || normalizeUrl(reviewData.url) !== normalizeUrl(existingReview.url))
               && !isHumanFlagged
               && !existingIsDateBasedWrongProd) {
-            const preserved = {};
-            // Aggregator signals: always preserve (independent of production validity)
-            for (const key of ['bwwScore', 'bwwExcerpt', 'showScoreRating', 'showScoreExcerpt', 'dtliThumb', 'dtliExcerpt']) {
-              if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
-            }
-            // Scored content: preserve if the file already went through the full scoring pipeline.
             // A file with llmScore + fullText is real content — the wrongProduction flag may be
             // an LLM false-positive (44% FP rate on opening night; Proof 2026-04-17 P0 incident).
             // Preserving scored content here ensures a second poller run can't clobber it even
             // when the incoming URL differs slightly (different query params, subdomain variation).
             const alreadyScored = (existingReview.llmScore && existingReview.llmScore.score != null)
               || existingReview.humanReviewScore != null;
-            if (alreadyScored) {
-              for (const key of ['fullText', 'llmScore', 'humanReviewScore', 'scoreStatus',
-                                  'isFullReview', 'contentTier', 'contentTierReason',
-                                  'originalScore', 'originalScoreNormalized', 'originalScoreSource',
-                                  'originalRating', 'publishDate', 'criticName']) {
-                if (existingReview[key] !== undefined) preserved[key] = existingReview[key];
-              }
-            }
+            // Single source of truth — see scripts/lib/wrongprod-replacement-preserve.js.
+            // Aggregator signals always preserve, scored content preserves PROTECTED_FIELDS
+            // minus REPLACE_CLEAR_FIELDS, human-decision fields always preserve.
+            const preserved = computeReplacementPreserve(existingReview, { alreadyScored });
             const replacement = { ...reviewData, ...preserved, source: reviewData.source || 'gather-reviews' };
             // Explicitly clear ALL blocking metadata — the old file's flags are about
             // the wrong production/show and must not survive into the replacement.
