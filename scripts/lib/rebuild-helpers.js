@@ -5,7 +5,7 @@
  * Scoring thresholds and constants come from score-extractors.js (single source of truth).
  */
 
-const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS, extractScore } = require('./score-extractors');
+const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIED_SOURCES, KNOWN_STAR_OUTLETS, OUTLET_STAR_AUTHORITATIVE, extractScore } = require('./score-extractors');
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
@@ -350,7 +350,7 @@ function getBestScore(data, opts = {}) {
   if (data.adjudicatedScore && data.adjudicatedScore >= 1 && data.adjudicatedScore <= 100) {
     const hasVerifiedStarScore = data.originalScore
       && OUTLET_VERIFIED_SOURCES.has(data.scoreSource)
-      && KNOWN_STAR_OUTLETS.has(data.outletId);
+      && OUTLET_STAR_AUTHORITATIVE.has(data.outletId);
     if (!hasVerifiedStarScore) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
@@ -443,7 +443,14 @@ function getBestScore(data, opts = {}) {
           // Investigation confirmed first bstarsN is always the review rating,
           // second is a sidebar related article. 33/33 recollections matched.
         ]);
-        const isHighReliability = !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource);
+        // Outlet-level trust overrides generic scoreSource labels. Outlets in
+        // OUTLET_STAR_AUTHORITATIVE have dedicated extractors (or well-understood
+        // markup) and publish their own star ratings; a generic "css-stars" /
+        // "numeric-stars" label from their dedicated path must not downgrade them
+        // to LOW-reliability where a high-confidence LLM could overwrite them.
+        const isHighReliability =
+          !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource) ||
+          OUTLET_STAR_AUTHORITATIVE.has(data.outletId);
         // RAW-vs-RAW comparison: this 25-point bucket-jump guard decides whether
         // to TRUST the LLM over a low-reliability star extraction. The decision
         // must be made on the raw LLM score, BEFORE calibration, so the threshold

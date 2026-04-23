@@ -102,6 +102,59 @@ describe('getBestScore — explicit scores', () => {
     const other = getBestScore({ originalScore: 'A', outletId: 'variety' });
     assert.strictEqual(other, null);
   });
+
+  test('P0.5: NY Post css-stars NOT overridden by high-confidence LLM (Fallen Angels 2026-04-19)', () => {
+    // Regression fixture for the Notion card "P1: NY Post stars not auto-converted to humanReviewScore at ingest."
+    // NY Post published 1/4 stars (originalScore-priority0 = 25). A high-confidence LLM saying 85
+    // must NOT be allowed to overwrite the published star rating — NY Post is in
+    // OUTLET_STAR_AUTHORITATIVE, so its dedicated css-stars extractor output is treated as
+    // ground truth even though 'css-stars' is nominally LOW-reliability for unknown outlets.
+    const data = {
+      outletId: 'nypost',
+      originalScore: '1/4 stars',
+      originalScoreNormalized: 25,
+      scoreSource: 'css-stars',
+      llmScore: { score: 85, confidence: 'high' },
+      ensembleData: { needsReview: false },
+    };
+    const result = getBestScore(data);
+    assert.strictEqual(result.score, 25);
+    assert.strictEqual(result.source, 'originalScore-priority0');
+  });
+
+  test('P0.5: unknown outlet with css-stars STILL allows LLM override (regression guard)', () => {
+    // The outlet-level trust is narrow — only OUTLET_STAR_AUTHORITATIVE outlets get it.
+    // Generic css-stars from unknown outlets must still be overridable by a confident LLM,
+    // otherwise false-positive CSS extractions on random blogs would lock in wrong scores.
+    const data = {
+      outletId: 'some-unknown-blog',
+      originalScore: '1/5',
+      originalScoreNormalized: 20,
+      scoreSource: 'css-stars',
+      llmScore: { score: 85, confidence: 'high' },
+      ensembleData: { needsReview: false },
+      fullText: 'x'.repeat(500),
+    };
+    const result = getBestScore(data);
+    assert.strictEqual(result.score, 85);
+    assert.strictEqual(result.source, 'llmScore-override-star-conflict');
+  });
+
+  test('P0a: adjudicatedScore does NOT override NY Post css-stars (adjudication skip)', () => {
+    // NY Post 1/4 stars = 25. Adjudicator said 45. Stars win.
+    // Before this fix, adjudicatedScore beat css-stars at P0a because nypost wasn't in
+    // the gating set. Now OUTLET_STAR_AUTHORITATIVE covers it.
+    const data = {
+      outletId: 'nypost',
+      originalScore: '1/4 stars',
+      originalScoreNormalized: 25,
+      scoreSource: 'css-stars',
+      adjudicatedScore: 45,
+    };
+    const result = getBestScore(data);
+    assert.strictEqual(result.score, 25);
+    assert.strictEqual(result.source, 'originalScore-priority0');
+  });
 });
 
 // ========================================
