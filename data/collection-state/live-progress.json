@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-23T03:29:46.969Z",
-  "processed": 19,
-  "failed": 695,
-  "successRate": "2.7%",
+  "updatedAt": "2026-04-23T03:37:40.945Z",
+  "processed": 26,
+  "failed": 698,
+  "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 20,
+    "browserbase": 23,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 2,
+    "scrapingbee": 4,
+    "brightdata": 4,
     "archiveToday": 1,
     "archive": 2
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-23T03:26:28.994Z",
-      "event": "bb-session",
-      "session": "7e4373fc",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
-    },
-    {
-      "t": "2026-04-23T03:26:29.708Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-23T03:26:43.660Z",
-      "event": "bb-session",
-      "session": "5ea9dc1e",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
-    },
-    {
-      "t": "2026-04-23T03:26:44.389Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-23T03:26:58.621Z",
-      "event": "bb-session",
-      "session": "029e00ff",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
-    },
-    {
-      "t": "2026-04-23T03:26:59.393Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-23T03:27:13.814Z",
       "event": "bb-session",
@@ -122,6 +89,39 @@
     },
     {
       "t": "2026-04-23T03:29:30.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T03:35:09.353Z",
+      "event": "bb-session",
+      "session": "bdb0b0da",
+      "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html"
+    },
+    {
+      "t": "2026-04-23T03:35:10.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:36:00.938Z",
+      "event": "bb-session",
+      "session": "74bbe0be",
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-rem"
+    },
+    {
+      "t": "2026-04-23T03:36:01.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-23T03:36:16.788Z",
+      "event": "bb-session",
+      "session": "2742ea49",
+      "url": "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/"
+    },
+    {
+      "t": "2026-04-23T03:36:17.953Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }

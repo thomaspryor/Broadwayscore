@@ -18,7 +18,14 @@
     "fallen-angels-2026/talkinbroadway--unknown.json",
     "jersey-boys-2005/hollywood-reporter--eriq-gardner.json",
     "ragtime-1998/nydailynews--fintan-otoole.json",
-    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+    "beaches-2026/nyt-theater--jonathan-mandell.json",
+    "beaches-2026/nytg--joe-dziemianowicz.json",
+    "beaches-2026/nytimes--laura-collins-hughes.json",
+    "beaches-2026/deadline--greg-evans.json",
+    "beaches-2026/thewrap--robert-hofler.json",
+    "beaches-2026/timeout--adam-feldman.json",
+    "beaches-2026/exeunt-magazine--cameron-kelsall.json"
   ],
   "failed": [
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
@@ -715,7 +722,10 @@
     "a-thousand-clowns-2001/nytimes--bruce-weber.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "les-miserables-1987/huffpost--mike-ryan.json",
-    "working-1978/theater-news-online--joe-dziemianowicz.json"
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "beaches-2026/variety--frank-rizzo.json",
+    "beaches-2026/theatrely--juan-a-ramirez.json",
+    "beaches-2026/nysr--bob-verini.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -726,7 +736,10 @@
       "the-balusters-2026/dc-theater-arts--deb-miller.json",
       "the-balusters-2026/the-recs--david-cook.json",
       "the-balusters-2026/times-square-chronicles--suzanna-bowling.json",
-      "between-the-river-and-the-sea-west-end-2026/london-theatre--matt-wolf.json"
+      "between-the-river-and-the-sea-west-end-2026/london-theatre--matt-wolf.json",
+      "beaches-2026/nyt-theater--jonathan-mandell.json",
+      "beaches-2026/nytg--joe-dziemianowicz.json",
+      "beaches-2026/exeunt-magazine--cameron-kelsall.json"
     ],
     "amp": [],
     "browserbase": [
@@ -749,17 +762,23 @@
       "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json",
       "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
-      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json"
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "data/review-texts/beaches-2026/variety--frank-rizzo.json",
+      "data/review-texts/beaches-2026/deadline--greg-evans.json",
+      "beaches-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "copenhagen-west-end-2026/independent--laura-hall.json",
       "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
-      "a-midsummer-nights-dream-globe-west-end-2026/times-uk--ben-dowell.json"
+      "a-midsummer-nights-dream-globe-west-end-2026/times-uk--ben-dowell.json",
+      "beaches-2026/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "the-balusters-2026/talkinbroadway--unknown.json",
-      "fallen-angels-2026/talkinbroadway--unknown.json"
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "beaches-2026/nytimes--laura-collins-hughes.json",
+      "beaches-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/dog-day-afternoon-2026/independent--unknown.json"
@@ -770,7 +789,7 @@
     ]
   },
   "startTime": "2026-04-22T08:48:02.911Z",
-  "lastProcessed": "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+  "lastProcessed": "beaches-2026/nysr--bob-verini.json",
   "log": [
     {
       "t": "2026-04-23T03:14:09.376Z",
@@ -934,6 +953,39 @@
     },
     {
       "t": "2026-04-23T03:29:30.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T03:35:09.353Z",
+      "event": "bb-session",
+      "session": "bdb0b0da",
+      "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html"
+    },
+    {
+      "t": "2026-04-23T03:35:10.512Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:36:00.938Z",
+      "event": "bb-session",
+      "session": "74bbe0be",
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-rem"
+    },
+    {
+      "t": "2026-04-23T03:36:01.978Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-23T03:36:16.788Z",
+      "event": "bb-session",
+      "session": "2742ea49",
+      "url": "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/"
+    },
+    {
+      "t": "2026-04-23T03:36:17.953Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
     }
