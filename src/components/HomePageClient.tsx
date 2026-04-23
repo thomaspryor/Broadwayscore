@@ -60,7 +60,7 @@ interface HomePageClientProps {
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz';
+type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz' | 'audience_asc';
 type TypeParam = 'all' | 'musical' | 'play';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
@@ -202,7 +202,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const [filters, setFilters] = useState(() => ({
     status: (['now_playing', 'closed', 'upcoming', 'closing_soon', 'all'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (['recent', 'score_desc', 'score_asc', 'alpha', 'audience_buzz'].includes(initialSearchParams.get('sort') as string)
+    sort: (['recent', 'score_desc', 'score_asc', 'alpha', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
@@ -480,6 +480,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             const bScore = (b.status === 'previews' || b.status === 'upcoming') ? -1 : (b.audienceCombinedScore ?? -1);
             return bScore - aScore;
           }
+          case 'audience_asc': {
+            const aScore = (a.status === 'previews' || a.status === 'upcoming') ? Infinity : (a.audienceCombinedScore ?? Infinity);
+            const bScore = (b.status === 'previews' || b.status === 'upcoming') ? Infinity : (b.audienceCombinedScore ?? Infinity);
+            return aScore - bScore;
+          }
           case 'alpha':
             return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
           case 'recent':
@@ -620,12 +625,26 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           label="SORT:"
           options={[
             { value: 'recent' as SortParam, label: 'NEWEST' },
-            { value: 'score_desc' as SortParam, label: 'CRITICS' },
-            { value: 'audience_buzz' as SortParam, label: 'AUDIENCE' },
+            {
+              value: 'score_desc' as SortParam,
+              label: sort === 'score_desc' ? 'CRITICS ↓' : sort === 'score_asc' ? 'CRITICS ↑' : 'CRITICS',
+            },
+            {
+              value: 'audience_buzz' as SortParam,
+              label: sort === 'audience_buzz' ? 'AUDIENCE ↓' : sort === 'audience_asc' ? 'AUDIENCE ↑' : 'AUDIENCE',
+            },
             { value: 'alpha' as SortParam, label: 'A-Z' },
           ]}
-          value={sort}
-          onChange={(s) => updateParams({ sort: s })}
+          value={sort === 'score_asc' ? 'score_desc' : sort === 'audience_asc' ? 'audience_buzz' : sort}
+          onChange={(s) => {
+            let next: SortParam = s;
+            if (s === 'score_desc') {
+              next = sort === 'score_desc' ? 'score_asc' : 'score_desc';
+            } else if (s === 'audience_buzz') {
+              next = sort === 'audience_buzz' ? 'audience_asc' : 'audience_buzz';
+            }
+            updateParams({ sort: next });
+          }}
           ariaLabel="Sort shows"
         />
       </div>
