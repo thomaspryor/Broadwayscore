@@ -232,11 +232,14 @@ function validateStatus(shows) {
       error(`Open show "${show.title}" (${show.id}) missing category — opening-night pipeline will misroute. Set category to 'broadway' or 'west-end'.`);
       invalid++;
     } else if (['previews', 'upcoming'].includes(show.status) && !show.category) {
-      warn(`Active show "${show.title}" (${show.id}) missing category field — pipeline will default to broadway`);
+      // Upgraded from warn→error 2026-04-22: previews-state shows ship to
+      // production and flip to status=open on opening day. By the time the
+      // 'open' check errors, the bug is already live. Catch at discovery.
+      error(`Active show "${show.title}" (${show.id}) missing category — discover-new-shows.js must set category+market on create. Fix the creator, not the data.`);
       invalid++;
     }
-    if (show.status === 'open' && show.category && !show.market) {
-      error(`Open show "${show.title}" (${show.id}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category.`);
+    if (['open', 'previews', 'upcoming'].includes(show.status) && show.category && !show.market) {
+      error(`Active show "${show.title}" (${show.id}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category, but also fix the creator that dropped it.`);
       invalid++;
     }
     if (show.category && !validCategories.includes(show.category)) {
