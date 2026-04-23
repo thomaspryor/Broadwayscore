@@ -24,7 +24,7 @@ export const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
     type: 'impact',
     impactDomain: 'todaytix.pxf.io',
     impactPublisherId: '6999278',
-    impactCampaignId: '1774863',
+    impactCampaignId: '3855163',
     impactProgramId: '20944',
     enabled: true,
   },
