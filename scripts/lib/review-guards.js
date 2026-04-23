@@ -1258,12 +1258,24 @@ function isIncludableForRebuild(data) {
   // Without this check, reviews whose rejectionReason was later cleared by clear-failure-flags
   // could slip back into reviews.json — which is what happened with the Vulture FILM review
   // of Hamlet (wrong_production) on 2026-04-20.
-  // Exception: if text was re-scraped AFTER rejection, treat as revalidated and let downstream
+  // Exception 1: if text was re-scraped AFTER rejection, treat as revalidated and let downstream
   // scoring decide. collect-review-texts should have cleared rejectedAt in that case but
   // only does so when rejectionReason is still set, so this guard handles the leak.
+  // Exception 2: if a human has manually cleared wrongProduction (wrongProductionManualClear,
+  // humanReviewedWrongProduction===false, or wrongProductionOverride), the rejection is a
+  // stale false positive and the guard must defer — same pattern as lines 1225-1230 and
+  // 1289-1296 for other exclusion signals. Discovered 2026-04-22 when 4 audit B-class
+  // false-positive clears stayed excluded (giant-2026, heart-wall-we, shedevil-we,
+  // authenticator-we): LLM ensemble told "show context specifies Broadway" for WE shows
+  // rejected them, and wrongProductionManualClear alone couldn't override the rejectedAt
+  // guard. See Notion card 34b637c5-416f-81ff-a6d6-d453e7ed537c.
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
     const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-    if (!reFetched) return false;
+    const wpCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false;
+    if (!reFetched && !wpCleared) return false;
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
