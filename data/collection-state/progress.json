@@ -323,7 +323,8 @@
     "browserbase": [
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
-      "data/review-texts/proof-2026/nytimes--unknown.json"
+      "data/review-texts/proof-2026/nytimes--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -333,7 +334,8 @@
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json",
-      "data/review-texts/flyby-off-west-end-2026/guardian--unknown.json"
+      "data/review-texts/flyby-off-west-end-2026/guardian--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
@@ -372,6 +374,17 @@
       "t": "2026-04-23T18:32:31.958Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-23T18:47:03.693Z",
+      "event": "bb-session",
+      "session": "b963f9b9",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T18:47:04.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
