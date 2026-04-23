@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T03:35:33.953Z",
+  "generatedAt": "2026-04-23T04:13:47.190Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -426,28 +426,23 @@
       "status": "open",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "siteScore": 41.75,
+      "liveScore": 42,
+      "scoreDrift": 0.25,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "total": 16,
+      "t1": 4,
+      "t2": 9,
+      "t3": 3,
+      "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 15,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -457,20 +452,12 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -493,16 +480,8 @@
           "isDualMarket": false
         },
         {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
           "name": "Los Angeles Times",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -527,31 +506,7 @@
       ],
       "missingT2": [
         {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
           "isDualMarket": false
         },
         {
@@ -567,10 +522,6 @@
           "isDualMarket": false
         },
         {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -583,23 +534,7 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
           "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -679,10 +614,6 @@
           "isDualMarket": false
         },
         {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
           "name": "Slate",
           "isDualMarket": false
         },
@@ -717,6 +648,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-23T04:13:47.190Z",
+          "rc": 16,
+          "s": 41.75,
+          "t1": 4,
+          "t2": 9,
+          "t3": 3,
+          "p": 1,
+          "m": 0,
+          "n": 15,
+          "bc": "waiting"
         }
       ]
     },
@@ -1434,17 +1379,17 @@
       "status": "open",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 75.93,
-      "liveScore": 76,
-      "scoreDrift": 0.06999999999999318,
+      "siteScore": 76.55,
+      "liveScore": 77,
+      "scoreDrift": 0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
-      "t1": 3,
+      "total": 22,
+      "t1": 4,
       "t2": 12,
       "t3": 6,
-      "positive": 15,
+      "positive": 16,
       "mixed": 5,
       "negative": 1,
       "readiness": {
@@ -1694,6 +1639,18 @@
           "m": 5,
           "n": 1,
           "bc": "complete"
+        },
+        {
+          "t": "2026-04-23T04:13:47.190Z",
+          "rc": 22,
+          "s": 76.55,
+          "t1": 4,
+          "t2": 12,
+          "t3": 6,
+          "p": 16,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     },
@@ -1707,23 +1664,23 @@
       "status": "open",
       "slug": "schmigadoon",
       "thumbnail": "/images/shows/schmigadoon-2026/thumbnail.webp",
-      "siteScore": 75.27,
-      "liveScore": 75,
-      "scoreDrift": -0.269999999999996,
+      "siteScore": 75.51,
+      "liveScore": 76,
+      "scoreDrift": 0.4899999999999949,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 25,
+      "total": 26,
       "t1": 6,
       "t2": 15,
-      "t3": 4,
-      "positive": 17,
+      "t3": 5,
+      "positive": 18,
       "mixed": 6,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1944,6 +1901,18 @@
           "t2": 15,
           "t3": 4,
           "p": 17,
+          "m": 6,
+          "n": 2,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-23T04:13:47.190Z",
+          "rc": 26,
+          "s": 75.51,
+          "t1": 6,
+          "t2": 15,
+          "t3": 5,
+          "p": 18,
           "m": 6,
           "n": 2,
           "bc": "complete"

@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-23T03:35:29.890Z",
+  "timestamp": "2026-04-23T04:13:43.871Z",
   "stats": {
-    "totalReviews": 35766,
-    "alreadyFlagged": 16010,
+    "totalReviews": 35786,
+    "alreadyFlagged": 16009,
     "dateGuardCatches": 94,
     "directorMismatch": 820,
-    "tvFilmSignals": 3188,
+    "tvFilmSignals": 3194,
     "londonSignals": 1026,
     "offBroadwaySignals": 898,
     "yearMismatch": 68,
@@ -5357,6 +5357,87 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": "2026-04-22",
+      "url": "https://culturesauce.com/2026/04/22/beaches-musical-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "ew--sarah-hearon.json",
+      "publishDate": "2026-04-22",
+      "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "nysr--david-finkle.json",
+      "score": 57,
+      "publishDate": "2026-04-23",
+      "url": "https://nystagereview.com/2026/04/22/beaches-much-loved-novel-and-movie-bursts-into-so-so-songs/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 38,
+      "publishDate": "2026-04-23",
+      "url": "https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2026-04-22",
+      "url": "https://www.theatermania.com/news/review-beaches-an-irresistible-broadway-tearjerker_1833737/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "variety--frank-rizzo.json",
+      "score": 34,
+      "publishDate": "2026-04-22",
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-remake-bette-midler-film-1236727693/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
