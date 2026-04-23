@@ -1,52 +1,129 @@
 {
-  "updatedAt": "2026-04-23T03:25:55.835Z",
-  "processed": 16,
-  "failed": 681,
-  "successRate": "2.3%",
+  "updatedAt": "2026-04-23T03:28:26.546Z",
+  "processed": 17,
+  "failed": 690,
+  "successRate": "2.4%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 17,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 2,
     "archiveToday": 1,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 12,
   "recentActivity": [
     {
-      "t": "2026-04-22T10:38:03.366Z",
+      "t": "2026-04-23T03:25:56.983Z",
       "event": "bb-session",
-      "session": "45bf8387",
-      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+      "session": "545089b3",
+      "url": "http://hollywoodreporter.com/thr-esq/judge-overturns-jurys-verdict-jersey-boys-i"
     },
     {
-      "t": "2026-04-22T10:38:04.397Z",
+      "t": "2026-04-23T03:25:57.837Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-04-23T03:10:11.227Z",
+      "t": "2026-04-23T03:26:13.125Z",
       "event": "bb-session",
-      "session": "4781edc8",
-      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose"
+      "session": "2f5bc2a9",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
     },
     {
-      "t": "2026-04-23T03:10:12.032Z",
+      "t": "2026-04-23T03:26:13.882Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-04-23T03:12:49.547Z",
+      "t": "2026-04-23T03:26:28.994Z",
       "event": "bb-session",
-      "session": "1da51a4a",
-      "url": "https://variety.com/2026/legit/reviews/fallen-angels-broadway-review-rose-byrne-"
+      "session": "7e4373fc",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
     },
     {
-      "t": "2026-04-23T03:12:50.292Z",
+      "t": "2026-04-23T03:26:29.708Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:26:43.660Z",
+      "event": "bb-session",
+      "session": "5ea9dc1e",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-23T03:26:44.389Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:26:58.621Z",
+      "event": "bb-session",
+      "session": "029e00ff",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-23T03:26:59.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:27:13.814Z",
+      "event": "bb-session",
+      "session": "911d3739",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-23T03:27:14.554Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:27:28.157Z",
+      "event": "bb-session",
+      "session": "b05e1fda",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
+    },
+    {
+      "t": "2026-04-23T03:27:28.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:27:43.086Z",
+      "event": "bb-session",
+      "session": "e6a0c2d7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-23T03:27:43.812Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:27:57.783Z",
+      "event": "bb-session",
+      "session": "cb1e9962",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
+    },
+    {
+      "t": "2026-04-23T03:27:58.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T03:28:13.038Z",
+      "event": "bb-session",
+      "session": "c11aa06d",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9406e0dc1f3af936a35757c0"
+    },
+    {
+      "t": "2026-04-23T03:28:13.859Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
