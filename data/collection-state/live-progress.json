@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-23T22:40:27.987Z",
+  "updatedAt": "2026-04-23T23:03:34.090Z",
   "processed": 6,
-  "failed": 933,
+  "failed": 939,
   "successRate": "0.6%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 3,
-    "archiveToday": 10,
+    "archiveToday": 11,
     "archive": 0
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-23T16:44:44.608Z",
-      "event": "bb-session",
-      "session": "2565204c",
-      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
-    },
-    {
-      "t": "2026-04-23T16:44:45.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-23T18:31:26.615Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-23T22:38:24.618Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T23:01:32.010Z",
+      "event": "bb-session",
+      "session": "48602cfb",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T23:01:32.555Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
