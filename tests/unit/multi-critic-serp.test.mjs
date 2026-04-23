@@ -28,6 +28,9 @@ const ROOT = join(import.meta.dirname, '..', '..');
 const {
   MULTI_CRITIC_SERP_OUTLETS,
   shouldQueryPerCritic,
+  remainingCritics,
+  normalizeCriticForCoverage,
+  normalizeUrlForDedup,
 } = require(join(ROOT, 'scripts/lib/multi-critic-serp.js'));
 
 test('allowlist contains NYT, Vulture, NYSR, Theatrely', () => {
@@ -146,6 +149,120 @@ test('searchForReviewViaSERP accepts a criticName option', () => {
   assert.ok(
     /async\s+function\s+searchForReviewViaSERP\s*\([^)]*\{[^}]*criticName/m.test(src),
     'searchForReviewViaSERP signature no longer destructures criticName from options'
+  );
+});
+
+test('remainingCritics: no coverage → all critics returned', () => {
+  const critics = ['Jesse Green', 'Maya Phillips'];
+  assert.deepStrictEqual(remainingCritics(critics, []), critics);
+  assert.deepStrictEqual(remainingCritics(critics, null), critics);
+});
+
+test('remainingCritics: one critic covered by aggregator → other critic returned', () => {
+  // P2 follow-up motivating case (2026-04-22): BWW RR finds Jesse Green,
+  // Maya Phillips review is silently dropped because the blanket skip fires.
+  const critics = ['Jesse Green', 'Maya Phillips'];
+  const found = [
+    { outletId: 'nytimes', criticName: 'Jesse Green', url: 'https://nytimes.com/a' },
+  ];
+  assert.deepStrictEqual(remainingCritics(critics, found), ['Maya Phillips']);
+});
+
+test('remainingCritics: normalization handles case, punctuation, spacing', () => {
+  const critics = ['Jesse Green', 'Maya Phillips'];
+  const found = [
+    { outletId: 'nytimes', criticName: 'JESSE  GREEN.', url: 'https://nytimes.com/a' },
+  ];
+  assert.deepStrictEqual(remainingCritics(critics, found), ['Maya Phillips']);
+
+  const found2 = [{ outletId: 'nytimes', criticName: 'maya-phillips' }];
+  assert.deepStrictEqual(remainingCritics(critics, found2), ['Jesse Green']);
+});
+
+test("remainingCritics: 'Unknown' critic does NOT count as coverage for anyone", () => {
+  // Aggregators sometimes set criticName to 'Unknown' when the byline couldn't
+  // be extracted. That tells us an article exists but not which critic wrote
+  // it, so we should still query every named critic.
+  const critics = ['Jesse Green', 'Maya Phillips', 'Elisabeth Vincentelli'];
+  const found = [
+    { outletId: 'nytimes', criticName: 'Unknown', url: 'https://nytimes.com/a' },
+  ];
+  assert.deepStrictEqual(remainingCritics(critics, found), critics);
+});
+
+test('remainingCritics: full coverage → empty list', () => {
+  const critics = ['Jesse Green', 'Maya Phillips'];
+  const found = [
+    { outletId: 'nytimes', criticName: 'Jesse Green' },
+    { outletId: 'nytimes', criticName: 'Maya Phillips' },
+  ];
+  assert.deepStrictEqual(remainingCritics(critics, found), []);
+});
+
+test('remainingCritics: bad input → empty / no crash', () => {
+  assert.deepStrictEqual(remainingCritics(null, []), []);
+  assert.deepStrictEqual(remainingCritics(undefined, []), []);
+  assert.deepStrictEqual(remainingCritics('not-an-array', []), []);
+});
+
+test('normalizeCriticForCoverage: falsy and Unknown collapse to empty', () => {
+  assert.strictEqual(normalizeCriticForCoverage(null), '');
+  assert.strictEqual(normalizeCriticForCoverage(''), '');
+  assert.strictEqual(normalizeCriticForCoverage('Unknown'), '');
+  assert.strictEqual(normalizeCriticForCoverage('unknown'), '');
+  assert.strictEqual(normalizeCriticForCoverage('UNKNOWN'), '');
+});
+
+test('normalizeCriticForCoverage: strips punctuation and case', () => {
+  assert.strictEqual(normalizeCriticForCoverage('Jesse Green'), 'jessegreen');
+  assert.strictEqual(normalizeCriticForCoverage('jesse-green'), 'jessegreen');
+  assert.strictEqual(normalizeCriticForCoverage('JESSE  GREEN.'), 'jessegreen');
+});
+
+test('normalizeUrlForDedup: trailing slash + hash dropped, query preserved, case folded', () => {
+  // Same article under different trivial variants should dedup.
+  const a = normalizeUrlForDedup('https://www.NYTimes.com/2026/04/22/theater/foo.html/');
+  const b = normalizeUrlForDedup('https://www.nytimes.com/2026/04/22/theater/foo.html#top');
+  assert.strictEqual(a, b);
+  // Query string kept — some outlets use ?reviewer=X for per-critic pages.
+  const c = normalizeUrlForDedup('https://example.com/review?critic=a');
+  const d = normalizeUrlForDedup('https://example.com/review?critic=b');
+  assert.notStrictEqual(c, d);
+  // Falsy input safe
+  assert.strictEqual(normalizeUrlForDedup(null), '');
+  assert.strictEqual(normalizeUrlForDedup(''), '');
+});
+
+test('gather-reviews.js wires partial-aggregator-coverage enrichment (P2 2026-04-22)', () => {
+  // Regression: before this fix, the blanket-skip on foundOutletIds silently
+  // cancelled per-critic SERP for any outlet an aggregator had touched. Lock
+  // the structural fix: _remainingCritics is imported AND used AND the
+  // multi-critic branch sits BEFORE the non-multi-critic blanket skip.
+  const src = readFileSync(join(ROOT, 'scripts/gather-reviews.js'), 'utf8');
+  assert.ok(
+    /remainingCritics:\s*_remainingCritics/.test(src),
+    'gather-reviews.js no longer imports remainingCritics — partial-coverage branch disconnected'
+  );
+  assert.ok(
+    /_remainingCritics\s*\(/.test(src),
+    'gather-reviews.js no longer calls _remainingCritics — every multi-critic outlet with aggregator coverage will silently skip the other critics'
+  );
+  assert.ok(
+    /normalizeUrlForDedup:\s*_normalizeUrlForDedup/.test(src),
+    'gather-reviews.js no longer imports normalizeUrlForDedup — per-critic results may duplicate aggregator URLs'
+  );
+
+  // The multi-critic branch must be positioned BEFORE the non-multi-critic
+  // blanket skip; otherwise the blanket skip catches multi-critic outlets
+  // first and we're back to the pre-fix behavior. Locate both markers and
+  // assert ordering.
+  const blanketSkipIdx = src.indexOf("already found via aggregator");
+  const multiBranchIdx = src.indexOf('_remainingCritics');
+  assert.ok(multiBranchIdx > 0, 'could not find multi-critic branch marker');
+  assert.ok(blanketSkipIdx > 0, 'could not find non-multi-critic blanket-skip marker');
+  assert.ok(
+    multiBranchIdx < blanketSkipIdx,
+    'multi-critic branch must run BEFORE the non-multi-critic blanket skip — otherwise aggregator-covered multi-critic outlets skip per-critic enrichment'
   );
 });
 
