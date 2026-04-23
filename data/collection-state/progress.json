@@ -7,7 +7,10 @@
     "proof-2026/vulture--unknown.json",
     "proof-2026/deadline--unknown.json",
     "proof-2026/ew--unknown.json",
-    "proof-2026/nypost--unknown.json"
+    "proof-2026/nypost--unknown.json",
+    "proof-2026/timeout--unknown.json",
+    "death-of-a-salesman-2026/ew--unknown.json",
+    "dog-day-afternoon-2026/talkinbroadway--howard-miller.json"
   ],
   "failed": [
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
@@ -43,14 +46,22 @@
     "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
     "fallen-angels-2026/talkinbroadway--unknown.json",
-    "proof-2026/nytimes--unknown.json"
+    "proof-2026/nytimes--unknown.json",
+    "copenhagen-west-end-2026/independent--laura-hall.json",
+    "copenhagen-west-end-2026/times-uk--maxie-szalwinska.json",
+    "inter-alia-west-end-2026/theupcoming--the-editorial-unit.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "schmigadoon-2026/ew--unknown.json",
       "proof-2026/nytg--unknown.json",
-      "proof-2026/ew--unknown.json"
+      "proof-2026/ew--unknown.json",
+      "death-of-a-salesman-2026/ew--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -63,12 +74,15 @@
       "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "proof-2026/timeout--unknown.json"
+    ],
     "brightdata": [
       "the-balusters-2026/nypost--johnny-oleksinski.json",
       "the-balusters-2026/talkinbroadway--unknown.json",
       "proof-2026/vulture--unknown.json",
-      "proof-2026/nypost--unknown.json"
+      "proof-2026/nypost--unknown.json",
+      "dog-day-afternoon-2026/talkinbroadway--howard-miller.json"
     ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
@@ -80,7 +94,7 @@
     "archive": []
   },
   "startTime": "2026-04-23T08:55:34.993Z",
-  "lastProcessed": "proof-2026/nypost--unknown.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-23T09:02:21.400Z",
