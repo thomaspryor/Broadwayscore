@@ -148,3 +148,28 @@ test('searchForReviewViaSERP accepts a criticName option', () => {
     'searchForReviewViaSERP signature no longer destructures criticName from options'
   );
 });
+
+test('SERP loop short-circuits when both providers are unavailable (budget waste guard)', () => {
+  // Ship-check P1 (2026-04-22): before this guard, a SERP-unavailable state
+  // would still iterate all 6 NYSR critics + outlet fallback + every remaining
+  // outlet — up to 100+ wasted calls × DELAY_MS sleeps per show. The fix:
+  // searchForReviewViaSERP returns { unavailable: true } and the outer loop
+  // sets serpUnavailable=true to abort. Lock both ends structurally.
+  const src = readFileSync(join(ROOT, 'scripts/gather-reviews.js'), 'utf8');
+  assert.ok(
+    /return\s*\{\s*unavailable:\s*true\s*\}/.test(src),
+    'searchForReviewViaSERP no longer returns { unavailable: true } — callers cannot distinguish no-results from provider outage'
+  );
+  assert.ok(
+    /let\s+serpUnavailable\s*=\s*false/.test(src),
+    'SERP loop no longer tracks a serpUnavailable flag — outage will burn full SERP budget'
+  );
+  assert.ok(
+    /if\s*\(\s*serpUnavailable\s*\)\s*break/.test(src),
+    'SERP outer loop no longer breaks on serpUnavailable — outage will still walk every outlet'
+  );
+  assert.ok(
+    /result\s*&&\s*result\.unavailable/.test(src),
+    'SERP loop no longer checks result.unavailable — unavailable state is being swallowed as "no hit"'
+  );
+});

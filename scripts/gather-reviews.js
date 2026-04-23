@@ -384,7 +384,12 @@ function getDomainMarketMap() {
 
 /**
  * Search for a review via real Google SERP (ScrapingBee / Bright Data).
- * Returns { url } on success, null on failure or no results.
+ * Returns:
+ *   { url }              — hit
+ *   null                 — no results (providers responded, just no match)
+ *   { unavailable: true } — both providers down / keys missing. Callers in a
+ *                           loop should short-circuit remaining calls instead
+ *                           of burning budget on N calls that will all fail.
  *
  * Pass options.criticName to target a specific critic at a multi-critic outlet —
  * discoverCorrectUrl will append the name as an unquoted boost term so the SERP
@@ -392,7 +397,7 @@ function getDomainMarketMap() {
  */
 async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical = false, criticName = 'Unknown' } = {}) {
   if (!scrapingBeeKey && !brightDataKey) {
-    return null;
+    return { unavailable: true };
   }
 
   // Build a minimal review-like object for discoverCorrectUrl()
@@ -411,7 +416,10 @@ async function searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightData
     forceHistorical: historical,
   });
 
-  if (result && result !== '__SERP_UNAVAILABLE__') {
+  if (result === '__SERP_UNAVAILABLE__') {
+    return { unavailable: true };
+  }
+  if (result) {
     return { url: result };
   }
   return null;
@@ -4308,10 +4316,15 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       const SERP_BUDGET = 150;
       let serpCallCount = 0;
+      // Once both SERP providers are unavailable, every subsequent call will
+      // fail the same way. Short-circuit the entire SERP phase instead of
+      // burning 50+ outlets × 6 critics of wasted budget + DELAY_MS sleeps.
+      let serpUnavailable = false;
 
       console.log(`\n[2/4] Searching ${allOutlets.length} outlets via SERP (budget: ${SERP_BUDGET})...`);
 
       for (const outlet of allOutlets) {
+        if (serpUnavailable) break;
         if (serpCallCount >= SERP_BUDGET) {
           console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} calls)`);
           break;
@@ -4345,6 +4358,11 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               historical: options.historical,
               criticName: critic,
             });
+            if (result && result.unavailable) {
+              console.log('✗ (SERP providers unavailable — aborting SERP phase)');
+              serpUnavailable = true;
+              break;
+            }
             if (result && result.url) {
               const urlKey = result.url.toLowerCase().replace(/\/$/, '');
               if (seenUrlsForOutlet.has(urlKey)) {
@@ -4368,13 +4386,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             }
             await sleep(DELAY_MS);
           }
+          if (serpUnavailable) break;
           // Fallback: if no critic-specific query hit, fire the legacy outlet-level
           // query. Catches freelancer / guest critic reviews not in critic-outlets.json.
           if (outletHits === 0 && serpCallCount < SERP_BUDGET) {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
-            if (result && result.url) {
+            if (result && result.unavailable) {
+              console.log('✗ (SERP providers unavailable — aborting SERP phase)');
+              serpUnavailable = true;
+            } else if (result && result.url) {
               health.serp.hits++;
               console.log('✓');
               foundReviews.push({
@@ -4398,7 +4420,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
         const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical });
 
-        if (result && result.url) {
+        if (result && result.unavailable) {
+          console.log('✗ (SERP providers unavailable — aborting SERP phase)');
+          serpUnavailable = true;
+        } else if (result && result.url) {
           health.serp.hits++;
           // For single-critic outlets, default to that critic so saveReview doesn't route
           // to _pending (where reviews never get scored). For multi-critic outlets, leave
