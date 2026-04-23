@@ -1,5 +1,14 @@
 {
-  "processed": [],
+  "processed": [
+    "the-balusters-2026/nypost--johnny-oleksinski.json",
+    "the-balusters-2026/talkinbroadway--unknown.json",
+    "schmigadoon-2026/ew--unknown.json",
+    "proof-2026/nytg--unknown.json",
+    "proof-2026/vulture--unknown.json",
+    "proof-2026/deadline--unknown.json",
+    "proof-2026/ew--unknown.json",
+    "proof-2026/nypost--unknown.json"
+  ],
   "failed": [
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -32,31 +41,46 @@
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
     "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+    "fallen-angels-2026/talkinbroadway--unknown.json",
+    "proof-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "schmigadoon-2026/ew--unknown.json",
+      "proof-2026/nytg--unknown.json",
+      "proof-2026/ew--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/proof-2026/nytimes--unknown.json",
+      "data/review-texts/proof-2026/deadline--unknown.json",
+      "proof-2026/deadline--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-balusters-2026/nypost--johnny-oleksinski.json",
+      "the-balusters-2026/talkinbroadway--unknown.json",
+      "proof-2026/vulture--unknown.json",
+      "proof-2026/nypost--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+      "data/review-texts/fallen-angels-2026/talkinbroadway--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-23T08:55:34.993Z",
-  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "proof-2026/nypost--unknown.json",
   "log": [
     {
       "t": "2026-04-23T09:02:21.400Z",
@@ -101,6 +125,39 @@
       "t": "2026-04-23T10:10:57.874Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T10:40:20.612Z",
+      "event": "bb-session",
+      "session": "c721521b",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-23T10:40:21.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T10:41:03.477Z",
+      "event": "bb-session",
+      "session": "9732d95a",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-04-23T10:41:03.544Z",
+      "event": "bb-session",
+      "session": "52f624cb",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-04-23T10:41:04.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T10:41:04.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

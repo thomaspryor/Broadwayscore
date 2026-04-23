@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-23T10:13:04.118Z",
-  "processed": 0,
-  "failed": 32,
-  "successRate": "0%",
+  "updatedAt": "2026-04-23T10:42:04.584Z",
+  "processed": 8,
+  "failed": 34,
+  "successRate": "19.0%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 4,
+    "brightdata": 4,
+    "archiveToday": 5,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-23T09:02:21.400Z",
@@ -58,6 +58,39 @@
       "t": "2026-04-23T10:10:57.874Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T10:40:20.612Z",
+      "event": "bb-session",
+      "session": "c721521b",
+      "url": "https://www.nytimes.com/2026/04/17/theater/salesman-giant-cats-becky-shaw-proof-"
+    },
+    {
+      "t": "2026-04-23T10:40:21.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-23T10:41:03.477Z",
+      "event": "bb-session",
+      "session": "9732d95a",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-04-23T10:41:03.544Z",
+      "event": "bb-session",
+      "session": "52f624cb",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871"
+    },
+    {
+      "t": "2026-04-23T10:41:04.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-23T10:41:04.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
