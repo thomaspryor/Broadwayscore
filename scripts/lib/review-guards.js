@@ -1230,7 +1230,25 @@ function isIncludableForRebuild(data) {
     if (!cleared) return false;
   }
 
-  if (data.wrongShow === true) return false;
+  // wrongShow — same manual-clear semantics as wrongProduction. If a human has
+  // verified the correct production, that also means the correct show — the LLM
+  // ensemble's wrong_show rejection for Giant (Mark Rosenblatt play vs musical)
+  // on 2026-04-22 is exactly this case: LLM knew "Giant the musical" from
+  // training and mis-identified the Broadway play as the wrong show. Without
+  // this carve-out, manual-clear was insufficient because llm-scoring could
+  // re-reject with `wrong_show` and set the flag on the manually-cleared file.
+  // Explicit wrongShowManualClear / wrongShowOverride fields supported for
+  // forward compatibility — ingest-manual-review.js sets wrongShow: false
+  // directly today (scripts/ingest-manual-review.js + memory/email-broadcast-rules).
+  if (data.wrongShow === true) {
+    const cleared =
+      data.wrongShowManualClear === true ||
+      data.wrongShowOverride === true ||
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false;
+    if (!cleared) return false;
+  }
   if (data.wrongAttribution === true) return false;
   if (data.duplicateOf) return false;
   if (data.isRoundupArticle === true) return false;

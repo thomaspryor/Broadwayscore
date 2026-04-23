@@ -321,6 +321,64 @@ describe('isIncludableForRebuild — rejectedAt canonical signal', () => {
   });
 });
 
+// Notion 34b637c5-416f-81ad-8afb-e39b9de9e926 continued (2026-04-23 ship-check):
+// wrongShow guard must respect the same manual-clear flags as wrongProduction.
+// Surfaced when the Giant (Mark Rosenblatt play) B-class file was re-rejected
+// with wrong_show despite wrongProductionManualClear=true — LLM ensemble knew
+// "Giant the musical" from training and mis-identified the Broadway play.
+describe('isIncludableForRebuild — wrongShow manual-clear carve-out', () => {
+  it('returns true when wrongShow: true but wrongProductionManualClear: true', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        wrongShow: true,
+        wrongProductionManualClear: true,
+      }),
+      true
+    );
+  });
+
+  it('returns true when wrongShow: true but humanReviewedWrongProduction: false', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        wrongShow: true,
+        humanReviewedWrongProduction: false,
+      }),
+      true
+    );
+  });
+
+  it('returns true when wrongShow: true but wrongShowManualClear: true', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        wrongShow: true,
+        wrongShowManualClear: true,
+      }),
+      true
+    );
+  });
+
+  it('returns true when wrongShow: true but wrongShowOverride: true', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...withText,
+        wrongShow: true,
+        wrongShowOverride: true,
+      }),
+      true
+    );
+  });
+
+  it('still excludes when wrongShow: true and no manual-clear flags', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...withText, wrongShow: true }),
+      false
+    );
+  });
+});
+
 describe('isIncludableForRebuild — fullTextWrongAuthor (ship-check additions)', () => {
   it('returns false when fullTextWrongAuthor: true and no excerpts', () => {
     // rebuild deletes fullText in memory and checks excerpts — on disk fullText still exists

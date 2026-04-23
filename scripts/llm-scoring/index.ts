@@ -1195,12 +1195,20 @@ async function main(): Promise<void> {
           // The guard at scripts/lib/review-guards.js also respects these flags as
           // belt-and-suspenders, so dropping this write just avoids churn and
           // preserves the human verdict as the source of truth.
+          // Also covers `wrong_show`: human-verified correct production implies correct
+          // show — the 2026-04-22 Giant case surfaced a second round where the LLM
+          // re-rejected with wrong_show ("Mark Rosenblatt play, not the musical I know")
+          // despite wrong_production being manually cleared. Treating both rejection
+          // types symmetrically matches the isIncludableForRebuild guard at
+          // scripts/lib/review-guards.js.
           const manuallyCleared =
             fileData.wrongProductionManualClear === true ||
             fileData.wrongProductionOverride === true ||
+            fileData.wrongShowManualClear === true ||
+            fileData.wrongShowOverride === true ||
             fileData.humanReviewedWrongProduction === false;
-          if (manuallyCleared && rejection === 'wrong_production') {
-            console.log(`SKIP-REJECT (wrong_production on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
+            console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
             skipped++;
             continue;
           }
