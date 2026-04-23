@@ -72,13 +72,30 @@ const PROTECTED_FIELDS = [
   'wrongArticleManualClear',
   'wrongShowManualClear',
   'wrongProductionOverride',
+  'wrongShowOverride',
+  'wrongShowNote',
+  'wrongShowAutoCleared',
+  'wrongProductionAutoCleared',
+  'wrongProductionAutoClearedAt',
+  'wrongProductionReason',
+  'wrongAttribution',
+  'manualContentTier',
   'designation',
   'isCriticsPick',
   'duplicateOf',
   'duplicateReason',
   'publishDateVerified',
   'publishDateSource',
+  // Opening-night manual-ingest overrides — rebuild guards read these to bypass
+  // date, market, tour, film, and routing flags. Missing from this list means
+  // a CI push that rebases our commits silently drops them and the review
+  // gets re-flagged on the next rebuild. See Beaches 2026-04-22 postmortem.
   'allowEarlyDate',
+  'allowLateDate',
+  'allowCrossMarket',
+  'allowTourSignal',
+  'allowFilmSignal',
+  'routedFromShowId',
   'urlVerified',
   'urlManualOverride',
   'urlManualOverrideNote',
@@ -91,6 +108,10 @@ const PROTECTED_FIELDS = [
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
   // Bug #10: manually-set pull quotes must survive rebuilds and LLM overrides.
   'pullQuote',
+  // Per-file protection array — unions with this global list in
+  // getEffectiveProtectedFields(). Must self-protect so ingest-manual-review's
+  // per-record locks can't be cleared by a rebase.
+  'protectedFields',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js

@@ -182,17 +182,67 @@ if (humanScore) {
   fields.humanReviewScore = humanScore;
 }
 
-// ALL protection fields — missing any one means a different guard re-flags the review.
+// Full protection field set — missing any one means a different guard re-flags the review.
 // These survive rebuild scoring, content reclassification, wrong-production flagging,
-// wrong-show classification, and pre-opening date guards.
+// wrong-show classification, pre-opening date guards, tour/film-signal guards, and
+// cross-market re-routing. The Beaches 2026-04-22 opening silently dropped 4 reviews
+// because this block only set 3 of the needed fields.
+//
+// Why each one:
+//   wrongProduction=false + wrongProductionManualClear=true    — bypass year/date-drift flagger
+//   wrongShow=false + wrongShowManualClear=true                — bypass cross-show heuristic
+//   wrongProductionOverride=true                               — older guard path still reads this
+//   wrongArticleManualClear=true                               — bypass "not a review" classifier
+//   humanReviewedWrongProduction=false                         — "human verified IS correct production"
+//   humanReviewedWrongArticle=false                            — "human verified IS a review"
+//   allowEarlyDate=true + allowLateDate=true + allowCrossMarket=true  — bypass temporal/market gates
+//   allowTourSignal=true + allowFilmSignal=true                — bypass keyword-based auto-exclusions
+//   contentVerification.{wrongProduction,wrongArticle}=false   — nested ensemble-scorer state
 fields.wrongProduction = false;
 fields.wrongProductionManualClear = true;
-fields.allowEarlyDate = true;
+fields.wrongProductionOverride = true;
 fields.wrongShow = false;
+fields.wrongShowManualClear = true;
+fields.wrongArticleManualClear = true;
+fields.humanReviewedWrongProduction = false;
+fields.humanReviewedWrongArticle = false;
+fields.allowEarlyDate = true;
+fields.allowLateDate = true;
+fields.allowCrossMarket = true;
+fields.allowTourSignal = true;
+fields.allowFilmSignal = true;
 fields.contentVerification = {
   wrongProduction: false,
   wrongArticle: false,
 };
+
+// Per-file protection lock — unions with global PROTECTED_FIELDS in
+// review-write-guard.js so these exact fields can't be silently dropped
+// on rebase even if one of them is later removed from the global list.
+// See memory/feedback_per_file_protected_fields_lock.md (Beaches 2026-04-22).
+fields.protectedFields = [
+  'humanReviewScore',
+  'manualContentTier',
+  'wrongProduction',
+  'wrongProductionManualClear',
+  'wrongProductionOverride',
+  'wrongShow',
+  'wrongShowManualClear',
+  'wrongArticleManualClear',
+  'humanReviewedWrongProduction',
+  'humanReviewedWrongArticle',
+  'allowEarlyDate',
+  'allowLateDate',
+  'allowCrossMarket',
+  'allowTourSignal',
+  'allowFilmSignal',
+  'contentVerification',
+  'fullText',
+  'textFetchedAt',
+  'originalScore',
+  'originalScoreSource',
+  'originalScoreNormalized',
+];
 
 if (originalScore) {
   fields.originalScore = originalScore;

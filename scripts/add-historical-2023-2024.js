@@ -8,6 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { checkForDuplicate } = require('./lib/deduplication');
+const { validateVenue } = require('./lib/broadway-theaters');
+const { classifyShow } = require('./lib/classify-show');
 
 const showsPath = path.join(__dirname, '../data/shows.json');
 const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
@@ -720,6 +722,14 @@ newShows.forEach(show => {
   if (check.isDuplicate) {
     console.log(`SKIP: ${show.title} (${show.id}) — ${check.reason}`);
   } else {
+    // Stamp category+market if not already set — prevents the null-category creator bug
+    // documented in memory/feedback_recurring_backfill_means_broken_creator.md.
+    if (!show.category || !show.market) {
+      const venueCat = validateVenue(show.venue)?.category;
+      const { category, market } = classifyShow({ category: show.category || venueCat });
+      show.category = show.category || category;
+      show.market = show.market || market;
+    }
     data.shows.push(show);
     addedCount++;
     console.log(`ADDED: ${show.title} (${show.id})`);
