@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadCookiesByFileKey, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
+const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 
 // --- Outlet Configuration ---
 
@@ -301,33 +302,83 @@ async function checkLiveAccess(fileKey, testUrl, cookies, authCookies) {
   }
 }
 
-// --- Layer 3 (plain HTTPS): for outlets where proxies are blocked (WSJ/New Yorker) ---
-// Uses fetchWithCookiesPlain directly — the same code path gather/collect scripts take.
-// A pass here proves PR #260 cookie wiring actually reaches the paywalled article.
+// --- Layer 3 (production-path): for outlets where SB proxies are blocked ---
+// Mirrors what gather/collect scripts actually do for WSJ/New Yorker:
+//   1. Try plain HTTPS with cookies (works from residential IPs)
+//   2. Fall through to Bright Data with cookies (works from CI datacenter IPs,
+//      since BD uses residential proxy pool)
+// A pass means "the production fetch path gets paywalled content end-to-end."
+
+async function fetchWithBrightDataCookies(url) {
+  const token = process.env.BRIGHTDATA_TOKEN;
+  if (!token) return { ok: false, error: 'BRIGHTDATA_TOKEN not set' };
+
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (!cookieHeader) return { ok: false, error: 'no cookies for domain' };
+
+  const bodyObj = {
+    zone: process.env.BRIGHTDATA_ZONE || 'mcp_unlocker',
+    url,
+    format: 'raw',
+    headers: { Cookie: cookieHeader },
+  };
+  const body = JSON.stringify(bodyObj);
+
+  return new Promise((resolve) => {
+    const req = https.request('https://api.brightdata.com/request', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body),
+      },
+      timeout: 30000,
+    }, (res) => {
+      let data = '';
+      res.on('data', (c) => { data += c; });
+      res.on('end', () => {
+        if (res.statusCode === 200) resolve({ ok: true, content: data });
+        else resolve({ ok: false, error: `BD HTTP ${res.statusCode}: ${data.slice(0, 200)}` });
+      });
+    });
+    req.on('error', (err) => resolve({ ok: false, error: err.message }));
+    req.on('timeout', () => { req.destroy(); resolve({ ok: false, error: 'timeout' }); });
+    req.end(body);
+  });
+}
+
+function classifyLiveContent(html, authCookies, source) {
+  const isSoftPaywall = !authCookies || authCookies.length === 0;
+  if (isBlocked(html)) return { status: 'fail', message: `Blocked via ${source} (${html.length} chars)` };
+  if (isPaywalled(html)) {
+    if (isSoftPaywall && html.length > 50000) {
+      return { status: 'pass', message: `OK soft-paywall via ${source} (${html.length} chars)` };
+    }
+    return { status: 'fail', message: `Paywalled via ${source} — subscriber cookies not authenticating (${html.length} chars)` };
+  }
+  if (html.length < 2000) return { status: 'warn', message: `Short via ${source} (${html.length} chars)` };
+  return { status: 'pass', message: `OK via ${source} (${html.length} chars)` };
+}
 
 async function checkLiveAccessPlain(fileKey, testUrl, authCookies) {
+  // Tier 1: plain HTTPS + cookies (residential IP path)
   try {
-    const result = await fetchWithCookiesPlain(testUrl);
-    if (!result || !result.content) {
-      return { status: 'fail', message: 'Plain-HTTPS fetch returned null (cookies missing or request failed)' };
+    const plain = await fetchWithCookiesPlain(testUrl);
+    if (plain && plain.content) {
+      const result = classifyLiveContent(plain.content, authCookies, 'plain-HTTPS');
+      if (result.status === 'pass') return result;
+      // fall through to BD if plain returned paywall/block — CI IP often blocked
     }
-
-    const html = result.content;
-    const isSoftPaywall = !authCookies || authCookies.length === 0;
-    if (isBlocked(html)) {
-      return { status: 'fail', message: `Blocked (${html.length} chars)` };
-    }
-    if (isPaywalled(html)) {
-      if (isSoftPaywall && html.length > 50000) {
-        return { status: 'pass', message: `OK soft-paywall (${html.length} chars)` };
-      }
-      return { status: 'fail', message: `Paywalled — subscriber cookies not authenticating (${html.length} chars)` };
-    }
-    if (html.length < 2000) return { status: 'warn', message: `Short (${html.length} chars)` };
-    return { status: 'pass', message: `OK plain-HTTPS (${html.length} chars)` };
   } catch (err) {
-    return { status: 'fail', message: `Plain-HTTPS error: ${err.message}` };
+    console.log(`  plain-HTTPS error: ${err.message}`);
   }
+
+  // Tier 2: Bright Data with cookies (residential proxy, works from CI datacenters)
+  const bd = await fetchWithBrightDataCookies(testUrl);
+  if (!bd.ok) {
+    return { status: 'fail', message: `plain-HTTPS failed + BD failed: ${bd.error}` };
+  }
+  return classifyLiveContent(bd.content, authCookies, 'Bright Data');
 }
 
 // --- Main ---
