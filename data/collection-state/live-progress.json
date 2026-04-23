@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-04-23T07:40:42.479Z",
+  "updatedAt": "2026-04-23T08:04:29.678Z",
   "processed": 29,
-  "failed": 724,
-  "successRate": "3.9%",
+  "failed": 730,
+  "successRate": "3.8%",
   "tierBreakdown": {
     "playwright": 12,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 27,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 5,
@@ -15,17 +15,6 @@
   },
   "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-23T03:27:57.783Z",
-      "event": "bb-session",
-      "session": "cb1e9962",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
-    },
-    {
-      "t": "2026-04-23T03:27:58.507Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-23T03:28:13.038Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-23T07:38:24.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-23T08:02:22.456Z",
+      "event": "bb-session",
+      "session": "2d27e334",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-23T08:02:23.588Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
