@@ -296,6 +296,17 @@ export class EnsembleReviewScorer {
       outlet: reviewFile.outlet,
       criticName: reviewFile.criticName,
       publishDate: reviewFile.publishDate,
+      // category + venue MUST be propagated: input-builder.ts uses these to
+      // emit the market label ("West End", "Off-Broadway", etc.) in the
+      // context block. When omitted, input-builder falls through to the
+      // "Broadway" default, which made the LLM ensemble reject genuine WE
+      // reviews with "show context specifies Broadway" reasoning.
+      // Discovered 2026-04-23 (Notion 34b637c5-416f-81ad-8afb-e39b9de9e926)
+      // after 4 audit B-class false-positives traced to this omission.
+      // index.ts:1070-1071 attaches these fields to reviewFile before
+      // calling the scorer — we just need to forward them.
+      category: (reviewFile as any).category,
+      venue: (reviewFile as any).venue,
       fullText: reviewFile.fullText,
       ...excerptData,
       bwwThumb: reviewFile.bwwThumb,
