@@ -39,6 +39,14 @@ const SESSION_TIMEOUT_MS = 30000;
  */
 const STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'is']);
 
+// Strip marketing subtitle from a title. "Beaches: A New Musical" → "Beaches".
+// BWW slugs are hand-authored and routinely omit subtitles after `:` or `—`.
+function stripSubtitle(title) {
+  if (!title) return '';
+  const stripped = title.split(/[:—–\-]/)[0].trim();
+  return stripped || title;
+}
+
 function tokensFromTitle(title) {
   return (title || '')
     .toUpperCase()
@@ -48,14 +56,37 @@ function tokensFromTitle(title) {
     .filter(t => !STOPWORDS.has(t.toLowerCase()));
 }
 
+/**
+ * Candidate title forms to test against a BWW slug, in priority order:
+ *   1. show.shortTitle if set (explicit override in shows.json)
+ *   2. subtitle-stripped full title ("Beaches: A New Musical" → "Beaches")
+ *   3. full title as-is
+ *
+ * This exists because BWW authors slugs without subtitles — Beaches opened
+ * 2026-04-22 with real URL `Review-Roundup-BEACHES-Opens-on-Broadway-20260422`
+ * while the raw-title match required BEACHES+NEW+MUSICAL all be present and
+ * silently returned no candidates.
+ */
+function candidateTitles(show) {
+  const out = [];
+  if (show.shortTitle) out.push(show.shortTitle);
+  const stripped = stripSubtitle(show.title);
+  if (stripped && stripped !== show.title) out.push(stripped);
+  if (show.title) out.push(show.title);
+  return Array.from(new Set(out));
+}
+
 function slugMatchesShow(slug, show) {
   const slugUpper = slug.toUpperCase();
-  const titleTokens = tokensFromTitle(show.title);
-  if (titleTokens.length === 0) return false;
-  const missing = titleTokens.filter(t => !slugUpper.includes(t));
-  // All tokens must match for short titles; 1 miss tolerated for 4+ token titles.
-  const allowed = titleTokens.length >= 4 ? 1 : 0;
-  return missing.length <= allowed;
+  for (const form of candidateTitles(show)) {
+    const titleTokens = tokensFromTitle(form);
+    if (titleTokens.length === 0) continue;
+    const missing = titleTokens.filter(t => !slugUpper.includes(t));
+    // All tokens must match for short titles; 1 miss tolerated for 4+ token titles.
+    const allowed = titleTokens.length >= 4 ? 1 : 0;
+    if (missing.length <= allowed) return true;
+  }
+  return false;
 }
 
 function parseOpeningDateYmd(dateStr) {

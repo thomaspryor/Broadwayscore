@@ -34,15 +34,24 @@ const { execSync } = require('child_process');
 const MANUAL_FIELDS = [
   // (a) Human-only corrections
   'humanReviewScore',
+  'humanReviewNote',
   'manualContentTier',
   'wrongProductionManualClear',
   'wrongArticleManualClear',
   'wrongShowManualClear',
   'wrongProductionOverride',
+  'wrongShowOverride',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
   'allowEarlyDate',
+  'allowLateDate',
   'allowCrossMarket',
+  'allowTourSignal',
+  'allowFilmSignal',
+  'routedFromShowId',
+  // Per-file protection array lock
+  'protectedFields',
   // (b) Durable SERP retry state — must survive rebase
   'serpDiscoveryAbandoned',
   'serpAbandonmentReason',

@@ -593,9 +593,22 @@ function detectConcatenatedArticles(text, expectedShowId) {
     }
   }
 
-  // If we have 3+ article boundary patterns, likely concatenated
-  // (2 can occur in single reviews that reference theaters)
-  if (boundaryMatches.length >= 3) {
+  // Dedupe: a review that mentions "at the Nederlander Theatre" 4x (opening
+  // paragraph, lede, press-info footer, photo credit) shouldn't register as
+  // 4 boundaries — that's one article discussing one theater. True concatenation
+  // has matches with DIFFERENT captured content. Count unique matches only.
+  // Regression signal: TRL Schmigadoon review 2026-04-23 had 4 "at the
+  // Nederlander" mentions, tripped the 3+ gate, got classified as scraper_garbage
+  // and silently skipped. See memory/feedback_article_boundary_dedupe.md.
+  const uniqueMatchStrings = new Set(
+    boundaryMatches.map(m => m.match.toLowerCase().replace(/\s+/g, ' ').trim())
+  );
+  const uniqueMatchCount = uniqueMatchStrings.size;
+
+  // If we have 3+ UNIQUE article boundary patterns, likely concatenated.
+  // (Single-article review can repeat the same theater or phrase multiple
+  // times; that's fine. True concatenation has different signatures.)
+  if (uniqueMatchCount >= 3) {
     // Sort by position
     boundaryMatches.sort((a, b) => a.index - b.index);
     // The first boundary after position 500 is likely where concatenation starts
@@ -603,7 +616,7 @@ function detectConcatenatedArticles(text, expectedShowId) {
     if (firstBoundary) {
       return {
         detected: true,
-        reason: `Multiple article boundaries detected (${boundaryMatches.length})`,
+        reason: `Multiple article boundaries detected (${uniqueMatchCount} unique of ${boundaryMatches.length} total)`,
         truncateAt: firstBoundary.index
       };
     }

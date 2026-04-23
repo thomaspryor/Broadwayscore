@@ -61,6 +61,22 @@ describe('slugMatchesShow', () => {
     assert.strictEqual(slugMatchesShow(REAL_ANCHORS[0], { title: 'Hamilton' }), false);
     assert.strictEqual(slugMatchesShow(REAL_ANCHORS[1], { title: 'Wicked' }), false);
   });
+
+  // Beaches 2026-04-22 regression: show.title = "Beaches: A New Musical"
+  // but real BWW slug is just "BEACHES". Raw-title matcher required
+  // BEACHES + NEW + MUSICAL and silently returned zero candidates.
+  it('matches subtitled title against short-slug URL (Beaches regression)', () => {
+    const show = { title: 'Beaches: A New Musical', openingDate: '2026-04-22' };
+    const realUrl = 'https://www.broadwayworld.com/article/Review-Roundup-BEACHES-Opens-on-Broadway-20260422';
+    assert.ok(slugMatchesShow(realUrl, show),
+      'candidate title forms must include subtitle-stripped "Beaches"');
+  });
+
+  it('respects explicit shortTitle override on show record', () => {
+    const show = { title: 'Ridiculous Marketing Title: The Legend of X', shortTitle: 'The Legend of X', openingDate: '2026-04-22' };
+    const url = 'https://www.broadwayworld.com/article/Review-Roundup-THE-LEGEND-OF-X-Opens-on-Broadway-20260422';
+    assert.ok(slugMatchesShow(url, show));
+  });
 });
 
 describe('scoreCandidate', () => {

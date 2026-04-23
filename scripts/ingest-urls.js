@@ -35,6 +35,7 @@ const urlsFile = getArg('urls');
 const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
 const noFetch = hasFlag('no-fetch');
+const noPushReviewTexts = hasFlag('no-push-review-texts');
 const defaultOutlet = getArg('default-outlet');
 const verbose = hasFlag('verbose') || dryRun;
 
@@ -42,11 +43,12 @@ if (!showId || !urlsFile) {
   console.error('Usage: node scripts/ingest-urls.js --show=SHOW_ID --urls=FILE');
   console.error('');
   console.error('Options:');
-  console.error('  --dry-run         Show what would happen without creating files');
-  console.error('  --no-rebuild      Skip triggering scoring/rebuild/deploy after ingestion');
-  console.error('  --no-fetch        Skip text fetching (create stub files for later collection)');
-  console.error('  --default-outlet=ID  Fallback outlet ID for URLs that can\'t be auto-detected');
-  console.error('  --verbose         Show detailed progress');
+  console.error('  --dry-run              Show what would happen without creating files');
+  console.error('  --no-rebuild           Skip triggering scoring/rebuild/deploy after ingestion');
+  console.error('  --no-push-review-texts Skip committing+pushing new review-text files to the private repo');
+  console.error('  --no-fetch             Skip text fetching (create stub files for later collection)');
+  console.error('  --default-outlet=ID    Fallback outlet ID for URLs that can\'t be auto-detected');
+  console.error('  --verbose              Show detailed progress');
   console.error('');
   console.error('URL file format: one URL per line. # comments and blank lines ignored.');
   console.error('Optional: append outlet ID after space: https://example.com/review my-outlet');
@@ -103,7 +105,7 @@ async function main() {
     }
   }
 
-  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [] };
+  const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [] };
 
   for (let i = 0; i < entries.length; i++) {
     const { url, outletOverride } = entries[i];
@@ -173,9 +175,11 @@ async function main() {
 
     if (writeResult.action === 'new') {
       results.created++;
+      if (writeResult.filepath) results.touchedPaths.push(writeResult.filepath);
       if (verbose) console.log(`    ✓ Created: ${path.basename(writeResult.filepath || '')}`);
     } else if (writeResult.action === 'updated') {
       results.updated++;
+      if (writeResult.filepath) results.touchedPaths.push(writeResult.filepath);
       if (verbose) console.log(`    ✓ Updated: ${path.basename(writeResult.filepath || '')}`);
     } else {
       results.skipped++;
@@ -199,8 +203,48 @@ async function main() {
   }
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
-  // Trigger downstream pipelines
+  // Push new review-text files to the private broadway-review-texts repo
+  // BEFORE triggering workflows — CI checks out review-texts from GitHub, so
+  // files that exist only locally are invisible to the first LLM + rebuild
+  // pass and silently skipped. Fixed 2026-04-23 after 3 user-submitted
+  // Schmigadoon reviews took 4 hours to land.
   const newReviews = results.created + results.updated;
+  if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
+    const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+    const relPaths = results.touchedPaths.map(p => path.relative(reviewTextsDir, p));
+    try {
+      console.log('\nPushing review-texts to private repo...');
+      // Stage only the files this run touched — never a blanket `git add .`
+      execSync(`git -C "${reviewTextsDir}" add ${relPaths.map(p => `"${p}"`).join(' ')}`, { stdio: 'pipe' });
+      const status = execSync(
+        `git -C "${reviewTextsDir}" status --porcelain ${relPaths.map(p => `"${p}"`).join(' ')}`,
+        { encoding: 'utf8' }
+      ).trim();
+      if (!status) {
+        console.log('  — No changes to push (files match remote).');
+      } else {
+        execSync(
+          `git -C "${reviewTextsDir}" commit -m "ingest-urls: ${newReviews} review(s) for ${showId}"`,
+          { stdio: 'pipe' }
+        );
+        // Rebase in case remote has moved (CI pushes all the time)
+        try {
+          execSync(`git -C "${reviewTextsDir}" pull --rebase --autostash origin main`, { stdio: 'pipe' });
+        } catch (rebaseErr) {
+          console.log(`  ⚠️  Pull-rebase failed: ${rebaseErr.message.split('\n')[0]}`);
+          console.log('  Attempting push anyway; if it fails resolve manually.');
+        }
+        execSync(`git -C "${reviewTextsDir}" push origin main`, { stdio: 'pipe' });
+        console.log(`  ✓ Pushed ${newReviews} review-text file(s) to private repo`);
+      }
+    } catch (e) {
+      console.log(`  ⚠️  Push to review-texts failed: ${e.message.split('\n')[0]}`);
+      console.log('  The CI workflows below will not see the new files.');
+      console.log('  Fix: cd data/review-texts && git status, resolve, then push manually.');
+    }
+  }
+
+  // Trigger downstream pipelines
   if (newReviews > 0 && !noRebuild && !dryRun) {
     console.log('\nTriggering downstream pipelines...');
 
