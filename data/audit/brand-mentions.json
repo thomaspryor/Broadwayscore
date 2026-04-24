@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-24T20:32:57.517Z",
+  "lastRunAt": "2026-04-24T22:30:45.389Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -38,7 +38,8 @@
     "google:2e1f7a4de10ff277": true,
     "news:0ac605a57304b163": true,
     "news:67acdc3de5e1aa44": true,
-    "google:e67df507ee6601c6": true
+    "google:e67df507ee6601c6": true,
+    "google:8b045df2e05a3e55": true
   },
   "mentions": [
     {
@@ -783,10 +784,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-24T16:37:55.576Z"
+    },
+    {
+      "id": "google:8b045df2e05a3e55",
+      "source": "google",
+      "url": "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2",
+      "title": "THE ROCKY HORROR SHOW reviews - Page 2",
+      "excerpt": "17 hours ago — https://broadwayscorecard.com/show/the-rocky-horror-show. \"When we die, we go bye bye.\" - Abe Lincolns. Previous · 1; 2; Next. Back to the ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-24T22:30:32.732Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-24T22:30:45.389Z"
     }
   ],
   "stats": {
-    "totalSeen": 38,
+    "totalSeen": 39,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -827,6 +848,7 @@
     "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true,
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true,
     "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true,
-    "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true
+    "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true,
+    "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true
   }
 }
