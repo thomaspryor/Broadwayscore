@@ -7,6 +7,7 @@
  */
 
 const { TRYOUT_URL_MARKERS } = require('./content-filters');
+const { shortTitleCandidate } = require('./title-normalization');
 
 /**
  * Check if "Review Roundup" appears in the <title> tag (not just anywhere on the page).
@@ -87,6 +88,15 @@ function normalizeTitleWords(title) {
  *
  * Returns false (invalid) when a mismatch is detected.
  */
+function titleWordsPassSlugCheck(title, slugSegments) {
+  const titleWords = normalizeTitleWords(title);
+  if (titleWords.length === 0) return true; // all stop words — can't validate
+  if (titleWords.length === 1) return slugSegments.has(titleWords[0]);
+  const matchedCount = titleWords.filter(w => slugSegments.has(w)).length;
+  const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
+  return matchedCount / titleWords.length >= threshold;
+}
+
 function validateBWWRoundupUrlMatchesShow(url, showTitle) {
   if (!url || !showTitle) return true; // can't validate, don't block
 
@@ -102,19 +112,15 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
 
   const slugSegments = new Set(slug.split(/[-_]/));
 
-  const titleWords = normalizeTitleWords(showTitle);
-  if (titleWords.length === 0) return true; // all stop words — can't validate
+  if (titleWordsPassSlugCheck(showTitle, slugSegments)) return true;
 
-  // Single meaningful word: exact segment match only (prevents substring collisions)
-  if (titleWords.length === 1) {
-    return slugSegments.has(titleWords[0]);
-  }
+  // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
+  // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
+  // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
+  const shortTitle = shortTitleCandidate(showTitle);
+  if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments)) return true;
 
-  // Multi-word: exact segment match (same as single-word) — prevents substring collisions
-  // e.g. 'to' matching inside 'story', 'is' inside 'christmas', 'all' inside 'falls'
-  const matchedCount = titleWords.filter(w => slugSegments.has(w)).length;
-  const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
-  return matchedCount / titleWords.length >= threshold;
+  return false;
 }
 
 module.exports = { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow };

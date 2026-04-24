@@ -2607,8 +2607,12 @@ showDirs.forEach(showId => {
           const idTitle = (data.showId || showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ').toLowerCase();
           const showTitle = realTitle ? realTitle.toLowerCase() : idTitle;
           const shortTitle = showTitle.replace(/^the /, '').replace(/ musical$/, '');
+          // Comma-subtitle fallback ("beaches, a new musical" → "beaches"). Opening-night
+          // reviews for subtitled shows nearly always mention the short title only.
+          const commaIdx = showTitle.indexOf(',');
+          const commaShort = commaIdx > 0 ? showTitle.slice(0, commaIdx).trim() : '';
           const textLower = textToCheck.substring(0, 5000).toLowerCase();
-          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle))) {
+          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out

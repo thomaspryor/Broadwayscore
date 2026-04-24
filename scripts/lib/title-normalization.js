@@ -147,4 +147,22 @@ function cleanSearchTitle(title) {
     .trim();
 }
 
-module.exports = { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix };
+/**
+ * For subtitled shows like "Beaches, A New Musical", return the short title
+ * (everything before the first comma). Returns null if no comma or if the
+ * short title is empty / identical to the full title.
+ *
+ * Used by URL/slug/title-match validators to accept outlet/aggregator pages
+ * that use the short title only (2026-04-22 Beaches opening night: BWW RR,
+ * NYT, Guardian, TB, etc. all indexed as "Beaches" — full-title validators
+ * rejected all 22 reviews).
+ */
+function shortTitleCandidate(title) {
+  if (!title) return null;
+  const idx = title.indexOf(',');
+  if (idx <= 0) return null;
+  const short = title.slice(0, idx).trim();
+  return (short && short !== title) ? short : null;
+}
+
+module.exports = { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix, shortTitleCandidate };
