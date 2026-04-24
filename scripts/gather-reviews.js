@@ -2788,6 +2788,32 @@ function createReviewFile(showId, reviewData, options = {}) {
   // to avoid misattribution — normalizeOutlet("NYT Theater") → "nyt-theater" (wrong outlet)
   const outletForNormalization = reviewData.outletId || reviewData.outlet;
   const normalizedOutletId = normalizeOutlet(outletForNormalization);
+
+  // Session 3 #14 — promote Unknown critic to the outlet's defaultCritic at gather time.
+  // Without this, single-author outlets (Cote Notices / Substack criticsfeeds, newyorktheater.me,
+  // etc.) whose RSS items carry no <author> tag arrive with criticName='Unknown' and get routed to
+  // _pending/ by shouldRouteUnknownCriticToPending → rebuild-all-reviews never reads _pending/
+  // so the hit silently strands. rebuild-all-reviews.js:2745 has the same resolution as a
+  // belt-and-suspenders backstop, but only for files that reach the main show dir.
+  // See feedback_rss_discovery_pending_strand.md.
+  {
+    const inCritic = (reviewData.criticName || '').trim().toLowerCase();
+    if (!inCritic || inCritic === 'unknown' || inCritic === 'unnamed') {
+      try {
+        const reg = _outletRegistryCache || (() => {
+          const r = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+          _outletRegistryCache = r.outlets || {};
+          return _outletRegistryCache;
+        })();
+        const entry = reg[normalizedOutletId];
+        if (entry && entry.defaultCritic) {
+          console.log(`    → promoted Unknown → ${entry.defaultCritic} via outlet-registry defaultCritic (${normalizedOutletId})`);
+          reviewData.criticName = entry.defaultCritic;
+        }
+      } catch (e) { /* registry load failure — fall through to existing unknown handling */ }
+    }
+  }
+
   const normalizedCriticName = normalizeCritic(reviewData.criticName);
   const filename = generateReviewFilename(outletForNormalization, reviewData.criticName);
   const filepath = path.join(showDir, filename);
