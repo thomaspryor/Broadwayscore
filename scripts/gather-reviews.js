@@ -62,6 +62,7 @@ const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
+const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -99,6 +100,7 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const GATHER_COLLISIONS_PATH = path.join(__dirname, '..', 'data', 'audit', 'gather-collisions.json');
+const MARKET_MISROUTES_PATH = path.join(__dirname, '..', 'data', 'audit', 'market-misroutes.json');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -183,6 +185,19 @@ let _globalUrlIndex = null;
 let _skipCrossShowDupeIds = null;
 // Lazy-loaded outlet registry cache for domain validation in saveReview()
 let _outletRegistryCache = null;
+// Lazy-loaded cross-market sibling index for createReviewFile market guard
+let _siblingIndexCache = null;
+function getSiblingIndex() {
+  if (_siblingIndexCache) return _siblingIndexCache;
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    _siblingIndexCache = buildSiblingIndex(shows);
+  } catch {
+    _siblingIndexCache = new Map();
+  }
+  return _siblingIndexCache;
+}
 function getSkipCrossShowDupeIds() {
   if (_skipCrossShowDupeIds) return _skipCrossShowDupeIds;
   try {
@@ -235,6 +250,21 @@ function _recordGatherCollision(entry) {
     // Cap at 500 entries so a stuck poller doesn't balloon the file.
     if (list.length > 500) list = list.slice(-500);
     fs.writeFileSync(GATHER_COLLISIONS_PATH, JSON.stringify(list, null, 2));
+  } catch { /* audit write must not abort batch */ }
+}
+
+function _recordMarketMisroute(entry) {
+  try {
+    const auditDir = path.dirname(MARKET_MISROUTES_PATH);
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    let list = [];
+    if (fs.existsSync(MARKET_MISROUTES_PATH)) {
+      try { list = JSON.parse(fs.readFileSync(MARKET_MISROUTES_PATH, 'utf8')); } catch {}
+      if (!Array.isArray(list)) list = [];
+    }
+    list.push({ recordedAt: new Date().toISOString(), ...entry });
+    if (list.length > 500) list = list.slice(-500);
+    fs.writeFileSync(MARKET_MISROUTES_PATH, JSON.stringify(list, null, 2));
   } catch { /* audit write must not abort batch */ }
 }
 
@@ -2935,12 +2965,35 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'tourReview';
   }
 
-  // CROSS-MARKET GUARD: Reject obviously-Broadway URLs for WE shows
-  if (allowWestEnd && reviewData.url) {
-    const broadwayReason = isBroadwayUrl(reviewData.url, reviewData.outletId);
-    if (broadwayReason) {
-      console.log(`    ✗ Skipping ${filename}: ${broadwayReason}`);
-      return 'crossMarketBroadway';
+  // CROSS-MARKET GUARD: Classify by sibling date / year match before URL-only check.
+  // Three outcomes: accept (continue), reject (skip), reroute (recurse into the
+  // Broadway sibling directory). Replaces the older thin isBroadwayUrl-only guard —
+  // that check is still applied inside classifyMarketRouting as a fallback.
+  // See scripts/lib/market-routing.js and Notion 34c637c5-416f-81cf.
+  if (reviewData.url || reviewData.publishDate) {
+    const showCategory = (getShowData(showId) || {}).category || null;
+    const skipCross = getSkipCrossShowDupeIds().has(showId);
+    if (!skipCross) {
+      const visited = options._marketVisited instanceof Set ? options._marketVisited : new Set();
+      const decision = classifyMarketRouting({
+        showId,
+        url: reviewData.url,
+        outletId: reviewData.outletId || normalizedOutletId,
+        publishDate: reviewData.publishDate,
+        category: showCategory,
+        allowCrossMarket: options.allowCrossMarket === true,
+        visited,
+        siblingIndex: getSiblingIndex(),
+      });
+      if (decision.action === 'reject') {
+        console.log(`    ✗ Skipping ${filename}: ${decision.reason}`);
+        return 'crossMarketBroadway';
+      }
+      if (decision.action === 'reroute') {
+        console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${decision.targetShowId} (${decision.reason})`);
+        _recordMarketMisroute({ fromShowId: showId, toShowId: decision.targetShowId, file: filename, url: reviewData.url, publishDate: reviewData.publishDate, reason: decision.reason });
+        return createReviewFile(decision.targetShowId, reviewData, { ...options, _marketVisited: visited });
+      }
     }
   }
 

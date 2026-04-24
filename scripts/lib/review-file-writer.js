@@ -36,6 +36,7 @@ const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { pickRerouteTarget } = require('./review-guards');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
+const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
@@ -58,8 +59,22 @@ function _getCriticRegistry() {
   }
 }
 
-// ─── Lazy-loaded sibling lookup for cross-market contamination prevention ───
-// Loaded once on first use, cached for the process lifetime.
+// ─── Lazy-loaded sibling index for market-routing classifier ───
+// Uses scripts/lib/market-routing.js buildSiblingIndex so gather-reviews.js and
+// this writer share one decision function. Loaded once, cached for process lifetime.
+let _siblingIndexCache = null;
+function _getSiblingIndex() {
+  if (_siblingIndexCache) return _siblingIndexCache;
+  try {
+    const shows = require(SHOWS_PATH).shows;
+    _siblingIndexCache = buildSiblingIndex(shows);
+  } catch {
+    _siblingIndexCache = new Map();
+  }
+  return _siblingIndexCache;
+}
+
+// ─── Legacy sibling lookup (kept for any external callers; delegates to new index) ───
 let _siblingCache = null;
 function _getSiblingData() {
   if (_siblingCache) return _siblingCache;
@@ -194,58 +209,32 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
   }
 
-  // --- Guard A: Cross-market sibling reroute ---
-  // If this review's publish date matches a sibling production's opening better
-  // than the target show, reroute it. Prevents WE reviews from landing in BW
-  // folders (and vice versa).
-  // Two-tier detection: (1) full-date comparison when opening dates available
-  // (catches shows separated by <2 years, like oh-mary BW 2024 / WE 2025),
-  // (2) year-level fallback via pickRerouteTarget for older shows without dates.
-  // _rerouteVisited prevents infinite recursion if two siblings point to each other.
-  // Added 2026-04-12 after Oh Mary audit found 57 cross-market contamination cases.
-  if (input.publishDate || (input.fields && input.fields.publishDate)) {
+  // --- Guard A: Cross-market sibling reroute (+ Guard H URL rejection) ---
+  // Delegated to scripts/lib/market-routing.js so gather-reviews.js and this
+  // writer share one decision function. Thresholds preserved: sibling ≤30d,
+  // current >90d (full-date Tier 1); pickRerouteTarget (Tier 2 by year).
+  // Visited set prevents recursion cycles. See card 34c637c5-416f-81cf.
+  {
     const pubDateStr = input.publishDate || input.fields?.publishDate;
-    const sibData = _getSiblingData().get(showId);
-    if (sibData && sibData.siblings.length) {
-      // Guard: only accept string dates (not epoch numbers that would parse as 1970)
-      const { parseDate } = require('./date-utils');
-      const pubStr = typeof pubDateStr === 'string' ? pubDateStr : null;
-      const reviewDate = parseDate(pubStr);
-      const reviewValid = !!reviewDate;
-
-      const visited = _rerouteVisited || new Set();
-      visited.add(showId);
-
-      // Tier 1: Full-date comparison (days-level precision)
-      if (reviewValid && sibData.openingDate) {
-        const DAY = 86400000;
-        const distToCurrent = Math.abs(reviewDate - sibData.openingDate) / DAY;
-        let bestSib = null;
-        for (const sib of sibData.siblings) {
-          if (!sib.openingDate || visited.has(sib.id)) continue;
-          const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
-          // Sibling is much closer (>90 day gap AND sibling within 30 days)
-          if (distToSib <= 30 && distToCurrent > 90) {
-            if (!bestSib || distToSib < bestSib.dist) {
-              bestSib = { id: sib.id, dist: distToSib, currentDist: distToCurrent };
-            }
-          }
-        }
-        if (bestSib) {
-          console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${bestSib.id} (review ${pubDateStr} is ${Math.round(bestSib.dist)}d from sibling vs ${Math.round(bestSib.currentDist)}d from current)`);
-          return createOrMergeReviewFile(bestSib.id, input, { ...options, _rerouteVisited: visited });
-        }
-      }
-
-      // Tier 2: Year-level fallback (for shows without opening dates)
-      if (reviewValid && sibData.showYear) {
-        const reviewYear = reviewDate.getFullYear();
-        const reroute = pickRerouteTarget(sibData.showYear, sibData.siblings, reviewYear);
-        if (reroute.action === 'reroute' && !visited.has(reroute.targetShowId)) {
-          console.warn(`  ⚠️  Cross-market reroute (year): ${showId} → ${reroute.targetShowId} (review year ${reviewYear})`);
-          return createOrMergeReviewFile(reroute.targetShowId, input, { ...options, _rerouteVisited: visited });
-        }
-      }
+    const showCategory = _getShowCategory(showId);
+    const visited = _rerouteVisited || new Set();
+    const decision = classifyMarketRouting({
+      showId,
+      url: input.url,
+      outletId,
+      publishDate: pubDateStr,
+      category: showCategory,
+      allowCrossMarket: fields.allowCrossMarket === true,
+      visited,
+      siblingIndex: _getSiblingIndex(),
+    });
+    if (decision.action === 'reject') {
+      console.warn(`  ⛔ Cross-market guard: rejecting ${outletId}/${input.criticName || 'Unknown'} for ${showId} — ${decision.reason}`);
+      return { action: 'skipped', reason: decision.reason };
+    }
+    if (decision.action === 'reroute') {
+      console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${decision.targetShowId} (${decision.reason})`);
+      return createOrMergeReviewFile(decision.targetShowId, input, { ...options, _rerouteVisited: visited });
     }
   }
 
@@ -293,21 +282,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
-  // --- Guard H: Cross-market URL/outlet rejection for WE shows ---
-  // Reject reviews at ingestion that are clearly Broadway content being filed
-  // under a WE show. Uses the same URL patterns + US-only outlet list that
-  // validate-data.js uses post-hoc, but applied at write time so contamination
-  // never enters the data directory. Only fires for WE/OWE shows.
-  // Safe: only checks URL path patterns and outlet IDs — never review text
-  // (which legitimately mentions "Broadway" for transfer productions).
-  const showCategory = _getShowCategory(showId);
-  if (showCategory && isLondonMarket(showCategory) && !fields.allowCrossMarket) {
-    const crossMarketReason = isBroadwayUrl(input.url, outletId);
-    if (crossMarketReason) {
-      console.warn(`  ⛔ Cross-market guard: rejecting ${outletId}/${criticSlug} for WE show ${showId} — ${crossMarketReason}`);
-      return { action: 'skipped', reason: `cross-market: ${crossMarketReason}` };
-    }
-  }
+  // Guard H (URL/outlet rejection) merged into Guard A above via classifyMarketRouting.
 
   const showDir = path.join(reviewTextsDir, showId);
 
