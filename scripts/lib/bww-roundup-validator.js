@@ -88,10 +88,46 @@ function normalizeTitleWords(title) {
  *
  * Returns false (invalid) when a mismatch is detected.
  */
-function titleWordsPassSlugCheck(title, slugSegments) {
+// Slug boilerplate that commonly follows a show title in a BWW Review-Roundup URL.
+// Used as the disambiguator for single-word titles so "Fear" doesn't accidentally
+// match the slug for "Fear of 13" — a single-word-title slug must end its title
+// portion with one of these words (or a 4-digit year / 8-digit date) in the segment
+// immediately after the matched title word.
+const BWW_SLUG_BOILERPLATE = new Set([
+  'opens', 'opening', 'returns', 'returning', 'reopens', 'reopening',
+  'comes', 'coming', 'closes', 'closing', 'begins', 'beginning',
+  'previews', 'preview', 'starts', 'starting', 'updating', 'live',
+  'premieres', 'premiering', 'debuts', 'debuting', 'extends', 'extending',
+]);
+
+function isBoilerplateOrDate(segment) {
+  if (!segment) return true; // end-of-slug acts like a terminator
+  if (BWW_SLUG_BOILERPLATE.has(segment)) return true;
+  if (/^\d{4}$/.test(segment)) return true;   // year
+  if (/^\d{8}$/.test(segment)) return true;   // YYYYMMDD date
+  return false;
+}
+
+function titleWordsPassSlugCheck(title, slugSegments, slugSegmentsArray) {
   const titleWords = normalizeTitleWords(title);
   if (titleWords.length === 0) return true; // all stop words — can't validate
-  if (titleWords.length === 1) return slugSegments.has(titleWords[0]);
+  if (titleWords.length === 1) {
+    // Strict rule: title word must be present AND the NEXT segment must be
+    // boilerplate / year / end-of-slug. Prevents "Fear" matching "fear-of-13-…".
+    // Search up to the first 3 segments to allow a leading stop-word ("the")
+    // e.g. "The Fear" → slug "the-fear-opens-on-broadway-…" → titleIdx=1 OK.
+    const w = titleWords[0];
+    const segs = slugSegmentsArray || [];
+    const maxLead = Math.min(3, segs.length);
+    for (let i = 0; i < maxLead; i++) {
+      if (segs[i] === w && isBoilerplateOrDate(segs[i + 1])) return true;
+    }
+    // Fallback: if we can't find a clean "title then boilerplate" shape but the
+    // word IS present in the slug, the slug is probably not a standard BWW format
+    // — don't block (consistent with other "unexpected format" paths in this file).
+    if (slugSegmentsArray === undefined && slugSegments.has(w)) return true;
+    return false;
+  }
   const matchedCount = titleWords.filter(w => slugSegments.has(w)).length;
   const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
   return matchedCount / titleWords.length >= threshold;
@@ -110,15 +146,16 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
     if (slug.includes(marker)) return false;
   }
 
-  const slugSegments = new Set(slug.split(/[-_]/));
+  const slugSegmentsArray = slug.split(/[-_]/);
+  const slugSegments = new Set(slugSegmentsArray);
 
-  if (titleWordsPassSlugCheck(showTitle, slugSegments)) return true;
+  if (titleWordsPassSlugCheck(showTitle, slugSegments, slugSegmentsArray)) return true;
 
   // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
   // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
   // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
   const shortTitle = shortTitleCandidate(showTitle);
-  if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments)) return true;
+  if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
 
   return false;
 }
