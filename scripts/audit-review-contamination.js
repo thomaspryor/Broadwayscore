@@ -127,6 +127,14 @@ for (const [d, ids] of Object.entries(domainToOutlets)) {
 // Wire services — reviews legitimately show up under many outlets
 const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 
+// Archive-mirror domains — fan / memorial sites that republish reviews from
+// many original outlets. The URL domain is the mirror, not the true outlet.
+// Internal outletId is the ground truth; skip class-C domain-match on these.
+// jasonraize.net: memorial site for Jason Raize (original Lion King Simba)
+// that archives regional-critic reviews of the 1997–2000 touring and
+// original Broadway productions.
+const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net']);
+
 // ─────────────────────────────────────────────────
 // Detectors
 // ─────────────────────────────────────────────────
@@ -223,7 +231,7 @@ for (const showId of showDirs) {
     // care about cases where the *internal* outletId is wrong.
     if (shouldRunClass('C') && !alreadyFlagged && d.url) {
       const domain = parseDomain(d.url);
-      if (domain && !AMBIGUOUS_DOMAINS.has(domain)) {
+      if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)) {
         const expected = domainToOutlet[domain];
         const internalOutlet = d.outletId || f.split('--')[0];
         if (expected && expected !== internalOutlet && !WIRE_OUTLETS.has(internalOutlet)) {
