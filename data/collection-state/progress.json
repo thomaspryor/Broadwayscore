@@ -6,7 +6,23 @@
     "death-of-a-salesman-2026/ew--unknown.json",
     "the-balusters-2026/talkinbroadway--unknown.json",
     "fallen-angels-2026/talkinbroadway--unknown.json",
-    "the-rocky-horror-show-2026/talkinbroadway--unknown.json"
+    "the-rocky-horror-show-2026/talkinbroadway--unknown.json",
+    "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
+    "the-rocky-horror-show-2026/nytg--austin-fimmano.json",
+    "the-rocky-horror-show-2026/nytimes--helen-shaw.json",
+    "the-rocky-horror-show-2026/variety--frank-rizzo.json",
+    "the-rocky-horror-show-2026/deadline--greg-evans.json",
+    "the-rocky-horror-show-2026/ew--dalton-ross.json",
+    "the-rocky-horror-show-2026/guardian--richard-lawson.json",
+    "the-rocky-horror-show-2026/nypost--johnny-oleksinski.json",
+    "the-rocky-horror-show-2026/timeout--adam-feldman.json",
+    "the-rocky-horror-show-2026/theatrely--kobi-kassal.json",
+    "the-rocky-horror-show-2026/chicagotribune--chris-jones.json",
+    "the-rocky-horror-show-2026/cote-notices--david-finkle.json",
+    "the-rocky-horror-show-2026/culturesauce--thom-geier.json",
+    "the-rocky-horror-show-2026/nysr--bob-verini.json",
+    "the-rocky-horror-show-2026/nysr--michael-sommers.json",
+    "the-rocky-horror-show-2026/people--dave-quinn.json"
   ],
   "failed": [
     "the-balusters-2026/talkinbroadway--unknown.json",
@@ -973,7 +989,15 @@
     "playwright": [
       "schmigadoon-2026/ew--unknown.json",
       "proof-2026/ew--unknown.json",
-      "death-of-a-salesman-2026/ew--unknown.json"
+      "death-of-a-salesman-2026/ew--unknown.json",
+      "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
+      "the-rocky-horror-show-2026/nytg--austin-fimmano.json",
+      "the-rocky-horror-show-2026/ew--dalton-ross.json",
+      "the-rocky-horror-show-2026/guardian--richard-lawson.json",
+      "the-rocky-horror-show-2026/culturesauce--thom-geier.json",
+      "the-rocky-horror-show-2026/nysr--bob-verini.json",
+      "the-rocky-horror-show-2026/nysr--michael-sommers.json",
+      "the-rocky-horror-show-2026/people--dave-quinn.json"
     ],
     "amp": [],
     "browserbase": [
@@ -991,15 +1015,27 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-rocky-horror-show-2026/nytimes--helen-shaw.json",
+      "the-rocky-horror-show-2026/nytimes--helen-shaw.json",
+      "data/review-texts/the-rocky-horror-show-2026/variety--frank-rizzo.json",
+      "the-rocky-horror-show-2026/variety--frank-rizzo.json",
+      "data/review-texts/the-rocky-horror-show-2026/deadline--greg-evans.json",
+      "the-rocky-horror-show-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-rocky-horror-show-2026/timeout--adam-feldman.json",
+      "the-rocky-horror-show-2026/theatrely--kobi-kassal.json",
+      "the-rocky-horror-show-2026/chicagotribune--chris-jones.json",
+      "the-rocky-horror-show-2026/cote-notices--david-finkle.json"
+    ],
     "brightdata": [
       "the-balusters-2026/talkinbroadway--unknown.json",
       "the-balusters-2026/talkinbroadway--unknown.json",
       "fallen-angels-2026/talkinbroadway--unknown.json",
-      "the-rocky-horror-show-2026/talkinbroadway--unknown.json"
+      "the-rocky-horror-show-2026/talkinbroadway--unknown.json",
+      "the-rocky-horror-show-2026/nypost--johnny-oleksinski.json"
     ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
@@ -1020,7 +1056,7 @@
     "archive": []
   },
   "startTime": "2026-04-23T16:42:29.240Z",
-  "lastProcessed": "the-rocky-horror-show-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "the-rocky-horror-show-2026/people--dave-quinn.json",
   "log": [
     {
       "t": "2026-04-23T16:44:44.608Z",
@@ -1175,6 +1211,39 @@
       "t": "2026-04-24T00:18:38.494Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-24T02:16:05.247Z",
+      "event": "bb-session",
+      "session": "22191b09",
+      "url": "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html"
+    },
+    {
+      "t": "2026-04-24T02:16:06.213Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T02:16:25.419Z",
+      "event": "bb-session",
+      "session": "91a9b8c1",
+      "url": "https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival"
+    },
+    {
+      "t": "2026-04-24T02:16:26.241Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-24T02:16:46.354Z",
+      "event": "bb-session",
+      "session": "e1a3b6df",
+      "url": "https://deadline.com/2026/04/rocky-horror-show-broadway-review-1236867882/"
+    },
+    {
+      "t": "2026-04-24T02:16:47.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
