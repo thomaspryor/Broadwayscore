@@ -20,6 +20,35 @@ const { applyTemporalOverrides } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 
 /**
+ * Extract a sensible publication year from a URL path.
+ *
+ * Matches `/YYYY/` segments (the Variety/NYT/Guardian convention) and the
+ * YYYYMMDD-suffix pattern used by BWW article slugs. Returns null when no
+ * signal is found or the extracted year is out of a sensible [1990, currentYear+1]
+ * window. Per CLAUDE.md rule 3 the result is NOT authoritative for positive
+ * matching — callers should surface it as context, not act on it.
+ *
+ * Private to content-verifier — if other modules need URL-year extraction
+ * they should extract this to scripts/lib/url-year.js first.
+ */
+function _extractUrlYear(url) {
+  if (!url || typeof url !== 'string') return null;
+  // Try /YYYY/ path segment first (Variety, NYT, Guardian, etc.)
+  const pathMatch = url.match(/\/((?:19|20)\d{2})\//);
+  if (pathMatch) {
+    const y = parseInt(pathMatch[1], 10);
+    if (y >= 1990 && y <= new Date().getFullYear() + 1) return y;
+  }
+  // Fallback: YYYYMMDD suffix (BWW article IDs)
+  const suffixMatch = url.match(/-((?:19|20)\d{2})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (suffixMatch) {
+    const y = parseInt(suffixMatch[1], 10);
+    if (y >= 1990 && y <= new Date().getFullYear() + 1) return y;
+  }
+  return null;
+}
+
+/**
  * Hash the first 2500 chars of text — used to detect when contentVerification
  * was done on different content than the stored fullText.
  */
@@ -240,9 +269,12 @@ async function callWithFallback(prompt) {
  *   continuously for many years (Mousetrap 1952, Phantom WE 1986, Les Mis WE 1985, Mamma Mia 1999).
  *   When set, the LLM is told NOT to flag wrongProduction based on publishDate-vs-openingDate
  *   age gap alone. See WE long-runner CV hardening card 34c637c5-416f-812b issue #3.
+ * @param {string} [params.url] - Review URL. Used to surface URL-year-vs-publishDate conflicts
+ *   to the LLM (issue #4). Per CLAUDE.md rule 3 the URL year is not authoritative but it's a
+ *   useful signal when publishDate disagrees by multiple years.
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -341,6 +373,23 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     longRunnerHint = `\n\n**LONG-RUNNING PRODUCTION**: This is a continuous-run ${mc.label} production that has been playing since ${openingDate}. Reviews from ANY year in that continuous run are valid — do NOT flag wrongProduction based on publishDate-vs-openingDate age gap alone. A 2010 review of a show that opened in 1986 is not "wrong production"; it is a review of the same ongoing production 24 years in. Treat the publish date as irrelevant to wrongProduction for long-runners. Only flag wrongProduction if the content explicitly references a DIFFERENT named production (e.g., a touring company, a Broadway transfer, a film adaptation), not based on date math.`;
   }
 
+  // URL-year conflict hint: when the URL path contains /YYYY/ that's significantly
+  // earlier than publishDate, the page's metadata date is likely a re-crawl/update
+  // timestamp while the URL slug preserves the true publication year. Don't
+  // auto-override — CLAUDE.md rule 3 says URLs are unreliable for positive matching.
+  // Surface both dates to the LLM and let it decide. See Mamma Mia WE 2021 case:
+  // URL was /1999/legit/reviews/mamma-mia-... but publishDate came out as 2015-09-03,
+  // leading CV to flag the "time gap" on a legitimate 1999 Variety review.
+  // Issue #4 of Notion 34c637c5-416f-812b.
+  let urlYearHint = '';
+  const urlYear = _extractUrlYear(url);
+  if (urlYear && publishDate) {
+    const pubYear = new Date(publishDate).getFullYear();
+    if (Number.isFinite(pubYear) && Math.abs(pubYear - urlYear) >= 3) {
+      urlYearHint = `\n\n**URL-YEAR / PUBLISHDATE CONFLICT**: The review URL path contains "/${urlYear}/" but the stored publishDate is ${publishDate} (year ${pubYear}) — a ${Math.abs(pubYear - urlYear)}-year gap. This often happens when the outlet recrawls / republishes an older article and the metadata date gets updated while the URL slug preserves the original publication year. Treat the URL year as ONE signal, not authoritative. If the review text itself reads as contemporary to the ${urlYear} opening of the production, the URL year is probably correct. Do NOT flag wrongProduction based solely on the publishDate being far from openingDate when this conflict is present.`;
+    }
+  }
+
   const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
   const prompt = `You are a content verification assistant for a theater review aggregator. We are verifying reviews of **${mc.label}** productions (${mc.description}).
@@ -422,7 +471,7 @@ ${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **To
 
 ${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:** Reviews at Chicago Shakespeare, Goodman Theatre, Kennedy Center, La Jolla Playhouse, Old Globe, Mark Taper Forum, ART Cambridge, etc. BEFORE the Broadway transfer ARE wrong production for the Broadway entry. Even if the same show later moved to Broadway, the tryout review describes the pre-Broadway venue.` : ''}
 
-Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}`;
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}${urlYearHint}`;
 
   const result = await callWithFallback(prompt);
 
