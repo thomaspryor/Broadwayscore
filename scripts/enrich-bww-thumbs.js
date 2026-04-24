@@ -27,10 +27,40 @@
 const fs = require('fs');
 const path = require('path');
 
-const { findExistingReviewFile } = require('./lib/review-normalization');
+const { findExistingReviewFile, normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+
+/**
+ * Fallback matcher for files whose filename year-suffix prevents
+ * findExistingReviewFile from matching. See enrich-dtli-thumbs.js for full
+ * explanation. Catches amny--matt-windman-2026.json-style filenames.
+ */
+function findByInternalFields(showDir, outletId, criticName) {
+  if (!fs.existsSync(showDir)) return null;
+  const targetOutlet = normalizeOutlet(outletId);
+  const targetCritic = criticName && criticName.toLowerCase() !== 'unknown'
+    ? normalizeCritic(criticName) : null;
+  for (const file of fs.readdirSync(showDir)) {
+    if (!file.endsWith('.json')) continue;
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); }
+    catch { continue; }
+    if (!data || data.wrongProduction || data.duplicateOf) continue;
+    if (!data.outletId) continue;
+    if (normalizeOutlet(data.outletId) !== targetOutlet) continue;
+    if (targetCritic && data.criticName) {
+      const dataCritic = normalizeCritic(data.criticName);
+      if (dataCritic !== targetCritic && !areCriticsSimilar(criticName, data.criticName)) {
+        continue;
+      }
+    }
+    return { path: filePath, filename: file, data };
+  }
+  return null;
+}
 
 function resolveShowTitle(showId) {
   try {
@@ -84,7 +114,10 @@ async function enrichBwwThumbsForShow(showId, opts = {}) {
   for (const ex of extracted) {
     if (!ex.outletId) continue;
 
-    const existing = findExistingReviewFile(showDir, ex.outletId, ex.criticName);
+    let existing = findExistingReviewFile(showDir, ex.outletId, ex.criticName);
+    if (!existing || !existing.path || !existing.data) {
+      existing = findByInternalFields(showDir, ex.outletId, ex.criticName);
+    }
     if (!existing || !existing.path || !existing.data) {
       if (verbose) {
         console.log(`  [miss] No existing file for outletId=${ex.outletId} critic=${ex.criticName || '?'}`);

@@ -121,6 +121,45 @@ describe('enrichDtliThumbsForShow', () => {
     }
   });
 
+  test('matches year-suffix filename via internal criticName fallback', async () => {
+    // amny--matt-windman-2026.json is how the poller names files for recurring
+    // critics (Matt Windman reviews at amny across multiple productions). The
+    // internal criticName is "Matt Windman" — no year. findExistingReviewFile
+    // skips because filename-critic "matt-windman-2026" doesn't normalize to
+    // "matt-windman". The fallback reads the internal field and matches.
+    const showId = 'test-enrich-dtli-year-suffix-' + Date.now();
+    const { abs: showDir } = mkTmpShowDir(showId);
+    try {
+      writeReview(showDir, 'amny--matt-windman-2026.json', {
+        showId, outletId: 'amny', outlet: 'amNewYork',
+        criticName: 'Matt Windman',
+        llmScore: { score: 70 },
+      });
+      const html = `
+        <div class="review-item">
+          <div class="review_image"><div>amNewYork</div></div>
+          <h2 class="review-item-critic-name"><a href="#">Matt<br/>Windman</a></h2>
+          <h3 class="review-item-date">April 23, 2026</h3>
+          <p class="paragraph">Some review excerpt content here that passes the length gate.</p>
+          <img alt="BigThumbs_Up" />
+          <a href="https://amny.com/review.html" class="button-pink review-item-button">Read full review</a>
+        </div>`;
+      const fakeFetchPage = async () => ({ content: html, format: 'html' });
+
+      const result = await enrichDtliThumbsForShow(showId, {
+        url: 'https://didtheylikeit.com/shows/the-rocky-horror-show/',
+        fetchPage: fakeFetchPage,
+      });
+
+      assert.strictEqual(result.enrichedThumb, 1, 'year-suffix filename should have matched');
+      const after = readReview(showDir, 'amny--matt-windman-2026.json');
+      assert.strictEqual(after.dtliThumb, 'Up');
+      assert.strictEqual(after.llmScore.score, 70, 'score preserved');
+    } finally {
+      cleanupShowDir(showDir);
+    }
+  });
+
   test('no-op when DTLI returns zero reviews', async () => {
     const showId = 'test-enrich-dtli-empty-' + Date.now();
     const { abs: showDir } = mkTmpShowDir(showId);
