@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import MarketFilterBar from '@/components/MarketFilterBar';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { ScoreModeParam } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -33,6 +34,8 @@ interface OffBroadwayPageClientProps {
   shows: OffBroadwayShow[];
   totalShows: number;
   totalReviews: number;
+  /** Open-show counts for the market pills */
+  marketOpenCounts: { broadway: number; offBroadway: number };
 }
 
 // URL parameter values
@@ -99,7 +102,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[]
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -356,14 +359,15 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews }: OffBroadwayPa
         />
       </div>
 
-      {/* Type Pills & Score Mode Toggle Row */}
+      {/* Market + Type Filter Row */}
       <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
-        <ToggleBar
-          variant="pill"
-          options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
-          value={type}
-          onChange={(t) => updateParams({ type: t })}
-          ariaLabel="Filter by type"
+        <MarketFilterBar
+          pair="nyc"
+          activeMarket="off-broadway"
+          primaryCount={marketOpenCounts.broadway}
+          secondaryCount={marketOpenCounts.offBroadway}
+          typeValue={type}
+          onTypeChange={(t) => updateParams({ type: t })}
         />
 
         <ScoreToggle

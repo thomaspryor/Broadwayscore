@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-types';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -279,6 +279,10 @@ export default function HomePage() {
           skipHero
           skipFirstMusicals
           featuredRows={featuredRows}
+          marketOpenCounts={{
+            broadway: getMarketStats().nyc.openShows,
+            offBroadway: getMarketStats().offBroadway?.openShows ?? 0,
+          }}
         />
       </Suspense>
     </>

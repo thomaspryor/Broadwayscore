@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import { hasEnoughReviews } from '@/config/score-buckets';
@@ -33,6 +34,8 @@ interface OffWestEndPageClientProps {
   shows: OffWestEndShow[];
   totalShows: number;
   totalReviews: number;
+  /** Open-show counts for the market pills */
+  marketOpenCounts: { westEnd: number; offWestEnd: number };
 }
 
 // URL parameter values
@@ -99,7 +102,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] 
 }
 
 // Inner component that uses searchParams
-function OffWestEndPageInner({ shows, totalShows, totalReviews }: OffWestEndPageClientProps) {
+function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts }: OffWestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -356,14 +359,15 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews }: OffWestEndPage
         />
       </div>
 
-      {/* Type Pills & Score Mode Toggle Row */}
+      {/* Market + Type Filter Row */}
       <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
-        <ToggleBar
-          variant="pill"
-          options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
-          value={type}
-          onChange={(t) => updateParams({ type: t })}
-          ariaLabel="Filter by type"
+        <MarketFilterBar
+          pair="london"
+          activeMarket="off-west-end"
+          primaryCount={marketOpenCounts.westEnd}
+          secondaryCount={marketOpenCounts.offWestEnd}
+          typeValue={type}
+          onTypeChange={(t) => updateParams({ type: t })}
         />
 
         <ScoreToggle

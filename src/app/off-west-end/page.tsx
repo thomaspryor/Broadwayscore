@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getOffWestEndShows } from '@/lib/data-core';
+import { getOffWestEndShows, getMarketStats } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OffWestEndPageClient from '@/components/OffWestEndPageClient';
@@ -76,6 +76,10 @@ export default function OffWestEndPage() {
           shows={serializedShows}
           totalShows={activeShows.length}
           totalReviews={totalReviews}
+          marketOpenCounts={{
+            westEnd: getMarketStats().westEnd.openShows,
+            offWestEnd: getMarketStats().offWestEnd?.openShows ?? 0,
+          }}
         />
       </Suspense>
     </>

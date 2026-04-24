@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import fs from 'fs';
 import path from 'path';
-import { getWestEndShows } from '@/lib/data-core';
+import { getWestEndShows, getMarketStats } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
@@ -109,6 +109,13 @@ export default function WestEndPage() {
   // Count reviews across all scored shows (WE + OWE)
   const totalReviews = scoredShows.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
+  // Open-show counts for the market pills (sourced from getMarketStats)
+  const stats = getMarketStats();
+  const marketOpenCounts = {
+    westEnd: stats.westEnd.openShows,
+    offWestEnd: stats.offWestEnd?.openShows ?? 0,
+  };
+
   return (
     <>
       <script
@@ -124,6 +131,7 @@ export default function WestEndPage() {
           scoredShows={scoredShows.length}
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
+          marketOpenCounts={marketOpenCounts}
         />
       </Suspense>
     </>

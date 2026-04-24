@@ -115,8 +115,12 @@ export function getOffWestEndShows(): ComputedShow[] {
 export function getMarketStats() {
   const bwShows = getBroadwayShows();
   const weShows = getWestEndShows();
+  const obShows = getOffBroadwayShows();
+  const oweShows = getOffWestEndShows();
   const bwOpen = bwShows.filter(s => s.status === 'open' || s.status === 'previews');
   const weOpen = weShows.filter(s => s.status === 'open' || s.status === 'previews');
+  const obOpen = obShows.filter(s => s.status === 'open' || s.status === 'previews');
+  const oweOpen = oweShows.filter(s => s.status === 'open' || s.status === 'previews');
   return {
     nyc: {
       openShows: bwOpen.length,
@@ -125,6 +129,12 @@ export function getMarketStats() {
     westEnd: {
       openShows: weOpen.length,
       theaters: new Set(weOpen.map(s => s.venue).filter(Boolean)).size,
+    },
+    offBroadway: {
+      openShows: obOpen.length,
+    },
+    offWestEnd: {
+      openShows: oweOpen.length,
     },
   };
 }
