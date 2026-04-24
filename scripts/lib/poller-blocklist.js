@@ -87,4 +87,10 @@ function _normalize(url) {
   }
 }
 
-module.exports = { loadBlocklist, findBlockedEntry, isBlocked, BLOCKLIST_FILENAME };
+module.exports = {
+  loadBlocklist,
+  findBlockedEntry,
+  isBlocked,
+  normalizeUrl: _normalize,
+  BLOCKLIST_FILENAME,
+};
