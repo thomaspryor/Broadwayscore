@@ -338,8 +338,15 @@ function getBestScore(data, opts = {}) {
   }
 
   // P0: Human-reviewed score (manual override — always wins)
+  // Semantic: humanReviewScoreProvisional === true means the operator wrote a
+  // tentative score but wants the LLM to override once a real score lands.
+  // Default (undefined / false) is LOCKED — humanReviewScore is the final word,
+  // which is the Rocky Horror 2026-04-23 Helen Shaw case the brief codifies.
   if (data.humanReviewScore && data.humanReviewScore >= 1 && data.humanReviewScore <= 100) {
-    return { score: data.humanReviewScore, source: 'human-review' };
+    if (data.humanReviewScoreProvisional !== true) {
+      return { score: data.humanReviewScore, source: 'human-review' };
+    }
+    inc('humanReviewScoreProvisionalSkipped');
   }
 
   // P0a: Adjudicated score (LLM re-evaluation of flagged reviews — beats LLM but not human)

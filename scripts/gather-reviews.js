@@ -76,6 +76,7 @@ const { computeReplacementPreserve } = require('./lib/wrongprod-replacement-pres
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
+const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -2759,6 +2760,20 @@ function createReviewFile(showId, reviewData, options = {}) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });
+  }
+
+  // Per-show blocklist — honor _blocklist.json so URLs the operator has
+  // deliberately deleted can't be silently rediscovered. Rocky Horror
+  // 2026-04-23: cote-notices--david-finkle.json was deleted as a duplicate
+  // and the poller recreated it 2h later from the same URL with a
+  // ?triedRedirect tracking param. See scripts/lib/poller-blocklist.js.
+  if (reviewData.url) {
+    const blocklist = loadBlocklist(showDir);
+    const blocked = findBlockedEntry(blocklist, reviewData.url);
+    if (blocked) {
+      console.log(`    ✗ Skipping ${reviewData.url}: blocklisted (${blocked.reason})`);
+      return 'blocklisted';
+    }
   }
 
   // Use centralized normalization for consistent file naming

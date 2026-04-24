@@ -94,11 +94,23 @@ const PROTECTED_FIELDS = [
   'allowLateDate',
   'allowCrossMarket',
   'allowTourSignal',
+  'allowTourSignalReason',
   'allowFilmSignal',
   'routedFromShowId',
   'urlVerified',
   'urlManualOverride',
   'urlManualOverrideNote',
+  // Additional override flags added in Rocky Horror 2026-04-23 postmortem (Session 2 #7):
+  // losing any of these on rebase silently re-flags a manually-verified review.
+  'humanReviewedTour',
+  'humanReviewScoreProvisional',
+  'humanReviewScoreClearedForLlm',
+  'isTourReview',
+  'isLikelyTourReview',
+  // Aggregator thumb signals used by P2 thumb-validated-LLM path in getBestScore.
+  // Losing these drops low-conf LLM reviews that would otherwise ship.
+  'dtliThumb',
+  'bwwThumb',
   // SERP retry state — set by collect-review-texts.js + gather-reviews.js lifecycle guard.
   // Losing these on rebase causes the cooldown to reset, which means a single
   // rebase can re-trigger 13K stuck wrong_content files. See sprint-plan-serp-cost-reduction.md S1-T1.

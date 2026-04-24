@@ -67,7 +67,12 @@ runs:
             'publishDateVerified', 'publishDateSource',
             // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
             'allowEarlyDate', 'allowLateDate', 'allowCrossMarket',
-            'allowTourSignal', 'allowFilmSignal', 'routedFromShowId',
+            'allowTourSignal', 'allowTourSignalReason', 'allowFilmSignal', 'routedFromShowId',
+            // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
+            'humanReviewedTour', 'humanReviewScoreProvisional', 'humanReviewScoreClearedForLlm',
+            'isTourReview', 'isLikelyTourReview',
+            // Aggregator thumb signals used by thumb-validated-LLM scoring path
+            'dtliThumb', 'bwwThumb',
             // Per-file protection array — keeps ingest-manual-review's fields locked
             'protectedFields',
             // SERP retry state — losing these on rebase resets the cooldown backoff
