@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
+import SocialIcons from '@/components/SocialIcons';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 export default function FooterBranding({ totalReviews }: { totalReviews: number }) {
@@ -16,6 +17,7 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
           <span className="text-lg font-bold text-white">{logoPrefix}<span className={isLondon ? 'bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent' : 'text-gradient'}>Scorecard</span></span>
           <span className="text-[8px] text-gray-500 font-normal align-super">™</span>
         </div>
+        <SocialIcons />
         <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-sm text-gray-400">
           <Link href="/about" className="hover:text-white transition-colors">About</Link>
           <span className="text-gray-500 hidden sm:inline">|</span>
