@@ -1,10 +1,11 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense, lazy } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import MarketFilterBar from '@/components/MarketFilterBar';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Lazy-load below-fold email capture to reduce initial hydration cost
@@ -56,6 +57,8 @@ interface HomePageClientProps {
   skipHero?: boolean;
   skipFirstMusicals?: boolean;
   featuredRows?: FeaturedRowData[];
+  /** Open-show counts for the market pills (stable across filter state) */
+  marketOpenCounts: { broadway: number; offBroadway: number };
 }
 
 // URL parameter values
@@ -195,7 +198,7 @@ function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: Home
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [] }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -211,20 +214,14 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     q: initialSearchParams.get('q') || '',
   }));
 
-  // Off-Broadway toggle (URL-synced)
-  const [includeOB, setIncludeOB] = useState(() => initialSearchParams.get('offBway') === 'true');
-
-  const toggleOB = useCallback(() => {
-    setIncludeOB(prev => {
-      const next = !prev;
-      const urlParams = new URLSearchParams(window.location.search);
-      if (next) urlParams.set('offBway', 'true');
-      else urlParams.delete('offBway');
-      const paramString = urlParams.toString();
-      window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
-      return next;
-    });
-  }, []);
+  // Legacy redirect: `/?offBway=true` used to switch the list to Off-Broadway in place.
+  // The new pattern routes to /off-broadway instead, so preserve old shared links with a redirect.
+  const router = useRouter();
+  useEffect(() => {
+    if (initialSearchParams.get('offBway') === 'true') {
+      router.replace('/off-broadway');
+    }
+  }, [initialSearchParams, router]);
 
   // Archive shows — lazy-loaded on demand when user filters to all/closed or searches
   const [archiveShows, setArchiveShows] = useState<HomepageShow[] | null>(null);
@@ -244,15 +241,13 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     }
   }, [archiveHash]);
 
-  // When OB toggle is active, show ONLY OB shows (not mixed with Broadway)
   const allShows = useMemo(() => {
-    if (includeOB && offBroadwayShows.length > 0) return offBroadwayShows;
     if (archiveShows) {
       const ids = new Set(shows.map(s => s.id));
       return [...shows, ...archiveShows.filter(s => !ids.has(s.id))];
     }
     return shows;
-  }, [shows, offBroadwayShows, includeOB, archiveShows]);
+  }, [shows, archiveShows]);
 
   // Separate synchronous state for search input to avoid startTransition dropping keystrokes
   const [searchInput, setSearchInput] = useState(() => initialSearchParams.get('q') || '');
@@ -560,38 +555,16 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         />
       </div>
 
-      {/* Type Pills & Score Mode Toggle Row */}
+      {/* Market + Type Filter Row */}
       <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
-        {/* Type Filter Pills (Left) */}
-        <div className="flex items-center gap-2">
-          <ToggleBar
-            variant="pill"
-            options={[{ value: 'all' as const, label: 'All' }, { value: 'musical' as const, label: 'Musicals' }, { value: 'play' as const, label: 'Plays' }]}
-            value={type}
-            onChange={(t) => updateParams({ type: t })}
-            ariaLabel="Filter by type"
-          />
-          {offBroadwayShows.length > 0 && (
-            <>
-              <div className="hidden sm:block w-px h-5 bg-white/10" />
-              <button
-                onClick={toggleOB}
-                className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold border transition-all ${
-                  includeOB
-                    ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300'
-                    : 'bg-white/[0.04] border-white/[0.08] text-gray-500 hover:text-gray-300'
-                }`}
-                aria-pressed={includeOB}
-                title={includeOB ? 'Back to Broadway' : 'Show Off-Broadway shows'}
-              >
-                <span className={`w-1.5 h-1.5 rounded-full ${
-                  includeOB ? 'bg-purple-400 shadow-[0_0_6px_rgba(168,85,247,0.5)]' : 'bg-gray-600'
-                }`} />
-                Off-Bway ({offBroadwayShows.length})
-              </button>
-            </>
-          )}
-        </div>
+        <MarketFilterBar
+          pair="nyc"
+          activeMarket="broadway"
+          primaryCount={marketOpenCounts.broadway}
+          secondaryCount={marketOpenCounts.offBroadway}
+          typeValue={type}
+          onTypeChange={(t) => updateParams({ type: t })}
+        />
 
         {/* Score Mode Picker (Right) */}
         <ScoreToggle
