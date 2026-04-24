@@ -1569,6 +1569,65 @@ function canonicalizeUrlForDedup(url) {
   }
 }
 
+/**
+ * Levenshtein edit distance — two strings, standard DP implementation.
+ * Returns edit distance (substitution/insertion/deletion each cost 1).
+ */
+function _levenshtein(a, b) {
+  if (a === b) return 0;
+  const m = a.length;
+  const n = b.length;
+  if (!m) return n;
+  if (!n) return m;
+  let prev = new Array(n + 1);
+  for (let j = 0; j <= n; j++) prev[j] = j;
+  const cur = new Array(n + 1);
+  for (let i = 1; i <= m; i++) {
+    cur[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a.charCodeAt(i - 1) === b.charCodeAt(j - 1) ? 0 : 1;
+      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+    }
+    for (let j = 0; j <= n; j++) prev[j] = cur[j];
+  }
+  return prev[n];
+}
+
+const FUZZY_CRITIC_MIN_LENGTH = 6;
+const FUZZY_CRITIC_MAX_EDIT_DISTANCE = 2;
+
+/**
+ * Decide whether two critic-name strings refer to the same person after a
+ * typo-tolerant comparison. Returns true when the alphanumeric-normalized
+ * strings differ by ≤2 edits AND both are ≥6 chars long (below that threshold
+ * the risk of collapsing two distinct short surnames like "Li" / "Liu" is too
+ * high). Returns false for exact matches — callers should short-circuit exact
+ * matches first (cheaper + this is strictly about fuzzy recovery).
+ *
+ * Audit 2026-04-24 found 18 latent typo-duplicate pairs in live data that
+ * Session 3's URL dedup + static CRITIC_CANONICAL_MAP didn't catch (e.g.,
+ * Isabella Biedenahrn vs Biedenharn at EW, Marilyn vs Marylin Stasio at
+ * Variety). See ~/Documents/claude-outputs/critic-typo-duplicates-2026-04-24.md.
+ *
+ * Used by the rebuild-all-reviews.js multi-critic-URL allow-through to
+ * reject "two different named critics" when one is a typo of the other.
+ *
+ * @param {string} a  Raw critic name (any case, any whitespace)
+ * @param {string} b  Raw critic name
+ * @returns {boolean} true iff a ≈ b within Levenshtein ≤ 2 AND both ≥ 6 alnum chars
+ */
+function areSameCriticFuzzy(a, b) {
+  if (!a || !b || typeof a !== 'string' || typeof b !== 'string') return false;
+  const na = a.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const nb = b.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!na || !nb) return false;
+  if (na === nb) return false; // exact matches aren't fuzzy — callers handle separately
+  if (Math.min(na.length, nb.length) < FUZZY_CRITIC_MIN_LENGTH) return false;
+  // Quick skip: if lengths differ by more than the distance cap, can't match.
+  if (Math.abs(na.length - nb.length) > FUZZY_CRITIC_MAX_EDIT_DISTANCE) return false;
+  return _levenshtein(na, nb) <= FUZZY_CRITIC_MAX_EDIT_DISTANCE;
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -1602,9 +1661,12 @@ module.exports = {
   shouldRouteUnknownCriticToPending,
   hasHighConfidenceLlmScore,
   canonicalizeUrlForDedup,
+  areSameCriticFuzzy,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,
   TRACKING_PARAM_NAMES,
   TRACKING_PARAM_PREFIXES,
+  FUZZY_CRITIC_MIN_LENGTH,
+  FUZZY_CRITIC_MAX_EDIT_DISTANCE,
 };
