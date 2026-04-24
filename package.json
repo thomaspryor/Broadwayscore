@@ -59,6 +59,8 @@
     "@google-analytics/data": "^5.2.1",
     "@google/generative-ai": "^0.24.1",
     "@notionhq/client": "^5.19.0",
+    "@portabletext/react": "^3.2.4",
+    "@sanity/vision": "^3.99.0",
     "@supabase/supabase-js": "^2.104.0",
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^1.6.1",
@@ -68,12 +70,14 @@
     "fuse.js": "^7.3.0",
     "gray-matter": "^4.0.3",
     "next": "14.2.35",
+    "next-sanity": "^9.12.3",
     "posthog-js": "^1.369.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
-    "remark-html": "^16.0.1"
+    "remark-html": "^16.0.1",
+    "sanity": "^3.99.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
