@@ -39,6 +39,7 @@ const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = requir
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup } = require('./lib/review-guards');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -2745,6 +2746,24 @@ showDirs.forEach(showId => {
           if (outletEntry && outletEntry.defaultCritic) {
             data.criticName = outletEntry.defaultCritic;
             stats.resolvedDefaultCritic = (stats.resolvedDefaultCritic || 0) + 1;
+          }
+        }
+      }
+
+      // Session 3 #13 — critic mis-attribution canonicalization at rebuild time.
+      // Without this, existing review files written BEFORE the gather-reviews-side
+      // canonicalization landed (e.g., Rocky Horror 2026-04-23 cote-notices--david-finkle.json)
+      // carry wrong critic names and the dedup's multi-critic-allow guard (bothNamed &&
+      // differentPeople → allowed) lets them through as distinct critics. Running
+      // canonicalization here ensures both the file written by the old BWW extractor AND
+      // the file written by the new path converge on the same critic name before dedup.
+      {
+        const oid = normalizeOutletCanonical(data.outletId || data.outlet);
+        if (data.criticName) {
+          const canon = canonicalizeCritic(oid, data.criticName);
+          if (canon.canonicalized) {
+            data.criticName = canon.name;
+            stats.canonicalizedCriticAtRebuild = (stats.canonicalizedCriticAtRebuild || 0) + 1;
           }
         }
       }
