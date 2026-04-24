@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-24T05:12:33.643Z",
+  "generatedAt": "2026-04-24T20:03:27.693Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-24",
-      "status": "upcoming",
+      "status": "open",
       "slug": "betty-buckley-random-notes-off-broadway",
       "thumbnail": "/images/shows/betty-buckley-random-notes-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -316,23 +316,23 @@
       "status": "open",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
-      "siteScore": 68.72,
+      "siteScore": 68.96,
       "liveScore": 69,
-      "scoreDrift": 0.28000000000000114,
+      "scoreDrift": 0.04000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
+      "total": 25,
       "t1": 4,
-      "t2": 14,
-      "t3": 5,
-      "positive": 9,
+      "t2": 15,
+      "t3": 6,
+      "positive": 11,
       "mixed": 11,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 20,
+        "highConfidence": 22,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -341,8 +341,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "preview-sent",
+        "detail": "Preview sent (25 reviews)"
       },
       "missingT1": [
         {
@@ -400,10 +400,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "Newsday",
           "isDualMarket": false
         },
@@ -421,10 +417,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -560,6 +552,18 @@
           "m": 11,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-24T20:03:27.693Z",
+          "rc": 25,
+          "s": 68.96,
+          "t1": 4,
+          "t2": 15,
+          "t3": 6,
+          "p": 11,
+          "m": 11,
+          "n": 3,
+          "bc": "preview-sent"
         }
       ]
     },
@@ -683,23 +687,23 @@
       "status": "open",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "siteScore": 47.81,
-      "liveScore": 48,
-      "scoreDrift": 0.18999999999999773,
+      "siteScore": 47.21,
+      "liveScore": 47,
+      "scoreDrift": -0.21000000000000085,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
-      "t1": 4,
+      "total": 24,
+      "t1": 5,
       "t2": 14,
       "t3": 5,
-      "positive": 3,
-      "mixed": 2,
-      "negative": 18,
+      "positive": 2,
+      "mixed": 3,
+      "negative": 19,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -712,10 +716,6 @@
         "detail": "Sent 1/1/1970, 12:00:00 AM"
       },
       "missingT1": [
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
         {
           "name": "The Hollywood Reporter",
           "isDualMarket": false
@@ -771,10 +771,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "Newsday",
           "isDualMarket": false
         },
@@ -788,10 +784,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -950,6 +942,18 @@
           "p": 3,
           "m": 2,
           "n": 18,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-24T20:03:27.693Z",
+          "rc": 24,
+          "s": 47.21,
+          "t1": 5,
+          "t2": 14,
+          "t3": 5,
+          "p": 2,
+          "m": 3,
+          "n": 19,
           "bc": "complete"
         }
       ]
@@ -1668,23 +1672,23 @@
       "status": "open",
       "slug": "the-balusters",
       "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 76.48,
-      "liveScore": 76,
-      "scoreDrift": -0.480000000000004,
+      "siteScore": 77.17,
+      "liveScore": 77,
+      "scoreDrift": -0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
-      "t1": 4,
+      "total": 26,
+      "t1": 5,
       "t2": 13,
-      "t3": 6,
-      "positive": 17,
+      "t3": 8,
+      "positive": 20,
       "mixed": 5,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 19,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1703,10 +1707,6 @@
         },
         {
           "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
           "isDualMarket": false
         },
         {
@@ -1960,6 +1960,18 @@
           "m": 5,
           "n": 1,
           "bc": "complete"
+        },
+        {
+          "t": "2026-04-24T20:03:27.693Z",
+          "rc": 26,
+          "s": 77.17,
+          "t1": 5,
+          "t2": 13,
+          "t3": 8,
+          "p": 20,
+          "m": 5,
+          "n": 1,
+          "bc": "complete"
         }
       ]
     }
@@ -2100,7 +2112,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-04-30",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "grace-pervades-west-end",
       "thumbnail": "/images/shows/grace-pervades-west-end-2026/thumbnail.webp",
       "daysUntil": 6,
