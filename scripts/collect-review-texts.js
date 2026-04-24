@@ -6141,6 +6141,10 @@ async function processReview(review) {
           // without this fallback, temporal override never fires and the LLM's high-confidence
           // wrongProduction FP (44% rate; Proof 2026-04-17) stamps the file immediately.
           publishDate: reviewData.publishDate || reviewData.textFetchedAt || new Date().toISOString().slice(0, 10),
+          // URL passed in so verifyContent can surface URL-year-vs-publishDate
+          // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
+          // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.
+          url: reviewData.url || null,
         });
 
         const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
