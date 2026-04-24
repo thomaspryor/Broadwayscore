@@ -163,6 +163,80 @@ async function fetchContent(url, { renderJs = true, premiumProxy = false } = {})
   return null;
 }
 
+/**
+ * Fetch a JSON endpoint through the proxy chain (Bright Data web_unlocker2 → ScrapingBee → direct).
+ * Used for the bwayrush /api/calendar endpoint, which Cloudflare blocks on datacenter IPs
+ * including GitHub Actions runners. Returns parsed JSON or null.
+ *
+ * Why web_unlocker2 (not mcp_browser): JSON APIs don't need JS rendering, and web_unlocker2
+ * is the zone currently configured in .env for cheap HTML fetches.
+ */
+async function fetchJson(url) {
+  // Bright Data web_unlocker2 — cheap residential proxy that bypasses Cloudflare
+  if (BRIGHTDATA_TOKEN) {
+    try {
+      const result = await httpsRequest('https://api.brightdata.com/request', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ zone: 'web_unlocker2', url, format: 'raw' }),
+      });
+      if (result) {
+        try {
+          const json = JSON.parse(result);
+          if (verbose) console.log(`  [Bright Data] JSON fetch OK (${result.length} chars)`);
+          return json;
+        } catch {
+          if (verbose) console.warn(`  [Bright Data] Non-JSON response (${result.length} chars, head: ${result.slice(0, 100)})`);
+        }
+      }
+    } catch (err) {
+      console.error(`  [Bright Data] JSON fetch failed: ${err.message}`);
+    }
+  }
+
+  // ScrapingBee fallback — no JS rendering for JSON endpoints
+  if (SCRAPINGBEE_KEY) {
+    try {
+      const params = new URLSearchParams({
+        api_key: SCRAPINGBEE_KEY,
+        url,
+        render_js: 'false',
+      });
+      const apiUrl = `https://app.scrapingbee.com/api/v1/?${params}`;
+      const result = await httpsRequest(apiUrl);
+      if (result) {
+        try {
+          const json = JSON.parse(result);
+          if (verbose) console.log(`  [ScrapingBee] JSON fetch OK (${result.length} chars)`);
+          return json;
+        } catch {
+          if (verbose) console.warn(`  [ScrapingBee] Non-JSON response`);
+        }
+      }
+    } catch (err) {
+      console.error(`  [ScrapingBee] JSON fetch failed: ${err.message}`);
+    }
+  }
+
+  // Last resort: direct — rarely works for Cloudflare-protected endpoints but cheap to try
+  try {
+    const result = await httpsRequest(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+        'Accept': 'application/json,*/*;q=0.8',
+      },
+    });
+    return JSON.parse(result);
+  } catch (err) {
+    if (verbose) console.error(`  [Direct] JSON fetch failed: ${err.message}`);
+  }
+
+  return null;
+}
+
 function htmlToText(html) {
   return html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
@@ -406,49 +480,56 @@ async function extractAndWriteScheduleData(html) {
     return;
   }
 
-  // Fetch future weeks via bwayrush calendar API
+  // Fetch future weeks via bwayrush calendar API.
+  // Route through fetchJson() (Bright Data / ScrapingBee) — direct fetch() is 403'd by
+  // Cloudflare on all IPs including GitHub Actions runners. Silent-1-week-write bug was
+  // caused by using native fetch() here while the HTML was (correctly) going through BD.
   const MAX_FUTURE_WEEKS = 7;
   let fetchMonday = currentMonday;
   let futureWeeksFetched = 0;
 
   for (let w = 0; w < MAX_FUTURE_WEEKS; w++) {
-    try {
-      const url = `https://bwayrush.com/api/calendar?currentMonday=${fetchMonday}&direction=next`;
-      const resp = await fetch(url);
-      if (!resp.ok) {
-        console.warn(`[Schedule] Calendar API returned ${resp.status} for ${fetchMonday} — stopping`);
-        break;
-      }
-      const data = await resp.json();
-      if (!data.currentMonday || !Array.isArray(data.calendar)) {
-        console.warn('[Schedule] Unexpected calendar API response — stopping');
-        break;
-      }
-
-      const weekMonday = data.currentMonday;
-      let weekMatched = 0;
-
-      for (const entry of data.calendar) {
-        const ourId = bwayIdToOurId[entry.id];
-        if (!ourId || !Array.isArray(entry.calendar) || entry.calendar.length !== 7) continue;
-
-        if (!scheduleShows[ourId]) {
-          scheduleShows[ourId] = { weeks: {} };
-        }
-        scheduleShows[ourId].weeks[weekMonday] = entry.calendar;
-        weekMatched++;
-      }
-
-      console.log(`[Schedule] Week ${weekMonday}: ${weekMatched} shows`);
-      fetchMonday = weekMonday;
-      futureWeeksFetched++;
-    } catch (err) {
-      console.warn(`[Schedule] Calendar API fetch failed: ${err.message} — stopping`);
+    const url = `https://bwayrush.com/api/calendar?currentMonday=${fetchMonday}&direction=next`;
+    const data = await fetchJson(url);
+    if (!data) {
+      console.warn(`[Schedule] Calendar API fetch returned no data for ${fetchMonday} — stopping`);
       break;
     }
+    if (!data.currentMonday || !Array.isArray(data.calendar)) {
+      console.warn('[Schedule] Unexpected calendar API response shape — stopping');
+      break;
+    }
+
+    const weekMonday = data.currentMonday;
+    let weekMatched = 0;
+
+    for (const entry of data.calendar) {
+      const ourId = bwayIdToOurId[entry.id];
+      if (!ourId || !Array.isArray(entry.calendar) || entry.calendar.length !== 7) continue;
+
+      if (!scheduleShows[ourId]) {
+        scheduleShows[ourId] = { weeks: {} };
+      }
+      scheduleShows[ourId].weeks[weekMonday] = entry.calendar;
+      weekMatched++;
+    }
+
+    console.log(`[Schedule] Week ${weekMonday}: ${weekMatched} shows`);
+    fetchMonday = weekMonday;
+    futureWeeksFetched++;
   }
 
   console.log(`[Schedule] Fetched ${futureWeeksFetched} future weeks`);
+
+  // Fail loudly if future-week fetch got zero results. One week means week-nav arrows
+  // on the Showtimes card are always disabled — a user-visible regression. Better to
+  // refuse the write (keep existing multi-week data) than ship a silently-degraded file.
+  if (futureWeeksFetched === 0) {
+    console.error('::error::[Schedule] Calendar API returned 0 future weeks — refusing to overwrite show-schedules.json with single-week data.');
+    console.error('[Schedule] Likely causes: Cloudflare re-block on proxy (check Bright Data zone), API shape change, or expired/rotated token.');
+    console.error('[Schedule] Existing show-schedules.json preserved. Fix upstream or re-run with a working proxy.');
+    return;
+  }
 
   if (dryRun) {
     console.log(`[Schedule] [Dry Run] Would write ${matchedCount} shows to show-schedules.json`);

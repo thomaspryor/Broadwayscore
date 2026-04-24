@@ -53,6 +53,7 @@ try {
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
+const SCHEDULES_FILE = path.join(DATA_DIR, 'show-schedules.json');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
 
@@ -1105,6 +1106,67 @@ function validateGrossesJson() {
     }
   } catch (e) {
     error(`grosses.json parse error: ${e.message}`);
+  }
+}
+
+function validateSchedulesJson(shows) {
+  info('Checking show-schedules.json multi-week coverage...');
+
+  if (!fs.existsSync(SCHEDULES_FILE)) {
+    info('show-schedules.json does not exist, skipping');
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(SCHEDULES_FILE, 'utf8'));
+  } catch (e) {
+    error(`show-schedules.json parse error: ${e.message}`);
+    return;
+  }
+  if (!data.shows || typeof data.shows !== 'object') {
+    warn('show-schedules.json missing "shows" object');
+    return;
+  }
+
+  // Shows that should have multi-week data: Broadway, open-status only (bwayrush is Broadway-only).
+  const broadwayOpen = shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
+  const openIds = new Set(broadwayOpen.map(s => s.id));
+
+  let multiWeek = 0;
+  let singleWeek = 0;
+  const singleWeekIds = [];
+  for (const [showId, entry] of Object.entries(data.shows)) {
+    if (!openIds.has(showId)) continue;
+    const weekCount = entry.weeks ? Object.keys(entry.weeks).length : 0;
+    if (weekCount >= 2) multiWeek++;
+    else {
+      singleWeek++;
+      singleWeekIds.push(`${showId} (${weekCount})`);
+    }
+  }
+
+  const totalCovered = multiWeek + singleWeek;
+  if (totalCovered === 0) {
+    warn('No open Broadway shows found in show-schedules.json (fresh scrape pending?)');
+    return;
+  }
+
+  // Fail if the majority of open shows have only 1 week — matches the week-nav bug's symptom.
+  // Threshold: >50% of open shows must have multi-week data.
+  const ratio = multiWeek / totalCovered;
+  if (ratio < 0.5) {
+    error(`show-schedules.json has only ${multiWeek}/${totalCovered} open Broadway shows with multi-week data ` +
+          `(bwayrush /api/calendar likely blocked). Week-nav arrows on Showtimes card will be disabled.`);
+    if (singleWeekIds.length <= 10) {
+      error(`Single-week shows: ${singleWeekIds.join(', ')}`);
+    } else {
+      error(`Single-week shows (first 10 of ${singleWeekIds.length}): ${singleWeekIds.slice(0, 10).join(', ')}`);
+    }
+  } else if (singleWeek > 0) {
+    warn(`show-schedules.json: ${singleWeek}/${totalCovered} open Broadway shows have only 1 week of data`);
+  } else {
+    ok(`show-schedules.json: all ${multiWeek} open Broadway shows have multi-week schedule data`);
   }
 }
 
@@ -3764,6 +3826,8 @@ function runValidation() {
   checkForCatastrophicChanges();
   console.log('');
   validateGrossesJson();
+  console.log('');
+  validateSchedulesJson(shows);
   console.log('');
   validateCommercialJson();
   console.log('');
