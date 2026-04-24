@@ -236,7 +236,13 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
-    "ann-2013/bloomberg--jeremy-gerard.json"
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,7 +266,8 @@
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -276,12 +283,13 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json"
+      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "ann-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -370,6 +378,17 @@
       "t": "2026-04-24T10:44:05.837Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-24T11:18:09.571Z",
+      "event": "bb-session",
+      "session": "3f5f9192",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-24T11:18:10.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
