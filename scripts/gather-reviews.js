@@ -59,6 +59,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
@@ -2158,6 +2159,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const outletName = getOutletDisplayName(outletId);
         const quote = posting.articleBody || posting.description || '';
 
+        // Fix mis-attributions BWW occasionally introduces when parsing their
+        // "Critic, Outlet" strings — e.g. "David Finkle, Cote Notices" for a
+        // Cote Notices piece that David Cote actually wrote (Rocky Horror
+        // 2026-04-23). Defense-in-depth for Session 3 #12 URL-dedup.
+        if (criticName) {
+          const canon = canonicalizeCritic(outletId, criticName);
+          if (canon.canonicalized) {
+            console.log(`    [BWW RR] canonicalized critic: ${canon.from} → ${canon.name} (outletId=${outletId})`);
+            criticName = canon.name;
+          }
+        }
+
         // Dedup within Method 1: BWW sometimes has duplicate BlogPosting entries
         // with real critic names — those we legitimately dedup. But for
         // criticName=null (outlet-only headlines), we keep every occurrence as
@@ -2326,7 +2339,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const seen = new Set();
         let supplementAdded = 0;
         while ((match = pattern.exec(text)) !== null) {
-          const criticName = match[1].trim();
+          let criticName = match[1].trim();
           const outletRaw = match[2].trim();
           let quote = match[3].trim();
 
@@ -2347,6 +2360,15 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
+
+          // Defense-in-depth mirror of Method 1 canonicalization — BWW's
+          // articleBody occasionally carries the same mis-attribution the
+          // JSON-LD author field does.
+          const canon = canonicalizeCritic(outletId, criticName);
+          if (canon.canonicalized) {
+            console.log(`    [BWW RR M2] canonicalized critic: ${canon.from} → ${canon.name} (outletId=${outletId})`);
+            criticName = canon.name;
+          }
 
           // Dedup against Method 1 results
           const dedupKey = `${outletId.toLowerCase()}|${normalizeCritic(criticName)}`;
@@ -2742,6 +2764,32 @@ function createReviewFile(showId, reviewData, options = {}) {
   // to avoid misattribution — normalizeOutlet("NYT Theater") → "nyt-theater" (wrong outlet)
   const outletForNormalization = reviewData.outletId || reviewData.outlet;
   const normalizedOutletId = normalizeOutlet(outletForNormalization);
+
+  // Session 3 #14 — promote Unknown critic to the outlet's defaultCritic at gather time.
+  // Without this, single-author outlets (Cote Notices / Substack criticsfeeds, newyorktheater.me,
+  // etc.) whose RSS items carry no <author> tag arrive with criticName='Unknown' and get routed to
+  // _pending/ by shouldRouteUnknownCriticToPending → rebuild-all-reviews never reads _pending/
+  // so the hit silently strands. rebuild-all-reviews.js:2745 has the same resolution as a
+  // belt-and-suspenders backstop, but only for files that reach the main show dir.
+  // See feedback_rss_discovery_pending_strand.md.
+  {
+    const inCritic = (reviewData.criticName || '').trim().toLowerCase();
+    if (!inCritic || inCritic === 'unknown' || inCritic === 'unnamed') {
+      try {
+        const reg = _outletRegistryCache || (() => {
+          const r = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+          _outletRegistryCache = r.outlets || {};
+          return _outletRegistryCache;
+        })();
+        const entry = reg[normalizedOutletId];
+        if (entry && entry.defaultCritic) {
+          console.log(`    → promoted Unknown → ${entry.defaultCritic} via outlet-registry defaultCritic (${normalizedOutletId})`);
+          reviewData.criticName = entry.defaultCritic;
+        }
+      } catch (e) { /* registry load failure — fall through to existing unknown handling */ }
+    }
+  }
+
   const normalizedCriticName = normalizeCritic(reviewData.criticName);
   const filename = generateReviewFilename(outletForNormalization, reviewData.criticName);
   const filepath = path.join(showDir, filename);

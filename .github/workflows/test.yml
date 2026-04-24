@@ -605,6 +605,8 @@ jobs:
             tests/unit/commercial-changes.test.mjs \
             tests/unit/content-verifier.test.mjs \
             tests/unit/cote-notices-registry.test.mjs \
+            tests/unit/critic-canonicalization.test.mjs \
+            tests/unit/rss-single-author-defaultcritic.test.mjs \
             tests/unit/deep-research-guardian.test.mjs \
             tests/unit/dtli-critic-name-regex.test.mjs \
             tests/unit/discover-new-shows-category.test.mjs \
@@ -629,6 +631,7 @@ jobs:
             tests/unit/enrich-thumbs.test.mjs \
             tests/unit/trade-press-scraper.test.mjs \
             tests/unit/tryout-url-filter.test.mjs \
+            tests/unit/url-canonicalize-dedup.test.mjs \
             tests/unit/url-content-sanity.test.mjs \
             tests/unit/url-date-wrongproduction.test.mjs \
             tests/unit/data-quality-pipeline.test.js \

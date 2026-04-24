@@ -63,21 +63,14 @@ function remainingCritics(criticList, foundReviewsForOutlet) {
 }
 
 /**
- * Normalize a URL for dedup comparison — lowercase, strip trailing slash,
- * drop hash fragments. Keeps query params (they sometimes distinguish
- * per-critic review pages at the same outlet).
+ * Normalize a URL for dedup comparison. Delegates to the canonical helper in
+ * review-guards.js so tracking-only params (?triedRedirect, ?utm_*, ?fbclid, …)
+ * are stripped consistently across the pipeline. Non-tracking query params are
+ * preserved — some outlets use them as article IDs.
  */
+const { canonicalizeUrlForDedup } = require('./review-guards');
 function normalizeUrlForDedup(url) {
-  if (!url) return '';
-  try {
-    const u = new URL(url);
-    u.hash = '';
-    let s = u.toString().toLowerCase();
-    if (s.endsWith('/')) s = s.slice(0, -1);
-    return s;
-  } catch {
-    return String(url).toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
-  }
+  return canonicalizeUrlForDedup(url);
 }
 
 module.exports = {

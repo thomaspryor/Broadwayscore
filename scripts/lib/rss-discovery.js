@@ -26,7 +26,9 @@ const THEATER_FEEDS = [
   // Use Guardian Open Platform API in site-search-discovery.js instead.
   { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway' },
   { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true, market: 'broadway' },
-  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway' },
+  // newyorktheater.me is Jonathan Mandell's single-author blog — stamp the byline so
+  // RSS hits don't land in _pending/ with criticName='Unknown'. See feedback_rss_discovery_pending_strand.md.
+  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway', defaultCritic: 'Jonathan Mandell' },
 ];
 
 // West End theater feeds (verified March 2026)

@@ -142,9 +142,12 @@ function _normalizeCriticForDedup(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '').trim();
 }
 
+// Delegate to the canonical helper so tracking-only query params (?triedRedirect,
+// ?utm_*, ?fbclid, …) are stripped while article-ID params (?p=, ?article_id=)
+// are preserved. Same behavior as rebuild-all-reviews / gather-reviews / SERP dedup.
+const { canonicalizeUrlForDedup } = require('./review-guards');
 function _normalizeUrlForDedup(url) {
-  if (!url || typeof url !== 'string') return '';
-  return url.toLowerCase().replace(/#.*$/, '').replace(/\?.*$/, '').replace(/\/$/, '');
+  return canonicalizeUrlForDedup(url);
 }
 
 /**

@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup } = require('./lib/review-guards');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -894,28 +894,16 @@ try {
 // Cross-show URL dedup: detect when the same review URL exists in multiple show directories.
 // When a URL appears in two shows, the show whose opening year is closest to the review's
 // publish date (or URL year) gets priority. The other is flagged wrongProduction.
+//
+// Delegates to canonicalizeUrlForDedup (scripts/lib/review-guards.js) so the tracking-param
+// registry stays in one place — any outlet-specific tracking params added there
+// (?triedRedirect, ?gaa_at, etc.) are stripped here too. Locally strips the
+// scheme + www. prefix for the cross-show Map key shape callers already expect.
 function normalizeUrlForDedup(url) {
     if (!url) return null;
-    // Strip tracking params and fragments to catch OB/Broadway copies of the same review
-    // that differ only by utm_*, searchResultPosition, etc.
-    // Preserve meaningful query params for old-format URLs (e.g., treview.html?res=ABC)
-    const TRACKING_PARAMS = new Set([
-      'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
-      'searchresultposition', 'gaa_at', 'gaa_n', 'gaa_ts', 'gaa_sig',
-      'ref', 'fbclid', 'gclid', 'mc_cid', 'mc_eid',
-    ]);
-    let cleaned = url;
-    // Strip fragment
-    cleaned = cleaned.split('#')[0];
-    // Strip tracking query params
-    try {
-      const u = new URL(cleaned);
-      for (const key of [...u.searchParams.keys()]) {
-        if (TRACKING_PARAMS.has(key.toLowerCase())) u.searchParams.delete(key);
-      }
-      cleaned = u.href;
-    } catch { /* not a valid URL, proceed with string ops */ }
-    return cleaned.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?&]$/, '').replace(/\/+$/, '').toLowerCase();
+    const canon = canonicalizeUrlForDedup(url);
+    if (!canon) return null;
+    return canon.replace(/^https?:\/\//, '').replace(/^www\./, '');
 }
 const crossShowUrlIndex = new Map();
 {
@@ -2867,16 +2855,12 @@ showDirs.forEach(showId => {
 
       // URL dedup: same URL at same outlet under different critic names
       if (data.url) {
-        // Normalize URL: lowercase hostname, strip trailing slash and fragment
-        // Preserve query params (some outlets use them as article IDs)
-        let normalizedUrl;
-        try {
-          const parsed = new URL(data.url);
-          parsed.hash = '';
-          normalizedUrl = parsed.toString().replace(/\/$/, '');
-        } catch {
-          normalizedUrl = data.url.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
-        }
+        // Canonicalize: lowercase host, strip fragment + tracking params, drop trailing slash.
+        // Non-tracking query params are preserved (some legacy CMS outlets use them as
+        // article IDs). See scripts/lib/review-guards.js canonicalizeUrlForDedup — shared
+        // across rebuild / gather / SERP / llm-extractor for consistent dedup behavior.
+        // Rocky Horror 2026-04-23: ?triedRedirect=true let Cote Notices ship twice.
+        const normalizedUrl = canonicalizeUrlForDedup(data.url);
         // Use canonical outletId for URL dedup
         const urlOutletKey = normalizeOutletCanonical(data.outletId || data.outlet);
         const urlDedupKey = `${urlOutletKey}|${normalizedUrl}`;
