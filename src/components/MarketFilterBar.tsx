@@ -52,14 +52,16 @@ export default function MarketFilterBar({
   const pillBase =
     'min-h-[44px] sm:min-h-0 px-3 sm:px-4 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold leading-none inline-flex items-center gap-1.5 transition-all whitespace-nowrap';
 
-  const primaryActiveClass = 'bg-brand text-gray-900 shadow-glow-sm';
+  const primaryActiveClass = isNyc
+    ? 'bg-brand text-gray-900 shadow-glow-sm font-bold'
+    : 'bg-gradient-to-r from-pink-400 to-pink-500 text-gray-900 shadow-[0_0_12px_rgba(244,114,182,0.25)] font-bold';
   const primaryIdleClass =
     'bg-surface-raised text-gray-400 border border-white/10 hover:text-white hover:border-white/20';
 
   const secondaryActiveClass =
     secondaryAccent === 'purple'
-      ? 'bg-purple-500/[0.12] border border-purple-500/25 text-purple-300'
-      : 'bg-violet-500/[0.12] border border-violet-500/25 text-violet-300';
+      ? 'bg-purple-500/[0.12] border border-purple-500/25 text-purple-200 font-bold'
+      : 'bg-violet-500/[0.12] border border-violet-500/25 text-violet-200 font-bold';
   const secondaryIdleClass =
     'bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:text-gray-200';
 
@@ -83,7 +85,7 @@ export default function MarketFilterBar({
     <div
       role="group"
       aria-label="Market and type filters"
-      className={`flex items-center gap-2 overflow-x-auto flex-nowrap scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 ${className ?? ''}`}
+      className={`flex items-center gap-2 overflow-x-auto flex-nowrap scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent_100%)] sm:[mask-image:none] ${className ?? ''}`}
     >
       {/* Primary market pill */}
       <Link
