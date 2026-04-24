@@ -119,7 +119,9 @@ const NEWSLETTER_PATTERNS = [
 const NAVIGATION_PATTERNS = [
   /^(home|about|contact|faq|help|support|careers|advertise)\s*$/im,
   /skip\s+to\s+(main\s+)?content/i,
-  /(footer|header|sidebar|menu|navigation)/i,
+  // Word boundaries prevent matching "themenu", and requiring a nav-specific qualifier
+  // for "menu" / "nav" kills legit dialogue like "drop-down menu for…".
+  /\b(footer|header|sidebar|navigation|main\s+menu|site\s+menu|mobile\s+menu|hamburger\s+menu|top\s+nav|bottom\s+nav)\b/i,
   /search\s+(this\s+)?(site|website)/i,
   /related\s+(articles?|stories|posts)/i,
   /popular\s+(articles?|stories|posts)/i,
@@ -135,15 +137,19 @@ const NAVIGATION_PATTERNS = [
  * These indicate the content is about something other than theater
  * @type {RegExp[]}
  */
+// Each pattern was audited against 2,832 real reviews for bare-keyword false positives.
+// Metaphorical usage ("recipe for disaster", "cooking up a hit") and topical overlap
+// (Lehman Trilogy discusses the stock market) were killing inclusion. See
+// memory/feedback_content_quality_regex_fps.md for the audit and rationale.
 const WRONG_ARTICLE_PATTERNS = [
-  /^insidious/im,  // Common scraping error - horror movie reviews
-  /horror\s+(film|movie)/i,
-  /box\s+office\s+(report|numbers|results)/i,
-  /recipe|ingredients|cook(ing)?/i,
+  /^insidious/i,  // doc start only — /m flag would match any line
+  /(?:^|\n)\s*(?:the\s+)?horror\s+(?:film|movie)\s+[A-Z]/,  // line start + Title-Case noun
+  /box\s+office\s+report/i,  // "numbers/results" fire on legit theater-commerce talk
+  /\bcook(?:ing)?\s+(?:instructions|time|method|class|book|school)\b|\bingredient\s+list\b|\brecipe\s+(?:card|book|box|serves)\b/i,
   /sports?\s+(news|scores|results)/i,
-  /weather\s+(forecast|report)/i,
-  /stock\s+(market|prices|trading)/i,
-  /breaking\s+news/i,
+  /weather\s+(?:forecast|report)\s+(?:for|in|across|today|tonight|tomorrow|this\s+weekend)/i,
+  /stock\s+(?:market\s+(?:close|open|index|session)|prices?\s+(?:rose|fell|surged|plunged)|trading\s+(?:session|volume|day|hours))/i,
+  /^breaking\s+news/im,
   /election\s+(results|coverage)/i,
 ];
 
