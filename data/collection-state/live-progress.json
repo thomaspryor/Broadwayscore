@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-24T10:42:56.197Z",
-  "processed": 9,
-  "failed": 36,
-  "successRate": "20.0%",
+  "updatedAt": "2026-04-24T10:44:57.100Z",
+  "processed": 13,
+  "failed": 42,
+  "successRate": "23.6%",
   "tierBreakdown": {
     "playwright": 5,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archiveToday": 4,
+    "scrapingbee": 3,
+    "brightdata": 1,
+    "archiveToday": 5,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -69,6 +69,39 @@
       "t": "2026-04-24T10:40:42.379Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-24T10:42:57.552Z",
+      "event": "bb-session",
+      "session": "155d28e6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645953"
+    },
+    {
+      "t": "2026-04-24T10:42:57.633Z",
+      "event": "bb-session",
+      "session": "bc45cdc1",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-24T10:42:58.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-04-24T10:42:58.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-24T10:44:04.966Z",
+      "event": "bb-session",
+      "session": "095135b7",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-04-24T10:44:05.837Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
