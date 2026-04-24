@@ -132,4 +132,31 @@ describe('canonicalizeUrlForDedup — tracking param registry', () => {
     assert.ok(TRACKING_PARAM_PREFIXES.includes('utm_'));
     assert.ok(TRACKING_PARAM_PREFIXES.includes('mc_'));
   });
+
+  test('legacy NYT tracking params (smid, _r, pagewanted) are stripped', () => {
+    const a = canonicalizeUrlForDedup('https://nytimes.com/review?smid=tw-share&_r=1&pagewanted=all');
+    const b = canonicalizeUrlForDedup('https://nytimes.com/review');
+    assert.strictEqual(a, b, 'smid/_r/pagewanted are tracking and must collapse');
+  });
+
+  test('WaPo wpisrc is stripped', () => {
+    const a = canonicalizeUrlForDedup('https://washingtonpost.com/article?wpisrc=nl_headlines');
+    const b = canonicalizeUrlForDedup('https://washingtonpost.com/article');
+    assert.strictEqual(a, b);
+  });
+});
+
+describe('canonicalizeUrlForDedup — param ordering (ship-check P1)', () => {
+  test('same non-tracking params in different order → same canonical', () => {
+    const a = canonicalizeUrlForDedup('https://example.com/roundup?page=2&section=theater');
+    const b = canonicalizeUrlForDedup('https://example.com/roundup?section=theater&page=2');
+    assert.strictEqual(a, b,
+      'Param order must not affect canonical form — SERP results sometimes reorder params');
+  });
+
+  test('tracking params interspersed still collapse regardless of order', () => {
+    const a = canonicalizeUrlForDedup('https://example.com/a?utm_source=fb&id=5&fbclid=abc');
+    const b = canonicalizeUrlForDedup('https://example.com/a?id=5');
+    assert.strictEqual(a, b);
+  });
 });

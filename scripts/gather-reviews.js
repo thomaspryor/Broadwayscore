@@ -2798,7 +2798,11 @@ function createReviewFile(showId, reviewData, options = {}) {
           console.log(`    → promoted Unknown → ${entry.defaultCritic} via outlet-registry defaultCritic (${normalizedOutletId})`);
           reviewData.criticName = entry.defaultCritic;
         }
-      } catch (e) { /* registry load failure — fall through to existing unknown handling */ }
+      } catch (e) {
+        // Registry load failure — don't silently strand every Unknown in _pending/.
+        // Log loud so ops can see it. Fall through to existing unknown handling.
+        console.warn(`    ⚠ outlet-registry load failed in defaultCritic promotion: ${e.message}`);
+      }
     }
   }
 

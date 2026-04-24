@@ -1485,6 +1485,25 @@ const TRACKING_PARAM_NAMES = new Set([
   'gaa_n',
   'gaa_ts',
   'gaa_sig',
+  // Legacy NYT tracking (every NYT URL before ~2014 had some of these)
+  'smid',
+  'smtyp',
+  'pagewanted',
+  '_r',
+  'adxnnl',
+  'adxnnlx',
+  'gwh',
+  'gwt',
+  // WaPo
+  'wpisrc',
+  'wpmm',
+  'wpmk',
+  // Other common article-source trackers
+  'partner',
+  'emc',
+  'nc',
+  'algo',
+  'impression_id',
 ]);
 const TRACKING_PARAM_PREFIXES = ['utm_', 'mc_', 'pk_', 'hsa_', 'mtm_'];
 
@@ -1520,18 +1539,33 @@ function canonicalizeUrlForDedup(url) {
     const u = new URL(trimmed);
     u.hash = '';
     u.hostname = u.hostname.toLowerCase();
-    // Drop tracking params in place. Collect keys first so deletion doesn't
-    // mutate the iterator.
-    const toDelete = [];
-    for (const key of u.searchParams.keys()) {
-      if (_isTrackingParam(key)) toDelete.push(key);
+    // Collect + sort non-tracking params so param-order-only differences
+    // collapse to the same key. e.g., `?a=1&b=2` and `?b=2&a=1` canonicalize
+    // to identical strings. Without sorting, SERP results that reorder params
+    // would dedup as distinct.
+    const kept = [];
+    for (const [k, v] of u.searchParams) {
+      if (!_isTrackingParam(k)) kept.push([k, v]);
     }
-    for (const key of toDelete) u.searchParams.delete(key);
+    kept.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : (a[1] < b[1] ? -1 : a[1] > b[1] ? 1 : 0)));
+    // Rebuild searchParams in sorted order.
+    const sp = new URLSearchParams();
+    for (const [k, v] of kept) sp.append(k, v);
+    u.search = sp.toString() ? `?${sp.toString()}` : '';
     let s = u.toString().toLowerCase();
     s = s.replace(/\/$/, '');
     return s;
   } catch {
-    return trimmed.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
+    // Best-effort fallback for URLs the URL constructor can't parse.
+    // Strip tracking params we can identify via regex — better than leaving
+    // them on and having the malformed-URL path silently over-preserve tracking.
+    let s = trimmed.toLowerCase().replace(/#.*$/, '');
+    // Build a regex union of tracking param names (escaped) + known prefixes.
+    const names = [...TRACKING_PARAM_NAMES].map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    const prefixes = TRACKING_PARAM_PREFIXES.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[a-z0-9_-]*').join('|');
+    const trackingRe = new RegExp('([?&])(?:' + names + '|' + prefixes + ')=[^&]*', 'g');
+    s = s.replace(trackingRe, (_, sep) => sep).replace(/\?&/g, '?').replace(/[?&]+$/, '').replace(/\/$/, '');
+    return s;
   }
 }
 
