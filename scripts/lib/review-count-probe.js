@@ -108,14 +108,16 @@ function countLocalPerShowJson(showId, publicDataRoot = 'public/data/shows') {
 }
 
 /**
- * Computes drift from the three count sources.
- * If live.rc is null, drift = |local - aggregate|.
+ * Computes drift from the available count sources. Any field that is null/
+ * undefined is omitted. With all four provided: max - min over
+ * [local, aggregate, localJson, live].
  *
- * @param {{ local: number, aggregate: number, live: number|null }} counts
+ * @param {{ local: number, aggregate: number, localJson?: number|null, live?: number|null }} counts
  * @returns {{ min: number, max: number, drift: number }}
  */
-function computeDrift({ local, aggregate, live }) {
+function computeDrift({ local, aggregate, localJson, live }) {
   const values = [local, aggregate];
+  if (localJson != null) values.push(localJson);
   if (live != null) values.push(live);
   const min = Math.min(...values);
   const max = Math.max(...values);
