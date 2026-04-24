@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-24T21:11:27.418Z",
+  "timestamp": "2026-04-24T21:47:49.494Z",
   "stats": {
-    "totalReviews": 35773,
-    "alreadyFlagged": 15987,
+    "totalReviews": 35769,
+    "alreadyFlagged": 15963,
     "dateGuardCatches": 95,
-    "directorMismatch": 820,
+    "directorMismatch": 821,
     "tvFilmSignals": 3202,
-    "londonSignals": 1029,
+    "londonSignals": 1030,
     "offBroadwaySignals": 897,
     "yearMismatch": 69,
-    "noPublishDate": 3745
+    "noPublishDate": 3744
   },
   "findings": [
     {
@@ -6463,6 +6463,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "stagezine--scott-harrah.json",
+      "score": null,
+      "publishDate": "March 31st, 2011",
+      "url": "http://www.stagezine.com/the-book-of-mormon-will-convert-you/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw and trey parker\" from the-book-of-mormon-west-end-2024"
         }
       ]
     },
@@ -66734,6 +66748,20 @@
       "score": 88,
       "publishDate": "2016-10-30",
       "url": "https://scribicide.com/2016/10/30/win-or-die/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
+      "file": "the-associated-press--mark-kennedy.json",
+      "score": 84,
+      "publishDate": "2016-10-30",
+      "url": "http://www.washingtontimes.com/news/2016/oct/30/review-nyc-revival-of-les-liaisons-dangereuses-cra/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
