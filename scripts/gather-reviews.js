@@ -1779,6 +1779,10 @@ async function searchBWWRoundup(show, year, options = {}) {
       console.log(`    ✓ Found at: ${options.overrideUrl} (runtime override)`);
       return { url: options.overrideUrl, html: result.html };
     }
+    if (result.found && result.html && isCloudflareChallenge(result.html)) {
+      console.log('    ⚠️  BWW is Cloudflare-gated — aborting (further fetches will burn credits for the same challenge)');
+      return null;
+    }
     console.log(`    ✗ Runtime override URL failed — falling through to other methods`);
   }
 
@@ -1801,6 +1805,10 @@ async function searchBWWRoundup(show, year, options = {}) {
         if (result.found && result.html && isBWWRoundupContent(result.html)) {
           console.log(`    ✓ Found at: ${overrideUrl} (override)`);
           return { url: overrideUrl, html: result.html };
+        }
+        if (result.found && result.html && isCloudflareChallenge(result.html)) {
+          console.log('    ⚠️  BWW is Cloudflare-gated — aborting (further fetches will burn credits for the same challenge)');
+          return null;
         }
       }
     } catch (e) { /* ignore override errors */ }
@@ -1834,21 +1842,25 @@ async function searchBWWRoundup(show, year, options = {}) {
     try {
       console.log('    Checking BWW homepage for Review Roundup link...');
       const homepageResult = await searchAggregator('BWW-Homepage', 'https://www.broadwayworld.com');
+      if (homepageResult.found && homepageResult.html && isCloudflareChallenge(homepageResult.html)) {
+        console.log('    ⚠️  BWW homepage is Cloudflare-gated — aborting (further fetches will burn credits for the same challenge)');
+        return null;
+      }
       if (homepageResult.found && homepageResult.html) {
+        // bww-homepage-scan.findBWWRoundupLinkOnHomepage already runs the slug validator
+        // internally via validateBWWRoundupUrlMatchesShow, so no need to re-check here.
         const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title);
         if (roundupUrl) {
-          if (!validateBWWRoundupUrlMatchesShow(roundupUrl, show.title)) {
-            console.log(`    ✗ Homepage roundup URL slug doesn't match show title "${show.title}" — skipping: ${roundupUrl}`);
-          } else {
-            console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
-            const result = await searchAggregator('BWW', roundupUrl);
-            if (result.found && result.html && isBWWRoundupContent(result.html)) {
-              console.log(`    ✓ Confirmed BWW roundup content from homepage discovery`);
-              return { url: roundupUrl, html: result.html };
-            }
+          console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
+          const result = await searchAggregator('BWW', roundupUrl);
+          if (result.found && result.html && isBWWRoundupContent(result.html)) {
+            console.log(`    ✓ Confirmed BWW roundup content from homepage discovery`);
+            return { url: roundupUrl, html: result.html };
           }
-        } else {
-          console.log('    No matching roundup link found on BWW homepage');
+          if (result.found && result.html && isCloudflareChallenge(result.html)) {
+            console.log('    ⚠️  BWW is Cloudflare-gated — aborting (further fetches will burn credits for the same challenge)');
+            return null;
+          }
         }
       }
     } catch (e) {
@@ -1957,8 +1969,8 @@ async function searchBWWRoundup(show, year, options = {}) {
       return { url, html: result.html };
     }
     if (result.found && result.html && isCloudflareChallenge(result.html)) {
-      console.log('    ⚠️  BWW is Cloudflare-gated — stopping URL-guess iteration (further fetches will burn credits for the same challenge)');
-      break;
+      console.log('    ⚠️  BWW is Cloudflare-gated — aborting URL-guess (further fetches will burn credits for the same challenge)');
+      return null;
     }
     await sleep(200);
   }

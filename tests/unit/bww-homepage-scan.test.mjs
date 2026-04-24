@@ -159,32 +159,61 @@ describe('findBWWRoundupLinkOnHomepage — no-match behavior', () => {
 });
 
 describe('isCloudflareChallenge', () => {
-  test('detects "Just a moment..." title', () => {
+  test('detects "Just a moment..." title (weak marker, size-gated)', () => {
     const html = '<html><head><title>Just a moment...</title></head><body>cf_chl_opt</body></html>';
     assert.strictEqual(isCloudflareChallenge(html), true);
   });
 
-  test('detects cf_chl_opt marker even without challenge title', () => {
+  test('detects cf_chl_opt marker at small size', () => {
     const html = '<html><body><script>window.cf_chl_opt = { something: 1 }</script></body></html>';
     assert.strictEqual(isCloudflareChallenge(html), true);
   });
 
-  test('detects challenge-platform marker', () => {
+  test('detects challenge-platform marker at small size', () => {
     const html = '<html><body><div id="challenge-platform"></div></body></html>';
     assert.strictEqual(isCloudflareChallenge(html), true);
   });
 
-  test('detects "Enable JavaScript and cookies to continue" banner', () => {
+  test('detects "Enable JavaScript and cookies" banner', () => {
     const html = '<html><body>Enable JavaScript and cookies to continue</body></html>';
     assert.strictEqual(isCloudflareChallenge(html), true);
   });
 
-  test('returns false for a normal full-length BWW roundup', () => {
-    // Real roundup articles are 100KB+; the length guard prevents false positives.
+  test('detects JS-heavy managed-challenge variant (50KB with BOTH strong markers)', () => {
+    // Cloudflare's Turnstile managed-challenge can reach 40-60KB with telemetry payload.
+    // Both strong markers together — trusted regardless of size.
+    const html = '<html><body>' + 'x'.repeat(50000) + 'cf_chl_opt challenge-platform</body></html>';
+    assert.strictEqual(html.length > 25000, true, 'precondition: html is >25KB');
+    assert.strictEqual(isCloudflareChallenge(html), true);
+  });
+
+  test('detects legacy meta-refresh challenge variant (no cf_chl_opt)', () => {
+    const html = '<html><head><meta http-equiv="refresh" content="5; url=https://example.com/cf-chl-bypass"></head><body></body></html>';
+    assert.strictEqual(isCloudflareChallenge(html), true);
+  });
+
+  test('returns false for a normal full-length BWW roundup with no challenge markers', () => {
+    // Real roundup articles are 100KB+ with NO Cloudflare markers.
     const html = '<html><head><title>Review Roundup: TEST</title></head><body>' +
-      'articleBody '.repeat(3000) + 'Just a moment appearing in quoted text is fine.' +
+      'articleBody '.repeat(10000) + 'Just a moment appearing in quoted text is fine.' +
+      '</body></html>';
+    assert.strictEqual(html.length > 100000, true, 'precondition: html is >100KB');
+    assert.strictEqual(isCloudflareChallenge(html), false);
+  });
+
+  test('returns false when a large page contains weak marker but no strong marker', () => {
+    // 30KB page (above weak-marker 25KB gate) with only "Just a moment" in body.
+    const html = '<html><head><title>Some Real Article</title></head><body>' +
+      'x'.repeat(30000) + ' the phrase Just a moment is in the body text' +
       '</body></html>';
     assert.strictEqual(isCloudflareChallenge(html), false);
+  });
+
+  test('returns true for a tiny page where a weak marker appears in the title', () => {
+    // 2KB page with "Just a moment" in title — this IS a challenge.
+    const html = '<html><head><title>Just a moment...</title></head><body>' +
+      'Please wait while we check your browser.</body></html>';
+    assert.strictEqual(isCloudflareChallenge(html), true);
   });
 
   test('returns false for empty / non-string input', () => {
