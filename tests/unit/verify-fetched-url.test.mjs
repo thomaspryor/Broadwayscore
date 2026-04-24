@@ -80,6 +80,39 @@ describe('verifyFetchedUrl', () => {
       const url = 'https://example.com/article/proof';
       assert.equal(verifyFetchedUrl(html, url).verified, true);
     });
+
+    // Regression for 2026-04-24 NY Post 2019 backfill:
+    // SERP URL had HTML-encoded `&amp;utm_*` params that parse as keys
+    // `amp;utm_campaign` / `amp;utm_source`. Pre-fix regex /^utm_|^fbclid/
+    // didn't strip them, so ink-2019 burned Cookie-plain → BD → SB → Playwright.
+    test('HTML-encoded &amp;utm_* tracking params do not break match', () => {
+      const html = '<html><head><link rel="canonical" href="https://nypost.com/2019/04/24/ink-review-broadways-latest-is-a-scrappy-seductive-tabloid-tale/"></head></html>';
+      const url = 'https://nypost.com/2019/04/24/ink-review-broadways-latest-is-a-scrappy-seductive-tabloid-tale/?utm_medium=SocialFlow&amp;utm_campaign=SocialFlow&amp;utm_source=NYPTwitter';
+      assert.equal(verifyFetchedUrl(html, url).verified, true);
+    });
+
+    // Regression for kiss-me-kate-2019 (same backfill):
+    // Request URL was http://, canonical returned https://. Previous normalizer
+    // kept `parsed.toString()` which retained the scheme → mismatch.
+    test('http request vs https canonical (scheme diff) does not break match', () => {
+      const html = '<html><head><link rel="canonical" href="https://nypost.com/2019/03/14/raunchy-gutsy-kiss-me-kate-showcases-glorious-kelli-ohara/"></head></html>';
+      const url = 'http://nypost.com/2019/03/14/raunchy-gutsy-kiss-me-kate-showcases-glorious-kelli-ohara/';
+      assert.equal(verifyFetchedUrl(html, url).verified, true);
+    });
+
+    // Non-utm tracking params (gclid, ref, share, etc.) should also not break match
+    // since canonical URLs are query-free by convention.
+    test('gclid / non-utm tracking params do not break match', () => {
+      const html = '<html><head><link rel="canonical" href="https://example.com/article/proof"></head></html>';
+      const url = 'https://example.com/article/proof?gclid=abc123&ref=twitter&share=fb';
+      assert.equal(verifyFetchedUrl(html, url).verified, true);
+    });
+
+    test('hash fragment ignored', () => {
+      const html = '<html><head><link rel="canonical" href="https://example.com/article/proof"></head></html>';
+      const url = 'https://example.com/article/proof#section-2';
+      assert.equal(verifyFetchedUrl(html, url).verified, true);
+    });
   });
 
   describe('domain alias handling', () => {
