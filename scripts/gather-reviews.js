@@ -59,6 +59,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
@@ -2196,6 +2197,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const outletName = getOutletDisplayName(outletId);
         const quote = posting.articleBody || posting.description || '';
 
+        // Fix mis-attributions BWW occasionally introduces when parsing their
+        // "Critic, Outlet" strings — e.g. "David Finkle, Cote Notices" for a
+        // Cote Notices piece that David Cote actually wrote (Rocky Horror
+        // 2026-04-23). Defense-in-depth for Session 3 #12 URL-dedup.
+        if (criticName) {
+          const canon = canonicalizeCritic(outletId, criticName);
+          if (canon.canonicalized) {
+            console.log(`    [BWW RR] canonicalized critic: ${canon.from} → ${canon.name} (outletId=${outletId})`);
+            criticName = canon.name;
+          }
+        }
+
         // Dedup within Method 1: BWW sometimes has duplicate BlogPosting entries
         // with real critic names — those we legitimately dedup. But for
         // criticName=null (outlet-only headlines), we keep every occurrence as
@@ -2364,7 +2377,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         const seen = new Set();
         let supplementAdded = 0;
         while ((match = pattern.exec(text)) !== null) {
-          const criticName = match[1].trim();
+          let criticName = match[1].trim();
           const outletRaw = match[2].trim();
           let quote = match[3].trim();
 
@@ -2385,6 +2398,15 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
 
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
+
+          // Defense-in-depth mirror of Method 1 canonicalization — BWW's
+          // articleBody occasionally carries the same mis-attribution the
+          // JSON-LD author field does.
+          const canon = canonicalizeCritic(outletId, criticName);
+          if (canon.canonicalized) {
+            console.log(`    [BWW RR M2] canonicalized critic: ${canon.from} → ${canon.name} (outletId=${outletId})`);
+            criticName = canon.name;
+          }
 
           // Dedup against Method 1 results
           const dedupKey = `${outletId.toLowerCase()}|${normalizeCritic(criticName)}`;
