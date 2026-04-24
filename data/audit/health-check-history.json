@@ -1,5 +1,5 @@
 {
-  "lastRun": "2026-04-23T07:36:36.520Z",
+  "lastRun": "2026-04-24T07:39:48.440Z",
   "consecutiveErrorDays": 0,
   "results": [
     {
@@ -10,57 +10,57 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "16h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "7h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "4d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "4h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
-      "status": "warn",
-      "message": "3d old (warn threshold: 2d)"
-    },
-    {
-      "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "1d old"
-    },
-    {
-      "name": "Freshness: nyt-critics-picks.json",
-      "status": "pass",
-      "message": "2d old"
-    },
-    {
-      "name": "Freshness: video-reviews.json",
-      "status": "pass",
-      "message": "3d old"
-    },
-    {
-      "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
       "message": "21h old"
     },
     {
+      "name": "Freshness: cast-changes.json",
+      "status": "pass",
+      "message": "2d old"
+    },
+    {
+      "name": "Freshness: nyt-critics-picks.json",
+      "status": "pass",
+      "message": "3d old"
+    },
+    {
+      "name": "Freshness: video-reviews.json",
+      "status": "pass",
+      "message": "4d old"
+    },
+    {
+      "name": "Freshness: social-pulse/_budget.json",
+      "status": "pass",
+      "message": "2d old"
+    },
+    {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (0h old, workflow 2d ago)"
+      "message": "Data synced (23h old, workflow 23h ago)"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -85,7 +85,7 @@
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 17137 vs baseline 17138"
+      "message": "Reviews dropped: 17165 vs baseline 17166"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -95,32 +95,32 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 2d ago"
+      "message": "Last success 23h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 4h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 2d ago"
+      "message": "Last success 3d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 39d ago (threshold: 10d)"
+      "message": "Last success 40d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 5h ago"
+      "message": "Last success 1d ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.5% scored (17137/17221)"
+      "message": "99.5% scored (17165/17253)"
     },
     {
       "name": "Cookies: expiration",
@@ -130,22 +130,22 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (4d ago)"
+      "message": "All metrics within thresholds (5d ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (4d ago)"
+      "message": "Healthy (5d ago)"
     },
     {
-      "name": "Cron failed: Update Show Status",
-      "status": "warn",
-      "message": "Last run failed (23h ago)"
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "23h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "3h ago, success"
+      "message": "2h ago, cancelled"
     },
     {
       "name": "Cron: Collect Review Texts",
@@ -170,53 +170,53 @@
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "16h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "5h ago, success"
     },
     {
       "name": "Cron failed: Update Cast Changes",
       "status": "warn",
-      "message": "Last run failed (22h ago)"
+      "message": "Last run failed (2d ago)"
     },
     {
       "name": "Cron: Weekly NYT Critics Picks",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "3d ago, success"
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
       "status": "pass",
-      "message": "1d ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (7h ago)"
+      "message": "Last check passed (1d ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "1598k credits left (30%) · 214k/day burn · exhausts in ~7d (renews May 5)"
+      "message": "1518k credits left (28%) · 207k/day burn · exhausts in ~7d (renews May 5)"
     }
   ],
-  "lastCleanStreak": 1
+  "lastCleanStreak": 2
 }
