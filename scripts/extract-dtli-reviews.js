@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -222,11 +223,23 @@ function extractReviewsFromDTLI(content, showId) {
       }
     }
 
+    // Session 3 #13 — canonicalize known mis-attributions at single-author outlets
+    // (e.g., Cote Notices + "David Finkle" → "David Cote"). Same rule as gather-
+    // reviews BWW RR extractor and rebuild-all-reviews.
+    let finalCriticName = criticName;
+    if (finalCriticName) {
+      const canon = canonicalizeCritic(finalOutletId, finalCriticName);
+      if (canon.canonicalized) {
+        console.log(`  [DTLI canon] ${canon.from} → ${canon.name} (outletId=${finalOutletId})`);
+        finalCriticName = canon.name;
+      }
+    }
+
     reviews.push({
       showId,
       outletId: finalOutletId,
       outlet: finalOutletName,
-      criticName,
+      criticName: finalCriticName,
       url,
       publishDate: normalizePublishDate(dateStr),
       dtliExcerpt: fullText,  // Store as excerpt since DTLI only provides excerpts
