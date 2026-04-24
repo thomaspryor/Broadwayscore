@@ -18,7 +18,7 @@ import os from 'node:os';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { enrichDtliThumbsForShow } = require('../../scripts/enrich-dtli-thumbs.js');
+const { enrichDtliThumbsForShow, buildDtliUrlCandidates, slugifyTitle } = require('../../scripts/enrich-dtli-thumbs.js');
 const { enrichBwwThumbsForShow } = require('../../scripts/enrich-bww-thumbs.js');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
@@ -47,6 +47,21 @@ function cleanupShowDir(abs) {
     fs.rmdirSync(abs);
   } catch { /* ignore */ }
 }
+
+describe('slugifyTitle', () => {
+  test('comma-subtitled show → slug from full title', () => {
+    assert.strictEqual(slugifyTitle('Beaches, A New Musical'), 'beaches-a-new-musical');
+  });
+  test('punctuation stripped', () => {
+    assert.strictEqual(slugifyTitle("The Rocky Horror Show"), 'the-rocky-horror-show');
+  });
+  test('apostrophes removed, not hyphenated', () => {
+    assert.strictEqual(slugifyTitle("Death of a Salesman's Widow"), 'death-of-a-salesmans-widow');
+  });
+  test('& → and', () => {
+    assert.strictEqual(slugifyTitle('Sex & Violence'), 'sex-and-violence');
+  });
+});
 
 describe('enrichDtliThumbsForShow', () => {
   test('sets dtliThumb on an existing review file without overwriting score', async () => {

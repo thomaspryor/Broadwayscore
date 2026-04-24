@@ -69,17 +69,80 @@ function findByInternalFields(showDir, outletId, criticName) {
   return null;
 }
 
-function resolveDtliUrl(showId, overrideUrl) {
-  if (overrideUrl) return overrideUrl;
-  if (!fs.existsSync(SLUG_MAP_PATH)) return null;
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+
+function slugifyTitle(title) {
+  return String(title || '')
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[‘’`´']/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function resolveShowTitle(showId) {
   try {
-    const map = JSON.parse(fs.readFileSync(SLUG_MAP_PATH, 'utf-8'));
-    const slug = map.shows && map.shows[showId];
-    if (!slug) return null;
-    return `https://didtheylikeit.com/shows/${slug}/`;
+    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
+    const arr = Array.isArray(shows) ? shows : (shows.shows || []);
+    const show = arr.find(s => s.id === showId);
+    return show ? show.title : null;
   } catch {
     return null;
   }
+}
+
+/**
+ * Build DTLI URL candidates for a show, in priority order:
+ *   1. overrideUrl (CLI or caller)
+ *   2. dtli-slug-map.json (authoritative, weekly-discovered)
+ *   3. Convention-based from shows.json title (for brand-new shows not yet
+ *      in the slug map — opening night case). Typical DTLI slugs:
+ *        "Beaches, A New Musical" → beaches
+ *        "The Rocky Horror Show" → the-rocky-horror-show
+ *      Try both with-and-without "the-" prefix.
+ *   4. Convention-based from showId (strip trailing -YYYY).
+ */
+function buildDtliUrlCandidates(showId, overrideUrl) {
+  if (overrideUrl) return [overrideUrl];
+  const candidates = [];
+  try {
+    if (fs.existsSync(SLUG_MAP_PATH)) {
+      const map = JSON.parse(fs.readFileSync(SLUG_MAP_PATH, 'utf-8'));
+      const slug = map.shows && map.shows[showId];
+      if (slug) candidates.push(`https://didtheylikeit.com/shows/${slug}/`);
+    }
+  } catch { /* fall through */ }
+
+  const title = resolveShowTitle(showId);
+  if (title) {
+    // Title-based conventional slug: try full title, then comma-short.
+    const titleSlug = slugifyTitle(title);
+    if (titleSlug) candidates.push(`https://didtheylikeit.com/shows/${titleSlug}/`);
+    const commaIdx = title.indexOf(',');
+    if (commaIdx > 0) {
+      const shortSlug = slugifyTitle(title.slice(0, commaIdx));
+      if (shortSlug && shortSlug !== titleSlug) {
+        candidates.push(`https://didtheylikeit.com/shows/${shortSlug}/`);
+      }
+    }
+    // Strip leading "The " for shows like "The Rocky Horror Show" → "rocky-horror-show".
+    const noThe = title.replace(/^the\s+/i, '');
+    if (noThe !== title) {
+      const noTheSlug = slugifyTitle(noThe);
+      if (noTheSlug && !candidates.some(c => c.endsWith(`/${noTheSlug}/`))) {
+        candidates.push(`https://didtheylikeit.com/shows/${noTheSlug}/`);
+      }
+    }
+  }
+
+  // Show-id based as last resort (strip year suffix).
+  const idSlug = showId.replace(/-\d{4}$/, '');
+  if (idSlug && !candidates.some(c => c.endsWith(`/${idSlug}/`))) {
+    candidates.push(`https://didtheylikeit.com/shows/${idSlug}/`);
+  }
+
+  return candidates;
 }
 
 /**
@@ -103,16 +166,34 @@ async function enrichDtliThumbsForShow(showId, opts = {}) {
     throw new Error(`No review-texts dir for show: ${showDir}`);
   }
 
-  const dtliUrl = resolveDtliUrl(showId, overrideUrl);
-  if (!dtliUrl) {
-    throw new Error(`No DTLI URL resolved for ${showId}. Pass url or run discover-dtli-slugs first.`);
+  const candidates = buildDtliUrlCandidates(showId, overrideUrl);
+  if (!candidates.length) {
+    throw new Error(`No DTLI URL candidates for ${showId}. Pass url or run discover-dtli-slugs first.`);
   }
 
-  console.log(`Fetching DTLI page: ${dtliUrl}`);
-  const result = await fetchPage(dtliUrl, { renderJs: false });
-  if (!result || !result.content) throw new Error('Fetch returned no content');
-
-  const extracted = extractReviewsFromDTLI(result.content, showId);
+  let dtliUrl = null;
+  let extracted = [];
+  let anyFetchSucceeded = false;
+  for (const candidate of candidates) {
+    console.log(`Fetching DTLI page: ${candidate}`);
+    try {
+      const r = await fetchPage(candidate, { renderJs: false });
+      if (!r || !r.content) continue;
+      anyFetchSucceeded = true;
+      const rows = extractReviewsFromDTLI(r.content, showId);
+      if (rows && rows.length > 0) {
+        dtliUrl = candidate;
+        extracted = rows;
+        break;
+      }
+      if (verbose) console.log(`  [candidate] ${candidate} returned 0 review blocks — trying next`);
+    } catch (e) {
+      if (verbose) console.log(`  [candidate] ${candidate} failed: ${e.message}`);
+    }
+  }
+  if (!anyFetchSucceeded) {
+    throw new Error(`No DTLI URL fetched for ${showId} (tried ${candidates.length} candidates)`);
+  }
   console.log(`Extracted ${extracted.length} critic blocks from DTLI`);
 
   let enrichedThumb = 0;
@@ -172,7 +253,7 @@ async function enrichDtliThumbsForShow(showId, opts = {}) {
   return { extracted: extracted.length, enrichedThumb, enrichedUrl, skippedMissing };
 }
 
-module.exports = { enrichDtliThumbsForShow, resolveDtliUrl };
+module.exports = { enrichDtliThumbsForShow, buildDtliUrlCandidates, slugifyTitle };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
