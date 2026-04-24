@@ -13,7 +13,7 @@
  * @type {RegExp[]}
  */
 const AD_BLOCKER_PATTERNS = [
-  /ad\s*block(er)?/i,
+  /\bad\s*block(er)?/i,  // \b prevents "roadblock" substring FP (17 hits pre-fix)
   /we\s+(noticed|detected|see)\s+(you('re|r)?|that\s+you('re|r)?)\s+(using|have)/i,
   /turn\s+off\s+(your\s+)?ad\s*block/i,
   /whitelist\s+(this\s+)?(site|domain|our)/i,
@@ -83,14 +83,20 @@ const COOKIE_CONSENT_PATTERNS = [
  */
 const ERROR_PAGE_PATTERNS = [
   /page\s+not\s+found/i,
-  /404\s+(error|not\s+found)?/i,
+  // "404" alone matches SVG path data ("M11.404 8.74") and numeric IDs.
+  // Require the error suffix or make the 404 anchored.
+  /\b404\s+(?:error|not\s+found)\b/i,
   /error\s+404/i,
-  /not\s+(been\s+)?found/i,
+  // (Dropped bare /not\s+(been\s+)?found/i — matched theater prose like
+  // "had not been found guilty", "has not found a way to translate".
+  // /page\s+not\s+found/i above already handles standard error pages.)
   /(this\s+)?(page|article|content|url)\s+(is\s+|does\s+)?(no\s+longer|not)\s+(available|exists?)/i,
   /(this\s+)?(page|article|content|url)\s+doesn'?t\s+exist/i,
   /sorry[,.]?\s+(we\s+)?couldn'?t\s+find/i,
   /the\s+page\s+you('re|\s+are)\s+looking\s+for/i,
-  /has\s+been\s+(removed|deleted|taken\s+down)/i,
+  // "has been removed/deleted" fires on theater-review prose ("the song has
+  // been removed", "that has been deleted"). Require page-subject.
+  /(?:this\s+)?(?:page|article|content|url|video|story|post)\s+has\s+been\s+(?:removed|deleted|taken\s+down)/i,
   /content\s+(is\s+)?unavailable/i,
   /page\s+(is\s+)?unavailable/i,
   /we\s+can'?t\s+find\s+(that|the)\s+(page|article)/i,
@@ -150,7 +156,10 @@ const WRONG_ARTICLE_PATTERNS = [
   /weather\s+(?:forecast|report)\s+(?:for|in|across|today|tonight|tomorrow|this\s+weekend)/i,
   /stock\s+(?:market\s+(?:close|open|index|session)|prices?\s+(?:rose|fell|surged|plunged)|trading\s+(?:session|volume|day|hours))/i,
   /^breaking\s+news/im,
-  /election\s+(results|coverage)/i,
+  // "election results/coverage" fires on theater metaphors — reviews of
+  // political satires ("diversion from the onslaught of election coverage").
+  // Require line-start or a concrete-news qualifier.
+  /(?:^|\n)\s*election\s+(?:results|coverage)|election\s+(?:results|coverage)\s+(?:show|showed|indicate|suggest|from|for\s+the)/i,
 ];
 
 /**
@@ -2317,4 +2326,13 @@ module.exports = {
   CURRENT_BROADWAY_SHOWS,
   ARTICLE_BOUNDARY_PATTERNS,
   TRUNCATION_SIGNALS,
+  // Pattern arrays — consumed by scripts/audit-regex-patterns.js FP gate
+  AD_BLOCKER_PATTERNS,
+  PAYWALL_PATTERNS,
+  LEGAL_PAGE_PATTERNS,
+  COOKIE_CONSENT_PATTERNS,
+  ERROR_PAGE_PATTERNS,
+  NEWSLETTER_PATTERNS,
+  NAVIGATION_PATTERNS,
+  WRONG_ARTICLE_PATTERNS,
 };

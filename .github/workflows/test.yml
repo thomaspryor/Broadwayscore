@@ -11,6 +11,8 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      - 'scripts/audit-regex-patterns.js'
+      - 'scripts/lib/content-quality.js'
       - 'public/data/mobile-shows.json'
       - 'package.json'
       - 'package-lock.json'
@@ -497,6 +499,15 @@ jobs:
         run: node scripts/validate-mobile-shows.js
         # Catches stale build artifacts from worktree merges:
         # closed shows without scores should be filtered out by generate-mobile-data.js
+
+      - name: Audit content-quality regex FP rate
+        run: node scripts/audit-regex-patterns.js --full
+        # FP gate for content-quality.js pattern families. Scans every review text
+        # against each exported RegExp[] and exits 1 if any pattern fires more often
+        # than its allowlist baseline. Catches bare-keyword class FPs that synthetic
+        # unit tests miss — e.g., /cook/ matching inside "cookie", /horror film/ in
+        # theater metaphors. See memory/feedback_content_quality_regex_fps.md.
+        # Added 2026-04-24 after 8-pattern tightening session.
 
       - name: Validate review-text files
         run: |

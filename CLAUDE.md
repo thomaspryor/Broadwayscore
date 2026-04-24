@@ -75,6 +75,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
    - Inclusion (Phase A): `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
    - Score-source (Phase B, added 2026-04-22): `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
    Unit tests are NOT sufficient. Giant 2026-04-14 shipped with 276 unit tests green and would have excluded 183 T1 reviews. **MUST run** `node scripts/scoring-delta.js` (lists T1 inclusion flips + score-source flips) AND `node scripts/test-temporal-override-regression.js` (fixture). Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that synthetic unit tests miss (e.g. `/cook/` matching "cookie", `/horror film/` in theater metaphors). Added 2026-04-24 after finding 8 pattern-level FPs. CI gate in `test.yml` enforces on merge. See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
