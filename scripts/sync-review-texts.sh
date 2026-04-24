@@ -2,18 +2,64 @@
 # Syncs local review-texts changes to the private repo.
 # Run this after ANY local modification to data/review-texts/ files.
 # CI workflows handle their own pushes — this is for local/Claude sessions only.
+#
+# --check-only mode:
+#   Prints one line of KEY=VAL state and exits. No commits, no pushes.
+#   Does `git fetch origin main` with a 5s timeout so it's safe for session-start hooks.
+#   Exit code 0 always — the caller interprets the state line.
+#   Output: "state=<clean|behind|ahead|diverged|dirty|nogit|nofetch> behind=N ahead=M dirty=<yes|no>"
 
 set -euo pipefail
 
 REVIEW_TEXTS_DIR="$(cd "$(dirname "$0")/../data/review-texts" && pwd)"
 
+CHECK_ONLY=0
+for arg in "$@"; do
+  case "$arg" in
+    --check-only) CHECK_ONLY=1 ;;
+  esac
+done
+
 if [ ! -d "$REVIEW_TEXTS_DIR/.git" ]; then
+  if [ "$CHECK_ONLY" = "1" ]; then
+    echo "state=nogit behind=0 ahead=0 dirty=no"
+    exit 0
+  fi
   echo "ERROR: $REVIEW_TEXTS_DIR is not a git repo. Clone the private repo first:"
   echo "  git clone https://github.com/thomaspryor/broadway-review-texts.git data/review-texts"
   exit 1
 fi
 
 cd "$REVIEW_TEXTS_DIR"
+
+if [ "$CHECK_ONLY" = "1" ]; then
+  # Portable 5-second timeout (macOS has no `timeout` by default).
+  # Uses perl's alarm() which is available on every macOS + Linux box.
+  if ! perl -e 'alarm shift; exec @ARGV' 5 git fetch origin main -q 2>/dev/null; then
+    echo "state=nofetch behind=0 ahead=0 dirty=no"
+    exit 0
+  fi
+  BEHIND=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0)
+  AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+  if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
+    DIRTY=no
+  else
+    DIRTY=yes
+  fi
+  if [ "$BEHIND" = "0" ] && [ "$AHEAD" = "0" ] && [ "$DIRTY" = "no" ]; then
+    STATE=clean
+  elif [ "$BEHIND" != "0" ] && [ "$AHEAD" = "0" ] && [ "$DIRTY" = "no" ]; then
+    STATE=behind
+  elif [ "$BEHIND" = "0" ] && [ "$AHEAD" != "0" ] && [ "$DIRTY" = "no" ]; then
+    STATE=ahead
+  elif [ "$BEHIND" != "0" ] && [ "$AHEAD" != "0" ]; then
+    STATE=diverged
+  else
+    STATE=dirty
+  fi
+  echo "state=$STATE behind=$BEHIND ahead=$AHEAD dirty=$DIRTY"
+  exit 0
+fi
 
 # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
 # that was fetched/committed by other processes while local changes were pending.
