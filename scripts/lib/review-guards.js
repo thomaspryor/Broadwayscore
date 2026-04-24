@@ -1432,6 +1432,109 @@ function shouldRouteUnknownCriticToPending(review) {
   return !isVerifiedDiscoverySource(review.source);
 }
 
+/**
+ * Tracking / analytics / auth query params that MUST be stripped before
+ * comparing two URLs for duplicate-review dedup. These never identify an
+ * article — they identify a click, a mailing, or a redirect chain.
+ *
+ * Rocky Horror 2026-04-23: Cote Notices David Cote (no param) and BWW-RR-extracted
+ * David Finkle (?triedRedirect=true) pointed at the same Substack article but
+ * the dedup compared full URLs and saw two distinct keys. Both shipped live.
+ *
+ * Exact names match. Wildcard prefixes (utm_*, mc_*) via `startsWith`. Keep
+ * this list conservative: removing a legitimate article-ID param silently
+ * collapses two distinct reviews into one.
+ */
+const TRACKING_PARAM_NAMES = new Set([
+  'triedredirect',
+  'fbclid',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'msclkid',
+  'yclid',
+  'igshid',
+  'ref',
+  'ref_src',
+  'ref_url',
+  'refsrc',
+  'source',
+  'src',
+  '_hsenc',
+  '_hsmi',
+  '_openstat',
+  'trk',
+  'si',
+  's_cid',
+  'share',
+  'shared',
+  'sharedfrom',
+  // Substack / newsletter tracking
+  '_bhlid',
+  'publication_id',
+  'post_id',
+  // Branch / deep-link
+  '_branch_match_id',
+  '_branch_referrer',
+  // Facebook + CMS misc
+  'wt_zmc',
+  'xid',
+  // Google News referrer params (seen in WSJ/NYT indexing)
+  'searchresultposition',
+  'gaa_at',
+  'gaa_n',
+  'gaa_ts',
+  'gaa_sig',
+]);
+const TRACKING_PARAM_PREFIXES = ['utm_', 'mc_', 'pk_', 'hsa_', 'mtm_'];
+
+function _isTrackingParam(name) {
+  const n = (name || '').toLowerCase();
+  if (TRACKING_PARAM_NAMES.has(n)) return true;
+  return TRACKING_PARAM_PREFIXES.some(p => n.startsWith(p));
+}
+
+/**
+ * Canonicalize a URL for duplicate detection. Lowercases the hostname, strips
+ * the fragment, removes tracking-only query params, and strips the trailing
+ * slash. Preserves non-tracking query params because some outlets (older PHP
+ * CMS sites, WP with ?p= or ?article_id=) use them as article identifiers.
+ *
+ * Use this anywhere two review URLs are being compared for "same article":
+ *   - rebuild-all-reviews.js seenUrlsByOutlet / seenUrlsGlobal
+ *   - gather-reviews.js seenUrlsForOutlet
+ *   - multi-critic-serp.js
+ *   - llm-extractor.js mergeAggregatorReviews
+ *
+ * Contract: never throw. Falls back to a lowercased trimmed string on parse
+ * failure so pipeline doesn't halt on a malformed URL.
+ *
+ * @param {string|null|undefined} url
+ * @returns {string} canonical form; empty string if input is unusable
+ */
+function canonicalizeUrlForDedup(url) {
+  if (!url || typeof url !== 'string') return '';
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  try {
+    const u = new URL(trimmed);
+    u.hash = '';
+    u.hostname = u.hostname.toLowerCase();
+    // Drop tracking params in place. Collect keys first so deletion doesn't
+    // mutate the iterator.
+    const toDelete = [];
+    for (const key of u.searchParams.keys()) {
+      if (_isTrackingParam(key)) toDelete.push(key);
+    }
+    for (const key of toDelete) u.searchParams.delete(key);
+    let s = u.toString().toLowerCase();
+    s = s.replace(/\/$/, '');
+    return s;
+  } catch {
+    return trimmed.toLowerCase().replace(/#.*$/, '').replace(/\/$/, '');
+  }
+}
+
 module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
@@ -1464,7 +1567,10 @@ module.exports = {
   isVerifiedDiscoverySource,
   shouldRouteUnknownCriticToPending,
   hasHighConfidenceLlmScore,
+  canonicalizeUrlForDedup,
   // Exported for test assertions
   MAX_RETRIES_WRONG_CONTENT,
   COOLDOWN_MS,
+  TRACKING_PARAM_NAMES,
+  TRACKING_PARAM_PREFIXES,
 };
