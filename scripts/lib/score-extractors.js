@@ -775,22 +775,39 @@ function extractUKStarRating(html, text) {
   }
 
   // 6. Text patterns: "X/5", "X out of 5", "X stars"
+  //
+  // Anchored + URL-context-filtered. The bare "X/5" pattern is ambiguous:
+  // it matches CDN URL path fragments like "/2026/01/23/12/50/Render-Final.jpg"
+  // where "2/5" or "5/5" appears between date components and image dimensions
+  // (proven FP on arcadia-west-end-2026/standard--nick-curtis.json, 2026-04-24).
+  // Two guards:
+  //   (a) Reject matches whose ±30 char context contains URL signals (http,
+  //       common asset extensions, CDN hostnames, or a date-path pattern).
+  //   (b) Anchor to the first or last 15% of text — critics publish the
+  //       rating at the verdict line, not mid-body. Same convention as the
+  //       KNOWN_STAR_OUTLETS fallthrough guard in extractScore().
   const textPatterns = [
-    /(\d(?:\.\d)?)\s*\/\s*5/,
-    /(\d(?:\.\d)?)\s*out\s*of\s*5/i,
-    /(\d(?:\.\d)?)\s*stars?\b/i
+    { re: /(\d(?:\.\d)?)\s*\/\s*5\b/g,            needsAnchor: true  },
+    { re: /(\d(?:\.\d)?)\s*out\s*of\s*5\b/gi,    needsAnchor: false },
+    { re: /(\d(?:\.\d)?)\s*stars?\b/gi,           needsAnchor: false },
   ];
-  for (const pattern of textPatterns) {
-    const match = text.match(pattern);
-    if (match) {
+  const len = text.length;
+  for (const { re, needsAnchor } of textPatterns) {
+    const matches = [...text.matchAll(re)];
+    for (const match of matches) {
       const rating = parseFloat(match[1]);
-      if (rating >= 1 && rating <= 5) {
-        return {
-          originalScore: `${rating}/5 stars`,
-          normalizedScore: starsToNumeric(rating, 5),
-          source: 'text-pattern'
-        };
-      }
+      if (!(rating >= 1 && rating <= 5)) continue;
+      const pos = match.index;
+      const ctx = text.substring(Math.max(0, pos - 30), Math.min(len, pos + match[0].length + 30));
+      // URL / asset-path filter
+      if (/https?:\/\/|\.(jpg|jpeg|png|webp|gif|svg)\b|\bcdn\b|\bstatic\b|\bassets\b|\/\d{4}\/\d{2}\/\d{2}\/|\/\d{2,4}x\d{2,4}\b/i.test(ctx)) continue;
+      // Position anchor for the bare "X/5" form
+      if (needsAnchor && !(pos <= len * 0.15 || pos >= len * 0.85)) continue;
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'text-pattern'
+      };
     }
   }
 
