@@ -299,7 +299,9 @@ console.log('COMPREHENSIVE QUALITY ASSESSMENT:');
 console.log('─'.repeat(70));
 
 test('Valid content with show title gets "valid" quality', () => {
-  const result = assessTextQuality(VALID_SAMPLES[0].text, 'Hamilton');
+  // assessTextQuality signature is (text, showId, showTitle). Pass showTitle
+  // correctly — don't collapse showId/showTitle into one positional arg.
+  const result = assessTextQuality(VALID_SAMPLES[0].text, 'hamilton-2015', VALID_SAMPLES[0].showTitle);
   assertEqual(result.quality, 'valid', `Quality should be valid, got: ${result.quality}`);
 });
 
