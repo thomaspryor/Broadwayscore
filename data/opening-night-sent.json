@@ -253,7 +253,7 @@
       "draftStatus": "draft",
       "sentAt": null,
       "recipientCount": null,
-      "lastReconciledAt": "2026-04-24T12:30:13.872Z"
+      "lastReconciledAt": "2026-04-24T11:30:38.209Z"
     },
     "beaches-2026": {
       "draftCreatedAt": "2026-04-23T16:55:22.415Z",
@@ -266,17 +266,38 @@
       "sentAt": null,
       "recipientCount": null,
       "broadcastKey": "broadway:beaches-2026",
-      "lastReconciledAt": "2026-04-24T12:30:14.018Z"
+      "lastReconciledAt": "2026-04-24T11:30:38.317Z"
     },
     "overdue-alert:the-rocky-horror-show-2026": {
-      "sentAt": "2026-04-24T11:50:07.538Z",
-      "draftStatus": "draft",
-      "_migratedAt": "2026-04-24T12:30:13.633Z"
+      "sentAt": "2026-04-24T11:50:07.538Z"
     },
     "the-rocky-horror-show-2026": {
-      "lastOverdueAlertAt": "2026-04-24T11:50:07.575Z",
+      "draftCreatedAt": "2026-04-24T12:51:29.908Z",
+      "draftId": "cdf3c0cc-83e2-4567-bb8f-ad0f5185e159",
+      "draftUrl": "https://resend.com/broadcasts/cdf3c0cc-83e2-4567-bb8f-ad0f5185e159",
+      "method": "resend-draft",
+      "reviewCount": 25,
+      "completed": true,
       "draftStatus": "draft",
-      "_migratedAt": "2026-04-24T12:30:13.633Z"
+      "sentAt": null,
+      "recipientCount": null,
+      "broadcastKey": "broadway:the-rocky-horror-show-2026"
+    },
+    "preview:broadway:the-rocky-horror-show-2026:2026-04-24": {
+      "sentAt": "2026-04-24T12:51:27.587Z",
+      "previewTo": "thomas.pryor@gmail.com",
+      "reviewCount": 25
+    },
+    "broadway:the-rocky-horror-show-2026": {
+      "draftCreatedAt": "2026-04-24T12:51:29.908Z",
+      "draftId": "cdf3c0cc-83e2-4567-bb8f-ad0f5185e159",
+      "draftUrl": "https://resend.com/broadcasts/cdf3c0cc-83e2-4567-bb8f-ad0f5185e159",
+      "method": "resend-draft",
+      "reviewCount": 25,
+      "completed": true,
+      "draftStatus": "draft",
+      "sentAt": null,
+      "recipientCount": null
     }
   }
 }
