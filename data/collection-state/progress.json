@@ -160,7 +160,8 @@
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -176,7 +177,8 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json"
+      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
@@ -270,6 +272,17 @@
       "t": "2026-04-24T10:44:05.837Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-24T10:52:56.869Z",
+      "event": "bb-session",
+      "session": "172549e3",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-24T10:52:57.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
