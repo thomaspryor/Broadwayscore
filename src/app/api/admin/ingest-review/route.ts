@@ -1,17 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/admin-auth';
+import { detectFromReview } from '@/lib/admin-ingest-detect';
 import { createRequire } from 'module';
-import fs from 'fs';
-import path from 'path';
 
 // Import CommonJS helpers from scripts/lib/ — these are the same ones the CLI
 // ingest-manual-review.js uses, so the on-disk semantics (protection fields,
 // filename normalization) are identical. See memory/feedback_per_file_protected_fields_lock.md.
-//
-// NOTE: resolveCanonicalOutletId is NOT imported here — its require()s
-// outlet-registry.json via __dirname, which breaks in Next.js server bundles
-// (path resolves under .next/server/). We inline the URL→outletId resolution
-// below, reading the registry from process.cwd() which DOES work on Vercel.
 const cjsRequire = createRequire(import.meta.url);
 const { generateReviewFilename, normalizeCritic } = cjsRequire('../../../../../scripts/lib/review-normalization') as {
   generateReviewFilename: (outlet: string, critic: string) => string;
@@ -27,73 +21,6 @@ const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manua
   }) => Record<string, unknown>;
 };
 
-// ─── Inline outlet-from-URL resolver ─────────────────────────────────
-// Mirrors scripts/lib/outlet-canonicalize.js semantics but reads the registry
-// from process.cwd() (Vercel-friendly) instead of __dirname.
-
-interface OutletRegistry {
-  outlets: Record<string, {
-    displayName: string;
-    domain?: string;
-    domainAliases?: string[];
-    aliases?: string[];
-  }>;
-}
-
-let _cachedRegistry: OutletRegistry | null = null;
-let _cachedDomainMap: Record<string, string> | null = null;
-
-function loadOutletRegistry(): OutletRegistry {
-  if (_cachedRegistry) return _cachedRegistry;
-  const registryPath = path.join(process.cwd(), 'data', 'outlet-registry.json');
-  const data = fs.readFileSync(registryPath, 'utf-8');
-  _cachedRegistry = JSON.parse(data) as OutletRegistry;
-  return _cachedRegistry;
-}
-
-function buildOutletDomainMap(): Record<string, string> {
-  if (_cachedDomainMap) return _cachedDomainMap;
-  const registry = loadOutletRegistry();
-  const collect: Record<string, Set<string>> = {};
-  for (const [id, o] of Object.entries(registry.outlets || {})) {
-    const domains: string[] = [];
-    if (o.domain) domains.push(String(o.domain).toLowerCase());
-    if (Array.isArray(o.domainAliases)) {
-      o.domainAliases.forEach((d) => domains.push(String(d).toLowerCase()));
-    }
-    for (const d of domains) {
-      (collect[d] ||= new Set()).add(id);
-    }
-  }
-  // Only include unambiguous domains (single outletId per domain)
-  const map: Record<string, string> = {};
-  for (const [domain, ids] of Object.entries(collect)) {
-    if (ids.size === 1) {
-      map[domain] = Array.from(ids)[0];
-    }
-  }
-  _cachedDomainMap = map;
-  return map;
-}
-
-function resolveOutletFromUrl(url: string): { outletId: string; displayName: string } | null {
-  let hostname: string;
-  try {
-    hostname = new URL(url).hostname.replace(/^www\./i, '').toLowerCase();
-  } catch {
-    return null;
-  }
-  const domainMap = buildOutletDomainMap();
-  const outletId = domainMap[hostname];
-  if (!outletId) return null;
-  const registry = loadOutletRegistry();
-  const entry = registry.outlets[outletId];
-  return {
-    outletId,
-    displayName: entry?.displayName || outletId,
-  };
-}
-
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
@@ -104,12 +31,13 @@ const PUBLIC_REPO_NAME = 'Broadwayscore';
 const REBUILD_WORKFLOW = 'rebuild-fast.yml';
 
 interface IngestRequest {
-  showId: string;
   url: string;
   fullText: string;
-  criticName: string;
-  humanReviewScore?: number | null;
+  // Everything below is optional — auto-detected from URL + fullText if missing.
+  showId?: string | null;
+  criticName?: string | null;
   publishDate?: string | null;
+  humanReviewScore?: number | null;
   originalScore?: string | null;
   forceClearStale?: boolean;
 }
@@ -118,12 +46,16 @@ interface IngestResponse {
   success: boolean;
   path?: string;
   outletId?: string;
+  criticName?: string;
+  showId?: string;
+  publishDate?: string | null;
   filename?: string;
   commitSha?: string;
   workflowRunUrl?: string;
   collisionDetail?: unknown;
   error?: string;
   warning?: string;
+  detectionWarnings?: string[];
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<IngestResponse>> {
@@ -146,11 +78,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { showId, url, fullText, criticName, humanReviewScore, publishDate, originalScore, forceClearStale } = body;
+  const { url, fullText, humanReviewScore, originalScore, forceClearStale } = body;
 
-  if (!showId || typeof showId !== 'string') {
-    return NextResponse.json({ success: false, error: 'showId is required' }, { status: 400 });
-  }
+  // Only URL and fullText are strictly required on input. Everything else is
+  // auto-detected (with caller overrides winning).
   if (!url || typeof url !== 'string') {
     return NextResponse.json({ success: false, error: 'url is required' }, { status: 400 });
   }
@@ -165,9 +96,6 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       { status: 400 },
     );
   }
-  if (!criticName || typeof criticName !== 'string' || criticName.trim().length === 0) {
-    return NextResponse.json({ success: false, error: 'criticName is required' }, { status: 400 });
-  }
   if (
     humanReviewScore !== null &&
     humanReviewScore !== undefined &&
@@ -178,6 +106,47 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       { status: 400 },
     );
   }
+
+  // Run auto-detection. Caller-provided values override detection.
+  const detected = detectFromReview({ url, fullText });
+
+  const outletId = detected.outletId;
+  if (!outletId) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: `Unregistered outlet domain for ${url}. Add it to data/outlet-registry.json before ingesting.`,
+        detectionWarnings: detected.warnings,
+      },
+      { status: 400 },
+    );
+  }
+
+  const criticName = (body.criticName?.trim()) || detected.criticName;
+  if (!criticName) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Could not auto-detect critic from byline. Pass criticName explicitly.',
+        detectionWarnings: detected.warnings,
+      },
+      { status: 400 },
+    );
+  }
+
+  const showId = (body.showId?.trim()) || detected.showId;
+  if (!showId) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Could not auto-detect show from text. Pass showId explicitly.',
+        detectionWarnings: detected.warnings,
+      },
+      { status: 400 },
+    );
+  }
+
+  const publishDate = body.publishDate || detected.publishDate || null;
   if (publishDate && !/^\d{4}-\d{2}-\d{2}$/.test(publishDate)) {
     return NextResponse.json(
       { success: false, error: 'publishDate must be YYYY-MM-DD' },
@@ -185,31 +154,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  // Resolve outletId from URL domain via the local outlet-registry.json.
-  let outletResolution;
-  try {
-    outletResolution = resolveOutletFromUrl(url);
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    return NextResponse.json(
-      { success: false, error: `Outlet resolution failed: ${msg}` },
-      { status: 500 },
-    );
-  }
-  if (!outletResolution) {
-    const hostname = (() => {
-      try { return new URL(url).hostname; } catch { return url; }
-    })();
-    return NextResponse.json(
-      {
-        success: false,
-        error: `Unregistered outlet domain "${hostname}". Add it to data/outlet-registry.json (public repo) before ingesting reviews from this URL.`,
-      },
-      { status: 400 },
-    );
-  }
-  const { outletId } = outletResolution;
-  const warning: string | undefined = undefined;
+  const outletDisplayName = detected.outletDisplayName || outletId;
 
   const filename = generateReviewFilename(outletId, criticName);
   const repoPath = `${showId}/${filename}`;
@@ -273,7 +218,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   const coreFields = {
     showId,
     outletId,
-    outlet: outletResolution.displayName,
+    outlet: outletDisplayName,
     criticName: criticName.trim(),
     url,
     source: 'admin-ingest-ui',
@@ -284,7 +229,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     fullText,
     originalScore: originalScore || null,
     originalScoreSource: originalScore ? 'manual-admin-ui' : null,
-    publishDate: publishDate || null,
+    publishDate,
   });
 
   const merged: Record<string, unknown> = {
@@ -314,8 +259,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  // Dispatch rebuild-fast.yml in the PUBLIC repo. The PAT has write scope on both
-  // repos (REVIEW_TEXTS_TOKEN is used interchangeably for both in CI).
+  // Dispatch rebuild-fast.yml in the PUBLIC repo.
   const dispatchResult = await githubDispatchWorkflow(
     token,
     PUBLIC_REPO_OWNER,
@@ -332,14 +276,16 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     success: true,
     path: `data/review-texts/${repoPath}`,
     outletId,
+    criticName: criticName.trim(),
+    showId,
+    publishDate,
     filename,
     commitSha: putResult.commitSha,
     workflowRunUrl,
-    warning: warning
-      ? warning
-      : dispatchResult.ok
-        ? undefined
-        : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`,
+    warning: dispatchResult.ok
+      ? undefined
+      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`,
+    detectionWarnings: detected.warnings.length > 0 ? detected.warnings : undefined,
   });
 }
 
