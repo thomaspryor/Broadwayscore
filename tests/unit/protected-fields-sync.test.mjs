@@ -19,6 +19,7 @@ const REQUIRED_OVERRIDES = [
   'allowLateDate',
   'allowCrossMarket',
   'allowTourSignal',
+  'allowTourSignalReason',
   'allowFilmSignal',
   'routedFromShowId',
   'wrongProductionManualClear',
@@ -27,6 +28,14 @@ const REQUIRED_OVERRIDES = [
   'wrongProductionOverride',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
+  'humanReviewedTour',
+  'humanReviewScoreProvisional',
+  'humanReviewScoreClearedForLlm',
+  'isTourReview',
+  'isLikelyTourReview',
+  'dtliThumb',
+  'bwwThumb',
 ];
 
 test('review-write-guard.js PROTECTED_FIELDS contains every opening-night override', () => {

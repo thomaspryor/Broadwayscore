@@ -48,8 +48,18 @@ const MANUAL_FIELDS = [
   'allowLateDate',
   'allowCrossMarket',
   'allowTourSignal',
+  'allowTourSignalReason',
   'allowFilmSignal',
   'routedFromShowId',
+  // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
+  'humanReviewedTour',
+  'humanReviewScoreProvisional',
+  'humanReviewScoreClearedForLlm',
+  'isTourReview',
+  'isLikelyTourReview',
+  // Aggregator thumb signals used by thumb-validated-LLM scoring path
+  'dtliThumb',
+  'bwwThumb',
   // Per-file protection array lock
   'protectedFields',
   // (b) Durable SERP retry state — must survive rebase

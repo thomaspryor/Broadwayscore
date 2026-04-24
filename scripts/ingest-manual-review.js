@@ -57,6 +57,7 @@ const path = require('path');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
+const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -77,6 +78,7 @@ const textFile = getArg('text-file');
 const publishDate = getArg('publish-date');
 const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
+const forceClearStale = hasFlag('force-clear-stale-flag');
 
 // Validate required args
 if (!showId || !outletArg || !criticName) {
@@ -96,6 +98,8 @@ if (!showId || !outletArg || !criticName) {
   console.error('  --publish-date=D   Publish date (e.g., 2026-04-06)');
   console.error('  --dry-run          Preview without writing');
   console.error('  --no-rebuild       Skip rebuild/deploy trigger');
+  console.error('  --force-clear-stale-flag   Ingest even if an existing file has wrongProduction/');
+  console.error('                              wrongShow=true or a publishDate >365 days off');
   process.exit(1);
 }
 
@@ -172,93 +176,40 @@ if (fullText) console.log(`║  Text: ${fullText.length} chars`);
 if (publishDate) console.log(`║  Published: ${publishDate}`);
 console.log(`╚══════════════════════════════════════════════════╝\n`);
 
-// Build fields
-const fields = {};
-
-if (fullText) {
-  fields.fullText = fullText;
-  fields.textFetchedAt = new Date().toISOString();
-  fields.fetchMethod = 'manual-entry';
-  // Lock content tier so rebuild doesn't reclassify
-  fields.manualContentTier = 'complete';
+// Pre-write collision check (postmortem #9). A 2015 Chris Jones Chicago Tribune
+// file with wrongProduction:true silently "merged" a 2026 URL during the Beaches
+// ingest — the flag was preserved and the new review dropped. Catch the case
+// before createOrMergeReviewFile is called and show the operator what's there.
+const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+const collision = detectIngestCollision({
+  showDir,
+  outletId,
+  criticName,
+  url,
+  publishDate,
+  forceClearStale,
+});
+if (!collision.ok) {
+  console.error(`\n❌ Refusing to ingest — collision with ${collision.file}`);
+  console.error(`   reason: ${collision.reason}`);
+  console.error(`   detail: ${JSON.stringify(collision.detail, null, 2)}`);
+  console.error(`\nEither fix the existing file first (delete / clear the flag / rename)`);
+  console.error(`or re-run with --force-clear-stale-flag to proceed anyway.`);
+  process.exit(1);
 }
 
-if (humanScore) {
-  // humanReviewScore is the ONLY score field rebuild respects
-  fields.humanReviewScore = humanScore;
-}
-
-// Full protection field set — missing any one means a different guard re-flags the review.
-// These survive rebuild scoring, content reclassification, wrong-production flagging,
-// wrong-show classification, pre-opening date guards, tour/film-signal guards, and
-// cross-market re-routing. The Beaches 2026-04-22 opening silently dropped 4 reviews
-// because this block only set 3 of the needed fields.
-//
-// Why each one:
-//   wrongProduction=false + wrongProductionManualClear=true    — bypass year/date-drift flagger
-//   wrongShow=false + wrongShowManualClear=true                — bypass cross-show heuristic
-//   wrongProductionOverride=true                               — older guard path still reads this
-//   wrongArticleManualClear=true                               — bypass "not a review" classifier
-//   humanReviewedWrongProduction=false                         — "human verified IS correct production"
-//   humanReviewedWrongArticle=false                            — "human verified IS a review"
-//   allowEarlyDate=true + allowLateDate=true + allowCrossMarket=true  — bypass temporal/market gates
-//   allowTourSignal=true + allowFilmSignal=true                — bypass keyword-based auto-exclusions
-//   contentVerification.{wrongProduction,wrongArticle}=false   — nested ensemble-scorer state
-fields.wrongProduction = false;
-fields.wrongProductionManualClear = true;
-fields.wrongProductionOverride = true;
-fields.wrongShow = false;
-fields.wrongShowManualClear = true;
-fields.wrongArticleManualClear = true;
-fields.humanReviewedWrongProduction = false;
-fields.humanReviewedWrongArticle = false;
-fields.allowEarlyDate = true;
-fields.allowLateDate = true;
-fields.allowCrossMarket = true;
-fields.allowTourSignal = true;
-fields.allowFilmSignal = true;
-fields.contentVerification = {
-  wrongProduction: false,
-  wrongArticle: false,
-};
-
-// Per-file protection lock — unions with global PROTECTED_FIELDS in
-// review-write-guard.js so these exact fields can't be silently dropped
-// on rebase even if one of them is later removed from the global list.
-// See memory/feedback_per_file_protected_fields_lock.md (Beaches 2026-04-22).
-fields.protectedFields = [
-  'humanReviewScore',
-  'manualContentTier',
-  'wrongProduction',
-  'wrongProductionManualClear',
-  'wrongProductionOverride',
-  'wrongShow',
-  'wrongShowManualClear',
-  'wrongArticleManualClear',
-  'humanReviewedWrongProduction',
-  'humanReviewedWrongArticle',
-  'allowEarlyDate',
-  'allowLateDate',
-  'allowCrossMarket',
-  'allowTourSignal',
-  'allowFilmSignal',
-  'contentVerification',
-  'fullText',
-  'textFetchedAt',
-  'originalScore',
-  'originalScoreSource',
-  'originalScoreNormalized',
-];
-
-if (originalScore) {
-  fields.originalScore = originalScore;
-  fields.originalScoreSource = originalScoreSource;
-  fields.originalScoreNormalized = humanScore;
-}
-
-if (publishDate) {
-  fields.publishDate = publishDate;
-}
+// Build fields via the shared library (scripts/lib/manual-review-fields.js).
+// See that module for the full rationale on each protection field. Keeping
+// the logic there lets tests pin the 8-field invariant (see
+// tests/unit/ingest-manual-review-fields.test.mjs) — if a future edit drops
+// one, CI catches it before another opening night.
+const fields = buildManualReviewFields({
+  humanScore,
+  fullText,
+  originalScore,
+  originalScoreSource,
+  publishDate,
+});
 
 // Create the review file
 const input = {
