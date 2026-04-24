@@ -315,17 +315,15 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-reviews'
 
-      - name: Trigger deploy (only when data changed)
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          # Only deploy when rebuild produced actual changes. The Dog Day Afternoon stale-data
-          # incident (2026-03-30) was caused by dedup logic blocking deploys — the fix is to
-          # always deploy when there ARE changes, not to deploy when there are none.
-          # Deploying on no-change rebuilds caused 190+ daily deploys during cascade events.
-          echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+      # Deploy dispatch removed 2026-04-24: vercel-deploy.yml now listens for
+      # "Rebuild Reviews Data" completion via workflow_run (added Beaches 2026-04-22
+      # postmortem #9). Keeping both paths double-fires the concurrency group.
+      # Historical note: the Dog Day Afternoon stale-data incident (2026-03-30)
+      # was caused by dedup logic blocking deploys — the fix was to always deploy
+      # when data changes. workflow_run now fires on every successful rebuild
+      # (including no-change), slightly more aggressive but acceptable — previous
+      # 190+ daily cascade deploys were driven by explicit redispatch loops that
+      # no longer exist.
 
       - name: Auto-trigger LLM scoring if needed
         id: scoring-trigger
