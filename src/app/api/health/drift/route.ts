@@ -205,6 +205,9 @@ function renderHtml(body: {
   const reviewsWarning = body.reviewsJsonAvailable
     ? ''
     : `<p style="color:#d97706"><strong>Note:</strong> data/reviews.json not readable from this deploy — aggregate column shows 0 for all shows.</p>`;
+  const stageBanner = `<div style="background:#1e3a5f;border-left:3px solid #60a5fa;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#dbeafe">
+    <strong>Stages 2-4 only.</strong> Stage 1 (scoreable review-texts, private repo) is not visible here. A <code>drift=0</code> row could still have a review-texts gap. Full drift check runs every 30 min via <code>check-opening-night-drift.yml</code> cron and alerts on Discord.
+  </div>`;
   return `<!doctype html>
 <html>
 <head>
@@ -231,6 +234,7 @@ function renderHtml(body: {
 <body>
 <h1>Drift — Opening Window (±${body.window}d)</h1>
 <div class="meta">Generated ${escapeHtml(body.generated)} · threshold=${body.threshold}</div>
+${stageBanner}
 ${reviewsWarning}
 <div class="summary">
   <span class="pill">Total: ${body.summary.total}</span>
