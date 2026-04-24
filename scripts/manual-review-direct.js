@@ -48,9 +48,11 @@ if (!showId || !outletArg || !criticName) {
 }
 
 // --- Resolve outlet ---
-const { normalizeOutlet, getOutletDisplayName } = require('./lib/review-normalization');
-const outletId = normalizeOutlet(outletArg) || outletArg.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-const outletName = getOutletDisplayName(outletId) || outletArg;
+const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
+const _resolved = resolveCanonicalOutletId({ outletArg, url });
+if (_resolved.warning) console.warn(`⚠️  ${_resolved.warning}`);
+const outletId = _resolved.outletId;
+const outletName = _resolved.displayName;
 
 // --- Get outlet tier for correct composite weighting ---
 const outletRegistry = require('../data/outlet-registry.json');

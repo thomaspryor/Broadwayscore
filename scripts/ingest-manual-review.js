@@ -56,7 +56,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
-const { normalizeOutlet, getOutletDisplayName } = require('./lib/review-normalization');
+const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -108,9 +108,15 @@ if (!show) {
   process.exit(1);
 }
 
-// Resolve outlet
-const outletId = normalizeOutlet(outletArg) || outletArg.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-const outletName = getOutletDisplayName(outletId) || outletArg;
+// Resolve outlet — cross-checks operator input against URL domain via outlet-registry.
+// Prevents class-C domain-outlet drift (e.g., 2026-04-23 Rocky Horror ingest wrote
+// davidcote-substack for a davidcote1.substack.com URL that maps canonically to cote-notices).
+const resolved = resolveCanonicalOutletId({ outletArg, url });
+if (resolved.warning) {
+  console.warn(`⚠️  ${resolved.warning}`);
+}
+const outletId = resolved.outletId;
+const outletName = resolved.displayName;
 
 // Parse score
 let humanScore = null;
