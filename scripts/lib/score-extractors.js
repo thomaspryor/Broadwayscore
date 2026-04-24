@@ -396,31 +396,59 @@ function extractNYSRScore(html, text) {
     }
   }
 
-  // Fallback: first star occurrence in text/HTML
-  const starMatch = text.match(/([★☆]{1,5})/) || html.match(/([★☆]{1,5})/);
-  if (starMatch) {
-    const stars = starMatch[1];
-    const filled = (stars.match(/★/g) || []).length;
-    const total = stars.length;
-    if (total >= 1 && total <= 5) {
-      return {
-        originalScore: `${filled}/${total} stars`,
-        normalizedScore: starsToNumeric(filled, total),
-        source: 'unicode-stars'
-      };
+  // Fallback: anchored star occurrence in TEXT ONLY.
+  //
+  // The primary text-xl extractor (above) is the reliable path. This fallback
+  // handles layouts where the text-xl class isn't present but the stars still
+  // appear at the start/end of the article text (critics' verdict convention).
+  //
+  // Do NOT match against html — NYSR multi-critic show pages embed other
+  // critics' stars in <meta property="og:description">, sidebar cross-links,
+  // and "more from this critic" blocks. The first star sequence in html is
+  // often a different critic's rating (P1-2 from 2026-04-24 ship-check).
+  //
+  // Do NOT match stars mid-body — critics occasionally quote other reviewers'
+  // ratings ("The Times gave it ★★★★, but I disagree…"). Anchor to the first
+  // or last 15% of text, same convention as KNOWN_STAR_OUTLETS fallthrough.
+  const textStarMatches = [...text.matchAll(/([★☆]{1,5})/g)];
+  if (textStarMatches.length > 0) {
+    const len = text.length;
+    const anchored = textStarMatches.find(m => {
+      const pos = m.index;
+      return pos <= len * 0.15 || pos >= len * 0.85;
+    });
+    if (anchored) {
+      const stars = anchored[1];
+      const filled = (stars.match(/★/g) || []).length;
+      const total = stars.length;
+      if (total >= 1 && total <= 5) {
+        return {
+          originalScore: `${filled}/${total} stars`,
+          normalizedScore: starsToNumeric(filled, total),
+          source: 'unicode-stars'
+        };
+      }
     }
   }
 
-  // Alternative format: "3/5" or "4 stars"
-  const numericMatch = text.match(/(\d)\s*(?:\/\s*5|stars?(?:\s*out\s*of\s*5)?)/i);
-  if (numericMatch) {
-    const rating = parseInt(numericMatch[1]);
-    if (rating >= 1 && rating <= 5) {
-      return {
-        originalScore: `${rating}/5 stars`,
-        normalizedScore: starsToNumeric(rating, 5),
-        source: 'numeric-stars'
-      };
+  // Alternative format: "3/5" or "4 stars" — anchored to start/end for the
+  // same reason: mid-body "3/5" sequences are ambiguous (dates, pull-quotes).
+  const numericMatches = [...text.matchAll(/(\d)\s*(?:\/\s*5|stars?(?:\s*out\s*of\s*5)?)/gi)];
+  if (numericMatches.length > 0) {
+    const len = text.length;
+    const anchored = numericMatches.find(m => {
+      const pos = m.index;
+      return pos <= len * 0.15 || pos >= len * 0.85;
+    });
+    if (anchored) {
+      const rating = parseInt(anchored[1]);
+      if (rating >= 1 && rating <= 5) {
+        return {
+          originalScore: `${rating}/5 stars`,
+          normalizedScore: starsToNumeric(rating, 5),
+          source: 'numeric-stars'
+        };
+      }
     }
   }
 

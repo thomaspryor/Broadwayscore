@@ -70,43 +70,60 @@ const CALLED_OUT_OUTLETS = new Set([
 ]);
 
 // Extractor sources trusted for fullText-only backfill. These either anchor
-// to a unicode glyph, pull from a structured image alt-attribute, or parse
-// an unambiguous textual format. Excluded: 'text-pattern' — too liberal; it
-// false-positives on numeric sequences inside image URL paths / date strings
-// (proven on arcadia-west-end-2026/standard--nick-curtis.json where "2/5"
-// matched a path fragment "/2026/01/23/12/50/Render" in CDN metadata).
+// to a unicode glyph, pull from a structured image alt-attribute or CSS
+// class count, or parse an unambiguous textual format.
+//
+// Excluded: 'text-pattern' — too liberal; it false-positives on numeric
+// sequences inside image URL paths / date strings (proven on
+// arcadia-west-end-2026/standard--nick-curtis.json where "2/5" matched a
+// path fragment "/2026/01/23/12/50/Render" in CDN metadata).
+//
+// NOT listed (intentional): 'lbo-css-stars', 'show-score-stars',
+// 'theatre-reviews-star-rating', 'westendtheatre-star-rating',
+// 'stagedoor-star-rating', 'thestage-roundup-star-rating' — these are
+// AGGREGATOR_SCORE_SOURCES (scripts/lib/review-normalization.js:36). They
+// route to aggregatorStars, not originalScore; the backfill predicate's
+// aggregator-supersede guard handles them separately.
+//
+// All entries below verified against actual `source:` emissions in
+// scripts/lib/score-extractors.js (ship-check 2026-04-24 P1-3 audit).
+// Removed vs prior version: 'timeout-star-widget', 'meta-itemprop',
+// 'telegraph-svg' — never emitted by any extractor. Added: 'css-stars'
+// (extractNYPostScore — structured DOM element count, safe).
 const ANCHORED_EXTRACTOR_SOURCES = new Set([
+  // Structured: CSS/DOM counts, JSON-LD, image alt attrs
+  'css-stars',              // NYPost rating__star--filled / --half
+  'json-ld',                // schema.org review ratings
+  'star-class',             // class="N-star" etc
+  'fivestar-widget',
+  'bww-star-image',
+  'theatre-weekly-star-image',
+  'afridiziak-star-image',
+  'dailymail-rating-img',
+  'dailymail-css-stars',
+  'stage-star-svg',
+  'wos-star-images',
+  'telegraph-svg-stars',
+  'timeout-svg-stars',
+  'radiotimes-page-json',
+  'radiotimes-svg-stars',
+  'omc-alt-text',
+  'omc-star-rating',
+  // Unicode glyphs (anchored; NYSR fallback position-gated 2026-04-24)
   'unicode-stars',
   'unicode-stars-fallthrough',
   'numeric-stars',
-  'omc-alt-text',
-  'omc-star-rating',
   'word-stars',
-  'letter-grade',
   'atd-emoji-stars',
-  'afridiziak-star-image',
-  'timeout-star-widget',
-  'timeout-svg-stars',
-  'star-class',
-  'json-ld',
-  'meta-itemprop',
-  'guardian-api',
+  // Canonical parsers
+  'letter-grade',
+  'reviewshub-percentage',
+  // Legacy/recovery scripts (legit)
+  'guardian-api',           // recover-explicit-ratings.js:389
   'guardian-json-ld',
   'guardian-svg-stars',
-  'wos-star-images',
-  'stage-star-svg',
-  'telegraph-svg',
-  'telegraph-svg-stars',
-  'dailymail-rating-img',
-  'dailymail-css-stars',
-  'bww-star-image',
-  'theatre-weekly-star-image',
-  'radiotimes-page-json',
-  'radiotimes-svg-stars',
-  'fivestar-widget',
-  'reviewshub-percentage',
-  'explicit-rating',
-  'original-star-rating',
+  'explicit-rating',        // fix-p0-score-corruption.js:104
+  'original-star-rating',   // diagnostic-p0-score-audit.js:48
 ]);
 
 function outletHasReliableExtractor(outletId) {
