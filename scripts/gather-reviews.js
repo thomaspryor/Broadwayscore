@@ -1849,7 +1849,7 @@ async function searchBWWRoundup(show, year, options = {}) {
       if (homepageResult.found && homepageResult.html) {
         // bww-homepage-scan.findBWWRoundupLinkOnHomepage already runs the slug validator
         // internally via validateBWWRoundupUrlMatchesShow, so no need to re-check here.
-        const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title);
+        const roundupUrl = findBWWRoundupLinkOnHomepage(homepageResult.html, show.title, { logger: console });
         if (roundupUrl) {
           console.log(`    ✓ Found roundup link on BWW homepage: ${roundupUrl}`);
           const result = await searchAggregator('BWW', roundupUrl);

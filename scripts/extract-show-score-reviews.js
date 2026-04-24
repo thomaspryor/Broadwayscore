@@ -59,7 +59,11 @@ function extractShowData(html, showId, sourceUrl) {
   const title = $('title').text() || '';
 
   if (!title.includes('Show Score') || title.includes('NYC Theatre Reviews and Tickets')) {
-    console.log(`  Warning: ${showId} - appears to be wrong page (title: ${title.slice(0, 60)}...)`);
+    // Louder than console.log so misconfigured slugs in data/show-score-urls.json
+    // are visible in CI output. Common case: URL silently redirects to the generic
+    // /shows/all listing page (title "Show Score | NYC Theatre Reviews and Tickets").
+    // scripts/audit-show-score-urls.js will flag these on cron so the URL gets fixed.
+    console.warn(`  ⚠️  SS-REDIRECT ${showId} — page title "${title.slice(0, 80)}" suggests the stored URL redirected to the generic listing. Fix data/show-score-urls.json.`);
     return null;
   }
 

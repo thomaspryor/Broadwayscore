@@ -14,21 +14,30 @@
 
 const { validateBWWRoundupUrlMatchesShow } = require('./bww-roundup-validator');
 
+// Silent logger for callers that don't want diagnostic output in stdout. Default for
+// findBWWRoundupLinkOnHomepage — gather-reviews.js passes `console` when it wants the
+// opening-night diagnostic line to land in workflow logs.
+const NOOP_LOGGER = { log: () => {} };
+
 /**
  * Extract every Review-Roundup anchor on a BWW homepage-style HTML payload.
  * Handles both absolute (https://...) and protocol-relative (//...) hrefs,
  * single- or double-quoted attributes, and decodes HTML-escaped ampersands.
+ *
+ * Also accepts lazy-load `data-href` / `data-url` attributes (no real callers today,
+ * but P2 card noted: if BWW switches to lazy-loaded teaser cards, href-only detection
+ * would silently return zero anchors without any error).
  */
 function extractRoundupAnchors(html) {
   if (!html || typeof html !== 'string') return [];
   const found = new Set();
   const patterns = [
     // Absolute URLs: https://www.broadwayworld.com/[london/]article/Review-Roundup-...
-    /href=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
     // Protocol-relative: //www.broadwayworld.com/article/Review-Roundup-...
-    /href=["'](\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
     // Root-relative: /article/Review-Roundup-... or /london/article/Review-Roundup-...
-    /href=["'](\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
+    /(?:href|data-href|data-url)=["'](\/(?:london\/)?article\/Review-Roundup[^"']*)["']/gi,
   ];
   for (const p of patterns) {
     let m;
@@ -49,15 +58,24 @@ function extractRoundupAnchors(html) {
  *
  * If anchors are present but none match, logs a one-line diagnostic with the
  * candidate count + a sample slug so the next opening-night session doesn't have
- * to reconstruct what the homepage had offered.
+ * to reconstruct what the homepage had offered. Default logger is silent; callers
+ * that want the diagnostic (gather-reviews.js during a poller run) pass `console`.
+ *
+ * Validator failures inside the loop are caught and logged — a regex regression in
+ * a future bww-roundup-validator edit shouldn't be able to abort a whole
+ * gather-reviews run for every show on the homepage.
  */
-function findBWWRoundupLinkOnHomepage(html, showTitle, { logger = console } = {}) {
+function findBWWRoundupLinkOnHomepage(html, showTitle, { logger = NOOP_LOGGER } = {}) {
   const urls = extractRoundupAnchors(html);
   if (urls.length === 0) return null;
   if (!showTitle) return null;
 
   for (const url of urls) {
-    if (validateBWWRoundupUrlMatchesShow(url, showTitle)) return url;
+    try {
+      if (validateBWWRoundupUrlMatchesShow(url, showTitle)) return url;
+    } catch (e) {
+      logger.log(`    BWW homepage scan: validator threw on "${url}" — ${e && e.message ? e.message : e}. Continuing.`);
+    }
   }
 
   const sample = urls.slice(0, 3).map(u => {
