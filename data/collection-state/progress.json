@@ -1,5 +1,15 @@
 {
-  "processed": [],
+  "processed": [
+    "the-rocky-horror-show-2026/ew--unknown.json",
+    "the-rocky-horror-show-2026/new-york-sun--unknown.json",
+    "the-rocky-horror-show-2026/nydailynews--unknown.json",
+    "the-rocky-horror-show-2026/cote-notices--david-finkle.json",
+    "the-rocky-horror-show-2026/playbill--unknown.json",
+    "the-balusters-2026/variety--unknown.json",
+    "the-balusters-2026/ew--unknown.json",
+    "the-balusters-2026/wsj--unknown.json",
+    "schmigadoon-2026/ew--unknown.json"
+  ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
     "shadowlands-west-end-2026/times-uk--clive-davis.json",
@@ -35,20 +45,34 @@
     "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
     "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+    "the-balusters-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-rocky-horror-show-2026/ew--unknown.json",
+      "the-rocky-horror-show-2026/new-york-sun--unknown.json",
+      "the-rocky-horror-show-2026/playbill--unknown.json",
+      "the-balusters-2026/ew--unknown.json",
+      "schmigadoon-2026/ew--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-balusters-2026/variety--unknown.json",
+      "the-balusters-2026/variety--unknown.json",
+      "data/review-texts/the-balusters-2026/wsj--unknown.json",
+      "the-balusters-2026/wsj--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-rocky-horror-show-2026/nydailynews--unknown.json",
+      "the-rocky-horror-show-2026/cote-notices--david-finkle.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
@@ -59,7 +83,7 @@
     "archive": []
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
+  "lastProcessed": "schmigadoon-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -93,6 +117,28 @@
       "t": "2026-04-24T10:12:25.998Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-24T10:39:53.178Z",
+      "event": "bb-session",
+      "session": "35bcf472",
+      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose"
+    },
+    {
+      "t": "2026-04-24T10:39:54.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-24T10:40:41.577Z",
+      "event": "bb-session",
+      "session": "72ed3af3",
+      "url": "https://www.wsj.com/articles/the-balusters-review-neighbors-at-odds-on-broadway-"
+    },
+    {
+      "t": "2026-04-24T10:40:42.379Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
