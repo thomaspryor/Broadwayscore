@@ -528,6 +528,9 @@ async function extractAndWriteScheduleData(html) {
     console.error('::error::[Schedule] Calendar API returned 0 future weeks — refusing to overwrite show-schedules.json with single-week data.');
     console.error('[Schedule] Likely causes: Cloudflare re-block on proxy (check Bright Data zone), API shape change, or expired/rotated token.');
     console.error('[Schedule] Existing show-schedules.json preserved. Fix upstream or re-run with a working proxy.');
+    // Set non-zero exit so the workflow's notify-failure step fires (Discord + email alert).
+    // Don't throw — let lottery/playbill/twopenny scrapers finish their own work first.
+    process.exitCode = 1;
     return;
   }
 
