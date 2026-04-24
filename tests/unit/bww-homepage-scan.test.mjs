@@ -286,12 +286,48 @@ describe('validateBWWRoundupUrlMatchesShow — single-word title disambiguation 
     );
   });
 
-  test("single-word title NOT present in first 3 slug segments — reject", () => {
-    // 'Cats' should NOT match 'Review-Roundup-HAMILTON-Returns-with-CATS-…'
-    // even though 'cats' is in the slug as a later segment.
+  test("single-word title NOT at a known BWW prefix offset — reject", () => {
+    // 'Cats' should NOT match 'Review-Roundup-HAMILTON-Returns-Featuring-CATS-…'
+    // even though 'cats' is in the slug as a later segment — the prefix
+    // 'hamilton-returns-featuring' is not a known BWW slug prefix.
     assert.strictEqual(
       validateBWWRoundupUrlMatchesShow(
         'https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-Returns-Featuring-CATS-20260501',
+        'Cats'
+      ),
+      false
+    );
+  });
+
+  test("'Bernhardt/Hamlet' accepts 'The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-…' (2018 variant)", () => {
+    // Real URL from data/aggregator-archive/bww-roundups/bernhardthamlet-2018.html.
+    // Parity test on 52 single-word-title archive entries caught this: the older BWW
+    // slug format puts the title at segment 5 after the prefix "The-Critics-Weigh-In-on".
+    assert.strictEqual(
+      validateBWWRoundupUrlMatchesShow(
+        'https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Weigh-In-on-BERNHARDTHAMLET-on-Broadway-20180925',
+        'Bernhardt/Hamlet'
+      ),
+      true
+    );
+  });
+
+  test("'on-Broadway' after title (preposition chain) — accept", () => {
+    // Another valid BWW variant: title-on-Broadway-date (no boilerplate verb).
+    assert.strictEqual(
+      validateBWWRoundupUrlMatchesShow(
+        'https://www.broadwayworld.com/article/Review-Roundup-HAMILTON-on-Broadway-20150801',
+        'Hamilton'
+      ),
+      true
+    );
+  });
+
+  test("unknown prefix rejected: 'Review-Roundup-Summer-Hits-Include-CATS-…' ≠ Cats", () => {
+    // Prevents the parity-fix from being too permissive.
+    assert.strictEqual(
+      validateBWWRoundupUrlMatchesShow(
+        'https://www.broadwayworld.com/article/Review-Roundup-Summer-Hits-Include-CATS-on-Broadway-20260601',
         'Cats'
       ),
       false
