@@ -10,6 +10,7 @@ on:
       - 'scripts/validate-aggregator-truth.js'
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
+      - 'scripts/audit-review-contamination.js'
       - 'public/data/mobile-shows.json'
       - 'package.json'
       - 'package-lock.json'
@@ -611,6 +612,7 @@ jobs:
             tests/unit/domain-filters-nytg.test.mjs \
             tests/unit/serp-defer-iterations.test.mjs \
             tests/unit/guardian-broadway-dispatch.test.mjs \
+            tests/unit/outlet-canonicalize.test.mjs \
             tests/unit/outlet-id-mapper.test.mjs \
             tests/unit/parse-grosses-analysis.test.mjs \
             tests/unit/rebuild-pause.test.mjs \
