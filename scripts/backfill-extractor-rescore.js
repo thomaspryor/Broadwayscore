@@ -32,7 +32,20 @@ const path = require('path');
 const { extractScore, OUTLET_EXTRACTORS, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
+// REVIEW_TEXTS_DIR resolution:
+//   1. --review-texts=PATH CLI flag (explicit)
+//   2. REVIEW_TEXTS_DIR env var
+//   3. default: data/review-texts/ relative to repo
+// The private-repo copy at ~/broadway-review-texts/ is the authoritative
+// source of truth (CI reads from there). Main-repo data/review-texts/ is a
+// gitignored local cache that does NOT propagate to CI. When running this
+// backfill locally for a real write, point at the private repo.
+const REVIEW_TEXTS_DIR = (() => {
+  const flag = (process.argv.find(a => a.startsWith('--review-texts=')) || '').split('=')[1];
+  if (flag) return path.resolve(flag);
+  if (process.env.REVIEW_TEXTS_DIR) return path.resolve(process.env.REVIEW_TEXTS_DIR);
+  return path.join(__dirname, '../data/review-texts');
+})();
 const ARCHIVES_DIR = path.join(__dirname, '../data/archives/reviews');
 
 const args = process.argv.slice(2);
@@ -54,6 +67,46 @@ const CALLED_OUT_OUTLETS = new Set([
   'all-that-dazzles', 'all-that-dazzles-uk',
   'lbo', 'london-box-office',
   'broadwayworld',
+]);
+
+// Extractor sources trusted for fullText-only backfill. These either anchor
+// to a unicode glyph, pull from a structured image alt-attribute, or parse
+// an unambiguous textual format. Excluded: 'text-pattern' — too liberal; it
+// false-positives on numeric sequences inside image URL paths / date strings
+// (proven on arcadia-west-end-2026/standard--nick-curtis.json where "2/5"
+// matched a path fragment "/2026/01/23/12/50/Render" in CDN metadata).
+const ANCHORED_EXTRACTOR_SOURCES = new Set([
+  'unicode-stars',
+  'unicode-stars-fallthrough',
+  'numeric-stars',
+  'omc-alt-text',
+  'omc-star-rating',
+  'word-stars',
+  'letter-grade',
+  'atd-emoji-stars',
+  'afridiziak-star-image',
+  'timeout-star-widget',
+  'timeout-svg-stars',
+  'star-class',
+  'json-ld',
+  'meta-itemprop',
+  'guardian-api',
+  'guardian-json-ld',
+  'guardian-svg-stars',
+  'wos-star-images',
+  'stage-star-svg',
+  'telegraph-svg',
+  'telegraph-svg-stars',
+  'dailymail-rating-img',
+  'dailymail-css-stars',
+  'bww-star-image',
+  'theatre-weekly-star-image',
+  'radiotimes-page-json',
+  'radiotimes-svg-stars',
+  'fivestar-widget',
+  'reviewshub-percentage',
+  'explicit-rating',
+  'original-star-rating',
 ]);
 
 function outletHasReliableExtractor(outletId) {
@@ -165,6 +218,17 @@ outer: for (const showId of showDirs) {
       continue;
     }
 
+    // Guard against loose text-pattern matches. fullText-only extraction can
+    // match numeric sequences inside CDN URLs / dates (e.g. "2/5" in
+    // "/2026/01/23/12/50/Render-Final.jpg"). Restrict to sources that anchor
+    // on a unicode glyph, structured alt-text, or a canonical format parser.
+    // Text-pattern regex fills are deferred — they need their own extractor
+    // hardening (anchor gates) before backfill is safe.
+    if (!ANCHORED_EXTRACTOR_SOURCES.has(result.source)) {
+      skipped.looseSource = (skipped.looseSource || 0) + 1;
+      continue;
+    }
+
     // Don't patch when the extractor returns the same score we already have.
     if (data.originalScore && String(data.originalScore) === String(result.originalScore)) {
       skipped.sameScore++;
@@ -200,6 +264,7 @@ console.log(`Skipped (score-ok):      ${skipped.scoreOk}`);
 console.log(`Skipped (no-fullText):   ${skipped.noFullText}`);
 console.log(`Skipped (guarded):       ${skipped.guarded}`);
 console.log(`Skipped (no-result):     ${skipped.noResult}`);
+console.log(`Skipped (loose-source):  ${skipped.looseSource || 0}  (text-pattern etc — needs extractor anchor fix)`);
 console.log(`Skipped (same-score):    ${skipped.sameScore}`);
 console.log('');
 
