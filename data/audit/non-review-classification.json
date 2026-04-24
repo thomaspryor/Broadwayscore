@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-04-24T21:53:32.093Z",
+    "generatedAt": "2026-04-24T22:26:35.345Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
@@ -9,21 +9,44 @@
       "skippedExcluded": 82,
       "withFullText": 22,
       "excerptOnly": 1558,
-      "llmClassified": 0,
+      "llmClassified": 3,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 0,
+      "uncertainCases": 2,
       "budgetUsed": 0.0022,
       "llmCalls": 22,
-      "rateLimitHits": 66,
-      "errors": 22,
+      "rateLimitHits": 62,
+      "errors": 19,
       "skippedAlreadyClassified": 14969
     },
     "calibration": null
   },
   "nonReviews": [],
-  "uncertainCases": [],
+  "uncertainCases": [
+    {
+      "file": "funny-girl-2022/talkinbroadway--matthew-murray.json",
+      "showId": "funny-girl-2022",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "currentScore": 62
+    },
+    {
+      "file": "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "contentType": "feature",
+      "confidence": "low",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "currentScore": 60
+    }
+  ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "the-balusters-2026/la-voce-di-new-york--jk-clarke.json"
+  ],
   "perShowSummary": []
 }
