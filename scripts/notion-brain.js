@@ -578,6 +578,15 @@ async function searchCards(args) {
     args.text = args._positional[1];
   }
 
+  // Alias --query to --text. A prior session's notes claimed --query works;
+  // it didn't (the flag was silently ignored), and sessions searching for
+  // real cards would get generic priority-sorted results back and conclude
+  // "no such card exists". Treat --query as synonymous with --text so that
+  // advice at least produces correct behavior now.
+  if (!args.text && args.query) {
+    args.text = args.query;
+  }
+
   if (args.status) {
     filters.push({
       property: 'Status',
@@ -598,17 +607,63 @@ async function searchCards(args) {
       ? { and: filters }
       : undefined;
 
-  const response = await notion.dataSources.query({
-    data_source_id: DATABASE_ID,
-    filter,
-    sorts: [{ property: 'Priority', direction: 'ascending' }],
-  });
+  // Pre-pagination fix, notion-brain did a single un-paginated call and relied
+  // on a client-side text filter. Notion's default page size is 100, so any
+  // card past the first 100 priority-asc results was invisible to `--text`.
+  // A P1-Next-Not-started card was missed this way on 2026-04-24 because the
+  // first 100 were all P0-Now. DB size that day was 1350 cards.
+  //
+  // Two-tier fix:
+  //   (1) When --text is given, AND a server-side Name `contains` filter with
+  //       status/priority filters. One round-trip covers the common case
+  //       (finding a card by its title) regardless of DB size.
+  //   (2) If (1) returns no hits, fall back to a paginated scan so we still
+  //       catch text matches that live only in the notes body. Capped to
+  //       prevent runaway calls — bump PAGE_CAP if the DB grows substantially.
+  const PAGE_CAP = 20;
+  const needle = args.text ? args.text.toLowerCase() : null;
 
-  let results = response.results.map(formatCard);
+  let allResults = [];
 
-  // Client-side text filter
-  if (args.text) {
-    const needle = args.text.toLowerCase();
+  if (needle) {
+    // Tier 1: server-side title filter. The base filter (status/priority)
+    // is AND'd with a name.contains so Notion returns only matching cards.
+    const titleFilter = { property: 'Name', title: { contains: args.text } };
+    const combined = filter ? { and: [filter, titleFilter] } : titleFilter;
+    const titleResponse = await notion.dataSources.query({
+      data_source_id: DATABASE_ID,
+      filter: combined,
+      sorts: [{ property: 'Priority', direction: 'ascending' }],
+    });
+    allResults = titleResponse.results.map(formatCard);
+  }
+
+  if (!needle || allResults.length === 0) {
+    // Tier 2 (or non-text-filter path): paginate the base filter and let
+    // the optional client-side needle match against notes as well.
+    let cursor;
+    let pages = 0;
+    allResults = [];
+    do {
+      const response = await notion.dataSources.query({
+        data_source_id: DATABASE_ID,
+        filter,
+        sorts: [{ property: 'Priority', direction: 'ascending' }],
+        start_cursor: cursor,
+      });
+      allResults = allResults.concat(response.results.map(formatCard));
+      cursor = response.has_more ? response.next_cursor : null;
+      pages++;
+      if (!needle) break;
+      if (pages >= PAGE_CAP) {
+        console.error(`[notion-brain] warning: hit ${PAGE_CAP}-page cap (${allResults.length} cards scanned); bump PAGE_CAP if the DB has grown`);
+        break;
+      }
+    } while (cursor);
+  }
+
+  let results = allResults;
+  if (needle) {
     results = results.filter(c =>
       c.name.toLowerCase().includes(needle) ||
       c.notes.toLowerCase().includes(needle)
@@ -742,7 +797,8 @@ Notes quality enforcement (2026-04-11):
 Options (search/list):
   --status "In progress"    Filter by status
   --priority "P0 Now"       Filter by priority (comma-separated for list)
-  --text "keyword"          Text search in name/notes (search only)
+  --text "keyword"          Text search in name/notes (search only).
+                            Aliased as --query. Paginates when set.
   --limit 10                Max results (default: 20)`);
     process.exit(1);
   }
