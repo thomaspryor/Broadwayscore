@@ -159,6 +159,41 @@ test('conflicting modes rejected (--list + --url)', () => {
   assert.match(r.stderr, /Conflicting modes/);
 });
 
+test('existing top-level array blocklist gets migrated to {urls:[...]} canonical form', () => {
+  fs.writeFileSync(
+    blocklistPath,
+    JSON.stringify([
+      { url: 'https://legacy.example/a', reason: 'legacy-a' },
+      { url: 'https://legacy.example/b', reason: 'legacy-b', blockedAt: '2026-04-23T22:00:00Z' },
+    ]),
+  );
+  const r = runInShow('--url=https://new.example/c', '--reason=new-c');
+  assert.equal(r.status, 0, r.stderr);
+  const saved = JSON.parse(fs.readFileSync(blocklistPath, 'utf-8'));
+  assert.ok(saved.urls, 'migrated to {urls:[...]} object form');
+  assert.equal(saved.urls.length, 3);
+  const legacyA = saved.urls.find((e) => e.url === 'https://legacy.example/a');
+  assert.equal(legacyA.reason, 'legacy-a', 'legacy-a reason preserved through canonicalization');
+  const legacyB = saved.urls.find((e) => e.url === 'https://legacy.example/b');
+  assert.equal(legacyB.blockedAt, '2026-04-23T22:00:00Z', 'legacy-b blockedAt preserved');
+});
+
+test('corrupted _blocklist.json exits 2 with a repair hint (not a V8 stack trace)', () => {
+  fs.writeFileSync(blocklistPath, '{not valid json');
+  const r = runInShow('--url=https://example.com/x');
+  assert.equal(r.status, 2);
+  assert.match(r.stderr, /Corrupted/);
+  assert.match(r.stderr, /repair the JSON|delete the file/);
+});
+
+test('--show with path traversal is rejected', () => {
+  for (const bad of ['../escape', '..', 'foo/bar', 'foo\\bar']) {
+    const r = run(`--show=${bad}`, `--data-dir=${tmpRoot}`, '--list');
+    assert.equal(r.status, 1, `expected exit 1 for --show=${bad}`);
+    assert.match(r.stderr, /Invalid --show value|no slashes or/);
+  }
+});
+
 test('existing legacy bare-string blocklist gets canonicalized on next write', () => {
   fs.writeFileSync(
     blocklistPath,

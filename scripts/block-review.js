@@ -64,7 +64,18 @@ function parseArgs(argv) {
 
 function readRawEntries(filePath) {
   if (!fs.existsSync(filePath)) return [];
-  const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  let raw;
+  try {
+    raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (err) {
+    // The lib (loadBlocklist) silently returns empty on malformed JSON so the
+    // poller can keep running. The CLI is operator-facing and writing — show
+    // the error and bail loudly so we don't trample over a half-edited file.
+    console.error(`❌ Corrupted ${filePath}`);
+    console.error(`   ${err.message}`);
+    console.error(`   Fix: repair the JSON by hand, or delete the file to start fresh.`);
+    process.exit(2);
+  }
   const arr = Array.isArray(raw) ? raw : Array.isArray(raw && raw.urls) ? raw.urls : [];
   const entries = [];
   for (const item of arr) {
@@ -184,6 +195,15 @@ function main(argv) {
   if (!args.show) {
     console.error('❌ --show=ID is required\n');
     console.error(HELP);
+    process.exit(1);
+  }
+
+  // Show IDs in this repo are always lowercase-kebab slugs (e.g., the-rocky-horror-show-2026).
+  // Reject anything containing path separators, parent-dir refs, or NUL — operator typo or
+  // shell-pasted garbage shouldn't write outside data/review-texts/.
+  if (/[/\\]|\.\.|\0/.test(args.show)) {
+    console.error(`❌ Invalid --show value: ${args.show}`);
+    console.error(`   Show IDs are slugs like "the-rocky-horror-show-2026" — no slashes or "..".`);
     process.exit(1);
   }
 
