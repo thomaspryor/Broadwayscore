@@ -667,6 +667,26 @@ function detectConcatenatedArticles(text, expectedShowId) {
 }
 
 /**
+ * Patterns indicating horror/film content (common scraping mistake where
+ * a movie review got attributed to a Broadway show). NOT auto-rejecting —
+ * detectHorrorFilmContent requires the text to ALSO lack 3+ theater keywords.
+ *
+ * Full-corpus audit 2026-04-24: the bare patterns fire on 312 reviews, but
+ * the keyword guard absorbs 100% — zero pass through to rejection. Kept at
+ * module scope so the regex-FP audit harness can gate them.
+ * @type {RegExp[]}
+ */
+const HORROR_FILM_PATTERNS = [
+  /insidious/i,
+  /horror\s*(film|movie|sequel)/i,
+  /terrifying\s+sequel/i,
+  /haunted\s+(family|house|lambert)/i,
+  /spirit\s+world/i,
+  /scary\s+movies?/i,
+  /horror\s+film/i,
+];
+
+/**
  * Check if text contains indicators of a horror/film review (common scraping mistake)
  * @param {string} text - Text to check
  * @returns {{ detected: boolean, reason: string | null }}
@@ -674,18 +694,7 @@ function detectConcatenatedArticles(text, expectedShowId) {
 function detectHorrorFilmContent(text) {
   const lower = text.toLowerCase();
 
-  // Specific patterns that indicate horror/film content mixed into Broadway reviews
-  const horrorFilmPatterns = [
-    /insidious/i,
-    /horror\s*(film|movie|sequel)/i,
-    /terrifying\s+sequel/i,
-    /haunted\s+(family|house|lambert)/i,
-    /spirit\s+world/i,
-    /scary\s+movies?/i,
-    /horror\s+film/i,
-  ];
-
-  for (const pattern of horrorFilmPatterns) {
+  for (const pattern of HORROR_FILM_PATTERNS) {
     const match = text.match(pattern);
     if (match) {
       // Make sure this isn't a legitimate theater review that mentions horror elements
@@ -2335,4 +2344,5 @@ module.exports = {
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,
+  HORROR_FILM_PATTERNS,
 };
