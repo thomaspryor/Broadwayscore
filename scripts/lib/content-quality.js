@@ -542,9 +542,12 @@ function detectMultiShowContent(text, expectedShowId) {
 
   const lower = text.toLowerCase();
 
-  // Extract the expected show's key words to exclude them
+  // Extract the expected show's key words to exclude them. Lowercase so the
+  // downstream substring check matches the lowercase titles from shows.json —
+  // a title-case showId like 'Hamilton' would otherwise fail to filter out the
+  // 'hamilton' entry and show up as an unexpected additional mention.
   const expectedWords = expectedShowId
-    ? expectedShowId.replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
+    ? expectedShowId.toLowerCase().replace(/-\d{4}$/, '').split('-').filter(w => w.length > 3)
     : [];
 
   // Find which shows are mentioned, excluding common-word titles
