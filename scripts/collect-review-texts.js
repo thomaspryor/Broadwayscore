@@ -92,7 +92,7 @@ const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
-const { setExtractedScore } = require('./lib/score-routing');
+const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
@@ -4351,6 +4351,60 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const outletExtractor = OUTLET_EXTRACTORS[(data.outletId || review.outletId || '').toLowerCase()];
       if (!outletExtractor || outletExtractor.name !== 'noScoreExtractor') {
         data.scoreExtractionPending = true;
+      }
+    }
+  }
+
+  // RH 2026 bug #22 fix: Second-pass extraction against saved fullText.
+  //
+  // The first pass above skips re-extraction when data.originalScore is already
+  // set (even when the source is an aggregator thumb/excerpt). On opening night,
+  // reviews land in review-texts/ with originalScore pre-populated from BWW
+  // Roundup / DTLI / Show Score aggregator signals, then collect-review-texts
+  // fetches the authoritative outlet page — but the extractor never re-runs
+  // against that page, so the aggregator score sticks even when the outlet
+  // published an explicit star rating we could read verbatim.
+  //
+  // This pass re-runs extractScore(html, fullText) and supersedes the current
+  // score ONLY when the outlet has a dedicated extractor AND the existing
+  // scoreSource is missing, aggregator-sourced, or not on the verified list.
+  // Writes originalScore + starRating on success.
+  {
+    const outletId = (data.outletId || review.outletId || '').toLowerCase();
+    const outletExtractor = OUTLET_EXTRACTORS[outletId];
+    const hasReliableExtractor = outletExtractor && outletExtractor.name !== 'noScoreExtractor';
+    const hasFullText = data.fullText && data.fullText.length > 500;
+    const scoreSource = data.scoreSource;
+    const isUnverifiedOrAggregator =
+      !data.originalScore ||
+      !scoreSource ||
+      AGGREGATOR_SCORE_SOURCES.has(scoreSource) ||
+      !OUTLET_VERIFIED_SOURCES.has(scoreSource);
+
+    if (hasReliableExtractor && hasFullText && html && isUnverifiedOrAggregator && !wasCleared) {
+      const rescoreResult = extractScore(html, data.fullText, outletId);
+      if (rescoreResult && rescoreResult.normalizedScore != null) {
+        const prevScore = data.originalScore || '(none)';
+        const prevSource = data.scoreSource || '(none)';
+        console.log(`    → [RESCORE-FULLTEXT] ${outletId}: ${rescoreResult.originalScore} (${rescoreResult.normalizedScore}/100) via ${rescoreResult.source} — supersedes ${prevScore} [${prevSource}]`);
+        const routed = setExtractedScore(data, {
+          value: rescoreResult.originalScore,
+          normalizedValue: rescoreResult.normalizedScore,
+          source: rescoreResult.source,
+        });
+        if (!routed.wasAggregator) {
+          data.scoreSource = rescoreResult.source;
+        }
+        // Persist starRating when the extracted score is a fractional star format
+        // (e.g. "3/5 stars", "4/5"). Downstream display uses this as a badge.
+        if (typeof rescoreResult.originalScore === 'string') {
+          const starMatch = rescoreResult.originalScore.match(/^(\d)\/(\d)(?:\s*stars?)?$/i);
+          if (starMatch) {
+            data.starRating = `${starMatch[1]}/${starMatch[2]}`;
+          }
+        }
+        // Clear pending flag — we just succeeded.
+        delete data.scoreExtractionPending;
       }
     }
   }
