@@ -123,4 +123,28 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
   return false;
 }
 
-module.exports = { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow };
+/**
+ * Detect Cloudflare challenge / interstitial pages.
+ *
+ * BWW's domain is intermittently gated behind Cloudflare's "Just a moment..."
+ * interstitial. Providers that can't solve the challenge (Bright Data, ScrapingBee,
+ * plain fetch, Playwright) return HTTP 200 with a short challenge HTML page. Detecting
+ * it lets callers stop iterating — every subsequent fetch to the same BWW domain during
+ * the gated window returns the same challenge, so continuing through additional SERP
+ * results or URL guesses only wastes credits and wall-clock time.
+ *
+ * Rocky Horror 2026-04-23 opening night: 25+ consecutive BWW fetches burned
+ * ScrapingBee credits because no caller short-circuited after the first challenge.
+ */
+function isCloudflareChallenge(html) {
+  if (typeof html !== 'string' || html.length === 0) return false;
+  // Challenge pages are short — typically under ~20KB. Real BWW articles are 100KB+.
+  if (html.length > 20000) return false;
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch && /Just a moment/i.test(titleMatch[1])) return true;
+  if (html.includes('cf_chl_opt') || html.includes('challenge-platform')) return true;
+  if (html.includes('Enable JavaScript and cookies to continue')) return true;
+  return false;
+}
+
+module.exports = { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge };
