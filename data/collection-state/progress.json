@@ -86,7 +86,13 @@
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "titanique-off-broadway-2022/newyorker--dan-stahl.json",
     "girl-from-the-north-country-2022/theater-news-online--david-cote.json",
-    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json"
+    "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -110,7 +116,8 @@
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "innocence-off-broadway-2026/variety--rebecca-rubin.json"
+      "innocence-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -126,12 +133,13 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json"
+      "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022/new-york-sun--elysa-gardner.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -220,6 +228,17 @@
       "t": "2026-04-24T10:44:05.837Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-24T10:52:56.869Z",
+      "event": "bb-session",
+      "session": "172549e3",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-24T10:52:57.640Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
