@@ -219,7 +219,7 @@ export default function HomePage() {
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
-    { title: 'In Previews', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows' },
+    { title: 'In Previews / Opening Soon', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },

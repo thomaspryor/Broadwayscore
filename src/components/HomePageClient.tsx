@@ -17,6 +17,7 @@ export interface FeaturedRowData {
   title: string;
   shows: HomepageShow[];
   viewAllHref: string;
+  minCount?: number;
 }
 
 // Serialized show data passed from server component
@@ -171,8 +172,8 @@ function LazySection({ children, fallbackHeight = '200px' }: { children: React.R
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, shows, viewAllHref }: { title: string; shows: HomepageShow[]; viewAllHref?: string }) {
-  if (shows.length <= 3) return null;
+function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: string; shows: HomepageShow[]; viewAllHref?: string; minCount?: number }) {
+  if (shows.length < minCount) return null;
 
   return (
     <section className="mb-6">
@@ -728,6 +729,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               title={row.title}
               shows={row.shows}
               viewAllHref={row.viewAllHref}
+              minCount={row.minCount}
             />
           ))}
         </div>
