@@ -30,10 +30,44 @@ const fs = require('fs');
 const path = require('path');
 
 const { extractReviewsFromDTLI } = require('./extract-dtli-reviews');
-const { findExistingReviewFile } = require('./lib/review-normalization');
+const { findExistingReviewFile, normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 
 const ROOT = path.join(__dirname, '..');
 const SLUG_MAP_PATH = path.join(ROOT, 'data', 'dtli-slug-map.json');
+
+/**
+ * Fallback matcher for files whose filename year-suffix prevents
+ * findExistingReviewFile from matching. Example:
+ *   filename: amny--matt-windman-2026.json  (fileCritic = "matt-windman-2026")
+ *   internal criticName: "Matt Windman"     (normalized "matt-windman")
+ * findExistingReviewFile's Pass 1 skips (critic mismatch via filename) and
+ * Pass 2 skips (because filename-outlet matched Pass 1). This helper reads
+ * each file's internal outletId + criticName fields directly.
+ */
+function findByInternalFields(showDir, outletId, criticName) {
+  if (!fs.existsSync(showDir)) return null;
+  const targetOutlet = normalizeOutlet(outletId);
+  const targetCritic = criticName && criticName.toLowerCase() !== 'unknown'
+    ? normalizeCritic(criticName) : null;
+  for (const file of fs.readdirSync(showDir)) {
+    if (!file.endsWith('.json')) continue;
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf-8')); }
+    catch { continue; }
+    if (!data || data.wrongProduction || data.duplicateOf) continue;
+    if (!data.outletId) continue;
+    if (normalizeOutlet(data.outletId) !== targetOutlet) continue;
+    if (targetCritic && data.criticName) {
+      const dataCritic = normalizeCritic(data.criticName);
+      if (dataCritic !== targetCritic && !areCriticsSimilar(criticName, data.criticName)) {
+        continue;
+      }
+    }
+    return { path: filePath, filename: file, data };
+  }
+  return null;
+}
 
 function resolveDtliUrl(showId, overrideUrl) {
   if (overrideUrl) return overrideUrl;
@@ -88,7 +122,10 @@ async function enrichDtliThumbsForShow(showId, opts = {}) {
   for (const ex of extracted) {
     if (!ex.outletId) continue;
 
-    const existing = findExistingReviewFile(showDir, ex.outletId, ex.criticName);
+    let existing = findExistingReviewFile(showDir, ex.outletId, ex.criticName);
+    if (!existing || !existing.path || !existing.data) {
+      existing = findByInternalFields(showDir, ex.outletId, ex.criticName);
+    }
     if (!existing || !existing.path || !existing.data) {
       if (verbose) {
         console.log(`  [miss] No existing file for outletId=${ex.outletId} critic=${ex.criticName || '?'}`);
