@@ -103,10 +103,19 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   const normPage = normalizeText(pageTitle);
   // Short-title fallback for comma-subtitled shows: TB page titles carry the short title only
   // ("Beaches" not "Beaches, A New Musical"). Beaches 2026-04-22 opening night.
+  //
+  // Guard: normalized short title must be ≥4 chars. Without this, "Oh, Mary!" → short "Oh"
+  // → normalizeText="oh" → normPage.includes("oh") matches "Wholesome", "Mother", "though",
+  // etc. 2-char substrings are too short to be a reliable title match. Affects
+  // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
+  // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
+  const MIN_SHORT_VARIANT_CHARS = 4;
   const { shortTitleCandidate } = require('./title-normalization');
   const titleVariants = [showTitle];
   const shortTitle = shortTitleCandidate(showTitle);
-  if (shortTitle) titleVariants.push(shortTitle);
+  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+    titleVariants.push(shortTitle);
+  }
   const titleMatched = titleVariants.some(variant => {
     const normVariant = normalizeText(variant);
     return normVariant && normPage.includes(normVariant);

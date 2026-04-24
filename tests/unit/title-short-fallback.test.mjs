@@ -149,6 +149,33 @@ describe('urlLooksLikeReview — short-title fallback', () => {
       false
     );
   });
+
+  test('2-char short title "Oh, Mary!" does NOT fail-open on arbitrary URLs', () => {
+    // Ship-check P0: shortTitleCandidate("Oh, Mary!") returns "Oh" (2 chars). Without a
+    // guard, urlTitleWordsPass filters words length>2 → ['oh']→[] (empty) → fail-open
+    // returns true for ANY non-reject URL. Affects oh-mary-2024 + oh-mary-west-end-2025
+    // (both open). Guard added 2026-04-24 requires ≥1 meaningful short-title word.
+    assert.strictEqual(
+      urlLooksLikeReview('https://example.com/cats-review-broadway/', 'Oh, Mary!'),
+      false,
+      'unrelated cats URL must NOT match Oh, Mary via short-title fallback'
+    );
+    assert.strictEqual(
+      urlLooksLikeReview('https://nytimes.com/2026/04/22/theater/hamilton-review.html', 'Oh, Mary!'),
+      false,
+      'unrelated hamilton URL must NOT match Oh, Mary'
+    );
+  });
+
+  test('full-title path still works for "Oh, Mary!" when URL contains "mary"', () => {
+    // Full title "Oh, Mary!" normalizes to ['mary'] (length>2 keeps "mary", strips "oh").
+    // Real Oh, Mary URLs contain "mary" → full-title path accepts. Short-title fallback
+    // is only the backup; the primary check still works.
+    assert.strictEqual(
+      urlLooksLikeReview('https://nytimes.com/2026/04/22/theater/oh-mary-review.html', 'Oh, Mary!'),
+      true
+    );
+  });
 });
 
 describe('verifyTbPage — short-title fallback', () => {
@@ -192,6 +219,39 @@ describe('verifyTbPage — short-title fallback', () => {
     const v = verifyTbPage(html, {
       showTitle: 'The Rocky Horror Show',
       openingDate: '2026-04-23',
+    });
+    assert.strictEqual(v.ok, true, v.reason);
+  });
+
+  test('2-char short title "Oh, Mary!" does NOT substring-match unrelated words', () => {
+    // Ship-check P0: normalizeText("Oh") = "oh" (2 chars). Without guard, normPage.includes("oh")
+    // matches "Wholesome", "Mother", "though", etc. in any TB page. Guard requires
+    // short-title normalized length ≥ 4 chars before including in titleVariants.
+    const html = padTo(
+      `<html><head><title>Talkin' Broadway: John Wholesome at the Mother Theater — April 22, 2026</title></head>` +
+      `<body>${tbBylineSignal}verdict rave. April 22, 2026</body></html>`,
+      900
+    );
+    const v = verifyTbPage(html, {
+      showTitle: 'Oh, Mary!',
+      openingDate: '2026-04-22',
+    });
+    assert.strictEqual(v.ok, false, 'Wholesome page must NOT match Oh, Mary via 2-char substring');
+    assert.match(v.reason, /title mismatch/);
+  });
+
+  test('real Oh, Mary! TB page still accepted via full-title path', () => {
+    // Full title "Oh, Mary!" normalizes to "oh mary" (via normalizeText which strips
+    // punctuation and collapses whitespace). A page titled "Oh, Mary!" normalizes to
+    // the same string → includes match → accepted.
+    const html = padTo(
+      `<html><head><title>Talkin' Broadway: Oh, Mary! — April 22, 2026</title></head>` +
+      `<body>${tbBylineSignal}verdict rave. April 22, 2026</body></html>`,
+      900
+    );
+    const v = verifyTbPage(html, {
+      showTitle: 'Oh, Mary!',
+      openingDate: '2026-04-22',
     });
     assert.strictEqual(v.ok, true, v.reason);
   });

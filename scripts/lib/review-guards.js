@@ -286,9 +286,20 @@ function urlLooksLikeReview(url, showTitle) {
   // Outlet URL slugs typically carry only the short title ("/beaches-review-broadway.html").
   // Beaches 2026-04-22: rejected all outlet URLs (NYT/Guardian/People/EW/TimeOut/TheWrap/NYDN/NYT/…)
   // via outlet-domain-supplement urlTitleCheck before this fallback.
+  //
+  // Guard: short title must contain ≥1 meaningful word (length > 2, non-stopword).
+  // Without this, "Oh, Mary!" → short "Oh" → zero meaningful words → urlTitleWordsPass
+  // fail-opens (titleWords.length === 0 branch) and accepts ANY URL as valid. Affected
+  // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
   const { shortTitleCandidate } = require('./title-normalization');
   const shortTitle = shortTitleCandidate(showTitle);
-  if (shortTitle && urlTitleWordsPass(lower, shortTitle)) return true;
+  if (shortTitle) {
+    const shortMeaningfulWords = shortTitle.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .split(/\s+/)
+      .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+    if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return true;
+  }
 
   return false;
 }
