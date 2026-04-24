@@ -191,6 +191,9 @@ function main() {
       }
     }
 
+    if (!freshData._meta) freshData._meta = {};
+    freshData._meta.lastUpdated = new Date().toISOString();
+
     fs.writeFileSync(SHOWS_PATH, JSON.stringify(freshData, null, 2) + '\n');
   }
 

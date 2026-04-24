@@ -229,6 +229,8 @@ function main() {
   // Save
   if (!DRY_RUN) {
     commercial.modelLastRun = today;
+    if (!commercial._meta) commercial._meta = {};
+    commercial._meta.lastUpdated = new Date().toISOString();
     fs.writeFileSync(COMMERCIAL_PATH, JSON.stringify(commercial, null, 2) + '\n');
     console.log(`Written to ${COMMERCIAL_PATH}`);
   }
