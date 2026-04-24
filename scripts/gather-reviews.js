@@ -1821,9 +1821,12 @@ async function searchBWWRoundup(show, year, options = {}) {
         console.log(`    Using URL override: ${overrideUrl}`);
         if (chromium) {
           const result = await scrapeBWWRoundupWithPlaywright(overrideUrl);
-          if (result) {
+          if (result && result.html) {
             console.log(`    ✓ Found at: ${overrideUrl} (override + Playwright)`);
             return { url: overrideUrl, html: result.html };
+          }
+          if (result && result.cloudflareChallenge) {
+            console.log('    ⚠️  BWW is Cloudflare-gated (Playwright) — falling through to searchAggregator');
           }
         }
         const result = await searchAggregator('BWW', overrideUrl);
@@ -1913,8 +1916,13 @@ async function searchBWWRoundup(show, year, options = {}) {
       }
       console.log(`    ✓ Found via Google: ${searchResult}`);
       if (chromium) {
-        const result = await scrapeBWWRoundupWithPlaywright(searchResult);
-        if (result) return { url: searchResult, html: result.html };
+        const pwResult = await scrapeBWWRoundupWithPlaywright(searchResult);
+        if (pwResult && pwResult.html) return { url: searchResult, html: pwResult.html };
+        if (pwResult && pwResult.cloudflareChallenge) {
+          bwwCloudflareGated = true;
+          console.log('    ⚠️  BWW is Cloudflare-gated (Playwright) — stopping SERP iteration');
+          break;
+        }
       }
       const result = await searchAggregator('BWW', searchResult);
       if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
@@ -1979,9 +1987,13 @@ async function searchBWWRoundup(show, year, options = {}) {
   if (chromium) {
     for (const url of searchUrls) {
       const result = await scrapeBWWRoundupWithPlaywright(url);
-      if (result) {
+      if (result && result.html) {
         console.log(`    ✓ Found at: ${url} (Playwright)`);
         return { url, html: result.html };
+      }
+      if (result && result.cloudflareChallenge) {
+        console.log('    ⚠️  BWW is Cloudflare-gated (Playwright) — skipping remaining URL-guess candidates; will retry via searchAggregator');
+        break;
       }
       await sleep(300);
     }
@@ -2024,9 +2036,14 @@ async function scrapeBWWRoundupWithPlaywright(url) {
     // Check we're on a real roundup page, not a 404 or homepage
     const title = await page.title();
     if (!title || !title.includes('Review Roundup')) {
-      console.log(`    BWW page title "${title || '(empty)'}" — not a roundup page`);
+      // Detect Cloudflare challenge page so the caller can short-circuit the loop
+      // — further Playwright fetches to the same BWW domain during a gated window
+      // will keep returning the same challenge page (observed 2026-04-24: 27+
+      // consecutive Cloudflare hits in a single Hamlet discovery run).
+      const isCf = /Just a moment/i.test(title) || /Enable JavaScript/i.test(title);
+      console.log(`    BWW page title "${title || '(empty)'}" — not a roundup page${isCf ? ' (Cloudflare challenge)' : ''}`);
       await browser.close();
-      return null;
+      return isCf ? { cloudflareChallenge: true } : null;
     }
 
     // Wait for article content to render (BWW loads review quotes dynamically)
