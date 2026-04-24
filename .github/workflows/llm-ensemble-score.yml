@@ -12,7 +12,7 @@ on:
   # Manual trigger with options
   workflow_dispatch:
     inputs:
-      show:
+      show_id:
         description: 'Show slug to process (leave empty for all)'
         required: false
         default: ''
@@ -160,11 +160,11 @@ jobs:
           # (Becky Shaw incident: wrongShow:false was pushed but scoring used the old checkout)
           cd data/review-texts
           git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || true
-          if [ -n "${{ github.event.inputs.show }}" ]; then
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
             # Targeted refresh: only pull the specific show directory (faster)
-            echo "Refreshing review-texts for show: ${{ github.event.inputs.show }}"
+            echo "Refreshing review-texts for show: ${{ github.event.inputs.show_id }}"
             git fetch origin main --depth=1
-            git checkout origin/main -- "${{ github.event.inputs.show }}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
+            git checkout origin/main -- "${{ github.event.inputs.show_id }}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
           else
             # Full refresh: pull all latest changes
             echo "Refreshing all review-texts..."
@@ -283,8 +283,8 @@ jobs:
           ARGS="--ensemble"
 
           # Show filter
-          if [ -n "${{ github.event.inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ github.event.inputs.show }}"
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           else
             ARGS="$ARGS --all"
           fi
@@ -408,8 +408,8 @@ jobs:
 
           # Build commit message
           SHOW_MSG=""
-          if [ -n "${{ github.event.inputs.show }}" ]; then
-            SHOW_MSG=" for ${{ github.event.inputs.show }}"
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            SHOW_MSG=" for ${{ github.event.inputs.show_id }}"
           fi
 
           git commit -m "feat: Ensemble LLM score reviews${SHOW_MSG}

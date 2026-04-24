@@ -55,7 +55,12 @@ jobs:
     # absorb Vercel build variance without letting a hung run wedge the queue.
     timeout-minutes: 15
     concurrency:
-      group: vercel-production-deploy
+      # Per-run group: GH concurrency queue depth is 1, so a shared
+      # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
+      # and Rocky Horror opening nights. Vercel itself queues deploys server-side
+      # (latest wins), so letting multiple runs proceed in parallel is safe.
+      # See memory/feedback_gha_concurrency_queue_limit.md.
+      group: vercel-production-deploy-${{ github.run_id }}
       cancel-in-progress: false
     steps:
       - name: Checkout

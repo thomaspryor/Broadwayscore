@@ -11,17 +11,9 @@
 const fs = require('fs');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
+const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
-
-// Letter grade mapping
-const LETTER_TO_SCORE = {
-  'A+': 97, 'A': 93, 'A-': 90,
-  'B+': 87, 'B': 83, 'B-': 80,
-  'C+': 77, 'C': 73, 'C-': 70,
-  'D+': 55, 'D': 50, 'D-': 45,
-  'F': 30
-};
 
 // Sentiment keyword scoring (for excerpts without explicit grades)
 const POSITIVE_STRONG = ['masterpiece', 'brilliant', 'extraordinary', 'magnificent', 'stunning', 'superb', 'phenomenal', 'triumphant', 'dazzling', 'must-see', 'must see', 'unmissable'];

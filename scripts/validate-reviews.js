@@ -23,6 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { LETTER_GRADES: LETTER_GRADE_MAP } = require('./lib/score-conversion-rules');
 
 // Load data
 const reviewsData = require('../data/reviews.json');
@@ -33,15 +34,6 @@ const shows = showsData.shows;
 
 // Create show lookup
 const showsById = new Map(shows.map(s => [s.id, s]));
-
-// Rating conversion rules (from scoring.ts)
-const LETTER_GRADE_MAP = {
-  'A+': 100, 'A': 95, 'A-': 90,
-  'B+': 85, 'B': 80, 'B-': 75,
-  'C+': 70, 'C': 65, 'C-': 60,
-  'D+': 55, 'D': 50, 'D-': 45,
-  'F': 30
-};
 
 const BUCKET_SCORE_MAP = {
   'Rave': 90, 'Positive': 82, 'mixed-positive': 72,

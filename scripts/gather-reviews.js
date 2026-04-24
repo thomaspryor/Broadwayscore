@@ -58,6 +58,7 @@ const { verifyProduction, quickDateCheck, getShowData } = require('./lib/product
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
+const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
@@ -2630,7 +2631,11 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
     if (/\bwest end\b/.test(htmlLower) && !/\bbroadway\b/.test(htmlLower)) wrongProductionSignals.push('West End (no Broadway mention)');
     if (/\blondon production\b/.test(htmlLower)) wrongProductionSignals.push('London production');
   }
-  if (/\bnational tour\b/i.test(htmlLower)) wrongProductionSignals.push('National tour');
+  // Forward-tense carve-out: "a national tour is planned" is a Broadway review
+  // mentioning an upcoming tour, not a tour review. Postmortem #18 (2026-04).
+  if (/\bnational tour\b/i.test(htmlLower) && !hasOnlyForwardTenseTourMention(htmlLower)) {
+    wrongProductionSignals.push('National tour');
+  }
 
   const marketLabel = isWestEnd ? 'non-London' : 'non-NYC';
   const nonLocalRatio = nonLocalCount / reviews.length;
