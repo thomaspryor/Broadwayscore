@@ -215,11 +215,15 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   }));
 
   // Legacy redirect: `/?offBway=true` used to switch the list to Off-Broadway in place.
-  // The new pattern routes to /off-broadway instead, so preserve old shared links with a redirect.
+  // The new pattern routes to /off-broadway instead. Preserve any other query params
+  // (sort, type, q, scoreMode) so shared links like /?offBway=true&sort=alpha still work.
   const router = useRouter();
   useEffect(() => {
     if (initialSearchParams.get('offBway') === 'true') {
-      router.replace('/off-broadway');
+      const params = new URLSearchParams(initialSearchParams);
+      params.delete('offBway');
+      const qs = params.toString();
+      router.replace(qs ? `/off-broadway?${qs}` : '/off-broadway');
     }
   }, [initialSearchParams, router]);
 
