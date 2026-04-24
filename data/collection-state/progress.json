@@ -22,7 +22,8 @@
     "the-rocky-horror-show-2026/culturesauce--thom-geier.json",
     "the-rocky-horror-show-2026/nysr--bob-verini.json",
     "the-rocky-horror-show-2026/nysr--michael-sommers.json",
-    "the-rocky-horror-show-2026/people--dave-quinn.json"
+    "the-rocky-horror-show-2026/people--dave-quinn.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json"
   ],
   "failed": [
     "the-balusters-2026/talkinbroadway--unknown.json",
@@ -1052,7 +1053,16 @@
     "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
     "six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
     "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
-    "urban-cowboy-2003/nytimes--ben-brantley.json"
+    "urban-cowboy-2003/nytimes--ben-brantley.json",
+    "imaginary-friends-2002/nytimes--ben-brantley.json",
+    "hollywood-arms-2002/nytimes--bruce-weber.json",
+    "the-graduate-2002/nytimes--ben-brantley.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/huffpost--mike-ryan.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1067,7 +1077,8 @@
       "the-rocky-horror-show-2026/culturesauce--thom-geier.json",
       "the-rocky-horror-show-2026/nysr--bob-verini.json",
       "the-rocky-horror-show-2026/nysr--michael-sommers.json",
-      "the-rocky-horror-show-2026/people--dave-quinn.json"
+      "the-rocky-horror-show-2026/people--dave-quinn.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1096,7 +1107,11 @@
       "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
       "data/review-texts/six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
       "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
-      "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json"
+      "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json",
+      "data/review-texts/imaginary-friends-2002/nytimes--ben-brantley.json",
+      "data/review-texts/hollywood-arms-2002/nytimes--bruce-weber.json",
+      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json",
+      "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1131,7 +1146,7 @@
     "archive": []
   },
   "startTime": "2026-04-23T16:42:29.240Z",
-  "lastProcessed": "urban-cowboy-2003/nytimes--ben-brantley.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-04-23T16:44:44.608Z",
@@ -1383,6 +1398,50 @@
     },
     {
       "t": "2026-04-24T03:20:07.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:20:21.382Z",
+      "event": "bb-session",
+      "session": "9d59a92f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-24T03:20:21.743Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:20:36.410Z",
+      "event": "bb-session",
+      "session": "2aa12bf4",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
+    },
+    {
+      "t": "2026-04-24T03:20:36.759Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:20:49.045Z",
+      "event": "bb-session",
+      "session": "6c51a787",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9406e0dc1f3af936a35757c0"
+    },
+    {
+      "t": "2026-04-24T03:20:49.424Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:21:11.672Z",
+      "event": "bb-session",
+      "session": "1b8bf827",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-24T03:21:12.025Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
