@@ -22,6 +22,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile } = require('./lib/review-normalization');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { setExtractedScore } = require('./lib/score-routing');
 
 // Paths
@@ -430,15 +431,27 @@ async function scrapeNYSRReviews() {
     const excerptText = cheerio.load(excerptHtml).text().trim();
     const starRating = extractStarRatingFromFirstLine(excerptText) || extractStarRatingFromFirstLine(plainText);
 
+    // Session 3 #13 — canonicalize known mis-attributions. Defensive: CRITIC_CANONICAL_MAP
+    // has no nysr entry today, but adding the hook means adding one later requires no
+    // further wiring.
+    let canonicalAuthorName = authorName;
+    {
+      const canon = canonicalizeCritic('nysr', authorName);
+      if (canon.canonicalized) {
+        console.log(`  [NYSR canon] ${canon.from} → ${canon.name}`);
+        canonicalAuthorName = canon.name;
+      }
+    }
+
     // Generate critic slug
-    const criticSlug = normalizeCritic(authorName) || authorName.toLowerCase().replace(/\s+/g, '-');
+    const criticSlug = normalizeCritic(canonicalAuthorName) || canonicalAuthorName.toLowerCase().replace(/\s+/g, '-');
 
     // Build review data
     const reviewData = {
       showId,
       outletId: 'nysr',
       outlet: 'New York Stage Review',
-      criticName: authorName,
+      criticName: canonicalAuthorName,
       url: postUrl,
       publishDate: postDate,
       fullText: plainText,

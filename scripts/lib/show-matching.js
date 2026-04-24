@@ -871,11 +871,13 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
 
   // Multi-word: ≥50% of meaningful words, minimum 2
   // Use word-boundary matching for ALL words to prevent substring false positives
-  const matchCount = words.filter(w => matchesAsWholeWord(w, candidateLower)).length;
+  const matchedWords = words.filter(w => matchesAsWholeWord(w, candidateLower));
+  const missingWords = words.filter(w => !matchesAsWholeWord(w, candidateLower));
+  const matchCount = matchedWords.length;
   const threshold = Math.max(2, Math.ceil(words.length * 0.5));
   const matched = matchCount >= threshold;
   const confidence = matched ? matchCount / words.length : 0;
-  return { matched, confidence, matchCount, threshold, words };
+  return { matched, confidence, matchCount, threshold, words, matchedWords, missingWords };
 }
 
 module.exports = {

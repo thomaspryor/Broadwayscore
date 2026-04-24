@@ -261,6 +261,21 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
     return { valid: false, confidence: 0, reason: `headings "${headingText.substring(0, 80)}" don't match "${showTitle}"` };
   }
 
+  // Short-title full-match guard: for titles with 2-3 meaningful words, a missing
+  // word almost always means a different show — e.g., "Drunk Romeo & Juliet" is
+  // NOT "Romeo + Juliet" (Broadway Connor/Zegler revival, 2024). The LLM tiebreaker
+  // cannot reliably distinguish brand prefixes (Drunk, Bad, Lunatic's) from base
+  // titles, so reject short-title partial matches without LLM rescue.
+  if (match.words && match.words.length >= 2 && match.words.length <= 3
+      && match.matchCount > 0 && match.matchCount < match.words.length) {
+    const missing = match.missingWords || [];
+    return {
+      valid: false,
+      confidence: match.confidence,
+      reason: `short-title partial match: missing [${missing.join(',')}] from headings "${headingText.substring(0, 80)}"`
+    };
+  }
+
   // Slug fallback: check if multi-word show slug appears in page title
   // Only for multi-word slugs (contain hyphen) — single-word slugs are too ambiguous
   const showSlug = showTitle.toLowerCase()

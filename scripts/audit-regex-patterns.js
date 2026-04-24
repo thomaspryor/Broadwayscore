@@ -41,6 +41,7 @@ const PATTERN_FAMILIES = [
   'NEWSLETTER_PATTERNS',
   'NAVIGATION_PATTERNS',
   'WRONG_ARTICLE_PATTERNS',
+  'HORROR_FILM_PATTERNS',
 ];
 
 // Per-pattern hit allowances. Default is DEFAULT_MAX_HITS. Add entries here
@@ -82,6 +83,16 @@ const PATTERN_ALLOWLIST = {
   // Paywall: bare /paywall/i matches critics discussing their publication's
   // funding model in trailing editor notes — absorbed by trailing-junk mitigation
   'PAYWALL_PATTERNS::12': 20, // /paywall/i
+  // Horror-film: bare patterns fire on 312 reviews (metaphors — "insidious plot",
+  // "horror movie genre comparison", "haunted house set", "spirit world in Hamlet").
+  // detectHorrorFilmContent's 3+-theater-keyword guard absorbs 100% — zero pass
+  // through to rejection. Allowlist to current full-corpus baseline + 30%.
+  'HORROR_FILM_PATTERNS::0': 150, // /insidious/ — raw 101
+  'HORROR_FILM_PATTERNS::1': 150, // /horror\s*(film|movie|sequel)/ — raw 107
+  'HORROR_FILM_PATTERNS::3': 70,  // /haunted\s+(family|house|lambert)/ — raw 47
+  'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
+  'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
+  'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
 };
 
 const DEFAULT_MAX_HITS = 5;

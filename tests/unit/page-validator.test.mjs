@@ -84,4 +84,39 @@ describe('Page Validator', () => {
       assert.strictEqual(result.valid, true);
     });
   });
+
+  describe('short-title partial-match guard', () => {
+    // Regression: "Drunk Romeo & Juliet" (Off-Broadway Drunk Shakespeare parody)
+    // was getting matched to the "Romeo + Juliet" Broadway 2024 roundup page
+    // because 2/3 words matched and the LLM tiebreaker said YES.
+    it('rejects "Drunk Romeo & Juliet" vs Romeo + Juliet roundup (the original bug)', async () => {
+      const html = `<html><head><title>Romeo + Juliet on Broadway: Review Roundup</title></head>
+        <body><h1>Romeo + Juliet Review Roundup</h1></body></html>`;
+      const result = await validatePageMatchesShow(html, 'Drunk Romeo & Juliet', { ...SKIP_LLM, openingYear: 2025 });
+      assert.strictEqual(result.valid, false);
+      assert.ok(result.reason.includes('short-title partial match'));
+      assert.ok(result.reason.includes('drunk'));
+    });
+
+    it('rejects "Bad Cinderella" vs Cinderella roundup (same bug class)', async () => {
+      const html = `<html><head><title>Cinderella Review Roundup</title></head>
+        <body><h1>Cinderella</h1></body></html>`;
+      const result = await validatePageMatchesShow(html, 'Bad Cinderella', { ...SKIP_LLM, openingYear: 2023 });
+      assert.strictEqual(result.valid, false);
+    });
+
+    it('still accepts "Romeo + Juliet" vs Romeo + Juliet roundup (no partial match)', async () => {
+      const html = `<html><head><title>Romeo + Juliet Review Roundup</title></head>
+        <body><h1>Romeo + Juliet</h1></body></html>`;
+      const result = await validatePageMatchesShow(html, 'Romeo + Juliet', { ...SKIP_LLM, openingYear: 2024 });
+      assert.strictEqual(result.valid, true);
+    });
+
+    it('still accepts "The Great Gatsby" full match', async () => {
+      const html = `<html><head><title>The Great Gatsby Review Roundup</title></head>
+        <body><h1>The Great Gatsby</h1></body></html>`;
+      const result = await validatePageMatchesShow(html, 'The Great Gatsby', { ...SKIP_LLM, openingYear: 2024 });
+      assert.strictEqual(result.valid, true);
+    });
+  });
 });

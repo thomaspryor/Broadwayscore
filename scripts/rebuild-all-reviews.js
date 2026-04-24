@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
@@ -2892,10 +2892,22 @@ showDirs.forEach(showId => {
           const bothNamed = currentCritic && currentCritic !== 'unknown' &&
                             winner.critic && winner.critic !== 'unknown';
           const differentPeople = bothNamed && currentCritic !== winner.critic;
-          if (differentPeople) {
+          // Fuzzy critic dedup — catch typo-variant duplicates (Isabella Biedenahrn vs
+          // Biedenharn, Marilyn vs Marylin Stasio, etc.) that the strict-equality check
+          // above treats as distinct critics. Audit 2026-04-24 found 18 such pairs in
+          // live data. Levenshtein ≤ 2 with min-length ≥ 6 is tight enough not to
+          // collapse legitimate different critics (Ben Brantley vs Charles Isherwood
+          // are edit-distance >> 2).
+          const fuzzySame = differentPeople && areSameCriticFuzzy(currentCritic, winner.critic);
+          if (differentPeople && !fuzzySame) {
             stats.allowedMultiCriticUrl = (stats.allowedMultiCriticUrl || 0) + 1;
           } else {
-            // Files are sorted so real critic names come before "unknown" — first wins
+            // Files are sorted so real critic names come before "unknown" — first wins.
+            // Fuzzy-matched typo-duplicates also fall through here.
+            if (fuzzySame) {
+              stats.skippedFuzzyCriticDuplicate = (stats.skippedFuzzyCriticDuplicate || 0) + 1;
+              console.log(`  [FUZZY-CRITIC DEDUP] ${showId}/${file}: ${data.criticName} ≈ ${winner.critic} at ${urlOutletKey} (keeping ${winner.file})`);
+            }
             logExclusion("skippedDuplicateUrl", showId, file, data);
             stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
             return;
@@ -2912,9 +2924,15 @@ showDirs.forEach(showId => {
           const bothNamedGlobal = currentCritic && currentCritic !== 'unknown' &&
                                   globalWinner.critic && globalWinner.critic !== 'unknown';
           const differentPeopleGlobal = bothNamedGlobal && currentCritic !== globalWinner.critic;
-          if (differentPeopleGlobal) {
+          // Fuzzy check mirrors the same-outlet path — typo duplicates across the
+          // cross-outlet index should also collapse (rare but possible).
+          const fuzzySameGlobal = differentPeopleGlobal && areSameCriticFuzzy(currentCritic, globalWinner.critic);
+          if (differentPeopleGlobal && !fuzzySameGlobal) {
             stats.allowedMultiCriticUrlCrossOutlet = (stats.allowedMultiCriticUrlCrossOutlet || 0) + 1;
           } else {
+            if (fuzzySameGlobal) {
+              stats.skippedFuzzyCriticDuplicateCrossOutlet = (stats.skippedFuzzyCriticDuplicateCrossOutlet || 0) + 1;
+            }
             logExclusion("skippedCrossOutletDuplicateUrl", showId, file, data);
             stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
             return;
@@ -2927,30 +2945,62 @@ showDirs.forEach(showId => {
       // Content fingerprint dedup: same review text at same outlet under different critic names
       // Belt-and-suspenders: catches duplicates even if duplicateTextOf flag was never set
       // Files are pre-sorted by quality (non-duplicate, verified, ensemble-scored first)
-      // so first-seen is the preferred file
+      // so first-seen is the preferred file.
+      //
+      // Single-author-outlet swap rule: when a fingerprint collision occurs at an outlet
+      // with outlet.defaultCritic set, prefer the file whose criticName matches the default
+      // critic. Defense-in-depth against cross-aggregator mis-attribution that URL dedup +
+      // static CRITIC_CANONICAL_MAP miss (e.g., an outlet-registry-defaulting file beats a
+      // randomly-attributed first-in file with the same text).
       if (data.fullText && data.fullText.length >= 100) {
         const fingerprint = computeContentFingerprint(data.fullText);
         if (fingerprint) {
           const outletKey2 = normalizeOutletCanonical(data.outletId || data.outlet);
           const fpKey = `${outletKey2}|${fingerprint}`;
+          const outletEntry = outletRegistry.outlets[outletKey2];
+          const defaultCritic = outletEntry && outletEntry.defaultCritic;
+          const defaultCriticKey = defaultCritic ? normalizeCriticCanonical(defaultCritic) : null;
+          const incomingCriticKey = normalizeCriticCanonical(data.criticName || 'unknown');
+
           if (seenFingerprintsByOutlet.has(fpKey)) {
-            const winner = seenFingerprintsByOutlet.get(fpKey);
-            console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} at ${outletKey2} (keeping ${winner})`);
-            logExclusion("skippedFingerprintDedup", showId, file, data);
-            stats.skippedFingerprintDedup = (stats.skippedFingerprintDedup || 0) + 1;
-            return;
+            const winnerRec = seenFingerprintsByOutlet.get(fpKey);
+            const winnerFile = typeof winnerRec === 'string' ? winnerRec : winnerRec.file;
+            const winnerCriticKey = typeof winnerRec === 'string' ? null : winnerRec.criticKey;
+            // Swap-to-default: if the outlet has a defaultCritic and the incoming file's
+            // critic matches it while the winner's doesn't, swap them. Incoming becomes the
+            // winner; the prior winner is dropped. This is the proactive fix that the
+            // existing post-hoc `detect-syndicated-duplicates.js` pass doesn't deliver.
+            if (defaultCriticKey &&
+                incomingCriticKey === defaultCriticKey &&
+                winnerCriticKey && winnerCriticKey !== defaultCriticKey) {
+              console.log(`  [FINGERPRINT SWAP-TO-DEFAULT] ${showId}/${file}: critic matches defaultCritic "${defaultCritic}" — replacing prior winner ${winnerFile}`);
+              // Log the drop of the prior winner so the audit trail survives.
+              logExclusion("skippedFingerprintDedupSwapped", showId, winnerFile, null, {
+                reason: `swapped for ${file} (critic matches outlet.defaultCritic)`,
+              });
+              stats.swappedFingerprintToDefault = (stats.swappedFingerprintToDefault || 0) + 1;
+              seenFingerprintsByOutlet.set(fpKey, { file, criticKey: incomingCriticKey });
+              // Don't `return` — let the incoming file flow through to output below.
+            } else {
+              console.log(`  [FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winnerFile} at ${outletKey2} (keeping ${winnerFile})`);
+              logExclusion("skippedFingerprintDedup", showId, file, data);
+              stats.skippedFingerprintDedup = (stats.skippedFingerprintDedup || 0) + 1;
+              return;
+            }
+          } else {
+            seenFingerprintsByOutlet.set(fpKey, { file, criticKey: incomingCriticKey });
           }
-          seenFingerprintsByOutlet.set(fpKey, file);
 
           // Cross-outlet fingerprint dedup: same article filed under different outlet names
           if (seenFingerprintsGlobal.has(fingerprint)) {
-            const winner = seenFingerprintsGlobal.get(fingerprint);
-            console.log(`  [CROSS-OUTLET FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winner} (keeping ${winner})`);
+            const winnerRec = seenFingerprintsGlobal.get(fingerprint);
+            const winnerFile = typeof winnerRec === 'string' ? winnerRec : winnerRec.file;
+            console.log(`  [CROSS-OUTLET FINGERPRINT DEDUP] ${showId}/${file}: same text as ${winnerFile} (keeping ${winnerFile})`);
             logExclusion("skippedCrossOutletFingerprintDedup", showId, file, data);
             stats.skippedCrossOutletFingerprintDedup = (stats.skippedCrossOutletFingerprintDedup || 0) + 1;
             return;
           }
-          seenFingerprintsGlobal.set(fingerprint, file);
+          seenFingerprintsGlobal.set(fingerprint, { file, criticKey: incomingCriticKey });
         }
       }
 
@@ -3725,6 +3775,9 @@ const output = {
       allowedMultiCriticUrl: stats.allowedMultiCriticUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       allowedMultiCriticUrlCrossOutlet: stats.allowedMultiCriticUrlCrossOutlet || 0,
+      skippedFuzzyCriticDuplicate: stats.skippedFuzzyCriticDuplicate || 0,
+      skippedFuzzyCriticDuplicateCrossOutlet: stats.skippedFuzzyCriticDuplicateCrossOutlet || 0,
+      swappedFingerprintToDefault: stats.swappedFingerprintToDefault || 0,
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
