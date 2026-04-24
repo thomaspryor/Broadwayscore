@@ -25,13 +25,16 @@ on:
       - 'data/gold-lists-computed.json'
       # NOTE: data/audit/seo-* is NOT listed here, so SEO health check pushes won't trigger deploys
   # Deploy-before-rebuild race fix (Beaches 2026-04-22 postmortem #9):
-  # When Rebuild Reviews Data finishes successfully, refresh production so the
-  # newly-rebuilt reviews.json actually ships. Without this, a deploy triggered
-  # by a public-repo push (e.g., src/ change) that races ahead of the rebuild
-  # clones stale core-data and serves yesterday's counts until the next deploy.
+  # When a rebuild finishes successfully, refresh production so the newly-rebuilt
+  # reviews.json actually ships. Without this, a deploy triggered by a public-repo
+  # push (e.g., src/ change) that races ahead of the rebuild clones stale core-data
+  # and serves yesterday's counts until the next deploy.
+  # Rebuild Reviews (Fast) is the path used for opening-night corrections, which
+  # is exactly when the stale-deploy race is most painful — include it here so Fast
+  # rebuilds also gate production deploys. Part of P1 redesign card 34b637c5-416f-8126-bb13-e12fb737bed2.
   # Job-level guard (see deploy.if) skips failures.
   workflow_run:
-    workflows: ["Rebuild Reviews Data"]
+    workflows: ["Rebuild Reviews Data", "Rebuild Reviews (Fast)"]
     types: [completed]
   workflow_dispatch: # Manual trigger
 
