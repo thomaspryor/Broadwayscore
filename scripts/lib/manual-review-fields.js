@@ -32,6 +32,10 @@ const REQUIRED_PROTECTION_FIELDS = [
  *
  * @param {object} opts
  * @param {number|null} [opts.humanScore]       Explicit score 1-100 (goes to humanReviewScore)
+ * @param {boolean} [opts.provisional=false]    When true, humanReviewScoreProvisional=true so
+ *                                              rebuild-helpers.js:P0 lets LLM scores override
+ *                                              once real scoring runs. Default false = LOCKED
+ *                                              (the Rocky Horror 2026-04-23 Helen Shaw case).
  * @param {string|null} [opts.fullText]         Review body text
  * @param {string|null} [opts.originalScore]    Raw rating string ("3/5", "B+", etc.)
  * @param {string|null} [opts.originalScoreSource] Extractor label ("manual-stars")
@@ -41,6 +45,7 @@ const REQUIRED_PROTECTION_FIELDS = [
 function buildManualReviewFields(opts = {}) {
   const {
     humanScore = null,
+    provisional = false,
     fullText = null,
     originalScore = null,
     originalScoreSource = null,
@@ -59,11 +64,12 @@ function buildManualReviewFields(opts = {}) {
   }
 
   if (humanScore) {
-    // humanReviewScore is the ONLY score field rebuild respects. Mark as LOCKED
-    // (non-provisional) so the resolver at rebuild-helpers.js:P0 uses it over LLM.
-    // See Rocky Horror 2026-04-23 Helen Shaw case.
+    // humanReviewScore is the ONLY score field rebuild respects.
+    // provisional=false (default) → LOCKED, resolver returns it at P0.
+    // provisional=true → operator wants LLM to override once real scoring lands.
+    // Semantic wired in scripts/lib/rebuild-helpers.js getBestScore.
     fields.humanReviewScore = humanScore;
-    fields.humanReviewScoreProvisional = false;
+    fields.humanReviewScoreProvisional = !!provisional;
   }
 
   // Full protection field set — missing any one means a different guard re-flags the review.

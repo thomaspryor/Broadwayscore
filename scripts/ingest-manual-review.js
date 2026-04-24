@@ -79,6 +79,7 @@ const publishDate = getArg('publish-date');
 const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
 const forceClearStale = hasFlag('force-clear-stale-flag');
+const provisional = hasFlag('provisional');
 
 // Validate required args
 if (!showId || !outletArg || !criticName) {
@@ -92,6 +93,8 @@ if (!showId || !outletArg || !criticName) {
   console.error('Optional:');
   console.error('  --url=URL          Review URL');
   console.error('  --score=N          Explicit score 1-100 (saved as humanReviewScore — survives rebuild)');
+  console.error('  --provisional      Mark humanReviewScore as tentative — LLM scoring will override');
+  console.error('                     once it runs. Default (no flag) is LOCKED (Helen Shaw behavior).');
   console.error('  --stars=N/M        Star rating (e.g., "3/5" → converted to score)');
   console.error('  --text=STRING      Inline review text');
   console.error('  --text-file=PATH   File containing review text');
@@ -170,7 +173,7 @@ console.log(`║  Show: ${show.title} (${showId})`);
 console.log(`║  Outlet: ${outletName} (${outletId})`);
 console.log(`║  Critic: ${criticName}`);
 if (url) console.log(`║  URL: ${url}`);
-if (humanScore) console.log(`║  Score: ${humanScore} (humanReviewScore — survives rebuild)`);
+if (humanScore) console.log(`║  Score: ${humanScore} (humanReviewScore — ${provisional ? 'PROVISIONAL, LLM may override' : 'LOCKED, wins over LLM'})`);
 if (originalScore) console.log(`║  Stars: ${originalScore} → ${humanScore}`);
 if (fullText) console.log(`║  Text: ${fullText.length} chars`);
 if (publishDate) console.log(`║  Published: ${publishDate}`);
@@ -205,6 +208,7 @@ if (!collision.ok) {
 // one, CI catches it before another opening night.
 const fields = buildManualReviewFields({
   humanScore,
+  provisional,
   fullText,
   originalScore,
   originalScoreSource,
@@ -255,8 +259,15 @@ if (!noRebuild) {
 
 console.log('\nDone.');
 if (humanScore) {
-  console.log(`\nNote: humanReviewScore=${humanScore} will survive all future rebuilds.`);
-  console.log('To change it later, edit the file directly and set a new humanReviewScore value.');
+  if (provisional) {
+    console.log(`\nNote: humanReviewScore=${humanScore} saved with humanReviewScoreProvisional=true.`);
+    console.log('LLM ensemble scoring WILL override this once it runs.');
+    console.log('To lock the score instead, edit the file and set humanReviewScoreProvisional=false.');
+  } else {
+    console.log(`\nNote: humanReviewScore=${humanScore} is LOCKED (humanReviewScoreProvisional=false).`);
+    console.log('The rebuild resolver returns it at P0 — LLM scores will not override.');
+    console.log('To change it later, edit the file directly and set a new humanReviewScore value.');
+  }
 }
 if (fullText) {
   console.log(`\nNote: manualContentTier=complete will prevent rebuild from reclassifying this review.`);

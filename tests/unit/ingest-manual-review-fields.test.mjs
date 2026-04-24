@@ -43,6 +43,30 @@ test('8 protection fields are set with full text + score', () => {
   assert.equal(fields.humanReviewScoreProvisional, false, 'locked-in humanReviewScore must set provisional=false');
 });
 
+test('provisional=true makes humanReviewScoreProvisional=true (LLM can override)', () => {
+  const fields = buildManualReviewFields({
+    humanScore: 70,
+    provisional: true,
+    fullText: 'Tentative take before full text arrives. '.repeat(10),
+  });
+  assert.equal(fields.humanReviewScore, 70);
+  assert.equal(fields.humanReviewScoreProvisional, true);
+  // The other protection fields still apply — it's only the score LOCK that
+  // relaxes; wrongProduction / allowEarlyDate etc. still bypass their guards.
+  assertCore8(fields, { expectManualContentTier: true });
+});
+
+test('provisional omitted defaults to false (backwards-compatible with pre-P2 callers)', () => {
+  const fields = buildManualReviewFields({ humanScore: 82 });
+  assert.equal(fields.humanReviewScoreProvisional, false);
+});
+
+test('provisional=true with no humanScore is a no-op on the provisional field', () => {
+  const fields = buildManualReviewFields({ provisional: true, fullText: 'x'.repeat(500) });
+  assert.equal(fields.humanReviewScore, undefined, 'no score → no humanReviewScore');
+  assert.equal(fields.humanReviewScoreProvisional, undefined, 'no score → no provisional flag to set');
+});
+
 test('8 protection fields are set with score only (no text)', () => {
   const fields = buildManualReviewFields({ humanScore: 63 });
   // manualContentTier only applies when we actually have text
