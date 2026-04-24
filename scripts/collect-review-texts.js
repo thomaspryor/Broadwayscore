@@ -4376,11 +4376,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const hasReliableExtractor = outletExtractor && outletExtractor.name !== 'noScoreExtractor';
     const hasFullText = data.fullText && data.fullText.length > 500;
     const scoreSource = data.scoreSource;
+    // LLM extraction already ran in the first pass (line ~4309) with access to
+    // the same html+text we have here, and it beats regex on ambiguous cases
+    // (e.g. "3.5 out of 4 stars" parses cleanly in LLM but hits the regex at
+    // face value). Never supersede an LLM-extracted score with a regex pass.
+    const isLlmSource = typeof scoreSource === 'string' && scoreSource.startsWith('llm-');
     const isUnverifiedOrAggregator =
-      !data.originalScore ||
-      !scoreSource ||
-      AGGREGATOR_SCORE_SOURCES.has(scoreSource) ||
-      !OUTLET_VERIFIED_SOURCES.has(scoreSource);
+      !isLlmSource && (
+        !data.originalScore ||
+        !scoreSource ||
+        AGGREGATOR_SCORE_SOURCES.has(scoreSource) ||
+        !OUTLET_VERIFIED_SOURCES.has(scoreSource)
+      );
 
     if (hasReliableExtractor && hasFullText && html && isUnverifiedOrAggregator && !wasCleared) {
       const rescoreResult = extractScore(html, data.fullText, outletId);
