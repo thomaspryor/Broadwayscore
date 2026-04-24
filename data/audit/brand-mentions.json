@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-24T14:50:37.206Z",
+  "lastRunAt": "2026-04-24T16:37:55.576Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -37,7 +37,8 @@
     "news:cdc732e5f342d769": true,
     "google:2e1f7a4de10ff277": true,
     "news:0ac605a57304b163": true,
-    "news:67acdc3de5e1aa44": true
+    "news:67acdc3de5e1aa44": true,
+    "google:e67df507ee6601c6": true
   },
   "mentions": [
     {
@@ -762,10 +763,30 @@
       "draftReason": "This is just a URL share in a reviews thread with no question, discussion prompt, or conversational opening — replying would look promotional.",
       "draftResponse": null,
       "dispatched": "2026-04-23T20:37:46.963Z"
+    },
+    {
+      "id": "google:e67df507ee6601c6",
+      "source": "google",
+      "url": "https://forum.broadwayworld.com/thread/Beaches-reviews/3",
+      "title": "Beaches reviews - Page 3",
+      "excerpt": "2 days ago — https://broadwayscorecard.com/show/beaches. \"When we die, we go bye bye.\" - Abe Lincolns. Kad Profile Photo. Kad. Profile. Broadway Legend ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-24T16:37:45.459Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-24T16:37:55.576Z"
     }
   ],
   "stats": {
-    "totalSeen": 37,
+    "totalSeen": 38,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -805,6 +826,7 @@
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/2": true,
     "https://www.podchaser.com/podcasts/broadway-breakdown-543385/episodes/updated-tony-eligibility-broad-284309408": true,
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true,
-    "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true
+    "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true,
+    "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true
   }
 }
