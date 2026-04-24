@@ -82,14 +82,42 @@ async function fetchLiveRc(showId) {
 }
 
 /**
- * Computes drift from the three count sources.
- * If live.rc is null, drift = |local - aggregate|.
+ * Reads the local per-show JSON (stage 3) and returns both the cached `rc`
+ * count and the actual length of the `rv` reviews array. Returns null if the
+ * file is missing or unreadable.
  *
- * @param {{ local: number, aggregate: number, live: number|null }} counts
+ * Pairs with fetchLiveRc: fetchLiveRc reads the same file served from CDN
+ * (stage 4), countLocalPerShowJson reads it from the local filesystem (stage 3).
+ * Drift between the two isolates deploy-lag from generation bugs.
+ *
+ * @param {string} showId
+ * @param {string} publicDataRoot  default: 'public/data/shows'
+ * @returns {{ rc: number|null, reviewsArrayLength: number }|null}
+ */
+function countLocalPerShowJson(showId, publicDataRoot = 'public/data/shows') {
+  const filePath = path.join(publicDataRoot, `${showId}.json`);
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const rc = typeof data.rc === 'number' ? data.rc : null;
+    const reviewsArrayLength = Array.isArray(data.rv) ? data.rv.length : 0;
+    return { rc, reviewsArrayLength };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Computes drift from the available count sources. Any field that is null/
+ * undefined is omitted. With all four provided: max - min over
+ * [local, aggregate, localJson, live].
+ *
+ * @param {{ local: number, aggregate: number, localJson?: number|null, live?: number|null }} counts
  * @returns {{ min: number, max: number, drift: number }}
  */
-function computeDrift({ local, aggregate, live }) {
+function computeDrift({ local, aggregate, localJson, live }) {
   const values = [local, aggregate];
+  if (localJson != null) values.push(localJson);
   if (live != null) values.push(live);
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -100,5 +128,6 @@ module.exports = {
   countLocalIncluded,
   countAggregate,
   fetchLiveRc,
+  countLocalPerShowJson,
   computeDrift,
 };

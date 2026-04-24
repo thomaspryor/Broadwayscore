@@ -222,6 +222,22 @@ FAIL if: no successful run in last 48 hours. Fix: `gh workflow run opening-night
 
 ---
 
+## Check 10: Pipeline Stage Drift
+
+**Purpose:** Confirm all 4 pipeline stages agree on the review count for this show (review-texts → reviews.json → public/data/shows/*.json → live CDN). Catches the silent-drop class documented in the 2026-04-15 incident.
+
+```bash
+node scripts/check-opening-night-drift.js --show=$SHOW_ID --format=table
+```
+
+Output format: `Show  Opening  Local  Agg  LocalJSON  Live  Drift  Status`.
+
+PASS if: `Drift` column is 0 (all 4 stages agree) AND `Status` is `ok`.
+GRACE (accept): `Status` is `grace` — stage 3↔4 drift within the 15-min Vercel deploy-lag window. Re-run in 5 min to confirm it clears.
+FAIL if: `Drift` > 0 with status `watch` or `ALERT`. Fix: `node scripts/verify-review-recovery.js --show=$SHOW_ID --production` to isolate which stage is stale.
+
+---
+
 ## Summary Output Format
 
 ```
