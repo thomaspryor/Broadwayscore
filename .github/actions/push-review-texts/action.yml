@@ -54,7 +54,13 @@ runs:
             'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
             'showTitle', 'textFetchedAt', 'textWordCount', 'textStatus', 'sourceMethod',
             'isFullReview', 'wrongFullText', 'wrongShow', 'wrongShowReason', 'wrongProduction',
-            'wrongProductionNote', 'incompleteReason', 'incompleteDetail',
+            'wrongProductionNote',
+            // incompleteReason + incompleteDetail INTENTIONALLY EXCLUDED — must stay in sync with
+            // scripts/lib/review-write-guard.js PROTECTED_FIELDS (see note at line 127 there).
+            // Preserving them caused stale 'wrong_content' flags to survive after classifyIncompleteReason
+            // cleared them (rebuild-all-reviews.js:1504-1524), blocking valid reviews from reviews.json.
+            // Observed 2026-04-24: cats-the-jellicle-ball NYT/nydailynews stayed filtered after contentTier
+            // fix because this push-action restored the stale incompleteReason='wrong_content'.
             'originalScoreCleared', 'originalScoreClearedReason', 'previousOriginalScore',
             'humanReviewScore', 'humanReviewNote', 'humanReviewedWrongProduction',
             'humanReviewedWrongArticle',
