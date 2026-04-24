@@ -7,6 +7,8 @@
  * Superset of all patterns previously duplicated across 3 files.
  */
 
+const { hasOnlyForwardTenseTourMention } = require('./excerpt-validation');
+
 /**
  * Returns true if the text indicates non-Broadway content (tour, off-Broadway,
  * regional, film/TV, streaming, West End, etc.)
@@ -42,16 +44,22 @@ function isNotBroadway(text, options = {}) {
     }
   }
 
-  return (
-    // Always rejected regardless of category
-    lower.includes('opera') ||
-    lower.includes('in chicago') ||
-    // Touring
+  // Tour phrases: apply forward-tense carve-out. A Broadway review that mentions
+  // "a national tour is planned" is not a tour review. Postmortem #18 (2026-04).
+  const hasTourPhrase =
     lower.includes('national tour') ||
     lower.includes('north american tour') ||
     lower.includes('touring production') ||
     lower.includes('touring cast') ||
-    lower.includes('touring company') ||
+    lower.includes('touring company');
+  if (hasTourPhrase && !hasOnlyForwardTenseTourMention(text)) {
+    return true;
+  }
+
+  return (
+    // Always rejected regardless of category
+    lower.includes('opera') ||
+    lower.includes('in chicago') ||
     // Film / movie
     lower.includes('film review') ||
     lower.includes('film adaptation') ||

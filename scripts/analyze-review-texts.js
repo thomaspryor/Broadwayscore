@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { LETTER_GRADES } = require('./lib/score-conversion-rules');
 
 const showId = process.argv[2] || 'queen-versailles-2025';
 const showDir = path.join(__dirname, '../data/review-texts', showId);
@@ -74,8 +75,7 @@ reviews.forEach(r => {
     }
     const letterMatch = rating.match(/^([A-D][+-]?|F)$/i);
     if (letterMatch) {
-      const grades = {'A+':97,'A':93,'A-':89,'B+':85,'B':80,'B-':74,'C+':67,'C':60,'C-':53,'D+':45,'D':36,'D-':28,'F':15};
-      bestScore = grades[letterMatch[1].toUpperCase()];
+      bestScore = LETTER_GRADES[letterMatch[1].toUpperCase()];
       source = letterMatch[1];
     }
   } else if (r.dtliThumb) {

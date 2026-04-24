@@ -158,25 +158,68 @@ const TOUR_VENUE_PATTERNS = [
   /\bPlayhouse Square\b/,
 ];
 
+// Forward-looking tour mentions (planned/upcoming tours, not reviews of live tours).
+// A Broadway review that ends with "a national tour is planned" should NOT be
+// excluded as a tour review. Beaches 2026-04-22 + Rocky Horror 2026-04-23 postmortem #18.
+const TOUR_FORWARD_TENSE_PATTERNS = [
+  /\b(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\s+(?:is|will\s+be|will|has\s+been|is\s+being|is\s+set|is\s+slated|is\s+expected)\s+(?:planned|announced|scheduled|slated|launched|booked|set|expected|coming|on\s+the\s+way|to\s+(?:launch|begin|start|open|hit|embark|follow|tour))/i,
+  /\b(?:planned|announced|scheduled|slated|upcoming|forthcoming|future|prospective|proposed)\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
+  /\btour\s+(?:starts|begins|opens|kicks\s+off|launches|heads|set\s+to\s+(?:launch|begin|start|open|embark))\s+(?:in\s+\d{4}|later|next|soon|this\s+(?:fall|winter|spring|summer|year))/i,
+  /\bto\s+(?:embark\s+on|launch|begin|start|commence|mount|hit\s+the\s+road\s+on)\s+a\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
+  /\b(?:announcing|announced|launching|launch|plans?\s+(?:for|a))\s+(?:a\s+)?(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
+  /\btour\s+(?:in|beginning|opening|starting|launching|set\s+for)\s+(?:20\d{2})\b/i,
+  /\bwill\s+tour\b/i,
+];
+
+// Past-tense / in-progress markers — confirm this IS a tour review
+const TOUR_PAST_TENSE_PATTERNS = [
+  /\b(?:saw|caught|watched|attended|experienced|witnessed|reviewed)\s+(?:the\s+)?(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
+  /\b(?:on|during|at|from)\s+(?:its|the)\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
+  /\btour\s+(?:opened|began|started|arrived|settled|landed|stops?|has\s+arrived|is\s+now|continues|is\s+currently|played|comes|came|has\s+come)\b/i,
+  /\btoured\b/i,
+  /\b(?:currently|now)\s+(?:on|touring)\b/i,
+  /\bthis\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)tour\b/i,
+];
+
+/**
+ * Returns true if a tour keyword appears only in forward-looking contexts
+ * (planned/upcoming tour) with no past-tense/in-progress tour signal.
+ * Indicates a Broadway review mentioning a future tour, not a review of the tour itself.
+ *
+ * @param {string} excerpt
+ * @returns {boolean}
+ */
+function hasOnlyForwardTenseTourMention(excerpt) {
+  if (!excerpt) return false;
+  const hasForward = TOUR_FORWARD_TENSE_PATTERNS.some(p => p.test(excerpt));
+  if (!hasForward) return false;
+  const hasPast = TOUR_PAST_TENSE_PATTERNS.some(p => p.test(excerpt));
+  return !hasPast;
+}
+
 /**
  * Check if an excerpt appears to be from a touring production review.
  *
  * @param {string} excerpt - The excerpt text
- * @returns {{ isTourReview: boolean, signal?: string }}
+ * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean }}
  */
 function isTourReviewExcerpt(excerpt) {
   if (!excerpt) return { isTourReview: false };
 
-  for (const pattern of TOUR_EXCERPT_PATTERNS) {
-    if (pattern.test(excerpt)) {
-      return { isTourReview: true, signal: pattern.source };
-    }
-  }
-
+  // Venue patterns are unambiguous — check first (forward-tense carve-out does NOT apply)
   for (const pattern of TOUR_VENUE_PATTERNS) {
     if (pattern.test(excerpt)) {
       return { isTourReview: true, signal: `venue: ${pattern.source}` };
     }
+  }
+
+  // Tour keyword patterns — skip when only forward-tense context is present
+  const matched = TOUR_EXCERPT_PATTERNS.find(p => p.test(excerpt));
+  if (matched) {
+    if (hasOnlyForwardTenseTourMention(excerpt)) {
+      return { isTourReview: false, forwardTenseOnly: true, signal: matched.source };
+    }
+    return { isTourReview: true, signal: matched.source };
   }
 
   return { isTourReview: false };
@@ -254,6 +297,7 @@ module.exports = {
   excerptMentionsWrongShow,
   isTourReviewExcerpt,
   isFilmTvReview,
+  hasOnlyForwardTenseTourMention,
   getMatchableTitles,
   resetCache,
   COMMON_WORD_TITLES,

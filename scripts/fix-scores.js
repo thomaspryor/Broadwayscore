@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
 
 const dataPath = path.join(__dirname, '../data/reviews.json');
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
@@ -17,14 +18,6 @@ let reviews = data.reviews;
 // Rating conversion rules
 const STAR_TO_SCORE = {
   5: 92, 4: 82, 3: 63, 2: 45, 1: 25, 0: 10
-};
-
-const LETTER_TO_SCORE = {
-  'A+': 97, 'A': 93, 'A-': 89,
-  'B+': 85, 'B': 80, 'B-': 74,
-  'C+': 67, 'C': 60, 'C-': 53,
-  'D+': 45, 'D': 36, 'D-': 28,
-  'F': 15
 };
 
 const SENTIMENT_TO_SCORE = {
