@@ -246,6 +246,31 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
  * @param {string} showTitle - The show title to match against
  * @returns {boolean}
  */
+function urlTitleWordsPass(lowerUrl, showTitle) {
+  const titleWords = showTitle.toLowerCase()
+    .replace(/[^a-z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+
+  // Zero meaningful words: fail-open (original behavior — better to include than miss).
+  if (titleWords.length === 0) return true;
+
+  const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lowerUrl);
+  if (isTBWorldPath) {
+    const matchCountTB = titleWords.filter(w => lowerUrl.includes(w)).length;
+    const minMatchTB = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
+    return matchCountTB >= minMatchTB;
+  }
+
+  const wordMatch = (haystack, word) => {
+    const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
+  };
+  const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
+  const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
+  return matchCount >= minMatch;
+}
+
 function urlLooksLikeReview(url, showTitle) {
   const lower = url.toLowerCase();
   // Reject non-article URLs
@@ -255,37 +280,17 @@ function urlLooksLikeReview(url, showTitle) {
   if (lower.includes('/page/') && !lower.includes('talkinbroadway.com/page/')) return false;
   if (lower.includes('ticket') && !lower.includes('review')) return false;
 
-  // Check if URL contains words from show title
-  const titleWords = showTitle.toLowerCase()
-    .replace(/[^a-z0-9\s]/g, '')
-    .split(/\s+/)
-    .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+  if (urlTitleWordsPass(lower, showTitle)) return true;
 
-  // Talkin' Broadway uses CamelCase slugs concatenated with optional year suffix
-  // (e.g. /page/world/Proof26.html, /world/MeteorShower2017.html, /page/world/AllMySons2019.html).
-  // Word boundaries don't exist between title words OR before the year — use plain substring match.
-  // TB is a curated outlet on our allowlist, so substring match is safe here.
-  const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lower);
-  if (isTBWorldPath) {
-    const matchCountTB = titleWords.filter(w => lower.includes(w)).length;
-    const minMatchTB = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
-    return matchCountTB >= minMatchTB;
-  }
+  // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
+  // Outlet URL slugs typically carry only the short title ("/beaches-review-broadway.html").
+  // Beaches 2026-04-22: rejected all outlet URLs (NYT/Guardian/People/EW/TimeOut/TheWrap/NYDN/NYT/…)
+  // via outlet-domain-supplement urlTitleCheck before this fallback.
+  const { shortTitleCandidate } = require('./title-normalization');
+  const shortTitle = shortTitleCandidate(showTitle);
+  if (shortTitle && urlTitleWordsPass(lower, shortTitle)) return true;
 
-  // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
-  // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
-  // Trailing digit is also a boundary — for year/sequel suffixes in URLs that DO use separators.
-  const wordMatch = (haystack, word) => {
-    const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
-    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
-  };
-  const matchCount = titleWords.filter(w => wordMatch(lower, w)).length;
-  // Short titles (1-3 words) need ALL words to match — prevents "Shaw" in "Becky Shaw"
-  // matching Fiona Shaw, George Bernard Shaw, etc. Longer titles can afford partial matches.
-  const minMatch = titleWords.length <= 3
-    ? titleWords.length
-    : Math.ceil(titleWords.length * 0.5);
-  return matchCount >= minMatch;
+  return false;
 }
 
 /**
