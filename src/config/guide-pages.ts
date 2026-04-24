@@ -518,16 +518,22 @@ export function getGuideConfig(slug: string): GuidePageConfig | null {
   // Verify this year is in the explicit yearPages list
   if (!baseConfig.yearPages?.includes(year)) return null;
 
-  // Return config with year-scoped filter
-  const originalFilter = baseConfig.filter;
+  // Return config with year-scoped filter.
+  // Year pages intentionally drop status='open' so closed shows from the target
+  // year still appear, but they must preserve the base filter's type + quality
+  // gates — otherwise /guides/best-broadway-musicals-2026 leaks plays, and
+  // /guides/best-broadway-plays-2026 leaks musicals.
   return {
     ...baseConfig,
     filter: (show: ComputedShow) => {
-      // For year pages: show opened in that year, regardless of current status
+      if (!show.openingDate) return false;
       const openDate = new Date(show.openingDate);
       if (openDate.getFullYear() !== year) return false;
-      // For base guides that filter on status='open', year pages show all statuses
-      return (show.criticScore?.score ?? 0) > 0;
+      if ((show.criticScore?.score ?? 0) <= 0) return false;
+      if ((show.criticScore?.reviewCount ?? 0) < 5) return false;
+      if (baseSlug === 'best-broadway-musicals' && show.type !== 'musical') return false;
+      if (baseSlug === 'best-broadway-plays' && show.type !== 'play') return false;
+      return true;
     },
   };
 }
