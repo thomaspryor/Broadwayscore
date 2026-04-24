@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup } = require('./lib/review-guards');
+const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
@@ -2892,10 +2892,22 @@ showDirs.forEach(showId => {
           const bothNamed = currentCritic && currentCritic !== 'unknown' &&
                             winner.critic && winner.critic !== 'unknown';
           const differentPeople = bothNamed && currentCritic !== winner.critic;
-          if (differentPeople) {
+          // Fuzzy critic dedup — catch typo-variant duplicates (Isabella Biedenahrn vs
+          // Biedenharn, Marilyn vs Marylin Stasio, etc.) that the strict-equality check
+          // above treats as distinct critics. Audit 2026-04-24 found 18 such pairs in
+          // live data. Levenshtein ≤ 2 with min-length ≥ 6 is tight enough not to
+          // collapse legitimate different critics (Ben Brantley vs Charles Isherwood
+          // are edit-distance >> 2).
+          const fuzzySame = differentPeople && areSameCriticFuzzy(currentCritic, winner.critic);
+          if (differentPeople && !fuzzySame) {
             stats.allowedMultiCriticUrl = (stats.allowedMultiCriticUrl || 0) + 1;
           } else {
-            // Files are sorted so real critic names come before "unknown" — first wins
+            // Files are sorted so real critic names come before "unknown" — first wins.
+            // Fuzzy-matched typo-duplicates also fall through here.
+            if (fuzzySame) {
+              stats.skippedFuzzyCriticDuplicate = (stats.skippedFuzzyCriticDuplicate || 0) + 1;
+              console.log(`  [FUZZY-CRITIC DEDUP] ${showId}/${file}: ${data.criticName} ≈ ${winner.critic} at ${urlOutletKey} (keeping ${winner.file})`);
+            }
             logExclusion("skippedDuplicateUrl", showId, file, data);
             stats.skippedDuplicateUrl = (stats.skippedDuplicateUrl || 0) + 1;
             return;
@@ -2912,9 +2924,15 @@ showDirs.forEach(showId => {
           const bothNamedGlobal = currentCritic && currentCritic !== 'unknown' &&
                                   globalWinner.critic && globalWinner.critic !== 'unknown';
           const differentPeopleGlobal = bothNamedGlobal && currentCritic !== globalWinner.critic;
-          if (differentPeopleGlobal) {
+          // Fuzzy check mirrors the same-outlet path — typo duplicates across the
+          // cross-outlet index should also collapse (rare but possible).
+          const fuzzySameGlobal = differentPeopleGlobal && areSameCriticFuzzy(currentCritic, globalWinner.critic);
+          if (differentPeopleGlobal && !fuzzySameGlobal) {
             stats.allowedMultiCriticUrlCrossOutlet = (stats.allowedMultiCriticUrlCrossOutlet || 0) + 1;
           } else {
+            if (fuzzySameGlobal) {
+              stats.skippedFuzzyCriticDuplicateCrossOutlet = (stats.skippedFuzzyCriticDuplicateCrossOutlet || 0) + 1;
+            }
             logExclusion("skippedCrossOutletDuplicateUrl", showId, file, data);
             stats.skippedCrossOutletDuplicateUrl = (stats.skippedCrossOutletDuplicateUrl || 0) + 1;
             return;
@@ -3725,6 +3743,8 @@ const output = {
       allowedMultiCriticUrl: stats.allowedMultiCriticUrl || 0,
       skippedCrossOutletDuplicateUrl: stats.skippedCrossOutletDuplicateUrl || 0,
       allowedMultiCriticUrlCrossOutlet: stats.allowedMultiCriticUrlCrossOutlet || 0,
+      skippedFuzzyCriticDuplicate: stats.skippedFuzzyCriticDuplicate || 0,
+      skippedFuzzyCriticDuplicateCrossOutlet: stats.skippedFuzzyCriticDuplicateCrossOutlet || 0,
       skippedDuplicateText: stats.skippedDuplicateText || 0,
       skippedFingerprintDedup: stats.skippedFingerprintDedup || 0,
       skippedUnknownCriticDedup: stats.skippedUnknownCriticDedup || 0,
