@@ -1,28 +1,48 @@
 {
   "meta": {
-    "generatedAt": "2026-04-23T19:23:55.105Z",
+    "generatedAt": "2026-04-24T03:12:59.259Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36447,
-      "inReviewsJson": 16639,
-      "skippedExcluded": 67,
-      "withFullText": 18,
+      "totalFiles": 36470,
+      "inReviewsJson": 16647,
+      "skippedExcluded": 70,
+      "withFullText": 22,
       "excerptOnly": 1571,
-      "llmClassified": 1,
+      "llmClassified": 21,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 1,
-      "budgetUsed": 0.0018000000000000006,
-      "llmCalls": 18,
-      "rateLimitHits": 52,
-      "errors": 17,
-      "skippedAlreadyClassified": 14983
+      "uncertainCases": 15,
+      "budgetUsed": 0.0022,
+      "llmCalls": 22,
+      "rateLimitHits": 0,
+      "errors": 1,
+      "skippedAlreadyClassified": 14984
     },
     "calibration": null
   },
   "nonReviews": [],
   "uncertainCases": [
+    {
+      "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
+      "showId": "eclipsed-2016",
+      "outlet": "Theatre Reviews Limited",
+      "outletId": "theatre-reviews-limited",
+      "contentType": "feature",
+      "confidence": "medium",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "currentScore": 82
+    },
+    {
+      "file": "fences-2010/talkinbroadway--matthew-murray.json",
+      "showId": "fences-2010",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "currentScore": 82
+    },
     {
       "file": "funny-girl-2022/talkinbroadway--matthew-murray.json",
       "showId": "funny-girl-2022",
@@ -32,9 +52,136 @@
       "confidence": "low",
       "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
+    },
+    {
+      "file": "les-liaisons-dangereuses-west-end-2026/telegraph--claire-allfree.json",
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "contentType": "feature",
+      "confidence": "low",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "currentScore": 60
+    },
+    {
+      "file": "liberation-2025/newyorker--helen-shaw.json",
+      "showId": "liberation-2025",
+      "outlet": "The New Yorker",
+      "outletId": "newyorker",
+      "contentType": "other",
+      "confidence": "low",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there's no evaluative content to classify it as a review.",
+      "currentScore": 88
+    },
+    {
+      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
+      "showId": "once-on-this-island-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "currentScore": 89
+    },
+    {
+      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "Faster Times",
+      "outletId": "faster-times",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "currentScore": 74
+    },
+    {
+      "file": "parade-2023/wsj--terry-teachout.json",
+      "showId": "parade-2023",
+      "outlet": "The Wall Street Journal",
+      "outletId": "wsj",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article appears to be truncated, but the available text suggests it's a news article or advertisement related to the Wall Street Journal, not a review of 'Parade'.",
+      "currentScore": 78
+    },
+    {
+      "file": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+      "showId": "paranormal-activity-west-end-2025",
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "currentScore": 80
+    },
+    {
+      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
+      "showId": "pippin-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text is a list of categories and links, suggesting a news or directory-style page rather than a review of Pippin.",
+      "currentScore": 80
+    },
+    {
+      "file": "prince-of-broadway-2017/stagebuddy--ariana-rudes.json",
+      "showId": "prince-of-broadway-2017",
+      "outlet": "Stage Buddy",
+      "outletId": "stagebuddy",
+      "contentType": "feature",
+      "confidence": "medium",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "currentScore": 83
+    },
+    {
+      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
+      "showId": "the-assembled-parties-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "beaches-2026/talkinbroadway--howard-miller.json",
+    "proof-2026/ew--emlyn-travis.json",
+    "the-rocky-horror-show-2026/nysr--bob-verini.json",
+    "the-rocky-horror-show-2026/nysr--michael-sommers.json",
+    "the-rocky-horror-show-2026/nytg--austin-fimmano.json",
+    "the-rocky-horror-show-2026/talkinbroadway--howard-miller.json"
+  ],
   "perShowSummary": []
 }

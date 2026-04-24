@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-23T19:32:31.925Z",
+  "timestamp": "2026-04-24T03:24:42.512Z",
   "stats": {
-    "totalReviews": 35796,
-    "alreadyFlagged": 16010,
+    "totalReviews": 35819,
+    "alreadyFlagged": 16009,
     "dateGuardCatches": 94,
-    "directorMismatch": 820,
-    "tvFilmSignals": 3194,
-    "londonSignals": 1027,
+    "directorMismatch": 821,
+    "tvFilmSignals": 3199,
+    "londonSignals": 1028,
     "offBroadwaySignals": 899,
-    "yearMismatch": 68,
-    "noPublishDate": 3758
+    "yearMismatch": 69,
+    "noPublishDate": 3759
   },
   "findings": [
     {
@@ -51429,6 +51429,90 @@
       ]
     },
     {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "amny--matt-windman-2026.json",
+      "publishDate": "2026-04-23",
+      "url": "https://www.amny.com/entertainment/review-rocky-horror-time-warps-studio-54s/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "deadline--greg-evans-2026.json",
+      "publishDate": "2026-04-23",
+      "url": "https://deadline.com/2026/04/rocky-horror-show-broadway-review-1236867882/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://nypost.com/2026/04/23/entertainment/the-rocky-horror-show-review-broadway-shows-got-killer-performances-but-dammit-janet-make-it-more-fun/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jim sharman\" from the-rocky-horror-show-1975"
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "theatermania--zachary-stewart-2026.json",
+      "publishDate": "2026-04-23",
+      "url": "https://www.theatermania.com/news/review-the-rocky-horror-show-receives-a-too-tame-broadway-revival_1834198/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "thewrap--robert-hofler-2026.json",
+      "publishDate": "2026-04-23",
+      "url": "https://www.thewrap.com/creative-content/theater/the-rocky-horror-show-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"movie theater\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2000 (2x) more than 2026 (1x). 2000 matches production: the-rocky-horror-show-2000"
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "timeout--adam-feldman-2026.json",
+      "publishDate": "2026-04-24",
+      "url": "https://www.timeout.com/newyork/news/broadway-review-the-rocky-horror-show-is-deliciously-warped-and-timely-042426",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "the-roommate-2024",
       "file": "guardian--adrian-horton.json",
       "score": 68,
@@ -76784,6 +76868,19 @@
       "score": 68,
       "publishDate": "November 16, 2014",
       "url": "http://www.nytimes.com/2014/11/17/theater/hugh-jackman-stars-in-the-river-on-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "nytimes--helen-shaw-2026.json",
+      "publishDate": "2026-04-23",
+      "url": "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
