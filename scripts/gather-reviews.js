@@ -60,7 +60,8 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
 const { isBroadwayUrl } = require('./lib/venue-classification');
-const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow } = require('./lib/bww-roundup-validator');
+const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
+const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { emitStage } = require('./lib/stage-latency');
@@ -1755,60 +1756,9 @@ function extractDTLIReviews(html, showId, dtliUrl, showTitle) {
 }
 
 // isBWWRoundupContent() moved to scripts/lib/bww-roundup-validator.js (shared module)
-
-/**
- * Find a Review Roundup link on the BWW homepage that matches the given show title.
- * BWW features the latest roundup prominently on their homepage on opening night,
- * before Google has indexed it. Returns the URL or null.
- */
-function findBWWRoundupLinkOnHomepage(html, showTitle) {
-  // Extract all Review-Roundup links from the homepage HTML
-  const linkPattern = /href=["'](https?:\/\/(?:www\.)?broadwayworld\.com\/(?:london\/)?article\/Review-Roundup[^"']*?)["']/gi;
-  const foundUrls = new Set();
-  let match;
-  while ((match = linkPattern.exec(html)) !== null) {
-    // Decode HTML entities in URLs
-    const url = match[1].replace(/&amp;/g, '&');
-    foundUrls.add(url);
-  }
-
-  if (foundUrls.size === 0) return null;
-
-  // Normalize title for matching: lowercase, strip punctuation, split into content words
-  const STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', 'this', 'its']);
-  const normalizeForMatch = (str) => str.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 1 && !STOP_WORDS.has(w));
-  const titleWords = normalizeForMatch(showTitle);
-  if (titleWords.length === 0) return null;
-
-  // Check each URL — the slug contains the title with hyphens between words
-  for (const url of foundUrls) {
-    // Extract the slug portion after "Review-Roundup-"
-    const slugMatch = url.match(/Review-Roundup-(.+)/i);
-    if (!slugMatch) continue;
-    const slug = slugMatch[1].toLowerCase();
-
-    // Split slug into segments for exact-segment matching on short titles
-    const slugSegments = slug.split(/[-_]/);
-
-    // Count how many title words appear in the slug
-    const matchedWords = titleWords.filter(w => slug.includes(w));
-    const matchRatio = matchedWords.length / titleWords.length;
-
-    // Single-word titles: require exact segment match (prevents "fear" matching "fear-of-13")
-    if (titleWords.length === 1) {
-      if (slugSegments.includes(titleWords[0])) return url;
-      continue;
-    }
-
-    // 2-word titles: require all words; 3+ words: require 80%+
-    const threshold = titleWords.length <= 2 ? 1.0 : 0.8;
-    if (matchRatio >= threshold) {
-      return url;
-    }
-  }
-
-  return null;
-}
+// findBWWRoundupLinkOnHomepage() moved to scripts/lib/bww-homepage-scan.js — reuses
+// validateBWWRoundupUrlMatchesShow so short-title / tryout logic is shared with the
+// SERP + URL-guess paths.
 
 /**
  * Search BroadwayWorld for Review Roundup article
@@ -1917,6 +1867,7 @@ async function searchBWWRoundup(show, year, options = {}) {
     const serpCandidates = serpResults
       ? serpResults.map(r => r.url).filter(url => url && url.includes('broadwayworld.com/article/Review-Roundup'))
       : [];
+    let bwwCloudflareGated = false;
     for (const searchResult of serpCandidates) {
       if (!validateBWWRoundupUrlMatchesShow(searchResult, show.title)) {
         console.log(`    ✗ SERP result doesn't match title "${show.title}" — skipping: ${searchResult.substring(0, 80)}`);
@@ -1929,7 +1880,13 @@ async function searchBWWRoundup(show, year, options = {}) {
       }
       const result = await searchAggregator('BWW', searchResult);
       if (result.found && result.html && isBWWRoundupContent(result.html)) return { url: searchResult, html: result.html };
+      if (result.found && result.html && isCloudflareChallenge(result.html)) {
+        bwwCloudflareGated = true;
+        console.log('    ⚠️  BWW is Cloudflare-gated — stopping SERP iteration (further fetches will burn credits for the same challenge)');
+        break;
+      }
     }
+    if (bwwCloudflareGated) return null;
   } catch (e) {
     console.log('    Google search unavailable, falling back to URL patterns...');
   }
@@ -1997,6 +1954,10 @@ async function searchBWWRoundup(show, year, options = {}) {
     if (result.found && result.html && isBWWRoundupContent(result.html)) {
       console.log(`    ✓ Found at: ${url}`);
       return { url, html: result.html };
+    }
+    if (result.found && result.html && isCloudflareChallenge(result.html)) {
+      console.log('    ⚠️  BWW is Cloudflare-gated — stopping URL-guess iteration (further fetches will burn credits for the same challenge)');
+      break;
     }
     await sleep(200);
   }
