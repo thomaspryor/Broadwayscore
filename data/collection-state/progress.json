@@ -959,7 +959,13 @@
     "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
     "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
-    "the-rocky-horror-show-2026/talkinbroadway--unknown.json"
+    "the-rocky-horror-show-2026/talkinbroadway--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/all-that-dazzles-uk--matthew-plampton.json",
+    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--the-standard.json",
+    "between-the-river-and-the-sea-west-end-2026/standard--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+    "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -973,6 +979,7 @@
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/proof-2026/nytimes--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
@@ -1005,12 +1012,13 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-04-23T16:42:29.240Z",
-  "lastProcessed": "the-rocky-horror-show-2026/talkinbroadway--unknown.json",
+  "lastProcessed": "between-the-river-and-the-sea-west-end-2026/times-uk--rachel-halliburton.json",
   "log": [
     {
       "t": "2026-04-23T16:44:44.608Z",
@@ -1152,6 +1160,17 @@
     },
     {
       "t": "2026-04-23T23:54:08.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-24T00:18:38.120Z",
+      "event": "bb-session",
+      "session": "5bcb1d22",
+      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
+    },
+    {
+      "t": "2026-04-24T00:18:38.494Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
