@@ -10,7 +10,7 @@
  * File format (data/review-texts/{showId}/_blocklist.json):
  *   {
  *     "urls": [
- *       { "url": "https://...", "reason": "duplicate of cote-notices--david-cote", "blockedAt": "2026-04-23T22:00Z" }
+ *       { "url": "https://...", "reason": "duplicate of cote-notices--david-cote", "blockedAt": "2026-04-23T22:00:00Z" }
  *     ]
  *   }
  *
