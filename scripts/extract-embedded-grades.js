@@ -18,17 +18,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const { LETTER_GRADES: CANONICAL_LETTER_GRADES } = require('./lib/score-conversion-rules');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
-// Letter grade conversions (same as other scripts)
-const LETTER_GRADES = {
-  'a+': 95, 'a': 90, 'a-': 85,
-  'b+': 80, 'b': 76, 'b-': 72,
-  'c+': 67, 'c': 62, 'c-': 57,
-  'd+': 42, 'd': 35, 'd-': 30,
-  'f': 20
-};
+// Letter-grade lookup keyed lowercase (this script normalizes inputs to lowercase
+// before lookup). Derived from the canonical uppercase dict.
+const LETTER_GRADES = Object.fromEntries(
+  Object.entries(CANONICAL_LETTER_GRADES).map(([k, v]) => [k.toLowerCase(), v])
+);
 
 // Designation patterns — INTENTIONALLY EMPTY
 // All designations are now extracted from HTML structure only (score-extractors.js),

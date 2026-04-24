@@ -30,6 +30,12 @@ describe('tour forward-tense carve-out', () => {
     'The show will tour in 2026.',
     'To embark on a national tour in 2026.',
     'Plans for a future tour are in the works.',
+    // Edge cases added post-ship-check review (Session 4 P1):
+    'A national tour planned for 2027.',                 // bare participle, no helper verb
+    'The tour is launching next spring.',                // launching + time modifier
+    'Tour announced today for a 2027 kickoff.',          // bare announced
+    'The show will eventually tour North America.',      // will + adverb + tour
+    'The tour starts tomorrow in Boston.',               // tour starts tomorrow
   ];
 
   const pastCases = [

@@ -7,7 +7,7 @@ on:
   # Allow manual trigger
   workflow_dispatch:
     inputs:
-      show:
+      show_id:
         description: 'Specific show ID to process (optional)'
         required: false
         type: string
@@ -75,8 +75,8 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           ARGS=""
-          if [ -n "${{ github.event.inputs.show }}" ]; then
-            ARGS="$ARGS --show=${{ github.event.inputs.show }}"
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           elif [ -n "${{ github.event.inputs.shows }}" ]; then
             ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then

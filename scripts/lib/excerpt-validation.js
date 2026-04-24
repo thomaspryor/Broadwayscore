@@ -162,13 +162,19 @@ const TOUR_VENUE_PATTERNS = [
 // A Broadway review that ends with "a national tour is planned" should NOT be
 // excluded as a tour review. Beaches 2026-04-22 + Rocky Horror 2026-04-23 postmortem #18.
 const TOUR_FORWARD_TENSE_PATTERNS = [
-  /\b(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\s+(?:is|will\s+be|will|has\s+been|is\s+being|is\s+set|is\s+slated|is\s+expected)\s+(?:planned|announced|scheduled|slated|launched|booked|set|expected|coming|on\s+the\s+way|to\s+(?:launch|begin|start|open|hit|embark|follow|tour))/i,
+  /\b(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\s+(?:is|will\s+be|will|has\s+been|is\s+being|is\s+set|is\s+slated|is\s+expected)\s+(?:planned|announced|scheduled|slated|launched|launching|booked|set|expected|coming|on\s+the\s+way|to\s+(?:launch|begin|start|open|hit|embark|follow|tour))/i,
   /\b(?:planned|announced|scheduled|slated|upcoming|forthcoming|future|prospective|proposed)\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
-  /\btour\s+(?:starts|begins|opens|kicks\s+off|launches|heads|set\s+to\s+(?:launch|begin|start|open|embark))\s+(?:in\s+\d{4}|later|next|soon|this\s+(?:fall|winter|spring|summer|year))/i,
+  /\btour\s+(?:starts|begins|opens|kicks\s+off|launches|heads|set\s+to\s+(?:launch|begin|start|open|embark))\s+(?:in\s+\d{4}|later|next|soon|tomorrow|this\s+(?:fall|winter|spring|summer|year))/i,
   /\bto\s+(?:embark\s+on|launch|begin|start|commence|mount|hit\s+the\s+road\s+on)\s+a\s+(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
   /\b(?:announcing|announced|launching|launch|plans?\s+(?:for|a))\s+(?:a\s+)?(?:national\s+|uk\s+|us\s+|north\s+american\s+)?tour\b/i,
   /\btour\s+(?:in|beginning|opening|starting|launching|set\s+for)\s+(?:20\d{2})\b/i,
-  /\bwill\s+tour\b/i,
+  // "will [optionally up to 2 words] tour" — catches "will tour", "will eventually tour",
+  // "will soon tour". Adverb gap capped at 2 words to avoid false positives like
+  // "will walk toward the tour bus".
+  /\bwill(?:\s+\w+){0,2}\s+tour\b/i,
+  // Bare participle/gerund adjacent to tour — no helper verb required. Catches
+  // "tour planned for 2027", "tour launching next spring", "tour announced today".
+  /\btour\s+(?:planned|announced|scheduled|slated|launching|booked|upcoming|expected)\b/i,
 ];
 
 // Past-tense / in-progress markers — confirm this IS a tour review
