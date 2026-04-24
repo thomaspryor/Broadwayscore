@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-24T21:47:49.494Z",
+  "timestamp": "2026-04-24T22:06:31.778Z",
   "stats": {
     "totalReviews": 35769,
     "alreadyFlagged": 15963,
     "dateGuardCatches": 95,
     "directorMismatch": 821,
-    "tvFilmSignals": 3202,
+    "tvFilmSignals": 3203,
     "londonSignals": 1030,
     "offBroadwaySignals": 897,
     "yearMismatch": 69,
-    "noPublishDate": 3744
+    "noPublishDate": 3745
   },
   "findings": [
     {
@@ -51528,6 +51528,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 84,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-rocky-horror-broadway-pinkleton-revival.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"onscreen\""
         }
       ]
     },

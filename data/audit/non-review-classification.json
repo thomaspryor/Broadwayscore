@@ -1,39 +1,28 @@
 {
   "meta": {
-    "generatedAt": "2026-04-24T21:34:52.119Z",
+    "generatedAt": "2026-04-24T21:53:32.093Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36424,
+      "totalFiles": 36420,
       "inReviewsJson": 16631,
       "skippedExcluded": 82,
-      "withFullText": 21,
-      "excerptOnly": 1559,
-      "llmClassified": 1,
+      "withFullText": 22,
+      "excerptOnly": 1558,
+      "llmClassified": 0,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 1,
-      "budgetUsed": 0.0021000000000000003,
-      "llmCalls": 21,
-      "rateLimitHits": 59,
-      "errors": 20,
+      "uncertainCases": 0,
+      "budgetUsed": 0.0022,
+      "llmCalls": 22,
+      "rateLimitHits": 66,
+      "errors": 22,
       "skippedAlreadyClassified": 14969
     },
     "calibration": null
   },
   "nonReviews": [],
-  "uncertainCases": [
-    {
-      "file": "liberation-2025/newyorker--helen-shaw.json",
-      "showId": "liberation-2025",
-      "outlet": "The New Yorker",
-      "outletId": "newyorker",
-      "contentType": "other",
-      "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
-      "currentScore": 88
-    }
-  ],
+  "uncertainCases": [],
   "heuristicFlags": [],
   "reviewsConfirmed": [],
   "perShowSummary": []
