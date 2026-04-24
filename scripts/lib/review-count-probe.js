@@ -82,6 +82,32 @@ async function fetchLiveRc(showId) {
 }
 
 /**
+ * Reads the local per-show JSON (stage 3) and returns both the cached `rc`
+ * count and the actual length of the `rv` reviews array. Returns null if the
+ * file is missing or unreadable.
+ *
+ * Pairs with fetchLiveRc: fetchLiveRc reads the same file served from CDN
+ * (stage 4), countLocalPerShowJson reads it from the local filesystem (stage 3).
+ * Drift between the two isolates deploy-lag from generation bugs.
+ *
+ * @param {string} showId
+ * @param {string} publicDataRoot  default: 'public/data/shows'
+ * @returns {{ rc: number|null, reviewsArrayLength: number }|null}
+ */
+function countLocalPerShowJson(showId, publicDataRoot = 'public/data/shows') {
+  const filePath = path.join(publicDataRoot, `${showId}.json`);
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const rc = typeof data.rc === 'number' ? data.rc : null;
+    const reviewsArrayLength = Array.isArray(data.rv) ? data.rv.length : 0;
+    return { rc, reviewsArrayLength };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Computes drift from the three count sources.
  * If live.rc is null, drift = |local - aggregate|.
  *
@@ -100,5 +126,6 @@ module.exports = {
   countLocalIncluded,
   countAggregate,
   fetchLiveRc,
+  countLocalPerShowJson,
   computeDrift,
 };
