@@ -1282,12 +1282,27 @@ function classifyContentTier(review) {
   );
 
   // T5: INVALID - Check first (garbage, wrong show, corrupted)
-  if (review.textStatus === 'garbage_cleared' || review.wrongProduction) {
+  // Effectively-wrong-production: wrongProduction=true is NOT invalidating when any of these
+  // clear-signaling flags are set — the rebuild pipeline's later auto-clear passes will flip
+  // wrongProduction to false. Without this gate, the early-pass safety-net writes contentTier='invalid'
+  // to disk based on stale wrongProduction, and the (later-running) auto-clear never re-runs the
+  // classifier. See Notion card 34c637c5-416f-8199 (2026-04-24 reclassify backfill).
+  const effectivelyWrongProduction = review.wrongProduction
+    && !review.allowEarlyDate
+    && !review.allowCrossMarket
+    && !review.wrongProductionManualClear
+    && !review.wrongProductionCleared
+    && !review.wrongProductionAutoCleared
+    && review.humanReviewedWrongProduction !== false;
+  const effectivelyWrongShow = review.wrongShow && !review.wrongShowManualClear;
+  if (review.textStatus === 'garbage_cleared' || effectivelyWrongProduction || effectivelyWrongShow) {
     return {
       contentTier: 'invalid',
       wordCount,
       truncationSignals: [],
-      tierReason: review.textStatus === 'garbage_cleared' ? 'Marked as garbage' : 'Wrong production'
+      tierReason: review.textStatus === 'garbage_cleared' ? 'Marked as garbage'
+        : effectivelyWrongShow ? 'Wrong show'
+        : 'Wrong production'
     };
   }
 
