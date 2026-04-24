@@ -270,7 +270,7 @@ async function main() {
   } else if (newReviews > 0 && noRebuild) {
     console.log('\n--no-rebuild: skipping scoring/rebuild/deploy triggers');
     console.log('When ready, run:');
-    console.log(`  gh workflow run llm-ensemble-score.yml -f show=${showId}`);
+    console.log(`  gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
     console.log(`  gh workflow run rebuild-reviews.yml -f reason="Manual ingest for ${showId}"`);
   } else if (dryRun && newReviews > 0) {
     console.log(`\nWould trigger: scoring for ${showId}, rebuild, deploy`);
