@@ -101,8 +101,17 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   }
   const pageTitle = extractTitle(html);
   const normPage = normalizeText(pageTitle);
-  const normShow = normalizeText(showTitle);
-  if (!normShow || !normPage.includes(normShow)) {
+  // Short-title fallback for comma-subtitled shows: TB page titles carry the short title only
+  // ("Beaches" not "Beaches, A New Musical"). Beaches 2026-04-22 opening night.
+  const { shortTitleCandidate } = require('./title-normalization');
+  const titleVariants = [showTitle];
+  const shortTitle = shortTitleCandidate(showTitle);
+  if (shortTitle) titleVariants.push(shortTitle);
+  const titleMatched = titleVariants.some(variant => {
+    const normVariant = normalizeText(variant);
+    return normVariant && normPage.includes(normVariant);
+  });
+  if (!titleMatched) {
     return { ok: false, reason: `title mismatch (page="${pageTitle.slice(0, 80)}", show="${showTitle}")` };
   }
   const byline = hasBylineSignal(html);

@@ -1111,6 +1111,12 @@ async function runAggregators(show) {
   }
 
   console.log(`  [Layer 1 Total] ${results.length} reviews from aggregators`);
+  // Return discovered aggregator URLs via non-enumerable property so existing
+  // call sites using spread (`...aggResults`) continue to work unchanged.
+  Object.defineProperty(results, '_aggregatorUrls', {
+    value: { bwwRoundupUrl: BWW_ROUNDUP_URL || null },
+    enumerable: false,
+  });
   return results;
 }
 
@@ -1596,6 +1602,34 @@ async function pollCycle() {
     knownUrls,
     { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd }
   );
+
+  // ── Aggregator thumb enrichment pass ──
+  // When reviews arrive via non-aggregator paths (RSS, SERP, outlet-domain-supplement),
+  // dtliThumb / bwwThumb never get populated. This pass re-fetches the aggregator
+  // pages and merges thumbs onto already-ingested review files. Best-effort, non-fatal.
+  // Card: 34c637c5-416f-8147-b7de-dcc260d0a151
+  if (!isWestEnd) {
+    try {
+      const { enrichDtliThumbsForShow } = require('./enrich-dtli-thumbs');
+      console.log('\n[Enrichment] DTLI thumbs...');
+      await enrichDtliThumbsForShow(SHOW_ID, { verbose: false });
+    } catch (e) {
+      console.log(`  [DTLI enrichment] non-fatal: ${e.message}`);
+    }
+  }
+  const bwwUrlFromPoll = (aggResults && aggResults._aggregatorUrls && aggResults._aggregatorUrls.bwwRoundupUrl)
+    || BWW_ROUNDUP_URL_CLI
+    || show.bwwRoundupUrl
+    || null;
+  if (!isOffBroadway && bwwUrlFromPoll) {
+    try {
+      const { enrichBwwThumbsForShow } = require('./enrich-bww-thumbs');
+      console.log('\n[Enrichment] BWW RR thumbs...');
+      await enrichBwwThumbsForShow(SHOW_ID, { url: bwwUrlFromPoll });
+    } catch (e) {
+      console.log(`  [BWW enrichment] non-fatal: ${e.message}`);
+    }
+  }
 
   // ── Post-poll status ──
   const postStatus = checkReadiness(SHOW_ID, market);
