@@ -192,6 +192,7 @@ const visibleShows = shows.filter(show =>
 
 let generated = 0;
 let totalSize = 0;
+const invariantChecks = new Map(); // showId → expected reviewEntries.length at write time
 
 for (const show of visibleShows) {
   const allShowReviews = reviewsByShow[show.id] || [];
@@ -494,9 +495,33 @@ for (const show of visibleShows) {
   const filePath = path.join(outputDir, `${show.id}.json`);
   const json = JSON.stringify(detail);
   fs.writeFileSync(filePath, json);
+  invariantChecks.set(show.id, reviewEntries.length);
   generated++;
   totalSize += json.length;
 }
+
+// Stage-2→3 invariant: verify each written file's review count matches the
+// in-memory reviewEntries array at write time. Catches stale-variable bugs
+// (wrong reviewsByShow, dedup logic error) before the data lands in public/.
+let invariantErrors = 0;
+for (const [showId, expectedCount] of invariantChecks) {
+  try {
+    const written = JSON.parse(fs.readFileSync(path.join(outputDir, `${showId}.json`), 'utf-8'));
+    const actualCount = written.rv ? written.rv.length : 0;
+    if (actualCount !== expectedCount) {
+      console.error(`✗ Invariant: ${showId} — in-memory reviewEntries=${expectedCount}, written rv=${actualCount}`);
+      invariantErrors++;
+    }
+  } catch (err) {
+    console.error(`✗ Invariant: ${showId} — failed to read back: ${err.message}`);
+    invariantErrors++;
+  }
+}
+if (invariantErrors > 0) {
+  console.error(`✗ Invariant check failed: ${invariantErrors} show(s) have stage-2→3 count mismatches. Aborting.`);
+  process.exit(1);
+}
+console.log(`✓ Invariant: ${generated} shows, all stage-2→3 counts match.`);
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;
 const totalKB = (totalSize / 1024).toFixed(0);

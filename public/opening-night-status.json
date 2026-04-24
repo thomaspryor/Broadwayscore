@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-24T03:24:46.449Z",
+  "generatedAt": "2026-04-24T03:54:55.141Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -330,11 +330,9 @@
       "mixed": 11,
       "negative": 3,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:1/8"
-        ],
-        "highConfidence": 1,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -344,7 +342,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {

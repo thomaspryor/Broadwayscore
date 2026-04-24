@@ -2,6 +2,8 @@
 .claude/worktrees/
 
 # Large data directories not needed after build (reduces upload file count)
+# data/audit/ is excluded explicitly to prevent audit JSON files from counting
+# against Vercel's 100MB static output cap (Option B' Phase 1 Edit 6).
 data/review-texts/
 data/aggregator-archive/
 data/archives/
