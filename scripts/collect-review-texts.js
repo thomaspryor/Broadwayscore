@@ -88,6 +88,7 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck } = require('./lib/content-verifier');
+const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
@@ -6127,6 +6128,11 @@ async function processReview(review) {
           openingDate: showMeta?.openingDate || null,
           venue: showMeta?.venue || null,
           market: showMeta?.category || 'broadway',
+          // Long-runners (Mousetrap 1952, Phantom WE 1986, etc.) get a prompt
+          // adjustment that tells the LLM not to flag wrongProduction based on
+          // publishDate-vs-openingDate age gap alone. See scripts/lib/long-runner-registry.js
+          // and WE long-runner CV hardening card issue #3.
+          isLongRunningProduction: showMeta ? _isLongRunner(showMeta) : false,
           // Pass publishDate so applyTemporalOverrides can downgrade wrongProduction
           // confidence on opening-week reviews (DoaS Apr 9-10 postmortem #9: missing
           // publishDate caused legitimate revival reviews to have their text nulled).

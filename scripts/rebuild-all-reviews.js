@@ -42,6 +42,7 @@ const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShow
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
 const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
@@ -779,17 +780,12 @@ for (const s of showsData.shows) {
   showStatusMap[s.id] = s.status;
   showTitleMap[s.id] = s.title;
   showCategoryMap[s.id] = s.category || 'broadway';
-  // Long-run WE shows: openingDate before 2015 AND London market.
-  // These have decades of valid reviews; the 90-day pre-opening guard shouldn't apply.
-  // Also catches shows where the ID year is significantly earlier than the stored openingDate
-  // (e.g., phantom-west-end-1986 has openingDate 2021 due to COVID reopening).
-  if (isLondonMarket(s.category) && s.openingDate) {
-    const openYear = new Date(s.openingDate).getFullYear();
-    const idYearMatch = s.id.match(/(\d{4})$/);
-    const idYear = idYearMatch ? parseInt(idYearMatch[1]) : null;
-    if (openYear < 2015 || (idYear && idYear < 2015 && openYear - idYear > 5)) {
-      showLongRunWE.add(s.id);
-    }
+  // Long-run WE shows: decades of valid reviews → 90-day pre-opening guard
+  // shouldn't apply and CV shouldn't flag wide publishDate ranges. The
+  // classifier lives in scripts/lib/long-runner-registry.js so content-verifier
+  // can reuse it. See WE long-runner CV hardening card (issue #3).
+  if (isLongRunningProduction(s)) {
+    showLongRunWE.add(s.id);
   }
   showCreativeTeamIndex[s.id] = new Set();
   if (s.creativeTeam) {
