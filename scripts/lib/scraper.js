@@ -632,17 +632,17 @@ function verifyFetchedUrl(html, expectedUrl) {
   // Only homepage-title detection (above) and explicit URL mismatch (below) should block.
   if (!actualUrl) return { verified: true, reason: 'no_canonical' };
 
-  // Normalize both URLs: lowercase domain, strip trailing slash, remove utm_* params
+  // Normalize both URLs to hostname + pathname (drop scheme, query string, and hash).
+  // Canonical URLs from <link rel="canonical"> are query-free by convention, so comparing
+  // anything beyond host+path causes false mismatches whenever the request URL carries:
+  //   - tracking params (utm_*, fbclid, gclid, SocialFlow, ref, etc.)
+  //   - HTML-encoded `&amp;utm_*` keys that don't match the utm_ strip list
+  //   - http:// vs https:// (e.g. old NYPost URLs stored as http but canonicalized to https)
+  // Path-only comparison is robust: none of these change the article served.
   function normalizeForVerify(u) {
     try {
       const parsed = new URL(u);
-      parsed.hostname = parsed.hostname.toLowerCase();
-      // Remove utm_* and fbclid tracking params
-      for (const key of [...parsed.searchParams.keys()]) {
-        if (/^utm_|^fbclid/.test(key)) parsed.searchParams.delete(key);
-      }
-      let out = parsed.toString().replace(/\/$/, '');
-      return out;
+      return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
     } catch { return u.toLowerCase().replace(/\/$/, ''); }
   }
 
