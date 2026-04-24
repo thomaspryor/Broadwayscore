@@ -80,6 +80,7 @@ const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/sc
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -97,6 +98,7 @@ try {
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const GATHER_COLLISIONS_PATH = path.join(__dirname, '..', 'data', 'audit', 'gather-collisions.json');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -212,6 +214,28 @@ function getGlobalUrlIndex() {
     console.log(`  Built global URL index: ${_globalUrlIndex.size} URLs across ${dirs.length} shows`);
   } catch {}
   return _globalUrlIndex;
+}
+
+/**
+ * Append a stale-flag collision to data/audit/gather-collisions.json.
+ * Never throws — an audit-write failure must not abort the gather batch.
+ *
+ * See Notion 34c637c5-416f-81e7-b0df-da7b91d8ba07 and Session 2 (83ce81afa2).
+ */
+function _recordGatherCollision(entry) {
+  try {
+    const auditDir = path.dirname(GATHER_COLLISIONS_PATH);
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    let list = [];
+    if (fs.existsSync(GATHER_COLLISIONS_PATH)) {
+      try { list = JSON.parse(fs.readFileSync(GATHER_COLLISIONS_PATH, 'utf8')); } catch {}
+      if (!Array.isArray(list)) list = [];
+    }
+    list.push({ recordedAt: new Date().toISOString(), ...entry });
+    // Cap at 500 entries so a stuck poller doesn't balloon the file.
+    if (list.length > 500) list = list.slice(-500);
+    fs.writeFileSync(GATHER_COLLISIONS_PATH, JSON.stringify(list, null, 2));
+  } catch { /* audit write must not abort batch */ }
 }
 
 // Rate limiting
@@ -2839,6 +2863,29 @@ function createReviewFile(showId, reviewData, options = {}) {
   if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
+  }
+
+  // STALE-FLAG COLLISION GUARD: catches the Beaches 2026-04-22 class of bug
+  // at the poller's entry point too (ingest-manual-review got it in Session 2,
+  // 83ce81afa2). When an existing outlet+critic file has wrongProduction=true
+  // and a different URL — or a publishDate gap > 365 days — creating a fresh
+  // file alongside it produces a silent side-by-side duplicate. findExistingReviewFile()
+  // already skips wrongProduction files as merge targets (review-normalization.js:1126)
+  // which is why this was invisible until now. Log it, write to the audit file,
+  // and don't create the new file. Doesn't abort the batch.
+  if (reviewData.url) {
+    const staleCollision = detectIngestCollision({
+      showDir,
+      outletId: normalizedOutletId,
+      criticName: reviewData.criticName,
+      url: reviewData.url,
+      publishDate: reviewData.publishDate,
+    });
+    if (!staleCollision.ok) {
+      console.log(`    ✗ Skipping ${filename}: stale-flag collision with ${staleCollision.file} (${staleCollision.reason})`);
+      _recordGatherCollision({ showId, newFile: filename, ...staleCollision });
+      return 'staleFlagCollision';
+    }
   }
 
   // NON-REVIEW URL PATH GUARD: Reject URLs with paths that indicate non-review content.
