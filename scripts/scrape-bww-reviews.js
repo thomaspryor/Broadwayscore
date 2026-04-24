@@ -32,6 +32,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -737,9 +738,20 @@ function saveReview(showId, reviewData, options = {}) {
   if (reviewData.bwwThumb) fields.bwwThumb = reviewData.bwwThumb;
   if (reviewData.bwwRoundupUrl) fields.bwwRoundupUrl = reviewData.bwwRoundupUrl;
 
+  // Session 3 #13 — canonicalize known mis-attributions at single-author outlets.
+  let criticName = reviewData.critic;
+  if (criticName) {
+    const oid = normalizeOutlet(reviewData.outlet);
+    const canon = canonicalizeCritic(oid, criticName);
+    if (canon.canonicalized) {
+      console.log(`  [BWW canon] ${canon.from} → ${canon.name} (outletId=${oid})`);
+      criticName = canon.name;
+    }
+  }
+
   const result = createOrMergeReviewFile(showId, {
     outlet: reviewData.outlet,
-    criticName: reviewData.critic,
+    criticName,
     url: reviewData.url,
     source: reviewData.source,
     fields,

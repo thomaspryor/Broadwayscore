@@ -20,6 +20,7 @@ const path = require('path');
 const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
+const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -366,6 +367,16 @@ function saveReviewFromPlaybill(showId, reviewInfo) {
 
   // Playbill has outlet aliases that need fallback normalization
   const outletId = normalizeOutlet(outletName) || normalizeOutlet(reviewInfo.outletDomain) || reviewInfo.outletDomain;
+
+  // Session 3 #13 — canonicalize known mis-attributions at single-author outlets.
+  // Mirrors gather-reviews BWW RR extractor + rebuild-all-reviews rebuild-time pass.
+  if (criticName) {
+    const canon = canonicalizeCritic(outletId, criticName);
+    if (canon.canonicalized) {
+      console.log(`  [PV canon] ${canon.from} → ${canon.name} (outletId=${outletId})`);
+      criticName = canon.name;
+    }
+  }
 
   const result = createOrMergeReviewFile(showId, {
     outlet: outletName,
