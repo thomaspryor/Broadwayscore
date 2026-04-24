@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-24T04:26:45.644Z",
+  "timestamp": "2026-04-24T05:12:29.676Z",
   "stats": {
-    "totalReviews": 35798,
+    "totalReviews": 35799,
     "alreadyFlagged": 15987,
     "dateGuardCatches": 94,
     "directorMismatch": 821,
-    "tvFilmSignals": 3199,
+    "tvFilmSignals": 3201,
     "londonSignals": 1028,
     "offBroadwaySignals": 899,
     "yearMismatch": 69,
@@ -34088,6 +34088,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2011",
+      "file": "variety--marilyn-stasio.json",
+      "score": 78,
+      "publishDate": "November 3, 2011",
+      "url": "https://variety.com/2012/legit/reviews/other-desert-cities-3-1117948891/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -70618,6 +70632,19 @@
     },
     {
       "showId": "schmigadoon-2026",
+      "file": "the-jewish-voice-and-opinion--susie-rosenbluth-and-sue-weston.json",
+      "publishDate": "2026-04-22",
+      "url": "https://thejewishvoiceandopinion.com/experience-the-magic-of-schmigadoon-where-life-is-a-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
       "file": "theatrely--kobi-kassal.json",
       "score": 91,
       "publishDate": "2026-04-20T23:00:00-04:00",
@@ -76884,7 +76911,7 @@
     {
       "showId": "the-rocky-horror-show-2026",
       "file": "nytimes--helen-shaw-2026.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-04-23",
       "url": "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html",
       "findings": [
