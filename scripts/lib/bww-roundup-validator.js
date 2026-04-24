@@ -128,22 +128,40 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle) {
  *
  * BWW's domain is intermittently gated behind Cloudflare's "Just a moment..."
  * interstitial. Providers that can't solve the challenge (Bright Data, ScrapingBee,
- * plain fetch, Playwright) return HTTP 200 with a short challenge HTML page. Detecting
- * it lets callers stop iterating — every subsequent fetch to the same BWW domain during
+ * plain fetch, Playwright) return HTTP 200 with a challenge HTML page. Detecting it
+ * lets callers stop iterating — every subsequent fetch to the same BWW domain during
  * the gated window returns the same challenge, so continuing through additional SERP
  * results or URL guesses only wastes credits and wall-clock time.
  *
  * Rocky Horror 2026-04-23 opening night: 25+ consecutive BWW fetches burned
  * ScrapingBee credits because no caller short-circuited after the first challenge.
+ *
+ * Detection strategy (two tiers, intentionally generous on the STRONG-marker path):
+ *  - STRONG markers (`cf_chl_opt` AND `challenge-platform`) are sufficient regardless
+ *    of page size. Cloudflare's JS-heavy managed-challenge variant can reach ~40-60KB
+ *    with embedded Turnstile telemetry; those markers never appear in legitimate BWW
+ *    article HTML, so size-independent detection is safe and avoids a false-negative
+ *    on large challenge variants. A SINGLE strong marker is trusted up to 100KB.
+ *  - WEAK markers (`Just a moment` in <title>, "Enable JavaScript and cookies",
+ *    or legacy meta-refresh cf-chl-bypass) are size-gated to <25KB to prevent any
+ *    theoretical false-positive on a real article quoting the phrase in body text.
  */
 function isCloudflareChallenge(html) {
   if (typeof html !== 'string' || html.length === 0) return false;
-  // Challenge pages are short — typically under ~20KB. Real BWW articles are 100KB+.
-  if (html.length > 20000) return false;
-  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if (titleMatch && /Just a moment/i.test(titleMatch[1])) return true;
-  if (html.includes('cf_chl_opt') || html.includes('challenge-platform')) return true;
-  if (html.includes('Enable JavaScript and cookies to continue')) return true;
+
+  // Strong markers — never appear in real BWW article HTML, trusted regardless of size.
+  const hasCfChlOpt = html.includes('cf_chl_opt');
+  const hasChallengePlatform = html.includes('challenge-platform');
+  if (hasCfChlOpt && hasChallengePlatform) return true;
+  if ((hasCfChlOpt || hasChallengePlatform) && html.length < 100000) return true;
+
+  // Weak markers — size-gated to avoid false positives on real articles.
+  if (html.length < 25000) {
+    const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    if (titleMatch && /Just a moment/i.test(titleMatch[1])) return true;
+    if (html.includes('Enable JavaScript and cookies to continue')) return true;
+    if (/<meta[^>]+http-equiv=["']?refresh["']?[^>]*(?:cf-chl-bypass|__cf_|cf-wrapper)/i.test(html)) return true;
+  }
   return false;
 }
 
