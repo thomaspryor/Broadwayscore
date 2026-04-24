@@ -519,6 +519,61 @@ async function runAggregators(show) {
     }
   }
 
+  // 1d. Playbill Verdict (Broadway + off-Broadway + WE — Playbill covers all three).
+  //
+  // Hits playbill.com/category/the-verdict and matches the article title
+  // against this specific show. Bridges a gap where the batch scraper
+  // (scrape-playbill-verdict.js, runs on its own cron) rejects medium-confidence
+  // matches against the 700-show corpus; per-show polling is narrow enough to
+  // trust medium matches, so long article titles like "Reviews: What Do the
+  // Critics Think of {Show} on Broadway?" land here instead of waiting for SERP.
+  // Shared helpers live in scripts/lib/playbill-verdict-discover.js — the batch
+  // scraper still owns file creation + archiving.
+  try {
+    console.log('  Checking Playbill Verdict...');
+    const {
+      searchPlaybillVerdict,
+      extractReviewLinksFromArticle,
+    } = require('./lib/playbill-verdict-discover');
+    const hit = await searchPlaybillVerdict(show);
+    if (hit && hit.articleUrl) {
+      console.log(`  Playbill Verdict article: ${hit.articleUrl}`);
+      const articleFetch = await fetchPage(hit.articleUrl, { skipVerify: true });
+      if (articleFetch && articleFetch.content) {
+        const links = extractReviewLinksFromArticle(articleFetch.content, show.id);
+        // resolveOutletFromUrl lives in review-normalization; using it here
+        // sets outletId up-front so processDiscoveredReviews doesn't have to
+        // fall back to a slugified domain (which misses aliases — e.g.
+        // 'nytimes-com' vs registry's 'nytimes').
+        let resolveOutletFromUrl;
+        try {
+          ({ resolveOutletFromUrl } = require('./lib/review-normalization'));
+        } catch { /* best-effort resolution; fallback handles null */ }
+        let converted = 0;
+        for (const link of links) {
+          const resolved = resolveOutletFromUrl ? (resolveOutletFromUrl(link.url) || null) : null;
+          results.push({
+            showId: show.id,
+            outletId: resolved?.outletId
+              || (link.outletDomain ? link.outletDomain.replace(/\./g, '-') : 'unknown'),
+            outlet: resolved?.outletName || link.outlet || link.outletDomain || 'Unknown',
+            criticName: link.critic || 'Unknown',
+            url: link.url,
+            source: 'playbill-verdict',
+          });
+          converted++;
+        }
+        console.log(`  Playbill Verdict: ${converted} review link(s) extracted from "${hit.articleTitle.slice(0, 80)}"`);
+      } else {
+        console.log('  Playbill Verdict: article fetch returned no content');
+      }
+    } else {
+      console.log('  Playbill Verdict: no matching article on the category page');
+    }
+  } catch (err) {
+    console.log(`  Playbill Verdict error: ${err.message}`);
+  }
+
   // 1c2. Talkin' Broadway direct URL (Broadway only, not off-Broadway)
   // SERP returns forum posts (All That Chat) instead of the review, so we construct the URL.
   // Verification (title match + byline + date window) lives in scripts/lib/tb-direct-url.js
