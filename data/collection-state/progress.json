@@ -1042,7 +1042,17 @@
     "talk-radio-2007/variety--charles-isherwood.json",
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
-    "tarzan-2006/variety--charles-isherwood.json"
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "julius-caesar-2005/nytimes--paul-griffiths.json",
+    "oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+    "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+    "six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+    "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+    "urban-cowboy-2003/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1081,7 +1091,12 @@
       "data/review-texts/the-rocky-horror-show-2026/variety--frank-rizzo.json",
       "the-rocky-horror-show-2026/variety--frank-rizzo.json",
       "data/review-texts/the-rocky-horror-show-2026/deadline--greg-evans.json",
-      "the-rocky-horror-show-2026/deadline--greg-evans.json"
+      "the-rocky-horror-show-2026/deadline--greg-evans.json",
+      "data/review-texts/oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+      "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+      "data/review-texts/six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+      "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+      "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1116,7 +1131,7 @@
     "archive": []
   },
   "startTime": "2026-04-23T16:42:29.240Z",
-  "lastProcessed": "tarzan-2006/variety--charles-isherwood.json",
+  "lastProcessed": "urban-cowboy-2003/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-23T16:44:44.608Z",
@@ -1304,6 +1319,72 @@
       "t": "2026-04-24T02:16:47.090Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-24T03:18:43.389Z",
+      "event": "bb-session",
+      "session": "01a53aa7",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
+    },
+    {
+      "t": "2026-04-24T03:18:43.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:13.333Z",
+      "event": "bb-session",
+      "session": "10818cae",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
+    },
+    {
+      "t": "2026-04-24T03:19:13.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:26.433Z",
+      "event": "bb-session",
+      "session": "ad4eba9e",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-24T03:19:26.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:40.293Z",
+      "event": "bb-session",
+      "session": "6a9c2e74",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-24T03:19:40.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:54.266Z",
+      "event": "bb-session",
+      "session": "5168a76c",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-24T03:19:54.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:20:07.350Z",
+      "event": "bb-session",
+      "session": "1524b2e2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
+    },
+    {
+      "t": "2026-04-24T03:20:07.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

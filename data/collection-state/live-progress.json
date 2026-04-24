@@ -1,86 +1,20 @@
 {
-  "updatedAt": "2026-04-24T03:17:48.743Z",
+  "updatedAt": "2026-04-24T03:20:20.566Z",
   "processed": 23,
-  "failed": 1018,
+  "failed": 1028,
   "successRate": "2.2%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 21,
+    "browserbase": 26,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 5,
     "archiveToday": 14,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-04-23T21:51:40.104Z",
-      "event": "bb-session",
-      "session": "00fc3f8a",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T21:51:42.071Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-04-23T22:15:10.462Z",
-      "event": "bb-session",
-      "session": "e3202213",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T22:15:10.998Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-04-23T22:38:23.772Z",
-      "event": "bb-session",
-      "session": "c2fa2e33",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T22:38:24.618Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-04-23T23:01:32.010Z",
-      "event": "bb-session",
-      "session": "48602cfb",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T23:01:32.555Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-04-23T23:29:20.466Z",
-      "event": "bb-session",
-      "session": "9bee7ab4",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T23:29:20.895Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-04-23T23:54:07.832Z",
-      "event": "bb-session",
-      "session": "c87261b6",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-23T23:54:08.710Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
     {
       "t": "2026-04-24T00:18:38.120Z",
       "event": "bb-session",
@@ -124,6 +58,72 @@
       "t": "2026-04-24T02:16:47.090Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-24T03:18:43.389Z",
+      "event": "bb-session",
+      "session": "01a53aa7",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
+    },
+    {
+      "t": "2026-04-24T03:18:43.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:13.333Z",
+      "event": "bb-session",
+      "session": "10818cae",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
+    },
+    {
+      "t": "2026-04-24T03:19:13.695Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:26.433Z",
+      "event": "bb-session",
+      "session": "ad4eba9e",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-24T03:19:26.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:40.293Z",
+      "event": "bb-session",
+      "session": "6a9c2e74",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-24T03:19:40.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:19:54.266Z",
+      "event": "bb-session",
+      "session": "5168a76c",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-24T03:19:54.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-24T03:20:07.350Z",
+      "event": "bb-session",
+      "session": "1524b2e2",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
+    },
+    {
+      "t": "2026-04-24T03:20:07.786Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
