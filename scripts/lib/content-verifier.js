@@ -236,9 +236,13 @@ async function callWithFallback(prompt) {
  * @param {string} [params.publishDate] - Review publish date (YYYY-MM-DD) — used with openingDate to prevent false wrongProduction flags
  * @param {string} [params.venue] - Venue name
  * @param {string} [params.market] - Market: 'broadway' (default), 'west-end', 'off-west-end', 'off-broadway'
+ * @param {boolean} [params.isLongRunningProduction] - True when the production has run
+ *   continuously for many years (Mousetrap 1952, Phantom WE 1986, Les Mis WE 1985, Mamma Mia 1999).
+ *   When set, the LLM is told NOT to flag wrongProduction based on publishDate-vs-openingDate
+ *   age gap alone. See WE long-runner CV hardening card 34c637c5-416f-812b issue #3.
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -326,6 +330,17 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     }
   }
 
+  // Long-runner hint: Mousetrap (1952), Phantom WE (1986), Les Mis WE (1985),
+  // Mamma Mia (1999) — these are continuous-run productions. Any review from
+  // any year during that run is legitimate. Without this hint the LLM sees a
+  // 40-year publishDate-vs-openingDate gap and flags wrongProduction because
+  // its mental model is "revival" not "continuous run". See issue #3 of
+  // Notion 34c637c5-416f-812b.
+  let longRunnerHint = '';
+  if (isLongRunningProduction && openingDate) {
+    longRunnerHint = `\n\n**LONG-RUNNING PRODUCTION**: This is a continuous-run ${mc.label} production that has been playing since ${openingDate}. Reviews from ANY year in that continuous run are valid — do NOT flag wrongProduction based on publishDate-vs-openingDate age gap alone. A 2010 review of a show that opened in 1986 is not "wrong production"; it is a review of the same ongoing production 24 years in. Treat the publish date as irrelevant to wrongProduction for long-runners. Only flag wrongProduction if the content explicitly references a DIFFERENT named production (e.g., a touring company, a Broadway transfer, a film adaptation), not based on date math.`;
+  }
+
   const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
   const prompt = `You are a content verification assistant for a theater review aggregator. We are verifying reviews of **${mc.label}** productions (${mc.description}).
@@ -407,7 +422,7 @@ ${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **To
 
 ${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:** Reviews at Chicago Shakespeare, Goodman Theatre, Kennedy Center, La Jolla Playhouse, Old Globe, Mark Taper Forum, ART Cambridge, etc. BEFORE the Broadway transfer ARE wrong production for the Broadway entry. Even if the same show later moved to Broadway, the tryout review describes the pre-Broadway venue.` : ''}
 
-Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}`;
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}`;
 
   const result = await callWithFallback(prompt);
 
