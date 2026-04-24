@@ -88,11 +88,10 @@ function normalizeTitleWords(title) {
  *
  * Returns false (invalid) when a mismatch is detected.
  */
-// Slug boilerplate that commonly follows a show title in a BWW Review-Roundup URL.
-// Used as the disambiguator for single-word titles so "Fear" doesn't accidentally
-// match the slug for "Fear of 13" — a single-word-title slug must end its title
-// portion with one of these words (or a 4-digit year / 8-digit date) in the segment
-// immediately after the matched title word.
+// Boilerplate verbs BWW uses immediately after a title in a Review-Roundup URL.
+// E.g. "…/Review-Roundup-FEAR-Opens-on-Broadway-…" → next-after-title is "opens".
+// Used as the terminator disambiguator for single-word titles so "Fear" doesn't
+// accidentally match the slug for "Fear of 13".
 const BWW_SLUG_BOILERPLATE = new Set([
   'opens', 'opening', 'returns', 'returning', 'reopens', 'reopening',
   'comes', 'coming', 'closes', 'closing', 'begins', 'beginning',
@@ -100,11 +99,69 @@ const BWW_SLUG_BOILERPLATE = new Set([
   'premieres', 'premiering', 'debuts', 'debuting', 'extends', 'extending',
 ]);
 
-function isBoilerplateOrDate(segment) {
-  if (!segment) return true; // end-of-slug acts like a terminator
-  if (BWW_SLUG_BOILERPLATE.has(segment)) return true;
-  if (/^\d{4}$/.test(segment)) return true;   // year
-  if (/^\d{8}$/.test(segment)) return true;   // YYYYMMDD date
+// Market words that follow a preposition after a title (e.g. "…-on-Broadway-…").
+const BWW_MARKET_WORDS = new Set([
+  'broadway', 'london', 'end', 'west-end', 'off-broadway', 'off',
+]);
+
+// Short prepositions BWW uses between title and market/date:
+// "…-BERNHARDTHAMLET-on-Broadway-20180925" / "…-TITLE-in-the-West-End-…".
+const POST_TITLE_PREPOSITIONS = new Set(['on', 'in', 'at', 'to', 'for']);
+
+// Known BWW slug prefix phrases that can appear BEFORE the title in a slug.
+// Each is a sequence of lowercase segments that must match the slug head.
+//   []                                  — title starts at segment 0 (most common)
+//   ['the']                             — "Review-Roundup-THE-{title}-…"
+//   ['the','critics','weigh','in','on'] — "…-The-Critics-Weigh-In-on-{title}-…"
+// Add a new prefix here if we spot a BWW variant in the wild that rejects a real
+// single-word title roundup (parity test in tests/unit/bww-homepage-scan.test.mjs).
+const BWW_SLUG_TITLE_PREFIXES = [
+  [],
+  ['the'],
+  ['the', 'critics', 'weigh', 'in', 'on'],
+];
+
+/**
+ * Decide whether the slug segment immediately AFTER the title word is a valid
+ * terminator for a BWW Review-Roundup slug. Accepted shapes:
+ *   - end of slug
+ *   - a known boilerplate verb ("opens", "returns", "updating", …)
+ *   - a 4-digit year or 8-digit YYYYMMDD date
+ *   - a short preposition followed by a market word or year/date
+ *     (covers the "TITLE-on-Broadway-YYYYMMDD" variant that the 2018 Bernhardt/Hamlet
+ *     roundup uses)
+ */
+function isPostTitleTerminator(segments, idx) {
+  const seg = segments[idx];
+  if (!seg) return true;
+  if (BWW_SLUG_BOILERPLATE.has(seg)) return true;
+  if (/^\d{4}$/.test(seg) || /^\d{8}$/.test(seg)) return true;
+  if (POST_TITLE_PREPOSITIONS.has(seg)) {
+    const next = segments[idx + 1];
+    if (!next) return true;
+    if (BWW_MARKET_WORDS.has(next)) return true;
+    if (/^\d{4}$/.test(next) || /^\d{8}$/.test(next)) return true;
+    // "on-the-West-End" style: skip a leading "the" and check the word after.
+    if (next === 'the') {
+      const afterThe = segments[idx + 2];
+      if (afterThe && (BWW_MARKET_WORDS.has(afterThe) || /^\d{4}$/.test(afterThe) || /^\d{8}$/.test(afterThe))) return true;
+    }
+  }
+  return false;
+}
+
+function singleWordTitleMatchesSlug(titleWord, slugSegmentsArray) {
+  const segs = slugSegmentsArray;
+  for (const prefix of BWW_SLUG_TITLE_PREFIXES) {
+    if (prefix.length > segs.length) continue;
+    let prefixOk = true;
+    for (let i = 0; i < prefix.length; i++) {
+      if (segs[i] !== prefix[i]) { prefixOk = false; break; }
+    }
+    if (!prefixOk) continue;
+    const titleIdx = prefix.length;
+    if (segs[titleIdx] === titleWord && isPostTitleTerminator(segs, titleIdx + 1)) return true;
+  }
   return false;
 }
 
@@ -112,19 +169,14 @@ function titleWordsPassSlugCheck(title, slugSegments, slugSegmentsArray) {
   const titleWords = normalizeTitleWords(title);
   if (titleWords.length === 0) return true; // all stop words — can't validate
   if (titleWords.length === 1) {
-    // Strict rule: title word must be present AND the NEXT segment must be
-    // boilerplate / year / end-of-slug. Prevents "Fear" matching "fear-of-13-…".
-    // Search up to the first 3 segments to allow a leading stop-word ("the")
-    // e.g. "The Fear" → slug "the-fear-opens-on-broadway-…" → titleIdx=1 OK.
+    // Title word must appear at a known BWW prefix offset AND be followed by a
+    // valid post-title terminator. Prevents "Fear" matching "fear-of-13-…" while
+    // accepting the "Review-Roundup-The-Critics-Weigh-In-on-TITLE-on-Broadway-…"
+    // variant (2018 Bernhardt/Hamlet archive).
     const w = titleWords[0];
-    const segs = slugSegmentsArray || [];
-    const maxLead = Math.min(3, segs.length);
-    for (let i = 0; i < maxLead; i++) {
-      if (segs[i] === w && isBoilerplateOrDate(segs[i + 1])) return true;
-    }
-    // Fallback: if we can't find a clean "title then boilerplate" shape but the
-    // word IS present in the slug, the slug is probably not a standard BWW format
-    // — don't block (consistent with other "unexpected format" paths in this file).
+    if (Array.isArray(slugSegmentsArray) && singleWordTitleMatchesSlug(w, slugSegmentsArray)) return true;
+    // 2-arg legacy call path (Set only, no array): fall back to the Set check so
+    // the module stays backward-compatible. Not reached from production today.
     if (slugSegmentsArray === undefined && slugSegments.has(w)) return true;
     return false;
   }
