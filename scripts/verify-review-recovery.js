@@ -23,6 +23,7 @@
  *   3. Exclusion flags  — wrongProduction, wrongShow, isRoundupArticle
  *   4. LLM scoring      — llmScore or assignedScore present
  *   5. Rebuild inclusion — review appears in reviews.json
+ *   5.5 Local per-show JSON — public/data/shows/{showId}.json rv.length matches reviews.json
  *   6. Production (opt) — review count on live site matches local
  *
  * Exit codes:
@@ -34,7 +35,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { fetchLiveRc, countAggregate } = require('./lib/review-count-probe');
+const { fetchLiveRc, countAggregate, countLocalPerShowJson } = require('./lib/review-count-probe');
 
 // ── Parse args ──────────────────────────────────────────────────────────────
 
@@ -270,6 +271,28 @@ if (reviewsData) {
   if (missingFromReviews > 0) {
     console.log(`  ${FAIL} ${missingFromReviews} scored reviews missing — run: gh workflow run "Refresh Review Data"`);
   }
+}
+
+// ── Check 5.5: Local per-show JSON (stage 2→3) ─────────────────────────────
+
+console.log(`\n${BOLD}Step 5.5: Local per-show JSON (public/data/shows)${RESET}`);
+
+if (reviewsData) {
+  const aggCount = countAggregate(showId, reviewsData);
+  const perShow = countLocalPerShowJson(showId, path.join(ROOT, 'public', 'data', 'shows'));
+
+  if (!perShow) {
+    fail(`public/data/shows/${showId}.json — MISSING (generate-mobile-show-details.js did not run or filtered this show out)`);
+  } else if (perShow.reviewsArrayLength !== aggCount) {
+    fail(`public/data/shows/${showId}.json — stage 2→3 drift: reviews.json has ${aggCount}, per-show JSON rv has ${perShow.reviewsArrayLength}`);
+    console.log(`  Fix: node scripts/generate-mobile-show-details.js`);
+  } else if (perShow.rc !== null && perShow.rc !== perShow.reviewsArrayLength) {
+    warn(`public/data/shows/${showId}.json — rc cache skew: rc=${perShow.rc}, rv.length=${perShow.reviewsArrayLength} (cached count out of date)`);
+  } else {
+    pass(`public/data/shows/${showId}.json — ${perShow.reviewsArrayLength} reviews match reviews.json`);
+  }
+} else {
+  skip('Skipped (could not read reviews.json)');
 }
 
 // ── Check 6: Production (optional) ─────────────────────────────────────────
