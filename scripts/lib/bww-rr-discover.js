@@ -24,6 +24,11 @@ const REVIEWS_PAGE_URL = 'https://www.broadwayworld.com/reviews.php';
 const BROWSERBASE_API = 'https://api.browserbase.com/v1/sessions';
 const NAV_TIMEOUT_MS = 30000;
 const SESSION_TIMEOUT_MS = 30000;
+// BWW's reviews.php redirects through a Cloudflare "Just a moment..." interstitial.
+// `domcontentloaded` fires on the challenge page — we must actively wait for a
+// Review-Roundup anchor to appear before reading the DOM. Env-tunable in case
+// Cloudflare tightens and we need to raise the wait.
+const CF_WAIT_TIMEOUT_MS = parseInt(process.env.BWW_CF_WAIT_MS || '25000', 10);
 
 /**
  * Titlecase-aware comparison: does the BWW URL slug reference this show?
@@ -166,6 +171,22 @@ async function fetchReviewsPageAnchors() {
     const ctx = browser.contexts()[0] || await browser.newContext();
     const page = await ctx.newPage();
     await page.goto(REVIEWS_PAGE_URL, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT_MS });
+    // Wait for a Review-Roundup anchor to appear — this naturally handles the
+    // Cloudflare challenge (selector can't match until the challenge clears and
+    // the real reviews.php renders). Timeout returns null; we then return [] so
+    // the caller falls through to URL-guessing. Using `waitForSelector` (over
+    // `waitForFunction`) keeps the CF-wait concern decoupled from the content
+    // semantics — a genuinely empty reviews.php page would also time out, which
+    // is the right behavior (no anchors means no discovery, regardless of CF).
+    const anchorFound = await page.waitForSelector(
+      'a[href*="Review-Roundup"]',
+      { timeout: CF_WAIT_TIMEOUT_MS }
+    ).catch(() => null);
+    if (!anchorFound) {
+      // ::warning:: matches the surfacing style at opening-night-poller.js:476
+      console.log(`::warning::bww-rr-discover: reviews.php selector did not match within ${CF_WAIT_TIMEOUT_MS}ms (Cloudflare challenge likely still active or page empty)`);
+      return [];
+    }
     const hrefs = await page.evaluate(() => {
       const anchors = Array.from(document.querySelectorAll('a[href*="Review-Roundup"]'));
       const set = new Set();
