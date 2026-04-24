@@ -12,7 +12,10 @@
     "schmigadoon-2026/wsj--unknown.json",
     "fallen-angels-2026/talkinbroadway--unknown.json",
     "innocence-off-broadway-2026/variety--rebecca-rubin.json",
-    "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json"
+    "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json",
+    "the-rocky-horror-show-2026/ew--dalton-ross.json",
+    "the-balusters-2026/talkinbroadway--unknown.json",
+    "schmigadoon-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -336,7 +339,14 @@
     "collected-stories-2010/ap--unknown.json",
     "collected-stories-2010/backstage--david-sheward.json",
     "enron-2010/new-jersey-newsroom--michael-sommers.json",
-    "enron-2010/backstage--erik-haagensen.json"
+    "enron-2010/backstage--erik-haagensen.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -345,7 +355,8 @@
       "the-rocky-horror-show-2026/new-york-sun--unknown.json",
       "the-rocky-horror-show-2026/playbill--unknown.json",
       "the-balusters-2026/ew--unknown.json",
-      "schmigadoon-2026/ew--unknown.json"
+      "schmigadoon-2026/ew--unknown.json",
+      "the-rocky-horror-show-2026/ew--dalton-ross.json"
     ],
     "amp": [],
     "browserbase": [
@@ -361,7 +372,9 @@
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/innocence-off-broadway-2026/variety--rebecca-rubin.json",
       "innocence-off-broadway-2026/variety--rebecca-rubin.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/schmigadoon-2026/wsj--charles-isherwood.json",
+      "schmigadoon-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -370,7 +383,8 @@
       "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json"
     ],
     "brightdata": [
-      "fallen-angels-2026/talkinbroadway--unknown.json"
+      "fallen-angels-2026/talkinbroadway--unknown.json",
+      "the-balusters-2026/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
@@ -383,7 +397,7 @@
     "archive": []
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "enron-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -483,6 +497,17 @@
       "t": "2026-04-24T11:18:10.188Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-24T11:33:58.106Z",
+      "event": "bb-session",
+      "session": "61c0e0ca",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-24T11:33:59.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

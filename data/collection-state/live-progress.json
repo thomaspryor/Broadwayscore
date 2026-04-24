@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-04-24T11:23:15.138Z",
-  "processed": 13,
-  "failed": 322,
-  "successRate": "3.9%",
+  "updatedAt": "2026-04-24T11:35:14.187Z",
+  "processed": 16,
+  "failed": 329,
+  "successRate": "4.6%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 6,
     "amp": 0,
-    "browserbase": 13,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingbee": 3,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 6,
     "archive": 0
   },
@@ -113,6 +113,17 @@
       "t": "2026-04-24T11:18:10.188Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-24T11:33:58.106Z",
+      "event": "bb-session",
+      "session": "61c0e0ca",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-24T11:33:59.431Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
