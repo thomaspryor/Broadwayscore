@@ -184,13 +184,11 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-fast'
 
-      - name: Trigger deploy
-        if: always() && steps.changes.outputs.has_changes == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: |
-          echo "Triggering deploy..."
-          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+      # Deploy dispatch removed 2026-04-24: vercel-deploy.yml now listens for
+      # "Rebuild Reviews (Fast)" completion via workflow_run. Keeping both paths
+      # double-fires the concurrency group for every opening-night correction.
+      # workflow_run fires on ALL successful completions (including no-change),
+      # which is the tradeoff — Fast is manual-only so no-change runs are rare.
 
       - name: Notify on failure
         if: failure()
