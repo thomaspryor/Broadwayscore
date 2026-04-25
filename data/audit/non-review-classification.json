@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-04-25T10:39:43.371Z",
+    "generatedAt": "2026-04-25T11:37:44.773Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
@@ -8,20 +8,31 @@
       "inReviewsJson": 16637,
       "skippedExcluded": 82,
       "withFullText": 16,
-      "excerptOnly": 1552,
+      "excerptOnly": 1551,
       "llmClassified": 15,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 0,
+      "nonReviewsFound": 1,
       "uncertainCases": 14,
       "budgetUsed": 0.0016000000000000005,
       "llmCalls": 16,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14987
+      "skippedAlreadyClassified": 14988
     },
     "calibration": null
   },
-  "nonReviews": [],
+  "nonReviews": [
+    {
+      "file": "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
+      "showId": "romeo-and-juliet-2013",
+      "outlet": "Bloomberg",
+      "outletId": "bloomberg",
+      "contentType": "preview",
+      "confidence": "high",
+      "reasoning": "This article describes the staging of the production but does not offer an evaluation or opinion, indicating it's a preview.",
+      "currentScore": 41
+    }
+  ],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -30,7 +41,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -40,7 +51,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than an actual article. It does mention 'Broadway review subscriptions' and 'Music album reviews' but does not contain a review of 'Fences'.",
       "currentScore": 82
     },
     {
@@ -60,7 +71,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +81,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which is a roundup of various cultural events and recommendations. While 'Liberation' is mentioned, there's no indication of a review or evaluation of the show itself within this excerpt.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
       "currentScore": 88
     },
     {
@@ -80,7 +91,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -90,7 +101,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.' It lacks any evaluative content about the show.",
       "currentScore": 74
     },
     {
@@ -100,7 +111,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer a critical evaluation or opinion on its quality. It sets the stage for an evening of terror but doesn't review the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -110,7 +121,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of categories and links related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -120,7 +131,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt, further suggesting it's a feature piece.",
       "currentScore": 83
     },
     {
@@ -130,7 +141,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "The text appears to be a collection of search terms or categories related to theater, rather than a review of a specific show. It lacks any evaluative content.",
       "currentScore": 42
     },
     {
@@ -140,7 +151,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content present.",
+      "reasoning": "The article consists of production credits and ticket information, which is more aligned with a news item or listing than a review or other content type. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -150,7 +161,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not evaluate \"The Price\".",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
       "currentScore": 78
     },
     {
@@ -160,13 +171,17 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about \"Three Tall Women\".",
+      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women'.",
       "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [
-    "the-rocky-horror-show-2026/ew--dalton-ross.json"
-  ],
-  "perShowSummary": []
+  "reviewsConfirmed": [],
+  "perShowSummary": [
+    {
+      "showId": "romeo-and-juliet-2013",
+      "currentCount": 23,
+      "removed": 1
+    }
+  ]
 }
