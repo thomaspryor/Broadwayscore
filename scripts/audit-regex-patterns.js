@@ -83,6 +83,11 @@ const PATTERN_ALLOWLIST = {
   // Paywall: bare /paywall/i matches critics discussing their publication's
   // funding model in trailing editor notes — absorbed by trailing-junk mitigation
   'PAYWALL_PATTERNS::12': 20, // /paywall/i
+  // NYT bot-detection JS-loader artifact appears literally in 171 archived NYT reviews.
+  // Each match is a real positive — the scraper got partial article + this anti-bot stub.
+  // No FP risk: phrase is too specific to occur in legitimate review prose. Sized to
+  // current corpus + headroom; revisit if NYT changes the stub wording.
+  'PAYWALL_PATTERNS::15': 250, // /trouble\s+retrieving\s+the\s+article\s+content/i — raw 171
   // Horror-film: bare patterns fire on 312 reviews (metaphors — "insidious plot",
   // "horror movie genre comparison", "haunted house set", "spirit world in Hamlet").
   // detectHorrorFilmContent's 3+-theater-keyword guard absorbs 100% — zero pass

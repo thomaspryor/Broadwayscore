@@ -45,6 +45,14 @@ const PAYWALL_PATTERNS = [
   /paywall/i,
   /continue\s+reading\s+(your\s+)?article\s+with\s+a/i,
   /with\s+a\s+\w+\s+subscription/i,
+  // NYT bot-detection / JS-loader artifact appended after partial article text.
+  // Observed 2026-04-24 across 44 stuck reviews where ensemble correctly rejected
+  // the file (rejectionReason=garbage_text) but classifyContentTier marked it
+  // 'complete' because the trailing chrome doesn't trigger any prior pattern.
+  // The full NYT chrome is "We are having trouble retrieving the article content.
+  // Please enable JavaScript in your browser settings. Thank you for your patience
+  // while we verify access." The first line is the most distinctive.
+  /trouble\s+retrieving\s+the\s+article\s+content/i,
 ];
 
 /**

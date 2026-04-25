@@ -87,3 +87,22 @@ test('content-quality: bare "Subscriber" word is NOT treated as paywall', () => 
   const p = detectPaywall(text);
   assert.equal(p.detected, false, 'Bare "Subscriber" alone should NOT be treated as paywall');
 });
+
+test('content-quality: NYT JS-loader chrome ("trouble retrieving the article content") is paywall', () => {
+  // NYT serves bot-detected requests a partial article followed by a JS-loader stub:
+  // "We are having trouble retrieving the article content. Please enable JavaScript in
+  // your browser settings. Thank you for your patience while we verify access."
+  // Affected 44+ archived NYT reviews where the scraper got real review prose then
+  // hit this stub at the bottom.
+  const text = 'We are having trouble retrieving the article content. Please enable JavaScript.';
+  const p = detectPaywall(text);
+  assert.equal(p.detected, true, 'NYT JS-loader chrome must be detected as paywall');
+});
+
+test('content-quality: NYT chrome appended to real review prose flags isGarbage when chrome is most of text', () => {
+  // Short bait of review prose + the JS-loader chrome — chrome dominates → isGarbage true
+  const text = 'A solid revival.\n\nWe are having trouble retrieving the article content. Please enable JavaScript in your browser settings. Thank you for your patience while we verify access.';
+  const result = isGarbageContent(text);
+  assert.equal(result.isGarbage, true,
+    `expected garbage when JS-loader chrome dominates a short bait, got: ${result.reason}`);
+});
