@@ -385,7 +385,17 @@
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "les-miserables-1987/huffpost--mike-ryan.json",
     "working-1978/theater-news-online--joe-dziemianowicz.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+    "joe-turners-come-and-gone-2026/theatrely--unknown.json",
+    "joe-turners-come-and-gone-2026/frontmezzjunkies--ross.json",
+    "beaches-2026/cititour--brian-scott-lipton.json",
+    "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+    "copenhagen-west-end-2026/times-uk--jane-edwardes.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -396,7 +406,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
-      "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json"
+      "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json",
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -408,7 +420,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "shadowlands-west-end-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -431,6 +443,28 @@
       "t": "2026-04-25T10:32:31.239Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T10:43:38.701Z",
+      "event": "bb-session",
+      "session": "bf80cbc5",
+      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
+    },
+    {
+      "t": "2026-04-25T10:43:39.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-25T10:44:08.124Z",
+      "event": "bb-session",
+      "session": "56555a3b",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-25T10:44:08.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
