@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-25T07:48:33.215Z",
+  "generatedAt": "2026-04-25T08:36:14.184Z",
   "date": "2026-04-25",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 14140,
+  "entryCount": 14142,
   "shows": [
     {
       "showId": "proof-2026",
@@ -3531,6 +3531,36 @@
     },
     {
       "showId": "into-the-woods-2002",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "arcadia-2011",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "julius-caesar-2005",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
