@@ -78,6 +78,7 @@ function normalizeTitle(t) {
 }
 
 const { parseDate } = require('./lib/date-utils');
+const { normalizeOutlet } = require('./lib/review-normalization');
 
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
@@ -229,14 +230,21 @@ for (const showId of showDirs) {
     // Filename-outlet drift is cosmetic — rebuild's stale-outlet-mismatch pass will
     // rename files whose filename outlet doesn't match internal outletId, so we only
     // care about cases where the *internal* outletId is wrong.
+    //
+    // Canonicalize internalOutlet via normalizeOutlet so legacy IDs that exist as
+    // aliases on a canonical entry (e.g. "the-associated-press" → "ap",
+    // "ibj" → "indianapolis-business-journal") resolve correctly. Without this,
+    // a single stranded file with a legacy outletId would re-trip the audit even
+    // though the registry already knows the canonical mapping.
     if (shouldRunClass('C') && !alreadyFlagged && d.url) {
       const domain = parseDomain(d.url);
       if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)) {
         const expected = domainToOutlet[domain];
-        const internalOutlet = d.outletId || f.split('--')[0];
+        const rawInternalOutlet = d.outletId || f.split('--')[0];
+        const internalOutlet = normalizeOutlet(rawInternalOutlet);
         if (expected && expected !== internalOutlet && !WIRE_OUTLETS.has(internalOutlet)) {
           hits.C_domain_mismatch.push({
-            showId, file: f, internalOutlet, expected, domain,
+            showId, file: f, internalOutlet, rawInternalOutlet, expected, domain,
           });
         }
       }
