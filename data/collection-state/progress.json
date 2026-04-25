@@ -937,7 +937,17 @@
     "chinglish-2011/variety--marilyn-stasio.json",
     "chinglish-2011/backstage--erik-haagensen.json",
     "joe-turners-come-and-gone-2026/playbill--unknown.json",
-    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+    "joe-turners-come-and-gone-2026/playbill--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+    "copenhagen-west-end-2026/times-uk--jane-edwardes.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -953,6 +963,8 @@
       "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json",
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
     ],
     "directCookies": [],
@@ -967,7 +979,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -1021,6 +1033,28 @@
     },
     {
       "t": "2026-04-25T18:20:06.716Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-25T18:29:45.734Z",
+      "event": "bb-session",
+      "session": "13a870a5",
+      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+    },
+    {
+      "t": "2026-04-25T18:29:46.935Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-25T18:30:04.766Z",
+      "event": "bb-session",
+      "session": "77993b6a",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-25T18:30:05.797Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
