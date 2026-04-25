@@ -11,9 +11,11 @@ import { AUTHOR } from '@/config/author';
 import { BASE_URL, toAbsoluteUrl, generateBreadcrumbSchema } from '@/lib/seo';
 import { getDataStats } from '@/lib/data-core';
 
-export function generateStaticParams() {
+export const revalidate = 60;
+
+export async function generateStaticParams() {
   try {
-    const reviews = getAllBlogReviews();
+    const reviews = await getAllBlogReviews();
     return reviews.map(r => ({ slug: r.slug }));
   } catch (err) {
     console.error('[blog] generateStaticParams failed:', err);
@@ -21,8 +23,8 @@ export function generateStaticParams() {
   }
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const review = getBlogReviewBySlug(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const review = await getBlogReviewBySlug(params.slug);
   if (!review) return { title: 'Review Not Found' };
 
   const description = review.excerpt.slice(0, 160);
@@ -53,8 +55,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function ReviewPage({ params }: { params: { slug: string } }) {
-  const review = getBlogReviewBySlug(params.slug);
+export default async function ReviewPage({ params }: { params: { slug: string } }) {
+  const review = await getBlogReviewBySlug(params.slug);
   if (!review) notFound();
   const { totalOutlets } = getDataStats();
 
