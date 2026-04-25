@@ -126,14 +126,35 @@ function loadReviews(): BlogReview[] {
   return reviews;
 }
 
-export function getAllBlogReviews(): BlogReview[] {
+/**
+ * Source of truth toggle.
+ * - USE_SANITY_REVIEWS=true  → fetch from Sanity (production after migration runs)
+ * - unset / false            → read from content/reviews/*.md (legacy, dev fallback)
+ *
+ * Once the migration script (scripts/migrate-reviews-to-sanity.js) has run and
+ * Sanity contains the reviews, set USE_SANITY_REVIEWS=true in Vercel env vars
+ * for all 3 environments. The MD files in content/reviews/ are kept as backup.
+ */
+const USE_SANITY = process.env.USE_SANITY_REVIEWS === 'true';
+
+export async function getAllBlogReviews(): Promise<BlogReview[]> {
+  if (USE_SANITY) {
+    const { getAllBlogReviewsFromSanity } = await import('./data-reviews-blog-sanity');
+    return getAllBlogReviewsFromSanity();
+  }
   return loadReviews();
 }
 
-export function getBlogReviewBySlug(slug: string): BlogReview | undefined {
+export async function getBlogReviewBySlug(slug: string): Promise<BlogReview | undefined> {
+  if (USE_SANITY) {
+    const { getBlogReviewBySlugFromSanity } = await import('./data-reviews-blog-sanity');
+    const r = await getBlogReviewBySlugFromSanity(slug);
+    return r ?? undefined;
+  }
   return loadReviews().find(r => r.slug === slug);
 }
 
-export function getBlogReviewByShowSlug(showSlug: string): BlogReview | undefined {
-  return loadReviews().find(r => r.showSlug === showSlug);
+export async function getBlogReviewByShowSlug(showSlug: string): Promise<BlogReview | undefined> {
+  const all = await getAllBlogReviews();
+  return all.find(r => r.showSlug === showSlug);
 }

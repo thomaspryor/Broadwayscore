@@ -266,7 +266,7 @@ function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
-export default function ShowPage({ params }: { params: { slug: string } }) {
+export default async function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
 
   if (!show) {
@@ -325,7 +325,7 @@ export default function ShowPage({ params }: { params: { slug: string } }) {
     }
   }
   const goldListMemberships = getShowSeasonGoldLists(show.id);
-  const blogReview = getBlogReviewByShowSlug(show.slug);
+  const blogReview = await getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
   const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
   const otherProductions = getOtherProductions(show);
