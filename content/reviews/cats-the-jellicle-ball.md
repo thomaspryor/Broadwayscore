@@ -1,7 +1,6 @@
 ---
 title: "Cats: The Jellicle Ball Is a Queer Lion King and I Mean That as the Highest Compliment"
 show: "Cats: The Jellicle Ball"
-showSlug: "cats-the-jellicle-ball-2026"
 venue: "Broadhurst Theatre"
 score: 88
 dateAttended: "2026-03-21"

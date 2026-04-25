@@ -1,7 +1,6 @@
 ---
 title: "Spelling Bee Had No Business Being This Fun While I Had Food Poisoning"
 show: "The 25th Annual Putnam County Spelling Bee"
-showSlug: "the-25th-annual-putnam-county-spelling-bee-off-broadway"
 venue: "New World Stages"
 score: 84
 dateAttended: "2026-03-07"
