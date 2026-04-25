@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-25T01:02:17.566Z",
+  "lastRunAt": "2026-04-25T06:48:23.167Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -39,7 +39,8 @@
     "news:0ac605a57304b163": true,
     "news:67acdc3de5e1aa44": true,
     "google:e67df507ee6601c6": true,
-    "google:8b045df2e05a3e55": true
+    "google:8b045df2e05a3e55": true,
+    "google:c3d31a9614e2dfd3": true
   },
   "mentions": [
     {
@@ -804,10 +805,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-24T22:30:45.389Z"
+    },
+    {
+      "id": "google:c3d31a9614e2dfd3",
+      "source": "google",
+      "url": "https://forum.broadwayworld.com/latest-posts.php",
+      "title": "Latest Posts - BWW Forum",
+      "excerpt": "https://broadwayscorecard.com/show/the-rocky-horror-show\" I feel like this is a lame summary, mostly because anything borne out of the 1970s era of ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-25T03:26:23.494Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-25T03:26:38.137Z"
     }
   ],
   "stats": {
-    "totalSeen": 39,
+    "totalSeen": 40,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -849,6 +870,7 @@
     "https://forum.broadwayworld.com/thread/SCHMIGADOON-Reviews/3": true,
     "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true,
     "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true,
-    "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true
+    "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true,
+    "https://forum.broadwayworld.com/latest-posts.php": true
   }
 }

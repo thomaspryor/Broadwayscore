@@ -1,7 +1,311 @@
 {
-  "generatedAt": "2026-04-24T22:39:40.396Z",
+  "generatedAt": "2026-04-25T05:10:19.406Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "joe-turners-come-and-gone-2026",
+      "title": "Joe Turner's Come and Gone",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "play",
+      "openingDate": "2026-04-25",
+      "status": "previews",
+      "slug": "joe-turners-come-and-gone",
+      "thumbnail": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "betty-buckley-random-notes-off-broadway-2026",
       "title": "Betty Buckley: Random Notes",
@@ -341,8 +645,8 @@
         }
       },
       "broadcast": {
-        "state": "preview-sent",
-        "detail": "Preview sent (25 reviews)"
+        "state": "overdue",
+        "detail": "Overdue alert sent"
       },
       "missingT1": [
         {
@@ -695,19 +999,19 @@
       "status": "open",
       "slug": "beaches",
       "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "siteScore": 47.21,
+      "siteScore": 47.06,
       "liveScore": 47,
-      "scoreDrift": -0.21000000000000085,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
+      "total": 25,
       "t1": 5,
       "t2": 14,
-      "t3": 5,
+      "t3": 6,
       "positive": 2,
       "mixed": 3,
-      "negative": 19,
+      "negative": 20,
       "readiness": {
         "ready": true,
         "reasons": [],
@@ -962,6 +1266,18 @@
           "p": 2,
           "m": 3,
           "n": 19,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-25T05:10:19.406Z",
+          "rc": 25,
+          "s": 47.06,
+          "t1": 5,
+          "t2": 14,
+          "t3": 6,
+          "p": 2,
+          "m": 3,
+          "n": 20,
           "bc": "complete"
         }
       ]
@@ -1669,361 +1985,9 @@
           "isDualMarket": true
         }
       ]
-    },
-    {
-      "id": "the-balusters-2026",
-      "title": "The Balusters",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-04-21",
-      "status": "open",
-      "slug": "the-balusters",
-      "thumbnail": "/images/shows/the-balusters-2026/thumbnail.webp",
-      "siteScore": 77.17,
-      "liveScore": 77,
-      "scoreDrift": -0.1700000000000017,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 26,
-      "t1": 5,
-      "t2": 13,
-      "t3": 8,
-      "positive": 20,
-      "mixed": 5,
-      "negative": 1,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 19,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "complete",
-        "detail": "Sent 4/22/2026, 12:52:46 PM"
-      },
-      "missingT1": [
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Vox",
-          "isDualMarket": false
-        },
-        {
-          "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-04-22T05:08:30.764Z",
-          "rc": 19,
-          "s": 76.8,
-          "t1": 4,
-          "t2": 11,
-          "t3": 4,
-          "p": 14,
-          "m": 4,
-          "n": 1,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-22T23:43:47.429Z",
-          "rc": 24,
-          "s": 76.89,
-          "t1": 4,
-          "t2": 12,
-          "t3": 8,
-          "p": 18,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-23T03:35:33.953Z",
-          "rc": 21,
-          "s": 75.93,
-          "t1": 3,
-          "t2": 12,
-          "t3": 6,
-          "p": 15,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-23T04:13:47.190Z",
-          "rc": 22,
-          "s": 76.55,
-          "t1": 4,
-          "t2": 12,
-          "t3": 6,
-          "p": 16,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-23T05:20:47.175Z",
-          "rc": 23,
-          "s": 76.67,
-          "t1": 4,
-          "t2": 13,
-          "t3": 6,
-          "p": 17,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-23T19:32:36.296Z",
-          "rc": 23,
-          "s": 76.48,
-          "t1": 4,
-          "t2": 13,
-          "t3": 6,
-          "p": 17,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-24T20:03:27.693Z",
-          "rc": 26,
-          "s": 77.17,
-          "t1": 5,
-          "t2": 13,
-          "t3": 8,
-          "p": 20,
-          "m": 5,
-          "n": 1,
-          "bc": "complete"
-        }
-      ]
     }
   ],
   "upcoming": [
-    {
-      "id": "joe-turners-come-and-gone-2026",
-      "title": "Joe Turner's Come and Gone",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "play",
-      "openingDate": "2026-04-25",
-      "status": "previews",
-      "slug": "joe-turners-come-and-gone",
-      "thumbnail": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Joe-Turners-Come-and-Gone-Opens-on-Broadway-20260425",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/JoeTurnersComeAndGone2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
     {
       "id": "the-lost-boys-2026",
       "title": "The Lost Boys",
@@ -2034,7 +1998,7 @@
       "status": "previews",
       "slug": "the-lost-boys",
       "thumbnail": "/images/shows/the-lost-boys-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2073,7 +2037,7 @@
       "status": "upcoming",
       "slug": "the-karate-kid-the-musical-west-end",
       "thumbnail": "/images/shows/the-karate-kid-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2098,7 +2062,7 @@
       "status": "previews",
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2123,7 +2087,7 @@
       "status": "previews",
       "slug": "grace-pervades-west-end",
       "thumbnail": "/images/shows/grace-pervades-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2148,7 +2112,7 @@
       "status": "upcoming",
       "slug": "thornton-wilders-the-emporium-off-broadway",
       "thumbnail": "/images/shows/thornton-wilders-the-emporium-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2187,7 +2151,7 @@
       "status": "upcoming",
       "slug": "well-ill-let-you-go-off-broadway",
       "thumbnail": "/images/shows/well-ill-let-you-go-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2226,7 +2190,7 @@
       "status": "previews",
       "slug": "mercury-off-broadway",
       "thumbnail": "/images/shows/mercury-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2244,6 +2208,45 @@
         "talkingBroadway": {
           "pass": null,
           "detail": "Verify manually: https://www.talkinbroadway.com/page/world/Mercury2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "messy-millie-off-broadway-2026",
+      "title": "Messy Millie",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "musical",
+      "openingDate": "2026-05-02",
+      "status": "upcoming",
+      "slug": "messy-millie-off-broadway",
+      "thumbnail": "/images/shows/messy-millie-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Messy-Millie-Opens-on-Broadway-20260502",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/MessyMillie2026.html",
           "warn": true
         }
       },
