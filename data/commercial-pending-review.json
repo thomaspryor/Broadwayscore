@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T00:49:49.177Z",
+  "generatedAt": "2026-04-25T08:37:43.566Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -1483,10 +1483,6 @@
       "researchedAt": "2026-04-09T08:20:43.559Z"
     },
     "joe-turners-come-and-gone-2026": {
-      "title": "Joe Turner's Come and Gone",
-      "slug": "joe-turners-come-and-gone",
-      "openingDate": "2026-04-25",
-      "status": "previews",
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
@@ -1494,27 +1490,24 @@
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Broadway revival of August Wilson's play starring Taraji P. Henson and Cedric the Entertainer, directed by Debbie Allen. Show is currently in previews with opening night April 25, 2026 and extended run through July 26, 2026 at Ethel Barrymore Theatre. No financial data available in provided evidence.",
+      "notes": "Weekly grosses available via BroadwayWorld, but no public data on production budget, weekly nut, or recoupment status.",
+      "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/broadways-joe-turners-come-and-gone-extends-run/",
-          "date": "2026-03-31"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.yahoo.com/entertainment/tv/articles/off-broadway-unknown-starring-sean-133000875.html",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://therainmakerscollective.com/Q&A/joe-turners-come-gone-qa-and-investment-memo/",
-          "date": "2026-02-08"
+          "url": "https://www.broadwayworld.com/grosses.php",
+          "date": "2026-04-21"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-04-09T08:21:23.541Z"
+      "title": "Joe Turner's Come and Gone",
+      "slug": "joe-turners-come-and-gone-2026",
+      "openingDate": "2026-04-25",
+      "status": "open",
+      "researchedAt": "2026-04-25T08:37:43.566Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     },
     "the-rocky-horror-show-2026": {
       "title": "The Rocky Horror Show",

@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-04-24T20:23:00.795Z",
+  "generatedAt": "2026-04-25T08:56:07.089Z",
   "summary": {
-    "total": 17,
-    "high": 9,
+    "total": 18,
+    "high": 10,
     "medium": 6,
     "low": 2
   },
   "collisions": [
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TDYA92",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "beaches-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-04-22",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "stereophonic-off-broadway-2023",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "October 30, 2023",
+          "openingDate": "2023-10-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "stereophonic-off-broadway-2023",
+      "reason": "publishDate October 30, 2023 is 13 days from stereophonic-off-broadway-2023 opening (2023-10-17)",
+      "confidence": "high"
+    },
     {
       "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
@@ -429,14 +456,14 @@
           "showId": "the-phantom-of-the-opera-west-end-1986",
           "file": "thestage--aleks-sierz.json",
           "publishDate": "June 1st, 2004",
-          "openingDate": "2021-08-10",
+          "openingDate": "1986-10-09",
           "hasScore": true,
           "hasFullText": true,
           "outletId": "thestage"
         }
       ],
       "suggestedWinner": "the-phantom-of-the-opera-west-end-1986",
-      "reason": "publishDate June 1st, 2004 is 6279+ days from all openings; defaulting to most recent production",
+      "reason": "publishDate June 1st, 2004 is 6445+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     },
     {
