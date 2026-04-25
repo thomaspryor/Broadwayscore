@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-25T09:11:17.756Z",
+  "updatedAt": "2026-04-25T09:14:54.812Z",
   "processed": 4,
-  "failed": 46,
-  "successRate": "8.0%",
+  "failed": 50,
+  "successRate": "7.4%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-04-25T09:14:20.124Z",
+      "event": "bb-session",
+      "session": "63dc06b8",
+      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
+    },
+    {
+      "t": "2026-04-25T09:14:21.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
