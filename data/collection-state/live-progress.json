@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-25T03:23:42.759Z",
-  "processed": 26,
-  "failed": 1608,
+  "updatedAt": "2026-04-25T03:25:03.221Z",
+  "processed": 27,
+  "failed": 1613,
   "successRate": "1.6%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 27,
+    "browserbase": 28,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 2,
     "archiveToday": 9,
     "archive": 2
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-04-25T03:20:53.836Z",
-      "event": "bb-session",
-      "session": "96d5d0ca",
-      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
-    },
-    {
-      "t": "2026-04-25T03:20:54.929Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-25T03:21:27.458Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-04-25T03:23:30.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:23:49.885Z",
+      "event": "bb-session",
+      "session": "3518044b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-25T03:23:50.925Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

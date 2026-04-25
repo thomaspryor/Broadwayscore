@@ -25,7 +25,8 @@
     "hadestown-2019/frontmezzjunkies--steven-ross.json",
     "hadestown-2019/show-showdown--elizabeth-wollman.json",
     "arcadia-2011/nytimes--houman-barekat.json",
-    "julius-caesar-2005/nytimes--paul-griffiths.json"
+    "julius-caesar-2005/nytimes--paul-griffiths.json",
+    "ragtime-1998/nydailynews--fintan-otoole.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -1635,7 +1636,12 @@
     "imaginary-friends-2002/nytimes--ben-brantley.json",
     "hollywood-arms-2002/nytimes--bruce-weber.json",
     "into-the-woods-2002/nytimes--ben-brantley.json",
-    "the-graduate-2002/nytimes--ben-brantley.json"
+    "the-graduate-2002/nytimes--ben-brantley.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
+    "a-thousand-clowns-2001/nytimes--bruce-weber.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/huffpost--mike-ryan.json",
+    "working-1978/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1650,7 +1656,8 @@
       "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
       "beaches-2026/the-recs--randall-david-cook.json",
       "hadestown-2019/frontmezzjunkies--steven-ross.json",
-      "hadestown-2019/show-showdown--elizabeth-wollman.json"
+      "hadestown-2019/show-showdown--elizabeth-wollman.json",
+      "ragtime-1998/nydailynews--fintan-otoole.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1680,7 +1687,8 @@
       "data/review-texts/imaginary-friends-2002/nytimes--ben-brantley.json",
       "data/review-texts/hollywood-arms-2002/nytimes--bruce-weber.json",
       "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json",
-      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json"
+      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json",
+      "data/review-texts/a-thousand-clowns-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1711,7 +1719,7 @@
     ]
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "the-graduate-2002/nytimes--ben-brantley.json",
+  "lastProcessed": "working-1978/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -1952,6 +1960,17 @@
     },
     {
       "t": "2026-04-25T03:23:30.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:23:49.885Z",
+      "event": "bb-session",
+      "session": "3518044b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf93"
+    },
+    {
+      "t": "2026-04-25T03:23:50.925Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
