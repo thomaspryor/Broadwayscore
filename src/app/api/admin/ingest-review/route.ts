@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/admin-auth';
 import { detectFromReview } from '@/lib/admin-ingest-detect';
+import { parseScore } from '@/lib/admin-ingest-score';
 import { createRequire } from 'module';
 
 // Import CommonJS helpers from scripts/lib/ — these are the same ones the CLI
@@ -78,7 +79,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { url, fullText, humanReviewScore, originalScore, forceClearStale } = body;
+  const { url, fullText, originalScore, forceClearStale } = body;
+  let humanReviewScore: number | null | undefined = body.humanReviewScore;
 
   // Only URL and fullText are strictly required on input. Everything else is
   // auto-detected (with caller overrides winning).
@@ -105,6 +107,21 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       { success: false, error: 'humanReviewScore must be a number between 1 and 100' },
       { status: 400 },
     );
+  }
+
+  // If the caller sent originalScore (e.g. "5/5 stars") but no explicit
+  // humanReviewScore, parse the raw rating to derive the /100 value. The
+  // raw string is what gets stored as originalScore; the parsed integer
+  // becomes humanReviewScore (the value the rebuild pipeline reads).
+  if (
+    (humanReviewScore === null || humanReviewScore === undefined) &&
+    typeof originalScore === 'string' &&
+    originalScore.trim()
+  ) {
+    const parsed = parseScore(originalScore);
+    if (parsed) {
+      humanReviewScore = parsed.score;
+    }
   }
 
   // Run auto-detection. Caller-provided values override detection.
@@ -228,7 +245,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     humanScore: humanReviewScore ?? null,
     fullText,
     originalScore: originalScore || null,
-    originalScoreSource: originalScore ? 'manual-admin-ui' : null,
+    originalScoreSource: originalScore ? deriveOriginalScoreSource(originalScore) : null,
     publishDate,
   });
 
@@ -366,6 +383,12 @@ async function githubDispatchWorkflow(
     return { ok: false, error: `${res.status} ${await res.text()}` };
   }
   return { ok: true };
+}
+
+function deriveOriginalScoreSource(raw: string): string {
+  const parsed = parseScore(raw);
+  if (!parsed) return 'manual-admin-ui';
+  return `manual-${parsed.type}`; // 'manual-stars' | 'manual-letter' | 'manual-numeric'
 }
 
 function normalizeUrl(url: string): string {
