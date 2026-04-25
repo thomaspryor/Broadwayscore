@@ -154,7 +154,8 @@ function buildActorsShard(ctx: DateContext, bucket: 'actors-ah' | 'actors-iq' | 
   return pages;
 }
 
-function buildCoreShard(ctx: DateContext): MetadataRoute.Sitemap {
+async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> {
+  const reviews = await getAllBlogReviews();
   const bestOfCategories = getAllBestOfCategories();
   const browseSlugs = getAllBrowseSlugs();
   const guideSlugs = getAllGuideSlugs();
@@ -403,7 +404,7 @@ function buildCoreShard(ctx: DateContext): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.75,
     },
-    ...getAllBlogReviews().map((review) => ({
+    ...reviews.map((review) => ({
       url: `${BASE_URL}/reviews/${review.slug}`,
       lastModified: review.publishDate,
       changeFrequency: 'monthly' as const,
@@ -436,13 +437,13 @@ function buildCoreShard(ctx: DateContext): MetadataRoute.Sitemap {
   ];
 }
 
-export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
+export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
   const ctx = getDateContext();
   const shard = SITEMAP_SHARDS[id];
   if (!shard) return [];
   const name: ShardName = shard.name;
   switch (name) {
-    case 'core': return buildCoreShard(ctx);
+    case 'core': return await buildCoreShard(ctx);
     case 'shows': return buildShowsShard(ctx);
     case 'theaters': return buildTheatersShard(ctx);
     case 'critics': return buildCriticsShard(ctx);

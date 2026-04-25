@@ -1,7 +1,7 @@
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { AUTHOR } from '@/config/author';
 
-export const dynamic = 'force-static';
+export const revalidate = 60;
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -15,7 +15,7 @@ function escapeXml(s: string): string {
 }
 
 export async function GET() {
-  const reviews = getAllBlogReviews();
+  const reviews = await getAllBlogReviews();
 
   const items = reviews.map(r => {
     const url = `${BASE_URL}/reviews/${r.slug}`;

@@ -45,3 +45,59 @@ export type MarketKey = keyof typeof MARKET_BRAND;
 export function getMarketBrand(market?: string) {
   return MARKET_BRAND[(market as MarketKey)] || MARKET_BRAND.broadway;
 }
+
+/**
+ * Social accounts — SINGLE SOURCE OF TRUTH.
+ * Rendered in the site footer (FooterBranding) and in the opening-night email (buildSocialRowHtml).
+ * Order in this array = display order in UI.
+ * Handles pulled from Buffer API on 2026-04-24.
+ */
+export type SocialPlatform =
+  | 'instagram'
+  | 'threads'
+  | 'bluesky'
+  | 'twitter'
+  | 'facebook';
+
+export interface SocialAccount {
+  platform: SocialPlatform;
+  /** Human-readable handle without leading @ (e.g. "bwayscorecard") */
+  handle: string;
+  /** Full URL used in href */
+  url: string;
+  /** aria-label / alt text */
+  label: string;
+}
+
+export const SOCIAL_ACCOUNTS: readonly SocialAccount[] = [
+  {
+    platform: 'instagram',
+    handle: 'bwayscorecard',
+    url: 'https://instagram.com/bwayscorecard',
+    label: 'Instagram',
+  },
+  {
+    platform: 'threads',
+    handle: 'bwayscorecard',
+    url: 'https://threads.net/@bwayscorecard',
+    label: 'Threads',
+  },
+  {
+    platform: 'bluesky',
+    handle: 'bwayscorecard.bsky.social',
+    url: 'https://bsky.app/profile/bwayscorecard.bsky.social',
+    label: 'Bluesky',
+  },
+  {
+    platform: 'twitter',
+    handle: 'BwayScorecard',
+    url: 'https://x.com/BwayScorecard',
+    label: 'X (formerly Twitter)',
+  },
+  {
+    platform: 'facebook',
+    handle: 'BroadwayScorecard',
+    url: 'https://facebook.com/BroadwayScorecard',
+    label: 'Facebook',
+  },
+] as const;
