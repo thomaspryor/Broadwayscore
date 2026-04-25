@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-25T00:40:17.265Z",
-  "processed": 22,
-  "failed": 1532,
-  "successRate": "1.4%",
+  "updatedAt": "2026-04-25T03:11:58.099Z",
+  "processed": 25,
+  "failed": 1539,
+  "successRate": "1.6%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 2,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-04-24T09:48:24.795Z",
-      "event": "bb-session",
-      "session": "4f810fed",
-      "url": "https://www.ft.com/content/5c7a893b-cd80-4bf2-8e9c-ee4bf8d04944?syn-25a6b1a6=1"
-    },
-    {
-      "t": "2026-04-24T09:48:25.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
     {
       "t": "2026-04-24T10:12:25.580Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-24T21:41:31.695Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-25T03:11:31.048Z",
+      "event": "bb-session",
+      "session": "7d161580",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-04-25T03:11:32.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

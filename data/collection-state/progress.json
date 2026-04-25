@@ -21,7 +21,10 @@
     "beaches-2026/nydailynews--chris-jones.json",
     "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
     "the-rocky-horror-show-2026/vulture--sara-holdren.json",
-    "beaches-2026/the-recs--randall-david-cook.json"
+    "beaches-2026/the-recs--randall-david-cook.json",
+    "hadestown-2019/frontmezzjunkies--steven-ross.json",
+    "hadestown-2019/show-showdown--elizabeth-wollman.json",
+    "arcadia-2011/nytimes--houman-barekat.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -1555,7 +1558,14 @@
     "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json",
     "beaches-2026/new-york-sun--unknown.json",
     "beaches-2026/cititour--brian-scott-lipton.json",
-    "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json"
+    "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json",
+    "hadestown-2019/newnownextcom--michael-musto.json",
+    "hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json",
+    "hadestown-2019/gotham-playgoer--robert-sholiton.json",
+    "hadestown-2019/scribicide--aaron-botwick.json",
+    "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
+    "matilda-the-musical-2013/bloomberg--jeremy-gerard.json",
+    "american-idiot-2010/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1568,7 +1578,9 @@
       "the-rocky-horror-show-2026/ew--dalton-ross.json",
       "beaches-2026/the-interested-bystander--cary-wong.json",
       "the-balusters-2026/theatre-reviews-limited--david-roberts.json",
-      "beaches-2026/the-recs--randall-david-cook.json"
+      "beaches-2026/the-recs--randall-david-cook.json",
+      "hadestown-2019/frontmezzjunkies--steven-ross.json",
+      "hadestown-2019/show-showdown--elizabeth-wollman.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1587,7 +1599,9 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/schmigadoon-2026/wsj--charles-isherwood.json",
       "schmigadoon-2026/wsj--charles-isherwood.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/arcadia-2011/nytimes--houman-barekat.json",
+      "arcadia-2011/nytimes--houman-barekat.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1607,7 +1621,9 @@
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-balusters-2026/talkinbroadway--unknown.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
-      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json"
+      "data/review-texts/between-the-river-and-the-sea-west-end-2026/thestage--unknown.json",
+      "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json",
+      "data/review-texts/hadestown-2019/theater-reviews-from-my-seat--joe-lombardi.json"
     ],
     "archive": [
       "beaches-2026/vulture--unknown.json",
@@ -1615,7 +1631,7 @@
     ]
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json",
+  "lastProcessed": "american-idiot-2010/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -1737,6 +1753,17 @@
       "t": "2026-04-24T21:41:31.695Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-04-25T03:11:31.048Z",
+      "event": "bb-session",
+      "session": "7d161580",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.h"
+    },
+    {
+      "t": "2026-04-25T03:11:32.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
