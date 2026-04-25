@@ -880,6 +880,45 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   return { matched, confidence, matchCount, threshold, words, matchedWords, missingWords };
 }
 
+/**
+ * Validate that an aggregator/roundup HTML page is actually about the show
+ * we think it is, by comparing the show title against the page's <title> tag.
+ *
+ * Returns { ok, reason, pageTitle } so callers can log/skip without filing
+ * reviews against the wrong show. Used by every script that reads cached
+ * LBO/aggregator archives, since those archives are keyed by showId and the
+ * cache itself has no integrity guarantee.
+ *
+ * Background: Stuart King (LBO Head Reviewer) reported on 2026-04-25 that
+ * we'd attributed an Oh, Mary! excerpt to him on Magic Mike Live, plus a
+ * Paddington excerpt on Teeth 'n' Smiles. Root cause was three readers
+ * (scrape-london-box-office-roundups, opening-night-poller, gather-reviews)
+ * trusting cached archive HTML without checking it matched the showId in
+ * the file path.
+ */
+function validateRoundupPageTitle(html, showTitle) {
+  if (!html || typeof html !== 'string') {
+    return { ok: false, reason: 'no-html', pageTitle: null };
+  }
+  const m = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (!m) {
+    return { ok: false, reason: 'no-title-tag', pageTitle: null };
+  }
+  const pageTitle = m[1].trim();
+  const conf = titleWordsMatchWithConfidence(showTitle, pageTitle);
+  if (conf.matched) {
+    return { ok: true, reason: 'matched', pageTitle, confidence: conf.confidence };
+  }
+  return {
+    ok: false,
+    reason: 'page-title-mismatch',
+    pageTitle,
+    matchCount: conf.matchCount,
+    threshold: conf.threshold,
+    showWords: conf.words,
+  };
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
@@ -889,6 +928,7 @@ module.exports = {
   buildLondonSlugVariants,
   titleWordsMatch,
   titleWordsMatchWithConfidence,
+  validateRoundupPageTitle,
   TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };
