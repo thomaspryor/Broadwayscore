@@ -75,6 +75,40 @@ Open:
 
 Edit `src/sanity/schemas/post.ts` — add fields via `defineField`. Deploy as usual; Sanity Studio picks up the new schema on next load.
 
-## 8. Known cosmetic follow-up
+## 8. Migrate the existing markdown reviews into Sanity
+
+The 4 reviews currently in `content/reviews/*.md` need to be migrated into Sanity. One-shot script:
+
+1. **Create an Editor API token** in Sanity:
+   - sanity.io/manage → your project → **API → Tokens → Add API token**
+   - Name: `migrate-reviews`
+   - Permissions: **Editor** (read+write)
+   - Copy the token (starts with `sk...`)
+
+2. **Run the migration locally:**
+   ```bash
+   export SANITY_API_WRITE_TOKEN=skXXX...
+   export NEXT_PUBLIC_SANITY_PROJECT_ID=fp1ft8k8
+   export NEXT_PUBLIC_SANITY_DATASET=production
+   node scripts/migrate-reviews-to-sanity.js --dry-run    # preview
+   node scripts/migrate-reviews-to-sanity.js              # for real
+   ```
+
+3. **Verify in Studio** at https://broadwayscorecard.com/studio. Confirm 4 Show Reviews appear (Cats, Edward, High Spirits, Spelling Bee).
+
+4. **Flip the source-of-truth flag** in Vercel:
+   ```bash
+   cd /Users/tompryor/Broadwayscore
+   vercel env add USE_SANITY_REVIEWS production --value true --yes
+   vercel env add USE_SANITY_REVIEWS preview --value true --yes
+   vercel env add USE_SANITY_REVIEWS development --value true --yes
+   ```
+   Re-deploy. `/reviews` now reads from Sanity.
+
+5. **Delete the API token** in Sanity once migration is verified. The blog reads with no token (public dataset, published-only).
+
+6. **Keep `content/reviews/*.md` as backup** for one release cycle, then delete them.
+
+## 9. Known cosmetic follow-up
 
 `/studio` currently uses a `position: fixed` overlay to hide the BWSC site chrome. The idiomatic fix is a Next.js route group with its own root layout. Small refactor — do it when there's time.
