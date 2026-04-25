@@ -10,11 +10,12 @@
  * - Reviews with outletId that should be normalized to different canonical ID
  *
  * Usage:
- *   node scripts/audit-outlet-registry.js           # Console summary output (default)
- *   node scripts/audit-outlet-registry.js --json    # Full JSON output to stdout
- *   node scripts/audit-outlet-registry.js --fix     # Audit and fix display name/normalization issues
- *   node scripts/audit-outlet-registry.js --dry-run # Show what --fix would do
- *   node scripts/audit-outlet-registry.js --update  # Add missing outlets to registry (with confirmation)
+ *   node scripts/audit-outlet-registry.js               # Console summary output (default)
+ *   node scripts/audit-outlet-registry.js --json        # Full JSON output to stdout
+ *   node scripts/audit-outlet-registry.js --fix         # Audit and fix display name/normalization issues
+ *   node scripts/audit-outlet-registry.js --dry-run     # Show what --fix would do
+ *   node scripts/audit-outlet-registry.js --update      # Add missing outlets to registry (with confirmation)
+ *   node scripts/audit-outlet-registry.js --report-only # Print report + audit JSON, always exit 0 (CI warning gate)
  */
 
 const fs = require('fs');
@@ -34,6 +35,7 @@ const DRY_RUN = args.includes('--dry-run');
 const JSON_OUTPUT = args.includes('--json');
 const UPDATE_MODE = args.includes('--update');
 const AUTO_MODE = args.includes('--auto'); // Skip confirmation prompts (for CI)
+const REPORT_ONLY = args.includes('--report-only'); // Always exit 0 — CI warning gate
 
 // Load the outlet registry
 function loadRegistry() {
@@ -713,6 +715,10 @@ async function main() {
     if (auditResult.findings.missingFromRegistry.length > 0) {
       if (!JSON_OUTPUT && !UPDATE_MODE) {
         console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
+      }
+      if (REPORT_ONLY) {
+        if (!JSON_OUTPUT) console.log('--report-only: exiting 0 despite findings (CI warning gate)');
+        process.exit(0);
       }
       process.exit(1);
     }

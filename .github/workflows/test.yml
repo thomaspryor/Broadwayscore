@@ -495,6 +495,13 @@ jobs:
         run: node scripts/audit-critic-outlets.js --report-only
         continue-on-error: true  # Informational only
 
+      - name: Audit outlet-registry gaps
+        run: node scripts/audit-outlet-registry.js --report-only
+        continue-on-error: true  # Informational only — exit 0 even with missing outlets.
+        # Surfaces unregistered outletIds + display-name + normalization mismatches.
+        # Wired as warning so the 53+ pre-existing missing outlets don't block merges
+        # while we work through the backlog. Promote to failure once count is <5.
+
       - name: Validate mobile-shows.json integrity
         run: node scripts/validate-mobile-shows.js
         # Catches stale build artifacts from worktree merges:
