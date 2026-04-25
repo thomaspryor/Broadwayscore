@@ -79,7 +79,7 @@ const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-gua
 const { computeReplacementPreserve } = require('./lib/wrongprod-replacement-preserve');
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { titleWordsMatchWithConfidence } = require('./lib/show-matching');
+const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -3933,6 +3933,17 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const lboArchivePath = path.join(__dirname, '../data/aggregator-archive/lbo-roundups', `${showId}.html`);
     if (fs.existsSync(lboArchivePath)) {
       const lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
+      // Validate the cached archive actually matches this show — past bug
+      // wrote roundup HTML for the wrong show under {showId}.html, then this
+      // block read it and filed reviews against the wrong show.
+      // (Stuart King mis-attribution incident, 2026-04-25.)
+      const validation = validateRoundupPageTitle(lboHtml, show.title || showId);
+      if (!validation.ok) {
+        console.log(`    ✗ LBO archive page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" — quarantining`);
+        try { fs.renameSync(lboArchivePath, lboArchivePath + '.mismatch'); } catch (e) {}
+        health.lbo.skipped = true;
+        // Fall through to the rest of the function (other aggregators).
+      } else {
       const lboRawReviews = extractReviewsFromLBO(lboHtml, showId);
       const lboRoundupDate = extractRoundupDateFromHtml(lboHtml);
       health.lbo.found = true;
@@ -3952,6 +3963,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         });
       }
       health.lbo.extracted = lboRawReviews.length;
+      } // close validated-archive block
     } else {
       console.log(`    No LBO archive found for ${showId}`);
     }

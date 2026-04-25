@@ -50,7 +50,7 @@ const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extracto
 const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
-const { matchTitleToShow } = require('./lib/show-matching');
+const { matchTitleToShow, validateRoundupPageTitle } = require('./lib/show-matching');
 const { fetchPage, fetchJSON } = require('./lib/scraper');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
@@ -650,17 +650,20 @@ async function runAggregators(show) {
       const lboArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'lbo-roundups', `${show.id}.html`);
 
       let lboHtml = null;
+      let lboHtmlSource = null; // 'curated' | 'archive' | 'sitemap'
       if (lboUrl) {
         console.log(`    Curated URL: ${lboUrl}`);
         try {
           const lboResult = await fetchPage(lboUrl, { renderJs: false });
           lboHtml = lboResult?.content || null;
+          if (lboHtml) lboHtmlSource = 'curated';
         } catch (e) {
           console.log(`    LBO fetch error: ${e.message}`);
         }
       } else if (fs.existsSync(lboArchivePath)) {
         console.log('    Using archived LBO page');
         lboHtml = fs.readFileSync(lboArchivePath, 'utf8');
+        lboHtmlSource = 'archive';
       }
 
       // Fallback: live sitemap discovery (free, ~16 entries)
@@ -672,36 +675,60 @@ async function runAggregators(show) {
             sitemapXml = smResult?.content || null;
           } catch (e) { /* sitemap fetch failed, continue */ }
           if (sitemapXml) {
-            // Match show title words against review URL slugs
-            // LBO uses both "review-round-up-{show}" and "{show}-review-{venue}" patterns
-            const titleWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 2);
+            // Match URL slug → title → matchTitleToShow against THIS show only.
+            // The previous "≥2 of titleWords>2chars" heuristic produced false
+            // matches via common words like "the" and "musical" (e.g.
+            // "Trainspotting the musical" matched the Paddington The Musical
+            // roundup). Stuart King contamination 2026-04-25.
             const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
               .map(m => m[1])
               .filter(url => {
                 const slug = url.split('/').pop().toLowerCase();
-                // Exclude non-review pages (photos, cast announcements, etc.)
                 return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
               });
             const match = reviewUrls.find(url => {
-              const slug = url.split('/').pop().toLowerCase();
-              return titleWords.filter(w => slug.includes(w)).length >= Math.min(titleWords.length, 2);
+              const slug = url.split('/').pop()
+                .replace(/^review-(?:round-?up-)?/i, '')
+                .replace(/-review(?:-[\w-]+)?$/i, '')
+                .replace(/-/g, ' ')
+                .toLowerCase();
+              const r = matchTitleToShow(slug, [show], { market: 'west-end' });
+              return r && r.show && r.confidence === 'high';
             });
             if (match) {
               console.log(`    Sitemap match: ${match}`);
               try {
                 const matchResult = await fetchPage(match, { renderJs: false });
                 lboHtml = matchResult?.content || null;
+                if (lboHtml) lboHtmlSource = 'sitemap';
               } catch (e) { /* page fetch failed */ }
-              // Cache to archive
-              if (lboHtml) {
-                const archDir = path.dirname(lboArchivePath);
-                if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-                fs.writeFileSync(lboArchivePath, lboHtml);
-              }
             }
           }
         } catch (e) {
           console.log(`    LBO sitemap fallback error: ${(e.message || '').substring(0, 60)}`);
+        }
+      }
+
+      // Validate page title before extracting / archiving — protects against
+      // poisoned cache entries (archive source) and against any URL/sitemap
+      // mismatch we may have missed (curated/sitemap sources).
+      if (lboHtml) {
+        const validation = validateRoundupPageTitle(lboHtml, show.title);
+        if (!validation.ok) {
+          console.log(`  LBO: skipping (${validation.reason}) — page title "${(validation.pageTitle || '').substring(0, 60)}" doesn't match "${show.title}"`);
+          if (lboHtmlSource === 'archive' && fs.existsSync(lboArchivePath)) {
+            // Quarantine the bad archive so future runs don't repeat the mistake.
+            const quarantine = lboArchivePath + '.mismatch';
+            try { fs.renameSync(lboArchivePath, quarantine); console.log(`    Quarantined bad archive → ${path.basename(quarantine)}`); } catch (e) {}
+          }
+          lboHtml = null;
+        } else if (lboHtmlSource === 'sitemap') {
+          // Only persist after validation passed.
+          try {
+            const archDir = path.dirname(lboArchivePath);
+            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+            fs.writeFileSync(lboArchivePath, lboHtml);
+          } catch (e) { /* best-effort archive write */ }
         }
       }
 

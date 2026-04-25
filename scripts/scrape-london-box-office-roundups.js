@@ -26,7 +26,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, titleWordsMatch, validateRoundupPageTitle } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
@@ -648,6 +648,7 @@ async function scrapeLBORoundups() {
       (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24) < 14;
 
     let html;
+    let isFreshFetch = false;
     if (archiveFresh) {
       console.log(`[CACHE] ${showId}: Using archived HTML`);
       html = fs.readFileSync(archivePath, 'utf8');
@@ -661,10 +662,7 @@ async function scrapeLBORoundups() {
           console.log(`  Empty or too short page, skipping`);
           continue;
         }
-        if (!DRY_RUN) {
-          // Archive with source URL header
-          fs.writeFileSync(archivePath, `<!-- Source: ${url} -->\n${html}`);
-        }
+        isFreshFetch = true;
         stats.pagesFetched++;
         await sleep(1500); // Rate limit
       } catch (err) {
@@ -674,18 +672,21 @@ async function scrapeLBORoundups() {
       }
     }
 
-    // Validate: page title should mention the show we matched to
-    // Prevents misassignment when matchTitleToShow fuzzy-matches the wrong show
-    const pageTitleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
-    if (pageTitleMatch) {
-      const pageTitle = pageTitleMatch[1].toLowerCase();
-      const showWords = show.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(w => w.length > 3);
-      const matchingWords = showWords.filter(w => pageTitle.includes(w));
-      if (matchingWords.length < Math.min(2, showWords.length)) {
-        console.log(`  [SKIP] Page title "${pageTitleMatch[1].substring(0, 60)}" doesn't match show "${show.title}" — misassignment`);
-        stats.skippedMismatch = (stats.skippedMismatch || 0) + 1;
-        continue;
-      }
+    // Validate: page title should mention the show we matched to.
+    // Run BEFORE writing the archive so we don't poison the cache that
+    // gather-reviews.js and opening-night-poller.js read later.
+    // (Stuart King mis-attribution incident, 2026-04-25.)
+    const validation = validateRoundupPageTitle(html, show.title);
+    if (!validation.ok) {
+      console.log(`  [SKIP] ${validation.reason}: page title "${(validation.pageTitle || '').substring(0, 60)}" doesn't match show "${show.title}"`);
+      stats.skippedMismatch = (stats.skippedMismatch || 0) + 1;
+      // Do NOT write the archive — it would mislead other readers.
+      continue;
+    }
+
+    // Now safe to persist the archive.
+    if (isFreshFetch && !DRY_RUN) {
+      fs.writeFileSync(archivePath, `<!-- Source: ${url} -->\n${html}`);
     }
 
     // Extract reviews
