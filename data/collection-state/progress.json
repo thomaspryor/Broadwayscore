@@ -24,7 +24,8 @@
     "beaches-2026/the-recs--randall-david-cook.json",
     "hadestown-2019/frontmezzjunkies--steven-ross.json",
     "hadestown-2019/show-showdown--elizabeth-wollman.json",
-    "arcadia-2011/nytimes--houman-barekat.json"
+    "arcadia-2011/nytimes--houman-barekat.json",
+    "julius-caesar-2005/nytimes--paul-griffiths.json"
   ],
   "failed": [
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
@@ -1625,7 +1626,16 @@
     "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
     "festen-2006/variety--charles-isherwood.json",
     "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
-    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+    "anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+    "six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+    "master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+    "urban-cowboy-2003/nytimes--ben-brantley.json",
+    "imaginary-friends-2002/nytimes--ben-brantley.json",
+    "hollywood-arms-2002/nytimes--bruce-weber.json",
+    "into-the-woods-2002/nytimes--ben-brantley.json",
+    "the-graduate-2002/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1661,14 +1671,24 @@
       "schmigadoon-2026/wsj--charles-isherwood.json",
       "data/review-texts/between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/arcadia-2011/nytimes--houman-barekat.json",
-      "arcadia-2011/nytimes--houman-barekat.json"
+      "arcadia-2011/nytimes--houman-barekat.json",
+      "data/review-texts/oldest-living-confederate-widow-tells-all-2003/nytimes--bruce-weber.json",
+      "data/review-texts/anna-in-the-tropics-2003/nytimes--ben-brantley.json",
+      "data/review-texts/six-dance-lessons-in-six-weeks-2003/nytimes--bruce-weber.json",
+      "data/review-texts/master-haroldand-the-boys-2003/nytimes--ben-brantley.json",
+      "data/review-texts/urban-cowboy-2003/nytimes--ben-brantley.json",
+      "data/review-texts/imaginary-friends-2002/nytimes--ben-brantley.json",
+      "data/review-texts/hollywood-arms-2002/nytimes--bruce-weber.json",
+      "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json",
+      "data/review-texts/the-graduate-2002/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "the-rocky-horror-show-2026/nydailynews--unknown.json",
       "the-rocky-horror-show-2026/cote-notices--david-finkle.json",
       "magic-mike-live-west-end-2021/daily-mail--candice-jackson.json",
-      "beaches-2026/nydailynews--chris-jones.json"
+      "beaches-2026/nydailynews--chris-jones.json",
+      "julius-caesar-2005/nytimes--paul-griffiths.json"
     ],
     "brightdata": [
       "fallen-angels-2026/talkinbroadway--unknown.json",
@@ -1691,7 +1711,7 @@
     ]
   },
   "startTime": "2026-04-24T09:01:55.628Z",
-  "lastProcessed": "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+  "lastProcessed": "the-graduate-2002/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-24T09:22:11.503Z",
@@ -1822,6 +1842,116 @@
     },
     {
       "t": "2026-04-25T03:11:32.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:20:53.836Z",
+      "event": "bb-session",
+      "session": "96d5d0ca",
+      "url": "https://www.nytimes.com/2005/07/05/arts/music/julius-caesar-finds-a-new-life-in-"
+    },
+    {
+      "t": "2026-04-25T03:20:54.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:21:27.458Z",
+      "event": "bb-session",
+      "session": "3551630f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b03e3df1e38f93ba25752c1"
+    },
+    {
+      "t": "2026-04-25T03:21:28.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:21:42.669Z",
+      "event": "bb-session",
+      "session": "9a5fcb62",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9400e4d61038f934a25752c1"
+    },
+    {
+      "t": "2026-04-25T03:21:43.702Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:21:57.193Z",
+      "event": "bb-session",
+      "session": "90e4b100",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9506e5dd1730f933a05753c1"
+    },
+    {
+      "t": "2026-04-25T03:21:58.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:22:12.426Z",
+      "event": "bb-session",
+      "session": "1f5df713",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0"
+    },
+    {
+      "t": "2026-04-25T03:22:13.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:22:28.312Z",
+      "event": "bb-session",
+      "session": "a80ea650",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c06e3d71e30f93ba15750c0"
+    },
+    {
+      "t": "2026-04-25T03:22:29.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:22:43.833Z",
+      "event": "bb-session",
+      "session": "22b48fe7",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-25T03:22:45.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:22:58.953Z",
+      "event": "bb-session",
+      "session": "657f924d",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9E07E3D7113FF932A35752C1"
+    },
+    {
+      "t": "2026-04-25T03:22:59.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:23:13.851Z",
+      "event": "bb-session",
+      "session": "d685aa07",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-25T03:23:14.895Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-25T03:23:29.095Z",
+      "event": "bb-session",
+      "session": "45b182e4",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9406e0dc1f3af936a35757c0"
+    },
+    {
+      "t": "2026-04-25T03:23:30.062Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
