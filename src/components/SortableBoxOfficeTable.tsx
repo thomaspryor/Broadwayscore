@@ -63,7 +63,7 @@ function ChangeIndicator({ current, previous, mode = 'percent' }: { current: num
 
   const isPositive = change > 0;
   return (
-    <span className={`text-xs ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+    <span className={`text-xs block sm:inline sm:ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
       {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}{mode === 'points' ? 'pp' : '%'}
     </span>
   );
@@ -180,11 +180,11 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'capacity'} />
               </th>
               <th
-                className={`text-right whitespace-nowrap ${headerClass}`}
+                className={`text-right whitespace-nowrap hidden md:table-cell ${headerClass}`}
                 onClick={() => handleSort('atp')}
               >
-                <span className="hidden sm:inline">Avg Ticket</span>
-                <span className="sm:hidden">ATP</span>
+                <span className="hidden lg:inline">Avg Ticket</span>
+                <span className="lg:hidden">ATP</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'atp'} />
               </th>
               <th
@@ -206,8 +206,8 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0 max-w-[140px] sm:max-w-none">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
+                <td className="py-3 px-2 sm:px-4 min-w-0">
+                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base block leading-tight break-words">
                     {item.show.title}
                   </Link>
                 </td>
@@ -236,7 +236,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     mode="points"
                   />
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap hidden md:table-cell">
                   {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
                 </td>
                 <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden lg:table-cell">
@@ -374,8 +374,8 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0 max-w-[140px] sm:max-w-none">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base truncate block">
+                <td className="py-3 px-2 sm:px-4 min-w-0">
+                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base block leading-tight break-words">
                     {item.show.title}
                   </Link>
                 </td>
