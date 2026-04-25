@@ -935,7 +935,9 @@
     "other-desert-cities-2011/backstage--erik-haagensen.json",
     "other-desert-cities-2011/bloomberg--jeremy-gerard.json",
     "chinglish-2011/variety--marilyn-stasio.json",
-    "chinglish-2011/backstage--erik-haagensen.json"
+    "chinglish-2011/backstage--erik-haagensen.json",
+    "joe-turners-come-and-gone-2026/playbill--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -950,7 +952,8 @@
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
       "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json",
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -964,7 +967,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "chinglish-2011/backstage--erik-haagensen.json",
+  "lastProcessed": "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -1007,6 +1010,17 @@
     },
     {
       "t": "2026-04-25T10:44:08.499Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-25T18:20:05.781Z",
+      "event": "bb-session",
+      "session": "9477f964",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-25T18:20:06.716Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
