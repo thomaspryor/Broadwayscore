@@ -31,12 +31,140 @@ interface IngestResponse {
   detectionWarnings?: string[];
 }
 
+interface LogEntry {
+  id: string;
+  startedAt: number;
+  url: string;
+  // Set after success
+  showId?: string;
+  outletId?: string;
+  criticName?: string;
+  commitSha?: string;
+  // Status
+  status: 'submitting' | 'saved' | 'failed';
+  error?: string;
+  warningCount?: number;
+}
+
+type Mode = 'single' | 'batch';
+
+interface BatchEntry {
+  url: string;
+  fullText: string;
+  scoreInput: string;
+}
+
 export default function IngestForm() {
+  const [mode, setMode] = useState<Mode>('single');
+  const [submissionLog, setSubmissionLog] = useState<LogEntry[]>([]);
+
+  return (
+    <div className="space-y-5">
+      {submissionLog.length > 0 && <SubmissionLog entries={submissionLog} />}
+
+      <ModeToggle mode={mode} onChange={setMode} />
+
+      {mode === 'single' ? (
+        <SinglePasteForm
+          onResult={pushLog}
+          onUpdate={updateLog}
+        />
+      ) : (
+        <BatchPasteForm onResult={pushLog} onUpdate={updateLog} />
+      )}
+    </div>
+  );
+
+  function pushLog(entry: LogEntry) {
+    setSubmissionLog(prev => [entry, ...prev].slice(0, 10));
+  }
+  function updateLog(id: string, patch: Partial<LogEntry>) {
+    setSubmissionLog(prev => prev.map(e => (e.id === id ? { ...e, ...patch } : e)));
+  }
+}
+
+// ─── Mode toggle ────────────────────────────────────────────────────
+
+function ModeToggle({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => void }) {
+  return (
+    <div className="inline-flex rounded-lg border border-white/10 bg-surface-raised/40 p-0.5 text-xs">
+      {(['single', 'batch'] as const).map(m => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          className={[
+            'px-3 py-1.5 rounded-md transition-colors',
+            mode === m ? 'bg-brand text-black font-medium' : 'text-gray-400 hover:text-white',
+          ].join(' ')}
+        >
+          {m === 'single' ? 'One review' : 'Paste a batch'}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Submission log ────────────────────────────────────────────────
+
+function SubmissionLog({ entries }: { entries: LogEntry[] }) {
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface-raised/60 p-3 space-y-2">
+      <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+        Recent submissions
+      </div>
+      <ul className="space-y-1">
+        {entries.slice(0, 5).map(e => (
+          <LogRow key={e.id} entry={e} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function LogRow({ entry }: { entry: LogEntry }) {
+  const icon =
+    entry.status === 'submitting' ? '⏳' : entry.status === 'saved' ? '✓' : '✕';
+  const tone =
+    entry.status === 'submitting'
+      ? 'text-gray-400'
+      : entry.status === 'saved'
+        ? 'text-status-open'
+        : 'text-score-skip';
+  const summary =
+    entry.status === 'saved' && entry.criticName
+      ? `${entry.criticName} · ${entry.outletId} · ${entry.showId}`
+      : entry.status === 'submitting'
+        ? entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)
+        : entry.error || 'Failed';
+
+  return (
+    <li className="flex items-start gap-2 text-xs">
+      <span className={`${tone} mt-0.5 shrink-0 w-4`}>{icon}</span>
+      <div className="flex-1 min-w-0">
+        <div className={`${tone} truncate`}>{summary}</div>
+        {entry.status === 'failed' && entry.error && (
+          <div className="text-[11px] text-gray-500 truncate">{entry.url}</div>
+        )}
+      </div>
+      <span className="text-[11px] text-gray-500 shrink-0 tabular-nums">
+        {new Date(entry.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+      </span>
+    </li>
+  );
+}
+
+// ─── Single-paste form ──────────────────────────────────────────────
+
+function SinglePasteForm({
+  onResult,
+  onUpdate,
+}: {
+  onResult: (e: LogEntry) => void;
+  onUpdate: (id: string, patch: Partial<LogEntry>) => void;
+}) {
   const [url, setUrl] = useState('');
   const [fullText, setFullText] = useState('');
-  // Score is a free-form text input — accepts "5/5 stars", "★★★★", "B+", "90/100", etc.
-  // We compute the /100 value live for display, and the server stores both the raw
-  // string (originalScore) and the parsed integer (humanReviewScore).
   const [scoreInput, setScoreInput] = useState('');
 
   const [detected, setDetected] = useState<DetectionResult | null>(null);
@@ -46,9 +174,7 @@ export default function IngestForm() {
   const [publishDateOverride, setPublishDateOverride] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState<IngestResponse | null>(null);
   const [forceClearStale, setForceClearStale] = useState(false);
-  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const detectTimerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -101,13 +227,11 @@ export default function IngestForm() {
   const effectiveOutlet = detected?.outletId || '';
   const effectiveOutletName = detected?.outletDisplayName || '';
 
-  // Live score parsing for display.
   const parsedScore = useMemo(() => {
     if (!scoreInput.trim()) return null;
     return parseScore(scoreInput);
   }, [scoreInput]);
 
-  // Tell the user exactly what's missing if they can't submit.
   const missingPieces: string[] = [];
   if (!url.trim()) missingPieces.push('review URL');
   if (fullText.trim().length < 50) missingPieces.push('review text');
@@ -121,8 +245,11 @@ export default function IngestForm() {
     event.preventDefault();
     if (!readyToSubmit || submitting) return;
 
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const startedAt = Date.now();
+    onResult({ id, startedAt, url: url.trim(), status: 'submitting' });
+
     setSubmitting(true);
-    setResult(null);
     try {
       const res = await fetch('/api/admin/ingest-review', {
         method: 'POST',
@@ -133,15 +260,21 @@ export default function IngestForm() {
           showId: effectiveShowId,
           criticName: effectiveCritic,
           publishDate: effectivePublishDate || null,
-          // Send the raw rating string. Server parses + stores both originalScore
-          // and humanReviewScore (the /100 value).
           originalScore: scoreInput.trim() || null,
           forceClearStale,
         }),
       });
       const json = (await res.json()) as IngestResponse;
-      setResult(json);
       if (json.success) {
+        onUpdate(id, {
+          status: 'saved',
+          showId: json.showId,
+          outletId: json.outletId,
+          criticName: json.criticName,
+          commitSha: json.commitSha,
+          warningCount: (json.detectionWarnings || []).length,
+        });
+        // Clear inputs so user can paste the next one
         setUrl('');
         setFullText('');
         setScoreInput('');
@@ -150,9 +283,14 @@ export default function IngestForm() {
         setPublishDateOverride('');
         setDetected(null);
         setForceClearStale(false);
+      } else {
+        onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
       }
     } catch (err) {
-      setResult({ success: false, error: err instanceof Error ? err.message : String(err) });
+      onUpdate(id, {
+        status: 'failed',
+        error: err instanceof Error ? err.message : String(err),
+      });
     } finally {
       setSubmitting(false);
     }
@@ -166,7 +304,6 @@ export default function IngestForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* ─── Step 1: URL ─── */}
       <Field label="Review URL" required>
         <input
           type="url"
@@ -181,7 +318,6 @@ export default function IngestForm() {
         />
       </Field>
 
-      {/* ─── Step 2: Full text ─── */}
       <Field label="Full review text" required>
         <textarea
           value={fullText}
@@ -196,7 +332,6 @@ export default function IngestForm() {
         )}
       </Field>
 
-      {/* ─── Detected box (always visible — shows progress as user pastes) ─── */}
       <DetectedSection
         detected={detected}
         loading={detectLoading}
@@ -217,7 +352,6 @@ export default function IngestForm() {
         disabled={submitting}
       />
 
-      {/* ─── Optional score (with live conversion) ─── */}
       <Field
         label="Critic's stated score"
         hint="Optional. Type it as written in the review (e.g. “4/5 stars”, “★★★★”, “A-”, “90/100”). If the review doesn't state a score, leave blank — our LLM will score the text."
@@ -249,12 +383,7 @@ export default function IngestForm() {
         )}
       </Field>
 
-      {/* ─── Advanced (collapsed by default) ─── */}
-      <details
-        open={advancedOpen}
-        onToggle={e => setAdvancedOpen((e.target as HTMLDetailsElement).open)}
-        className="rounded-lg border border-white/5 bg-surface-raised/40"
-      >
+      <details className="rounded-lg border border-white/5 bg-surface-raised/40">
         <summary className="px-4 py-2.5 text-xs text-gray-400 cursor-pointer hover:text-gray-200 select-none">
           Advanced options
         </summary>
@@ -276,7 +405,6 @@ export default function IngestForm() {
         </div>
       </details>
 
-      {/* ─── Submit button ─── */}
       <button
         type="submit"
         disabled={!readyToSubmit || submitting}
@@ -297,13 +425,181 @@ export default function IngestForm() {
           ))}
         </ul>
       )}
-
-      {result && <Result result={result} />}
     </form>
   );
 }
 
-// ─── Detected section ──────────────────────────────────────────────
+// ─── Batch-paste form ──────────────────────────────────────────────
+
+function BatchPasteForm({
+  onResult,
+  onUpdate,
+}: {
+  onResult: (e: LogEntry) => void;
+  onUpdate: (id: string, patch: Partial<LogEntry>) => void;
+}) {
+  const [batchInput, setBatchInput] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState({ done: 0, total: 0 });
+
+  const entries = useMemo(() => parseBatch(batchInput), [batchInput]);
+  const validCount = entries.filter(e => isEntryValid(e)).length;
+  const invalidCount = entries.length - validCount;
+
+  async function handleSubmitAll(event: React.FormEvent) {
+    event.preventDefault();
+    if (validCount === 0 || submitting) return;
+    setSubmitting(true);
+    setProgress({ done: 0, total: validCount });
+
+    const validEntries = entries.filter(isEntryValid);
+    for (let i = 0; i < validEntries.length; i++) {
+      const entry = validEntries[i];
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      const startedAt = Date.now();
+      onResult({ id, startedAt, url: entry.url, status: 'submitting' });
+
+      try {
+        const res = await fetch('/api/admin/ingest-review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: entry.url,
+            fullText: entry.fullText,
+            originalScore: entry.scoreInput || null,
+          }),
+        });
+        const json = (await res.json()) as IngestResponse;
+        if (json.success) {
+          onUpdate(id, {
+            status: 'saved',
+            showId: json.showId,
+            outletId: json.outletId,
+            criticName: json.criticName,
+            commitSha: json.commitSha,
+            warningCount: (json.detectionWarnings || []).length,
+          });
+        } else {
+          onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
+        }
+      } catch (err) {
+        onUpdate(id, {
+          status: 'failed',
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+      setProgress({ done: i + 1, total: validEntries.length });
+    }
+
+    // Clear the batch input only if everything succeeded — keep it on partial
+    // failure so the operator can re-edit and re-run.
+    setBatchInput('');
+    setSubmitting(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmitAll} className="space-y-5">
+      <div className="rounded-lg border border-white/10 bg-surface-raised/40 p-3 text-xs text-gray-400 space-y-1">
+        <div className="font-semibold text-gray-200">Batch format</div>
+        <p>
+          Separate each review with a line of <code className="text-brand">---</code>. For each
+          review: put the URL on its own line, then the full review text. Optionally add a line{' '}
+          <code className="text-brand">Score: 5/5 stars</code> anywhere in the block.
+        </p>
+        <pre className="text-[11px] text-gray-500 leading-relaxed mt-2 whitespace-pre-wrap">{`https://www.nytimes.com/2026/04/23/...
+By Helen Shaw
+Full review text…
+Score: 4/5 stars
+---
+https://variety.com/2026/...
+By Naveen Kumar
+Full review text…`}</pre>
+      </div>
+
+      <Field label={`Batch paste (${entries.length} reviews detected)`}>
+        <textarea
+          value={batchInput}
+          onChange={e => setBatchInput(e.target.value)}
+          rows={20}
+          className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
+          disabled={submitting}
+          placeholder="Paste all reviews here, separated by --- on its own line…"
+        />
+      </Field>
+
+      {entries.length > 0 && (
+        <div className="text-xs space-y-0.5">
+          <div className="text-gray-400">
+            <strong className="text-status-open">{validCount} ready</strong> · {invalidCount > 0 && (
+              <span className="text-score-tepid">{invalidCount} invalid (URL or text missing)</span>
+            )}
+          </div>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={validCount === 0 || submitting}
+        className={[
+          'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
+          validCount > 0 && !submitting
+            ? 'bg-brand text-black hover:bg-brand/90'
+            : 'bg-white/5 text-gray-500 cursor-not-allowed',
+        ].join(' ')}
+      >
+        {submitting
+          ? `Submitting ${progress.done} of ${progress.total}…`
+          : validCount === 0
+            ? 'Paste reviews to enable'
+            : `Submit all ${validCount} reviews`}
+      </button>
+    </form>
+  );
+}
+
+function parseBatch(input: string): BatchEntry[] {
+  if (!input.trim()) return [];
+  // Split on lines that are 3+ dashes (or 3+ equals) on their own line
+  const chunks = input.split(/\n\s*[-=]{3,}\s*\n/);
+  return chunks
+    .map(chunk => {
+      const lines = chunk.split('\n');
+      let url = '';
+      let scoreInput = '';
+      const textLines: string[] = [];
+      for (const rawLine of lines) {
+        const line = rawLine.trim();
+        if (!url && /^https?:\/\//i.test(line)) {
+          url = line;
+          continue;
+        }
+        const scoreMatch = line.match(/^score\s*[:=]\s*(.+)$/i);
+        if (scoreMatch) {
+          scoreInput = scoreMatch[1].trim();
+          continue;
+        }
+        textLines.push(rawLine);
+      }
+      return {
+        url,
+        fullText: textLines.join('\n').trim(),
+        scoreInput,
+      };
+    })
+    .filter(e => e.url || e.fullText.trim());
+}
+
+function isEntryValid(e: BatchEntry): boolean {
+  if (!e.url) return false;
+  try {
+    new URL(e.url);
+  } catch {
+    return false;
+  }
+  return e.fullText.trim().length >= 50;
+}
+
+// ─── Detected section (single-paste only) ─────────────────────────
 
 function DetectedSection({
   detected,
@@ -360,7 +656,6 @@ function DetectedSection({
         {loading && <span className="text-xs text-gray-500">Detecting…</span>}
       </div>
 
-      {/* Outlet — never editable; we only accept registered outlets */}
       <DetectedField
         label="Outlet"
         value={
@@ -373,7 +668,6 @@ function DetectedSection({
         missingHint="URL not from a recognized outlet — try a different review URL"
       />
 
-      {/* Show */}
       <DetectedField
         label="Show"
         value={effectiveShowId ? `${effectiveShowTitle} (${effectiveShowId})` : null}
@@ -388,7 +682,6 @@ function DetectedSection({
         missingHint="Couldn't find a matching show — type the show ID below"
       />
 
-      {/* Critic — when missing, surface the input directly with a clear ask */}
       <DetectedField
         label="Critic"
         value={effectiveCritic || null}
@@ -401,7 +694,6 @@ function DetectedSection({
         missingHint="Couldn't find a “By [Name]” byline — type the critic's name below"
       />
 
-      {/* Publish date */}
       <DetectedField
         label="Publish date"
         value={effectivePublishDate || null}
@@ -447,7 +739,6 @@ function DetectedField({
   optional?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
-  // When the field is missing AND marked autoExpand, force the input visible.
   const inputVisible = editable && (editing || (override && override.length > 0) || (autoExpandWhenMissing && !value));
 
   return (
@@ -466,7 +757,6 @@ function DetectedField({
         )}
       </div>
 
-      {/* Display + edit affordance */}
       {!inputVisible && value ? (
         <div className="flex items-center gap-2">
           <span className="text-sm text-white">{value}</span>
@@ -483,7 +773,6 @@ function DetectedField({
         </div>
       ) : null}
 
-      {/* Inline editor */}
       {inputVisible && setOverride ? (
         <div className="space-y-1">
           {!value && missingHint && (
@@ -514,7 +803,6 @@ function DetectedField({
         </div>
       ) : null}
 
-      {/* Missing — not auto-expanded, not optional */}
       {!inputVisible && !value && !editable && missingHint && (
         <div className="text-xs text-score-skip">⚠ {missingHint}</div>
       )}
@@ -522,7 +810,6 @@ function DetectedField({
         <div className="text-xs text-gray-500">— {missingHint || 'not detected (optional)'}</div>
       )}
 
-      {/* Candidate chips for ambiguous show match */}
       {candidates && candidates.length > 1 && (
         <div className="mt-2 flex flex-wrap gap-1.5">
           <span className="text-[11px] text-gray-500 self-center mr-1">Or pick:</span>
@@ -544,7 +831,7 @@ function DetectedField({
   );
 }
 
-// ─── Misc helpers ──────────────────────────────────────────────────
+// ─── Misc ──────────────────────────────────────────────────────────
 
 function Field({
   label,
@@ -565,75 +852,6 @@ function Field({
       </label>
       {children}
       {hint && <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{hint}</p>}
-    </div>
-  );
-}
-
-function Result({ result }: { result: IngestResponse }) {
-  if (result.success) {
-    return (
-      <div className="rounded-lg border border-status-open/40 bg-status-open/10 p-4 text-sm">
-        <p className="font-semibold text-status-open">✓ Saved</p>
-        <p className="mt-1 text-xs text-gray-400">
-          The review will appear on the show page after the next rebuild + deploy (~10 min).
-        </p>
-        <dl className="mt-3 space-y-1 text-gray-200 text-xs font-mono">
-          <Row k="Show" v={result.showId} />
-          <Row k="Outlet" v={result.outletId} />
-          <Row k="Critic" v={result.criticName} />
-          <Row k="Date" v={result.publishDate || undefined} />
-          <Row k="Commit" v={result.commitSha?.slice(0, 10)} />
-        </dl>
-        {result.workflowRunUrl && (
-          <a
-            href={result.workflowRunUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-block text-brand underline hover:no-underline text-xs"
-          >
-            → Watch the rebuild
-          </a>
-        )}
-        {result.warning && <p className="mt-2 text-xs text-score-tepid">⚠ {result.warning}</p>}
-        {result.detectionWarnings && result.detectionWarnings.length > 0 && (
-          <ul className="mt-2 text-xs text-score-tepid space-y-0.5">
-            {result.detectionWarnings.map((w, i) => (
-              <li key={i}>⚠ {w}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  }
-  return (
-    <div className="rounded-lg border border-score-skip/40 bg-score-skip/10 p-4 text-sm">
-      <p className="font-semibold text-score-skip">✕ Couldn&apos;t save</p>
-      <p className="mt-2 text-gray-200 text-xs whitespace-pre-wrap">{result.error}</p>
-      {result.detectionWarnings && result.detectionWarnings.length > 0 && (
-        <ul className="mt-2 text-xs text-gray-400 space-y-0.5">
-          {result.detectionWarnings.map((w, i) => (
-            <li key={i}>⚠ {w}</li>
-          ))}
-        </ul>
-      )}
-      {result.collisionDetail !== undefined && result.collisionDetail !== null ? (
-        <details className="mt-2">
-          <summary className="text-xs text-gray-400 cursor-pointer">Conflict details</summary>
-          <pre className="mt-1 text-[11px] text-gray-400 whitespace-pre-wrap break-all">
-            {JSON.stringify(result.collisionDetail, null, 2)}
-          </pre>
-        </details>
-      ) : null}
-    </div>
-  );
-}
-
-function Row({ k, v }: { k: string; v?: string }) {
-  if (!v) return null;
-  return (
-    <div className="flex gap-2">
-      <dt className="text-gray-500 w-16 shrink-0">{k}</dt>
-      <dd className="break-all">{v}</dd>
     </div>
   );
 }
