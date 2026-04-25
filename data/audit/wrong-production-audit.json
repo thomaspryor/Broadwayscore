@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-24T22:39:35.903Z",
+  "timestamp": "2026-04-25T05:10:15.295Z",
   "stats": {
-    "totalReviews": 35769,
+    "totalReviews": 35772,
     "alreadyFlagged": 15963,
     "dateGuardCatches": 95,
-    "directorMismatch": 821,
-    "tvFilmSignals": 3203,
-    "londonSignals": 1030,
-    "offBroadwaySignals": 897,
+    "directorMismatch": 820,
+    "tvFilmSignals": 3204,
+    "londonSignals": 1031,
+    "offBroadwaySignals": 901,
     "yearMismatch": 69,
-    "noPublishDate": 3745
+    "noPublishDate": 3747
   },
   "findings": [
     {
@@ -6469,14 +6469,14 @@
     {
       "showId": "book-of-mormon-2011",
       "file": "stagezine--scott-harrah.json",
-      "score": null,
+      "score": 90,
       "publishDate": "March 31st, 2011",
       "url": "http://www.stagezine.com/the-book-of-mormon-will-convert-you/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Mentions director \"casey nicholaw and trey parker\" from the-book-of-mormon-west-end-2024"
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -58402,6 +58402,20 @@
       ]
     },
     {
+      "showId": "arcadia-2011",
+      "file": "nytimes--houman-barekat.json",
+      "score": null,
+      "publishDate": "March 17, 2011",
+      "url": "https://www.nytimes.com/2026/02/05/theater/arcadia-tom-stoppard-old-vic-london.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "arcadia-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 76,
@@ -62935,6 +62949,20 @@
     },
     {
       "showId": "hadestown-2019",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": 85,
+      "publishDate": "April 20th, 2019",
+      "url": "https://broadwayandme.blogspot.com/2019/04/three-little-shows-making-big-time-be.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
       "file": "carole-di-tosti--carole-di-tosti.json",
       "score": 93,
       "publishDate": "2019-04-26",
@@ -62953,6 +62981,20 @@
       "score": 81,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Hadestown/803",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "curtainup--elyse-sommer.json",
+      "score": 87,
+      "publishDate": "April 26th, 2019",
+      "url": "http://www.curtainup.com/hadestownbway.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -63001,6 +63043,20 @@
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
         },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "newsday--barbara-schuler.json",
+      "score": 83,
+      "publishDate": "April 17th, 2019",
+      "url": "https://www.newsday.com/entertainment/theater/hadestown-musical-1.29879447",
+      "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
@@ -63098,6 +63154,20 @@
       "score": 88,
       "publishDate": "2019-05-12",
       "url": "https://www.offscriptdandwyer.com/single-post/2019/05/12/HADESTOWN---Walter-Kerr-Theatre",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-2019",
+      "file": "show-showdown--elizabeth-wollman.json",
+      "score": 87,
+      "publishDate": "April 17th, 2019",
+      "url": "http://showshowdown.blogspot.com/2019/04/hadestown.html?utm_source=feedburner&utm_medium=email&utm_campaign=Feed%3A+blogspot%2FPMGYW+%28Show+Showdown%29",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
