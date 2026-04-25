@@ -101,7 +101,11 @@
     "torch-song-2018/theater-news-online--jeremy-gerard.json",
     "the-waverly-gallery-2018/theater-news-online--matt-windman.json",
     "the-waverly-gallery-2018/journal-inquirer--tim-leininger.json",
-    "the-ferryman-2018/theater-news-online--jessica-branch.json"
+    "the-ferryman-2018/theater-news-online--jessica-branch.json",
+    "joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+    "joe-turners-come-and-gone-2026/theatrely--unknown.json",
+    "joe-turners-come-and-gone-2026/frontmezzjunkies--ross.json",
+    "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -111,6 +115,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
@@ -123,6 +128,18 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "the-ferryman-2018/theater-news-online--jessica-branch.json",
-  "log": []
+  "lastProcessed": "the-rocky-horror-show-2026/pages-on-stages--mason-pilevsky.json",
+  "log": [
+    {
+      "t": "2026-04-25T09:42:22.046Z",
+      "event": "bb-session",
+      "session": "9859679a",
+      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
+    },
+    {
+      "t": "2026-04-25T09:42:23.202Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
