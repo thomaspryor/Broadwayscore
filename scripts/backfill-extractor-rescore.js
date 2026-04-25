@@ -120,10 +120,13 @@ const ANCHORED_EXTRACTOR_SOURCES = new Set([
   'reviewshub-percentage',
   // Legacy/recovery scripts (legit)
   'guardian-api',           // recover-explicit-ratings.js:389
-  'guardian-json-ld',
-  'guardian-svg-stars',
   'explicit-rating',        // fix-p0-score-corruption.js:104
   'original-star-rating',   // diagnostic-p0-score-audit.js:48
+  // Removed 2026-04-25 (ship-check P2 audit): 'guardian-json-ld',
+  // 'guardian-svg-stars'. Never emitted — Guardian extractor returns 'json-ld'
+  // (P3 path) or falls through; recover-explicit-ratings.js only emits
+  // 'guardian-api'. Same class as prior audit's removals
+  // (timeout-star-widget, meta-itemprop, telegraph-svg).
 ]);
 
 function outletHasReliableExtractor(outletId) {
