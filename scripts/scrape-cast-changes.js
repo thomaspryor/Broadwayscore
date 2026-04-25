@@ -1381,7 +1381,7 @@ function backupExisting() {
  * Threshold scales with data staleness — if the file hasn't been updated
  * in weeks, more new shows are expected and the guard relaxes accordingly.
  */
-function validateShowStability(original, updated) {
+function validateShowStability(original, updated, expectedRemovals = new Set()) {
   const oldIds = new Set(Object.keys(original.shows || {}));
   // Only count shows with upcoming events as "new" — baseline-only shows
   // (currentCast set, empty upcoming) are just initialization, not real changes
@@ -1392,7 +1392,9 @@ function validateShowStability(original, updated) {
   }));
 
   const added = [...newIds].filter(id => !oldIds.has(id));
-  const removed = [...oldIds].filter(id => !newIds.has(id));
+  // Exclude shows the cleanup step intentionally removed (closed/orphan GC).
+  // Those aren't scrape-driven data loss, just expected lifecycle GC.
+  const removed = [...oldIds].filter(id => !newIds.has(id) && !expectedRemovals.has(id));
 
   // Scale add threshold by staleness: base 10, +5 per week stale, max 50
   const lastUpdated = original.lastUpdated;
@@ -1641,7 +1643,10 @@ async function main() {
   existing.lastUpdated = TODAY;
 
   // Step 8: Validate stability guards
-  validateShowStability(originalSnapshot, existing);
+  // Pass shows the cleanup step intentionally removed so the guard doesn't
+  // count closed/orphan GC as scrape-driven data loss.
+  const expectedRemovals = new Set(closedChanges.map(c => c.showId));
+  validateShowStability(originalSnapshot, existing, expectedRemovals);
   validateCastMemberStability(originalSnapshot, existing);
 
   // Step 9: Print summary
