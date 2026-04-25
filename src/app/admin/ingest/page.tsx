@@ -15,10 +15,10 @@ export default function AdminIngestPage() {
     <div className="min-h-screen bg-surface text-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <header className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Ingest review</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Add a review</h1>
           <p className="text-sm text-gray-400 mt-1">
-            Paste a review URL + full text. Server-side: resolves outlet, writes protected review
-            file to the private repo, triggers a fast rebuild. Bypasses the 8-bug CLI flow.
+            Paste the review&apos;s URL and full text. We&apos;ll figure out the outlet, critic,
+            show, and date — you confirm or fix anything that&apos;s wrong, then submit.
           </p>
         </header>
         <IngestForm />

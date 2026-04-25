@@ -114,28 +114,44 @@ export function detectPublishDateFromUrl(url: string): string | null {
 }
 
 export function detectCriticFromByline(fullText: string): string | null {
-  // Scan first 3000 chars — bylines almost always appear at the top.
+  // Scan BOTH the head (first 3000) AND the tail (last 2000). Major outlets
+  // (NYT, Variety, Guardian) put bylines at the top; theater blogs (Queer
+  // Review, Talkin' Broadway, theater-specific Substacks) put "By Name" at
+  // the BOTTOM. Tail scan was added 2026-04-25 after Queer Review's James
+  // Kleinmann byline at position ~14,500 was missed.
   const head = fullText.slice(0, 3000);
+  const tail = fullText.slice(-2000);
+  // Avoid double-scanning when the review is short.
+  const segments = fullText.length <= 5000 ? [head] : [head, tail];
 
-  // Pattern 1: "By Helen Shaw" on its own line or followed by newline/punctuation.
-  // Allows middle initials, hyphens, apostrophes, up to 4 words total.
-  const p1 = /(?:^|\n)\s*(?:By|BY)\s+([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})(?=\s*(?:\n|[,.]|$))/m;
-  const m1 = head.match(p1);
-  if (m1) {
-    const candidate = m1[1].trim();
-    if (isPlausibleCriticName(candidate)) return candidate;
-  }
+  // Pattern 1: "By Helen Shaw" — accepts byline at line start, after a
+  // sentence-ending punctuation, or after a dash separator. The 'By' itself
+  // must follow whitespace or punctuation (not appear inside a word like "Bypass").
+  const p1 = /(?:^|\n|[.!?]\s+|—\s*|–\s*)\s*(?:By|BY)\s+([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})(?=\s*(?:\n|[,.]|$))/m;
 
-  // Pattern 2: "— Helen Shaw" (em-dash byline, e.g., Helen Shaw at NYT sometimes)
+  // Pattern 2: "— Helen Shaw" (em-dash byline, e.g., NYT print bylines)
   const p2 = /(?:^|\n)\s*[—–-]\s*([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})\s*(?:\n|$)/m;
-  const m2 = head.match(p2);
-  if (m2) {
-    const candidate = m2[1].trim();
-    if (isPlausibleCriticName(candidate)) return candidate;
+
+  for (const segment of segments) {
+    const m1 = segment.match(p1);
+    if (m1) {
+      const candidate = m1[1].trim();
+      if (isPlausibleCriticName(candidate)) return candidate;
+    }
+    const m2 = segment.match(p2);
+    if (m2) {
+      const candidate = m2[1].trim();
+      if (isPlausibleCriticName(candidate)) return candidate;
+    }
   }
 
   return null;
 }
+
+// Re-export score parser (lives in admin-ingest-score.ts so client components
+// can import it without dragging in 'server-only').
+export { parseScore } from './admin-ingest-score';
+export type { ScoreParseResult } from './admin-ingest-score';
 
 function isPlausibleCriticName(name: string): boolean {
   // Reject obvious non-names (common false positives).
