@@ -371,7 +371,17 @@
     "the-little-mermaid-2008/variety--david-rooney.json",
     "the-farnsworth-invention-2007/variety--charles-isherwood.json",
     "pygmalion-2007/variety--david-rooney.json",
-    "xanadu-2007/variety--david-rooney.json"
+    "xanadu-2007/variety--david-rooney.json",
+    "talk-radio-2007/variety--charles-isherwood.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "the-threepenny-opera-2006/hollywood-reporter--david-rooney.json",
+    "festen-2006/variety--charles-isherwood.json",
+    "the-pajama-game-2006/talkinbroadway--matthew-murray.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "into-the-woods-2002/nytimes--ben-brantley.json",
+    "oklahoma-2002/theater-news-online--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -381,7 +391,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json"
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+      "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -393,7 +404,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "xanadu-2007/variety--david-rooney.json",
+  "lastProcessed": "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -405,6 +416,17 @@
       "t": "2026-04-25T10:21:54.527Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-25T10:32:29.655Z",
+      "event": "bb-session",
+      "session": "316afdcc",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
+    },
+    {
+      "t": "2026-04-25T10:32:31.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
