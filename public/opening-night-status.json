@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-25T08:53:16.200Z",
+  "generatedAt": "2026-04-25T09:33:38.898Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-04-25",
-      "status": "previews",
+      "status": "open",
       "slug": "joe-turners-come-and-gone",
       "thumbnail": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp",
       "siteScore": null,
@@ -125,10 +125,6 @@
           "isDualMarket": false
         },
         {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -174,10 +170,6 @@
         },
         {
           "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
           "isDualMarket": false
         },
         {
@@ -620,23 +612,23 @@
       "status": "open",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
-      "siteScore": 69.81,
-      "liveScore": 70,
-      "scoreDrift": 0.18999999999999773,
+      "siteScore": 69.09,
+      "liveScore": 69,
+      "scoreDrift": -0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 25,
       "t1": 5,
-      "t2": 15,
+      "t2": 14,
       "t3": 6,
-      "positive": 12,
+      "positive": 11,
       "mixed": 11,
       "negative": 3,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 21,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -695,6 +687,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
         {
           "name": "USA Today",
           "isDualMarket": false
@@ -876,6 +872,18 @@
           "m": 11,
           "n": 3,
           "bc": "preview-sent"
+        },
+        {
+          "t": "2026-04-25T09:33:38.898Z",
+          "rc": 25,
+          "s": 69.09,
+          "t1": 5,
+          "t2": 14,
+          "t3": 6,
+          "p": 11,
+          "m": 11,
+          "n": 3,
+          "bc": "overdue"
         }
       ]
     },
