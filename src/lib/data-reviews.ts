@@ -296,6 +296,7 @@ for (const review of reviews) {
     showOpeningDate: show.openingDate,
     showStatus: show.status,
     showType: show.type,
+    showCategory: show.category,
     outletId,
     outlet: review.outlet,
     outletSlug: '', // filled in after outlet profiles built
