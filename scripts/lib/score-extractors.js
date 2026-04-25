@@ -431,17 +431,39 @@ function extractNYSRScore(html, text) {
     }
   }
 
-  // Alternative format: "3/5" or "4 stars" — anchored to start/end for the
-  // same reason: mid-body "3/5" sequences are ambiguous (dates, pull-quotes).
-  const numericMatches = [...text.matchAll(/(\d)\s*(?:\/\s*5|stars?(?:\s*out\s*of\s*5)?)/gi)];
-  if (numericMatches.length > 0) {
-    const len = text.length;
-    const anchored = numericMatches.find(m => {
+  // Alternative format: "3/5", "4 stars", "3 out of 5". Anchored to start/end
+  // AND requires explicit rating context (stars/out-of) for the bare "X/5"
+  // form — date headers like "Opens 3/5/2026 in New York" or "On 3/5 we saw
+  // the show" otherwise FP at the start of a review template (ship-check
+  // 2026-04-25 P1 finding). The "X stars" / "X out of 5" forms are
+  // self-disambiguating and don't need the rating-context guard.
+  // Order matters: bare "X/5 [keyword]" tried FIRST so its rating digit (3 in
+  // "3/5 stars") wins; otherwise the trailing "5 stars" half would match the
+  // standalone-stars pattern and return 100. The standalone "X stars" /
+  // "X out of 5" patterns also use a negative lookbehind to skip digits
+  // preceded by "/" — the second half of any X/Y fraction.
+  const numericPatterns = [
+    // Bare "X/5" — requires explicit rating keyword immediately after
+    // (whitespace + stars/★/☆/rating). "3/5 stars", "3/5 ★", "3/5 rating"
+    // accepted; "3/5/2026" and "On 3/5 we saw" rejected.
+    /(\d)\s*\/\s*5(?=\s+(?:stars?\b|★|☆|rating\b))/gi,
+    // Self-disambiguating word forms.
+    /(?<![\d/])(\d)\s*stars?\b/gi,
+    /(?<![\d/])(\d)\s*out\s*of\s*5\b/gi,
+  ];
+  const len = text.length;
+  for (const re of numericPatterns) {
+    const matches = [...text.matchAll(re)];
+    for (const m of matches) {
       const pos = m.index;
-      return pos <= len * 0.15 || pos >= len * 0.85;
-    });
-    if (anchored) {
-      const rating = parseInt(anchored[1]);
+      // Anchor to first/last 15% — verdict line convention
+      if (!(pos <= len * 0.15 || pos >= len * 0.85)) continue;
+      // For the bare X/5 form, double-check the trailing context is not a
+      // continued date fragment (e.g. "3/5" followed by "/2026" survived the
+      // lookahead because \b matches between 5 and /).
+      const tail = text.substring(pos + m[0].length, Math.min(len, pos + m[0].length + 8));
+      if (/^\s*\/\s*\d{2,4}/.test(tail)) continue; // "/YYYY" or "/MM" fragment
+      const rating = parseInt(m[1]);
       if (rating >= 1 && rating <= 5) {
         return {
           originalScore: `${rating}/5 stars`,
@@ -1378,12 +1400,17 @@ function scoreToThumb(score) {
 
 // Outlets that use outlet-verified originalScore sources (not ShowScore aggregator data).
 // Used by getBestScore() to decide whether to trust originalScore at P0.5 vs P3b.
+//
+// Dead entries removed 2026-04-25 (ship-check P2 audit, verified 0/36420 files
+// in private repo use them as scoreSource): 'meta-itemprop', 'guardian-json-ld',
+// 'guardian-svg-stars', 'telegraph-svg', 'timeout-star-widget'. Never emitted
+// by any extractor; safe to remove.
 const OUTLET_VERIFIED_SOURCES = new Set([
-  'json-ld', 'meta-itemprop', 'guardian-api', 'guardian-json-ld', 'guardian-svg-stars',
+  'json-ld', 'guardian-api',
   'wos-star-images', 'stage-star-svg',
-  'telegraph-svg', 'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
+  'telegraph-svg-stars', 'dailymail-rating-img', 'dailymail-css-stars', 'fivestar-widget',
   'star-class', 'unicode-stars', 'numeric-stars', 'original-star-rating',
-  'timeout-star-widget', 'timeout-svg-stars',
+  'timeout-svg-stars',
   // NOTE: lbo-star-rating removed — LBO is an aggregator (in AGGREGATOR_SCORE_SOURCES),
   // its ratings are third-party interpretations, not outlet-published scores.
   'express-star-count', 'standard-star-count', 'dailymail-star-count',
