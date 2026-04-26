@@ -230,7 +230,56 @@ export function detectShow(
     return true;
   });
 
+  // ─── URL-slug match (HIGH PRIORITY) ───────────────────────────────
+  // Walk EVERY path segment of the URL. The review's URL is the most reliable
+  // signal of which show it's about — slug matches in the URL beat text
+  // substring matches every time. Without this, critics who mention OTHER
+  // recent productions (Outsiders, Home, Purpose) in passing get
+  // misattributed (caught 2026-04-26 opening night — 6 of 9 batch reviews
+  // attributed to wrong shows).
+  const urlSegments = extractAllUrlSegments(url);
+  for (const segment of urlSegments) {
+    // Normalize segment to a slug-like form: lowercase, replace _ with -,
+    // collapse non-alphanumerics to single hyphens.
+    const segNorm = segment
+      .toLowerCase()
+      .replace(/_/g, '-')
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    if (segNorm.length < 5) continue; // Skip tiny segments like IDs
+
+    for (const show of poolShows) {
+      const titleSlug = show.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      if (titleSlug.length < 5) continue;
+      // Match in either direction: segment contains slug, OR slug contains segment
+      // (the show's slug might be longer than the URL slug — e.g., "Joe Turner's Come and Gone"
+      // → "joe-turner-s-come-and-gone" vs URL "Joe-Turners-Come-and-Gone" → "joe-turners-come-and-gone")
+      const segHasSlug = segNorm.includes(titleSlug);
+      const slugHasSeg = titleSlug.includes(segNorm);
+      // Also try a "loose" comparison that ignores possessive 's: "joe-turner-s" vs "joe-turners"
+      const titleSlugLoose = titleSlug.replace(/-s-/g, 's-').replace(/-s$/, 's');
+      const segNormLoose = segNorm.replace(/-s-/g, 's-').replace(/-s$/, 's');
+      const looseMatch = segNormLoose.includes(titleSlugLoose) || titleSlugLoose.includes(segNormLoose);
+      if (segHasSlug || slugHasSeg || looseMatch) {
+        return {
+          showId: show.id,
+          showTitle: show.title,
+          confidence: 'high',
+          candidates: [{ id: show.id, title: show.title, openingDate: show.openingDate ?? null }],
+        };
+      }
+    }
+  }
+
+  // ─── Text substring fallback (LOW PRIORITY) ───────────────────────
   // Scan first 4000 chars of review text — show title usually appears here.
+  // BUT only use this when URL slug match returned nothing, because critics
+  // mention many other shows in passing and substring count is unreliable.
   const head = fullText.slice(0, 4000);
   const headLower = head.toLowerCase();
 
@@ -248,22 +297,6 @@ export function detectShow(
   }
 
   if (matches.length === 0) {
-    // Fallback: try URL slug matching.
-    const urlSlug = extractUrlSlug(url);
-    if (urlSlug) {
-      const slugLower = urlSlug.toLowerCase().replace(/-/g, ' ');
-      for (const show of poolShows) {
-        const titleNorm = show.title.toLowerCase();
-        if (slugLower.includes(titleNorm)) {
-          return {
-            showId: show.id,
-            showTitle: show.title,
-            confidence: 'medium',
-            candidates: [{ id: show.id, title: show.title, openingDate: show.openingDate ?? null }],
-          };
-        }
-      }
-    }
     return { showId: null, showTitle: null, confidence: null, candidates: [] };
   }
 
@@ -277,8 +310,11 @@ export function detectShow(
   const top = matches[0];
   const runnerUp = matches[1];
 
-  // High confidence: clear winner (2x hits OR only match)
-  const isClearWinner = !runnerUp || top.hits >= runnerUp.hits * 2 || top.hits - runnerUp.hits >= 3;
+  // Confidence rules — text-only matches are inherently shaky because critics
+  // mention other shows in their reviews. Demand a HUGE margin for high
+  // confidence; otherwise return medium and surface candidates so the
+  // operator can verify or pick a different one.
+  const isClearWinner = !runnerUp || top.hits >= runnerUp.hits * 3 || top.hits - runnerUp.hits >= 5;
 
   const candidates = matches.slice(0, 5).map((m) => ({
     id: m.show.id,
@@ -289,20 +325,23 @@ export function detectShow(
   return {
     showId: top.show.id,
     showTitle: top.show.title,
-    confidence: isClearWinner ? 'high' : 'medium',
+    // Text-substring matches are MEDIUM at best — too easy to false-positive
+    // on critics who reference other recent shows.
+    confidence: isClearWinner ? 'medium' : 'low',
     candidates,
   };
 }
 
-function extractUrlSlug(url: string): string | null {
+function extractAllUrlSegments(url: string): string[] {
   try {
     const u = new URL(url);
-    const parts = u.pathname.split('/').filter(Boolean);
-    // Last path segment, stripped of extension
-    const last = parts[parts.length - 1] || '';
-    return last.replace(/\.[a-z]+$/i, '').replace(/-review$/i, '') || null;
+    return u.pathname
+      .split('/')
+      .filter(Boolean)
+      .map(s => s.replace(/\.[a-z]+$/i, '').replace(/-review$/i, ''))
+      .filter(Boolean);
   } catch {
-    return null;
+    return [];
   }
 }
 
