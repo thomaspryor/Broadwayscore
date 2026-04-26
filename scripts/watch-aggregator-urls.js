@@ -231,6 +231,19 @@ async function checkBwwRoundup(show) {
 // here prevents the redundant dispatches in the first place; the per-show
 // concurrency group on opening-night-poller.yml is the backstop.
 //
+// findInFlightPollerForShow ALSO matches "Opening Night Poller — auto" runs
+// (dispatched by update-show-status.yml line 943 and the orchestrator's
+// multi-show branch). An auto run iterates ALL of today's openings via
+// opening-night-poller.js, so it covers every show the watcher might target.
+// Without this, the watcher's targeted dispatch races against an in-flight
+// auto run for the same show — re-introducing the Joe Turner push storm.
+// (Caught in /ship-check 2026-04-26 by both Claude general-purpose and
+// Codex reviewers, independently.)
+//
+// --limit=50: opening nights with 8+ pollers per orchestrator iteration
+// can push active runs past index 20 once a few finish. limit=50 covers
+// roughly the last 4 hours on the busiest nights.
+//
 // Fail-open: if the gh API hiccups, we still dispatch — better a redundant
 // poller than a missed BWW URL discovery on opening night.
 function pollerInFlightForShow(showId) {
@@ -239,7 +252,7 @@ function pollerInFlightForShow(showId) {
     [
       'run', 'list',
       '--workflow=opening-night-poller.yml',
-      '--limit=20',
+      '--limit=50',
       '--json', 'databaseId,displayTitle,status,createdAt',
     ],
     { stdio: 'pipe', timeout: 15000 },
@@ -261,10 +274,15 @@ function dispatchPoller(showId, overrides) {
   if (inFlight.error) {
     console.log(`  ⚠️  Idempotency check failed (${inFlight.error}) — proceeding with dispatch`);
   } else if (inFlight.run) {
+    const dt = inFlight.run.displayTitle || '';
+    const isAuto = dt.endsWith('— auto');
+    const coverage = isAuto
+      ? `auto poller ${inFlight.run.databaseId} (${inFlight.run.status}) covers all today's openings`
+      : `targeted poller ${inFlight.run.databaseId} (${inFlight.run.status}) already running for ${showId}`;
     return {
       exitCode: 0,
       skipped: true,
-      reason: `poller ${inFlight.run.databaseId} already ${inFlight.run.status} for ${showId}`,
+      reason: coverage,
       output: '',
     };
   }
