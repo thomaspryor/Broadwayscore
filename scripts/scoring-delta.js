@@ -120,6 +120,56 @@ const SCORE_VALUE_FILES = [
   'scripts/lib/score-routing.js',
 ];
 
+// Inclusion-relevant flag fields in review-texts JSON files.
+// A change to any of these can flip a review's inclusion decision even when
+// guard CODE is unchanged (e.g. wrongProduction cleared by an audit sweep).
+const FLAG_FIELDS = new Set([
+  'wrongProduction', 'wrongShow', 'isRoundupArticle', 'suspectedMisattribution',
+  'wrongAttribution', 'isNonReview', 'fabricatedEntry', 'contentTier',
+  'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
+  'wrongProductionManualClear', 'humanReviewedWrongProduction',
+  'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
+]);
+
+// Detect flag-field changes in data/review-texts/ (a separate git repo from
+// the main Broadwayscore repo). Returns a Map of "showId/filename.json" →
+// { old: parsedJSON|null, new: parsedJSON|null } for files where any
+// inclusion-relevant field changed value.
+function detectDataFlagChanges() {
+  const result = new Map();
+  const rtGit = path.join(REVIEW_TEXTS_DIR, '.git');
+  if (!fs.existsSync(rtGit)) return result;
+  try {
+    const changed = execSync('git diff HEAD --name-only', {
+      cwd: REVIEW_TEXTS_DIR, encoding: 'utf8',
+    }).trim().split('\n').filter(f => f && f.endsWith('.json') && !f.endsWith('failed-fetches.json'));
+    if (changed.length === 0) return result;
+    const toCheck = changed.length > 2000 ? changed.slice(0, 2000) : changed;
+    for (const relPath of toCheck) {
+      let oldData = null;
+      try {
+        const raw = execSync(`git show HEAD:${relPath}`, {
+          cwd: REVIEW_TEXTS_DIR, encoding: 'utf8',
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        oldData = JSON.parse(raw);
+      } catch { /* new file */ }
+      let newData = null;
+      try {
+        const absPath = path.join(REVIEW_TEXTS_DIR, relPath);
+        if (fs.existsSync(absPath)) newData = JSON.parse(fs.readFileSync(absPath, 'utf8'));
+      } catch { /* deleted or invalid */ }
+      const hasRelevantChange = [...FLAG_FIELDS].some(field => {
+        const oldVal = oldData ? (oldData[field] ?? null) : null;
+        const newVal = newData ? (newData[field] ?? null) : null;
+        return JSON.stringify(oldVal) !== JSON.stringify(newVal);
+      });
+      if (hasRelevantChange) result.set(relPath, { old: oldData, new: newData });
+    }
+  } catch { /* git unavailable — skip data-flag detection */ }
+  return result;
+}
+
 function gitDiffHasChanges(files) {
   try {
     const out = execSync(
@@ -362,13 +412,19 @@ function main() {
     process.exit(1);
   }
 
-  if (!inclusionDiff && !scoreValueDiff) {
-    log('[scoring-delta] ✅ No changes to inclusion or score-value files vs ' + BASE_REF + ' — nothing to check.');
+  // Guard 1b: flag-field changes in review-texts (separate git repo).
+  // Audit sweeps (e.g. clearing wrongProduction) change data but not code,
+  // so inclusionDiff stays false — but the inclusion decisions still flip.
+  const changedReviewFiles = detectDataFlagChanges();
+  const dataFlagDiff = changedReviewFiles.size > 0;
+
+  if (!inclusionDiff && !scoreValueDiff && !dataFlagDiff) {
+    log('[scoring-delta] ✅ No changes to inclusion, score-value, or review-texts flag files vs ' + BASE_REF + ' — nothing to check.');
     if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'no-diff' }));
     process.exit(0);
   }
 
-  log(`[scoring-delta] Phase A (inclusion): ${inclusionDiff ? 'diff detected' : 'no diff'}`);
+  log(`[scoring-delta] Phase A (inclusion): ${inclusionDiff ? 'code diff detected' : 'no code diff'}${dataFlagDiff ? `, ${changedReviewFiles.size} review-texts flag-field changes` : ''}`);
   log(`[scoring-delta] Phase B (score-source): ${scoreValueDiff ? 'diff detected' : 'no diff'}`);
 
   // ── Phase A prep: load inclusion guards if needed ──
@@ -376,43 +432,52 @@ function main() {
   let working = null;
   let runPhaseA = false;
 
-  if (inclusionDiff) {
-    baseline = loadBaselineGuards();
+  if (inclusionDiff || dataFlagDiff) {
+    // Always load working guards — needed for data-flag replay even when code unchanged.
     working = loadWorkingTreeGuards();
 
-    // Sanity: if inclusion guards are string-identical, Phase A has nothing to replay.
-    //
-    // Note: data dependencies are tracked separately. isLikelyStaleSuspectedMisattribution
-    // reads critic-registry.json at decision time, so a change to that data file can flip
-    // inclusion decisions even when the function source is identical. We hash the registry
-    // content and include it in the identity check so registry-driven flips replay too.
-    const registryHash = (() => {
-      try {
-        const fs = require('fs');
-        const path = require('path');
-        const p = path.join(__dirname, '..', 'data', 'critic-registry.json');
-        const buf = fs.readFileSync(p);
-        return crypto.createHash('md5').update(buf).digest('hex');
-      } catch { return 'unreadable'; }
-    })();
-    const baselineRegistryHash = (() => {
-      try {
-        const buf = require('child_process').execSync(`git show ${BASE_REF}:data/critic-registry.json`, { stdio: ['ignore', 'pipe', 'ignore'] });
-        return crypto.createHash('md5').update(buf).digest('hex');
-      } catch { return 'unreadable'; }
-    })();
-    const guardsIdentical =
-      baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
-      && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
-      && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
-      && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
-      && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
-      && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
-      && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '')
-      && registryHash === baselineRegistryHash;
-    if (guardsIdentical) {
-      log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
-    } else {
+    if (inclusionDiff) {
+      baseline = loadBaselineGuards();
+
+      // Sanity: if inclusion guards are string-identical, Phase A has nothing to replay.
+      //
+      // Note: data dependencies are tracked separately. isLikelyStaleSuspectedMisattribution
+      // reads critic-registry.json at decision time, so a change to that data file can flip
+      // inclusion decisions even when the function source is identical. We hash the registry
+      // content and include it in the identity check so registry-driven flips replay too.
+      const registryHash = (() => {
+        try {
+          const fs = require('fs');
+          const path = require('path');
+          const p = path.join(__dirname, '..', 'data', 'critic-registry.json');
+          const buf = fs.readFileSync(p);
+          return crypto.createHash('md5').update(buf).digest('hex');
+        } catch { return 'unreadable'; }
+      })();
+      const baselineRegistryHash = (() => {
+        try {
+          const buf = require('child_process').execSync(`git show ${BASE_REF}:data/critic-registry.json`, { stdio: ['ignore', 'pipe', 'ignore'] });
+          return crypto.createHash('md5').update(buf).digest('hex');
+        } catch { return 'unreadable'; }
+      })();
+      const guardsIdentical =
+        baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
+        && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
+        && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
+        && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
+        && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
+        && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
+        && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '')
+        && registryHash === baselineRegistryHash;
+      if (guardsIdentical && !dataFlagDiff) {
+        log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
+      } else if (!guardsIdentical) {
+        runPhaseA = true;
+      }
+    }
+
+    // Data-flag changes always trigger Phase A replay on the changed files.
+    if (dataFlagDiff) {
       runPhaseA = true;
     }
   }
@@ -553,8 +618,25 @@ function main() {
       // ── Phase A: inclusion replay ──
       if (!runPhaseA) continue;
 
-      const baselineDecision = decideInclusion(review, show, baseline);
-      const workingDecision = decideInclusion(review, show, working);
+      const relPath = `${showId}/${f}`;
+      const changedFile = changedReviewFiles.get(relPath);
+
+      // Skip files unaffected by either sub-phase
+      if (!changedFile && !inclusionDiff) continue;
+
+      // Determine before/after state:
+      // - Data-flag change: old data vs new data, same (working) guards
+      // - Code change only: same data, baseline guards vs working guards
+      // - Both changed: old data + baseline guards vs new data + working guards
+      const baselineData = changedFile ? changedFile.old : review;
+      const baselineGuards = (inclusionDiff && baseline) ? baseline : working;
+
+      const baselineDecision = baselineData
+        ? decideInclusion(baselineData, show, baselineGuards)
+        : { included: false, reason: 'new file' };
+      const workingDecision = review
+        ? decideInclusion(review, show, working)
+        : { included: false, reason: 'deleted' };
 
       if (baselineDecision.included === workingDecision.included) continue;
 
