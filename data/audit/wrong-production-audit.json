@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T03:59:26.605Z",
+  "timestamp": "2026-04-26T06:21:15.537Z",
   "stats": {
-    "totalReviews": 35791,
-    "alreadyFlagged": 16034,
+    "totalReviews": 35788,
+    "alreadyFlagged": 16031,
     "dateGuardCatches": 95,
-    "directorMismatch": 821,
+    "directorMismatch": 820,
     "tvFilmSignals": 3199,
     "londonSignals": 1030,
     "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3731
+    "noPublishDate": 3727
   },
   "findings": [
     {
@@ -3571,19 +3571,6 @@
       ]
     },
     {
-      "showId": "an-act-of-god-2016",
-      "file": "variety--bob-verini.json",
-      "publishDate": null,
-      "url": "http://variety.com/2016/legit/reviews/an-act-of-god-review-sean-hayes-1201703755/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "an-american-in-paris-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 88,
@@ -4964,7 +4951,8 @@
     {
       "showId": "back-to-the-future-2023",
       "file": "nysr--steven-suskin.json",
-      "publishDate": null,
+      "score": 78,
+      "publishDate": "2023-08-03",
       "url": "https://nystagereview.com/2023/08/03/back-to-the-future-back-to-musical-comedy-with-plutonium-packed-thrills/",
       "findings": [
         {
@@ -5536,6 +5524,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "becky-shaw-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 79,
+      "publishDate": "April 6, 2026",
+      "url": "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -8630,7 +8632,7 @@
     {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "variety--frank-rizzo.json",
-      "score": 90,
+      "score": 85,
       "publishDate": "2026-04-08",
       "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
       "findings": [
@@ -22544,19 +22546,6 @@
       "score": 88,
       "publishDate": "July 10, 2022",
       "url": "https://www.nydailynews.com/2022/07/10/theater-review-broadway-revival-of-sondheims-into-the-woods-still-makes-for-a-powerful-journey/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "file": "nysr--steven-suskin.json",
-      "publishDate": null,
-      "url": "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
