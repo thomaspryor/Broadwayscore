@@ -34,6 +34,10 @@ permissions:
   issues: write
   actions: write
 
+concurrency:
+  group: review-texts-backfill-write
+  cancel-in-progress: false
+
 jobs:
   # Step 1: Split shows into batches for parallel processing
   prepare:
