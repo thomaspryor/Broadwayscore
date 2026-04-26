@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T16:36:26.845Z",
+  "timestamp": "2026-04-26T17:07:16.989Z",
   "stats": {
-    "totalReviews": 36260,
-    "alreadyFlagged": 16139,
+    "totalReviews": 36092,
+    "alreadyFlagged": 16107,
     "dateGuardCatches": 95,
-    "directorMismatch": 821,
-    "tvFilmSignals": 3215,
+    "directorMismatch": 820,
+    "tvFilmSignals": 3218,
     "londonSignals": 1030,
     "offBroadwaySignals": 901,
     "yearMismatch": 69,
-    "noPublishDate": 3736
+    "noPublishDate": 3737
   },
   "findings": [
     {
@@ -497,6 +497,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "about-entertainment--charles-isherwood.json",
+      "score": 81,
+      "publishDate": "November 19, 2012",
+      "url": "http://theater.nytimes.com/2012/11/20/theater/reviews/a-christmas-story-the-musical-at-the-lunt-fontanne-theater.html?pagewanted=all&amp;_r=1&amp;",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -1460,7 +1474,7 @@
       "file": "about-entertainment--bruce-weber.json",
       "score": null,
       "publishDate": "July 12, 2001",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9f05e6de163bf931a25754c0a9679c8b63",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -2720,20 +2734,6 @@
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 52,
       "publishDate": "December 22, 2024",
-      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "all-in-comedy-about-love-2024",
-      "file": "timeout--elisabeth-vincentelli.json",
-      "score": 64,
-      "publishDate": "December 22nd, 2024",
       "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html",
       "findings": [
         {
@@ -6118,6 +6118,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "big-fish-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": 43,
+      "publishDate": "October 6, 2013",
+      "url": "http://theater.nytimes.com/2013/10/07/theater/reviews/susan-stroman-directs-big-fish-on-broadway.html?_r=0",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -14360,6 +14374,20 @@
     },
     {
       "showId": "first-date-2013",
+      "file": "about-entertainment--charles-isherwood.json",
+      "score": 43,
+      "publishDate": "August 8, 2013",
+      "url": "http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens-on-broadway.html?ref=theater&amp;_r=0",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "first-date-2013",
       "file": "amny--matt-windman.json",
       "score": 28,
       "publishDate": null,
@@ -17898,20 +17926,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"on screen\""
-        }
-      ]
-    },
-    {
-      "showId": "grease-2007",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": 41,
-      "publishDate": "August 20, 2007",
-      "url": "http://theater.nytimes.com/2007/08/20/theater/reviews/20grea.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -24806,20 +24820,6 @@
     },
     {
       "showId": "just-in-time-2025",
-      "file": "timeout--adam-feldman.json",
-      "score": 85,
-      "publishDate": "April 26, 2025",
-      "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "just-in-time-2025",
       "file": "vulture--jackson-mchenry.json",
       "score": 77,
       "publishDate": "April 26, 2025",
@@ -28656,7 +28656,7 @@
       "file": "about-entertainment--ben-brantley.json",
       "score": null,
       "publishDate": "June 2, 2003",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9507e6d61530f931a35755c0a9659c8b63",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32514,6 +32514,20 @@
       ]
     },
     {
+      "showId": "next-to-normal-2009",
+      "file": "nytimes--ben-brantley.json",
+      "score": 81,
+      "publishDate": "August 14, 2010",
+      "url": "http://theater.nytimes.com/2010/08/14/theater/reviews/14next.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "nicole-travolta-is-doing-alright-off-broadway-2026",
       "file": "nytg--caroline-cao.json",
       "score": 76,
@@ -34033,6 +34047,20 @@
     },
     {
       "showId": "orphans-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": 43,
+      "publishDate": "April 18, 2013",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/orphans-with-alec-baldwin-at-the-schoenfeld-theater.html?ref=theater",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "orphans-2013",
       "file": "newsday--linda-winer.json",
       "score": 78,
       "publishDate": null,
@@ -35293,6 +35321,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": 58,
+      "publishDate": "April 25, 2013",
+      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-paulus-at-the-music-box-theater.html?ref=theater&amp;_r=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
         }
       ]
     },
@@ -38575,20 +38617,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "seascape-2005",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": 64,
-      "publishDate": "November 22, 2005",
-      "url": "http://theater.nytimes.com/2005/11/22/theater/reviews/22seas.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from seascape-1975"
         }
       ]
     },
@@ -52492,6 +52520,20 @@
     },
     {
       "showId": "the-trip-to-bountiful-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": 70,
+      "publishDate": "April 23, 2013",
+      "url": "http://theater.nytimes.com/2013/04/24/theater/reviews/the-trip-to-bountiful-at-the-stephen-sondheim-theater.html?ref=theater&amp;_r=1&amp;pagewanted=1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "the-trip-to-bountiful-2013",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 62,
       "publishDate": "April 23, 2013",
@@ -56250,20 +56292,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"onscreen\""
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2012",
-      "file": "about-entertainment--charles-isherwood.json",
-      "score": 88,
-      "publishDate": "October 14, 2012",
-      "url": "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html?_r=0&amp;adxnnl=1&amp;ref=theater&amp;adxnnlx=1350253537-D2F1mvl4k86ll70uRrnxIg",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
         }
       ]
     },
@@ -64914,7 +64942,7 @@
       "file": "about-entertainment--bruce-weber.json",
       "score": null,
       "publishDate": "December 4, 2003",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9505e5db163df937a35751c1a9659c8b63",
+      "url": null,
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",

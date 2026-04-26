@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T12:46:58.338Z",
+    "generatedAt": "2026-04-26T16:57:59.712Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36507,
-      "inReviewsJson": 16678,
-      "skippedExcluded": 83,
-      "withFullText": 19,
-      "excerptOnly": 1523,
-      "llmClassified": 18,
+      "totalFiles": 36939,
+      "inReviewsJson": 16861,
+      "skippedExcluded": 82,
+      "withFullText": 66,
+      "excerptOnly": 1705,
+      "llmClassified": 50,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 14,
-      "budgetUsed": 0.0019000000000000006,
-      "llmCalls": 19,
+      "uncertainCases": 11,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
-      "errors": 1,
-      "skippedAlreadyClassified": 15053
+      "errors": 0,
+      "skippedAlreadyClassified": 15008
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show like Fences.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
+      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific show.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the play's premise and setting, but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -110,7 +110,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "reasoning": "This appears to be a list of categories and links related to musical theatre, not a review of a specific production.",
       "currentScore": 80
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on its quality. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
       "currentScore": 83
     },
     {
@@ -130,46 +130,51 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
-    },
-    {
-      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
-      "showId": "the-glass-menagerie-2017",
-      "outlet": "The Front Row Center",
-      "outletId": "front-row-center",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The article provides production details and cast/crew information, resembling a news item or listing rather than a review with critical evaluation.",
-      "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It's closest to a news aggregator or directory.",
-      "currentScore": 78
-    },
-    {
-      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
-      "showId": "three-tall-women-2018",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It lacks any evaluative content about 'Three Tall Women'.",
-      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "avenue-q-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "dracula-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "a-christmas-story-the-musical-2012/about-entertainment--charles-isherwood.json",
+    "a-night-with-janis-joplin-2013/about-entertainment--charles-isherwood.json",
+    "aint-no-mo-2022/nyt-theater--jonathan-mandell.json",
+    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+    "beaches-2026/nypost--johnny-oleksinski.json",
+    "big-fish-2013/about-entertainment--ben-brantley.json",
+    "book-of-mormon-2011/about-entertainment--ben-brantley.json",
+    "burlesque-west-end-2026/telegraph--claire-allfree.json",
+    "dead-accounts-2012/about-entertainment--ben-brantley.json",
+    "every-brilliant-thing-2026/wsj--charles-isherwood.json",
+    "first-date-2013/about-entertainment--charles-isherwood.json",
+    "golden-boy-2012/about-entertainment--charles-isherwood.json",
+    "hands-on-a-hardbody-2013/about-entertainment--charles-isherwood.json",
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "high-noon-west-end-2025/times-uk--clive-davis.json",
+    "into-the-woods-west-end-2025/thestage--sam-marlowe.json",
+    "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
+    "joe-turners-come-and-gone-2026/culturesauce--thom-geier.json",
+    "john-proctor-is-the-villain-west-end-2026/telegraph--claire-allfree.json",
+    "masquerade-off-broadway-2025/nysr--frank-scheck.json",
+    "masquerade-off-broadway-2025/slantmagazine--dan-rubins.json",
+    "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
+    "maybe-happy-ending-2024/washpost--naveen-kumar.json",
+    "mothers-and-sons-2014/washpost--mark-kennedy.json",
+    "oh-mary-2024/culturesauce--thom-geier.json",
+    "oh-mary-west-end-2025/guardian--arifa-akbar.json",
+    "old-times-2015/timeout--david-cote.json",
+    "operation-mincemeat-west-end-2024/theatre-weekly--greg-stewart.json",
+    "orphans-2013/about-entertainment--ben-brantley.json",
     "paranormal-activity-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "the-hunger-games-on-stage-west-end-2025/timeout-london--andrzej-lukowski.json"
+    "picnic-2013/about-entertainment--ben-brantley.json",
+    "pippin-2013/about-entertainment--ben-brantley.json",
+    "scandalous-2012/about-entertainment--charles-isherwood.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "the-anarchist-2012/about-entertainment--ben-brantley.json",
+    "the-assembled-parties-2013/about-entertainment--ben-brantley.json",
+    "the-balusters-2026/the-recs--randall-david-cook.json",
+    "the-bands-visit-2017/show-showdown--wendy-caster.json",
+    "the-bands-visit-2017/the-times-of-israel--jordan-hoffman.json"
   ],
   "perShowSummary": []
 }

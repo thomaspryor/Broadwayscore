@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-04-26T12:54:29.038Z",
+  "generatedAt": "2026-04-26T17:05:25.375Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 8,
+    "newlyFlagged": 7,
     "alreadyFlagged": 1,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 2,
+    "showsAffected": 7,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 7.4
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,92 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Ben Brantley",
+      "showId": "big-fish-2013",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 92,
+      "primaryScore": 46,
+      "secondaryScore": 43,
+      "scoreDiff": 3
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "pippin-2013",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 89,
+      "primaryScore": 63,
+      "secondaryScore": 58,
+      "scoreDiff": 5
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "the-assembled-parties-2013",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 53,
+      "primaryScore": 85,
+      "secondaryScore": 83,
+      "scoreDiff": 2
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "the-performers-2012",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 94,
+      "primaryScore": 44,
+      "secondaryScore": 49,
+      "scoreDiff": 5
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "the-testament-of-mary-2013",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 100,
+      "primaryScore": 62,
+      "secondaryScore": 46,
+      "scoreDiff": 16
+    },
+    {
+      "critic": "Ben Brantley",
+      "showId": "the-trip-to-bountiful-2013",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--ben-brantley.json",
+      "secondaryFile": "about-entertainment--ben-brantley.json",
+      "similarity": 99,
+      "primaryScore": 78,
+      "secondaryScore": 70,
+      "scoreDiff": 8
+    },
+    {
+      "critic": "Charles Isherwood",
+      "showId": "golden-boy-2012",
+      "primaryOutlet": "nytimes",
+      "secondaryOutlet": "about-entertainment",
+      "primaryFile": "nytimes--charles-isherwood.json",
+      "secondaryFile": "about-entertainment--charles-isherwood.json",
+      "similarity": 96,
+      "primaryScore": 85,
+      "secondaryScore": 72,
+      "scoreDiff": 13
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
