@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-04-26T02:31:54.257Z",
+  "timestamp": "2026-04-26T03:07:18.030Z",
   "stats": {
     "totalReviews": 35789,
     "alreadyFlagged": 16034,
-    "dateGuardCatches": 96,
+    "dateGuardCatches": 95,
     "directorMismatch": 820,
-    "tvFilmSignals": 3197,
+    "tvFilmSignals": 3198,
     "londonSignals": 1030,
     "offBroadwaySignals": 899,
     "yearMismatch": 69,
@@ -23887,15 +23887,14 @@
     },
     {
       "showId": "joe-turners-come-and-gone-2026",
-      "file": "thewrap--robert-hofler.json",
-      "score": 73,
-      "publishDate": "April 11, 2024",
-      "url": "https://www.thewrap.com/creative-content/theater/joe-turners-come-and-gone-broadway-review-debbie-allen-directed/",
+      "file": "wsj--charles-isherwood.json",
+      "publishDate": null,
+      "url": "https://www.wsj.com/articles/joe-turners-come-and-gone-review-august-wilsons-spiritual-searchers-674b4dd1",
       "findings": [
         {
-          "type": "DATE_GUARD",
+          "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Published 718d before show (April 11, 2024 vs 2026-03-30)"
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },

@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T02:05:24.890Z",
+    "generatedAt": "2026-04-26T02:50:05.576Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36430,
-      "inReviewsJson": 16648,
+      "totalFiles": 36441,
+      "inReviewsJson": 16657,
       "skippedExcluded": 82,
-      "withFullText": 62,
-      "excerptOnly": 1522,
-      "llmClassified": 49,
+      "withFullText": 29,
+      "excerptOnly": 1530,
+      "llmClassified": 28,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 12,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "uncertainCases": 14,
+      "budgetUsed": 0.002899999999999999,
+      "llmCalls": 29,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14982
+      "skippedAlreadyClassified": 15016
     },
     "calibration": null
   },
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content about the show itself.",
+      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
       "currentScore": 88
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -130,7 +130,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a list of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
       "currentScore": 42
     },
     {
@@ -140,49 +140,46 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content.",
       "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific content type. It's likely a dynamically generated page or search result.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-dolls-house-off-west-end-2026/london-box-office--stuart-king.json",
-    "amazing-grace-2015/the-clyde-fitch-report--david-finkle.json",
-    "angels-in-america-2018/the-clyde-fitch-report--david-finkle.json",
-    "beaches-2026/the-interested-bystander--cary-wong.json",
-    "bernhardthamlet-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "bright-star-2016/the-clyde-fitch-report--david-finkle.json",
-    "bug-2026/the-interested-bystander--cary-wong.json",
-    "children-of-a-lesser-god-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
-    "dead-outlaw-2025/the-interested-bystander--cary-wong.json",
-    "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
-    "deep-azure-globe-west-end-2026/london-box-office--stuart-king.json",
-    "fences-2010/backstage--unknown.json",
-    "floyd-collins-2025/the-interested-bystander--cary-wong.json",
-    "gettin-the-band-back-together-2018/the-clyde-fitch-report--david-finkle.json",
-    "groundhog-day-2017/the-clyde-fitch-report--david-finkle.json",
-    "gypsy-2024/the-interested-bystander--cary-wong.json",
-    "hello-dolly-2017/the-clyde-fitch-report--david-finkle.json",
-    "in-the-print-off-west-end-2026/london-box-office--stuart-king.json",
-    "it-walks-around-the-house-at-night-west-end-2026/london-box-office--stuart-king.json",
-    "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
-    "oh-mary-2024/the-interested-bystander--cary-wong.json",
-    "please-please-me-west-end-2026/london-box-office--stuart-king.json",
-    "pretty-woman-the-musical-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "prince-of-broadway-2017/the-clyde-fitch-report--david-finkle.json",
-    "punch-2025/the-interested-bystander--cary-wong.json",
-    "queen-versailles-2025/the-interested-bystander--cary-wong.json",
-    "redwood-2025/the-interested-bystander--cary-wong.json",
-    "roi-return-on-investment-west-end-2026/london-box-office--stuart-king.json",
-    "romeo-juliet-2024/the-interested-bystander--cary-wong.json",
-    "saint-joan-2018/the-clyde-fitch-report--david-finkle.json",
-    "she-loves-me-2016/the-clyde-fitch-report--david-finkle.json",
-    "stranger-things-2024/the-interested-bystander--cary-wong.json",
-    "sweat-2017/the-clyde-fitch-report--david-finkle.json",
-    "the-balusters-2026/nypost--johnny-oleksinski.json",
-    "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
-    "the-front-page-2016/the-clyde-fitch-report--david-finkle.json"
+    "dracula-west-end-2025/london-box-office--stuart-king.json",
+    "joe-turners-come-and-gone-2026/nydailynews--chris-jones.json",
+    "joe-turners-come-and-gone-2026/nytg--austin-fimmano.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/london-box-office--stuart-king.json",
+    "the-iceman-cometh-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "the-little-foxes-2017/the-clyde-fitch-report--david-finkle.json",
+    "the-old-ladies-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-rocky-horror-show-2026/jks-theatre-scene--jeff-kready.json",
+    "the-rocky-horror-show-2026/nypost--johnny-oleksinski.json",
+    "the-terms-of-my-surrender-2017/the-clyde-fitch-report--david-finkle.json",
+    "the-waverly-gallery-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "three-tall-women-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "welcome-to-pemfort-off-west-end-2026/london-box-office--stuart-king.json",
+    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
   ],
   "perShowSummary": []
 }
