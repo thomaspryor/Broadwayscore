@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
@@ -2532,7 +2532,9 @@ showDirs.forEach(showId => {
       // NOTE: Do NOT auto-skip based on URL patterns like BWW review-roundup URLs.
       // Many reviews are SOURCED from roundup pages but have individual critic/outlet
       // attribution and should count as original reviews.
-      if (data.isRoundupArticle === true) {
+      // Defensive override: stale flag on a substantial individual review (long
+      // fullText + isFullReview + non-roundup URL) is treated as wrong. Notion 34e637c5.
+      if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) {
         logExclusion("skippedRoundup", showId, file, data);
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;

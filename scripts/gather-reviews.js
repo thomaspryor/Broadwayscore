@@ -3426,14 +3426,23 @@ function createReviewFile(showId, reviewData, options = {}) {
     showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null
   };
 
-  // Auto-tag known roundup outlets whose URLs always cover multiple shows
+  // Auto-tag known roundup outlets whose pages OFTEN cover multiple shows.
+  // Skip the tag when the URL is on the outlet's own domain in an individual-post
+  // path — these outlets do publish single-show reviews too, and the flag
+  // suppresses scoring downstream. Notion 34e637c5.
   const KNOWN_ROUNDUP_OUTLETS = new Set([
     'interested-bystander',
     'the-interested-bystander',
     'the-clyde-fitch-report',
   ]);
   if (KNOWN_ROUNDUP_OUTLETS.has(normalizedOutletId)) {
-    review.isRoundupArticle = true;
+    const url = review.url || '';
+    const looksIndividual =
+      /clydefitchreport\.com\/\d{4}\/\d{2}\//i.test(url) ||
+      /interestedbystander\.com\/\d{4}\/\d{2}\//i.test(url);
+    if (!looksIndividual) {
+      review.isRoundupArticle = true;
+    }
   }
 
   // Auto-tag BWW Review Roundup pages by URL pattern — these are aggregator pages,
