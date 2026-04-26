@@ -435,6 +435,7 @@ interface ReviewSlot {
   id: string;
   url: string;
   fullText: string;
+  scoreInput: string;
 }
 
 interface ShowSearchResult {
@@ -463,8 +464,8 @@ function BatchPasteForm({
 
   // Slots — start with 2
   const [slots, setSlots] = useState<ReviewSlot[]>(() => [
-    { id: makeSlotId(), url: '', fullText: '' },
-    { id: makeSlotId(), url: '', fullText: '' },
+    { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+    { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
   ]);
 
   const [submitting, setSubmitting] = useState(false);
@@ -515,7 +516,7 @@ function BatchPasteForm({
     setSlots(prev => prev.map(s => (s.id === id ? { ...s, ...patch } : s)));
   }
   function addSlot() {
-    setSlots(prev => [...prev, { id: makeSlotId(), url: '', fullText: '' }]);
+    setSlots(prev => [...prev, { id: makeSlotId(), url: '', fullText: '', scoreInput: '' }]);
   }
   function removeSlot(id: string) {
     setSlots(prev => (prev.length <= 1 ? prev : prev.filter(s => s.id !== id)));
@@ -546,6 +547,7 @@ function BatchPasteForm({
             url: slot.url.trim(),
             fullText: slot.fullText.trim(),
             showId: selectedShow.id,
+            originalScore: slot.scoreInput.trim() || null,
             skipDispatch: true,
           }),
         });
@@ -617,8 +619,8 @@ function BatchPasteForm({
     // Reset slots that succeeded; keep failed ones so operator can edit + retry.
     if (failureCount === 0) {
       setSlots([
-        { id: makeSlotId(), url: '', fullText: '' },
-        { id: makeSlotId(), url: '', fullText: '' },
+        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
+        { id: makeSlotId(), url: '', fullText: '', scoreInput: '' },
       ]);
     }
     setSubmitting(false);
@@ -765,6 +767,7 @@ function SlotEditor({
 }) {
   const urlOk = !slot.url.trim() || isValidUrl(slot.url);
   const textOk = !slot.fullText.trim() || slot.fullText.trim().length >= 50;
+  const parsedScore = slot.scoreInput.trim() ? parseScore(slot.scoreInput.trim()) : null;
   return (
     <div className="rounded-lg border border-white/10 bg-surface-raised p-3 space-y-2">
       <div className="flex items-center justify-between">
@@ -807,6 +810,31 @@ function SlotEditor({
             : ''}
         </span>
       </div>
+      <input
+        type="text"
+        value={slot.scoreInput}
+        onChange={e => onChange({ scoreInput: e.target.value })}
+        placeholder="Score if stated (e.g. 4/5, ★★★★, A-, 90/100) — leave blank to let LLM score"
+        autoComplete="off"
+        autoCapitalize="off"
+        autoCorrect="off"
+        disabled={disabled}
+        className={`${inputClass()} text-xs`}
+      />
+      {slot.scoreInput.trim() && (
+        <div className="text-[11px]">
+          {parsedScore ? (
+            <span className="text-status-open">
+              ✓ Will be saved as <strong>{parsedScore.score}/100</strong> (original:{' '}
+              <code className="text-gray-300">{slot.scoreInput.trim()}</code>)
+            </span>
+          ) : (
+            <span className="text-score-tepid">
+              Couldn&apos;t recognize this rating format. Fix it or leave blank.
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
