@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-26T16:30:23.010Z",
-  "processed": 39,
-  "failed": 844,
-  "successRate": "4.4%",
+  "updatedAt": "2026-04-26T16:33:20.812Z",
+  "processed": 42,
+  "failed": 851,
+  "successRate": "4.7%",
   "tierBreakdown": {
     "playwright": 25,
     "amp": 1,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 7,
     "brightdata": 1,
-    "archiveToday": 12,
-    "archive": 5
+    "archiveToday": 13,
+    "archive": 6
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -102,6 +102,28 @@
       "t": "2026-04-26T15:57:52.623Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T16:32:11.457Z",
+      "event": "bb-session",
+      "session": "e9968dd3",
+      "url": "http://theater.nytimes.com/2013/10/11/theater/reviews/a-night-with-janis-joplin-"
+    },
+    {
+      "t": "2026-04-26T16:32:11.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:32:50.963Z",
+      "event": "bb-session",
+      "session": "7ed01ab6",
+      "url": "http://theater.nytimes.com/2013/10/07/theater/reviews/susan-stroman-directs-big-"
+    },
+    {
+      "t": "2026-04-26T16:32:51.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

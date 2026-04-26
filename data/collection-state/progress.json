@@ -38,7 +38,10 @@
     "king-kong-2018/nytimes--jesse-green-and-ben-brantley.json",
     "natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
     "this-is-our-youth-2014/abc-news--mark-kennedy.json",
-    "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
+    "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
+    "mothers-and-sons-2014/washpost--mark-kennedy.json",
+    "a-night-with-janis-joplin-2013/about-entertainment--charles-isherwood.json",
+    "big-fish-2013/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -884,7 +887,14 @@
     "act-one-2014/abc-news--mark-kennedy.json",
     "act-one-2014/timeout--david-cote.json",
     "of-mice-and-men-2014/abc-news--mark-kennedy.json",
-    "of-mice-and-men-2014/ap--mark-kennedy.json"
+    "of-mice-and-men-2014/ap--mark-kennedy.json",
+    "ifthen-2014/huffpost--mark-kennedy.json",
+    "all-the-way-2014/ap--mark-kennedy.json",
+    "all-the-way-2014/ap--unknown.json",
+    "machinal-2014/timeout--david-cote.json",
+    "no-mans-land-2013/abc-news--mark-kennedy.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -935,7 +945,9 @@
       "book-of-mormon-2011/about-entertainment--ben-brantley.json",
       "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
-      "king-kong-2018/nytimes--jesse-green-and-ben-brantley.json"
+      "king-kong-2018/nytimes--jesse-green-and-ben-brantley.json",
+      "a-night-with-janis-joplin-2013/about-entertainment--charles-isherwood.json",
+      "big-fish-2013/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -952,18 +964,20 @@
       "data/review-texts/the-last-ship-2014/abc-news--mark-kennedy.json",
       "data/review-texts/disgraced-2014/abc-news--mark-kennedy.json",
       "data/review-texts/on-the-town-2014/abc-news--mark-kennedy.json",
-      "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json"
+      "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json",
+      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json"
     ],
     "archive": [
       "burlesque-west-end-2026/telegraph--unknown.json",
       "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
       "natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
       "this-is-our-youth-2014/abc-news--mark-kennedy.json",
-      "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json"
+      "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
+      "mothers-and-sons-2014/washpost--mark-kennedy.json"
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "of-mice-and-men-2014/ap--mark-kennedy.json",
+  "lastProcessed": "big-fish-2013/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1052,6 +1066,28 @@
       "t": "2026-04-26T15:57:52.623Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T16:32:11.457Z",
+      "event": "bb-session",
+      "session": "e9968dd3",
+      "url": "http://theater.nytimes.com/2013/10/11/theater/reviews/a-night-with-janis-joplin-"
+    },
+    {
+      "t": "2026-04-26T16:32:11.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:32:50.963Z",
+      "event": "bb-session",
+      "session": "7ed01ab6",
+      "url": "http://theater.nytimes.com/2013/10/07/theater/reviews/susan-stroman-directs-big-"
+    },
+    {
+      "t": "2026-04-26T16:32:51.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
