@@ -127,12 +127,21 @@ function run() {
           console.log(`    Phantom: ${phantomOutletId} | Canonical: ${normalizeOutlet(canonical.data.outlet || canonical.data.outletId)}`);
 
           if (apply) {
-            // TOPOLOGY: merge-then-unlink does not honor _locked — see S1-T5
-            const merged = mergeReviews(canonical.data, phantom.data);
-            fs.writeFileSync(path.join(showDir, canonical.file), JSON.stringify(merged, null, 2) + '\n');
-            fs.unlinkSync(path.join(showDir, phantom.file));
-            totalMerged++;
-            totalDeleted++;
+            // TOPOLOGY: merge-then-unlink does not honor _locked — see S1-T5.
+            // Stop-gap (ship-check P0 2026-04-26): refuse the merge if EITHER side
+            // is locked. mergeReviews would otherwise blend phantom into a locked
+            // canonical via raw write, bypassing lockedOverride. Real fix lands
+            // with safeRenameReview/safeUnlinkReview in the topology follow-up card.
+            if (canonical.data._locked === true || phantom.data._locked === true) {
+              lockedSkipCount++;
+              console.log(`  [LOCKED-SKIP] ${showId}: refusing merge — ${canonical.data._locked ? 'canonical' : 'phantom'} is locked`);
+            } else {
+              const merged = mergeReviews(canonical.data, phantom.data);
+              fs.writeFileSync(path.join(showDir, canonical.file), JSON.stringify(merged, null, 2) + '\n');
+              fs.unlinkSync(path.join(showDir, phantom.file));
+              totalMerged++;
+              totalDeleted++;
+            }
           }
         }
       }

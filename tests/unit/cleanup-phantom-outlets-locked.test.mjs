@@ -75,4 +75,23 @@ describe('cleanup-phantom-outlets locked-file behavior (S1-T3f)', () => {
       'cleanup-phantom-outlets.js must mark merge-then-unlink with a TOPOLOGY comment',
     );
   });
+
+  test('topology stop-gap: merge refuses when canonical or phantom is locked (ship-check P0)', () => {
+    // Verifies the stop-gap added 2026-04-26 after Codex review flagged that
+    // mergeReviews + raw write at line 132 would blend phantom data into a
+    // locked canonical and bypass lockedOverride. The stop-gap reads _locked
+    // from BOTH sides before merging.
+    const src = fs.readFileSync(
+      path.resolve('scripts/cleanup-phantom-outlets.js'),
+      'utf8',
+    );
+    assert.ok(
+      /canonical\.data\._locked\s*===\s*true\s*\|\|\s*phantom\.data\._locked\s*===\s*true/.test(src),
+      'merge-then-unlink must short-circuit when either side is locked',
+    );
+    assert.ok(
+      src.includes('refusing merge'),
+      'merge refusal must log [LOCKED-SKIP] for operator visibility',
+    );
+  });
 });

@@ -452,7 +452,21 @@ if (applyMode) {
         continue;
       }
 
-      // TOPOLOGY: file moves do not honor _locked — see S1-T5
+      // TOPOLOGY: file moves do not honor _locked — see S1-T5.
+      // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target path
+      // exists and is itself locked. shouldSkipLockedEnrichment already short-
+      // circuits when the SOURCE is locked (function entry), so this guard
+      // covers the remaining target-collision case.
+      if (fs.existsSync(targetPath)) {
+        try {
+          const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+          if (targetData._locked === true) {
+            lockedSkipCount++;
+            console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.suggestedShowId}/${result.file} is locked — refusing MOVE`);
+            continue;
+          }
+        } catch { /* corrupt target — let the original path handle it */ }
+      }
       fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
       fs.unlinkSync(filePath);
       moved++;

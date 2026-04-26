@@ -161,7 +161,21 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
   }
 
   if (!dryRun) {
-    // TOPOLOGY: rename paths do not honor _locked — see S1-T5
+    // TOPOLOGY: rename paths do not honor _locked — see S1-T5.
+    // Stop-gap (ship-check P0 2026-04-26): the source is already gated by
+    // shouldSkipLockedEnrichment at function entry. The newPath collision
+    // is caught above by `if (fs.existsSync(newPath))`. This guard covers
+    // the case where another writer created a locked file at newPath
+    // between the existsSync check and our rename (TOCTOU narrow window).
+    if (fs.existsSync(newPath)) {
+      try {
+        const targetData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+        if (targetData._locked === true) {
+          lockedSkipCount++;
+          return { renamed: false, lockedSkipped: true };
+        }
+      } catch { /* corrupt target — fall through */ }
+    }
     fs.writeFileSync(newPath, JSON.stringify(data, null, 2) + '\n');
     fs.unlinkSync(filePath);
   }

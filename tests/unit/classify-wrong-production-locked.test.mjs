@@ -102,4 +102,15 @@ describe('classify-wrong-production locked-file behavior (S1-T3c)', () => {
       'classify-wrong-production.js must mark the MOVE write with a TOPOLOGY comment',
     );
   });
+
+  test('topology stop-gap: cross-show MOVE refuses when target is locked (ship-check P0)', () => {
+    const src = fs.readFileSync(
+      path.resolve('scripts/classify-wrong-production.js'),
+      'utf8',
+    );
+    assert.ok(
+      /targetData\._locked\s*===\s*true/.test(src),
+      'classify-wrong-production cross-show MOVE must check target _locked',
+    );
+  });
 });

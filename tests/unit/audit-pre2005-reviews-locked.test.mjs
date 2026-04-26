@@ -79,4 +79,19 @@ describe('audit-pre2005-reviews flag-write paths (S1-T3b)', () => {
       'audit-pre2005-reviews.js must mark the MOVE write with a TOPOLOGY comment',
     );
   });
+
+  test('topology stop-gap: cross-show MOVE refuses when target is locked (ship-check P0)', () => {
+    const src = fs.readFileSync(
+      path.resolve('scripts/audit-pre2005-reviews.js'),
+      'utf8',
+    );
+    assert.ok(
+      /targetData\._locked\s*===\s*true/.test(src),
+      'cross-show MOVE must check target _locked before raw write',
+    );
+    assert.ok(
+      src.includes('target') && src.includes('is locked') && src.includes('refusing MOVE'),
+      'MOVE refusal must log [LOCKED-SKIP] target-is-locked for operator visibility',
+    );
+  });
 });

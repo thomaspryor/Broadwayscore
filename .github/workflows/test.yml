@@ -251,9 +251,15 @@ jobs:
             # Allowlist exemption (file granularity for now; tighten to call-site
             # later when the topology card lands)
             if echo "$EXEMPT" | grep -Fxq "$name"; then continue; fi
-            # Match writeFileSync calls where first arg looks like a review-texts file path
-            if grep -qE "fs\.writeFileSync\((\bfilePath\b|\bfullPath\b|\bfilepath\b|path\.join\(show)" "$f" \
-              && grep -qE "(review-texts|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|rtDir)" "$f" \
+            # Match writeFileSync calls where the first argument resolves to a
+            # review-texts path. Broadened 2026-04-26 (ship-check P1) to cover:
+            #   - common variable names (filePath, fullPath, filepath, fp, fullpath, newPath, targetPath, outPath)
+            #   - path.join(...) starting with show-related dir vars (showDir, dirPath, REVIEW_TEXTS_DIR, REVIEW_TEXTS_BASE, reviewsDir, rtDir)
+            #   - path.join('data', 'review-texts', ...) string-prefix patterns
+            # Additional heuristic: file must reference review-texts somewhere AND
+            # NOT import safeWriteReview to count as a violator.
+            if grep -qE "fs\.writeFileSync\((\bfilePath\b|\bfullPath\b|\bfilepath\b|\bfp\b|\bfullpath\b|\bnewPath\b|\btargetPath\b|\boutPath\b|path\.join\((showDir|dirPath|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|reviewsDir|rtDir|REVIEW_TEXTS_ROOT)|path\.join\(['\"]data['\"], ['\"]review-texts['\"])" "$f" \
+              && grep -qE "(review-texts|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|rtDir|reviewsDir|REVIEW_TEXTS_ROOT)" "$f" \
               && ! grep -q "safeWriteReview" "$f"; then
               VIOLATIONS="$VIOLATIONS $name"
             fi

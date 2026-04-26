@@ -596,7 +596,22 @@ async function main() {
           stats.applied++;
           console.log(`  FLAGGED ${result.showId}/${result.file} (dup at ${result.targetShowId})`);
         } else {
-          // TOPOLOGY: file moves do not honor _locked — see S1-T5
+          // TOPOLOGY: file moves do not honor _locked — see S1-T5.
+          // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target
+          // path exists and is itself locked. The "if (fs.existsSync(targetPath))"
+          // branch above (duplicate-at-target) handles the source-flag case;
+          // this catches the case where targetPath exists but our reviewData
+          // would have created a NEW file there had we not collided.
+          if (fs.existsSync(targetPath)) {
+            try {
+              const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+              if (targetData._locked === true) {
+                lockedSkipCount++;
+                console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.targetShowId}/${result.file} is locked — refusing MOVE`);
+                continue;
+              }
+            } catch { /* corrupt target — fall through */ }
+          }
           fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
           fs.unlinkSync(filePath);
           stats.moved++;
