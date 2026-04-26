@@ -36,6 +36,21 @@ interface UsePanelFiltersArgs<T extends ShowCardShow> {
   scoreMode?: 'critics' | 'audience';
   /** Per-page single-select groups (Type, Status) — page provides Status options. */
   singleGroups?: SingleGroupConfig[];
+  /**
+   * Controlled-mode override for single-select values. The page is the source
+   * of truth for `type`/`status` (inline ToggleBars use local state + write URL
+   * via window.history.replaceState, which doesn't trigger useSearchParams).
+   * When provided, the hook reads single values from this map instead of the URL.
+   */
+  singleValueOverrides?: Record<string, string>;
+  /**
+   * Controlled-mode write callback for single-select. When provided, the hook
+   * delegates writes to the page's updateParams (which owns local filters state
+   * + URL sync), keeping inline pills, the list, and panel chips/badge in sync.
+   * Receives `defaultValue` when the user clears the chip — page should treat
+   * that as a reset (e.g. updateParams({ [paramKey]: null })).
+   */
+  onSetSingleValueOverride?: (paramKey: string, value: string) => void;
 }
 
 interface UsePanelFiltersReturn<T extends ShowCardShow> {
@@ -79,6 +94,8 @@ export function usePanelFilters<T extends ShowCardShow>({
   awardWinnerSets,
   scoreMode = 'critics',
   singleGroups,
+  singleValueOverrides,
+  onSetSingleValueOverride,
 }: UsePanelFiltersArgs<T>): UsePanelFiltersReturn<T> {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -123,16 +140,25 @@ export function usePanelFilters<T extends ShowCardShow>({
     return out;
   }, [searchParams]);
 
-  // Parse current value per single-select group (defaults applied if unset/unknown)
+  // Parse current value per single-select group. Prefers controlled-mode
+  // overrides from the page (its local filters state) so the panel mirrors the
+  // inline ToggleBar without depending on useSearchParams (which doesn't fire
+  // on window.history.replaceState that inline writes use).
   const singleValueByGroup = useMemo(() => {
     const out: Record<string, string> = {};
     for (const group of singleGroupsList) {
+      const overridden = singleValueOverrides?.[group.paramKey];
+      if (overridden !== undefined) {
+        const known = group.options.some((o) => o.id === overridden);
+        out[group.paramKey] = known ? overridden : group.defaultValue;
+        continue;
+      }
       const raw = searchParams?.get(group.paramKey);
       const known = raw && group.options.some((o) => o.id === raw);
       out[group.paramKey] = known ? raw : group.defaultValue;
     }
     return out;
-  }, [searchParams, singleGroupsList]);
+  }, [searchParams, singleGroupsList, singleValueOverrides]);
 
   // Collect active predicates (multi-option = OR within group, AND across groups)
   const activePredicatesByGroup: { paramKey: string; predicates: FilterOption[] }[] = useMemo(() => {
@@ -229,6 +255,12 @@ export function usePanelFilters<T extends ShowCardShow>({
 
   const setSingleValue = useCallback(
     (paramKey: string, value: string) => {
+      // Controlled mode: delegate to the page so its local filters state +
+      // inline pills + the list re-filter all stay in sync with the panel.
+      if (onSetSingleValueOverride) {
+        onSetSingleValueOverride(paramKey, value);
+        return;
+      }
       const group = singleGroupsList.find((g) => g.paramKey === paramKey);
       writeParams((params) => {
         // Match the existing inline-filter convention: omit the param when it's the default
@@ -236,7 +268,7 @@ export function usePanelFilters<T extends ShowCardShow>({
         else params.set(paramKey, value);
       });
     },
-    [writeParams, singleGroupsList],
+    [writeParams, singleGroupsList, onSetSingleValueOverride],
   );
 
   const setYearRange = useCallback(
@@ -270,10 +302,25 @@ export function usePanelFilters<T extends ShowCardShow>({
   );
 
   const clearAll = useCallback(() => {
+    // Multi-select + year-range: delete from URL via writeParams (router.replace)
     writeParams((params) => {
-      Array.from(PANEL_PARAM_KEYS).forEach((key) => params.delete(key));
+      Array.from(PANEL_PARAM_KEYS).forEach((key) => {
+        // In controlled mode, single-select keys flow through the page's
+        // updateParams below — don't touch them here, otherwise we'd write
+        // them via router.replace AND via the page, producing two writes
+        // that race and leave inline state stale.
+        if (onSetSingleValueOverride && SINGLE_PARAM_KEYS.has(key)) return;
+        params.delete(key);
+      });
     });
-  }, [writeParams]);
+    // Controlled-mode single-select reset: route through the page so its
+    // local filters state, inline pills, and the list all reset to defaults.
+    if (onSetSingleValueOverride) {
+      for (const group of singleGroupsList) {
+        onSetSingleValueOverride(group.paramKey, group.defaultValue);
+      }
+    }
+  }, [writeParams, onSetSingleValueOverride, singleGroupsList]);
 
   return {
     filteredShows,
