@@ -19,6 +19,8 @@
 import { chromium, Browser, Page } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { validateRoundupPageTitle } = require('./lib/show-matching');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '../data');
@@ -107,6 +109,15 @@ Fetched: ${now.split('T')[0]}
 
 // Save HTML to archive
 function saveHtml(aggregator: string, showId: string, html: string, showTitle: string, url: string): void {
+  // Validate page title matches the show before archiving — Stuart King 2026-04-25
+  // Show Score uses a redirect-to-homepage pattern when a show doesn't exist,
+  // so this is especially important there.
+  const validation = validateRoundupPageTitle(html, showTitle);
+  if (!validation.ok) {
+    console.log(`  [SKIP] page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" doesn't match "${showTitle}" — not archived`);
+    return;
+  }
+
   const archiveSubdir = aggregator === 'show-score' ? 'show-score' :
                         aggregator === 'dtli' ? 'dtli' : 'bww-roundups';
   const archivePath = path.join(ARCHIVE_DIR, archiveSubdir);
