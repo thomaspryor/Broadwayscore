@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T12:11:37.473Z",
+  "timestamp": "2026-04-26T12:36:48.187Z",
   "stats": {
-    "totalReviews": 35822,
-    "alreadyFlagged": 16043,
+    "totalReviews": 35848,
+    "alreadyFlagged": 16051,
     "dateGuardCatches": 95,
-    "directorMismatch": 819,
+    "directorMismatch": 817,
     "tvFilmSignals": 3200,
     "londonSignals": 1030,
     "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3745
+    "noPublishDate": 3763
   },
   "findings": [
     {
@@ -8897,25 +8897,6 @@
       "score": 83,
       "publishDate": "August 8th, 2024",
       "url": "https://www.theaterscene.net/musicals/offbway/cats-the-jellicle-ball/victor-gluck/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 81,
-      "publishDate": "June 20th, 2024",
-      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
