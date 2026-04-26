@@ -524,11 +524,31 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_BROADWAY)],
     [],
   );
+  // Page is the source of truth for type/status (inline ToggleBars use local
+  // filters state). Pass current values + a write callback so the panel pills,
+  // chips, badge, and the actual list filtering all stay in sync.
+  const panelSingleValueOverrides = useMemo(
+    () => ({ type, status }),
+    [type, status],
+  );
+  const setPanelSingleValue = useCallback(
+    (paramKey: string, value: string) => {
+      const group = panelSingleGroups.find((g) => g.paramKey === paramKey);
+      if (group && value === group.defaultValue) {
+        updateParams({ [paramKey]: null });
+      } else {
+        updateParams({ [paramKey]: value });
+      }
+    },
+    [panelSingleGroups, updateParams],
+  );
   const panel = usePanelFilters({
     shows: filteredAndSortedShows,
     awardWinnerSets,
     scoreMode,
     singleGroups: panelSingleGroups,
+    singleValueOverrides: panelSingleValueOverrides,
+    onSetSingleValueOverride: setPanelSingleValue,
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
