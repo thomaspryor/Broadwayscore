@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-26T12:56:06.197Z",
+    "lastUpdated": "2026-04-26T13:09:08.855Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 36506,
-    "skippedFiles": 16907,
-    "totalCritics": 1314,
+    "totalFilesScanned": 36514,
+    "skippedFiles": 16901,
+    "totalCritics": 1315,
     "registryCritics": 489,
-    "flaggedReviews": 13
+    "flaggedReviews": 12
   },
   "flaggedReviews": [
     {
@@ -52,7 +52,7 @@
       "outletShare": 0,
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
-      "totalReviews": 332
+      "totalReviews": 333
     },
     {
       "critic": "Michael Dale",
@@ -108,17 +108,6 @@
       "primaryOutlet": "observer",
       "primaryShare": 90,
       "totalReviews": 21
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 3,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 97,
-      "totalReviews": 38
     },
     {
       "critic": "Dominic Maxwell",
@@ -365,13 +354,13 @@
         "ap",
         "thestage",
         "playbill",
+        "new-york-city-theatre",
         "nytimes",
         "timeout",
         "nydailynews",
         "ny1",
         "musical-theatre-review",
         "chicagotribune",
-        "new-york-city-theatre",
         "theatre-weekly",
         "backstage",
         "newsday",
@@ -396,6 +385,7 @@
         "all-that-dazzles-uk",
         "culturesauce",
         "bloomberg",
+        "independent",
         "new-york-sun",
         "amny",
         "vulture",
@@ -407,9 +397,11 @@
         "latimes",
         "times-uk",
         "one-minute-critic",
+        "nysr",
         "nbcny",
         "usatoday",
         "city-am",
+        "timeout-london",
         "theater-pizzazz",
         "telegraph",
         "broadwaynews",
@@ -425,7 +417,6 @@
         "curtainup",
         "indiewire",
         "minneapolis-star-tribune",
-        "independent",
         "ricky-martin",
         "burlington-free-press",
         "cnn",
@@ -436,12 +427,12 @@
         "new-statesman",
         "the-daily",
         "nypost",
-        "nysr",
         "3news",
         "aussie-theatre",
         "herald-sun",
         "monstagigz",
         "a-younger-theatre",
+        "slantmagazine",
         "fathomentertainmentcom",
         "front-row-center",
         "the-sun",
@@ -467,7 +458,7 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 522
+      "totalReviews": 535
     },
     {
       "critic": "Jesse Green",
@@ -683,7 +674,7 @@
         "nypost",
         "dtli"
       ],
-      "totalReviews": 178
+      "totalReviews": 177
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -997,7 +988,7 @@
         "theatre-is-easy",
         "curtainup"
       ],
-      "totalReviews": 54
+      "totalReviews": 53
     },
     {
       "critic": "Naveen Kumar",
@@ -1129,6 +1120,16 @@
         "plays-international"
       ],
       "totalReviews": 11
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "slug": "dominic-cavendish",
+      "outlets": [
+        "telegraph",
+        "sunday-telegraph",
+        "timeout-london"
+      ],
+      "totalReviews": 39
     },
     {
       "critic": "Sam Marlowe",
