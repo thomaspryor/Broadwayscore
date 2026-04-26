@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T20:27:56.501Z",
+  "timestamp": "2026-04-26T20:33:46.785Z",
   "stats": {
     "totalReviews": 35814,
-    "alreadyFlagged": 15715,
-    "dateGuardCatches": 58,
-    "directorMismatch": 820,
-    "tvFilmSignals": 2945,
-    "londonSignals": 621,
-    "offBroadwaySignals": 430,
-    "yearMismatch": 69,
-    "noPublishDate": 3725
+    "alreadyFlagged": 15654,
+    "dateGuardCatches": 94,
+    "directorMismatch": 836,
+    "tvFilmSignals": 2948,
+    "londonSignals": 627,
+    "offBroadwaySignals": 429,
+    "yearMismatch": 70,
+    "noPublishDate": 3735
   },
   "findings": [
     {
@@ -54976,6 +54976,20 @@
       ]
     },
     {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 60,
+      "publishDate": "2026-01-26",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/learn-about-the-real-history-of-grace-pervades",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
       "showId": "grey-gardens-2006",
       "file": "chicagotribune--chris-jones.json",
       "score": 89,
@@ -55443,7 +55457,7 @@
     },
     {
       "showId": "hamilton-west-end-2021",
-      "file": "metro--adam-bloodworth.json",
+      "file": "metro-uk--adam-bloodworth.json",
       "score": 86,
       "publishDate": "2017-12-21",
       "url": "http://metro.co.uk/2017/12/21/hamilton-london-review-a-bravely-rule-breaking-new-musical-with-a-near-perfect-score-7172695/",
