@@ -3,26 +3,35 @@
  * preflight-recovery-budget.js — pre-flight gate for Sprint 2/3 backfill operations.
  *
  * Dispatches `check-secrets-health.yml`, waits for completion, parses the logs,
- * and exits 0 (OK) or 1 (FAIL) based on ScrapingBee credit % remaining and
+ * and exits 0 (OK) or 1 (FAIL) based on ScrapingBee credit thresholds and
  * Bright Data zone status. Intended to gate bulk-collect-review-texts.yml and
  * backfill-aggregators.yml runs before they burn expensive credits.
  *
  * Usage:
  *   node scripts/preflight-recovery-budget.js --threshold-sb=40 --threshold-bd=enabled
- *   node scripts/preflight-recovery-budget.js --threshold-sb=25 --threshold-bd=enabled
+ *   node scripts/preflight-recovery-budget.js --min-credits-remaining=50000 --threshold-bd=enabled
+ *   node scripts/preflight-recovery-budget.js --threshold-sb=20 --min-credits-remaining=50000 --threshold-bd=enabled
  *
- * Args (both required):
- *   --threshold-sb=<n>   Integer 0-100. SB % remaining must be >= this to pass.
- *   --threshold-bd=<s>   Must be "enabled". Bright Data zone must be active.
+ * Args:
+ *   --threshold-bd=<s>            Required. Must be "enabled". Bright Data zone must be active.
+ *   --threshold-sb=<n>            Optional. Integer 0-100. SB % remaining must be >= this to pass.
+ *                                 Use for opening-night protection ("preserve monthly allowance").
+ *   --min-credits-remaining=<n>   Optional. Integer >= 0. Absolute SB credits remaining must be
+ *                                 >= this value. Use for one-off backfills where % is misleading
+ *                                 (e.g. 75% used but 1.3M credits remain — more than enough for
+ *                                 a ~10K-credit operation).
+ *
+ *   At least one of --threshold-sb or --min-credits-remaining must be supplied.
+ *   If both are given, both must pass (most conservative).
  *
  * Exit codes:
- *   0 — BUDGET_OK: both SB and BD meet thresholds (printed to stdout)
+ *   0 — BUDGET_OK: all thresholds met (printed to stdout)
  *   1 — BUDGET_FAIL: one or more thresholds not met (printed to stderr)
  *   2 — script error: JSON parse failure, timeout, or missing args (printed to stderr)
  *
  * Log format parsed from check-secrets-health.js output:
  *   ScrapingBee: 1234 credits remaining (45% used)
- *   ScrapingBee: 75% credits used (500 remaining) — opening nights at risk
+ *   ScrapingBee: 75% credits used (1346447 remaining) — opening nights at risk
  *   Bright Data: mcp_unlocker zone active
  *   Bright Data: Zone mcp_unlocker disabled: "..."
  */
@@ -44,23 +53,47 @@ function parseArgs(argv) {
 
 const args = parseArgs(process.argv);
 
-if (!args['threshold-sb'] || !args['threshold-bd']) {
+const hasSbPercent = !!args['threshold-sb'];
+const hasMinCredits = args['min-credits-remaining'] !== undefined;
+
+if (!args['threshold-bd']) {
   process.stderr.write(
-    'Usage: node scripts/preflight-recovery-budget.js --threshold-sb=<percent> --threshold-bd=enabled\n' +
-    '  --threshold-sb  Integer 0-100; ScrapingBee % remaining must be >= this value\n' +
-    '  --threshold-bd  Must be "enabled"; Bright Data zone must be active\n' +
+    'Usage: node scripts/preflight-recovery-budget.js [--threshold-sb=<percent>] [--min-credits-remaining=<count>] --threshold-bd=enabled\n' +
+    '  --threshold-sb              Integer 0-100; SB % remaining must be >= this value (opening-night protection)\n' +
+    '  --min-credits-remaining     Integer >= 0; absolute SB credits remaining must be >= this value (one-off backfills)\n' +
+    '  --threshold-bd              Must be "enabled"; Bright Data zone must be active\n' +
+    '  At least one of --threshold-sb or --min-credits-remaining is required.\n' +
     '\nExit codes: 0=BUDGET_OK, 1=BUDGET_FAIL, 2=script error\n'
   );
   process.exit(2);
 }
 
-const thresholdSb = parseInt(args['threshold-sb'], 10);
-const thresholdBd = args['threshold-bd'];
-
-if (isNaN(thresholdSb) || thresholdSb < 0 || thresholdSb > 100) {
-  process.stderr.write(`ERROR: --threshold-sb must be an integer 0-100, got: ${args['threshold-sb']}\n`);
+if (!hasSbPercent && !hasMinCredits) {
+  process.stderr.write(
+    'BUDGET_FAIL: must supply at least one of --threshold-sb=<percent> or --min-credits-remaining=<count>\n'
+  );
   process.exit(2);
 }
+
+let thresholdSb = null;
+if (hasSbPercent) {
+  thresholdSb = parseInt(args['threshold-sb'], 10);
+  if (isNaN(thresholdSb) || thresholdSb < 0 || thresholdSb > 100) {
+    process.stderr.write(`ERROR: --threshold-sb must be an integer 0-100, got: ${args['threshold-sb']}\n`);
+    process.exit(2);
+  }
+}
+
+let minCreditsRemaining = null;
+if (hasMinCredits) {
+  minCreditsRemaining = parseInt(args['min-credits-remaining'], 10);
+  if (isNaN(minCreditsRemaining) || minCreditsRemaining < 0) {
+    process.stderr.write(`ERROR: --min-credits-remaining must be an integer >= 0, got: ${args['min-credits-remaining']}\n`);
+    process.exit(2);
+  }
+}
+
+const thresholdBd = args['threshold-bd'];
 
 if (thresholdBd !== 'enabled') {
   process.stderr.write(`ERROR: --threshold-bd must be "enabled", got: ${thresholdBd}\n`);
@@ -163,6 +196,26 @@ function parseSbPercent(logs) {
 }
 
 /**
+ * Parse the absolute ScrapingBee credits remaining from log output.
+ * Uses the same log lines as parseSbPercent but extracts the raw count.
+ * Returns the integer count, or null if unparseable.
+ */
+function parseSbCredits(logs) {
+  // Format 1: "N credits remaining (P% used)" — N is the absolute count
+  const m1 = logs.match(/ScrapingBee[^:]*:\s+([\d,]+) credits remaining \(\d+% used\)/);
+  if (m1) return parseInt(m1[1].replace(/,/g, ''), 10);
+
+  // Format 2: "P% credits used (N remaining)" — N is the absolute count
+  const m2 = logs.match(/ScrapingBee[^:]*:\s+\d+% credits used \(([\d,]+) remaining\)/);
+  if (m2) return parseInt(m2[1].replace(/,/g, ''), 10);
+
+  // Format 3: exhausted
+  if (/ScrapingBee[^:]*:\s+Credits exhausted/i.test(logs)) return 0;
+
+  return null;
+}
+
+/**
  * Parse Bright Data zone status from log output.
  * The log line from check-secrets-health.js is one of:
  *   "✅ Bright Data: mcp_unlocker zone active"
@@ -208,16 +261,27 @@ function main() {
   }
 
   // Parse
-  const sbRemaining = parseSbPercent(logs);
+  const sbPercent = parseSbPercent(logs);
+  const sbCredits = parseSbCredits(logs);
   const bdStatus = parseBdStatus(logs);
 
   // Evaluate
   const failures = [];
 
-  if (sbRemaining === null) {
-    failures.push('SB=UNKNOWN (could not parse ScrapingBee % from logs)');
-  } else if (sbRemaining < thresholdSb) {
-    failures.push(`SB=${sbRemaining}% < ${thresholdSb}%`);
+  if (thresholdSb !== null) {
+    if (sbPercent === null) {
+      failures.push('SB=UNKNOWN (could not parse ScrapingBee % from logs)');
+    } else if (sbPercent < thresholdSb) {
+      failures.push(`SB=${sbPercent}% < ${thresholdSb}%`);
+    }
+  }
+
+  if (minCreditsRemaining !== null) {
+    if (sbCredits === null) {
+      failures.push('SB=UNKNOWN (could not parse ScrapingBee credit count from logs)');
+    } else if (sbCredits < minCreditsRemaining) {
+      failures.push(`SB credits ${sbCredits} < ${minCreditsRemaining}`);
+    }
   }
 
   if (bdStatus === null) {
@@ -226,11 +290,12 @@ function main() {
     failures.push(`BD=${bdStatus} (expected ${thresholdBd})`);
   }
 
-  const sbDisplay = sbRemaining !== null ? `${sbRemaining}%` : 'UNKNOWN';
+  const sbPercentDisplay = sbPercent !== null ? `${sbPercent}%` : 'UNKNOWN%';
+  const sbCreditsDisplay = sbCredits !== null ? `${sbCredits} remaining` : 'UNKNOWN remaining';
   const bdDisplay = bdStatus !== null ? bdStatus : 'UNKNOWN';
 
   if (failures.length === 0) {
-    process.stdout.write(`BUDGET_OK: SB=${sbDisplay} BD=${bdDisplay}\n`);
+    process.stdout.write(`BUDGET_OK: SB=${sbPercentDisplay} (${sbCreditsDisplay}) BD=${bdDisplay}\n`);
     process.exit(0);
   } else {
     process.stderr.write(`BUDGET_FAIL: ${failures.join(', ')}\n`);

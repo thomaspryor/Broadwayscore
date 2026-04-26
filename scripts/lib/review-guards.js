@@ -1733,6 +1733,28 @@ function hasHighConfidenceLlmScore(data) {
   return conf === 'high' || conf === 'medium';
 }
 
+/**
+ * Skip predicate for score-reviews-llm.js.
+ *
+ * Returns true when the review file already has a real numeric assignedScore
+ * (any number, including 0 for an extreme Pan) and therefore should NOT be
+ * re-scored.
+ *
+ * Why typeof, not !== null:
+ *   - `!== null` skips undefined (the bug) — newly-created files have no field
+ *     at all, so they were silently skipped without being scored.
+ *   - `!= null` would over-correct: it permits 0 (a valid Pan) to be re-scored
+ *     every run because 0 == null is false but 0 is still a valid score.
+ *   - `typeof === 'number'` correctly skips any numeric score (including 0)
+ *     while still processing files where the field is undefined or null.
+ *
+ * @param {Object} review - Parsed review-texts JSON file content
+ * @returns {boolean} True if the file already has a numeric assignedScore
+ */
+function isAlreadyLlmScored(review) {
+  return typeof review.assignedScore === 'number';
+}
+
 function shouldRouteUnknownCriticToPending(review) {
   if (!review || typeof review !== 'object') return false;
   const isUnknownCritic = (review.criticName || '').toString().toLowerCase().trim() === 'unknown';
@@ -1975,6 +1997,7 @@ module.exports = {
   isVerifiedDiscoverySource,
   shouldRouteUnknownCriticToPending,
   hasHighConfidenceLlmScore,
+  isAlreadyLlmScored,
   canonicalizeUrlForDedup,
   areSameCriticFuzzy,
   // Exported for test assertions
