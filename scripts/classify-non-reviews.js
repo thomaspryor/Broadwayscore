@@ -25,7 +25,9 @@
  *                           /tmp/non-review-flagged.txt)
  *   --root=PATH             Root directory for relative paths in --reclassify-flagged
  *                           (default: data/review-texts)
- *   --force                 Allow --apply even if per-show guard triggers
+ *   --force                 Main mode: allow --apply even if per-show guard triggers.
+ *                           Reclassify mode: also clear medium/low-confidence
+ *                           disagreements (default is high-confidence only).
  *   --limit=N               Cap LLM calls
  *   --concurrency=N         Parallel LLM calls (default: 10)
  *   --max-cost=N            Budget cap in dollars (default: 5.00)
@@ -673,9 +675,13 @@ async function runReclassifyFlagged() {
   console.log(`  Errors: ${errors.length}`);
   console.log(`  LLM calls: ${stats.llmCalls} | Cost: $${stats.budgetUsed.toFixed(4)}`);
 
-  // Save audit report
+  // Save audit report. Write to a timestamped file plus a stable -latest copy
+  // so re-runs don't silently overwrite prior runs (dry-run-after-apply burned
+  // us in the first session — Notion 34e637c5-416f-8144).
   if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
-  const reportPath = path.join(AUDIT_DIR, 'non-review-reclassify-audit.json');
+  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19); // 2026-04-26T16-41-43
+  const reportPath = path.join(AUDIT_DIR, `non-review-reclassify-audit-${ts}.json`);
+  const latestPath = path.join(AUDIT_DIR, 'non-review-reclassify-audit.json');
   const report = {
     meta: {
       generatedAt: new Date().toISOString(),
@@ -702,7 +708,9 @@ async function runReclassifyFlagged() {
     errors,
   };
   fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
+  fs.copyFileSync(reportPath, latestPath);
   console.log(`\nReport: ${reportPath}`);
+  console.log(`Latest: ${latestPath}`);
 
   // Print sample disagreements for spot-checking
   if (disagreements.length > 0 && !APPLY) {
