@@ -77,6 +77,7 @@ const OUTPUT_PATH = path.join(DATA_DIR, 'audit', 'wrong-show-classified.json');
 // --- Imports from show-matching ---
 const { titleWordsMatch, TITLE_GENERIC_WORDS } = require('./lib/show-matching');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
+const { wrongShowCleared } = require('./lib/review-guards');
 
 // --- Load shows ---
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -372,7 +373,7 @@ async function main() {
               const r = safeWriteReview(candidate.filePath, data);
               if (r.lockedSkipped) lockedSkipCount++;
             }
-          } else if (APPLY && parsed.confidence === 'high') {
+          } else if (APPLY && parsed.confidence === 'high' && !wrongShowCleared(data)) {
             // Apply: flag file with wrongShow + wrongShowReason
             data.wrongShow = true;
             data.wrongShowReason = `LLM: ${parsed.reasoning}`;
@@ -381,7 +382,7 @@ async function main() {
             const r = safeWriteReview(candidate.filePath, data);
             if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
-          } else if (APPLY && parsed.confidence === 'medium') {
+          } else if (APPLY && parsed.confidence === 'medium' && !wrongShowCleared(data)) {
             // Medium confidence — flag but mark for potential review
             data.wrongShow = true;
             data.wrongShowReason = `LLM (medium): ${parsed.reasoning}`;

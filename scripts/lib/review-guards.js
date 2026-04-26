@@ -1081,6 +1081,23 @@ function shouldSkipWrongProductionAudit(data) {
 }
 
 /**
+ * Returns true if an isRoundupArticle setter should skip this file because
+ * a human has manually cleared the flag (clear-stale-roundup-flags.js sets
+ * isRoundupArticle=false and roundupArticleClearedNote). Without this guard,
+ * CI setter scripts re-flag within one cycle.
+ *
+ * @param {Object|null} data - Review data object
+ * @returns {boolean} true if the setter should skip this file
+ */
+function shouldSkipRoundupAudit(data) {
+  if (!data || typeof data !== 'object') return false;
+  return (
+    data.isRoundupArticle === false ||
+    data.roundupArticleClearedNote !== undefined
+  );
+}
+
+/**
  * Returns true if the show is a revival of an earlier-titled production.
  *
  * Revival = another show in shows.json shares the same `title` (or `canonicalTitle`)
@@ -2136,6 +2153,7 @@ module.exports = {
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,
+  shouldSkipRoundupAudit,
   isRevivalByCanonicalTitle,
   urlOrTitleLooksLikeReview,
   isWrongShowUnknownLocked,

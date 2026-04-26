@@ -20,7 +20,7 @@ const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-r
 
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
-const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, wrongShowCleared } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -352,9 +352,10 @@ if (APPLY) {
     return false;
   }
 
-  // Guard: skip wrongShow for London-market shows reviewed by UK outlets,
+  // Guard: skip wrongShow for manually-cleared files, London-market shows reviewed by UK outlets,
   // OR when URL market signal matches the show's market
   function shouldSkipWrongShow(showId, data) {
+    if (wrongShowCleared(data)) return true;
     const showInfo = showDateMap[showId];
     if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
       londonMarketSkipped++;

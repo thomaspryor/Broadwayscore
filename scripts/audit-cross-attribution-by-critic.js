@@ -28,6 +28,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { wrongShowCleared } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 function arg(name, fallback = null) {
@@ -509,7 +510,7 @@ if (APPLY) {
     if (f.confidence !== 'high') continue;
     try {
       const data = JSON.parse(fs.readFileSync(f.filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction) continue; // already flagged
+      if (data.wrongShow || data.wrongProduction || wrongShowCleared(data)) continue; // already flagged or manually cleared
       data.wrongShow = true;
       data.wrongShowReason = `Cross-attribution: content matches ${f.detectedShowId} (score ${f.score} vs filed ${f.filedScore}, margin ${f.margin}x)`;
       data.crossAttributionAudit = {
