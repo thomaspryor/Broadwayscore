@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, mergeReviews } = require('./lib/review-normalization');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const BACKUP_DIR = path.join(__dirname, '..', 'data', 'audit', 'cleanup-backups');
@@ -233,6 +234,7 @@ function pass3_flagTour(reviews) {
   for (const r of reviews) {
     if (!r.data.url) continue;
     if (r.data.wrongProduction) { stats.skippedAlreadyFlagged++; continue; }
+    if (shouldSkipWrongProductionAudit(r.data)) { stats.skippedAlreadyFlagged++; continue; }
 
     const url = r.data.url;
     // Relative URL: /{city}/article/... where city is a regional BWW page

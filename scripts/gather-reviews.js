@@ -59,7 +59,7 @@ const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
@@ -3146,10 +3146,15 @@ function createReviewFile(showId, reviewData, options = {}) {
           try {
             const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
             const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-            existingData.wrongProduction = true;
-            existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
-            fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
-            console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
+            // Honor manual clears — don't re-flag a human-verified review.
+            if (shouldSkipWrongProductionAudit(existingData)) {
+              console.log(`    ⏭️  Existing ${existing.showId}/${existing.file} has manual-clear breadcrumb — leaving alone`);
+            } else {
+              existingData.wrongProduction = true;
+              existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
+              fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
+              console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
+            }
             // Update the URL index to point to this show
             urlIndex.set(normalizeUrl(reviewData.url), { showId, file: filename });
           } catch (e) {

@@ -4274,7 +4274,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.outletId || review.outletId,
       { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
     );
-    if (anticip.rejected) {
+    if (anticip.rejected && !shouldSkipWrongProductionAudit(data)) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;

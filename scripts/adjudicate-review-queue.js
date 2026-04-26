@@ -21,6 +21,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { isLondonMarket } = require('./lib/venue-classification');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -351,6 +352,12 @@ Respond with ONLY this JSON (no markdown fences):
         const isWrongMarket = result.verdict === 'wrong-market' || result.verdict === 'not-broadway';
         if (result.confidence === 'high' || result.confidence === 'medium') {
           if (isWrongMarket) {
+            // Honor manual clears — don't re-flag a human-verified review.
+            if (shouldSkipWrongProductionAudit(sourceData)) {
+              console.log(`  ⏭️  Skipping wrongProduction set — file has manual-clear breadcrumb`);
+              results.skipped++;
+              continue;
+            }
             sourceData.wrongProduction = true;
             sourceData.wrongProductionNote = `Auto-adjudicated: ${result.productionType}. ${result.reasoning}`;
           } else {
