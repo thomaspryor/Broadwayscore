@@ -1,0 +1,1608 @@
+{
+  "_meta": {
+    "decidedAt": "2026-04-26T20:27:03.443Z",
+    "decidedBy": "opus-subagent (S2 path 1)",
+    "totalCandidates": 97,
+    "flagged": 5,
+    "marked_safe": 89,
+    "uncertain": 3,
+    "appliedFlipsViaScript": [
+      "angels-in-america-perestroika-1993",
+      "annie-1977",
+      "hello-dolly-1978",
+      "the-glass-menagerie-1983",
+      "the-merchant-of-venice-1989"
+    ],
+    "appliedFlipsViaManualEdit": [],
+    "notes": "audit-wrong-production.js --fix --show=annie-1977 also flipped data/review-texts/annie-1977/northjerseycom--robert-feldberg.json (not in 97-candidate list because it had non-empty fullText, but independently verified as a 2012 review filed under 1977). 6 total file-level flips applied via 5 --show invocations.",
+    "postFlipParityRun": {
+      "rerunAt": "2026-04-26T20:29:43.025Z",
+      "outlierFlagTotal": 2017,
+      "outlierFlagNewCandidates": 8,
+      "flipsApplied": 6,
+      "remainingNewCandidatesMatchedToDecisions": "5 safe + 3 uncertain — all consistent with my decisions",
+      "cohortShrunkBeyondFlips": "Of original 97 candidates: 5 flipped, 52 gained fullText (other sessions/automation), 40 still in cohort, only 8 still flagged by audit-wp. The drop suggests the in-tree audit-wrong-production.js has further refinements that have suppressed FP signals on the original 97. My decisions still accurately reflect the judgment for those 97 files."
+    }
+  },
+  "decisions": [
+    {
+      "showId": "a-bronx-tale-2007",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Walter Kerr Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-christmas-carol-2019",
+      "file": "newyorker--jesse-green.json",
+      "decision": "uncertain",
+      "reason": "URL is correct 2019/12/23 New Yorker URL but cached dtliExcerpt says \"directed by Michael Arden\" who directed 2022 not 2019 (Matthew Warchus directed 2019). The URL points to the right year and venue (Lyceum) but the excerpt content seems mis-cached or DTLI returned wrong data. Cannot tell if score reflects 2019 or 2022 review.",
+      "evidence": [
+        "URL 2019/12/23 is correct year",
+        "Excerpt mentions Lyceum Theatre (correct 2019 venue) AND Michael Arden (incorrect, 2022 director)",
+        "Likely DTLI cached wrong excerpt; URL itself is fine but score may have been derived from corrupt excerpt"
+      ],
+      "confidence": "low",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "file": "newyorker--naomi-fry.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show A Christmas Carol is a Broadway production at Nederlander Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-christmas-story-the-musical-2012",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lunt-Fontanne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-little-night-music-2009",
+      "file": "ny1--roma-torre.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show A Little Night Music is a Broadway production at Walter Kerr Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-man-for-all-seasons-2008",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Todd Haimes Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-naked-girl-on-the-appian-way-2005",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Todd Haimes Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show A Strange Loop is a Broadway production at Lyceum Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "almost-famous-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Bernard B. Jacobs Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "angels-in-america-perestroika-1993",
+      "file": "should-appeal-to-two-audiences--national-theatre.json",
+      "decision": "flag",
+      "reason": "Outlet name explicitly says national-theatre and excerpt names Marianne Elliott as director, who directed the 2017 NT/2018 Broadway revival, not the 1993 production (directed by George C. Wolfe).",
+      "evidence": [
+        "Outlet ID \"national-theatre\" identifies the source as the NT 2017 production",
+        "Excerpt mentions director Marianne Elliott (2018 director, not 1993)",
+        "Filed under 1993 production but content is from 2018 revival"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": true
+    },
+    {
+      "showId": "annie-1977",
+      "file": "amny--matt-windman.json",
+      "decision": "flag",
+      "reason": "Modern amny.com URL and active critic Matt Windman with explicit reference to James Lapine (2012 director) prove this is a 2012 review filed under 1977.",
+      "evidence": [
+        "URL is modern amny.com (post-2010 domain)",
+        "Critic Matt Windman is active 2010s+",
+        "Excerpt explicitly says James Lapine directed (2012 director, 1977 was directed by Martin Charnin)"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": true
+    },
+    {
+      "showId": "annie-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "NYT URL 2012/11/09 matches 2012 Palace Theater opening. Detail flags Martin Charnin as \"from annie-1997\"; Charnin was original 1977 lyricist, normal historical reference in revival reviews.",
+      "evidence": [
+        "URL `theater.nytimes.com/2012/11/09/.../annie-starring-katie-finneran-at-the-palace-theater.html` matches 2012 Palace opening",
+        "Excerpt opens at the Palace Theater (2012 venue)",
+        "Charnin is the original lyricist — historical mention is normal"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "arcadia-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Ethel Barrymore Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "barefoot-in-the-park-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Barefoot in the Park is a Broadway production at James Earl Jones Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "big-fish-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Neil Simon Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "billy-elliot-the-musical-2008",
+      "file": "nypost--barbara-hoffman.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Imperial Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "bloody-bloody-andrew-jackson-2010",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Bloody Bloody Andrew Jackson is a Broadway production at Bernard B. Jacobs Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "bonnie-and-clyde-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Gerald Schoenfeld Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "born-yesterday-2011",
+      "file": "faster-times--jonathan-mandell.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at James Earl Jones Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "bronx-bombers-2014",
+      "file": "amny--matt-windman.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Circle in the Square Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Neil Simon Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "chaplin-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Ethel Barrymore Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "file": "amny--matt-windman.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Clybourne Park is a Broadway production at Walter Kerr Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "cymbeline-2007",
+      "file": "nytimes--ben-brantley.json",
+      "decision": "safe",
+      "reason": "URL is `nytimes.com/2007/12/03/theater/reviews/03cymb.html` matching the actual Dec 2007 opening. The publishDate field \"August 22, 2007\" is wrong metadata; URL date and excerpt naming Declan Donnellan (2007 director) confirm correct production.",
+      "evidence": [
+        "URL date 2007/12/03 matches show opening 2007-12-02",
+        "Excerpt names Declan Donnellan (2007 director)",
+        "publishDate field is incorrect — likely a parser issue, not wrong production"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DATE_GUARD"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Cyrano de Bergerac is a Broadway production at Todd Haimes Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "driving-miss-daisy-2010",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Driving Miss Daisy is a Broadway production at John Golden Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "elling-2010",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Ethel Barrymore Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "enron-2010",
+      "file": "about-entertainment--unknown.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Enron is a Broadway production at Broadhurst Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "file": "about-entertainment--unknown.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Todd Haimes Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "festen-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Festen is a Broadway production at Music Box Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "first-date-2013",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Longacre Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "follies-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Brantley's 2011 NYT review of the Marquis production. Harold Prince and Michael Bennett were the 1971 original directors; mentioning them is normal historical context for any Follies revival.",
+      "evidence": [
+        "URL `theater.nytimes.com/2011/09/13/...follies-on-broadway-review` matches 2011",
+        "Excerpt mentions \"Kennedy Center production\" (where 2011 originated)",
+        "1971 directors are standard historical reference"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "frozen-2018",
+      "file": "zeal-nyc--chris-caggiano.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at St. James Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "ghetto-klown-2011",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lyceum Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Ghost The Musical is a Broadway production at Lunt-Fontanne Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "file": "variety--steven-suskin.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Ghost The Musical is a Broadway production at Lunt-Fontanne Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "girl-from-the-north-country-2022",
+      "file": "theater-news-online--david-cote.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Girl From The North Country is a Broadway production at Belasco Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "godspell-2011",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Circle in the Square Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "hair-2011",
+      "file": "variety--david-rooney.json",
+      "decision": "uncertain",
+      "reason": "Variety URL is `the-burma-conspiracy-1117944760` (looks like a different review entirely). publishDate March 31 2011 is 96d before show. Excerpt is generic enough to match any Hair production. Could be from earlier 2009 Broadway run or 2011 St James reopening.",
+      "evidence": [
+        "Variety URL slug references \"the-burma-conspiracy\" (unrelated film)",
+        "Pub March 31, 2011 is 96d before St James opening July 13",
+        "Excerpt is generic — cannot distinguish 2009 vs 2011 production"
+      ],
+      "confidence": "low",
+      "audit_signals": [
+        "DATE_GUARD"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "hello-dolly-1978",
+      "file": "off-script-with-dan-dwyer--dan-dwyer.json",
+      "decision": "flag",
+      "reason": "Tumblr URL post-dates 2017; Jerry Zaks directed the 2017 Hello Dolly revival, not the 1978 production.",
+      "evidence": [
+        "Tumblr URL didn't exist in 1978",
+        "Excerpt says \"Veteran director Jerry Zaks\" — Zaks directed 2017 revival",
+        "Filed in 1978 folder but content is 2017+ review"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": true
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "file": "talkinbroadway--matthew-murray.json",
+      "decision": "safe",
+      "reason": "2022 review (pub date July 11, 2022) mentions James Lapine as the original co-author/director — normal historical context for the 2022 revival.",
+      "evidence": [
+        "Publish date July 11, 2022 matches 2022 production timeline",
+        "Excerpt describes \"lean, mean fairy-tale machine\" — review of the 2022 Lear deBessonet revival",
+        "James Lapine reference is to the original creator, not the 2022 director"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "jersey-boys-2005",
+      "file": "the-journal-news--jacques-le-sourd.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at August Wilson Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "king-kong-2018",
+      "file": "nytimes--jesse-green-and-ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Broadway Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "leap-of-faith-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at St. James Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "mary-poppins-2006",
+      "file": "ap--michael-kuchwara.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at New Amsterdam Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "mary-poppins-2006",
+      "file": "nypost--clive-barnes.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at New Amsterdam Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "mary-stuart-2009",
+      "file": "backstage--david-sheward.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Mary Stuart is a Broadway production at Broadhurst Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "master-class-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Samuel J. Friedman Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "network-2018",
+      "file": "wolf-entertainment-guide--william-wolf.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Network is a Broadway production at Belasco Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "newsies-the-musical-2012",
+      "file": "new-jersey-newsroom--michael-sommers.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Nederlander Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "orphans-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Gerald Schoenfeld Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "other-desert-cities-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Booth Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
+      "file": "ap--mark-kennedy.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Peter and the Starcatcher is a Broadway production at Lena Horne Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
+      "file": "philadelphia-inquirer--howard-shapiro.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Peter and the Starcatcher is a Broadway production at Lena Horne Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "pippin-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "NYT URL `pippin-directed-by-diane-paulus-at-the-music-box-theater` confirms 2013 Diane Paulus production. Bob Fosse was the 1972 original director; reference is historical.",
+      "evidence": [
+        "URL explicitly names Diane Paulus (2013 director)",
+        "Date 2013/04/26 matches Music Box opening April 25, 2013",
+        "Bob Fosse is original director — historical reference"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "rabbit-hole-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Samuel J. Friedman Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "relatively-speaking-2011",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lena Horne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "shining-city-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Shining City is a Broadway production at Samuel J. Friedman Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "sister-act-2011",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show Sister Act is a Broadway production at Broadway Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL",
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "sylvia-2015",
+      "file": "zeal-nyc--jil-picariello.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at James Earl Jones Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "tarzan-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Richard Rodgers Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "tarzan-2006",
+      "file": "variety--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Richard Rodgers Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-addams-family-2010",
+      "file": "backstage--erik-haagensen.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lunt-Fontanne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-anarchist-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at John Golden Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-apple-tree-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Harold and Miriam Steinberg Center for Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-farnsworth-invention-2007",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Music Box Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-farnsworth-invention-2007",
+      "file": "variety--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Music Box Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-farnsworth-invention-2007",
+      "file": "wsj--terry-teachout.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Music Box Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-glass-menagerie-1983",
+      "file": "dailybeast--tim-teeman.json",
+      "decision": "flag",
+      "reason": "Daily Beast was founded in 2008. Sam Gold directed the 2017 Glass Menagerie revival.",
+      "evidence": [
+        "Daily Beast (founded 2008) cannot have published a 1983 review",
+        "Excerpt explicitly references \"Sam Gold's staging\" — Gold directed 2017",
+        "Filed in 1983 folder but content is 2017"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": true
+    },
+    {
+      "showId": "the-homecoming-2007",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at James Earl Jones Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-lieutenant-of-inishmore-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Lieutenant of Inishmore is a Broadway production at Lyceum Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-little-mermaid-2008",
+      "file": "variety--david-rooney.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lunt-Fontanne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-little-mermaid-2008",
+      "file": "washpost--peter-marks.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lunt-Fontanne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-lyons-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at James Earl Jones Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-lyons-2012",
+      "file": "backstage--david-sheward.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Lyons is a Broadway production at James Earl Jones Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-merchant-of-venice-1989",
+      "file": "newsday--linda-winer.json",
+      "decision": "flag",
+      "reason": "Modern newsday.com URL with reference to Daniel Sullivan, Lily Rabe, and \"Central Park last summer\" — clearly the 2010 Public Theater/Broadway transfer, not the 1989 Peter Hall production with Dustin Hoffman.",
+      "evidence": [
+        "URL format `newsday.com/entertainment/theater/al-pacino-s-merchant...1.2461204` is modern (post-2010)",
+        "Excerpt names Daniel Sullivan (2010 director) + Lily Rabe (2010 cast) + \"Central Park last summer\" (2010 was a Public/Delacorte production)",
+        "Filed in 1989 folder but content is 2010"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": true
+    },
+    {
+      "showId": "the-mountaintop-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Bernard B. Jacobs Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-mountaintop-2011",
+      "file": "backstage--david-sheward.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Mountaintop is a Broadway production at Bernard B. Jacobs Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-normal-heart-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Normal Heart is a Broadway production at John Golden Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-normal-heart-2011",
+      "file": "scheckontheater--frank-scheck.json",
+      "decision": "safe",
+      "reason": "Review references Off-Broadway venue as origin of show that transferred to Broadway. Critics routinely note OB origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Normal Heart is a Broadway production at John Golden Theatre",
+        "Excerpt mentions OB venue as historical origin (Public Theater, Playwrights Horizons, NYTW, Vineyard, Atlantic)",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "OFF_BROADWAY_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-odd-couple-2005",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lena Horne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-odd-couple-2005",
+      "file": "nytimes--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lena Horne Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-pajama-game-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "NYT URL 2006/02/24 matches 2006 Pajama Game. Excerpt explicitly says \"Kathleen Marshall's delicious reinvention\" (2006 director). George Abbott from 1973 is historical reference to the original 1954 director.",
+      "evidence": [
+        "URL `theater.nytimes.com/2006/02/24/theater/reviews/24paja.html` matches 2006",
+        "Excerpt names Kathleen Marshall (actual 2006 director)",
+        "Abbott reference is historical"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-people-in-the-picture-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Harold and Miriam Steinberg Center for Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-performers-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Longacre Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-philanthropist-2009",
+      "file": "about-entertainment--charles-isherwood.json",
+      "decision": "safe",
+      "reason": "Review references London/West End venue as origin of show that transferred to Broadway. Critics routinely note West End origins; this is normal context, not wrong production.",
+      "evidence": [
+        "Show The Philanthropist is a Broadway production at Todd Haimes Theatre",
+        "Excerpt mentions London venue as historical origin",
+        "URL/date consistent with Broadway run"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "LONDON_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-pirate-queen-2007",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lyric Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-trip-to-bountiful-2013",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Stephen Sondheim Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-vertical-hour-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Music Box Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "the-wedding-singer-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Al Hirschfeld Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "three-days-of-rain-2006",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Bernard B. Jacobs Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "waiting-for-godot-2013",
+      "file": "newyorker--john-lahr.json",
+      "decision": "uncertain",
+      "reason": "URL is 2013/12/09 New Yorker (correct year), excerpt mentions McKellen and Stewart who were the 2013 cast. But the excerpt says \"directed by Anthony Page\" who directed the 2009 production. Likely cached excerpt error; cannot tell if score reflects 2013 or 2009 content.",
+      "evidence": [
+        "URL `newyorker.com/magazine/2013/12/09/waiting-for-nobody` is 2013",
+        "McKellen + Stewart matches 2013 cast",
+        "Anthony Page direction reference is 2009 — possible cached/excerpt error"
+      ],
+      "confidence": "low",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "war-horse-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Vivian Beaumont Theater",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "west-side-story-2020",
+      "file": "theater-news-online--jeremy-gerard.json",
+      "decision": "safe",
+      "reason": "Excerpt clearly about Ivo van Hove's 2020 production (mentions video images, 105-minute single act — distinctive Van Hove choices). Arthur Laurents (1957 librettist) and Jerome Robbins (1957 original director) are historical references.",
+      "evidence": [
+        "Excerpt describes Van Hove signature staging (video, single act, 105 min)",
+        "Laurents and Robbins are original 1957 creators, not 2020 director",
+        "Filed under 2020 production correctly"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "northjerseycom--robert-feldberg.json",
+      "decision": "safe",
+      "reason": "URL is from 2012/10/16, matches 2012 Booth opening. Edward Albee is the playwright — the audit's data flagging him as a 1976 director is wrong. Review is correctly filed.",
+      "evidence": [
+        "URL `northjersey.com/.../174136991_Broadway_review___Who_s_Afraid_of_Virginia_Woolf__.html` matches 2012",
+        "Albee is the playwright not a director — audit data error",
+        "Pub date 2012/10/16 matches 2012 production"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "DIRECTOR_MISMATCH"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "wit-2012",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Samuel J. Friedman Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    },
+    {
+      "showId": "young-frankenstein-2007",
+      "file": "about-entertainment--ben-brantley.json",
+      "decision": "safe",
+      "reason": "Single TV/film keyword match (television/disney/on-screen/paramount/movie-theater/tv-show/tv-series/netflix) used as critic's metaphor or contextual reference, not because review is about a TV/film production. URL and venue match the Broadway show.",
+      "evidence": [
+        "URL/venue match Broadway production at Lyric Theatre",
+        "TV/film keyword appears in critical metaphor context (e.g., comparing show to Disney aesthetic, \"Sopranos\" tie-in for Bronx Tale, etc.)",
+        "No production-confusion evidence"
+      ],
+      "confidence": "high",
+      "audit_signals": [
+        "TV_FILM_SIGNAL"
+      ],
+      "applied": false
+    }
+  ],
+  "newSystematicPatterns": [
+    {
+      "pattern": "Pre-2010 historical-show folders accumulating modern-era reviews via outlet/critic-name URL collisions",
+      "count": 6,
+      "recommendation": "audit-wp could check `URL host plausibility vs production year` — e.g., dailybeast.com URLs in pre-2008 folders, modern .com news-site URLs (newsday.com, amny.com, northjersey.com) using post-2008 path patterns in pre-2010 folders. The DIRECTOR_MISMATCH pattern is catching these well today."
+    },
+    {
+      "pattern": "TV/film keyword false positives: \"disney\", \"television\", \"on screen\", \"paramount\" used as critical metaphors or production-house references in legitimate Broadway reviews",
+      "count": 56,
+      "recommendation": "TV_FILM_PATTERNS at scripts/audit-wrong-production.js:148-154 still over-flag despite isScreenAdaptedShow() fallback. Consider extending fallback list further (e.g., a-bronx-tale, the-mountaintop, the-wedding-singer, three-days-of-rain — these all reference TV/film as critical context). Better: add a strict-context guard requiring proximity to clearly-TV phrases like \"this season of\", \"Episode N\", \"streaming service\" to flag, OR move TV_FILM_PATTERNS to MEDIUM severity by default for reviews scored by reputable Broadway-focused outlets (NYT, Variety, etc.)."
+    },
+    {
+      "pattern": "London/Off-Broadway venue mentions that reference SHOW ORIGIN, not the production being reviewed",
+      "count": 21,
+      "recommendation": "shouldIgnoreVenueMatch() in audit-wrong-production.js (lines 96+) already handles some of these but is not catching cases like \"Olivier Award\" mentions, \"the National Theatre production...\" (when describing the import), and \"Donmar Warehouse production of...\" (when describing transfer-to-Broadway). Extend the regex set to ignore: /\b(olivier award|donmar.{0,40}production|royal court.{0,40}production|west end (originated|premiere|debut|run)|(originated|premiered|first.{0,20}seen|debuted) (at|in)\b)/i. NB: this overlaps with already-noted Pattern #2 from S2 P3 triage but with broader coverage."
+    }
+  ]
+}
