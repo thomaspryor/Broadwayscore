@@ -1937,7 +1937,17 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "joe-turners-come-and-gone-2026/playbill--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+    "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "black-is-the-color-of-my-voice-west-end-2026/times-uk--debra-craine.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1956,7 +1966,8 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
-      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json"
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1970,7 +1981,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -2059,6 +2070,17 @@
       "t": "2026-04-25T23:53:31.268Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-26T01:49:14.195Z",
+      "event": "bb-session",
+      "session": "66e7c23a",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-26T01:49:14.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

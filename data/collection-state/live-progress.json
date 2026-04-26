@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-26T01:29:07.873Z",
+  "updatedAt": "2026-04-26T01:50:27.942Z",
   "processed": 6,
-  "failed": 1930,
+  "failed": 1940,
   "successRate": "0.3%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -102,6 +102,17 @@
       "t": "2026-04-25T23:53:31.268Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-26T01:49:14.195Z",
+      "event": "bb-session",
+      "session": "66e7c23a",
+      "url": "https://variety.com/2026/biz/news/simu-liu-sepideh-moafi-stories-from-the-city-o"
+    },
+    {
+      "t": "2026-04-26T01:49:14.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
