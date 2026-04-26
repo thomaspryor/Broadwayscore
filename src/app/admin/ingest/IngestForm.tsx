@@ -52,6 +52,8 @@ interface BatchEntry {
   url: string;
   fullText: string;
   scoreInput: string;
+  criticName: string;
+  showId: string;
 }
 
 export default function IngestForm() {
@@ -453,6 +455,13 @@ function BatchPasteForm({
     setProgress({ done: 0, total: validCount });
 
     const validEntries = entries.filter(isEntryValid);
+    let successCount = 0;
+    let failureCount = 0;
+
+    // Phase 1: commit all files. Each ingest-review call uses skipDispatch=true
+    // so we don't fire N parallel rebuilds (the per-run concurrency groups in
+    // rebuild-fast.yml mean N dispatches = N parallel rebuilds = wasted compute
+    // + push contention on reviews.json).
     for (let i = 0; i < validEntries.length; i++) {
       const entry = validEntries[i];
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
@@ -467,10 +476,16 @@ function BatchPasteForm({
             url: entry.url,
             fullText: entry.fullText,
             originalScore: entry.scoreInput || null,
+            // Per-entry overrides — let the user supply critic/show in the
+            // paste when auto-detection won't catch it (Substack, etc).
+            criticName: entry.criticName || null,
+            showId: entry.showId || null,
+            skipDispatch: true,
           }),
         });
         const json = (await res.json()) as IngestResponse;
         if (json.success) {
+          successCount++;
           onUpdate(id, {
             status: 'saved',
             showId: json.showId,
@@ -480,9 +495,11 @@ function BatchPasteForm({
             warningCount: (json.detectionWarnings || []).length,
           });
         } else {
+          failureCount++;
           onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
         }
       } catch (err) {
+        failureCount++;
         onUpdate(id, {
           status: 'failed',
           error: err instanceof Error ? err.message : String(err),
@@ -491,9 +508,52 @@ function BatchPasteForm({
       setProgress({ done: i + 1, total: validEntries.length });
     }
 
+    // Phase 2: dispatch a SINGLE rebuild covering all the files we just
+    // committed. Fire even if some entries failed — the successful commits
+    // still need to be rebuilt. Skip only if literally zero commits succeeded.
+    if (successCount > 0) {
+      const dispatchId = `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`;
+      onResult({
+        id: dispatchId,
+        startedAt: Date.now(),
+        url: `Rebuild ${successCount} review${successCount === 1 ? '' : 's'}`,
+        status: 'submitting',
+      });
+      try {
+        const res = await fetch('/api/admin/dispatch-rebuild', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reason: `admin-ingest-ui batch: ${successCount} reviews${failureCount ? ` (${failureCount} failed)` : ''}`,
+          }),
+        });
+        const json = (await res.json()) as { success: boolean; workflowRunUrl?: string; error?: string };
+        if (json.success) {
+          onUpdate(dispatchId, {
+            status: 'saved',
+            criticName: `${successCount} review${successCount === 1 ? '' : 's'}`,
+            outletId: 'rebuild',
+            showId: 'dispatched',
+          });
+        } else {
+          onUpdate(dispatchId, {
+            status: 'failed',
+            error: `Reviews committed but rebuild dispatch failed: ${json.error}. Trigger manually: gh workflow run "Rebuild Reviews (Fast)"`,
+          });
+        }
+      } catch (err) {
+        onUpdate(dispatchId, {
+          status: 'failed',
+          error: `Reviews committed but rebuild dispatch failed: ${err instanceof Error ? err.message : String(err)}`,
+        });
+      }
+    }
+
     // Clear the batch input only if everything succeeded — keep it on partial
-    // failure so the operator can re-edit and re-run.
-    setBatchInput('');
+    // failure so the operator can re-edit and re-run only the failed entries.
+    if (failureCount === 0) {
+      setBatchInput('');
+    }
     setSubmitting(false);
   }
 
@@ -503,16 +563,19 @@ function BatchPasteForm({
         <div className="font-semibold text-gray-200">Batch format</div>
         <p>
           Separate each review with a line of <code className="text-brand">---</code>. For each
-          review: put the URL on its own line, then the full review text. Optionally add a line{' '}
-          <code className="text-brand">Score: 5/5 stars</code> anywhere in the block.
+          review: put the URL on its own line, then the full review text. Optionally add lines:{' '}
+          <code className="text-brand">Score: 5/5 stars</code>,{' '}
+          <code className="text-brand">Critic: Name</code>,{' '}
+          <code className="text-brand">Show: show-id</code>.
         </p>
         <pre className="text-[11px] text-gray-500 leading-relaxed mt-2 whitespace-pre-wrap">{`https://www.nytimes.com/2026/04/23/...
 By Helen Shaw
 Full review text…
 Score: 4/5 stars
 ---
-https://variety.com/2026/...
-By Naveen Kumar
+https://offbookcincinnati.substack.com/p/...
+Critic: Christopher Brown
+Show: the-rocky-horror-show-2026
 Full review text…`}</pre>
       </div>
 
@@ -566,6 +629,8 @@ function parseBatch(input: string): BatchEntry[] {
       const lines = chunk.split('\n');
       let url = '';
       let scoreInput = '';
+      let criticName = '';
+      let showId = '';
       const textLines: string[] = [];
       for (const rawLine of lines) {
         const line = rawLine.trim();
@@ -578,12 +643,24 @@ function parseBatch(input: string): BatchEntry[] {
           scoreInput = scoreMatch[1].trim();
           continue;
         }
+        const criticMatch = line.match(/^critic\s*[:=]\s*(.+)$/i);
+        if (criticMatch) {
+          criticName = criticMatch[1].trim();
+          continue;
+        }
+        const showMatch = line.match(/^show\s*[:=]\s*(.+)$/i);
+        if (showMatch) {
+          showId = showMatch[1].trim();
+          continue;
+        }
         textLines.push(rawLine);
       }
       return {
         url,
         fullText: textLines.join('\n').trim(),
         scoreInput,
+        criticName,
+        showId,
       };
     })
     .filter(e => e.url || e.fullText.trim());

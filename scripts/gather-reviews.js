@@ -1881,7 +1881,14 @@ async function searchBWWRoundup(show, year, options = {}) {
     const age = (Date.now() - fs.statSync(archivePath).mtimeMs) / (1000 * 60 * 60 * 24);
     if (age < 30) {
       const html = fs.readFileSync(archivePath, 'utf8');
-      if (html.includes('Review Roundup') && html.includes('articleBody')) {
+      // Validate cached archive matches show — Stuart King 2026-04-25.
+      // Pre-validation gates left poisoned BWW archives in cache (142 detected
+      // in initial audit). Quarantine instead of silently extracting.
+      const v = validateRoundupPageTitle(html, show.title || showId);
+      if (!v.ok) {
+        console.log(`    ✗ BWW archive page-title mismatch (${v.reason}) — quarantining`);
+        try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch (e) {}
+      } else if (html.includes('Review Roundup') && html.includes('articleBody')) {
         const urlMatch = html.match(/Source:\s+(https?:\/\/[^\n]+)/);
         const url = urlMatch ? urlMatch[1].trim() : null;
         console.log(`    ✓ Using cached archive (${Math.round(age)} days old)`);
@@ -4006,6 +4013,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(trArchive)) {
       try {
         const html = fs.readFileSync(trArchive, 'utf8');
+        const trVal = validateRoundupPageTitle(html, show.title || showId);
+        if (!trVal.ok) {
+          console.log(`    ✗ TR archive page-title mismatch (${trVal.reason}) — quarantining`);
+          try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
         const trReviews = extractTR(html, showId);
         const trRoundupDate = extractRoundupDateFromHtml(html);
         if (trReviews.length > 0) {
@@ -4052,6 +4065,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(tsArchive)) {
       try {
         const html = fs.readFileSync(tsArchive, 'utf8');
+        const tsVal = validateRoundupPageTitle(html, show.title || showId);
+        if (!tsVal.ok) {
+          console.log(`    ✗ TS archive page-title mismatch (${tsVal.reason}) — quarantining`);
+          try { fs.renameSync(tsArchive, tsArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
         const tsReviews = extractTS(html, showId);
         const tsRoundupDate = extractRoundupDateFromHtml(html);
         if (tsReviews.length > 0) {
