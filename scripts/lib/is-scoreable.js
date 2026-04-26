@@ -10,6 +10,7 @@ const { isLikelyStaleRoundupFlag } = require('./review-guards');
 
 function isScoreable(data) {
   if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+  if (data.incompleteReason === 'scraper_garbage') return false;
   if (data.fullTextWrongAuthor) {
     if (!hasExcerpt(data)) return false;
   }

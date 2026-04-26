@@ -3437,9 +3437,13 @@ function createReviewFile(showId, reviewData, options = {}) {
   ]);
   if (KNOWN_ROUNDUP_OUTLETS.has(normalizedOutletId)) {
     const url = review.url || '';
-    const looksIndividual =
+    // Per-month post path on outlet domain looks individual EXCEPT when the slug
+    // itself names a roundup. Mirrors the LBO carve-out in isRoundupUrl.
+    const isPerMonthPost =
       /clydefitchreport\.com\/\d{4}\/\d{2}\//i.test(url) ||
       /interestedbystander\.com\/\d{4}\/\d{2}\//i.test(url);
+    const slugLooksRoundup = /\/[^/]*(?:roundup|round-up)[^/]*\.?html?$|\/[^/]*(?:roundup|round-up)[^/]*\/?$/i.test(url);
+    const looksIndividual = isPerMonthPost && !slugLooksRoundup;
     if (!looksIndividual) {
       review.isRoundupArticle = true;
     }

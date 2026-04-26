@@ -451,7 +451,7 @@ const INDIVIDUAL_REVIEW_URL_PATTERNS = [
   // The Clyde Fitch Report — `/YYYY/MM/{slug}/` per individual review
   /^https?:\/\/(?:www\.)?clydefitchreport\.com\/\d{4}\/\d{2}\/[^/]+\/?(?:[?#]|$)/i,
   // The Interested Bystander — Blogger `/YYYY/MM/{slug}.html` per individual review
-  /^https?:\/\/(?:www\.)?interestedbystander\.com\/\d{4}\/\d{2}\/[^/]+\.html/i,
+  /^https?:\/\/(?:www\.)?interestedbystander\.com\/\d{4}\/\d{2}\/[^/]+\.html(?:[?#]|$)/i,
   // London Box Office — `/news/post/{slug}` is per-show; `*review-roundup*` is multi-show
   // (the latter is already caught by isRoundupUrl above)
   /^https?:\/\/(?:www\.)?londonboxoffice\.co\.uk\/news\/post\/(?!.*review-roundup)[^/]+\/?(?:[?#]|$)/i,
