@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-26T11:51:24.578Z",
+  "generatedAt": "2026-04-26T12:05:57.299Z",
   "summary": {
-    "total": 16,
-    "high": 9,
-    "medium": 6,
+    "total": 25,
+    "high": 17,
+    "medium": 7,
     "low": 1
   },
   "collisions": [
@@ -278,6 +278,222 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+      "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514",
+      "candidates": [
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "2026-04-08",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-off-broadway-2024",
+          "file": "theatermania--zachary-stewart.json",
+          "publishDate": "June 20th, 2024",
+          "openingDate": "2024-06-10",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatermania"
+        }
+      ],
+      "suggestedWinner": "cats-the-jellicle-ball-2026",
+      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 but also 10 days from cats-the-jellicle-ball-off-broadway-2024",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.amny.com/news/review-glengarry-glen-ross-revival-2025/",
+      "normalizedUrl": "https://amny.com/news/review-glengarry-glen-ross-revival-2025",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "amny--matt-windman.json",
+          "publishDate": "March 31, 2025",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "amny"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "amny--matt-windman.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "amny"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate March 31, 2025 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-kieran-culkins-glengarry-glen-ross-is-dangerously-offensive-and-dated/",
+      "normalizedUrl": "https://thedailybeast.com/review-kieran-culkins-glengarry-glen-ross-is-dangerously-offensive-and-dated",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": "March 31, 2025",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "dailybeast"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "dailybeast"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate March 31, 2025 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross/",
+      "normalizedUrl": "https://thefrontrowcenter.com/2025/04/glengarry-glen-ross",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "front-row-center--yuval-jonas.json",
+          "publishDate": "2025-04-06T17:21:36",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "front-row-center"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "front-row-center--yuval-jonas.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "front-row-center"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate 2025-04-06T17:21:36 is 6 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/31/glengarry-glen-ross-good-leads-but-the-production-doesnt-quite-close/",
+      "normalizedUrl": "https://nystagereview.com/2025/03/31/glengarry-glen-ross-good-leads-but-the-production-doesnt-quite-close",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "nysr--frank-scheck.json",
+          "publishDate": "2025-03-31T23:29:13",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nysr"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "nysr--frank-scheck.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nysr"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate 2025-03-31T23:29:13 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://nystagereview.com/2025/03/31/glengarry-glen-ross-the-stars-are-mostly-selling-it/",
+      "normalizedUrl": "https://nystagereview.com/2025/03/31/glengarry-glen-ross-the-stars-are-mostly-selling-it",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "nysr--roma-torre.json",
+          "publishDate": "2025-03-31T23:28:23",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nysr"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "nysr--roma-torre.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nysr"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate 2025-03-31T23:28:23 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.nytimes.com/2025/03/31/theater/glengarry-glen-ross-review-culkin-odenkirk-burr.html",
+      "normalizedUrl": "https://nytimes.com/2025/03/31/theater/glengarry-glen-ross-review-culkin-odenkirk-burr.html",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "nytimes--jesse-green.json",
+          "publishDate": "March 31, 2025",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "nytimes--jesse-green.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate March 31, 2025 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.vulture.com/article/theater-review-glengarry-glen-ross-mamet-culkin-odenkirk-burr.html",
+      "normalizedUrl": "https://vulture.com/article/theater-review-glengarry-glen-ross-mamet-culkin-odenkirk-burr.html",
+      "candidates": [
+        {
+          "showId": "glengarry-glen-ross-2025",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": "March 31, 2025",
+          "openingDate": "2025-03-31",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "vulture"
+        },
+        {
+          "showId": "glengarry-glen-ross-west-end-2026",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": null,
+          "openingDate": "2026-06-17",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "vulture"
+        }
+      ],
+      "suggestedWinner": "glengarry-glen-ross-2025",
+      "reason": "publishDate March 31, 2025 is 0 days from glengarry-glen-ross-2025 opening (2025-03-31)",
+      "confidence": "high"
+    },
+    {
       "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "candidates": [
@@ -356,6 +572,33 @@
       ],
       "suggestedWinner": "the-lion-king-west-end-2021",
       "reason": "publishDate 1999-10-22 is 3 days from the-lion-king-west-end-2021 opening (1999-10-19); next closest is 1031 days from six-the-musical-west-end-2021",
+      "confidence": "high"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "stereophonic-off-broadway-2023",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "October 30, 2023",
+          "openingDate": "2023-10-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "the-balusters-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-04-21",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "stereophonic-off-broadway-2023",
+      "reason": "publishDate October 30, 2023 is 13 days from stereophonic-off-broadway-2023 opening (2023-10-17)",
       "confidence": "high"
     },
     {
