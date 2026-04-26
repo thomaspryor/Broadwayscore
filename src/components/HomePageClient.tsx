@@ -72,7 +72,7 @@ interface HomePageClientProps {
 
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
-type SortParam = 'recent' | 'score_desc' | 'score_asc' | 'alpha' | 'audience_buzz' | 'audience_asc';
+type SortParam = 'recent' | 'recent_asc' | 'score_desc' | 'score_asc' | 'alpha' | 'alpha_desc' | 'audience_buzz' | 'audience_asc';
 type TypeParam = 'all' | 'musical' | 'play';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
@@ -214,7 +214,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const [filters, setFilters] = useState(() => ({
     status: (['now_playing', 'closed', 'upcoming', 'closing_soon', 'all'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
-    sort: (['recent', 'score_desc', 'score_asc', 'alpha', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
+    sort: (['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
     type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
@@ -501,6 +501,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
           }
           case 'alpha':
             return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+          case 'alpha_desc':
+            return b.title.toLowerCase().localeCompare(a.title.toLowerCase());
+          case 'recent_asc':
+            // Oldest opening date first
+            return a.openingDate < b.openingDate ? -1 : a.openingDate > b.openingDate ? 1 : 0;
           case 'recent':
           default:
             // Most recent opening date first (ISO date strings are lexicographically sortable)
@@ -648,7 +653,10 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         <ToggleBar
           label="SORT:"
           options={[
-            { value: 'recent' as SortParam, label: 'NEWEST' },
+            {
+              value: 'recent' as SortParam,
+              label: sort === 'recent' ? 'NEWEST ↓' : sort === 'recent_asc' ? 'NEWEST ↑' : 'NEWEST',
+            },
             {
               value: 'score_desc' as SortParam,
               label: sort === 'score_desc' ? 'CRITICS ↓' : sort === 'score_asc' ? 'CRITICS ↑' : 'CRITICS',
@@ -657,15 +665,28 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               value: 'audience_buzz' as SortParam,
               label: sort === 'audience_buzz' ? 'AUDIENCE ↓' : sort === 'audience_asc' ? 'AUDIENCE ↑' : 'AUDIENCE',
             },
-            { value: 'alpha' as SortParam, label: 'A-Z' },
+            {
+              value: 'alpha' as SortParam,
+              label: sort === 'alpha' ? 'A-Z ↓' : sort === 'alpha_desc' ? 'A-Z ↑' : 'A-Z',
+            },
           ]}
-          value={sort === 'score_asc' ? 'score_desc' : sort === 'audience_asc' ? 'audience_buzz' : sort}
+          value={
+            sort === 'score_asc' ? 'score_desc'
+            : sort === 'audience_asc' ? 'audience_buzz'
+            : sort === 'recent_asc' ? 'recent'
+            : sort === 'alpha_desc' ? 'alpha'
+            : sort
+          }
           onChange={(s) => {
             let next: SortParam = s;
             if (s === 'score_desc') {
               next = sort === 'score_desc' ? 'score_asc' : 'score_desc';
             } else if (s === 'audience_buzz') {
               next = sort === 'audience_buzz' ? 'audience_asc' : 'audience_buzz';
+            } else if (s === 'recent') {
+              next = sort === 'recent' ? 'recent_asc' : 'recent';
+            } else if (s === 'alpha') {
+              next = sort === 'alpha' ? 'alpha_desc' : 'alpha';
             }
             updateParams({ sort: next });
           }}
