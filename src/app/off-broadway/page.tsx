@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getOffBroadwayShows, getMarketStats } from '@/lib/data-core';
+import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OffBroadwayPageClient from '@/components/OffBroadwayPageClient';
@@ -82,6 +83,7 @@ export default function OffBroadwayPage() {
             broadway: getMarketStats().nyc.openShows,
             offBroadway: getMarketStats().offBroadway?.openShows ?? 0,
           }}
+          awardWinnerSets={getAwardWinnerSets()}
         />
       </Suspense>
     </>

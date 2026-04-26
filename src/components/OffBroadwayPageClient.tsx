@@ -8,6 +8,11 @@ import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from 
 import MarketFilterBar from '@/components/MarketFilterBar';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { ScoreModeParam } from '@/components/show-cards';
+import type { AwardWinnerSets } from '@/lib/data-awards';
+import { FilterButton } from '@/components/filters/FilterButton';
+import { FilterPanel } from '@/components/filters/FilterPanel';
+import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -21,6 +26,8 @@ export interface OffBroadwayShow {
   status: string;
   type: string;
   isRevival?: boolean;
+  season?: string;
+  tags?: string[];
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
@@ -36,6 +43,7 @@ interface OffBroadwayPageClientProps {
   totalReviews: number;
   /** Open-show counts for the market pills */
   marketOpenCounts: { broadway: number; offBroadway: number };
+  awardWinnerSets?: AwardWinnerSets;
 }
 
 // URL parameter values
@@ -102,7 +110,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffBroadwayShow[]
 }
 
 // Inner component that uses searchParams
-function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts }: OffBroadwayPageClientProps) {
+function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets }: OffBroadwayPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -142,12 +150,17 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
         }
       }
 
-      const urlParams = new URLSearchParams();
-      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
-      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
-      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
-      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
-      if (next.q) urlParams.set('q', next.q);
+      // Preserve unknown params (panel filters) so they survive inline-filter changes
+      const urlParams = new URLSearchParams(window.location.search);
+      const setOrDelete = (key: string, value: string, isDefault: boolean) => {
+        if (isDefault) urlParams.delete(key);
+        else urlParams.set(key, value);
+      };
+      setOrDelete('status', next.status, next.status === DEFAULT_STATUS);
+      setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
+      setOrDelete('type', next.type, next.type === DEFAULT_TYPE);
+      setOrDelete('scoreMode', next.scoreMode, next.scoreMode === DEFAULT_SCORE_MODE);
+      setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/off-broadway?${paramString}` : '/off-broadway');
@@ -304,6 +317,9 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
     return result;
   }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
+  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
@@ -339,7 +355,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       )}
 
       {/* Search */}
-      <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
+      <div id="search" className="relative mb-2 scroll-mt-24" role="search">
         <label htmlFor="ob-show-search" className="sr-only">Search Off-Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
@@ -354,10 +370,35 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
             setSearchInput(val);
             updateParams({ q: val });
           }}
-          className="search-input pl-12 focus-visible:outline-none"
+          className="search-input pl-12 pr-14 focus-visible:outline-none"
           autoComplete="off"
         />
+        <div className="absolute inset-y-0 right-2 flex items-center">
+          <FilterButton
+            activeCount={panel.activeCount}
+            isOpen={isPanelOpen}
+            onClick={() => setIsPanelOpen((v) => !v)}
+            controlsId="advanced-filter-panel"
+          />
+        </div>
       </div>
+
+      <div className="mb-2 sm:mb-4">
+        <ActiveFilterChips
+          chips={panel.chips}
+          onRemove={panel.removeChip}
+          onClearAll={panel.clearAll}
+        />
+      </div>
+
+      <FilterPanel
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+        selectedByGroup={panel.selectedByGroup}
+        onToggle={panel.toggleOption}
+        onClearAll={panel.clearAll}
+        resultCount={panel.filteredShows.length}
+      />
 
       {/* Market + Type Filter Row */}
       <div className="flex items-center gap-2 sm:gap-4 mb-4">
@@ -414,9 +455,9 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
 
       {/* Show List */}
       <h2 className="sr-only">Off-Broadway Shows</h2>
-      <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+      <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {filteredAndSortedShows.length === 0 && (
+      {panel.filteredShows.length === 0 && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -442,7 +483,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       )}
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
-        <span>{filteredAndSortedShows.length} shows</span>
+        <span>{panel.filteredShows.length} shows</span>
         <Link href="/methodology" prefetch={false} className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>

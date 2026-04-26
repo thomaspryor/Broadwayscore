@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import fs from 'fs';
 import path from 'path';
 import { getWestEndShows, getMarketStats } from '@/lib/data-core';
+import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import WestEndPageClient from '@/components/WestEndPageClient';
@@ -132,6 +133,7 @@ export default function WestEndPage() {
           lotteryShows={lotteryShowsList}
           rushShows={rushShowsList}
           marketOpenCounts={marketOpenCounts}
+          awardWinnerSets={getAwardWinnerSets()}
         />
       </Suspense>
     </>
