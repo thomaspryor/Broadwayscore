@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
+const { validateTemporalAttribution } = require('./temporal-byline-guard');
 
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
@@ -145,6 +146,22 @@ const PROTECTED_FIELDS = [
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   const preserved = [];
+
+  // Temporal byline guard — refuse to write attributions to retired/deceased
+  // critics for articles dated past their last-active date.
+  // (Soft warnings — like Brantley freelance pieces — pass through with a log.)
+  if (newData && newData.criticName && (newData.publishDate || newData.parsedDate)) {
+    const tcheck = validateTemporalAttribution(newData.criticName, newData.publishDate || newData.parsedDate);
+    if (tcheck.warning) {
+      console.warn(`[temporal-byline-guard] ${path.basename(filePath)}: ${tcheck.warning}`);
+    }
+    if (tcheck.hardBlock) {
+      console.error(`[temporal-byline-guard] BLOCKED write to ${path.basename(filePath)}: ${tcheck.reason}`);
+      // Downgrade attribution to Unknown so the review still lands but doesn't
+      // pollute the dead/retired critic's page. Log so a human can fix later.
+      newData = { ...newData, criticName: 'Unknown', _temporalGuardBlocked: tcheck.reason };
+    }
+  }
 
   // Bug #25: When force=true, log protected fields that would be lost so CI logs show it.
   if (force && fs.existsSync(filePath)) {

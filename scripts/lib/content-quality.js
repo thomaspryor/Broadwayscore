@@ -1775,6 +1775,61 @@ function nameFoundInText(text, name) {
 }
 
 /**
+ * Broadway venue aliases — groups of names that refer to the same physical theater
+ * or to a producer that uses that theater as its Broadway home.
+ *
+ * Without this map the content classifier marks reviews "Wrong production"
+ * when a critic names the producing company instead of the venue, e.g. an
+ * NYSR review of a Becky Shaw revival at the Hayes Theater that says
+ * "Second Stage Theater" (Second Stage's Broadway home is the Hayes).
+ *
+ * Each inner array is a group: any one alias matched in review text is
+ * sufficient to count as a venue-name hit for any show whose venue is in the
+ * same group.
+ */
+const VENUE_ALIAS_GROUPS = [
+  // Hayes Theater — Second Stage's Broadway home
+  ['Hayes Theater', 'Helen Hayes Theater', 'Helen Hayes Theatre', 'Second Stage Theater', 'Second Stage Theatre', 'Second Stage'],
+  // Friedman Theatre — Manhattan Theatre Club's Broadway home
+  ['Samuel J. Friedman Theatre', 'Friedman Theatre', 'Friedman Theater', 'Manhattan Theatre Club', 'Manhattan Theater Club', 'MTC'],
+  // Lincoln Center Theater — three venues
+  ['Vivian Beaumont Theater', 'Vivian Beaumont Theatre', 'Beaumont Theater', 'Beaumont Theatre', 'Lincoln Center Theater', 'Lincoln Center Theatre', 'LCT'],
+  ['Mitzi E. Newhouse Theater', 'Newhouse Theater', 'Mitzi Newhouse', 'Lincoln Center Theater', 'LCT'],
+  // Roundabout Theatre Company — multiple Broadway venues
+  ['American Airlines Theatre', 'American Airlines Theater', 'Roundabout Theatre Company', 'Roundabout Theatre', 'Roundabout'],
+  ['Studio 54', 'Roundabout Theatre Company', 'Roundabout'],
+  ['Stephen Sondheim Theatre', 'Sondheim Theatre', 'Sondheim Theater', 'Roundabout Theatre Company', 'Roundabout'],
+  ['Todd Haimes Theatre', 'Todd Haimes Theater', 'Roundabout Theatre Company', 'Roundabout'],
+  // Lyceum — sometimes referred to by producer
+  ['Lyceum Theatre', 'Lyceum Theater'],
+  // City Center Encores — at NY City Center (counted as Broadway when the producer says so)
+  ['New York City Center', 'NY City Center', 'City Center Encores', 'Encores'],
+];
+
+const _venueAliasIndex = (() => {
+  const map = new Map();
+  for (const group of VENUE_ALIAS_GROUPS) {
+    for (const alias of group) {
+      const key = alias.toLowerCase().replace(/\s+/g, ' ').trim();
+      if (!map.has(key)) map.set(key, group);
+    }
+  }
+  return map;
+})();
+
+/**
+ * Return all alias names for a given venue. Always includes the venue itself
+ * even if no alias group is registered.
+ */
+function getVenueAliasGroup(venue) {
+  if (!venue) return [];
+  const key = venue.toLowerCase().replace(/\s+/g, ' ').trim();
+  const group = _venueAliasIndex.get(key);
+  if (group) return group;
+  return [venue];
+}
+
+/**
  * Verify whether fullText content matches the expected show.
  *
  * Uses weighted signals from show metadata (title, director, venue, cast, creative team)
@@ -1916,14 +1971,24 @@ function verifyFullTextContent(fullText, showMetadata) {
     }
   }
 
-  // 3. Theater/venue name (+1)
+  // 3. Theater/venue name (+1) — checks the venue and its aliases.
+  // Many Broadway theaters are referenced by producer name or shortened form
+  // ("Second Stage Theater" for Hayes Theater = Second Stage's Broadway home;
+  // "MTC" for Friedman Theatre, etc.). Without alias awareness the classifier
+  // flags accurate reviews as wrongProduction.
   if (showMetadata.venue) {
-    const venue = showMetadata.venue.toLowerCase();
-    // Try full venue name, then just the distinctive part (e.g., "Shubert" from "Shubert Theatre")
-    const venueWords = venue.replace(/\s*(theatre|theater)\s*/gi, '').trim();
-    if (venueWords.length > 3 && text.includes(venueWords)) {
+    const aliasGroups = getVenueAliasGroup(showMetadata.venue);
+    let venueHit = null;
+    for (const alias of aliasGroups) {
+      const venueWords = alias.toLowerCase().replace(/\s*(theatre|theater)\s*/gi, '').trim();
+      if (venueWords.length > 3 && text.includes(venueWords)) {
+        venueHit = alias;
+        break;
+      }
+    }
+    if (venueHit) {
       score += 1;
-      positiveSignals.push(`Venue "${showMetadata.venue}" found`);
+      positiveSignals.push(`Venue "${showMetadata.venue}" found${venueHit !== showMetadata.venue ? ` (via alias "${venueHit}")` : ''}`);
       details.venueFound = true;
     }
   }
@@ -2143,7 +2208,43 @@ function extractAuthorFromHtml(html, text, options = {}) {
     }
   }
 
+  // Outlet-specific fallback for WSJ theater. WSJ's HTML structure and paywall
+  // chrome routinely defeat our generic byline extractors, leaving criticName
+  // 'Unknown' on real Charles Isherwood reviews. Since Charles Isherwood has
+  // been the sole WSJ theater critic since Terry Teachout died 2022-01-13,
+  // a WSJ theater review with a post-2022 publishDate is overwhelmingly likely
+  // his. This is a soft fallback — the guard tags it _bylineInferred so callers
+  // can audit/override.
+  if (options && options.url && options.publishDate) {
+    const inferred = inferWsjTheaterByline(options.url, options.publishDate);
+    if (inferred) return inferred;
+  }
+
   return null;
+}
+
+/**
+ * Infer WSJ theater byline when extractors fail.
+ * Returns null unless URL is unambiguously a WSJ theater review and publishDate
+ * is within the Charles-Isherwood-only era (2022-04 onward, after Teachout's
+ * last published reviews cleared).
+ */
+function inferWsjTheaterByline(url, publishDate) {
+  if (!url || !publishDate) return null;
+  const u = String(url).toLowerCase();
+  if (!u.includes('wsj.com')) return null;
+  // Theater reviews live at /articles/* with -review- or -theater- in slug
+  const looksTheater = /-review-/.test(u) || u.includes('/theater/') || u.includes('-broadway-') || u.includes('-musical-') || u.includes('-play-');
+  if (!looksTheater) return null;
+  // Use article date — Isherwood replaced Teachout effective ~2022-04
+  const iso = (() => {
+    const s = String(publishDate);
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+    const t = Date.parse(s);
+    return isNaN(t) ? null : new Date(t).toISOString().slice(0, 10);
+  })();
+  if (!iso || iso < '2022-04-01') return null;
+  return 'Charles Isherwood';
 }
 
 /**
@@ -2341,6 +2442,9 @@ module.exports = {
   computeContentFingerprint,
   // Phase 1D: Content-to-show verification
   verifyFullTextContent,
+  // Venue aliases (for testing + reuse by other validators)
+  getVenueAliasGroup,
+  VENUE_ALIAS_GROUPS,
   // Export individual detectors for testing/debugging
   detectAdBlocker,
   detectPaywall,

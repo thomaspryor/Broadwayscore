@@ -4672,7 +4672,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // 1B-iii. AUTHOR ENRICHMENT — resolve "Unknown" critics from HTML metadata
   // Skip if criticNameManual is set — this means the name was manually verified and should not be overwritten
   if ((!data.criticName || data.criticName === 'Unknown') && html && !data.criticNameManual) {
-    const extractedAuthor = extractAuthorFromHtml(html, cleanedText, { excludeNames: bylineExcludeNames });
+    const extractedAuthor = extractAuthorFromHtml(html, cleanedText, {
+      excludeNames: bylineExcludeNames,
+      url: data.url,
+      publishDate: data.publishDate,
+    });
     if (extractedAuthor) {
       console.log(`    → Author enriched: "Unknown" → "${extractedAuthor}"`);
       data.criticName = extractedAuthor;
