@@ -2,6 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import ShowImage from '@/components/ShowImage';
+import { getOptimizedImageUrl } from '@/lib/images';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -10,6 +12,11 @@ interface ShowGrossesData {
     slug: string;
     title: string;
     status: string;
+    images?: {
+      hero?: string;
+      thumbnail?: string;
+      poster?: string;
+    };
   };
   grosses: {
     thisWeek?: {
@@ -63,9 +70,32 @@ function ChangeIndicator({ current, previous, mode = 'percent' }: { current: num
 
   const isPositive = change > 0;
   return (
-    <span className={`text-xs block sm:inline sm:ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+    <span className={`text-xs ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
       {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}{mode === 'points' ? 'pp' : '%'}
     </span>
+  );
+}
+
+function ShowThumbnail({ show }: { show: ShowGrossesData['show'] }) {
+  return (
+    <div className="relative flex-shrink-0 w-10 h-14 rounded overflow-hidden bg-surface-overlay">
+      <ShowImage
+        sources={[
+          show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
+          show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
+          show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
+        ]}
+        alt=""
+        loading="lazy"
+        ariaHidden
+        className="w-full h-full object-cover"
+        fallback={
+          <div className="w-full h-full flex items-center justify-center text-gray-500" aria-hidden="true">
+            <span className="text-base">🎭</span>
+          </div>
+        }
+      />
+    </div>
   );
 }
 
@@ -153,10 +183,10 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 px-2 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8 hidden sm:table-cell">#</th>
+              <th className="text-left py-3 pl-3 pr-1 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8">#</th>
               <th
                 className={`text-left ${headerClass}`}
                 onClick={() => handleSort('show')}
@@ -180,7 +210,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'capacity'} />
               </th>
               <th
-                className={`text-right whitespace-nowrap hidden md:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('atp')}
               >
                 <span className="hidden lg:inline">Avg Ticket</span>
@@ -188,10 +218,11 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'atp'} />
               </th>
               <th
-                className={`text-right hidden lg:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('attendance')}
               >
-                Attendance
+                <span className="hidden sm:inline">Attendance</span>
+                <span className="sm:hidden">Attend</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'attendance'} />
               </th>
             </tr>
@@ -199,19 +230,22 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
           <tbody>
             {sortedData.map((item, index) => (
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="py-3 px-2 sm:px-4 w-6 sm:w-8 hidden sm:table-cell">
+                <td className="py-3 pl-3 pr-1 sm:px-4 w-6 sm:w-8 align-middle">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                     index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                   }`}>
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base block leading-tight break-words">
-                    {item.show.title}
+                <td className="py-3 px-2 sm:px-4 min-w-0 align-middle">
+                  <Link href={`/show/${item.show.slug}`} className="flex items-center gap-3 group">
+                    <ShowThumbnail show={item.show} />
+                    <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                      {item.show.title}
+                    </span>
                   </Link>
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap">
+                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap align-middle">
                   {formatCurrency(item.grosses?.thisWeek?.gross)}
                   <ChangeIndicator
                     current={item.grosses?.thisWeek?.gross}
@@ -219,7 +253,7 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                   />
                 </td>
                 <td
-                  className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap"
+                  className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle"
                   title={
                     (item.grosses?.thisWeek?.capacity ?? 0) > 100
                       ? 'Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.'
@@ -236,10 +270,10 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                     mode="points"
                   />
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap hidden md:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
                   {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden lg:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
                   {formatNumber(item.grosses?.thisWeek?.attendance)}
                 </td>
               </tr>
@@ -321,10 +355,10 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-sm min-w-[640px]">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 px-2 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8 hidden sm:table-cell">#</th>
+              <th className="text-left py-3 pl-3 pr-1 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8">#</th>
               <th
                 className={`text-left ${headerClass}`}
                 onClick={() => handleSort('show')}
@@ -349,14 +383,15 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
                 <SortIcon direction={sortDirection} active={sortColumn === 'performances'} />
               </th>
               <th
-                className={`text-right hidden md:table-cell ${headerClass}`}
+                className={`text-right whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('attendance')}
               >
-                Attendance
+                <span className="hidden sm:inline">Attendance</span>
+                <span className="sm:hidden">Attend</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'attendance'} />
               </th>
               <th
-                className={`text-center hidden lg:table-cell ${headerClass}`}
+                className={`text-center whitespace-nowrap ${headerClass}`}
                 onClick={() => handleSort('status')}
               >
                 Status
@@ -367,28 +402,31 @@ export function AllTimeTable({ data }: AllTimeTableProps) {
           <tbody>
             {sortedData.map((item, index) => (
               <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="py-3 px-2 sm:px-4 w-6 sm:w-8 hidden sm:table-cell">
+                <td className="py-3 pl-3 pr-1 sm:px-4 w-6 sm:w-8 align-middle">
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                     index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                   }`}>
                     {index + 1}
                   </span>
                 </td>
-                <td className="py-3 px-2 sm:px-4 min-w-0">
-                  <Link href={`/show/${item.show.slug}`} className="text-white hover:text-brand transition-colors font-medium text-sm sm:text-base block leading-tight break-words">
-                    {item.show.title}
+                <td className="py-3 px-2 sm:px-4 min-w-0 align-middle">
+                  <Link href={`/show/${item.show.slug}`} className="flex items-center gap-3 group">
+                    <ShowThumbnail show={item.show} />
+                    <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                      {item.show.title}
+                    </span>
                   </Link>
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap">
+                <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap align-middle">
                   {formatCurrency(item.grosses?.allTime?.gross)}
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
                   {formatNumber(item.grosses?.allTime?.performances)}
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 hidden md:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
                   {formatNumber(item.grosses?.allTime?.attendance)}
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-center hidden lg:table-cell">
+                <td className="py-3 px-2 sm:px-4 text-center whitespace-nowrap align-middle">
                   <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                     item.show.status === 'open'
                       ? 'bg-emerald-500/15 text-emerald-400'
