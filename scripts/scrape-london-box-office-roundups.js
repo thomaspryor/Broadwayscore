@@ -379,6 +379,19 @@ function extractIndividualReviewFromLBO(html, showId) {
     }
   }
 
+  // Extract star rating from LBO's CSS class — bstars1..bstars5 wraps the
+  // visible star icons on every byline review page. Without this, every
+  // first-party LBO review (Stuart King + colleagues) gets ingested with
+  // stars=null and the LLM scores from text alone, often disagreeing with
+  // the critic's published rating. (Stuart King report 2026-04-26.)
+  let stars = null;
+  const starsMatch = html.match(/class="[^"]*\bbstars(\d)\b[^"]*"/);
+  if (starsMatch) {
+    const n = parseInt(starsMatch[1], 10);
+    if (n >= 1 && n <= 5) stars = n;
+  }
+  const score = stars !== null ? Math.round((stars / 5) * 100) : null;
+
   // Extract first 500 chars of body text as excerpt
   const paragraphs = [];
   $('article p, .post-content p, .entry-content p').each((_, el) => {
@@ -389,8 +402,8 @@ function extractIndividualReviewFromLBO(html, showId) {
 
   return {
     outlet: 'London Box Office',
-    stars: null,
-    score: null,
+    stars,
+    score,
     critic,
     excerpt: excerpt || '',
     url: '', // will be set to the LBO page URL itself
@@ -470,11 +483,16 @@ function stripTheatreFromSlug(slug) {
 function saveLBOReview(showId, reviewInfo) {
   const sourceName = reviewInfo.isIndividual ? 'lbo-individual' : 'lbo-roundup';
 
-  // Build score fields — aggregator score, store as metadata only
+  // Build score fields. aggregatorStars is stored in canonical "X/5" string
+  // form so parseOriginalScore() and the rebuild's stars-aware paths can
+  // resolve it; scoreSource is 'lbo-css-stars' to match the rest of the
+  // codebase (the prior 'lbo-star-rating' label was orphaned and produced
+  // numeric aggregatorStars values that downstream stars-handling missed).
   const scoreFields = {};
-  if (reviewInfo.score !== null && reviewInfo.score !== undefined) {
-    scoreFields.aggregatorStars = reviewInfo.score;
-    scoreFields.scoreSource = 'lbo-star-rating';
+  if (reviewInfo.stars !== null && reviewInfo.stars !== undefined) {
+    scoreFields.aggregatorStars = `${reviewInfo.stars}/5`;
+    scoreFields.scoreSource = 'lbo-css-stars';
+    scoreFields.originalScoreNormalized = Math.round((reviewInfo.stars / 5) * 100);
   }
 
   const result = createOrMergeReviewFile(showId, {
