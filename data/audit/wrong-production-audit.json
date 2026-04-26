@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T11:51:05.408Z",
+  "timestamp": "2026-04-26T12:11:37.473Z",
   "stats": {
-    "totalReviews": 35810,
-    "alreadyFlagged": 16042,
+    "totalReviews": 35822,
+    "alreadyFlagged": 16043,
     "dateGuardCatches": 95,
-    "directorMismatch": 820,
+    "directorMismatch": 819,
     "tvFilmSignals": 3200,
     "londonSignals": 1030,
     "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3733
+    "noPublishDate": 3745
   },
   "findings": [
     {
@@ -6977,20 +6977,6 @@
       "score": 79,
       "publishDate": "2023-12-14",
       "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "file": "nytimes--elisabeth-vincentelli.json",
-      "score": 78,
-      "publishDate": "December 13, 2023",
-      "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
