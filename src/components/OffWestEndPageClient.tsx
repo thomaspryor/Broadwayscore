@@ -12,6 +12,7 @@ import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
@@ -317,7 +318,33 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
     return result;
   }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode]);
 
-  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
+  const panelSingleGroups = useMemo(
+    () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
+    [],
+  );
+  const panelSingleValueOverrides = useMemo(
+    () => ({ type, status }),
+    [type, status],
+  );
+  const setPanelSingleValue = useCallback(
+    (paramKey: string, value: string) => {
+      const group = panelSingleGroups.find((g) => g.paramKey === paramKey);
+      if (group && value === group.defaultValue) {
+        updateParams({ [paramKey]: null });
+      } else {
+        updateParams({ [paramKey]: value });
+      }
+    },
+    [panelSingleGroups, updateParams],
+  );
+  const panel = usePanelFilters({
+    shows: filteredAndSortedShows,
+    awardWinnerSets,
+    scoreMode,
+    singleGroups: panelSingleGroups,
+    singleValueOverrides: panelSingleValueOverrides,
+    onSetSingleValueOverride: setPanelSingleValue,
+  });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const shouldHideStatus = statusFilter !== 'all';
@@ -396,6 +423,9 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
         onClose={() => setIsPanelOpen(false)}
         selectedByGroup={panel.selectedByGroup}
         onToggle={panel.toggleOption}
+        singleGroups={panelSingleGroups}
+        singleValueByGroup={panel.singleValueByGroup}
+        onSetSingleValue={panel.setSingleValue}
         yearRange={panel.yearRange}
         onYearRangeChange={panel.setYearRange}
         onClearAll={panel.clearAll}

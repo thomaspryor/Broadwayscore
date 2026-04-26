@@ -2,6 +2,12 @@
  * Single source of truth for panel filter UI metadata + predicate wiring.
  * The panel reads this to render groups; the hook reads it to apply
  * predicates against the show list.
+ *
+ * Discriminated union (`kind`):
+ *  - 'multi'  → multi-select pills, predicate-driven (Production, Awards, etc.)
+ *  - 'single' → single-select pills mirrored from inline ToggleBars (Type, Status).
+ *               No predicate — inline filter logic upstream already filters
+ *               the `shows` array on these params; the panel just mirrors URL state.
  */
 import {
   type FilterPredicate,
@@ -39,15 +45,34 @@ export interface FilterOption {
   predicate: FilterPredicate;
 }
 
-export interface FilterGroupConfig {
+export interface MultiGroupConfig {
+  kind: 'multi';
   /** URL param key (e.g. "production") — comma-separated multi-value */
   paramKey: string;
   label: string;
   options: FilterOption[];
 }
 
-export const FILTER_GROUPS: FilterGroupConfig[] = [
+export interface SingleOption {
+  id: string;
+  label: string;
+}
+
+export interface SingleGroupConfig {
+  kind: 'single';
+  /** URL param key (e.g. "type", "status") — single value */
+  paramKey: string;
+  label: string;
+  /** Param value treated as "no filter" — chip + badge suppressed when current */
+  defaultValue: string;
+  options: SingleOption[];
+}
+
+export type FilterGroupConfig = MultiGroupConfig | SingleGroupConfig;
+
+export const FILTER_GROUPS: MultiGroupConfig[] = [
   {
+    kind: 'multi',
     paramKey: 'production',
     label: 'Production',
     options: [
@@ -56,6 +81,7 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
     ],
   },
   {
+    kind: 'multi',
     paramKey: 'score_tier',
     label: 'Score tier',
     options: [
@@ -67,6 +93,7 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
     ],
   },
   {
+    kind: 'multi',
     paramKey: 'awards',
     label: 'Awards',
     options: [
@@ -78,6 +105,7 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
     ],
   },
   {
+    kind: 'multi',
     paramKey: 'genre',
     label: 'Genre & format',
     options: [
@@ -91,6 +119,7 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
     ],
   },
   {
+    kind: 'multi',
     paramKey: 'tickets',
     label: 'Tickets & access',
     options: [
@@ -100,14 +129,69 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
   },
 ];
 
+// ─────────────── Single-select groups (mirror inline ToggleBars) ───────────────
+
+/**
+ * Type group — identical across all 4 list pages. Defaults to 'all'.
+ * Mirrors the inline Musical/Plays pill row.
+ */
+export const TYPE_GROUP: SingleGroupConfig = {
+  kind: 'single',
+  paramKey: 'type',
+  label: 'Type',
+  defaultValue: 'all',
+  options: [
+    { id: 'all', label: 'All' },
+    { id: 'musical', label: 'Musicals' },
+    { id: 'play', label: 'Plays' },
+  ],
+};
+
+/** Broadway status options (CLOSING, no PREVIEWS). */
+export const STATUS_OPTIONS_BROADWAY: SingleOption[] = [
+  { id: 'now_playing', label: 'Playing' },
+  { id: 'closing_soon', label: 'Closing' },
+  { id: 'all', label: 'All' },
+  { id: 'closed', label: 'Closed' },
+];
+
+/** Off-Broadway / West End / Off-West-End status options (PREVIEWS, no CLOSING). */
+export const STATUS_OPTIONS_WITH_PREVIEWS: SingleOption[] = [
+  { id: 'now_playing', label: 'Playing' },
+  { id: 'previews', label: 'Previews' },
+  { id: 'all', label: 'All' },
+  { id: 'closed', label: 'Closed' },
+];
+
+/** Build a per-page Status SingleGroup from the page's status options. */
+export function buildStatusGroup(options: SingleOption[]): SingleGroupConfig {
+  return {
+    kind: 'single',
+    paramKey: 'status',
+    label: 'Status',
+    defaultValue: 'now_playing',
+    options,
+  };
+}
+
+/** Static list of param keys owned by single-select panel members. */
+const SINGLE_PARAM_KEY_LIST = ['type', 'status'] as const;
+export const SINGLE_PARAM_KEYS: ReadonlySet<string> = new Set(SINGLE_PARAM_KEY_LIST);
+
 /** All param keys owned by the panel — used to scope Reset / Clear-all */
 export const PANEL_PARAM_KEYS: ReadonlySet<string> = new Set([
   ...FILTER_GROUPS.map((g) => g.paramKey),
-  'years', // time-period range (Sprint 3 — slider not yet shipped)
+  ...SINGLE_PARAM_KEY_LIST,
+  'years', // time-period range
 ]);
 
-/** Look up an option by paramKey + id */
+/** Look up a multi-select option by paramKey + id */
 export function findFilterOption(paramKey: string, id: string): FilterOption | undefined {
   const group = FILTER_GROUPS.find((g) => g.paramKey === paramKey);
   return group?.options.find((o) => o.id === id);
+}
+
+/** Look up a single-select option by group + id */
+export function findSingleOption(group: SingleGroupConfig, id: string): SingleOption | undefined {
+  return group.options.find((o) => o.id === id);
 }

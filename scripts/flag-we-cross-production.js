@@ -8,6 +8,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -90,6 +91,11 @@ for (const dir of dirs) {
 
       // Skip already-excluded files
       if (data.wrongProduction || data.wrongShow || data.duplicateOf || data.rejectionReason) {
+        skippedAlready++;
+        continue;
+      }
+      // Honor manual clears — don't re-flag a human-verified review.
+      if (shouldSkipWrongProductionAudit(data)) {
         skippedAlready++;
         continue;
       }

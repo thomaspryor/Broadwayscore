@@ -32,6 +32,7 @@ const https = require('https');
 const { spawnSync } = require('child_process');
 const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
 const { fetchPage } = require('./lib/scraper');
+const { findInFlightPollerForShow } = require('./lib/poller-idempotency');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -223,7 +224,68 @@ async function checkBwwRoundup(show) {
   }
 }
 
+// Tonight #7 (Joe Turner postmortem): when 3 watcher ticks and an orchestrator
+// dispatch all targeted the same show within ~10 min, the resulting concurrent
+// pollers exhausted push-with-retry's 5 attempts and triggered a GitHub
+// installation rate-limit (HTTP 403) on rebuild dispatch. Idempotency check
+// here prevents the redundant dispatches in the first place; the per-show
+// concurrency group on opening-night-poller.yml is the backstop.
+//
+// findInFlightPollerForShow ALSO matches "Opening Night Poller — auto" runs
+// (dispatched by update-show-status.yml line 943 and the orchestrator's
+// multi-show branch). An auto run iterates ALL of today's openings via
+// opening-night-poller.js, so it covers every show the watcher might target.
+// Without this, the watcher's targeted dispatch races against an in-flight
+// auto run for the same show — re-introducing the Joe Turner push storm.
+// (Caught in /ship-check 2026-04-26 by both Claude general-purpose and
+// Codex reviewers, independently.)
+//
+// --limit=50: opening nights with 8+ pollers per orchestrator iteration
+// can push active runs past index 20 once a few finish. limit=50 covers
+// roughly the last 4 hours on the busiest nights.
+//
+// Fail-open: if the gh API hiccups, we still dispatch — better a redundant
+// poller than a missed BWW URL discovery on opening night.
+function pollerInFlightForShow(showId) {
+  const result = spawnSync(
+    'gh',
+    [
+      'run', 'list',
+      '--workflow=opening-night-poller.yml',
+      '--limit=50',
+      '--json', 'databaseId,displayTitle,status,createdAt',
+    ],
+    { stdio: 'pipe', timeout: 15000 },
+  );
+  if (result.status !== 0) {
+    return { error: ((result.stderr || '') + (result.stdout || '')).toString().slice(0, 300) };
+  }
+  let runs;
+  try {
+    runs = JSON.parse(result.stdout.toString() || '[]');
+  } catch (err) {
+    return { error: `parse error: ${err.message}` };
+  }
+  return { run: findInFlightPollerForShow(runs, showId) };
+}
+
 function dispatchPoller(showId, overrides) {
+  const inFlight = pollerInFlightForShow(showId);
+  if (inFlight.error) {
+    console.log(`  ⚠️  Idempotency check failed (${inFlight.error}) — proceeding with dispatch`);
+  } else if (inFlight.run) {
+    const dt = inFlight.run.displayTitle || '';
+    const isAuto = dt.endsWith('— auto');
+    const coverage = isAuto
+      ? `auto poller ${inFlight.run.databaseId} (${inFlight.run.status}) covers all today's openings`
+      : `targeted poller ${inFlight.run.databaseId} (${inFlight.run.status}) already running for ${showId}`;
+    return {
+      exitCode: 0,
+      skipped: true,
+      reason: coverage,
+      output: '',
+    };
+  }
   const args = ['workflow', 'run', 'opening-night-poller.yml', '-f', `show_id=${showId}`];
   if (overrides.bwwRoundupUrl) {
     args.push('-f', `bww_roundup_url=${overrides.bwwRoundupUrl}`);
@@ -309,7 +371,9 @@ function dispatchPoller(showId, overrides) {
         console.log(`  [dry-run] Would dispatch opening-night-poller.yml with overrides=${JSON.stringify(overrides)}`);
       } else {
         const d = dispatchPoller(show.id, overrides);
-        if (d.exitCode === 0) {
+        if (d.skipped) {
+          console.log(`  ⏭  Dispatch skipped — ${d.reason}`);
+        } else if (d.exitCode === 0) {
           console.log(`  ✅ Dispatched opening-night-poller.yml`);
           dispatched++;
         } else {

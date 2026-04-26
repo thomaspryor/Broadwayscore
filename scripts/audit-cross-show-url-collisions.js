@@ -20,6 +20,7 @@ const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-r
 
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -90,6 +91,7 @@ for (const showId of showDirs) {
 
     if (!data.showId || data.showId === showId) continue;
     if (data.wrongProduction || data.wrongShow) continue;
+    if (shouldSkipWrongProductionAudit(data)) continue;
     if (isIdMigration(showId, data.showId)) { showIdMismatchSkipped++; continue; }
 
     if (APPLY) {
@@ -922,6 +924,7 @@ if (APPLY) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         if (data.wrongShow || data.wrongProduction) continue;
+        if (shouldSkipWrongProductionAudit(data)) continue;
         data.wrongProduction = true;
         data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;
         atomicWriteJSON(filePath, data);

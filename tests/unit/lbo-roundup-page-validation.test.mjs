@@ -71,6 +71,33 @@ describe('validateRoundupPageTitle', () => {
     assert.strictEqual(validateRoundupPageTitle(null, 'X').ok, false);
   });
 
+  test('numeric-only title "13" matches its own page', () => {
+    // Show "13" was missing from validator pre-2026-04-26 — distinctive-words
+    // filter dropped 1-2 char tokens. Now caught via fullTitle whole-word match.
+    const html = fakePage('Review Roundup: 13 THE MUSICAL Opens at the Bernard B. Jacobs Theatre');
+    assert.strictEqual(validateRoundupPageTitle(html, '13').ok, true);
+  });
+
+  test('numeric-only title "13" rejects wrong-content page', () => {
+    // The actual contamination this session: a "13" archive contained
+    // FREE MAN OF COLOR roundup. Validator must reject.
+    const html = fakePage('Review Roundup: A FREE MAN OF COLOR Opens on Broadway');
+    assert.strictEqual(validateRoundupPageTitle(html, '13').ok, false);
+  });
+
+  test('numeric-substring "13" inside "1973" does NOT false-positive', () => {
+    // Word-boundary check prevents "13" from matching inside "1973" digit run.
+    const html = fakePage('A LITTLE NIGHT MUSIC 1973 Production Reviews');
+    assert.strictEqual(validateRoundupPageTitle(html, '13').ok, false);
+  });
+
+  test('multi-token short title "9 to 5" matches its own page', () => {
+    // "9 to 5" had all tokens filtered (1 char + stopword "to") — fullTitle
+    // whole-word match handles the entire phrase as a single match candidate.
+    const html = fakePage('Review Roundup: 9 TO 5 National Tour Reviews');
+    assert.strictEqual(validateRoundupPageTitle(html, '9 to 5').ok, true);
+  });
+
   test('substring "live" inside "lively" does NOT pass for Magic Mike Live', () => {
     // Old check used pageTitle.includes(word) — would let "lively" match "live".
     // New check uses whole-word matching.

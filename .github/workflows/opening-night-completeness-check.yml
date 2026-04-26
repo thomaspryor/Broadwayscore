@@ -1,0 +1,121 @@
+name: Opening Night Completeness Check
+
+# Per-critic + per-show drop detector for shows in the opening-night window.
+# Runs every 15 min between rebuilds. Snapshots reviews.json critic identities
+# per show and alerts on any disappearance, score-source loss, or count
+# regression. Fast — no aggregator fetches; pure diff against last snapshot.
+# (See scripts/check-opening-night-completeness.js for full design.)
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID to check (omit for all in-window shows)'
+        required: false
+        default: ''
+      window_days:
+        description: 'Days ± around openingDate to include (default: 7)'
+        required: false
+        default: '7'
+      force:
+        description: 'Bypass per-show 60-min cooldown'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: opening-night-completeness-check
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Skip if rebuild in progress (race avoidance)
+        id: rebuild_check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          RUNNING_FAST=$(gh run list --workflow=rebuild-fast.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED_FAST=$(gh run list --workflow=rebuild-fast.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ] || [ "$QUEUED" -gt 0 ] || [ "$RUNNING_FAST" -gt 0 ] || [ "$QUEUED_FAST" -gt 0 ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Rebuild in progress/queued — skipping completeness check; rebuild's own post-step will run it with fresh data."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run completeness check
+        if: steps.rebuild_check.outputs.skip != 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          SHOW_ARG=""
+          if [ -n "${{ inputs.show_id }}" ]; then
+            SHOW_ARG="--show=${{ inputs.show_id }}"
+          fi
+          WINDOW=$(echo "${{ inputs.window_days || '7' }}" | grep -oE '^[0-9]+$' || echo "7")
+          FORCE_ARG=""
+          if [ "${{ inputs.force || 'false' }}" = "true" ]; then
+            FORCE_ARG="--force"
+          fi
+          node scripts/check-opening-night-completeness.js \
+            $SHOW_ARG --window-days="$WINDOW" $FORCE_ARG
+
+      - name: Snapshot updated state for private repo push
+        if: steps.rebuild_check.outputs.skip != 'true'
+        run: |
+          if [ -f "data/audit/opening-night-completeness-state.json" ]; then
+            mkdir -p /tmp/core-data-snapshot
+            cp -f data/audit/opening-night-completeness-state.json /tmp/core-data-snapshot/ 2>/dev/null || true
+          fi
+
+      - name: Commit state file
+        if: steps.rebuild_check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/opening-night-completeness-state.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: opening-night completeness state [skip ci]"
+            # 5 retries (matches push-with-retry.sh default + opening-night-checklist.yml).
+            # 3 retries was too few during high-contention windows: observed 24965589737
+            # where all 3 attempts at 19:54/19:58/19:59 lost to concurrent rebuild + scoring
+            # pushers, dropping the snapshot file entirely.
+            # If push still fails after 5: emit warning and continue. Next cron tick (≤15 min)
+            # will re-snapshot — drop detection is degraded for that window but not broken.
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::State push failed after 5 attempts — snapshot lost; next cron will re-snapshot. Drop detection skipped for this 15-min window."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Completeness Check Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

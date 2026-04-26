@@ -64,6 +64,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 // --- Load .env ---
 try {
@@ -849,6 +850,8 @@ function applyFlag(item, parsed) {
 
   // Don't double-flag
   if (data.wrongProduction) return false;
+  // Honor manual clears — don't re-flag a human-verified review.
+  if (shouldSkipWrongProductionAudit(data)) return false;
 
   data.wrongProduction = true;
   const venuePart = parsed.venue ? ` at ${parsed.venue}` : '';

@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 let lockedSkipCount = 0;
@@ -426,6 +427,9 @@ if (applyMode) {
     if (!fs.existsSync(filePath)) continue;
 
     const reviewData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    // Honor manual clears — don't re-flag a human-verified review.
+    if (shouldSkipWrongProductionAudit(reviewData)) continue;
 
     if (result.suggestedShowId && showById.has(result.suggestedShowId)) {
       // Move to correct show directory
