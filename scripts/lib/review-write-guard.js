@@ -426,4 +426,37 @@ function coerceAssignedScore(data, filePath) {
   return { changed: true, from: original, to: null, reason: 'unparseable' };
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, PROTECTED_FIELDS };
+/**
+ * Decide whether a poller text-update should be skipped to protect existing data.
+ *
+ * Joe Turner postmortem A #1, A #16 (2026-04-26): collect-review-texts.js was
+ * writing fullText:'' on top of existing non-empty content when its scraper
+ * tier returned nothing. The push-action patch (commit 6c34f1ebf7) caught it
+ * at push time, but the right place is at the source. This predicate is the
+ * source-side gate.
+ *
+ * Returns { skip, reason } so callers can log a meaningful breadcrumb.
+ *
+ * @param {object} existingData - Parsed JSON of the existing review file
+ * @param {string|null|undefined} newText - The freshly-fetched fullText
+ * @returns {{ skip: boolean, reason: string|null }}
+ */
+function shouldSkipPollerUpdate(existingData, newText) {
+  const existingTextLen = (existingData && typeof existingData.fullText === 'string')
+    ? existingData.fullText.trim().length
+    : 0;
+  const newTextLen = (typeof newText === 'string') ? newText.trim().length : 0;
+
+  if (existingData && existingData._locked === true && existingTextLen > 0) {
+    return { skip: true, reason: `_locked=true with ${existingTextLen}ch existing fullText` };
+  }
+  if (existingData && existingData.manualContentTier === 'complete' && existingTextLen > 0) {
+    return { skip: true, reason: `manualContentTier=complete with ${existingTextLen}ch existing fullText` };
+  }
+  if (newTextLen === 0 && existingTextLen > 0) {
+    return { skip: true, reason: `new text empty; existing fullText is ${existingTextLen}ch` };
+  }
+  return { skip: false, reason: null };
+}
+
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, PROTECTED_FIELDS };

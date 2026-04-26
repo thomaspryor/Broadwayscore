@@ -113,6 +113,7 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { logExclusion } = require('./lib/exclusion-logger');
+const { shouldSkipPollerUpdate } = require('./lib/review-write-guard');
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -4156,6 +4157,17 @@ function mapSourceMethod(method) {
 
 async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+
+  // EMPTY-WRITE GUARD (Joe Turner postmortem A #1, A #16) — never overwrite
+  // an existing non-empty fullText with empty/whitespace, and never modify a
+  // file the operator has pinned (_locked) or that holds user-pasted complete
+  // text (manualContentTier === 'complete'). Push-action protection (commit
+  // 6c34f1ebf7) catches this at push time; this stops the bleed at the source.
+  const protectionGate = shouldSkipPollerUpdate(data, text);
+  if (protectionGate.skip) {
+    console.log(`    [PROTECTED] ${protectionGate.reason} — skipping updateReviewJson`);
+    return;
+  }
 
   // Get excerpt length for truncation detection
   const excerptLength = Math.max(
