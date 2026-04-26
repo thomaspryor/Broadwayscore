@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T20:51:35.521Z",
+  "timestamp": "2026-04-26T21:11:37.478Z",
   "stats": {
-    "totalReviews": 35814,
+    "totalReviews": 35817,
     "alreadyFlagged": 15651,
     "dateGuardCatches": 94,
     "directorMismatch": 829,
-    "tvFilmSignals": 2950,
+    "tvFilmSignals": 2951,
     "londonSignals": 627,
     "offBroadwaySignals": 430,
     "yearMismatch": 70,
-    "noPublishDate": 3732
+    "noPublishDate": 3735
   },
   "findings": [
     {
@@ -46386,6 +46386,19 @@
       "score": 88,
       "publishDate": "November 16, 2018",
       "url": "https://nypost.com/2020/12/01/the-prom-review-broadway-is-back-on-netflix/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-prom-2018",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": null,
+      "url": "http://nystagereview.com/2020/12/02/the-prom-streep-and-corden-conquer-all-with-sequins/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

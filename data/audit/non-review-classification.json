@@ -1,38 +1,27 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T20:42:23.498Z",
+    "generatedAt": "2026-04-26T21:01:57.042Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36479,
-      "inReviewsJson": 16953,
-      "skippedExcluded": 80,
-      "withFullText": 52,
-      "excerptOnly": 1591,
-      "llmClassified": 49,
+      "totalFiles": 36482,
+      "inReviewsJson": 16962,
+      "skippedExcluded": 79,
+      "withFullText": 17,
+      "excerptOnly": 1593,
+      "llmClassified": 16,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 1,
-      "uncertainCases": 13,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "nonReviewsFound": 0,
+      "uncertainCases": 14,
+      "budgetUsed": 0.0017000000000000006,
+      "llmCalls": 17,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15230
+      "skippedAlreadyClassified": 15273
     },
     "calibration": null
   },
-  "nonReviews": [
-    {
-      "file": "all-my-sons-2019/broadwayworld--michael-dale.json",
-      "showId": "all-my-sons-2019",
-      "outlet": "BroadwayWorld",
-      "outletId": "broadwayworld",
-      "contentType": "preview",
-      "confidence": "high",
-      "reasoning": "The article describes the upcoming production of \"All My Sons,\" including the director's approach, set design, and actors' portrayals, but it does not offer a critical evaluation or recommendation. It sets the stage for the play without providing a definitive judgment.",
-      "currentScore": 66
-    }
-  ],
+  "nonReviews": [],
   "uncertainCases": [
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -41,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items about other shows.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -51,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -61,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and other general theater topics.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and \"Music album reviews\" but does not contain evaluative content about \"Funny Girl\".",
       "currentScore": 62
     },
     {
@@ -81,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of the show itself. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, a collection of brief notices about various cultural events. While 'Liberation' is mentioned, there is no evaluative content or opinion offered about the show itself.",
       "currentScore": 88
     },
     {
@@ -91,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -151,7 +140,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is typical of a news item or listing rather than a review that offers an evaluation.",
       "currentScore": 64
     },
     {
@@ -161,53 +150,24 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "reasoning": "This appears to be a list of theater-related links and search terms, not an article about a specific show. It does not evaluate \"The Price\".",
       "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater, not a review of a specific show.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "33-variations-2009/usatoday--elysa-gardner.json",
-    "a-christmas-carol-2019/observer--rex-reed.json",
-    "almost-famous-2022/ew--dalton-ross.json",
-    "and-juliet-2022/nyt-theater--jonathan-mandell.json",
-    "bad-cinderella-2023/nytg--amelia-merrill.json",
-    "broken-glass-west-end-2026/guardian--alfred-hickling.json",
-    "cats-the-jellicle-ball-2026/washpost--thomas-floyd.json",
-    "company-2021/observer--david-cote.json",
-    "dracula-west-end-2025/city-am--adam-bloodworth.json",
-    "giant-2026/theatermania--zachary-stewart.json",
-    "gypsy-2024/observer--david-cote.json",
-    "hangmen-2022/observer--david-cote.json",
-    "heartbreak-hotel-off-broadway-2026/nytg--gillian-russo.json",
-    "hercules-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "into-the-woods-2022/observer--jesse-green.json",
-    "jajas-african-hair-braiding-2023/nytg--gillian-russo.json",
-    "john-proctor-is-the-villain-2025/ew--emlyn-travis.json",
-    "john-proctor-is-the-villain-2025/observer--david-cote.json",
-    "just-for-us-2023/theatermania--hayley-levitt.json",
-    "macbeth-2022/observer--david-cote.json",
-    "once-upon-a-mattress-2024/nydailynews--chris-jones.json",
-    "operation-mincemeat-2025/observer--david-cote.json",
-    "pass-over-2021/observer--david-cote.json",
-    "plaza-suite-2022/observer--david-cote.json",
-    "redwood-2025/observer--david-cote.json",
-    "shucked-2023/ew--christian-holub.json",
-    "shucked-2023/observer--david-cote.json",
-    "spamalot-2023/broadwaynews--brittani-samuel.json",
-    "take-me-out-2022/deadline--greg-evans.json",
-    "take-me-out-2022/ew--andrea-towers.json",
-    "the-hills-of-california-2024/washpost--naveen-kumar.json",
-    "the-picture-of-dorian-gray-2025/observer--david-cote.json",
-    "the-skin-of-our-teeth-2022/nypost--johnny-oleksinski.json",
-    "the-sound-inside-2019/observer--david-cote.json",
-    "the-thanksgiving-play-2023/nytg--amelia-merrill.json"
+    "death-becomes-her-2024/the-interested-bystander--cary-wong.json",
+    "waiting-for-godot-2013/usatoday--patrick-ryan.json"
   ],
-  "perShowSummary": [
-    {
-      "showId": "all-my-sons-2019",
-      "currentCount": 31,
-      "removed": 1
-    }
-  ]
+  "perShowSummary": []
 }
