@@ -132,7 +132,7 @@ for (const dirId of showDirs) {
     const filePath = path.join(showDir, file);
     let data;
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
-    if (data.wrongShow || data.wrongProduction || data.duplicateOf) { orphanedDirSkipped++; continue; }
+    if (data.wrongShow || data.wrongProduction || data.duplicateOf || wrongShowCleared(data)) { orphanedDirSkipped++; continue; }
 
     if (APPLY) {
       data.wrongShow = true;

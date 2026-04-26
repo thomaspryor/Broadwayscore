@@ -34,7 +34,7 @@ const {
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
-const { pickRerouteTarget } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit } = require('./review-guards');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
 
@@ -351,8 +351,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   const { input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
-  // Default field merge: set scraper-specific fields if existing value is falsy
+  // Default field merge: set scraper-specific fields if existing value is falsy.
+  // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
+  // re-flag the file even though a human explicitly cleared it.
   for (const [key, val] of Object.entries(fields)) {
+    if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
