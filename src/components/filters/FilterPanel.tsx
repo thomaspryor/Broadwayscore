@@ -4,12 +4,15 @@ import { useEffect, useId } from 'react';
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap';
 import { FILTER_GROUPS } from './filter-ui-config';
 import { FilterPillGroup } from './FilterPillGroup';
+import { TimePeriodSection } from './TimePeriodSection';
 
 interface FilterPanelProps {
   isOpen: boolean;
   onClose: () => void;
   selectedByGroup: Record<string, ReadonlySet<string>>;
   onToggle: (paramKey: string, id: string) => void;
+  yearRange: { from: number; to: number } | null;
+  onYearRangeChange: (range: { from: number; to: number } | null) => void;
   onClearAll: () => void;
   resultCount: number;
 }
@@ -24,6 +27,8 @@ export function FilterPanel({
   onClose,
   selectedByGroup,
   onToggle,
+  yearRange,
+  onYearRangeChange,
   onClearAll,
   resultCount,
 }: FilterPanelProps) {
@@ -88,17 +93,28 @@ export function FilterPanel({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-5 py-2">
-          {FILTER_GROUPS.map((group) => (
-            <div key={group.paramKey} className="py-3 border-b border-white/5 last:border-b-0">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
-                {group.label}
-              </h3>
-              <FilterPillGroup
-                options={group.options.map((o) => ({ value: o.id, label: o.label }))}
-                selected={selectedByGroup[group.paramKey] ?? new Set()}
-                onToggle={(id) => onToggle(group.paramKey, id)}
-                ariaLabel={`${group.label} filters`}
-              />
+          {FILTER_GROUPS.map((group, idx) => (
+            <div key={group.paramKey}>
+              <div className="py-3 border-b border-white/5">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                  {group.label}
+                </h3>
+                <FilterPillGroup
+                  options={group.options.map((o) => ({ value: o.id, label: o.label }))}
+                  selected={selectedByGroup[group.paramKey] ?? new Set()}
+                  onToggle={(id) => onToggle(group.paramKey, id)}
+                  ariaLabel={`${group.label} filters`}
+                />
+              </div>
+              {/* Insert Time period after Production (idx 0) */}
+              {idx === 0 && (
+                <div className="py-3 border-b border-white/5">
+                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                    Time period
+                  </h3>
+                  <TimePeriodSection yearRange={yearRange} onChange={onYearRangeChange} />
+                </div>
+              )}
             </div>
           ))}
         </div>

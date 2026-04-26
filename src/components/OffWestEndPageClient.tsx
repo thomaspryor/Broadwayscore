@@ -396,6 +396,8 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
         onClose={() => setIsPanelOpen(false)}
         selectedByGroup={panel.selectedByGroup}
         onToggle={panel.toggleOption}
+        yearRange={panel.yearRange}
+        onYearRangeChange={panel.setYearRange}
         onClearAll={panel.clearAll}
         resultCount={panel.filteredShows.length}
       />
