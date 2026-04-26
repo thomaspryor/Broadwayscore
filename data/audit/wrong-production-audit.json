@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T21:28:07.515Z",
+  "timestamp": "2026-04-26T23:48:00.542Z",
   "stats": {
-    "totalReviews": 35817,
-    "alreadyFlagged": 15654,
+    "totalReviews": 35944,
+    "alreadyFlagged": 15687,
     "dateGuardCatches": 94,
-    "directorMismatch": 829,
-    "tvFilmSignals": 962,
-    "londonSignals": 530,
+    "directorMismatch": 840,
+    "tvFilmSignals": 963,
+    "londonSignals": 531,
     "offBroadwaySignals": 428,
-    "yearMismatch": 70,
-    "noPublishDate": 3732
+    "yearMismatch": 72,
+    "noPublishDate": 3827
   },
   "findings": [
     {
@@ -3119,20 +3119,6 @@
       ]
     },
     {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "variety--frank-rizzo.json",
-      "score": 85,
-      "publishDate": "2026-04-08",
-      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"series premiere\""
-        }
-      ]
-    },
-    {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "chicagotribune--chris-jones.json",
       "score": 85,
@@ -4764,6 +4750,19 @@
     },
     {
       "showId": "death-of-a-salesman-2026",
+      "file": "ew--thom-geier.json",
+      "publishDate": null,
+      "url": "http://www.ew.com/ew/article/0,,20364394_20578450,00.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 89,
       "publishDate": "2026-04-10",
@@ -4787,6 +4786,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "publishDate": null,
+      "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-death-a-salesman-article-1.1039703?localLinksEnabled=false",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
         }
       ]
     },
@@ -9350,6 +9362,19 @@
     },
     {
       "showId": "inter-alia-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/inter-alia",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
       "file": "timeout-london--caroline-mcginn.json",
       "publishDate": "2026-04-07",
       "url": "https://www.timeout.com/london/news/review-inter-alia-starring-rosamund-pike-at-the-national-theatre-072425",
@@ -10027,6 +10052,24 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "theatrely--joey-sims.json",
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "thestage--sam-marlowe.json",
       "score": 63,
       "publishDate": "December 12th, 2025",
@@ -10227,6 +10270,19 @@
       "score": 45,
       "publishDate": null,
       "url": "http://www.ew.com/ew/article/0,,20364394_20579821,00.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from jesus-christ-superstar-2012"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-west-end-2026",
+      "file": "amny--matt-windman.json",
+      "publishDate": null,
+      "url": "http://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15688,6 +15744,24 @@
     },
     {
       "showId": "proof-2026",
+      "file": "nysr--charles-isherwood.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2000 (2x) more than 2026 (0x). 2000 matches production: proof-2000"
+        }
+      ]
+    },
+    {
+      "showId": "proof-2026",
       "file": "theatermania--david-gordon.json",
       "score": 62,
       "publishDate": "April 16, 2026",
@@ -17703,6 +17777,37 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-off-broadway-2026",
+      "file": "dc-theater-arts--amy-kotkin.json",
+      "publishDate": null,
+      "url": "https://dctheaterarts.org/2025/12/21/monty-pythons-zany-spamalot-is-back-delivering-laughs-at-the-kennedy-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-off-broadway-2026",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": null,
+      "url": "https://www.courant.com/2025/12/11/theater-review-overstuffed-spamalot-at-the-bushnell-tries-anything-to-make-you-laugh/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2026 (0x). 2023 matches production: spamalot-2023"
         }
       ]
     },
@@ -23130,6 +23235,19 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": null,
+      "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-1169085",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 76,
@@ -23341,6 +23459,19 @@
       "score": 78,
       "publishDate": "2026-03-20",
       "url": "https://www.nysun.com/article/jesse-tyler-ferguson-zings-tru-as-capote-in-a-poignant-revival",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "file": "nysr--david-finkle.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2026/03/19/tru-very-up-close-and-personal-with-truman-capote/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23584,6 +23715,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-west-end-2026",
+      "file": "variety--marilyn-stasio.json",
+      "publishDate": null,
+      "url": "http://www.variety.com/review/VE1117945025",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from war-horse-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tom morris\" from war-horse-2011"
         }
       ]
     },
@@ -32560,6 +32709,19 @@
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martland.json",
       "score": 93,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "file": "musical-theatre-review--lisa-martlandbr.json",
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
       "findings": [
