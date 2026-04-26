@@ -12,6 +12,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
 const HomepageExplainerShelf = lazy(() => import('@/components/HomepageExplainerShelf'));
 import type { ScoreModeParam } from '@/components/show-cards';
+import type { AwardWinnerSets } from '@/lib/data-awards';
 
 export interface FeaturedRowData {
   title: string;
@@ -61,6 +62,8 @@ interface HomePageClientProps {
   featuredRows?: FeaturedRowData[];
   /** Open-show counts for the market pills (stable across filter state) */
   marketOpenCounts: { broadway: number; offBroadway: number };
+  /** Pre-computed award winner ID arrays (avoids client-side awards.json import) */
+  awardWinnerSets?: AwardWinnerSets;
 }
 
 // URL parameter values

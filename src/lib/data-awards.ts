@@ -1,5 +1,7 @@
 // Awards data module
-// Imports: awards.json only (~35 KB)
+// Imports: awards.json (~612 KB) — server-only. Never import this from a
+// client component. For client filtering, see getAwardWinnerSets() which
+// returns small ID arrays meant to be passed as props.
 
 import type { ShowAwards, AwardsDesignation } from './data-types';
 import awardsData from '../../data/awards.json';
@@ -111,4 +113,63 @@ export function isTopTonyWinner(showId: string): boolean {
  */
 export function getAwardsLastUpdated(): string {
   return awards._meta.lastUpdated;
+}
+
+/**
+ * Pre-compute the set of show IDs that won/were nominated for each award.
+ * Called once per page server-side; the resulting arrays ship to the client
+ * (~hundreds of strings) instead of the full 600KB awards.json blob.
+ *
+ * Predicates in src/lib/show-filter-predicates.ts consume these via
+ * FilterPredicateCtx (Sets reconstructed client-side from the arrays).
+ */
+export interface AwardWinnerSets {
+  tonyWinnerIds: string[];
+  tonyNomineeIds: string[];
+  olivierWinnerIds: string[];
+  olivierNomineeIds: string[];
+  dramaDeskWinnerIds: string[];
+  pulitzerWinnerIds: string[];
+}
+
+interface OlivierAwards {
+  wins?: string[];
+  nominations?: number;
+  nominatedFor?: string[];
+}
+
+export function getAwardWinnerSets(): AwardWinnerSets {
+  const tonyWinnerIds: string[] = [];
+  const tonyNomineeIds: string[] = [];
+  const olivierWinnerIds: string[] = [];
+  const olivierNomineeIds: string[] = [];
+  const dramaDeskWinnerIds: string[] = [];
+  const pulitzerWinnerIds: string[] = [];
+
+  for (const [showId, showAwards] of Object.entries(awards.shows)) {
+    if (showAwards.tony) {
+      const wins = showAwards.tony.wins?.length ?? 0;
+      const noms = showAwards.tony.nominations ?? 0;
+      if (wins > 0) tonyWinnerIds.push(showId);
+      if (wins > 0 || noms > 0) tonyNomineeIds.push(showId);
+    }
+    const olivier = (showAwards as ShowAwards & { olivier?: OlivierAwards }).olivier;
+    if (olivier) {
+      const wins = olivier.wins?.length ?? 0;
+      const noms = olivier.nominations ?? 0;
+      if (wins > 0) olivierWinnerIds.push(showId);
+      if (wins > 0 || noms > 0) olivierNomineeIds.push(showId);
+    }
+    if (showAwards.dramadesk?.wins?.length) dramaDeskWinnerIds.push(showId);
+    if (showAwards.pulitzer) pulitzerWinnerIds.push(showId);
+  }
+
+  return {
+    tonyWinnerIds,
+    tonyNomineeIds,
+    olivierWinnerIds,
+    olivierNomineeIds,
+    dramaDeskWinnerIds,
+    pulitzerWinnerIds,
+  };
 }

@@ -7,6 +7,7 @@ import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
+import type { AwardWinnerSets } from '@/lib/data-awards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -45,6 +46,7 @@ interface WestEndPageClientProps {
   rushShows?: WestEndShow[];
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
+  awardWinnerSets?: AwardWinnerSets;
 }
 
 // URL parameter values

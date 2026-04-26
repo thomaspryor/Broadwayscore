@@ -8,6 +8,7 @@ import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from 
 import MarketFilterBar from '@/components/MarketFilterBar';
 import { GoldListCTA } from '@/components/gold-list/GoldListCTA';
 import type { ScoreModeParam } from '@/components/show-cards';
+import type { AwardWinnerSets } from '@/lib/data-awards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -38,6 +39,7 @@ interface OffBroadwayPageClientProps {
   totalReviews: number;
   /** Open-show counts for the market pills */
   marketOpenCounts: { broadway: number; offBroadway: number };
+  awardWinnerSets?: AwardWinnerSets;
 }
 
 // URL parameter values
