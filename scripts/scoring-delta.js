@@ -387,7 +387,8 @@ function main() {
       && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
       && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
       && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
-      && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '');
+      && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
+      && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '');
     if (guardsIdentical) {
       log('[scoring-delta] Phase A: review-guards.js decisions identical — skipping inclusion replay.');
     } else {
