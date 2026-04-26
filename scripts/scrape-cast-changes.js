@@ -160,7 +160,9 @@ async function fetchViaScrapingBee(url, options = {}) {
             if (res.statusCode === 200) {
               resolve(data);
             } else {
-              reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+              const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+              err.statusCode = res.statusCode;
+              reject(err);
             }
           });
         });
@@ -169,6 +171,13 @@ async function fetchViaScrapingBee(url, options = {}) {
       });
     } catch (e) {
       lastError = e;
+      // Don't retry on 4xx — the URL doesn't exist or we're forbidden,
+      // retrying just burns the 60-min step budget. Each ~180-show run
+      // tries multiple URL variants per show; missing pages used to cost
+      // 15s each (5s + 10s backoff) for nothing.
+      if (e.statusCode >= 400 && e.statusCode < 500) {
+        throw e;
+      }
       if (attempt < maxRetries) {
         const delay = 5000 * (attempt + 1);
         if (verbose) console.log(`    Retry ${attempt + 1}/${maxRetries} after ${delay / 1000}s: ${e.message}`);
