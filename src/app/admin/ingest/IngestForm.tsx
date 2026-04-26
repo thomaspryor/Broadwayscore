@@ -1,6 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { parseScore } from '@/lib/admin-ingest-score';
 
 interface DetectionResult {
   outletId: string | null;
@@ -30,10 +31,135 @@ interface IngestResponse {
   detectionWarnings?: string[];
 }
 
+interface LogEntry {
+  id: string;
+  startedAt: number;
+  url: string;
+  // Set after success
+  showId?: string;
+  outletId?: string;
+  criticName?: string;
+  commitSha?: string;
+  // Status
+  status: 'submitting' | 'saved' | 'failed';
+  error?: string;
+  warningCount?: number;
+}
+
+type Mode = 'single' | 'batch';
+
 export default function IngestForm() {
+  const [mode, setMode] = useState<Mode>('single');
+  const [submissionLog, setSubmissionLog] = useState<LogEntry[]>([]);
+
+  return (
+    <div className="space-y-5">
+      {submissionLog.length > 0 && <SubmissionLog entries={submissionLog} />}
+
+      <ModeToggle mode={mode} onChange={setMode} />
+
+      {mode === 'single' ? (
+        <SinglePasteForm
+          onResult={pushLog}
+          onUpdate={updateLog}
+        />
+      ) : (
+        <BatchPasteForm onResult={pushLog} onUpdate={updateLog} />
+      )}
+    </div>
+  );
+
+  function pushLog(entry: LogEntry) {
+    setSubmissionLog(prev => [entry, ...prev].slice(0, 10));
+  }
+  function updateLog(id: string, patch: Partial<LogEntry>) {
+    setSubmissionLog(prev => prev.map(e => (e.id === id ? { ...e, ...patch } : e)));
+  }
+}
+
+// ─── Mode toggle ────────────────────────────────────────────────────
+
+function ModeToggle({ mode, onChange }: { mode: Mode; onChange: (m: Mode) => void }) {
+  return (
+    <div className="inline-flex rounded-lg border border-white/10 bg-surface-raised/40 p-0.5 text-xs">
+      {(['single', 'batch'] as const).map(m => (
+        <button
+          key={m}
+          type="button"
+          onClick={() => onChange(m)}
+          className={[
+            'px-3 py-1.5 rounded-md transition-colors',
+            mode === m ? 'bg-brand text-black font-medium' : 'text-gray-400 hover:text-white',
+          ].join(' ')}
+        >
+          {m === 'single' ? 'One review' : 'Paste a batch'}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Submission log ────────────────────────────────────────────────
+
+function SubmissionLog({ entries }: { entries: LogEntry[] }) {
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface-raised/60 p-3 space-y-2">
+      <div className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
+        Recent submissions
+      </div>
+      <ul className="space-y-1">
+        {entries.slice(0, 5).map(e => (
+          <LogRow key={e.id} entry={e} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function LogRow({ entry }: { entry: LogEntry }) {
+  const icon =
+    entry.status === 'submitting' ? '⏳' : entry.status === 'saved' ? '✓' : '✕';
+  const tone =
+    entry.status === 'submitting'
+      ? 'text-gray-400'
+      : entry.status === 'saved'
+        ? 'text-status-open'
+        : 'text-score-skip';
+  const summary =
+    entry.status === 'saved' && entry.criticName
+      ? `${entry.criticName} · ${entry.outletId} · ${entry.showId}`
+      : entry.status === 'submitting'
+        ? entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)
+        : entry.error || 'Failed';
+
+  return (
+    <li className="flex items-start gap-2 text-xs">
+      <span className={`${tone} mt-0.5 shrink-0 w-4`}>{icon}</span>
+      <div className="flex-1 min-w-0">
+        <div className={`${tone} truncate`}>{summary}</div>
+        {entry.status === 'failed' && entry.error && (
+          <div className="text-[11px] text-gray-500 truncate">{entry.url}</div>
+        )}
+      </div>
+      <span className="text-[11px] text-gray-500 shrink-0 tabular-nums">
+        {new Date(entry.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+      </span>
+    </li>
+  );
+}
+
+// ─── Single-paste form ──────────────────────────────────────────────
+
+function SinglePasteForm({
+  onResult,
+  onUpdate,
+}: {
+  onResult: (e: LogEntry) => void;
+  onUpdate: (id: string, patch: Partial<LogEntry>) => void;
+}) {
   const [url, setUrl] = useState('');
   const [fullText, setFullText] = useState('');
-  const [humanReviewScore, setHumanReviewScore] = useState('');
+  const [scoreInput, setScoreInput] = useState('');
 
   const [detected, setDetected] = useState<DetectionResult | null>(null);
   const [detectLoading, setDetectLoading] = useState(false);
@@ -42,7 +168,6 @@ export default function IngestForm() {
   const [publishDateOverride, setPublishDateOverride] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
-  const [result, setResult] = useState<IngestResponse | null>(null);
   const [forceClearStale, setForceClearStale] = useState(false);
 
   const detectTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -89,24 +214,36 @@ export default function IngestForm() {
   }, [url, fullText, runDetection]);
 
   const effectiveShowId = showIdOverride.trim() || detected?.showId || '';
+  const effectiveShowTitle =
+    detected?.showCandidates?.find(c => c.id === effectiveShowId)?.title || detected?.showTitle || '';
   const effectiveCritic = criticOverride.trim() || detected?.criticName || '';
   const effectivePublishDate = publishDateOverride.trim() || detected?.publishDate || '';
   const effectiveOutlet = detected?.outletId || '';
+  const effectiveOutletName = detected?.outletDisplayName || '';
 
-  const readyToSubmit = Boolean(
-    url.trim().length > 0 &&
-      fullText.trim().length >= 50 &&
-      effectiveShowId &&
-      effectiveCritic &&
-      effectiveOutlet,
-  );
+  const parsedScore = useMemo(() => {
+    if (!scoreInput.trim()) return null;
+    return parseScore(scoreInput);
+  }, [scoreInput]);
+
+  const missingPieces: string[] = [];
+  if (!url.trim()) missingPieces.push('review URL');
+  if (fullText.trim().length < 50) missingPieces.push('review text');
+  if (!effectiveOutlet) missingPieces.push('outlet (URL not from a recognized site)');
+  if (!effectiveShowId) missingPieces.push('show');
+  if (!effectiveCritic) missingPieces.push('critic name');
+
+  const readyToSubmit = missingPieces.length === 0;
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!readyToSubmit || submitting) return;
 
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const startedAt = Date.now();
+    onResult({ id, startedAt, url: url.trim(), status: 'submitting' });
+
     setSubmitting(true);
-    setResult(null);
     try {
       const res = await fetch('/api/admin/ingest-review', {
         method: 'POST',
@@ -117,32 +254,51 @@ export default function IngestForm() {
           showId: effectiveShowId,
           criticName: effectiveCritic,
           publishDate: effectivePublishDate || null,
-          humanReviewScore: humanReviewScore ? Number(humanReviewScore) : null,
+          originalScore: scoreInput.trim() || null,
           forceClearStale,
         }),
       });
       const json = (await res.json()) as IngestResponse;
-      setResult(json);
       if (json.success) {
+        onUpdate(id, {
+          status: 'saved',
+          showId: json.showId,
+          outletId: json.outletId,
+          criticName: json.criticName,
+          commitSha: json.commitSha,
+          warningCount: (json.detectionWarnings || []).length,
+        });
+        // Clear inputs so user can paste the next one
         setUrl('');
         setFullText('');
-        setHumanReviewScore('');
+        setScoreInput('');
         setShowIdOverride('');
         setCriticOverride('');
         setPublishDateOverride('');
         setDetected(null);
         setForceClearStale(false);
+      } else {
+        onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
       }
     } catch (err) {
-      setResult({ success: false, error: err instanceof Error ? err.message : String(err) });
+      onUpdate(id, {
+        status: 'failed',
+        error: err instanceof Error ? err.message : String(err),
+      });
     } finally {
       setSubmitting(false);
     }
   }
 
+  const buttonLabel = submitting
+    ? 'Submitting…'
+    : !readyToSubmit
+      ? `Need: ${missingPieces[0]}`
+      : 'Submit review';
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <Field label="Review URL" hint="Outlet + publish date auto-detected">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <Field label="Review URL" required>
         <input
           type="url"
           value={url}
@@ -150,47 +306,31 @@ export default function IngestForm() {
           autoComplete="off"
           className={inputClass()}
           disabled={submitting}
-          placeholder="https://www.nytimes.com/2026/..."
+          placeholder="https://www.nytimes.com/2026/04/23/theater/..."
           autoCapitalize="off"
           autoCorrect="off"
         />
       </Field>
 
-      <Field label="Full text" hint="Paste the review body. Critic + show auto-detected.">
+      <Field label="Full review text" required>
         <textarea
           value={fullText}
           onChange={e => setFullText(e.target.value)}
           rows={12}
           className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
           disabled={submitting}
-          placeholder="Paste the full review text here…"
+          placeholder="Paste the entire review here, including the byline if visible…"
         />
-        <div className="text-xs text-gray-500 mt-1">
-          {fullText.length > 0 && `${fullText.length.toLocaleString()} chars`}
-        </div>
+        {fullText.length > 0 && (
+          <div className="text-xs text-gray-500 mt-1">{fullText.length.toLocaleString()} characters</div>
+        )}
       </Field>
 
-      <Field
-        label="Score (optional)"
-        hint="Only fill if explicitly stated in the review (stars, thumbs, etc.). Otherwise the LLM pipeline scores it."
-      >
-        <input
-          type="number"
-          min={1}
-          max={100}
-          step={1}
-          value={humanReviewScore}
-          onChange={e => setHumanReviewScore(e.target.value)}
-          className={inputClass()}
-          disabled={submitting}
-          placeholder="1–100"
-          inputMode="numeric"
-        />
-      </Field>
-
-      <DetectedPreview
+      <DetectedSection
         detected={detected}
         loading={detectLoading}
+        url={url}
+        fullText={fullText}
         showIdOverride={showIdOverride}
         setShowIdOverride={setShowIdOverride}
         criticOverride={criticOverride}
@@ -198,41 +338,499 @@ export default function IngestForm() {
         publishDateOverride={publishDateOverride}
         setPublishDateOverride={setPublishDateOverride}
         effectiveShowId={effectiveShowId}
+        effectiveShowTitle={effectiveShowTitle}
         effectiveCritic={effectiveCritic}
         effectivePublishDate={effectivePublishDate}
+        effectiveOutlet={effectiveOutlet}
+        effectiveOutletName={effectiveOutletName}
         disabled={submitting}
       />
 
-      <label className="flex items-start gap-2 text-xs text-gray-400">
+      <Field
+        label="Critic's stated score"
+        hint="Optional. Type it as written in the review (e.g. “4/5 stars”, “★★★★”, “A-”, “90/100”). If the review doesn't state a score, leave blank — our LLM will score the text."
+      >
         <input
-          type="checkbox"
-          checked={forceClearStale}
-          onChange={e => setForceClearStale(e.target.checked)}
+          type="text"
+          value={scoreInput}
+          onChange={e => setScoreInput(e.target.value)}
+          autoComplete="off"
+          autoCapitalize="off"
+          autoCorrect="off"
+          className={inputClass()}
           disabled={submitting}
-          className="accent-brand mt-0.5"
+          placeholder="e.g. 5/5 stars, ★★★★, A-, 90/100"
         />
-        <span>
-          Force-clear stale wrongProduction/wrongShow flag on existing file (only if existing file
-          is for a different production)
-        </span>
-      </label>
+        {scoreInput.trim() && (
+          <div className="mt-1.5 text-xs">
+            {parsedScore ? (
+              <span className="text-status-open">
+                ✓ Will be saved as <strong>{parsedScore.score}/100</strong> (original:{' '}
+                <code className="text-gray-300">{scoreInput.trim()}</code>)
+              </span>
+            ) : (
+              <span className="text-score-tepid">
+                Couldn&apos;t recognize this rating format. Either fix it or leave blank.
+              </span>
+            )}
+          </div>
+        )}
+      </Field>
+
+      <details className="rounded-lg border border-white/5 bg-surface-raised/40">
+        <summary className="px-4 py-2.5 text-xs text-gray-400 cursor-pointer hover:text-gray-200 select-none">
+          Advanced options
+        </summary>
+        <div className="px-4 pb-3 pt-1 space-y-2">
+          <label className="flex items-start gap-2 text-xs text-gray-400">
+            <input
+              type="checkbox"
+              checked={forceClearStale}
+              onChange={e => setForceClearStale(e.target.checked)}
+              disabled={submitting}
+              className="accent-brand mt-0.5"
+            />
+            <span>
+              Override existing wrong-production flag — only check this if you know the existing
+              file for this outlet+critic was tagged for a different production and you want to
+              replace it.
+            </span>
+          </label>
+        </div>
+      </details>
 
       <button
         type="submit"
         disabled={!readyToSubmit || submitting}
-        className="w-full px-4 py-3 bg-brand text-black font-semibold rounded-lg disabled:opacity-40 disabled:cursor-not-allowed hover:bg-brand/90 transition-colors"
+        className={[
+          'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
+          readyToSubmit && !submitting
+            ? 'bg-brand text-black hover:bg-brand/90'
+            : 'bg-white/5 text-gray-500 cursor-not-allowed',
+        ].join(' ')}
       >
-        {submitting ? 'Ingesting…' : 'Ingest review'}
+        {buttonLabel}
       </button>
-
-      {result && <Result result={result} />}
+      {!readyToSubmit && missingPieces.length > 1 && (
+        <ul className="-mt-3 text-xs text-gray-500 space-y-0.5">
+          <li className="text-gray-400">Also missing:</li>
+          {missingPieces.slice(1).map((p, i) => (
+            <li key={i}>· {p}</li>
+          ))}
+        </ul>
+      )}
     </form>
   );
 }
 
-function DetectedPreview({
+// ─── Batch form: same-show, N (URL+text) slot pairs ───────────────
+//
+// Single-show batch redesigned 2026-04-26 after Joe Turner opening night.
+// Old delimited-paste model (`---` separator + URL on first line + Show: line)
+// caused a paste-error class of bugs (Cititour text in Culture Sauce slot).
+// New model: pick the show ONCE at the top, then fill in N (URL, fullText)
+// pairs as separate inputs. Eliminates paste confusion entirely.
+
+interface ReviewSlot {
+  id: string;
+  url: string;
+  fullText: string;
+}
+
+interface ShowSearchResult {
+  id: string;
+  title: string;
+  slug?: string;
+  status?: string;
+  category?: string;
+  od?: string;
+  openingDate?: string;
+  venue?: string;
+}
+
+function BatchPasteForm({
+  onResult,
+  onUpdate,
+}: {
+  onResult: (e: LogEntry) => void;
+  onUpdate: (id: string, patch: Partial<LogEntry>) => void;
+}) {
+  // Show picker
+  const [showQuery, setShowQuery] = useState('');
+  const [shows, setShows] = useState<ShowSearchResult[]>([]);
+  const [selectedShow, setSelectedShow] = useState<ShowSearchResult | null>(null);
+  const [showsLoaded, setShowsLoaded] = useState(false);
+
+  // Slots — start with 2
+  const [slots, setSlots] = useState<ReviewSlot[]>(() => [
+    { id: makeSlotId(), url: '', fullText: '' },
+    { id: makeSlotId(), url: '', fullText: '' },
+  ]);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [progress, setProgress] = useState({ done: 0, total: 0 });
+
+  // Lazy-load shows.json
+  useEffect(() => {
+    if (showsLoaded) return;
+    fetch('/data/search-shows.json')
+      .then(r => r.json())
+      .then((data: ShowSearchResult[]) => {
+        setShows(data);
+        setShowsLoaded(true);
+      })
+      .catch(() => setShowsLoaded(false));
+  }, [showsLoaded]);
+
+  const showResults = useMemo(() => {
+    if (!selectedShow && showQuery.trim().length >= 2) {
+      const q = showQuery.toLowerCase();
+      // Prefer open Broadway/West End; recently-opened first
+      return shows
+        .filter(s => s.title?.toLowerCase().includes(q))
+        .sort((a, b) => {
+          const aOpen = a.status === 'open' || a.status === 'previews' ? 0 : 1;
+          const bOpen = b.status === 'open' || b.status === 'previews' ? 0 : 1;
+          if (aOpen !== bOpen) return aOpen - bOpen;
+          const aDate = a.openingDate || a.od || '';
+          const bDate = b.openingDate || b.od || '';
+          return bDate.localeCompare(aDate);
+        })
+        .slice(0, 8);
+    }
+    return [];
+  }, [shows, showQuery, selectedShow]);
+
+  const validSlots = useMemo(
+    () =>
+      slots.filter(
+        s => s.url.trim() && isValidUrl(s.url) && s.fullText.trim().length >= 50,
+      ),
+    [slots],
+  );
+  const invalidCount = slots.filter(s => s.url.trim() || s.fullText.trim()).length - validSlots.length;
+  const readyToSubmit = !!selectedShow && validSlots.length > 0;
+
+  function updateSlot(id: string, patch: Partial<ReviewSlot>) {
+    setSlots(prev => prev.map(s => (s.id === id ? { ...s, ...patch } : s)));
+  }
+  function addSlot() {
+    setSlots(prev => [...prev, { id: makeSlotId(), url: '', fullText: '' }]);
+  }
+  function removeSlot(id: string) {
+    setSlots(prev => (prev.length <= 1 ? prev : prev.filter(s => s.id !== id)));
+  }
+
+  async function handleSubmitAll(event: React.FormEvent) {
+    event.preventDefault();
+    if (!readyToSubmit || submitting || !selectedShow) return;
+
+    setSubmitting(true);
+    setProgress({ done: 0, total: validSlots.length });
+    let successCount = 0;
+    let failureCount = 0;
+
+    // Phase 1: commit each review with skipDispatch=true. The show is FIXED
+    // at the form level so every entry gets the same showId — no per-slot
+    // detection ambiguity.
+    for (let i = 0; i < validSlots.length; i++) {
+      const slot = validSlots[i];
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      onResult({ id, startedAt: Date.now(), url: slot.url, status: 'submitting' });
+
+      try {
+        const res = await fetch('/api/admin/ingest-review', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: slot.url.trim(),
+            fullText: slot.fullText.trim(),
+            showId: selectedShow.id,
+            skipDispatch: true,
+          }),
+        });
+        const json = (await res.json()) as IngestResponse;
+        if (json.success) {
+          successCount++;
+          onUpdate(id, {
+            status: 'saved',
+            showId: json.showId,
+            outletId: json.outletId,
+            criticName: json.criticName,
+            commitSha: json.commitSha,
+            warningCount: (json.detectionWarnings || []).length,
+          });
+        } else {
+          failureCount++;
+          onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
+        }
+      } catch (err) {
+        failureCount++;
+        onUpdate(id, {
+          status: 'failed',
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+      setProgress({ done: i + 1, total: validSlots.length });
+    }
+
+    // Phase 2: ONE rebuild covering all the commits. Skip only if literally
+    // zero succeeded.
+    if (successCount > 0) {
+      const dispatchId = `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`;
+      onResult({
+        id: dispatchId,
+        startedAt: Date.now(),
+        url: `Rebuild ${successCount} review${successCount === 1 ? '' : 's'} for ${selectedShow.title}`,
+        status: 'submitting',
+      });
+      try {
+        const res = await fetch('/api/admin/dispatch-rebuild', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reason: `admin-ingest-ui batch: ${successCount} reviews for ${selectedShow.id}${failureCount ? ` (${failureCount} failed)` : ''}`,
+          }),
+        });
+        const json = (await res.json()) as { success: boolean; workflowRunUrl?: string; error?: string };
+        if (json.success) {
+          onUpdate(dispatchId, {
+            status: 'saved',
+            criticName: `${successCount} review${successCount === 1 ? '' : 's'}`,
+            outletId: 'rebuild',
+            showId: 'dispatched',
+          });
+        } else {
+          onUpdate(dispatchId, {
+            status: 'failed',
+            error: `Reviews committed but rebuild dispatch failed: ${json.error}. Trigger manually: gh workflow run "Rebuild Reviews (Fast)"`,
+          });
+        }
+      } catch (err) {
+        onUpdate(dispatchId, {
+          status: 'failed',
+          error: `Reviews committed but rebuild dispatch failed: ${err instanceof Error ? err.message : String(err)}`,
+        });
+      }
+    }
+
+    // Reset slots that succeeded; keep failed ones so operator can edit + retry.
+    if (failureCount === 0) {
+      setSlots([
+        { id: makeSlotId(), url: '', fullText: '' },
+        { id: makeSlotId(), url: '', fullText: '' },
+      ]);
+    }
+    setSubmitting(false);
+  }
+
+  return (
+    <form onSubmit={handleSubmitAll} className="space-y-5">
+      {/* Show picker */}
+      <Field label="Show" required hint="All reviews in this batch will be attached to this show.">
+        {selectedShow ? (
+          <div className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-raised px-3 py-2.5">
+            <div>
+              <div className="text-sm text-white">{selectedShow.title}</div>
+              <div className="text-[11px] text-gray-500">
+                {selectedShow.id}
+                {selectedShow.openingDate || selectedShow.od ? ` · opened ${selectedShow.openingDate || selectedShow.od}` : ''}
+                {selectedShow.status ? ` · ${selectedShow.status}` : ''}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedShow(null);
+                setShowQuery('');
+              }}
+              disabled={submitting}
+              className="text-[11px] text-brand hover:underline"
+            >
+              change
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={showQuery}
+              onChange={e => setShowQuery(e.target.value)}
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              placeholder={showsLoaded ? 'Type show title to search…' : 'Loading shows…'}
+              className={inputClass()}
+              disabled={submitting || !showsLoaded}
+            />
+            {showResults.length > 0 && (
+              <div className="rounded-lg border border-white/10 bg-surface-raised divide-y divide-white/5 max-h-72 overflow-y-auto">
+                {showResults.map(s => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedShow(s);
+                      setShowQuery('');
+                    }}
+                    disabled={submitting}
+                    className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
+                  >
+                    <div className="text-sm text-white">{s.title}</div>
+                    <div className="text-[11px] text-gray-500">
+                      {s.id}
+                      {s.openingDate || s.od ? ` · opened ${s.openingDate || s.od}` : ''}
+                      {s.status ? ` · ${s.status}` : ''}
+                      {s.category ? ` · ${s.category}` : ''}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+            {showQuery.trim().length >= 2 && showResults.length === 0 && showsLoaded && (
+              <div className="text-xs text-gray-500">No matches.</div>
+            )}
+          </div>
+        )}
+      </Field>
+
+      {/* Slot list */}
+      {selectedShow && (
+        <>
+          <div className="space-y-4">
+            {slots.map((slot, idx) => (
+              <SlotEditor
+                key={slot.id}
+                index={idx}
+                slot={slot}
+                onChange={patch => updateSlot(slot.id, patch)}
+                onRemove={slots.length > 1 ? () => removeSlot(slot.id) : undefined}
+                disabled={submitting}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={addSlot}
+            disabled={submitting}
+            className="text-sm text-brand hover:underline disabled:opacity-50"
+          >
+            + Add another review
+          </button>
+
+          {(validSlots.length > 0 || invalidCount > 0) && (
+            <div className="text-xs text-gray-400">
+              <strong className="text-status-open">{validSlots.length} ready</strong>
+              {invalidCount > 0 && (
+                <span className="text-score-tepid"> · {invalidCount} incomplete (need URL + text ≥50ch)</span>
+              )}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!readyToSubmit || submitting}
+            className={[
+              'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
+              readyToSubmit && !submitting
+                ? 'bg-brand text-black hover:bg-brand/90'
+                : 'bg-white/5 text-gray-500 cursor-not-allowed',
+            ].join(' ')}
+          >
+            {submitting
+              ? `Submitting ${progress.done} of ${progress.total}…`
+              : !readyToSubmit
+                ? 'Fill in at least one review (URL + text)'
+                : `Submit ${validSlots.length} review${validSlots.length === 1 ? '' : 's'} for ${selectedShow.title}`}
+          </button>
+        </>
+      )}
+    </form>
+  );
+}
+
+function SlotEditor({
+  index,
+  slot,
+  onChange,
+  onRemove,
+  disabled,
+}: {
+  index: number;
+  slot: ReviewSlot;
+  onChange: (patch: Partial<ReviewSlot>) => void;
+  onRemove?: () => void;
+  disabled?: boolean;
+}) {
+  const urlOk = !slot.url.trim() || isValidUrl(slot.url);
+  const textOk = !slot.fullText.trim() || slot.fullText.trim().length >= 50;
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface-raised p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs uppercase tracking-wider text-gray-500">Review {index + 1}</span>
+        {onRemove && (
+          <button
+            type="button"
+            onClick={onRemove}
+            disabled={disabled}
+            className="text-[11px] text-gray-500 hover:text-score-skip"
+          >
+            remove
+          </button>
+        )}
+      </div>
+      <input
+        type="url"
+        value={slot.url}
+        onChange={e => onChange({ url: e.target.value })}
+        placeholder="https://www.nytimes.com/2026/04/23/theater/..."
+        autoComplete="off"
+        autoCapitalize="off"
+        autoCorrect="off"
+        disabled={disabled}
+        className={inputClass()}
+      />
+      {!urlOk && <p className="text-[11px] text-score-skip">Not a valid URL</p>}
+      <textarea
+        value={slot.fullText}
+        onChange={e => onChange({ fullText: e.target.value })}
+        rows={6}
+        placeholder="Paste the full review text…"
+        disabled={disabled}
+        className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
+      />
+      <div className="flex items-center justify-between text-[11px]">
+        <span className={textOk ? 'text-gray-500' : 'text-score-skip'}>
+          {slot.fullText.length > 0
+            ? `${slot.fullText.length.toLocaleString()} chars${textOk ? '' : ' (need ≥50)'}`
+            : ''}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function makeSlotId() {
+  return `slot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function isValidUrl(s: string): boolean {
+  try {
+    new URL(s);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// ─── Detected section (single-paste only) ─────────────────────────
+
+function DetectedSection({
   detected,
   loading,
+  url,
+  fullText,
   showIdOverride,
   setShowIdOverride,
   criticOverride,
@@ -240,12 +838,17 @@ function DetectedPreview({
   publishDateOverride,
   setPublishDateOverride,
   effectiveShowId,
+  effectiveShowTitle,
   effectiveCritic,
   effectivePublishDate,
+  effectiveOutlet,
+  effectiveOutletName,
   disabled,
 }: {
   detected: DetectionResult | null;
   loading: boolean;
+  url: string;
+  fullText: string;
   showIdOverride: string;
   setShowIdOverride: (v: string) => void;
   criticOverride: string;
@@ -253,147 +856,153 @@ function DetectedPreview({
   publishDateOverride: string;
   setPublishDateOverride: (v: string) => void;
   effectiveShowId: string;
+  effectiveShowTitle: string;
   effectiveCritic: string;
   effectivePublishDate: string;
+  effectiveOutlet: string;
+  effectiveOutletName: string;
   disabled: boolean;
 }) {
-  if (!detected && !loading) {
+  const idle = !url.trim() || fullText.trim().length < 50;
+
+  if (idle) {
     return (
-      <div className="rounded-lg border border-white/5 bg-surface-raised/50 p-4 text-xs text-gray-500">
-        Detected fields appear here once you paste a URL and text.
+      <div className="rounded-lg border border-white/5 bg-surface-raised/40 p-4 text-xs text-gray-500">
+        Once you paste a URL and the review text, we&apos;ll auto-fill outlet, critic, show, and
+        date here. You&apos;ll be able to fix anything that&apos;s wrong before submitting.
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-white/10 bg-surface-raised p-4 space-y-3">
+    <div className="rounded-lg border border-white/10 bg-surface-raised p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-200">Detected</h3>
+        <h3 className="text-sm font-semibold text-gray-200">Detected from URL + text</h3>
         {loading && <span className="text-xs text-gray-500">Detecting…</span>}
       </div>
 
-      <DetectedRow
+      <DetectedField
         label="Outlet"
         value={
-          detected
-            ? detected.outletDisplayName
-              ? `${detected.outletDisplayName} (${detected.outletId})`
-              : null
+          effectiveOutlet
+            ? effectiveOutletName
+              ? `${effectiveOutletName} (${effectiveOutlet})`
+              : effectiveOutlet
             : null
         }
-        editable={false}
+        missingHint="URL not from a recognized outlet — try a different review URL"
       />
 
-      <DetectedRow
+      <DetectedField
         label="Show"
-        value={
-          detected
-            ? detected.showTitle
-              ? `${detected.showTitle} (${detected.showId})`
-              : null
-            : null
-        }
+        value={effectiveShowId ? `${effectiveShowTitle} (${effectiveShowId})` : null}
         editable
         override={showIdOverride}
         setOverride={setShowIdOverride}
-        placeholder="e.g. the-rocky-horror-show-2026"
-        effectiveValue={effectiveShowId}
+        placeholder="show ID, e.g. the-rocky-horror-show-2026"
         disabled={disabled}
+        confidence={detected?.showConfidence}
         candidates={detected?.showCandidates}
         onPickCandidate={id => setShowIdOverride(id)}
-        confidence={detected?.showConfidence}
+        missingHint="Couldn't find a matching show — type the show ID below"
       />
 
-      <DetectedRow
+      <DetectedField
         label="Critic"
-        value={detected?.criticName ?? null}
+        value={effectiveCritic || null}
         editable
         override={criticOverride}
         setOverride={setCriticOverride}
-        placeholder="e.g. Helen Shaw"
-        effectiveValue={effectiveCritic}
+        placeholder="critic's full name, e.g. Helen Shaw"
         disabled={disabled}
+        autoExpandWhenMissing
+        missingHint="Couldn't find a “By [Name]” byline — type the critic's name below"
       />
 
-      <DetectedRow
+      <DetectedField
         label="Publish date"
-        value={detected?.publishDate ?? null}
+        value={effectivePublishDate || null}
         editable
         override={publishDateOverride}
         setOverride={setPublishDateOverride}
         placeholder="YYYY-MM-DD"
-        effectiveValue={effectivePublishDate}
         disabled={disabled}
+        missingHint="Date not in URL — type it below if you want it set"
+        optional
       />
-
-      {detected && detected.warnings.length > 0 && (
-        <ul className="text-xs text-score-tepid space-y-0.5 pt-1">
-          {detected.warnings.map((w, i) => (
-            <li key={i}>⚠ {w}</li>
-          ))}
-        </ul>
-      )}
     </div>
   );
 }
 
-function DetectedRow({
+function DetectedField({
   label,
   value,
   editable,
   override,
   setOverride,
   placeholder,
-  effectiveValue,
   disabled,
+  confidence,
   candidates,
   onPickCandidate,
-  confidence,
+  missingHint,
+  autoExpandWhenMissing,
+  optional,
 }: {
   label: string;
   value: string | null;
-  editable: boolean;
+  editable?: boolean;
   override?: string;
   setOverride?: (v: string) => void;
   placeholder?: string;
-  effectiveValue?: string;
   disabled?: boolean;
+  confidence?: 'high' | 'medium' | 'low' | null;
   candidates?: Array<{ id: string; title: string; openingDate: string | null }>;
   onPickCandidate?: (id: string) => void;
-  confidence?: 'high' | 'medium' | 'low' | null;
+  missingHint?: string;
+  autoExpandWhenMissing?: boolean;
+  optional?: boolean;
 }) {
-  const isEditing = editable && ((override && override.length > 0) || !value);
+  const [editing, setEditing] = useState(false);
+  const inputVisible = editable && (editing || (override && override.length > 0) || (autoExpandWhenMissing && !value));
 
   return (
-    <div className="text-sm">
-      <div className="flex items-baseline justify-between">
-        <span className="text-xs uppercase tracking-wider text-gray-500">{label}</span>
+    <div>
+      <div className="flex items-baseline justify-between mb-1">
+        <span className="text-sm font-medium text-gray-300">{label}</span>
         {confidence && value && (
           <span
-            className={`text-[10px] uppercase tracking-wider ${
-              confidence === 'high' ? 'text-status-open' : 'text-score-tepid'
-            }`}
+            className={[
+              'text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded',
+              confidence === 'high' ? 'bg-status-open/20 text-status-open' : 'bg-score-tepid/20 text-score-tepid',
+            ].join(' ')}
           >
-            {confidence}
+            {confidence === 'high' ? '✓' : '?'} {confidence}
           </span>
         )}
       </div>
-      {!isEditing && value ? (
-        <div className="flex items-center gap-2 mt-0.5">
-          <span className="text-gray-200">{value}</span>
+
+      {!inputVisible && value ? (
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-white">{value}</span>
           {editable && setOverride && (
             <button
               type="button"
-              onClick={() => setOverride(value.split(' ')[0])}
+              onClick={() => setEditing(true)}
               disabled={disabled}
-              className="text-[11px] text-brand underline hover:no-underline"
+              className="text-[11px] text-brand hover:underline"
             >
-              edit
+              change
             </button>
           )}
         </div>
-      ) : editable && setOverride ? (
-        <div className="space-y-1.5 mt-0.5">
+      ) : null}
+
+      {inputVisible && setOverride ? (
+        <div className="space-y-1">
+          {!value && missingHint && (
+            <div className="text-xs text-score-tepid mb-1">⚠ {missingHint}</div>
+          )}
           <input
             type="text"
             value={override ?? ''}
@@ -401,25 +1010,41 @@ function DetectedRow({
             placeholder={placeholder}
             disabled={disabled}
             autoComplete="off"
-            autoCapitalize="off"
+            autoCapitalize={label === 'Critic' ? 'words' : 'off'}
             className={`${inputClass()} text-sm`}
           />
-          {effectiveValue && effectiveValue !== value && (
-            <div className="text-[11px] text-gray-500">Using: {effectiveValue}</div>
+          {editing && value && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditing(false);
+                setOverride('');
+              }}
+              className="text-[11px] text-gray-400 hover:text-gray-200"
+            >
+              cancel
+            </button>
           )}
         </div>
-      ) : (
-        <div className="text-gray-500 text-xs mt-0.5">—</div>
+      ) : null}
+
+      {!inputVisible && !value && !editable && missingHint && (
+        <div className="text-xs text-score-skip">⚠ {missingHint}</div>
       )}
+      {!inputVisible && !value && optional && !override?.length && (
+        <div className="text-xs text-gray-500">— {missingHint || 'not detected (optional)'}</div>
+      )}
+
       {candidates && candidates.length > 1 && (
-        <div className="mt-1.5 flex flex-wrap gap-1.5">
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          <span className="text-[11px] text-gray-500 self-center mr-1">Or pick:</span>
           {candidates.map(c => (
             <button
               key={c.id}
               type="button"
               onClick={() => onPickCandidate?.(c.id)}
               disabled={disabled}
-              className="text-[11px] px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300"
+              className="text-[11px] px-2 py-1 rounded bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200"
             >
               {c.title}
               {c.openingDate && <span className="text-gray-500"> · {c.openingDate}</span>}
@@ -431,87 +1056,27 @@ function DetectedRow({
   );
 }
 
+// ─── Misc ──────────────────────────────────────────────────────────
+
 function Field({
   label,
   hint,
+  required,
   children,
 }: {
   label: string;
   hint?: string;
+  required?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-200 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-gray-200 mb-1">
+        {label}
+        {required && <span className="text-score-skip ml-1">*</span>}
+      </label>
       {children}
-      {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
-    </div>
-  );
-}
-
-function Result({ result }: { result: IngestResponse }) {
-  if (result.success) {
-    return (
-      <div className="rounded-lg border border-status-open/40 bg-status-open/10 p-4 text-sm">
-        <p className="font-semibold text-status-open">✓ Ingested</p>
-        <dl className="mt-2 space-y-1 text-gray-200 text-xs font-mono">
-          <Row k="Show" v={result.showId} />
-          <Row k="Outlet" v={result.outletId} />
-          <Row k="Critic" v={result.criticName} />
-          <Row k="Date" v={result.publishDate || undefined} />
-          <Row k="Path" v={result.path} />
-          <Row k="Commit" v={result.commitSha?.slice(0, 10)} />
-        </dl>
-        {result.workflowRunUrl && (
-          <a
-            href={result.workflowRunUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-3 inline-block text-brand underline hover:no-underline text-xs"
-          >
-            → Rebuild-fast workflow runs
-          </a>
-        )}
-        {result.warning && <p className="mt-2 text-xs text-score-tepid">⚠ {result.warning}</p>}
-        {result.detectionWarnings && result.detectionWarnings.length > 0 && (
-          <ul className="mt-2 text-xs text-score-tepid space-y-0.5">
-            {result.detectionWarnings.map((w, i) => (
-              <li key={i}>⚠ {w}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-    );
-  }
-  return (
-    <div className="rounded-lg border border-score-skip/40 bg-score-skip/10 p-4 text-sm">
-      <p className="font-semibold text-score-skip">✕ Failed</p>
-      <p className="mt-2 text-gray-200 text-xs whitespace-pre-wrap">{result.error}</p>
-      {result.detectionWarnings && result.detectionWarnings.length > 0 && (
-        <ul className="mt-2 text-xs text-gray-400 space-y-0.5">
-          {result.detectionWarnings.map((w, i) => (
-            <li key={i}>⚠ {w}</li>
-          ))}
-        </ul>
-      )}
-      {result.collisionDetail !== undefined && result.collisionDetail !== null ? (
-        <details className="mt-2">
-          <summary className="text-xs text-gray-400 cursor-pointer">Collision detail</summary>
-          <pre className="mt-1 text-[11px] text-gray-400 whitespace-pre-wrap break-all">
-            {JSON.stringify(result.collisionDetail, null, 2)}
-          </pre>
-        </details>
-      ) : null}
-    </div>
-  );
-}
-
-function Row({ k, v }: { k: string; v?: string }) {
-  if (!v) return null;
-  return (
-    <div className="flex gap-2">
-      <dt className="text-gray-500 w-16 shrink-0">{k}</dt>
-      <dd className="break-all">{v}</dd>
+      {hint && <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{hint}</p>}
     </div>
   );
 }

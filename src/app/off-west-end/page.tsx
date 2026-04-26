@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getOffWestEndShows, getMarketStats } from '@/lib/data-core';
+import { getAwardWinnerSets } from '@/lib/data-awards';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OffWestEndPageClient from '@/components/OffWestEndPageClient';
@@ -80,6 +81,7 @@ export default function OffWestEndPage() {
             westEnd: getMarketStats().westEnd.openShows,
             offWestEnd: getMarketStats().offWestEnd?.openShows ?? 0,
           }}
+          awardWinnerSets={getAwardWinnerSets()}
         />
       </Suspense>
     </>

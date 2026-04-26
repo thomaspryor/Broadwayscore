@@ -28,8 +28,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ReviewsPage() {
-  const reviews = getAllBlogReviews();
+export const revalidate = 60;
+
+export default async function ReviewsPage() {
+  const reviews = await getAllBlogReviews();
   const { totalOutlets } = getDataStats();
 
   return (

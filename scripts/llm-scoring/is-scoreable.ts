@@ -22,11 +22,7 @@ export function isScoreable(data: Record<string, any>): boolean {
   }
   // isMultiShowReview is no longer a hard block — the trimmer in index.ts handles these.
   // isRoundupArticle (10+ shows) stays blocked — too many shows for reliable trimming.
-  // BUT: skip the block when the flag is stale (legacy auto-tag on a file that
-  // is actually an individual review by URL pattern). isLikelyStaleRoundupFlag
-  // is whitelist-based per scripts/lib/review-guards.js. The Stuart King JP file
-  // got flagged because the contaminated lboRoundupExcerpt looked like a roundup
-  // summary, then the LLM scoring silently skipped it (Notion 34e637c5-416f-817b).
+  // Defensive override: stale flag on a substantial individual review — Notion 34e637c5.
   if (data.isRoundupArticle && !isLikelyStaleRoundupFlag(data)) return false;
   if (data.rejectionReason) return false;
   if (data.showNotMentioned) {

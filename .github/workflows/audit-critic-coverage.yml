@@ -1,0 +1,74 @@
+name: Audit Critic Coverage
+
+# Weekly cron — Mondays 09:00 UTC (Sunday night ET).
+# Compares each active T1/T2 critic's Muckrack page to our reviews.json,
+# bucketizes gaps, and commits the audit + bucket reports to data/audit/.
+# Surfaces misattributions and true missing Broadway reviews so they can be
+# fixed/ingested before they pile up.
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-critic-coverage
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run critic coverage audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/audit-critic-coverage.js
+
+      - name: Bucketize coverage gaps
+        run: node scripts/audit-critic-coverage-bucket.js
+
+      - name: Print summary
+        run: |
+          if [ -f data/audit/critic-coverage-buckets.md ]; then
+            head -30 data/audit/critic-coverage-buckets.md
+          fi
+
+      - name: Commit and push audit reports
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/audit/critic-coverage-audit.json data/audit/critic-coverage-buckets.json data/audit/critic-coverage-buckets.md 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "audit: weekly critic coverage report"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::push failed; will retry next week"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Critic Coverage Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

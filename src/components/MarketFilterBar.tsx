@@ -85,7 +85,7 @@ export default function MarketFilterBar({
     <div
       role="group"
       aria-label="Market and type filters"
-      className={`flex items-center gap-2 overflow-x-auto flex-nowrap scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent_100%)] sm:[mask-image:none] ${className ?? ''}`}
+      className={`flex items-center gap-2 overflow-x-auto flex-nowrap scrollbar-hide min-w-0 flex-1 [mask-image:linear-gradient(to_right,black_calc(100%-24px),transparent_100%)] sm:[mask-image:none] ${className ?? ''}`}
     >
       {/* Primary market pill */}
       <Link

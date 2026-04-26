@@ -1,63 +1,129 @@
 {
-  "updatedAt": "2026-04-25T12:21:51.018Z",
-  "processed": 6,
-  "failed": 928,
-  "successRate": "0.6%",
+  "updatedAt": "2026-04-26T16:48:17.684Z",
+  "processed": 60,
+  "failed": 873,
+  "successRate": "6.4%",
   "tierBreakdown": {
-    "playwright": 4,
-    "amp": 0,
-    "browserbase": 4,
+    "playwright": 25,
+    "amp": 1,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 1,
-    "archive": 0
+    "scrapingbee": 25,
+    "brightdata": 1,
+    "archiveToday": 15,
+    "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 20,
   "recentActivity": [
     {
-      "t": "2026-04-25T10:21:53.763Z",
+      "t": "2026-04-26T16:33:37.385Z",
       "event": "bb-session",
-      "session": "326f48a1",
-      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
+      "session": "09d01407",
+      "url": "http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens"
     },
     {
-      "t": "2026-04-25T10:21:54.527Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-25T10:32:29.655Z",
-      "event": "bb-session",
-      "session": "316afdcc",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
-    },
-    {
-      "t": "2026-04-25T10:32:31.239Z",
+      "t": "2026-04-26T16:33:37.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-04-25T10:43:38.701Z",
+      "t": "2026-04-26T16:34:07.622Z",
       "event": "bb-session",
-      "session": "bf80cbc5",
-      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
+      "session": "61ae301f",
+      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-p"
     },
     {
-      "t": "2026-04-25T10:43:39.055Z",
+      "t": "2026-04-26T16:34:08.009Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-04-25T10:44:08.124Z",
+      "t": "2026-04-26T16:34:43.586Z",
       "event": "bb-session",
-      "session": "56555a3b",
-      "url": "https://variety.com/2026/legit/awards/pink-host-tonys-awards-2026-1236712627/"
+      "session": "7e089360",
+      "url": "http://theater.nytimes.com/2013/04/24/theater/reviews/the-trip-to-bountiful-at-t"
     },
     {
-      "t": "2026-04-25T10:44:08.499Z",
+      "t": "2026-04-26T16:34:43.962Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:35:24.173Z",
+      "event": "bb-session",
+      "session": "81e52161",
+      "url": "http://theater.nytimes.com/2013/04/23/theater/reviews/the-testament-of-mary-at-t"
+    },
+    {
+      "t": "2026-04-26T16:35:24.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:36:03.093Z",
+      "event": "bb-session",
+      "session": "5023da01",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyd"
+    },
+    {
+      "t": "2026-04-26T16:36:03.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:36:42.780Z",
+      "event": "bb-session",
+      "session": "eacfb39f",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/orphans-with-alec-baldwin-"
+    },
+    {
+      "t": "2026-04-26T16:36:43.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:37:51.595Z",
+      "event": "bb-session",
+      "session": "b3de7702",
+      "url": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-t"
+    },
+    {
+      "t": "2026-04-26T16:37:51.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:38:33.760Z",
+      "event": "bb-session",
+      "session": "296fbd0f",
+      "url": "http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-"
+    },
+    {
+      "t": "2026-04-26T16:38:34.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:40:37.292Z",
+      "event": "bb-session",
+      "session": "71f2c684",
+      "url": "http://theater.nytimes.com/2013/03/22/theater/reviews/hands-on-a-hardbody-at-the"
+    },
+    {
+      "t": "2026-04-26T16:40:37.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:41:30.502Z",
+      "event": "bb-session",
+      "session": "afe3a91b",
+      "url": "http://theater.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at"
+    },
+    {
+      "t": "2026-04-26T16:41:30.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

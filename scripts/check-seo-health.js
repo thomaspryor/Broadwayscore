@@ -740,8 +740,15 @@ function detectAnomalies(currentMetrics, history) {
   }
 
   if (impressionsDrop > 0.30) {
+    // Clicks + position guard: an impressions drop with stable clicks and stable
+    // position usually means Google stopped showing low-CTR long-tail queries —
+    // healthy churn, not an SEO problem. Only alert when click outcomes also moved.
+    const clicksHealthy = clicksDrop < 0.15;
+    const positionHealthy = positionIncrease <= 2;
     if (seasonallyExpected) {
       console.log(`  Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg, but matches seasonal pattern — suppressed`);
+    } else if (clicksHealthy && positionHealthy) {
+      console.log(`  Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg, but clicks (${currentMetrics.clicks} vs avg ${Math.round(avgClicks)}, ${Math.round(clicksDrop * 100)}% drop) and position (${currentMetrics.position} vs avg ${avgPosition.toFixed(1)}) are stable — suppressed`);
     } else {
       issues.push({ type: 'impressions_drop', severity: 'error', message: `Impressions down ${Math.round(impressionsDrop * 100)}% vs 4-week avg (${currentMetrics.impressions} vs avg ${Math.round(avgImpressions)})` });
       console.log(`  ALERT: ${issues[issues.length - 1].message}`);
@@ -999,3 +1006,5 @@ if (require.main === module) {
     process.exit(1);
   });
 }
+
+module.exports = { detectAnomalies };

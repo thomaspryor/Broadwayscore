@@ -160,7 +160,9 @@ async function fetchViaScrapingBee(url, options = {}) {
             if (res.statusCode === 200) {
               resolve(data);
             } else {
-              reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+              const err = new Error(`HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+              err.statusCode = res.statusCode;
+              reject(err);
             }
           });
         });
@@ -169,6 +171,13 @@ async function fetchViaScrapingBee(url, options = {}) {
       });
     } catch (e) {
       lastError = e;
+      // Don't retry on 4xx — the URL doesn't exist or we're forbidden,
+      // retrying just burns the 60-min step budget. Each ~180-show run
+      // tries multiple URL variants per show; missing pages used to cost
+      // 15s each (5s + 10s backoff) for nothing.
+      if (e.statusCode >= 400 && e.statusCode < 500) {
+        throw e;
+      }
       if (attempt < maxRetries) {
         const delay = 5000 * (attempt + 1);
         if (verbose) console.log(`    Retry ${attempt + 1}/${maxRetries} after ${delay / 1000}s: ${e.message}`);
@@ -1381,7 +1390,7 @@ function backupExisting() {
  * Threshold scales with data staleness — if the file hasn't been updated
  * in weeks, more new shows are expected and the guard relaxes accordingly.
  */
-function validateShowStability(original, updated) {
+function validateShowStability(original, updated, expectedRemovals = new Set()) {
   const oldIds = new Set(Object.keys(original.shows || {}));
   // Only count shows with upcoming events as "new" — baseline-only shows
   // (currentCast set, empty upcoming) are just initialization, not real changes
@@ -1392,7 +1401,9 @@ function validateShowStability(original, updated) {
   }));
 
   const added = [...newIds].filter(id => !oldIds.has(id));
-  const removed = [...oldIds].filter(id => !newIds.has(id));
+  // Exclude shows the cleanup step intentionally removed (closed/orphan GC).
+  // Those aren't scrape-driven data loss, just expected lifecycle GC.
+  const removed = [...oldIds].filter(id => !newIds.has(id) && !expectedRemovals.has(id));
 
   // Scale add threshold by staleness: base 10, +5 per week stale, max 50
   const lastUpdated = original.lastUpdated;
@@ -1587,13 +1598,18 @@ async function main() {
   // Enable checkpointing — saves progress after each source so crashes don't lose data
   setCheckpointData(existing);
 
-  // Step 4: Clean expired events (idempotent via appliedAt)
+  // Step 4: Clean expired events (idempotent via appliedAt).
+  // This step intentionally rewrites currentCast for shows whose tracked
+  // exit/join events came due — that's the entire point of the function.
+  // Snapshot AFTER it so the cast-member stability guard only fires on
+  // scrape-driven drops, not on expected cleanup-applied departures.
   const cleanupChanges = cleanExpiredEvents(existing);
   allChanges.push(...cleanupChanges);
   if (cleanupChanges.length > 0) {
     console.log(`[Cleanup] Applied ${cleanupChanges.length} expired event changes`);
     checkpoint('after cleanup');
   }
+  const postCleanupSnapshot = JSON.parse(JSON.stringify(existing));
 
   // Step 5: Scrape sources (checkpoint after each to preserve progress)
   if (sourceFilter === 'all' || sourceFilter === 'articles') {
@@ -1641,8 +1657,14 @@ async function main() {
   existing.lastUpdated = TODAY;
 
   // Step 8: Validate stability guards
-  validateShowStability(originalSnapshot, existing);
-  validateCastMemberStability(originalSnapshot, existing);
+  // Show-level guard: pass shows the cleanup step intentionally removed so
+  // the guard doesn't count closed/orphan GC as scrape-driven data loss.
+  const expectedRemovals = new Set(closedChanges.map(c => c.showId));
+  validateShowStability(originalSnapshot, existing, expectedRemovals);
+  // Cast-member guard: compare against the post-cleanup baseline so
+  // expected event-applied departures (e.g., "Actor X exits 2026-04-25")
+  // don't register as scrape-driven cast loss.
+  validateCastMemberStability(postCleanupSnapshot, existing);
 
   // Step 9: Print summary
   console.log('\n' + '='.repeat(60));

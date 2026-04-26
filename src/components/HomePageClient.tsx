@@ -12,6 +12,11 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
 const HomepageExplainerShelf = lazy(() => import('@/components/HomepageExplainerShelf'));
 import type { ScoreModeParam } from '@/components/show-cards';
+import type { AwardWinnerSets } from '@/lib/data-awards';
+import { FilterButton } from '@/components/filters/FilterButton';
+import { FilterPanel } from '@/components/filters/FilterPanel';
+import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 
 export interface FeaturedRowData {
   title: string;
@@ -31,6 +36,7 @@ export interface HomepageShow {
   status: string;
   type: string;
   isRevival?: boolean;
+  season?: string;
   tags?: string[];
   ageRecommendation?: string;
   creativeTeam?: Array<{ name: string; role: string }>;
@@ -60,6 +66,8 @@ interface HomePageClientProps {
   featuredRows?: FeaturedRowData[];
   /** Open-show counts for the market pills (stable across filter state) */
   marketOpenCounts: { broadway: number; offBroadway: number };
+  /** Pre-computed award winner ID arrays (avoids client-side awards.json import) */
+  awardWinnerSets?: AwardWinnerSets;
 }
 
 // URL parameter values
@@ -199,7 +207,7 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -282,13 +290,19 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         }
       }
 
-      // Sync to URL without triggering navigation
-      const urlParams = new URLSearchParams();
-      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
-      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
-      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
-      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
-      if (next.q) urlParams.set('q', next.q);
+      // Sync to URL without triggering navigation. Preserve unknown params
+      // (e.g. panel filters: production/awards/score_tier/genre/tickets/years)
+      // so the panel state survives inline-filter changes.
+      const urlParams = new URLSearchParams(window.location.search);
+      const setOrDelete = (key: string, value: string, isDefault: boolean) => {
+        if (isDefault) urlParams.delete(key);
+        else urlParams.set(key, value);
+      };
+      setOrDelete('status', next.status, next.status === DEFAULT_STATUS);
+      setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
+      setOrDelete('type', next.type, next.type === DEFAULT_TYPE);
+      setOrDelete('scoreMode', next.scoreMode, next.scoreMode === DEFAULT_SCORE_MODE);
+      setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
@@ -498,6 +512,10 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     return result;
   }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, isEffectivelyOpen]);
 
+  // Advanced filter panel — applies on top of inline-filtered shows
+  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
 
@@ -540,7 +558,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       )}
 
       {/* Search */}
-      <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
+      <div id="search" className="relative mb-2 scroll-mt-24" role="search">
         <label htmlFor="show-search" className="sr-only">Search Broadway shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
@@ -555,13 +573,40 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             setSearchInput(val);         // sync update — keeps input responsive
             updateParams({ q: val });    // deferred via startTransition — filters catch up
           }}
-          className="search-input pl-12 focus-visible:outline-none"
+          className="search-input pl-12 pr-14 focus-visible:outline-none"
           autoComplete="off"
+        />
+        <div className="absolute inset-y-0 right-2 flex items-center">
+          <FilterButton
+            activeCount={panel.activeCount}
+            isOpen={isPanelOpen}
+            onClick={() => setIsPanelOpen((v) => !v)}
+            controlsId="advanced-filter-panel"
+          />
+        </div>
+      </div>
+
+      {/* Active panel-filter chips */}
+      <div className="mb-2 sm:mb-4">
+        <ActiveFilterChips
+          chips={panel.chips}
+          onRemove={panel.removeChip}
+          onClearAll={panel.clearAll}
         />
       </div>
 
+      {/* Filter Panel (sheet on mobile, popover on desktop) */}
+      <FilterPanel
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+        selectedByGroup={panel.selectedByGroup}
+        onToggle={panel.toggleOption}
+        onClearAll={panel.clearAll}
+        resultCount={panel.filteredShows.length}
+      />
+
       {/* Market + Type Filter Row */}
-      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
+      <div className="flex items-center gap-2 sm:gap-4 mb-4">
         <MarketFilterBar
           pair="nyc"
           activeMarket="broadway"
@@ -581,6 +626,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               updateParams({ scoreMode: key });
             }
           }}
+          className="flex-shrink-0"
         />
       </div>
 
@@ -629,9 +675,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
 
       {/* Show List */}
       <h2 className="sr-only">Broadway Shows</h2>
-      <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+      <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {filteredAndSortedShows.length === 0 && !archiveShows && (statusFilter === 'all' || statusFilter === 'closed') && (
+      {panel.filteredShows.length === 0 && !archiveShows && (statusFilter === 'all' || statusFilter === 'closed') && (
         <div className="space-y-3" role="status" aria-label="Loading shows">
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="animate-pulse h-24 bg-surface-overlay rounded-xl" />
@@ -639,7 +685,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         </div>
       )}
 
-      {filteredAndSortedShows.length === 0 && (archiveShows || (statusFilter !== 'all' && statusFilter !== 'closed')) && (
+      {panel.filteredShows.length === 0 && (archiveShows || (statusFilter !== 'all' && statusFilter !== 'closed')) && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -665,7 +711,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       )}
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
-        <span>{filteredAndSortedShows.length} shows</span>
+        <span>{panel.filteredShows.length} shows</span>
         <Link href="/methodology" prefetch={false} className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>

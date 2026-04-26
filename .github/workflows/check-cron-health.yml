@@ -112,9 +112,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Get last 5 successful deploy runs and their durations
-          DEPLOY_WARN_MINS=8
-          DEPLOY_FAIL_MINS=12
+          # Get last 5 successful deploy runs and their durations.
+          # Last-30-deploy avg is ~12min, max ~15min (745MB Vercel upload + 4.5GB
+          # core-data cache restore + npm install + next build). Thresholds set
+          # above the natural ceiling so the alert fires on a real regression,
+          # not on a 5-deploy window that happens to land on the slow tail.
+          DEPLOY_WARN_MINS=12
+          DEPLOY_FAIL_MINS=15
 
           RUNS=$(gh run list --workflow=vercel-deploy.yml --status=success --limit=5 \
             --json createdAt,updatedAt,databaseId 2>/dev/null || echo '[]')

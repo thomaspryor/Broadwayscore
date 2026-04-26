@@ -410,6 +410,11 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'LBO review roundup page' };
   }
 
+  // Playbill "what do the critics think of" articles — multi-outlet roundups
+  if (/playbill\.com\/article\/reviews?-what-do-the-critics-think-of/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill critics-think-of roundup' };
+  }
+
   // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
   // Many legitimate individual critic reviews are SOURCED from roundup pages —
   // the URL points to the roundup where the review was discovered, but the review
@@ -417,6 +422,122 @@ function isRoundupUrl(url) {
   // Only flag site-specific patterns where the roundup PAGE is being treated as a review.
 
   return { isRoundup: false };
+}
+
+/**
+ * Detect a stale isRoundupArticle flag on a file that actually contains an
+ * individual critic's full review.
+ *
+ * Background (Notion 34e637c5-416f-817b): The isRoundupArticle flag has had
+ * multiple over-eager setters over time:
+ *   - Removed: `isRoundupUrl` once matched generic /review-roundup/ patterns,
+ *     auto-flagging any review SOURCED from a roundup page (cleared 2026-04-01
+ *     in d7bf1603b8 but the flag persisted on disk).
+ *   - Still active: gather-reviews tags every file from KNOWN_ROUNDUP_OUTLETS
+ *     (interested-bystander, the-clyde-fitch-report) even when the URL is an
+ *     individual review post on the outlet's own domain.
+ *   - Cross-show contamination poisoned excerpt fields, which (in older
+ *     heuristics) read as roundup summaries.
+ *
+ * The flag blocks LLM scoring (is-scoreable / review-text-scoreable / rebuild),
+ * silently dropping legitimate reviews. This predicate is whitelist-based: it
+ * returns true only when the URL matches a per-outlet "individual review" URL
+ * pattern that we know is one show per page. A blacklist (anything not on
+ * isRoundupUrl) is too loose — Playbill, NYT, and others have multi-show
+ * roundup URLs that don't match isRoundupUrl, and clearing those would let
+ * roundup-as-review files leak into scoring.
+ */
+const INDIVIDUAL_REVIEW_URL_PATTERNS = [
+  // The Clyde Fitch Report — `/YYYY/MM/{slug}/` per individual review
+  /^https?:\/\/(?:www\.)?clydefitchreport\.com\/\d{4}\/\d{2}\/[^/]+\/?(?:[?#]|$)/i,
+  // The Interested Bystander — Blogger `/YYYY/MM/{slug}.html` per individual review
+  /^https?:\/\/(?:www\.)?interestedbystander\.com\/\d{4}\/\d{2}\/[^/]+\.html(?:[?#]|$)/i,
+  // London Box Office — `/news/post/{slug}` is per-show; `*review-roundup*` is multi-show
+  // (the latter is already caught by isRoundupUrl above)
+  /^https?:\/\/(?:www\.)?londonboxoffice\.co\.uk\/news\/post\/(?!.*review-roundup)[^/]+\/?(?:[?#]|$)/i,
+];
+
+function isLikelyStaleRoundupFlag(data) {
+  if (!data || data.isRoundupArticle !== true) return false;
+  const fullText = (data.fullText || '').trim();
+  if (fullText.length < 800) return false;
+  if (data.isFullReview !== true) return false;
+  const url = data.url || '';
+  if (!url) return false;
+  if (isRoundupUrl(url).isRoundup) return false;
+  if (/\/article\/Review-Roundup-/i.test(url)) return false;
+  return INDIVIDUAL_REVIEW_URL_PATTERNS.some(re => re.test(url));
+}
+
+/**
+ * Detect a stale suspectedMisattribution flag — a flag that the current
+ * critic-registry would no longer set on this file.
+ *
+ * Background (Notion 34e637c5-416f-81b8): suspectedMisattribution is set by
+ * Guard G in scripts/lib/review-file-writer.js when a non-freelancer critic
+ * publishes at an outletId outside their knownOutlets. The check is gated by
+ * `entry && !entry.isFreelancer && knownOutlets.length > 0` — if any of those
+ * is false today, Guard G would no longer fire on the same file.
+ *
+ * The registry is regenerated nightly by scripts/audit-critic-outlets.js from
+ * the current corpus, so knownOutlets expands over time as critics accumulate
+ * reviews at additional outlets. Files flagged in earlier passes carry the
+ * exclusion forever, even after the registry has caught up.
+ *
+ * Whitelist by registry-state-today, mirroring the exact preconditions of
+ * Guard G:
+ *   - critic is no longer in registry (entry undefined → guard short-circuits)
+ *   - critic is now classified as freelancer (guard skips)
+ *   - outletId is now in knownOutlets (guard passes)
+ *
+ * Caller passes the registry as the second argument (not loaded here so the
+ * predicate stays pure and dependency-free for test isolation).
+ *
+ * @param {Object} data - Review-text record
+ * @param {Object|undefined} registry - critic-registry critics map (slug → entry).
+ *   Pass `getCriticRegistry()` from this file or the same `_getCriticRegistry`
+ *   used by review-file-writer. If undefined, predicate returns false (cannot
+ *   prove staleness without registry context).
+ */
+function isLikelyStaleSuspectedMisattribution(data, registry) {
+  if (!data || data.suspectedMisattribution !== true) return false;
+  if (!registry || typeof registry !== 'object') return false;
+  const criticName = (data.criticName || '').trim();
+  const outletId = (data.outletId || '').trim();
+  if (!criticName || !outletId || criticName === 'Unknown' || outletId === 'unknown') return false;
+  // Use the same slugifier as audit-critic-outlets.js / review-file-writer normalization.
+  const slug = criticName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (!slug) return false;
+  const entry = registry[slug];
+  if (!entry) return true; // Critic dropped from registry — Guard G would short-circuit.
+  if (entry.isFreelancer === true) return true; // Freelancer — Guard G skips.
+  const knownOutlets = entry.knownOutlets || [];
+  if (knownOutlets.length === 0) return true; // No knownOutlets — Guard G's `length > 0` check fails.
+  if (knownOutlets.includes(outletId)) return true; // Outlet now legitimate.
+  return false;
+}
+
+/**
+ * Lazy-load critic-registry from disk for use in pure-flag exclusion gates.
+ * Cached at module scope; call _resetCriticRegistryCache() in tests if needed.
+ */
+let _criticRegistryCache = null;
+function getCriticRegistry() {
+  if (_criticRegistryCache !== null) return _criticRegistryCache;
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
+    const raw = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    _criticRegistryCache = raw.critics || {};
+  } catch {
+    _criticRegistryCache = {};
+  }
+  return _criticRegistryCache;
+}
+
+function _resetCriticRegistryCache() {
+  _criticRegistryCache = null;
 }
 
 /**
@@ -1267,7 +1388,7 @@ function isIncludableForRebuild(data) {
   }
   if (data.wrongAttribution === true) return false;
   if (data.duplicateOf) return false;
-  if (data.isRoundupArticle === true) return false;
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
   if (
     data.isNonReview === true ||
     data.isNotReview === true ||
@@ -1277,7 +1398,7 @@ function isIncludableForRebuild(data) {
   if (data.fabricatedEntry === true) return false;
   if (data.isSyndicatedDuplicate === true) return false;
   if (data.crossOutletDuplicate === true) return false;
-  if (data.suspectedMisattribution === true) return false;
+  if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return false;
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high'
@@ -1652,6 +1773,10 @@ module.exports = {
   isLikelyWrongProduction,
   isLikelyTourReview,
   isRoundupUrl,
+  isLikelyStaleRoundupFlag,
+  isLikelyStaleSuspectedMisattribution,
+  getCriticRegistry,
+  _resetCriticRegistryCache,
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,

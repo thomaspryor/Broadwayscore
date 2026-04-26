@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 
 const BWW_DIR = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 const SS_DIR = path.join(__dirname, '../data/aggregator-archive/show-score');
@@ -38,14 +39,10 @@ function extractBWWReviews(html, showId) {
       const articleBody = json.articleBody || '';
 
       if (articleBody) {
-        // Pattern: "Critic Name, Outlet:" followed by review text
-        const pattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'-]+),\s+([A-Za-z][A-Za-z\s&'.\-]+):\s*([^]+?)(?=(?:[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'-]+,\s+[A-Za-z])|Photo Credit:|$)/g;
-
-        let match;
-        while ((match = pattern.exec(articleBody)) !== null) {
-          const criticName = match[1].trim();
-          const outletRaw = match[2].trim();
-          let excerpt = match[3].trim();
+        for (const pair of parseArticleBodyReviews(articleBody)) {
+          const criticName = pair.criticName;
+          const outletRaw = pair.outletRaw;
+          let excerpt = pair.quote;
 
           // Clean up excerpt
           if (excerpt.length > 500) {
@@ -56,10 +53,7 @@ function extractBWWReviews(html, showId) {
             }
           }
 
-          // Skip invalid entries
-          if (outletRaw.length < 2 || outletRaw.length > 60) continue;
-          if (/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i.test(outletRaw)) continue;
-          // Lowered minimum to 20 chars - some valid excerpts are short when critics from same outlet appear consecutively
+          // Lowered minimum to 20 chars — some valid excerpts are short when critics from same outlet appear consecutively
           if (excerpt.length < 20) continue;
 
           const outletId = normalizeOutlet(outletRaw);

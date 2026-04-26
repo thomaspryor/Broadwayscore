@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
+const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
@@ -58,23 +59,15 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
 
   const reviews = [];
 
-  // Find where reviews start
-  const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
-  const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
+  // Pattern parsing extracted to scripts/lib/bww-roundup-parser.js so the
+  // first-name initial fix ("J. Kelly Nestruck") can be unit-tested.
+  const parsedPairs = parseArticleBodyReviews(articleBody);
 
-  // Pattern to match "Critic Name, Outlet:" followed by review text
-  // Name pattern supports apostrophes (D'Addario, O'Brien) and hyphens (Jean-Paul)
-  const pattern = /([A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z'\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z'\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
+  for (const pair of parsedPairs) {
+    const criticName = pair.criticName;
+    const outletRaw = pair.outletRaw;
+    let quote = pair.quote;
 
-  let match;
-  const seen = new Set();
-
-  while ((match = pattern.exec(text)) !== null) {
-    const criticName = match[1].trim();
-    const outletRaw = match[2].trim();
-    let quote = match[3].trim();
-
-    // Clean up the quote - take first ~500 chars and try to end at sentence
     if (quote.length > 500) {
       quote = quote.substring(0, 500);
       const lastPeriod = quote.lastIndexOf('.');
@@ -83,15 +76,6 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
       }
       quote += '...';
     }
-
-    // Skip if we've already seen this critic
-    const key = `${criticName.toLowerCase()}-${outletRaw.toLowerCase()}`;
-    if (seen.has(key)) continue;
-    seen.add(key);
-
-    // Filter out false positives
-    if (outletRaw.length < 2 || outletRaw.length > 60) continue;
-    if (outletRaw.match(/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i)) continue;
 
     const outlet = normalizeOutlet(outletRaw);
 
@@ -102,7 +86,7 @@ function extractFromArticleBody(articleBody, showId, publishDate) {
       criticName,
       url: null,
       publishDate: normalizePublishDate(publishDate) || null,
-      assignedScore: null, // Will need to be filled in based on sentiment
+      assignedScore: null,
       bucket: null,
       thumb: null,
       originalRating: null,

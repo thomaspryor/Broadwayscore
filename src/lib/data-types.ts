@@ -532,6 +532,7 @@ export interface ProfileReview {
   showOpeningDate: string;
   showStatus: string;
   showType: string;
+  showCategory: string;
   outletId: string;
   outlet: string;
   outletSlug: string;

@@ -64,6 +64,7 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
+const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
@@ -2417,22 +2418,15 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           existingOutletOnly.set(oid, (existingOutletOnly.get(oid) || 0) + 1);
         }
 
-        // Find where reviews start
-        const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
-        const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
+        // Pattern parsing extracted to scripts/lib/bww-roundup-parser.js so the
+        // first-name initial fix ("J. Kelly Nestruck") can be unit-tested.
+        const parsedPairs = parseArticleBodyReviews(articleBody);
 
-        // Pattern: "Critic Name, Outlet:" followed by review text
-        // Name pattern supports apostrophes (D'Addario, O'Brien), hyphens (Jean-Paul, Collins-Hughes)
-        // [a-zA-Z] after hyphen handles uppercase in hyphenated surnames (Collins-Hughes, Ben-David)
-        const pattern = /([A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z][a-zA-Z'\u2019\-]+)?),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-zA-Z'\u2019\-]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-zA-Z'\u2019\-]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
-
-        let match;
-        const seen = new Set();
         let supplementAdded = 0;
-        while ((match = pattern.exec(text)) !== null) {
-          let criticName = match[1].trim();
-          const outletRaw = match[2].trim();
-          let quote = match[3].trim();
+        for (const pair of parsedPairs) {
+          let criticName = pair.criticName;
+          const outletRaw = pair.outletRaw;
+          let quote = pair.quote;
 
           if (quote.length > 500) {
             quote = quote.substring(0, 500);
@@ -2440,14 +2434,6 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
             if (lastPeriod > 200) quote = quote.substring(0, lastPeriod + 1);
             quote += '...';
           }
-
-          const key = `${criticName.toLowerCase()}-${outletRaw.toLowerCase()}`;
-          if (seen.has(key)) continue;
-          seen.add(key);
-
-          // Filter out false positives
-          if (outletRaw.length < 2 || outletRaw.length > 60) continue;
-          if (outletRaw.match(/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i)) continue;
 
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);
@@ -3426,14 +3412,27 @@ function createReviewFile(showId, reviewData, options = {}) {
     showScoreExcerpt: cleanText(reviewData.showScoreExcerpt || (reviewData.source !== 'serp-discovery' ? reviewData.excerpt : null)) || null
   };
 
-  // Auto-tag known roundup outlets whose URLs always cover multiple shows
+  // Auto-tag known roundup outlets whose pages OFTEN cover multiple shows.
+  // Skip the tag when the URL is on the outlet's own domain in an individual-post
+  // path — these outlets do publish single-show reviews too, and the flag
+  // suppresses scoring downstream. Notion 34e637c5.
   const KNOWN_ROUNDUP_OUTLETS = new Set([
     'interested-bystander',
     'the-interested-bystander',
     'the-clyde-fitch-report',
   ]);
   if (KNOWN_ROUNDUP_OUTLETS.has(normalizedOutletId)) {
-    review.isRoundupArticle = true;
+    const url = review.url || '';
+    // Per-month post path on outlet domain looks individual EXCEPT when the slug
+    // itself names a roundup. Mirrors the LBO carve-out in isRoundupUrl.
+    const isPerMonthPost =
+      /clydefitchreport\.com\/\d{4}\/\d{2}\//i.test(url) ||
+      /interestedbystander\.com\/\d{4}\/\d{2}\//i.test(url);
+    const slugLooksRoundup = /\/[^/]*(?:roundup|round-up)[^/]*\.?html?$|\/[^/]*(?:roundup|round-up)[^/]*\/?$/i.test(url);
+    const looksIndividual = isPerMonthPost && !slugLooksRoundup;
+    if (!looksIndividual) {
+      review.isRoundupArticle = true;
+    }
   }
 
   // Auto-tag BWW Review Roundup pages by URL pattern — these are aggregator pages,

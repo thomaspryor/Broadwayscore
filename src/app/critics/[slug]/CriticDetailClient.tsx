@@ -9,6 +9,16 @@ import { ToggleBar, StatGrid } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
+type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
+
+const MARKET_LABELS: Record<Exclude<MarketFilter, 'all'>, string> = {
+  'broadway': 'Broadway',
+  'west-end': 'West End',
+  'off-west-end': 'Off-West End',
+  'off-broadway': 'Off-Broadway',
+};
+
+const MARKET_FILTER_MIN = 3;
 
 /** Extract opening year from showOpeningDate string (e.g., "2021-12-09" → "2021") */
 function getShowYear(review: ProfileReview): string | null {
@@ -89,10 +99,54 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [showCount, setShowCount] = useState(INITIAL_REVIEWS);
 
+  const marketCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const r of critic.reviews) {
+      const m = r.showCategory || 'broadway';
+      counts[m] = (counts[m] || 0) + 1;
+    }
+    return counts;
+  }, [critic.reviews]);
+
+  const availableMarkets = useMemo(() => {
+    const order: MarketFilter[] = ['broadway', 'west-end', 'off-west-end', 'off-broadway'];
+    return order.filter(m => (marketCounts[m] || 0) >= MARKET_FILTER_MIN) as Exclude<MarketFilter, 'all'>[];
+  }, [marketCounts]);
+
+  const showMarketFilter = availableMarkets.length >= 2;
+  // Default preference: Broadway > West End > highest-volume remaining.
+  // Off-Broadway / Off-West End never default; they require an explicit click.
+  const defaultMarket: MarketFilter = (() => {
+    if (!showMarketFilter) return 'all';
+    if (availableMarkets.includes('broadway')) return 'broadway';
+    if (availableMarkets.includes('west-end')) return 'west-end';
+    return availableMarkets[0];
+  })();
+  const [marketFilter, setMarketFilter] = useState<MarketFilter>(defaultMarket);
+
+  const filteredReviews = useMemo(() => {
+    if (marketFilter === 'all') return critic.reviews;
+    return critic.reviews.filter(r => (r.showCategory || 'broadway') === marketFilter);
+  }, [critic.reviews, marketFilter]);
+
+  const filteredStats = useMemo(() => {
+    if (marketFilter === 'all') {
+      return { count: critic.reviewCount, avg: critic.avgScore, high: critic.highScore, low: critic.lowScore };
+    }
+    const scores = filteredReviews.map(r => r.reviewScore);
+    if (scores.length === 0) return { count: 0, avg: 0, high: 0, low: 0 };
+    return {
+      count: scores.length,
+      avg: scores.reduce((s, n) => s + n, 0) / scores.length,
+      high: Math.max(...scores),
+      low: Math.min(...scores),
+    };
+  }, [marketFilter, filteredReviews, critic]);
+
   // Detect show titles that appear multiple times (different productions)
   const duplicateTitles = useMemo(() => {
     const titleCounts = new Map<string, number>();
-    for (const r of critic.reviews) {
+    for (const r of filteredReviews) {
       titleCounts.set(r.showTitle, (titleCounts.get(r.showTitle) || 0) + 1);
     }
     const dupes = new Set<string>();
@@ -100,10 +154,10 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       if (count > 1) dupes.add(title);
     }
     return dupes;
-  }, [critic.reviews]);
+  }, [filteredReviews]);
 
   const sortedReviews = useMemo(() => {
-    const sorted = [...critic.reviews];
+    const sorted = [...filteredReviews];
     if (sortMode === 'recent') {
       sorted.sort((a, b) => (b.parsedDate || 0) - (a.parsedDate || 0));
     } else if (sortMode === 'highest') {
@@ -112,7 +166,7 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       sorted.sort((a, b) => a.reviewScore - b.reviewScore);
     }
     return sorted;
-  }, [critic.reviews, sortMode]);
+  }, [filteredReviews, sortMode]);
 
   const visibleReviews = sortedReviews.slice(0, showCount);
   const remaining = sortedReviews.length - showCount;
@@ -169,10 +223,10 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
 
         {/* Stats */}
         <StatGrid className="mb-4" stats={[
-          { label: 'Reviews', value: critic.reviewCount },
-          { label: 'Average', value: Math.round(critic.avgScore), color: getScoreTextColor(critic.avgScore) },
-          { label: 'Highest', value: critic.highScore },
-          { label: 'Lowest', value: critic.lowScore },
+          { label: 'Reviews', value: filteredStats.count },
+          { label: 'Average', value: Math.round(filteredStats.avg), color: getScoreTextColor(filteredStats.avg) },
+          { label: 'Highest', value: filteredStats.high },
+          { label: 'Lowest', value: filteredStats.low },
         ]} />
 
         {/* Ranks */}
@@ -180,8 +234,27 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
           <span>{ordinalSuffix(critic.volumeRank)} most prolific critic</span>
           <span className="text-gray-600">·</span>
           <span>{ordinalSuffix(critic.generosityRank)} most generous scorer</span>
+          {marketFilter !== 'all' && (
+            <span className="text-gray-600">· ranks across all reviews</span>
+          )}
         </div>
       </div>
+
+      {/* Market Filter — only when critic spans 2+ markets with ≥3 reviews each */}
+      {showMarketFilter && (
+        <ToggleBar
+          label="MARKET:"
+          options={availableMarkets.map(m => ({
+            value: m as MarketFilter,
+            label: `${MARKET_LABELS[m].toUpperCase()} (${marketCounts[m]})`,
+          }))}
+          value={marketFilter}
+          onChange={(m) => { setMarketFilter(m); setShowCount(INITIAL_REVIEWS); }}
+          ariaLabel="Filter by market"
+          size="compact"
+          className="mb-3"
+        />
+      )}
 
       {/* Sort Controls */}
       <ToggleBar

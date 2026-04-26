@@ -23,6 +23,7 @@ export interface ShowCardShow {
   status: string;
   type: string;
   isRevival?: boolean;
+  season?: string;
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };

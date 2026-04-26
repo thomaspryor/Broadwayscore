@@ -12,18 +12,29 @@
  *   node scripts/classify-non-reviews.js [options]
  *
  * Options:
- *   --dry-run          Heuristic checks only, no LLM calls
- *   --apply            Write isNonReview flag to source files (high-confidence only)
- *   --incremental      Daily rebuild mode: skip already-classified files, auto-apply,
- *                      skip calibration gate, default limit=50, safety cap at >10 non-reviews
- *   --force            Allow --apply even if per-show guard triggers
- *   --limit=N          Cap LLM calls
- *   --concurrency=N    Parallel LLM calls (default: 10)
- *   --max-cost=N       Budget cap in dollars (default: 5.00)
- *   --provider=NAME    gemini (default) | openai | claude
- *   --show=SLUG        Single show filter
- *   --resume           Continue from checkpoint
- *   --verbose          Per-file details
+ *   --dry-run               Heuristic checks only, no LLM calls
+ *   --apply                 Write isNonReview flag to source files (high-confidence only)
+ *   --incremental           Daily rebuild mode: skip already-classified files, auto-apply,
+ *                           skip calibration gate, default limit=50, safety cap at >10 non-reviews
+ *   --reclassify-flagged    Audit mode: re-run classifier on files currently flagged
+ *                           isNonReview=true (default input: /tmp/non-review-flagged.txt;
+ *                           override with --input=PATH and --root=PATH for a different
+ *                           review-texts root). Disagreements (LLM says review) reveal stale
+ *                           flags from older prompts. Pair with --apply to clear stale flags.
+ *   --input=PATH            File listing relative paths for --reclassify-flagged (default:
+ *                           /tmp/non-review-flagged.txt)
+ *   --root=PATH             Root directory for relative paths in --reclassify-flagged
+ *                           (default: data/review-texts)
+ *   --force                 Main mode: allow --apply even if per-show guard triggers.
+ *                           Reclassify mode: also clear medium/low-confidence
+ *                           disagreements (default is high-confidence only).
+ *   --limit=N               Cap LLM calls
+ *   --concurrency=N         Parallel LLM calls (default: 10)
+ *   --max-cost=N            Budget cap in dollars (default: 5.00)
+ *   --provider=NAME         gemini (default) | openai | claude
+ *   --show=SLUG             Single show filter
+ *   --resume                Continue from checkpoint
+ *   --verbose               Per-file details
  *
  * Env:
  *   GEMINI_API_KEY     Required for gemini provider (default)
@@ -64,6 +75,9 @@ const FORCE = args.includes('--force');
 const INCREMENTAL = args.includes('--incremental');
 const RESUME = args.includes('--resume');
 const VERBOSE = args.includes('--verbose');
+const RECLASSIFY_FLAGGED = args.includes('--reclassify-flagged');
+const RECLASSIFY_INPUT = (args.find(a => a.startsWith('--input=')) || '').split('=')[1] || '/tmp/non-review-flagged.txt';
+const RECLASSIFY_ROOT = (args.find(a => a.startsWith('--root=')) || '').split('=')[1] || '';
 const LIMIT_RAW = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1]) || 0;
 const LIMIT = LIMIT_RAW || (INCREMENTAL ? 50 : 0);
 const CONCURRENCY = parseInt((args.find(a => a.startsWith('--concurrency=')) || '').split('=')[1]) || 10;
@@ -518,6 +532,260 @@ async function runCalibrationGate(showTitleMap) {
 }
 
 // ============================================================
+// Reclassify-flagged audit mode
+//
+// Re-runs the current classifier prompt on files that already carry
+// isNonReview=true on disk. Disagreements (LLM now says "review") reveal
+// stale flags written by older prompt versions. Pair with --apply to
+// clear the stale flag (preserves all other fields, including any
+// concurrent edits in flight).
+//
+// Belt-and-suspenders pattern from the isLikelyStaleRoundupFlag sweep
+// (Notion 34e637c5-416f-817b). isNonReview is actively maintained by
+// classify-non-reviews.js incremental runs, so a sweep alone is enough —
+// no gate-side override needed (any future re-classification will reset
+// the flag if the file is in fact a non-review).
+// ============================================================
+
+async function runReclassifyFlagged() {
+  const inputPath = RECLASSIFY_INPUT;
+  if (!fs.existsSync(inputPath)) {
+    console.error(`Input list not found: ${inputPath}`);
+    console.error(`Generate with: node -e '... > ${inputPath}'`);
+    process.exit(1);
+  }
+
+  const root = RECLASSIFY_ROOT || REVIEW_TEXTS_DIR;
+  console.log(`Input list: ${inputPath}`);
+  console.log(`Root: ${root}`);
+
+  const relPaths = fs.readFileSync(inputPath, 'utf8')
+    .split('\n').map(s => s.trim()).filter(Boolean);
+  console.log(`Files in list: ${relPaths.length}`);
+
+  // Load shows.json for titles (used by classifier prompt)
+  const showsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'shows.json'), 'utf8'));
+  const showsList = showsData.shows || showsData;
+  const showArr = Array.isArray(showsList) ? showsList : Object.values(showsList);
+  const showTitleMap = {};
+  for (const s of showArr) {
+    if (s.id && s.title) showTitleMap[s.id] = s.title;
+  }
+
+  // Load each file, build classify list. Skip files that no longer exist or
+  // no longer have isNonReview=true on disk (something else cleared them).
+  const candidates = [];
+  let missingFile = 0, noFlag = 0, noFullText = 0;
+  for (const rel of relPaths) {
+    if (SHOW_FILTER && !rel.startsWith(SHOW_FILTER + '/')) continue;
+    const fullPath = path.join(root, rel);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(fullPath, 'utf8')); }
+    catch { missingFile++; continue; }
+    if (data.isNonReview !== true) { noFlag++; continue; }
+    const fullText = (data.fullText || '').trim();
+    if (fullText.length <= 200) { noFullText++; continue; }
+    candidates.push({
+      rel,
+      fullPath,
+      showId: data.showId || rel.split('/')[0],
+      outlet: data.outlet || data.outletId,
+      outletId: data.outletId,
+      currentNonReviewType: data.nonReviewType || null,
+      classifiedAt: data.classifiedAt || null,
+      fullText,
+    });
+  }
+
+  console.log(`Skipped — file missing/unparseable: ${missingFile}`);
+  console.log(`Skipped — flag already cleared on disk: ${noFlag}`);
+  console.log(`Skipped — fullText too short for LLM: ${noFullText}`);
+  console.log(`Reclassifying: ${candidates.length} files\n`);
+
+  let toProcess = candidates;
+  if (LIMIT > 0 && toProcess.length > LIMIT) {
+    console.log(`Limiting to ${LIMIT} of ${toProcess.length} files`);
+    toProcess = toProcess.slice(0, LIMIT);
+  }
+
+  // Classify in batches with concurrency
+  const disagreements = []; // LLM says review (current flag is stale)
+  const agreements = [];    // LLM also says non-review (flag still valid)
+  const errors = [];
+
+  for (let i = 0; i < toProcess.length; i += CONCURRENCY) {
+    if (stats.budgetUsed >= MAX_COST) {
+      console.log(`\nBudget exhausted ($${stats.budgetUsed.toFixed(4)} >= $${MAX_COST}). Stopping.`);
+      break;
+    }
+    const batch = toProcess.slice(i, i + CONCURRENCY);
+    const results = await Promise.allSettled(
+      batch.map(async (c) => {
+        const showTitle = showTitleMap[c.showId] || c.showId;
+        const prompt = buildClassifyPrompt(showTitle, c.fullText);
+        const raw = await callLLMWithRetry(CLASSIFY_SYSTEM_PROMPT, prompt);
+        stats.llmCalls++;
+        stats.budgetUsed += COST_PER_CALL;
+        return { c, result: parseClassifyResponse(raw) };
+      })
+    );
+    for (const r of results) {
+      if (r.status !== 'fulfilled' || !r.value.result) {
+        errors.push({ file: r.status === 'fulfilled' ? r.value.c.rel : '(unknown)',
+                      reason: r.status === 'rejected' ? (r.reason?.message || String(r.reason)) : 'parse failed' });
+        stats.errors++;
+        continue;
+      }
+      const { c, result } = r.value;
+      const item = {
+        file: c.rel,
+        showId: c.showId,
+        outlet: c.outlet,
+        outletId: c.outletId,
+        currentNonReviewType: c.currentNonReviewType,
+        previousClassifiedAt: c.classifiedAt,
+        newClassification: {
+          isReview: result.isReview,
+          contentType: result.contentType,
+          confidence: result.confidence,
+          reasoning: result.reasoning,
+        },
+      };
+      if (result.isReview) disagreements.push(item);
+      else agreements.push(item);
+      if (VERBOSE) {
+        console.log(`  ${result.isReview ? 'STALE' : 'AGREE'}: ${c.rel} — old=${c.currentNonReviewType} new=${result.contentType} (${result.confidence}) — ${result.reasoning}`);
+      }
+    }
+    const processed = Math.min(i + CONCURRENCY, toProcess.length);
+    if (processed % 50 === 0 || processed === toProcess.length) {
+      console.log(`  Progress: ${processed}/${toProcess.length} | Disagree (stale): ${disagreements.length} | Agree: ${agreements.length} | Errors: ${errors.length} | Cost: $${stats.budgetUsed.toFixed(4)}`);
+    }
+  }
+
+  // Confidence breakdown of disagreements
+  const byConfidence = { high: 0, medium: 0, low: 0 };
+  for (const d of disagreements) byConfidence[d.newClassification.confidence] = (byConfidence[d.newClassification.confidence] || 0) + 1;
+
+  console.log(`\n=== RECLASSIFY-FLAGGED RESULT ===`);
+  console.log(`Reclassified: ${disagreements.length + agreements.length}`);
+  console.log(`  Disagreements (LLM says review = stale flag): ${disagreements.length}`);
+  console.log(`     by confidence: high=${byConfidence.high} medium=${byConfidence.medium} low=${byConfidence.low}`);
+  console.log(`  Agreements (LLM still says non-review): ${agreements.length}`);
+  console.log(`  Errors: ${errors.length}`);
+  console.log(`  LLM calls: ${stats.llmCalls} | Cost: $${stats.budgetUsed.toFixed(4)}`);
+
+  // Save audit report. Write to a timestamped file plus a stable -latest copy
+  // so re-runs don't silently overwrite prior runs (dry-run-after-apply burned
+  // us in the first session — Notion 34e637c5-416f-8144).
+  if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
+  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19); // 2026-04-26T16-41-43
+  const reportPath = path.join(AUDIT_DIR, `non-review-reclassify-audit-${ts}.json`);
+  const latestPath = path.join(AUDIT_DIR, 'non-review-reclassify-audit.json');
+  const report = {
+    meta: {
+      generatedAt: new Date().toISOString(),
+      mode: APPLY ? 'apply' : 'dry-run',
+      provider: PROVIDER,
+      input: inputPath,
+      root,
+      counts: {
+        inputFiles: relPaths.length,
+        skippedMissing: missingFile,
+        skippedFlagAlreadyCleared: noFlag,
+        skippedNoFullText: noFullText,
+        reclassified: disagreements.length + agreements.length,
+        disagreements: disagreements.length,
+        agreements: agreements.length,
+        errors: errors.length,
+        llmCalls: stats.llmCalls,
+        budgetUsed: stats.budgetUsed,
+      },
+      disagreementsByConfidence: byConfidence,
+    },
+    disagreements,
+    agreements: VERBOSE ? agreements : agreements.map(a => a.file),
+    errors,
+  };
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
+  fs.copyFileSync(reportPath, latestPath);
+  console.log(`\nReport: ${reportPath}`);
+  console.log(`Latest: ${latestPath}`);
+
+  // Print sample disagreements for spot-checking
+  if (disagreements.length > 0 && !APPLY) {
+    const sample = disagreements.slice(0, 10);
+    console.log(`\n=== SAMPLE DISAGREEMENTS (first ${sample.length}) — MANUALLY VERIFY ===`);
+    for (const d of sample) {
+      console.log(`\n${d.file}`);
+      console.log(`  old type: ${d.currentNonReviewType}  | new: ${d.newClassification.contentType} (${d.newClassification.confidence})`);
+      console.log(`  reasoning: ${d.newClassification.reasoning}`);
+    }
+    console.log('\nDRY RUN — pass --apply to clear isNonReview on the disagreements above.');
+    return;
+  }
+
+  if (!APPLY) return;
+
+  // Files manually excluded from the sweep — usually because the file's
+  // fullText is misattributed (wrong-show contamination), so clearing
+  // isNonReview would reactivate a wrongly-scored review. The right fix
+  // for these is the wrongShow auditor, not this sweep.
+  const RECLASSIFY_EXCLUDE = new Set([
+    // 2026-04-26 reclassify-flagged audit (Notion 34e637c5-416f-8144):
+    // URL is a Wicked 2003-10-31 review, but cached fullText is Brantley
+    // on Omnium Gatherum (Variety Arts Theater, East Village). Clearing
+    // isNonReview would re-add an Omnium score (79) to wicked-2003.
+    // Needs wrongShow=true via cross-attribution audit instead.
+    'wicked-2003/nytimes--ben-brantley.json',
+  ]);
+
+  // Apply: clear isNonReview on disagreements. Read fresh, only patch the
+  // flag fields, preserve everything else (concurrent writers may have
+  // touched the file). Default to high-confidence disagreements only;
+  // medium/low are reported but not applied without --force.
+  let toClear = FORCE ? disagreements : disagreements.filter(d => d.newClassification.confidence === 'high');
+  const excluded = toClear.filter(d => RECLASSIFY_EXCLUDE.has(d.file));
+  toClear = toClear.filter(d => !RECLASSIFY_EXCLUDE.has(d.file));
+  if (excluded.length > 0) {
+    console.log(`\nExcluded ${excluded.length} file(s) from sweep (manual hold for separate wrongShow audit):`);
+    excluded.forEach(d => console.log(`  ${d.file}`));
+  }
+  console.log(`\n=== APPLYING (${toClear.length} files — confidence: ${FORCE ? 'all (--force)' : 'high only'}) ===`);
+  if (!FORCE && byConfidence.medium + byConfidence.low > 0) {
+    console.log(`  (${byConfidence.medium + byConfidence.low} medium/low-confidence disagreements held — pass --force to also clear)`);
+  }
+  let applied = 0, failed = 0;
+  const now = new Date().toISOString();
+  for (const d of toClear) {
+    const fullPath = path.join(root, d.file);
+    try {
+      // Re-read fresh to pick up any concurrent edits
+      const fresh = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
+      if (fresh.isNonReview !== true) { failed++; continue; }
+      fresh.isNonReview = false;
+      fresh.nonReviewClearedNote = `[${now.slice(0,10)} cleared stale isNonReview — reclassify-audit (${PROVIDER}) now says ${d.newClassification.contentType} (${d.newClassification.confidence}) — Notion 34e637c5-416f-8144]`;
+      // Preserve old type for forensics. Setting to null (not delete) because
+      // safeWriteReview merges undefined fields back from disk, so a delete
+      // gets silently restored by the merge step (line 202-208).
+      if (fresh.nonReviewType) {
+        fresh.nonReviewTypePrev = fresh.nonReviewType;
+        fresh.nonReviewType = null;
+      }
+      fresh.classifiedAt = now;
+      fresh.nonReviewClassifiedBy = `${PROVIDER}:reclassify-audit`;
+      safeWriteReview(fullPath, fresh);
+      applied++;
+      if (VERBOSE) console.log(`  cleared: ${d.file}`);
+    } catch (e) {
+      failed++;
+      console.log(`  ERROR ${d.file}: ${e.message}`);
+    }
+  }
+  console.log(`\nCleared: ${applied}  | Failed: ${failed}`);
+}
+
+// ============================================================
 // Main
 // ============================================================
 
@@ -525,6 +793,12 @@ async function main() {
   console.log('=== Non-Review Classification ===');
   console.log(`Provider: ${PROVIDER} | Cost/call: $${COST_PER_CALL}`);
   console.log(`Budget: $${MAX_COST} | Concurrency: ${CONCURRENCY}`);
+  if (RECLASSIFY_FLAGGED) {
+    console.log('MODE: reclassify-flagged (audit isNonReview=true files for stale flags)');
+    if (APPLY) console.log('       --apply set: will clear stale flags');
+    else console.log('       (dry-run: no writes — pass --apply to clear stale flags)');
+    return await runReclassifyFlagged();
+  }
   if (DRY_RUN) console.log('MODE: dry-run (heuristic only)');
   else if (INCREMENTAL) console.log('MODE: incremental (auto-apply, skip calibration, limit=' + LIMIT + ')');
   else if (APPLY) console.log('MODE: apply (will write flags to source files, high-confidence only)');

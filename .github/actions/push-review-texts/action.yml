@@ -87,14 +87,28 @@ runs:
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
           let restored = 0;
           let scoreSaves = 0;
+          // 'isEmpty' covers undefined, null, AND empty string / empty array.
+          // Required for the empty-string overwrite case observed during Joe
+          // Turner opening night 2026-04-26: a poller / rebuild step wrote
+          // fullText: '' over a non-empty value, which the previous null-only
+          // check did NOT catch. See memory/feedback_admin_ingest_opening_night_2026-04-26.md
+          const isEmpty = (v) => v === undefined || v === null
+            || (typeof v === 'string' && v.length === 0)
+            || (Array.isArray(v) && v.length === 0);
           for (const f of staged) {
             if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
             try {
               const local = JSON.parse(fs.readFileSync(f, 'utf8'));
               const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
               const restoredFields = [];
+              // Per-file _locked flag — when true on either side, ALL protected
+              // fields where committed had content are restored unconditionally.
+              // Strongest defense for opening-night ingestion.
+              const isLocked = committed._locked === true || local._locked === true;
               for (const field of PROTECTED) {
-                if (committed[field] !== undefined && committed[field] !== null && (local[field] === undefined || local[field] === null)) {
+                const committedHasContent = !isEmpty(committed[field]);
+                const localIsEmpty = isEmpty(local[field]);
+                if (committedHasContent && (localIsEmpty || isLocked)) {
                   local[field] = committed[field];
                   restoredFields.push(field);
                   if (field === 'assignedScore') scoreSaves++;

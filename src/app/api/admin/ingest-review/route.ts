@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdmin } from '@/lib/admin-auth';
 import { detectFromReview } from '@/lib/admin-ingest-detect';
+import { parseScore } from '@/lib/admin-ingest-score';
 import { createRequire } from 'module';
 
 // Import CommonJS helpers from scripts/lib/ — these are the same ones the CLI
@@ -40,6 +41,10 @@ interface IngestRequest {
   humanReviewScore?: number | null;
   originalScore?: string | null;
   forceClearStale?: boolean;
+  // When true, commit the file but skip the workflow_dispatch step. The caller
+  // (batch mode) will dispatch ONE rebuild via /api/admin/dispatch-rebuild after
+  // committing all files, instead of N parallel rebuilds.
+  skipDispatch?: boolean;
 }
 
 interface IngestResponse {
@@ -78,7 +83,8 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { url, fullText, humanReviewScore, originalScore, forceClearStale } = body;
+  const { url, fullText, originalScore, forceClearStale } = body;
+  let humanReviewScore: number | null | undefined = body.humanReviewScore;
 
   // Only URL and fullText are strictly required on input. Everything else is
   // auto-detected (with caller overrides winning).
@@ -105,6 +111,21 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       { success: false, error: 'humanReviewScore must be a number between 1 and 100' },
       { status: 400 },
     );
+  }
+
+  // If the caller sent originalScore (e.g. "5/5 stars") but no explicit
+  // humanReviewScore, parse the raw rating to derive the /100 value. The
+  // raw string is what gets stored as originalScore; the parsed integer
+  // becomes humanReviewScore (the value the rebuild pipeline reads).
+  if (
+    (humanReviewScore === null || humanReviewScore === undefined) &&
+    typeof originalScore === 'string' &&
+    originalScore.trim()
+  ) {
+    const parsed = parseScore(originalScore);
+    if (parsed) {
+      humanReviewScore = parsed.score;
+    }
   }
 
   // Run auto-detection. Caller-provided values override detection.
@@ -228,7 +249,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     humanScore: humanReviewScore ?? null,
     fullText,
     originalScore: originalScore || null,
-    originalScoreSource: originalScore ? 'manual-admin-ui' : null,
+    originalScoreSource: originalScore ? deriveOriginalScoreSource(originalScore) : null,
     publishDate,
   });
 
@@ -259,18 +280,26 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  // Dispatch rebuild-fast.yml in the PUBLIC repo.
-  const dispatchResult = await githubDispatchWorkflow(
-    token,
-    PUBLIC_REPO_OWNER,
-    PUBLIC_REPO_NAME,
-    REBUILD_WORKFLOW,
-    { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
-  );
-
-  const workflowRunUrl = dispatchResult.ok
-    ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
-    : undefined;
+  // Dispatch rebuild-fast.yml in the PUBLIC repo — UNLESS the caller asked us
+  // to skip (batch mode commits N files then dispatches once at the end via
+  // /api/admin/dispatch-rebuild).
+  let workflowRunUrl: string | undefined;
+  let dispatchWarning: string | undefined;
+  if (!body.skipDispatch) {
+    const dispatchResult = await githubDispatchWorkflow(
+      token,
+      PUBLIC_REPO_OWNER,
+      PUBLIC_REPO_NAME,
+      REBUILD_WORKFLOW,
+      { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
+    );
+    workflowRunUrl = dispatchResult.ok
+      ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
+      : undefined;
+    dispatchWarning = dispatchResult.ok
+      ? undefined
+      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`;
+  }
 
   return NextResponse.json({
     success: true,
@@ -282,14 +311,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     filename,
     commitSha: putResult.commitSha,
     workflowRunUrl,
-    warning: dispatchResult.ok
-      ? undefined
-      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`,
+    warning: dispatchWarning,
     detectionWarnings: detected.warnings.length > 0 ? detected.warnings : undefined,
   });
 }
 
-// ─── GitHub API helpers ─────────────────────────────────────────────
+// ─── GitHub API helpers (with retry) ────────────────────────────────
 
 const GH_API_BASE = 'https://api.github.com';
 const GH_HEADERS = (token: string) => ({
@@ -299,13 +326,53 @@ const GH_HEADERS = (token: string) => ({
   'User-Agent': 'broadwayscorecard-admin-ingest',
 });
 
+// fetchWithRetry — 3 attempts (200ms / 500ms / 1s backoff) on transient failures.
+//
+// Retried: 5xx, 429, network errors (fetch throws).
+// NOT retried: 4xx user errors (auth, conflict, validation) — surface immediately.
+//   404 specifically is returned as-is so callers (githubGetFile) can treat
+//   "missing file" as a normal case.
+async function fetchWithRetry(url: string, init: RequestInit): Promise<Response> {
+  const delays = [200, 500, 1000];
+  let lastError: unknown = null;
+
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const res = await fetch(url, init);
+      // Retry on 5xx and 429 (rate limit). Everything else is final.
+      if (res.status >= 500 || res.status === 429) {
+        if (attempt < delays.length) {
+          await sleep(delays[attempt]);
+          continue;
+        }
+      }
+      return res;
+    } catch (err) {
+      // Network-level failure (DNS, socket, abort). Retryable.
+      lastError = err;
+      if (attempt < delays.length) {
+        await sleep(delays[attempt]);
+        continue;
+      }
+      throw err;
+    }
+  }
+  // Exhausted retries — re-throw last network error if we got here from catch.
+  if (lastError) throw lastError;
+  throw new Error('fetchWithRetry exhausted attempts');
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function githubGetFile(
   token: string,
   owner: string,
   repo: string,
   path: string,
 ): Promise<{ sha: string; content: string } | null> {
-  const res = await fetch(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}?ref=main`, {
+  const res = await fetchWithRetry(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}?ref=main`, {
     headers: GH_HEADERS(token),
     cache: 'no-store',
   });
@@ -333,7 +400,7 @@ async function githubPutFile(
   };
   if (sha) body.sha = sha;
 
-  const res = await fetch(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}`, {
+  const res = await fetchWithRetry(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}`, {
     method: 'PUT',
     headers: { ...GH_HEADERS(token), 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -353,7 +420,7 @@ async function githubDispatchWorkflow(
   workflowFile: string,
   inputs: Record<string, string>,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `${GH_API_BASE}/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`,
     {
       method: 'POST',
@@ -366,6 +433,12 @@ async function githubDispatchWorkflow(
     return { ok: false, error: `${res.status} ${await res.text()}` };
   }
   return { ok: true };
+}
+
+function deriveOriginalScoreSource(raw: string): string {
+  const parsed = parseScore(raw);
+  if (!parsed) return 'manual-admin-ui';
+  return `manual-${parsed.type}`; // 'manual-stars' | 'manual-letter' | 'manual-numeric'
 }
 
 function normalizeUrl(url: string): string {
