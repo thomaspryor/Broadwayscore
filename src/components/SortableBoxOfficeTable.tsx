@@ -59,19 +59,33 @@ function formatPercent(pct: number | null | undefined): string {
   return `${pct.toFixed(1)}%`;
 }
 
+// Fixed-width slot keeps values right-aligned across rows whether or not a delta renders.
+const DELTA_SLOT = 'inline-block w-14 text-left text-xs ml-1 tabular-nums';
+
 function ChangeIndicator({ current, previous, mode = 'percent' }: { current: number | null | undefined; previous: number | null | undefined; mode?: 'percent' | 'points' }) {
+  // No prior-week data — leave the slot empty so values still column-align.
   if (current === null || current === undefined || previous === null || previous === undefined) {
-    return null;
+    return <span className={DELTA_SLOT} aria-hidden="true" />;
   }
   // 'percent' = percentage change ((new-old)/old*100), used for gross/attendance
   // 'points' = percentage point change (new-old), used for capacity which is already a %
   const change = mode === 'points' ? (current - previous) : ((current - previous) / previous) * 100;
-  if (Math.abs(change) < 0.1) return null;
+  const unit = mode === 'points' ? 'pp' : '%';
+
+  // Effectively unchanged — render in neutral gray so the user can tell
+  // "we have data and it didn't move" apart from "no prior data" (empty slot).
+  if (Math.abs(change) < 0.1) {
+    return (
+      <span className={`${DELTA_SLOT} text-gray-500`} title="Unchanged from last week">
+        0.0{unit}
+      </span>
+    );
+  }
 
   const isPositive = change > 0;
   return (
-    <span className={`text-xs ml-1 ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
-      {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}{mode === 'points' ? 'pp' : '%'}
+    <span className={`${DELTA_SLOT} ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+      {isPositive ? '↑' : '↓'}{Math.abs(change).toFixed(1)}{unit}
     </span>
   );
 }
