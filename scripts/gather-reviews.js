@@ -4980,6 +4980,30 @@ async function main() {
   const showIds = showsArg.replace('--shows=', '').split(',').map(s => s.trim());
   const aggregatorsOnly = args.includes('--aggregators-only');
   const validateUrls = args.includes('--validate-urls');
+  /**
+   * NOTE: For historical shows where SERP yields few/no hits (typically pre-2010
+   * Broadway, where Google has deindexed older outlet archives), do NOT implement
+   * a Wayback fallback inline here. The repo already has dedicated infrastructure:
+   *
+   *   - scripts/backfill-review-dates.js — CDX query patterns at ~line 206
+   *     ("Archive.org Wayback Machine" fetchFromArchiveOrg) and ~line 384
+   *     (date extraction from Wayback snapshots)
+   *   - .github/workflows/recover-wayback-reviews.yml — workflow_dispatch
+   *     entrypoint for Wayback-based review recovery, scoped by outlet domain
+   *     or tier (inputs: source_mode, domain_filter, tier_filter, dry_run)
+   *
+   * Workflow when SERP returns <3 hits for a historical show — scope by outlet:
+   *   gh workflow run recover-wayback-reviews.yml \
+   *     -f source_mode=failed-fetches \
+   *     -f domain_filter=nytimes.com,variety.com
+   *
+   * Or run dry-run first to see candidates without writing files:
+   *   gh workflow run recover-wayback-reviews.yml -f dry_run=true
+   *
+   * Inline Wayback in this file would duplicate that infrastructure and add a
+   * second discovery path to maintain. See plan-review notes from Joe Turner
+   * 2009 historical recovery (2026-04-26).
+   */
   const historical = args.includes('--historical');
 
   console.log('========================================');
