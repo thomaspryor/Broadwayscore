@@ -119,7 +119,10 @@ export function usePanelFilters<T extends ShowCardShow>({
 
   const writeParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(searchParams?.toString() ?? '');
+      // Read from live URL — searchParams is React state and may lag behind
+      // rapid back-to-back updates, dropping params silently otherwise.
+      const live = typeof window !== 'undefined' ? window.location.search : (searchParams?.toString() ?? '');
+      const params = new URLSearchParams(live);
       mutate(params);
       const qs = params.toString();
       router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
