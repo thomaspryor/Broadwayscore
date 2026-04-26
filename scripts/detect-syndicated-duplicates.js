@@ -21,6 +21,9 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+
+let lockedSkipCount = 0;
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -216,11 +219,17 @@ for (const [key, revs] of multiOutlet) {
 
       // Write the flag to the secondary file
       if (!DRY_RUN) {
-        secondaryFile.data.isSyndicatedDuplicate = true;
-        secondaryFile.data.syndicatedPrimaryFile = `${primaryFile.data.showId || revs[0].showId}/${primaryFile.filename}`;
-        secondaryFile.data.syndicationSimilarity = sim;
-        fs.writeFileSync(secondaryFile.path, JSON.stringify(secondaryFile.data, null, 2) + '\n');
-        filesWritten++;
+        const skip = shouldSkipLockedEnrichment(secondaryFile.data);
+        if (skip.skip) {
+          lockedSkipCount++;
+        } else {
+          secondaryFile.data.isSyndicatedDuplicate = true;
+          secondaryFile.data.syndicatedPrimaryFile = `${primaryFile.data.showId || revs[0].showId}/${primaryFile.filename}`;
+          secondaryFile.data.syndicationSimilarity = sim;
+          const r = safeWriteReview(secondaryFile.path, secondaryFile.data);
+          if (r.lockedSkipped) lockedSkipCount++;
+          filesWritten++;
+        }
       }
     }
   }
@@ -283,12 +292,18 @@ for (const [showId, showRevs] of Object.entries(unknownByShow)) {
       });
 
       if (!DRY_RUN) {
-        secondaryFile.data.isSyndicatedDuplicate = true;
-        secondaryFile.data.syndicatedPrimaryFile = `${showId}/${primaryFile.filename}`;
-        secondaryFile.data.syndicationSimilarity = sim;
-        secondaryFile.data._matchedByOutletPair = true;
-        fs.writeFileSync(secondaryFile.path, JSON.stringify(secondaryFile.data, null, 2) + '\n');
-        filesWritten++;
+        const skip = shouldSkipLockedEnrichment(secondaryFile.data);
+        if (skip.skip) {
+          lockedSkipCount++;
+        } else {
+          secondaryFile.data.isSyndicatedDuplicate = true;
+          secondaryFile.data.syndicatedPrimaryFile = `${showId}/${primaryFile.filename}`;
+          secondaryFile.data.syndicationSimilarity = sim;
+          secondaryFile.data._matchedByOutletPair = true;
+          const r = safeWriteReview(secondaryFile.path, secondaryFile.data);
+          if (r.lockedSkipped) lockedSkipCount++;
+          filesWritten++;
+        }
       }
       unknownPairsFlagged++;
     }
@@ -326,11 +341,17 @@ for (const showId of showDirs) {
         console.log(`  AP content in non-AP file: ${showId}/${file}${apRef ? ' → primary: ' + apRef : ''}`);
 
         if (!DRY_RUN) {
-          data.isSyndicatedDuplicate = true;
-          data.syndicatedPrimaryFile = apRef;
-          data._apContentDetected = true;
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-          filesWritten++;
+          const skip = shouldSkipLockedEnrichment(data);
+          if (skip.skip) {
+            lockedSkipCount++;
+          } else {
+            data.isSyndicatedDuplicate = true;
+            data.syndicatedPrimaryFile = apRef;
+            data._apContentDetected = true;
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+            filesWritten++;
+          }
         }
 
         flagged.push({
@@ -500,4 +521,5 @@ if (!fs.existsSync(AUDIT_DIR)) fs.mkdirSync(AUDIT_DIR, { recursive: true });
 const reportPath = path.join(AUDIT_DIR, 'syndicated-duplicates.json');
 fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
 console.log(`\nAudit report: ${reportPath}`);
+console.log(`[LOCKED-SKIP-COUNT] detect-syndicated-duplicates: ${lockedSkipCount}`);
 console.log('\nDone.');

@@ -24,11 +24,15 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const apply = process.argv.includes('--apply');
+const forceStripLocked = process.argv.includes('--force-strip-locked');
 const showArg = process.argv.find(a => a.startsWith('--show='))?.replace('--show=', '');
 const beforeOpeningArg = process.argv.find(a => a.startsWith('--before-opening='))?.replace('--before-opening=', '');
+
+let lockedSkipCount = 0;
 
 const QUALITY_FLAGS = [
   'duplicateOf',
@@ -77,11 +81,17 @@ function runQualityFlaggedMode() {
       stripped++;
 
       if (apply) {
-        delete data.llmScore;
-        delete data.llmMetadata;
-        if (data.needsRescore) delete data.needsRescore;
-        if (data.rescoreCompletedAt) delete data.rescoreCompletedAt;
-        fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n');
+        // Use null instead of delete: safeWriteReview's merge step (line 219-225)
+        // re-adds undefined fields back from disk, so a delete gets silently
+        // restored. null lets safeWriteReview write through (and lockedOverride
+        // still preserves on locked files, which is the right behavior here —
+        // a critic-locked file should not get its score scrubbed by this pass).
+        data.llmScore = null;
+        data.llmMetadata = null;
+        if (data.needsRescore) data.needsRescore = null;
+        if (data.rescoreCompletedAt) data.rescoreCompletedAt = null;
+        const r = safeWriteReview(fp, data);
+        if (r.lockedSkipped) lockedSkipCount++;
       }
     }
   }
@@ -126,19 +136,39 @@ function runBeforeOpeningMode(openingDateStr, showId) {
     // Only act if there's a score to clear
     if (!data.ensembleData && !data.ensembleScore && !data.llmScore) { skipped++; continue; }
 
+    // Locked file in --before-opening mode is destructive — refuse without
+    // --force-strip-locked. Loud per-file log so the operator sees what would
+    // be wiped. Joe Turner postmortem P0 #2 (2026-04-26): without this, the
+    // script silently no-ops on locked files because lockedOverride preserves
+    // every PROTECTED field, so the operator thinks the wipe succeeded.
+    if (data._locked === true && !forceStripLocked) {
+      const score = data.assignedScore ?? data.ensembleScore ?? data.llmScore?.score ?? '?';
+      const outlet = data.outletId || file.split('--')[0];
+      const critic = data.criticName || file.split('--')[1]?.replace('.json', '') || 'unknown';
+      console.log(`  [LOCKED-SKIP] ${showId}/${outlet}--${critic}: assignedScore=${score} preserved (use --force-strip-locked to override)`);
+      lockedSkipCount++;
+      skipped++;
+      continue;
+    }
+
     const pubStr = pubDate.toISOString().split('T')[0];
     console.log(`  ${apply ? 'CLEAR' : 'WOULD CLEAR'}: ${file} (published ${pubStr}, ${Math.round((openingDate - pubDate) / 86400000)}d before opening)`);
     cleared++;
 
     if (apply) {
-      delete data.ensembleData;
-      delete data.ensembleScore;
-      delete data.assignedScore;
-      delete data.llmScore;
-      delete data.llmMetadata;
+      // Use null instead of delete: safeWriteReview's merge re-adds undefined
+      // fields, so deletes get silently restored. force=true bypasses
+      // lockedOverride for the --force-strip-locked path; without that flag,
+      // we never reach this branch on a locked file (early-skip above).
+      data.ensembleData = null;
+      data.ensembleScore = null;
+      data.assignedScore = null;
+      data.llmScore = null;
+      data.llmMetadata = null;
       data.needsRescore = true;
       data.staleScoredBeforeOpening = true;
-      fs.writeFileSync(fp, JSON.stringify(data, null, 2) + '\n');
+      const r = safeWriteReview(fp, data, { force: true });
+      if (r.lockedSkipped) lockedSkipCount++;
     }
   }
 
@@ -152,3 +182,5 @@ if (beforeOpeningArg) {
 } else {
   runQualityFlaggedMode();
 }
+
+console.log(`[LOCKED-SKIP-COUNT] strip-stale-single-model-scores: ${lockedSkipCount}`);

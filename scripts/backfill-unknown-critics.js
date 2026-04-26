@@ -20,6 +20,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+
+let lockedSkipCount = 0;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -120,7 +123,18 @@ async function fetchHtml(url) {
 }
 
 // --- Update file and optionally rename ---
+// Joe Turner postmortem P0 #2 (2026-04-26): criticName + outletId are
+// non-PROTECTED — safeWriteReview's lockedOverride does not block them.
+// shouldSkipLockedEnrichment short-circuits the whole update on locked files
+// so a manually-canonical record can't have its byline silently rewritten by
+// HTML extraction or domain re-aliasing.
 function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
+  const skip = shouldSkipLockedEnrichment(data);
+  if (skip.skip) {
+    lockedSkipCount++;
+    return { renamed: false, lockedSkipped: true };
+  }
+
   if (criticName) data.criticName = criticName;
   if (outletId && typeof outletId === 'string' && outletId !== data.outletId) {
     data.outletId = outletId;
@@ -136,7 +150,8 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
 
   if (oldFile === newFile) {
     if (!dryRun) {
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+      const r = safeWriteReview(filePath, data);
+      if (r.lockedSkipped) lockedSkipCount++;
     }
     return { renamed: false, newFile };
   }
@@ -146,12 +161,15 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
   }
 
   if (!dryRun) {
+    // TOPOLOGY: rename paths do not honor _locked — see S1-T5
     fs.writeFileSync(newPath, JSON.stringify(data, null, 2) + '\n');
     fs.unlinkSync(filePath);
   }
 
   return { renamed: true, newFile };
 }
+
+module.exports = { updateReviewFile };
 
 // --- Phase A: Outlet resolution (local, no HTTP) ---
 function phaseA(unknownOutlets) {
@@ -344,4 +362,8 @@ async function main() {
   console.log('\nDone.');
 }
 
-main().catch(console.error);
+if (require.main === module) {
+  main()
+    .then(() => console.log(`[LOCKED-SKIP-COUNT] backfill-unknown-critics: ${lockedSkipCount}`))
+    .catch(console.error);
+}
