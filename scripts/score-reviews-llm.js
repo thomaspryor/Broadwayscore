@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { isAlreadyLlmScored } = require('./lib/review-guards');
 
 const reviewsDir = path.join(__dirname, '../data/review-texts');
 
@@ -137,7 +138,7 @@ async function main() {
       const review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Skip if already scored
-      if (review.assignedScore !== null) {
+      if (isAlreadyLlmScored(review)) {
         skipped++;
         continue;
       }

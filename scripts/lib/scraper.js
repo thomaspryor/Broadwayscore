@@ -430,6 +430,12 @@ async function fetchPage(url, options = {}) {
       console.log(`  ✅ Success (${source}, ${result.format})`);
       return result;
     }
+    if (vr.reason === 'url_mismatch') {
+      try {
+        const hostname = new URL(url).hostname;
+        recordUrlMismatch(url, vr.actual, source, hostname);
+      } catch { /* never crash the scrape */ }
+    }
     console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
     return null;
   }
@@ -668,6 +674,59 @@ function verifyFetchedUrl(html, expectedUrl) {
   return { verified: false, reason: 'url_mismatch', actual: actualUrl };
 }
 
+// --- Audit log for url_mismatch rejections ---
+// When verifyFetchedUrl rejects due to a canonical URL redirect (e.g. Variety's
+// /legit/reviews/ → /film/awards/ path for Joe Turner 2009), the scraper correctly
+// refuses the wrong-path response and falls over to the next provider. But canonical
+// redirects ARE sometimes legitimate (CMS restructuring), so we record each rejection
+// here for human review. A human can then decide which are safe to allowlist.
+// The rejection behavior itself is NOT changed — this is purely telemetry.
+const URL_MISMATCH_AUDIT_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'url-mismatch-suspects.json');
+const URL_MISMATCH_MAX_ENTRIES = 10000;
+
+/**
+ * Append a url_mismatch rejection record to data/audit/url-mismatch-suspects.json.
+ * File is a JSON array; created if missing. Capped at URL_MISMATCH_MAX_ENTRIES (oldest dropped).
+ * Never throws — audit failures must not crash the scrape.
+ *
+ * @param {string} requestedUrl - The URL that was requested
+ * @param {string} actualUrl - The canonical/og:url found in the fetched HTML
+ * @param {string} source - Which fetch tier returned the mismatch (e.g. 'Bright Data')
+ * @param {string} hostname - Hostname of the requested URL (for quick filtering)
+ */
+function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
+  try {
+    fs.mkdirSync(path.dirname(URL_MISMATCH_AUDIT_PATH), { recursive: true });
+    let entries = [];
+    try {
+      const raw = fs.readFileSync(URL_MISMATCH_AUDIT_PATH, 'utf8');
+      entries = JSON.parse(raw);
+      if (!Array.isArray(entries)) {
+        console.warn('[scraper] url-mismatch-suspects.json is not an array — resetting');
+        entries = [];
+      }
+    } catch (readErr) {
+      if (readErr.code !== 'ENOENT') {
+        console.warn('[scraper] Could not read url-mismatch-suspects.json:', readErr.message);
+      }
+      entries = [];
+    }
+    entries.push({
+      requestedUrl,
+      actualUrl,
+      fetchedAt: new Date().toISOString(),
+      source,
+      hostname,
+    });
+    if (entries.length > URL_MISMATCH_MAX_ENTRIES) {
+      entries = entries.slice(entries.length - URL_MISMATCH_MAX_ENTRIES);
+    }
+    fs.writeFileSync(URL_MISMATCH_AUDIT_PATH, JSON.stringify(entries, null, 2));
+  } catch (err) {
+    console.warn('[scraper] Failed to record url_mismatch audit entry:', err.message);
+  }
+}
+
 module.exports = {
   fetchPage,
   fetchJSON,
@@ -682,5 +741,6 @@ module.exports = {
   checkScrapingBeeCredits,
   getScraperStats,
   verifyFetchedUrl,
+  recordUrlMismatch,
   get sbCreditsLow() { return _sbCreditsLow; },
 };
