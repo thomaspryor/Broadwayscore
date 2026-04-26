@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T02:22:40.543Z",
+  "timestamp": "2026-04-26T02:31:54.257Z",
   "stats": {
-    "totalReviews": 35779,
-    "alreadyFlagged": 16033,
-    "dateGuardCatches": 95,
+    "totalReviews": 35789,
+    "alreadyFlagged": 16034,
+    "dateGuardCatches": 96,
     "directorMismatch": 820,
-    "tvFilmSignals": 3198,
+    "tvFilmSignals": 3197,
     "londonSignals": 1030,
-    "offBroadwaySignals": 900,
+    "offBroadwaySignals": 899,
     "yearMismatch": 69,
-    "noPublishDate": 3727
+    "noPublishDate": 3735
   },
   "findings": [
     {
@@ -23868,6 +23868,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"lloyd richards\" from joe-turners-come-and-gone-1988"
+        }
+      ]
+    },
+    {
+      "showId": "joe-turners-come-and-gone-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 66,
+      "publishDate": "2026-04-25",
+      "url": "https://nystagereview.com/2026/04/25/joe-turners-come-and-gone-revival-of-wilsons-drama-about-finding-your-song-mostly-sings/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "joe-turners-come-and-gone-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": 73,
+      "publishDate": "April 11, 2024",
+      "url": "https://www.thewrap.com/creative-content/theater/joe-turners-come-and-gone-broadway-review-debbie-allen-directed/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 718d before show (April 11, 2024 vs 2026-03-30)"
         }
       ]
     },
@@ -49614,20 +49642,6 @@
     },
     {
       "showId": "the-outsiders-2024",
-      "file": "nysr--frank-scheck.json",
-      "score": 66,
-      "publishDate": "2024-04-11T20:54:44",
-      "url": "https://nystagereview.com/2024/04/11/the-outsiders-lets-get-ready-to-rumble/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"movie theater\""
-        }
-      ]
-    },
-    {
-      "showId": "the-outsiders-2024",
       "file": "nysr--roma-torre.json",
       "score": 85,
       "publishDate": "2024-04-11T20:55:02",
@@ -51369,20 +51383,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "the-rocky-horror-show-2026",
-      "file": "deadline--greg-evans.json",
-      "score": 87,
-      "publishDate": "2026-04-23",
-      "url": "https://deadline.com/2026/04/rocky-horror-show-broadway-review-1236867882/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -78101,20 +78101,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-bway-2025",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 71,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },

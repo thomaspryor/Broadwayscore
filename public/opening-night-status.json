@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-26T02:22:44.504Z",
+  "generatedAt": "2026-04-26T02:31:58.261Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -316,28 +316,26 @@
       "status": "open",
       "slug": "joe-turners-come-and-gone",
       "thumbnail": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "siteScore": 76.24,
+      "liveScore": 76,
+      "scoreDrift": -0.23999999999999488,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "total": 11,
+      "t1": 3,
+      "t2": 6,
+      "t3": 2,
+      "positive": 8,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "11/12 total",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -351,16 +349,8 @@
       },
       "missingT1": [
         {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
           "name": "Vulture",
           "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
         },
         {
           "name": "The Hollywood Reporter",
@@ -383,16 +373,8 @@
           "isDualMarket": false
         },
         {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
           "name": "Los Angeles Times",
           "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
         },
         {
           "name": "Broadway News",
@@ -421,19 +403,7 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -445,15 +415,7 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
           "isDualMarket": false
         },
         {
@@ -463,10 +425,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -595,6 +553,20 @@
         {
           "name": "The Stage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-26T02:31:58.261Z",
+          "rc": 11,
+          "s": 76.24,
+          "t1": 3,
+          "t2": 6,
+          "t3": 2,
+          "p": 8,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -912,23 +884,23 @@
       "status": "open",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
-      "siteScore": 69.67,
-      "liveScore": 70,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 69.03,
+      "liveScore": 69,
+      "scoreDrift": -0.030000000000001137,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 28,
+      "total": 27,
       "t1": 5,
-      "t2": 15,
+      "t2": 14,
       "t3": 8,
-      "positive": 13,
+      "positive": 12,
       "mixed": 11,
       "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 21,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -987,6 +959,10 @@
         }
       ],
       "missingT2": [
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
         {
           "name": "USA Today",
           "isDualMarket": false
@@ -1213,6 +1189,18 @@
           "t2": 15,
           "t3": 8,
           "p": 13,
+          "m": 11,
+          "n": 4,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-04-26T02:31:58.261Z",
+          "rc": 27,
+          "s": 69.03,
+          "t1": 5,
+          "t2": 14,
+          "t3": 8,
+          "p": 12,
           "m": 11,
           "n": 4,
           "bc": "complete"
