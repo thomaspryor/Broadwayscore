@@ -360,7 +360,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
       </div>
 
       {/* Market + Type Filter Row */}
-      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
+      <div className="flex items-center gap-2 sm:gap-4 mb-4">
         <MarketFilterBar
           pair="london"
           activeMarket="off-west-end"
@@ -379,6 +379,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
               updateParams({ scoreMode: key });
             }
           }}
+          className="flex-shrink-0"
         />
       </div>
 
