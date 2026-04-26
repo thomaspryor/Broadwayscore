@@ -31,6 +31,7 @@ const path = require('path');
 const https = require('https');
 const { spawnSync } = require('child_process');
 const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
+const { fetchPage } = require('./lib/scraper');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -152,24 +153,32 @@ async function discoverDtliSlugForShow(show) {
 }
 
 /**
- * Free, fast BWW homepage scrape. BWW features new Review Roundups in the
- * homepage carousel + trending stories the moment they publish — typically
- * 5-15 min ahead of when the same URL appears on reviews.php (which has a
- * different cache lane). Plain HTTPS works (no Cloudflare challenge on
- * homepage), so this layer is free.
+ * Fast BWW homepage scrape via fetchPage(). BWW features new Review Roundups
+ * in the homepage carousel the moment they publish — typically 5-15 min ahead
+ * of when the same URL appears on reviews.php (different Cloudflare cache lane).
  *
- * Returns the highest-scoring matching URL, or null.
+ * Why fetchPage and not plain HTTPS: tested 2026-04-25 — plain curl/node fetch
+ * works from a residential IP (Mac) but returns 403 from GitHub Actions IPs
+ * (Cloudflare bot block). fetchPage's provider chain (Bright Data → SB →
+ * Playwright) handles this transparently. Costs ~$0.005/call via BD vs
+ * ~$0.10/call for the Browserbase reviews.php scrape.
  *
  * Caught Joe Turner 2026-04-25 when reviews.php scrape returned 6 anchors
  * none matching, but homepage had the RR as the top featured article.
  */
 async function discoverBwwRoundupFromHomepage(show) {
-  const res = await httpGet('https://www.broadwayworld.com/');
-  if (!res.ok || !res.body) return { url: null, anchors: 0, error: res.error || res.status };
+  let html;
+  try {
+    const res = await fetchPage('https://www.broadwayworld.com/', { renderJs: false });
+    html = res?.content;
+  } catch (err) {
+    return { url: null, anchors: 0, error: err.message };
+  }
+  if (!html) return { url: null, anchors: 0, error: 'empty-response' };
   const re = /href="(\/article\/Review-Roundup-[^"]+)"/g;
   const found = new Set();
   let m;
-  while ((m = re.exec(res.body)) !== null) {
+  while ((m = re.exec(html)) !== null) {
     found.add('https://www.broadwayworld.com' + m[1]);
   }
   const anchors = [...found];
