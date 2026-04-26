@@ -34,10 +34,12 @@ describe('LLM is-scoreable + stale isRoundupArticle exemption', () => {
       'scorer must respect the stale-flag exemption');
   });
 
-  test('isRoundupArticle=true on actual roundup URL: NOT stale, blocked', () => {
+  test('isRoundupArticle=true on actual roundup URL (The Stage): NOT stale, blocked', () => {
+    // The Stage's /review-round-ups/ pattern is explicitly listed in isRoundupUrl
+    // — should be blocked even with substantial fullText.
     const data = {
-      outlet: 'London Box Office',
-      url: 'https://www.londonboxoffice.co.uk/news/post/review-round-up-some-show',
+      outlet: 'The Stage',
+      url: 'https://www.thestage.co.uk/review-round-ups/some-show-review-round-up',
       fullText: 'A'.repeat(3500),
       isFullReview: true,
       contentTier: 'complete',
