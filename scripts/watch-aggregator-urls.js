@@ -228,6 +228,13 @@ function dispatchPoller(showId, overrides) {
   if (overrides.bwwRoundupUrl) {
     args.push('-f', `bww_roundup_url=${overrides.bwwRoundupUrl}`);
   }
+  // When we hand the poller a known-good BWW RR URL, SERP becomes a waste:
+  // it costs 3-5 min and can return wrong-production results that the poller
+  // then has to filter out. We have ground truth — skip the discovery layer
+  // we don't need.
+  if (overrides.bwwRoundupUrl) {
+    args.push('-f', 'skip_serp=true');
+  }
   const result = spawnSync('gh', args, { stdio: 'pipe', timeout: 30000 });
   return {
     exitCode: result.status,
