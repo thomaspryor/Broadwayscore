@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T12:36:48.187Z",
+  "timestamp": "2026-04-26T12:56:03.601Z",
   "stats": {
-    "totalReviews": 35848,
-    "alreadyFlagged": 16051,
+    "totalReviews": 35843,
+    "alreadyFlagged": 16058,
     "dateGuardCatches": 95,
     "directorMismatch": 817,
-    "tvFilmSignals": 3200,
-    "londonSignals": 1030,
+    "tvFilmSignals": 3201,
+    "londonSignals": 1031,
     "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3763
+    "noPublishDate": 3748
   },
   "findings": [
     {
@@ -12400,6 +12400,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2026-02-17",
+      "url": "https://www.timeout.com/london/news/review-dracula-starring-cynthia-erivo-at-the-noel-coward-theatre-021726",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"big screen\""
         }
       ]
     },
@@ -62585,6 +62598,19 @@
       "score": 38,
       "publishDate": "2012-04-24",
       "url": "https://www.variety.com/review/VE1117947430",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "giant-2026",
+      "file": "new-york-city-theatre--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newyorkcitytheatre.com/shows/musicboxtheater/giant",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
