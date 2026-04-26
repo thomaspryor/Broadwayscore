@@ -589,6 +589,15 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** REVIEW_TEXTS_TOKEN (for checkout-core-data — reads shows.json/reviews.json)
 - **If it fails:** Pre-deploy check uses a slightly stale baseline. Absolute floors (500 shows, 10K reviews) are the real safety net.
 
+## `deploy-on-data-change.yml`
+- **Runs:** Every 15 min (`*/15 * * * *`), or manually
+- **Does:** Safety net for stranded core-data commits. Compares the latest commit timestamp on the private `broadway-scorecard-data` repo against `data/audit/deploy-watermark.json` `updatedAt`. If drift exceeds **20 minutes** AND no `vercel-deploy.yml` / `rebuild-reviews.yml` / `rebuild-fast.yml` run is in flight, dispatches `Deploy to Vercel`.
+- **Why it exists (A #21):** `vercel-deploy.yml`'s `workflow_run` listener only fires when rebuild's `conclusion == 'success'`. Rebuild's `Push core data` step is `if: always()`, so reviews.json/shows.json can reach the private repo even when the job ultimately times out (30-min cap) or fails on a later step. Without this safety net, those commits sit unshipped until the next successful rebuild.
+- **Grace window:** 20 min. Happy path is data-then-deploy-then-watermark, so watermark is normally newer than data (negative drift). Positive drift > 20 min = chain broke.
+- **Manual trigger:** `gh workflow run deploy-on-data-change.yml [-f force=true] [-f dry_run=true]`
+- **Requires:** REVIEW_TEXTS_TOKEN (read-only `gh api` against private repo)
+- **Severity:** `warning` — failures surface in the daily digest, not real-time alerts.
+
 ## `vercel-demo.yml`
 - **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
 - **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
