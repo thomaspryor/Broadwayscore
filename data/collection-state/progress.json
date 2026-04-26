@@ -110,7 +110,17 @@
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/usatoday--elysa-gardner.json",
     "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
-    "the-norman-conquests-2009/observer--rex-reed.json"
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "into-the-woods-2002/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -118,7 +128,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/joe-turners-come-and-gone-2026/variety--aramide-tinubu.json",
-      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json"
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+      "data/review-texts/into-the-woods-2002/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -127,7 +138,7 @@
     "archive": []
   },
   "startTime": "2026-04-26T02:42:32.957Z",
-  "lastProcessed": "the-norman-conquests-2009/observer--rex-reed.json",
+  "lastProcessed": "into-the-woods-2002/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-26T02:42:34.500Z",
@@ -192,6 +203,17 @@
     },
     {
       "t": "2026-04-26T03:00:22.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T03:15:38.164Z",
+      "event": "bb-session",
+      "session": "92f207e3",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title="
+    },
+    {
+      "t": "2026-04-26T03:15:39.286Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
