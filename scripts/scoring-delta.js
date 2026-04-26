@@ -135,6 +135,13 @@ const FLAG_FIELDS = new Set([
 // the main Broadwayscore repo). Returns a Map of "showId/filename.json" →
 // { old: parsedJSON|null, new: parsedJSON|null } for files where any
 // inclusion-relevant field changed value.
+//
+// Note: review-texts is a separate git repo with its own history. This function
+// always compares working tree vs HEAD of the review-texts repo, regardless of
+// BASE_REF (which applies to the main repo). For the default usage (working-tree
+// vs HEAD), the two repos are aligned. For --base=main, code changes are compared
+// against main but data-flag changes are still compared against review-texts HEAD —
+// which is the correct behavior (review-texts HEAD = last committed data state).
 function detectDataFlagChanges() {
   const result = new Map();
   const rtGit = path.join(REVIEW_TEXTS_DIR, '.git');
@@ -144,6 +151,9 @@ function detectDataFlagChanges() {
       cwd: REVIEW_TEXTS_DIR, encoding: 'utf8',
     }).trim().split('\n').filter(f => f && f.endsWith('.json') && !f.endsWith('failed-fetches.json'));
     if (changed.length === 0) return result;
+    if (changed.length > 2000) {
+      log(`[scoring-delta] data-flag: ${changed.length} changed files — scanning first 2000 (raise cap if this audit is larger)`);
+    }
     const toCheck = changed.length > 2000 ? changed.slice(0, 2000) : changed;
     for (const relPath of toCheck) {
       let oldData = null;
@@ -660,6 +670,35 @@ function main() {
       } else {
         flipsIncluded.push(flip);
       }
+    }
+  }
+
+  // ── Phase A: deleted-file pass ────────────────────────────────────────────
+  // Files deleted from the working tree are skipped by readdirSync above.
+  // Iterate changedReviewFiles entries where new===null to catch deletions.
+  if (runPhaseA && dataFlagDiff) {
+    for (const [relPath, { old: oldData }] of changedReviewFiles) {
+      if (oldData === null) continue; // new file (no old data) — already handled above
+      const absPath = path.join(REVIEW_TEXTS_DIR, relPath);
+      if (fs.existsSync(absPath)) continue; // file still exists — handled in main loop
+      const showId = relPath.split('/')[0];
+      const show = showById.get(showId);
+      if (!show) continue;
+      const baselineGuards = (inclusionDiff && baseline) ? baseline : working;
+      const baselineDecision = decideInclusion(oldData, show, baselineGuards);
+      if (!baselineDecision.included) continue; // was already excluded — no flip
+      const outletKey = (oldData.outletId || oldData.outlet || '').toLowerCase().replace(/\s+/g, '-');
+      flipsExcluded.push({
+        showId,
+        outlet: oldData.outletId || oldData.outlet || 'unknown',
+        critic: oldData.criticName || '',
+        url: oldData.url || '',
+        publishDate: oldData.publishDate || '',
+        openingDate: show.openingDate || '',
+        tier: T1_OUTLETS.has(outletKey) ? 'T1' : 'other',
+        baselineReason: baselineDecision.reason,
+        workingReason: 'deleted',
+      });
     }
   }
 
