@@ -16,6 +16,7 @@ import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 
 export interface FeaturedRowData {
@@ -517,8 +518,18 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     return result;
   }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, isEffectivelyOpen]);
 
-  // Advanced filter panel — applies on top of inline-filtered shows
-  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
+  // Advanced filter panel — applies on top of inline-filtered shows.
+  // Type + Status mirror the inline ToggleBars as full panel members.
+  const panelSingleGroups = useMemo(
+    () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_BROADWAY)],
+    [],
+  );
+  const panel = usePanelFilters({
+    shows: filteredAndSortedShows,
+    awardWinnerSets,
+    scoreMode,
+    singleGroups: panelSingleGroups,
+  });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // Hide status chip when it would be redundant
@@ -606,6 +617,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         onClose={() => setIsPanelOpen(false)}
         selectedByGroup={panel.selectedByGroup}
         onToggle={panel.toggleOption}
+        singleGroups={panelSingleGroups}
+        singleValueByGroup={panel.singleValueByGroup}
+        onSetSingleValue={panel.setSingleValue}
         yearRange={panel.yearRange}
         onYearRangeChange={panel.setYearRange}
         onClearAll={panel.clearAll}

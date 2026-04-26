@@ -2,8 +2,9 @@
 
 import { useEffect, useId } from 'react';
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap';
-import { FILTER_GROUPS } from './filter-ui-config';
+import { FILTER_GROUPS, type SingleGroupConfig } from './filter-ui-config';
 import { FilterPillGroup } from './FilterPillGroup';
+import { FilterSinglePillGroup } from './FilterSinglePillGroup';
 import { TimePeriodSection } from './TimePeriodSection';
 
 interface FilterPanelProps {
@@ -11,6 +12,10 @@ interface FilterPanelProps {
   onClose: () => void;
   selectedByGroup: Record<string, ReadonlySet<string>>;
   onToggle: (paramKey: string, id: string) => void;
+  /** Per-page single-select groups (Type, Status). Rendered above multi-select groups. */
+  singleGroups?: SingleGroupConfig[];
+  singleValueByGroup?: Record<string, string>;
+  onSetSingleValue?: (paramKey: string, value: string) => void;
   yearRange: { from: number; to: number } | null;
   onYearRangeChange: (range: { from: number; to: number } | null) => void;
   onClearAll: () => void;
@@ -27,6 +32,9 @@ export function FilterPanel({
   onClose,
   selectedByGroup,
   onToggle,
+  singleGroups,
+  singleValueByGroup,
+  onSetSingleValue,
   yearRange,
   onYearRangeChange,
   onClearAll,
@@ -93,6 +101,22 @@ export function FilterPanel({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-5 py-2">
+          {/* Single-select groups (Type, Status) — render at top */}
+          {singleGroups?.map((group) => (
+            <div key={group.paramKey} className="py-3 border-b border-white/5">
+              <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                {group.label}
+              </h3>
+              <FilterSinglePillGroup
+                options={group.options.map((o) => ({ value: o.id, label: o.label }))}
+                value={singleValueByGroup?.[group.paramKey] ?? group.defaultValue}
+                onChange={(v) => onSetSingleValue?.(group.paramKey, v)}
+                ariaLabel={`${group.label} filter`}
+              />
+            </div>
+          ))}
+
+          {/* Multi-select groups */}
           {FILTER_GROUPS.map((group, idx) => (
             <div key={group.paramKey}>
               <div className="py-3 border-b border-white/5">
