@@ -467,6 +467,16 @@ jobs:
         # Added 2026-04-11 after Oh Mary! BW audit found 18 issues in one folder,
         # systematic scan found 291 across all shows.
 
+      - name: Audit aggregator-archive integrity
+        run: node scripts/audit-aggregator-archive-integrity.js --strict
+        # Catches the Stuart King contamination class — cached aggregator HTML
+        # whose <title> doesn't match the showId in the filename. The bug
+        # silently mis-attributed reviews across ~14 LBO archives + 256 across
+        # other sources before being caught by a critic email (2026-04-25).
+        # Baseline: data/audit/aggregator-archive-integrity-baseline.json
+        # (currently empty; --update-baseline to grow it intentionally).
+        # Notion 34e637c5-416f-812c.
+
       - name: Validate market expansion
         run: node scripts/validate-market-expansion.js
         # Catches slug, threshold, display, and copy issues for WE/OB markets
