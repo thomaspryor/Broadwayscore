@@ -9,6 +9,7 @@ interface OutletRegistry {
     displayName: string;
     domain?: string;
     domainAliases?: string[];
+    defaultCritic?: string;
   }>;
 }
 
@@ -29,7 +30,7 @@ export interface DetectionResult {
   outletId: string | null;
   outletDisplayName: string | null;
   criticName: string | null;
-  criticSource: 'byline-regex' | 'none' | null;
+  criticSource: 'byline-regex' | 'outlet-default' | 'none' | null;
   publishDate: string | null;
   publishDateSource: 'url-path' | 'none' | null;
   showId: string | null;
@@ -89,9 +90,35 @@ export function detectOutlet(url: string): { outletId: string | null; displayNam
   }
   const map = buildOutletDomainMap();
   const outletId = map[hostname] ?? null;
-  if (!outletId) return { outletId: null, displayName: null };
-  const registry = loadOutletRegistry();
-  return { outletId, displayName: registry.outlets[outletId]?.displayName ?? outletId };
+  if (outletId) {
+    const registry = loadOutletRegistry();
+    return { outletId, displayName: registry.outlets[outletId]?.displayName ?? outletId };
+  }
+
+  // Fallback: multi-tenant publishing platforms where every subdomain is a
+  // distinct publication. We can't pre-register every Substack/Ghost newsletter,
+  // but the subdomain itself is a stable, unique identifier.
+  const platformMatch = hostname.match(/^([a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\.(substack\.com|ghost\.io|beehiiv\.com)$/i);
+  if (platformMatch) {
+    const sub = platformMatch[1].toLowerCase();
+    const platform = platformMatch[2].toLowerCase();
+    const platformLabel = platform === 'substack.com' ? 'Substack' : platform === 'ghost.io' ? 'Ghost' : 'Beehiiv';
+    return {
+      outletId: sub,
+      displayName: `${titleCaseSlug(sub)} (${platformLabel})`,
+    };
+  }
+
+  return { outletId: null, displayName: null };
+}
+
+function titleCaseSlug(slug: string): string {
+  // "offbookcincinnati" → "Offbookcincinnati"; "off-book-cincinnati" → "Off Book Cincinnati"
+  return slug
+    .split(/[-_]/)
+    .filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
 }
 
 export function detectPublishDateFromUrl(url: string): string | null {
@@ -132,16 +159,27 @@ export function detectCriticFromByline(fullText: string): string | null {
   // Pattern 2: "— Helen Shaw" (em-dash byline, e.g., NYT print bylines)
   const p2 = /(?:^|\n)\s*[—–-]\s*([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})\s*(?:\n|$)/m;
 
+  // Pattern 3: "Posted by JK at 9:44 PM" — Blogger.com convention. JKS
+  // Theatre Scene and many other Blogger blogs use this. Allows 1-word
+  // names because the surrounding context ("Posted by ... at TIME") is
+  // distinctive enough that single names like "JK" are reliably bylines.
+  const p3 = /(?:^|\n|\s)Posted\s+by\s+([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){0,3})\s+(?:at|on|@)\b/;
+
+  // Pattern 4: "Reviewed by Helen Shaw" / "Review by Helen Shaw"
+  const p4 = /(?:^|\n|\s)(?:Reviewed|Review|Written|Authored)\s+by\s+([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})(?=\s*(?:\n|[,.]|$))/m;
+
+  // Pattern 5: "By: Helen Shaw" (with colon — alt format)
+  const p5 = /(?:^|\n)\s*(?:By|BY)\s*[:|]\s*([A-Z][a-zA-Z.'’\-]+(?:\s+[A-Z][a-zA-Z.'’\-]+){1,3})(?=\s*(?:\n|[,.]|$))/m;
+
   for (const segment of segments) {
-    const m1 = segment.match(p1);
-    if (m1) {
-      const candidate = m1[1].trim();
-      if (isPlausibleCriticName(candidate)) return candidate;
-    }
-    const m2 = segment.match(p2);
-    if (m2) {
-      const candidate = m2[1].trim();
-      if (isPlausibleCriticName(candidate)) return candidate;
+    for (const pat of [p1, p2, p3, p4, p5]) {
+      const m = segment.match(pat);
+      if (m) {
+        const candidate = m[1].trim();
+        // Pattern 3 (Posted by) allows 1-word names; others require 2+
+        const allowSingleWord = pat === p3;
+        if (isPlausibleCriticName(candidate, { allowSingleWord })) return candidate;
+      }
     }
   }
 
@@ -153,13 +191,14 @@ export function detectCriticFromByline(fullText: string): string | null {
 export { parseScore } from './admin-ingest-score';
 export type { ScoreParseResult } from './admin-ingest-score';
 
-function isPlausibleCriticName(name: string): boolean {
+function isPlausibleCriticName(name: string, opts: { allowSingleWord?: boolean } = {}): boolean {
   // Reject obvious non-names (common false positives).
   const NEG = /\b(Broadway|Theater|Theatre|Review|Critic|Opening|The New York|Signed|The Critics?|Rocky Horror|Beaches)\b/i;
   if (NEG.test(name)) return false;
-  // Must have 2-4 space-separated words.
+  // Word count: 2-4 normally, 1-4 when caller has high-confidence context.
   const words = name.split(/\s+/);
-  if (words.length < 2 || words.length > 4) return false;
+  const minWords = opts.allowSingleWord ? 1 : 2;
+  if (words.length < minWords || words.length > 4) return false;
   // Each word should be capitalized + mostly alphabetic.
   for (const w of words) {
     if (!/^[A-Z]/.test(w)) return false;
@@ -286,8 +325,27 @@ export function detectFromReview(opts: { url: string; fullText: string }): Detec
   const publishDate = detectPublishDateFromUrl(url);
   if (!publishDate) warnings.push('Publish date not found in URL path; set manually if needed');
 
-  const criticName = detectCriticFromByline(fullText);
-  if (!criticName) warnings.push('No byline detected in first 3000 chars; set critic manually');
+  // defaultCritic from the registry is the authority for single-author outlets
+  // (306 entries set it). When the registry has it, it wins over byline detection
+  // — keeps reviews from this outlet writing to a consistent filename.
+  let criticName: string | null = null;
+  let criticSource: 'byline-regex' | 'outlet-default' | 'none' = 'none';
+  if (outlet.outletId) {
+    const registry = loadOutletRegistry();
+    const def = registry.outlets[outlet.outletId]?.defaultCritic;
+    if (def) {
+      criticName = def;
+      criticSource = 'outlet-default';
+    }
+  }
+  if (!criticName) {
+    const byline = detectCriticFromByline(fullText);
+    if (byline) {
+      criticName = byline;
+      criticSource = 'byline-regex';
+    }
+  }
+  if (!criticName) warnings.push('No byline detected and no defaultCritic for this outlet; set critic manually');
 
   const show = detectShow(fullText, url);
   if (!show.showId) {
@@ -300,7 +358,7 @@ export function detectFromReview(opts: { url: string; fullText: string }): Detec
     outletId: outlet.outletId,
     outletDisplayName: outlet.displayName,
     criticName,
-    criticSource: criticName ? 'byline-regex' : 'none',
+    criticSource,
     publishDate,
     publishDateSource: publishDate ? 'url-path' : 'none',
     showId: show.showId,

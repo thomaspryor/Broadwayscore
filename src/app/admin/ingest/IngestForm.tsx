@@ -52,6 +52,8 @@ interface BatchEntry {
   url: string;
   fullText: string;
   scoreInput: string;
+  criticName: string;
+  showId: string;
 }
 
 export default function IngestForm() {
@@ -474,6 +476,10 @@ function BatchPasteForm({
             url: entry.url,
             fullText: entry.fullText,
             originalScore: entry.scoreInput || null,
+            // Per-entry overrides — let the user supply critic/show in the
+            // paste when auto-detection won't catch it (Substack, etc).
+            criticName: entry.criticName || null,
+            showId: entry.showId || null,
             skipDispatch: true,
           }),
         });
@@ -557,16 +563,19 @@ function BatchPasteForm({
         <div className="font-semibold text-gray-200">Batch format</div>
         <p>
           Separate each review with a line of <code className="text-brand">---</code>. For each
-          review: put the URL on its own line, then the full review text. Optionally add a line{' '}
-          <code className="text-brand">Score: 5/5 stars</code> anywhere in the block.
+          review: put the URL on its own line, then the full review text. Optionally add lines:{' '}
+          <code className="text-brand">Score: 5/5 stars</code>,{' '}
+          <code className="text-brand">Critic: Name</code>,{' '}
+          <code className="text-brand">Show: show-id</code>.
         </p>
         <pre className="text-[11px] text-gray-500 leading-relaxed mt-2 whitespace-pre-wrap">{`https://www.nytimes.com/2026/04/23/...
 By Helen Shaw
 Full review text…
 Score: 4/5 stars
 ---
-https://variety.com/2026/...
-By Naveen Kumar
+https://offbookcincinnati.substack.com/p/...
+Critic: Christopher Brown
+Show: the-rocky-horror-show-2026
 Full review text…`}</pre>
       </div>
 
@@ -620,6 +629,8 @@ function parseBatch(input: string): BatchEntry[] {
       const lines = chunk.split('\n');
       let url = '';
       let scoreInput = '';
+      let criticName = '';
+      let showId = '';
       const textLines: string[] = [];
       for (const rawLine of lines) {
         const line = rawLine.trim();
@@ -632,12 +643,24 @@ function parseBatch(input: string): BatchEntry[] {
           scoreInput = scoreMatch[1].trim();
           continue;
         }
+        const criticMatch = line.match(/^critic\s*[:=]\s*(.+)$/i);
+        if (criticMatch) {
+          criticName = criticMatch[1].trim();
+          continue;
+        }
+        const showMatch = line.match(/^show\s*[:=]\s*(.+)$/i);
+        if (showMatch) {
+          showId = showMatch[1].trim();
+          continue;
+        }
         textLines.push(rawLine);
       }
       return {
         url,
         fullText: textLines.join('\n').trim(),
         scoreInput,
+        criticName,
+        showId,
       };
     })
     .filter(e => e.url || e.fullText.trim());
