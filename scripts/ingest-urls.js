@@ -21,6 +21,7 @@ const { execSync } = require('child_process');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
+const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -145,9 +146,19 @@ async function main() {
         if (verbose) console.log(`    Fetching text...`);
         const result = await fetchPage(url);
         if (result && result.content) {
-          fullText = result.content;
           fetchMethod = result.source;
-          if (verbose) console.log(`    ✓ Fetched ${fullText.length} chars via ${fetchMethod}`);
+          // Extract main article text from outlet HTML rather than storing
+          // raw chrome. Falls back to raw HTML only if no extractor pattern
+          // matched and the raw HTML doesn't look like a full page.
+          const extracted = extractArticleTextFromUrl(result.content, url);
+          if (extracted && extracted.length >= 200) {
+            fullText = extracted;
+            if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
+          } else {
+            // No extractor matched. Skip rather than store raw HTML chrome.
+            if (verbose) console.log(`    ⚠️  No article-body match for ${url}; skipping fullText`);
+            results.warnings.push(`No article-body extractor matched ${url} — review created without fullText`);
+          }
         }
       } catch (e) {
         if (verbose) console.log(`    ⚠️  Fetch failed: ${e.message}`);

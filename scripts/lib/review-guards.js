@@ -620,6 +620,77 @@ function isLikelyStaleWrongShow(data, show) {
 }
 
 /**
+ * Detect a stale suspectedMisattribution flag — a flag that the current
+ * critic-registry would no longer set on this file.
+ *
+ * Background (Notion 34e637c5-416f-81b8): suspectedMisattribution is set by
+ * Guard G in scripts/lib/review-file-writer.js when a non-freelancer critic
+ * publishes at an outletId outside their knownOutlets. The check is gated by
+ * `entry && !entry.isFreelancer && knownOutlets.length > 0` — if any of those
+ * is false today, Guard G would no longer fire on the same file.
+ *
+ * The registry is regenerated nightly by scripts/audit-critic-outlets.js from
+ * the current corpus, so knownOutlets expands over time as critics accumulate
+ * reviews at additional outlets. Files flagged in earlier passes carry the
+ * exclusion forever, even after the registry has caught up.
+ *
+ * Whitelist by registry-state-today, mirroring the exact preconditions of
+ * Guard G:
+ *   - critic is no longer in registry (entry undefined → guard short-circuits)
+ *   - critic is now classified as freelancer (guard skips)
+ *   - outletId is now in knownOutlets (guard passes)
+ *
+ * Caller passes the registry as the second argument (not loaded here so the
+ * predicate stays pure and dependency-free for test isolation).
+ *
+ * @param {Object} data - Review-text record
+ * @param {Object|undefined} registry - critic-registry critics map (slug → entry).
+ *   Pass `getCriticRegistry()` from this file or the same `_getCriticRegistry`
+ *   used by review-file-writer. If undefined, predicate returns false (cannot
+ *   prove staleness without registry context).
+ */
+function isLikelyStaleSuspectedMisattribution(data, registry) {
+  if (!data || data.suspectedMisattribution !== true) return false;
+  if (!registry || typeof registry !== 'object') return false;
+  const criticName = (data.criticName || '').trim();
+  const outletId = (data.outletId || '').trim();
+  if (!criticName || !outletId || criticName === 'Unknown' || outletId === 'unknown') return false;
+  // Use the same slugifier as audit-critic-outlets.js / review-file-writer normalization.
+  const slug = criticName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  if (!slug) return false;
+  const entry = registry[slug];
+  if (!entry) return true; // Critic dropped from registry — Guard G would short-circuit.
+  if (entry.isFreelancer === true) return true; // Freelancer — Guard G skips.
+  const knownOutlets = entry.knownOutlets || [];
+  if (knownOutlets.length === 0) return true; // No knownOutlets — Guard G's `length > 0` check fails.
+  if (knownOutlets.includes(outletId)) return true; // Outlet now legitimate.
+  return false;
+}
+
+/**
+ * Lazy-load critic-registry from disk for use in pure-flag exclusion gates.
+ * Cached at module scope; call _resetCriticRegistryCache() in tests if needed.
+ */
+let _criticRegistryCache = null;
+function getCriticRegistry() {
+  if (_criticRegistryCache !== null) return _criticRegistryCache;
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    const registryPath = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
+    const raw = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    _criticRegistryCache = raw.critics || {};
+  } catch {
+    _criticRegistryCache = {};
+  }
+  return _criticRegistryCache;
+}
+
+function _resetCriticRegistryCache() {
+  _criticRegistryCache = null;
+}
+
+/**
  * Detect URL/venue mismatches that suggest wrong production.
  * Checks if the review URL mentions a different venue than expected.
  *
@@ -1850,6 +1921,9 @@ module.exports = {
   isLikelyStaleRoundupFlag,
   isLikelyStaleWrongShow,
   wrongShowCleared,
+  isLikelyStaleSuspectedMisattribution,
+  getCriticRegistry,
+  _resetCriticRegistryCache,
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,

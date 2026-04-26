@@ -390,7 +390,8 @@ function main() {
       && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
       && (baseline.isLikelyStaleWrongShow?.toString() || '') === (working.isLikelyStaleWrongShow?.toString() || '')
       && (baseline.wrongShowCleared?.toString() || '') === (working.wrongShowCleared?.toString() || '')
-      && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '');
+      && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '')
+      && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '');
     if (guardsIdentical) {
       log('[scoring-delta] Phase A: review-guards.js decisions identical — skipping inclusion replay.');
     } else {

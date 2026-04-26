@@ -38,7 +38,7 @@ const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTL
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
@@ -2247,8 +2247,10 @@ showDirs.forEach(showId => {
       }
 
       // Skip reviews flagged as suspected misattribution by critic-registry guard
-      // (critic at an outlet outside their known affiliation, and not a freelancer)
-      if (data.suspectedMisattribution === true) {
+      // (critic at an outlet outside their known affiliation, and not a freelancer).
+      // Defensive override: stale flag where current registry would no longer fire
+      // (Notion 34e637c5-416f-81b8 — Susannah Clapp/guardian etc.).
+      if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) {
         logExclusion("skippedSuspectedMisattribution", showId, file, data);
         stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
         return;
@@ -2518,8 +2520,9 @@ showDirs.forEach(showId => {
         return;
       }
 
-      // Skip suspected misattributions (critic-registry guard)
-      if (data.suspectedMisattribution === true) {
+      // Skip suspected misattributions (critic-registry guard).
+      // Defensive override: stale flag where current registry would no longer fire.
+      if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) {
         logExclusion("skippedSuspectedMisattribution", showId, file, data);
         stats.skippedSuspectedMisattribution = (stats.skippedSuspectedMisattribution || 0) + 1;
         return;
