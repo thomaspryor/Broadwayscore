@@ -414,3 +414,129 @@ describe('checkForDataLoss', () => {
     assert.deepEqual(losses, []);
   });
 });
+
+describe('safeWriteReview lockedOverride (Joe Turner postmortem P0 #2)', () => {
+  test('locked + non-empty incoming PROTECTED → existing wins, lockedSkipped=true', () => {
+    const filePath = path.join(tmpDir, 'locked-protected.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'joe-turners-come-and-gone-2026',
+      outletId: 'nytimes',
+      _locked: true,
+      assignedScore: 85,
+      fullText: 'Original locked text',
+    }, null, 2));
+
+    const result = safeWriteReview(filePath, {
+      showId: 'joe-turners-come-and-gone-2026',
+      outletId: 'nytimes',
+      assignedScore: 72,
+      fullText: 'Different text from enrichment',
+    });
+
+    assert.equal(result.lockedSkipped, true);
+    assert.ok(result.preserved.includes('assignedScore'));
+    assert.ok(result.preserved.includes('fullText'));
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 85);
+    assert.equal(written.fullText, 'Original locked text');
+  });
+
+  test('locked + force=true → incoming wins, lockedSkipped=false', () => {
+    const filePath = path.join(tmpDir, 'locked-force.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      _locked: true,
+      assignedScore: 85,
+    }, null, 2));
+
+    const originalWarn = console.warn;
+    console.warn = () => {};
+    const result = safeWriteReview(filePath, { assignedScore: 72 }, { force: true });
+    console.warn = originalWarn;
+
+    assert.equal(result.lockedSkipped, false);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 72);
+  });
+
+  test('locked + non-PROTECTED field changes go through normally', () => {
+    const filePath = path.join(tmpDir, 'locked-nonprotected.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      _locked: true,
+      assignedScore: 85,
+      criticName: 'Old Critic',
+    }, null, 2));
+
+    const result = safeWriteReview(filePath, {
+      assignedScore: 85,
+      criticName: 'New Critic',
+    });
+
+    // criticName is NOT in PROTECTED_FIELDS, so it should change.
+    // assignedScore matches existing, so it's a no-op.
+    assert.equal(result.lockedSkipped, false);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.criticName, 'New Critic');
+    assert.equal(written.assignedScore, 85);
+  });
+
+  test('parallel-writer race: fresh disk read sees post-write mutation', () => {
+    // This proves safeWriteReview re-reads from disk on every call. If a parallel
+    // writer mutates the file between our two writes, the second write sees the
+    // mutated state, not a stale cache. That's the mitigation for the Joe Turner
+    // P0 #2 parallel-writer scenario.
+    const filePath = path.join(tmpDir, 'parallel-race.json');
+    safeWriteReview(filePath, {
+      _locked: true,
+      assignedScore: 80,
+    });
+
+    // Simulate a parallel writer (poller, manual ingest, etc.) mutating the
+    // PROTECTED field on disk while we're between calls.
+    const onDisk = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    onDisk.assignedScore = 95;
+    fs.writeFileSync(filePath, JSON.stringify(onDisk, null, 2) + '\n');
+
+    // Now call safeWriteReview again with a different score. Locked override
+    // should preserve the disk's 95, not our cached 80 or our incoming 72.
+    const result = safeWriteReview(filePath, {
+      _locked: true,
+      assignedScore: 72,
+    });
+
+    assert.equal(result.lockedSkipped, true);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 95);
+  });
+
+  test('locked + incoming empty → preserved (existing behavior, lockedSkipped=false)', () => {
+    // When incoming is empty, the original empty-incoming guard already preserves
+    // the field. This is not a "lock save" — the lock was redundant. lockedSkipped
+    // stays false to keep the signal meaningful (lock prevented a real overwrite).
+    const filePath = path.join(tmpDir, 'locked-incoming-empty.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      _locked: true,
+      assignedScore: 85,
+    }, null, 2));
+
+    const result = safeWriteReview(filePath, { showId: 'x' });
+
+    assert.equal(result.lockedSkipped, false);
+    assert.ok(result.preserved.includes('assignedScore'));
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 85);
+  });
+
+  test('non-locked + non-empty incoming PROTECTED → incoming wins, lockedSkipped=false', () => {
+    // Sanity: lockedOverride must NOT trigger on non-locked files.
+    const filePath = path.join(tmpDir, 'unlocked-incoming.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      assignedScore: 85,
+    }, null, 2));
+
+    const result = safeWriteReview(filePath, { assignedScore: 72 });
+
+    assert.equal(result.lockedSkipped, false);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.assignedScore, 72);
+  });
+});
