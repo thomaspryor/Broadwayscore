@@ -103,7 +103,13 @@ jobs:
             echo "No state changes to commit."
           else
             git commit -m "chore: opening-night completeness state [skip ci]"
-            bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-snapshot."
+            # 5 retries (matches push-with-retry.sh default + opening-night-checklist.yml).
+            # 3 retries was too few during high-contention windows: observed 24965589737
+            # where all 3 attempts at 19:54/19:58/19:59 lost to concurrent rebuild + scoring
+            # pushers, dropping the snapshot file entirely.
+            # If push still fails after 5: emit warning and continue. Next cron tick (≤15 min)
+            # will re-snapshot — drop detection is degraded for that window but not broken.
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::State push failed after 5 attempts — snapshot lost; next cron will re-snapshot. Drop detection skipped for this 15-min window."
           fi
 
       - name: Notify on failure
