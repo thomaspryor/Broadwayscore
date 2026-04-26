@@ -193,17 +193,37 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Push core data to private repo
+        id: push-core-data
         if: always()
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from rebuild-fast'
 
-      # Deploy dispatch removed 2026-04-24: vercel-deploy.yml now listens for
-      # "Rebuild Reviews (Fast)" completion via workflow_run. Keeping both paths
-      # double-fires the concurrency group for every opening-night correction.
-      # workflow_run fires on ALL successful completions (including no-change),
-      # which is the tradeoff — Fast is manual-only so no-change runs are rare.
+      # A #21 (2026-04-26): Dispatch deploy directly after push-core-data so
+      # post-push step failures don't strand fresh data. Workflow_run listener
+      # gates on success-conclusion, which means a failed downstream step
+      # silently suppresses the deploy. See rebuild-reviews.yml for the same
+      # pattern; full rationale in memory/feedback_admin_ingest_opening_night_2026-04-26.md.
+      - name: Trigger deploy (core data changed)
+        if: always() && steps.push-core-data.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          OUR_RUN_START=$(gh run view ${{ github.run_id }} --json createdAt -q '.createdAt' 2>/dev/null || echo "")
+          RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          if [ -n "$RECENT" ] && [ -n "$OUR_RUN_START" ]; then
+            RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
+            OUR_TS=$(date -d "$OUR_RUN_START" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$OUR_RUN_START" +%s 2>/dev/null || echo "0")
+            NOW_TS=$(date +%s)
+            DIFF=$((NOW_TS - RECENT_TS))
+            if [ "$RECENT_TS" -gt "$OUR_TS" ] && [ "$DIFF" -lt 900 ]; then
+              echo "Skipping deploy — already triggered after this run started (${DIFF}s ago)"
+              exit 0
+            fi
+          fi
+          echo "Triggering deploy..."
+          gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — workflow_run will catch successful conclusions"
 
       - name: Notify on failure
         if: failure()
