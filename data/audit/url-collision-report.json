@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-26T20:12:00.444Z",
+  "generatedAt": "2026-04-26T20:28:03.594Z",
   "summary": {
-    "total": 16,
+    "total": 21,
     "high": 9,
-    "medium": 6,
+    "medium": 11,
     "low": 1
   },
   "collisions": [
@@ -278,6 +278,105 @@
       "confidence": "high"
     },
     {
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review/",
+      "normalizedUrl": "https://washingtonpost.com/entertainment/theater/2026/04/15/death-of-a-salesman-cats-jellicle-ball-broadway-review",
+      "candidates": [
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "file": "washpost--thomas-floyd.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "washpost"
+        },
+        {
+          "showId": "death-of-a-salesman-2026",
+          "file": "washpost--thomas-floyd.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "washpost"
+        }
+      ],
+      "suggestedWinner": "death-of-a-salesman-2026",
+      "reason": "publishDate 2026-04-15 is 6 days from death-of-a-salesman-2026 but also 8 days from cats-the-jellicle-ball-2026",
+      "confidence": "medium"
+    },
+    {
+      "url": "http://www.susangranger.com/?p=9674",
+      "normalizedUrl": "https://susangranger.com",
+      "candidates": [
+        {
+          "showId": "charlie-and-the-chocolate-factory-2017",
+          "file": "susangrangercom--susan-granger.json",
+          "publishDate": null,
+          "openingDate": "2017-04-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "susangrangercom"
+        },
+        {
+          "showId": "come-from-away-2017",
+          "file": "susangrangercom--susan-granger.json",
+          "publishDate": "May 4th, 2017",
+          "openingDate": "2017-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "susangrangercom"
+        },
+        {
+          "showId": "the-bands-visit-2017",
+          "file": "susangrangercom--susan-granger.json",
+          "publishDate": "2017-11-29",
+          "openingDate": "2017-11-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "susangrangercom"
+        }
+      ],
+      "suggestedWinner": "the-bands-visit-2017",
+      "reason": "publishDate 2017-11-29 is 20 days from the-bands-visit-2017 but also 53 days from come-from-away-2017",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27600",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "heart-wall-west-end-2026",
+          "file": "london-theatre--unknown.json",
+          "publishDate": "2026-04-15",
+          "openingDate": "2026-04-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        },
+        {
+          "showId": "moulin-rouge-the-musical-west-end-2021",
+          "file": "london-theatre--marianka-swain.json",
+          "publishDate": "2025-12-01",
+          "openingDate": "2022-01-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        },
+        {
+          "showId": "paranormal-activity-west-end-2025",
+          "file": "london-theatre--the-anonymous-critic.json",
+          "publishDate": "2025-12-17",
+          "openingDate": "2025-12-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        }
+      ],
+      "suggestedWinner": "heart-wall-west-end-2026",
+      "reason": "publishDate 2026-04-15 is 1 days from heart-wall-west-end-2026 but also 3 days from paranormal-activity-west-end-2025",
+      "confidence": "medium"
+    },
+    {
       "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "candidates": [
@@ -332,6 +431,42 @@
       "confidence": "medium"
     },
     {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-LU2NUC",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "punch-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "2025-09-29",
+          "openingDate": "2025-09-29",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "stereophonic-off-broadway-2023",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "October 30, 2023",
+          "openingDate": "2023-10-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "waiting-for-godot-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2025-09-28",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "punch-2025",
+      "reason": "publishDate 2025-09-29 is 0 days from punch-2025 but also 13 days from stereophonic-off-broadway-2023",
+      "confidence": "medium"
+    },
+    {
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
       "normalizedUrl": "https://westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville",
       "candidates": [
@@ -357,6 +492,33 @@
       "suggestedWinner": "the-lion-king-west-end-2021",
       "reason": "publishDate 1999-10-22 is 3 days from the-lion-king-west-end-2021 opening (1999-10-19); next closest is 1031 days from six-the-musical-west-end-2021",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
+      "normalizedUrl": "https://thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed",
+      "candidates": [
+        {
+          "showId": "stereophonic-2024",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": "2024-04-19",
+          "openingDate": "2024-04-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "dailybeast"
+        },
+        {
+          "showId": "stereophonic-off-broadway-2023",
+          "file": "dailybeast--tim-teeman.json",
+          "publishDate": "2023-10-30",
+          "openingDate": "2023-10-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "dailybeast"
+        }
+      ],
+      "suggestedWinner": "stereophonic-2024",
+      "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
+      "confidence": "medium"
     },
     {
       "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
