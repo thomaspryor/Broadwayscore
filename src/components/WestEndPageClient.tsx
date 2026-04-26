@@ -165,13 +165,18 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
         }
       }
 
-      const urlParams = new URLSearchParams();
-      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
-      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
-      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
-      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
-      if (next.q) urlParams.set('q', next.q);
-      if (next.venue === 'west-end-only') urlParams.set('venue', next.venue);
+      // Preserve unknown params (panel filters) so they survive inline-filter changes
+      const urlParams = new URLSearchParams(window.location.search);
+      const setOrDelete = (key: string, value: string, isDefault: boolean) => {
+        if (isDefault) urlParams.delete(key);
+        else urlParams.set(key, value);
+      };
+      setOrDelete('status', next.status, next.status === DEFAULT_STATUS);
+      setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
+      setOrDelete('type', next.type, next.type === DEFAULT_TYPE);
+      setOrDelete('scoreMode', next.scoreMode, next.scoreMode === DEFAULT_SCORE_MODE);
+      setOrDelete('q', next.q, !next.q);
+      setOrDelete('venue', next.venue, next.venue !== 'west-end-only');
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/west-end?${paramString}` : '/west-end');
@@ -402,7 +407,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     return result;
   }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
 
-  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets });
+  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const shouldHideStatus = statusFilter !== 'all';

@@ -12,7 +12,6 @@ import {
   AWARD_OLIVIER_WINNER,
   AWARD_OLIVIER_NOMINEE,
   AWARD_DRAMA_DESK_WINNER,
-  AWARD_PULITZER,
   SCORE_TIER_CRITICAL_GOLD,
   SCORE_TIER_RECOMMENDED,
   SCORE_TIER_WORTH_SEEING,
@@ -23,15 +22,15 @@ import {
   GENRE_COMEDY,
   GENRE_DRAMA,
   FORMAT_JUKEBOX,
-  FORMAT_CONCERT,
-  FORMAT_SOLO_SHOW,
-  FORMAT_IMMERSIVE,
-  FORMAT_REVUE,
   SOURCE_BASED_ON_BOOK,
   SOURCE_BASED_ON_TRUE_STORY,
   SOURCE_FILM_ADAPTATION,
   SOURCE_DISNEY,
 } from '@/lib/show-filter-predicates';
+// Excluded from v1 — match 0 (concert, revue) or 0 currently-open shows
+// (solo-show, immersive). Predicates remain in show-filter-predicates.ts
+// and can be re-added when tag coverage improves.
+// AWARD_PULITZER: 1 entry in awards.json (Hamilton only) — defer until backfilled.
 
 export interface FilterOption {
   /** Stable id — used in URL and as predicate key */
@@ -76,7 +75,6 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
       { id: 'olivier-winner', label: 'Olivier winner', predicate: AWARD_OLIVIER_WINNER },
       { id: 'olivier-nominee', label: 'Olivier nominee', predicate: AWARD_OLIVIER_NOMINEE },
       { id: 'drama-desk', label: 'Drama Desk winner', predicate: AWARD_DRAMA_DESK_WINNER },
-      { id: 'pulitzer', label: 'Pulitzer (Drama)', predicate: AWARD_PULITZER },
     ],
   },
   {
@@ -86,10 +84,6 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
       { id: 'comedy', label: 'Comedy', predicate: GENRE_COMEDY },
       { id: 'drama', label: 'Drama', predicate: GENRE_DRAMA },
       { id: 'jukebox', label: 'Jukebox', predicate: FORMAT_JUKEBOX },
-      { id: 'concert', label: 'Concert', predicate: FORMAT_CONCERT },
-      { id: 'solo-show', label: 'Solo show', predicate: FORMAT_SOLO_SHOW },
-      { id: 'immersive', label: 'Immersive', predicate: FORMAT_IMMERSIVE },
-      { id: 'revue', label: 'Revue', predicate: FORMAT_REVUE },
       { id: 'based-on-book', label: 'Based on book', predicate: SOURCE_BASED_ON_BOOK },
       { id: 'based-on-true-story', label: 'Based on true story', predicate: SOURCE_BASED_ON_TRUE_STORY },
       { id: 'film-adaptation', label: 'Film adaptation', predicate: SOURCE_FILM_ADAPTATION },

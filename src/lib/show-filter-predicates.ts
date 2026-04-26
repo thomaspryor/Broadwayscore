@@ -24,6 +24,8 @@ export interface FilterPredicateCtx {
   pulitzerWinnerIds: ReadonlySet<string>;
   /** Time-period range — inclusive on both ends; null = no time filter */
   yearRange: { from: number; to: number } | null;
+  /** Active score-mode — score-tier predicates evaluate against this score */
+  scoreMode: 'critics' | 'audience';
 }
 
 export type FilterPredicate = (show: ShowCardShow, ctx: FilterPredicateCtx) => boolean;
@@ -69,11 +71,13 @@ export const TIME_PERIOD_RANGE: FilterPredicate = (s, ctx) => {
 };
 
 // ─────────────── Score tier ───────────────
-// Uses the canonical buckets from src/config/score-buckets.ts. Filters
-// against criticScore for v1 — audience-mode coupling can come later.
+// Uses the canonical buckets from src/config/score-buckets.ts. Reads the
+// score that matches the active scoreMode (critics vs audience).
 
-const inScoreRange = (min: number, max: number): FilterPredicate => (s) => {
-  const score = s.criticScore?.score;
+const inScoreRange = (min: number, max: number): FilterPredicate => (s, ctx) => {
+  const score = ctx.scoreMode === 'audience'
+    ? s.audienceCombinedScore
+    : s.criticScore?.score;
   if (typeof score !== 'number') return false;
   return score >= min && score <= max;
 };

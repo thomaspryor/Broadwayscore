@@ -290,13 +290,19 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         }
       }
 
-      // Sync to URL without triggering navigation
-      const urlParams = new URLSearchParams();
-      if (next.status !== DEFAULT_STATUS) urlParams.set('status', next.status);
-      if (next.sort !== DEFAULT_SORT) urlParams.set('sort', next.sort);
-      if (next.type !== DEFAULT_TYPE) urlParams.set('type', next.type);
-      if (next.scoreMode !== DEFAULT_SCORE_MODE) urlParams.set('scoreMode', next.scoreMode);
-      if (next.q) urlParams.set('q', next.q);
+      // Sync to URL without triggering navigation. Preserve unknown params
+      // (e.g. panel filters: production/awards/score_tier/genre/tickets/years)
+      // so the panel state survives inline-filter changes.
+      const urlParams = new URLSearchParams(window.location.search);
+      const setOrDelete = (key: string, value: string, isDefault: boolean) => {
+        if (isDefault) urlParams.delete(key);
+        else urlParams.set(key, value);
+      };
+      setOrDelete('status', next.status, next.status === DEFAULT_STATUS);
+      setOrDelete('sort', next.sort, next.sort === DEFAULT_SORT);
+      setOrDelete('type', next.type, next.type === DEFAULT_TYPE);
+      setOrDelete('scoreMode', next.scoreMode, next.scoreMode === DEFAULT_SCORE_MODE);
+      setOrDelete('q', next.q, !next.q);
 
       const paramString = urlParams.toString();
       window.history.replaceState({}, '', paramString ? `/?${paramString}` : '/');
@@ -507,7 +513,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   }, [allShows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, isEffectivelyOpen]);
 
   // Advanced filter panel — applies on top of inline-filtered shows
-  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets });
+  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // Hide status chip when it would be redundant

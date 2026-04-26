@@ -13,6 +13,8 @@ interface UsePanelFiltersArgs<T extends ShowCardShow> {
   shows: T[];
   /** Pre-computed award winner ID arrays from server */
   awardWinnerSets?: AwardWinnerSets;
+  /** Active score-mode — Score tier predicates filter against this score */
+  scoreMode?: 'critics' | 'audience';
 }
 
 interface UsePanelFiltersReturn<T extends ShowCardShow> {
@@ -41,6 +43,7 @@ interface UsePanelFiltersReturn<T extends ShowCardShow> {
 export function usePanelFilters<T extends ShowCardShow>({
   shows,
   awardWinnerSets,
+  scoreMode = 'critics',
 }: UsePanelFiltersArgs<T>): UsePanelFiltersReturn<T> {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -57,8 +60,9 @@ export function usePanelFilters<T extends ShowCardShow>({
       dramaDeskWinnerIds: new Set(ws?.dramaDeskWinnerIds ?? []),
       pulitzerWinnerIds: new Set(ws?.pulitzerWinnerIds ?? []),
       yearRange: null, // wired in Sprint 3
+      scoreMode,
     };
-  }, [awardWinnerSets]);
+  }, [awardWinnerSets, scoreMode]);
 
   // Parse selected ids per paramKey from URL
   const selectedByGroup = useMemo(() => {
