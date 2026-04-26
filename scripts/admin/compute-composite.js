@@ -217,6 +217,8 @@ function getExclusionReason(data) {
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
   if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
   if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
+  if (data.suspectedMisattribution === true) return 'suspectedMisattribution';
+  if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return `rejectedBy:${data.rejectedBy.join(',')}`;
   if (data.rejectionReason) return `rejected:${data.rejectionReason}`;
   if (data.rejectedAt) return 'rejectedAt';
   if (data.incompleteReason === 'wrong_content') return 'wrong_content';
