@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T03:07:18.030Z",
+  "timestamp": "2026-04-26T03:59:26.605Z",
   "stats": {
-    "totalReviews": 35789,
+    "totalReviews": 35791,
     "alreadyFlagged": 16034,
     "dateGuardCatches": 95,
-    "directorMismatch": 820,
-    "tvFilmSignals": 3198,
+    "directorMismatch": 821,
+    "tvFilmSignals": 3199,
     "londonSignals": 1030,
-    "offBroadwaySignals": 899,
+    "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3735
+    "noPublishDate": 3731
   },
   "findings": [
     {
@@ -3571,6 +3571,19 @@
       ]
     },
     {
+      "showId": "an-act-of-god-2016",
+      "file": "variety--bob-verini.json",
+      "publishDate": null,
+      "url": "http://variety.com/2016/legit/reviews/an-act-of-god-review-sean-hayes-1201703755/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"paramount\""
+        }
+      ]
+    },
+    {
       "showId": "an-american-in-paris-2015",
       "file": "deadline--jeremy-gerard.json",
       "score": 88,
@@ -4950,6 +4963,19 @@
     },
     {
       "showId": "back-to-the-future-2023",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2023/08/03/back-to-the-future-back-to-musical-comedy-with-plutonium-packed-thrills/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"motion picture\""
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-2023",
       "file": "nytg--gillian-russo.json",
       "score": 81,
       "publishDate": "August 4th, 2023",
@@ -4987,20 +5013,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "back-to-the-future-2023",
-      "file": "variety--charles-isherwood.json",
-      "score": 72,
-      "publishDate": "August 3, 2023",
-      "url": "https://variety.com/2023/legit/news/back-to-the-future-the-musical-broadway-star-casey-likes-michael-j-fox-opening-night-advice-1235723715/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
         }
       ]
     },
@@ -8620,12 +8632,12 @@
       "file": "variety--frank-rizzo.json",
       "score": 90,
       "publishDate": "2026-04-08",
-      "url": null,
+      "url": "https://variety.com/2026/legit/reviews/cats-the-jellicle-ball-broadway-review-andrew-lloyd-webber-musical-ballroom-culture-1236709562/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -22542,6 +22554,19 @@
     },
     {
       "showId": "into-the-woods-2022",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": null,
+      "url": "https://nystagereview.com/2022/05/06/into-the-woods-sondheim-leads-encores-out-of-darkness/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 88,
       "publishDate": "July 10, 2022",
@@ -23888,6 +23913,7 @@
     {
       "showId": "joe-turners-come-and-gone-2026",
       "file": "wsj--charles-isherwood.json",
+      "score": 77,
       "publishDate": null,
       "url": "https://www.wsj.com/articles/joe-turners-come-and-gone-review-august-wilsons-spiritual-searchers-674b4dd1",
       "findings": [
@@ -65669,6 +65695,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"soho rep\""
+        }
+      ]
+    },
+    {
+      "showId": "joe-turners-come-and-gone-2026",
+      "file": "frontmezzjunkies--ross.json",
+      "score": 84,
+      "publishDate": "2026-03-30",
+      "url": "https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },

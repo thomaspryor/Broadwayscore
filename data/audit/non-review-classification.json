@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T02:50:05.576Z",
+    "generatedAt": "2026-04-26T03:42:18.357Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36441,
-      "inReviewsJson": 16657,
-      "skippedExcluded": 82,
-      "withFullText": 29,
-      "excerptOnly": 1530,
-      "llmClassified": 28,
+      "totalFiles": 36442,
+      "inReviewsJson": 16669,
+      "skippedExcluded": 83,
+      "withFullText": 20,
+      "excerptOnly": 1522,
+      "llmClassified": 19,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
       "uncertainCases": 14,
-      "budgetUsed": 0.002899999999999999,
-      "llmCalls": 29,
+      "budgetUsed": 0.0020000000000000005,
+      "llmCalls": 20,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 15016
+      "skippedAlreadyClassified": 15044
     },
     "calibration": null
   },
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting it might be a directory or advertisement rather than a review of a specific show.",
       "currentScore": 82
     },
     {
@@ -50,7 +50,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a directory or listing of theater-related resources and news, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, rather than a review of a specific production. It mentions 'Broadway review subscriptions' but does not contain a review itself.",
       "currentScore": 62
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content about the show itself.",
       "currentScore": 88
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "The text appears to be a collection of links and categories related to theater and music, rather than a review of a specific production.",
       "currentScore": 89
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production.",
+      "reasoning": "The article describes the play's premise and setting up the audience for the show, but does not offer an evaluation or opinion on the quality of the production itself. It seems to be setting the stage for a review or providing background information before a review.",
       "currentScore": 80
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or recommendation. It also includes an interview excerpt, further suggesting it's not a review.",
       "currentScore": 83
     },
     {
@@ -140,7 +140,7 @@
       "outletId": "front-row-center",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or show listing than a review. There is no evaluative content.",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
     },
     {
@@ -150,7 +150,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific content type. It's likely a dynamically generated page or search result.",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
       "currentScore": 78
     },
     {
@@ -166,20 +166,11 @@
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "dracula-west-end-2025/london-box-office--stuart-king.json",
-    "joe-turners-come-and-gone-2026/nydailynews--chris-jones.json",
-    "joe-turners-come-and-gone-2026/nytg--austin-fimmano.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/london-box-office--stuart-king.json",
-    "the-iceman-cometh-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "the-little-foxes-2017/the-clyde-fitch-report--david-finkle.json",
-    "the-old-ladies-off-west-end-2026/london-box-office--stuart-king.json",
-    "the-rocky-horror-show-2026/jks-theatre-scene--jeff-kready.json",
-    "the-rocky-horror-show-2026/nypost--johnny-oleksinski.json",
-    "the-terms-of-my-surrender-2017/the-clyde-fitch-report--david-finkle.json",
-    "the-waverly-gallery-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "three-tall-women-2018/the-clyde-fitch-report--martha-wade-steketee.json",
-    "welcome-to-pemfort-off-west-end-2026/london-box-office--stuart-king.json",
-    "zack-off-broadway-2026/the-interested-bystander--cary-wong.json"
+    "joe-turners-come-and-gone-2026/frontmezzjunkies--ross.json",
+    "joe-turners-come-and-gone-2026/nypost--johnny-oleksinski.json",
+    "joe-turners-come-and-gone-2026/nytimes--helen-shaw.json",
+    "joe-turners-come-and-gone-2026/timeout--raven-snook.json",
+    "joe-turners-come-and-gone-2026/vulture--sara-holdren.json"
   ],
   "perShowSummary": []
 }
