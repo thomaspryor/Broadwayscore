@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-26T01:36:33.964Z",
+    "lastUpdated": "2026-04-26T01:53:15.934Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 36421,
-    "skippedFiles": 16799,
-    "totalCritics": 1316,
-    "registryCritics": 491,
-    "flaggedReviews": 12
+    "totalFilesScanned": 36428,
+    "skippedFiles": 16869,
+    "totalCritics": 1315,
+    "registryCritics": 490,
+    "flaggedReviews": 13
   },
   "flaggedReviews": [
     {
@@ -64,6 +64,17 @@
       "primaryOutlet": "broadwayworld",
       "primaryShare": 99,
       "totalReviews": 131
+    },
+    {
+      "critic": "Jackson McHenry",
+      "criticSlug": "jackson-mchenry",
+      "outlet": "theatrely",
+      "showId": "parade-2023",
+      "file": "theatrely--jackson-mchenry.json",
+      "outletShare": 1,
+      "primaryOutlet": "vulture",
+      "primaryShare": 99,
+      "totalReviews": 86
     },
     {
       "critic": "Michael Kuchwara",
@@ -176,7 +187,7 @@
         "theatermania",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 168
+      "totalReviews": 166
     },
     {
       "critic": "David Rooney",
@@ -189,7 +200,7 @@
         "reuters",
         "ap"
       ],
-      "totalReviews": 416
+      "totalReviews": 413
     },
     {
       "critic": "Mark Kennedy",
@@ -206,7 +217,7 @@
         "canadian-press",
         "npr"
       ],
-      "totalReviews": 237
+      "totalReviews": 235
     },
     {
       "critic": "Chris Jones",
@@ -220,7 +231,7 @@
         "nytimes",
         "thestage"
       ],
-      "totalReviews": 502
+      "totalReviews": 499
     },
     {
       "critic": "Michael Sommers",
@@ -247,7 +258,7 @@
         "broadwayworld",
         "newyorker"
       ],
-      "totalReviews": 219
+      "totalReviews": 217
     },
     {
       "critic": "Brittani Samuel",
@@ -272,7 +283,7 @@
         "nytg",
         "zeal-nyc"
       ],
-      "totalReviews": 239
+      "totalReviews": 238
     },
     {
       "critic": "Greg Evans",
@@ -352,8 +363,8 @@
         "frontmezzjunkies",
         "theatermania",
         "ap",
-        "thestage",
         "playbill",
+        "thestage",
         "nytimes",
         "timeout",
         "nydailynews",
@@ -456,7 +467,7 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 506
+      "totalReviews": 505
     },
     {
       "critic": "Jesse Green",
@@ -474,7 +485,7 @@
         "newyorker",
         "nypost"
       ],
-      "totalReviews": 499
+      "totalReviews": 497
     },
     {
       "critic": "Howard Miller",
@@ -504,7 +515,7 @@
         "nytheatre",
         "whatsonstage"
       ],
-      "totalReviews": 99
+      "totalReviews": 97
     },
     {
       "critic": "Adam Feldman",
@@ -514,7 +525,7 @@
         "theatermania",
         "nytimes"
       ],
-      "totalReviews": 370
+      "totalReviews": 368
     },
     {
       "critic": "Charles Isherwood",
@@ -530,7 +541,7 @@
         "financialtimes",
         "hollywood-reporter"
       ],
-      "totalReviews": 525
+      "totalReviews": 519
     },
     {
       "critic": "Matt Windman",
@@ -568,7 +579,7 @@
         "newsday",
         "vulture"
       ],
-      "totalReviews": 189
+      "totalReviews": 187
     },
     {
       "critic": "Christopher Kelly",
@@ -590,7 +601,7 @@
         "nypost",
         "variety"
       ],
-      "totalReviews": 388
+      "totalReviews": 386
     },
     {
       "critic": "Thom Geier",
@@ -610,7 +621,7 @@
         "boston-herald",
         "chicagotribune"
       ],
-      "totalReviews": 304
+      "totalReviews": 303
     },
     {
       "critic": "John Simon",
@@ -620,7 +631,7 @@
         "vulture",
         "yonkers-tribune"
       ],
-      "totalReviews": 36
+      "totalReviews": 32
     },
     {
       "critic": "David Cote",
@@ -670,10 +681,9 @@
         "scheckontheater",
         "reuters",
         "nypost",
-        "dtli",
-        "theatermania"
+        "dtli"
       ],
-      "totalReviews": 177
+      "totalReviews": 175
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -710,26 +720,6 @@
         "stageandcinema"
       ],
       "totalReviews": 155
-    },
-    {
-      "critic": "Jackson McHenry",
-      "slug": "jackson-mchenry",
-      "outlets": [
-        "vulture",
-        "theatrely",
-        "theatermania"
-      ],
-      "totalReviews": 87
-    },
-    {
-      "critic": "David Sheward",
-      "slug": "david-sheward",
-      "outlets": [
-        "theater-life",
-        "backstage",
-        "cultural-weekly"
-      ],
-      "totalReviews": 101
     },
     {
       "critic": "Martin Denton",
@@ -801,7 +791,7 @@
         "exeunt-magazine",
         "thestage"
       ],
-      "totalReviews": 29
+      "totalReviews": 28
     },
     {
       "critic": "Gloria Oladipo",
@@ -821,6 +811,16 @@
         "cititour"
       ],
       "totalReviews": 40
+    },
+    {
+      "critic": "David Sheward",
+      "slug": "david-sheward",
+      "outlets": [
+        "theater-life",
+        "backstage",
+        "cultural-weekly"
+      ],
+      "totalReviews": 97
     },
     {
       "critic": "Carol Rocamora",
@@ -1129,7 +1129,7 @@
         "telegraph",
         "standard"
       ],
-      "totalReviews": 29
+      "totalReviews": 27
     },
     {
       "critic": "Maryam Philpott",
@@ -1149,7 +1149,7 @@
         "timeout",
         "london-theatre"
       ],
-      "totalReviews": 20
+      "totalReviews": 18
     },
     {
       "critic": "Tim Bano",
@@ -1403,13 +1403,13 @@
       "critic": "Paul Raven",
       "slug": "paul-raven",
       "outlets": [
-        "telegraph",
         "financialtimes",
         "guardian",
+        "telegraph",
         "timeout-london",
         "standard"
       ],
-      "totalReviews": 7
+      "totalReviews": 6
     },
     {
       "critic": "Holly O’Mahony",
@@ -1447,7 +1447,7 @@
         "drama-queen-nyc",
         "gay-socialites"
       ],
-      "totalReviews": 20
+      "totalReviews": 17
     },
     {
       "critic": "Patrick Maley",
