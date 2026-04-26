@@ -48,14 +48,6 @@ interface LogEntry {
 
 type Mode = 'single' | 'batch';
 
-interface BatchEntry {
-  url: string;
-  fullText: string;
-  scoreInput: string;
-  criticName: string;
-  showId: string;
-}
-
 export default function IngestForm() {
   const [mode, setMode] = useState<Mode>('single');
   const [submissionLog, setSubmissionLog] = useState<LogEntry[]>([]);
@@ -431,7 +423,30 @@ function SinglePasteForm({
   );
 }
 
-// ─── Batch-paste form ──────────────────────────────────────────────
+// ─── Batch form: same-show, N (URL+text) slot pairs ───────────────
+//
+// Single-show batch redesigned 2026-04-26 after Joe Turner opening night.
+// Old delimited-paste model (`---` separator + URL on first line + Show: line)
+// caused a paste-error class of bugs (Cititour text in Culture Sauce slot).
+// New model: pick the show ONCE at the top, then fill in N (URL, fullText)
+// pairs as separate inputs. Eliminates paste confusion entirely.
+
+interface ReviewSlot {
+  id: string;
+  url: string;
+  fullText: string;
+}
+
+interface ShowSearchResult {
+  id: string;
+  title: string;
+  slug?: string;
+  status?: string;
+  category?: string;
+  od?: string;
+  openingDate?: string;
+  venue?: string;
+}
 
 function BatchPasteForm({
   onResult,
@@ -440,46 +455,97 @@ function BatchPasteForm({
   onResult: (e: LogEntry) => void;
   onUpdate: (id: string, patch: Partial<LogEntry>) => void;
 }) {
-  const [batchInput, setBatchInput] = useState('');
+  // Show picker
+  const [showQuery, setShowQuery] = useState('');
+  const [shows, setShows] = useState<ShowSearchResult[]>([]);
+  const [selectedShow, setSelectedShow] = useState<ShowSearchResult | null>(null);
+  const [showsLoaded, setShowsLoaded] = useState(false);
+
+  // Slots — start with 2
+  const [slots, setSlots] = useState<ReviewSlot[]>(() => [
+    { id: makeSlotId(), url: '', fullText: '' },
+    { id: makeSlotId(), url: '', fullText: '' },
+  ]);
+
   const [submitting, setSubmitting] = useState(false);
   const [progress, setProgress] = useState({ done: 0, total: 0 });
 
-  const entries = useMemo(() => parseBatch(batchInput), [batchInput]);
-  const validCount = entries.filter(e => isEntryValid(e)).length;
-  const invalidCount = entries.length - validCount;
+  // Lazy-load shows.json
+  useEffect(() => {
+    if (showsLoaded) return;
+    fetch('/data/search-shows.json')
+      .then(r => r.json())
+      .then((data: ShowSearchResult[]) => {
+        setShows(data);
+        setShowsLoaded(true);
+      })
+      .catch(() => setShowsLoaded(false));
+  }, [showsLoaded]);
+
+  const showResults = useMemo(() => {
+    if (!selectedShow && showQuery.trim().length >= 2) {
+      const q = showQuery.toLowerCase();
+      // Prefer open Broadway/West End; recently-opened first
+      return shows
+        .filter(s => s.title?.toLowerCase().includes(q))
+        .sort((a, b) => {
+          const aOpen = a.status === 'open' || a.status === 'previews' ? 0 : 1;
+          const bOpen = b.status === 'open' || b.status === 'previews' ? 0 : 1;
+          if (aOpen !== bOpen) return aOpen - bOpen;
+          const aDate = a.openingDate || a.od || '';
+          const bDate = b.openingDate || b.od || '';
+          return bDate.localeCompare(aDate);
+        })
+        .slice(0, 8);
+    }
+    return [];
+  }, [shows, showQuery, selectedShow]);
+
+  const validSlots = useMemo(
+    () =>
+      slots.filter(
+        s => s.url.trim() && isValidUrl(s.url) && s.fullText.trim().length >= 50,
+      ),
+    [slots],
+  );
+  const invalidCount = slots.filter(s => s.url.trim() || s.fullText.trim()).length - validSlots.length;
+  const readyToSubmit = !!selectedShow && validSlots.length > 0;
+
+  function updateSlot(id: string, patch: Partial<ReviewSlot>) {
+    setSlots(prev => prev.map(s => (s.id === id ? { ...s, ...patch } : s)));
+  }
+  function addSlot() {
+    setSlots(prev => [...prev, { id: makeSlotId(), url: '', fullText: '' }]);
+  }
+  function removeSlot(id: string) {
+    setSlots(prev => (prev.length <= 1 ? prev : prev.filter(s => s.id !== id)));
+  }
 
   async function handleSubmitAll(event: React.FormEvent) {
     event.preventDefault();
-    if (validCount === 0 || submitting) return;
-    setSubmitting(true);
-    setProgress({ done: 0, total: validCount });
+    if (!readyToSubmit || submitting || !selectedShow) return;
 
-    const validEntries = entries.filter(isEntryValid);
+    setSubmitting(true);
+    setProgress({ done: 0, total: validSlots.length });
     let successCount = 0;
     let failureCount = 0;
 
-    // Phase 1: commit all files. Each ingest-review call uses skipDispatch=true
-    // so we don't fire N parallel rebuilds (the per-run concurrency groups in
-    // rebuild-fast.yml mean N dispatches = N parallel rebuilds = wasted compute
-    // + push contention on reviews.json).
-    for (let i = 0; i < validEntries.length; i++) {
-      const entry = validEntries[i];
+    // Phase 1: commit each review with skipDispatch=true. The show is FIXED
+    // at the form level so every entry gets the same showId — no per-slot
+    // detection ambiguity.
+    for (let i = 0; i < validSlots.length; i++) {
+      const slot = validSlots[i];
       const id = `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-      const startedAt = Date.now();
-      onResult({ id, startedAt, url: entry.url, status: 'submitting' });
+      onResult({ id, startedAt: Date.now(), url: slot.url, status: 'submitting' });
 
       try {
         const res = await fetch('/api/admin/ingest-review', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            url: entry.url,
-            fullText: entry.fullText,
-            originalScore: entry.scoreInput || null,
-            // Per-entry overrides — let the user supply critic/show in the
-            // paste when auto-detection won't catch it (Substack, etc).
-            criticName: entry.criticName || null,
-            showId: entry.showId || null,
+            url: slot.url.trim(),
+            fullText: slot.fullText.trim(),
+            showId: selectedShow.id,
             skipDispatch: true,
           }),
         });
@@ -505,18 +571,17 @@ function BatchPasteForm({
           error: err instanceof Error ? err.message : String(err),
         });
       }
-      setProgress({ done: i + 1, total: validEntries.length });
+      setProgress({ done: i + 1, total: validSlots.length });
     }
 
-    // Phase 2: dispatch a SINGLE rebuild covering all the files we just
-    // committed. Fire even if some entries failed — the successful commits
-    // still need to be rebuilt. Skip only if literally zero commits succeeded.
+    // Phase 2: ONE rebuild covering all the commits. Skip only if literally
+    // zero succeeded.
     if (successCount > 0) {
       const dispatchId = `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`;
       onResult({
         id: dispatchId,
         startedAt: Date.now(),
-        url: `Rebuild ${successCount} review${successCount === 1 ? '' : 's'}`,
+        url: `Rebuild ${successCount} review${successCount === 1 ? '' : 's'} for ${selectedShow.title}`,
         status: 'submitting',
       });
       try {
@@ -524,7 +589,7 @@ function BatchPasteForm({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            reason: `admin-ingest-ui batch: ${successCount} reviews${failureCount ? ` (${failureCount} failed)` : ''}`,
+            reason: `admin-ingest-ui batch: ${successCount} reviews for ${selectedShow.id}${failureCount ? ` (${failureCount} failed)` : ''}`,
           }),
         });
         const json = (await res.json()) as { success: boolean; workflowRunUrl?: string; error?: string };
@@ -549,131 +614,214 @@ function BatchPasteForm({
       }
     }
 
-    // Clear the batch input only if everything succeeded — keep it on partial
-    // failure so the operator can re-edit and re-run only the failed entries.
+    // Reset slots that succeeded; keep failed ones so operator can edit + retry.
     if (failureCount === 0) {
-      setBatchInput('');
+      setSlots([
+        { id: makeSlotId(), url: '', fullText: '' },
+        { id: makeSlotId(), url: '', fullText: '' },
+      ]);
     }
     setSubmitting(false);
   }
 
   return (
     <form onSubmit={handleSubmitAll} className="space-y-5">
-      <div className="rounded-lg border border-white/10 bg-surface-raised/40 p-3 text-xs text-gray-400 space-y-1">
-        <div className="font-semibold text-gray-200">Batch format</div>
-        <p>
-          Separate each review with a line of <code className="text-brand">---</code>. For each
-          review: put the URL on its own line, then the full review text. Optionally add lines:{' '}
-          <code className="text-brand">Score: 5/5 stars</code>,{' '}
-          <code className="text-brand">Critic: Name</code>,{' '}
-          <code className="text-brand">Show: show-id</code>.
-        </p>
-        <pre className="text-[11px] text-gray-500 leading-relaxed mt-2 whitespace-pre-wrap">{`https://www.nytimes.com/2026/04/23/...
-By Helen Shaw
-Full review text…
-Score: 4/5 stars
----
-https://offbookcincinnati.substack.com/p/...
-Critic: Christopher Brown
-Show: the-rocky-horror-show-2026
-Full review text…`}</pre>
-      </div>
-
-      <Field label={`Batch paste (${entries.length} reviews detected)`}>
-        <textarea
-          value={batchInput}
-          onChange={e => setBatchInput(e.target.value)}
-          rows={20}
-          className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
-          disabled={submitting}
-          placeholder="Paste all reviews here, separated by --- on its own line…"
-        />
-      </Field>
-
-      {entries.length > 0 && (
-        <div className="text-xs space-y-0.5">
-          <div className="text-gray-400">
-            <strong className="text-status-open">{validCount} ready</strong> · {invalidCount > 0 && (
-              <span className="text-score-tepid">{invalidCount} invalid (URL or text missing)</span>
+      {/* Show picker */}
+      <Field label="Show" required hint="All reviews in this batch will be attached to this show.">
+        {selectedShow ? (
+          <div className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-raised px-3 py-2.5">
+            <div>
+              <div className="text-sm text-white">{selectedShow.title}</div>
+              <div className="text-[11px] text-gray-500">
+                {selectedShow.id}
+                {selectedShow.openingDate || selectedShow.od ? ` · opened ${selectedShow.openingDate || selectedShow.od}` : ''}
+                {selectedShow.status ? ` · ${selectedShow.status}` : ''}
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedShow(null);
+                setShowQuery('');
+              }}
+              disabled={submitting}
+              className="text-[11px] text-brand hover:underline"
+            >
+              change
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <input
+              type="text"
+              value={showQuery}
+              onChange={e => setShowQuery(e.target.value)}
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              placeholder={showsLoaded ? 'Type show title to search…' : 'Loading shows…'}
+              className={inputClass()}
+              disabled={submitting || !showsLoaded}
+            />
+            {showResults.length > 0 && (
+              <div className="rounded-lg border border-white/10 bg-surface-raised divide-y divide-white/5 max-h-72 overflow-y-auto">
+                {showResults.map(s => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedShow(s);
+                      setShowQuery('');
+                    }}
+                    disabled={submitting}
+                    className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors"
+                  >
+                    <div className="text-sm text-white">{s.title}</div>
+                    <div className="text-[11px] text-gray-500">
+                      {s.id}
+                      {s.openingDate || s.od ? ` · opened ${s.openingDate || s.od}` : ''}
+                      {s.status ? ` · ${s.status}` : ''}
+                      {s.category ? ` · ${s.category}` : ''}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+            {showQuery.trim().length >= 2 && showResults.length === 0 && showsLoaded && (
+              <div className="text-xs text-gray-500">No matches.</div>
             )}
           </div>
-        </div>
-      )}
+        )}
+      </Field>
 
-      <button
-        type="submit"
-        disabled={validCount === 0 || submitting}
-        className={[
-          'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
-          validCount > 0 && !submitting
-            ? 'bg-brand text-black hover:bg-brand/90'
-            : 'bg-white/5 text-gray-500 cursor-not-allowed',
-        ].join(' ')}
-      >
-        {submitting
-          ? `Submitting ${progress.done} of ${progress.total}…`
-          : validCount === 0
-            ? 'Paste reviews to enable'
-            : `Submit all ${validCount} reviews`}
-      </button>
+      {/* Slot list */}
+      {selectedShow && (
+        <>
+          <div className="space-y-4">
+            {slots.map((slot, idx) => (
+              <SlotEditor
+                key={slot.id}
+                index={idx}
+                slot={slot}
+                onChange={patch => updateSlot(slot.id, patch)}
+                onRemove={slots.length > 1 ? () => removeSlot(slot.id) : undefined}
+                disabled={submitting}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={addSlot}
+            disabled={submitting}
+            className="text-sm text-brand hover:underline disabled:opacity-50"
+          >
+            + Add another review
+          </button>
+
+          {(validSlots.length > 0 || invalidCount > 0) && (
+            <div className="text-xs text-gray-400">
+              <strong className="text-status-open">{validSlots.length} ready</strong>
+              {invalidCount > 0 && (
+                <span className="text-score-tepid"> · {invalidCount} incomplete (need URL + text ≥50ch)</span>
+              )}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!readyToSubmit || submitting}
+            className={[
+              'w-full px-4 py-3 font-semibold rounded-lg transition-colors',
+              readyToSubmit && !submitting
+                ? 'bg-brand text-black hover:bg-brand/90'
+                : 'bg-white/5 text-gray-500 cursor-not-allowed',
+            ].join(' ')}
+          >
+            {submitting
+              ? `Submitting ${progress.done} of ${progress.total}…`
+              : !readyToSubmit
+                ? 'Fill in at least one review (URL + text)'
+                : `Submit ${validSlots.length} review${validSlots.length === 1 ? '' : 's'} for ${selectedShow.title}`}
+          </button>
+        </>
+      )}
     </form>
   );
 }
 
-function parseBatch(input: string): BatchEntry[] {
-  if (!input.trim()) return [];
-  // Split on lines that are 3+ dashes (or 3+ equals) on their own line
-  const chunks = input.split(/\n\s*[-=]{3,}\s*\n/);
-  return chunks
-    .map(chunk => {
-      const lines = chunk.split('\n');
-      let url = '';
-      let scoreInput = '';
-      let criticName = '';
-      let showId = '';
-      const textLines: string[] = [];
-      for (const rawLine of lines) {
-        const line = rawLine.trim();
-        if (!url && /^https?:\/\//i.test(line)) {
-          url = line;
-          continue;
-        }
-        const scoreMatch = line.match(/^score\s*[:=]\s*(.+)$/i);
-        if (scoreMatch) {
-          scoreInput = scoreMatch[1].trim();
-          continue;
-        }
-        const criticMatch = line.match(/^critic\s*[:=]\s*(.+)$/i);
-        if (criticMatch) {
-          criticName = criticMatch[1].trim();
-          continue;
-        }
-        const showMatch = line.match(/^show\s*[:=]\s*(.+)$/i);
-        if (showMatch) {
-          showId = showMatch[1].trim();
-          continue;
-        }
-        textLines.push(rawLine);
-      }
-      return {
-        url,
-        fullText: textLines.join('\n').trim(),
-        scoreInput,
-        criticName,
-        showId,
-      };
-    })
-    .filter(e => e.url || e.fullText.trim());
+function SlotEditor({
+  index,
+  slot,
+  onChange,
+  onRemove,
+  disabled,
+}: {
+  index: number;
+  slot: ReviewSlot;
+  onChange: (patch: Partial<ReviewSlot>) => void;
+  onRemove?: () => void;
+  disabled?: boolean;
+}) {
+  const urlOk = !slot.url.trim() || isValidUrl(slot.url);
+  const textOk = !slot.fullText.trim() || slot.fullText.trim().length >= 50;
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface-raised p-3 space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs uppercase tracking-wider text-gray-500">Review {index + 1}</span>
+        {onRemove && (
+          <button
+            type="button"
+            onClick={onRemove}
+            disabled={disabled}
+            className="text-[11px] text-gray-500 hover:text-score-skip"
+          >
+            remove
+          </button>
+        )}
+      </div>
+      <input
+        type="url"
+        value={slot.url}
+        onChange={e => onChange({ url: e.target.value })}
+        placeholder="https://www.nytimes.com/2026/04/23/theater/..."
+        autoComplete="off"
+        autoCapitalize="off"
+        autoCorrect="off"
+        disabled={disabled}
+        className={inputClass()}
+      />
+      {!urlOk && <p className="text-[11px] text-score-skip">Not a valid URL</p>}
+      <textarea
+        value={slot.fullText}
+        onChange={e => onChange({ fullText: e.target.value })}
+        rows={6}
+        placeholder="Paste the full review text…"
+        disabled={disabled}
+        className={`${inputClass()} font-mono text-xs leading-5 resize-y`}
+      />
+      <div className="flex items-center justify-between text-[11px]">
+        <span className={textOk ? 'text-gray-500' : 'text-score-skip'}>
+          {slot.fullText.length > 0
+            ? `${slot.fullText.length.toLocaleString()} chars${textOk ? '' : ' (need ≥50)'}`
+            : ''}
+        </span>
+      </div>
+    </div>
+  );
 }
 
-function isEntryValid(e: BatchEntry): boolean {
-  if (!e.url) return false;
+function makeSlotId() {
+  return `slot-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function isValidUrl(s: string): boolean {
   try {
-    new URL(e.url);
+    new URL(s);
+    return true;
   } catch {
     return false;
   }
-  return e.fullText.trim().length >= 50;
 }
 
 // ─── Detected section (single-paste only) ─────────────────────────
