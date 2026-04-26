@@ -114,9 +114,14 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
   }, [marketCounts]);
 
   const showMarketFilter = availableMarkets.length >= 2;
-  const defaultMarket: MarketFilter = showMarketFilter
-    ? availableMarkets.reduce((top, m) => (marketCounts[m] > marketCounts[top] ? m : top), availableMarkets[0])
-    : 'all';
+  // Default preference: Broadway > West End > highest-volume remaining.
+  // Off-Broadway / Off-West End never default; they require an explicit click.
+  const defaultMarket: MarketFilter = (() => {
+    if (!showMarketFilter) return 'all';
+    if (availableMarkets.includes('broadway')) return 'broadway';
+    if (availableMarkets.includes('west-end')) return 'west-end';
+    return availableMarkets[0];
+  })();
   const [marketFilter, setMarketFilter] = useState<MarketFilter>(defaultMarket);
 
   const filteredReviews = useMemo(() => {
