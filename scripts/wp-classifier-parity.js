@@ -44,7 +44,11 @@
  *   counts these). For our cohort (P3), already-flagged files count as 'flag'.
  * - wp_reviews: only audits ~69 shows (revivals + KNOWN_WRONG_INDICATORS keys).
  *   For files outside that scope: 'unseen'. For files inside: flagged ⇒ 'flag',
- *   else 'safe'. Plus its `baseline_pending` skip list — those become 'unseen'.
+ *   else 'safe' iff there's text to examine (fullText / dtliExcerpt / bwwExcerpt /
+ *   showScoreExcerpt). Files with NO examinable text → 'unseen' (the classifier
+ *   requires text content to evaluate KNOWN_WRONG_INDICATORS; absence of text
+ *   means absence-of-evidence, not clearance — see triage commit 4caf00fc6c).
+ *   Plus its `baseline_pending` skip list — those become 'unseen'.
  * - wp_classify: empty corpus today. Every file → 'unseen' unless we find it in
  *   the `results` array.
  *
@@ -123,6 +127,15 @@ function buildP3Cohort() {
       } catch (e) { continue; }
       const noText = !data.fullText || data.fullText.length === 0;
       const hasScore = (data.llmScore && data.llmScore.score != null) || data.originalScore != null;
+      // wp_reviews scans these text fields (see audit-wrong-production-reviews.js
+      // textFields collection at L413-419). If ALL are empty, it has nothing to
+      // examine and any non-flag verdict is absence-of-evidence, not clearance.
+      const hasExaminableText = !!(
+        (data.fullText && data.fullText.length > 0) ||
+        (data.dtliExcerpt && data.dtliExcerpt.length > 0) ||
+        (data.bwwExcerpt && data.bwwExcerpt.length > 0) ||
+        (data.showScoreExcerpt && data.showScoreExcerpt.length > 0)
+      );
       if (noText && hasScore) {
         cohort.push({
           showId,
@@ -131,6 +144,7 @@ function buildP3Cohort() {
           publishDate: data.publishDate || null,
           llmScore: data.llmScore?.score ?? null,
           originalScore: data.originalScore ?? null,
+          hasExaminableText,
           existingFlags: {
             wrongProduction: !!data.wrongProduction,
             wrongShow: !!data.wrongShow,
@@ -261,12 +275,18 @@ function getVerdict(file, auditWP, wpReviews, wpClassify) {
   if (auditWP.totalScanned === 0) wp_audit = 'unseen';
 
   // wp_reviews
+  // Structural caveat: audit-wrong-production-reviews.js requires textual content
+  // (fullText / dtliExcerpt / bwwExcerpt / showScoreExcerpt) to find KNOWN_WRONG_INDICATORS.
+  // For P3 cohort files (fullText.length === 0 by definition), wp_reviews has nothing
+  // to inspect — its non-flag is absence-of-evidence, NOT actual clearance. Treat
+  // such files as 'unseen' so they don't spuriously oppose other classifiers' flags.
+  // (See triage commit 4caf00fc6c.)
   let wp_reviews;
   let wpRevSignals = null;
   if (wpReviews.flagged.has(key)) {
     wp_reviews = 'flag';
     wpRevSignals = wpReviews.flagged.get(key);
-  } else if (wpReviews.auditedShows.has(file.showId)) {
+  } else if (wpReviews.auditedShows.has(file.showId) && file.hasExaminableText) {
     wp_reviews = 'safe';
   } else {
     wp_reviews = 'unseen';
