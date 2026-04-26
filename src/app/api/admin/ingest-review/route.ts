@@ -306,7 +306,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   });
 }
 
-// ─── GitHub API helpers ─────────────────────────────────────────────
+// ─── GitHub API helpers (with retry) ────────────────────────────────
 
 const GH_API_BASE = 'https://api.github.com';
 const GH_HEADERS = (token: string) => ({
@@ -316,13 +316,53 @@ const GH_HEADERS = (token: string) => ({
   'User-Agent': 'broadwayscorecard-admin-ingest',
 });
 
+// fetchWithRetry — 3 attempts (200ms / 500ms / 1s backoff) on transient failures.
+//
+// Retried: 5xx, 429, network errors (fetch throws).
+// NOT retried: 4xx user errors (auth, conflict, validation) — surface immediately.
+//   404 specifically is returned as-is so callers (githubGetFile) can treat
+//   "missing file" as a normal case.
+async function fetchWithRetry(url: string, init: RequestInit): Promise<Response> {
+  const delays = [200, 500, 1000];
+  let lastError: unknown = null;
+
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const res = await fetch(url, init);
+      // Retry on 5xx and 429 (rate limit). Everything else is final.
+      if (res.status >= 500 || res.status === 429) {
+        if (attempt < delays.length) {
+          await sleep(delays[attempt]);
+          continue;
+        }
+      }
+      return res;
+    } catch (err) {
+      // Network-level failure (DNS, socket, abort). Retryable.
+      lastError = err;
+      if (attempt < delays.length) {
+        await sleep(delays[attempt]);
+        continue;
+      }
+      throw err;
+    }
+  }
+  // Exhausted retries — re-throw last network error if we got here from catch.
+  if (lastError) throw lastError;
+  throw new Error('fetchWithRetry exhausted attempts');
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function githubGetFile(
   token: string,
   owner: string,
   repo: string,
   path: string,
 ): Promise<{ sha: string; content: string } | null> {
-  const res = await fetch(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}?ref=main`, {
+  const res = await fetchWithRetry(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}?ref=main`, {
     headers: GH_HEADERS(token),
     cache: 'no-store',
   });
@@ -350,7 +390,7 @@ async function githubPutFile(
   };
   if (sha) body.sha = sha;
 
-  const res = await fetch(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}`, {
+  const res = await fetchWithRetry(`${GH_API_BASE}/repos/${owner}/${repo}/contents/${path}`, {
     method: 'PUT',
     headers: { ...GH_HEADERS(token), 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
@@ -370,7 +410,7 @@ async function githubDispatchWorkflow(
   workflowFile: string,
   inputs: Record<string, string>,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const res = await fetch(
+  const res = await fetchWithRetry(
     `${GH_API_BASE}/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`,
     {
       method: 'POST',

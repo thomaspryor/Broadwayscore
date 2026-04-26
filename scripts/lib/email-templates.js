@@ -160,6 +160,31 @@ function buildFooterHtml(showTitle, showId, email, market) {
   </td></tr>`;
 }
 
+/**
+ * Follow-us row for the opening-night broadcast (Option C: above unsubscribe footer).
+ * Text-only by design: SVG renders inconsistently in Outlook Desktop / Gmail; PNG hotlinks
+ * add a dependency we don't need here. Upgrade to PNG icons later if CTR warrants it.
+ */
+const SOCIAL_ACCOUNTS_EMAIL = [
+  { label: 'Instagram', url: 'https://instagram.com/bwayscorecard' },
+  { label: 'Threads', url: 'https://threads.net/@bwayscorecard' },
+  { label: 'Bluesky', url: 'https://bsky.app/profile/bwayscorecard.bsky.social' },
+  { label: 'X', url: 'https://x.com/BwayScorecard' },
+  { label: 'Facebook', url: 'https://facebook.com/BroadwayScorecard' },
+];
+
+function buildSocialRowHtml(market) {
+  const isWE = isLondonMarket(market);
+  const brandColor = isWE ? '#f472b6' : '#d4a574';
+  const links = SOCIAL_ACCOUNTS_EMAIL.map(
+    (a) => `<a href="${escapeHtml(a.url)}" style="color:${brandColor};text-decoration:none;font-weight:600;" target="_blank" rel="noopener">${escapeHtml(a.label)}</a>`
+  ).join(`<span style="color:rgba(255,255,255,0.2);padding:0 8px;">&middot;</span>`);
+  return `<tr><td align="center" style="padding:16px 0 24px;">
+    <p style="margin:0 0 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1.2px;font-family:${FONT};">Follow Broadway Scorecard</p>
+    <p style="margin:0;font-size:13px;line-height:1.6;font-family:${FONT};">${links}</p>
+  </td></tr>`;
+}
+
 function buildBroadcastFooterHtml(email, market) {
   // When email is null, use Resend's unsubscribe template variable (for drafts/broadcasts).
   // When email is provided, use our custom unsubscribe URL (for transactional/preview sends).
@@ -437,9 +462,10 @@ function buildBroadcastOpeningNightHtml(shows, email, market) {
     <h1 style="margin:0;font-size:24px;font-weight:700;color:#ffffff;line-height:1.3;font-family:${FONT};">${h1}</h1>
   </td></tr>
   ${showCards.join('')}
-  <tr><td style="padding:8px 0 32px;" align="center">
+  <tr><td style="padding:8px 0 8px;" align="center">
     <a href="${browseUrl}" style="display:inline-block;padding:10px 24px;background-color:rgba(255,255,255,0.08);color:${brandColor};font-size:13px;font-weight:600;text-decoration:none;border-radius:6px;border:1px solid ${brandColor}33;font-family:${FONT};">Browse All Shows</a>
   </td></tr>
+  ${buildSocialRowHtml(market)}
   ${buildBroadcastFooterHtml(email, market)}
 </table>
 </td></tr></table>
@@ -856,6 +882,7 @@ module.exports = {
   buildUnsubscribeUrl,
   buildFooterHtml,
   buildBroadcastFooterHtml,
+  buildSocialRowHtml,
   buildEmailHtml,
   buildOpeningNightHtml,
   buildBroadcastSubjectLine,
