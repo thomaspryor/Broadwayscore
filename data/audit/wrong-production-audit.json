@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T01:36:31.377Z",
+  "timestamp": "2026-04-26T02:22:40.543Z",
   "stats": {
-    "totalReviews": 35770,
-    "alreadyFlagged": 15963,
+    "totalReviews": 35779,
+    "alreadyFlagged": 16033,
     "dateGuardCatches": 95,
     "directorMismatch": 820,
-    "tvFilmSignals": 3204,
+    "tvFilmSignals": 3198,
     "londonSignals": 1030,
-    "offBroadwaySignals": 901,
+    "offBroadwaySignals": 900,
     "yearMismatch": 69,
-    "noPublishDate": 3745
+    "noPublishDate": 3727
   },
   "findings": [
     {
@@ -5400,7 +5400,7 @@
     {
       "showId": "beaches-2026",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": null,
+      "score": 64,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html?m=0",
       "findings": [
@@ -12335,6 +12335,20 @@
     },
     {
       "showId": "dracula-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "score": 64,
+      "publishDate": "2026-04-21",
+      "url": "https://www.londonboxoffice.co.uk/news/post/dracula-noel-coward-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 62,
       "publishDate": "February 18, 2026",
@@ -12405,20 +12419,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dracula-west-end-2025",
-      "file": "thestage--sam-marlowe.json",
-      "score": 43,
-      "publishDate": "February 17th, 2026",
-      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-williams-cynthia-erivo",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -21872,6 +21872,20 @@
       ]
     },
     {
+      "showId": "in-the-print-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 42,
+      "publishDate": "2026-03-31",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-in-the-print-kings-head",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
+        }
+      ]
+    },
+    {
       "showId": "in-transit-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 72,
@@ -23840,20 +23854,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "job-2024",
-      "file": "wsj--terry-teachout.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "https://www.wsj.com/arts-culture/working-what-we-do-all-day-review-obamas-new-jobs-tour-2c1fb6e5",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -27865,20 +27865,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-west-end-2021",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 88,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -33294,20 +33280,6 @@
     },
     {
       "showId": "on-the-town-2014",
-      "file": "chicagotribune--chris-jones-bway.json",
-      "score": 80,
-      "publishDate": "2014-10-17",
-      "url": "https://www.newspapers.com/image/249102280/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
-        }
-      ]
-    },
-    {
-      "showId": "on-the-town-2014",
       "file": "deadline--jeremy-gerard.json",
       "score": 88,
       "publishDate": "October 17th, 2014",
@@ -33457,20 +33429,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "once-2012",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://cititour.com/NYC_Broadway/Once-Upon-A-Mattress/1246",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -34182,20 +34140,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "our-town-2024",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 84,
-      "publishDate": "October 10, 2024",
-      "url": "https://talkinbroadway.com/world/?p=14053",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -37982,7 +37926,7 @@
     {
       "showId": "romeo-juliet-2024",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": 80,
+      "score": 76,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
       "findings": [
@@ -43984,20 +43928,6 @@
       ]
     },
     {
-      "showId": "the-39-steps-2008",
-      "file": "variety--charles-isherwood.json",
-      "score": 72,
-      "publishDate": "January 16, 2008",
-      "url": "https://variety.com/2008/legit/reviews/the-39-steps-1200472318/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"paramount\""
-        }
-      ]
-    },
-    {
       "showId": "the-addams-family-2010",
       "file": "ap--michael-kuchwara.json",
       "score": 45,
@@ -44176,20 +44106,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "the-american-plan-2009",
-      "file": "latimes--charles-mcnulty-bway.json",
-      "score": 65,
-      "publishDate": "2009-01-22",
-      "url": "https://www.newspapers.com/image/193654575/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -57052,6 +56968,20 @@
       ]
     },
     {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 63,
+      "publishDate": "2026-04-09",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-a-dolls-house-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "a-little-night-music-2009",
       "file": "ny1--roma-torre.json",
       "score": 88,
@@ -59345,20 +59275,6 @@
       ]
     },
     {
-      "showId": "bring-it-on-the-musical-2012",
-      "file": "variety--marilyn-stasio.json",
-      "score": 69,
-      "publishDate": "August 1, 2012",
-      "url": "https://variety.com/2012/legit/reviews/bring-it-on-the-musical-1117948024/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "broken-glass-west-end-2026",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 63,
@@ -60285,7 +60201,7 @@
     {
       "showId": "chinese-republicans-off-broadway-2026",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": 72,
+      "score": 77,
       "publishDate": null,
       "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
       "findings": [
@@ -69301,6 +69217,20 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 76,
+      "publishDate": "2026-04-22",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-one-flew-over-the-cuckoos-nest-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "london-theatre--olivia-rook.json",
       "publishDate": "2026-04-16",
       "url": "https://www.londontheatre.co.uk/reviews/one-flew-over-the-cuckoos-nest-review-aaron-pierre-giles-terera-clint-dyer",
@@ -70120,20 +70050,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "punch-2025",
-      "file": "thestage--unknown.json",
-      "score": 69,
-      "publishDate": "2025-09-22",
-      "url": "https://www.thestage.co.uk/review-round-ups/the-land-of-the-living-starring-juliet-stevenson-review-round-up",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -76122,20 +76038,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "the-little-prince-2022",
-      "file": "broadway-and-me--janice-c-simpson.json",
-      "score": 44,
-      "publishDate": "2022-04-30",
-      "url": null,
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

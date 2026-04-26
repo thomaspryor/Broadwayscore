@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T01:19:25.874Z",
+    "generatedAt": "2026-04-26T02:05:24.890Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36422,
-      "inReviewsJson": 16639,
+      "totalFiles": 36430,
+      "inReviewsJson": 16648,
       "skippedExcluded": 82,
-      "withFullText": 15,
-      "excerptOnly": 1550,
-      "llmClassified": 14,
+      "withFullText": 62,
+      "excerptOnly": 1522,
+      "llmClassified": 49,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 14,
-      "budgetUsed": 0.0015000000000000005,
-      "llmCalls": 15,
+      "uncertainCases": 12,
+      "budgetUsed": 0.005,
+      "llmCalls": 50,
       "rateLimitHits": 0,
       "errors": 1,
-      "skippedAlreadyClassified": 14992
+      "skippedAlreadyClassified": 14982
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and themes of \"Eclipsed\" and provides historical context, but it does not offer a critical evaluation or opinion on the quality of the production. The truncated portion includes news items about other shows, suggesting this is a roundup or feature article.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "This is a 'Goings On' newsletter-style article that mentions 'Liberation' but does not contain a review of it. It's a roundup of various cultural events.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and short blurbs about them. While 'Liberation' is mentioned, there is no evaluative content about the show itself.",
       "currentScore": 88
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production.",
       "currentScore": 80
     },
     {
@@ -120,7 +120,7 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion about its quality. It also includes an interview excerpt.",
       "currentScore": 83
     },
     {
@@ -142,29 +142,47 @@
       "confidence": "low",
       "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content.",
       "currentScore": 64
-    },
-    {
-      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
-      "showId": "the-price-2017",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review or any other specific article type. It is closest to news.",
-      "currentScore": 78
-    },
-    {
-      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
-      "showId": "three-tall-women-2018",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text appears to be a collection of links and keywords related to theater, rather than a review or any other specific type of article. It lacks any evaluative content about 'Three Tall Women'.",
-      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
-  "reviewsConfirmed": [],
+  "reviewsConfirmed": [
+    "a-dolls-house-off-west-end-2026/london-box-office--stuart-king.json",
+    "amazing-grace-2015/the-clyde-fitch-report--david-finkle.json",
+    "angels-in-america-2018/the-clyde-fitch-report--david-finkle.json",
+    "beaches-2026/the-interested-bystander--cary-wong.json",
+    "bernhardthamlet-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "bright-star-2016/the-clyde-fitch-report--david-finkle.json",
+    "bug-2026/the-interested-bystander--cary-wong.json",
+    "children-of-a-lesser-god-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "chinese-republicans-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "dead-outlaw-2025/the-interested-bystander--cary-wong.json",
+    "death-of-a-salesman-2026/nypost--johnny-oleksinski.json",
+    "deep-azure-globe-west-end-2026/london-box-office--stuart-king.json",
+    "fences-2010/backstage--unknown.json",
+    "floyd-collins-2025/the-interested-bystander--cary-wong.json",
+    "gettin-the-band-back-together-2018/the-clyde-fitch-report--david-finkle.json",
+    "groundhog-day-2017/the-clyde-fitch-report--david-finkle.json",
+    "gypsy-2024/the-interested-bystander--cary-wong.json",
+    "hello-dolly-2017/the-clyde-fitch-report--david-finkle.json",
+    "in-the-print-off-west-end-2026/london-box-office--stuart-king.json",
+    "it-walks-around-the-house-at-night-west-end-2026/london-box-office--stuart-king.json",
+    "masquerade-off-broadway-2025/nypost--johnny-oleksinski.json",
+    "oh-mary-2024/the-interested-bystander--cary-wong.json",
+    "please-please-me-west-end-2026/london-box-office--stuart-king.json",
+    "pretty-woman-the-musical-2018/the-clyde-fitch-report--martha-wade-steketee.json",
+    "prince-of-broadway-2017/the-clyde-fitch-report--david-finkle.json",
+    "punch-2025/the-interested-bystander--cary-wong.json",
+    "queen-versailles-2025/the-interested-bystander--cary-wong.json",
+    "redwood-2025/the-interested-bystander--cary-wong.json",
+    "roi-return-on-investment-west-end-2026/london-box-office--stuart-king.json",
+    "romeo-juliet-2024/the-interested-bystander--cary-wong.json",
+    "saint-joan-2018/the-clyde-fitch-report--david-finkle.json",
+    "she-loves-me-2016/the-clyde-fitch-report--david-finkle.json",
+    "stranger-things-2024/the-interested-bystander--cary-wong.json",
+    "sweat-2017/the-clyde-fitch-report--david-finkle.json",
+    "the-balusters-2026/nypost--johnny-oleksinski.json",
+    "the-fear-of-13-2026/nypost--johnny-oleksinski.json",
+    "the-front-page-2016/the-clyde-fitch-report--david-finkle.json"
+  ],
   "perShowSummary": []
 }
