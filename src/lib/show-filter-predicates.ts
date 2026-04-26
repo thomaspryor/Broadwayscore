@@ -68,6 +68,22 @@ export const TIME_PERIOD_RANGE: FilterPredicate = (s, ctx) => {
   return year >= ctx.yearRange.from && year <= ctx.yearRange.to;
 };
 
+// ─────────────── Score tier ───────────────
+// Uses the canonical buckets from src/config/score-buckets.ts. Filters
+// against criticScore for v1 — audience-mode coupling can come later.
+
+const inScoreRange = (min: number, max: number): FilterPredicate => (s) => {
+  const score = s.criticScore?.score;
+  if (typeof score !== 'number') return false;
+  return score >= min && score <= max;
+};
+
+export const SCORE_TIER_CRITICAL_GOLD = inScoreRange(83, 100);
+export const SCORE_TIER_RECOMMENDED = inScoreRange(75, 82);
+export const SCORE_TIER_WORTH_SEEING = inScoreRange(65, 74);
+export const SCORE_TIER_SKIPPABLE = inScoreRange(55, 64);
+export const SCORE_TIER_CRITICAL_MISS = inScoreRange(0, 54);
+
 // ─────────────── Tickets & access ───────────────
 
 export const TICKETS_LOTTERY: FilterPredicate = (s) => s.tags?.includes('lottery') ?? false;

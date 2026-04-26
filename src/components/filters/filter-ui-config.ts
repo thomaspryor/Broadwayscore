@@ -13,6 +13,11 @@ import {
   AWARD_OLIVIER_NOMINEE,
   AWARD_DRAMA_DESK_WINNER,
   AWARD_PULITZER,
+  SCORE_TIER_CRITICAL_GOLD,
+  SCORE_TIER_RECOMMENDED,
+  SCORE_TIER_WORTH_SEEING,
+  SCORE_TIER_SKIPPABLE,
+  SCORE_TIER_CRITICAL_MISS,
   TICKETS_LOTTERY,
   TICKETS_RUSH,
   GENRE_COMEDY,
@@ -49,6 +54,17 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
     options: [
       { id: 'original', label: 'Original', predicate: PRODUCTION_ORIGINAL },
       { id: 'revival', label: 'Revival', predicate: PRODUCTION_REVIVAL },
+    ],
+  },
+  {
+    paramKey: 'score_tier',
+    label: 'Score tier',
+    options: [
+      { id: 'critical-gold', label: 'Critical Gold (83+)', predicate: SCORE_TIER_CRITICAL_GOLD },
+      { id: 'recommended', label: 'Recommended (75–82)', predicate: SCORE_TIER_RECOMMENDED },
+      { id: 'worth-seeing', label: 'Worth Seeing (65–74)', predicate: SCORE_TIER_WORTH_SEEING },
+      { id: 'skippable', label: 'Skippable (55–64)', predicate: SCORE_TIER_SKIPPABLE },
+      { id: 'critical-miss', label: 'Critical Miss (<55)', predicate: SCORE_TIER_CRITICAL_MISS },
     ],
   },
   {
@@ -93,8 +109,7 @@ export const FILTER_GROUPS: FilterGroupConfig[] = [
 /** All param keys owned by the panel — used to scope Reset / Clear-all */
 export const PANEL_PARAM_KEYS: ReadonlySet<string> = new Set([
   ...FILTER_GROUPS.map((g) => g.paramKey),
-  'years', // time-period range (Sprint 3)
-  'score_tier', // score-tier multi-select (Sprint 3)
+  'years', // time-period range (Sprint 3 — slider not yet shipped)
 ]);
 
 /** Look up an option by paramKey + id */
