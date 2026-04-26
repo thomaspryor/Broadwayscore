@@ -944,7 +944,9 @@ async function main(): Promise<void> {
       if (d.wrongAttribution) reasons.push('wrongAttribution');
       if (d.contentTier === 'invalid') reasons.push('contentTier=invalid');
       if (d.incompleteReason === 'scraper_garbage') reasons.push('scraper_garbage');
-      if (d.isRoundupArticle) reasons.push('isRoundupArticle');
+      // Mirror is-scoreable.ts: stale-flag exemption for individual-review URLs
+      // means the file is scoreable even with isRoundupArticle=true on disk.
+      if (d.isRoundupArticle && !require('../lib/review-guards').isLikelyStaleRoundupFlag(d)) reasons.push('isRoundupArticle');
       if (d.rejectionReason) reasons.push(`rejectionReason=${d.rejectionReason}`);
       if (d.showNotMentioned) reasons.push('showNotMentioned-no-excerpts');
       if (d.fullTextWrongAuthor) reasons.push('fullTextWrongAuthor-no-excerpts');

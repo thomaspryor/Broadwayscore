@@ -640,38 +640,61 @@ function isLikelyStaleWrongShow(data, show) {
  *   - critic is now classified as freelancer (guard skips)
  *   - outletId is now in knownOutlets (guard passes)
  *
- * Caller passes the registry as the second argument (not loaded here so the
- * predicate stays pure and dependency-free for test isolation).
+ * Slug + outlet contract: predicate uses the SAME normalization functions as
+ * Guard G (normalizeCritic — strips honorifics + applies CRITIC_ALIASES) and
+ * the same outlet canonicalization that audit-critic-outlets.js writes into
+ * knownOutlets (normalizeOutlet). Without this, an aliased critic name or a
+ * pre-canonical outletId would mis-look-up the registry and silently un-flag
+ * real misattributions (caught in /ship-check 2026-04-26).
+ *
+ * Empty-registry fail-safe: if the registry is empty (broken symlink, missing
+ * file), the predicate returns false on every flagged file — preserves the
+ * existing flag rather than blanket-clearing the entire corpus when it cannot
+ * prove anything. getCriticRegistry() also logs a warning on load failure.
  *
  * @param {Object} data - Review-text record
  * @param {Object|undefined} registry - critic-registry critics map (slug → entry).
- *   Pass `getCriticRegistry()` from this file or the same `_getCriticRegistry`
- *   used by review-file-writer. If undefined, predicate returns false (cannot
- *   prove staleness without registry context).
+ *   Pass `getCriticRegistry()` from this file. Empty/null/undefined registry
+ *   makes the predicate return false everywhere.
  */
 function isLikelyStaleSuspectedMisattribution(data, registry) {
   if (!data || data.suspectedMisattribution !== true) return false;
   if (!registry || typeof registry !== 'object') return false;
+  if (Object.keys(registry).length === 0) return false; // Empty-registry fail-safe.
   const criticName = (data.criticName || '').trim();
   const outletId = (data.outletId || '').trim();
   if (!criticName || !outletId || criticName === 'Unknown' || outletId === 'unknown') return false;
-  // Use the same slugifier as audit-critic-outlets.js / review-file-writer normalization.
-  const slug = criticName.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  if (!slug) return false;
+  // Lazy require to avoid load-time cycles; matches the file's pattern (lines 294, 323).
+  const { normalizeCritic, normalizeOutlet } = require('./review-normalization');
+  // Use Guard G's exact normalization (review-file-writer.js:261) — handles
+  // honorific prefix stripping (CSA./MR./MS./DR.) and CRITIC_ALIASES canonicalization.
+  const slug = normalizeCritic(criticName);
+  if (!slug || slug === 'unknown') return false;
   const entry = registry[slug];
   if (!entry) return true; // Critic dropped from registry — Guard G would short-circuit.
   if (entry.isFreelancer === true) return true; // Freelancer — Guard G skips.
   const knownOutlets = entry.knownOutlets || [];
   if (knownOutlets.length === 0) return true; // No knownOutlets — Guard G's `length > 0` check fails.
-  if (knownOutlets.includes(outletId)) return true; // Outlet now legitimate.
+  // Compare canonical outletId — audit-critic-outlets.js writes normalizeOutlet
+  // values into knownOutlets, so a pre-canonical outletId on the file must be
+  // canonicalized for the includes() check to be meaningful. Also check raw
+  // outletId for backwards compatibility with any legacy registry rows.
+  const canonicalOutlet = normalizeOutlet(outletId);
+  if (knownOutlets.includes(canonicalOutlet) || knownOutlets.includes(outletId)) return true;
   return false;
 }
 
 /**
  * Lazy-load critic-registry from disk for use in pure-flag exclusion gates.
  * Cached at module scope; call _resetCriticRegistryCache() in tests if needed.
+ *
+ * On read failure (missing file, broken symlink, parse error), logs a warning
+ * once and returns an empty object. The predicate treats empty registry as
+ * "cannot prove staleness" — a missing/corrupt registry must NOT silently
+ * un-flag the corpus (would be the inverse of the bug we're fixing).
  */
 let _criticRegistryCache = null;
+let _criticRegistryWarned = false;
 function getCriticRegistry() {
   if (_criticRegistryCache !== null) return _criticRegistryCache;
   try {
@@ -680,7 +703,15 @@ function getCriticRegistry() {
     const registryPath = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
     const raw = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
     _criticRegistryCache = raw.critics || {};
-  } catch {
+    if (Object.keys(_criticRegistryCache).length === 0 && !_criticRegistryWarned) {
+      console.warn('  ⚠️  critic-registry loaded but empty — stale-misattribution gate disabled');
+      _criticRegistryWarned = true;
+    }
+  } catch (e) {
+    if (!_criticRegistryWarned) {
+      console.warn(`  ⚠️  critic-registry load failed (${e.message}) — stale-misattribution gate disabled`);
+      _criticRegistryWarned = true;
+    }
     _criticRegistryCache = {};
   }
   return _criticRegistryCache;
@@ -688,6 +719,7 @@ function getCriticRegistry() {
 
 function _resetCriticRegistryCache() {
   _criticRegistryCache = null;
+  _criticRegistryWarned = false;
 }
 
 /**
