@@ -856,11 +856,24 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
 
   const candidateLower = candidateText.toLowerCase();
 
-  // Zero meaningful words — very low confidence
+  // Zero meaningful words — very low confidence.
+  // Edge case: purely numeric / short titles ("13", "9 to 5", "1776"). The
+  // length≥3 fallback misses "13"/"9". For these, try a whole-word match
+  // against the FULL title string (preserves spacing, e.g. "9 to 5") OR a
+  // numeric-only first token. The whole-word boundary prevents false
+  // positives — "13" inside "1973" wouldn't match.
   if (words.length === 0) {
-    const rawTitle = showTitleLower.split(/[\s,]+/)[0];
-    const matched = rawTitle && rawTitle.length >= 3 && matchesAsWholeWord(rawTitle, candidateLower);
-    return { matched, confidence: matched ? 0.3 : 0, matchCount: matched ? 1 : 0, threshold: 1, words: rawTitle ? [rawTitle] : [] };
+    const rawFirst = showTitleLower.split(/[\s,]+/)[0];
+    const fullTitle = showTitleLower.trim();
+    // Try the full normalized title first (handles "9 to 5", "13", "1776")
+    if (fullTitle && matchesAsWholeWord(fullTitle, candidateLower)) {
+      return { matched: true, confidence: 0.4, matchCount: 1, threshold: 1, words: [fullTitle] };
+    }
+    // Fall back to first-token match: length≥3 OR purely numeric
+    const matched = rawFirst &&
+      (rawFirst.length >= 3 || /^\d+$/.test(rawFirst)) &&
+      matchesAsWholeWord(rawFirst, candidateLower);
+    return { matched, confidence: matched ? 0.3 : 0, matchCount: matched ? 1 : 0, threshold: 1, words: rawFirst ? [rawFirst] : [] };
   }
 
   // Single meaningful word — moderate confidence at best
