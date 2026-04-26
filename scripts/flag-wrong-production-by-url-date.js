@@ -14,6 +14,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -55,6 +56,7 @@ for (const showId of dirs) {
     let d;
     try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
     if (d.wrongProduction || d.wrongShow || d.manualClear || d.allowEarlyDate || d.allowLateDate) continue;
+    if (shouldSkipWrongProductionAudit(d)) continue;
     if (!d.assignedScore && !d.llmScore?.score) continue;
 
     const url = d.url || '';

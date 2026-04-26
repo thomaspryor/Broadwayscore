@@ -620,6 +620,160 @@ function isLikelyStaleWrongShow(data, show) {
 }
 
 /**
+ * Detect a stale wrongProduction=true flag on a file that actually contains
+ * a substantial individual critic review of THIS production. Mirrors
+ * isLikelyStaleWrongShow's structure — conservative whitelist; the companion
+ * sweep script (scripts/clear-stale-wrong-production-flags.js) layers an LLM
+ * second-opinion before clearing the flag on disk.
+ *
+ * Background (Notion 34e637c5-416f-811d, Session 5 of multi-flag audit):
+ * wrongProduction is set by 4 paths —
+ *   (1) date-vs-opening guard (>30d before show, >Nyrs after closing),
+ *   (2) URL/venue mismatch (cross-market, regional outlet),
+ *   (3) LLM ensemble rejection (rejectedAt + reason='wrong_production'),
+ *   (4) cross-attribution audit + retroactive Haiku reverify.
+ * Most ~15k flagged files are CORRECTLY flagged (tour reviews, regional
+ * tryouts, cross-Atlantic transfers, prior revivals). Stale subset is a
+ * minority where the producing logic was tightened or the override marker
+ * was set but the flag persisted.
+ *
+ * Existing manual-clear paths (4 gate sites already honor these):
+ *   - wrongProductionManualClear === true
+ *   - wrongProductionOverride === true
+ *   - humanReviewedWrongProduction === false
+ * The sweep sets `wrongProduction = false` directly so the bare gate checks
+ * (is-scoreable.js:12, review-text-scoreable.js:49, llm-scoring/is-scoreable.ts:15)
+ * also pass without further refactor — and writes wrongProductionManualClear=true
+ * as a durable breadcrumb so future audit/restore-protected-fields don't
+ * re-flag the file.
+ *
+ * Manual-sample precision (10 files, 2026-04-26): 7/10 = 70% with
+ * URL+date+title-overlap; 8/9 = 87.5% after requiring URL year alignment.
+ * LLM second-opinion in the sweep should lift to ~95%+ before any disk write.
+ *
+ * Predicate is STRICTER than isLikelyStaleWrongShow — wrongProduction is
+ * fundamentally about "wrong production of same play," so URL year alignment
+ * + publishDate within show's run window are MANDATORY (not OR). URL-only
+ * matches without date support are dominated by tour/revival reviews of
+ * other productions and need the LLM to disambiguate.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} [show] - Show entry from shows.json (needs title +
+ *   openingDate + status; uses closingDate when present)
+ */
+function isLikelyStaleWrongProduction(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show || !show.title || String(show.title).length < 5) return false;
+
+  // Already manually cleared — don't double-process; the sweep would be a no-op.
+  if (data.wrongProductionManualClear === true) return false;
+  if (data.wrongProductionOverride === true) return false;
+  if (data.humanReviewedWrongProduction === false) return false;
+
+  const fullText = String(data.fullText || '').trim();
+  if (fullText.length < 1500) return false;
+
+  // Don't override stronger signals from sibling guards.
+  if (data.wrongShow === true) return false;
+  if (data.fullTextWrongAuthor === true) return false;
+  if (
+    data.contentVerification &&
+    data.contentVerification.wrongArticle === true &&
+    data.contentVerification.confidence === 'high'
+  ) return false;
+  // Honor non-wrong_production rejection reasons (wrong_show, garbage_text,
+  // not_a_review are different signals — leave them alone).
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_production') return false;
+
+  const url = data.url || data.sourceUrl || '';
+  if (!url) return false;
+  const u = url.toLowerCase();
+
+  // Roundup / multi-show / feature article URLs — never individual reviews.
+  if (isRoundupUrl(url).isRoundup) return false;
+  if (/\/article\/review-roundup-/i.test(u)) return false;
+  if (/\/article\/reviews-sound-off-/i.test(u)) return false;
+  if (/\/article\/reviews-/i.test(u)) return false;
+  if (/playbill\.com\/article\/reviews-/i.test(u)) return false;
+  if (/westendtheatre\.com\/.*\/reviews-of-/i.test(u)) return false;
+  if (/\/review-roundup\//i.test(u)) return false;
+  if (/\/reviews?-roundup\b/i.test(u)) return false;
+  if (/broadway-shockers-\d{4}/i.test(u)) return false;
+  if (/\/year-in-(?:theater|review)/i.test(u)) return false;
+  if (/best-(?:plays?|musicals?|shows?)-of-\d{4}/i.test(u)) return false;
+
+  // Tour / regional / wrong-venue indicators — these are LEGITIMATE wrong-production.
+  if (/national-tour|tour-review|tour-and-regional|regional-(?:legit-)?review/i.test(u)) return false;
+  if (/stratford-festival|actors-?gang|kennedy-center|world-premiere|world\.premiere/i.test(u)) return false;
+  if (/[-/]tour[-/]|broadway-in-/i.test(u)) return false;
+  if (/(?:[\/-])(?:knoxville|nashville|st-louis|orlando|tampa|cleveland|cincinnati|portland-or|minneapolis|milwaukee|baltimore|pittsburgh|las-vegas|orange-county|sarasota|charlotte|raleigh|hartford|providence|albany|buffalo|rochester|syracuse)(?:[\/-])/i.test(u)) return false;
+  if (/arts-?(?:knoxville|nashville|memphis|atlanta)/i.test(u)) return false;
+
+  // Wrong medium — film/TV reviews under same title.
+  if (/\/film[\/s-]/i.test(u)) return false;
+  if (/\/films[\/s-]/i.test(u)) return false;
+  if (/\/movies?[\/s-]/i.test(u)) return false;
+  if (/variety\.com\/\d+\/film\//i.test(u)) return false;
+  if (/\/tv-?(?:plus|review|shows)\b/i.test(u)) return false;
+  if (/apple-?tv-?(?:plus|review)?/i.test(u)) return false;
+
+  // Must look like an individual review URL (path token "review").
+  if (!/[\/-]review[s\/-]?/.test(u) && !/[\/-]reviewed?[\/-]/.test(u)) return false;
+
+  // Title tokens must overlap URL slug (re-use wrongShow's tokenizer).
+  const titleTokens = _wrongShowTitleTokens(show.title);
+  if (titleTokens.length === 0) return false;
+  const urlTokens = new Set(_wrongShowTitleTokens(url));
+  let overlap = 0;
+  for (const t of titleTokens) if (urlTokens.has(t)) overlap++;
+  if (titleTokens.length === 1 && overlap < 1) return false;
+  if (titleTokens.length > 1 && overlap < 2) return false;
+
+  // Show title must appear as a phrase in fullText.
+  if (!fullText.toLowerCase().includes(String(show.title).toLowerCase())) return false;
+
+  // Year alignment — STRICT for wrongProduction. If URL has year, it must be
+  // within 1 year of show opening year. URL year mismatch is the strongest
+  // single signal that this is a different production of the same play
+  // (e.g. arts-knoxville/2024/wicked review under wicked-2003).
+  const urlYearMatch = url.match(/[\/_-](20\d{2}|19\d{2})\b/);
+  const urlYear = urlYearMatch ? parseInt(urlYearMatch[1], 10) : null;
+  let showYear = null;
+  if (show.openingDate) {
+    const m = String(show.openingDate).match(/^(\d{4})/);
+    if (m) showYear = parseInt(m[1], 10);
+  }
+  if (!showYear && show.id) {
+    const m = String(show.id).match(/(\d{4})\b/);
+    if (m) showYear = parseInt(m[1], 10);
+  }
+  if (urlYear && showYear && Math.abs(urlYear - showYear) > 1) return false;
+  // Pre-2005 shows: require URL year (older catalog has high cross-attribution risk).
+  if (showYear && showYear < 2005 && !urlYear) return false;
+
+  // publishDate must be within show's run window (allow -30d before opening
+  // for previews, +14d after closing for late reviews). MANDATORY for
+  // wrongProduction — distinguishes "this run" from "different run of same play".
+  if (!show.openingDate || !data.publishDate) return false;
+  const openDate = new Date(show.openingDate);
+  const pd = new Date(data.publishDate);
+  if (isNaN(openDate) || isNaN(pd)) return false;
+  let endDate;
+  if (show.closingDate) {
+    endDate = new Date(show.closingDate);
+  } else if (show.status === 'open') {
+    endDate = new Date();
+  } else {
+    endDate = new Date(openDate.getTime() + 365 * 86400000);
+  }
+  const earliest = new Date(openDate.getTime() - 30 * 86400000);
+  const latest = new Date(endDate.getTime() + 14 * 86400000);
+  if (pd < earliest || pd > latest) return false;
+
+  return true;
+}
+
+/**
  * Detect a stale suspectedMisattribution flag — a flag that the current
  * critic-registry would no longer set on this file.
  *
@@ -1974,6 +2128,7 @@ module.exports = {
   isRoundupUrl,
   isLikelyStaleRoundupFlag,
   isLikelyStaleWrongShow,
+  isLikelyStaleWrongProduction,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,

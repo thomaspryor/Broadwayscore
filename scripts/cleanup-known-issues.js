@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -251,6 +252,10 @@ function fixCats() {
 
         if (data.wrongProduction === true) {
           console.log(`  SKIP (already flagged): cats-the-jellicle-ball-2026/${file}`);
+          continue;
+        }
+        if (shouldSkipWrongProductionAudit(data)) {
+          console.log(`  SKIP (manual-clear): cats-the-jellicle-ball-2026/${file}`);
           continue;
         }
 
