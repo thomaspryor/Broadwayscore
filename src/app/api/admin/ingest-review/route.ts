@@ -41,6 +41,10 @@ interface IngestRequest {
   humanReviewScore?: number | null;
   originalScore?: string | null;
   forceClearStale?: boolean;
+  // When true, commit the file but skip the workflow_dispatch step. The caller
+  // (batch mode) will dispatch ONE rebuild via /api/admin/dispatch-rebuild after
+  // committing all files, instead of N parallel rebuilds.
+  skipDispatch?: boolean;
 }
 
 interface IngestResponse {
@@ -276,18 +280,26 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  // Dispatch rebuild-fast.yml in the PUBLIC repo.
-  const dispatchResult = await githubDispatchWorkflow(
-    token,
-    PUBLIC_REPO_OWNER,
-    PUBLIC_REPO_NAME,
-    REBUILD_WORKFLOW,
-    { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
-  );
-
-  const workflowRunUrl = dispatchResult.ok
-    ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
-    : undefined;
+  // Dispatch rebuild-fast.yml in the PUBLIC repo — UNLESS the caller asked us
+  // to skip (batch mode commits N files then dispatches once at the end via
+  // /api/admin/dispatch-rebuild).
+  let workflowRunUrl: string | undefined;
+  let dispatchWarning: string | undefined;
+  if (!body.skipDispatch) {
+    const dispatchResult = await githubDispatchWorkflow(
+      token,
+      PUBLIC_REPO_OWNER,
+      PUBLIC_REPO_NAME,
+      REBUILD_WORKFLOW,
+      { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
+    );
+    workflowRunUrl = dispatchResult.ok
+      ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
+      : undefined;
+    dispatchWarning = dispatchResult.ok
+      ? undefined
+      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`;
+  }
 
   return NextResponse.json({
     success: true,
@@ -299,9 +311,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     filename,
     commitSha: putResult.commitSha,
     workflowRunUrl,
-    warning: dispatchResult.ok
-      ? undefined
-      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`,
+    warning: dispatchWarning,
     detectionWarnings: detected.warnings.length > 0 ? detected.warnings : undefined,
   });
 }
