@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-04-25T18:42:56.249Z",
+  "timestamp": "2026-04-26T00:45:03.097Z",
   "stats": {
-    "totalReviews": 35770,
+    "totalReviews": 35771,
     "alreadyFlagged": 15964,
     "dateGuardCatches": 95,
     "directorMismatch": 820,
     "tvFilmSignals": 3204,
-    "londonSignals": 1029,
+    "londonSignals": 1030,
     "offBroadwaySignals": 901,
     "yearMismatch": 69,
     "noPublishDate": 3745
@@ -76999,6 +76999,20 @@
       "score": 82,
       "publishDate": "2026-04-23",
       "url": "https://www.nytimes.com/2026/04/23/theater/rocky-horror-show-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "the-queer-review--james-kleinmann.json",
+      "score": 93,
+      "publishDate": "2026-04-23",
+      "url": "https://thequeerreview.com/2026/04/23/theatre-review-the-rocky-horror-show-studio-54-broadway/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
