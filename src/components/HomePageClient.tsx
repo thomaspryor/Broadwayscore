@@ -561,7 +561,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       </div>
 
       {/* Market + Type Filter Row */}
-      <div className="flex items-center justify-between gap-2 sm:gap-4 mb-4 flex-wrap">
+      <div className="flex items-center gap-2 sm:gap-4 mb-4">
         <MarketFilterBar
           pair="nyc"
           activeMarket="broadway"
@@ -581,6 +581,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
               updateParams({ scoreMode: key });
             }
           }}
+          className="flex-shrink-0"
         />
       </div>
 
