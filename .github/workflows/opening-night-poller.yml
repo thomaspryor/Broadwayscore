@@ -209,6 +209,35 @@ jobs:
               ANY_NEW=true
               echo "  → $CREATED new review files"
             fi
+            # Joe Turner 2026-04-25 postmortem: a poll that returns 0 NEW files
+            # but has UNSCORED existing reviews used to skip the entire scoring
+            # + rebuild + deploy chain — leaving openings with collected-but-
+            # unscored reviews stranded under the 5-review llm-ensemble auto-
+            # trigger threshold. Detect that case here so the scoring + rebuild
+            # gates can fire.
+            UNSCORED=$(node -e "
+              const fs = require('fs');
+              const path = require('path');
+              const dir = path.join('data', 'review-texts', '$SHOW_ID');
+              if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
+              let n = 0;
+              for (const f of fs.readdirSync(dir)) {
+                if (!f.endsWith('.json')) continue;
+                try {
+                  const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+                  // 'Unscored' = no llmScore AND no humanReviewScore AND no
+                  // originalScore. originalScore alone (e.g., a star rating)
+                  // does NOT count as scored — composite still needs LLM.
+                  const hasScore = d.llmScore != null || d.humanReviewScore != null;
+                  if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
+                } catch (_) {}
+              }
+              console.log(n);
+            " 2>/dev/null || echo 0)
+            if [ "$UNSCORED" -gt 0 ]; then
+              ANY_READY=true
+              echo "  → $UNSCORED unscored review(s) waiting for $SHOW_ID"
+            fi
             # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
             if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
               GUARDIAN_REDISPATCH_SHOWS="$GUARDIAN_REDISPATCH_SHOWS,$SHOW_ID"
@@ -217,7 +246,14 @@ jobs:
 
           # Strip leading comma, expose as output
           GUARDIAN_REDISPATCH_SHOWS="${GUARDIAN_REDISPATCH_SHOWS#,}"
+          # any_new gates file-commit steps (only fire when files actually changed).
+          # any_action gates score/rebuild/deploy (fires for new files OR existing
+          # unscored reviews — closes the Joe-Turner gap).
+          ANY_ACTION=false
+          if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ]; then ANY_ACTION=true; fi
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
+          echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
+          echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
           echo "guardian_redispatch_shows=$GUARDIAN_REDISPATCH_SHOWS" >> $GITHUB_OUTPUT
           if [ -n "$GUARDIAN_REDISPATCH_SHOWS" ]; then
             echo "Guardian redispatch needed for: $GUARDIAN_REDISPATCH_SHOWS"
@@ -315,7 +351,7 @@ jobs:
         continue-on-error: true
 
       - name: Score reviews inline
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -331,7 +367,7 @@ jobs:
         timeout-minutes: 10
 
       - name: Commit scores
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         run: |
           cd data/review-texts
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -344,7 +380,7 @@ jobs:
 
       # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
       - name: Cancel competing rebuilds (fast_path)
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -363,7 +399,7 @@ jobs:
 
       - name: Rebuild reviews.json (fast_path)
         id: fast_rebuild
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -467,20 +503,20 @@ jobs:
 
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
-        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh workflow run rebuild-reviews.yml -f reason="Opening night poller (inline)"
 
       - name: Rebuild reviews.json locally (for readiness check)
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         run: node scripts/rebuild-all-reviews.js 2>&1 | tail -5
         continue-on-error: true
         timeout-minutes: 5
 
       - name: Check readiness and trigger broadcast
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
