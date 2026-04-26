@@ -58,6 +58,11 @@ const path = require('path');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
+const {
+  recoverFromText,
+  recoverFromUrl,
+  _hasDedicatedExtractor,
+} = require('./lib/recover-manual-review-score');
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -80,6 +85,7 @@ const dryRun = hasFlag('dry-run');
 const noRebuild = hasFlag('no-rebuild');
 const forceClearStale = hasFlag('force-clear-stale-flag');
 const provisional = hasFlag('provisional');
+const noAutoExtract = hasFlag('no-auto-extract');
 
 // Validate required args
 if (!showId || !outletArg || !criticName) {
@@ -103,6 +109,10 @@ if (!showId || !outletArg || !criticName) {
   console.error('  --no-rebuild       Skip rebuild/deploy trigger');
   console.error('  --force-clear-stale-flag   Ingest even if an existing file has wrongProduction/');
   console.error('                              wrongShow=true or a publishDate >365 days off');
+  console.error('  --no-auto-extract  Skip the opportunistic URL fetch + score-extractor recovery.');
+  console.error('                     Default: when --score/--stars not set and outlet has a dedicated');
+  console.error('                     extractor (nysr, timeout, guardian, ...), fetch the URL and try');
+  console.error('                     to recover the published rating from HTML (RHS 2026-04-23 NYSR fix).');
   process.exit(1);
 }
 
@@ -164,6 +174,34 @@ if (textFile) {
   fullText = fs.readFileSync(textFile, 'utf8').trim();
 } else if (inlineText) {
   fullText = inlineText;
+}
+
+// Async tail: opportunistic score recovery + ingest. Wrapped because
+// score recovery calls fetchPage (async) and the rest of the script
+// can't easily run before it.
+(async () => {
+
+// Opportunistic score recovery (RHS 2026-04-23 NYSR fix).
+// When operator pasted a review with no explicit --score/--stars, try to
+// recover the published rating from text or HTML. Runs ONLY when the
+// outlet has a dedicated extractor (nysr, timeout, guardian, UK stars,
+// etc.) — never on noScoreExtractor outlets where false positives ruin
+// scores. Sync text scan first (free); URL fetch only if text scan misses
+// AND a URL was supplied. --no-auto-extract opts out.
+if (!originalScore && !noAutoExtract && _hasDedicatedExtractor(outletId)) {
+  let recovered = recoverFromText(fullText, outletId);
+  if (!recovered && url) {
+    console.log(`Outlet "${outletId}" has a dedicated rating extractor — fetching URL to recover stars...`);
+    recovered = await recoverFromUrl(url, outletId, { log: (m) => console.log(m) });
+  }
+  if (recovered && recovered.normalizedScore != null) {
+    originalScore = recovered.originalScore;
+    originalScoreSource = recovered.source || 'extractor-recovered';
+    if (humanScore == null) {
+      humanScore = recovered.normalizedScore;
+    }
+    console.log(`✦ Auto-recovered rating: ${originalScore} → ${recovered.normalizedScore} [${originalScoreSource}]`);
+  }
 }
 
 // Summary
@@ -273,3 +311,8 @@ if (fullText) {
   console.log(`\nNote: manualContentTier=complete will prevent rebuild from reclassifying this review.`);
   console.log('To unlock, remove the manualContentTier field from the file.');
 }
+
+})().catch((e) => {
+  console.error('Ingest failed:', e.stack || e.message);
+  process.exit(1);
+});
