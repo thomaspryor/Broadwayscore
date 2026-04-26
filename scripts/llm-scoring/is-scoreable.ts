@@ -9,7 +9,7 @@
 
 // Canonical excerpt field list — single source of truth in excerpt-fields.js
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
-const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared } = require('../lib/review-guards');
+const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared, isLikelyStaleSuspectedMisattribution, getCriticRegistry } = require('../lib/review-guards');
 
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>): boolean {
   if (data.duplicateOf || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
@@ -28,6 +28,12 @@ export function isScoreable(data: Record<string, any>, show?: Record<string, any
   // isRoundupArticle (10+ shows) stays blocked — too many shows for reliable trimming.
   // Defensive override: stale flag on a substantial individual review — Notion 34e637c5.
   if (data.isRoundupArticle && !isLikelyStaleRoundupFlag(data)) return false;
+  // suspectedMisattribution: Guard G in review-file-writer.js fires when a
+  // non-freelancer critic publishes at an outletId outside their knownOutlets.
+  // Defensive override: stale flag where current registry would no longer fire
+  // (Notion 34e637c5-416f-81b8). The LLM scorer was previously not gating on
+  // this flag at all, burning budget re-scoring files rebuild correctly excluded.
+  if (data.suspectedMisattribution && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return false;
   if (data.rejectionReason) return false;
   if (data.showNotMentioned) {
     if (!hasAnyExcerpt(data)) return false;
