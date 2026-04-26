@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-26T02:58:12.210Z",
+  "updatedAt": "2026-04-26T03:02:25.061Z",
   "processed": 0,
-  "failed": 31,
+  "failed": 40,
   "successRate": "0%",
   "tierBreakdown": {
     "playwright": 0,
@@ -67,6 +67,17 @@
     },
     {
       "t": "2026-04-26T02:56:22.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T03:00:22.061Z",
+      "event": "bb-session",
+      "session": "8cfff614",
+      "url": "https://www.nytimes.com/2026/04/25/theater/joe-turners-come-and-gone-review-hens"
+    },
+    {
+      "t": "2026-04-26T03:00:22.732Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
