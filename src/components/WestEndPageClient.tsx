@@ -8,6 +8,10 @@ import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from 
 import MarketFilterBar from '@/components/MarketFilterBar';
 import type { ScoreModeParam } from '@/components/show-cards';
 import type { AwardWinnerSets } from '@/lib/data-awards';
+import { FilterButton } from '@/components/filters/FilterButton';
+import { FilterPanel } from '@/components/filters/FilterPanel';
+import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
 // Serialized show data passed from server component
@@ -118,7 +122,7 @@ function FeaturedRow({ title, subtitle, shows }: { title: string; subtitle?: str
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], marketOpenCounts }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], marketOpenCounts, awardWinnerSets }: WestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
@@ -398,6 +402,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     return result;
   }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
 
+  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets });
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
@@ -431,7 +438,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       )}
 
       {/* Search */}
-      <div id="search" className="relative mb-4 sm:mb-6 scroll-mt-24" role="search">
+      <div id="search" className="relative mb-2 scroll-mt-24" role="search">
         <label htmlFor="we-show-search" className="sr-only">Search West End shows</label>
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
           <SearchIcon />
@@ -446,10 +453,35 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
             setSearchInput(val);
             updateParams({ q: val });
           }}
-          className="search-input pl-12 focus-visible:outline-none"
+          className="search-input pl-12 pr-14 focus-visible:outline-none"
           autoComplete="off"
         />
+        <div className="absolute inset-y-0 right-2 flex items-center">
+          <FilterButton
+            activeCount={panel.activeCount}
+            isOpen={isPanelOpen}
+            onClick={() => setIsPanelOpen((v) => !v)}
+            controlsId="advanced-filter-panel"
+          />
+        </div>
       </div>
+
+      <div className="mb-2 sm:mb-4">
+        <ActiveFilterChips
+          chips={panel.chips}
+          onRemove={panel.removeChip}
+          onClearAll={panel.clearAll}
+        />
+      </div>
+
+      <FilterPanel
+        isOpen={isPanelOpen}
+        onClose={() => setIsPanelOpen(false)}
+        selectedByGroup={panel.selectedByGroup}
+        onToggle={panel.toggleOption}
+        onClearAll={panel.clearAll}
+        resultCount={panel.filteredShows.length}
+      />
 
       {/* Market + Type Filter Row */}
       <div className="flex items-center gap-2 sm:gap-4 mb-4">
@@ -522,9 +554,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
 
       {/* Show List */}
       <h2 className="sr-only">West End Shows</h2>
-      <ShowCardList shows={filteredAndSortedShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+      <ShowCardList shows={panel.filteredShows} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
 
-      {filteredAndSortedShows.length === 0 && (
+      {panel.filteredShows.length === 0 && (
         <div className="card text-center py-16 px-6" role="status" aria-live="polite">
           <div className="w-16 h-16 rounded-full bg-surface-overlay mx-auto mb-4 flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -550,7 +582,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       )}
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
-        <span>{filteredAndSortedShows.length} shows</span>
+        <span>{panel.filteredShows.length} shows</span>
         <Link href="/methodology" prefetch={false} className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>
