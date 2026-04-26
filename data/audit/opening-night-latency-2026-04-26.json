@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-26T11:30:48.158Z",
+  "generatedAt": "2026-04-26T12:32:55.341Z",
   "date": "2026-04-26",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 15234,
+  "entryCount": 16258,
   "shows": [
     {
       "showId": "proof-2026",
@@ -156,7 +156,7 @@
     },
     {
       "showId": "every-brilliant-thing-2026",
-      "reviewCount": 23,
+      "reviewCount": 24,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -996,7 +996,7 @@
     },
     {
       "showId": "high-noon-west-end-2025",
-      "reviewCount": 18,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2106,7 +2106,7 @@
     },
     {
       "showId": "dracula-west-end-2025",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2436,7 +2436,7 @@
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
-      "reviewCount": 7,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3411,7 +3411,7 @@
     },
     {
       "showId": "the-rocky-horror-show-2026",
-      "reviewCount": 27,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3672,6 +3672,21 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 835996,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "just-in-time-2025",
+      "reviewCount": 33,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
