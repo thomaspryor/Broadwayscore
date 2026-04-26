@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-26T12:21:36.092Z",
+  "generatedAt": "2026-04-26T12:43:59.962Z",
   "summary": {
-    "total": 19,
-    "high": 10,
-    "medium": 6,
-    "low": 3
+    "total": 17,
+    "high": 9,
+    "medium": 7,
+    "low": 1
   },
   "collisions": [
     {
@@ -278,33 +278,6 @@
       "confidence": "high"
     },
     {
-      "url": "https://www.newyorkcitytheatre.com/shows/broadhursttheater/cats-the-jellicle-ball",
-      "normalizedUrl": "https://newyorkcitytheatre.com/shows/broadhursttheater/cats-the-jellicle-ball",
-      "candidates": [
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "new-york-city-theatre--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-04-07",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "new-york-city-theatre"
-        },
-        {
-          "showId": "cats-west-end-2026",
-          "file": "new-york-city-theatre--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-08-06",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "new-york-city-theatre"
-        }
-      ],
-      "suggestedWinner": "cats-west-end-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://www.newyorkcitytheatre.com/shows/musicboxtheater/giant",
       "normalizedUrl": "https://newyorkcitytheatre.com/shows/musicboxtheater/giant",
       "candidates": [
@@ -314,7 +287,7 @@
           "publishDate": null,
           "openingDate": "2026-03-23",
           "hasScore": false,
-          "hasFullText": false,
+          "hasFullText": true,
           "outletId": "new-york-city-theatre"
         },
         {
@@ -328,8 +301,8 @@
         }
       ],
       "suggestedWinner": "giant-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
     },
     {
       "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
@@ -410,33 +383,6 @@
       ],
       "suggestedWinner": "the-lion-king-west-end-2021",
       "reason": "publishDate 1999-10-22 is 3 days from the-lion-king-west-end-2021 opening (1999-10-19); next closest is 1031 days from six-the-musical-west-end-2021",
-      "confidence": "high"
-    },
-    {
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR",
-      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
-      "candidates": [
-        {
-          "showId": "stereophonic-off-broadway-2023",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "October 30, 2023",
-          "openingDate": "2023-10-17",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "the-balusters-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2026-04-21",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "lighting-and-sound-america"
-        }
-      ],
-      "suggestedWinner": "stereophonic-off-broadway-2023",
-      "reason": "publishDate October 30, 2023 is 13 days from stereophonic-off-broadway-2023 opening (2023-10-17)",
       "confidence": "high"
     },
     {
