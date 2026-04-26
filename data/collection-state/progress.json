@@ -2137,7 +2137,17 @@
     "lucky-guy-2013/backstage--erik-haagensen.json",
     "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
-    "ann-2013/bloomberg--jeremy-gerard.json"
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "joe-turners-come-and-gone-2026/nytg--austin-fimmano.json",
+    "joe-turners-come-and-gone-2026/nytimes--helen-shaw.json",
+    "joe-turners-come-and-gone-2026/variety--aramide-tinubu.json",
+    "joe-turners-come-and-gone-2026/deadline--greg-evans.json",
+    "joe-turners-come-and-gone-2026/guardian--juan-a-ramirez.json",
+    "joe-turners-come-and-gone-2026/nydailynews--chris-jones.json",
+    "joe-turners-come-and-gone-2026/nypost--johnny-oleksinski.json",
+    "joe-turners-come-and-gone-2026/thewrap--robert-hofler.json",
+    "joe-turners-come-and-gone-2026/timeout--raven-snook.json",
+    "joe-turners-come-and-gone-2026/cititour--brian-scott-lipton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2157,7 +2167,9 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--clayton-davis.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
       "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json",
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+      "data/review-texts/joe-turners-come-and-gone-2026/variety--aramide-tinubu.json",
+      "data/review-texts/joe-turners-come-and-gone-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -2172,7 +2184,7 @@
     "archive": []
   },
   "startTime": "2026-04-25T09:03:49.332Z",
-  "lastProcessed": "ann-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "joe-turners-come-and-gone-2026/cititour--brian-scott-lipton.json",
   "log": [
     {
       "t": "2026-04-25T10:21:53.763Z",
@@ -2272,6 +2284,39 @@
       "t": "2026-04-26T01:49:14.777Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T02:24:19.195Z",
+      "event": "bb-session",
+      "session": "d1c0788f",
+      "url": "https://www.nytimes.com/2026/04/25/theater/joe-turners-come-and-gone-review-hens"
+    },
+    {
+      "t": "2026-04-26T02:24:19.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T02:24:46.500Z",
+      "event": "bb-session",
+      "session": "2b1b705d",
+      "url": "https://variety.com/2026/legit/reviews/joe-turners-come-and-gone-broadway-review"
+    },
+    {
+      "t": "2026-04-26T02:24:46.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T02:24:57.573Z",
+      "event": "bb-session",
+      "session": "66cf7fba",
+      "url": "https://deadline.com/2026/04/joe-turners-come-and-gone-broadway-review-taraji-p-"
+    },
+    {
+      "t": "2026-04-26T02:24:57.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

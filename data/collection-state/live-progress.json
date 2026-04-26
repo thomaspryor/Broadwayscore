@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-26T02:16:27.434Z",
+  "updatedAt": "2026-04-26T02:26:31.584Z",
   "processed": 6,
-  "failed": 2130,
+  "failed": 2140,
   "successRate": "0.3%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-04-25T10:21:53.763Z",
-      "event": "bb-session",
-      "session": "326f48a1",
-      "url": "https://deadline.com/2026/04/tyler-perry-joe-turners-come-and-gone-broadway-1236"
-    },
-    {
-      "t": "2026-04-25T10:21:54.527Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-04-25T10:32:29.655Z",
-      "event": "bb-session",
-      "session": "316afdcc",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=I"
-    },
-    {
-      "t": "2026-04-25T10:32:31.239Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-25T10:43:38.701Z",
       "event": "bb-session",
@@ -113,6 +91,39 @@
       "t": "2026-04-26T01:49:14.777Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T02:24:19.195Z",
+      "event": "bb-session",
+      "session": "d1c0788f",
+      "url": "https://www.nytimes.com/2026/04/25/theater/joe-turners-come-and-gone-review-hens"
+    },
+    {
+      "t": "2026-04-26T02:24:19.588Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T02:24:46.500Z",
+      "event": "bb-session",
+      "session": "2b1b705d",
+      "url": "https://variety.com/2026/legit/reviews/joe-turners-come-and-gone-broadway-review"
+    },
+    {
+      "t": "2026-04-26T02:24:46.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T02:24:57.573Z",
+      "event": "bb-session",
+      "session": "66cf7fba",
+      "url": "https://deadline.com/2026/04/joe-turners-come-and-gone-broadway-review-taraji-p-"
+    },
+    {
+      "t": "2026-04-26T02:24:57.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
