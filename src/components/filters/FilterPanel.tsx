@@ -72,6 +72,7 @@ export function FilterPanel({
       {/* Sheet (mobile) / Popover (desktop) */}
       <div
         ref={containerRef}
+        id="advanced-filter-panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby={headingId}
