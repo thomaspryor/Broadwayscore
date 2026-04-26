@@ -24,7 +24,13 @@
     "operation-mincemeat-west-end-2024/theatre-weekly--unknown.json",
     "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
     "matilda-the-musical-west-end-2021/guardian--unknown.json",
-    "book-of-mormon-2011/about-entertainment--ben-brantley.json"
+    "book-of-mormon-2011/about-entertainment--ben-brantley.json",
+    "the-comedy-about-spies-west-end-2026/guardian--unknown.json",
+    "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
+    "the-comedy-about-spies-west-end-2026/whatsonstage--unknown.json",
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
+    "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+    "glengarry-glen-ross-west-end-2026/observer--david-cote.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -704,7 +710,11 @@
     "book-of-mormon-2011/variety--david-rooney.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
-    "book-of-mormon-2011/backstage--david-sheward.json"
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-comedy-about-spies-west-end-2026/thestage--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -728,7 +738,11 @@
       "oliver-west-end-2024/theatre-weekly--unknown.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
       "operation-mincemeat-west-end-2024/theatre-weekly--unknown.json",
-      "matilda-the-musical-west-end-2021/guardian--unknown.json"
+      "matilda-the-musical-west-end-2021/guardian--unknown.json",
+      "the-comedy-about-spies-west-end-2026/guardian--unknown.json",
+      "the-comedy-about-spies-west-end-2026/whatsonstage--unknown.json",
+      "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
+      "glengarry-glen-ross-west-end-2026/observer--david-cote.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
@@ -737,7 +751,10 @@
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
       "data/review-texts/every-brilliant-thing-2026/wsj--unknown.json",
-      "every-brilliant-thing-2026/wsj--unknown.json"
+      "every-brilliant-thing-2026/wsj--unknown.json",
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+      "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -749,14 +766,16 @@
     ],
     "archiveToday": [
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
-      "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json"
+      "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json",
+      "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "burlesque-west-end-2026/telegraph--unknown.json"
+      "burlesque-west-end-2026/telegraph--unknown.json",
+      "the-comedy-about-spies-west-end-2026/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "book-of-mormon-2011/backstage--david-sheward.json",
+  "lastProcessed": "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -812,6 +831,28 @@
       "t": "2026-04-26T15:51:34.183Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T15:52:32.245Z",
+      "event": "bb-session",
+      "session": "94d500b8",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
+    },
+    {
+      "t": "2026-04-26T15:52:32.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T15:55:49.664Z",
+      "event": "bb-session",
+      "session": "97430b73",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kier"
+    },
+    {
+      "t": "2026-04-26T15:55:50.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

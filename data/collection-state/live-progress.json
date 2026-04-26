@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-26T15:52:31.352Z",
-  "processed": 25,
-  "failed": 678,
-  "successRate": "3.6%",
+  "updatedAt": "2026-04-26T15:56:24.180Z",
+  "processed": 31,
+  "failed": 682,
+  "successRate": "4.3%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 24,
     "amp": 1,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 1,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 3,
+    "archive": 2
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -69,6 +69,28 @@
       "t": "2026-04-26T15:51:34.183Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T15:52:32.245Z",
+      "event": "bb-session",
+      "session": "94d500b8",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
+    },
+    {
+      "t": "2026-04-26T15:52:32.625Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T15:55:49.664Z",
+      "event": "bb-session",
+      "session": "97430b73",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kier"
+    },
+    {
+      "t": "2026-04-26T15:55:50.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
