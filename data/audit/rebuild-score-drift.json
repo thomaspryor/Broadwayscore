@@ -1,39 +1,479 @@
 {
-  "timestamp": "2026-04-26T15:54:48.758Z",
-  "totalDrifted": 4,
+  "timestamp": "2026-04-26T16:36:11.092Z",
+  "totalDrifted": 59,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "the-producers-west-end-2025",
-      "outlet": "London Box Office",
-      "critic": "Stuart King",
-      "oldScore": 66,
-      "newScore": 80,
+      "showId": "lennon-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 80,
+      "newScore": 18,
+      "delta": 62
+    },
+    {
+      "showId": "sister-act-2011",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 75,
+      "delta": 40
+    },
+    {
+      "showId": "dead-accounts-2012",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 73,
+      "delta": 38
+    },
+    {
+      "showId": "design-for-living-2001",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 80,
+      "newScore": 42,
+      "delta": 38
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 68,
+      "delta": 33
+    },
+    {
+      "showId": "the-violet-hour-2003",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 65,
+      "delta": 30
+    },
+    {
+      "showId": "42nd-street-2001",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 63,
+      "delta": 28
+    },
+    {
+      "showId": "dinner-at-eight-2002",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 60,
+      "delta": 25
+    },
+    {
+      "showId": "the-woman-in-white-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 38,
+      "delta": 22
+    },
+    {
+      "showId": "three-days-of-rain-2006",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 57,
+      "delta": 22
+    },
+    {
+      "showId": "picnic-2013",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 56,
+      "delta": 21
+    },
+    {
+      "showId": "priscilla-queen-of-the-desert-2011",
+      "outlet": "About Entertainment",
+      "critic": "Chris Caggiano",
+      "oldScore": 35,
+      "newScore": 56,
+      "delta": 21
+    },
+    {
+      "showId": "race-2009",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 56,
+      "delta": 21
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 55,
+      "delta": 20
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 55,
+      "delta": 20
+    },
+    {
+      "showId": "mothers-and-sons-2014",
+      "outlet": "The Washington Post",
+      "critic": "Mark Kennedy",
+      "oldScore": 80,
+      "newScore": 60,
+      "delta": 20
+    },
+    {
+      "showId": "say-goodnight-gracie-2002",
+      "outlet": "About Entertainment",
+      "critic": "Bruce Weber",
+      "oldScore": 60,
+      "newScore": 40,
+      "delta": 20
+    },
+    {
+      "showId": "la-bete-2010",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 78,
+      "delta": 18
+    },
+    {
+      "showId": "prymate-2004",
+      "outlet": "About Entertainment",
+      "critic": "Margo Jefferson",
+      "oldScore": 60,
+      "newScore": 42,
+      "delta": 18
+    },
+    {
+      "showId": "after-the-night-and-the-music-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 43,
+      "delta": 17
+    },
+    {
+      "showId": "baby-its-you-2011",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 18,
+      "delta": 17
+    },
+    {
+      "showId": "hands-on-a-hardbody-2013",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 60,
+      "newScore": 77,
+      "delta": 17
+    },
+    {
+      "showId": "in-my-life-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 18,
+      "delta": 17
+    },
+    {
+      "showId": "sight-unseen-2004",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 77,
+      "delta": 17
+    },
+    {
+      "showId": "the-odd-couple-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 43,
+      "delta": 17
+    },
+    {
+      "showId": "the-vertical-hour-2006",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 43,
+      "delta": 17
+    },
+    {
+      "showId": "all-shook-up-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 19,
+      "delta": 16
+    },
+    {
+      "showId": "dance-of-the-vampires-2002",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 19,
+      "delta": 16
+    },
+    {
+      "showId": "man-and-boy-2011",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 76,
+      "delta": 16
+    },
+    {
+      "showId": "mrs-warrens-profession-2010",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 76,
+      "delta": 16
+    },
+    {
+      "showId": "the-year-of-magical-thinking-2007",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 80,
+      "newScore": 64,
+      "delta": 16
+    },
+    {
+      "showId": "a-man-for-all-seasons-2008",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 45,
+      "delta": 15
+    },
+    {
+      "showId": "elling-2010",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 50,
+      "delta": 15
+    },
+    {
+      "showId": "lombardi-2010",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 50,
+      "delta": 15
+    },
+    {
+      "showId": "the-look-of-love-2003",
+      "outlet": "About Entertainment",
+      "critic": "Bruce Weber",
+      "oldScore": 35,
+      "newScore": 50,
+      "delta": 15
+    },
+    {
+      "showId": "wonderland-2011",
+      "outlet": "About Entertainment",
+      "critic": "Chris Caggiano",
+      "oldScore": 35,
+      "newScore": 50,
+      "delta": 15
+    },
+    {
+      "showId": "33-variations-2009",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 74,
       "delta": 14
     },
     {
-      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
-      "outlet": "London Box Office",
-      "critic": "Stuart King",
-      "oldScore": 87,
-      "newScore": 100,
+      "showId": "a-touch-of-the-poet-2005",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 46,
+      "delta": 14
+    },
+    {
+      "showId": "a-year-with-frog-and-toad-2003",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 74,
+      "delta": 14
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 80,
+      "newScore": 94,
+      "delta": 14
+    },
+    {
+      "showId": "private-lives-2011",
+      "outlet": "About Entertainment",
+      "critic": "Chris Caggiano",
+      "oldScore": 80,
+      "newScore": 66,
+      "delta": 14
+    },
+    {
+      "showId": "scandalous-2012",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 49,
+      "delta": 14
+    },
+    {
+      "showId": "the-performers-2012",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 49,
+      "delta": 14
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outlet": "About Entertainment",
+      "critic": "Chris Caggiano",
+      "oldScore": 60,
+      "newScore": 73,
       "delta": 13
     },
     {
-      "showId": "summerfolk-west-end-2026",
-      "outlet": "London Box Office",
-      "critic": "Stuart King",
-      "oldScore": 67,
-      "newScore": 80,
+      "showId": "enchanted-april-2003",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 73,
       "delta": 13
     },
     {
-      "showId": "roi-return-on-investment-west-end-2026",
-      "outlet": "London Box Office",
-      "critic": "Stuart King",
-      "oldScore": 68,
-      "newScore": 80,
+      "showId": "stones-in-his-pockets-2001",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 73,
+      "delta": 13
+    },
+    {
+      "showId": "jesus-christ-superstar-2012",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 47,
       "delta": 12
+    },
+    {
+      "showId": "the-anarchist-2012",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 47,
+      "delta": 12
+    },
+    {
+      "showId": "the-heiress-2012",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 48,
+      "delta": 12
+    },
+    {
+      "showId": "the-lieutenant-of-inishmore-2006",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 80,
+      "newScore": 68,
+      "delta": 12
+    },
+    {
+      "showId": "a-steady-rain-2009",
+      "outlet": "Los Angeles Times",
+      "critic": null,
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
+      "showId": "burn-the-floor-2009",
+      "outlet": "About Entertainment",
+      "critic": "Chris Caggiano",
+      "oldScore": 35,
+      "newScore": 46,
+      "delta": 11
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "outlet": "The Seattle Times",
+      "critic": "Mark Kennedy",
+      "oldScore": 60,
+      "newScore": 49,
+      "delta": 11
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
+      "outlet": "About Entertainment",
+      "critic": "Charles Isherwood",
+      "oldScore": 35,
+      "newScore": 24,
+      "delta": 11
+    },
+    {
+      "showId": "seminar-2011",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 49,
+      "delta": 11
+    },
+    {
+      "showId": "the-farnsworth-invention-2007",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 49,
+      "delta": 11
+    },
+    {
+      "showId": "the-mystery-of-charles-dickens-2002",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
+      "showId": "the-testament-of-mary-2013",
+      "outlet": "About Entertainment",
+      "critic": "Ben Brantley",
+      "oldScore": 35,
+      "newScore": 46,
+      "delta": 11
+    },
+    {
+      "showId": "waiting-for-godot-2025",
+      "outlet": "The New York Times",
+      "critic": "Laura Collins-Hughes",
+      "oldScore": 60,
+      "newScore": 49,
+      "delta": 11
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-26T15:55:01.205Z",
+  "timestamp": "2026-04-26T16:36:26.845Z",
   "stats": {
-    "totalReviews": 36264,
-    "alreadyFlagged": 16132,
+    "totalReviews": 36260,
+    "alreadyFlagged": 16139,
     "dateGuardCatches": 95,
     "directorMismatch": 821,
-    "tvFilmSignals": 3213,
+    "tvFilmSignals": 3215,
     "londonSignals": 1030,
-    "offBroadwaySignals": 902,
+    "offBroadwaySignals": 901,
     "yearMismatch": 69,
-    "noPublishDate": 3742
+    "noPublishDate": 3736
   },
   "findings": [
     {
@@ -976,7 +976,7 @@
     {
       "showId": "a-naked-girl-on-the-appian-way-2005",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 42,
       "publishDate": "October 7, 2005",
       "url": "http://theater.nytimes.com/2005/10/07/theater/reviews/07nake.html?adxnnl=1&amp;adxnnlx=1308331216-FFQTU+/R121x5huxesWpZw",
       "findings": [
@@ -2720,6 +2720,20 @@
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 52,
       "publishDate": "December 22, 2024",
+      "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "all-in-comedy-about-love-2024",
+      "file": "timeout--elisabeth-vincentelli.json",
+      "score": 64,
+      "publishDate": "December 22nd, 2024",
       "url": "https://www.nytimes.com/2024/12/22/theater/all-in-review.html",
       "findings": [
         {
@@ -6450,6 +6464,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": 94,
+      "publishDate": "March 24, 2011",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-eugene-oneill-theater-review.html?ref=theater",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -17876,7 +17904,7 @@
     {
       "showId": "grease-2007",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 41,
       "publishDate": "August 20, 2007",
       "url": "http://theater.nytimes.com/2007/08/20/theater/reviews/20grea.html",
       "findings": [
@@ -25060,7 +25088,7 @@
     {
       "showId": "king-kong-2018",
       "file": "nytimes--jesse-green-and-ben-brantley.json",
-      "score": null,
+      "score": 14,
       "publishDate": "November 8, 2018",
       "url": "https://www.nytimes.com/2018/11/08/theater/king-kong-review.html?action=click&amp;contentCollection=undefined&amp;region=stream&amp;module=stream_unit&amp;version=latest-stories&amp;contentPlacement=1&amp;pgtype=collection",
       "findings": [
@@ -38553,7 +38581,7 @@
     {
       "showId": "seascape-2005",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 64,
       "publishDate": "November 22, 2005",
       "url": "http://theater.nytimes.com/2005/11/22/theater/reviews/22seas.html",
       "findings": [
@@ -43865,7 +43893,7 @@
     {
       "showId": "tarzan-2006",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 43,
       "publishDate": "May 11, 2006",
       "url": "http://theater.nytimes.com/2006/05/11/theater/reviews/11tarz.html",
       "findings": [
@@ -44281,7 +44309,7 @@
     {
       "showId": "the-anarchist-2012",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 47,
       "publishDate": "December 2, 2012",
       "url": "http://theater.nytimes.com/2012/12/03/theater/reviews/david-mamets-anarchist-at-the-golden-theater.html?ref=theater&amp;_r=0",
       "findings": [
@@ -44323,7 +44351,7 @@
     {
       "showId": "the-apple-tree-2006",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 83,
       "publishDate": "December 15, 2006",
       "url": "http://theater.nytimes.com/2006/12/15/theater/reviews/15appl.html?adxnnl=1&amp;adxnnlx=1308253128-51H59rI1D3Q4oo1zaeJ3gg",
       "findings": [
@@ -49700,7 +49728,7 @@
     {
       "showId": "the-odd-couple-2005",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 43,
       "publishDate": "October 28, 2005",
       "url": "http://theater.nytimes.com/2005/10/28/theater/reviews/28odd.html",
       "findings": [
@@ -50457,7 +50485,7 @@
     {
       "showId": "the-performers-2012",
       "file": "about-entertainment--ben-brantley.json",
-      "score": null,
+      "score": 49,
       "publishDate": "November 14, 2012",
       "url": "http://theater.nytimes.com/2012/11/15/theater/reviews/the-performers-with-henry-winkler-and-cheyenne-jackson.html?_r=0",
       "findings": [
@@ -51195,7 +51223,7 @@
     },
     {
       "showId": "the-prom-2018",
-      "file": "the-globe-and-mail--kelly-nestruck.json",
+      "file": "the-globe-and-mail--j-kelly-nestruck.json",
       "score": 68,
       "publishDate": null,
       "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-review-the-prom-hits-the-heights-of-hilarity-as-a-spoof-of-broadway/",
@@ -56228,7 +56256,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "about-entertainment--charles-isherwood.json",
-      "score": null,
+      "score": 88,
       "publishDate": "October 14, 2012",
       "url": "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html?_r=0&amp;adxnnl=1&amp;ref=theater&amp;adxnnlx=1350253537-D2F1mvl4k86ll70uRrnxIg",
       "findings": [
@@ -58978,7 +59006,7 @@
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
-      "file": "the-globe-and-mail--kelly-nestruck.json",
+      "file": "the-globe-and-mail--j-kelly-nestruck.json",
       "score": 65,
       "publishDate": null,
       "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/nestruck-on-theatre/king-and-bacharachs-brill-building-brilliance-rearranged-for-the-stage/article16294134/#dashboard/follows/",
@@ -70415,20 +70443,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "rent-1996",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": null,
-      "publishDate": "August 11, 2011",
-      "url": "http://theater.nytimes.com/2011/08/12/theater/reviews/rent-revival-at-new-world-stages-review.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
