@@ -47,7 +47,9 @@
     "the-trip-to-bountiful-2013/about-entertainment--ben-brantley.json",
     "the-testament-of-mary-2013/about-entertainment--ben-brantley.json",
     "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
-    "orphans-2013/about-entertainment--ben-brantley.json"
+    "orphans-2013/about-entertainment--ben-brantley.json",
+    "the-assembled-parties-2013/about-entertainment--ben-brantley.json",
+    "the-nance-2013/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -904,7 +906,15 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "pippin-2013/new-jersey-newsroom--michael-sommers.json",
-    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json"
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-assembled-parties-2013/wsj--terry-teachout.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/bloomberg--jeremy-gerard.json",
+    "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -963,7 +973,9 @@
       "the-trip-to-bountiful-2013/about-entertainment--ben-brantley.json",
       "the-testament-of-mary-2013/about-entertainment--ben-brantley.json",
       "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
-      "orphans-2013/about-entertainment--ben-brantley.json"
+      "orphans-2013/about-entertainment--ben-brantley.json",
+      "the-assembled-parties-2013/about-entertainment--ben-brantley.json",
+      "the-nance-2013/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -993,7 +1005,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+  "lastProcessed": "matilda-the-musical-2013/village-voice--michael-musto.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1168,6 +1180,28 @@
     },
     {
       "t": "2026-04-26T16:36:43.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:37:51.595Z",
+      "event": "bb-session",
+      "session": "b3de7702",
+      "url": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-t"
+    },
+    {
+      "t": "2026-04-26T16:37:51.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:38:33.760Z",
+      "event": "bb-session",
+      "session": "296fbd0f",
+      "url": "http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-"
+    },
+    {
+      "t": "2026-04-26T16:38:34.151Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

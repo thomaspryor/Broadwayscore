@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-26T16:37:35.164Z",
-  "processed": 48,
-  "failed": 855,
-  "successRate": "5.3%",
+  "updatedAt": "2026-04-26T16:40:32.711Z",
+  "processed": 50,
+  "failed": 863,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 25,
     "amp": 1,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 13,
+    "scrapingbee": 15,
     "brightdata": 1,
     "archiveToday": 13,
     "archive": 6
   },
-  "browserbaseSessions": 16,
+  "browserbaseSessions": 18,
   "recentActivity": [
-    {
-      "t": "2026-04-26T15:55:49.664Z",
-      "event": "bb-session",
-      "session": "97430b73",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/glengarry-glen-ross-review-kier"
-    },
-    {
-      "t": "2026-04-26T15:55:50.675Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-26T15:57:52.212Z",
-      "event": "bb-session",
-      "session": "cb487fbf",
-      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-review-broadway-musica"
-    },
-    {
-      "t": "2026-04-26T15:57:52.623Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-04-26T16:32:11.457Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-26T16:36:43.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:37:51.595Z",
+      "event": "bb-session",
+      "session": "b3de7702",
+      "url": "http://theater.nytimes.com/2013/04/18/theater/reviews/the-assembled-parties-at-t"
+    },
+    {
+      "t": "2026-04-26T16:37:51.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:38:33.760Z",
+      "event": "bb-session",
+      "session": "296fbd0f",
+      "url": "http://theater.nytimes.com/2013/04/16/theater/reviews/the-nance-starring-nathan-"
+    },
+    {
+      "t": "2026-04-26T16:38:34.151Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
