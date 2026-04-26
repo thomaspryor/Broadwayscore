@@ -77,7 +77,17 @@
     "magicbird-2012/about-entertainment--charles-isherwood.json",
     "evita-2012/about-entertainment--ben-brantley.json",
     "end-of-the-rainbow-2012/about-entertainment--ben-brantley.json",
-    "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json"
+    "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json",
+    "wit-2012/about-entertainment--ben-brantley.json",
+    "on-a-clear-day-you-can-see-forever-2011/about-entertainment--ben-brantley.json",
+    "stick-fly-2011/about-entertainment--charles-isherwood.json",
+    "bonnie-and-clyde-2011/about-entertainment--ben-brantley.json",
+    "seminar-2011/about-entertainment--ben-brantley.json",
+    "private-lives-2011/about-entertainment--unknown.json",
+    "venus-in-fur-2011/about-entertainment--charles-isherwood.json",
+    "godspell-2011/about-entertainment--charles-isherwood.json",
+    "other-desert-cities-2011/about-entertainment--ben-brantley.json",
+    "chinglish-2011/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1041,7 +1051,16 @@
       "magicbird-2012/about-entertainment--charles-isherwood.json",
       "evita-2012/about-entertainment--ben-brantley.json",
       "end-of-the-rainbow-2012/about-entertainment--ben-brantley.json",
-      "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json"
+      "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json",
+      "on-a-clear-day-you-can-see-forever-2011/about-entertainment--ben-brantley.json",
+      "stick-fly-2011/about-entertainment--charles-isherwood.json",
+      "bonnie-and-clyde-2011/about-entertainment--ben-brantley.json",
+      "seminar-2011/about-entertainment--ben-brantley.json",
+      "private-lives-2011/about-entertainment--unknown.json",
+      "venus-in-fur-2011/about-entertainment--charles-isherwood.json",
+      "godspell-2011/about-entertainment--charles-isherwood.json",
+      "other-desert-cities-2011/about-entertainment--ben-brantley.json",
+      "chinglish-2011/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -1072,11 +1091,12 @@
       "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
       "mothers-and-sons-2014/washpost--mark-kennedy.json",
       "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
-      "the-lyons-2012/about-entertainment--ben-brantley.json"
+      "the-lyons-2012/about-entertainment--ben-brantley.json",
+      "wit-2012/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json",
+  "lastProcessed": "chinglish-2011/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1471,6 +1491,116 @@
     },
     {
       "t": "2026-04-26T18:29:44.936Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:30:30.309Z",
+      "event": "bb-session",
+      "session": "606021bf",
+      "url": "http://theater.nytimes.com/2012/01/27/theater/reviews/cynthia-nixon-in-wit-at-ma"
+    },
+    {
+      "t": "2026-04-26T18:30:30.648Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:30:56.390Z",
+      "event": "bb-session",
+      "session": "bf0b94a5",
+      "url": "http://theater.nytimes.com/2011/12/12/theater/reviews/on-a-clear-day-you-can-see"
+    },
+    {
+      "t": "2026-04-26T18:30:56.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:31:34.935Z",
+      "event": "bb-session",
+      "session": "1b00021a",
+      "url": "http://theater.nytimes.com/2011/12/09/theater/reviews/stick-fly-at-the-cort-thea"
+    },
+    {
+      "t": "2026-04-26T18:31:35.299Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:32:15.464Z",
+      "event": "bb-session",
+      "session": "6f3620dd",
+      "url": "http://theater.nytimes.com/2011/12/02/theater/reviews/bonnie-clyde-with-laura-os"
+    },
+    {
+      "t": "2026-04-26T18:32:15.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:32:56.906Z",
+      "event": "bb-session",
+      "session": "373dba78",
+      "url": "http://theater.nytimes.com/2011/11/21/theater/reviews/seminar-by-theresa-rebeck-"
+    },
+    {
+      "t": "2026-04-26T18:32:57.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:33:40.321Z",
+      "event": "bb-session",
+      "session": "d4d9900e",
+      "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-priv"
+    },
+    {
+      "t": "2026-04-26T18:33:40.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:34:20.375Z",
+      "event": "bb-session",
+      "session": "df867a4d",
+      "url": "http://theater.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-by-david-ives"
+    },
+    {
+      "t": "2026-04-26T18:34:20.731Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:34:59.783Z",
+      "event": "bb-session",
+      "session": "31c00531",
+      "url": "http://theater.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-"
+    },
+    {
+      "t": "2026-04-26T18:35:00.237Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:35:40.792Z",
+      "event": "bb-session",
+      "session": "ee0c05b8",
+      "url": "http://theater.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-boo"
+    },
+    {
+      "t": "2026-04-26T18:35:41.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:36:19.846Z",
+      "event": "bb-session",
+      "session": "1d4b0be4",
+      "url": "http://theater.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-h"
+    },
+    {
+      "t": "2026-04-26T18:36:20.218Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
