@@ -44,11 +44,23 @@ test('review-write-guard.js PROTECTED_FIELDS contains every opening-night overri
     `PROTECTED_FIELDS missing overrides — will silently drop on rebase`);
 });
 
-test('push-review-texts/action.yml PROTECTED array contains every opening-night override', () => {
+test('push-review-texts/action.yml effective PROTECTED list contains every opening-night override', () => {
+  // S2-T2 (2026-04-26): action.yml no longer inlines the PROTECTED array — it
+  // imports PROTECTED_FIELDS from scripts/lib/review-write-guard.js at runtime
+  // and unions with a small ACTION_EXTRA list. We mirror that composition.
   const actionYml = readRepo('.github/actions/push-review-texts/action.yml');
-  const missing = REQUIRED_OVERRIDES.filter(f => !new RegExp(`'${f}'`).test(actionYml));
+  assert.ok(
+    /PROTECTED_FIELDS\s*\}\s*=\s*require\(/.test(actionYml),
+    'action.yml must require { PROTECTED_FIELDS } from scripts/lib/review-write-guard.js (S2-T2)'
+  );
+  const extraMatch = actionYml.match(/const\s+ACTION_EXTRA\s*=\s*\[([\s\S]*?)\];/);
+  const extra = extraMatch
+    ? Array.from(extraMatch[1].replace(/\/\/[^\n]*\n/g, '\n').matchAll(/'([A-Za-z_][A-Za-z0-9_]*)'/g)).map(m => m[1])
+    : [];
+  const effective = new Set([...PROTECTED_FIELDS, ...extra]);
+  const missing = REQUIRED_OVERRIDES.filter(f => !effective.has(f));
   assert.deepEqual(missing, [],
-    `push-review-texts/action.yml PROTECTED array missing overrides — CI push will drop them`);
+    `push-review-texts/action.yml effective PROTECTED list missing overrides — CI push will drop them`);
 });
 
 test('restore-protected-fields.js MANUAL_FIELDS contains every opening-night override', () => {

@@ -1,0 +1,127 @@
+# Allowlist for the safeWriteReview lint (test.yml).
+#
+# Format: one line per script: filename followed by `--` and a one-line reason.
+# Lines starting with `#` are comments. Trailing whitespace is trimmed.
+#
+# Add a new entry only when a script legitimately must write to data/review-texts/
+# without going through safeWriteReview — typically because it does file moves
+# or unlinks that the per-field guard cannot protect (the topology gap, see
+# memory/feedback_locked_files_enrichment_chain.md).
+#
+# Do NOT use this as a workaround for a routine migration. The default path is
+# always: import safeWriteReview, route the write through it.
+#
+# Once the follow-up "Topology preservation for _locked files" Notion card lands,
+# these exemptions can be tightened (e.g. to specific call sites only).
+
+audit-pre2005-reviews.js -- cross-show MOVE write at line 455 (TOPOLOGY marker), bypasses _locked by design
+classify-wrong-production.js -- cross-show MOVE write at line 599 (TOPOLOGY marker), bypasses _locked by design
+backfill-unknown-critics.js -- rename path at line 164 (TOPOLOGY marker), bypasses _locked by design
+cleanup-phantom-outlets.js -- merge-then-unlink at line 130 (TOPOLOGY marker), bypasses _locked by design
+
+# === Legacy violators (pre-Sprint-1 P0 #2) ===
+# These scripts have raw fs.writeFileSync to review-texts paths but predate the
+# Joe Turner P0 #2 lock-at-the-writer migration (Sprint 1, 2026-04-26). They
+# are tracked here as a ratchet — new scripts cannot join this list, and each
+# entry should be removed as the script is migrated to safeWriteReview. The
+# follow-up Notion card 'Migrate legacy review-texts writers to safeWriteReview'
+# tracks this work.
+
+adjudicate-review-queue.js -- legacy-pending-migration
+apply-designations.js -- legacy-pending-migration
+audit-data-integrity.js -- legacy-pending-migration
+audit-non-reviews.js -- legacy-pending-migration
+audit-outlet-registry.js -- legacy-pending-migration
+audit-touring-contamination.js -- legacy-pending-migration
+audit-wrong-production.js -- legacy-pending-migration
+backfill-classified-at.js -- legacy-pending-migration
+backfill-llm-dates.js -- legacy-pending-migration
+backfill-original-scores.js -- legacy-pending-migration
+backfill-preview-placeholders.js -- legacy-pending-migration
+backfill-pv-critics.js -- legacy-pending-migration
+backfill-text-dates.js -- legacy-pending-migration
+backfill-url-dates.js -- legacy-pending-migration
+block-review.js -- legacy-pending-migration
+check-nyt-critics-pick.js -- legacy-pending-migration
+clean-review-entities.js -- legacy-pending-migration
+cleanup-data-integrity.js -- legacy-pending-migration
+cleanup-known-issues.js -- legacy-pending-migration
+cleanup-stale-multishow-flags.js -- legacy-pending-migration
+cleanup-unfetchable-urls.js -- legacy-pending-migration
+clear-stale-roundup-flags.js -- legacy-pending-migration
+clear-stale-suspected-misattribution-flags.js -- legacy-pending-migration
+collect-outlet-reviews.js -- legacy-pending-migration
+collect-west-end-reviews.js -- legacy-pending-migration
+convert-show-score-to-review-texts.js -- legacy-pending-migration
+create-stubs-from-reviews-json.js -- legacy-pending-migration
+detect-cross-outlet-duplicates.js -- legacy-pending-migration
+discover-opening-night-reviews.js -- legacy-pending-migration
+discover-outlet-reviews-serp.js -- legacy-pending-migration
+extract-dtli-reviews.js -- legacy-pending-migration
+extract-embedded-grades.js -- legacy-pending-migration
+extract-explicit-ratings.js -- legacy-pending-migration
+extract-full-reviews.js -- legacy-pending-migration
+extract-stagedoor-reviews.js -- legacy-pending-migration
+fetch-bww-roundups.js -- legacy-pending-migration
+fetch-from-wayback.js -- legacy-pending-migration
+fetch-nysr-scores.js -- legacy-pending-migration
+fix-contaminated-reviews.js -- legacy-pending-migration
+fix-critic-typos.js -- legacy-pending-migration
+fix-default-scores.js -- legacy-pending-migration
+fix-excerpt-as-fulltext.js -- legacy-pending-migration
+fix-garbage-reviews.js -- legacy-pending-migration
+fix-garbage-scores.js -- legacy-pending-migration
+fix-html-entities.js -- legacy-pending-migration
+fix-nav-contaminated.js -- legacy-pending-migration
+fix-non-review-misclassifications.js -- legacy-pending-migration
+fix-null-dates.js -- legacy-pending-migration
+fix-nysr-scores.js -- legacy-pending-migration
+fix-outlet-case.js -- legacy-pending-migration
+fix-p0-score-corruption.js -- legacy-pending-migration
+fix-remaining-domain-mismatches.js -- legacy-pending-migration
+fix-review-dedup-gaps.js -- legacy-pending-migration
+fix-theatre-reviews-star-ratings.js -- legacy-pending-migration
+fix-timeout-and-invalid.js -- legacy-pending-migration
+fix-timeout-we-attribution.js -- legacy-pending-migration
+fix-unknown-critics.js -- legacy-pending-migration
+fix-wrong-production-reviews.js -- legacy-pending-migration
+fix-wrong-reviews.js -- legacy-pending-migration
+flag-junk-url-reviews.js -- legacy-pending-migration
+flag-rescore-needed.js -- legacy-pending-migration
+flag-single-model-for-rescore.js -- legacy-pending-migration
+flag-we-cross-production.js -- legacy-pending-migration
+gather-reviews.js -- legacy-pending-migration
+mark-uncalculated-reviews.js -- legacy-pending-migration
+merge-dtli-excerpts.js -- legacy-pending-migration
+merge-showscore-excerpts.js -- legacy-pending-migration
+migrate-add-core-data-checkout.js -- legacy-pending-migration
+migrate-aggregator-originalscores.js -- legacy-pending-migration
+migrate-numeric-scores.js -- legacy-pending-migration
+migrate-ss-score-labels.js -- legacy-pending-migration
+newspapers-com-extract.js -- legacy-pending-migration
+opening-night-poller.js -- legacy-pending-migration
+paywall-browser-extract.js -- legacy-pending-migration
+prep-recollect-hallucinations.js -- legacy-pending-migration
+protect-review-field.js -- legacy-pending-migration
+reclassify-invalid-reviews.js -- legacy-pending-migration
+reclean-truncated.js -- legacy-pending-migration
+reconcile-source-scores.js -- legacy-pending-migration
+recover-login-page-reviews.js -- legacy-pending-migration
+recover-null-dates.js -- legacy-pending-migration
+reset-adjudication.js -- legacy-pending-migration
+retry-pending-scores.js -- legacy-pending-migration
+retry-wrong-urls.js -- legacy-pending-migration
+reverify-with-haiku.js -- legacy-pending-migration
+score-all-unscored.js -- legacy-pending-migration
+score-final-unscored.js -- legacy-pending-migration
+score-remaining-reviews.js -- legacy-pending-migration
+scrape-broadway-and-me.js -- legacy-pending-migration
+scrape-nysr-reviews.js -- legacy-pending-migration
+scrape-reviews.js -- legacy-pending-migration
+scrape-showscore-we.js -- legacy-pending-migration
+scrape-theatre-reviews.js -- legacy-pending-migration
+scrape-thestage-roundups.js -- legacy-pending-migration
+scrape-wp-theater-blogs.js -- legacy-pending-migration
+sync-review-texts.js -- legacy-pending-migration
+unabandon-non-serp-cycles.js -- legacy-pending-migration
+unflag-content-reviewed.js -- legacy-pending-migration
