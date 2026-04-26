@@ -44,6 +44,106 @@ const TITLE_ALIASES = {
   'schmigadoon': ['schmigadoon-2025'],
 };
 
+// ============================================================================
+// FP suppression helpers (added 2026-04-26 — see S2-T2.5a, commit 4caf00fc6c)
+// ============================================================================
+
+// Pattern #1 fallback: shows whose stage productions legitimately reference
+// TV/film/Disney source material but lack a `film-adaptation` show.tags entry.
+// PRIMARY check is `show.tags?.includes('film-adaptation')`; this list is the
+// secondary safety net for shows missing the tag. Prefer adding the tag in
+// shows.json over extending this list.
+//
+// Original 3 entries (stranger-things, schmigadoon, beetlejuice) preserved.
+// Additional entries cover the Disney/film-to-stage adaptations identified
+// in the S2 P3 triage — adding `tags: ['film-adaptation']` in shows.json for
+// any of these would supersede this fallback automatically.
+const TV_FILM_FALLBACK_SHOW_IDS = [
+  // Original 3 (TV adaptations / spoofs)
+  'stranger-things', 'schmigadoon', 'beetlejuice',
+  // Disney musicals (stage adaptations of animated films)
+  'mary-poppins', 'newsies', 'aladdin', 'the-lion-king', 'tarzan',
+  'the-little-mermaid', 'frozen', 'the-apple-tree',
+  // Film-to-stage adaptations
+  'big-fish', 'billy-elliot', 'almost-famous', 'king-kong',
+  'peter-and-the-starcatcher', 'a-christmas-story-the-musical',
+  'jersey-boys', 'network', 'the-trip-to-bountiful',
+  // TV/sitcom-derived stage shows
+  'the-addams-family', 'the-odd-couple', 'the-farnsworth-invention',
+  'bronx-bombers', 'born-yesterday', 'first-date', 'sylvia',
+  'the-anarchist', 'the-performers', 'orphans',
+  'a-naked-girl-on-the-appian-way',
+];
+
+/**
+ * isScreenAdaptedShow — true when the show's stage version is a known
+ * adaptation of a film/TV property, so generic mentions of "Disney",
+ * "television", "film", etc. inside a review are legitimate (the review is
+ * comparing the stage production to its source material), not evidence of
+ * wrong-production contamination. Tag-based check is authoritative; the
+ * hardcoded fallback exists for shows missing the tag.
+ *
+ * Addresses Pattern #1 from S2 parity triage (9 confirmed FPs in P3 cohort:
+ * Disney musical adaptations like Mary Poppins, Newsies, Frozen, Aladdin,
+ * Lion King, Tarzan, Little Mermaid, plus film-to-stage like Big Fish,
+ * Almost Famous, Billy Elliot).
+ */
+function isScreenAdaptedShow(show, showId) {
+  if (Array.isArray(show?.tags) && show.tags.includes('film-adaptation')) return true;
+  return TV_FILM_FALLBACK_SHOW_IDS.some(t => showId.includes(t));
+}
+
+/**
+ * shouldIgnoreVenueMatch — context-aware filter that suppresses venue-name
+ * matches when surrounding text describes the show's PREMIERE/ORIGINATION
+ * venue rather than the venue of the current production. Ported from
+ * scripts/audit-wrong-production-reviews.js (`shouldIgnoreMatch`) with the
+ * patterns most relevant to historical-venue mentions.
+ *
+ * Addresses Pattern #2 from S2 parity triage (13 confirmed FPs in P3 cohort:
+ * excerpts mentioning "originated at the Old Vic", "premiered at Playwrights
+ * Horizons", "first seen at the Public Theater", "Donmar Warehouse production
+ * of...", etc.).
+ */
+function shouldIgnoreVenueMatch(text, indicator, matchIndex) {
+  const contextRadius = 150;
+  const start = Math.max(0, matchIndex - contextRadius);
+  const end = Math.min(text.length, matchIndex + indicator.length + contextRadius);
+  const context = text.slice(start, end).toLowerCase();
+
+  // Transfer / origination language — review is describing where the show CAME from
+  const transferPatterns = [
+    'moving to', 'transferring to', 'transferred to', 'moves to',
+    'relocated to', 'before moving', 'after transferring',
+    'transfer from', 'moved from', 'originally at', 'premiered at',
+    'debuted at', 'opened at', 'prior to', 'previous production',
+    'transferred from', 'originated at', 'originated in', 'premiered in',
+    'first staged at', 'first staged in', 'first seen at', 'first seen in',
+    'world premiere at', 'world premiere in', 'previously at',
+    'originally staged at', 'first produced at', 'first ran at',
+  ];
+  for (const pattern of transferPatterns) {
+    if (context.includes(pattern)) return true;
+  }
+
+  // Historical / comparison language — critic referencing past productions
+  const historicalPatterns = [
+    'originally', 'first production', 'premiere', 'debut',
+    'in the original', 'the original production', 'when it first',
+    'back in', 'years ago', 'previous revival', 'last revival',
+    'reprising', 'remounted', 'revived in', 'was revived',
+    'production from', 'production at the', 'production of',
+  ];
+  for (const pattern of historicalPatterns) {
+    if (context.includes(pattern)) return true;
+  }
+
+  // "X in YEAR" historical comparison
+  if (/\b(in|from|during|of|the)\s+\d{4}\b/.test(context)) return true;
+
+  return false;
+}
+
 // TV/Film/Streaming signals
 const TV_FILM_PATTERNS = [
   /\b(apple\s*tv\+?|netflix|hbo\s*max|disney\+?|hulu|amazon\s*prime|peacock|paramount\+?)\b/i,
@@ -198,9 +298,9 @@ for (const showDir of showDirs) {
     for (const pattern of TV_FILM_PATTERNS) {
       const match = text.match(pattern);
       if (match) {
-        // Don't flag if the show itself is related to TV (e.g., Stranger Things is a TV adaptation)
-        const tvRelatedShows = ['stranger-things', 'schmigadoon', 'beetlejuice'];
-        const isTvRelated = tvRelatedShows.some(t => showDir.includes(t));
+        // Don't flag if the show is a known screen adaptation (Disney musicals,
+        // film-to-stage, TV-to-stage). See isScreenAdaptedShow() for FP rationale.
+        const isTvRelated = isScreenAdaptedShow(show, showDir);
 
         // For TV-related shows, only flag strong signals
         if (!isTvRelated || /\b(tv\s*series|season\s*\d|episode\s*\d|streaming\s*series)\b/i.test(match[0])) {
@@ -216,9 +316,19 @@ for (const showDir of showDirs) {
     }
 
     // 4. London/West End signals (only for shows not explicitly marked as transfers)
+    // FP suppression: skip venue signals on excerpt-only files (fullText empty),
+    // since excerpts are too short to disambiguate "originated at" vs current venue.
+    const fullTextLen = (data.fullText || '').length;
+    const skipVenueSignals = fullTextLen === 0;
+    if (!skipVenueSignals) {
     for (const venue of LONDON_VENUES) {
       const pattern = new RegExp(`\\b${venue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-      if (pattern.test(text)) {
+      const match = pattern.exec(text);
+      if (match) {
+        // FP suppression: ignore matches that occur in historical-venue context
+        // (review describes where the show ORIGINATED, not the current venue)
+        if (shouldIgnoreVenueMatch(text, match[0], match.index)) continue;
+
         // Context check: is this mentioning London as the VENUE of the review, not just as a reference?
         // Look for phrases like "at the [London venue]", "reviewed at", "opens at", etc.
         const contextPatterns = [
@@ -255,6 +365,7 @@ for (const showDir of showDirs) {
         }
       }
     }
+    }
 
     // 5. Year mismatch in review text
     if (showYear) {
@@ -290,10 +401,17 @@ for (const showDir of showDirs) {
     }
 
     // 6. Off-Broadway venue signals (for shows that should be Broadway)
-    if (show.venue && !show.venue.toLowerCase().includes('off-broadway')) {
+    // FP suppression: same skipVenueSignals gate as London check above —
+    // excerpts cannot disambiguate "premiered at Playwrights Horizons" from
+    // "currently playing at Playwrights Horizons".
+    if (!skipVenueSignals && show.venue && !show.venue.toLowerCase().includes('off-broadway')) {
       for (const venue of OFF_BROADWAY_VENUES) {
         const pattern = new RegExp(`\\b${venue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
-        if (pattern.test(text)) {
+        const match = pattern.exec(text);
+        if (match) {
+          // FP suppression: ignore matches that occur in historical-venue context
+          if (shouldIgnoreVenueMatch(text, match[0], match.index)) continue;
+
           // Context: is the off-Broadway venue mentioned as WHERE the review took place?
           const atVenue = new RegExp(`(at|in)\\s+(the\\s+)?${venue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
           if (atVenue.test(text)) {
