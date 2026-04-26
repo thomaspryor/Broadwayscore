@@ -1,23 +1,23 @@
 {
   "meta": {
-    "generatedAt": "2026-04-26T19:13:12.089Z",
+    "generatedAt": "2026-04-26T19:34:58.905Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
       "totalFiles": 36479,
-      "inReviewsJson": 16845,
+      "inReviewsJson": 16801,
       "skippedExcluded": 82,
-      "withFullText": 87,
-      "excerptOnly": 1590,
-      "llmClassified": 50,
+      "withFullText": 29,
+      "excerptOnly": 1591,
+      "llmClassified": 28,
       "heuristicFlagged": 0,
       "nonReviewsFound": 0,
-      "uncertainCases": 10,
-      "budgetUsed": 0.005,
-      "llmCalls": 50,
+      "uncertainCases": 14,
+      "budgetUsed": 0.002899999999999999,
+      "llmCalls": 29,
       "rateLimitHits": 0,
-      "errors": 0,
-      "skippedAlreadyClassified": 15086
+      "errors": 1,
+      "skippedAlreadyClassified": 15099
     },
     "calibration": null
   },
@@ -30,7 +30,7 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
     },
     {
@@ -40,7 +40,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "reasoning": "The text is a collection of keywords and phrases related to theater, suggesting a directory or advertisement rather than a review of a specific show like Fences.",
       "currentScore": 82
     },
     {
@@ -60,7 +60,7 @@
       "outletId": "telegraph",
       "contentType": "feature",
       "confidence": "low",
-      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a general interest piece about the play's themes and context.",
+      "reasoning": "The article discusses how to stage the play, rather than reviewing a specific production. It seems to be a feature article about the play's themes and context.",
       "currentScore": 60
     },
     {
@@ -70,7 +70,7 @@
       "outletId": "newyorker",
       "contentType": "other",
       "confidence": "low",
-      "reasoning": "The article is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there is no evaluative content about the show itself within this excerpt.",
+      "reasoning": "This is a 'Goings On' newsletter, which lists various cultural events and articles. While 'Liberation' is mentioned, there's no indication of a review within this excerpt.",
       "currentScore": 88
     },
     {
@@ -80,7 +80,7 @@
       "outletId": "talkinbroadway",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific production.",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
       "currentScore": 89
     },
     {
@@ -90,7 +90,7 @@
       "outletId": "faster-times",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "reasoning": "This appears to be a website index page or author bio, not a review of 'One Man, Two Guvnors.'",
       "currentScore": 74
     },
     {
@@ -100,7 +100,7 @@
       "outletId": "telegraph",
       "contentType": "preview",
       "confidence": "medium",
-      "reasoning": "The article describes the play's premise and setting up the audience for what to expect, but does not offer an evaluation or opinion on the quality of the production. It seems to be a preview of the show.",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but doesn't review the production.",
       "currentScore": 80
     },
     {
@@ -120,52 +120,66 @@
       "outletId": "stagebuddy",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the show and its context, but does not offer an evaluation or opinion on the quality of the production itself. It focuses on the show's concept and historical significance.",
+      "reasoning": "The article describes the show and its context, but it does not offer a critical evaluation or opinion about the quality of the production. It focuses on the show's concept and historical significance.",
       "currentScore": 83
+    },
+    {
+      "file": "the-assembled-parties-2013/talkinbroadway--matthew-murray.json",
+      "showId": "the-assembled-parties-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to Broadway and theater, not a review of a specific show.",
+      "currentScore": 42
+    },
+    {
+      "file": "the-glass-menagerie-2017/front-row-center--donna-herman.json",
+      "showId": "the-glass-menagerie-2017",
+      "outlet": "The Front Row Center",
+      "outletId": "front-row-center",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The article consists of production credits and ticket information, which is more akin to a news item or listing than a review. There is no evaluative content present.",
+      "currentScore": 64
+    },
+    {
+      "file": "the-price-2017/talkinbroadway--matthew-murray.json",
+      "showId": "the-price-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and search terms related to theater, not a review of a specific production.",
+      "currentScore": 78
+    },
+    {
+      "file": "three-tall-women-2018/talkinbroadway--matthew-murray.json",
+      "showId": "three-tall-women-2018",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of links and categories related to theater, rather than a review of a specific production.",
+      "currentScore": 89
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "a-bronx-tale-2007/about-entertainment--charles-isherwood.json",
-    "a-free-man-of-color-2010/about-entertainment--ben-brantley.json",
-    "a-man-for-all-seasons-2008/about-entertainment--ben-brantley.json",
-    "an-enemy-of-the-people-2024/guardian--susannah-clapp.json",
-    "annie-2012/about-entertainment--ben-brantley.json",
-    "anything-goes-2011/about-entertainment--ben-brantley.json",
-    "arcadia-2011/about-entertainment--ben-brantley.json",
-    "barefoot-in-the-park-2006/about-entertainment--ben-brantley.json",
-    "bloody-bloody-andrew-jackson-2010/about-entertainment--ben-brantley.json",
-    "bonnie-and-clyde-2011/about-entertainment--ben-brantley.json",
-    "brief-encounter-2010/about-entertainment--ben-brantley.json",
-    "burlesque-west-end-2026/london-theatre--anya-ryan.json",
-    "catch-me-if-you-can-2011/about-entertainment--ben-brantley.json",
-    "chaplin-2012/about-entertainment--ben-brantley.json",
-    "chinglish-2011/about-entertainment--ben-brantley.json",
-    "collected-stories-2010/about-entertainment--charles-isherwood.json",
-    "cyrano-de-bergerac-2012/about-entertainment--ben-brantley.json",
-    "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json",
-    "driving-miss-daisy-2010/about-entertainment--ben-brantley.json",
-    "elling-2010/about-entertainment--charles-isherwood.json",
-    "end-of-the-rainbow-2012/about-entertainment--ben-brantley.json",
-    "evita-2012/about-entertainment--ben-brantley.json",
-    "festen-2006/about-entertainment--ben-brantley.json",
-    "follies-2011/about-entertainment--ben-brantley.json",
-    "ghetto-klown-2011/about-entertainment--charles-isherwood.json",
-    "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
-    "godspell-2011/about-entertainment--charles-isherwood.json",
-    "is-he-dead-2007/about-entertainment--ben-brantley.json",
-    "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json",
-    "leap-of-faith-2012/about-entertainment--ben-brantley.json",
-    "lombardi-2010/about-entertainment--charles-isherwood.json",
-    "losing-louie-2006/about-entertainment--charles-isherwood.json",
-    "lovemusik-2007/about-entertainment--ben-brantley.json",
-    "magicbird-2012/about-entertainment--charles-isherwood.json",
-    "man-and-boy-2011/about-entertainment--ben-brantley.json",
-    "master-class-2011/about-entertainment--ben-brantley.json",
-    "on-a-clear-day-you-can-see-forever-2011/about-entertainment--ben-brantley.json",
-    "one-man-two-guvnors-2012/about-entertainment--ben-brantley.json",
-    "other-desert-cities-2011/about-entertainment--ben-brantley.json",
-    "rabbit-hole-2006/about-entertainment--ben-brantley.json"
+    "how-to-succeed-in-business-without-really-trying-2011/about-entertainment--ben-brantley.json",
+    "private-lives-2011/about-entertainment--ben-brantley.json",
+    "pygmalion-2007/about-entertainment--ben-brantley.json",
+    "shining-city-2006/about-entertainment--ben-brantley.json",
+    "stick-fly-2011/about-entertainment--charles-isherwood.json",
+    "stranger-things-the-first-shadow-west-end-2023/guardian--susannah-clapp.json",
+    "tarzan-2006/about-entertainment--ben-brantley.json",
+    "that-championship-season-2011/about-entertainment--ben-brantley.json",
+    "the-history-boys-2006/about-entertainment--ben-brantley.json",
+    "the-lieutenant-of-inishmore-2006/about-entertainment--ben-brantley.json",
+    "the-lyons-2012/about-entertainment--ben-brantley.json",
+    "the-wedding-singer-2006/about-entertainment--ben-brantley.json",
+    "war-horse-2011/about-entertainment--ben-brantley.json",
+    "wit-2012/about-entertainment--ben-brantley.json"
   ],
   "perShowSummary": []
 }
