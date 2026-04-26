@@ -31,6 +31,7 @@ export interface HomepageShow {
   status: string;
   type: string;
   isRevival?: boolean;
+  season?: string;
   tags?: string[];
   ageRecommendation?: string;
   creativeTeam?: Array<{ name: string; role: string }>;

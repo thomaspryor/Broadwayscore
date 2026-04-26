@@ -21,6 +21,8 @@ export interface OffWestEndShow {
   status: string;
   type: string;
   isRevival?: boolean;
+  season?: string;
+  tags?: string[];
   reviewYearNote?: string;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };

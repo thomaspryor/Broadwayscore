@@ -23,6 +23,7 @@ export function serializeShowForClient(
     status: string;
     type: string;
     isRevival?: boolean | null;
+    season?: string | null;
     reviewYearNote?: string | null;
     images?: { thumbnail?: string; poster?: string; hero?: string };
     criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number } | null;
@@ -61,6 +62,7 @@ export function serializeShowForClient(
     status: show.status,
     type: show.type,
     isRevival: show.isRevival ?? undefined,
+    season: show.season ?? undefined,
     reviewYearNote: show.reviewYearNote ?? undefined,
     images: show.images,
     criticScore: show.criticScore
