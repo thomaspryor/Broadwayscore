@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-26T12:56:07.574Z",
+  "generatedAt": "2026-04-26T15:55:04.611Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -118,10 +118,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -316,17 +312,17 @@
       "status": "open",
       "slug": "joe-turners-come-and-gone",
       "thumbnail": "/images/shows/joe-turners-come-and-gone-2026/thumbnail.webp",
-      "siteScore": 77.52,
+      "siteScore": 77.53,
       "liveScore": 78,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 18,
       "t1": 6,
       "t2": 9,
-      "t3": 2,
-      "positive": 13,
+      "t3": 3,
+      "positive": 14,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -341,8 +337,8 @@
         }
       },
       "broadcast": {
-        "state": "preview-sent",
-        "detail": "Preview sent (17 reviews)"
+        "state": "complete",
+        "detail": "Sent 1/1/1970, 12:00:00 AM"
       },
       "missingT1": [
         {
@@ -413,10 +409,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theater",
           "isDualMarket": false
         },
         {
@@ -588,6 +580,18 @@
           "m": 4,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-04-26T15:55:04.611Z",
+          "rc": 18,
+          "s": 77.53,
+          "t1": 6,
+          "t2": 9,
+          "t3": 3,
+          "p": 14,
+          "m": 4,
+          "n": 0,
+          "bc": "complete"
         }
       ]
     },
@@ -952,10 +956,6 @@
         }
       ],
       "missingT2": [
-        {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
         {
           "name": "USA Today",
           "isDualMarket": false
