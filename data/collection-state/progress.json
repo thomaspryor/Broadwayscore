@@ -41,7 +41,13 @@
     "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
     "mothers-and-sons-2014/washpost--mark-kennedy.json",
     "a-night-with-janis-joplin-2013/about-entertainment--charles-isherwood.json",
-    "big-fish-2013/about-entertainment--ben-brantley.json"
+    "big-fish-2013/about-entertainment--ben-brantley.json",
+    "first-date-2013/about-entertainment--charles-isherwood.json",
+    "pippin-2013/about-entertainment--ben-brantley.json",
+    "the-trip-to-bountiful-2013/about-entertainment--ben-brantley.json",
+    "the-testament-of-mary-2013/about-entertainment--ben-brantley.json",
+    "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
+    "orphans-2013/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -894,7 +900,11 @@
     "machinal-2014/timeout--david-cote.json",
     "no-mans-land-2013/abc-news--mark-kennedy.json",
     "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
-    "the-winslow-boy-2013/bloomberg--unknown.json"
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -947,7 +957,13 @@
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
       "king-kong-2018/nytimes--jesse-green-and-ben-brantley.json",
       "a-night-with-janis-joplin-2013/about-entertainment--charles-isherwood.json",
-      "big-fish-2013/about-entertainment--ben-brantley.json"
+      "big-fish-2013/about-entertainment--ben-brantley.json",
+      "first-date-2013/about-entertainment--charles-isherwood.json",
+      "pippin-2013/about-entertainment--ben-brantley.json",
+      "the-trip-to-bountiful-2013/about-entertainment--ben-brantley.json",
+      "the-testament-of-mary-2013/about-entertainment--ben-brantley.json",
+      "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
+      "orphans-2013/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -977,7 +993,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "big-fish-2013/about-entertainment--ben-brantley.json",
+  "lastProcessed": "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1086,6 +1102,72 @@
     },
     {
       "t": "2026-04-26T16:32:51.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:33:37.385Z",
+      "event": "bb-session",
+      "session": "09d01407",
+      "url": "http://theater.nytimes.com/2013/08/09/theater/reviews/first-date-a-musical-opens"
+    },
+    {
+      "t": "2026-04-26T16:33:37.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:34:07.622Z",
+      "event": "bb-session",
+      "session": "61ae301f",
+      "url": "http://theater.nytimes.com/2013/04/26/theater/reviews/pippin-directed-by-diane-p"
+    },
+    {
+      "t": "2026-04-26T16:34:08.009Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:34:43.586Z",
+      "event": "bb-session",
+      "session": "7e089360",
+      "url": "http://theater.nytimes.com/2013/04/24/theater/reviews/the-trip-to-bountiful-at-t"
+    },
+    {
+      "t": "2026-04-26T16:34:43.962Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:35:24.173Z",
+      "event": "bb-session",
+      "session": "81e52161",
+      "url": "http://theater.nytimes.com/2013/04/23/theater/reviews/the-testament-of-mary-at-t"
+    },
+    {
+      "t": "2026-04-26T16:35:24.523Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:36:03.093Z",
+      "event": "bb-session",
+      "session": "5023da01",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyd"
+    },
+    {
+      "t": "2026-04-26T16:36:03.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:36:42.780Z",
+      "event": "bb-session",
+      "session": "eacfb39f",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/orphans-with-alec-baldwin-"
+    },
+    {
+      "t": "2026-04-26T16:36:43.145Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
