@@ -103,7 +103,9 @@ function isScreenAdaptedShow(show, showId) {
  * Addresses Pattern #2 from S2 parity triage (13 confirmed FPs in P3 cohort:
  * excerpts mentioning "originated at the Old Vic", "premiered at Playwrights
  * Horizons", "first seen at the Public Theater", "Donmar Warehouse production
- * of...", etc.).
+ * of...", etc.). Extended in S2-T2.5c to cover Olivier Award mentions and
+ * London-origin production phrasing — the 4th systematic FP pattern from the
+ * S2-Path1 triage (commit 0a4a3ae3ca).
  */
 function shouldIgnoreVenueMatch(text, indicator, matchIndex) {
   const contextRadius = 150;
@@ -141,7 +143,46 @@ function shouldIgnoreVenueMatch(text, indicator, matchIndex) {
   // "X in YEAR" historical comparison
   if (/\b(in|from|during|of|the)\s+\d{4}\b/.test(context)) return true;
 
+  // S2-T2.5c addition: London awards/honors and origin-production phrasings.
+  // - "Olivier Award" is exclusively a UK/West End theatre prize — a NY review
+  //   mentioning it is referencing the show's London honors, not flagging the
+  //   review as wrong-production.
+  // - Donmar/Royal Court "production" phrasing typically describes the London
+  //   origin of a show transferring to Broadway.
+  // - "West End originated/premiere/debut/run/transfer/production" describes
+  //   where the show CAME from before Broadway.
+  if (/\b(olivier\s+award|donmar.{0,40}\bproduction\b|royal\s+court.{0,40}\bproduction\b|west\s+end\s+(originated|premiere|debut|run|transfer|production))\b/i.test(context)) return true;
+
   return false;
+}
+
+/**
+ * hasTvFilmContextEvidence — context-proximity check that distinguishes a real
+ * "this review is about a TV/film property" signal from incidental mentions of
+ * Disney/television/film/movie/etc. inside legitimate Broadway reviews. Returns
+ * true when the ±150 character window around `matchIndex` contains at least
+ * one strong corroborator (an unambiguous TV/streaming context phrase).
+ *
+ * Addresses S2-T2.5c (commit 0a4a3ae3ca, S2-Path1 triage finding): 56 of 97
+ * outlier_flag candidates were TV_FILM_PATTERNS false positives, mostly from
+ * critic metaphors ("the wonder years television series"), source-material
+ * references ("the Disney channel"), Disney-as-producer ("Disney Theatrical
+ * Group"), or stage-vs-screen comparisons ("on screen and on stage"). The
+ * existing isScreenAdaptedShow() fallback only covers ~30 known shows; this
+ * helper applies a stricter signal-quality bar to ALL shows.
+ *
+ * Strong corroborators (any one within ±150 chars satisfies the check):
+ *   - episode N / season N / pilot episode / series premiere|finale|return
+ *   - streaming service|platform|premiere|debut
+ *   - named TV/streaming platforms in clear TV context
+ *   - "tv series" / "tv show" / "web series"
+ */
+function hasTvFilmContextEvidence(text, matchIndex) {
+  const contextRadius = 150;
+  const start = Math.max(0, matchIndex - contextRadius);
+  const end = Math.min(text.length, matchIndex + contextRadius);
+  const window = text.slice(start, end);
+  return /\b(episode\s*\d|season\s*\d+|pilot\s*episode|series\s*(premiere|finale|return)|streaming\s*(service|platform|premiere|debut)|apple\s*tv\+?|netflix|hbo\s*max|disney\+|hulu|amazon\s*prime|peacock|paramount\+|tv\s*(series|show)|web\s*series)\b/i.test(window);
 }
 
 // TV/Film/Streaming signals
@@ -295,23 +336,48 @@ for (const showDir of showDirs) {
     }
 
     // 3. TV/Film signals
+    // S2-T2.5c: For "soft" keyword matches (bare disney/television/film/movie/
+    // on-screen/etc.), require corroborating TV/streaming context within
+    // ±150 chars. Strong patterns (season N, episode N, named platforms in
+    // clear TV context) fire on their own.
     for (const pattern of TV_FILM_PATTERNS) {
-      const match = text.match(pattern);
+      const match = pattern.exec(text);
       if (match) {
-        // Don't flag if the show is a known screen adaptation (Disney musicals,
-        // film-to-stage, TV-to-stage). See isScreenAdaptedShow() for FP rationale.
         const isTvRelated = isScreenAdaptedShow(show, showDir);
+        const matchedToken = match[0];
 
-        // For TV-related shows, only flag strong signals
-        if (!isTvRelated || /\b(tv\s*series|season\s*\d|episode\s*\d|streaming\s*series)\b/i.test(match[0])) {
-          stats.tvFilmSignals++;
-          reviewFindings.push({
-            type: 'TV_FILM_SIGNAL',
-            severity: isTvRelated ? 'MEDIUM' : 'HIGH',
-            detail: `Contains TV/film keyword: "${match[0]}"`,
-          });
-          break; // One signal is enough
+        // STRONG-by-themselves matches: these phrases unambiguously describe
+        // a TV/streaming production, not a Broadway review's metaphor or
+        // producer credits. Mirrors the corroborator set used by
+        // hasTvFilmContextEvidence so the two stay in sync.
+        const isStrongMatch = /\b(episode\s*\d|season\s*\d+|pilot\s*episode|series\s*(premiere|finale|return)|streaming\s*(service|platform|series|show|premiere|debut)|tv\s*(series|show)|web\s*series|apple\s*tv\+|disney\+|hbo\s*max|paramount\+)\b/i.test(matchedToken)
+          || /\bdirected\s*by\s*[\w\s]+for\s*(apple|netflix|hbo|disney|hulu|amazon|paramount|peacock)\b/i.test(matchedToken);
+
+        // For SOFT matches, require corroborating evidence within ±150 chars.
+        // Without a corroborator, the keyword is almost certainly a metaphor,
+        // a producer credit (e.g., "Disney Theatricals"), or a stage-vs-screen
+        // comparison — not evidence the review is about a TV/film property.
+        if (!isStrongMatch && !hasTvFilmContextEvidence(text, match.index)) {
+          continue; // Suppress — no corroborating evidence
         }
+
+        // Existing screen-adapted-show suppression: for TV/film-derived stage
+        // shows (Disney musicals, sitcom adaptations), generic "tv series" /
+        // "tv show" mentions are still ambiguous (the review may be discussing
+        // the SOURCE TV show, not flagging wrong production). Require an
+        // even stronger TV-production-specific signal here.
+        const isTvProductionLevelSignal = /\b(episode\s*\d|season\s*\d+|streaming\s*(service|series|premiere|debut))\b/i.test(matchedToken);
+        if (isTvRelated && !isTvProductionLevelSignal) {
+          continue;
+        }
+
+        stats.tvFilmSignals++;
+        reviewFindings.push({
+          type: 'TV_FILM_SIGNAL',
+          severity: isTvRelated ? 'MEDIUM' : 'HIGH',
+          detail: `Contains TV/film keyword: "${matchedToken}"`,
+        });
+        break; // One signal is enough
       }
     }
 
