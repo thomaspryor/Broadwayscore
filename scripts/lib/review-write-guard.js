@@ -146,6 +146,7 @@ const PROTECTED_FIELDS = [
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   const preserved = [];
+  let lockedSkipped = false;
 
   // Temporal byline guard — refuse to write attributions to retired/deceased
   // critics for articles dated past their last-active date.
@@ -195,6 +196,13 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
 
     if (existing) {
+      // Joe Turner postmortem P0 #2 (2026-04-26): _locked must be honored
+      // at the writer, not in each enrichment script. existing was just read
+      // fresh from disk above, so a parallel writer's _locked flag is visible
+      // to us. force=true still bypasses (intentional override path —
+      // strip-stale-single-model-scores --force-strip-locked, etc.).
+      const lockedOverride = existing._locked === true && !force;
+
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {
         const existingVal = existing[field];
@@ -210,9 +218,16 @@ function safeWriteReview(filePath, newData, options = {}) {
         const incomingIsEmpty = newVal === undefined || newVal === null
           || (typeof newVal === 'string' && newVal.length === 0)
           || (Array.isArray(newVal) && newVal.length === 0);
-        if (existingIsReal && incomingIsEmpty) {
-          newData[field] = existingVal;
-          preserved.push(field);
+        // Locked override: preserve every PROTECTED field on a locked file
+        // even when incoming has a real value. The lock means the human or
+        // ingest pipeline declared the file canonical; nothing downstream
+        // should mutate scored/collected fields without force=true.
+        if (existingIsReal && (incomingIsEmpty || lockedOverride)) {
+          if (newData[field] !== existingVal) {
+            newData[field] = existingVal;
+            preserved.push(field);
+            if (lockedOverride && !incomingIsEmpty) lockedSkipped = true;
+          }
         }
       }
 
@@ -266,7 +281,7 @@ function safeWriteReview(filePath, newData, options = {}) {
   }
 
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
-  return { wrote: true, preserved };
+  return { wrote: true, preserved, lockedSkipped };
 }
 
 /**
@@ -512,6 +527,30 @@ function coerceAssignedScore(data, filePath) {
  * @param {string|null|undefined} newText - The freshly-fetched fullText
  * @returns {{ skip: boolean, reason: string|null }}
  */
+/**
+ * Decide whether an enrichment script should skip a locked file entirely.
+ *
+ * Joe Turner postmortem P0 #2 (2026-04-26): safeWriteReview's lockedOverride
+ * only protects PROTECTED_FIELDS. Enrichment scripts that mutate
+ * NON-PROTECTED fields on locked files (criticName backfill, isSyndicatedDuplicate
+ * detection, outletId re-aliasing) need an explicit early-return — the writer
+ * guard alone does not save them.
+ *
+ * Returns { skip, reason } so callers can log a meaningful breadcrumb.
+ *
+ * @param {object|null|undefined} existingData - Parsed JSON of the existing review file
+ * @returns {{ skip: boolean, reason: string|null }}
+ */
+function shouldSkipLockedEnrichment(existingData) {
+  if (!existingData || typeof existingData !== 'object') {
+    return { skip: false, reason: null };
+  }
+  if (existingData._locked === true) {
+    return { skip: true, reason: '_locked=true' };
+  }
+  return { skip: false, reason: null };
+}
+
 function shouldSkipPollerUpdate(existingData, newText) {
   const existingTextLen = (existingData && typeof existingData.fullText === 'string')
     ? existingData.fullText.trim().length
@@ -530,4 +569,4 @@ function shouldSkipPollerUpdate(existingData, newText) {
   return { skip: false, reason: null };
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, hasPlaceholderUrlPattern, PROTECTED_FIELDS };
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };

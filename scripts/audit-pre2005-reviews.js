@@ -18,9 +18,11 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+let lockedSkipCount = 0;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'pre2005-wrong-production.json');
 
@@ -447,12 +449,28 @@ if (applyMode) {
         reviewData.auditReason = 'pre2005-audit: duplicate exists at ' + result.suggestedShowId;
         reviewData.auditConfidence = result.confidence;
         reviewData.auditDate = new Date().toISOString().slice(0, 10);
-        fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+        const r1 = safeWriteReview(filePath, reviewData);
+        if (r1.lockedSkipped) lockedSkipCount++;
         applied++;
         console.log(`  FLAGGED ${result.showId}/${result.file} (dup at ${result.suggestedShowId})`);
         continue;
       }
 
+      // TOPOLOGY: file moves do not honor _locked — see S1-T5.
+      // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target path
+      // exists and is itself locked. shouldSkipLockedEnrichment already short-
+      // circuits when the SOURCE is locked (function entry), so this guard
+      // covers the remaining target-collision case.
+      if (fs.existsSync(targetPath)) {
+        try {
+          const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+          if (targetData._locked === true) {
+            lockedSkipCount++;
+            console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.suggestedShowId}/${result.file} is locked — refusing MOVE`);
+            continue;
+          }
+        } catch { /* corrupt target — let the original path handle it */ }
+      }
       fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
       fs.unlinkSync(filePath);
       moved++;
@@ -463,11 +481,13 @@ if (applyMode) {
       reviewData.auditReason = result.signals[0];
       reviewData.auditConfidence = result.confidence;
       reviewData.auditDate = new Date().toISOString().slice(0, 10);
-      fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+      const r2 = safeWriteReview(filePath, reviewData);
+      if (r2.lockedSkipped) lockedSkipCount++;
       applied++;
       console.log(`  FLAGGED ${result.showId}/${result.file}`);
     }
   }
 
   console.log(`\nApplied: ${applied} flagged, ${moved} moved`);
+  console.log(`[LOCKED-SKIP-COUNT] audit-pre2005-reviews: ${lockedSkipCount}`);
 }

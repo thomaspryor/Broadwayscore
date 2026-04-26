@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -46,6 +47,7 @@ function run() {
   );
 
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
+  let lockedSkipCount = 0;
   const flaggedDetails = [];
 
   for (const showDir of showDirs) {
@@ -115,7 +117,8 @@ function run() {
       if (!DRY_RUN) {
         data.wrongProduction = true;
         data.wrongProductionNote = note;
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+        const result = safeWriteReview(filePath, data);
+        if (result.lockedSkipped) lockedSkipCount++;
       }
     }
   }
@@ -148,6 +151,7 @@ function run() {
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (early): ${flaggedEarly}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (late):  ${flaggedLate}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} total:   ${flaggedEarly + flaggedLate}`);
+  console.log(`[LOCKED-SKIP-COUNT] flag-wrong-production-by-date: ${lockedSkipCount}`);
   if (DRY_RUN && (flaggedEarly + flaggedLate) > 0) {
     console.log(`\nRun with --apply to write flags.`);
   }

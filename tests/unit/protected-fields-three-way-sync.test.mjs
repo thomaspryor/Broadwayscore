@@ -37,18 +37,28 @@ const EXPLICITLY_EXCLUDED_FROM_PROTECTED = [
   'incompleteDetail',
 ];
 
-// Parse the inline PROTECTED array from .github/actions/push-review-texts/action.yml
+// Compute the effective PROTECTED list used by .github/actions/push-review-texts/action.yml.
+// S2-T2 (2026-04-26): action.yml now imports PROTECTED_FIELDS from review-write-guard.js
+// at runtime and unions them with a small ACTION_EXTRA list. The test mirrors that
+// composition by reading the same source files.
 function loadActionPushProtected() {
   const yamlPath = path.join(repoRoot, '.github/actions/push-review-texts/action.yml');
   const text = fs.readFileSync(yamlPath, 'utf8');
-  // Locate `const PROTECTED = [` ... `];`
-  const match = text.match(/const\s+PROTECTED\s*=\s*\[([\s\S]*?)\];/);
-  if (!match) throw new Error('Could not locate const PROTECTED = [...] in push-review-texts/action.yml');
-  // Strip JS comments inside the array literal so quoted-string extraction is clean.
-  const body = match[1].replace(/\/\/[^\n]*\n/g, '\n');
-  // Pull all single-quoted string literals.
-  const fields = Array.from(body.matchAll(/'([A-Za-z_][A-Za-z0-9_]*)'/g)).map(m => m[1]);
-  return fields;
+
+  // The action must require PROTECTED_FIELDS from review-write-guard.js.
+  if (!/PROTECTED_FIELDS\s*\}\s*=\s*require\(/.test(text)) {
+    throw new Error(
+      'action.yml must require { PROTECTED_FIELDS } from scripts/lib/review-write-guard.js (S2-T2 unification)'
+    );
+  }
+
+  // Pull the action-specific extension list.
+  const extraMatch = text.match(/const\s+ACTION_EXTRA\s*=\s*\[([\s\S]*?)\];/);
+  const extra = extraMatch
+    ? Array.from(extraMatch[1].replace(/\/\/[^\n]*\n/g, '\n').matchAll(/'([A-Za-z_][A-Za-z0-9_]*)'/g)).map(m => m[1])
+    : [];
+
+  return Array.from(new Set([...PROTECTED_FIELDS, ...extra]));
 }
 
 test('action.yml PROTECTED never re-introduces fields explicitly excluded by review-write-guard', () => {

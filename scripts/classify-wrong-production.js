@@ -34,6 +34,9 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { safeWriteReview } = require('./lib/review-write-guard');
+
+let lockedSkipCount = 0;
 
 // --- Load .env ---
 try {
@@ -476,7 +479,8 @@ async function main() {
           reviewData.wpClassified = parsed.verdict.toLowerCase();
           reviewData.wpClassifiedDate = new Date().toISOString().slice(0, 10);
           try {
-            fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+            const r = safeWriteReview(filePath, reviewData);
+            if (r.lockedSkipped) lockedSkipCount++;
           } catch (e) { /* non-fatal */ }
         }
 
@@ -587,10 +591,27 @@ async function main() {
           reviewData.llmConfidence = result.confidence;
           reviewData.llmReason = result.reasoning;
           reviewData.llmDate = new Date().toISOString().slice(0, 10);
-          fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+          const r1 = safeWriteReview(filePath, reviewData);
+          if (r1.lockedSkipped) lockedSkipCount++;
           stats.applied++;
           console.log(`  FLAGGED ${result.showId}/${result.file} (dup at ${result.targetShowId})`);
         } else {
+          // TOPOLOGY: file moves do not honor _locked — see S1-T5.
+          // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target
+          // path exists and is itself locked. The "if (fs.existsSync(targetPath))"
+          // branch above (duplicate-at-target) handles the source-flag case;
+          // this catches the case where targetPath exists but our reviewData
+          // would have created a NEW file there had we not collided.
+          if (fs.existsSync(targetPath)) {
+            try {
+              const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+              if (targetData._locked === true) {
+                lockedSkipCount++;
+                console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.targetShowId}/${result.file} is locked — refusing MOVE`);
+                continue;
+              }
+            } catch { /* corrupt target — fall through */ }
+          }
           fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
           fs.unlinkSync(filePath);
           stats.moved++;
@@ -603,7 +624,8 @@ async function main() {
         reviewData.llmConfidence = result.confidence;
         reviewData.llmReason = result.reasoning;
         reviewData.llmDate = new Date().toISOString().slice(0, 10);
-        fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+        const r2 = safeWriteReview(filePath, reviewData);
+        if (r2.lockedSkipped) lockedSkipCount++;
         stats.applied++;
         console.log(`  FLAGGED ${result.showId}/${result.file}`);
       }
@@ -619,6 +641,8 @@ async function main() {
     fs.unlinkSync(CHECKPOINT_PATH);
     console.log('Cleaned up checkpoint file.');
   }
+
+  console.log(`[LOCKED-SKIP-COUNT] classify-wrong-production: ${lockedSkipCount}`);
 }
 
 main().catch(e => {

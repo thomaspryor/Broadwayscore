@@ -27,6 +27,9 @@ const {
   loadOutletRegistry,
   levenshteinDistance,
 } = require('./lib/review-normalization');
+const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+
+let lockedSkipCount = 0;
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -124,11 +127,21 @@ function run() {
           console.log(`    Phantom: ${phantomOutletId} | Canonical: ${normalizeOutlet(canonical.data.outlet || canonical.data.outletId)}`);
 
           if (apply) {
-            const merged = mergeReviews(canonical.data, phantom.data);
-            fs.writeFileSync(path.join(showDir, canonical.file), JSON.stringify(merged, null, 2) + '\n');
-            fs.unlinkSync(path.join(showDir, phantom.file));
-            totalMerged++;
-            totalDeleted++;
+            // TOPOLOGY: merge-then-unlink does not honor _locked — see S1-T5.
+            // Stop-gap (ship-check P0 2026-04-26): refuse the merge if EITHER side
+            // is locked. mergeReviews would otherwise blend phantom into a locked
+            // canonical via raw write, bypassing lockedOverride. Real fix lands
+            // with safeRenameReview/safeUnlinkReview in the topology follow-up card.
+            if (canonical.data._locked === true || phantom.data._locked === true) {
+              lockedSkipCount++;
+              console.log(`  [LOCKED-SKIP] ${showId}: refusing merge — ${canonical.data._locked ? 'canonical' : 'phantom'} is locked`);
+            } else {
+              const merged = mergeReviews(canonical.data, phantom.data);
+              fs.writeFileSync(path.join(showDir, canonical.file), JSON.stringify(merged, null, 2) + '\n');
+              fs.unlinkSync(path.join(showDir, phantom.file));
+              totalMerged++;
+              totalDeleted++;
+            }
           }
         }
       }
@@ -149,6 +162,13 @@ function run() {
         if (!currentOutletId) continue;
         const canonicalId = normalizeOutlet(currentOutletId);
         if (canonicalId !== currentOutletId) {
+          // outletId is non-PROTECTED — lockedOverride alone won't block it.
+          // Skip the entire re-aliasing on locked files: a manually-canonical
+          // record's outlet must not be silently rewritten by a registry
+          // alias change.
+          const skip = shouldSkipLockedEnrichment(data);
+          if (skip.skip) { lockedSkipCount++; continue; }
+
           // The outlet ID in the file is now stale — normalizeOutlet maps it to a different canonical
           realiasedCount++;
           if (realiasedCount <= 20) {
@@ -157,7 +177,8 @@ function run() {
           if (apply) {
             data.outletId = canonicalId;
             data.outlet = data.outlet; // Keep display name as-is
-            fs.writeFileSync(path.join(showDir, file), JSON.stringify(data, null, 2) + '\n');
+            const r = safeWriteReview(path.join(showDir, file), data);
+            if (r.lockedSkipped) lockedSkipCount++;
           }
         }
       } catch {
@@ -307,3 +328,5 @@ if (auditPhantoms) {
 } else {
   run();
 }
+
+console.log(`[LOCKED-SKIP-COUNT] cleanup-phantom-outlets: ${lockedSkipCount}`);

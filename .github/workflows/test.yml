@@ -224,38 +224,52 @@ jobs:
           echo "All demo feature flag checks are in client components"
 
       - name: Check scripts route review-texts writes through safeWriteReview
-        continue-on-error: true  # TODO: remove once gather-reviews + remaining CI scripts converted
         run: |
-          # Scripts that write to review-texts/ MUST use safeWriteReview.
-          # Three waves retrofitted 2026-04-18 (rebuild-all-reviews, 10 siblings,
-          # 5 high-risk delete-field scripts). This gate catches new additions.
+          # Joe Turner postmortem P0 #2 (2026-04-26): every write to data/review-texts/
+          # MUST go through safeWriteReview unless the script is on the explicit
+          # allowlist (.review-write-guard-exempt.txt), which is reserved for the
+          # topology-mover scripts (move/delete/rename paths that the per-field
+          # guard cannot protect). See memory/feedback_locked_files_enrichment_chain.md.
           #
           # Detection: scripts that have fs.writeFileSync with a review-texts-
           # derived first argument (filePath/fullPath/path.join(showDir/...))
-          # but no safeWriteReview import. Narrowed to avoid false positives on
-          # audit scripts that only read review-texts and write to audit/ outputs.
-          #
-          # continue-on-error:true while gather-reviews.js and other large CI
-          # scripts are still pending conversion. Flip to false when that work
-          # completes (check: grep -rn "fs.writeFileSync" scripts/*.js | grep -v review-write-guard).
+          # but neither (a) import safeWriteReview from review-write-guard, nor
+          # (b) appear on the allowlist.
+          ALLOWLIST=".review-write-guard-exempt.txt"
+          if [ ! -f "$ALLOWLIST" ]; then
+            echo "::error::missing allowlist file: $ALLOWLIST"
+            exit 1
+          fi
+          # Extract just the filenames from the allowlist (strip comments + reason)
+          EXEMPT=$(grep -v '^[[:space:]]*#' "$ALLOWLIST" | grep -v '^[[:space:]]*$' | awk -F' --' '{print $1}' | tr -d ' ')
+
           VIOLATIONS=""
           for f in scripts/*.js; do
             name=$(basename "$f")
             # Guard itself is exempt
             if [ "$name" = "review-write-guard.js" ]; then continue; fi
-            # Match writeFileSync calls where first arg looks like a review-texts file path
-            # (not an audit output like OUTPUT_PATH or reportPath)
-            if grep -qE "fs\.writeFileSync\((\bfilePath\b|\bfullPath\b|\bfilepath\b|path\.join\(show)" "$f" \
-              && grep -qE "(review-texts|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|rtDir)" "$f" \
+            # Allowlist exemption (file granularity for now; tighten to call-site
+            # later when the topology card lands)
+            if echo "$EXEMPT" | grep -Fxq "$name"; then continue; fi
+            # Match writeFileSync calls where the first argument resolves to a
+            # review-texts path. Broadened 2026-04-26 (ship-check P1) to cover:
+            #   - common variable names (filePath, fullPath, filepath, fp, fullpath, newPath, targetPath, outPath)
+            #   - path.join(...) starting with show-related dir vars (showDir, dirPath, REVIEW_TEXTS_DIR, REVIEW_TEXTS_BASE, reviewsDir, rtDir)
+            #   - path.join('data', 'review-texts', ...) string-prefix patterns
+            # Additional heuristic: file must reference review-texts somewhere AND
+            # NOT import safeWriteReview to count as a violator.
+            if grep -qE "fs\.writeFileSync\((\bfilePath\b|\bfullPath\b|\bfilepath\b|\bfp\b|\bfullpath\b|\bnewPath\b|\btargetPath\b|\boutPath\b|path\.join\((showDir|dirPath|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|reviewsDir|rtDir|REVIEW_TEXTS_ROOT)|path\.join\(['\"]data['\"], ['\"]review-texts['\"])" "$f" \
+              && grep -qE "(review-texts|REVIEW_TEXTS_DIR|REVIEW_TEXTS_BASE|rtDir|reviewsDir|REVIEW_TEXTS_ROOT)" "$f" \
               && ! grep -q "safeWriteReview" "$f"; then
               VIOLATIONS="$VIOLATIONS $name"
             fi
           done
           if [ -n "$VIOLATIONS" ]; then
-            echo "::warning::Scripts write directly to review-texts/ without safeWriteReview:"
+            echo "::error::Scripts write directly to review-texts/ without safeWriteReview:"
             for v in $VIOLATIONS; do echo "  $v"; done
-            echo "Import safeWriteReview from ./lib/review-write-guard and replace fs.writeFileSync."
-            echo "Use force:true when intentionally deleting/nulling protected fields."
+            echo "Either:"
+            echo "  (a) Import { safeWriteReview } from './lib/review-write-guard' and route the write through it."
+            echo "  (b) For topology operations (move/delete/rename), add the file to .review-write-guard-exempt.txt with a one-line reason."
             exit 1
           fi
           echo "All detected review-texts writes route through safeWriteReview"

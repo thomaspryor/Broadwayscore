@@ -90,37 +90,37 @@ jobs:
         if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose
+        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Flag wrong-production reviews by date window
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/flag-wrong-production-by-date.js --apply
+        run: node scripts/flag-wrong-production-by-date.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Audit pre-2005 wrong-production reviews
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/audit-pre2005-reviews.js
+        run: node scripts/audit-pre2005-reviews.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Classify medium-confidence wrong-production flags
         if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-production.js --apply --resume --limit=200
+        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Classify wrong-show flags (LLM)
         if: inputs.skip_enrichment != 'true'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-show.js --apply --resume --limit=100
+        run: node scripts/classify-wrong-show.js --apply --resume --limit=100 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 5
 
       - name: Backfill unknown outlets (local, free)
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/backfill-unknown-critics.js --outlets-only
+        run: node scripts/backfill-unknown-critics.js --outlets-only 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Backfill unknown critics (via scraper infrastructure)
@@ -129,23 +129,23 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/backfill-unknown-critics.js --critics-only --limit=50
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=50 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
         timeout-minutes: 15
 
       - name: Cleanup phantom outlet duplicates
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/cleanup-phantom-outlets.js --apply
+        run: node scripts/cleanup-phantom-outlets.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Strip stale single-model scores from flagged reviews
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/strip-stale-single-model-scores.js --apply
+        run: node scripts/strip-stale-single-model-scores.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Detect syndicated duplicates and author mismatches
         if: inputs.skip_enrichment != 'true'
-        run: node scripts/detect-syndicated-duplicates.js
+        run: node scripts/detect-syndicated-duplicates.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Apply audit flags to review-text files
@@ -234,6 +234,45 @@ jobs:
       - name: Generate opening night status page
         run: node scripts/generate-status-page.js
         continue-on-error: true
+
+      - name: Aggregate locked-skip counts (S2-T4)
+        if: always()
+        run: |
+          # Joe Turner postmortem P0 #2 (2026-04-26): each enrichment script logs
+          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. The 9 enrichment steps above
+          # tee their stdout to /tmp/locked-skip.log so we can aggregate here.
+          #
+          # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
+          # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run
+          # validation of the warning threshold.
+          LOG="${LOCKED_SKIP_TEST_LOG_OVERRIDE:-/tmp/locked-skip.log}"
+          if [ ! -f "$LOG" ]; then
+            echo "::notice::No locked-skip log produced — enrichment steps may have been skipped"
+            exit 0
+          fi
+          echo "## Locked-skip aggregation"
+          # Collapse to one entry per script (last value wins if a script logged twice).
+          declare -A counts
+          while IFS= read -r line; do
+            script=$(echo "$line" | sed -nE 's/.*\[LOCKED-SKIP-COUNT\] ([^:]+):.*/\1/p')
+            count=$(echo "$line" | sed -nE 's/.*: ([0-9]+)$/\1/p')
+            [ -z "$script" ] || [ -z "$count" ] && continue
+            counts["$script"]=$count
+          done < <(grep '\[LOCKED-SKIP-COUNT\]' "$LOG")
+          # Total files modified during enrichment (proxy: review-texts diff line count).
+          MODIFIED=$(git -C data/review-texts diff --name-only 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+          [ "$MODIFIED" -lt 1 ] && MODIFIED=1  # avoid divide-by-zero
+          for script in "${!counts[@]}"; do
+            count=${counts[$script]}
+            echo "  $script: $count"
+            # Threshold: warn when this script's lockedSkip count exceeds 50% of
+            # files modified during enrichment. Tunable via LOCKED_SKIP_THRESHOLD_PCT.
+            PCT_THRESHOLD=${LOCKED_SKIP_THRESHOLD_PCT:-50}
+            ratio=$(( count * 100 / MODIFIED ))
+            if [ "$ratio" -gt "$PCT_THRESHOLD" ]; then
+              echo "::warning::High locked-skip ratio in $script: $count skipped vs $MODIFIED files modified ($ratio%) — likely something is wrong (stuck files? false positive in lock detection? aggressive --before-opening?)"
+            fi
+          done
 
       - name: Get new review count
         id: after

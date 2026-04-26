@@ -28,6 +28,9 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { safeWriteReview } = require('./lib/review-write-guard');
+
+let lockedSkipCount = 0;
 
 // --- Load .env ---
 try {
@@ -366,7 +369,8 @@ async function main() {
             if (APPLY) {
               data.wsClassified = 'london_market_exempt';
               data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
-              fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+              const r = safeWriteReview(candidate.filePath, data);
+              if (r.lockedSkipped) lockedSkipCount++;
             }
           } else if (APPLY && parsed.confidence === 'high') {
             // Apply: flag file with wrongShow + wrongShowReason
@@ -374,7 +378,8 @@ async function main() {
             data.wrongShowReason = `LLM: ${parsed.reasoning}`;
             data.wsClassified = 'wrong_show';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
-            fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+            const r = safeWriteReview(candidate.filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
           } else if (APPLY && parsed.confidence === 'medium') {
             // Medium confidence — flag but mark for potential review
@@ -382,7 +387,8 @@ async function main() {
             data.wrongShowReason = `LLM (medium): ${parsed.reasoning}`;
             data.wsClassified = 'wrong_show';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
-            fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+            const r = safeWriteReview(candidate.filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
             stats.applied++;
           }
         } else if (parsed.verdict === 'CORRECT') {
@@ -393,7 +399,8 @@ async function main() {
           if (APPLY) {
             data.wsClassified = 'correct';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
-            fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+            const r = safeWriteReview(candidate.filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
           }
         } else {
           stats.uncertain++;
@@ -402,7 +409,8 @@ async function main() {
           if (APPLY) {
             data.wsClassified = 'uncertain';
             data.wsClassifiedDate = new Date().toISOString().slice(0, 10);
-            fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2));
+            const r = safeWriteReview(candidate.filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
           }
         }
 
@@ -473,6 +481,8 @@ async function main() {
     fs.unlinkSync(CHECKPOINT_PATH);
     console.log('\nCleaned up checkpoint file.');
   }
+
+  console.log(`[LOCKED-SKIP-COUNT] classify-wrong-show: ${lockedSkipCount}`);
 }
 
 main().catch(e => {

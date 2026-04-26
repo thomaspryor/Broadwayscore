@@ -105,6 +105,9 @@ const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const OUTPUT_FILE = path.join(AUDIT_DIR, 'non-review-classification.json');
 
+// Locked-skip counter — logged at exit for S2-T4 rebuild-reviews aggregation.
+let lockedSkipCount = 0;
+
 // --- Cost tracking ---
 const COST_BY_PROVIDER = {
   claude: 0.006,
@@ -774,7 +777,8 @@ async function runReclassifyFlagged() {
       }
       fresh.classifiedAt = now;
       fresh.nonReviewClassifiedBy = `${PROVIDER}:reclassify-audit`;
-      safeWriteReview(fullPath, fresh);
+      const result = safeWriteReview(fullPath, fresh);
+      if (result.lockedSkipped) lockedSkipCount++;
       applied++;
       if (VERBOSE) console.log(`  cleared: ${d.file}`);
     } catch (e) {
@@ -1120,7 +1124,8 @@ async function main() {
           data.nonReviewType = nr.contentType;
           data.nonReviewClassifiedBy = PROVIDER;
           data.classifiedAt = new Date().toISOString();
-          safeWriteReview(fullPath, data);
+          const result = safeWriteReview(fullPath, data);
+          if (result.lockedSkipped) lockedSkipCount++;
           applied++;
           console.log(`  Applied: ${nr.file} → ${nr.contentType}`);
         } catch (e) {
@@ -1139,7 +1144,8 @@ async function main() {
           try {
             const data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
             data.classifiedAt = now;
-            safeWriteReview(fullPath, data);
+            const result = safeWriteReview(fullPath, data);
+            if (result.lockedSkipped) lockedSkipCount++;
             stamped++;
           } catch (e) {
             if (VERBOSE) console.log(`  ERROR stamping ${relPath}: ${e.message}`);
@@ -1204,6 +1210,8 @@ function saveReport(nonReviews, uncertainCases, heuristicFlags, reviewsConfirmed
   };
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(report, null, 2) + '\n');
+
+  console.log(`[LOCKED-SKIP-COUNT] classify-non-reviews: ${lockedSkipCount}`);
 }
 
 main().catch(e => {

@@ -46,44 +46,26 @@ runs:
         # This prevents any workflow from accidentally wiping scores, fullText, or metadata.
         node -e "
           const fs = require('fs');
+          const path = require('path');
           const { execSync } = require('child_process');
-          // KEEP IN SYNC with scripts/lib/review-write-guard.js PROTECTED_FIELDS
-          // and scripts/lib/restore-protected-fields.js MANUAL_FIELDS
-          const PROTECTED = [
-            'assignedScore', 'llmScore', 'llmMetadata', 'fullText', 'contentTier',
-            'contentTierReason', 'contentVerification', 'ensembleData', 'tierReason',
-            'showTitle', 'textFetchedAt', 'textWordCount', 'textStatus', 'sourceMethod',
-            'isFullReview', 'wrongFullText', 'wrongShow', 'wrongShowReason', 'wrongProduction',
-            'wrongProductionNote',
-            // incompleteReason + incompleteDetail INTENTIONALLY EXCLUDED — must stay in sync with
-            // scripts/lib/review-write-guard.js PROTECTED_FIELDS (see note at line 127 there).
-            // Preserving them caused stale 'wrong_content' flags to survive after classifyIncompleteReason
-            // cleared them (rebuild-all-reviews.js:1504-1524), blocking valid reviews from reviews.json.
-            // Observed 2026-04-24: cats-the-jellicle-ball NYT/nydailynews stayed filtered after contentTier
-            // fix because this push-action restored the stale incompleteReason='wrong_content'.
-            'originalScoreCleared', 'originalScoreClearedReason', 'previousOriginalScore',
-            'humanReviewScore', 'humanReviewNote', 'humanReviewedWrongProduction',
-            'humanReviewedWrongArticle',
-            'wrongProductionManualClear', 'wrongArticleManualClear', 'wrongShowManualClear',
-            'wrongProductionOverride', 'wrongShowOverride', 'wrongShowNote',
-            'wrongShowAutoCleared', 'wrongProductionAutoCleared',
-            'wrongProductionAutoClearedAt', 'wrongProductionReason', 'wrongAttribution',
-            'manualContentTier',
-            'designation', 'isCriticsPick', 'originalScore', 'duplicateOf', 'duplicateReason',
-            'publishDateVerified', 'publishDateSource',
-            // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
-            'allowEarlyDate', 'allowLateDate', 'allowCrossMarket',
-            'allowTourSignal', 'allowTourSignalReason', 'allowFilmSignal', 'routedFromShowId',
-            // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
-            'humanReviewedTour', 'humanReviewScoreProvisional', 'humanReviewScoreClearedForLlm',
-            'isTourReview', 'isLikelyTourReview',
-            // Aggregator thumb signals used by thumb-validated-LLM scoring path
-            'dtliThumb', 'bwwThumb',
-            // Per-file protection array — keeps ingest-manual-review's fields locked
-            'protectedFields',
-            // SERP retry state — losing these on rebase resets the cooldown backoff
-            'serpRetryAfter', 'serpRetryCount', 'serpDiscoveryAbandoned', 'wrongShowRetryAt'
+          // S2-T2: PROTECTED is sourced from the single source of truth in
+          // scripts/lib/review-write-guard.js. The action keeps a small local
+          // extension for fields that are intentionally NOT in the global
+          // PROTECTED list (clearFailureFlags clears them on success) but
+          // SHOULD survive a rebase here at push time.
+          const guardPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/review-write-guard.js')
+            : path.resolve('scripts/lib/review-write-guard.js');
+          const { PROTECTED_FIELDS } = require(guardPath);
+          const ACTION_EXTRA = [
+            // SERP retry state intentionally excluded from guard's PROTECTED_FIELDS
+            // because clearFailureFlags() clears them on success. But on rebase,
+            // losing them would reset the cooldown backoff and re-trigger 13K stuck
+            // wrong_content files. Belt-and-braces: protect them at push time.
+            'serpRetryCount',
+            'serpDiscoveryAbandoned',
           ];
+          const PROTECTED = Array.from(new Set([...PROTECTED_FIELDS, ...ACTION_EXTRA]));
           const staged = execSync('git diff --cached --name-only', { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
           let restored = 0;
           let scoreSaves = 0;
