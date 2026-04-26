@@ -1598,13 +1598,18 @@ async function main() {
   // Enable checkpointing — saves progress after each source so crashes don't lose data
   setCheckpointData(existing);
 
-  // Step 4: Clean expired events (idempotent via appliedAt)
+  // Step 4: Clean expired events (idempotent via appliedAt).
+  // This step intentionally rewrites currentCast for shows whose tracked
+  // exit/join events came due — that's the entire point of the function.
+  // Snapshot AFTER it so the cast-member stability guard only fires on
+  // scrape-driven drops, not on expected cleanup-applied departures.
   const cleanupChanges = cleanExpiredEvents(existing);
   allChanges.push(...cleanupChanges);
   if (cleanupChanges.length > 0) {
     console.log(`[Cleanup] Applied ${cleanupChanges.length} expired event changes`);
     checkpoint('after cleanup');
   }
+  const postCleanupSnapshot = JSON.parse(JSON.stringify(existing));
 
   // Step 5: Scrape sources (checkpoint after each to preserve progress)
   if (sourceFilter === 'all' || sourceFilter === 'articles') {
@@ -1652,11 +1657,14 @@ async function main() {
   existing.lastUpdated = TODAY;
 
   // Step 8: Validate stability guards
-  // Pass shows the cleanup step intentionally removed so the guard doesn't
-  // count closed/orphan GC as scrape-driven data loss.
+  // Show-level guard: pass shows the cleanup step intentionally removed so
+  // the guard doesn't count closed/orphan GC as scrape-driven data loss.
   const expectedRemovals = new Set(closedChanges.map(c => c.showId));
   validateShowStability(originalSnapshot, existing, expectedRemovals);
-  validateCastMemberStability(originalSnapshot, existing);
+  // Cast-member guard: compare against the post-cleanup baseline so
+  // expected event-applied departures (e.g., "Actor X exits 2026-04-25")
+  // don't register as scrape-driven cast loss.
+  validateCastMemberStability(postCleanupSnapshot, existing);
 
   // Step 9: Print summary
   console.log('\n' + '='.repeat(60));
