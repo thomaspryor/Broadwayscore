@@ -1,35 +1,19 @@
 {
-  "lastChecked": "2026-04-19",
+  "lastChecked": "2026-04-26",
   "performance": {
-    "clicks": 1086,
-    "impressions": 43683,
-    "ctr": 0.0249,
-    "position": 13.9,
-    "priorClicks": 1235,
-    "priorImpressions": 69427
+    "clicks": 1008,
+    "impressions": 30247,
+    "ctr": 0.0333,
+    "position": 13,
+    "priorClicks": 1148,
+    "priorImpressions": 48038
   },
   "indexCoverage": {
-    "indexed": 47,
-    "notIndexed": 3,
+    "indexed": 50,
+    "notIndexed": 0,
     "total": 50,
-    "rate": 94,
-    "issues": [
-      {
-        "url": "https://broadwayscorecard.com/show/tricks-of-the-trade-1980",
-        "verdict": "NEUTRAL",
-        "coverageState": "URL is unknown to Google"
-      },
-      {
-        "url": "https://broadwayscorecard.com/show/water-for-elephants",
-        "verdict": "NEUTRAL",
-        "coverageState": "URL is unknown to Google"
-      },
-      {
-        "url": "https://broadwayscorecard.com/show/a-thousand-clowns-2001",
-        "verdict": "NEUTRAL",
-        "coverageState": "URL is unknown to Google"
-      }
-    ]
+    "rate": 100,
+    "issues": []
   },
   "sitemapStatus": {
     "count": 1,
@@ -38,55 +22,62 @@
         "path": "https://broadwayscorecard.com/sitemap.xml",
         "errors": "1",
         "warnings": "0",
-        "lastSubmitted": "2026-04-19T07:43:57.769Z",
+        "lastSubmitted": "2026-04-26T07:42:19.304Z",
         "lastDownloaded": "2026-04-16T21:29:06.792Z"
       }
     ]
   },
   "newPages": {
-    "checked": 14,
-    "indexed": 14,
-    "resubmitted": 0
+    "checked": 11,
+    "indexed": 9,
+    "resubmitted": 2
   },
   "stalePages": {
     "sampled": 100,
-    "stale": 20,
-    "resubmitted": 20
+    "stale": 29,
+    "resubmitted": 29
   },
   "targetKeywords": [
     {
       "keyword": "broadway scorecard",
-      "position": 1.6,
-      "clicks": 130,
-      "impressions": 161,
-      "ctr": 0.8075
+      "position": 1.5,
+      "clicks": 191,
+      "impressions": 231,
+      "ctr": 0.8268
     },
     {
       "keyword": "best broadway musicals 2026",
-      "position": 10.8,
+      "position": 15,
       "clicks": 0,
-      "impressions": 13,
+      "impressions": 3,
       "ctr": 0
     },
     {
       "keyword": "best broadway shows 2026",
-      "position": 13.9,
-      "clicks": 1,
-      "impressions": 33,
-      "ctr": 0.0303
+      "position": 16.4,
+      "clicks": 0,
+      "impressions": 16,
+      "ctr": 0
     },
     {
       "keyword": "broadway box office grosses",
-      "position": 15.2,
+      "position": 19.5,
       "clicks": 0,
-      "impressions": 5,
+      "impressions": 6,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway show ratings",
+      "position": 24.5,
+      "clicks": 0,
+      "impressions": 2,
       "ctr": 0
     },
     {
       "keyword": "broadway ratings",
-      "position": 25.3,
+      "position": 29.4,
       "clicks": 0,
-      "impressions": 4,
+      "impressions": 5,
       "ctr": 0
     },
     {
@@ -97,56 +88,55 @@
       "ctr": 0
     },
     {
-      "keyword": "broadway show ratings",
-      "position": 36.4,
-      "clicks": 1,
-      "impressions": 7,
-      "ctr": 0.1429
-    },
-    {
       "keyword": "upcoming broadway shows",
-      "position": 43.9,
-      "clicks": 0,
-      "impressions": 7,
-      "ctr": 0
-    },
-    {
-      "keyword": "best broadway plays",
-      "position": 48,
-      "clicks": 0,
-      "impressions": 1,
-      "ctr": 0
-    },
-    {
-      "keyword": "broadway show reviews",
-      "position": 49.8,
-      "clicks": 0,
-      "impressions": 10,
-      "ctr": 0
-    },
-    {
-      "keyword": "new broadway shows",
-      "position": 50,
+      "position": 42.7,
       "clicks": 0,
       "impressions": 6,
       "ctr": 0
     },
     {
-      "keyword": "best broadway musicals",
-      "position": 53.8,
+      "keyword": "broadway show reviews",
+      "position": 45.9,
       "clicks": 0,
-      "impressions": 23,
+      "impressions": 7,
       "ctr": 0
     },
     {
       "keyword": "best broadway shows",
-      "position": 55.1,
+      "position": 48.9,
       "clicks": 0,
-      "impressions": 16,
+      "impressions": 17,
+      "ctr": 0
+    },
+    {
+      "keyword": "best broadway musicals",
+      "position": 49.2,
+      "clicks": 0,
+      "impressions": 24,
+      "ctr": 0
+    },
+    {
+      "keyword": "new broadway shows",
+      "position": 61,
+      "clicks": 0,
+      "impressions": 12,
+      "ctr": 0
+    },
+    {
+      "keyword": "broadway shows for kids",
+      "position": 74.2,
+      "clicks": 0,
+      "impressions": 10,
       "ctr": 0
     }
   ],
   "coreWebVitals": [],
-  "anomalies": [],
-  "quotaUsedToday": 70
+  "anomalies": [
+    {
+      "type": "impressions_drop",
+      "severity": "error",
+      "message": "Impressions down 44% vs 4-week avg (30247 vs avg 53792)"
+    }
+  ],
+  "quotaUsedToday": 81
 }
