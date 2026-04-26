@@ -21,6 +21,7 @@ const {
   getOutletDisplayName,
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
@@ -230,17 +231,10 @@ function reExtractBWW() {
           const publishDate = jsonLd.datePublished || null;
 
           if (articleBody) {
-            const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
-            const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
-
-            const pattern = /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):\s*([^]+?)(?=(?:[A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+,\s+[A-Za-z][A-Za-z\s&'.]+:)|Photo Credit:|$)/g;
-
-            let m;
-            const seen = new Set();
-            while ((m = pattern.exec(text)) !== null) {
-              const criticName = m[1].trim();
-              const outletRaw = m[2].trim();
-              let quote = m[3].trim();
+            for (const pair of parseArticleBodyReviews(articleBody)) {
+              const criticName = pair.criticName;
+              const outletRaw = pair.outletRaw;
+              let quote = pair.quote;
 
               if (quote.length > 500) {
                 quote = quote.substring(0, 500);
@@ -248,13 +242,6 @@ function reExtractBWW() {
                 if (lastPeriod > 200) quote = quote.substring(0, lastPeriod + 1);
                 quote += '...';
               }
-
-              const key = `${criticName.toLowerCase()}-${outletRaw.toLowerCase()}`;
-              if (seen.has(key)) continue;
-              seen.add(key);
-
-              if (outletRaw.length < 2 || outletRaw.length > 60) continue;
-              if (outletRaw.match(/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i)) continue;
 
               const outletId = normalizeOutlet(outletRaw);
               if (!isValidOutlet(outletId, outletRaw)) continue;
