@@ -410,6 +410,11 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'LBO review roundup page' };
   }
 
+  // Playbill "what do the critics think of" articles — multi-outlet roundups
+  if (/playbill\.com\/article\/reviews?-what-do-the-critics-think-of/i.test(url)) {
+    return { isRoundup: true, reason: 'Playbill critics-think-of roundup' };
+  }
+
   // NOTE: Do NOT add generic roundup URL patterns (e.g. /review-roundup/ in BWW URLs).
   // Many legitimate individual critic reviews are SOURCED from roundup pages —
   // the URL points to the roundup where the review was discovered, but the review
@@ -417,6 +422,51 @@ function isRoundupUrl(url) {
   // Only flag site-specific patterns where the roundup PAGE is being treated as a review.
 
   return { isRoundup: false };
+}
+
+/**
+ * Detect a stale isRoundupArticle flag on a file that actually contains an
+ * individual critic's full review.
+ *
+ * Background (Notion 34e637c5-416f-817b): The isRoundupArticle flag has had
+ * multiple over-eager setters over time:
+ *   - Removed: `isRoundupUrl` once matched generic /review-roundup/ patterns,
+ *     auto-flagging any review SOURCED from a roundup page (cleared 2026-04-01
+ *     in d7bf1603b8 but the flag persisted on disk).
+ *   - Still active: gather-reviews tags every file from KNOWN_ROUNDUP_OUTLETS
+ *     (interested-bystander, the-clyde-fitch-report) even when the URL is an
+ *     individual review post on the outlet's own domain.
+ *   - Cross-show contamination poisoned excerpt fields, which (in older
+ *     heuristics) read as roundup summaries.
+ *
+ * The flag blocks LLM scoring (is-scoreable / review-text-scoreable / rebuild),
+ * silently dropping legitimate reviews. This predicate is whitelist-based: it
+ * returns true only when the URL matches a per-outlet "individual review" URL
+ * pattern that we know is one show per page. A blacklist (anything not on
+ * isRoundupUrl) is too loose — Playbill, NYT, and others have multi-show
+ * roundup URLs that don't match isRoundupUrl, and clearing those would let
+ * roundup-as-review files leak into scoring.
+ */
+const INDIVIDUAL_REVIEW_URL_PATTERNS = [
+  // The Clyde Fitch Report — `/YYYY/MM/{slug}/` per individual review
+  /^https?:\/\/(?:www\.)?clydefitchreport\.com\/\d{4}\/\d{2}\/[^/]+\/?(?:[?#]|$)/i,
+  // The Interested Bystander — Blogger `/YYYY/MM/{slug}.html` per individual review
+  /^https?:\/\/(?:www\.)?interestedbystander\.com\/\d{4}\/\d{2}\/[^/]+\.html/i,
+  // London Box Office — `/news/post/{slug}` is per-show; `*review-roundup*` is multi-show
+  // (the latter is already caught by isRoundupUrl above)
+  /^https?:\/\/(?:www\.)?londonboxoffice\.co\.uk\/news\/post\/(?!.*review-roundup)[^/]+\/?(?:[?#]|$)/i,
+];
+
+function isLikelyStaleRoundupFlag(data) {
+  if (!data || data.isRoundupArticle !== true) return false;
+  const fullText = (data.fullText || '').trim();
+  if (fullText.length < 800) return false;
+  if (data.isFullReview !== true) return false;
+  const url = data.url || '';
+  if (!url) return false;
+  if (isRoundupUrl(url).isRoundup) return false;
+  if (/\/article\/Review-Roundup-/i.test(url)) return false;
+  return INDIVIDUAL_REVIEW_URL_PATTERNS.some(re => re.test(url));
 }
 
 /**
@@ -1267,7 +1317,7 @@ function isIncludableForRebuild(data) {
   }
   if (data.wrongAttribution === true) return false;
   if (data.duplicateOf) return false;
-  if (data.isRoundupArticle === true) return false;
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
   if (
     data.isNonReview === true ||
     data.isNotReview === true ||
@@ -1652,6 +1702,7 @@ module.exports = {
   isLikelyWrongProduction,
   isLikelyTourReview,
   isRoundupUrl,
+  isLikelyStaleRoundupFlag,
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,

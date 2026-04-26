@@ -247,7 +247,12 @@ function decideInclusion(review, show, guards) {
   if (review.wrongShow === true) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true) return { included: false, reason: 'wrongProduction' };
   if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
-  if (review.isRoundupArticle) return { included: false, reason: 'isRoundupArticle' };
+  if (review.isRoundupArticle) {
+    const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
+      ? guards.isLikelyStaleRoundupFlag(review)
+      : false;
+    if (!isStale) return { included: false, reason: 'isRoundupArticle' };
+  }
   if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
   if (review.contentTier === 'invalid') return { included: false, reason: 'contentTier:invalid' };
   if (review.assignedScore == null) return { included: false, reason: 'no score' };
@@ -380,7 +385,9 @@ function main() {
       baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
       && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
       && baseline.isLikelyTourReview.toString() === working.isLikelyTourReview.toString()
-      && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString();
+      && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
+      && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
+      && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '');
     if (guardsIdentical) {
       log('[scoring-delta] Phase A: review-guards.js decisions identical — skipping inclusion replay.');
     } else {

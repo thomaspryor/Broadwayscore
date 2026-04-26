@@ -37,11 +37,13 @@
  * Both are checked to match validate-data.js behavior (2026-04-11 fix that
  * stopped falsely flagging 39 duplicateOf files as silent gaps).
  */
+const { isLikelyStaleRoundupFlag } = require('./review-guards');
+
 function passesFlagFilters(data) {
   if (!data) return false;
   if (data.rejectionReason) return false;
   if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
-  if (data.isRoundupArticle === true) return false;
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
   if (data.wrongAttribution === true) return false;
   if (data.suspectedMisattribution === true) return false;
   if (data.wrongProduction) return false;
