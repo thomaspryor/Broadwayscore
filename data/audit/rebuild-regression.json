@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-20T04:09:04.363Z",
+  "timestamp": "2026-04-26T15:43:58.924Z",
   "regressions": [
     {
       "showId": "take-me-out-2022",
@@ -12,12 +12,22 @@
       "reason": "scored files exist but being dropped"
     },
     {
+      "showId": "machinal-2014",
+      "oldCount": 26,
+      "newCount": 23,
+      "dropped": 3,
+      "scoredOnDisk": 26,
+      "flaggedScored": 10,
+      "inlineGuardExcluded": 1,
+      "reason": "scored files exist but being dropped"
+    },
+    {
       "showId": "twelfth-night-2013",
       "oldCount": 6,
       "newCount": 3,
       "dropped": 3,
       "scoredOnDisk": 10,
-      "flaggedScored": 15,
+      "flaggedScored": 14,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
     }

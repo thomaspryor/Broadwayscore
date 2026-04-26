@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-26T14:52:03.355Z",
+    "lastUpdated": "2026-04-26T15:44:01.714Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 36506,
-    "skippedFiles": 16908,
-    "totalCritics": 1314,
-    "registryCritics": 489,
+    "totalFilesScanned": 36949,
+    "skippedFiles": 16983,
+    "totalCritics": 1320,
+    "registryCritics": 492,
     "flaggedReviews": 13
   },
   "flaggedReviews": [
@@ -55,6 +55,17 @@
       "totalReviews": 332
     },
     {
+      "critic": "Peter Marks",
+      "criticSlug": "peter-marks",
+      "outlet": "independent",
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "independent--peter-marks.json",
+      "outletShare": 0,
+      "primaryOutlet": "washpost",
+      "primaryShare": 100,
+      "totalReviews": 275
+    },
+    {
       "critic": "Michael Dale",
       "criticSlug": "michael-dale",
       "outlet": "talkinbroadway",
@@ -75,17 +86,6 @@
       "primaryOutlet": "vulture",
       "primaryShare": 99,
       "totalReviews": 86
-    },
-    {
-      "critic": "Michael Kuchwara",
-      "criticSlug": "michael-kuchwara",
-      "outlet": "abc-news",
-      "showId": "la-cage-aux-folles-2010",
-      "file": "abc-news--michael-kuchwara.json",
-      "outletShare": 2,
-      "primaryOutlet": "ap",
-      "primaryShare": 98,
-      "totalReviews": 46
     },
     {
       "critic": "Susannah Clapp",
@@ -168,6 +168,7 @@
       "slug": "ben-brantley",
       "outlets": [
         "nytimes",
+        "about-entertainment",
         "ap",
         "guardian",
         "hollywood-reporter",
@@ -176,7 +177,7 @@
         "theatermania",
         "vulture"
       ],
-      "totalReviews": 481
+      "totalReviews": 679
     },
     {
       "critic": "David Finkle",
@@ -214,10 +215,12 @@
         "washington-times",
         "seattle-post-intelligencer",
         "news-tribune",
+        "seattle-times",
+        "minneapolis-star-tribune",
         "canadian-press",
         "npr"
       ],
-      "totalReviews": 235
+      "totalReviews": 261
     },
     {
       "critic": "Chris Jones",
@@ -255,10 +258,11 @@
         "nytimes",
         "newsday",
         "washpost",
+        "timeout",
         "broadwayworld",
         "newyorker"
       ],
-      "totalReviews": 216
+      "totalReviews": 217
     },
     {
       "critic": "Brittani Samuel",
@@ -351,7 +355,7 @@
         "thestage",
         "vulture"
       ],
-      "totalReviews": 324
+      "totalReviews": 325
     },
     {
       "critic": "Unknown",
@@ -381,6 +385,7 @@
         "washpost",
         "london-theatre",
         "whatsonstage",
+        "ew",
         "cititour",
         "artsdesk",
         "british-theatre",
@@ -389,7 +394,6 @@
         "theupcoming",
         "plays-international",
         "broadwayworld",
-        "ew",
         "hollywood-reporter",
         "stageandcinema",
         "huffpost",
@@ -467,7 +471,7 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 521
+      "totalReviews": 525
     },
     {
       "critic": "Jesse Green",
@@ -523,9 +527,10 @@
       "outlets": [
         "timeout",
         "theatermania",
-        "nytimes"
+        "nytimes",
+        "edge-new-york"
       ],
-      "totalReviews": 368
+      "totalReviews": 369
     },
     {
       "critic": "Charles Isherwood",
@@ -535,13 +540,14 @@
         "nytimes",
         "variety",
         "broadwaynews",
+        "about-entertainment",
         "usatoday",
         "theatermania",
         "guardian",
         "financialtimes",
         "hollywood-reporter"
       ],
-      "totalReviews": 520
+      "totalReviews": 571
     },
     {
       "critic": "Matt Windman",
@@ -611,7 +617,7 @@
         "ew",
         "thewrap"
       ],
-      "totalReviews": 206
+      "totalReviews": 213
     },
     {
       "critic": "Marilyn Stasio.",
@@ -645,12 +651,13 @@
         "village-voice",
         "cote-notices",
         "what-should-we-do",
+        "edge-new-york",
         "guardian",
         "timeout-london",
         "nbcny",
         "medium"
       ],
-      "totalReviews": 193
+      "totalReviews": 195
     },
     {
       "critic": "Dave Quinn",
@@ -681,9 +688,10 @@
         "scheckontheater",
         "reuters",
         "nypost",
+        "nytg",
         "dtli"
       ],
-      "totalReviews": 178
+      "totalReviews": 179
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -720,6 +728,16 @@
         "stageandcinema"
       ],
       "totalReviews": 155
+    },
+    {
+      "critic": "Michael Kuchwara",
+      "slug": "michael-kuchwara",
+      "outlets": [
+        "ap",
+        "staten-island-advance",
+        "abc-news"
+      ],
+      "totalReviews": 47
     },
     {
       "critic": "Martin Denton",
@@ -921,9 +939,10 @@
       "outlets": [
         "ap",
         "abc-news",
-        "reading-eagle"
+        "reading-eagle",
+        "washpost"
       ],
-      "totalReviews": 28
+      "totalReviews": 32
     },
     {
       "critic": "Robert Sholiton",
@@ -1151,7 +1170,7 @@
         "standard",
         "independent"
       ],
-      "totalReviews": 18
+      "totalReviews": 19
     },
     {
       "critic": "Kevin Filipski",
@@ -1169,6 +1188,15 @@
       "outlets": [
         "nytg",
         "stagebiz"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Alix Cohen",
+      "slug": "alix-cohen",
+      "outlets": [
+        "theater-life",
+        "woman-around-town"
       ],
       "totalReviews": 3
     },
@@ -1428,7 +1456,7 @@
         "onandoffbroadwaytheaterreviews",
         "dc-metro-theater-arts"
       ],
-      "totalReviews": 51
+      "totalReviews": 52
     },
     {
       "critic": "Jonathan Warman",
@@ -1484,7 +1512,7 @@
         "theater-pizzazz",
         "la-voce-di-new-york"
       ],
-      "totalReviews": 20
+      "totalReviews": 22
     },
     {
       "critic": "Philip Dorian",
@@ -1627,6 +1655,15 @@
       "totalReviews": 3
     },
     {
+      "critic": "Peter Santilli",
+      "slug": "peter-santilli",
+      "outlets": [
+        "ap",
+        "abc-news"
+      ],
+      "totalReviews": 3
+    },
+    {
       "critic": "Regina Robbins",
       "slug": "regina-robbins",
       "outlets": [
@@ -1710,6 +1747,15 @@
       "outlets": [
         "guardian",
         "variety"
+      ],
+      "totalReviews": 3
+    },
+    {
+      "critic": "Roy Berko",
+      "slug": "roy-berko",
+      "outlets": [
+        "royberkinfo",
+        "broadwayworld"
       ],
       "totalReviews": 3
     },
