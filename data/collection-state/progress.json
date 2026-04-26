@@ -7,7 +7,10 @@
     "beaches-2026/nypost--johnny-oleksinski.json",
     "titanique-2026/new-york-city-theatre--unknown.json",
     "becky-shaw-2026/new-york-city-theatre--unknown.json",
-    "every-brilliant-thing-2026/new-york-city-theatre--unknown.json"
+    "every-brilliant-thing-2026/new-york-city-theatre--unknown.json",
+    "every-brilliant-thing-2026/wsj--unknown.json",
+    "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+    "chess-2025/new-york-city-theatre--unknown.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -654,7 +657,14 @@
     "schmigadoon-2026/new-york-city-theatre--unknown.json",
     "lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
     "teeth-n-smiles-west-end-2026/telegraph--fiona-mountford.json",
-    "music-city-off-broadway-2026/new-york-city-theatre--unknown.json"
+    "music-city-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "bigfoot-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "shadowlands-west-end-2026/times-uk--clive-davis.json",
+    "oh-mary-west-end-2025/theatre-weekly--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -665,14 +675,18 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "titanique-2026/new-york-city-theatre--unknown.json",
       "becky-shaw-2026/new-york-city-theatre--unknown.json",
-      "every-brilliant-thing-2026/new-york-city-theatre--unknown.json"
+      "every-brilliant-thing-2026/new-york-city-theatre--unknown.json",
+      "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+      "chess-2025/new-york-city-theatre--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--payton-turkeltaub.json",
+      "data/review-texts/every-brilliant-thing-2026/wsj--unknown.json",
+      "every-brilliant-thing-2026/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -683,7 +697,7 @@
     "archive": []
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "every-brilliant-thing-2026/new-york-city-theatre--unknown.json",
+  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -717,6 +731,17 @@
       "t": "2026-04-26T15:39:42.990Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-26T15:41:02.206Z",
+      "event": "bb-session",
+      "session": "6c9bc8c1",
+      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spir"
+    },
+    {
+      "t": "2026-04-26T15:41:02.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
