@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
@@ -12,7 +12,7 @@ import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
-import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS } from '@/components/filters/filter-ui-config';
+import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
@@ -113,6 +113,7 @@ function FeaturedRow({ title, shows }: { title: string; shows: OffWestEndShow[] 
 // Inner component that uses searchParams
 function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts, awardWinnerSets }: OffWestEndPageClientProps) {
   const initialSearchParams = useSearchParams();
+  const router = useRouter();
 
   const [filters, setFilters] = useState(() => ({
     status: (['now_playing', 'previews', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
@@ -347,6 +348,20 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
+  // Single-writer clearAll (avoids URL race between window.history.replaceState
+  // in startTransition + router.replace). See HomePageClient note.
+  const handlePanelClearAll = useCallback(() => {
+    setFilters((prev) => ({
+      ...prev,
+      type: DEFAULT_TYPE,
+      status: DEFAULT_STATUS,
+    }));
+    const live = new URLSearchParams(window.location.search);
+    Array.from(PANEL_PARAM_KEYS).forEach((k) => live.delete(k));
+    const qs = live.toString();
+    router.replace(qs ? `/off-west-end?${qs}` : '/off-west-end', { scroll: false });
+  }, [router]);
+
   const shouldHideStatus = statusFilter !== 'all';
 
   return (
@@ -414,7 +429,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
         <ActiveFilterChips
           chips={panel.chips}
           onRemove={panel.removeChip}
-          onClearAll={panel.clearAll}
+          onClearAll={handlePanelClearAll}
         />
       </div>
 
@@ -428,7 +443,7 @@ function OffWestEndPageInner({ shows, totalShows, totalReviews, marketOpenCounts
         onSetSingleValue={panel.setSingleValue}
         yearRange={panel.yearRange}
         onYearRangeChange={panel.setYearRange}
-        onClearAll={panel.clearAll}
+        onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
       />
 

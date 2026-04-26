@@ -301,26 +301,19 @@ export function usePanelFilters<T extends ShowCardShow>({
     [toggleOption, setSingleValue, setYearRange, singleGroupsList],
   );
 
+  // Hook-internal clearAll for non-controlled mode (no override props). When
+  // the page owns single-select state (controlled mode), wire the page's own
+  // handler at the FilterPanel/ActiveFilterChips call sites instead of using
+  // panel.clearAll — mixing writeParams (router.replace) with the page's
+  // updateParams (window.history.replaceState in startTransition) produces a
+  // URL race where the deferred page write overwrites the router state, or the
+  // synchronous router state overwrites the page write. See trace in
+  // memory/feedback_clearall_two_writer_race.md.
   const clearAll = useCallback(() => {
-    // Multi-select + year-range: delete from URL via writeParams (router.replace)
     writeParams((params) => {
-      Array.from(PANEL_PARAM_KEYS).forEach((key) => {
-        // In controlled mode, single-select keys flow through the page's
-        // updateParams below — don't touch them here, otherwise we'd write
-        // them via router.replace AND via the page, producing two writes
-        // that race and leave inline state stale.
-        if (onSetSingleValueOverride && SINGLE_PARAM_KEYS.has(key)) return;
-        params.delete(key);
-      });
+      Array.from(PANEL_PARAM_KEYS).forEach((key) => params.delete(key));
     });
-    // Controlled-mode single-select reset: route through the page so its
-    // local filters state, inline pills, and the list all reset to defaults.
-    if (onSetSingleValueOverride) {
-      for (const group of singleGroupsList) {
-        onSetSingleValueOverride(group.paramKey, group.defaultValue);
-      }
-    }
-  }, [writeParams, onSetSingleValueOverride, singleGroupsList]);
+  }, [writeParams]);
 
   return {
     filteredShows,

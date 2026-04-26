@@ -16,7 +16,7 @@ import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
-import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY } from '@/components/filters/filter-ui-config';
+import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_BROADWAY, PANEL_PARAM_KEYS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 
 export interface FeaturedRowData {
@@ -552,6 +552,23 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
+  // Single-writer clearAll for the panel: resets inline filters state AND
+  // strips all panel keys from the URL in one router.replace. Routing both
+  // writes through the same channel avoids the race where the page's
+  // window.history.replaceState (in startTransition) and the hook's
+  // router.replace would clobber each other and leave stale params behind.
+  const handlePanelClearAll = useCallback(() => {
+    setFilters((prev) => ({
+      ...prev,
+      type: DEFAULT_TYPE,
+      status: DEFAULT_STATUS,
+    }));
+    const live = new URLSearchParams(window.location.search);
+    Array.from(PANEL_PARAM_KEYS).forEach((k) => live.delete(k));
+    const qs = live.toString();
+    router.replace(qs ? `/?${qs}` : '/', { scroll: false });
+  }, [router]);
+
   // Hide status chip when it would be redundant
   const shouldHideStatus = statusFilter !== 'all';
 
@@ -627,7 +644,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         <ActiveFilterChips
           chips={panel.chips}
           onRemove={panel.removeChip}
-          onClearAll={panel.clearAll}
+          onClearAll={handlePanelClearAll}
         />
       </div>
 
@@ -642,7 +659,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         onSetSingleValue={panel.setSingleValue}
         yearRange={panel.yearRange}
         onYearRangeChange={panel.setYearRange}
-        onClearAll={panel.clearAll}
+        onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
       />
 
