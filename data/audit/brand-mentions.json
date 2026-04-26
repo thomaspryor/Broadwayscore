@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-26T18:32:30.617Z",
+  "lastRunAt": "2026-04-26T20:30:25.041Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -40,7 +40,8 @@
     "news:67acdc3de5e1aa44": true,
     "google:e67df507ee6601c6": true,
     "google:8b045df2e05a3e55": true,
-    "google:c3d31a9614e2dfd3": true
+    "google:c3d31a9614e2dfd3": true,
+    "google:a230d0cfcbcc1d86": true
   },
   "mentions": [
     {
@@ -825,10 +826,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-25T03:26:38.137Z"
+    },
+    {
+      "id": "google:a230d0cfcbcc1d86",
+      "source": "google",
+      "url": "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews",
+      "title": "JOE TURNER'S COME AND GONE reviews",
+      "excerpt": "22 hours ago — https://broadwayscorecard.com/show/joe-turners-come-and-gone. \"When we die, we go bye bye.\" - Abe Lincolns. Back to the Message Board. Latest ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-26T20:30:02.389Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-26T20:30:25.041Z"
     }
   ],
   "stats": {
-    "totalSeen": 40,
+    "totalSeen": 41,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -871,6 +892,7 @@
     "https://forum.broadwayworld.com/thread/THE-BALUSTERS-Reviews": true,
     "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true,
     "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true,
-    "https://forum.broadwayworld.com/latest-posts.php": true
+    "https://forum.broadwayworld.com/latest-posts.php": true,
+    "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true
   }
 }
