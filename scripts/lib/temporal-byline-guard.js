@@ -6,13 +6,14 @@
  * long after they stopped writing. We've cleaned 25+ Brantley/Teachout/Kissel
  * misattributions manually; this guard prevents future ones at write time.
  *
- * Each entry: { name, lastActiveDate, reason }.
- *   - lastActiveDate: ISO date past which this critic cannot have written.
- *     For deceased: date of death. For retired: retirement date or last known
- *     real byline + a buffer.
- *
- * If `freelanceAfter` is true, the critic occasionally publishes freelance
- * post-cutoff; we soft-warn instead of rejecting.
+ * Each entry: { name, lastActiveDate, freelanceUntilDate?, reason }.
+ *   - lastActiveDate: ISO date past which this critic stopped staff writing.
+ *     For deceased: date of death (hard cutoff, no freelance).
+ *     For retired: retirement date.
+ *   - freelanceUntilDate (optional): if present, attributions between
+ *     lastActiveDate and this date soft-warn (real freelance piece is possible).
+ *     Past this date, hard-block — parser garbage.
+ *     For deceased critics, never set freelanceUntilDate.
  *
  * Behavior of `validateTemporalAttribution`:
  *   - Returns { ok: true } if attribution is plausible.
@@ -32,17 +33,17 @@ const RETIRED_CRITICS = [
   { name: 'John Simon', lastActiveDate: '2019-11-24', reason: 'died 2019-11-24' },
   { name: 'Michael Feingold', lastActiveDate: '2022-11-02', reason: 'died 2022-11-02' },
 
-  // Retired (NYT chief critics)
-  { name: 'Ben Brantley', lastActiveDate: '2020-10-30', freelanceAfter: true, reason: 'retired NYT 2020-10-30; rare freelance pieces through ~2023' },
+  // Retired NYT chief critics
+  { name: 'Ben Brantley', lastActiveDate: '2020-10-30', freelanceUntilDate: '2023-12-31', reason: 'retired NYT 2020-10-30; rare freelance pieces through ~2023' },
   { name: 'Bruce Weber', lastActiveDate: '2010-12-31', reason: 'left NYT theater desk ~2010' },
   { name: 'Frank Rich', lastActiveDate: '1994-03-01', reason: 'left NYT as critic 1994' },
 
   // Other long-retired
   { name: 'Linda Winer', lastActiveDate: '2017-07-01', reason: 'retired Newsday 2017' },
   { name: 'John Lahr', lastActiveDate: '2013-12-31', reason: 'retired New Yorker ~2013' },
-  { name: 'Marilyn Stasio', lastActiveDate: '2020-12-31', freelanceAfter: true, reason: 'semi-retired Variety ~2020' },
-  { name: 'Jeremy Gerard', lastActiveDate: '2020-01-01', freelanceAfter: true, reason: 'mostly retired ~2020' },
-  { name: 'Peter Marks', lastActiveDate: '2024-12-31', freelanceAfter: true, reason: 'WaPo ended theater desk 2024' },
+  { name: 'Marilyn Stasio', lastActiveDate: '2020-12-31', freelanceUntilDate: '2023-12-31', reason: 'semi-retired Variety ~2020' },
+  { name: 'Jeremy Gerard', lastActiveDate: '2020-01-01', freelanceUntilDate: '2023-12-31', reason: 'mostly retired ~2020' },
+  { name: 'Peter Marks', lastActiveDate: '2024-12-31', freelanceUntilDate: '2026-12-31', reason: 'WaPo ended theater desk 2024' },
 ];
 
 const _retiredIndex = (() => {
@@ -70,17 +71,19 @@ function validateTemporalAttribution(criticName, publishDate) {
 
   if (pubIso <= entry.lastActiveDate) return { ok: true };
 
-  if (entry.freelanceAfter) {
+  // Inside freelance window — soft warn but accept.
+  if (entry.freelanceUntilDate && pubIso <= entry.freelanceUntilDate) {
     return {
       ok: true,
-      warning: `Attribution to ${criticName} after ${entry.lastActiveDate} (${entry.reason}). Possible freelance piece — verify byline.`,
+      warning: `Attribution to ${criticName} after ${entry.lastActiveDate} but inside freelance window through ${entry.freelanceUntilDate} (${entry.reason}). Possible freelance piece — verify byline.`,
     };
   }
 
+  // Past freelance window OR no freelance window: hard-block.
   return {
     ok: false,
     hardBlock: true,
-    reason: `${criticName} is past their last-active date (${entry.lastActiveDate}; ${entry.reason}). Article publishDate ${pubIso} cannot be authored by them.`,
+    reason: `${criticName} is past their last-active date (${entry.lastActiveDate}${entry.freelanceUntilDate ? `; freelance through ${entry.freelanceUntilDate}` : ''}; ${entry.reason}). Article publishDate ${pubIso} cannot be authored by them.`,
   };
 }
 
