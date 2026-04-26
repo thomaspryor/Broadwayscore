@@ -770,13 +770,22 @@ async function main(): Promise<void> {
     return;
   }
 
+  // Pre-load show titles so isScoreable() can activate the wrongShow stale-flag
+  // override (predicate needs show.title; falls back safely when undefined).
+  // Reused later for assessTextQuality (line ~870). Notion 34e637c5-416f-8121.
+  const showTitles = loadShowTitles();
+  const showFor = (d: any): { title: string } | undefined => {
+    const title = d.showId ? showTitles.get(d.showId) : undefined;
+    return title ? { title } : undefined;
+  };
+
   // Filter based on mode
   let filesToProcess: typeof allFiles;
   if (options.needsRescore) {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).needsRescore !== true) return false;
-      if (!isScoreable(f.data as any)) return false;
+      if (!isScoreable(f.data as any, showFor(f.data as any))) return false;
       // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
       if (options.rescoreReason) {
         const reason = (f.data as any).rescoreReason || '';
@@ -819,7 +828,7 @@ async function main(): Promise<void> {
     filesToProcess = allFiles.filter(f => {
       const d = f.data as any;
       if (!d.llmScore || d.ensembleData) return false;
-      if (!isScoreable(d)) return false;
+      if (!isScoreable(d, showFor(d))) return false;
       return true;
     });
     console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
@@ -855,9 +864,8 @@ async function main(): Promise<void> {
   // Track garbage skips for logging
   const garbageSkips: GarbageSkipEntry[] = [];
 
-  // Load show titles for quality checks — assessTextQuality needs the human-readable
-  // title to properly validate show mentions (showId alone misses many valid reviews)
-  const showTitles = loadShowTitles();
+  // showTitles is loaded above (line ~776) for the isScoreable wrongShow gate;
+  // assessTextQuality reuses it for show-mention validation.
 
   // Helper to get scorable text (fullText or excerpts)
   // Uses the full content-quality module for comprehensive garbage detection
@@ -934,7 +942,7 @@ async function main(): Promise<void> {
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
-    if (!isScoreable(d)) {
+    if (!isScoreable(d, showFor(d))) {
       dataQualitySkipped++;
       // Log the specific reason for rejection
       const reasons: string[] = [];

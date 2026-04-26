@@ -16,9 +16,25 @@ const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
 const apply = process.argv.includes('--apply');
 
+// Build showId → { title } map so isScoreable can activate the wrongShow
+// stale-flag override (Notion 34e637c5-416f-8121).
+function loadShowTitles() {
+  const map = new Map();
+  try {
+    const j = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    for (const s of (j.shows || j)) {
+      if (s.id && s.title) map.set(s.id, { title: s.title });
+    }
+  } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
+  return map;
+}
+
 function main() {
+  const showTitles = loadShowTitles();
+  const showFor = (d) => (d.showId ? showTitles.get(d.showId) : undefined);
   const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
     .filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
 
@@ -48,7 +64,7 @@ function main() {
       if (!data.llmScore || data.ensembleData) continue;
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (!isScoreable(data)) continue;
+      if (!isScoreable(data, showFor(data))) continue;
 
       singleModelTotal++;
       const tier = data.contentTier || 'unknown';

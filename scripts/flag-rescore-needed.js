@@ -17,6 +17,22 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isScoreable } = require('./lib/is-scoreable');
+
+// Build showId → { title } map so isScoreable can activate the wrongShow
+// stale-flag override (Notion 34e637c5-416f-8121).
+function loadShowTitles() {
+  const map = new Map();
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    for (const s of (j.shows || j)) {
+      if (s.id && s.title) map.set(s.id, { title: s.title });
+    }
+  } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
+  return map;
+}
+const SHOW_TITLES = loadShowTitles();
+const showFor = (d) => (d.showId ? SHOW_TITLES.get(d.showId) : undefined);
 
 // Parse args
 const args = process.argv.slice(2);
@@ -64,7 +80,7 @@ if (cleanupMode) {
         scanned++;
         if (!data.needsRescore) continue;
         // Check if unscorable
-        if (!isScoreable(data)) {
+        if (!isScoreable(data, showFor(data))) {
           cleaned++;
           cleanedFiles.push(`${show}/${file}`);
           if (!dryRun) {
@@ -118,7 +134,7 @@ for (const show of shows) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (!isScoreable(data)) continue;
+      if (!isScoreable(data, showFor(data))) continue;
 
       // Skip if already flagged for rescore
       if (data.needsRescore) {
