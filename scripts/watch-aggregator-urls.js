@@ -30,7 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { spawnSync } = require('child_process');
-const { discoverBwwRoundupUrl } = require('./lib/bww-rr-discover');
+const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -151,16 +151,64 @@ async function discoverDtliSlugForShow(show) {
   return { slug: null, total: allSlugs.length };
 }
 
+/**
+ * Free, fast BWW homepage scrape. BWW features new Review Roundups in the
+ * homepage carousel + trending stories the moment they publish — typically
+ * 5-15 min ahead of when the same URL appears on reviews.php (which has a
+ * different cache lane). Plain HTTPS works (no Cloudflare challenge on
+ * homepage), so this layer is free.
+ *
+ * Returns the highest-scoring matching URL, or null.
+ *
+ * Caught Joe Turner 2026-04-25 when reviews.php scrape returned 6 anchors
+ * none matching, but homepage had the RR as the top featured article.
+ */
+async function discoverBwwRoundupFromHomepage(show) {
+  const res = await httpGet('https://www.broadwayworld.com/');
+  if (!res.ok || !res.body) return { url: null, anchors: 0, error: res.error || res.status };
+  const re = /href="(\/article\/Review-Roundup-[^"]+)"/g;
+  const found = new Set();
+  let m;
+  while ((m = re.exec(res.body)) !== null) {
+    found.add('https://www.broadwayworld.com' + m[1]);
+  }
+  const anchors = [...found];
+  const candidates = anchors
+    .map(url => ({ url, score: scoreCandidate(url, show) }))
+    .filter(c => c.score >= 10)
+    .sort((a, b) => b.score - a.score);
+  return { url: candidates[0]?.url || null, anchors: anchors.length, candidates: candidates.length };
+}
+
 async function checkBwwRoundup(show) {
   if (show.bwwRoundupUrl) {
     return { skipped: true, reason: 'already-known', url: show.bwwRoundupUrl };
   }
+
+  // Layer 1: free homepage scrape (plain HTTPS, fastest)
+  try {
+    const home = await discoverBwwRoundupFromHomepage(show);
+    if (home.url) {
+      return { url: home.url, source: 'homepage', anchors: home.anchors };
+    }
+    if (home.error) {
+      console.log(`  BWW homepage scrape error: ${home.error}`);
+    }
+  } catch (err) {
+    console.log(`  BWW homepage scrape exception: ${err.message}`);
+  }
+
+  // Layer 2: Browserbase reviews.php scrape (paid, fallback for non-homepage features)
   if (!process.env.BROWSERBASE_API_KEY || !process.env.BROWSERBASE_PROJECT_ID) {
-    return { skipped: true, reason: 'no-browserbase-creds' };
+    return { url: null, source: 'homepage-only', reason: 'no-browserbase-creds' };
   }
   try {
     const result = await discoverBwwRoundupUrl(show);
-    return { url: result.url, candidates: result.candidates.length };
+    return {
+      url: result.url,
+      source: 'reviews.php',
+      anchors: result.candidates.length,
+    };
   } catch (err) {
     return { error: err.message };
   }
@@ -199,19 +247,20 @@ function dispatchPoller(showId, overrides) {
     const overrides = {};
     let needsDispatch = false;
 
-    // BWW RR via Browserbase (existing discoverBwwRoundupUrl)
+    // BWW RR: homepage scrape (free) → reviews.php (Browserbase fallback)
     const bwwResult = await checkBwwRoundup(show);
     if (bwwResult.skipped) {
       console.log(`  BWW RR: ${bwwResult.reason}${bwwResult.url ? ' (' + bwwResult.url + ')' : ''}`);
     } else if (bwwResult.error) {
       console.log(`  BWW RR error: ${bwwResult.error}`);
     } else if (bwwResult.url) {
-      console.log(`  ✅ BWW RR discovered: ${bwwResult.url}`);
+      console.log(`  ✅ BWW RR discovered via ${bwwResult.source}: ${bwwResult.url}`);
       overrides.bwwRoundupUrl = bwwResult.url;
       needsDispatch = true;
       bwwFoundAny = true;
     } else {
-      console.log(`  BWW RR: not yet published (${bwwResult.candidates} anchors checked)`);
+      const note = bwwResult.reason ? ` [${bwwResult.reason}]` : '';
+      console.log(`  BWW RR: not yet published (${bwwResult.anchors ?? 0} RR anchors scanned)${note}`);
     }
 
     // DTLI via plain HTTPS sitemap (free)
