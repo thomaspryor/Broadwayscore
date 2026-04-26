@@ -7,42 +7,16 @@
 
 const fs = require('fs');
 const path = require('path');
+const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
 function countReviewsInArticleBody(articleBody) {
   if (!articleBody) return 0;
-
-  // Skip intro text - find where reviews start
-  const reviewStart = articleBody.indexOf("Let's see what the critics had to say");
-  const text = reviewStart > 0 ? articleBody.substring(reviewStart) : articleBody;
-
-  // Pattern: "Name Name(s), Outlet Name:"
-  // More permissive pattern that matches various formats
-  const patterns = [
-    // Standard: "First Last, Outlet:"
-    /([A-Z][a-z]+(?:\s+[A-Z]\.?)?\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):/g,
-    // With middle initial: "First M. Last, Outlet:"
-    /([A-Z][a-z]+\s+[A-Z]\.\s+[A-Z][a-z]+),\s+([A-Za-z][A-Za-z\s&'.]+):/g,
-  ];
-
   const critics = new Set();
-
-  for (const pattern of patterns) {
-    let match;
-    while ((match = pattern.exec(text)) !== null) {
-      const criticName = match[1].trim();
-      const outlet = match[2].trim();
-
-      // Filter out false positives
-      if (outlet.length >= 2 && outlet.length <= 60 &&
-          !outlet.includes('http') &&
-          !outlet.match(/^(In|The|A|An|On|At|For|With|And|But|Or|If|So|As|By)$/i)) {
-        critics.add(criticName.toLowerCase());
-      }
-    }
+  for (const pair of parseArticleBodyReviews(articleBody)) {
+    critics.add(pair.criticName.toLowerCase());
   }
-
   return critics.size;
 }
 
