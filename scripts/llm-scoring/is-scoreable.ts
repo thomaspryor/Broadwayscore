@@ -9,6 +9,7 @@
 
 // Canonical excerpt field list — single source of truth in excerpt-fields.js
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
+const { isLikelyStaleRoundupFlag } = require('../lib/review-guards');
 
 export function isScoreable(data: Record<string, any>): boolean {
   if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
@@ -21,7 +22,12 @@ export function isScoreable(data: Record<string, any>): boolean {
   }
   // isMultiShowReview is no longer a hard block — the trimmer in index.ts handles these.
   // isRoundupArticle (10+ shows) stays blocked — too many shows for reliable trimming.
-  if (data.isRoundupArticle) return false;
+  // BUT: skip the block when the flag is stale (legacy auto-tag on a file that
+  // is actually an individual review by URL pattern). isLikelyStaleRoundupFlag
+  // is whitelist-based per scripts/lib/review-guards.js. The Stuart King JP file
+  // got flagged because the contaminated lboRoundupExcerpt looked like a roundup
+  // summary, then the LLM scoring silently skipped it (Notion 34e637c5-416f-817b).
+  if (data.isRoundupArticle && !isLikelyStaleRoundupFlag(data)) return false;
   if (data.rejectionReason) return false;
   if (data.showNotMentioned) {
     if (!hasAnyExcerpt(data)) return false;
