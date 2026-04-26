@@ -110,7 +110,7 @@ function buildActualCounts(reviews) {
   return counts;
 }
 
-function countExpectedForShow(showDir) {
+function countExpectedForShow(showDir, show) {
   const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);
   let files;
   try {
@@ -128,7 +128,7 @@ function countExpectedForShow(showDir) {
       continue;
     }
     scanned++;
-    if (wouldBeIncludedInRebuild(data)) expected++;
+    if (wouldBeIncludedInRebuild(data, show)) expected++;
   }
   return { expected, scanned };
 }
@@ -145,6 +145,17 @@ function main() {
 
   const reviews = loadReviewsJson();
   const actualCounts = buildActualCounts(reviews);
+
+  // Build showId → show map so wouldBeIncludedInRebuild can apply the
+  // isLikelyStaleWrongShow override consistently with the rebuild gate
+  // (Notion 34e637c5-416f-8121).
+  const showsJsonPath = path.join(__dirname, '..', 'data', 'shows.json');
+  const showById = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(showsJsonPath, 'utf8'));
+    const showsArr = Array.isArray(showsData) ? showsData : (showsData.shows || []);
+    for (const s of showsArr) if (s && s.id) showById[s.id] = s;
+  } catch { /* shows.json missing — predicate falls back to no-override behavior */ }
 
   const allShowDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory() && !d.name.startsWith('.'))
@@ -164,7 +175,7 @@ function main() {
       console.error(`ERROR: show-filter "${showDir}" not found in review-texts/`);
       process.exit(1);
     }
-    const { expected, scanned } = countExpectedForShow(showDir);
+    const { expected, scanned } = countExpectedForShow(showDir, showById[showDir]);
     const actual = actualCounts[showDir] || 0;
     const delta = expected - actual;
     totalExpected += expected;

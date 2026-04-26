@@ -6,10 +6,11 @@
  * IMPORTANT: When updating is-scoreable.ts, update this file too.
  */
 const { hasExcerpt } = require('./excerpt-fields');
-const { isLikelyStaleRoundupFlag } = require('./review-guards');
+const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared } = require('./review-guards');
 
-function isScoreable(data) {
-  if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+function isScoreable(data, show) {
+  if (data.duplicateOf || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+  if (data.wrongShow && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   if (data.incompleteReason === 'scraper_garbage') return false;
   if (data.fullTextWrongAuthor) {
     if (!hasExcerpt(data)) return false;
