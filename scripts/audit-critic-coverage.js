@@ -60,7 +60,7 @@ function looksLikeReview(title, url) {
   return false;
 }
 
-async function fetchMuckrack(slug, maxPages = 4) {
+async function fetchMuckrack(slug, maxPages = 2) {
   const all = [];
   for (let p = 1; p <= maxPages; p++) {
     const url = p === 1
