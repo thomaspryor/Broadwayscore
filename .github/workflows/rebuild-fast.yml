@@ -113,6 +113,17 @@ jobs:
           COUNT=$(node -e "console.log(require('./data/reviews.json').reviews.length)")
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
+      - name: Opening-night drop + completeness check
+        # Runs the per-critic snapshot diff AND the per-show rebuild-regression
+        # alert path for shows in the ±7d opening-night window. Replaces
+        # analyze-rebuild-drops.js (full-rebuild only) for the fast path.
+        # See scripts/check-opening-night-completeness.js + memory/feedback_admin_ingest_opening_night_2026-04-26.md (#A19/#A20).
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-opening-night-completeness.js
+        continue-on-error: true
+
       - name: Check for changes
         if: always()
         id: changes

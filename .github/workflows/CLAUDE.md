@@ -117,7 +117,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **When to use:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
 - **Manual trigger:** `gh workflow run "Rebuild Reviews (Fast)" -f reason="your reason"`
 - **Options:** `reason` (commit message), `force_write` (override regression guard)
-- **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy.
+- **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy, **`check-opening-night-completeness.js`** (A #20 — strict per-show drop alert for shows in ±7d opening-night window).
 
 ## `rebuild-reviews.yml`
 - **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
@@ -132,6 +132,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/rebuild-all-reviews.js`
 - **Auto-scoring:** After rebuild, auto-triggers `llm-ensemble-score.yml` if 5+ reviews need scoring (threshold lowered from 100 on Feb 25, 2026)
 - **Drop analysis:** After rebuild, runs `scripts/analyze-rebuild-drops.js` (`continue-on-error: true`). Fires if total dropped >30 OR any single show >10. Calls Claude Sonnet to classify drops as flag-explained (routine dedup/quality work) vs unexplained. Sends email with ROUTINE/NEEDS_REVIEW/SUSPICIOUS verdict. 48h cooldown. All guards in `rebuild-all-reviews.js` are **non-blocking** — they write audit files to `data/audit/rebuild-score-drift.json` (Guard 3B), `data/audit/rebuild-regression.json` (Guard 3B-ii), and `data/audit/rebuild-show-drift.json` (Guard 3B-iii) but never call `process.exit(1)`. The `ALLOW_DRIFT` env var has been removed from all workflows.
+- **Opening-night drop check:** After analyze-rebuild-drops, runs `scripts/check-opening-night-completeness.js` (`continue-on-error: true`). Stricter than analyze-rebuild-drops for shows in the ±7d opening-night window: any per-show drop OR per-critic disappearance fires a Discord alert (warning severity, 60-min per-show cooldown). Reads the same `data/audit/rebuild-regression.json` plus its own `data/audit/opening-night-completeness-state.json` snapshot. See A #19 / A #20 in `memory/feedback_admin_ingest_opening_night_2026-04-26.md`.
 
 ## `update-show-status.yml`
 - **Runs:** Daily at 8 AM UTC (3 AM EST)
@@ -154,6 +155,19 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Requires:** `DISCORD_WEBHOOK_ALERTS`, `RESEND_API_KEY`, `OWNER_EMAIL`, `REVIEW_TEXTS_TOKEN`
 - **Manual trigger:** `gh workflow run opening-night-checklist.yml -f show_id=the-rocky-horror-show-2026 -f dry_run=true`
 - **Related:** `opening-night-orchestrator.yml` also calls the checklist once after its polling loop; `opening-night-broadcast.yml` gates sends on checklist passing (override with `force_broadcast=true`)
+
+## `opening-night-completeness-check.yml`
+- **Runs:** Every 15 min (`*/15 * * * *`), or manually via `workflow_dispatch`
+- **Does:** Fast snapshot-diff drop detector for shows in the ±7d opening-night window. No aggregator fetches — just reads `data/reviews.json`, builds the per-show `(outletId, criticName)` set, and diffs against `data/audit/opening-night-completeness-state.json` from the previous run. Any disappearance, score-source loss, or count regression fires a single Discord alert summarizing all affected shows.
+- **Why it exists (A #19/#A20):** Joe Turner's Come and Gone went 14 → 12 → 14 → 17 reviews silently across opening night because `analyze-rebuild-drops.js` only runs in the full rebuild and was below its 30-total / 10-single-show thresholds. Operator noticed Culture Sauce was missing from the live page only by manual eyeball. This workflow + the new step in rebuild-fast/rebuild-reviews catches per-critic drops at every cadence (rebuild + 15-min cron).
+- **Skips when rebuild is in flight:** Avoids racing with `rebuild-reviews.yml` / `rebuild-fast.yml` (those workflows run the same script as a post-rebuild step).
+- **Cooldown:** 60 min per show — prevents storm during a rebuild-loop opening night.
+- **Severity:** `warning` (Discord alert via `scripts/lib/discord-notify.js`; failures surface in the daily digest).
+- **State file:** `data/audit/opening-night-completeness-state.json` — committed back via `push-with-retry.sh` so consecutive runs share snapshot.
+- **Options:** `show_id` (single-show), `window_days` (default 7), `force` (bypass cooldown).
+- **Manual trigger:** `gh workflow run "Opening Night Completeness Check" -f show_id=joe-turners-come-and-gone-2026 -f force=true`
+- **Script:** `scripts/check-opening-night-completeness.js`
+- **Requires:** `DISCORD_WEBHOOK_ALERTS`, `REVIEW_TEXTS_TOKEN` (for checkout-core-data)
 
 ## `opening-night-reviews.yml`
 - **Runs:** Daily at 5 AM UTC (midnight EST), or manually
