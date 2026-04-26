@@ -24,12 +24,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: ./.github/actions/load-private-data
+      - uses: ./.github/actions/checkout-core-data
         with:
-          token: ${{ secrets.PRIVATE_DATA_TOKEN }}
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - uses: actions/setup-node@v5
         with:
@@ -64,6 +62,13 @@ jobs:
             echo "No audit changes to commit"
           else
             git commit -m "audit: weekly critic coverage report"
-            git pull --rebase origin main || true
-            git push origin main || echo "::warning::push failed; will retry next week"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::push failed; will retry next week"
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Critic Coverage Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
