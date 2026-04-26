@@ -98,6 +98,13 @@
     "joe-turners-come-and-gone-2026/timeout--raven-snook.json",
     "joe-turners-come-and-gone-2026/cititour--brian-scott-lipton.json",
     "joe-turners-come-and-gone-2026/frontmezzjunkies--ross.json",
+    "joe-turners-come-and-gone-2026/playbill--unknown.json",
+    "joe-turners-come-and-gone-2026/nytimes--helen-shaw.json",
+    "joe-turners-come-and-gone-2026/vulture--sara-holdren.json",
+    "joe-turners-come-and-gone-2026/guardian--juan-a-ramirez.json",
+    "joe-turners-come-and-gone-2026/timeout--raven-snook.json",
+    "joe-turners-come-and-gone-2026/cititour--brian-scott-lipton.json",
+    "joe-turners-come-and-gone-2026/frontmezzjunkies--ross.json",
     "joe-turners-come-and-gone-2026/playbill--unknown.json"
   ],
   "skipped": [],
@@ -192,6 +199,17 @@
     },
     {
       "t": "2026-04-26T03:14:57.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T03:20:29.441Z",
+      "event": "bb-session",
+      "session": "8781af6f",
+      "url": "https://www.nytimes.com/2026/04/25/theater/joe-turners-come-and-gone-review-hens"
+    },
+    {
+      "t": "2026-04-26T03:20:30.590Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
