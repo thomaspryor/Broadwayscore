@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-04-26T12:19:24.795Z",
-  "processed": 1,
-  "failed": 632,
-  "successRate": "0.2%",
+  "updatedAt": "2026-04-26T15:38:12.718Z",
+  "processed": 2,
+  "failed": 641,
+  "successRate": "0.3%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 2,
+    "amp": 1,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-04-26T15:33:32.901Z",
+      "event": "bb-session",
+      "session": "762c1de1",
+      "url": "http://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-04-26T15:33:33.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-26T15:33:46.275Z",
+      "event": "bb-session",
+      "session": "b791bbe2",
+      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
+    },
+    {
+      "t": "2026-04-26T15:33:46.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

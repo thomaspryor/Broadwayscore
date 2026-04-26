@@ -1,6 +1,7 @@
 {
   "processed": [
-    "titanique-2026/ew--unknown.json"
+    "titanique-2026/ew--unknown.json",
+    "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -634,15 +635,29 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "joe-turners-come-and-gone-2026/new-york-sun--unknown.json",
+    "joe-turners-come-and-gone-2026/chicagotribune--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/ew--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "titanique-2026/ew--unknown.json"
+      "titanique-2026/ew--unknown.json",
+      "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json"
     ],
-    "amp": [],
-    "browserbase": [],
+    "amp": [
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -650,6 +665,29 @@
     "archive": []
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
+  "log": [
+    {
+      "t": "2026-04-26T15:33:32.901Z",
+      "event": "bb-session",
+      "session": "762c1de1",
+      "url": "http://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-04-26T15:33:33.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-26T15:33:46.275Z",
+      "event": "bb-session",
+      "session": "b791bbe2",
+      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
+    },
+    {
+      "t": "2026-04-26T15:33:46.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
