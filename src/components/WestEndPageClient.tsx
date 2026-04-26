@@ -412,11 +412,28 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
     [],
   );
+  const panelSingleValueOverrides = useMemo(
+    () => ({ type, status }),
+    [type, status],
+  );
+  const setPanelSingleValue = useCallback(
+    (paramKey: string, value: string) => {
+      const group = panelSingleGroups.find((g) => g.paramKey === paramKey);
+      if (group && value === group.defaultValue) {
+        updateParams({ [paramKey]: null });
+      } else {
+        updateParams({ [paramKey]: value });
+      }
+    },
+    [panelSingleGroups, updateParams],
+  );
   const panel = usePanelFilters({
     shows: filteredAndSortedShows,
     awardWinnerSets,
     scoreMode,
     singleGroups: panelSingleGroups,
+    singleValueOverrides: panelSingleValueOverrides,
+    onSetSingleValueOverride: setPanelSingleValue,
   });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
