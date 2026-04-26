@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-26T17:07:16.989Z",
+  "timestamp": "2026-04-26T17:48:44.688Z",
   "stats": {
-    "totalReviews": 36092,
-    "alreadyFlagged": 16107,
+    "totalReviews": 36090,
+    "alreadyFlagged": 16099,
     "dateGuardCatches": 95,
-    "directorMismatch": 820,
+    "directorMismatch": 822,
     "tvFilmSignals": 3218,
-    "londonSignals": 1030,
-    "offBroadwaySignals": 901,
+    "londonSignals": 1031,
+    "offBroadwaySignals": 902,
     "yearMismatch": 69,
     "noPublishDate": 3737
   },
@@ -8983,6 +8983,25 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 81,
+      "publishDate": "June 20th, 2024",
+      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "timeout--adam-feldman.json",
       "score": 84,
       "publishDate": "June 20th, 2024",
@@ -12471,6 +12490,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 43,
+      "publishDate": "February 17th, 2026",
+      "url": "https://www.thestage.co.uk/long-reviews/dracula-review-noel-coward-theatre-kip-williams-cynthia-erivo",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"on screen\""
         }
       ]
     },
@@ -32510,20 +32543,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"big screen\""
-        }
-      ]
-    },
-    {
-      "showId": "next-to-normal-2009",
-      "file": "nytimes--ben-brantley.json",
-      "score": 81,
-      "publishDate": "August 14, 2010",
-      "url": "http://theater.nytimes.com/2010/08/14/theater/reviews/14next.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -57923,6 +57942,20 @@
     },
     {
       "showId": "all-my-sons-west-end-2025",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 93,
+      "publishDate": "2025-11-22",
+      "url": "https://www.broadwayworld.com/westend/article/Review-ALL-MY-SONS-starring-Bryan-Cranston-and-Marianne-Jean-Baptiste-20251122",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-west-end-2025",
       "file": "everything-theatre--dave-b.json",
       "score": 92,
       "publishDate": "2025-11-23",
@@ -69097,6 +69130,20 @@
       "score": 91,
       "publishDate": "July 11, 2024",
       "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "file": "digital-journal--markos-papadatos.json",
+      "score": 90,
+      "publishDate": "2024-07-12",
+      "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
