@@ -9,10 +9,14 @@
 
 // Canonical excerpt field list — single source of truth in excerpt-fields.js
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
-const { isLikelyStaleRoundupFlag } = require('../lib/review-guards');
+const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared } = require('../lib/review-guards');
 
-export function isScoreable(data: Record<string, any>): boolean {
-  if (data.duplicateOf || data.wrongShow || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+export function isScoreable(data: Record<string, any>, show?: Record<string, any>): boolean {
+  if (data.duplicateOf || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
+  // wrongShow: same manual-clear + stale-override semantics as isIncludableForRebuild
+  // (Notion 34e637c5-416f-8121). Without the override, a human-cleared file
+  // could pass rebuild but be skipped by the LLM rescore — leaving it scoreless.
+  if (data.wrongShow && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   if (data.incompleteReason === 'scraper_garbage') return false;
   // fullTextWrongAuthor: fullText is from wrong author but excerpts may be valid.
   // Scoreable only if there's excerpt content to score from (not fullText).

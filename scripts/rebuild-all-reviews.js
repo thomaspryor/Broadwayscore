@@ -772,6 +772,10 @@ const showCategoryMap = {};  // showId -> category (e.g., 'west-end', 'broadway'
 const showLongRunWE = new Set();  // WE shows with openingDate before 2015 — skip pre-opening guard
 const showCreativeTeamIndex = {};  // showId -> Set of lowercase creative team names
 const skipCrossShowDupeIds = new Set(showsData.shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
+const showById = {};
+for (const s of showsData.shows) {
+  showById[s.id] = s;
+}
 for (const s of showsData.shows) {
   const earliest = s.previewsStartDate || s.openingDate;
   if (earliest) showDateMap[s.id] = new Date(earliest);
@@ -1553,7 +1557,7 @@ showDirs.forEach(showId => {
             circularSameText = !!(a && b && a === b);
           }
           // Check if reference would be excluded by later guards
-          refExcluded = !isIncludableForRebuild(refData);
+          refExcluded = !isIncludableForRebuild(refData, showById[showId]);
           if (!refExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];
@@ -1605,7 +1609,7 @@ showDirs.forEach(showId => {
             circularSameText = !!(a && b && a === b);
           }
           // Check if reference would be excluded by later guards
-          refWouldBeExcluded = !isIncludableForRebuild(refData);
+          refWouldBeExcluded = !isIncludableForRebuild(refData, showById[showId]);
           if (!refWouldBeExcluded && refData.publishDate && showDateMap[showId] && !refData.allowEarlyDate) {
             const refPubDate = new Date(refData.publishDate);
             const openDate = showDateMap[showId];

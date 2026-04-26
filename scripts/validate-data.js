@@ -2635,6 +2635,17 @@ function validateUnscoredReviewTexts() {
     return;
   }
 
+  // Load shows.json once so passesFlagFilters can apply the
+  // isLikelyStaleWrongShow override consistently with the rebuild gate
+  // (Notion 34e637c5-416f-8121).
+  const showsJsonPath = path.join(DATA_DIR, 'shows.json');
+  const showById = {};
+  try {
+    const showsData = JSON.parse(fs.readFileSync(showsJsonPath, 'utf8'));
+    const showsArr = Array.isArray(showsData) ? showsData : (showsData.shows || []);
+    for (const s of showsArr) if (s && s.id) showById[s.id] = s;
+  } catch { /* fall back to no-override behavior */ }
+
   let filesScanned = 0;
   const gaps = [];
 
@@ -2663,7 +2674,7 @@ function validateUnscoredReviewTexts() {
       // so this validator and scripts/check-review-count-drift.js never drift apart.
       // See that file for the exact flag list and dedup-field-naming gotchas.
       // A silent gap = passes every skip filter BUT has no valid score.
-      if (!passesFlagFilters(r) || hasValidScore(r)) continue;
+      if (!passesFlagFilters(r, showById[showDir]) || hasValidScore(r)) continue;
 
       // This file passes every skip filter and has no score — silent gap.
       const ageDays = r.textFetchedAt

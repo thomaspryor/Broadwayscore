@@ -37,9 +37,9 @@
  * Both are checked to match validate-data.js behavior (2026-04-11 fix that
  * stopped falsely flagging 39 duplicateOf files as silent gaps).
  */
-const { isLikelyStaleRoundupFlag } = require('./review-guards');
+const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared } = require('./review-guards');
 
-function passesFlagFilters(data) {
+function passesFlagFilters(data, show) {
   if (!data) return false;
   if (data.rejectionReason) return false;
   if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
@@ -47,7 +47,13 @@ function passesFlagFilters(data) {
   if (data.wrongAttribution === true) return false;
   if (data.suspectedMisattribution === true) return false;
   if (data.wrongProduction) return false;
-  if (data.wrongShow) return false;
+  // wrongShow: defer to manual-clear flags + isLikelyStaleWrongShow override.
+  // Mirrors the symmetric gate added in isIncludableForRebuild + isScoreable
+  // (Notion 34e637c5-416f-8121). Without this, the validate-data + drift-check
+  // probes over-count silent gaps — they'd flag manually-cleared wrongShow
+  // files as "should be in reviews.json but isn't" when rebuild does include
+  // them.
+  if (data.wrongShow && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   if (data.duplicateTextOf) return false;
   if (data.duplicateOf) return false;
   if (data.humanReviewedWrongProduction) return false;
@@ -122,9 +128,15 @@ function hasValidScore(data) {
 /**
  * Main predicate. Returns true iff we expect rebuild to include this file in
  * reviews.json for its showId (modulo the context-dependent guards noted above).
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} [show] - Show entry from shows.json. Optional but required
+ *   for accurate stale-wrongShow detection (Notion 34e637c5-416f-8121); when
+ *   missing, the predicate degrades to old behavior (all wrongShow files
+ *   without manual-clear are excluded).
  */
-function wouldBeIncludedInRebuild(data) {
-  return passesFlagFilters(data) && hasValidScore(data);
+function wouldBeIncludedInRebuild(data, show) {
+  return passesFlagFilters(data, show) && hasValidScore(data);
 }
 
 module.exports = {

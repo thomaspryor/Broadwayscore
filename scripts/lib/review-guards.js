@@ -470,6 +470,156 @@ function isLikelyStaleRoundupFlag(data) {
 }
 
 /**
+ * Returns true when wrongShow=true should be treated as already cleared by
+ * a human override or wrongProduction-equivalent decision. Single source of
+ * truth for the 5 manual-clear flags so all 4 gate sites
+ * (isIncludableForRebuild, isScoreable, passesFlagFilters, llm-scoring/is-scoreable.ts)
+ * stay in sync.
+ *
+ * Background: pre-2026-04-26, only isIncludableForRebuild honored these flags;
+ * isScoreable and passesFlagFilters did not. A human-cleared wrongShow file
+ * could pass rebuild but still be skipped by the LLM rescore — leaving the
+ * file with no current score and no path back into reviews.json. Discovered
+ * during the wrongShow stale-flag audit (Notion 34e637c5-416f-8121).
+ */
+function wrongShowCleared(data) {
+  if (!data) return false;
+  return (
+    data.wrongShowManualClear === true ||
+    data.wrongShowOverride === true ||
+    data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true ||
+    data.humanReviewedWrongProduction === false
+  );
+}
+
+const WRONG_SHOW_TITLE_STOPWORDS = new Set([
+  'the','a','an','of','and','or','for','to','in','on','at','with','as','by',
+  'is','are','was','were','be','been','it','this','that','these','those',
+  'review','musical','play','show','broadway','revival','off',
+]);
+
+function _wrongShowTitleTokens(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .split(/\s+/)
+    .filter(t => t.length >= 4 && !WRONG_SHOW_TITLE_STOPWORDS.has(t));
+}
+
+/**
+ * Detect a stale wrongShow=true flag on a file that actually contains a
+ * substantial individual critic review of THIS show.
+ *
+ * Background (Notion 34e637c5-416f-8121): wrongShow is set by 3 paths —
+ *   (1) LLM ensemble rejection (rejectionReason='wrong_show'),
+ *   (2) content-fingerprint cross-attribution audit (audit-cross-attribution.js),
+ *   (3) manual flagging in ingest-manual-review.js.
+ * Some are correct; others are stale post-fix. The Giant 2026-04-22 incident
+ * (LLM mis-rejected real Broadway reviews because it knew "Giant the musical"
+ * from training and called the play wrong-show) is the canonical false positive.
+ *
+ * Unlike isLikelyStaleRoundupFlag this predicate REQUIRES show context (title +
+ * openingDate/id) — wrongShow is inherently about whether a file matches a
+ * specific show. Without `show`, the predicate returns false (safe default).
+ *
+ * Tuned to be conservative — measured precision ~75% on a 20-file sample;
+ * remaining ~25% FPs are caught by other gates (rejectedAt, contentVerification).
+ * The companion sweep script (scripts/clear-stale-wrong-show-flags.js) layers
+ * an LLM second-opinion before physically clearing the flag on disk.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} [show] - Show entry from shows.json (needs title; uses
+ *   openingDate + id for year alignment when present)
+ */
+function isLikelyStaleWrongShow(data, show) {
+  if (!data || data.wrongShow !== true) return false;
+  if (!show || !show.title || String(show.title).length < 5) return false;
+
+  const fullText = String(data.fullText || '').trim();
+  if (fullText.length < 1500) return false;
+
+  // Honor specific rejection reasons set by other guards. Only override
+  // wrong_show ensemble rejections (Giant case); leave wrong_production,
+  // garbage_text, not_a_review, etc. alone — those are different signals.
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_show') return false;
+
+  // Don't override high-confidence content-verification mismatches — they're
+  // a separate, stronger signal from the cross-attribution audit.
+  if (
+    data.contentVerification &&
+    data.contentVerification.wrongArticle === true &&
+    data.contentVerification.confidence === 'high'
+  ) return false;
+
+  if (data.fullTextWrongAuthor === true) return false;
+
+  const url = data.url || data.sourceUrl || '';
+  if (!url) return false;
+  const u = url.toLowerCase();
+
+  // Roundup / multi-show / feature article URLs — never individual reviews.
+  if (isRoundupUrl(url).isRoundup) return false;
+  if (/\/article\/review-roundup-/i.test(u)) return false;
+  if (/\/article\/reviews-sound-off-/i.test(u)) return false;
+  if (/\/article\/reviews-/i.test(u)) return false;
+  if (/playbill\.com\/article\/reviews-/i.test(u)) return false;
+  if (/westendtheatre\.com\/.*\/reviews-of-/i.test(u)) return false;
+  if (/londonboxoffice\.co\.uk\/.*\/.*review-roundup/i.test(u)) return false;
+  if (/thestage\.co\.uk\/review-round-ups/i.test(u)) return false;
+  if (/\/review-roundup\//i.test(u)) return false;
+  if (/\/reviews?-roundup\b/i.test(u)) return false;
+  if (/broadway-shockers-\d{4}/i.test(u)) return false;
+  if (/\/year-in-(?:theater|review)/i.test(u)) return false;
+  if (/best-(?:plays?|musicals?|shows?)-of-\d{4}/i.test(u)) return false;
+
+  // Wrong medium — film/TV/movie reviews under same title.
+  if (/\/film[\/s-]/i.test(u)) return false;
+  if (/\/films[\/s-]/i.test(u)) return false;
+  if (/\/movies?[\/s-]/i.test(u)) return false;
+  if (/variety\.com\/\d+\/film\//i.test(u)) return false;
+  if (/\/tv-?(?:plus|review|shows)\b/i.test(u)) return false;
+  if (/apple-?tv-?(?:plus|review)?/i.test(u)) return false;
+
+  // Wrong production / wrong subject markers.
+  if (/regional-legit-review|stratford-festival|actors-?gang|national-theatre-tour|tour-review|restaurant\b/i.test(u)) return false;
+
+  // Must look like an individual review URL (path token "review").
+  if (!/[\/-]review[s\/-]?/.test(u) && !/[\/-]reviewed?[\/-]/.test(u)) return false;
+
+  // Title tokens must overlap URL slug.
+  const titleTokens = _wrongShowTitleTokens(show.title);
+  if (titleTokens.length === 0) return false;
+  const urlTokens = new Set(_wrongShowTitleTokens(url));
+  let overlap = 0;
+  for (const t of titleTokens) if (urlTokens.has(t)) overlap++;
+  if (titleTokens.length === 1 && overlap < 1) return false;
+  if (titleTokens.length > 1 && overlap < 2) return false;
+
+  // Show title must appear as a phrase in fullText.
+  if (!fullText.toLowerCase().includes(String(show.title).toLowerCase())) return false;
+
+  // Year alignment — when both URL and show have a year, must be within 3.
+  // For shows older than 2005, require URL year to be present (older revivals
+  // commonly cross-attribute critics from later productions).
+  const urlYearMatch = url.match(/[\/_-](20\d{2}|19\d{2})\b/);
+  const urlYear = urlYearMatch ? parseInt(urlYearMatch[1], 10) : null;
+  let showYear = null;
+  if (show.openingDate) {
+    const m = String(show.openingDate).match(/^(\d{4})/);
+    if (m) showYear = parseInt(m[1], 10);
+  }
+  if (!showYear && show.id) {
+    const m = String(show.id).match(/(\d{4})\b/);
+    if (m) showYear = parseInt(m[1], 10);
+  }
+  if (urlYear && showYear && Math.abs(urlYear - showYear) > 3) return false;
+  if (showYear && showYear < 2005 && !urlYear) return false;
+
+  return true;
+}
+
+/**
  * Detect URL/venue mismatches that suggest wrong production.
  * Checks if the review URL mentions a different venue than expected.
  *
@@ -1284,7 +1434,7 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
-function isIncludableForRebuild(data) {
+function isIncludableForRebuild(data, show) {
   if (!data) return false;
 
   // wrongProduction — excluded unless cleared by one of three override flags
@@ -1296,24 +1446,19 @@ function isIncludableForRebuild(data) {
     if (!cleared) return false;
   }
 
-  // wrongShow — same manual-clear semantics as wrongProduction. If a human has
-  // verified the correct production, that also means the correct show — the LLM
-  // ensemble's wrong_show rejection for Giant (Mark Rosenblatt play vs musical)
-  // on 2026-04-22 is exactly this case: LLM knew "Giant the musical" from
-  // training and mis-identified the Broadway play as the wrong show. Without
-  // this carve-out, manual-clear was insufficient because llm-scoring could
-  // re-reject with `wrong_show` and set the flag on the manually-cleared file.
-  // Explicit wrongShowManualClear / wrongShowOverride fields supported for
-  // forward compatibility — ingest-manual-review.js sets wrongShow: false
-  // directly today (scripts/ingest-manual-review.js + memory/email-broadcast-rules).
+  // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
+  // source of truth shared with the other gates). If a human has verified the
+  // correct production, that also means the correct show — the LLM ensemble's
+  // wrong_show rejection for Giant (Mark Rosenblatt play vs musical) on
+  // 2026-04-22 is exactly this case: LLM knew "Giant the musical" from
+  // training and mis-identified the Broadway play as the wrong show.
+  //
+  // Stale-flag override (Notion 34e637c5-416f-8121): when no manual clear is
+  // set but the data + URL signals strongly indicate a real review of THIS
+  // show, isLikelyStaleWrongShow defers to the rebuild. Conservative — see
+  // helper docstring for the full filter chain.
   if (data.wrongShow === true) {
-    const cleared =
-      data.wrongShowManualClear === true ||
-      data.wrongShowOverride === true ||
-      data.wrongProductionManualClear === true ||
-      data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false;
-    if (!cleared) return false;
+    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   }
   if (data.wrongAttribution === true) return false;
   if (data.duplicateOf) return false;
@@ -1703,6 +1848,8 @@ module.exports = {
   isLikelyTourReview,
   isRoundupUrl,
   isLikelyStaleRoundupFlag,
+  isLikelyStaleWrongShow,
+  wrongShowCleared,
   isVenueMismatch,
   isUrlTitleMismatch,
   shouldSkipWrongProductionAudit,
