@@ -28,7 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
-const { matchTitleToShow, loadShows } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, validateRoundupPageTitle } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
 
@@ -233,6 +233,14 @@ async function scrapeRoundups(page, urls, weShows) {
       await page.waitForTimeout(2000);
 
       const html = await page.content();
+
+      // Validate page title matches the show before archiving — Stuart King 2026-04-25
+      const v = validateRoundupPageTitle(html, match.show.title);
+      if (!v.ok) {
+        console.log(`    ✗ page-title mismatch (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
+        stats.errors++;
+        continue;
+      }
 
       if (!DRY_RUN) {
         fs.writeFileSync(archivePath, html);
