@@ -204,6 +204,17 @@ jobs:
         run: node scripts/analyze-rebuild-drops.js
         continue-on-error: true
 
+      - name: Opening-night drop + completeness check
+        # Per-critic snapshot diff + per-show rebuild-regression alert path
+        # for shows in the ±7d opening-night window. Stricter threshold than
+        # analyze-rebuild-drops.js: any per-show drop fires here for opening
+        # shows. See scripts/check-opening-night-completeness.js + memory/feedback_admin_ingest_opening_night_2026-04-26.md (#A19/#A20).
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/check-opening-night-completeness.js
+        continue-on-error: true
+
       - name: Audit wrong-production reviews
         run: node scripts/audit-wrong-production.js
         continue-on-error: true

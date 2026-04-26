@@ -1,5 +1,11 @@
 name: Opening Night Poller
 
+# run-name embeds show_id (when set) so other tools can detect in-flight
+# pollers for a specific show via `gh run list --json displayTitle`. The
+# aggregator-url-watcher uses this for idempotency — see
+# scripts/watch-aggregator-urls.js: pollerInFlightForShow().
+run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
+
 # Fast review discovery for opening nights. Runs 4 layers:
 #   1. Aggregators (BWW RR, Show Score, DTLI) — fastest
 #   2. RSS feeds (Variety, NYT, Guardian) — free
@@ -63,12 +69,15 @@ permissions:
   actions: write
 
 concurrency:
-  # Per-run concurrency: each poller dispatch gets its own lane. The orchestrator
-  # serializes dispatches via `gh run watch`, so concurrent pollers only happen
-  # across markets (BW vs WE) — which is fine, they work on different shows.
-  # The old shared group `opening-night-poller` had GitHub's 1-pending queue limit
-  # cancel 30% of runs when dispatches overlapped (Cats postmortem 2026-04-07).
-  group: opening-night-poller-${{ github.run_id }}
+  # Per-show concurrency when show_id is set, otherwise per-run. This serializes
+  # multiple targeted dispatches for the SAME show (watcher + orchestrator +
+  # update-show-status all converging during opening night) without falling back
+  # to the old shared `opening-night-poller` group that hit GitHub's 1-pending
+  # queue limit and cancelled 30% of runs (Cats postmortem 2026-04-07). Auto-
+  # discovery dispatches (no show_id) still get unique per-run groups so they
+  # never collide with each other. Backstop for Tonight #7 push race —
+  # the watcher does its own idempotency check; this group catches the rest.
+  group: opening-night-poller-${{ inputs.show_id || github.run_id }}
   cancel-in-progress: false
 
 jobs:
