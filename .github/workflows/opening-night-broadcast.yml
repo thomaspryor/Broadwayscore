@@ -71,6 +71,21 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Check recovery hold marker
+        run: |
+          if [ -f data/audit/recovery-active.marker ]; then
+            ACTIVE_UNTIL=$(jq -r '.activeUntil' data/audit/recovery-active.marker)
+            NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if [ "$ACTIVE_UNTIL" \> "$NOW" ]; then
+              REASON=$(jq -r '.reason' data/audit/recovery-active.marker)
+              echo "::warning::Broadcast skipped: recovery-active marker present (reason: $REASON, expires: $ACTIVE_UNTIL)"
+              echo "BROADCAST_HOLD_ACTIVE=true" >> $GITHUB_ENV
+              exit 0
+            fi
+          fi
+          echo "BROADCAST_HOLD_ACTIVE=false" >> $GITHUB_ENV
+
       - name: Find recently opened shows
         id: find
         run: |
@@ -437,7 +452,7 @@ jobs:
           node scripts/generate-mobile-show-details.js
 
       - name: Create broadcast draft (owner sends manually from Resend)
-        if: steps.check.outputs.pending_shows != ''
+        if: steps.check.outputs.pending_shows != '' && env.BROADCAST_HOLD_ACTIVE != 'true'
         id: broadcast
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -687,7 +702,7 @@ jobs:
           "
 
       - name: Send push notifications (mobile app)
-        if: steps.check.outputs.broadway != ''
+        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
