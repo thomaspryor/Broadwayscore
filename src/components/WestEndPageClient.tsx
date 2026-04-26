@@ -11,6 +11,7 @@ import type { AwardWinnerSets } from '@/lib/data-awards';
 import { FilterButton } from '@/components/filters/FilterButton';
 import { FilterPanel } from '@/components/filters/FilterPanel';
 import { ActiveFilterChips } from '@/components/filters/ActiveFilterChips';
+import { TYPE_GROUP, buildStatusGroup, STATUS_OPTIONS_WITH_PREVIEWS } from '@/components/filters/filter-ui-config';
 import { usePanelFilters } from '@/lib/hooks/usePanelFilters';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
@@ -407,7 +408,16 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     return result;
   }, [shows, fuseResults, statusFilter, type, searchQuery, sort, scoreMode, venueFilter]);
 
-  const panel = usePanelFilters({ shows: filteredAndSortedShows, awardWinnerSets, scoreMode });
+  const panelSingleGroups = useMemo(
+    () => [TYPE_GROUP, buildStatusGroup(STATUS_OPTIONS_WITH_PREVIEWS)],
+    [],
+  );
+  const panel = usePanelFilters({
+    shows: filteredAndSortedShows,
+    awardWinnerSets,
+    scoreMode,
+    singleGroups: panelSingleGroups,
+  });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   const shouldHideStatus = statusFilter !== 'all';
@@ -484,6 +494,9 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
         onClose={() => setIsPanelOpen(false)}
         selectedByGroup={panel.selectedByGroup}
         onToggle={panel.toggleOption}
+        singleGroups={panelSingleGroups}
+        singleValueByGroup={panel.singleValueByGroup}
+        onSetSingleValue={panel.setSingleValue}
         yearRange={panel.yearRange}
         onYearRangeChange={panel.setYearRange}
         onClearAll={panel.clearAll}
