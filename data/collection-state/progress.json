@@ -68,7 +68,16 @@
     "cyrano-de-bergerac-2012/about-entertainment--ben-brantley.json",
     "chaplin-2012/about-entertainment--ben-brantley.json",
     "harvey-2012/about-entertainment--charles-isherwood.json",
-    "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json"
+    "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json",
+    "leap-of-faith-2012/about-entertainment--ben-brantley.json",
+    "the-columnist-2012/about-entertainment--ben-brantley.json",
+    "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+    "the-lyons-2012/about-entertainment--ben-brantley.json",
+    "one-man-two-guvnors-2012/about-entertainment--ben-brantley.json",
+    "magicbird-2012/about-entertainment--charles-isherwood.json",
+    "evita-2012/about-entertainment--ben-brantley.json",
+    "end-of-the-rainbow-2012/about-entertainment--ben-brantley.json",
+    "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -944,7 +953,8 @@
     "dead-accounts-2012/washpost--mark-kennedy.json",
     "dead-accounts-2012/variety--marilyn-stasio.json",
     "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
-    "joe-turners-come-and-gone-2026/nyt-theater--jonathan-mandell.json"
+    "joe-turners-come-and-gone-2026/nyt-theater--jonathan-mandell.json",
+    "nice-work-if-you-can-get-it-2012/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1024,7 +1034,14 @@
       "cyrano-de-bergerac-2012/about-entertainment--ben-brantley.json",
       "chaplin-2012/about-entertainment--ben-brantley.json",
       "harvey-2012/about-entertainment--charles-isherwood.json",
-      "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json"
+      "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json",
+      "leap-of-faith-2012/about-entertainment--ben-brantley.json",
+      "the-columnist-2012/about-entertainment--ben-brantley.json",
+      "one-man-two-guvnors-2012/about-entertainment--ben-brantley.json",
+      "magicbird-2012/about-entertainment--charles-isherwood.json",
+      "evita-2012/about-entertainment--ben-brantley.json",
+      "end-of-the-rainbow-2012/about-entertainment--ben-brantley.json",
+      "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -1053,11 +1070,13 @@
       "natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
       "this-is-our-youth-2014/abc-news--mark-kennedy.json",
       "the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
-      "mothers-and-sons-2014/washpost--mark-kennedy.json"
+      "mothers-and-sons-2014/washpost--mark-kennedy.json",
+      "ghost-the-musical-2012/about-entertainment--charles-isherwood.json",
+      "the-lyons-2012/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json",
+  "lastProcessed": "jesus-christ-superstar-2012/about-entertainment--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1342,6 +1361,116 @@
     },
     {
       "t": "2026-04-26T18:23:35.139Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:24:14.665Z",
+      "event": "bb-session",
+      "session": "2c3e2725",
+      "url": "http://theater.nytimes.com/2012/04/27/theater/reviews/leap-of-faith-with-raul-es"
+    },
+    {
+      "t": "2026-04-26T18:24:15.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:24:55.181Z",
+      "event": "bb-session",
+      "session": "2b2e3d6a",
+      "url": "http://theater.nytimes.com/2012/04/26/theater/reviews/john-lithgow-in-the-column"
+    },
+    {
+      "t": "2026-04-26T18:24:55.540Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:25:37.043Z",
+      "event": "bb-session",
+      "session": "39ec5147",
+      "url": "http://theater.nytimes.com/2012/04/25/theater/reviews/nice-work-if-you-can-get-i"
+    },
+    {
+      "t": "2026-04-26T18:25:37.410Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:26:11.993Z",
+      "event": "bb-session",
+      "session": "506c905c",
+      "url": "http://theater.nytimes.com/2012/04/24/theater/reviews/ghost-the-musical-at-the-l"
+    },
+    {
+      "t": "2026-04-26T18:26:12.391Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:26:38.205Z",
+      "event": "bb-session",
+      "session": "ac85be5f",
+      "url": "http://theater.nytimes.com/2012/04/24/theater/reviews/the-lyons-with-linda-lavin"
+    },
+    {
+      "t": "2026-04-26T18:26:38.583Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:26:59.760Z",
+      "event": "bb-session",
+      "session": "fdce4ea8",
+      "url": "http://theater.nytimes.com/2012/04/19/theater/reviews/james-corden-in-one-man-tw"
+    },
+    {
+      "t": "2026-04-26T18:27:00.109Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:27:40.712Z",
+      "event": "bb-session",
+      "session": "2e0f5322",
+      "url": "http://theater.nytimes.com/2012/04/12/theater/reviews/magic-bird-at-the-longacre"
+    },
+    {
+      "t": "2026-04-26T18:27:41.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:28:20.092Z",
+      "event": "bb-session",
+      "session": "4ba3443f",
+      "url": "http://theater.nytimes.com/2012/04/06/theater/reviews/evita-starring-elena-roger"
+    },
+    {
+      "t": "2026-04-26T18:28:20.487Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:29:00.376Z",
+      "event": "bb-session",
+      "session": "a70a04ea",
+      "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy"
+    },
+    {
+      "t": "2026-04-26T18:29:00.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:29:44.553Z",
+      "event": "bb-session",
+      "session": "cd53a702",
+      "url": "http://theater.nytimes.com/2012/03/23/theater/reviews/jesus-christ-superstar-at-"
+    },
+    {
+      "t": "2026-04-26T18:29:44.936Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
