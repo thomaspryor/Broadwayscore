@@ -381,8 +381,14 @@ function getBestScore(data, opts = {}) {
   const isWestEnd = data._showCategory === 'west-end' || data._showCategory === 'off-west-end';
   const isOutletVerified = OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
   const isKnownStarOutlet = KNOWN_STAR_OUTLETS.has(data.outletId);
-  // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet
-  const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet;
+  // First-party LBO byline reviews (Stuart King + Nicola Wright + Shehrazade
+  // Zafar-Arif) come through source='lbo-individual'. These are LBO's own
+  // editorial team — the bstarsN class on those pages IS the critic's
+  // published rating, not a third-party aggregator score. Treat them like a
+  // known-star-outlet to bypass downgrade. (Stuart King report 2026-04-26.)
+  const isLBOFirstParty = data.source === 'lbo-individual' && data.outletId === 'london-box-office';
+  // Only downgrade if: aggregator source + WE + NOT outlet-verified + NOT a known star outlet + NOT LBO first-party
+  const downgradeShowScore = isAggregatorSource && isWestEnd && !isOutletVerified && !isKnownStarOutlet && !isLBOFirstParty;
 
   // Skip P0 if score was deliberately cleared by audit (aggregator in wrong slot,
   // extraction with no evidence, outlet doesn't publish star ratings).
@@ -422,7 +428,7 @@ function getBestScore(data, opts = {}) {
     resolvedOriginalScore = String(data.previousOriginalScore);
   }
   const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore)
-    || (data.aggregatorStars && isKnownStarOutlet ? data.aggregatorStars : null);
+    || (data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty) ? data.aggregatorStars : null);
   const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
 
   if (effectiveOriginalScore && !downgradeShowScore) {
