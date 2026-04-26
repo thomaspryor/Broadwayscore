@@ -45,7 +45,9 @@ export function parseScore(rating: string): ScoreParseResult | null {
   const empty = (r.match(/☆/g) || []).length;
   const halfStar = /½|\.5|\bhalf\b/i.test(r) ? 0.5 : 0;
   if (filled > 0) {
-    const total = filled + empty || 5;
+    // If no empty stars present, assume /5 (industry standard scale). ★★★★ = 4/5 = 80.
+    // If empty stars present, use the explicit total: ★★★★☆ = 4/5 = 80.
+    const total = empty > 0 ? filled + empty : 5;
     return { score: Math.round(((filled + halfStar) / total) * 100), type: 'stars' };
   }
 
