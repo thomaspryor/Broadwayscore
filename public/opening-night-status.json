@@ -1,7 +1,311 @@
 {
-  "generatedAt": "2026-04-25T18:43:00.312Z",
+  "generatedAt": "2026-04-26T00:45:07.006Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "the-lost-boys-2026",
+      "title": "The Lost Boys",
+      "market": "broadway",
+      "category": "broadway",
+      "type": "musical",
+      "openingDate": "2026-04-26",
+      "status": "previews",
+      "slug": "the-lost-boys",
+      "thumbnail": "/images/shows/the-lost-boys-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ]
+    },
     {
       "id": "joe-turners-come-and-gone-2026",
       "title": "Joe Turner's Come and Gone",
@@ -608,17 +912,17 @@
       "status": "open",
       "slug": "the-rocky-horror-show",
       "thumbnail": "/images/shows/the-rocky-horror-show-2026/thumbnail.webp",
-      "siteScore": 69.56,
+      "siteScore": 70.15,
       "liveScore": 70,
-      "scoreDrift": 0.4399999999999977,
+      "scoreDrift": -0.15000000000000568,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 26,
+      "total": 27,
       "t1": 5,
       "t2": 15,
-      "t3": 6,
-      "positive": 12,
+      "t3": 7,
+      "positive": 13,
       "mixed": 11,
       "negative": 3,
       "readiness": {
@@ -888,6 +1192,18 @@
           "m": 11,
           "n": 3,
           "bc": "overdue"
+        },
+        {
+          "t": "2026-04-26T00:45:07.006Z",
+          "rc": 27,
+          "s": 70.15,
+          "t1": 5,
+          "t2": 15,
+          "t3": 7,
+          "p": 13,
+          "m": 11,
+          "n": 3,
+          "bc": "complete"
         }
       ]
     },
@@ -1000,1045 +1316,9 @@
           "bc": "waiting"
         }
       ]
-    },
-    {
-      "id": "beaches-2026",
-      "title": "Beaches, A New Musical",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "musical",
-      "openingDate": "2026-04-22",
-      "status": "open",
-      "slug": "beaches",
-      "thumbnail": "/images/shows/beaches-2026/thumbnail.webp",
-      "siteScore": 47.06,
-      "liveScore": 47,
-      "scoreDrift": -0.060000000000002274,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 25,
-      "t1": 5,
-      "t2": 14,
-      "t3": 6,
-      "positive": 2,
-      "mixed": 3,
-      "negative": 20,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 20,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "complete",
-        "detail": "Sent 1/1/1970, 12:00:00 AM"
-      },
-      "missingT1": [
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Vox",
-          "isDualMarket": false
-        },
-        {
-          "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-04-23T04:13:47.190Z",
-          "rc": 16,
-          "s": 41.75,
-          "t1": 4,
-          "t2": 9,
-          "t3": 3,
-          "p": 1,
-          "m": 0,
-          "n": 15,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-23T05:20:47.175Z",
-          "rc": 21,
-          "s": 48.36,
-          "t1": 4,
-          "t2": 13,
-          "t3": 4,
-          "p": 3,
-          "m": 2,
-          "n": 16,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-24T03:24:46.449Z",
-          "rc": 22,
-          "s": 48.06,
-          "t1": 4,
-          "t2": 14,
-          "t3": 4,
-          "p": 3,
-          "m": 2,
-          "n": 17,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-24T04:26:49.680Z",
-          "rc": 23,
-          "s": 47.81,
-          "t1": 4,
-          "t2": 14,
-          "t3": 5,
-          "p": 3,
-          "m": 2,
-          "n": 18,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-24T20:03:27.693Z",
-          "rc": 24,
-          "s": 47.21,
-          "t1": 5,
-          "t2": 14,
-          "t3": 5,
-          "p": 2,
-          "m": 3,
-          "n": 19,
-          "bc": "complete"
-        },
-        {
-          "t": "2026-04-25T05:10:19.406Z",
-          "rc": 25,
-          "s": 47.06,
-          "t1": 5,
-          "t2": 14,
-          "t3": 6,
-          "p": 2,
-          "m": 3,
-          "n": 20,
-          "bc": "complete"
-        }
-      ]
-    },
-    {
-      "id": "worlds-greatest-lover-west-end-2026",
-      "title": "World’s Greatest Lover",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "musical",
-      "openingDate": "2026-04-22",
-      "status": "open",
-      "slug": "worlds-greatest-lover-west-end",
-      "thumbnail": "/images/shows/worlds-greatest-lover-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ]
-    },
-    {
-      "id": "juilliard-opera-presents-verdis-falstaff-off-broadway-2026",
-      "title": "Juilliard Opera Presents Verdi’s \"Falstaff\"",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "special",
-      "openingDate": "2026-04-22",
-      "status": "open",
-      "slug": "juilliard-opera-presents-verdis-falstaff-off-broadway",
-      "thumbnail": "/images/shows/juilliard-opera-presents-verdis-falstaff-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Vox",
-          "isDualMarket": false
-        },
-        {
-          "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ]
-    },
-    {
-      "id": "clara-sex-love-and-classical-off-broadway-2026",
-      "title": "Clara: Sex, Love and Classical",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "play",
-      "openingDate": "2026-04-22",
-      "status": "open",
-      "slug": "clara-sex-love-and-classical-off-broadway",
-      "thumbnail": "/images/shows/clara-sex-love-and-classical-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Billboard",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "Vox",
-          "isDualMarket": false
-        },
-        {
-          "name": "Parade",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ]
     }
   ],
   "upcoming": [
-    {
-      "id": "the-lost-boys-2026",
-      "title": "The Lost Boys",
-      "market": "broadway",
-      "category": "broadway",
-      "type": "musical",
-      "openingDate": "2026-04-26",
-      "status": "previews",
-      "slug": "the-lost-boys",
-      "thumbnail": "/images/shows/the-lost-boys-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Lost-Boys-Opens-on-Broadway-20260426",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheLostBoys2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
     {
       "id": "the-karate-kid-the-musical-west-end-2026",
       "title": "The Karate Kid - The Musical",
@@ -2049,7 +1329,7 @@
       "status": "upcoming",
       "slug": "the-karate-kid-the-musical-west-end",
       "thumbnail": "/images/shows/the-karate-kid-the-musical-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2074,7 +1354,7 @@
       "status": "previews",
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2099,7 +1379,7 @@
       "status": "previews",
       "slug": "grace-pervades-west-end",
       "thumbnail": "/images/shows/grace-pervades-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2124,7 +1404,7 @@
       "status": "upcoming",
       "slug": "thornton-wilders-the-emporium-off-broadway",
       "thumbnail": "/images/shows/thornton-wilders-the-emporium-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2163,7 +1443,7 @@
       "status": "upcoming",
       "slug": "well-ill-let-you-go-off-broadway",
       "thumbnail": "/images/shows/well-ill-let-you-go-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2202,7 +1482,7 @@
       "status": "previews",
       "slug": "mercury-off-broadway",
       "thumbnail": "/images/shows/mercury-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2241,7 +1521,7 @@
       "status": "upcoming",
       "slug": "messy-millie-off-broadway",
       "thumbnail": "/images/shows/messy-millie-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
