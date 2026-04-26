@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-26T15:57:45.028Z",
-  "processed": 33,
-  "failed": 690,
-  "successRate": "4.6%",
+  "updatedAt": "2026-04-26T15:58:42.008Z",
+  "processed": 35,
+  "failed": 698,
+  "successRate": "4.8%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 25,
     "amp": 1,
-    "browserbase": 7,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingbee": 4,
     "brightdata": 1,
     "archiveToday": 3,
     "archive": 2
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -91,6 +91,17 @@
       "t": "2026-04-26T15:55:50.675Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-26T15:57:52.212Z",
+      "event": "bb-session",
+      "session": "cb487fbf",
+      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-review-broadway-musica"
+    },
+    {
+      "t": "2026-04-26T15:57:52.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

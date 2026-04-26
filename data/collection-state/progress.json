@@ -32,7 +32,9 @@
     "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
     "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
     "waiting-for-godot-2025/nytimes--laura-collins-hughes.json",
-    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+    "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+    "back-to-the-future-2023/variety--frank-rizzo.json",
+    "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -724,7 +726,15 @@
     "art-2025/broadwaynews--michael-abourizk.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
-    "romeo-juliet-2024/thestage--nicole-serratore.json"
+    "romeo-juliet-2024/thestage--nicole-serratore.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "prima-facie-2023/newyorker--naomi-fry.json",
+    "fat-ham-2023/newyorker--naomi-fry.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "the-collaboration-2022/hollywood-reporter--angie-han.json",
+    "the-collaboration-2022/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -752,7 +762,8 @@
       "the-comedy-about-spies-west-end-2026/guardian--unknown.json",
       "the-comedy-about-spies-west-end-2026/whatsonstage--unknown.json",
       "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
-      "glengarry-glen-ross-west-end-2026/observer--david-cote.json"
+      "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
+      "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
@@ -764,7 +775,9 @@
       "every-brilliant-thing-2026/wsj--unknown.json",
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
-      "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json"
+      "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/back-to-the-future-2023/variety--frank-rizzo.json",
+      "back-to-the-future-2023/variety--frank-rizzo.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -787,7 +800,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "romeo-juliet-2024/thestage--nicole-serratore.json",
+  "lastProcessed": "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -865,6 +878,17 @@
       "t": "2026-04-26T15:55:50.675Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-26T15:57:52.212Z",
+      "event": "bb-session",
+      "session": "cb487fbf",
+      "url": "https://variety.com/2023/legit/reviews/back-to-the-future-review-broadway-musica"
+    },
+    {
+      "t": "2026-04-26T15:57:52.623Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
