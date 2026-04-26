@@ -22,7 +22,9 @@
     "oliver-west-end-2024/theatre-weekly--unknown.json",
     "oh-mary-2024/culturesauce--thom-geier.json",
     "operation-mincemeat-west-end-2024/theatre-weekly--unknown.json",
-    "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json"
+    "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+    "matilda-the-musical-west-end-2021/guardian--unknown.json",
+    "book-of-mormon-2011/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -694,7 +696,15 @@
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json"
+    "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/independent--peter-marks.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -717,7 +727,8 @@
       "my-neighbour-totoro-west-end-2025/standard--unknown.json",
       "oliver-west-end-2024/theatre-weekly--unknown.json",
       "oh-mary-2024/culturesauce--thom-geier.json",
-      "operation-mincemeat-west-end-2024/theatre-weekly--unknown.json"
+      "operation-mincemeat-west-end-2024/theatre-weekly--unknown.json",
+      "matilda-the-musical-west-end-2021/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
@@ -730,7 +741,8 @@
     ],
     "directCookies": [],
     "scrapingbee": [
-      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json"
+      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json",
+      "book-of-mormon-2011/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -744,7 +756,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
+  "lastProcessed": "book-of-mormon-2011/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -789,6 +801,17 @@
       "t": "2026-04-26T15:41:02.598Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-26T15:51:33.762Z",
+      "event": "bb-session",
+      "session": "b5692def",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-04-26T15:51:34.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

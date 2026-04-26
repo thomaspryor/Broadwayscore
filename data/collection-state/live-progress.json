@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-26T15:50:27.554Z",
-  "processed": 23,
-  "failed": 670,
-  "successRate": "3.3%",
+  "updatedAt": "2026-04-26T15:52:31.352Z",
+  "processed": 25,
+  "failed": 678,
+  "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 20,
     "amp": 1,
     "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 2,
     "brightdata": 1,
     "archiveToday": 2,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -58,6 +58,17 @@
       "t": "2026-04-26T15:41:02.598Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-26T15:51:33.762Z",
+      "event": "bb-session",
+      "session": "b5692def",
+      "url": "http://theater.nytimes.com/2011/03/25/theater/reviews/the-book-of-mormon-at-euge"
+    },
+    {
+      "t": "2026-04-26T15:51:34.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
