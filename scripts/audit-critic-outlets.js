@@ -51,6 +51,34 @@ const KNOWN_FREELANCERS = [
   'martin-denton',     // NYTheatre + TheaterMania
 ];
 
+// Critic-outlet pairs that are legitimate sister-publication or syndication
+// affiliations the audit can't infer from data alone (because most reviews of
+// the secondary outlet are also wrongProduction-flagged stubs and get skipped
+// by the audit). Adding a pair here unions the outletId into the critic's
+// `knownOutlets` durably across nightly regenerations, which prevents Guard G
+// in scripts/lib/review-file-writer.js from re-flagging new files at that pair.
+//
+// Format: { criticSlug: ['additional-outlet-id', ...] }
+//
+// Added 2026-04-26 (Notion 34e637c5-416f-81b8) to fix the operational churn
+// where Guard G kept re-flagging Cavendish/sunday-telegraph etc. on every new
+// gather, requiring a manual sweep to clear. Verified against the URL domains:
+//   sunday-telegraph URLs all on telegraph.co.uk (same publisher)
+//   sunday-express URLs all on express.co.uk (same publisher)
+//   times-uk URLs on thetimes.com (Cavendish guest pieces verified)
+//   timeout-london URLs on timeout.com/london (Saville's longtime employer)
+//   thestage URLs on thestage.co.uk (Benedict freelance)
+//   standard URLs on standard.co.uk (Tripney freelance)
+//   wsj URLs on wsj.com (Anderson — different John Anderson? URL evidence is real)
+const KNOWN_MULTI_OUTLET_PAIRS = {
+  'dominic-cavendish': ['sunday-telegraph', 'times-uk'],
+  'stefan-kyriazis': ['sunday-express'],
+  'alice-saville': ['timeout-london'],
+  'david-benedict': ['thestage'],
+  'natasha-tripney': ['standard'],
+  'john-anderson': ['wsj'],
+};
+
 const MIN_REVIEWS_FOR_REGISTRY = 3;
 const FREELANCER_OUTLET_THRESHOLD = 3;     // 3+ outlets = freelancer
 const FREELANCER_DOMINANCE_THRESHOLD = 0.7; // No outlet >70% = freelancer
@@ -156,10 +184,18 @@ function buildRegistry(rawCritics) {
       outlets.length >= FREELANCER_OUTLET_THRESHOLD ||
       primaryShare <= FREELANCER_DOMINANCE_THRESHOLD;
 
+    // Union manually-curated sister-publication pairs into knownOutlets so Guard G
+    // doesn't re-flag legitimate outlet attributions on every new gather.
+    const manualPairs = KNOWN_MULTI_OUTLET_PAIRS[criticSlug] || [];
+    const augmentedOutlets = [...sortedOutlets];
+    for (const extra of manualPairs) {
+      if (!augmentedOutlets.includes(extra)) augmentedOutlets.push(extra);
+    }
+
     registry[criticSlug] = {
       displayName: data.displayName,
       primaryOutlet,
-      knownOutlets: sortedOutlets,
+      knownOutlets: augmentedOutlets,
       totalReviews: data.totalReviews,
       outletCounts: data.outletCounts,
       isFreelancer,

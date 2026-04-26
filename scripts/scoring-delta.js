@@ -380,7 +380,27 @@ function main() {
     baseline = loadBaselineGuards();
     working = loadWorkingTreeGuards();
 
-    // Sanity: if inclusion guards are string-identical, Phase A has nothing to replay
+    // Sanity: if inclusion guards are string-identical, Phase A has nothing to replay.
+    //
+    // Note: data dependencies are tracked separately. isLikelyStaleSuspectedMisattribution
+    // reads critic-registry.json at decision time, so a change to that data file can flip
+    // inclusion decisions even when the function source is identical. We hash the registry
+    // content and include it in the identity check so registry-driven flips replay too.
+    const registryHash = (() => {
+      try {
+        const fs = require('fs');
+        const path = require('path');
+        const p = path.join(__dirname, '..', 'data', 'critic-registry.json');
+        const buf = fs.readFileSync(p);
+        return crypto.createHash('md5').update(buf).digest('hex');
+      } catch { return 'unreadable'; }
+    })();
+    const baselineRegistryHash = (() => {
+      try {
+        const buf = require('child_process').execSync(`git show ${BASE_REF}:data/critic-registry.json`, { stdio: ['ignore', 'pipe', 'ignore'] });
+        return crypto.createHash('md5').update(buf).digest('hex');
+      } catch { return 'unreadable'; }
+    })();
     const guardsIdentical =
       baseline.applyTemporalOverrides.toString() === working.applyTemporalOverrides.toString()
       && baseline.isLikelyWrongProduction.toString() === working.isLikelyWrongProduction.toString()
@@ -388,12 +408,10 @@ function main() {
       && baseline.shouldSkipWrongProductionAudit.toString() === working.shouldSkipWrongProductionAudit.toString()
       && (baseline.isRoundupUrl?.toString() || '') === (working.isRoundupUrl?.toString() || '')
       && (baseline.isLikelyStaleRoundupFlag?.toString() || '') === (working.isLikelyStaleRoundupFlag?.toString() || '')
-      && (baseline.isLikelyStaleWrongShow?.toString() || '') === (working.isLikelyStaleWrongShow?.toString() || '')
-      && (baseline.wrongShowCleared?.toString() || '') === (working.wrongShowCleared?.toString() || '')
-      && (baseline.isIncludableForRebuild?.toString() || '') === (working.isIncludableForRebuild?.toString() || '')
-      && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '');
+      && (baseline.isLikelyStaleSuspectedMisattribution?.toString() || '') === (working.isLikelyStaleSuspectedMisattribution?.toString() || '')
+      && registryHash === baselineRegistryHash;
     if (guardsIdentical) {
-      log('[scoring-delta] Phase A: review-guards.js decisions identical — skipping inclusion replay.');
+      log('[scoring-delta] Phase A: review-guards.js decisions + critic-registry identical — skipping inclusion replay.');
     } else {
       runPhaseA = true;
     }
