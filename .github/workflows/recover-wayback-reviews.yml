@@ -28,6 +28,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: review-texts-backfill-write
+  cancel-in-progress: false
+
 jobs:
   recover:
     name: Recover reviews from Wayback Machine
