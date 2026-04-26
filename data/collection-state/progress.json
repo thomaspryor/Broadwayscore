@@ -49,7 +49,10 @@
     "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
     "orphans-2013/about-entertainment--ben-brantley.json",
     "the-assembled-parties-2013/about-entertainment--ben-brantley.json",
-    "the-nance-2013/about-entertainment--ben-brantley.json"
+    "the-nance-2013/about-entertainment--ben-brantley.json",
+    "hands-on-a-hardbody-2013/about-entertainment--charles-isherwood.json",
+    "ann-2013/about-entertainment--charles-isherwood.json",
+    "picnic-2013/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -914,7 +917,14 @@
     "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
     "matilda-the-musical-2013/bloomberg--jeremy-gerard.json",
     "matilda-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
-    "matilda-the-musical-2013/village-voice--michael-musto.json"
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "hands-on-a-hardbody-2013/bloomberg--jeremy-gerard.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "ann-2013/bloomberg--jeremy-gerard.json",
+    "cat-on-a-hot-tin-roof-2013/about-entertainment--ben-brantley.json",
+    "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json",
+    "picnic-2013/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -975,7 +985,10 @@
       "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
       "orphans-2013/about-entertainment--ben-brantley.json",
       "the-assembled-parties-2013/about-entertainment--ben-brantley.json",
-      "the-nance-2013/about-entertainment--ben-brantley.json"
+      "the-nance-2013/about-entertainment--ben-brantley.json",
+      "hands-on-a-hardbody-2013/about-entertainment--charles-isherwood.json",
+      "ann-2013/about-entertainment--charles-isherwood.json",
+      "picnic-2013/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -1005,7 +1018,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "matilda-the-musical-2013/village-voice--michael-musto.json",
+  "lastProcessed": "picnic-2013/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1202,6 +1215,28 @@
     },
     {
       "t": "2026-04-26T16:38:34.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:40:37.292Z",
+      "event": "bb-session",
+      "session": "71f2c684",
+      "url": "http://theater.nytimes.com/2013/03/22/theater/reviews/hands-on-a-hardbody-at-the"
+    },
+    {
+      "t": "2026-04-26T16:40:37.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:41:30.502Z",
+      "event": "bb-session",
+      "session": "afe3a91b",
+      "url": "http://theater.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at"
+    },
+    {
+      "t": "2026-04-26T16:41:30.874Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

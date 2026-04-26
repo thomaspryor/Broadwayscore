@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-26T16:40:32.711Z",
-  "processed": 50,
-  "failed": 863,
-  "successRate": "5.5%",
+  "updatedAt": "2026-04-26T16:44:08.127Z",
+  "processed": 53,
+  "failed": 870,
+  "successRate": "5.7%",
   "tierBreakdown": {
     "playwright": 25,
     "amp": 1,
     "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 18,
     "brightdata": 1,
     "archiveToday": 13,
     "archive": 6
   },
-  "browserbaseSessions": 18,
+  "browserbaseSessions": 20,
   "recentActivity": [
-    {
-      "t": "2026-04-26T16:32:11.457Z",
-      "event": "bb-session",
-      "session": "e9968dd3",
-      "url": "http://theater.nytimes.com/2013/10/11/theater/reviews/a-night-with-janis-joplin-"
-    },
-    {
-      "t": "2026-04-26T16:32:11.820Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T16:32:50.963Z",
-      "event": "bb-session",
-      "session": "7ed01ab6",
-      "url": "http://theater.nytimes.com/2013/10/07/theater/reviews/susan-stroman-directs-big-"
-    },
-    {
-      "t": "2026-04-26T16:32:51.410Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-26T16:33:37.385Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-04-26T16:38:34.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:40:37.292Z",
+      "event": "bb-session",
+      "session": "71f2c684",
+      "url": "http://theater.nytimes.com/2013/03/22/theater/reviews/hands-on-a-hardbody-at-the"
+    },
+    {
+      "t": "2026-04-26T16:40:37.779Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T16:41:30.502Z",
+      "event": "bb-session",
+      "session": "afe3a91b",
+      "url": "http://theater.nytimes.com/2013/03/08/theater/reviews/ann-with-holland-taylor-at"
+    },
+    {
+      "t": "2026-04-26T16:41:30.874Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
