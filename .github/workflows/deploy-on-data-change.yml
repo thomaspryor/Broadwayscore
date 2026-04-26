@@ -1,0 +1,211 @@
+name: Deploy on Data Change
+
+# Safety net for stranded core-data commits.
+#
+# Normal flow: rebuild succeeds → workflow_run fires vercel-deploy.yml → deploy → watermark updated.
+#
+# Failure mode this catches: rebuild commits core data via the `if: always()` push-core-data
+# step (or hits the 30-min job timeout), but the overall job conclusion is not 'success', so
+# vercel-deploy.yml's workflow_run listener never fires. Result: reviews.json sitting fresh in
+# the private repo, production still serving yesterday's snapshot.
+#
+# This job runs every 15 min, compares the latest commit on the private core-data repo against
+# data/audit/deploy-watermark.json (updated post-deploy), and dispatches Deploy to Vercel if
+# the gap exceeds 20 min and no deploy is currently in flight.
+#
+# Linked to A #21 (Joe Turner 2026-04-25/26 opening-night postmortem).
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Dispatch a deploy regardless of drift'
+        required: false
+        default: 'false'
+        type: string
+      dry_run:
+        description: 'Compute drift but do not dispatch'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: deploy-on-data-change
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Read deploy watermark
+        id: watermark
+        run: |
+          if [ ! -f data/audit/deploy-watermark.json ]; then
+            echo "::warning::data/audit/deploy-watermark.json missing — skipping drift check"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          WATERMARK_AT=$(node -e "
+            const w = JSON.parse(require('fs').readFileSync('data/audit/deploy-watermark.json','utf8'));
+            process.stdout.write(w.updatedAt || '');
+          ")
+          if [ -z "$WATERMARK_AT" ]; then
+            echo "::warning::Watermark has no updatedAt field — skipping drift check"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "watermark_at=$WATERMARK_AT" >> "$GITHUB_OUTPUT"
+          echo "Watermark updatedAt: $WATERMARK_AT"
+
+      - name: Read latest core-data commit timestamp
+        if: steps.watermark.outputs.skip != 'true'
+        id: data
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Latest commit on private core-data repo main branch — covers reviews.json,
+          # shows.json, critic-consensus.json, outlet-registry.json, etc. Any push by
+          # rebuild-reviews / gather-reviews / update-show-status / opening-night-poller
+          # bumps this timestamp.
+          DATA_AT=$(gh api repos/thomaspryor/broadway-scorecard-data/commits/main --jq '.commit.committer.date' 2>/dev/null || echo "")
+          if [ -z "$DATA_AT" ]; then
+            echo "::error::Could not fetch latest core-data commit timestamp from private repo"
+            exit 1
+          fi
+          echo "data_at=$DATA_AT" >> "$GITHUB_OUTPUT"
+          echo "Latest core-data commit: $DATA_AT"
+
+      - name: Decide whether to dispatch
+        if: steps.watermark.outputs.skip != 'true'
+        id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WATERMARK_AT: ${{ steps.watermark.outputs.watermark_at }}
+          DATA_AT: ${{ steps.data.outputs.data_at }}
+          FORCE: ${{ inputs.force }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # Convert ISO 8601 to Unix timestamps (handles fractional seconds via ${VAR%.*}).
+          # Linux date works on Actions runners; macOS fallback kept for `act` local runs.
+          parse_ts() {
+            local s="$1"
+            local clean="${s%.*}"
+            # If clean lost the trailing Z, restore it.
+            case "$clean" in
+              *Z) ;;
+              *)  clean="${clean}Z" ;;
+            esac
+            date -d "$s" +%s 2>/dev/null \
+              || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$clean" +%s 2>/dev/null \
+              || echo 0
+          }
+
+          WATERMARK_TS=$(parse_ts "$WATERMARK_AT")
+          DATA_TS=$(parse_ts "$DATA_AT")
+          if [ "$WATERMARK_TS" -eq 0 ] || [ "$DATA_TS" -eq 0 ]; then
+            echo "::error::Failed to parse timestamps (watermark=$WATERMARK_AT data=$DATA_AT)"
+            exit 1
+          fi
+          DRIFT=$((DATA_TS - WATERMARK_TS))
+          echo "Watermark: $WATERMARK_TS ($WATERMARK_AT)"
+          echo "Data:      $DATA_TS ($DATA_AT)"
+          echo "Drift:     ${DRIFT}s ($((DRIFT / 60)) min)"
+          echo "drift_seconds=$DRIFT" >> "$GITHUB_OUTPUT"
+
+          if [ "$FORCE" = "true" ]; then
+            echo "Force flag set — dispatching"
+            echo "dispatch=true" >> "$GITHUB_OUTPUT"
+            echo "reason=force" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Threshold: 20 min. Happy path is data-then-deploy-then-watermark, so watermark
+          # is normally NEWER than data (negative drift). Positive drift > 20 min means the
+          # deploy chain broke between data push and watermark update.
+          if [ "$DRIFT" -lt 1200 ]; then
+            echo "Within grace window — no dispatch"
+            echo "dispatch=false" >> "$GITHUB_OUTPUT"
+            echo "reason=within-grace" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Avoid double-dispatch: if vercel-deploy.yml is already in flight, the running
+          # deploy will pick up the latest data and refresh the watermark.
+          ACTIVE=$(gh run list \
+            --workflow=vercel-deploy.yml \
+            --limit=20 \
+            --json status,conclusion \
+            --jq '[.[] | select(.status == "in_progress" or .status == "queued" or .status == "waiting")] | length' \
+            2>/dev/null || echo 0)
+          if [ "${ACTIVE:-0}" -gt 0 ]; then
+            echo "vercel-deploy.yml already active ($ACTIVE run(s)) — no dispatch"
+            echo "dispatch=false" >> "$GITHUB_OUTPUT"
+            echo "reason=deploy-in-flight" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Avoid loop with rebuild — a running rebuild will dispatch its own deploy on
+          # success. Wait for it to finish (or time out) before firing.
+          REBUILD_ACTIVE=$(gh run list \
+            --workflow=rebuild-reviews.yml \
+            --limit=10 \
+            --json status \
+            --jq '[.[] | select(.status == "in_progress" or .status == "queued")] | length' \
+            2>/dev/null || echo 0)
+          FAST_ACTIVE=$(gh run list \
+            --workflow=rebuild-fast.yml \
+            --limit=10 \
+            --json status \
+            --jq '[.[] | select(.status == "in_progress" or .status == "queued")] | length' \
+            2>/dev/null || echo 0)
+          if [ "${REBUILD_ACTIVE:-0}" -gt 0 ] || [ "${FAST_ACTIVE:-0}" -gt 0 ]; then
+            echo "Rebuild active (rebuild=$REBUILD_ACTIVE fast=$FAST_ACTIVE) — let it dispatch"
+            echo "dispatch=false" >> "$GITHUB_OUTPUT"
+            echo "reason=rebuild-in-flight" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Drift > 20 min, no deploy or rebuild active — dispatching"
+          echo "dispatch=true" >> "$GITHUB_OUTPUT"
+          echo "reason=stranded-data-${DRIFT}s" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch deploy
+        if: steps.decide.outputs.dispatch == 'true' && inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "::warning::Deploy-on-data-change safety net dispatching (reason: ${{ steps.decide.outputs.reason }})"
+          gh workflow run vercel-deploy.yml
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Deploy-on-Data-Change Check"
+            echo ""
+            echo "- Watermark updatedAt: \`${{ steps.watermark.outputs.watermark_at || 'missing' }}\`"
+            echo "- Latest core-data commit: \`${{ steps.data.outputs.data_at || 'n/a' }}\`"
+            echo "- Drift: \`${{ steps.decide.outputs.drift_seconds || 'n/a' }}s\`"
+            echo "- Decision: \`dispatch=${{ steps.decide.outputs.dispatch || 'skipped' }}\` reason=\`${{ steps.decide.outputs.reason || 'skipped' }}\`"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "- Dry run: dispatch suppressed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy on Data Change Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
