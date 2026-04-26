@@ -60,7 +60,15 @@
     "scandalous-2012/about-entertainment--charles-isherwood.json",
     "the-performers-2012/about-entertainment--ben-brantley.json",
     "the-mystery-of-edwin-drood-2012/about-entertainment--charles-isherwood.json",
-    "dog-day-afternoon-2026/the-interested-bystander--cary-wong.json"
+    "the-lost-boys-2026/nytg--unknown.json",
+    "the-lost-boys-2026/theatermania--unknown.json",
+    "the-rocky-horror-show-2026/ew--unknown.json",
+    "annie-2012/about-entertainment--ben-brantley.json",
+    "the-heiress-2012/about-entertainment--ben-brantley.json",
+    "cyrano-de-bergerac-2012/about-entertainment--ben-brantley.json",
+    "chaplin-2012/about-entertainment--ben-brantley.json",
+    "harvey-2012/about-entertainment--charles-isherwood.json",
+    "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -936,8 +944,7 @@
     "dead-accounts-2012/washpost--mark-kennedy.json",
     "dead-accounts-2012/variety--marilyn-stasio.json",
     "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
-    "dog-day-afternoon-2026/independent--unknown.json",
-    "dog-day-afternoon-2026/pages-on-stages--mason-pilevsky.json"
+    "joe-turners-come-and-gone-2026/nyt-theater--jonathan-mandell.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -967,7 +974,9 @@
       "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
       "glengarry-glen-ross-west-end-2026/observer--david-cote.json",
       "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
-      "dog-day-afternoon-2026/the-interested-bystander--cary-wong.json"
+      "the-lost-boys-2026/nytg--unknown.json",
+      "the-lost-boys-2026/theatermania--unknown.json",
+      "the-rocky-horror-show-2026/ew--unknown.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
@@ -1009,7 +1018,13 @@
       "a-christmas-story-the-musical-2012/about-entertainment--charles-isherwood.json",
       "scandalous-2012/about-entertainment--charles-isherwood.json",
       "the-performers-2012/about-entertainment--ben-brantley.json",
-      "the-mystery-of-edwin-drood-2012/about-entertainment--charles-isherwood.json"
+      "the-mystery-of-edwin-drood-2012/about-entertainment--charles-isherwood.json",
+      "annie-2012/about-entertainment--ben-brantley.json",
+      "the-heiress-2012/about-entertainment--ben-brantley.json",
+      "cyrano-de-bergerac-2012/about-entertainment--ben-brantley.json",
+      "chaplin-2012/about-entertainment--ben-brantley.json",
+      "harvey-2012/about-entertainment--charles-isherwood.json",
+      "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json"
@@ -1042,7 +1057,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "dog-day-afternoon-2026/the-interested-bystander--cary-wong.json",
+  "lastProcessed": "dont-dress-for-dinner-2012/about-entertainment--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -1261,6 +1276,72 @@
     },
     {
       "t": "2026-04-26T16:41:30.874Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:20:47.962Z",
+      "event": "bb-session",
+      "session": "5f6c85ea",
+      "url": "http://theater.nytimes.com/2012/11/09/theater/reviews/annie-starring-katie-finne"
+    },
+    {
+      "t": "2026-04-26T18:20:48.344Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:21:19.401Z",
+      "event": "bb-session",
+      "session": "56fd74f7",
+      "url": "http://theater.nytimes.com/2012/11/02/theater/reviews/the-heiress-with-jessica-c"
+    },
+    {
+      "t": "2026-04-26T18:21:19.783Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:21:48.992Z",
+      "event": "bb-session",
+      "session": "839a8f57",
+      "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-do"
+    },
+    {
+      "t": "2026-04-26T18:21:49.358Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:22:13.481Z",
+      "event": "bb-session",
+      "session": "cb042212",
+      "url": "http://theater.nytimes.com/2012/09/11/theater/reviews/chaplin-the-musical-at-the"
+    },
+    {
+      "t": "2026-04-26T18:22:13.834Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:22:54.940Z",
+      "event": "bb-session",
+      "session": "118c2941",
+      "url": "http://theater.nytimes.com/2012/06/15/theater/reviews/harvey-with-jim-parsons-at"
+    },
+    {
+      "t": "2026-04-26T18:22:55.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-26T18:23:34.743Z",
+      "event": "bb-session",
+      "session": "2a7a2584",
+      "url": "http://theater.nytimes.com/2012/04/27/theater/reviews/dont-dress-for-dinner-at-a"
+    },
+    {
+      "t": "2026-04-26T18:23:35.139Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
