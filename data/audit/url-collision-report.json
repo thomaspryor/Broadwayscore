@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-04-26T02:18:36.038Z",
+  "generatedAt": "2026-04-26T02:47:00.572Z",
   "summary": {
     "total": 17,
-    "high": 9,
+    "high": 10,
     "medium": 6,
-    "low": 2
+    "low": 1
   },
   "collisions": [
+    {
+      "url": "https://nypost.com/2026/04/25/entertainment/joe-turners-come-and-gone-review-cedric-the-entertainer-and-taraji-p-henson-star-in-uneven-revival/",
+      "normalizedUrl": "https://nypost.com/2026/04/25/entertainment/joe-turners-come-and-gone-review-cedric-the-entertainer-and-taraji-p-henson-star-in-uneven-revival",
+      "candidates": [
+        {
+          "showId": "beaches-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": "2026-04-25",
+          "openingDate": "2026-04-22",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nypost"
+        },
+        {
+          "showId": "joe-turners-come-and-gone-2026",
+          "file": "nypost--johnny-oleksinski.json",
+          "publishDate": null,
+          "openingDate": "2026-04-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nypost"
+        }
+      ],
+      "suggestedWinner": "beaches-2026",
+      "reason": "publishDate 2026-04-25 is 3 days from beaches-2026 opening (2026-04-22)",
+      "confidence": "high"
+    },
     {
       "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
@@ -33,33 +60,6 @@
       "suggestedWinner": "smash-2025",
       "reason": "publishDate 2025-04-12 is 2 days from smash-2025 but also 7 days from boop-2025",
       "confidence": "medium"
-    },
-    {
-      "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
-      "normalizedUrl": "https://interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html",
-      "candidates": [
-        {
-          "showId": "bug-2026",
-          "file": "the-interested-bystander--cary-wong.json",
-          "publishDate": null,
-          "openingDate": "2026-01-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        },
-        {
-          "showId": "two-strangers-bway-2025",
-          "file": "the-interested-bystander--cary-wong.json",
-          "publishDate": null,
-          "openingDate": "2025-11-20",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "the-interested-bystander"
-        }
-      ],
-      "suggestedWinner": "bug-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://www.bloomberg.com/news/articles/2011-04-11/high-spirits-higher-legs-launch-catch-me-if-you-can-review",
