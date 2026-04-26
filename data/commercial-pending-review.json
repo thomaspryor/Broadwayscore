@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-25T08:37:43.566Z",
+  "generatedAt": "2026-04-26T08:38:07.605Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -1454,33 +1454,36 @@
       "researchedAt": "2026-04-05T19:28:59.731Z"
     },
     "the-lost-boys-2026": {
-      "title": "The Lost Boys",
-      "slug": "the-lost-boys",
-      "openingDate": "2026-04-26",
-      "status": "previews",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
+      "capitalization": 25000000,
+      "capitalizationSource": "Bloomberg reported a $25 million production cost",
+      "weeklyRunningCost": 1100000,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Show is still in previews as of 2026, no financial data available yet. Only found general Broadway forum discussion and unrelated NYT article about Broadway musical finances.",
+      "notes": "Production budget ~$25M, weekly nut ~$1.1M, still running and not yet recouped",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://forum.broadwayworld.com/thread/Michael-Arden-to-direct-musical-adaptation-of-THE-LOST-BOYSwith-music-by-The-Rescues/6",
-          "date": null
+          "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
+          "date": "2026-04-15"
         },
         {
-          "type": "trade",
-          "url": "https://www.nytimes.com/2025/09/22/theater/broadway-musicals-finances.html",
-          "date": "2025-09-22"
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1sqgnwc/does_anyone_know_what_the_operating_costs_are_for/",
+          "date": "2026-04-24"
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-04-09T08:20:43.559Z"
+      "title": "The Lost Boys",
+      "slug": "the-lost-boys-2026",
+      "openingDate": "2026-04-26",
+      "status": "open",
+      "researchedAt": "2026-04-26T08:38:07.605Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     },
     "joe-turners-come-and-gone-2026": {
       "capitalization": null,
