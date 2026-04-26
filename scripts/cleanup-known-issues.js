@@ -16,7 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, shouldSkipRoundupAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -296,8 +296,8 @@ function fixInterestedBystander() {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        if (data.isRoundupArticle === true) {
-          continue; // Already tagged
+        if (data.isRoundupArticle === true || shouldSkipRoundupAudit(data)) {
+          continue; // Already tagged or manually cleared
         }
 
         console.log(`  ${DRY_RUN ? 'WOULD TAG' : 'TAGGING'}: ${showDir}/${file}`);

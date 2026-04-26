@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { verifyContent } = require('./lib/content-verifier');
+const { wrongShowCleared } = require('./lib/review-guards');
 
 const BASE = 'data/review-texts';
 
@@ -182,12 +183,14 @@ async function processVerify(items) {
           if (result.wrongProduction) {
             data.wrongProduction = true;
             data.wrongProductionReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
-          } else if (result.isFilmTv) {
-            data.wrongShow = true;
-            data.wrongShowReason = `Retroactive LLM verify (film/TV): ${result.reasoning || reason}`;
-          } else {
-            data.wrongShow = true;
-            data.wrongShowReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
+          } else if (!wrongShowCleared(data)) {
+            if (result.isFilmTv) {
+              data.wrongShow = true;
+              data.wrongShowReason = `Retroactive LLM verify (film/TV): ${result.reasoning || reason}`;
+            } else {
+              data.wrongShow = true;
+              data.wrongShowReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
+            }
           }
 
           // Preserve fullText in wrongFullText before nulling

@@ -111,7 +111,7 @@ function getNytCriticsPicks() {
   return _nytCriticsPicks;
 }
 const { isLondonMarket } = require('./lib/venue-classification');
-const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate } = require('./lib/review-write-guard');
 
@@ -4920,7 +4920,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.needsReview = true;
         data.needsReviewReason = `Collector LLM: film/TV content (${contentVerification.confidence} conf) but already scored — needs human verification`;
         console.log(`    ⚠ LLM: Film/TV content (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
-      } else {
+      } else if (!wrongShowCleared(data)) {
         const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
         data.wrongFullText = data.fullText;
         data.fullText = null;
