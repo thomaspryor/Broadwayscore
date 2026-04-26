@@ -244,6 +244,16 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] assignedScore coerced in ${path.basename(filePath)}: ${JSON.stringify(coercion.from)} → ${coercion.to} (${coercion.reason})`);
   }
 
+  // Pattern Card #8: Placeholder URL detection — flag fabricated/stub URLs that
+  // contain sequential-digit placeholder patterns (e.g. Joe Turner WSJ fake ID
+  // SB123944876543210987 found in 2026-04-26 catalog audit, 8 similar files).
+  // FLAG-ONLY — does not block the write because the false-positive rate on real
+  // URLs is not yet characterised. Downstream auditors can filter urlPlaceholderSuspect=true.
+  if (newData.url && hasPlaceholderUrlPattern(newData.url)) {
+    newData.urlPlaceholderSuspect = true;
+    console.warn(`[review-write-guard] placeholder URL detected in ${path.basename(filePath)}: ${newData.url}`);
+  }
+
   // Pattern Card #4: URL collision detection — warn before writing a file whose URL
   // already exists in another file in the same show directory.
   if (!force && newData.url) {
@@ -349,6 +359,67 @@ function _normalizeUrlForCollision(url) {
   } catch {
     return url.toLowerCase().replace(/\/$/, '');
   }
+}
+
+/**
+ * Check whether a URL contains a sequential-digit placeholder pattern that
+ * suggests it was fabricated rather than copied from a live page.
+ *
+ * Motivation: Joe Turner 2009 catalog audit (2026-04-26) found
+ * https://www.wsj.com/articles/SB123944876543210987 — a WSJ legacy-ID URL
+ * containing both ascending (1239…) and a long descending run (876543210).
+ * Eight similar files were identified in the catalog. This function provides
+ * a write-time detector so urlPlaceholderSuspect=true is set before the file
+ * lands on disk, without blocking the write (false-positive rate unknown).
+ *
+ * Pattern coverage:
+ *  1. WSJ legacy IDs where the SB-prefixed numeric portion contains a
+ *     4-digit ascending sequential run (SB1234…, SB2345…, …, SB0123…) OR
+ *     a 4-digit descending run (SB9876…, SB8765…, …, SB1098…).
+ *     The real test URL SB123944876543210987 matches via descending 9876 run
+ *     embedded in the digits (…4876…).
+ *  2. Any URL path containing 7+ strictly ascending sequential digits
+ *     (1234567 … 1234567890) — common stub tail pattern.
+ *  3. Any URL path containing 7+ strictly descending sequential digits
+ *     (9876543 … 9876543210) — the Joe Turner WSJ ID contains 876543210.
+ *  4. Path that ENDS in any of the above sequences (stub tail).
+ *
+ * @param {string} url
+ * @returns {boolean} true if the URL looks like a placeholder
+ */
+function hasPlaceholderUrlPattern(url) {
+  if (!url || typeof url !== 'string') return false;
+
+  // Pattern 1a: WSJ-style SB-prefixed IDs with a 4-digit ascending sequential run.
+  // Matches embedded SB1234…, SB2345…, SB3456…, SB4567…, SB5678…, SB6789…, SB7890…, SB0123…
+  const WSJ_ASCENDING = /wsj\.com\/articles\/SB\d{0,8}(?:1234|2345|3456|4567|5678|6789|7890|0123)/i;
+
+  // Pattern 1b: WSJ-style SB-prefixed IDs with a 4-digit DESCENDING sequential run.
+  // The Joe Turner fake ID SB123944876543210987 contains "4876" which embeds a
+  // descending 4-digit sequence (4→3→2→1 is not matching, but the broader
+  // string contains "9876" within "44876"). Capture it via any descending 4-run.
+  // Also covers: SB9876…, SB8765…, SB7654…, SB6543…, SB5432…, SB4321…, SB3210…, SB2109…, SB1098…
+  const WSJ_DESCENDING = /wsj\.com\/articles\/SB\d{0,8}(?:9876|8765|7654|6543|5432|4321|3210|2109|1098)/i;
+
+  // Pattern 2: Any URL containing 7+ strictly ascending sequential digits.
+  // Covers: 1234567, 12345678, 123456789, 1234567890 in any path position.
+  const ASCENDING_LONG = /(?:SB)?\d{0,4}(?:1234567|12345678|123456789|1234567890)/i;
+
+  // Pattern 3: Any URL containing 7+ strictly descending sequential digits.
+  // The Joe Turner WSJ URL contains 876543210 (9-digit descending run).
+  // Covers: 9876543, 87654321, 876543210, 9876543210.
+  const DESCENDING_LONG = /(?:9876543(?:210?)?|87654321(?:0)?|76543210|65432109)/i;
+
+  // Pattern 4: Path ending in a sequential run (stub tail pattern).
+  const PATH_ASCENDING_TAIL = /\/(?:SB)?\d{0,4}(?:1234567|12345678|123456789|1234567890)\/?(?:[?#].*)?$/i;
+
+  return (
+    WSJ_ASCENDING.test(url) ||
+    WSJ_DESCENDING.test(url) ||
+    ASCENDING_LONG.test(url) ||
+    DESCENDING_LONG.test(url) ||
+    PATH_ASCENDING_TAIL.test(url)
+  );
 }
 
 /**
@@ -459,4 +530,4 @@ function shouldSkipPollerUpdate(existingData, newText) {
   return { skip: false, reason: null };
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, PROTECTED_FIELDS };
+module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, hasPlaceholderUrlPattern, PROTECTED_FIELDS };
