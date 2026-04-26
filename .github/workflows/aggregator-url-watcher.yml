@@ -1,0 +1,113 @@
+name: Aggregator URL Watcher
+
+# Runs every 5 min during opening-night windows. For each show with
+# openingDate === today (America/New_York), tries to discover BWW Review
+# Roundup + DTLI show-page URLs. When found, dispatches opening-night-poller
+# with the override URL so the existing aggregator extractors fire
+# immediately instead of waiting for the next 13-min orchestrator cycle.
+#
+# Cost: ~$0.10/Browserbase call for BWW reviews.php scrape; DTLI is free
+# (plain HTTPS sitemap fetch). Worst-case ~$8 per opening over a 7h window.
+#
+# Bails fast (exits 0) when no shows are opening today — so off-day cron
+# ticks are nearly free.
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # Every 5 minutes
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Force-target a specific show (otherwise: today_ET openings only)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Discover URLs but do not dispatch poller'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  # Drop overlapping ticks — if a previous run is still going, skip this one.
+  # Watcher cycles should finish in <60s; if they don't, we don't want pileup.
+  group: aggregator-url-watcher
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data (private)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Quick exit if no opening tonight
+        id: gate
+        run: |
+          OPENINGS=$(node -e "
+            const data = require('./data/shows.json');
+            const shows = data.shows || data;
+            const fmt = new Intl.DateTimeFormat('en-CA', {
+              timeZone: 'America/New_York',
+              year: 'numeric', month: '2-digit', day: '2-digit',
+            });
+            const today = fmt.format(new Date());
+            const matches = shows.filter(s => {
+              if (s.openingDate !== today) return false;
+              const cat = s.category || 'broadway';
+              return cat === 'broadway' || cat === 'off-broadway';
+            });
+            if (matches.length > 0) console.log(matches.map(s => s.id).join(','));
+          ")
+          FORCED="${{ inputs.show_id }}"
+          if [ -n "$OPENINGS" ] || [ -n "$FORCED" ]; then
+            echo "active=true" >> $GITHUB_OUTPUT
+            echo "Active openings: $OPENINGS${FORCED:+ (forced=$FORCED)}"
+          else
+            echo "active=false" >> $GITHUB_OUTPUT
+            echo "No shows opening today (ET) — skipping."
+          fi
+
+      - uses: actions/setup-node@v5
+        if: steps.gate.outputs.active == 'true'
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        if: steps.gate.outputs.active == 'true'
+        run: npm ci
+
+      - name: Watch
+        if: steps.gate.outputs.active == 'true'
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show_id }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/watch-aggregator-urls.js $ARGS
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Aggregator URL Watcher Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
