@@ -18,8 +18,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+let lockedSkipCount = 0;
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'pre2005-wrong-production.json');
 
@@ -443,12 +445,14 @@ if (applyMode) {
         reviewData.auditReason = 'pre2005-audit: duplicate exists at ' + result.suggestedShowId;
         reviewData.auditConfidence = result.confidence;
         reviewData.auditDate = new Date().toISOString().slice(0, 10);
-        fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+        const r1 = safeWriteReview(filePath, reviewData);
+        if (r1.lockedSkipped) lockedSkipCount++;
         applied++;
         console.log(`  FLAGGED ${result.showId}/${result.file} (dup at ${result.suggestedShowId})`);
         continue;
       }
 
+      // TOPOLOGY: file moves do not honor _locked — see S1-T5
       fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
       fs.unlinkSync(filePath);
       moved++;
@@ -459,11 +463,13 @@ if (applyMode) {
       reviewData.auditReason = result.signals[0];
       reviewData.auditConfidence = result.confidence;
       reviewData.auditDate = new Date().toISOString().slice(0, 10);
-      fs.writeFileSync(filePath, JSON.stringify(reviewData, null, 2));
+      const r2 = safeWriteReview(filePath, reviewData);
+      if (r2.lockedSkipped) lockedSkipCount++;
       applied++;
       console.log(`  FLAGGED ${result.showId}/${result.file}`);
     }
   }
 
   console.log(`\nApplied: ${applied} flagged, ${moved} moved`);
+  console.log(`[LOCKED-SKIP-COUNT] audit-pre2005-reviews: ${lockedSkipCount}`);
 }
