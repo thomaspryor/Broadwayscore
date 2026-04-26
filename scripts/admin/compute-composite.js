@@ -20,24 +20,24 @@
 const fs = require('fs');
 const path = require('path');
 
-// Support running from a worktree by walking up to find the repo root
-// that actually has data/shows.json (main repo, not a worktree copy)
+// Walk up from __dirname until we find data/shows.json (handles any worktree depth).
 function findRoot() {
-  const candidates = [
-    path.join(__dirname, '..', '..'),
-    process.cwd(),
-    path.join(__dirname, '..', '..', '..', '..'), // worktree: .claude/worktrees/NAME/
-  ];
-  for (const c of candidates) {
-    if (fs.existsSync(path.join(c, 'data', 'shows.json'))) return c;
+  let dir = __dirname;
+  for (let i = 0; i < 10; i++) {
+    if (fs.existsSync(path.join(dir, 'data', 'shows.json'))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
   }
-  return candidates[0];
+  if (fs.existsSync(path.join(process.cwd(), 'data', 'shows.json'))) return process.cwd();
+  return path.join(__dirname, '..', '..');
 }
 
 const ROOT = findRoot();
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_JSON = path.join(ROOT, 'data', 'shows.json');
 const REVIEWS_JSON = path.join(ROOT, 'data', 'reviews.json');
+const OUTLET_REGISTRY_JSON = path.join(ROOT, 'data', 'outlet-registry.json');
 
 const { computeCriticScore, TOP_CRITICS } = require('../lib/compute-critic-score');
 const { isIncludableForRebuild } = require('../lib/review-guards');
@@ -57,6 +57,12 @@ if (!showArg) {
 const showId = showArg.trim();
 
 // ─── Load data ───────────────────────────────────────────────────────────────
+
+// outletRegistry provides tier data for long-tail outlets not in outlet-tiers.json
+const outletRegistry = (() => {
+  try { return JSON.parse(fs.readFileSync(OUTLET_REGISTRY_JSON, 'utf8')).outlets || {}; }
+  catch { return {}; }
+})();
 
 const showsRaw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
 const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
@@ -79,7 +85,7 @@ try {
   const reviewsRaw = JSON.parse(fs.readFileSync(REVIEWS_JSON, 'utf8'));
   const allReviews = reviewsRaw.reviews || (Array.isArray(reviewsRaw) ? reviewsRaw : []);
   const showReviews = allReviews.filter(r => r && r.showId === showId && !r.singleModelEmergency);
-  const deployed = computeCriticScore(showReviews);
+  const deployed = computeCriticScore(showReviews, outletRegistry);
   if (deployed) deployedComposite = Math.round(deployed.s);
 } catch { /* reviews.json unavailable */ }
 
@@ -131,7 +137,7 @@ for (const f of files) {
 
 // ─── Compute predicted composite ─────────────────────────────────────────────
 
-const result = computeCriticScore(included);
+const result = computeCriticScore(included, outletRegistry);
 
 // ─── Output ──────────────────────────────────────────────────────────────────
 
@@ -221,7 +227,7 @@ function getTier(review, tiers) {
   const isTop = !!(review.criticName && TOP_CRITICS.has(review.criticName));
   if (isTop) return 1;
   const id = (review.outletId || '').toLowerCase().trim();
-  return tiers[id]?.tier || 3;
+  return tiers[id]?.tier || outletRegistry[id]?.tier || 3;
 }
 
 function getConfidenceWeight(review) {
