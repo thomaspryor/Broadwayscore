@@ -35,6 +35,21 @@ const { extractScore: extractScoreRuleBased } = require('./lib/score-extractors'
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
 
+// Build showId → { title } map so isScoreable can activate the wrongShow
+// stale-flag override (Notion 34e637c5-416f-8121).
+function loadShowTitles() {
+  const map = new Map();
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
+    for (const s of (j.shows || j)) {
+      if (s.id && s.title) map.set(s.id, { title: s.title });
+    }
+  } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
+  return map;
+}
+const SHOW_TITLES = loadShowTitles();
+const showFor = (d) => (d.showId ? SHOW_TITLES.get(d.showId) : undefined);
+
 // ---------------------------------------------------------------------------
 // CLI args
 // ---------------------------------------------------------------------------
@@ -804,7 +819,7 @@ function findMissingRatings() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (!isScoreable(data)) continue;
+        if (!isScoreable(data, showFor(data))) continue;
         if (data.originalScore) continue;
 
         const outletId = data.outletId || '';
