@@ -622,14 +622,19 @@ async function searchAggregator(aggregatorName, searchUrl, maxRedirects = 3) {
 async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, showTitle) {
   const additionalReviews = [];
 
-  // Parse pagination attributes from the critic reviews scrollable block
-  const nextPagePathMatch = initialHtml.match(/data-next-page-path="([^"]+)"/);
-  const totalCountMatch = initialHtml.match(/js-show-page-v2__critic-reviews[^>]*data-total-count="(\d+)"/);
+  // Parse pagination attributes from the critic reviews scrollable block.
+  // Show Score's Rails-rendered HTML uses single quotes for inline attributes
+  // (class='...', data-next-page-path='...'). Match either quote style — confirmed
+  // 2026-04-26 against hamilton/wicked/death-becomes-her/the-outsiders/schmigadoon
+  // pages, all single-quoted. Hard-coded double-quote regex was silently dropping
+  // pages 2-N (e.g., 36 of 44 Hamilton reviews) since the DOM switch.
+  const nextPagePathMatch = initialHtml.match(/data-next-page-path=(["'])([^"']+)\1/);
+  const totalCountMatch = initialHtml.match(/js-show-page-v2__critic-reviews[^>]*data-total-count=(["'])(\d+)\1/);
 
   if (!nextPagePathMatch) return additionalReviews;
 
-  const nextPagePath = nextPagePathMatch[1]; // e.g., /shows/death-becomes-her-broadway/paginate_critic_reviews
-  const totalCount = totalCountMatch ? parseInt(totalCountMatch[1]) : 0;
+  const nextPagePath = nextPagePathMatch[2]; // e.g., /shows/death-becomes-her-broadway/paginate_critic_reviews
+  const totalCount = totalCountMatch ? parseInt(totalCountMatch[2]) : 0;
 
   if (totalCount <= 8) return additionalReviews; // No pagination needed
 
@@ -1578,7 +1583,18 @@ function extractShowScoreReviews(html, showId, showTitle) {
   if (reviews.length > 0) {
     console.log(`    Extracted ${reviews.length} reviews from Show Score`);
   } else if (html && html.length > 5000) {
-    console.log(`    ⚠️  Show Score page loaded (${(html.length / 1024).toFixed(0)}KB) but 0 reviews extracted — HTML structure may have changed`);
+    // Distinguish "no critic reviews on this show" from "structure changed".
+    // Show Score doesn't always have critic reviews for newly-opened shows; the
+    // section is omitted entirely until reviews are added (no "Critic Reviews"
+    // heading and no review-tile-v2 -critic markup). Treating that as an
+    // extractor bug spammed misleading warnings during Joe Turner opening night.
+    const hasCriticHeading = /Critic\s+Reviews\s*\(\d+\)/i.test(html);
+    const hasCriticTile = /review-tile-v2[^>'"]*-critic/.test(html);
+    if (!hasCriticHeading && !hasCriticTile) {
+      console.log(`    Show Score page loaded (${(html.length / 1024).toFixed(0)}KB) — no critic-reviews section on this show yet`);
+    } else {
+      console.log(`    ⚠️  Show Score page loaded (${(html.length / 1024).toFixed(0)}KB), critic-reviews section present (heading=${hasCriticHeading} tiles=${hasCriticTile}) but 0 reviews extracted — HTML structure may have changed`);
+    }
   }
 
   // Domain supplement — catches outlets not in the hand-maintained outletPatterns
