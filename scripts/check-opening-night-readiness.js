@@ -104,6 +104,21 @@ async function runChecks() {
     report(PASS, 'Show status', show.status);
   }
 
+  // 1b. Category not-null (CLAUDE.md rule 14 item 5; Joe Turner 2026-04-19
+  // shipped with category=null and the orchestrator soft-warned + defaulted
+  // to broadway — fragile. Hard-fail if null.)
+  if (!show.category) {
+    report(FAIL, 'Show category',
+      `category is null — orchestrator will warn + default to broadway. ` +
+      `Fix in broadway-scorecard-data/shows.json: set category to 'broadway' or 'west-end'.`);
+  } else if (show.category === 'broadway' || show.category === 'west-end') {
+    report(PASS, 'Show category', show.category);
+  } else {
+    report(WARN, 'Show category',
+      `category="${show.category}" — orchestrator only special-cases broadway/west-end. ` +
+      `Confirm this is intentional (off-broadway / off-west-end shows don't get the broadcast pipeline).`);
+  }
+
   // 2. Images
   const imgDir = path.join(DATA_DIR, 'public', 'images', 'shows', SHOW_ID);
   const hasHero = fs.existsSync(path.join(imgDir, 'hero.webp'));
@@ -160,27 +175,53 @@ async function runChecks() {
     report(SKIP, 'DTLI reachability', 'West End — DTLI is US-only');
   }
 
-  // 5. BWW Review Roundup URL pattern
-  const titleSlug = show.title.toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g, '-');
-  const openingDate = show.openingDate || '';
-  const bwwDate = openingDate.replace(/-/g, '');
-  const bwwPattern = `https://www.broadwayworld.com/article/Review-Roundup-${titleSlug}-Opens-on-Broadway-${bwwDate}`;
-  if (isBroadway && openingDate) {
-    report(WARN, 'BWW Roundup URL', `Have this ready: ${bwwPattern}\n   If wrong, find correct URL and pass as --bww-roundup-url to poller.`);
-  } else if (!isBroadway) {
-    report(SKIP, 'BWW Roundup URL', 'West End — BWW roundups are primarily Broadway');
+  // 5. BWW Review Roundup discovery
+  // URL pattern guessing was DELETED 2026-04-26 (commit eccdb3280f) — never
+  // caught what reviews.php missed and burned 17 min/cycle pre-publication.
+  // The current chain is: reviews.php Browserbase → homepage scan → SERP →
+  // fast-fail. Pre-opening 404s are EXPECTED — page doesn't exist until
+  // reviews start dropping. Manual --bww-roundup-url is only needed when
+  // reviews.php fails after publication.
+  if (isBroadway) {
+    report(PASS, 'BWW Roundup discovery',
+      `Chain: reviews.php → homepage scan → SERP → fast-fail. ` +
+      `Pre-opening 404 is normal; only intervene if reviews.php fails AFTER opening. ` +
+      `URL pattern guessing was removed 2026-04-26.`);
+  } else {
+    report(SKIP, 'BWW Roundup discovery', 'West End — BWW roundups are primarily Broadway');
   }
 
   // 6. Talkin' Broadway URL (Broadway only)
+  // TB pattern varies by show: Lost Boys 2026 used `TheLostBoys.html` (bare
+  // slug, no year), Giant 2026 used `giant2026.html` (year suffix). The
+  // poller's tryTbDirectUrl tries BOTH. Pre-opening, TB can publish early
+  // (Lost Boys' Howard Miller landed 24h pre-opening), so the bare-slug
+  // variant is worth checking now.
   if (isBroadway) {
-    const tbSlug = show.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    const baseSlug = show.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+    const baseSlugCamel = show.title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
+      .split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
     const tbYear = (show.openingDate || '').slice(0, 4);
-    const tbUrl = `https://www.talkinbroadway.com/page/world/${tbSlug}${tbYear}.html`;
-    const tbRes = await httpsGet(tbUrl);
-    if (tbRes.status === 200 && tbRes.body.length > 2000) {
-      report(PASS, 'Talkin\' Broadway URL', `Found: ${tbUrl}`);
+    const candidates = [
+      `https://www.talkinbroadway.com/page/world/${baseSlugCamel}.html`,           // Lost Boys pattern
+      `https://www.talkinbroadway.com/page/world/${baseSlug}${tbYear}.html`,       // Giant pattern (year)
+      `https://www.talkinbroadway.com/page/world/${baseSlug}.html`,                // bare lowercase
+    ];
+    let found = null;
+    for (const url of candidates) {
+      const res = await httpsGet(url);
+      if (res.status === 200 && res.body.length > 2000) {
+        found = url;
+        break;
+      }
+    }
+    if (found) {
+      report(PASS, 'Talkin\' Broadway URL', `Found: ${found}`);
     } else {
-      report(WARN, 'Talkin\' Broadway URL', `Not found yet (${tbRes.status}). Expected: ${tbUrl}\n   TB publishes late — may appear after opening. Have URL ready for poller.`);
+      report(WARN, 'Talkin\' Broadway URL',
+        `Not found yet across ${candidates.length} pattern variants. ` +
+        `TB can publish early (Lost Boys' Howard Miller landed 24h pre-opening) but typically publishes within ` +
+        `48h of opening. Poller will discover via tryTbDirectUrl.`);
     }
   } else {
     report(SKIP, 'Talkin\' Broadway URL', 'West End — TB is Broadway-only');
@@ -239,27 +280,54 @@ async function runChecks() {
   }
 
   // 9. Bright Data zone status
+  // Per memory/feedback_brightdata_zone_migration.md: `mcp_unlocker` is the
+  // OBSOLETE trial zone (always shows disabled with "trial limit reached" —
+  // ignore). The active zone is $BRIGHTDATA_ZONE (default web_unlocker2 as
+  // of 2026-04-25). Alternates: web_unlocker_mnewmsyo / mngwkvlo / mnn80138.
   const bdToken = process.env.BRIGHTDATA_TOKEN;
+  const bdZone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
   if (bdToken) {
-    const bdRes = await httpsGet('https://api.brightdata.com/zone?zone=mcp_unlocker', {
+    const bdRes = await httpsGet(`https://api.brightdata.com/zone?zone=${encodeURIComponent(bdZone)}`, {
       'Authorization': `Bearer ${bdToken}`,
     });
     if (bdRes.status === 200) {
       try {
         const zone = JSON.parse(bdRes.body);
         if (zone.disable) {
-          report(FAIL, 'Bright Data zone', 'mcp_unlocker is DISABLED. Recover in BD UI (Configuration tab → Recover + enable toggle).');
+          report(FAIL, 'Bright Data zone',
+            `${bdZone} is DISABLED ("${zone.disable}"). Recover in BD UI ` +
+            `(Configuration tab → Recover + enable toggle), or swap to alternate ` +
+            `via: printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE.`);
         } else {
-          report(PASS, 'Bright Data zone', 'mcp_unlocker active');
+          report(PASS, 'Bright Data zone', `${bdZone} active`);
         }
       } catch {
         report(WARN, 'Bright Data zone', `Unexpected response: ${bdRes.body.slice(0, 100)}`);
       }
     } else {
-      report(WARN, 'Bright Data zone', `API returned ${bdRes.status}`);
+      report(WARN, 'Bright Data zone', `API returned ${bdRes.status} for zone ${bdZone}`);
     }
   } else {
     report(SKIP, 'Bright Data zone', 'BRIGHTDATA_TOKEN not set');
+  }
+
+  // 9b. CRITICAL_CRONS membership (CLAUDE.md rule 14 item 2). Verify
+  // opening-night-orchestrator is in check-cron-health.yml's CRITICAL_CRONS
+  // list — without it, a missing/late orchestrator run won't page anyone.
+  try {
+    const cronHealthYml = fs.readFileSync(
+      path.join(DATA_DIR, '.github', 'workflows', 'check-cron-health.yml'),
+      'utf8',
+    );
+    if (cronHealthYml.includes('opening-night-orchestrator')) {
+      report(PASS, 'Orchestrator in CRITICAL_CRONS', 'opening-night-orchestrator listed in check-cron-health.yml');
+    } else {
+      report(FAIL, 'Orchestrator missing from CRITICAL_CRONS',
+        'opening-night-orchestrator NOT found in .github/workflows/check-cron-health.yml. ' +
+        'Late or missed runs won\'t page. Add to CRITICAL_CRONS list.');
+    }
+  } catch (e) {
+    report(WARN, 'Orchestrator CRITICAL_CRONS check', `Could not read check-cron-health.yml: ${e.message}`);
   }
 
   // 10. ScrapingBee credits
