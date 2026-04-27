@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-27T03:25:54.393Z",
-  "processed": 170,
-  "failed": 1561,
-  "successRate": "9.8%",
+  "updatedAt": "2026-04-27T03:31:33.236Z",
+  "processed": 177,
+  "failed": 1564,
+  "successRate": "10.2%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 51,
     "amp": 2,
-    "browserbase": 14,
+    "browserbase": 18,
     "directCookies": 0,
     "scrapingbee": 96,
     "brightdata": 3,
-    "archiveToday": 19,
-    "archive": 19
+    "archiveToday": 20,
+    "archive": 20
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-04-26T18:35:41.181Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:36:19.846Z",
-      "event": "bb-session",
-      "session": "1d4b0be4",
-      "url": "http://theater.nytimes.com/2011/10/28/theater/reviews/chinglish-by-david-henry-h"
-    },
-    {
-      "t": "2026-04-26T18:36:20.218Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:37:13.478Z",
-      "event": "bb-session",
-      "session": "e1634efd",
-      "url": "http://theater.nytimes.com/2011/10/21/theater/reviews/relatively-speaking-at-bro"
-    },
-    {
-      "t": "2026-04-26T18:37:13.831Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:37:51.617Z",
-      "event": "bb-session",
-      "session": "78d6bd01",
-      "url": "http://theater.nytimes.com/2011/10/14/theater/reviews/the-mountaintop-with-samue"
-    },
     {
       "t": "2026-04-26T18:37:51.981Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-04-27T03:22:56.233Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:27:23.381Z",
+      "event": "bb-session",
+      "session": "aa88a83d",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
+    },
+    {
+      "t": "2026-04-27T03:27:24.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-27T03:27:42.693Z",
+      "event": "bb-session",
+      "session": "c819b1bb",
+      "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-an"
+    },
+    {
+      "t": "2026-04-27T03:27:43.482Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-27T03:31:16.223Z",
+      "event": "bb-session",
+      "session": "9c7f929e",
+      "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-11690"
+    },
+    {
+      "t": "2026-04-27T03:31:17.080Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

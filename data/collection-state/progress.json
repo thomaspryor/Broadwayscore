@@ -169,7 +169,14 @@
     "dracula-west-end-2025/financialtimes--sara-hemming.json",
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/dailybeast--tim-teeman.json",
     "ragtime-2025/america-magazine--weinert-kendt.json",
-    "the-great-gatsby-2024/variety--dan-rubins.json"
+    "the-great-gatsby-2024/variety--dan-rubins.json",
+    "cats-west-end-2026/huffpost--david-finkle.json",
+    "cats-west-end-2026/nbcny--robert-kahn.json",
+    "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+    "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+    "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+    "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json",
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1732,7 +1739,10 @@
     "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
+    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
+    "cats-west-end-2026/northjerseycom--robert-feldberg.json",
+    "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
+    "jesus-christ-superstar-west-end-2026/philadelphia-inquirer--howard-shapiro.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1783,7 +1793,11 @@
       "every-brilliant-thing-2026/nyt-theater--jonathan-mandell.json",
       "every-brilliant-thing-2026/the-contending--frank-j-avella.json",
       "dracula-west-end-2025/financialtimes--sara-hemming.json",
-      "ragtime-2025/america-magazine--weinert-kendt.json"
+      "ragtime-2025/america-magazine--weinert-kendt.json",
+      "cats-west-end-2026/nbcny--robert-kahn.json",
+      "jesus-christ-superstar-west-end-2026/ew--melissa-rose-bernardo.json",
+      "jesus-christ-superstar-west-end-2026/backstage--david-sheward.json",
+      "jesus-christ-superstar-west-end-2026/financialtimes--brendan-lemon.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
@@ -1803,7 +1817,11 @@
       "data/review-texts/becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
       "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
       "data/review-texts/the-great-gatsby-2024/variety--dan-rubins.json",
-      "the-great-gatsby-2024/variety--dan-rubins.json"
+      "the-great-gatsby-2024/variety--dan-rubins.json",
+      "data/review-texts/jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+      "jesus-christ-superstar-west-end-2026/hollywood-reporter--david-rooney.json",
+      "data/review-texts/to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
+      "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1928,7 +1946,8 @@
       "data/review-texts/dog-day-afternoon-2026/independent--unknown.json",
       "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
       "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
-      "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
+      "data/review-texts/cats-west-end-2026/northjerseycom--robert-feldberg.json"
     ],
     "archive": [
       "burlesque-west-end-2026/telegraph--unknown.json",
@@ -1949,11 +1968,12 @@
       "enron-2010/about-entertainment--unknown.json",
       "pygmalion-2007/about-entertainment--ben-brantley.json",
       "tarzan-2006/about-entertainment--ben-brantley.json",
-      "the-lieutenant-of-inishmore-2006/about-entertainment--ben-brantley.json"
+      "the-lieutenant-of-inishmore-2006/about-entertainment--ben-brantley.json",
+      "cats-west-end-2026/huffpost--david-finkle.json"
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -2554,6 +2574,39 @@
       "t": "2026-04-27T03:22:56.233Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:27:23.381Z",
+      "event": "bb-session",
+      "session": "aa88a83d",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
+    },
+    {
+      "t": "2026-04-27T03:27:24.203Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-27T03:27:42.693Z",
+      "event": "bb-session",
+      "session": "c819b1bb",
+      "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-an"
+    },
+    {
+      "t": "2026-04-27T03:27:43.482Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-27T03:31:16.223Z",
+      "event": "bb-session",
+      "session": "9c7f929e",
+      "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-11690"
+    },
+    {
+      "t": "2026-04-27T03:31:17.080Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
