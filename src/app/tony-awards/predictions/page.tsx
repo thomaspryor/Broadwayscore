@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge, AudienceChip } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -176,18 +176,48 @@ export default function TonyPredictionsOverviewPage() {
                         {pick.show.venue}
                       </p>
                     </div>
-                    {/* Score + Audience */}
+                    {/* Score: critic + audience side-by-side, Blended below */}
                     <div className="flex-shrink-0 flex flex-col items-center gap-1">
-                      <ScoreBadge
-                        score={pick.show.blendedScore}
-                        size="lg"
-                        showCrown
-                        reviewCount={pick.show.reviewCount}
-                        status={pick.show.status}
-                      />
-                      {pick.show.audienceGrade && pick.show.audienceGrade.grade !== '—' && (
-                        <AudienceChip grade={pick.show.audienceGrade} />
-                      )}
+                      <div className="flex items-center gap-1.5">
+                        <ScoreBadge
+                          score={pick.show.compositeScore}
+                          size="md"
+                          showCrown
+                          reviewCount={pick.show.reviewCount}
+                          status={pick.show.status}
+                        />
+                        {pick.show.audienceGrade && pick.show.audienceGrade.grade !== '—' ? (
+                          <div
+                            className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl font-bold"
+                            style={{ backgroundColor: `${pick.show.audienceGrade.color}20`, color: pick.show.audienceGrade.color }}
+                            title={pick.show.audienceGrade.tooltip}
+                          >
+                            {pick.show.audienceGrade.grade}
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base font-bold bg-surface-overlay text-gray-500">
+                            —
+                          </div>
+                        )}
+                      </div>
+                      {pick.show.blendedScore != null && pick.show.reviewCount >= 5 && pick.show.status !== 'previews' && pick.show.status !== 'upcoming' && (() => {
+                        const tier = getScoreTier(pick.show.blendedScore);
+                        return (
+                          <div className="flex flex-col items-center gap-0.5">
+                            {tier && (
+                              <span
+                                className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
+                                style={{ color: tier.color }}
+                              >
+                                {tier.label}
+                              </span>
+                            )}
+                            <span className="text-[10px] text-gray-400 whitespace-nowrap">
+                              Blended: {Math.round(pick.show.blendedScore)}
+                            </span>
+                          </div>
+                        );
+                      })()}
                     </div>
                   </div>
                   {pick.runnerUp && (
