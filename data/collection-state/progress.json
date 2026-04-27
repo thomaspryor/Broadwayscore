@@ -166,7 +166,10 @@
     "every-brilliant-thing-2026/nyt-theater--jonathan-mandell.json",
     "every-brilliant-thing-2026/theatrely--juan-a-ramirez.json",
     "every-brilliant-thing-2026/the-contending--frank-j-avella.json",
-    "dracula-west-end-2025/financialtimes--sara-hemming.json"
+    "dracula-west-end-2025/financialtimes--sara-hemming.json",
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/dailybeast--tim-teeman.json",
+    "ragtime-2025/america-magazine--weinert-kendt.json",
+    "the-great-gatsby-2024/variety--dan-rubins.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1722,7 +1725,14 @@
     "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
     "inter-alia-west-end-2026/theatreandtonic--becky-k.json",
-    "seagull-true-story-off-broadway-2026/theatreclique--brian-eugenio-herrera.json"
+    "seagull-true-story-off-broadway-2026/theatreclique--brian-eugenio-herrera.json",
+    "into-the-woods-west-end-2025/timeout--adam-feldman.json",
+    "in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1772,10 +1782,12 @@
       "titus-andronicus-off-broadway-2026/nysr--melissa-rose-bernardo.json",
       "every-brilliant-thing-2026/nyt-theater--jonathan-mandell.json",
       "every-brilliant-thing-2026/the-contending--frank-j-avella.json",
-      "dracula-west-end-2025/financialtimes--sara-hemming.json"
+      "dracula-west-end-2025/financialtimes--sara-hemming.json",
+      "ragtime-2025/america-magazine--weinert-kendt.json"
     ],
     "amp": [
-      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
@@ -1789,7 +1801,9 @@
       "back-to-the-future-2023/variety--frank-rizzo.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
-      "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json"
+      "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
+      "data/review-texts/the-great-gatsby-2024/variety--dan-rubins.json",
+      "the-great-gatsby-2024/variety--dan-rubins.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1892,7 +1906,8 @@
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json",
-      "the-homecoming-2007/about-entertainment--ben-brantley.json"
+      "the-homecoming-2007/about-entertainment--ben-brantley.json",
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/dailybeast--tim-teeman.json"
     ],
     "archiveToday": [
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
@@ -1910,7 +1925,10 @@
       "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
       "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
       "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
-      "data/review-texts/dog-day-afternoon-2026/independent--unknown.json"
+      "data/review-texts/dog-day-afternoon-2026/independent--unknown.json",
+      "data/review-texts/into-the-woods-west-end-2025/timeout--adam-feldman.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
     ],
     "archive": [
       "burlesque-west-end-2026/telegraph--unknown.json",
@@ -1935,7 +1953,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "dracula-west-end-2025/financialtimes--sara-hemming.json",
+  "lastProcessed": "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -2508,6 +2526,34 @@
       "t": "2026-04-27T03:15:43.677Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-27T03:21:08.454Z",
+      "event": "bb-session",
+      "session": "b33a6625",
+      "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-"
+    },
+    {
+      "t": "2026-04-27T03:21:09.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:22:29.438Z",
+      "event": "bb-session",
+      "session": "84fba32d",
+      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
+    },
+    {
+      "t": "2026-04-27T03:22:55.446Z",
+      "event": "bb-session",
+      "session": "bc10e778",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-27T03:22:56.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

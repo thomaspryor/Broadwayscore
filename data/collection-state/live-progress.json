@@ -1,48 +1,20 @@
 {
-  "updatedAt": "2026-04-27T03:20:19.039Z",
-  "processed": 167,
-  "failed": 1554,
-  "successRate": "9.7%",
+  "updatedAt": "2026-04-27T03:25:54.393Z",
+  "processed": 170,
+  "failed": 1561,
+  "successRate": "9.8%",
   "tierBreakdown": {
-    "playwright": 46,
-    "amp": 1,
-    "browserbase": 12,
+    "playwright": 47,
+    "amp": 2,
+    "browserbase": 14,
     "directCookies": 0,
     "scrapingbee": 96,
-    "brightdata": 2,
-    "archiveToday": 16,
+    "brightdata": 3,
+    "archiveToday": 19,
     "archive": 19
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-26T18:34:20.375Z",
-      "event": "bb-session",
-      "session": "df867a4d",
-      "url": "http://theater.nytimes.com/2011/11/09/theater/reviews/venus-in-fur-by-david-ives"
-    },
-    {
-      "t": "2026-04-26T18:34:20.731Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:34:59.783Z",
-      "event": "bb-session",
-      "session": "31c00531",
-      "url": "http://theater.nytimes.com/2011/11/08/theater/reviews/godspell-at-the-circle-in-"
-    },
-    {
-      "t": "2026-04-26T18:35:00.237Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:35:40.792Z",
-      "event": "bb-session",
-      "session": "ee0c05b8",
-      "url": "http://theater.nytimes.com/2011/11/04/theater/reviews/other-desert-cities-at-boo"
-    },
     {
       "t": "2026-04-26T18:35:41.181Z",
       "event": "bb-cookie-inject",
@@ -124,6 +96,34 @@
       "t": "2026-04-27T03:15:43.677Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-27T03:21:08.454Z",
+      "event": "bb-session",
+      "session": "b33a6625",
+      "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-"
+    },
+    {
+      "t": "2026-04-27T03:21:09.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:22:29.438Z",
+      "event": "bb-session",
+      "session": "84fba32d",
+      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
+    },
+    {
+      "t": "2026-04-27T03:22:55.446Z",
+      "event": "bb-session",
+      "session": "bc10e778",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-27T03:22:56.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
