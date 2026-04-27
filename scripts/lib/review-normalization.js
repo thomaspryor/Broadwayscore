@@ -416,6 +416,71 @@ function generateReviewFilename(outlet, critic) {
 }
 
 /**
+ * Rename a review-text file on disk to match its in-memory criticName.
+ *
+ * Used by collect-review-texts.js whenever criticName is overwritten after
+ * load (HC author override from JSON-LD/article:author, byline cross-check
+ * confirmed by HC, or Unknown→real-name enrichment). Without this, the file
+ * keeps its old slug and validate-review-texts.js flags the (outletId,
+ * criticName) pair as a duplicate of any sibling file that already matches
+ * the new slug. Documented in `memory/feedback_recurring_backfill_means_broken_creator.md`.
+ *
+ * Behavior:
+ * - If the computed new filename matches the current filename → no-op.
+ * - If the destination doesn't exist → fs.renameSync.
+ * - If the destination exists → merge unique fields from the source
+ *   (i.e. fields the destination is missing per a falsy check matching
+ *   pre-extraction behavior) into the destination, write it back, and
+ *   delete the source. Same semantics as the inline rename block this
+ *   helper replaces — change parity is intentional.
+ *
+ * @param {string} currentFilePath - absolute path to the source review-text file
+ * @param {object} data - in-memory review data (data.criticName already updated)
+ * @returns {{ newFilePath: string, action: 'noop'|'rename'|'merge'|'error', error?: string }}
+ */
+function renameReviewFileToMatchCritic(currentFilePath, data) {
+  const fs = require('fs');
+  const path = require('path');
+  const currentFile = path.basename(currentFilePath);
+  const showDir = path.dirname(currentFilePath);
+  const outletId = normalizeOutlet(data.outletId || data.outlet);
+  const newFilename = generateReviewFilename(outletId, data.criticName);
+
+  if (newFilename === currentFile) {
+    return { newFilePath: currentFilePath, action: 'noop' };
+  }
+
+  const newPath = path.join(showDir, newFilename);
+
+  if (fs.existsSync(newPath)) {
+    try {
+      const existingData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+      let merged = false;
+      for (const [key, val] of Object.entries(data)) {
+        if (val != null && !existingData[key]) {
+          existingData[key] = val;
+          merged = true;
+        }
+      }
+      if (merged) {
+        fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2) + '\n');
+      }
+      fs.unlinkSync(currentFilePath);
+      return { newFilePath: newPath, action: 'merge' };
+    } catch (err) {
+      return { newFilePath: currentFilePath, action: 'error', error: err.message };
+    }
+  }
+
+  try {
+    fs.renameSync(currentFilePath, newPath);
+    return { newFilePath: newPath, action: 'rename' };
+  } catch (err) {
+    return { newFilePath: currentFilePath, action: 'error', error: err.message };
+  }
+}
+
+/**
  * Check if an outlet ID looks like a sentence fragment rather than a real outlet.
  * Real outlets are typically under 40 chars with ≤4 hyphens.
  * Sentence fragments like "its-a-brave-writer-who-would-contrive-this-show" are much longer.
@@ -1359,6 +1424,7 @@ module.exports = {
   normalizePublishDate,
   normalizeUrl,
   generateReviewFilename,
+  renameReviewFileToMatchCritic,
   generateReviewKey,
   slugify,
   areReviewsDuplicates,

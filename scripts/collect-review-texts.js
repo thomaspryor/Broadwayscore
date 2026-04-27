@@ -92,7 +92,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
-const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
+const { resolveOutletFromUrl, getOutletDisplayName, renameReviewFileToMatchCritic } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
@@ -4613,6 +4613,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.expectedCritic;
       delete data.fullTextWrongAuthor;
       delete data._authorMismatch;
+
+      // File slug must follow criticName or validate-review-texts.js will flag
+      // a duplicate against any sibling whose filename already matches the new
+      // slug (real incident: cats-the-jellicle-ball-2026/variety, 2026-04-26).
+      const r = renameReviewFileToMatchCritic(review.filePath, data);
+      if (r.action === 'merge') {
+        console.log(`    → Merged into existing ${path.basename(r.newFilePath)} and deleted stale ${path.basename(review.filePath)}`);
+        review.filePath = r.newFilePath;
+      } else if (r.action === 'rename') {
+        console.log(`    → Renamed ${path.basename(review.filePath)} → ${path.basename(r.newFilePath)}`);
+        review.filePath = r.newFilePath;
+      } else if (r.action === 'error') {
+        console.warn(`    → Warning: could not rename to match new criticName: ${r.error}`);
+      }
     }
   }
 
@@ -4655,6 +4669,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         delete data.expectedCritic;
         delete data.fullTextWrongAuthor;
         delete data._authorMismatch;
+
+        // Same rename-or-merge as 1A-bis above — keep filename in sync with criticName.
+        const r = renameReviewFileToMatchCritic(review.filePath, data);
+        if (r.action === 'merge') {
+          console.log(`    → Merged into existing ${path.basename(r.newFilePath)} and deleted stale ${path.basename(review.filePath)}`);
+          review.filePath = r.newFilePath;
+        } else if (r.action === 'rename') {
+          console.log(`    → Renamed ${path.basename(review.filePath)} → ${path.basename(r.newFilePath)}`);
+          review.filePath = r.newFilePath;
+        } else if (r.action === 'error') {
+          console.warn(`    → Warning: could not rename to match new criticName: ${r.error}`);
+        }
       } else {
         data.misattributedFullText = true;
         data.extractedByline = bylineResult.name;
@@ -4698,40 +4724,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.extractedByline;
       delete data.expectedCritic;
 
-      // Rename file to match enriched critic name (prevents stale --unknown filenames)
-      const currentFile = path.basename(review.filePath);
-      if (currentFile.includes('--unknown')) {
-        const showDir = path.dirname(review.filePath);
-        const outletId = normalizeOutlet(data.outletId || data.outlet);
-        const newFilename = generateReviewFilename(outletId, extractedAuthor);
-        if (newFilename !== currentFile) {
-          const newPath = path.join(showDir, newFilename);
-          if (fs.existsSync(newPath)) {
-            // Named file already exists — merge unique fields from --unknown into it, then delete --unknown
-            try {
-              const existingData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
-              let merged = false;
-              for (const [key, val] of Object.entries(data)) {
-                if (val != null && !existingData[key]) {
-                  existingData[key] = val;
-                  merged = true;
-                }
-              }
-              if (merged) {
-                fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2) + '\n');
-              }
-              fs.unlinkSync(review.filePath);
-              console.log(`    → Merged enriched --unknown into existing ${newFilename} and deleted stale file`);
-              review.filePath = newPath;
-            } catch (mergeErr) {
-              console.warn(`    → Warning: could not merge into ${newFilename}: ${mergeErr.message}`);
-            }
-          } else {
-            // No named file exists — just rename
-            fs.renameSync(review.filePath, newPath);
-            review.filePath = newPath;
-            console.log(`    → Renamed ${currentFile} → ${newFilename}`);
-          }
+      // Rename file to match enriched critic name (prevents stale --unknown filenames).
+      // Helper handles the rename-or-merge path; same semantics as the prior inline block.
+      if (path.basename(review.filePath).includes('--unknown')) {
+        const r = renameReviewFileToMatchCritic(review.filePath, data);
+        if (r.action === 'merge') {
+          console.log(`    → Merged enriched --unknown into existing ${path.basename(r.newFilePath)} and deleted stale file`);
+          review.filePath = r.newFilePath;
+        } else if (r.action === 'rename') {
+          console.log(`    → Renamed ${path.basename(review.filePath)} → ${path.basename(r.newFilePath)}`);
+          review.filePath = r.newFilePath;
+        } else if (r.action === 'error') {
+          console.warn(`    → Warning: could not merge into ${path.basename(r.newFilePath)}: ${r.error}`);
         }
       }
     }
