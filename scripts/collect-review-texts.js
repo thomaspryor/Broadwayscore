@@ -3473,14 +3473,6 @@ async function extractArticleText(page) {
       }
     } catch (e) {}
 
-    // Chrome blocks that frequently sit INSIDE the main article container on
-    // WordPress + Jetpack sites (newyorktheater.me, NYSR, etc.). Paragraphs
-    // inside these subtrees ("Reading Broadway: …", related-post excerpts,
-    // share buttons) are not part of the review and confuse the ensemble
-    // scoreability LLM into rejecting the page as not_a_review.
-    // Joe Turner Jonathan Mandell 2026-04-26 incident.
-    const CHROME_SELECTORS = '.sharedaddy, .jp-relatedposts, #jp-post-flair, .sd-sharing, .sd-like, .wpcnt, .related-posts, [class*="related-posts"], .author-bio, .post-tags, .post-meta, .social-share';
-
     // If JSON-LD didn't give enough text, try CSS selectors
     if (bestText.length < 500) {
       for (const selector of selectors) {
@@ -3493,9 +3485,9 @@ async function extractArticleText(page) {
 
           let candidateText = '';
           for (const el of els) {
-            const paragraphs = Array.from(el.querySelectorAll('p')).filter(p => !p.closest(CHROME_SELECTORS));
+            const paragraphs = el.querySelectorAll('p');
             const text = paragraphs.length > 0
-              ? paragraphs.map(p => p.textContent.trim()).filter(t => t.length > 30).join('\n\n')
+              ? Array.from(paragraphs).map(p => p.textContent.trim()).filter(t => t.length > 30).join('\n\n')
               : el.textContent.trim();
             if (text.length > candidateText.length) candidateText = text;
           }
