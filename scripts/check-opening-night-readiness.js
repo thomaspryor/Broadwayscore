@@ -396,6 +396,37 @@ async function runChecks() {
     report(SKIP, 'Subscriber sync', 'Missing RESEND_API_KEY or FORMSPREE keys');
   }
 
+  // 11b. Resource budget headroom (single-show pre-flight).
+  // Soft-warns when any resource has less than 1.5× the per-show estimate
+  // available — i.e. enough to cover this show plus ~half another. Failures
+  // block. See scripts/lib/opening-night-budget.js.
+  try {
+    const { checkBudget } = require('./lib/opening-night-budget');
+    const budget = await checkBudget(1);
+    if (!budget.ok) {
+      const lines = budget.blockers.map(b => `${b.resource}: need ${b.needed} ${b.unit || ''}, ${b.available} available`);
+      report(FAIL, 'Resource budget (1 show)', lines.join('; '));
+    } else {
+      // Soft-warn at 1.5× per-show headroom (i.e. tight if we couldn't fit a second one)
+      const tight = [];
+      for (const [res, est] of Object.entries(budget.estimate)) {
+        const avail = budget.usage[res] && budget.usage[res].remaining;
+        if (avail == null) continue;
+        if (est.perShow > 0 && avail < est.perShow * 1.5) {
+          tight.push(`${res}: ${avail} remaining < 1.5× per-show (${est.perShow})`);
+        }
+      }
+      if (tight.length > 0) {
+        report(WARN, 'Resource budget (1 show)', `Tight headroom — ${tight.join('; ')}`);
+      } else {
+        const totals = Object.entries(budget.estimate).map(([k, v]) => `${k}=${v.total}`).join(', ');
+        report(PASS, 'Resource budget (1 show)', `Budget OK: ${totals}`);
+      }
+    }
+  } catch (e) {
+    report(WARN, 'Resource budget check', `Could not run budget check: ${e.message}`);
+  }
+
   // 12. Orchestrator recent fire
   const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   if (ghToken) {
