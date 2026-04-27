@@ -165,6 +165,27 @@ describe('validateContentMentionsShow: curly quote normalization', () => {
     assert.ok(result.mentionCount >= 3, `expected >=3 mentions, got ${result.mentionCount}`);
   });
 
+  test('htmlTitleMatch=true relaxes threshold by 1 (Beaches NY Sun case)', () => {
+    // Single-word show title where the body mentions it 2× in a >1500-char
+    // article. Without the htmlTitleMatch relaxation, threshold=3 would reject
+    // even though the page is provably about the show (title contains it).
+    // Beaches NY Sun 2026-04-27 incident.
+    const text = 'Beaches washes up on Broadway. '.padEnd(2500, ' ') + 'Some final thoughts about Beaches musical.';
+    const html = '<html><head><title>‘Beaches’ Washes Up on Broadway | The New York Sun</title></head><body></body></html>';
+    const result = validateContentMentionsShow(text, html, 'Beaches', 'beaches-2026');
+    assert.strictEqual(result.valid, true, `expected valid (htmlTitleMatch should relax threshold), got: ${result.reason}`);
+    assert.strictEqual(result.htmlTitleMatch, true);
+  });
+
+  test('htmlTitleMatch=true does NOT let through pages with 0 body mentions', () => {
+    // Even with title match, require at least 1 body mention. A title-only
+    // page (sidebar listing, sitemap) should still fail.
+    const text = 'Lorem ipsum dolor sit amet. '.repeat(100);
+    const html = '<html><head><title>Beaches | The New York Sun</title></head><body></body></html>';
+    const result = validateContentMentionsShow(text, html, 'Beaches', 'beaches-2026');
+    assert.strictEqual(result.valid, false, 'title-only page (0 body mentions) should still fail');
+  });
+
   test('NBSP (U+00A0) between words matches regular-space title', () => {
     // Some outlets (FT, certain WordPress themes) inject NBSP between words.
     // Without normalization, "Joe Turner's" with NBSP would not match.

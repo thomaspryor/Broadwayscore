@@ -2421,10 +2421,19 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     }
   }
 
-  if (mentionCount < threshold) {
+  // When the HTML <title> matches the show, the URL is provably correct — relax
+  // the body-mention threshold by 1 (but require at least 1 body mention so a
+  // title-only page can't sneak through). Beaches NY Sun 2026-04-27: paywalled
+  // article with `htmlTitleMatch=true` and 2 body mentions of "Beaches" was
+  // being rejected against the 3-mention threshold for >1500-char text.
+  const effectiveThreshold = (htmlTitleMatch === true && mentionCount >= 1)
+    ? Math.max(1, threshold - 1)
+    : threshold;
+
+  if (mentionCount < effectiveThreshold) {
     return {
       valid: false,
-      reason: `show mentioned ${mentionCount}× (below ${threshold} threshold for ${text.length}-char text)`,
+      reason: `show mentioned ${mentionCount}× (below ${effectiveThreshold} threshold for ${text.length}-char text${htmlTitleMatch === true ? ', titleMatch=true' : ''})`,
       mentionCount,
       threshold,
       htmlTitle,
