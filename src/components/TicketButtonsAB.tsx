@@ -49,7 +49,7 @@ interface TicketButtonsABProps {
   /**
    * When true, renders the first ticket link as a full-width primary CTA on its
    * own row, followed by the remaining links + Official Site as inline secondary
-   * pills wrapped in a flex row. Used by the show-page redesign hero block.
+   * pills in a horizontal-scroll row. Used by the show-page redesign hero block.
    * Tracking events stay identical to the inline-row default — same abVariantStr,
    * same `linkPosition` ordering — so analyze-ab-test.js handles split traffic
    * the same as inline traffic. Single-button A/B variant collapses to just the
@@ -58,6 +58,13 @@ interface TicketButtonsABProps {
   splitVariant?: boolean;
   /** Class applied to the first/primary CTA when splitVariant=true. */
   primaryButtonClassName?: string;
+  /**
+   * Optional content appended INSIDE the secondary scroll row (after Telecharge,
+   * Official, etc.). Used by the show-page redesign hero to inline a $X Lottery
+   * pill alongside the ticket platform pills so they stay on a single row.
+   * Only renders when splitVariant=true and the secondary row is shown.
+   */
+  secondaryAfter?: React.ReactNode;
 }
 
 /**
@@ -79,6 +86,7 @@ export default function TicketButtonsAB({
   buttonClassName = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0",
   splitVariant = false,
   primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
+  secondaryAfter,
 }: TicketButtonsABProps) {
   const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
   const [abButtonVariant, setAbButtonVariant] = useState<string | null>(null);
@@ -230,7 +238,8 @@ export default function TicketButtonsAB({
       <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
       </svg>
-      Official Site
+      {/* Shortened from "Official Site" so secondary row fits on one line at 390px alongside Telecharge + $X Lottery. */}
+      Official
     </TicketLink>
   ) : null;
 
@@ -241,13 +250,15 @@ export default function TicketButtonsAB({
     const primaryLink = visibleLinks[0];
     const secondaryLinks = visibleLinks.slice(1);
     const hasSecondary = !isSingleButton && (secondaryLinks.length > 0 || officialUrl);
+    const showSecondaryRow = hasSecondary || (secondaryAfter != null && !isSingleButton);
     return (
       <>
         {primaryLink && renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)}
-        {hasSecondary && (
-          <div className="flex flex-wrap gap-2">
+        {showSecondaryRow && (
+          <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
             {secondaryLinks.map((link, idx) => renderSecondary(link, idx + 1, totalLinksInRow))}
             {!isSingleButton && renderOfficial(visibleLinks.length, totalLinksInRow)}
+            {!isSingleButton && secondaryAfter}
           </div>
         )}
       </>
