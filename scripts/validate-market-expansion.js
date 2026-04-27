@@ -145,18 +145,11 @@ console.log('\n--- Show Data Checks ---');
 for (const market of marketsToCheck) {
   const marketShows = shows.filter(s => s.category === market);
 
-  // No "open" shows with closingDate more than the auto-close grace period in
-  // the past. update-show-status.js uses CLOSING_GRACE_PERIOD_DAYS=7 (line 33)
-  // — the auto-close waits a week before flipping status=open→closed so we can
-  // catch extensions. The validator must respect that grace window or it fires
-  // on every show that just closed (real incident: 4 OB shows on 2026-04-26
-  // wedged Test Suite for ~2 hours waiting for the cron to act, when the cron
-  // was correctly holding off). Add a 1-day buffer for the cron itself to run.
-  const GRACE_DAYS = 7 + 1;
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - GRACE_DAYS);
+  // No "open" shows with closingDate more than 1 day in the past
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
   const badOpen = marketShows.filter(s =>
-    s.status === 'open' && s.closingDate && new Date(s.closingDate) < cutoff
+    s.status === 'open' && s.closingDate && new Date(s.closingDate) < yesterday
   );
   if (badOpen.length > 0) {
     for (const s of badOpen) {
