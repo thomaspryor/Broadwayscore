@@ -49,6 +49,14 @@ function isSourceCorrupt(data) {
   // override neutralized it at the top level — we don't want to propagate
   // ambiguous attribution into a renamed file.
   if (data.contentVerification && data.contentVerification.wrongProduction === true) return true;
+  // Other exclusion flags that mark a file as not-a-real-attributable-review.
+  // These were missed in the first cut and called out in PR #290 review:
+  // backfill is durable and will be re-run on future asymmetric files, so
+  // the filter must cover the full validate-review-texts skip set.
+  if (data.fabricatedEntry === true) return true;
+  if (data.isRoundupArticle === true) return true;
+  if (data.suspectedMisattribution === true) return true;
+  if (data.fullTextWrongAuthor === true) return true;
   return false;
 }
 

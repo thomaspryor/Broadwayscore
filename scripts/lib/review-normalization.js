@@ -423,7 +423,8 @@ function generateReviewFilename(outlet, critic) {
  * confirmed by HC, or Unknown→real-name enrichment). Without this, the file
  * keeps its old slug and validate-review-texts.js flags the (outletId,
  * criticName) pair as a duplicate of any sibling file that already matches
- * the new slug. Documented in `memory/feedback_recurring_backfill_means_broken_creator.md`.
+ * the new slug. Real incident: cats-the-jellicle-ball-2026/variety on
+ * 2026-04-26 (PR #290).
  *
  * Behavior:
  * - If the computed new filename matches the current filename → no-op.
