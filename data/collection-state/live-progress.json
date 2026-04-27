@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-04-27T04:01:42.449Z",
-  "processed": 194,
-  "failed": 1727,
+  "updatedAt": "2026-04-27T04:02:51.699Z",
+  "processed": 195,
+  "failed": 1729,
   "successRate": "10.1%",
   "tierBreakdown": {
     "playwright": 59,
@@ -9,23 +9,12 @@
     "browserbase": 23,
     "directCookies": 0,
     "scrapingbee": 102,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 23,
     "archive": 22
   },
-  "browserbaseSessions": 11,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-04-27T03:15:08.637Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-27T03:15:42.700Z",
-      "event": "bb-session",
-      "session": "9a179fa3",
-      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
-    },
     {
       "t": "2026-04-27T03:15:43.677Z",
       "event": "bb-cookie-inject",
@@ -124,6 +113,17 @@
       "t": "2026-04-27T03:39:52.369Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T04:02:03.611Z",
+      "event": "bb-session",
+      "session": "52d2c9d6",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-04-27T04:02:04.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -193,7 +193,8 @@
     "war-horse-west-end-2026/variety--marilyn-stasio.json",
     "war-horse-west-end-2026/new-jersey-newsroom--michael-sommers.json",
     "war-horse-west-end-2026/wsj--terry-teachout.json",
-    "jajas-african-hair-braiding-west-end-2026/theatrely--juan-a-ramirez.json"
+    "jajas-african-hair-braiding-west-end-2026/theatrely--juan-a-ramirez.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1922,7 +1923,9 @@
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "oklahoma-2002/theater-news-online--joe-dziemianowicz.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "working-1978/theater-news-online--joe-dziemianowicz.json"
+    "working-1978/theater-news-online--joe-dziemianowicz.json",
+    "girls-off-west-end-2026/london-box-office--christian-durham.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2125,7 +2128,8 @@
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json",
       "the-homecoming-2007/about-entertainment--ben-brantley.json",
-      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/dailybeast--tim-teeman.json"
+      "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025/dailybeast--tim-teeman.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "archiveToday": [
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
@@ -2178,7 +2182,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "working-1978/theater-news-online--joe-dziemianowicz.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -2845,6 +2849,17 @@
       "t": "2026-04-27T03:39:52.369Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T04:02:03.611Z",
+      "event": "bb-session",
+      "session": "52d2c9d6",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-04-27T04:02:04.560Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
