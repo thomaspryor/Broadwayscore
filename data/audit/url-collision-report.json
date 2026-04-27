@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-27T04:05:06.725Z",
+  "generatedAt": "2026-04-27T07:08:58.841Z",
   "summary": {
-    "total": 30,
-    "high": 18,
+    "total": 18,
+    "high": 10,
     "medium": 7,
-    "low": 5
+    "low": 1
   },
   "collisions": [
     {
@@ -60,33 +60,6 @@
       "suggestedWinner": "catch-me-if-you-can-2011",
       "reason": "publishDate 2011-04-11 is 1 days from catch-me-if-you-can-2011 but also 1 days from high-2011",
       "confidence": "medium"
-    },
-    {
-      "url": "https://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339",
-      "normalizedUrl": "https://northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339",
-      "candidates": [
-        {
-          "showId": "cats-2016",
-          "file": "northjerseycom--robert-feldberg.json",
-          "publishDate": null,
-          "openingDate": "2016-07-31",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "northjerseycom"
-        },
-        {
-          "showId": "cats-west-end-2026",
-          "file": "northjerseycom--robert-feldberg.json",
-          "publishDate": null,
-          "openingDate": "2026-08-06",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "northjerseycom"
-        }
-      ],
-      "suggestedWinner": "cats-west-end-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://culturesauce.com/2026/04/07/cats-jellicle-ball-broadway-andrew-lloyd-webber-review/",
@@ -332,138 +305,30 @@
       "confidence": "medium"
     },
     {
-      "url": "http://www.nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kQdtu7z9RSuwwtO9pKNtPO?utm_medium=rss&amp;utm_content=Theater",
-      "normalizedUrl": "https://nypost.com/p/entertainment/theater/attention_must_be_paid_to_age_kqdtu7z9rsuwwto9pkntpo",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871",
+      "normalizedUrl": "https://talkinbroadway.com/allthatchat_new/d.php",
       "candidates": [
         {
-          "showId": "death-of-a-salesman-2012",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": "2012-03-15T20:42:51-04:00",
-          "openingDate": "2012-03-15",
+          "showId": "fallen-angels-2026",
+          "file": "talkinbroadway--unknown.json",
+          "publishDate": "2026-04-19",
+          "openingDate": "2026-04-19",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "nypost"
+          "outletId": "talkinbroadway"
         },
         {
-          "showId": "death-of-a-salesman-2026",
-          "file": "nypost--elisabeth-vincentelli.json",
+          "showId": "the-lost-boys-2026",
+          "file": "talkinbroadway--unknown.json",
           "publishDate": null,
-          "openingDate": "2026-04-09",
-          "hasScore": true,
+          "openingDate": "2026-04-26",
+          "hasScore": false,
           "hasFullText": false,
-          "outletId": "nypost"
+          "outletId": "talkinbroadway"
         }
       ],
-      "suggestedWinner": "death-of-a-salesman-2012",
-      "reason": "publishDate 2012-03-15T20:42:51-04:00 is 0 days from death-of-a-salesman-2012 opening (2012-03-15)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.businessweek.com/news/2012-12-09/pacino-is-a-mannered-mess-in-mamet-s-glengarry-review",
-      "normalizedUrl": "https://businessweek.com/news/2012-12-09/pacino-is-a-mannered-mess-in-mamet-s-glengarry-review",
-      "candidates": [
-        {
-          "showId": "glengarry-glen-ross-2012",
-          "file": "bloomberg--jeremy-gerard.json",
-          "publishDate": "2012-12-09",
-          "openingDate": "2012-12-08",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "glengarry-glen-ross-west-end-2026",
-          "file": "bloomberg--jeremy-gerard.json",
-          "publishDate": null,
-          "openingDate": "2026-06-17",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        }
-      ],
-      "suggestedWinner": "glengarry-glen-ross-2012",
-      "reason": "publishDate 2012-12-09 is 1 days from glengarry-glen-ross-2012 opening (2012-12-08)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
-      "normalizedUrl": "https://theatrely.com/post/jajas-african-hair-braiding-an-unbridled-joy-review",
-      "candidates": [
-        {
-          "showId": "jajas-african-hair-braiding-2023",
-          "file": "theatrely--juan-a-ramirez.json",
-          "publishDate": "October 3, 2023",
-          "openingDate": "2023-10-03",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatrely"
-        },
-        {
-          "showId": "jajas-african-hair-braiding-west-end-2026",
-          "file": "theatrely--juan-a-ramirez.json",
-          "publishDate": null,
-          "openingDate": "2026-03-26",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatrely"
-        }
-      ],
-      "suggestedWinner": "jajas-african-hair-braiding-2023",
-      "reason": "publishDate October 3, 2023 is 0 days from jajas-african-hair-braiding-2023 opening (2023-10-03)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-      "normalizedUrl": "https://amny.com/urbanite-1.812039/theater-review-jesus-christ-superstar-3-5-stars-1.3618340",
-      "candidates": [
-        {
-          "showId": "jesus-christ-superstar-2012",
-          "file": "amny--matt-windman.json",
-          "publishDate": null,
-          "openingDate": "2012-03-22",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "amny"
-        },
-        {
-          "showId": "jesus-christ-superstar-west-end-2026",
-          "file": "amny--matt-windman.json",
-          "publishDate": null,
-          "openingDate": "2026-07-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "amny"
-        }
-      ],
-      "suggestedWinner": "jesus-christ-superstar-west-end-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://articles.philly.com/2012-03-22/news/31225410_1_scene-jesus-christ-superstar-lloyd-webbers",
-      "normalizedUrl": "https://articles.philly.com/2012-03-22/news/31225410_1_scene-jesus-christ-superstar-lloyd-webbers",
-      "candidates": [
-        {
-          "showId": "jesus-christ-superstar-2012",
-          "file": "philadelphia-inquirer--howard-shapiro.json",
-          "publishDate": "2012-03-22",
-          "openingDate": "2012-03-22",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "philadelphia-inquirer"
-        },
-        {
-          "showId": "jesus-christ-superstar-west-end-2026",
-          "file": "philadelphia-inquirer--howard-shapiro.json",
-          "publishDate": null,
-          "openingDate": "2026-07-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "philadelphia-inquirer"
-        }
-      ],
-      "suggestedWinner": "jesus-christ-superstar-2012",
-      "reason": "publishDate 2012-03-22 is 0 days from jesus-christ-superstar-2012 opening (2012-03-22)",
+      "suggestedWinner": "fallen-angels-2026",
+      "reason": "publishDate 2026-04-19 is 0 days from fallen-angels-2026 opening (2026-04-19)",
       "confidence": "high"
     },
     {
@@ -519,33 +384,6 @@
       "suggestedWinner": "moulin-rouge-the-musical-west-end-2021",
       "reason": "publishDate 2022-01-21 is 2 days from moulin-rouge-the-musical-west-end-2021 but also 2 days from paddington-the-musical-west-end-2025",
       "confidence": "medium"
-    },
-    {
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-LU2NUC",
-      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
-      "candidates": [
-        {
-          "showId": "punch-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": "2025-09-29",
-          "openingDate": "2025-09-29",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "waiting-for-godot-2025",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2025-09-28",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        }
-      ],
-      "suggestedWinner": "punch-2025",
-      "reason": "publishDate 2025-09-29 is 0 days from punch-2025 opening (2025-09-29)",
-      "confidence": "high"
     },
     {
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
@@ -654,168 +492,6 @@
       "suggestedWinner": "you-got-older-off-broadway-2026",
       "reason": "publishDate 2026-02-28 is 16 days from you-got-older-off-broadway-2026 but also 23 days from the-reservoir-off-broadway-2026",
       "confidence": "medium"
-    },
-    {
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-war-horse-4-stars-1.2819064",
-      "normalizedUrl": "https://amny.com/urbanite-1.812039/theater-review-war-horse-4-stars-1.2819064",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "amny--matt-windman.json",
-          "publishDate": "April 14, 2011",
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "amny"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "amny--matt-windman.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "amny"
-        }
-      ],
-      "suggestedWinner": "war-horse-2011",
-      "reason": "publishDate April 14, 2011 is 0 days from war-horse-2011 opening (2011-04-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.bloomberg.com/news/2011-04-15/in-war-horse-equine-hero-triumphs-over-horror-jeremy-gerard.html",
-      "normalizedUrl": "https://bloomberg.com/news/2011-04-15/in-war-horse-equine-hero-triumphs-over-horror-jeremy-gerard.html",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "bloomberg--jeremy-gerard.json",
-          "publishDate": "2011-04-15",
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "bloomberg"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "bloomberg--jeremy-gerard.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "bloomberg"
-        }
-      ],
-      "suggestedWinner": "war-horse-2011",
-      "reason": "publishDate 2011-04-15 is 1 days from war-horse-2011 opening (2011-04-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "http://www.newjerseynewsroom.com/movies/review-war-horse-runs-away-with-hearts",
-      "normalizedUrl": "https://newjerseynewsroom.com/movies/review-war-horse-runs-away-with-hearts",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "new-jersey-newsroom--michael-sommers.json",
-          "publishDate": null,
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "new-jersey-newsroom"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "new-jersey-newsroom--michael-sommers.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "new-jersey-newsroom"
-        }
-      ],
-      "suggestedWinner": "war-horse-west-end-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.ny1.com/content/ny1_living/theater_reviews/137471/ny1-theater-review---war-horse-",
-      "normalizedUrl": "https://ny1.com/content/ny1_living/theater_reviews/137471/ny1-theater-review---war-horse-",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "ny1--roma-torre.json",
-          "publishDate": null,
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "ny1"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "ny1--roma-torre.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ny1"
-        }
-      ],
-      "suggestedWinner": "war-horse-west-end-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "https://www.time.com/time/arts/article/0,8599,2065286,00.html",
-      "normalizedUrl": "https://time.com/time/arts/article/0,8599,2065286,00.html",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "time--richard-zoglin.json",
-          "publishDate": "2011-03-12",
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "time"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "time--richard-zoglin.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "time"
-        }
-      ],
-      "suggestedWinner": "war-horse-2011",
-      "reason": "publishDate 2011-03-12 is 33 days from war-horse-2011 opening (2011-04-14)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://www.villagevoice.com/2011-04-20/theater/war-horse-offers-a-different-kind-of-hoofing/",
-      "normalizedUrl": "https://villagevoice.com/2011-04-20/theater/war-horse-offers-a-different-kind-of-hoofing",
-      "candidates": [
-        {
-          "showId": "war-horse-2011",
-          "file": "village-voice--michael-feingold.json",
-          "publishDate": "2011-04-20",
-          "openingDate": "2011-04-14",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "village-voice"
-        },
-        {
-          "showId": "war-horse-west-end-2026",
-          "file": "village-voice--michael-feingold.json",
-          "publishDate": null,
-          "openingDate": "2026-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "village-voice"
-        }
-      ],
-      "suggestedWinner": "war-horse-2011",
-      "reason": "publishDate 2011-04-20 is 6 days from war-horse-2011 opening (2011-04-14)",
-      "confidence": "high"
     }
   ]
 }
