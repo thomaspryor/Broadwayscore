@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-04-27T19:16:22.429Z",
+  "runDate": "2026-04-27T20:00:25.086Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 225,
+    "processed": 6,
+    "failed": 222,
     "skipped": 0,
-    "successRate": "7.4%"
+    "successRate": "2.6%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 18,
-    "tier1Success": 16,
+    "tier1Attempts": 10,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 4,
-    "tier2Attempts": 8,
-    "tier2Success": 7,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 2,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 222,
-    "scrapingBeePageCredits": 43,
+    "totalFailed": 219,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1.6,
-    "urlDiscoveryAttempts": 214,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1,
+    "urlDiscoveryAttempts": 212,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -56,39 +56,25 @@
     "the-lost-boys-2026/whatsonstage--unknown.json",
     "joe-turners-come-and-gone-2026/theatre-reviews-limited--david-roberts.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-    "eugene-onegin-off-broadway-2026/nytimes--unknown.json",
-    "schmigadoon-2026/ew--unknown.json",
-    "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
-    "kenrex-off-broadway-2026/frontmezzjunkies--ross.json",
-    "the-receptionist-off-broadway-2026/playbill--unknown.json",
-    "giant-2026/whatsonstage--sarah-crompton.json",
-    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-    "wicked-west-end-2021/daily-mail--brian-viner.json",
-    "mamma-mia-west-end-2021/variety--unknown.json",
-    "the-mousetrap-west-end-2021/nytimes--unknown.json",
-    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
-    "joe-turners-come-and-gone-2009/nytg--unknown.json",
-    "girls-off-west-end-2026/london-box-office--christian-durham.json"
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
     "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
     "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
+    "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
     "the-rocky-horror-show-2026/w42st--michael-musto.json",
-    "beaches-2026/ap--unknown.json",
     "titanique-2026/the-recs--randall-david-cook.json",
     "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
     "inter-alia-west-end-2026/theatreandtonic--becky-k.json",
     "giant-2026/times-uk--clive-davis.json",
     "mexodus-off-broadway-2026/nytimes--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-    "oh-mary-west-end-2025/theatre-weekly--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
-    "titanique-west-end-2024/telegraph--unknown.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
     "witness-for-the-prosecution-west-end-2022/financialtimes--sarah-hemming.json",
-    "witness-for-the-prosecution-west-end-2022/whatsonstage--unknown.json",
     "mj-2022/broadwaynews--charles-isherwood.json",
     "mj-2022/nydailynews--karu-f-daniels.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
@@ -96,7 +82,6 @@
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
     "aladdin-2014/ap--mark-kennedy.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
     "book-of-mormon-2011/variety--david-rooney.json",
@@ -105,7 +90,7 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "wicked-west-end-2021/times-uk--kevin-maher.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json",
+    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "john-proctor-is-the-villain-west-end-2026/all-that-dazzles-uk--daz-gale.json",
@@ -246,7 +231,6 @@
     "la-bete-2010/chicagotribune--ben-brantley.json",
     "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
     "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
-    "a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
     "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
     "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
     "the-pitmen-painters-2010/backstage--erik-haagensen.json",
@@ -294,39 +278,26 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
     "playwright": [
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "beaches-2026/ap--unknown.json",
-      "schmigadoon-2026/ew--unknown.json",
-      "between-the-river-and-the-sea-west-end-2026/financialtimes--unknown.json",
-      "kenrex-off-broadway-2026/frontmezzjunkies--ross.json",
-      "giant-2026/whatsonstage--sarah-crompton.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "joe-turners-come-and-gone-2009/nytg--unknown.json",
-      "girls-off-west-end-2026/london-box-office--christian-durham.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/mamma-mia-west-end-2021/variety--unknown.json",
-      "mamma-mia-west-end-2021/variety--unknown.json",
-      "data/review-texts/the-mousetrap-west-end-2021/nytimes--unknown.json",
-      "the-mousetrap-west-end-2021/nytimes--unknown.json",
-      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
-      "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
-      "data/review-texts/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json"
+      "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "the-lost-boys-2026/ew--unknown.json",
       "the-lost-boys-2026/whatsonstage--unknown.json",
-      "joe-turners-come-and-gone-2026/theatre-reviews-limited--david-roberts.json",
-      "eugene-onegin-off-broadway-2026/nytimes--unknown.json",
-      "the-receptionist-off-broadway-2026/playbill--unknown.json",
-      "wicked-west-end-2021/daily-mail--brian-viner.json"
+      "joe-turners-come-and-gone-2026/theatre-reviews-limited--david-roberts.json"
     ],
     "brightdata": [
       "the-lost-boys-2026/guardian--unknown.json"
@@ -334,14 +305,6 @@
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
