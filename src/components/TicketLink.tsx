@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { track } from '@vercel/analytics';
 
 declare global {
@@ -45,9 +45,22 @@ export default function TicketLink({
   abVariant,
   className, children,
 }: TicketLinkProps) {
+  // Read PostHog distinct_id at mount so the rendered href carries it
+  // (Impact subId1). We need it on the href, not just the click handler,
+  // because users middle-click / right-click → copy URL too. PostHog SDK
+  // is loaded before TicketButtonsAB renders (flagsLoaded gate), but other
+  // TicketLink call sites (compare/guides/showtimes) may render before the
+  // SDK is ready — first paint without subId1 is acceptable; useEffect
+  // populates it before the user can realistically click.
+  const [distinctId, setDistinctId] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    const id = window.posthog?.get_distinct_id?.();
+    if (typeof id === 'string' && id.length > 0) setDistinctId(id);
+  }, []);
+
   const { url: affiliateUrl, isAffiliate } = useMemo(
-    () => buildAffiliateUrl(url, platform, pageType),
-    [url, platform, pageType],
+    () => buildAffiliateUrl(url, platform, pageType, { distinctId, abVariant }),
+    [url, platform, pageType, distinctId, abVariant],
   );
 
   const handleClick = () => {
