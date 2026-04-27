@@ -109,6 +109,14 @@ on:
         description: 'Total number of parallel shards'
         required: false
         default: ''
+      fast_rebuild:
+        description: 'After scoring, dispatch rebuild-fast.yml instead of rebuild-reviews.yml. Use for /ingest UI flows where reviews must reach the live page in <20 min.'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 permissions:
   contents: write
@@ -441,23 +449,39 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # Two rebuild targets:
+          #   - rebuild-reviews.yml (default): full ~15 min pipeline
+          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, skips backfill +
+          #     classification. Used by /ingest UI dispatches that need the
+          #     review on the live page within an opening-night window.
+          #     (Lost Boys 2026-04-26 Issue #5.)
+          if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
+            REBUILD_WF="rebuild-fast.yml"
+            REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
+          else
+            REBUILD_WF="rebuild-reviews.yml"
+            REASON="Auto-triggered after LLM scoring"
+          fi
+
           # Check for running OR queued rebuilds — prevents multiple scoring shards
           # from each triggering their own rebuild (concurrency group on rebuild-reviews.yml
-          # is the primary guard, this is defense-in-depth)
-          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow=rebuild-reviews.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          # is the primary guard, this is defense-in-depth). For rebuild-fast.yml the
+          # concurrency group is per-run, so this only matters for rebuild-reviews.yml,
+          # but checking both keeps us out of trouble.
+          RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
           ACTIVE=$((RUNNING + QUEUED + WAITING))
           if [ "$ACTIVE" -gt 0 ]; then
-            echo "Rebuild already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
+            echo "$REBUILD_WF already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
             exit 0
           fi
 
-          echo "Triggering rebuild to incorporate new scores..."
-          gh workflow run rebuild-reviews.yml \
-            -f reason="Auto-triggered after LLM scoring"
+          echo "Triggering $REBUILD_WF to incorporate new scores..."
+          gh workflow run "$REBUILD_WF" \
+            -f reason="$REASON"
 
-          echo "Rebuild auto-triggered."
+          echo "Rebuild auto-triggered ($REBUILD_WF)."
 
       - name: Count remaining unscored reviews
         if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'
