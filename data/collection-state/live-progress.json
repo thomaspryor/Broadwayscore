@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-04-27T13:12:15.949Z",
-  "processed": 18,
-  "failed": 295,
-  "successRate": "5.8%",
+  "updatedAt": "2026-04-27T13:19:06.275Z",
+  "processed": 19,
+  "failed": 486,
+  "successRate": "3.8%",
   "tierBreakdown": {
     "playwright": 12,
     "amp": 2,
-    "browserbase": 6,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 11,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-04-27T10:47:20.995Z",
-      "event": "bb-session",
-      "session": "e66bae28",
-      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
-    },
-    {
-      "t": "2026-04-27T10:47:21.844Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-04-27T10:56:18.459Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-04-27T12:05:52.400Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T13:12:22.497Z",
+      "event": "bb-session",
+      "session": "5a84737c",
+      "url": "http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-04-27T13:12:23.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

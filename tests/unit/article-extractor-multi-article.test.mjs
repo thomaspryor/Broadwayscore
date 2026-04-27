@@ -25,6 +25,38 @@ import { extractArticleText } from '../../scripts/lib/article-extractor.js';
 import pkg from '../../scripts/lib/content-quality.js';
 const { validateContentMentionsShow } = pkg;
 
+describe('article-extractor: newyorktheater.me cuts at Jetpack chrome', () => {
+  test('truncates entry-content at <div class="sharedaddy">', () => {
+    const html =
+      '<html><body><article>' +
+      '<div class="entry-content clearfix">' +
+        '<p>' + 'Real review body. '.repeat(40) + '</p>' +
+        '<p>More review prose with critical evaluation of the production.</p>' +
+        '<div class="sharedaddy sd-sharing-enabled">' +
+          '<p>Reading Broadway: The Books behind the 2025-2026 Season</p>' +
+          '<p>Coming soon: Tina Turner and The Temptations</p>' +
+        '</div>' +
+      '</div></article></body></html>';
+    const text = extractArticleText(html, 'newyorktheater.me');
+    assert.ok(text, 'extractor should return text');
+    assert.ok(text.includes('Real review body'));
+    assert.ok(text.includes('critical evaluation'));
+    assert.ok(!text.includes('Reading Broadway'), `chrome leaked through: …${text.slice(-200)}`);
+    assert.ok(!text.includes('Tina Turner'), 'related-posts content leaked through');
+  });
+
+  test('falls back to </div></article> when no Jetpack chrome present', () => {
+    const html =
+      '<html><body><article>' +
+      '<div class="entry-content clearfix">' +
+        '<p>' + 'A clean older post body. '.repeat(40) + '</p>' +
+      '</div></article></body></html>';
+    const text = extractArticleText(html, 'newyorktheater.me');
+    assert.ok(text, 'extractor should return text');
+    assert.ok(text.includes('clean older post body'));
+  });
+});
+
 describe('article-extractor: generic <article> picks largest match', () => {
   test('single <article> on page returns that article', () => {
     const html =
