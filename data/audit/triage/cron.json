@@ -1,7 +1,7 @@
 {
   "system": "cron",
-  "status": "warn",
-  "lastChecked": "2026-04-26T07:34:07.947Z",
+  "status": "pass",
+  "lastChecked": "2026-04-27T07:49:47.011Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "23h ago, success"
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "1h ago, "
     },
     {
       "name": "Cron: Collect Review Texts",
@@ -24,52 +24,52 @@
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "0h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-lottery-rush.yml\" --limit=1 --jso"
+      "status": "pass",
+      "message": "4d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-grosses.yml\" --limit=1 --json cre"
+      "status": "pass",
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-show-score.yml\" --limit=1 --json "
+      "status": "pass",
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-mezzanine.yml\" --limit=1 --json c"
+      "status": "pass",
+      "message": "7h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-cast-changes.yml\" --limit=1 --jso"
+      "status": "pass",
+      "message": "1d ago, success"
     },
     {
       "name": "Cron: Weekly NYT Critics Picks",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-nyt-critics-picks.yml\" --limit=1 "
+      "status": "pass",
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-video-reviews.yml\" --limit=1 --js"
+      "status": "pass",
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: Update Social Pulse",
-      "status": "warn",
-      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-social-pulse.yml\" --limit=1 --jso"
+      "status": "pass",
+      "message": "1h ago, "
     }
   ]
 }
