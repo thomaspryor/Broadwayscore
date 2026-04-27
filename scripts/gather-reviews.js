@@ -1988,85 +1988,19 @@ async function searchBWWRoundup(show, year, options = {}) {
     }
     if (bwwCloudflareGated) return null;
   } catch (e) {
-    console.log('    Google search unavailable, falling back to URL patterns...');
+    console.log('    Google search unavailable.');
   }
 
-  // Priority 4: URL pattern guessing — fallback when SERP unavailable or hasn't indexed yet
-  // (e.g., same-day opening where Google hasn't crawled the roundup yet)
-  const titleVariations = [
-    show.title.toUpperCase().replace(/[^A-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-    show.title.replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-    show.title.replace(/'/g, '').replace(/[^a-zA-Z0-9\s]+/g, '').replace(/\s+/g, '-'),
-  ];
-
-  const dateSlug = show.openingDate ? show.openingDate.replace(/-/g, '') : null;
-
-  const searchUrls = [];
-  if (isLondonMarket(show.category)) {
-    if (dateSlug) {
-      for (const title of titleVariations) {
-        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${dateSlug}`);
-      }
-    }
-    for (const title of titleVariations) {
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-in-the-West-End-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-In-London-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/london/article/Review-Roundup-${title}-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
-    }
-  } else {
-    if (dateSlug) {
-      for (const title of titleVariations) {
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${dateSlug}`);
-        searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${dateSlug}`);
-      }
-    }
-    for (const title of titleVariations) {
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-Updating-LIVE-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-Updating-Live-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-On-Broadway-${year}`);
-      searchUrls.push(`https://www.broadwayworld.com/article/Review-Roundup-${title}-${year}`);
-    }
-  }
-
-  if (chromium) {
-    for (const url of searchUrls) {
-      const result = await scrapeBWWRoundupWithPlaywright(url);
-      if (result && result.html) {
-        console.log(`    ✓ Found at: ${url} (Playwright)`);
-        return { url, html: result.html };
-      }
-      if (result && result.cloudflareChallenge) {
-        console.log('    ⚠️  BWW is Cloudflare-gated (Playwright) — skipping remaining URL-guess candidates; will retry via searchAggregator');
-        break;
-      }
-      await sleep(300);
-    }
-  }
-
-  for (const url of searchUrls) {
-    const result = await searchAggregator('BWW', url);
-    if (result.found && result.html && isBWWRoundupContent(result.html)) {
-      console.log(`    ✓ Found at: ${url}`);
-      return { url, html: result.html };
-    }
-    if (result.found && result.html && isCloudflareChallenge(result.html)) {
-      console.log('    ⚠️  BWW is Cloudflare-gated — aborting URL-guess (further fetches will burn credits for the same challenge)');
-      return null;
-    }
-    await sleep(200);
-  }
-
-  console.log('    ✗ Not found on BWW');
+  // Priority 4 (URL pattern guessing) REMOVED 2026-04-26 — Lost Boys readiness audit.
+  // Was: 25+ Playwright fetches × 30s ≈ 12 min waste per cycle on every show whose
+  // RR hasn't published yet. Never beat reviews.php (which updates within minutes of
+  // publication) AND never caught the slugs we actually needed: Rocky Horror used
+  // "Returns-to-Broadway" not "Opens-on-Broadway"; Fear of 13 had a "Starring..."
+  // subtitle. The shows we found via guessing (Beaches, Joe Turner) were also found
+  // via reviews.php — guessing was strictly redundant.
+  // When reviews.php + homepage + SERP all return null, the RR is genuinely not
+  // published yet. Fast-fail and let the next 15-min poll cycle pick it up.
+  console.log('    ✗ BWW RR not found via reviews.php + homepage + SERP — likely not published yet, will retry next cycle');
   return null;
 }
 
