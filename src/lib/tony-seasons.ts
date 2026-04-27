@@ -23,6 +23,11 @@ export interface RangeDef {
   to: string;
 }
 
+// Captured once at module load. Build-time on the server bundle, page-load
+// on the client bundle — both run in the same webpack pass so there's no
+// hydration mismatch. The list goes one year stale if no rebuild happens
+// between Dec 31 and Jan 1; static export deploys run daily so practical
+// exposure is the gap between the year-flip cron and the next deploy.
 const CURRENT_YEAR = new Date().getFullYear();
 
 /** 8 most recent Tony seasons, newest first. */
