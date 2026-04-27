@@ -59,7 +59,20 @@ const PATTERNS = [
   // NYSR (WordPress) — entry-content
   ['nystagereview.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
-  // newyorktheater.me (WordPress) — entry-content
+  // newyorktheater.me (WordPress + Jetpack) — entry-content. Jetpack injects
+  // sharedaddy share buttons + jp-relatedposts INSIDE entry-content, before
+  // </article>. Stop at the first chrome marker to avoid pulling related-post
+  // chrome ("Reading Broadway: The Books behind the 2025-2026 Season…",
+  // unrelated cast lists from older shows) into the body. Without this, the
+  // ensemble scoreability LLM correctly rejects the page as "not_a_review"
+  // (Joe Turner / Jonathan Mandell 2026-04-26 incident).
+  // Symmetric with the DOM extractor's CHROME_SELECTORS in
+  // collect-review-texts.js.
+  // ⚠️ DO NOT REVERT — a parallel session's merge wiped this once already
+  // (commit 9c19b5afda). If git blame shows this getting "reverted" in a
+  // merge, the fix is to re-add it, not delete it.
+  ['newyorktheater.me', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|wpcnt|sd-sharing|sd-like)[^"]*")/, 300],
+  // Fallback for older posts without Jetpack chrome
   ['newyorktheater.me', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
   // WSJ
