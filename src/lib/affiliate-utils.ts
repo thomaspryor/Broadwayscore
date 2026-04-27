@@ -68,7 +68,23 @@ export const AFFILIATE_CONFIG: Record<string, AffiliateConfig> = {
   },
 };
 
-export function buildAffiliateUrl(url: string, platform: string, pageType: string): { url: string; isAffiliate: boolean } {
+/**
+ * Optional click-time tracking forwarded to Impact via subId1/subId2.
+ * Impact echoes these back on each conversion record (Actions API) so
+ * analyze-ab-test.js can join conversions to PostHog clicks per-user
+ * (subId1 = distinct_id) and per-variant (subId2 = ab_variant string).
+ */
+export interface AffiliateTracking {
+  distinctId?: string;
+  abVariant?: string;
+}
+
+export function buildAffiliateUrl(
+  url: string,
+  platform: string,
+  pageType: string,
+  tracking?: AffiliateTracking,
+): { url: string; isAffiliate: boolean } {
   const config = AFFILIATE_CONFIG[platform];
   if (!config?.enabled) return { url, isAffiliate: false };
 
@@ -76,7 +92,11 @@ export function buildAffiliateUrl(url: string, platform: string, pageType: strin
     if (config.type === 'impact' && config.impactDomain && config.impactPublisherId && config.impactCampaignId && config.impactProgramId) {
       // Impact deep link format: https://{domain}/c/{publisherId}/{campaignId}/{programId}?u={encodedUrl}
       const encodedUrl = encodeURIComponent(url);
-      const affiliateUrl = `https://${config.impactDomain}/c/${config.impactPublisherId}/${config.impactCampaignId}/${config.impactProgramId}?u=${encodedUrl}`;
+      const subParams: string[] = [];
+      if (tracking?.distinctId) subParams.push(`subId1=${encodeURIComponent(tracking.distinctId)}`);
+      if (tracking?.abVariant) subParams.push(`subId2=${encodeURIComponent(tracking.abVariant)}`);
+      const subSuffix = subParams.length ? `&${subParams.join('&')}` : '';
+      const affiliateUrl = `https://${config.impactDomain}/c/${config.impactPublisherId}/${config.impactCampaignId}/${config.impactProgramId}?u=${encodedUrl}${subSuffix}`;
       return { url: affiliateUrl, isAffiliate: true };
     }
 

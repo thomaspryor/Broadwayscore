@@ -192,12 +192,34 @@ async function main() {
     impactConversions = data.Actions || [];
   }
 
-  // Note: Impact conversions can't be directly attributed to PostHog variants
-  // (no shared user ID), so we can only compute total conversions and approximate
-  // per-variant by assuming proportional click distribution.
+  // Postback attribution: as of 2026-04-26, affiliate-utils.ts forwards
+  // distinct_id (subId1) and ab_variant (subId2) on every Impact click URL
+  // built by TicketLink. Impact echoes these back on each Action record
+  // (PascalCase: SubId1/SubId2). When SubId2 is present we can attribute
+  // the conversion directly to a variant; rows without SubId2 are pre-
+  // postback historical (or non-AB-tested click sources like
+  // DiscountTicketsTable) and fall back to proportional split.
+  const subIdField = (a) => a.SubId2 || a.subId2 || '';
+  const attributedConversions = impactConversions.filter(a => subIdField(a));
+  const unattributedConversions = impactConversions.filter(a => !subIdField(a));
+  const unattributedCommission = unattributedConversions.reduce((s, c) => s + parseFloat(c.Payout || 0), 0);
   const totalConversions = impactConversions.length;
   const totalRevenue = impactConversions.reduce((s, c) => s + parseFloat(c.Amount || 0), 0);
   const totalCommission = impactConversions.reduce((s, c) => s + parseFloat(c.Payout || 0), 0);
+
+  // Group attributed conversions by the variant segment we're analyzing
+  // (same regex as the click grouping above so the keys match).
+  const directByVariant = {};
+  for (const a of attributedConversions) {
+    const subId = subIdField(a);
+    const m = subId.match(new RegExp(`${variantKey}:([^,]+)`));
+    if (!m) continue;
+    const v = m[1];
+    if (!directByVariant[v]) directByVariant[v] = { conversions: 0, revenue: 0, commission: 0 };
+    directByVariant[v].conversions++;
+    directByVariant[v].revenue += parseFloat(a.Amount || 0);
+    directByVariant[v].commission += parseFloat(a.Payout || 0);
+  }
 
   // ── Print per-variant metrics ──
   console.log(`\n${'─'.repeat(70)}`);
@@ -215,21 +237,39 @@ async function main() {
     const data = byVariant[v];
     const userCount = data.users.size;
     const clicksPerUser = userCount > 0 ? (data.clicks / userCount).toFixed(2) : 'N/A';
-    // Approximate conversions for this variant by share of total clicks
+    // Direct attribution from Impact SubId2 (postback path)
+    const direct = directByVariant[v] || { conversions: 0, revenue: 0, commission: 0 };
+    // Proportional fallback for unattributed conversions (pre-postback
+    // history + non-AB-tested click sources). Split by this variant's
+    // share of total clicks.
     const variantShare = totals.clicks > 0 ? data.clicks / totals.clicks : 0;
-    const estConversions = (totalConversions * variantShare).toFixed(1);
-    const estCommission = (totalCommission * variantShare).toFixed(2);
+    const propConversions = unattributedConversions.length * variantShare;
+    const propCommission = unattributedCommission * variantShare;
 
     console.log(`\nVariant: ${v}`);
     console.log(`  Clicks: ${data.clicks}`);
     console.log(`  Unique users: ${userCount}`);
     console.log(`  Clicks per user: ${clicksPerUser}`);
-    console.log(`  Est. conversions (proportional): ${estConversions}`);
-    console.log(`  Est. commission (proportional): $${estCommission}`);
+    console.log(`  Direct conversions (subId2): ${direct.conversions}`);
+    console.log(`  Direct commission (subId2): $${direct.commission.toFixed(2)}`);
+    if (unattributedConversions.length > 0) {
+      console.log(`  + Proportional (pre-postback): ${propConversions.toFixed(1)} conv / $${propCommission.toFixed(2)}`);
+    }
     console.log(`  By platform:`);
     Object.entries(data.platforms).sort((a, b) => b[1] - a[1]).forEach(([p, c]) => {
       console.log(`    ${p}: ${c}`);
     });
+  }
+
+  // Postback coverage line — tells you whether attribution is "live" yet.
+  if (totalConversions > 0) {
+    const pct = ((attributedConversions.length / totalConversions) * 100).toFixed(0);
+    console.log(`\nPostback coverage: ${attributedConversions.length}/${totalConversions} conversions carry SubId2 (${pct}%).`);
+    if (attributedConversions.length === 0) {
+      console.log(`  ⚠ No conversions have SubId2 yet. Either the postback wiring just shipped`);
+      console.log(`    and no conversion has landed since, or Impact isn't echoing the field.`);
+      console.log(`    Verify with: curl an Action and inspect the SubId2 property.`);
+    }
   }
 
   // ── Statistical significance ──
@@ -278,9 +318,11 @@ async function main() {
   console.log(`\n${'─'.repeat(70)}`);
   console.log('CAVEATS');
   console.log('─'.repeat(70));
-  console.log('• Conversions are proportional estimates. Impact API doesnt expose');
-  console.log('  click_id or distinct_id, so we cant directly join with PostHog variants.');
-  console.log('• True per-variant conversion rates require Impact postback integration.');
+  console.log('• Direct conversions use the SubId2 postback wired into affiliate-utils.ts');
+  console.log('  on 2026-04-26 — distinct_id (subId1) + ab_variant (subId2) ride the click URL,');
+  console.log('  Impact echoes them on each Action, this script joins on subId2.');
+  console.log('• Conversions without SubId2 are pre-postback historical OR clicks from non-AB');
+  console.log('  surfaces (DiscountTicketsTable, lottery/rush) — split proportionally as fallback.');
   console.log('• Click tracking only works when PostHog loads (ad blockers excluded via fallback filter).');
   console.log('• Methodology: see memory/feedback_ab_test_analysis.md');
   console.log('');
