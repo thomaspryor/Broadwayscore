@@ -14,7 +14,10 @@
     "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
     "joe-turners-come-and-gone-2009/nytg--unknown.json",
     "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
-    "matilda-the-musical-west-end-2021/telegraph--unknown.json"
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
   ],
   "failed": [
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
@@ -303,7 +306,14 @@
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "in-the-heights-off-broadway-2026/variety--david-rooney.json"
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "cats-west-end-2026/northjerseycom--robert-feldberg.json",
+    "the-comedy-about-spies-west-end-2026/thestage--unknown.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+    "war-horse-west-end-2026/ny1--roma-torre.json",
+    "beetlejuice-west-end-2026/newsday--barbara-schuler.json",
+    "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -318,7 +328,8 @@
       "kenrex-off-broadway-2026/theatermania--unknown.json",
       "titanique-2026/ew--unknown.json",
       "joe-turners-come-and-gone-2009/nytg--unknown.json",
-      "kenrex-off-broadway-2026/theatermania--zachary-stewart.json"
+      "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
+      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
@@ -329,7 +340,8 @@
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -345,15 +357,19 @@
       "data/review-texts/cats-west-end-2026/northjerseycom--robert-feldberg.json",
       "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json",
       "data/review-texts/matilda-the-musical-2013/bloomberg--jeremy-gerard.json",
-      "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json"
+      "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
+      "data/review-texts/cats-west-end-2026/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
-      "matilda-the-musical-west-end-2021/telegraph--unknown.json"
+      "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+      "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
+      "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json"
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+  "lastProcessed": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/nytimes--alex-marshall.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -468,6 +484,28 @@
     },
     {
       "t": "2026-04-27T11:59:06.602Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T12:01:00.366Z",
+      "event": "bb-session",
+      "session": "3d47ac07",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
+    },
+    {
+      "t": "2026-04-27T12:01:01.534Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-27T12:05:51.315Z",
+      "event": "bb-session",
+      "session": "8fd1fcdb",
+      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
+    },
+    {
+      "t": "2026-04-27T12:05:52.400Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
