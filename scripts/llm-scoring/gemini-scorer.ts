@@ -54,9 +54,11 @@ export class GeminiScorer {
   }
 
   /**
-   * Score a single review text
+   * Score a single review text.
+   * Optional `systemPromptOverride` lets the A/B harness swap in a candidate
+   * prompt while leaving the live SYSTEM_PROMPT_V5 untouched.
    */
-  async scoreReview(reviewText: string, context: string = ''): Promise<GeminiScoringOutcome> {
+  async scoreReview(reviewText: string, context: string = '', systemPromptOverride?: string): Promise<GeminiScoringOutcome> {
     const model = this.client.getGenerativeModel({
       model: this.options.model,
       generationConfig: {
@@ -67,7 +69,8 @@ export class GeminiScorer {
     });
 
     const prompt = buildPromptV5(reviewText, context);
-    const fullPrompt = SYSTEM_PROMPT_V5 + '\n\n' + prompt;
+    const systemPrompt = systemPromptOverride || SYSTEM_PROMPT_V5;
+    const fullPrompt = systemPrompt + '\n\n' + prompt;
 
     let lastError: string = '';
     let inputTokens = 0;

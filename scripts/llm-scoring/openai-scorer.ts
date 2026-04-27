@@ -283,9 +283,11 @@ export class OpenAIReviewScorer {
   }
 
   /**
-   * Score a review using V5 simplified prompt (bucket-first approach)
+   * Score a review using V5 simplified prompt (bucket-first approach).
+   * Optional `systemPromptOverride` lets the A/B harness swap in a candidate
+   * prompt while leaving the live SYSTEM_PROMPT_V5 untouched.
    */
-  async scoreReviewV5(reviewText: string, context: string = ''): Promise<{
+  async scoreReviewV5(reviewText: string, context: string = '', systemPromptOverride?: string): Promise<{
     success: boolean;
     result?: SimplifiedLLMResult;
     rejected?: boolean;
@@ -296,6 +298,7 @@ export class OpenAIReviewScorer {
     outputTokens: number;
   }> {
     const prompt = buildPromptV5(reviewText, context);
+    const systemPrompt = systemPromptOverride || SYSTEM_PROMPT_V5;
 
     let lastError: string = '';
     let inputTokens = 0;
@@ -317,7 +320,7 @@ export class OpenAIReviewScorer {
           body: JSON.stringify({
             model: this.options.model,
             messages: [
-              { role: 'system', content: SYSTEM_PROMPT_V5 },
+              { role: 'system', content: systemPrompt },
               { role: 'user', content: prompt }
             ],
             max_tokens: 500,
