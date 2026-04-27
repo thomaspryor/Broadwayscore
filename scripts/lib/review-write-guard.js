@@ -121,6 +121,15 @@ const PROTECTED_FIELDS = [
   'wrongShowRetryAt', // existing bug fix — was silently droppable on rebase
   // Bug #10: manually-set pull quotes must survive rebuilds and LLM overrides.
   'pullQuote',
+  // Lock audit-trail metadata (Lost Boys 2026-04-27 Gap #6). Set by
+  // /api/admin/lock-score; surfaced on /admin/locks. Without explicit
+  // protection, a rebase + rebuild round-trip would silently strip the
+  // rationale + actor + timestamp, making the audit trail useless.
+  'lockedReason',
+  'lockedAt',
+  'lockedBy',
+  'lockedAcrossTier',
+  'priorScoreAtLock',
   // Per-file protection array — unions with this global list in
   // getEffectiveProtectedFields(). Must self-protect so ingest-manual-review's
   // per-record locks can't be cleared by a rebase.

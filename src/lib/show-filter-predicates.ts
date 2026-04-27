@@ -13,6 +13,7 @@
  * the panel state passes the right score into ctx.
  */
 import type { ShowCardShow } from '@/components/show-cards/types';
+import type { DateRange } from '@/lib/tony-seasons';
 
 export interface FilterPredicateCtx {
   /** Reconstructed Sets from AwardWinnerSets — O(1) lookup */
@@ -22,8 +23,8 @@ export interface FilterPredicateCtx {
   olivierNomineeIds: ReadonlySet<string>;
   dramaDeskWinnerIds: ReadonlySet<string>;
   pulitzerWinnerIds: ReadonlySet<string>;
-  /** Time-period range — inclusive on both ends; null = no time filter */
-  yearRange: { from: number; to: number } | null;
+  /** Time-period date ranges (ISO YYYY-MM-DD). Empty = no filter. Multiple = OR. */
+  dateRanges: DateRange[];
   /** Active score-mode — score-tier predicates evaluate against this score */
   scoreMode: 'critics' | 'audience';
 }
@@ -45,29 +46,18 @@ export const AWARD_DRAMA_DESK_WINNER: FilterPredicate = (s, ctx) => ctx.dramaDes
 export const AWARD_PULITZER: FilterPredicate = (s, ctx) => ctx.pulitzerWinnerIds.has(s.id);
 
 // ─────────────── Time period ───────────────
-
-/**
- * Extract the year a show "belongs to" for time-period filtering.
- * Prefers `season` (e.g., "2024-2025" → 2024), falls back to opening-year.
- * Returns null if neither field is usable.
- */
-export function getShowYear(show: ShowCardShow): number | null {
-  if (show.season) {
-    const match = show.season.match(/^(\d{4})/);
-    if (match) return parseInt(match[1], 10);
-  }
-  if (show.openingDate) {
-    const year = parseInt(show.openingDate.slice(0, 4), 10);
-    if (!isNaN(year)) return year;
-  }
-  return null;
-}
+//
+// Filters by `openingDate` (ISO YYYY-MM-DD) against any active date range.
+// Tony season pills set April 28 → April 27 windows; decade and slider pills
+// set calendar-year windows (Jan 1 → Dec 31). See src/lib/tony-seasons.ts.
+// Multiple ranges OR together — show passes if openingDate is in any.
+// String comparison is correct because ISO 8601 dates sort lexicographically.
 
 export const TIME_PERIOD_RANGE: FilterPredicate = (s, ctx) => {
-  if (!ctx.yearRange) return true;
-  const year = getShowYear(s);
-  if (year === null) return false;
-  return year >= ctx.yearRange.from && year <= ctx.yearRange.to;
+  if (ctx.dateRanges.length === 0) return true;
+  if (!s.openingDate) return false;
+  const opened = s.openingDate;
+  return ctx.dateRanges.some((r) => opened >= r.from && opened <= r.to);
 };
 
 // ─────────────── Score tier ───────────────

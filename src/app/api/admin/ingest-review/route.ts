@@ -106,6 +106,10 @@ interface IngestResponse {
   // whether the post-batch dispatch should target rebuild-fast.yml (no scoring
   // needed) or llm-ensemble-score.yml (must score before rebuild).
   needsScoring?: boolean;
+  // Set when the committed file carries a humanReviewScore (operator-typed
+  // OR strong-extractor pre-pass). UI surfaces this as a 🔒 Locked badge in
+  // LogRow. Lost Boys 2026-04-27 Gap #6.
+  lockedScore?: number;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<IngestResponse>> {
@@ -537,6 +541,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     pendingReason: bylineFallback ? 'no-byline' : undefined,
     dispatchedWorkflow,
     needsScoring: !fileHasScore,
+    lockedScore:
+      typeof humanReviewScore === 'number' && humanReviewScore >= 1 && humanReviewScore <= 100
+        ? humanReviewScore
+        : undefined,
   });
 }
 
