@@ -3393,158 +3393,17 @@ function isPaywalled(html) {
   );
 }
 
+// Logic extracted to scripts/lib/dom-article-extractor.js so it can be
+// unit-tested in jsdom (parallel sessions kept silently reverting fixes when
+// it lived inline). The function is serialized and injected into the
+// Playwright browser context via page.evaluate.
+const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
+
 async function extractArticleText(page) {
-  return await page.evaluate(() => {
-    // Site-specific selectors first (most precise), then generic fallbacks
-    const selectors = [
-      // New Yorker (Condé Nast) - most precise selector
-      '.body__inner-container',
-      // NYT
-      '[data-testid="article-body"]',
-      'section[name="articleBody"]',
-      // Vulture / NY Mag / Condé Nast
-      '[class*="ArticlePageChunks"]',
-      '[class*="RawHtmlBody"]',
-      // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
-      '[class*="_articleContent_"]',
-      // Variety / THR / Deadline (PMC sites - free content)
-      '.a-content',
-      // WSJ
-      '.article-content .wsj-snippet-body',
-      'div.article-content',
-      '[class*="article_body"]',
-      // WaPo
-      '[data-qa="article-body"]',
-      '.article-body',
-      // Entertainment Weekly / People
-      '[data-testid="article-body-content"]',
-      // Talkin' Broadway — review content in <section class="page">
-      'section.page',
-      // NY Sun (Next.js) — main body in `article-wrapper`. Without this the
-      // generic `article` fallback below picks the first of 8 sidebar teaser
-      // cards (Joe Turner 2026-04-26 incident).
-      '.article-wrapper',
-      // Generic (ordered by specificity)
-      'article .entry-content',
-      'article .post-content',
-      'article .article-body',
-      '.story-body',
-      '.entry-content',
-      '.post-content',
-      '.review-content',
-      '.article__body',
-      '.article-content',
-      '.rich-text',
-      '[class*="ArticleBody"]',
-      '[class*="article-body"]',
-      '[class*="story-body"]',
-      '[class*="StoryBody"]',
-      'main article',
-      '.story-content',
-      '[role="article"]',
-      'article',
-      'main',
-    ];
-
-    // For these broad selectors, use querySelectorAll + pick the LARGEST match
-    // (by paragraph count). Defends against SPAs where <article> tags are used
-    // for sidebar teaser cards and the first one isn't the real story.
-    const MULTI_MATCH_SELECTORS = new Set(['article', 'main', 'main article', '[role="article"]', '.article-wrapper']);
-
-    let bestText = '';
-
-    // Try JSON-LD first — many major sites embed articleBody in structured data
-    try {
-      const ldScripts = document.querySelectorAll('script[type="application/ld+json"]');
-      for (const script of ldScripts) {
-        try {
-          const data = JSON.parse(script.textContent);
-          const items = Array.isArray(data) ? data : data['@graph'] ? data['@graph'] : [data];
-          for (const item of items) {
-            const body = item.articleBody || item.reviewBody || item.text;
-            if (body && typeof body === 'string' && body.length > bestText.length) {
-              const cleaned = body.replace(/<[^>]+>/g, '').trim();
-              if (cleaned.length > bestText.length) {
-                bestText = cleaned;
-              }
-            }
-          }
-        } catch (e) {}
-      }
-    } catch (e) {}
-
-    // If JSON-LD didn't give enough text, try CSS selectors
-    if (bestText.length < 500) {
-      for (const selector of selectors) {
-        try {
-          // Broad selectors (article/main/etc): pick the LARGEST match.
-          // First-match (querySelector) loses to sidebar teaser cards.
-          const els = MULTI_MATCH_SELECTORS.has(selector)
-            ? Array.from(document.querySelectorAll(selector))
-            : [document.querySelector(selector)].filter(Boolean);
-
-          let candidateText = '';
-          for (const el of els) {
-            const paragraphs = el.querySelectorAll('p');
-            const text = paragraphs.length > 0
-              ? Array.from(paragraphs).map(p => p.textContent.trim()).filter(t => t.length > 30).join('\n\n')
-              : el.textContent.trim();
-            if (text.length > candidateText.length) candidateText = text;
-          }
-
-          if (candidateText.length > bestText.length) {
-            bestText = candidateText;
-          }
-          // Early exit: if a specific selector (not 'article' or 'main')
-          // returns enough text, prefer it over broader selectors that
-          // might include sidebar/related-posts content
-          if (candidateText.length >= 500 && !MULTI_MATCH_SELECTORS.has(selector)) {
-            break;
-          }
-        } catch (e) {}
-      }
-    }
-
-    // Fallback: find all substantial paragraphs
-    if (bestText.length < 500) {
-      const allParagraphs = Array.from(document.querySelectorAll('p'));
-      const contentParagraphs = allParagraphs.filter(p => {
-        const text = p.textContent.trim();
-        return text.length > 50 &&
-          !text.toLowerCase().includes('cookie') &&
-          !text.toLowerCase().includes('subscribe') &&
-          !text.toLowerCase().includes('sign up') &&
-          !text.toLowerCase().includes('newsletter');
-      });
-
-      if (contentParagraphs.length > 3) {
-        const pText = contentParagraphs.map(p => p.textContent.trim()).join('\n\n');
-        if (pText.length > bestText.length) {
-          bestText = pText;
-        }
-      }
-    }
-
-    let cleaned = bestText
-      .replace(/\s+/g, ' ')
-      .replace(/Subscribe to our newsletter[^.]*\./gi, '')
-      .replace(/Sign up for[^.]*\./gi, '')
-      .replace(/Advertisement/gi, '')
-      .trim();
-
-    // New Yorker: truncate at ♦ end-of-article marker
-    const diamondIdx = cleaned.indexOf('\u2666');
-    if (diamondIdx > 500) {
-      cleaned = cleaned.substring(0, diamondIdx).trim();
-    }
-    // New Yorker: truncate at print edition footer
-    const printIdx = cleaned.indexOf('Published in the print edition');
-    if (printIdx > 500) {
-      cleaned = cleaned.substring(0, printIdx).trim();
-    }
-
-    return cleaned;
-  });
+  // Serialize the lib function and run it in the browser. Wrapping in
+  // `(${fn.toString()})(document)` evaluates the IIFE with the browser's
+  // own document. Function must be self-contained — no closures.
+  return await page.evaluate(`(${extractArticleTextFromDocument.toString()})(document)`);
 }
 
 /**
