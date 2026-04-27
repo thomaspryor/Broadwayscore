@@ -139,7 +139,17 @@
     "of-mice-and-men-2014/ap--mark-kennedy.json",
     "all-the-way-2014/ap--mark-kennedy.json",
     "all-the-way-2014/ap--unknown.json",
-    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json"
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/bloomberg--jeremy-gerard.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -175,14 +185,15 @@
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
       "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json",
       "data/review-texts/cats-west-end-2026/northjerseycom--robert-feldberg.json",
-      "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json"
+      "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json",
+      "data/review-texts/matilda-the-musical-2013/bloomberg--jeremy-gerard.json"
     ],
     "archive": [
       "jesus-christ-superstar-west-end-2026/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "matilda-the-musical-2013/village-voice--michael-musto.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -255,6 +266,17 @@
       "t": "2026-04-27T11:07:24.613Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-27T11:13:58.743Z",
+      "event": "bb-session",
+      "session": "92747b6d",
+      "url": "https://www.bloomberg.com/news/2013-04-11/five-star-matilda-brings-roald-dahl-to"
+    },
+    {
+      "t": "2026-04-27T11:13:59.717Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
     }
   ]
 }
