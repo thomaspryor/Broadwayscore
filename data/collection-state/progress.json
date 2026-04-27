@@ -217,7 +217,17 @@
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -228,7 +238,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
-      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -243,7 +254,7 @@
     "archive": []
   },
   "startTime": "2026-04-27T16:18:52.228Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "by-jeeves-2001/nytimes--bruce-weber.json",
   "log": [
     {
       "t": "2026-04-27T19:28:06.591Z",
@@ -264,6 +275,17 @@
     },
     {
       "t": "2026-04-27T19:31:41.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T20:00:01.686Z",
+      "event": "bb-session",
+      "session": "ce3bffa5",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-27T20:00:02.585Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
