@@ -3,49 +3,49 @@
   "showId": "mamma-mia-west-end-2021",
   "showTitle": "Mamma Mia!",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:38:50.967Z",
-  "tier": "Steady",
-  "volume": 163,
-  "positivePct": 84,
-  "weekOverWeekPct": 4,
-  "baselineMultiple": 1.13,
+  "fetchedAt": "2026-04-27T08:02:49.553Z",
+  "tier": "Hidden",
+  "volume": 1,
+  "positivePct": 0,
+  "weekOverWeekPct": -99,
+  "baselineMultiple": 0.01,
   "platformBreakdown": {
-    "x": 130,
-    "tiktok": 20,
-    "instagram": 12,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 1
   },
-  "topQuotes": [
+  "topQuotes": [],
+  "xTrueVolume": 8,
+  "baseline": {
+    "mean": 123.16666666666667,
+    "weeksOfHistory": 6
+  },
+  "costUsd": 0.13525,
+  "rawCounts": {
+    "reddit": 6,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
+  },
+  "errors": [
     {
-      "text": "Well… this is a bit of a pinch me moment 💙 I’m so excited to be joining the cast of MAMMA MIA SA ! Grateful to be…",
-      "platform": "instagram",
-      "author": "@jmcphail_",
-      "url": "https://www.instagram.com/p/DXbW0SXjVmp/"
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     },
     {
-      "text": "On this day in 1999, MAMMA MIA! had its world premiere at the Prince Edward Theatre in London’s West End. 🩵 Happy…",
-      "platform": "x",
-      "author": "@MammaMiaMusical",
-      "url": "https://x.com/MammaMiaMusical/status/2041078596261867926"
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     }
   ],
-  "xTrueVolume": 4,
-  "baseline": {
-    "mean": 147.6,
-    "weeksOfHistory": 5
-  },
-  "costUsd": 0.1305,
-  "rawCounts": {
-    "reddit": 8,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
-  },
-  "errors": [],
   "rank": {
-    "position": 27,
-    "total": 53,
-    "text": "27/53 West End"
+    "position": 53,
+    "total": 54,
+    "text": "53/54 West End"
   },
-  "compositeScore": 136.92
+  "compositeScore": 0
 }

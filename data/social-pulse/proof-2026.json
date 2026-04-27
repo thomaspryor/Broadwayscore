@@ -3,49 +3,54 @@
   "showId": "proof-2026",
   "showTitle": "Proof",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:25:09.725Z",
+  "fetchedAt": "2026-04-27T07:46:11.261Z",
   "tier": "Steady",
-  "volume": 176,
-  "positivePct": 77,
-  "weekOverWeekPct": 28,
-  "baselineMultiple": 1.51,
+  "volume": 136,
+  "positivePct": 83,
+  "weekOverWeekPct": -23,
+  "baselineMultiple": 1.06,
   "platformBreakdown": {
-    "x": 134,
-    "tiktok": 17,
+    "x": 127,
+    "tiktok": 0,
     "instagram": 1,
-    "reddit": 24
+    "reddit": 8
   },
   "topQuotes": [
-    {
-      "text": "Jin Ha in a custom Qween Jean suit at the opening night of Proof on Broadway (April 16, 2026) Math plays an important…",
-      "platform": "reddit",
-      "author": "u/scandalliances",
-      "url": "https://www.reddit.com/r/whatthefrockk/comments/1spgkmb/jin_ha_in_a_custom_qween_jean_suit_at_the_opening/"
-    },
     {
       "text": "VP @KamalaHarris received a rockstar reception while attending the Broadway play “Proof” in New York today.…",
       "platform": "x",
       "author": "@ATTYHARRIS",
       "url": "https://x.com/ATTYHARRIS/status/2043094553108860993"
+    },
+    {
+      "text": "Kamala Harris (and Doug) watching Ayo Edebiri in PROOF on Broadway 😭❤️ The People's Princess and President…",
+      "platform": "x",
+      "author": "@girlflopping",
+      "url": "https://x.com/girlflopping/status/2043092601780216136"
     }
   ],
-  "xTrueVolume": 525,
+  "xTrueVolume": 138,
   "baseline": {
-    "mean": 128.4,
-    "weeksOfHistory": 5
+    "mean": 129.66666666666666,
+    "weeksOfHistory": 6
   },
   "costUsd": 0.1305,
   "rawCounts": {
-    "reddit": 43,
+    "reddit": 22,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.442661.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 28,
+    "position": 25,
     "total": 42,
-    "text": "28/42 Broadway"
+    "text": "25/42 Broadway"
   },
-  "compositeScore": 135.52
+  "compositeScore": 112.88
 }

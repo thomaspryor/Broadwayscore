@@ -3,36 +3,49 @@
   "showId": "between-the-river-and-the-sea-west-end-2026",
   "showTitle": "Between The River and The Sea",
   "market": "West End",
-  "fetchedAt": "2026-04-22T08:56:33.252Z",
+  "fetchedAt": "2026-04-27T08:00:30.422Z",
   "tier": "Hidden",
-  "volume": 5,
+  "volume": 0,
   "positivePct": 0,
-  "weekOverWeekPct": null,
-  "baselineMultiple": null,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
-    "instagram": 5,
+    "instagram": 0,
     "reddit": 0
   },
   "topQuotes": [],
   "xTrueVolume": 0,
   "baseline": {
-    "mean": 5,
-    "weeksOfHistory": 1
+    "mean": 2.5,
+    "weeksOfHistory": 2
   },
-  "costUsd": 0.132,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 153,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 53,
-    "total": 53,
-    "text": "53/53 West End"
+    "position": 40,
+    "total": 54,
+    "text": "40/54 West End"
   },
   "compositeScore": 0
 }

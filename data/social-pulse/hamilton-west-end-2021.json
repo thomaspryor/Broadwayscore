@@ -3,49 +3,56 @@
   "showId": "hamilton-west-end-2021",
   "showTitle": "Hamilton",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:14:11.492Z",
-  "tier": "Steady",
-  "volume": 133,
-  "positivePct": 78,
-  "weekOverWeekPct": 2,
-  "baselineMultiple": 1.09,
+  "fetchedAt": "2026-04-27T08:01:43.820Z",
+  "tier": "Hidden",
+  "volume": 2,
+  "positivePct": 0,
+  "weekOverWeekPct": -98,
+  "baselineMultiple": 0.02,
   "platformBreakdown": {
-    "x": 111,
-    "tiktok": 20,
+    "x": 0,
+    "tiktok": 0,
     "instagram": 0,
     "reddit": 2
   },
   "topQuotes": [
     {
-      "text": "\"theater is dead\" okay timothée then explain why there is 138k plus ppl in the queue for hamilton in west end starring…",
-      "platform": "x",
-      "author": "@swiftfletch",
-      "url": "https://x.com/swiftfletch/status/2032062302791274802"
-    },
-    {
-      "text": "Shan Ako’s last Helpless on stage at West End Hamilton. So proud of her. @SHAN AKO #hamilton #elizahamilton #westend…",
-      "platform": "tiktok",
-      "author": "@beyondtuft",
-      "url": "https://www.tiktok.com/@beyondtuft/video/7381185306688605483"
+      "text": "Seeing a musical with my mom and aunt this July, can only choose one Hello! We'll be in London for a concert and have…",
+      "platform": "reddit",
+      "author": "u/mookkzs",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1sub48t/seeing_a_musical_with_my_mom_and_aunt_this_july/"
     }
   ],
-  "xTrueVolume": 8,
+  "xTrueVolume": 12,
   "baseline": {
-    "mean": 124,
-    "weeksOfHistory": 5
+    "mean": 103.66666666666667,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1255,
+  "costUsd": 0.13525,
   "rawCounts": {
-    "reddit": 37,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 41,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 41,
-    "total": 53,
-    "text": "41/53 West End"
+    "position": 45,
+    "total": 54,
+    "text": "45/54 West End"
   },
-  "compositeScore": 103.74
+  "compositeScore": 0
 }

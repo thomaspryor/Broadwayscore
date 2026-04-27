@@ -3,49 +3,49 @@
   "showId": "les-liaisons-dangereuses-west-end-2026",
   "showTitle": "Les Liaisons Dangereuses",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:35:34.666Z",
-  "tier": "Steady",
-  "volume": 177,
-  "positivePct": 77,
-  "weekOverWeekPct": 4,
-  "baselineMultiple": 1.4,
+  "fetchedAt": "2026-04-27T08:02:24.903Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 150,
-    "tiktok": 12,
-    "instagram": 15,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "press night @nationaltheatre #LesLiaisonsDangereuses NT debut - one to remember! thanks to @curtisbrowntalent wearing…",
-      "platform": "instagram",
-      "author": "@diantelodge",
-      "url": "https://www.instagram.com/p/DXREcmdF5Bc/"
-    },
-    {
-      "text": "The play is called Les Liaisons Dangereuses, you can watch it in National Theatre till 6 June. I honestly am so in…",
-      "platform": "tiktok",
-      "author": "@ananasssme",
-      "url": "https://www.tiktok.com/@ananasssme/video/7620906520439442710"
-    }
-  ],
-  "xTrueVolume": 1,
+  "topQuotes": [],
+  "xTrueVolume": 0,
   "baseline": {
-    "mean": 136.8,
-    "weeksOfHistory": 5
+    "mean": 114,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.135,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 158,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 28,
-    "total": 53,
-    "text": "28/53 West End"
+    "position": 51,
+    "total": 54,
+    "text": "51/54 West End"
   },
-  "compositeScore": 136.29
+  "compositeScore": 0
 }

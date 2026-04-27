@@ -3,49 +3,62 @@
   "showId": "the-lost-boys-2026",
   "showTitle": "The Lost Boys",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:41:27.589Z",
+  "fetchedAt": "2026-04-27T07:58:18.041Z",
   "tier": "Steady",
-  "volume": 217,
-  "positivePct": 69,
-  "weekOverWeekPct": 9,
-  "baselineMultiple": 1.27,
+  "volume": 41,
+  "positivePct": 60,
+  "weekOverWeekPct": -81,
+  "baselineMultiple": 0.23,
   "platformBreakdown": {
-    "x": 144,
-    "tiktok": 20,
-    "instagram": 8,
-    "reddit": 45
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 41
   },
   "topQuotes": [
     {
-      "text": "Congratulations to @benjamin.pajak.official and River Lipe-Smith, who received Outer Critics Circle nominations this…",
-      "platform": "instagram",
-      "author": "@youngbwaynews",
-      "url": "https://www.instagram.com/p/DXZoQsFDxly/"
+      "text": "The Reviews are in for Schmigadoon! Two Strangers 🎂 and The Lost Boys 🧛 might have a run for their money for Best…",
+      "platform": "reddit",
+      "author": "u/omurchus",
+      "url": "https://www.reddit.com/r/Broadway/comments/1srmd8e/the_reviews_are_in_for_schmigadoon/"
     },
     {
-      "text": "The Lost Boys! Wow! One of my top all time theater experiences. Just amazed at the entire production. I will be…",
+      "text": "THE LOST BOYS, MEXODUS, SCHMIGADOON!, and More Nominated For Outer Critics Circle Awards; Full List",
       "platform": "reddit",
-      "author": "u/Surfnectar",
-      "url": "https://www.reddit.com/r/Broadway/comments/1soc65c/the_lost_boys_wow/"
+      "author": "u/alteragi",
+      "url": "https://www.reddit.com/r/Broadway/comments/1sroz9h/the_lost_boys_mexodus_schmigadoon_and_more/"
     }
   ],
-  "xTrueVolume": 31,
+  "xTrueVolume": 288,
   "baseline": {
-    "mean": 180.4,
-    "weeksOfHistory": 5
+    "mean": 157.16666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.13525,
   "rawCounts": {
-    "reddit": 50,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 53,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 22,
+    "position": 34,
     "total": 42,
-    "text": "22/42 Broadway"
+    "text": "34/42 Broadway"
   },
-  "compositeScore": 149.73
+  "compositeScore": 24.6
 }

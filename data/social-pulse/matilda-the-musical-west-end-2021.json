@@ -3,49 +3,56 @@
   "showId": "matilda-the-musical-west-end-2021",
   "showTitle": "Matilda The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:40:37.486Z",
-  "tier": "Steady",
-  "volume": 174,
-  "positivePct": 77,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.12,
+  "fetchedAt": "2026-04-27T08:02:58.539Z",
+  "tier": "Hidden",
+  "volume": 1,
+  "positivePct": 100,
+  "weekOverWeekPct": -99,
+  "baselineMultiple": 0.01,
   "platformBreakdown": {
-    "x": 146,
-    "tiktok": 19,
-    "instagram": 8,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 1
   },
   "topQuotes": [
     {
-      "text": "Jilly ‘28 can’t wait to deliver Matilda this weekend April 23-26 at SV Theatre!! #matildathemusical",
-      "platform": "instagram",
-      "author": "@svtheatredept",
-      "url": "https://www.instagram.com/p/DXZeG85EYF4/"
-    },
-    {
-      "text": "She’s grown in the role 🥹 Bless her she was emotional at her final curtain call ❤️‍🩹 I made this comparison since I…",
-      "platform": "tiktok",
-      "author": "@littlebitnaughty_",
-      "url": "https://www.tiktok.com/@littlebitnaughty_/video/7626865584189263126"
+      "text": "Matilda the Musical deserves a Broadway revival. Matilda the Musical should return to Broadway. It was such a huge…",
+      "platform": "reddit",
+      "author": "u/britneyp2004",
+      "url": "https://www.reddit.com/r/Broadway/comments/1ss3s58/matilda_the_musical_deserves_a_broadway_revival/"
     }
   ],
   "xTrueVolume": 2,
   "baseline": {
-    "mean": 159.6,
-    "weeksOfHistory": 5
+    "mean": 133.16666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 3,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 29,
-    "total": 53,
-    "text": "29/53 West End"
+    "position": 37,
+    "total": 54,
+    "text": "37/54 West End"
   },
-  "compositeScore": 133.98
+  "compositeScore": 1
 }

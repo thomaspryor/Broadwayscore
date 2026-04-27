@@ -3,49 +3,54 @@
   "showId": "schmigadoon-2026",
   "showTitle": "Schmigadoon!",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:28:57.788Z",
-  "tier": "Rising",
-  "volume": 217,
-  "positivePct": 72,
-  "weekOverWeekPct": 7,
-  "baselineMultiple": 1.26,
+  "fetchedAt": "2026-04-27T07:50:33.201Z",
+  "tier": "Steady",
+  "volume": 162,
+  "positivePct": 81,
+  "weekOverWeekPct": -25,
+  "baselineMultiple": 0.89,
   "platformBreakdown": {
-    "x": 150,
-    "tiktok": 20,
-    "instagram": 15,
-    "reddit": 32
+    "x": 148,
+    "tiktok": 0,
+    "instagram": 14,
+    "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "🌽 CORN PUDDIN’ FOLKS? ALEX BRIGHTMAN @brightmansomesay + SCHMIGADOON! @schmigadoon + OPENING NIGHT on BROADWAY…",
+      "text": "What a day!! Fans of musical theatre, you have got to go see this one!! Thanks to all who made today possible, to our…",
       "platform": "instagram",
-      "author": "@johntanstyling",
-      "url": "https://www.instagram.com/p/DXZhcfjkWIe/"
+      "author": "@gamiemanonplayers",
+      "url": "https://www.instagram.com/p/DXk9Yw7Dfwz/"
     },
     {
-      "text": "Schmigadoon! is a NYT Critic’s Pick",
-      "platform": "reddit",
-      "author": "u/Zealousideal_Door392",
-      "url": "https://www.reddit.com/r/Broadway/comments/1srbeit/schmigadoon_is_a_nyt_critics_pick/"
+      "text": "“The most remarkable aspect of the stage version of Schmigadoon! is that it actually improves upon creator Cinco…",
+      "platform": "x",
+      "author": "@therecsuk",
+      "url": "https://x.com/therecsuk/status/2046408614772982244"
     }
   ],
-  "xTrueVolume": 142,
+  "xTrueVolume": 132,
   "baseline": {
-    "mean": 181.4,
-    "weeksOfHistory": 5
+    "mean": 178.16666666666666,
+    "weeksOfHistory": 6
   },
   "costUsd": 0.1305,
   "rawCounts": {
-    "reddit": 36,
+    "reddit": 0,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.30351.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 15,
+    "position": 19,
     "total": 42,
-    "text": "15/42 Broadway"
+    "text": "19/42 Broadway"
   },
-  "compositeScore": 156.24
+  "compositeScore": 131.22
 }

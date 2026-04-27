@@ -3,49 +3,54 @@
   "showId": "stranger-things-2024",
   "showTitle": "Stranger Things: The First Shadow",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:32:30.378Z",
+  "fetchedAt": "2026-04-27T07:54:28.419Z",
   "tier": "Steady",
-  "volume": 183,
-  "positivePct": 74,
-  "weekOverWeekPct": -4,
-  "baselineMultiple": 1.09,
+  "volume": 165,
+  "positivePct": 69,
+  "weekOverWeekPct": -10,
+  "baselineMultiple": 0.97,
   "platformBreakdown": {
-    "x": 149,
-    "tiktok": 19,
+    "x": 148,
+    "tiktok": 0,
     "instagram": 14,
-    "reddit": 1
+    "reddit": 3
   },
   "topQuotes": [
     {
-      "text": "@epgny took me back to Hawkins for an early birthday gift. 🖤🚲🔦🎄🧇👨‍🔬📻☣️👹⚡️ @stonbroadway is a visually amazing…",
+      "text": "Guess who saw TFS again… I DIIIID !! I got the incredible opportunity to see the new cast and oh my gosh I was blown…",
       "platform": "instagram",
-      "author": "@ladyhope78",
-      "url": "https://www.instagram.com/p/DXUrp3bDuuJ/"
+      "author": "@henrys_radio_static",
+      "url": "https://www.instagram.com/p/DXnCptREYw5/"
     },
     {
-      "text": "If you saw the ‘Stranger Things: The First Shadow’ on Broadway last night, you won the jackpot, as Jamie Campbell…",
-      "platform": "tiktok",
-      "author": "@thehook",
-      "url": "https://www.tiktok.com/@thehook/video/7585924890427919638"
+      "text": "Grateful to be stepping into the Stranger Things Universe 🥹♥️ Come join me on Broadway in NYC in the Most…",
+      "platform": "x",
+      "author": "@missdoradolphin",
+      "url": "https://x.com/missdoradolphin/status/1934436179161587841"
     }
   ],
-  "xTrueVolume": 5,
+  "xTrueVolume": 3,
   "baseline": {
-    "mean": 170.4,
-    "weeksOfHistory": 5
+    "mean": 169.5,
+    "weeksOfHistory": 6
   },
   "costUsd": 0.1355,
   "rawCounts": {
     "reddit": 3,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.14427.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 29,
+    "position": 24,
     "total": 42,
-    "text": "29/42 Broadway"
+    "text": "24/42 Broadway"
   },
-  "compositeScore": 135.42
+  "compositeScore": 113.85
 }

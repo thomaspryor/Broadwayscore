@@ -3,49 +3,62 @@
   "showId": "wicked-2003",
   "showTitle": "Wicked",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:50:45.376Z",
-  "tier": "Buzzing",
-  "volume": 199,
-  "positivePct": 94,
-  "weekOverWeekPct": 0,
-  "baselineMultiple": 1.14,
+  "fetchedAt": "2026-04-27T07:59:25.985Z",
+  "tier": "Hidden",
+  "volume": 19,
+  "positivePct": 100,
+  "weekOverWeekPct": -90,
+  "baselineMultiple": 0.11,
   "platformBreakdown": {
-    "x": 148,
-    "tiktok": 19,
-    "instagram": 12,
-    "reddit": 20
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 19
   },
   "topQuotes": [
-    {
-      "text": "グリンダ(のんちゃん)とウィキッドのアフヌン💗👑🪄🫧 ティアラありがとう💕わくわくな時間だった♫ いつもありがとう〜💚🩷店員さんも装いを褒めてくれて色々ぽかぽか🥰…",
-      "platform": "instagram",
-      "author": "@miko.muchi2",
-      "url": "https://www.instagram.com/p/DXa7WkUgQyc/"
-    },
     {
       "text": "sixteen show trip over :/ hi all, sitting at the airport on the way home back to louisiana after what i think i’ll…",
       "platform": "reddit",
       "author": "u/kendrellgarcia",
       "url": "https://www.reddit.com/r/Broadway/comments/1sqr9vu/sixteen_show_trip_over/"
+    },
+    {
+      "text": "Congratulations to all the Pelotoners that ran the London Marathon today 🎉🇬🇧🎽👟 2 Pros broke the official 2hr…",
+      "platform": "reddit",
+      "author": "u/NYCUberChick",
+      "url": "https://www.reddit.com/r/OnePelotonRealSub/comments/1swhijs/congratulations_to_all_the_pelotoners_that_ran/"
     }
   ],
-  "xTrueVolume": 318,
+  "xTrueVolume": 128,
   "baseline": {
-    "mean": 179.4,
-    "weeksOfHistory": 5
+    "mean": 152.66666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.13525,
   "rawCounts": {
-    "reddit": 29,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 26,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 2,
+    "position": 35,
     "total": 42,
-    "text": "2/42 Broadway"
+    "text": "35/42 Broadway"
   },
-  "compositeScore": 187.06
+  "compositeScore": 19
 }

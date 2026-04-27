@@ -3,49 +3,49 @@
   "showId": "moulin-rouge-the-musical-west-end-2021",
   "showTitle": "Moulin Rouge! The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:42:21.964Z",
-  "tier": "Steady",
-  "volume": 176,
-  "positivePct": 79,
-  "weekOverWeekPct": 4,
-  "baselineMultiple": 1.12,
+  "fetchedAt": "2026-04-27T08:03:01.807Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 148,
-    "tiktok": 20,
-    "instagram": 8,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Having My Way All 2026 🦄 As a fellow Texas Hottie, it was only right I pulled up to premiere week of @moulinrougebway…",
-      "platform": "instagram",
-      "author": "@lovedomma",
-      "url": "https://www.instagram.com/p/DXAG4wUFA9m/"
-    },
-    {
-      "text": "booked the gods and yet got to experience everything in such amazing detail 😍 #moulinrouge #moulinrougemusical…",
-      "platform": "tiktok",
-      "author": "@mermaidonsea",
-      "url": "https://www.tiktok.com/@mermaidonsea/video/7594582313816788247"
-    }
-  ],
-  "xTrueVolume": 0,
+  "topQuotes": [],
+  "xTrueVolume": 1,
   "baseline": {
-    "mean": 160.4,
-    "weeksOfHistory": 5
+    "mean": 133.66666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 26,
-    "total": 53,
-    "text": "26/53 West End"
+    "position": 54,
+    "total": 54,
+    "text": "54/54 West End"
   },
-  "compositeScore": 139.04
+  "compositeScore": 0
 }

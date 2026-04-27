@@ -3,17 +3,17 @@
   "showId": "the-balusters-2026",
   "showTitle": "The Balusters",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:34:24.074Z",
-  "tier": "Buzzing",
-  "volume": 197,
-  "positivePct": 95,
-  "weekOverWeekPct": 6,
-  "baselineMultiple": 1.19,
+  "fetchedAt": "2026-04-27T07:56:26.401Z",
+  "tier": "Rising",
+  "volume": 175,
+  "positivePct": 89,
+  "weekOverWeekPct": -11,
+  "baselineMultiple": 1.02,
   "platformBreakdown": {
     "x": 150,
-    "tiktok": 19,
-    "instagram": 15,
-    "reddit": 13
+    "tiktok": 0,
+    "instagram": 14,
+    "reddit": 11
   },
   "topQuotes": [
     {
@@ -23,29 +23,34 @@
       "url": "https://x.com/Variety/status/2046763490220638569"
     },
     {
-      "text": "The Vernon Point Neighborhood Association is a passionate bunch, whether squabbling over historically inaccurate porch…",
+      "text": "Happy opening night to @kcheung24 and the entire company of #TheBalusters @mtc_nyc it’s time for some HOA chaos!…",
       "platform": "instagram",
-      "author": "@thetonyawards",
-      "url": "https://www.instagram.com/p/DXaH5pOCa6I/"
+      "author": "@cgftalent",
+      "url": "https://www.instagram.com/p/DXZgRugjUvM/"
     }
   ],
-  "xTrueVolume": 31,
+  "xTrueVolume": 61,
   "baseline": {
-    "mean": 172.2,
-    "weeksOfHistory": 5
+    "mean": 172.66666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.1305,
   "rawCounts": {
-    "reddit": 13,
+    "reddit": 14,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.14427.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 1,
+    "position": 10,
     "total": 42,
-    "text": "1/42 Broadway"
+    "text": "10/42 Broadway"
   },
-  "compositeScore": 187.15
+  "compositeScore": 155.75
 }

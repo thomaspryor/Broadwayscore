@@ -3,49 +3,49 @@
   "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
   "showTitle": "Austentatious: An Improvised Jane Austen Novel",
   "market": "West End",
-  "fetchedAt": "2026-04-22T08:52:26.471Z",
-  "tier": "Steady",
-  "volume": 164,
-  "positivePct": 73,
-  "weekOverWeekPct": -4,
-  "baselineMultiple": 1.06,
+  "fetchedAt": "2026-04-27T07:59:29.492Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 147,
-    "tiktok": 17,
+    "x": 0,
+    "tiktok": 0,
     "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Actually, a gentleman ALWAYS tells 🤣😂 #Improv #WestEnd #Austentatious is back in London on Mondays at the Vaudeville…",
-      "platform": "tiktok",
-      "author": "@austenimpro",
-      "url": "https://www.tiktok.com/@austenimpro/video/7563046016711216406"
-    },
-    {
-      "text": "We have a message 🤛💨 Well, had! #Austentatious is back!!! Join us on Mondays at the Vaudeville Theatre in London -…",
-      "platform": "tiktok",
-      "author": "@austenimpro",
-      "url": "https://www.tiktok.com/@austenimpro/video/7560852449485917462"
-    }
-  ],
+  "topQuotes": [],
   "xTrueVolume": 0,
   "baseline": {
-    "mean": 156.6,
-    "weeksOfHistory": 5
+    "mean": 130.5,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1033,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 1
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 32,
-    "total": 53,
-    "text": "32/53 West End"
+    "position": 38,
+    "total": 54,
+    "text": "38/54 West End"
   },
-  "compositeScore": 119.72
+  "compositeScore": 0
 }

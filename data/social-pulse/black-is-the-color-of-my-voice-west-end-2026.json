@@ -3,49 +3,49 @@
   "showId": "black-is-the-color-of-my-voice-west-end-2026",
   "showTitle": "Black Is The Color Of My Voice",
   "market": "West End",
-  "fetchedAt": "2026-04-22T08:59:20.214Z",
-  "tier": "Rising",
-  "volume": 169,
-  "positivePct": 95,
-  "weekOverWeekPct": -3,
-  "baselineMultiple": 1.2,
+  "fetchedAt": "2026-04-27T08:00:39.430Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 150,
-    "tiktok": 4,
-    "instagram": 15,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
+  "topQuotes": [],
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 121.83333333333333,
+    "weeksOfHistory": 6
+  },
+  "costUsd": 0.13525,
+  "rawCounts": {
+    "reddit": 1,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
+  },
+  "errors": [
     {
-      "text": "I arrived Thursday afternoon and kicked off Friday morning with a thrilling TV interview at our local station to…",
-      "platform": "instagram",
-      "author": "@apphiacampbell",
-      "url": "https://www.instagram.com/p/DLKTNhbuK2w/"
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     },
     {
-      "text": "From fragments of the Thames this morning to Nina’s voice tonight… Black Is The Color of My Voice — a one-woman play…",
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
       "platform": "instagram",
-      "author": "@benbekkepiette",
-      "url": "https://www.instagram.com/p/DVHYZyBjU22/"
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     }
   ],
-  "xTrueVolume": 1,
-  "baseline": {
-    "mean": 146.2,
-    "weeksOfHistory": 5
-  },
-  "costUsd": 0.13375,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 153,
-    "tiktok": 20,
-    "instagram": 15
-  },
-  "errors": [],
   "rank": {
-    "position": 12,
-    "total": 53,
-    "text": "12/53 West End"
+    "position": 41,
+    "total": 54,
+    "text": "41/54 West End"
   },
-  "compositeScore": 160.55
+  "compositeScore": 0
 }

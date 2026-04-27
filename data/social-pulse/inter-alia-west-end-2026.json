@@ -3,49 +3,49 @@
   "showId": "inter-alia-west-end-2026",
   "showTitle": "Inter Alia",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:30:38.808Z",
-  "tier": "Steady",
-  "volume": 137,
-  "positivePct": 82,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.09,
+  "fetchedAt": "2026-04-27T08:02:13.553Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 105,
-    "tiktok": 18,
-    "instagram": 14,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
+  "topQuotes": [],
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 106.5,
+    "weeksOfHistory": 6
+  },
+  "costUsd": 0.13525,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
+  },
+  "errors": [
     {
-      "text": "Inter Alia ❤️ just brilliant. #interalia",
-      "platform": "instagram",
-      "author": "@samanthakbrowning",
-      "url": "https://www.instagram.com/p/DXXg3GzEgbd/"
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     },
     {
-      "text": "if u see a little show called inter alia on london’s west end … listen out for a familiar voice :’D the music is…",
       "platform": "tiktok",
-      "author": "@erinlecount",
-      "url": "https://www.tiktok.com/@erinlecount/video/7626149917706259714"
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     }
   ],
-  "xTrueVolume": 2,
-  "baseline": {
-    "mean": 127.8,
-    "weeksOfHistory": 5
-  },
-  "costUsd": 0.10075,
-  "rawCounts": {
-    "reddit": 1,
-    "twitter": 159,
-    "tiktok": 20,
-    "instagram": 15
-  },
-  "errors": [],
   "rank": {
-    "position": 37,
-    "total": 53,
-    "text": "37/53 West End"
+    "position": 49,
+    "total": 54,
+    "text": "49/54 West End"
   },
-  "compositeScore": 112.34
+  "compositeScore": 0
 }

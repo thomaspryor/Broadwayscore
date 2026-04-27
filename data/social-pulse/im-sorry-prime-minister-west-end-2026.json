@@ -3,49 +3,49 @@
   "showId": "im-sorry-prime-minister-west-end-2026",
   "showTitle": "I’m Sorry, Prime Minister",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:27:25.867Z",
-  "tier": "Steady",
-  "volume": 168,
-  "positivePct": 64,
-  "weekOverWeekPct": 0,
-  "baselineMultiple": 1.09,
+  "fetchedAt": "2026-04-27T08:02:06.540Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 150,
-    "tiktok": 6,
-    "instagram": 12,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Achieved @logan_sk23’s ambition of watching a play from a box ✅ Great performances and a surprising meditation on…",
-      "platform": "instagram",
-      "author": "@vernee.samuel",
-      "url": "https://www.instagram.com/p/DWcibYKjKh9/"
-    },
-    {
-      "text": "Making this video so future me remembers how this moment felt. First West End show 🥹✨ For the play ' I'm Sorry Prime…",
-      "platform": "tiktok",
-      "author": "@princess_donnough",
-      "url": "https://www.tiktok.com/@princess_donnough/video/7601228753775185174"
-    }
-  ],
-  "xTrueVolume": 1,
+  "topQuotes": [],
+  "xTrueVolume": 0,
   "baseline": {
-    "mean": 157,
-    "weeksOfHistory": 5
+    "mean": 130.83333333333334,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 40,
-    "total": 53,
-    "text": "40/53 West End"
+    "position": 48,
+    "total": 54,
+    "text": "48/54 West End"
   },
-  "compositeScore": 107.52
+  "compositeScore": 0
 }

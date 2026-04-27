@@ -3,49 +3,49 @@
   "showId": "kinky-boots-the-musical-west-end-2026",
   "showTitle": "Kinky Boots The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:33:42.380Z",
-  "tier": "Steady",
-  "volume": 134,
-  "positivePct": 86,
-  "weekOverWeekPct": 16,
-  "baselineMultiple": 1.19,
+  "fetchedAt": "2026-04-27T08:02:17.406Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 121,
-    "tiktok": 11,
-    "instagram": 2,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Celebrating the new West End cast of Kinky Boots triumphantly! 💋 London, we can't wait to welcome you to the Land of…",
-      "platform": "tiktok",
-      "author": "@kinkyboots_uk",
-      "url": "https://www.tiktok.com/@kinkyboots_uk/video/7607395341297634582"
-    },
-    {
-      "text": "OTD 2018 on a West End night out to see our lovely friend ⁦@RosieGlossop⁩ in Kinky Boots the Musical.…",
-      "platform": "x",
-      "author": "@BeingBoycie",
-      "url": "https://x.com/BeingBoycie/status/1633079414811402241"
-    }
-  ],
+  "topQuotes": [],
   "xTrueVolume": 0,
   "baseline": {
-    "mean": 116.6,
-    "weeksOfHistory": 5
+    "mean": 97.16666666666667,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.09315,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 121,
-    "tiktok": 20,
-    "instagram": 3
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 36,
-    "total": 53,
-    "text": "36/53 West End"
+    "position": 50,
+    "total": 54,
+    "text": "50/54 West End"
   },
-  "compositeScore": 115.24
+  "compositeScore": 0
 }

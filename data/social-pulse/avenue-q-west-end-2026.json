@@ -3,49 +3,49 @@
   "showId": "avenue-q-west-end-2026",
   "showTitle": "Avenue Q",
   "market": "West End",
-  "fetchedAt": "2026-04-22T08:54:12.181Z",
-  "tier": "Rising",
-  "volume": 182,
-  "positivePct": 88,
-  "weekOverWeekPct": 3,
-  "baselineMultiple": 1.13,
+  "fetchedAt": "2026-04-27T08:00:25.446Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 147,
-    "tiktok": 20,
-    "instagram": 15,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Ever since a puppetry workshop at West End Stage summer school and having heard several songs from the show during…",
-      "platform": "instagram",
-      "author": "@gemmadaviesofficial",
-      "url": "https://www.instagram.com/p/DXZrzJPjPeT/"
-    },
-    {
-      "text": "Because WHY was I almost crying at PUPPETS onstage?! This musical found me at the right time in my life 🥲 This show…",
-      "platform": "tiktok",
-      "author": "@emjaytheatre",
-      "url": "https://www.tiktok.com/@emjaytheatre/video/7629108374176664854"
-    }
-  ],
-  "xTrueVolume": 70,
+  "topQuotes": [],
+  "xTrueVolume": 3,
   "baseline": {
-    "mean": 165.6,
-    "weeksOfHistory": 5
+    "mean": 138,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 1,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 13,
-    "total": 53,
-    "text": "13/53 West End"
+    "position": 39,
+    "total": 54,
+    "text": "39/54 West End"
   },
-  "compositeScore": 160.16
+  "compositeScore": 0
 }

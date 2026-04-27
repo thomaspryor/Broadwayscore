@@ -3,49 +3,54 @@
   "showId": "six-2021",
   "showTitle": "SIX",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:30:51.264Z",
+  "fetchedAt": "2026-04-27T07:52:33.673Z",
   "tier": "Steady",
-  "volume": 112,
-  "positivePct": 80,
-  "weekOverWeekPct": 0,
-  "baselineMultiple": 1.19,
+  "volume": 88,
+  "positivePct": 78,
+  "weekOverWeekPct": -21,
+  "baselineMultiple": 0.9,
   "platformBreakdown": {
-    "x": 70,
-    "tiktok": 20,
-    "instagram": 2,
-    "reddit": 20
+    "x": 74,
+    "tiktok": 0,
+    "instagram": 6,
+    "reddit": 8
   },
   "topQuotes": [
     {
-      "text": "six months pregnant and performing on broadway eight times a week there needs to be a word stronger than mother!!!…",
-      "platform": "x",
-      "author": "@ddraiocht",
-      "url": "https://x.com/ddraiocht/status/2046613320636248277"
+      "text": "Disenchanted! Life in London? I just caught the UK premiere of this show in Lichfield, before it heads to the…",
+      "platform": "reddit",
+      "author": "u/Temporary_Eye_9758",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1svp0cn/disenchanted_life_in_london/"
     },
     {
-      "text": "Special guest at Six tonight!",
-      "platform": "reddit",
-      "author": "u/Roskosity",
-      "url": "https://www.reddit.com/r/Broadway/comments/1snnh0k/special_guest_at_six_tonight/"
+      "text": "What a great way to start my birthday! I’m a huge theater nerd and this was my first time seeing six which is crazy…",
+      "platform": "x",
+      "author": "@MakoMommyVT",
+      "url": "https://x.com/MakoMommyVT/status/2043425902516646364"
     }
   ],
-  "xTrueVolume": 97,
+  "xTrueVolume": 59,
   "baseline": {
-    "mean": 97.8,
-    "weeksOfHistory": 5
+    "mean": 96.16666666666667,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.1355,
   "rawCounts": {
-    "reddit": 48,
+    "reddit": 35,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.29348.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 41,
+    "position": 33,
     "total": 42,
-    "text": "41/42 Broadway"
+    "text": "33/42 Broadway"
   },
-  "compositeScore": 89.6
+  "compositeScore": 68.64
 }

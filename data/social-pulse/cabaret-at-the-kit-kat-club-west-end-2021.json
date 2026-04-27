@@ -3,49 +3,49 @@
   "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
   "showTitle": "Cabaret at the Kit Kat Club",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:01:42.009Z",
-  "tier": "Buzzing",
-  "volume": 181,
-  "positivePct": 92,
-  "weekOverWeekPct": -2,
-  "baselineMultiple": 1.07,
+  "fetchedAt": "2026-04-27T08:00:43.275Z",
+  "tier": "Hidden",
+  "volume": 0,
+  "positivePct": 0,
+  "weekOverWeekPct": -100,
+  "baselineMultiple": 0,
   "platformBreakdown": {
-    "x": 149,
-    "tiktok": 17,
-    "instagram": 15,
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [
-    {
-      "text": "Tonight's viewing - I'm back at the @kitkatclubldn to willkommen the latest cast. Always love a trip to Cabaret!…",
-      "platform": "instagram",
-      "author": "@atdazzles",
-      "url": "https://www.instagram.com/p/DUq0yATDlu5/"
-    },
-    {
-      "text": "Rob Madge, Hannah Dodd and the cast of the musical Cabaret at the Kit Kat Club perform Wilkommen at West End Live…",
-      "platform": "tiktok",
-      "author": "@aeronjamesuk",
-      "url": "https://www.tiktok.com/@aeronjamesuk/video/7518470671446379798"
-    }
-  ],
+  "topQuotes": [],
   "xTrueVolume": 0,
   "baseline": {
-    "mean": 171,
-    "weeksOfHistory": 5
+    "mean": 142.5,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.09975,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 155,
-    "tiktok": 20,
-    "instagram": 15
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 6,
-    "total": 53,
-    "text": "6/53 West End"
+    "position": 42,
+    "total": 54,
+    "text": "42/54 West End"
   },
-  "compositeScore": 166.52
+  "compositeScore": 0
 }

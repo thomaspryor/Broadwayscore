@@ -3,49 +3,62 @@
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-04-22T08:39:36.095Z",
-  "tier": "Steady",
-  "volume": 164,
-  "positivePct": 78,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.08,
+  "fetchedAt": "2026-04-27T07:57:56.014Z",
+  "tier": "Hidden",
+  "volume": 8,
+  "positivePct": 20,
+  "weekOverWeekPct": -95,
+  "baselineMultiple": 0.05,
   "platformBreakdown": {
-    "x": 137,
-    "tiktok": 16,
-    "instagram": 7,
-    "reddit": 4
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 8
   },
   "topQuotes": [
     {
-      "text": "An ENORMOUS congratulations to Stage 2/3 Performer Program Student, Dev, for his first performance as ‘Young Simba’ in…",
-      "platform": "instagram",
-      "author": "@theperformancestudio",
-      "url": "https://www.instagram.com/p/DXa8_SzFMjx/"
+      "text": "The Lion King review – Disney’s Broadway juggernaut roars to life in Sydney",
+      "platform": "reddit",
+      "author": "u/TheGuardianPostBot",
+      "url": "https://www.reddit.com/r/theguardian/comments/1su2hb1/the_lion_king_review_disneys_broadway_juggernaut/"
     },
     {
-      "text": "After 25 years and 9,000+ performances, Tshidi Manye takes her final bow at THE LION KING on Broadway after her…",
-      "platform": "tiktok",
-      "author": "@disneyonbroadway",
-      "url": "https://www.tiktok.com/@disneyonbroadway/video/7545941508256451853"
+      "text": "What’s my next Broadway show? Hi everyone, Last night we saw Wicked on Broadway and it was absolutely incredible. We…",
+      "platform": "reddit",
+      "author": "u/Captain_Cornell",
+      "url": "https://www.reddit.com/r/musicals/comments/1sva2g9/whats_my_next_broadway_show/"
     }
   ],
-  "xTrueVolume": 38,
+  "xTrueVolume": 40,
   "baseline": {
-    "mean": 154.6,
-    "weeksOfHistory": 5
+    "mean": 130.16666666666666,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.134,
+  "costUsd": 0.13525,
   "rawCounts": {
-    "reddit": 6,
-    "twitter": 154,
-    "tiktok": 20,
-    "instagram": 15
+    "reddit": 8,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    }
+  ],
   "rank": {
-    "position": 31,
+    "position": 42,
     "total": 42,
-    "text": "31/42 Broadway"
+    "text": "42/42 Broadway"
   },
-  "compositeScore": 127.92
+  "compositeScore": 1.6
 }

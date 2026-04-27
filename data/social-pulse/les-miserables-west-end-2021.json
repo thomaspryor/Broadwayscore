@@ -3,49 +3,49 @@
   "showId": "les-miserables-west-end-2021",
   "showTitle": "Les Misérables",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:37:22.114Z",
-  "tier": "Steady",
-  "volume": 149,
-  "positivePct": 89,
-  "weekOverWeekPct": -7,
-  "baselineMultiple": 1.02,
+  "fetchedAt": "2026-04-27T08:02:38.425Z",
+  "tier": "Hidden",
+  "volume": 2,
+  "positivePct": 0,
+  "weekOverWeekPct": -99,
+  "baselineMultiple": 0.01,
   "platformBreakdown": {
-    "x": 127,
-    "tiktok": 14,
-    "instagram": 7,
-    "reddit": 1
+    "x": 0,
+    "tiktok": 0,
+    "instagram": 0,
+    "reddit": 2
   },
-  "topQuotes": [
+  "topQuotes": [],
+  "xTrueVolume": 66,
+  "baseline": {
+    "mean": 123,
+    "weeksOfHistory": 6
+  },
+  "costUsd": 0.13525,
+  "rawCounts": {
+    "reddit": 4,
+    "twitter": 0,
+    "tiktok": 0,
+    "instagram": 0
+  },
+  "errors": [
     {
-      "text": "Honestly, there’s no better way to spend an evening than at the theatre ✨ #lesmis #lesmiserables #london…",
-      "platform": "tiktok",
-      "author": "@lilyscarlettaylor",
-      "url": "https://www.tiktok.com/@lilyscarlettaylor/video/7565245458612833558"
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     },
     {
-      "text": "‘The dream lives on — &amp; the people still sing’ Happy 40th West End anniversary to Les Misérables! @lesmisofficial…",
-      "platform": "x",
-      "author": "@MusicalTheatreR",
-      "url": "https://x.com/MusicalTheatreR/status/1975877995689824308"
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "instagram",
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     }
   ],
-  "xTrueVolume": 6,
-  "baseline": {
-    "mean": 147.2,
-    "weeksOfHistory": 5
-  },
-  "costUsd": 0.1305,
-  "rawCounts": {
-    "reddit": 3,
-    "twitter": 160,
-    "tiktok": 20,
-    "instagram": 15
-  },
-  "errors": [],
   "rank": {
-    "position": 30,
-    "total": 53,
-    "text": "30/53 West End"
+    "position": 52,
+    "total": 54,
+    "text": "52/54 West End"
   },
-  "compositeScore": 132.61
+  "compositeScore": 0
 }

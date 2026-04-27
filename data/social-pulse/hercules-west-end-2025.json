@@ -3,54 +3,56 @@
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-04-22T09:25:19.219Z",
-  "tier": "Steady",
-  "volume": 158,
-  "positivePct": 62,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.1,
+  "fetchedAt": "2026-04-27T08:02:03.454Z",
+  "tier": "Hidden",
+  "volume": 2,
+  "positivePct": 0,
+  "weekOverWeekPct": -99,
+  "baselineMultiple": 0.01,
   "platformBreakdown": {
-    "x": 137,
-    "tiktok": 19,
+    "x": 0,
+    "tiktok": 0,
     "instagram": 0,
     "reddit": 2
   },
   "topQuotes": [
     {
-      "text": "Going to watch the Hercules west end show this evening ♥️✨ Excited for my inner child that had the VCR tape growing up…",
-      "platform": "x",
-      "author": "@marlene_zw",
-      "url": "https://x.com/marlene_zw/status/2037931829882155438"
-    },
-    {
-      "text": "The Muses are out of this world! Check out the curtain call for Disney’s Hercules the Musical in London’s West End!…",
-      "platform": "tiktok",
-      "author": "@aeronjamesuk",
-      "url": "https://www.tiktok.com/@aeronjamesuk/video/7567712813708283158"
+      "text": "Hercules West End worth the stop? Hello! I'm in the midst of planning a trip. I was planning to stop in London for one…",
+      "platform": "reddit",
+      "author": "u/BoysenberryPrudent49",
+      "url": "https://www.reddit.com/r/Broadway/comments/1su3b11/hercules_west_end_worth_the_stop/"
     }
   ],
-  "xTrueVolume": 25,
+  "xTrueVolume": 20,
   "baseline": {
-    "mean": 147,
-    "weeksOfHistory": 5
+    "mean": 122.83333333333333,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.13525,
   "rawCounts": {
     "reddit": 13,
-    "twitter": 160,
-    "tiktok": 20,
+    "twitter": 0,
+    "tiktok": 0,
     "instagram": 0
   },
   "errors": [
     {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+    },
+    {
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 408 {\n  \"error\": {\n    \"type\": \"run-timeout-exceeded\",\n    \"message\": \"Actor run exceeded the timeout of 300 seconds for this API endpoint\"\n  }\n}"
+      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
     }
   ],
   "rank": {
-    "position": 42,
-    "total": 53,
-    "text": "42/53 West End"
+    "position": 47,
+    "total": 54,
+    "text": "47/54 West End"
   },
-  "compositeScore": 97.96
+  "compositeScore": 0
 }
