@@ -341,7 +341,7 @@ function Inner({
   const userFeaturesEnabled = featureFlags.userAccounts;
 
   return (
-    <div className="card p-4 sm:p-5 lg:p-6 space-y-4" data-testid="show-hero-redesign">
+    <div className="card p-4 sm:p-5 space-y-4 lg:space-y-3" data-testid="show-hero-redesign">
       {/* Header: poster left + title block right. Poster scales up at desktop. */}
       <div className="flex gap-4 lg:gap-6">
         <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
@@ -393,83 +393,84 @@ function Inner({
             </p>
             <DateLine show={show} />
           </div>
+
+          {/* Desktop-only inline score block — lives INSIDE the right column,
+              alongside title/meta. Mobile renders dual cards in a separate
+              full-width row below the header. */}
+          {hasEnoughCriticReviews && (
+            <div className="hidden lg:flex items-center flex-wrap gap-4 pt-3">
+              <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
+                <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
+                <div>
+                  {tier && (
+                    <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
+                      {tier.label}
+                    </p>
+                  )}
+                  <p className="text-sm text-gray-500 mt-1">
+                    Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                  </p>
+                </div>
+              </a>
+              {hasAudience && audienceGrade && (
+                <a
+                  href="#audience"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold hover:brightness-125 transition-all"
+                  style={{ background: `${audienceGrade.color}1f`, color: audienceGrade.color }}
+                >
+                  <span className="opacity-60">Audience:</span>
+                  <span>{audienceGrade.grade} · {audienceGrade.label}</span>
+                </a>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Score row OR awaiting card. Mobile: dual cards (critic + audience).
-          Desktop (lg+): single inline block (gold ScoreBadge + tier name + review
-          count + audience chip) — preserves current desktop's vertical density. */}
+      {/* Mobile/sm score row — dual cards. Hidden on desktop (score block lives
+          inline in the title column on lg+). Awaiting card replaces both when
+          there aren't enough critic reviews. */}
       {!hasEnoughCriticReviews ? (
         <AwaitingCard show={show} reviewCount={reviewCount} />
       ) : (
-        <>
-          {/* Mobile / sm — dual boxes */}
-          <div className={`lg:hidden grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
-            <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
-              <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
-              <div className="min-w-0 flex-1">
-                {tier && (
-                  <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
-                    {tier.label}
-                  </p>
-                )}
-                <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
-                  {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
+        <div className={`lg:hidden grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
+            <div className="min-w-0 flex-1">
+              {tier && (
+                <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
+                  {tier.label}
                 </p>
-              </div>
-            </a>
-            {hasAudience && audienceGrade && (
-              <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
-                <div
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
-                  style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
-                >
-                  {audienceGrade.grade}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
-                    {audienceGrade.label}
-                  </p>
-                  {audienceCount > 0 && (
-                    <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
-                      {audienceCount.toLocaleString('en-US')} audience reviews
-                    </p>
-                  )}
-                </div>
-              </a>
-            )}
-          </div>
-
-          {/* Desktop / lg — inline score block (matches current desktop hero) */}
-          <div className="hidden lg:flex items-center gap-4">
-            <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
-              <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
-              <div>
-                {tier && (
-                  <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
-                    {tier.label}
-                  </p>
-                )}
-                <p className="text-sm text-gray-500 mt-1">
-                  Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
-                </p>
-              </div>
-            </a>
-            {hasAudience && audienceGrade && (
-              <a
-                href="#audience"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold hover:brightness-125 transition-all"
-                style={{ background: `${audienceGrade.color}1f`, color: audienceGrade.color }}
+              )}
+              <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
+              </p>
+            </div>
+          </a>
+          {hasAudience && audienceGrade && (
+            <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+              <div
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
+                style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
               >
-                <span className="opacity-60">Audience:</span>
-                <span>{audienceGrade.grade} · {audienceGrade.label}</span>
-              </a>
-            )}
-          </div>
-        </>
+                {audienceGrade.grade}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
+                  {audienceGrade.label}
+                </p>
+                {audienceCount > 0 && (
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                    {audienceCount.toLocaleString('en-US')} audience reviews
+                  </p>
+                )}
+              </div>
+            </a>
+          )}
+        </div>
       )}
 
-      {/* Distribution bar — same on both, just wider on desktop */}
+      {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
         <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
       )}
@@ -601,7 +602,7 @@ function Inner({
           officialUrl={show.officialUrl}
           pageType="show"
           splitVariant
-          primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 py-2.5 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+          primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 py-2.5 lg:py-1.5 px-5 lg:px-3 rounded-lg bg-gradient-brand text-white font-bold text-sm lg:text-xs leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
           secondaryAfter={
             featureFlags.discountTickets && lotteryRush ? (
               <a
