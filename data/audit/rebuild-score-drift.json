@@ -1,47 +1,823 @@
 {
-  "timestamp": "2026-04-27T06:58:43.312Z",
-  "totalDrifted": 5,
+  "timestamp": "2026-04-27T16:11:14.716Z",
+  "totalDrifted": 102,
   "threshold": 20,
   "reviews": [
     {
-      "showId": "six-the-musical-west-end-2021",
-      "outlet": "Lost in Theatreland",
-      "critic": "Amy Rye",
-      "oldScore": 95,
-      "newScore": 40,
-      "delta": 55
+      "showId": "the-ferryman-2018",
+      "outlet": "City Cabaret",
+      "critic": "Elizabeth Ahlfors",
+      "oldScore": 35,
+      "newScore": 85,
+      "delta": 50
     },
     {
-      "showId": "operation-mincemeat-west-end-2024",
-      "outlet": "Lost in Theatreland",
-      "critic": "Amy Rye",
-      "oldScore": 94,
-      "newScore": 40,
-      "delta": 54
+      "showId": "1776-2022",
+      "outlet": "New York Theatre Guide",
+      "critic": "Gillian Russo",
+      "oldScore": 35,
+      "newScore": 77,
+      "delta": 42
+    },
+    {
+      "showId": "what-the-constitution-means-to-me-2019",
+      "outlet": "Slant Magazine",
+      "critic": "Aaron Riccio",
+      "oldScore": 35,
+      "newScore": 77,
+      "delta": 42
+    },
+    {
+      "showId": "job-2024",
+      "outlet": "Talkin' Broadway",
+      "critic": "Kimberly Ramirez",
+      "oldScore": 45,
+      "newScore": 85,
+      "delta": 40
+    },
+    {
+      "showId": "little-bear-ridge-road-2025",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "oldScore": 50,
+      "newScore": 86,
+      "delta": 36
+    },
+    {
+      "showId": "all-my-sons-2019",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 45,
+      "newScore": 77,
+      "delta": 32
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 55,
+      "newScore": 86,
+      "delta": 31
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "oldScore": 88,
+      "newScore": 59,
+      "delta": 29
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 50,
+      "newScore": 78,
+      "delta": 28
+    },
+    {
+      "showId": "linda-vista-2019",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "oldScore": 51,
+      "newScore": 77,
+      "delta": 26
+    },
+    {
+      "showId": "the-prom-2018",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "oldScore": 38,
+      "newScore": 64,
+      "delta": 26
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "The Wall Street Journal",
+      "critic": "Terry Teachout",
+      "oldScore": 55,
+      "newScore": 81,
+      "delta": 26
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "outlet": "Associated Press",
+      "critic": "Mark Kennedy",
+      "oldScore": 62,
+      "newScore": 87,
+      "delta": 25
+    },
+    {
+      "showId": "pictures-from-home-2023",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "oldScore": 55,
+      "newScore": 80,
+      "delta": 25
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "outlet": "The New York Times",
+      "critic": "Adam Feldman",
+      "oldScore": 78,
+      "newScore": 55,
+      "delta": 23
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 45,
+      "newScore": 67,
+      "delta": 22
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "outlet": "Theater Scene",
+      "critic": "Joseph Pisano",
+      "oldScore": 42,
+      "newScore": 64,
+      "delta": 22
+    },
+    {
+      "showId": "the-ferryman-2018",
+      "outlet": "Exeunt Magazine",
+      "critic": "Dan O'Neil",
+      "oldScore": 38,
+      "newScore": 60,
+      "delta": 22
+    },
+    {
+      "showId": "burnout-paradise-off-broadway-2026",
+      "outlet": "New York Theatre Guide",
+      "critic": "Gillian Russo",
+      "oldScore": 64,
+      "newScore": 85,
+      "delta": 21
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "New York Theatre Guide",
+      "critic": "Amelia Merrill",
+      "oldScore": 43,
+      "newScore": 64,
+      "delta": 21
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "oldScore": 55,
+      "newScore": 34,
+      "delta": 21
+    },
+    {
+      "showId": "man-and-boy-west-end-2026",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 88,
+      "newScore": 67,
+      "delta": 21
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "outlet": "Front Row Center",
+      "critic": "Tulis McCall",
+      "oldScore": 65,
+      "newScore": 85,
+      "delta": 20
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "The Wall Street Journal",
+      "critic": "Edward Rothstein",
+      "oldScore": 25,
+      "newScore": 45,
+      "delta": 20
+    },
+    {
+      "showId": "gary-a-sequel-to-titus-andronicus-2019",
+      "outlet": "New York Theatre Guide",
+      "critic": "Mark Shenton",
+      "oldScore": 58,
+      "newScore": 78,
+      "delta": 20
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outlet": "Front Mezz Junkies",
+      "critic": "Unknown",
+      "oldScore": 56,
+      "newScore": 76,
+      "delta": 20
+    },
+    {
+      "showId": "the-last-five-years-2025",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "oldScore": 65,
+      "newScore": 45,
+      "delta": 20
+    },
+    {
+      "showId": "anastasia-2017",
+      "outlet": "The New Yorker",
+      "critic": "Michael Schulman",
+      "oldScore": 43,
+      "newScore": 62,
+      "delta": 19
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "oldScore": 45,
+      "newScore": 64,
+      "delta": 19
+    },
+    {
+      "showId": "call-me-izzy-2025",
+      "outlet": "TheaterMania",
+      "critic": "David Gordon",
+      "oldScore": 72,
+      "newScore": 91,
+      "delta": 19
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Towleroad",
+      "critic": "Naveen Kumar",
+      "oldScore": 45,
+      "newScore": 64,
+      "delta": 19
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "outlet": "Times Square Chronicles",
+      "critic": "Suzanna Bowling",
+      "oldScore": 72,
+      "newScore": 91,
+      "delta": 19
+    },
+    {
+      "showId": "the-prom-2018",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 45,
+      "newScore": 64,
+      "delta": 19
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Theater Scene",
+      "critic": "David Kaufman",
+      "oldScore": 25,
+      "newScore": 43,
+      "delta": 18
+    },
+    {
+      "showId": "othello-2025",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 45,
+      "newScore": 63,
+      "delta": 18
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outlet": "Variety",
+      "critic": "Ellise Shafer",
+      "oldScore": 49,
+      "newScore": 67,
+      "delta": 18
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "oldScore": 50,
+      "newScore": 68,
+      "delta": 18
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "Towleroad",
+      "critic": "Naveen Kumar",
+      "oldScore": 38,
+      "newScore": 56,
+      "delta": 18
+    },
+    {
+      "showId": "amelie-a-new-musical-2017",
+      "outlet": "The New York Times",
+      "critic": "Ben Brantley",
+      "oldScore": 45,
+      "newScore": 62,
+      "delta": 17
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "oldScore": 45,
+      "newScore": 62,
+      "delta": 17
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 48,
+      "newScore": 65,
+      "delta": 17
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Village Voice",
+      "critic": "Elizabeth Zimmer",
+      "oldScore": 25,
+      "newScore": 42,
+      "delta": 17
     },
     {
       "showId": "death-becomes-her-2024",
-      "outlet": "The Interested Bystander",
-      "critic": "Cary Wong",
-      "oldScore": 35,
-      "newScore": 78,
-      "delta": 43
+      "outlet": "amNewYork",
+      "critic": "Matt Windman",
+      "oldScore": 66,
+      "newScore": 49,
+      "delta": 17
     },
     {
-      "showId": "the-lost-boys-2026",
-      "outlet": "People",
-      "critic": "Dave Quinn",
-      "oldScore": 76,
-      "newScore": 62,
+      "showId": "ohio-state-murders-2022",
+      "outlet": "TheaterMania",
+      "critic": "Jesse Green",
+      "oldScore": 72,
+      "newScore": 89,
+      "delta": 17
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-2025",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "oldScore": 50,
+      "newScore": 67,
+      "delta": 17
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "oldScore": 25,
+      "newScore": 41,
+      "delta": 16
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Exeunt Magazine",
+      "critic": "Jordan G. Teicher",
+      "oldScore": 25,
+      "newScore": 41,
+      "delta": 16
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outlet": "Vulture",
+      "critic": "Jackson McHenry",
+      "oldScore": 42,
+      "newScore": 57,
+      "delta": 15
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "outlet": "Theatre Reviews Limited",
+      "critic": "David Roberts",
+      "oldScore": 45,
+      "newScore": 60,
+      "delta": 15
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Variety",
+      "critic": "Marilyn Stasio",
+      "oldScore": 38,
+      "newScore": 53,
+      "delta": 15
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "outlet": "Los Angeles Times",
+      "critic": "Charles McNulty",
+      "oldScore": 49,
+      "newScore": 64,
+      "delta": 15
+    },
+    {
+      "showId": "heartbreak-hotel-off-broadway-2026",
+      "outlet": "Pages on Stages",
+      "critic": "Mason Pilevsky",
+      "oldScore": 56,
+      "newScore": 71,
+      "delta": 15
+    },
+    {
+      "showId": "slave-play-2021",
+      "outlet": "CurtainUp",
+      "critic": "Simon Saltzman",
+      "oldScore": 88,
+      "newScore": 73,
+      "delta": 15
+    },
+    {
+      "showId": "tammy-faye-2024",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "oldScore": 34,
+      "newScore": 49,
+      "delta": 15
+    },
+    {
+      "showId": "thoughts-of-a-colored-man-2021",
+      "outlet": "USA Today",
+      "critic": "Charles Isherwood",
+      "oldScore": 79,
+      "newScore": 64,
+      "delta": 15
+    },
+    {
+      "showId": "wicked-2003",
+      "outlet": "New York Daily News",
+      "critic": "Howard",
+      "oldScore": 19,
+      "newScore": 34,
+      "delta": 15
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "oldScore": 25,
+      "newScore": 39,
       "delta": 14
     },
     {
-      "showId": "the-balusters-2026",
-      "outlet": "TheWrap",
-      "critic": "Robert Hofler",
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "oldScore": 52,
+      "newScore": 66,
+      "delta": 14
+    },
+    {
+      "showId": "evening-all-afternoon-west-end-2026",
+      "outlet": "London Theatre",
+      "critic": "Holly O'Mahony",
+      "oldScore": 80,
+      "newScore": 66,
+      "delta": 14
+    },
+    {
+      "showId": "good-night-and-good-luck-2025",
+      "outlet": "Theater Scene",
+      "critic": "Victor Gluck",
+      "oldScore": 80,
+      "newScore": 66,
+      "delta": 14
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "outlet": "The Arts Fuse",
+      "critic": "Christopher Caggiano",
+      "oldScore": 65,
+      "newScore": 79,
+      "delta": 14
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "oldScore": 62,
+      "newScore": 76,
+      "delta": 14
+    },
+    {
+      "showId": "ragtime-2025",
+      "outlet": "Vulture",
+      "critic": "Jackson McHenry",
+      "oldScore": 72,
+      "newScore": 86,
+      "delta": 14
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 88,
+      "newScore": 74,
+      "delta": 14
+    },
+    {
+      "showId": "the-tempest-globe-west-end-2026",
+      "outlet": "London Theatre",
+      "critic": "Julia Rank",
+      "oldScore": 80,
+      "newScore": 66,
+      "delta": 14
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "Newsday",
+      "critic": "Rafer Guzmán",
+      "oldScore": 42,
+      "newScore": 56,
+      "delta": 14
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "NY1",
+      "critic": "Roma Torre",
+      "oldScore": 45,
+      "newScore": 59,
+      "delta": 14
+    },
+    {
+      "showId": "west-side-story-2020",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 42,
+      "newScore": 56,
+      "delta": 14
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Theatrely",
+      "critic": "Juan A. Ramirez",
+      "oldScore": 35,
+      "newScore": 48,
+      "delta": 13
+    },
+    {
+      "showId": "anastasia-2017",
+      "outlet": "Variety",
+      "critic": "Marilyn Stasio",
+      "oldScore": 65,
+      "newScore": 78,
+      "delta": 13
+    },
+    {
+      "showId": "encores-the-wild-party-off-broadway-2026",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "oldScore": 66,
+      "newScore": 79,
+      "delta": 13
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "outlet": "The Forward",
+      "critic": "PJ Grisar",
+      "oldScore": 65,
+      "newScore": 78,
+      "delta": 13
+    },
+    {
+      "showId": "paddington-the-musical-west-end-2025",
+      "outlet": "South London",
+      "critic": "Michael Holland",
+      "oldScore": 73,
+      "newScore": 86,
+      "delta": 13
+    },
+    {
+      "showId": "pictures-from-home-2023",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 72,
+      "newScore": 85,
+      "delta": 13
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "outlet": "Showbiz411",
+      "critic": "Roger Friedman",
+      "oldScore": 72,
+      "newScore": 85,
+      "delta": 13
+    },
+    {
+      "showId": "walking-with-ghosts-2022",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 62,
+      "newScore": 75,
+      "delta": 13
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 88,
+      "newScore": 76,
+      "delta": 12
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "Deadline",
+      "critic": "Greg Evans",
+      "oldScore": 76,
+      "newScore": 64,
+      "delta": 12
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "oldScore": 62,
+      "newScore": 50,
+      "delta": 12
+    },
+    {
+      "showId": "camelot-2023",
+      "outlet": "Vulture",
+      "critic": "Jackson McHenry",
+      "oldScore": 62,
+      "newScore": 74,
+      "delta": 12
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "oldScore": 12,
+      "newScore": 24,
+      "delta": 12
+    },
+    {
+      "showId": "how-i-learned-to-drive-2022",
+      "outlet": "Broadway Blog",
+      "critic": "Samuel L. Leiter",
+      "oldScore": 88,
+      "newScore": 76,
+      "delta": 12
+    },
+    {
+      "showId": "oh-mary-2024",
+      "outlet": "Theatrely",
+      "critic": "Nolan Boggess",
+      "oldScore": 79,
+      "newScore": 91,
+      "delta": 12
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "outlet": "Vulture",
+      "critic": "Helen Shaw",
+      "oldScore": 62,
+      "newScore": 74,
+      "delta": 12
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "oldScore": 93,
+      "newScore": 81,
+      "delta": 12
+    },
+    {
+      "showId": "topdog-underdog-2022",
+      "outlet": "Theatrely",
+      "critic": "Juan A. Ramirez",
       "oldScore": 74,
       "newScore": 62,
       "delta": 12
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outlet": "Cititour",
+      "critic": "Scott Lipton",
+      "oldScore": 65,
+      "newScore": 76,
+      "delta": 11
+    },
+    {
+      "showId": "aladdin-2014",
+      "outlet": "New Jersey Newsroom",
+      "critic": "Michael Sommers",
+      "oldScore": 74,
+      "newScore": 85,
+      "delta": 11
+    },
+    {
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "oldScore": 75,
+      "newScore": 86,
+      "delta": 11
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "outlet": "The New York Times",
+      "critic": "Jesse Green",
+      "oldScore": 73,
+      "newScore": 62,
+      "delta": 11
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "oldScore": 25,
+      "newScore": 36,
+      "delta": 11
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Newsday",
+      "critic": "Linda Winer",
+      "oldScore": 28,
+      "newScore": 39,
+      "delta": 11
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outlet": "Times Square Chronicles",
+      "critic": "Suzanna Bowling",
+      "oldScore": 38,
+      "newScore": 49,
+      "delta": 11
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "outlet": "Stage Buddy",
+      "critic": "Elyse Trevers",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "pictures-from-home-2023",
+      "outlet": "Exeunt Magazine",
+      "critic": "Juliet Hindell",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "outlet": "Cititour",
+      "critic": "Brian Scott Lipton",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "prima-facie-2023",
+      "outlet": "Theater Scene",
+      "critic": "Joseph Pisano",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "significant-other-2017",
+      "outlet": "The Hollywood Reporter",
+      "critic": "David Rooney",
+      "oldScore": 76,
+      "newScore": 87,
+      "delta": 11
+    },
+    {
+      "showId": "the-little-prince-2022",
+      "outlet": "Front Row Center",
+      "critic": "Victoria Dammer",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "outlet": "Vulture",
+      "critic": "Jackson McHenry",
+      "oldScore": 65,
+      "newScore": 76,
+      "delta": 11
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "oldScore": 88,
+      "newScore": 77,
+      "delta": 11
     }
   ]
 }
