@@ -51,6 +51,11 @@ interface LogEntry {
   status: 'submitting' | 'saved' | 'failed';
   error?: string;
   warningCount?: number;
+  // UX hints (Lost Boys 2026-04-27 ship-check Gap 8): show the operator
+  // which workflow was dispatched + ETA, plus surface byline-fail rows
+  // distinctly so they don't get lost in the success list.
+  dispatchedWorkflow?: string;
+  pendingReason?: string;
 }
 
 type Mode = 'single' | 'batch';
@@ -139,6 +144,13 @@ function LogRow({ entry }: { entry: LogEntry }) {
         ? entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)
         : entry.error || 'Failed';
 
+  // Decode the dispatched workflow into operator-friendly ETA (Lost Boys
+  // 2026-04-27 ship-check Gap 8). Without this hint, "saved + rebuild
+  // dispatched" leaves the operator guessing whether to expect 5 min
+  // (rebuild-fast) or 15-20 min (LLM-then-rebuild).
+  const eta = entry.status === 'saved' ? describeDispatchEta(entry.dispatchedWorkflow) : null;
+  const bylineWarning = entry.status === 'saved' && entry.pendingReason === 'no-byline';
+
   return (
     <li className="flex items-start gap-2 text-xs">
       <span className={`${tone} mt-0.5 shrink-0 w-4`}>{icon}</span>
@@ -147,12 +159,45 @@ function LogRow({ entry }: { entry: LogEntry }) {
         {entry.status === 'failed' && entry.error && (
           <div className="text-[11px] text-gray-500 truncate">{entry.url}</div>
         )}
+        {bylineWarning && (
+          <div className="text-[11px] text-score-tepid mt-0.5">
+            ⚠ Byline not detected — saved as &quot;Unknown&quot;. Edit the file to set criticName, then re-rebuild.
+          </div>
+        )}
+        {eta && (
+          <div className={`text-[11px] mt-0.5 ${eta.tone}`}>
+            {eta.label}
+          </div>
+        )}
       </div>
       <span className="text-[11px] text-gray-500 shrink-0 tabular-nums">
         {new Date(entry.startedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
       </span>
     </li>
   );
+}
+
+/**
+ * Map the dispatched workflow filename to the operator-facing ETA hint.
+ * rebuild-fast.yml means a score is already on the file; pipeline takes
+ * ~5 min to live. llm-ensemble-score.yml means we need to score from
+ * fullText first; pipeline takes ~15-20 min to live.
+ */
+function describeDispatchEta(workflow?: string): { label: string; tone: string } | null {
+  if (!workflow) return null;
+  if (workflow === 'rebuild-fast.yml') {
+    return {
+      label: '🚀 Fast path — live in ~5 min (rebuild-fast)',
+      tone: 'text-status-open',
+    };
+  }
+  if (workflow === 'llm-ensemble-score.yml') {
+    return {
+      label: '🤖 LLM scoring — live in ~15-20 min (ensemble-then-rebuild)',
+      tone: 'text-gray-400',
+    };
+  }
+  return { label: `Dispatched ${workflow}`, tone: 'text-gray-500' };
 }
 
 // ─── Single-paste form ──────────────────────────────────────────────
@@ -274,6 +319,8 @@ function SinglePasteForm({
           criticName: json.criticName,
           commitSha: json.commitSha,
           warningCount: (json.detectionWarnings || []).length,
+          dispatchedWorkflow: json.dispatchedWorkflow,
+          pendingReason: json.pendingReason,
         });
         // Clear inputs so user can paste the next one
         setUrl('');
@@ -574,6 +621,10 @@ function BatchPasteForm({
             criticName: json.criticName,
             commitSha: json.commitSha,
             warningCount: (json.detectionWarnings || []).length,
+            // Per-slot dispatch info — batch dispatches a single workflow at
+            // the end so this is per-FILE state (committed yes, but the
+            // batch-end dispatch tells the operator the actual ETA).
+            pendingReason: json.pendingReason,
           });
         } else {
           failureCount++;
@@ -629,6 +680,7 @@ function BatchPasteForm({
             criticName: `${successCount} review${successCount === 1 ? '' : 's'}`,
             outletId: anyNeedsScoring ? 'score-then-rebuild' : 'rebuild',
             showId: 'dispatched',
+            dispatchedWorkflow: json.dispatchedWorkflow,
           });
         } else {
           const fallbackCmd = anyNeedsScoring
