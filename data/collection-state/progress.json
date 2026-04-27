@@ -37,7 +37,17 @@
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "wicked-west-end-2021/times-uk--kevin-maher.json"
+    "wicked-west-end-2021/times-uk--kevin-maher.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "john-proctor-is-the-villain-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -46,7 +56,10 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-lost-boys-2026/ew--unknown.json",
@@ -60,7 +73,7 @@
     "archive": []
   },
   "startTime": "2026-04-27T16:18:52.228Z",
-  "lastProcessed": "wicked-west-end-2021/times-uk--kevin-maher.json",
+  "lastProcessed": "stereophonic-2024/usatoday--charles-isherwood.json",
   "log": [
     {
       "t": "2026-04-27T19:28:06.591Z",
@@ -70,6 +83,17 @@
     },
     {
       "t": "2026-04-27T19:28:07.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T19:31:40.512Z",
+      "event": "bb-session",
+      "session": "b263e650",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
+    },
+    {
+      "t": "2026-04-27T19:31:41.446Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

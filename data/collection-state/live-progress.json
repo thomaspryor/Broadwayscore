@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-27T19:30:36.616Z",
+  "updatedAt": "2026-04-27T19:32:55.347Z",
   "processed": 6,
-  "failed": 30,
-  "successRate": "16.7%",
+  "failed": 40,
+  "successRate": "13.0%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-27T19:28:06.591Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-04-27T19:28:07.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T19:31:40.512Z",
+      "event": "bb-session",
+      "session": "b263e650",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
+    },
+    {
+      "t": "2026-04-27T19:31:41.446Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
