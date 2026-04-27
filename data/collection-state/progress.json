@@ -453,7 +453,17 @@
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "driving-miss-daisy-2010/nytheatre--martin-denton.json",
     "la-bete-2010/chicagotribune--ben-brantley.json",
-    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json"
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "the-pitmen-painters-2010/backstage--erik-haagensen.json",
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "everyday-rapture-2010/backstage--david-sheward.json",
+    "collected-stories-2010/ap--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -481,7 +491,8 @@
       "schmigadoon-2026/wsj--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
-      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -509,7 +520,7 @@
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+  "lastProcessed": "collected-stories-2010/ap--unknown.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -648,6 +659,17 @@
       "t": "2026-04-27T12:05:52.400Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T13:12:22.497Z",
+      "event": "bb-session",
+      "session": "5a84737c",
+      "url": "http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-04-27T13:12:23.975Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
