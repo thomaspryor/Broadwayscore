@@ -29,12 +29,22 @@ const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manua
 // originalScore + originalScoreNormalized populated BEFORE rebuild touches the
 // file, so rebuild's P0.5 path returns the explicit rating instead of falling
 // through to the LLM ensemble's body-sentiment guess.
-const { extractScore } = cjsRequire('../../../../../scripts/lib/score-extractors') as {
+//
+// scoreToBucket maps a 1-100 score to a bucket label (Rave/Positive/Mixed/
+// Negative/Pan). Used by Issue #10's keyPhrase clear: when /ingest writes a
+// humanReviewScore that crosses a tier boundary from any pre-existing
+// llmScore.score, we clear llmScore.keyPhrases so rebuild's pullquote
+// selection falls through to a non-mismatched source. Helen Shaw on Lost
+// Boys 2026-04-26: LLM scored 68 (Mixed) → keyPhrases highlighted negative
+// Act 2 critique. Operator overrode score to 78 (Positive) but didn't clear
+// keyPhrases — pullquote stayed negative on a Positive review.
+const { extractScore, scoreToBucket } = cjsRequire('../../../../../scripts/lib/score-extractors') as {
   extractScore: (
     html: string,
     text: string,
     outletId: string,
   ) => { originalScore: string; normalizedScore: number; source: string; outlet?: string } | null;
+  scoreToBucket: (score: number) => string;
 };
 
 export const dynamic = 'force-dynamic';
@@ -345,6 +355,44 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     ...coreFields,
     ...manualFields,
   };
+
+  // Issue #10 (Lost Boys 2026-04-26) — clear stale keyPhrases on tier change.
+  // When /ingest writes humanReviewScore and the existing file has
+  // llmScore.score in a DIFFERENT bucket, the existing llmScore.keyPhrases
+  // were selected to support the old bucket and now mismatch the new
+  // sentiment. Drop them so rebuild's pullquote-selection chain falls through
+  // to llmPullQuote / pullQuote / aggregator excerpts / fullText slice
+  // instead of rendering a negative phrase on a now-positive review (Helen
+  // Shaw NYT, locked at 78 with a Mixed-bucket pullquote). Same-bucket writes
+  // keep keyPhrases — they're still relevant.
+  if (
+    typeof humanReviewScore === 'number' &&
+    humanReviewScore >= 1 &&
+    humanReviewScore <= 100 &&
+    existingData &&
+    typeof existingData.llmScore === 'object' &&
+    existingData.llmScore !== null
+  ) {
+    const existingLlm = existingData.llmScore as Record<string, unknown>;
+    const existingScore = typeof existingLlm.score === 'number' ? existingLlm.score : null;
+    const existingKeyPhrases = existingLlm.keyPhrases;
+    if (
+      existingScore !== null &&
+      Array.isArray(existingKeyPhrases) &&
+      existingKeyPhrases.length > 0 &&
+      scoreToBucket(existingScore) !== scoreToBucket(humanReviewScore)
+    ) {
+      const mergedLlm = { ...((merged.llmScore as Record<string, unknown>) || existingLlm) };
+      delete mergedLlm.keyPhrases;
+      merged.llmScore = mergedLlm;
+      merged.keyPhrasesCleared = {
+        clearedAt: new Date().toISOString(),
+        reason: 'tier-change',
+        oldBucket: scoreToBucket(existingScore),
+        newBucket: scoreToBucket(humanReviewScore),
+      };
+    }
+  }
 
   const content = JSON.stringify(merged, null, 2) + '\n';
   const base64Content = Buffer.from(content, 'utf-8').toString('base64');
