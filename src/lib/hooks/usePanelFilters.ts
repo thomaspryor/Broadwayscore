@@ -6,6 +6,13 @@ import type { ShowCardShow } from '@/components/show-cards/types';
 import { type FilterPredicateCtx, TIME_PERIOD_RANGE } from '@/lib/show-filter-predicates';
 import type { AwardWinnerSets } from '@/lib/data-awards';
 import {
+  type DateRange,
+  parseDateRanges,
+  serializeDateRanges,
+  labelForRange,
+  rangesEqual,
+} from '@/lib/tony-seasons';
+import {
   FILTER_GROUPS,
   PANEL_PARAM_KEYS,
   SINGLE_PARAM_KEYS,
@@ -15,17 +22,6 @@ import {
   type SingleGroupConfig,
 } from '@/components/filters/filter-ui-config';
 import type { ActiveFilterChip } from '@/components/filters/ActiveFilterChips';
-
-/** Parse "FROM-TO" into {from, to}; returns null if malformed. */
-function parseYearRange(raw: string | null): { from: number; to: number } | null {
-  if (!raw) return null;
-  const m = raw.match(/^(\d{4})-(\d{4})$/);
-  if (!m) return null;
-  const from = parseInt(m[1], 10);
-  const to = parseInt(m[2], 10);
-  if (isNaN(from) || isNaN(to) || from > to) return null;
-  return { from, to };
-}
 
 interface UsePanelFiltersArgs<T extends ShowCardShow> {
   /** Pre-filtered shows from existing inline filters — panel applies on top */
@@ -56,20 +52,25 @@ interface UsePanelFiltersArgs<T extends ShowCardShow> {
 interface UsePanelFiltersReturn<T extends ShowCardShow> {
   /** Final shows after panel predicates */
   filteredShows: T[];
-  /** Number of selected panel filter options across all groups (multi + non-default single + year) */
+  /** Number of selected panel filter options across all groups (multi + non-default single + each date range) */
   activeCount: number;
   /** Per-group selected sets (multi-select), keyed by paramKey */
   selectedByGroup: Record<string, ReadonlySet<string>>;
   /** Per-group current value (single-select), keyed by paramKey */
   singleValueByGroup: Record<string, string>;
-  /** Year range tuple — null if no time-period filter */
-  yearRange: { from: number; to: number } | null;
+  /** Active time-period date ranges (ISO YYYY-MM-DD). Empty = no filter. */
+  dateRanges: DateRange[];
   /** Toggle a single option in a multi-select group */
   toggleOption: (paramKey: string, id: string) => void;
   /** Set the value of a single-select group (writes URL param; default value deletes it) */
   setSingleValue: (paramKey: string, value: string) => void;
-  /** Set the year range (or null to clear) */
-  setYearRange: (range: { from: number; to: number } | null) => void;
+  /**
+   * Set the active date ranges. Accepts an array (replace) OR a function
+   * that receives the LIVE URL state (read from window.location.search,
+   * not React state). The function form is required for back-to-back
+   * toggles in the same tick — see feedback_react_searchparams_stale.md.
+   */
+  setDateRanges: (ranges: DateRange[] | ((prev: DateRange[]) => DateRange[])) => void;
   /** Remove a single chip */
   removeChip: (chipKey: string) => void;
   /** Clear every panel filter */
@@ -104,8 +105,12 @@ export function usePanelFilters<T extends ShowCardShow>({
   // Stable reference for the optional singleGroups prop — empty array if omitted
   const singleGroupsList = useMemo<SingleGroupConfig[]>(() => singleGroups ?? [], [singleGroups]);
 
-  // Year range from URL — single source of truth for Time period
-  const yearRange = useMemo(() => parseYearRange(searchParams?.get('years') ?? null), [searchParams]);
+  // Active date ranges from URL — single source of truth for Time period.
+  // Format: ?dates=YYYY-MM-DD~YYYY-MM-DD,YYYY-MM-DD~YYYY-MM-DD
+  const dateRanges = useMemo(
+    () => parseDateRanges(searchParams?.get('dates') ?? null),
+    [searchParams],
+  );
 
   // Build predicate ctx from server-supplied award sets (rebuild Sets once)
   const ctx: FilterPredicateCtx = useMemo(() => {
@@ -117,10 +122,10 @@ export function usePanelFilters<T extends ShowCardShow>({
       olivierNomineeIds: new Set(ws?.olivierNomineeIds ?? []),
       dramaDeskWinnerIds: new Set(ws?.dramaDeskWinnerIds ?? []),
       pulitzerWinnerIds: new Set(ws?.pulitzerWinnerIds ?? []),
-      yearRange,
+      dateRanges,
       scoreMode,
     };
-  }, [awardWinnerSets, scoreMode, yearRange]);
+  }, [awardWinnerSets, scoreMode, dateRanges]);
 
   // Parse selected ids per paramKey from URL (multi-select)
   const selectedByGroup = useMemo(() => {
@@ -171,10 +176,10 @@ export function usePanelFilters<T extends ShowCardShow>({
 
   const filteredShows = useMemo(() => {
     const hasGroupFilters = activePredicatesByGroup.length > 0;
-    const hasYearFilter = yearRange !== null;
-    if (!hasGroupFilters && !hasYearFilter) return shows;
+    const hasDateFilter = dateRanges.length > 0;
+    if (!hasGroupFilters && !hasDateFilter) return shows;
     return shows.filter((show) => {
-      if (hasYearFilter && !TIME_PERIOD_RANGE(show, ctx)) return false;
+      if (hasDateFilter && !TIME_PERIOD_RANGE(show, ctx)) return false;
       for (const group of activePredicatesByGroup) {
         // Within a group: any-of (OR)
         const groupPasses = group.predicates.some((opt) => opt.predicate(show, ctx));
@@ -182,16 +187,16 @@ export function usePanelFilters<T extends ShowCardShow>({
       }
       return true;
     });
-  }, [shows, activePredicatesByGroup, ctx, yearRange]);
+  }, [shows, activePredicatesByGroup, ctx, dateRanges]);
 
   const activeCount = useMemo(() => {
     let count = Object.values(selectedByGroup).reduce((sum, s) => sum + s.size, 0);
-    if (yearRange) count += 1;
+    count += dateRanges.length;
     for (const group of singleGroupsList) {
       if (singleValueByGroup[group.paramKey] !== group.defaultValue) count += 1;
     }
     return count;
-  }, [selectedByGroup, yearRange, singleGroupsList, singleValueByGroup]);
+  }, [selectedByGroup, dateRanges, singleGroupsList, singleValueByGroup]);
 
   const chips: ActiveFilterChip[] = useMemo(() => {
     const out: ActiveFilterChip[] = [];
@@ -217,14 +222,14 @@ export function usePanelFilters<T extends ShowCardShow>({
         }
       }
     }
-    if (yearRange) {
-      const label = yearRange.from === yearRange.to
-        ? `${yearRange.from}–${String((yearRange.from + 1) % 100).padStart(2, '0')}`
-        : `${yearRange.from}–${yearRange.to}`;
-      out.push({ key: 'years:_range', label });
+    for (const range of dateRanges) {
+      out.push({
+        key: `dates:${range.from}~${range.to}`,
+        label: labelForRange(range),
+      });
     }
     return out;
-  }, [selectedByGroup, yearRange, singleGroupsList, singleValueByGroup]);
+  }, [selectedByGroup, dateRanges, singleGroupsList, singleValueByGroup]);
 
   const writeParams = useCallback(
     (mutate: (params: URLSearchParams) => void) => {
@@ -234,7 +239,18 @@ export function usePanelFilters<T extends ShowCardShow>({
       const params = new URLSearchParams(live);
       mutate(params);
       const qs = params.toString();
-      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      const url = qs ? `${pathname}?${qs}` : pathname;
+      // Two writes to the SAME URL:
+      //   1. replaceState so subsequent in-tick reads of window.location see it
+      //      (router.replace is async — lets back-to-back toggles overwrite each
+      //      other; verified manually 2026-04-27 with 2-3 rapid season pills).
+      //   2. router.replace so Next.js's useSearchParams() updates and React
+      //      re-renders the panel.
+      // Same URL on both → no two-writer race (see feedback_clearall_two_writer_race.md).
+      if (typeof window !== 'undefined') {
+        window.history.replaceState(null, '', url);
+      }
+      router.replace(url, { scroll: false });
     },
     [searchParams, router, pathname],
   );
@@ -271,11 +287,13 @@ export function usePanelFilters<T extends ShowCardShow>({
     [writeParams, singleGroupsList, onSetSingleValueOverride],
   );
 
-  const setYearRange = useCallback(
-    (range: { from: number; to: number } | null) => {
+  const setDateRanges = useCallback(
+    (ranges: DateRange[] | ((prev: DateRange[]) => DateRange[])) => {
       writeParams((params) => {
-        if (range) params.set('years', `${range.from}-${range.to}`);
-        else params.delete('years');
+        const livePrev = parseDateRanges(params.get('dates'));
+        const next = typeof ranges === 'function' ? ranges(livePrev) : ranges;
+        if (next.length > 0) params.set('dates', serializeDateRanges(next));
+        else params.delete('dates');
       });
     },
     [writeParams],
@@ -283,8 +301,13 @@ export function usePanelFilters<T extends ShowCardShow>({
 
   const removeChip = useCallback(
     (chipKey: string) => {
-      if (chipKey === 'years:_range') {
-        setYearRange(null);
+      if (chipKey.startsWith('dates:')) {
+        const rangeStr = chipKey.slice('dates:'.length);
+        const [from, to] = rangeStr.split('~');
+        if (!from || !to) return;
+        // Use functional form — `dateRanges` from React state can be stale
+        // when chips are removed in rapid succession.
+        setDateRanges((prev) => prev.filter((r) => !rangesEqual(r, { from, to })));
         return;
       }
       const [paramKey, id] = chipKey.split(':');
@@ -298,7 +321,7 @@ export function usePanelFilters<T extends ShowCardShow>({
       // Multi-select chip → toggle off
       toggleOption(paramKey, id);
     },
-    [toggleOption, setSingleValue, setYearRange, singleGroupsList],
+    [toggleOption, setSingleValue, setDateRanges, singleGroupsList],
   );
 
   // Hook-internal clearAll for non-controlled mode (no override props). When
@@ -320,10 +343,10 @@ export function usePanelFilters<T extends ShowCardShow>({
     activeCount,
     selectedByGroup,
     singleValueByGroup,
-    yearRange,
+    dateRanges,
     toggleOption,
     setSingleValue,
-    setYearRange,
+    setDateRanges,
     removeChip,
     clearAll,
     chips,
