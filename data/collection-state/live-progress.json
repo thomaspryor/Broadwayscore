@@ -1,129 +1,52 @@
 {
-  "updatedAt": "2026-04-27T04:02:51.699Z",
-  "processed": 195,
-  "failed": 1729,
-  "successRate": "10.1%",
+  "updatedAt": "2026-04-27T07:07:22.706Z",
+  "processed": 2,
+  "failed": 8,
+  "successRate": "20.0%",
   "tierBreakdown": {
-    "playwright": 59,
-    "amp": 3,
-    "browserbase": 23,
+    "playwright": 1,
+    "amp": 1,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 102,
-    "brightdata": 4,
-    "archiveToday": 23,
-    "archive": 22
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archiveToday": 1,
+    "archive": 0
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-04-27T03:15:43.677Z",
+      "t": "2026-04-27T07:03:37.015Z",
+      "event": "bb-session",
+      "session": "2fe3eb26",
+      "url": "http://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-04-27T07:03:37.020Z",
+      "event": "bb-session",
+      "session": "b81e38a4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2646226"
+    },
+    {
+      "t": "2026-04-27T07:03:37.632Z",
       "event": "bb-cookie-inject",
-      "domain": "deadline.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-04-27T03:21:08.454Z",
-      "event": "bb-session",
-      "session": "b33a6625",
-      "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-"
-    },
-    {
-      "t": "2026-04-27T03:21:09.273Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-27T03:22:29.438Z",
-      "event": "bb-session",
-      "session": "84fba32d",
-      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
-    },
-    {
-      "t": "2026-04-27T03:22:55.446Z",
-      "event": "bb-session",
-      "session": "bc10e778",
-      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
-    },
-    {
-      "t": "2026-04-27T03:22:56.233Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-27T03:27:23.381Z",
-      "event": "bb-session",
-      "session": "aa88a83d",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
-    },
-    {
-      "t": "2026-04-27T03:27:24.203Z",
-      "event": "bb-cookie-inject",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-04-27T03:27:42.693Z",
-      "event": "bb-session",
-      "session": "c819b1bb",
-      "url": "http://www.hollywoodreporter.com/review/jesus-christ-superstar-theater-review-an"
-    },
-    {
-      "t": "2026-04-27T03:27:43.482Z",
+      "t": "2026-04-27T07:03:37.721Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     },
     {
-      "t": "2026-04-27T03:31:16.223Z",
+      "t": "2026-04-27T07:03:50.387Z",
       "event": "bb-session",
-      "session": "9c7f929e",
-      "url": "https://www.hollywoodreporter.com/review/kill-a-mockingbird-theater-review-11690"
+      "session": "e808182b",
+      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
     },
     {
-      "t": "2026-04-27T03:31:17.080Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-27T03:37:04.757Z",
-      "event": "bb-session",
-      "session": "8fb6afff",
-      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
-    },
-    {
-      "t": "2026-04-27T03:37:05.586Z",
+      "t": "2026-04-27T07:03:50.941Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-27T03:39:32.646Z",
-      "event": "bb-session",
-      "session": "93aadace",
-      "url": "http://www.hollywoodreporter.com/review/war-horse-theater-review-178714"
-    },
-    {
-      "t": "2026-04-27T03:39:33.497Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-27T03:39:51.589Z",
-      "event": "bb-session",
-      "session": "430b4a48",
-      "url": "http://www.variety.com/review/VE1117945025"
-    },
-    {
-      "t": "2026-04-27T03:39:52.369Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-04-27T04:02:03.611Z",
-      "event": "bb-session",
-      "session": "52d2c9d6",
-      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
-    },
-    {
-      "t": "2026-04-27T04:02:04.560Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
