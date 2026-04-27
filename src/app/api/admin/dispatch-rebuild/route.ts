@@ -7,20 +7,43 @@ export const runtime = 'nodejs';
 const PUBLIC_REPO_OWNER = 'thomaspryor';
 const PUBLIC_REPO_NAME = 'Broadwayscore';
 const REBUILD_WORKFLOW = 'rebuild-fast.yml';
+const SCORING_WORKFLOW = 'llm-ensemble-score.yml';
 
 const GH_API_BASE = 'https://api.github.com';
+
+interface DispatchRebuildBody {
+  reason?: string;
+  // 'rebuild' (default): dispatch rebuild-fast.yml directly. Use when every
+  //   file in the batch already has humanReviewScore or an extractor-populated
+  //   originalScore (i.e. every /ingest call returned needsScoring=false).
+  // 'score-then-rebuild': dispatch llm-ensemble-score.yml with show_id +
+  //   fast_rebuild=true. Use when ANY file in the batch has fullText only
+  //   (needsScoring=true) — without this path, unscored files commit
+  //   successfully but never render on the live page (Lost Boys 2026-04-26
+  //   Issue #5; ship-check 2026-04-27 P0).
+  mode?: 'rebuild' | 'score-then-rebuild';
+  // Required when mode='score-then-rebuild'. The scoring workflow needs the
+  // show slug to filter its targeted scoring run.
+  show_id?: string;
+}
 
 /**
  * POST /api/admin/dispatch-rebuild
  *
- * Dispatches Rebuild Reviews (Fast) once. Used by the form's batch mode after
- * committing N files via /api/admin/ingest-review with skipDispatch=true.
+ * Used by the /ingest UI's batch mode after committing N files via
+ * /api/admin/ingest-review with skipDispatch=true. The caller decides which
+ * workflow to dispatch based on whether any of those N files lack scoring:
  *
- * Body (optional):
- *   { reason?: string }  // commit-message-style reason for the rebuild
+ *   - `mode: 'rebuild'` (default): dispatches rebuild-fast.yml. ~5 min to live.
+ *   - `mode: 'score-then-rebuild'`: dispatches llm-ensemble-score.yml with
+ *      show_id + fast_rebuild=true so it auto-triggers rebuild-fast on
+ *      completion. ~15-20 min to live.
+ *
+ * Body:
+ *   { reason?: string, mode?: 'rebuild' | 'score-then-rebuild', show_id?: string }
  *
  * Returns:
- *   { success: true, workflowRunUrl: string }
+ *   { success: true, workflowRunUrl: string, dispatchedWorkflow: string }
  *   { success: false, error: string }
  */
 export async function POST(request: NextRequest) {
@@ -37,17 +60,43 @@ export async function POST(request: NextRequest) {
   }
 
   let reason = 'admin-ingest-ui: batch dispatch';
+  let mode: 'rebuild' | 'score-then-rebuild' = 'rebuild';
+  let showId: string | null = null;
   try {
-    const body = (await request.json()) as { reason?: string };
+    const body = (await request.json()) as DispatchRebuildBody;
     if (body && typeof body.reason === 'string' && body.reason.trim()) {
       reason = body.reason.trim().slice(0, 200);
     }
+    if (body && body.mode === 'score-then-rebuild') {
+      mode = 'score-then-rebuild';
+    }
+    if (body && typeof body.show_id === 'string' && body.show_id.trim()) {
+      showId = body.show_id.trim();
+    }
   } catch {
-    // Empty body OK — use default reason
+    // Empty body OK — use default rebuild-only mode
   }
 
+  if (mode === 'score-then-rebuild' && !showId) {
+    return NextResponse.json(
+      { success: false, error: 'show_id is required when mode=score-then-rebuild' },
+      { status: 400 },
+    );
+  }
+
+  const targetWorkflow = mode === 'score-then-rebuild' ? SCORING_WORKFLOW : REBUILD_WORKFLOW;
+  const inputs: Record<string, string> =
+    mode === 'score-then-rebuild'
+      ? {
+          show_id: showId as string,
+          fast_rebuild: 'true',
+          run_calibration: 'false',
+          run_validation: 'false',
+        }
+      : { reason };
+
   const res = await fetchWithRetry(
-    `${GH_API_BASE}/repos/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}/dispatches`,
+    `${GH_API_BASE}/repos/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${targetWorkflow}/dispatches`,
     {
       method: 'POST',
       headers: {
@@ -57,7 +106,7 @@ export async function POST(request: NextRequest) {
         'User-Agent': 'broadwayscorecard-admin-ingest',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ref: 'main', inputs: { reason } }),
+      body: JSON.stringify({ ref: 'main', inputs }),
       cache: 'no-store',
     },
   );
@@ -71,7 +120,8 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    workflowRunUrl: `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`,
+    workflowRunUrl: `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${targetWorkflow}`,
+    dispatchedWorkflow: targetWorkflow,
   });
 }
 

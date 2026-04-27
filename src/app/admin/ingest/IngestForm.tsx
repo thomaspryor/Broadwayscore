@@ -29,6 +29,13 @@ interface IngestResponse {
   error?: string;
   warning?: string;
   detectionWarnings?: string[];
+  pendingReason?: string;
+  dispatchedWorkflow?: string;
+  // True when the committed file has no humanReviewScore and no
+  // extractor-populated originalScore — i.e. LLM scoring is required before
+  // the review can render on the live page. Batch mode reads this from each
+  // slot's response and sets dispatch mode accordingly.
+  needsScoring?: boolean;
 }
 
 interface LogEntry {
@@ -530,6 +537,11 @@ function BatchPasteForm({
     setProgress({ done: 0, total: validSlots.length });
     let successCount = 0;
     let failureCount = 0;
+    // Track whether ANY successful slot needs LLM scoring. If so, the post-
+    // batch dispatch must target llm-ensemble-score.yml (with fast_rebuild=true)
+    // — dispatching rebuild-fast.yml directly would commit unscored reviews
+    // that never render on the live page (Lost Boys 2026-04-26 Issue #5).
+    let anyNeedsScoring = false;
 
     // Phase 1: commit each review with skipDispatch=true. The show is FIXED
     // at the form level so every entry gets the same showId — no per-slot
@@ -554,6 +566,7 @@ function BatchPasteForm({
         const json = (await res.json()) as IngestResponse;
         if (json.success) {
           successCount++;
+          if (json.needsScoring) anyNeedsScoring = true;
           onUpdate(id, {
             status: 'saved',
             showId: json.showId,
@@ -576,14 +589,22 @@ function BatchPasteForm({
       setProgress({ done: i + 1, total: validSlots.length });
     }
 
-    // Phase 2: ONE rebuild covering all the commits. Skip only if literally
-    // zero succeeded.
+    // Phase 2: ONE dispatch covering all the commits. Skip only if literally
+    // zero succeeded. When any committed file lacks scoring, route to
+    // llm-ensemble-score.yml (which auto-triggers rebuild-fast on completion);
+    // otherwise dispatch rebuild-fast directly.
     if (successCount > 0) {
       const dispatchId = `${Date.now()}-dispatch-${Math.random().toString(36).slice(2, 6)}`;
+      const dispatchMode: 'rebuild' | 'score-then-rebuild' = anyNeedsScoring
+        ? 'score-then-rebuild'
+        : 'rebuild';
+      const dispatchLabel = anyNeedsScoring
+        ? `Score + rebuild ${successCount} review${successCount === 1 ? '' : 's'} for ${selectedShow.title}`
+        : `Rebuild ${successCount} review${successCount === 1 ? '' : 's'} for ${selectedShow.title}`;
       onResult({
         id: dispatchId,
         startedAt: Date.now(),
-        url: `Rebuild ${successCount} review${successCount === 1 ? '' : 's'} for ${selectedShow.title}`,
+        url: dispatchLabel,
         status: 'submitting',
       });
       try {
@@ -591,27 +612,37 @@ function BatchPasteForm({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
+            mode: dispatchMode,
+            show_id: selectedShow.id,
             reason: `admin-ingest-ui batch: ${successCount} reviews for ${selectedShow.id}${failureCount ? ` (${failureCount} failed)` : ''}`,
           }),
         });
-        const json = (await res.json()) as { success: boolean; workflowRunUrl?: string; error?: string };
+        const json = (await res.json()) as {
+          success: boolean;
+          workflowRunUrl?: string;
+          dispatchedWorkflow?: string;
+          error?: string;
+        };
         if (json.success) {
           onUpdate(dispatchId, {
             status: 'saved',
             criticName: `${successCount} review${successCount === 1 ? '' : 's'}`,
-            outletId: 'rebuild',
+            outletId: anyNeedsScoring ? 'score-then-rebuild' : 'rebuild',
             showId: 'dispatched',
           });
         } else {
+          const fallbackCmd = anyNeedsScoring
+            ? `gh workflow run "LLM Ensemble Score Reviews" -f show_id=${selectedShow.id} -f fast_rebuild=true`
+            : `gh workflow run "Rebuild Reviews (Fast)"`;
           onUpdate(dispatchId, {
             status: 'failed',
-            error: `Reviews committed but rebuild dispatch failed: ${json.error}. Trigger manually: gh workflow run "Rebuild Reviews (Fast)"`,
+            error: `Reviews committed but dispatch failed: ${json.error}. Trigger manually: ${fallbackCmd}`,
           });
         }
       } catch (err) {
         onUpdate(dispatchId, {
           status: 'failed',
-          error: `Reviews committed but rebuild dispatch failed: ${err instanceof Error ? err.message : String(err)}`,
+          error: `Reviews committed but dispatch failed: ${err instanceof Error ? err.message : String(err)}`,
         });
       }
     }

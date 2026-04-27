@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import crypto from 'crypto';
 import { isAdmin } from '@/lib/admin-auth';
 import { detectFromReview } from '@/lib/admin-ingest-detect';
 import { parseScore } from '@/lib/admin-ingest-score';
@@ -8,9 +9,10 @@ import { createRequire } from 'module';
 // ingest-manual-review.js uses, so the on-disk semantics (protection fields,
 // filename normalization) are identical. See memory/feedback_per_file_protected_fields_lock.md.
 const cjsRequire = createRequire(import.meta.url);
-const { generateReviewFilename, normalizeCritic } = cjsRequire('../../../../../scripts/lib/review-normalization') as {
+const { generateReviewFilename, normalizeCritic, normalizeOutlet } = cjsRequire('../../../../../scripts/lib/review-normalization') as {
   generateReviewFilename: (outlet: string, critic: string) => string;
   normalizeCritic: (name: string) => string;
+  normalizeOutlet: (outlet: string) => string;
 };
 const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manual-review-fields') as {
   buildManualReviewFields: (opts: {
@@ -21,6 +23,19 @@ const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manua
     publishDate?: string | null;
   }) => Record<string, unknown>;
 };
+// extractScore runs the per-outlet score extractor against fullText (no HTML).
+// Used for the /ingest pre-rebuild pass (Issue #6): when the operator pastes
+// "★★★/5" body text without entering a score in the form, we still want
+// originalScore + originalScoreNormalized populated BEFORE rebuild touches the
+// file, so rebuild's P0.5 path returns the explicit rating instead of falling
+// through to the LLM ensemble's body-sentiment guess.
+const { extractScore } = cjsRequire('../../../../../scripts/lib/score-extractors') as {
+  extractScore: (
+    html: string,
+    text: string,
+    outletId: string,
+  ) => { originalScore: string; normalizedScore: number; source: string; outlet?: string } | null;
+};
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -30,6 +45,12 @@ const PRIVATE_REPO_NAME = 'broadway-review-texts';
 const PUBLIC_REPO_OWNER = 'thomaspryor';
 const PUBLIC_REPO_NAME = 'Broadwayscore';
 const REBUILD_WORKFLOW = 'rebuild-fast.yml';
+// LLM ensemble scoring workflow — dispatched when /ingest writes fullText
+// without an explicit score AND no per-outlet score extractor matched the
+// pasted text. Lost Boys 2026-04-26 Issue #5: the old flow committed
+// fullText then dispatched rebuild only, so 16 of 23 reviews never got
+// scored and never rendered on the live page.
+const SCORING_WORKFLOW = 'llm-ensemble-score.yml';
 
 interface IngestRequest {
   url: string;
@@ -61,6 +82,17 @@ interface IngestResponse {
   error?: string;
   warning?: string;
   detectionWarnings?: string[];
+  // Set when byline detection fell back to criticName='Unknown'. Operator
+  // should edit the file to set the real critic, then re-rebuild.
+  pendingReason?: string;
+  // Which workflow was dispatched (rebuild-fast.yml or llm-ensemble-score.yml).
+  // Helps the UI show a more accurate "expected time to live" hint.
+  dispatchedWorkflow?: string;
+  // True when the committed file has neither humanReviewScore nor an
+  // extractor-populated originalScore. The batch flow uses this to decide
+  // whether the post-batch dispatch should target rebuild-fast.yml (no scoring
+  // needed) or llm-ensemble-score.yml (must score before rebuild).
+  needsScoring?: boolean;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<IngestResponse>> {
@@ -143,16 +175,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  const criticName = (body.criticName?.trim()) || detected.criticName;
+  // Issue #2 (Lost Boys 2026-04-26): when byline detection fails, SAVE the
+  // pasted content with criticName='Unknown' + pendingReason='no-byline'
+  // instead of rejecting. The old flow discarded 4 of 11 reviews tonight when
+  // theatrely / thewrap / nysun / slantmagazine bylines didn't match the
+  // regex; the operator had to find and re-paste each one. Now: every paste
+  // commits, the operator can fix the byline later.
+  const explicitCritic = body.criticName?.trim();
+  const detectedCritic = detected.criticName;
+  let criticName: string = explicitCritic || detectedCritic || '';
+  let bylineFallback = false;
   if (!criticName) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Could not auto-detect critic from byline. Pass criticName explicitly.',
-        detectionWarnings: detected.warnings,
-      },
-      { status: 400 },
-    );
+    criticName = 'Unknown';
+    bylineFallback = true;
   }
 
   const showId = (body.showId?.trim()) || detected.showId;
@@ -177,7 +212,56 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
 
   const outletDisplayName = detected.outletDisplayName || outletId;
 
-  const filename = generateReviewFilename(outletId, criticName);
+  // Score-extractor pre-pass (Issue #6): when the operator pastes a review
+  // with an explicit star rating in the body but didn't enter the score in
+  // the form, run the per-outlet extractor against fullText so originalScore
+  // is populated. Without this, rebuild's P0.5 path is empty and the LLM
+  // ensemble's body-sentiment guess wins (NYSR Roma Torre ★★★/5 → 76 instead
+  // of 60 on 2026-04-26). Skip when the operator already provided a score.
+  let extractorOriginalScore: string | null = body.originalScore || null;
+  let extractorOriginalScoreSource: string | null = body.originalScore
+    ? deriveOriginalScoreSource(body.originalScore)
+    : null;
+  if (!extractorOriginalScore && humanReviewScore == null) {
+    try {
+      const extracted = extractScore('', fullText, outletId);
+      // Only accept extractor hits when:
+      //   (a) score is in the 1-100 range (matches the input validator above),
+      //   (b) outlet has a dedicated extractor in OUTLET_EXTRACTORS or is in
+      //       KNOWN_STAR_OUTLETS — text-only generic fallthrough has no
+      //       positional anchor and can FP on quoted critic mentions or
+      //       pull-quotes. Codex ship-check 2026-04-27 P1 finding.
+      if (
+        extracted &&
+        Number.isFinite(extracted.normalizedScore) &&
+        extracted.normalizedScore >= 1 &&
+        extracted.normalizedScore <= 100 &&
+        isStrongExtractorSource(extracted.source)
+      ) {
+        extractorOriginalScore = extracted.originalScore;
+        extractorOriginalScoreSource = extracted.source;
+        humanReviewScore = extracted.normalizedScore;
+      }
+    } catch {
+      // Extractor errors should never block ingest. Fall through; LLM
+      // ensemble dispatch (below) will score from fullText instead.
+    }
+  }
+
+  // When byline detection failed, embed a short URL hash in the filename so
+  // multiple unknown-byline reviews from the same outlet don't collide on
+  // `outlet--unknown.json`. Operator can rename later via the manual flow.
+  let filename: string;
+  if (bylineFallback) {
+    const hash = crypto
+      .createHash('sha1')
+      .update(url)
+      .digest('hex')
+      .slice(0, 6);
+    filename = `${normalizeOutlet(outletId)}--unknown-${hash}.json`;
+  } else {
+    filename = generateReviewFilename(outletId, criticName);
+  }
   const repoPath = `${showId}/${filename}`;
 
   // GET existing file (to check for stale-flag collision + capture sha for update).
@@ -236,7 +320,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
 
   // Build the review JSON. Merge with existing (preserves bwwExcerpt, dtliExcerpt,
   // etc.) so we don't clobber aggregator-discovered fields.
-  const coreFields = {
+  const coreFields: Record<string, unknown> = {
     showId,
     outletId,
     outlet: outletDisplayName,
@@ -245,11 +329,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     source: 'admin-ingest-ui',
     ingestedAt: new Date().toISOString(),
   };
+  if (bylineFallback) {
+    coreFields.pendingReason = 'no-byline';
+  }
   const manualFields = buildManualReviewFields({
     humanScore: humanReviewScore ?? null,
     fullText,
-    originalScore: originalScore || null,
-    originalScoreSource: originalScore ? deriveOriginalScoreSource(originalScore) : null,
+    originalScore: extractorOriginalScore,
+    originalScoreSource: extractorOriginalScoreSource,
     publishDate,
   });
 
@@ -280,25 +367,63 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     );
   }
 
-  // Dispatch rebuild-fast.yml in the PUBLIC repo — UNLESS the caller asked us
-  // to skip (batch mode commits N files then dispatches once at the end via
-  // /api/admin/dispatch-rebuild).
+  // Dispatch decision (Lost Boys 2026-04-26 Issue #5) — UNLESS the caller
+  // asked us to skip (batch mode commits N files then dispatches once at the
+  // end via /api/admin/dispatch-rebuild).
+  //
+  // Two paths:
+  //   - File has a score on disk (humanReviewScore set OR extractor pre-pass
+  //     populated originalScore) → dispatch rebuild-fast.yml. ~5 min to live.
+  //   - File has fullText but no score → dispatch llm-ensemble-score.yml with
+  //     show_id + fast_rebuild=true. The scoring workflow writes
+  //     llmScore.score then chains rebuild-fast.yml. ~15-20 min to live, but
+  //     the live page won't render the review at all if we skip this step.
+  //     Pre-fix, /ingest dispatched rebuild-fast only and 16 of 23 reviews
+  //     stayed unscored across the wave.
+  const fileHasScore =
+    (typeof humanReviewScore === 'number' && humanReviewScore >= 1 && humanReviewScore <= 100) ||
+    !!extractorOriginalScore;
+
   let workflowRunUrl: string | undefined;
   let dispatchWarning: string | undefined;
+  let dispatchedWorkflow: string | undefined;
   if (!body.skipDispatch) {
-    const dispatchResult = await githubDispatchWorkflow(
-      token,
-      PUBLIC_REPO_OWNER,
-      PUBLIC_REPO_NAME,
-      REBUILD_WORKFLOW,
-      { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
-    );
-    workflowRunUrl = dispatchResult.ok
-      ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
-      : undefined;
-    dispatchWarning = dispatchResult.ok
-      ? undefined
-      : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`;
+    if (fileHasScore) {
+      const dispatchResult = await githubDispatchWorkflow(
+        token,
+        PUBLIC_REPO_OWNER,
+        PUBLIC_REPO_NAME,
+        REBUILD_WORKFLOW,
+        { reason: `admin-ingest-ui: ${showId} / ${outletId}` },
+      );
+      dispatchedWorkflow = REBUILD_WORKFLOW;
+      workflowRunUrl = dispatchResult.ok
+        ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${REBUILD_WORKFLOW}`
+        : undefined;
+      dispatchWarning = dispatchResult.ok
+        ? undefined
+        : `Review committed but rebuild dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "Rebuild Reviews (Fast)"`;
+    } else {
+      const dispatchResult = await githubDispatchWorkflow(
+        token,
+        PUBLIC_REPO_OWNER,
+        PUBLIC_REPO_NAME,
+        SCORING_WORKFLOW,
+        {
+          show_id: showId,
+          fast_rebuild: 'true',
+          run_calibration: 'false',
+          run_validation: 'false',
+        },
+      );
+      dispatchedWorkflow = SCORING_WORKFLOW;
+      workflowRunUrl = dispatchResult.ok
+        ? `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions/workflows/${SCORING_WORKFLOW}`
+        : undefined;
+      dispatchWarning = dispatchResult.ok
+        ? undefined
+        : `Review committed but LLM scoring dispatch failed: ${dispatchResult.error}. Manually trigger via: gh workflow run "LLM Ensemble Score Reviews" -f show_id=${showId} -f fast_rebuild=true`;
+    }
   }
 
   return NextResponse.json({
@@ -311,8 +436,15 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     filename,
     commitSha: putResult.commitSha,
     workflowRunUrl,
-    warning: dispatchWarning,
+    warning:
+      dispatchWarning ||
+      (bylineFallback
+        ? `Saved with criticName='Unknown' (no byline detected). Edit the file at data/review-texts/${repoPath} to set criticName, then re-rebuild.`
+        : undefined),
     detectionWarnings: detected.warnings.length > 0 ? detected.warnings : undefined,
+    pendingReason: bylineFallback ? 'no-byline' : undefined,
+    dispatchedWorkflow,
+    needsScoring: !fileHasScore,
   });
 }
 
@@ -439,6 +571,29 @@ function deriveOriginalScoreSource(raw: string): string {
   const parsed = parseScore(raw);
   if (!parsed) return 'manual-admin-ui';
   return `manual-${parsed.type}`; // 'manual-stars' | 'manual-letter' | 'manual-numeric'
+}
+
+// Whitelist of extractor sources that we trust at /ingest time. Generic
+// text-pattern / og-description / wp-api-title can FP on quoted critic
+// mentions or page chrome since /ingest passes html='' (no positional
+// anchor). Outlet-dedicated and unicode/word/letter forms are safe because
+// they either have anchored regexes (KNOWN_STAR_OUTLETS fallthrough) or are
+// outlet-specific.
+const STRONG_EXTRACTOR_SOURCES = new Set([
+  'unicode-stars',
+  'unicode-stars-fallthrough',
+  'word-stars',
+  'numeric-stars',
+  'letter-grade',
+  'json-ld',
+  'css-stars',
+  'star-class',
+  'star-rating',
+  'lbo-css-stars',
+]);
+function isStrongExtractorSource(source: string | undefined | null): boolean {
+  if (!source) return false;
+  return STRONG_EXTRACTOR_SOURCES.has(source);
 }
 
 function normalizeUrl(url: string): string {

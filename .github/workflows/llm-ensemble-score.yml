@@ -109,6 +109,14 @@ on:
         description: 'Total number of parallel shards'
         required: false
         default: ''
+      fast_rebuild:
+        description: 'After scoring, dispatch rebuild-fast.yml instead of rebuild-reviews.yml. Use for /ingest UI flows where reviews must reach the live page in <20 min.'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 permissions:
   contents: write
@@ -441,23 +449,47 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Check for running OR queued rebuilds — prevents multiple scoring shards
-          # from each triggering their own rebuild (concurrency group on rebuild-reviews.yml
-          # is the primary guard, this is defense-in-depth)
-          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          WAITING=$(gh run list --workflow=rebuild-reviews.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          ACTIVE=$((RUNNING + QUEUED + WAITING))
-          if [ "$ACTIVE" -gt 0 ]; then
-            echo "Rebuild already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
+          # Two rebuild targets:
+          #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
+          #     concurrency group → "skip if active" is correct (a queued
+          #     rebuild would just cancel-in-progress=false serialize anyway).
+          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, per-run concurrency.
+          #     Multiple concurrent runs are SAFE and intended — the per-run
+          #     group exists exactly so opening-night ingests don't queue
+          #     behind unrelated rebuild-fast runs (memory/feedback_gha_concurrency_queue_limit.md).
+          #     So we MUST NOT skip if another rebuild-fast is in flight —
+          #     ship-check 2026-04-27 caught that the old code silently
+          #     swallowed the dispatch when an unrelated fast rebuild was
+          #     already running, leaving freshly scored reviews unrebuilt.
+          if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
+            REBUILD_WF="rebuild-fast.yml"
+            REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
+            echo "Triggering $REBUILD_WF to incorporate new scores (per-run concurrency, no skip-if-active check)..."
+            gh workflow run "$REBUILD_WF" \
+              -f reason="$REASON"
+            echo "Rebuild auto-triggered ($REBUILD_WF)."
             exit 0
           fi
 
-          echo "Triggering rebuild to incorporate new scores..."
-          gh workflow run rebuild-reviews.yml \
-            -f reason="Auto-triggered after LLM scoring"
+          REBUILD_WF="rebuild-reviews.yml"
+          REASON="Auto-triggered after LLM scoring"
 
-          echo "Rebuild auto-triggered."
+          # Shared concurrency group on rebuild-reviews.yml — skip if active to
+          # prevent multiple scoring shards each queuing their own rebuild.
+          RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "$REBUILD_WF already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
+            exit 0
+          fi
+
+          echo "Triggering $REBUILD_WF to incorporate new scores..."
+          gh workflow run "$REBUILD_WF" \
+            -f reason="$REASON"
+
+          echo "Rebuild auto-triggered ($REBUILD_WF)."
 
       - name: Count remaining unscored reviews
         if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'

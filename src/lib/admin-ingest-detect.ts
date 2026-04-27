@@ -1,6 +1,22 @@
 import 'server-only';
 import fs from 'fs';
 import path from 'path';
+import { createRequire } from 'module';
+
+// Delegate outlet resolution to the canonical helper (Lost Boys 2026-04-26
+// Issue #3): the bespoke flat-domain map silently dropped timeout.com URLs
+// because two outlets (timeout, timeout-london) share that domain. The
+// canonical helper has path-aware logic for shared-domain outlets.
+const cjsRequire = createRequire(import.meta.url);
+const { resolveOutletFromUrl } = cjsRequire('../../scripts/lib/review-normalization') as {
+  resolveOutletFromUrl: (url: string) => { outletId: string; displayName: string } | null;
+};
+// Byline post-extraction cleanup (Issue #11). Lives in scripts/lib so it can
+// be unit-tested via `require()` per CLAUDE.md rule 15 — server-only TS
+// modules can't be imported from a node test runner.
+const { normalizeBylineCapture } = cjsRequire('../../scripts/lib/byline-normalization') as {
+  normalizeBylineCapture: (raw: string) => string;
+};
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -82,22 +98,26 @@ function loadShows(): ShowsJson['shows'] {
 // ─── Individual detectors ───────────────────────────────────────────
 
 export function detectOutlet(url: string): { outletId: string | null; displayName: string | null } {
+  // Primary path: canonical resolver from scripts/lib/review-normalization.js.
+  // Path-aware for shared-domain outlets (timeout.com → timeout vs timeout-london
+  // by /london path), domain-alias-aware, subdomain-strip-aware. The /ingest UI's
+  // old flat-domain map skipped any domain registered on >1 outlet, which is why
+  // timeout.com URLs failed (Lost Boys 2026-04-26 Issue #3).
+  const canonical = resolveOutletFromUrl(url);
+  if (canonical && canonical.outletId) {
+    return { outletId: canonical.outletId, displayName: canonical.displayName ?? canonical.outletId };
+  }
+
+  // Fallback: multi-tenant publishing platforms where every subdomain is a
+  // distinct publication. The canonical resolver doesn't synthesize these —
+  // we can't pre-register every Substack/Ghost newsletter, but the subdomain
+  // itself is a stable, unique identifier.
   let hostname: string;
   try {
     hostname = new URL(url).hostname.replace(/^www\./i, '').toLowerCase();
   } catch {
     return { outletId: null, displayName: null };
   }
-  const map = buildOutletDomainMap();
-  const outletId = map[hostname] ?? null;
-  if (outletId) {
-    const registry = loadOutletRegistry();
-    return { outletId, displayName: registry.outlets[outletId]?.displayName ?? outletId };
-  }
-
-  // Fallback: multi-tenant publishing platforms where every subdomain is a
-  // distinct publication. We can't pre-register every Substack/Ghost newsletter,
-  // but the subdomain itself is a stable, unique identifier.
   const platformMatch = hostname.match(/^([a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\.(substack\.com|ghost\.io|beehiiv\.com)$/i);
   if (platformMatch) {
     const sub = platformMatch[1].toLowerCase();
@@ -175,7 +195,7 @@ export function detectCriticFromByline(fullText: string): string | null {
     for (const pat of [p1, p2, p3, p4, p5]) {
       const m = segment.match(pat);
       if (m) {
-        const candidate = m[1].trim();
+        const candidate = normalizeBylineCapture(m[1]);
         // Pattern 3 (Posted by) allows 1-word names; others require 2+
         const allowSingleWord = pat === p3;
         if (isPlausibleCriticName(candidate, { allowSingleWord })) return candidate;
@@ -185,6 +205,7 @@ export function detectCriticFromByline(fullText: string): string | null {
 
   return null;
 }
+
 
 // Re-export score parser (lives in admin-ingest-score.ts so client components
 // can import it without dragging in 'server-only').
