@@ -84,32 +84,35 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
     const hasGrade = grade && grade.grade !== '—';
     return (
       <div className="flex flex-col items-center gap-1">
-        <TierLabel score={show.blendedScore} reviewCount={show.reviewCount} status={show.status} />
         <div className="flex items-center gap-1.5">
           <ScoreBadge
             score={show.compositeScore}
             size="md"
+            showCrown
             reviewCount={show.reviewCount}
             status={show.status}
           />
           {hasGrade ? (
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bold"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl font-bold"
               style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
               title={grade.tooltip}
             >
               {grade.grade}
             </div>
           ) : (
-            <div className="w-14 h-14 rounded-xl flex items-center justify-center text-base font-bold bg-surface-overlay text-gray-500">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base font-bold bg-surface-overlay text-gray-500">
               —
             </div>
           )}
         </div>
         {show.blendedScore != null && (
-          <span className="text-[10px] text-gray-400 whitespace-nowrap">
-            Composite: {Math.round(show.blendedScore)}
-          </span>
+          <div className="flex flex-col items-center gap-0.5">
+            <TierLabel score={show.blendedScore} reviewCount={show.reviewCount} status={show.status} />
+            <span className="text-[10px] text-gray-400 whitespace-nowrap">
+              Blended: {Math.round(show.blendedScore)}
+            </span>
+          </div>
         )}
       </div>
     );
