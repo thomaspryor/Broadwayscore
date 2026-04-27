@@ -13,7 +13,7 @@
  *
  * Environment variables:
  *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
- *   BRIGHTDATA_ZONE - Bright Data zone name (default: mcp_unlocker)
+ *   BRIGHTDATA_ZONE - Bright Data zone name (default: web_unlocker2)
  *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
  */
 
@@ -137,7 +137,7 @@ function setRegistryDomainAliases(aliases) {
 }
 
 const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
-const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 
 // --- SB credit pre-check ---

@@ -11,7 +11,7 @@
  *   3. Gemini API key (list models)
  *   4. OpenRouter API key (check key info + remaining credits)
  *   5. ScrapingBee API key (usage endpoint)
- *   6. Bright Data zone status (mcp_unlocker zone active/disabled)
+ *   6. Bright Data zone status ($BRIGHTDATA_ZONE / web_unlocker2 active/disabled)
  *   7. Private repo PAT (API call to private repo)
  *   7. Vercel token (get user info)
  *   8. Sentry auth token (get project)
@@ -211,7 +211,7 @@ async function checkBrightData() {
   const token = process.env.BRIGHTDATA_TOKEN;
   if (!token) return { name: 'Bright Data', status: 'skip', message: 'Token not set' };
 
-  const zoneName = process.env.BRIGHTDATA_ZONE || 'mcp_unlocker';
+  const zoneName = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
   const res = await httpsGet(`https://api.brightdata.com/zone?zone=${zoneName}`, {
     'Authorization': `Bearer ${token}`,
   });
