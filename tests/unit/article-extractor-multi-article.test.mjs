@@ -93,4 +93,24 @@ describe('validateContentMentionsShow: curly quote normalization', () => {
     );
     assert.strictEqual(result.htmlTitleMatch, true, 'curly-quote title should match straight-quote token');
   });
+
+  test("possessive title: body usage 'Joe Turner' counts toward show-mention threshold", () => {
+    // Long-form review (>1500 chars, threshold=3) where the body uses the
+    // SHORT form "Joe Turner" (the protagonist's name) but the full title
+    // "Joe Turner's Come and Gone" only appears in the headline. Without the
+    // before-apostrophe-s token the validator counted 1 and rejected.
+    const text =
+      'Joe Turner’s Come and Gone Triumphantly Returns on Broadway. '.padEnd(200, ' ') +
+      ('Joe Turner is a powerful presence in this revival. '.repeat(10)) +
+      ('Director Debbie Allen leans into August Wilson’s lyrical rhythms. '.repeat(15));
+    assert.ok(text.length >= 1500, 'fixture must exceed long-text threshold');
+    const result = validateContentMentionsShow(
+      text,
+      null,
+      "Joe Turner's Come and Gone",
+      'joe-turners-come-and-gone-2026'
+    );
+    assert.strictEqual(result.valid, true, `expected valid, got: ${result.reason}`);
+    assert.ok(result.mentionCount >= 3, `expected >=3 mentions, got ${result.mentionCount}`);
+  });
 });

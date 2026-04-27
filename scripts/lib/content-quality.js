@@ -2358,12 +2358,25 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     tokens.add(t);
     const noThe = t.replace(/^the\s+/, '');
     if (noThe.length > 2) tokens.add(noThe);
+    // For possessive titles ("Joe Turner's Come and Gone", "Mrs. Doubtfire's
+    // Showbiz Memoir") add the prefix before "'s " — body text typically
+    // uses the short form ("Joe Turner is back"). Without this, the full-title
+    // token only matches the headline (1×) and a paywalled review fails the
+    // 3× threshold for >1500-char text. Joe Turner 2026-04-26 incident.
+    const apostropheS = t.indexOf("'s ");
+    if (apostropheS >= 4) {
+      const prefix = t.slice(0, apostropheS);
+      if (prefix.length > 2 && /\s/.test(prefix)) tokens.add(prefix);
+    }
   }
   if (showId) {
     const idBase = showId.replace(/-\d{4}$/, '');
     for (const w of idBase.split('-')) {
       if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w)) {
         tokens.add(w.toLowerCase());
+        // Also add singular form of plural ID words (>5 chars to avoid noise):
+        // "turners" → "turner" matches the natural body usage. Joe Turner.
+        if (w.length > 5 && w.endsWith('s')) tokens.add(w.slice(0, -1).toLowerCase());
       }
     }
   }

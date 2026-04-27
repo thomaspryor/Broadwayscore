@@ -3420,6 +3420,10 @@ async function extractArticleText(page) {
       '[data-testid="article-body-content"]',
       // Talkin' Broadway — review content in <section class="page">
       'section.page',
+      // NY Sun (Next.js) — main body in `article-wrapper`. Without this the
+      // generic `article` fallback below picks the first of 8 sidebar teaser
+      // cards (Joe Turner 2026-04-26 incident).
+      '.article-wrapper',
       // Generic (ordered by specificity)
       'article .entry-content',
       'article .post-content',
@@ -3441,6 +3445,11 @@ async function extractArticleText(page) {
       'article',
       'main',
     ];
+
+    // For these broad selectors, use querySelectorAll + pick the LARGEST match
+    // (by paragraph count). Defends against SPAs where <article> tags are used
+    // for sidebar teaser cards and the first one isn't the real story.
+    const MULTI_MATCH_SELECTORS = new Set(['article', 'main', 'main article', '[role="article"]', '.article-wrapper']);
 
     let bestText = '';
 
@@ -3468,29 +3477,29 @@ async function extractArticleText(page) {
     if (bestText.length < 500) {
       for (const selector of selectors) {
         try {
-          const el = document.querySelector(selector);
-          if (el) {
+          // Broad selectors (article/main/etc): pick the LARGEST match.
+          // First-match (querySelector) loses to sidebar teaser cards.
+          const els = MULTI_MATCH_SELECTORS.has(selector)
+            ? Array.from(document.querySelectorAll(selector))
+            : [document.querySelector(selector)].filter(Boolean);
+
+          let candidateText = '';
+          for (const el of els) {
             const paragraphs = el.querySelectorAll('p');
-            if (paragraphs.length > 0) {
-              const text = Array.from(paragraphs)
-                .map(p => p.textContent.trim())
-                .filter(t => t.length > 30)
-                .join('\n\n');
-              if (text.length > bestText.length) {
-                bestText = text;
-              }
-              // Early exit: if a specific selector (not 'article' or 'main')
-              // returns enough text, prefer it over broader selectors that
-              // might include sidebar/related-posts content
-              if (text.length >= 500 && selector !== 'article' && selector !== 'main' && selector !== 'main article') {
-                break;
-              }
-            } else {
-              const text = el.textContent.trim();
-              if (text.length > bestText.length) {
-                bestText = text;
-              }
-            }
+            const text = paragraphs.length > 0
+              ? Array.from(paragraphs).map(p => p.textContent.trim()).filter(t => t.length > 30).join('\n\n')
+              : el.textContent.trim();
+            if (text.length > candidateText.length) candidateText = text;
+          }
+
+          if (candidateText.length > bestText.length) {
+            bestText = candidateText;
+          }
+          // Early exit: if a specific selector (not 'article' or 'main')
+          // returns enough text, prefer it over broader selectors that
+          // might include sidebar/related-posts content
+          if (candidateText.length >= 500 && !MULTI_MATCH_SELECTORS.has(selector)) {
+            break;
           }
         } catch (e) {}
       }
