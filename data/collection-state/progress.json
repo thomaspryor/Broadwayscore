@@ -12,7 +12,8 @@
     "titanique-2026/ew--unknown.json",
     "becky-shaw-2026/cote-notices--david-cote.json",
     "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
-    "joe-turners-come-and-gone-2009/nytg--unknown.json"
+    "joe-turners-come-and-gone-2009/nytg--unknown.json",
+    "kenrex-off-broadway-2026/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
@@ -263,7 +264,16 @@
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "girls-off-west-end-2026/london-box-office--christian-durham.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-rocky-horror-show-2026/w42st--michael-musto.json",
+    "kenrex-off-broadway-2026/thewrap--robert-hofler.json",
+    "kenrex-off-broadway-2026/frontmezzjunkies--ross.json",
+    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "titanique-2026/the-recs--randall-david-cook.json",
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
+    "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+    "inter-alia-west-end-2026/theatreandtonic--becky-k.json",
+    "giant-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -277,7 +287,8 @@
       "kenrex-off-broadway-2026/new-york-sun--elysa-gardner.json",
       "kenrex-off-broadway-2026/theatermania--unknown.json",
       "titanique-2026/ew--unknown.json",
-      "joe-turners-come-and-gone-2009/nytg--unknown.json"
+      "joe-turners-come-and-gone-2009/nytg--unknown.json",
+      "kenrex-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -286,7 +297,8 @@
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
       "schmigadoon-2026/wsj--unknown.json",
-      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json"
+      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -308,7 +320,7 @@
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "giant-2026/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -403,6 +415,17 @@
       "t": "2026-04-27T11:23:18.052Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T11:44:11.938Z",
+      "event": "bb-session",
+      "session": "1a9998b2",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
+    },
+    {
+      "t": "2026-04-27T11:44:13.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
