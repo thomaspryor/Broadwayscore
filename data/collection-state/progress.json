@@ -150,7 +150,14 @@
     "proof-2026/the-contending--frank-j-avella.json",
     "titanique-2026/the-contending--frank-j-avella.json",
     "death-of-a-salesman-2026/ew--thom-geier.json",
-    "death-of-a-salesman-2026/nydailynews--joe-dziemianowicz.json"
+    "death-of-a-salesman-2026/nydailynews--joe-dziemianowicz.json",
+    "cats-the-jellicle-ball-2026/the-contending--frank-j-avella.json",
+    "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
+    "becky-shaw-2026/cote-notices--david-cote.json",
+    "becky-shaw-2026/the-contending--frank-j-avella.json",
+    "nicole-travolta-is-doing-alright-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "dog-day-afternoon-2026/the-contending--frank-j-avella.json",
+    "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -1702,7 +1709,10 @@
     "joe-turners-come-and-gone-2026/new-york-sun--unknown.json",
     "joe-turners-come-and-gone-2026/chicagotribune--unknown.json",
     "the-rocky-horror-show-2026/w42st--michael-musto.json",
-    "titanique-2026/the-recs--randall-david-cook.json"
+    "titanique-2026/the-recs--randall-david-cook.json",
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
+    "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+    "inter-alia-west-end-2026/theatreandtonic--becky-k.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1740,7 +1750,12 @@
       "proof-2026/nysr--charles-isherwood.json",
       "proof-2026/the-contending--frank-j-avella.json",
       "titanique-2026/the-contending--frank-j-avella.json",
-      "death-of-a-salesman-2026/ew--thom-geier.json"
+      "death-of-a-salesman-2026/ew--thom-geier.json",
+      "cats-the-jellicle-ball-2026/the-contending--frank-j-avella.json",
+      "becky-shaw-2026/the-contending--frank-j-avella.json",
+      "nicole-travolta-is-doing-alright-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "dog-day-afternoon-2026/the-contending--frank-j-avella.json",
+      "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
@@ -1754,7 +1769,10 @@
       "data/review-texts/glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
       "glengarry-glen-ross-west-end-2026/hollywood-reporter--david-rooney.json",
       "data/review-texts/back-to-the-future-2023/variety--frank-rizzo.json",
-      "back-to-the-future-2023/variety--frank-rizzo.json"
+      "back-to-the-future-2023/variety--frank-rizzo.json",
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json",
+      "becky-shaw-2026/deadline--httpsdeadlinecom202604becky-shaw-broadway-review-1236780120.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1850,7 +1868,8 @@
       "barefoot-in-the-park-2006/about-entertainment--ben-brantley.json",
       "rabbit-hole-2006/about-entertainment--ben-brantley.json",
       "avenue-q-west-end-2026/times-uk--clive-davis.json",
-      "death-of-a-salesman-2026/nydailynews--joe-dziemianowicz.json"
+      "death-of-a-salesman-2026/nydailynews--joe-dziemianowicz.json",
+      "becky-shaw-2026/cote-notices--david-cote.json"
     ],
     "brightdata": [
       "beaches-2026/nypost--johnny-oleksinski.json",
@@ -1897,7 +1916,7 @@
     ]
   },
   "startTime": "2026-04-26T10:22:19.201Z",
-  "lastProcessed": "death-of-a-salesman-2026/nydailynews--joe-dziemianowicz.json",
+  "lastProcessed": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json",
   "log": [
     {
       "t": "2026-04-26T15:33:32.901Z",
@@ -2448,6 +2467,28 @@
       "t": "2026-04-26T18:39:11.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T03:15:07.653Z",
+      "event": "bb-session",
+      "session": "6ad83483",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
+    },
+    {
+      "t": "2026-04-27T03:15:08.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:15:42.700Z",
+      "event": "bb-session",
+      "session": "9a179fa3",
+      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
+    },
+    {
+      "t": "2026-04-27T03:15:43.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }

@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-04-27T03:14:48.001Z",
-  "processed": 151,
-  "failed": 1550,
-  "successRate": "8.9%",
+  "updatedAt": "2026-04-27T03:17:41.048Z",
+  "processed": 158,
+  "failed": 1553,
+  "successRate": "9.2%",
   "tierBreakdown": {
-    "playwright": 34,
+    "playwright": 39,
     "amp": 1,
-    "browserbase": 9,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 93,
+    "scrapingbee": 94,
     "brightdata": 2,
     "archiveToday": 16,
     "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-26T18:32:56.906Z",
-      "event": "bb-session",
-      "session": "373dba78",
-      "url": "http://theater.nytimes.com/2011/11/21/theater/reviews/seminar-by-theresa-rebeck-"
-    },
-    {
-      "t": "2026-04-26T18:32:57.271Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:33:40.321Z",
-      "event": "bb-session",
-      "session": "d4d9900e",
-      "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-priv"
-    },
-    {
-      "t": "2026-04-26T18:33:40.694Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-04-26T18:34:20.375Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-04-26T18:39:11.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T03:15:07.653Z",
+      "event": "bb-session",
+      "session": "6ad83483",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
+    },
+    {
+      "t": "2026-04-27T03:15:08.637Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:15:42.700Z",
+      "event": "bb-session",
+      "session": "9a179fa3",
+      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
+    },
+    {
+      "t": "2026-04-27T03:15:43.677Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
