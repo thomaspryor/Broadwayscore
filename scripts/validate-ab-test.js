@@ -208,11 +208,16 @@ async function checkClickTracking(browser) {
       continue;
     }
     const abVariant = ticketClickEvent.properties?.ab_variant;
-    const expectedAb = `platform:todaytix,buttons:${expected}`;
-    if (abVariant === expectedAb) {
+    // Accept both new flag-prefixed format and legacy bare format. The new
+    // format added a `flag:ticket-single-button,` cohort prefix on 2026-04-27
+    // (Codex ship-check #6). Once all in-flight tabs cycle out, drop the
+    // legacy branch.
+    const expectedNew = `flag:ticket-single-button,platform:todaytix,buttons:${expected}`;
+    const expectedLegacy = `platform:todaytix,buttons:${expected}`;
+    if (abVariant === expectedNew || abVariant === expectedLegacy) {
       recordPass(`click:${expected}`, `ab_variant='${abVariant}'`);
     } else {
-      recordFail(`click:${expected}`, `ab_variant='${abVariant}' (expected '${expectedAb}')`);
+      recordFail(`click:${expected}`, `ab_variant='${abVariant}' (expected '${expectedNew}' or legacy '${expectedLegacy}')`);
     }
   }
 }

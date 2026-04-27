@@ -163,9 +163,14 @@ export default function TicketButtonsAB({
 
   // Combine variants into a tracking string. Use explicit "fallback" marker
   // when flags didn't load (ad blocker / opt-out) so we can exclude these from analysis.
+  // The leading `flag:` cohort segment namespaces this string against future
+  // experiments that might reuse `buttons:` or `platform:` keys — without it,
+  // a later test sending `buttons:single|multi` would silently merge into this
+  // test's Impact history with no way to demix. analyze-ab-test.js requires
+  // the matching `flag:${FLAG}` prefix when bucketing direct conversions.
   const platformPart = abPlatformVariant ?? 'fallback';
   const buttonsPart = abButtonVariant ?? 'fallback';
-  const abVariantStr = `platform:${platformPart},buttons:${buttonsPart}`;
+  const abVariantStr = `flag:ticket-single-button,platform:${platformPart},buttons:${buttonsPart}`;
 
   // Don't render anything until flags load (or fallback fires after 5s)
   // This eliminates the multi-default flicker that biased early clicks to control.
