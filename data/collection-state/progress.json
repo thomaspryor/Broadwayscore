@@ -3,15 +3,28 @@
     "the-lost-boys-2026/ew--unknown.json",
     "the-lost-boys-2026/guardian--unknown.json",
     "the-lost-boys-2026/whatsonstage--unknown.json",
-    "joe-turners-come-and-gone-2026/theatre-reviews-limited--david-roberts.json"
+    "joe-turners-come-and-gone-2026/theatre-reviews-limited--david-roberts.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
     "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
-    "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json"
+    "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
+    "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
+    "the-rocky-horror-show-2026/w42st--michael-musto.json",
+    "titanique-2026/the-recs--randall-david-cook.json",
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
+    "inter-alia-west-end-2026/theatreandtonic--becky-k.json",
+    "giant-2026/times-uk--clive-davis.json",
+    "mexodus-off-broadway-2026/nytimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -27,6 +40,18 @@
     "archive": []
   },
   "startTime": "2026-04-27T16:18:52.228Z",
-  "lastProcessed": "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
-  "log": []
+  "lastProcessed": "mexodus-off-broadway-2026/nytimes--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-27T19:28:06.591Z",
+      "event": "bb-session",
+      "session": "caabce28",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-27T19:28:07.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
