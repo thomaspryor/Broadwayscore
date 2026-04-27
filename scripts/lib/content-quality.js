@@ -2335,7 +2335,16 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     };
   }
 
-  const lower = text.toLowerCase();
+  // Normalize curly quotes/dashes to straight ASCII before matching. shows.json
+  // uses straight apostrophes ("Joe Turner's") while many outlets render curly
+  // ones ("Joe Turner's") — without normalization the multi-word title token
+  // never matches and short paywalled excerpts get rejected as
+  // url_content_mismatch (NY Sun Joe Turner 2026-04-26 incident).
+  const normalize = (s) => s
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[–—]/g, '-');
+  const lower = normalize(text).toLowerCase();
   const threshold = text.length >= 1500 ? minLong : minShort;
 
   // Build the set of title tokens to count — show title, title-without-"The",
@@ -2345,8 +2354,9 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // both title and ID doesn't double-weight.
   const tokens = new Set();
   if (showTitle && showTitle.length > 2) {
-    tokens.add(showTitle.toLowerCase());
-    const noThe = showTitle.toLowerCase().replace(/^the\s+/, '');
+    const t = normalize(showTitle).toLowerCase();
+    tokens.add(t);
+    const noThe = t.replace(/^the\s+/, '');
     if (noThe.length > 2) tokens.add(noThe);
   }
   if (showId) {
@@ -2378,7 +2388,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     if (m) {
       htmlTitle = m[1].replace(/\s+/g, ' ').trim();
-      const titleLower = htmlTitle.toLowerCase();
+      const titleLower = normalize(htmlTitle).toLowerCase();
       htmlTitleMatch = false;
       for (const token of tokens) {
         if (token && titleLower.includes(token)) {
