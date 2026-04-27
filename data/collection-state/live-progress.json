@@ -1,18 +1,52 @@
 {
-  "updatedAt": "2026-04-27T16:24:45.501Z",
-  "processed": 4,
-  "failed": 2,
-  "successRate": "66.7%",
+  "updatedAt": "2026-04-27T20:00:22.270Z",
+  "processed": 6,
+  "failed": 222,
+  "successRate": "2.6%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-04-27T19:28:06.591Z",
+      "event": "bb-session",
+      "session": "caabce28",
+      "url": "https://www.nytimes.com/2026/04/15/theater/julio-torres-mexodus-theater-streamin"
+    },
+    {
+      "t": "2026-04-27T19:28:07.666Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T19:31:40.512Z",
+      "event": "bb-session",
+      "session": "b263e650",
+      "url": "https://artsbeat.blogs.nytimes.com/2011/11/25/no-ending-spoiled-or-otherwise-in-"
+    },
+    {
+      "t": "2026-04-27T19:31:41.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-27T20:00:01.686Z",
+      "event": "bb-session",
+      "session": "ce3bffa5",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-27T20:00:02.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
