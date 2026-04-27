@@ -10,7 +10,8 @@
     "kenrex-off-broadway-2026/new-york-sun--elysa-gardner.json",
     "kenrex-off-broadway-2026/theatermania--unknown.json",
     "titanique-2026/ew--unknown.json",
-    "becky-shaw-2026/cote-notices--david-cote.json"
+    "becky-shaw-2026/cote-notices--david-cote.json",
+    "jesus-christ-superstar-west-end-2026/amny--matt-windman.json"
   ],
   "failed": [
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
@@ -59,7 +60,16 @@
     "harry-potter-2021/woman-around-town--alix-cohen.json",
     "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
     "aladdin-2014/ap--mark-kennedy.json",
-    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json"
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "cats-west-end-2026/northjerseycom--robert-feldberg.json",
+    "the-comedy-about-spies-west-end-2026/thestage--unknown.json",
+    "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -80,7 +90,8 @@
     "browserbase": [
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
       "data/review-texts/schmigadoon-2026/wsj--unknown.json",
-      "schmigadoon-2026/wsj--unknown.json"
+      "schmigadoon-2026/wsj--unknown.json",
+      "data/review-texts/glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -92,12 +103,16 @@
       "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
       "data/review-texts/spamalot-off-broadway-2026/albany-times-union--katherine-kiessling.json",
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json",
-      "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json"
+      "data/review-texts/hadestown-2019/newnownextcom--michael-musto.json",
+      "data/review-texts/cats-west-end-2026/northjerseycom--robert-feldberg.json",
+      "data/review-texts/the-comedy-about-spies-west-end-2026/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "jesus-christ-superstar-west-end-2026/amny--matt-windman.json"
+    ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+  "lastProcessed": "glengarry-glen-ross-west-end-2026/variety--marilyn-stasio.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -137,6 +152,28 @@
       "t": "2026-04-27T10:47:21.844Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-27T10:56:18.459Z",
+      "event": "bb-session",
+      "session": "58878421",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
+    },
+    {
+      "t": "2026-04-27T10:56:19.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-27T10:58:17.646Z",
+      "event": "bb-session",
+      "session": "9155fe85",
+      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
+    },
+    {
+      "t": "2026-04-27T10:58:18.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

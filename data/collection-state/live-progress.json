@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-27T10:54:33.205Z",
-  "processed": 11,
-  "failed": 47,
-  "successRate": "19.0%",
+  "updatedAt": "2026-04-27T10:58:31.653Z",
+  "processed": 12,
+  "failed": 56,
+  "successRate": "17.6%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 1,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 0
+    "archiveToday": 7,
+    "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -53,6 +53,28 @@
       "t": "2026-04-27T10:47:21.844Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-27T10:56:18.459Z",
+      "event": "bb-session",
+      "session": "58878421",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater-review-cats-1.1637339"
+    },
+    {
+      "t": "2026-04-27T10:56:19.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-04-27T10:58:17.646Z",
+      "event": "bb-session",
+      "session": "9155fe85",
+      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
+    },
+    {
+      "t": "2026-04-27T10:58:18.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
