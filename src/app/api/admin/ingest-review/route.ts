@@ -38,13 +38,16 @@ const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manua
 // Boys 2026-04-26: LLM scored 68 (Mixed) → keyPhrases highlighted negative
 // Act 2 critique. Operator overrode score to 78 (Positive) but didn't clear
 // keyPhrases — pullquote stayed negative on a Positive review.
-const { extractScore, scoreToBucket } = cjsRequire('../../../../../scripts/lib/score-extractors') as {
+const { extractScore, scoreToBucket, OUTLET_VERIFIED_SOURCES } = cjsRequire(
+  '../../../../../scripts/lib/score-extractors',
+) as {
   extractScore: (
     html: string,
     text: string,
     outletId: string,
   ) => { originalScore: string; normalizedScore: number; source: string; outlet?: string } | null;
   scoreToBucket: (score: number) => string;
+  OUTLET_VERIFIED_SOURCES: Set<string>;
 };
 
 export const dynamic = 'force-dynamic';
@@ -228,35 +231,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   // is populated. Without this, rebuild's P0.5 path is empty and the LLM
   // ensemble's body-sentiment guess wins (NYSR Roma Torre ★★★/5 → 76 instead
   // of 60 on 2026-04-26). Skip when the operator already provided a score.
+  // Seed values from operator-typed inputs. The extractor pre-pass below
+  // (after existingData is loaded) will only run when no typed score and no
+  // pre-existing manual score exists on disk, to avoid clobbering the
+  // operator's prior manual entry on re-ingest (ship-check 2026-04-27 P1).
   let extractorOriginalScore: string | null = body.originalScore || null;
   let extractorOriginalScoreSource: string | null = body.originalScore
     ? deriveOriginalScoreSource(body.originalScore)
     : null;
-  if (!extractorOriginalScore && humanReviewScore == null) {
-    try {
-      const extracted = extractScore('', fullText, outletId);
-      // Only accept extractor hits when:
-      //   (a) score is in the 1-100 range (matches the input validator above),
-      //   (b) outlet has a dedicated extractor in OUTLET_EXTRACTORS or is in
-      //       KNOWN_STAR_OUTLETS — text-only generic fallthrough has no
-      //       positional anchor and can FP on quoted critic mentions or
-      //       pull-quotes. Codex ship-check 2026-04-27 P1 finding.
-      if (
-        extracted &&
-        Number.isFinite(extracted.normalizedScore) &&
-        extracted.normalizedScore >= 1 &&
-        extracted.normalizedScore <= 100 &&
-        isStrongExtractorSource(extracted.source)
-      ) {
-        extractorOriginalScore = extracted.originalScore;
-        extractorOriginalScoreSource = extracted.source;
-        humanReviewScore = extracted.normalizedScore;
-      }
-    } catch {
-      // Extractor errors should never block ingest. Fall through; LLM
-      // ensemble dispatch (below) will score from fullText instead.
-    }
-  }
 
   // When byline detection failed, embed a short URL hash in the filename so
   // multiple unknown-byline reviews from the same outlet don't collide on
@@ -294,6 +276,61 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       existingData = JSON.parse(decoded) as Record<string, unknown>;
     } catch {
       existingData = null;
+    }
+  }
+
+  // Score-extractor pre-pass (Issue #6 + ship-check 2026-04-27 P1). Runs
+  // when:
+  //   (a) operator did NOT type a score AND did NOT pre-set humanReviewScore,
+  //   (b) existing file has no humanReviewScore AND no originalScore from
+  //       a manual source — never clobber a prior manual entry on re-ingest.
+  // Without (b) the second submission of the same review (e.g. operator
+  // editing the byline post-ingest) would re-extract from fullText and could
+  // overwrite a previously-correct score with a different extractor read,
+  // OR null it out if the operator pasted a different excerpt that lacks
+  // the rating. Gate is conservative: any pre-existing originalScore
+  // (regardless of source) wins, since the operator can re-extract by
+  // explicitly typing a new score.
+  const existingHasManualScore = !!(
+    existingData &&
+    (
+      (typeof existingData.humanReviewScore === 'number' &&
+        existingData.humanReviewScore >= 1 &&
+        existingData.humanReviewScore <= 100) ||
+      (typeof existingData.originalScore === 'string' &&
+        existingData.originalScore.trim().length > 0)
+    )
+  );
+  if (
+    !extractorOriginalScore &&
+    humanReviewScore == null &&
+    !existingHasManualScore
+  ) {
+    try {
+      const extracted = extractScore('', fullText, outletId);
+      // Only accept extractor hits when:
+      //   (a) score is in the 1-100 range (matches the input validator above),
+      //   (b) source is in OUTLET_VERIFIED_SOURCES — text-only generic
+      //       fallthrough has no positional anchor and can FP on quoted
+      //       critic mentions or pull-quotes. The canonical list lives in
+      //       score-extractors.js; importing it here keeps the whitelist in
+      //       sync as new outlet extractors are added (Codex ship-check
+      //       2026-04-27 P1: previous local STRONG_EXTRACTOR_SOURCES list
+      //       missed ~19 outlet-anchored sources).
+      if (
+        extracted &&
+        Number.isFinite(extracted.normalizedScore) &&
+        extracted.normalizedScore >= 1 &&
+        extracted.normalizedScore <= 100 &&
+        isTrustedExtractorSource(extracted.source)
+      ) {
+        extractorOriginalScore = extracted.originalScore;
+        extractorOriginalScoreSource = extracted.source;
+        humanReviewScore = extracted.normalizedScore;
+      }
+    } catch {
+      // Extractor errors should never block ingest. Fall through; LLM
+      // ensemble dispatch (below) will score from fullText instead.
     }
   }
 
@@ -462,6 +499,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
           fast_rebuild: 'true',
           run_calibration: 'false',
           run_validation: 'false',
+          // Per-show concurrency lane (ship-check 2026-04-27 P0). The
+          // workflow's group is `scoring-reviews${rescore_reason}` —
+          // without a per-show suffix every /ingest dispatch queues into
+          // the same default group and serializes. Two operators ingesting
+          // different shows in parallel would block each other up to the
+          // 350-min job timeout, defeating the <20-min fast-path SLA.
+          rescore_reason: `admin-ingest-${showId}`,
         },
       );
       dispatchedWorkflow = SCORING_WORKFLOW;
@@ -621,27 +665,27 @@ function deriveOriginalScoreSource(raw: string): string {
   return `manual-${parsed.type}`; // 'manual-stars' | 'manual-letter' | 'manual-numeric'
 }
 
-// Whitelist of extractor sources that we trust at /ingest time. Generic
-// text-pattern / og-description / wp-api-title can FP on quoted critic
-// mentions or page chrome since /ingest passes html='' (no positional
-// anchor). Outlet-dedicated and unicode/word/letter forms are safe because
-// they either have anchored regexes (KNOWN_STAR_OUTLETS fallthrough) or are
-// outlet-specific.
-const STRONG_EXTRACTOR_SOURCES = new Set([
-  'unicode-stars',
-  'unicode-stars-fallthrough',
-  'word-stars',
-  'numeric-stars',
-  'letter-grade',
-  'json-ld',
-  'css-stars',
-  'star-class',
-  'star-rating',
-  'lbo-css-stars',
-]);
-function isStrongExtractorSource(source: string | undefined | null): boolean {
+// Trust gate for extractor pre-pass at /ingest time. Delegates to the
+// canonical OUTLET_VERIFIED_SOURCES set in scripts/lib/score-extractors.js,
+// which is the same set used elsewhere in the codebase to label scores as
+// "outlet-verified" (see rebuild-helpers.js getBestScore P0.5). Importing
+// keeps this in sync as new outlet-anchored extractors are added — the
+// previous local STRONG_EXTRACTOR_SOURCES list missed ~19 trustworthy
+// outlet-specific sources (Codex ship-check 2026-04-27 P1).
+//
+// We also keep `unicode-stars-fallthrough` even though it's not in
+// OUTLET_VERIFIED_SOURCES — it's the KNOWN_STAR_OUTLETS anchored fallback
+// in extractScore() and is positionally safe (first/last 15% only). All
+// other generic text-pattern / og-description / wp-api-title sources ARE
+// excluded because they have no positional anchor when /ingest passes
+// html='' and can FP on quoted critic mentions or page chrome.
+function isTrustedExtractorSource(source: string | undefined | null): boolean {
   if (!source) return false;
-  return STRONG_EXTRACTOR_SOURCES.has(source);
+  if (OUTLET_VERIFIED_SOURCES.has(source)) return true;
+  // KNOWN_STAR_OUTLETS anchored fallthrough emits this source — anchored
+  // to first/last 15% of text, safe.
+  if (source === 'unicode-stars-fallthrough') return true;
+  return false;
 }
 
 function normalizeUrl(url: string): string {

@@ -92,6 +92,12 @@ export async function POST(request: NextRequest) {
           fast_rebuild: 'true',
           run_calibration: 'false',
           run_validation: 'false',
+          // Per-show concurrency lane (ship-check 2026-04-27 P0). Same
+          // rationale as /api/admin/ingest-review: without rescore_reason,
+          // every dispatch queues into the default `scoring-reviews`
+          // concurrency group and serializes — blocking parallel show
+          // ingests up to the 350-min timeout, breaking the <20-min SLA.
+          rescore_reason: `admin-ingest-${showId}`,
         }
       : { reason };
 
