@@ -341,10 +341,10 @@ function Inner({
   const userFeaturesEnabled = featureFlags.userAccounts;
 
   return (
-    <div className="card p-4 sm:p-5 space-y-4" data-testid="show-hero-redesign">
-      {/* Header: poster left + title block right */}
-      <div className="flex gap-4">
-        <div className="flex-shrink-0 w-28 sm:w-36">
+    <div className="card p-4 sm:p-5 lg:p-6 space-y-4" data-testid="show-hero-redesign">
+      {/* Header: poster left + title block right. Poster scales up at desktop. */}
+      <div className="flex gap-4 lg:gap-6">
+        <div className="flex-shrink-0 w-28 sm:w-36 lg:w-44">
           <div className="relative aspect-[2/3] rounded-xl overflow-visible shadow-2xl border border-white/10 bg-surface-raised">
             {userFeaturesEnabled && <ShowPageBookmark showId={show.id} size="compact" />}
             <div className="absolute inset-0 rounded-xl overflow-hidden">
@@ -377,7 +377,7 @@ function Inner({
             <CategoryBadge category={show.category} />
             <StatusBadge status={show.status} />
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight leading-tight text-white">
+          <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
             {show.title}
           </h1>
           <div className="text-sm text-gray-400 space-y-0.5 pt-0.5">
@@ -396,50 +396,80 @@ function Inner({
         </div>
       </div>
 
-      {/* Score row OR awaiting card */}
+      {/* Score row OR awaiting card. Mobile: dual cards (critic + audience).
+          Desktop (lg+): single inline block (gold ScoreBadge + tier name + review
+          count + audience chip) — preserves current desktop's vertical density. */}
       {!hasEnoughCriticReviews ? (
         <AwaitingCard show={show} reviewCount={reviewCount} />
       ) : (
-        <div className={`grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
-          {/* Critic score box — taps anchor to #critic-reviews */}
-          <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
-            <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
-            <div className="min-w-0 flex-1">
-              {tier && (
-                <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
-                  {tier.label}
-                </p>
-              )}
-              <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
-                {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
-              </p>
-            </div>
-          </a>
-          {/* Audience grade box — taps anchor to #audience */}
-          {hasAudience && audienceGrade && (
-            <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
-              <div
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
-                style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
-              >
-                {audienceGrade.grade}
-              </div>
+        <>
+          {/* Mobile / sm — dual boxes */}
+          <div className={`lg:hidden grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
+            <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+              <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
-                  {audienceGrade.label}
-                </p>
-                {audienceCount > 0 && (
-                  <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
-                    {audienceCount.toLocaleString('en-US')} audience reviews
+                {tier && (
+                  <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
+                    {tier.label}
                   </p>
                 )}
+                <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                  {reviewCount} critic {reviewCount === 1 ? 'review' : 'reviews'}
+                </p>
               </div>
             </a>
-          )}
-        </div>
+            {hasAudience && audienceGrade && (
+              <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+                <div
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
+                  style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
+                >
+                  {audienceGrade.grade}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
+                    {audienceGrade.label}
+                  </p>
+                  {audienceCount > 0 && (
+                    <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">
+                      {audienceCount.toLocaleString('en-US')} audience reviews
+                    </p>
+                  )}
+                </div>
+              </a>
+            )}
+          </div>
+
+          {/* Desktop / lg — inline score block (matches current desktop hero) */}
+          <div className="hidden lg:flex items-center gap-4">
+            <a href="#critic-reviews" className="flex items-center gap-4 hover:opacity-90 transition-opacity">
+              <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
+              <div>
+                {tier && (
+                  <p className="text-2xl font-extrabold leading-tight tracking-tight" style={{ color: tier.color }}>
+                    {tier.label}
+                  </p>
+                )}
+                <p className="text-sm text-gray-500 mt-1">
+                  Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                </p>
+              </div>
+            </a>
+            {hasAudience && audienceGrade && (
+              <a
+                href="#audience"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold hover:brightness-125 transition-all"
+                style={{ background: `${audienceGrade.color}1f`, color: audienceGrade.color }}
+              >
+                <span className="opacity-60">Audience:</span>
+                <span>{audienceGrade.grade} · {audienceGrade.label}</span>
+              </a>
+            )}
+          </div>
+        </>
       )}
 
-      {/* Distribution bar */}
+      {/* Distribution bar — same on both, just wider on desktop */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
         <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
       )}
@@ -556,7 +586,9 @@ function Inner({
 
       {/* Tickets — split-variant: primary CTA + secondary pills row.
           Lottery/Rush pill rides the same scroll row via secondaryAfter so the
-          three secondary pills always sit on a single line (scrolls if too wide). */}
+          three secondary pills always sit on a single line (scrolls if too wide).
+          Primary CTA is full-width on mobile (standard CTA pattern), inline auto
+          width at lg+ (desktop has horizontal room — full-width feels too wide). */}
       {!isClosed && sortedTicketLinks.length > 0 && (
         <TicketButtonsAB
           showName={show.title}
@@ -569,6 +601,7 @@ function Inner({
           officialUrl={show.officialUrl}
           pageType="show"
           splitVariant
+          primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 py-2.5 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
           secondaryAfter={
             featureFlags.discountTickets && lotteryRush ? (
               <a

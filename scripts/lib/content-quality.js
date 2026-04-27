@@ -2335,7 +2335,16 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     };
   }
 
-  const lower = text.toLowerCase();
+  // Normalize curly quotes/dashes to straight ASCII before matching. shows.json
+  // uses straight apostrophes ("Joe Turner's") while many outlets render curly
+  // ones ("Joe Turner's") — without normalization the multi-word title token
+  // never matches and short paywalled excerpts get rejected as
+  // url_content_mismatch (NY Sun Joe Turner 2026-04-26 incident).
+  const normalize = (s) => s
+    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[“”„‟]/g, '"')
+    .replace(/[–—]/g, '-');
+  const lower = normalize(text).toLowerCase();
   const threshold = text.length >= 1500 ? minLong : minShort;
 
   // Build the set of title tokens to count — show title, title-without-"The",
@@ -2345,15 +2354,29 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // both title and ID doesn't double-weight.
   const tokens = new Set();
   if (showTitle && showTitle.length > 2) {
-    tokens.add(showTitle.toLowerCase());
-    const noThe = showTitle.toLowerCase().replace(/^the\s+/, '');
+    const t = normalize(showTitle).toLowerCase();
+    tokens.add(t);
+    const noThe = t.replace(/^the\s+/, '');
     if (noThe.length > 2) tokens.add(noThe);
+    // For possessive titles ("Joe Turner's Come and Gone", "Mrs. Doubtfire's
+    // Showbiz Memoir") add the prefix before "'s " — body text typically
+    // uses the short form ("Joe Turner is back"). Without this, the full-title
+    // token only matches the headline (1×) and a paywalled review fails the
+    // 3× threshold for >1500-char text. Joe Turner 2026-04-26 incident.
+    const apostropheS = t.indexOf("'s ");
+    if (apostropheS >= 4) {
+      const prefix = t.slice(0, apostropheS);
+      if (prefix.length > 2 && /\s/.test(prefix)) tokens.add(prefix);
+    }
   }
   if (showId) {
     const idBase = showId.replace(/-\d{4}$/, '');
     for (const w of idBase.split('-')) {
       if (w.length > 4 && !['the', 'and', 'for', 'with', 'from'].includes(w)) {
         tokens.add(w.toLowerCase());
+        // Also add singular form of plural ID words (>5 chars to avoid noise):
+        // "turners" → "turner" matches the natural body usage. Joe Turner.
+        if (w.length > 5 && w.endsWith('s')) tokens.add(w.slice(0, -1).toLowerCase());
       }
     }
   }
@@ -2378,7 +2401,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
     if (m) {
       htmlTitle = m[1].replace(/\s+/g, ' ').trim();
-      const titleLower = htmlTitle.toLowerCase();
+      const titleLower = normalize(htmlTitle).toLowerCase();
       htmlTitleMatch = false;
       for (const token of tokens) {
         if (token && titleLower.includes(token)) {

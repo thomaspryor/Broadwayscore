@@ -75,7 +75,14 @@ const PATTERNS = [
   // Vulture — article-body
   ['vulture.com', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<aside/, 300],
 
-  // Generic fallbacks (any host)
+  // NY Sun (Next.js) — main body lives in `article-wrapper` inside <main>.
+  // The 8 <article class="group/article-teaser"> tags on the page are sidebar
+  // teaser cards, NOT the review — without this NY Sun-specific pattern the
+  // generic <article> fallback used to grab the first teaser and we'd reject
+  // the whole page as url_content_mismatch (Joe Turner 2026-04-26 incident).
+  ['nysun.com', /<div[^>]+class="[^"]*article-wrapper[^"]*"[^>]*>([\s\S]*?)<\/main>/, 300],
+
+  // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
   [null, /<main[^>]*>([\s\S]*?)<\/main>/, 500],
 ];
@@ -94,9 +101,23 @@ function extractArticleText(html, hostname) {
 
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
-    const m = html.match(re);
-    if (m && m[1] && m[1].length >= minLen) {
-      const text = stripHtml(m[1]);
+    // Generic fallbacks (hostMatch === null) pick the LARGEST match, not the
+    // first — sidebar teaser cards on Next.js/SPA sites use <article> too, and
+    // the first <article> on the page is often a teaser (Joe Turner 2026-04-26
+    // NY Sun incident: 8 sidebar teasers shadowed the real story). For
+    // host-specific patterns we trust the selector to be unique enough.
+    const reGlobal = hostMatch == null ? new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g') : null;
+    let best = null;
+    if (reGlobal) {
+      for (const m of html.matchAll(reGlobal)) {
+        if (m[1] && m[1].length >= minLen && (!best || m[1].length > best.length)) best = m[1];
+      }
+    } else {
+      const m = html.match(re);
+      if (m && m[1] && m[1].length >= minLen) best = m[1];
+    }
+    if (best) {
+      const text = stripHtml(best);
       if (text.length >= 100) return text;
     }
   }
