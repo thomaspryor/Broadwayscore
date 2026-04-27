@@ -200,7 +200,7 @@ export default function TicketButtonsAB({
   // Inline mode keeps the smaller default class so existing call sites (where ticket pills are
   // a tight scrolling row) don't change visually.
   const splitSecondaryClass =
-    'inline-flex items-center gap-1.5 py-2.5 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0';
+    'inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-sm leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0';
   const secondaryClass = splitVariant ? splitSecondaryClass : buttonClassName;
   const secondaryIconSize = splitVariant ? 'w-4 h-4' : 'w-3.5 h-3.5';
 
