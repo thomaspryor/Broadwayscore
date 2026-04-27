@@ -36,6 +36,11 @@ interface IngestResponse {
   // the review can render on the live page. Batch mode reads this from each
   // slot's response and sets dispatch mode accordingly.
   needsScoring?: boolean;
+  // Set when the ingest committed a humanReviewScore (operator-typed score
+  // OR strong-extractor pre-pass hit). Surfaces as a 🔒 Locked badge in
+  // LogRow so the operator sees which submissions hard-locked vs went to
+  // LLM scoring (Lost Boys 2026-04-27 Gap #6).
+  lockedScore?: number;
 }
 
 interface LogEntry {
@@ -56,6 +61,10 @@ interface LogEntry {
   // distinctly so they don't get lost in the success list.
   dispatchedWorkflow?: string;
   pendingReason?: string;
+  // Lost Boys 2026-04-27 Gap #6: surface a 🔒 Locked badge when the ingest
+  // committed a humanReviewScore so the operator can audit which rows
+  // hard-locked at a specific score vs went to LLM ensemble scoring.
+  lockedScore?: number;
 }
 
 type Mode = 'single' | 'batch';
@@ -150,12 +159,26 @@ function LogRow({ entry }: { entry: LogEntry }) {
   // (rebuild-fast) or 15-20 min (LLM-then-rebuild).
   const eta = entry.status === 'saved' ? describeDispatchEta(entry.dispatchedWorkflow) : null;
   const bylineWarning = entry.status === 'saved' && entry.pendingReason === 'no-byline';
+  const lockedBadge =
+    entry.status === 'saved' && typeof entry.lockedScore === 'number'
+      ? entry.lockedScore
+      : null;
 
   return (
     <li className="flex items-start gap-2 text-xs">
       <span className={`${tone} mt-0.5 shrink-0 w-4`}>{icon}</span>
       <div className="flex-1 min-w-0">
-        <div className={`${tone} truncate`}>{summary}</div>
+        <div className={`${tone} truncate flex items-center gap-1.5`}>
+          <span className="truncate">{summary}</span>
+          {lockedBadge !== null && (
+            <span
+              className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-brand/15 text-brand text-[10px] uppercase tracking-wider"
+              title="humanReviewScore committed; LLM ensemble will not override."
+            >
+              🔒 Locked {lockedBadge}
+            </span>
+          )}
+        </div>
         {entry.status === 'failed' && entry.error && (
           <div className="text-[11px] text-gray-500 truncate">{entry.url}</div>
         )}
@@ -321,6 +344,7 @@ function SinglePasteForm({
           warningCount: (json.detectionWarnings || []).length,
           dispatchedWorkflow: json.dispatchedWorkflow,
           pendingReason: json.pendingReason,
+          lockedScore: json.lockedScore,
         });
         // Clear inputs so user can paste the next one
         setUrl('');
@@ -625,6 +649,7 @@ function BatchPasteForm({
             // the end so this is per-FILE state (committed yes, but the
             // batch-end dispatch tells the operator the actual ETA).
             pendingReason: json.pendingReason,
+            lockedScore: json.lockedScore,
           });
         } else {
           failureCount++;

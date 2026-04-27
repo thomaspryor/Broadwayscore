@@ -3945,6 +3945,28 @@ try {
 }
 
 // ========================================
+// 3.5: LOCKS INDEX (admin audit trail)
+// ========================================
+// Scans data/review-texts/*\/*.json for human-locked humanReviewScore files
+// and writes public/data/admin/locks.json. Drives /admin/locks UI.
+// No scoring impact — read-only over disk + single JSON write. Errors
+// surface to stderr with a GitHub Actions ::warning:: annotation (CI sees
+// it in the summary) but don't fail the rebuild — locks.json is an audit
+// surface, not core data.
+{
+  try {
+    const { writeLocksIndex } = require('./lib/locks-index');
+    const locksReviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+    const locksOutPath = path.join(__dirname, '..', 'public', 'data', 'admin', 'locks.json');
+    const stats = writeLocksIndex({ reviewTextsDir: locksReviewTextsDir, outputPath: locksOutPath });
+    console.log(`\n🔒 Locks index: ${stats.count} locks (${stats.withRationale} with rationale, ${stats.withoutRationale} without) → public/data/admin/locks.json`);
+  } catch (e) {
+    console.error(`\n::warning::Locks index generation failed: ${e.message}`);
+    console.error(`   /admin/locks page will ship empty until the next successful rebuild. Stack: ${e.stack}`);
+  }
+}
+
+// ========================================
 // 4: POST-REBUILD EXCERPT AUDIT (Layer 2)
 // ========================================
 {
