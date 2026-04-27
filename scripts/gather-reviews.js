@@ -773,7 +773,37 @@ async function searchDTLI(show) {
       console.log(`    ✓ Found via slug map: ${url}`);
       return { url, html: result.html };
     }
-    console.log(`    ⚠ Mapped URL failed, falling back to sitemap discovery...`);
+    console.log(`    ⚠ Mapped URL failed, falling back to homepage discovery...`);
+  }
+
+  // Homepage discovery — DTLI's homepage features the ~20 most-recent shows and
+  // updates within minutes of a new review page going live. One fetch beats both
+  // URL-guessing (8+ HTTP probes) and sitemap discovery (multi-XML fetch) when the
+  // show is recent. Lost Boys 2026-04-26 readiness audit. Falls through to sitemap
+  // discovery on miss.
+  try {
+    const { findDTLIShowLinkOnHomepage } = require('./lib/dtli-homepage-scan.js');
+    console.log('  DTLI: homepage scan...');
+    const homepageResult = await searchAggregator('DTLI-Homepage', 'https://didtheylikeit.com/');
+    if (homepageResult.found && homepageResult.html) {
+      const homeUrl = findDTLIShowLinkOnHomepage(homepageResult.html, show, { logger: console });
+      if (homeUrl) {
+        console.log(`    homepage match: ${homeUrl}`);
+        const showResult = await searchAggregator('DTLI', homeUrl);
+        if (showResult.found && showResult.html && showResult.html.includes('review-item') &&
+            quickTitleCheck(showResult.html, show.title)) {
+          console.log(`    ✓ Found via homepage scan: ${homeUrl}`);
+          return { url: homeUrl, html: showResult.html };
+        }
+        console.log(`    ⚠ Homepage URL failed validation, falling back to sitemap discovery...`);
+      } else {
+        console.log('    homepage: no matching anchor (falling back to sitemap discovery)');
+      }
+    } else {
+      console.log('    homepage: fetch failed (falling back to sitemap discovery)');
+    }
+  } catch (err) {
+    console.log(`    homepage discovery error (falling through): ${err.message}`);
   }
 
   // Live sitemap discovery — runs when the slug map misses (new shows between
