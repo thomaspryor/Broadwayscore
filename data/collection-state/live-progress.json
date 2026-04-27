@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-27T11:23:02.134Z",
+  "updatedAt": "2026-04-27T11:25:16.487Z",
   "processed": 12,
-  "failed": 196,
-  "successRate": "5.8%",
+  "failed": 206,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 1,
@@ -13,7 +13,7 @@
     "archiveToday": 8,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -97,6 +97,17 @@
       "t": "2026-04-27T11:13:59.717Z",
       "event": "bb-cookie-inject",
       "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-04-27T11:23:17.192Z",
+      "event": "bb-session",
+      "session": "b6ce4061",
+      "url": "http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-04-27T11:23:18.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

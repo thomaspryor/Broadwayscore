@@ -209,7 +209,17 @@
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
     "driving-miss-daisy-2010/nytheatre--martin-denton.json",
     "la-bete-2010/chicagotribune--ben-brantley.json",
-    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json"
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "the-pitmen-painters-2010/backstage--erik-haagensen.json",
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json",
+    "everyday-rapture-2010/backstage--david-sheward.json",
+    "collected-stories-2010/ap--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -253,7 +263,7 @@
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+  "lastProcessed": "collected-stories-2010/ap--unknown.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -337,6 +347,17 @@
       "t": "2026-04-27T11:13:59.717Z",
       "event": "bb-cookie-inject",
       "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-04-27T11:23:17.192Z",
+      "event": "bb-session",
+      "session": "b6ce4061",
+      "url": "http://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-04-27T11:23:18.052Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
