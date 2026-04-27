@@ -18,7 +18,6 @@ audit-pre2005-reviews.js -- cross-show MOVE write at line 455 (TOPOLOGY marker),
 classify-wrong-production.js -- cross-show MOVE write at line 599 (TOPOLOGY marker), bypasses _locked by design
 backfill-unknown-critics.js -- rename path at line 164 (TOPOLOGY marker), bypasses _locked by design
 cleanup-phantom-outlets.js -- merge-then-unlink at line 130 (TOPOLOGY marker), bypasses _locked by design
-backfill-html-override-rename.js -- one-shot topology-mover (rename/merge review-text files when criticName slug changed via HC author override), routes through renameReviewFileToMatchCritic helper which writes merged dest + unlinks source
 
 # === Legacy violators (pre-Sprint-1 P0 #2) ===
 # These scripts have raw fs.writeFileSync to review-texts paths but predate the
