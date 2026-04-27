@@ -1,72 +1,65 @@
 {
   "processed": [
-    "the-lost-boys-2026/ew--unknown.json",
-    "joe-turners-come-and-gone-2026/amny--unknown.json"
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
-    "the-lost-boys-2026/talkinbroadway--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/ew--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/huffpost--unknown.json",
-    "betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json"
+    "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+    "music-city-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "seagull-true-story-off-broadway-2026/theatreclique--brian-eugenio-herrera.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-lost-boys-2026/ew--unknown.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [
-      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
-      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [
-      "joe-turners-come-and-gone-2026/amny--unknown.json"
-    ],
+    "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-lost-boys-2026/talkinbroadway--unknown.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json"
     ],
     "archive": []
   },
-  "startTime": "2026-04-27T07:01:21.408Z",
-  "lastProcessed": "betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json",
+  "startTime": "2026-04-27T09:11:00.649Z",
+  "lastProcessed": "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
   "log": [
     {
-      "t": "2026-04-27T07:03:37.015Z",
+      "t": "2026-04-27T09:11:06.977Z",
       "event": "bb-session",
-      "session": "2fe3eb26",
-      "url": "http://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+      "session": "309ad9df",
+      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
     },
     {
-      "t": "2026-04-27T07:03:37.020Z",
-      "event": "bb-session",
-      "session": "b81e38a4",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2646226"
-    },
-    {
-      "t": "2026-04-27T07:03:37.632Z",
+      "t": "2026-04-27T09:11:08.122Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "variety.com"
     },
     {
-      "t": "2026-04-27T07:03:37.721Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-04-27T07:03:50.387Z",
+      "t": "2026-04-27T09:13:30.503Z",
       "event": "bb-session",
-      "session": "e808182b",
-      "url": "http://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2Fr"
+      "session": "6b1d82c1",
+      "url": "http://www.nytheatre.com/nytheatre/showpage.php?t=inth6271"
     },
     {
-      "t": "2026-04-27T07:03:50.941Z",
+      "t": "2026-04-27T09:14:08.187Z",
+      "event": "bb-session",
+      "session": "f160ed64",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-27T09:14:09.327Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
