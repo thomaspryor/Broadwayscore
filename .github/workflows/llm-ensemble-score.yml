@@ -450,24 +450,32 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Two rebuild targets:
-          #   - rebuild-reviews.yml (default): full ~15 min pipeline
-          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, skips backfill +
-          #     classification. Used by /ingest UI dispatches that need the
-          #     review on the live page within an opening-night window.
-          #     (Lost Boys 2026-04-26 Issue #5.)
+          #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
+          #     concurrency group → "skip if active" is correct (a queued
+          #     rebuild would just cancel-in-progress=false serialize anyway).
+          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, per-run concurrency.
+          #     Multiple concurrent runs are SAFE and intended — the per-run
+          #     group exists exactly so opening-night ingests don't queue
+          #     behind unrelated rebuild-fast runs (memory/feedback_gha_concurrency_queue_limit.md).
+          #     So we MUST NOT skip if another rebuild-fast is in flight —
+          #     ship-check 2026-04-27 caught that the old code silently
+          #     swallowed the dispatch when an unrelated fast rebuild was
+          #     already running, leaving freshly scored reviews unrebuilt.
           if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
             REBUILD_WF="rebuild-fast.yml"
             REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
-          else
-            REBUILD_WF="rebuild-reviews.yml"
-            REASON="Auto-triggered after LLM scoring"
+            echo "Triggering $REBUILD_WF to incorporate new scores (per-run concurrency, no skip-if-active check)..."
+            gh workflow run "$REBUILD_WF" \
+              -f reason="$REASON"
+            echo "Rebuild auto-triggered ($REBUILD_WF)."
+            exit 0
           fi
 
-          # Check for running OR queued rebuilds — prevents multiple scoring shards
-          # from each triggering their own rebuild (concurrency group on rebuild-reviews.yml
-          # is the primary guard, this is defense-in-depth). For rebuild-fast.yml the
-          # concurrency group is per-run, so this only matters for rebuild-reviews.yml,
-          # but checking both keeps us out of trouble.
+          REBUILD_WF="rebuild-reviews.yml"
+          REASON="Auto-triggered after LLM scoring"
+
+          # Shared concurrency group on rebuild-reviews.yml — skip if active to
+          # prevent multiple scoring shards each queuing their own rebuild.
           RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
           QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
           WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")

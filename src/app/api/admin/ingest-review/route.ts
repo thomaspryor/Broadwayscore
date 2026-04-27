@@ -88,6 +88,11 @@ interface IngestResponse {
   // Which workflow was dispatched (rebuild-fast.yml or llm-ensemble-score.yml).
   // Helps the UI show a more accurate "expected time to live" hint.
   dispatchedWorkflow?: string;
+  // True when the committed file has neither humanReviewScore nor an
+  // extractor-populated originalScore. The batch flow uses this to decide
+  // whether the post-batch dispatch should target rebuild-fast.yml (no scoring
+  // needed) or llm-ensemble-score.yml (must score before rebuild).
+  needsScoring?: boolean;
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<IngestResponse>> {
@@ -220,7 +225,19 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   if (!extractorOriginalScore && humanReviewScore == null) {
     try {
       const extracted = extractScore('', fullText, outletId);
-      if (extracted && Number.isFinite(extracted.normalizedScore)) {
+      // Only accept extractor hits when:
+      //   (a) score is in the 1-100 range (matches the input validator above),
+      //   (b) outlet has a dedicated extractor in OUTLET_EXTRACTORS or is in
+      //       KNOWN_STAR_OUTLETS — text-only generic fallthrough has no
+      //       positional anchor and can FP on quoted critic mentions or
+      //       pull-quotes. Codex ship-check 2026-04-27 P1 finding.
+      if (
+        extracted &&
+        Number.isFinite(extracted.normalizedScore) &&
+        extracted.normalizedScore >= 1 &&
+        extracted.normalizedScore <= 100 &&
+        isStrongExtractorSource(extracted.source)
+      ) {
         extractorOriginalScore = extracted.originalScore;
         extractorOriginalScoreSource = extracted.source;
         humanReviewScore = extracted.normalizedScore;
@@ -427,6 +444,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     detectionWarnings: detected.warnings.length > 0 ? detected.warnings : undefined,
     pendingReason: bylineFallback ? 'no-byline' : undefined,
     dispatchedWorkflow,
+    needsScoring: !fileHasScore,
   });
 }
 
@@ -553,6 +571,29 @@ function deriveOriginalScoreSource(raw: string): string {
   const parsed = parseScore(raw);
   if (!parsed) return 'manual-admin-ui';
   return `manual-${parsed.type}`; // 'manual-stars' | 'manual-letter' | 'manual-numeric'
+}
+
+// Whitelist of extractor sources that we trust at /ingest time. Generic
+// text-pattern / og-description / wp-api-title can FP on quoted critic
+// mentions or page chrome since /ingest passes html='' (no positional
+// anchor). Outlet-dedicated and unicode/word/letter forms are safe because
+// they either have anchored regexes (KNOWN_STAR_OUTLETS fallthrough) or are
+// outlet-specific.
+const STRONG_EXTRACTOR_SOURCES = new Set([
+  'unicode-stars',
+  'unicode-stars-fallthrough',
+  'word-stars',
+  'numeric-stars',
+  'letter-grade',
+  'json-ld',
+  'css-stars',
+  'star-class',
+  'star-rating',
+  'lbo-css-stars',
+]);
+function isStrongExtractorSource(source: string | undefined | null): boolean {
+  if (!source) return false;
+  return STRONG_EXTRACTOR_SOURCES.has(source);
 }
 
 function normalizeUrl(url: string): string {
