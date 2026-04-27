@@ -1,6 +1,14 @@
 {
   "processed": [
-    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-rocky-horror-show-2026/ew--dalton-ross.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "schmigadoon-2026/ew--unknown.json",
+    "schmigadoon-2026/wsj--unknown.json",
+    "kenrex-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "kenrex-off-broadway-2026/nytg--unknown.json",
+    "kenrex-off-broadway-2026/new-york-sun--elysa-gardner.json",
+    "kenrex-off-broadway-2026/theatermania--unknown.json"
   ],
   "failed": [
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
@@ -19,18 +27,29 @@
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/new-york-city-theatre--unknown.json",
-    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "the-rocky-horror-show-2026/w42st--michael-musto.json",
+    "schmigadoon-2026/new-york-city-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "the-rocky-horror-show-2026/ew--dalton-ross.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "schmigadoon-2026/ew--unknown.json",
+      "kenrex-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "kenrex-off-broadway-2026/nytg--unknown.json",
+      "kenrex-off-broadway-2026/new-york-sun--elysa-gardner.json",
+      "kenrex-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
-      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json"
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
+      "data/review-texts/schmigadoon-2026/wsj--unknown.json",
+      "schmigadoon-2026/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -43,7 +62,7 @@
     "archive": []
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+  "lastProcessed": "kenrex-off-broadway-2026/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -72,6 +91,17 @@
       "t": "2026-04-27T09:14:09.327Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T10:47:20.995Z",
+      "event": "bb-session",
+      "session": "e66bae28",
+      "url": "https://www.wsj.com/articles/schmigadoon-review-a-loving-lampoon-of-broadway-mus"
+    },
+    {
+      "t": "2026-04-27T10:47:21.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
