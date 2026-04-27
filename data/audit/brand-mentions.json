@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-27T18:46:58.137Z",
+  "lastRunAt": "2026-04-27T20:41:41.575Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -41,7 +41,8 @@
     "google:e67df507ee6601c6": true,
     "google:8b045df2e05a3e55": true,
     "google:c3d31a9614e2dfd3": true,
-    "google:a230d0cfcbcc1d86": true
+    "google:a230d0cfcbcc1d86": true,
+    "news:908494ada0683d6d": true
   },
   "mentions": [
     {
@@ -846,10 +847,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-26T20:30:25.041Z"
+    },
+    {
+      "id": "news:908494ada0683d6d",
+      "source": "forum",
+      "url": "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5",
+      "title": "THE LOST BOYS Reviews - Page 5",
+      "excerpt": "5 hours ago — https://broadwayscorecard.com/show/the-lost-boys. \"When we die, we go bye bye.\" - Abe Lincolns. MemorableUserName. Profile. Broadway Legend ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-27T20:41:21.640Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "Just a link share with a movie quote — no question, discussion prompt, or conversational opening that warrants a reply.",
+      "draftResponse": null,
+      "dispatched": "2026-04-27T20:41:41.574Z"
     }
   ],
   "stats": {
-    "totalSeen": 41,
+    "totalSeen": 42,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -893,6 +914,7 @@
     "https://forum.broadwayworld.com/thread/Beaches-reviews/3": true,
     "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true,
     "https://forum.broadwayworld.com/latest-posts.php": true,
-    "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true
+    "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true,
+    "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true
   }
 }
