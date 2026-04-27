@@ -2340,10 +2340,14 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // ones ("Joe Turner's") — without normalization the multi-word title token
   // never matches and short paywalled excerpts get rejected as
   // url_content_mismatch (NY Sun Joe Turner 2026-04-26 incident).
+  // Includes U+02BC (modifier-letter apostrophe), U+FF07 (full-width
+  // apostrophe), and U+00A0 (NBSP) — collapse NBSP to regular space so
+  // "Joe Turner's" with NBSP between words still matches.
   const normalize = (s) => s
-    .replace(/[‘’‚‛]/g, "'")
+    .replace(/[‘’‚‛ʼ＇]/g, "'")
     .replace(/[“”„‟]/g, '"')
-    .replace(/[–—]/g, '-');
+    .replace(/[–—]/g, '-')
+    .replace(/ /g, ' ');
   const lower = normalize(text).toLowerCase();
   const threshold = text.length >= 1500 ? minLong : minShort;
 
@@ -2358,15 +2362,20 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     tokens.add(t);
     const noThe = t.replace(/^the\s+/, '');
     if (noThe.length > 2) tokens.add(noThe);
-    // For possessive titles ("Joe Turner's Come and Gone", "Mrs. Doubtfire's
-    // Showbiz Memoir") add the prefix before "'s " — body text typically
-    // uses the short form ("Joe Turner is back"). Without this, the full-title
-    // token only matches the headline (1×) and a paywalled review fails the
-    // 3× threshold for >1500-char text. Joe Turner 2026-04-26 incident.
-    const apostropheS = t.indexOf("'s ");
-    if (apostropheS >= 4) {
-      const prefix = t.slice(0, apostropheS);
-      if (prefix.length > 2 && /\s/.test(prefix)) tokens.add(prefix);
+    // For possessive titles add the prefix before "'s" as a token — body text
+    // typically uses the short form. Two patterns:
+    // - Multi-word possessive ("Joe Turner's Come and Gone" → "Joe Turner")
+    // - Single-word possessive ("Hell's Kitchen" → "Hell", "Marvin's Room"
+    //   → "Marvin"). 47 shows in the catalog are single-word possessive; the
+    //   original `/\s/` check filtered all of them out — caught in QA review
+    //   2026-04-27. Joe Turner 2026-04-26 incident is the multi-word case.
+    // Match either "'s " (with space) for mid-title or "'s" before EOL for
+    // titles ending in possessive ("Hell's"). Threshold of 2 chars catches
+    // "It's"/"Amy's"/"Who's" prefixes.
+    const apostropheMatch = /^([^']{2,})'s(\s|$)/.exec(t);
+    if (apostropheMatch) {
+      const prefix = apostropheMatch[1].trim();
+      if (prefix.length >= 2) tokens.add(prefix);
     }
   }
   if (showId) {

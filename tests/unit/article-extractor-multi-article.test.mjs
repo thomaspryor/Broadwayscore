@@ -113,4 +113,39 @@ describe('validateContentMentionsShow: curly quote normalization', () => {
     assert.strictEqual(result.valid, true, `expected valid, got: ${result.reason}`);
     assert.ok(result.mentionCount >= 3, `expected >=3 mentions, got ${result.mentionCount}`);
   });
+
+  test('single-word possessive title (Hells Kitchen) matches body usage of Hell', () => {
+    // 47 shows in shows.json have single-word possessive titles ("Hell's
+    // Kitchen", "It's Only a Play", "Marvin's Room"). Original `/\\s/.test(prefix)`
+    // check filtered all of them out — caught in QA review 2026-04-27.
+    const text =
+      'Hell’s Kitchen returns to Broadway. The new musical from Alicia Keys.'.padEnd(200, ' ') +
+      ('Hell, somehow, finds room for innovation. '.repeat(10)) +
+      ('The score is brilliant and the staging inventive. '.repeat(20));
+    assert.ok(text.length >= 1500, 'fixture must exceed long-text threshold');
+    const result = validateContentMentionsShow(
+      text,
+      null,
+      "Hell's Kitchen",
+      'hells-kitchen-2024'
+    );
+    assert.strictEqual(result.valid, true, `expected valid, got: ${result.reason}`);
+    assert.ok(result.mentionCount >= 3, `expected >=3 mentions, got ${result.mentionCount}`);
+  });
+
+  test('NBSP (U+00A0) between words matches regular-space title', () => {
+    // Some outlets (FT, certain WordPress themes) inject NBSP between words.
+    // Without normalization, "Joe Turner's" with NBSP would not match.
+    const text =
+      'Joe Turner’s Come and Gone returns to Broadway. ' +
+      'Joe Turner is a stirring presence. The production excels in every way.';
+    const result = validateContentMentionsShow(
+      text,
+      null,
+      "Joe Turner's Come and Gone",
+      'joe-turners-come-and-gone-2026'
+    );
+    assert.strictEqual(result.valid, true, `expected valid, got: ${result.reason}`);
+    assert.ok(result.mentionCount >= 1, `expected >=1 mention, got ${result.mentionCount}`);
+  });
 });
