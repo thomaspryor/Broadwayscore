@@ -36,7 +36,7 @@ const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
-const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome } = require('./lib/pull-quote-guards');
+const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLeadingChrome } = require('./lib/pull-quote-guards');
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -207,7 +207,15 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 function extractExcerptFromFullText(fullText, showTitle) {
   if (!fullText || fullText.length < 200) return null;
 
-  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(fullText)));
+  // Pre-process: strip leading page-chrome lines (Review:/By/Photo/Credit/
+  // venue/date/just-name) BEFORE the existing line-by-line strip and sentence
+  // scoring. The existing strip didn't handle "Review: <Title>" prefixes or
+  // standalone venue lines ("Palace Theatre"), so chrome leaked into the
+  // fallback "first substantive sentences" path. Lost Boys 2026-04-26 Exeunt.
+  // stripLeadingChrome bails (returns null) if it would skip >70% of text;
+  // in that case keep the original.
+  const chromeStripped = stripLeadingChrome(fullText, { maxLen: fullText.length });
+  let text = fixMissingPeriods(fixMojibake(decodeHtmlEntities(chromeStripped || fullText)));
 
   // Strip control characters (U+0080–U+009F range)
   text = text.replace(/[\u0080-\u009F]/g, '');
@@ -638,6 +646,25 @@ function selectBestExcerpt(data, showTitle) {
     if (extracted && extracted.length > 50) {
       const validated = validateExcerpt(extracted, 'fullText');
       if (validated) return validated;
+    }
+  }
+
+  // 7. Chrome-skip raw fullText fallback. Defense-in-depth: when the
+  //    evaluative-sentence extractor returns null (too few substantive
+  //    sentences, all rejected, etc.), still try to surface SOMETHING from
+  //    fullText rather than nothing — but skip the leading page chrome first
+  //    so we don't return "Review: <Title> at the Palace Theatre Palace
+  //    Theatre ⋄ ...". See pull-quote-guards.stripLeadingChrome.
+  //    Operates on raw fullText (not the truncated-status version) and bails
+  //    when the heuristic would skip >70% of text.
+  if (data.fullText && data.fullText.length > 300 && data.textStatus !== 'truncated') {
+    const stripped = stripLeadingChrome(data.fullText, { maxLen: 600 });
+    if (stripped && stripped.length > 50) {
+      const cleaned = cleanExcerpt(stripped);
+      if (cleaned && cleaned.length > 50 && !isJunkExcerpt(cleaned)) {
+        const validated = validateExcerpt(cleaned, 'fullText-chrome-skip');
+        if (validated) return validated;
+      }
     }
   }
 

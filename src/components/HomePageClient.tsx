@@ -657,8 +657,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         singleGroups={panelSingleGroups}
         singleValueByGroup={panel.singleValueByGroup}
         onSetSingleValue={panel.setSingleValue}
-        yearRange={panel.yearRange}
-        onYearRangeChange={panel.setYearRange}
+        dateRanges={panel.dateRanges}
+        onDateRangesChange={panel.setDateRanges}
         onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
       />
