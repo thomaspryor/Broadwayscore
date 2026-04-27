@@ -123,6 +123,42 @@ describe('DOM extractor: CHROME_SELECTORS chrome stripping', () => {
   });
 });
 
+describe('DOM extractor: serialization roundtrip (Playwright path)', () => {
+  test('function works after .toString() + eval in isolated context', async () => {
+    // collect-review-texts.js calls `page.evaluate(${fn.toString()})(document)`
+    // — the function must be self-contained (no module-level closures).
+    // This test simulates that path: serialize → eval in vm context with only
+    // `document` available. If the function references SELECTORS or
+    // CHROME_SELECTORS at module scope, this throws ReferenceError.
+    const vm = await import('node:vm');
+    const html = '<html><body>'
+      + Array.from({ length: 8 }, (_, i) => `<article class="group/article-teaser"><p>Teaser ${i}.</p></article>`).join('')
+      + `<main><div class="article-wrapper"><p>${'Real article body. '.repeat(40)}</p></div></main>`
+      + '</body></html>';
+    const dom = new JSDOM(html);
+    const ctx = { document: dom.window.document };
+    vm.createContext(ctx);
+    const fnSrc = extractArticleTextFromDocument.toString();
+    const result = vm.runInContext(`(${fnSrc})(document)`, ctx);
+    assert.ok(result.includes('Real article body'), 'serialized fn should extract article-wrapper');
+    assert.ok(!result.includes('Teaser 0'), 'serialized fn should NOT include teaser content');
+  });
+
+  test('serialized function does not reference module-level identifiers', () => {
+    // If someone moves SELECTORS/MULTI_MATCH_SELECTORS/CHROME_SELECTORS back
+    // to module scope, .toString() would still emit references but the
+    // browser-side eval would throw. This guard fires immediately if any
+    // const declaration is missing from the function body.
+    const fnSrc = extractArticleTextFromDocument.toString();
+    assert.ok(/const SELECTORS = \[/.test(fnSrc),
+      'SELECTORS const must be declared INSIDE the function body for serialization');
+    assert.ok(/const MULTI_MATCH_SELECTORS = new Set/.test(fnSrc),
+      'MULTI_MATCH_SELECTORS const must be declared INSIDE the function body');
+    assert.ok(/const CHROME_SELECTORS = '/.test(fnSrc),
+      'CHROME_SELECTORS const must be declared INSIDE the function body');
+  });
+});
+
 describe('DOM extractor: NY Sun teaser-card scenario', () => {
   test('article-wrapper inside <main> wins over 8 teaser <article> cards', () => {
     // Simulates NY Sun's actual structure: 8 sidebar teaser cards as <article>,

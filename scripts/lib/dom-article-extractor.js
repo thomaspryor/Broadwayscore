@@ -12,6 +12,12 @@
  * filter, multi-match selector logic) THREE times in 24 hours
  * (2026-04-26/27). Extracting to a lib + testing it locks the contract.
  *
+ * ⚠️ ALL CONSTANTS MUST LIVE INSIDE THE FUNCTION BODY.
+ * Caller serializes via `.toString()` and runs in browser context — module-
+ * level closures don't survive serialization. The constants are also
+ * exported separately for tests to assert on, but the function itself must
+ * be self-contained.
+ *
  * ⚠️ DO NOT REVERT THE CHROME_SELECTORS FILTER. Removing it re-introduces
  * the newyorktheater.me Jonathan Mandell bug where related-post chrome
  * bleeds into the article body and the ensemble scoreability LLM correctly
@@ -20,83 +26,84 @@
 
 'use strict';
 
-// Selectors searched in priority order (most specific first, generic fallback last).
-const SELECTORS = [
-  // New Yorker (Condé Nast) - most precise selector
-  '.body__inner-container',
-  // NYT
-  '[data-testid="article-body"]',
-  'section[name="articleBody"]',
-  // Vulture / NY Mag / Condé Nast
-  '[class*="ArticlePageChunks"]',
-  '[class*="RawHtmlBody"]',
-  // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
-  '[class*="_articleContent_"]',
-  // Variety / THR / Deadline (PMC sites - free content)
-  '.a-content',
-  // WSJ
-  '.article-content .wsj-snippet-body',
-  'div.article-content',
-  '[class*="article_body"]',
-  // WaPo
-  '[data-qa="article-body"]',
-  '.article-body',
-  // Entertainment Weekly / People
-  '[data-testid="article-body-content"]',
-  // Talkin' Broadway — review content in <section class="page">
-  'section.page',
-  // NY Sun (Next.js) — main body in `article-wrapper`. Without this the
-  // generic `article` fallback below picks the first of 8 sidebar teaser
-  // cards (Joe Turner 2026-04-26 incident).
-  '.article-wrapper',
-  // Generic (ordered by specificity)
-  'article .entry-content',
-  'article .post-content',
-  'article .article-body',
-  '.story-body',
-  '.entry-content',
-  '.post-content',
-  '.review-content',
-  '.article__body',
-  '.article-content',
-  '.rich-text',
-  '[class*="ArticleBody"]',
-  '[class*="article-body"]',
-  '[class*="story-body"]',
-  '[class*="StoryBody"]',
-  'main article',
-  '.story-content',
-  '[role="article"]',
-  'article',
-  'main',
-];
-
-// For these broad selectors, use querySelectorAll + pick the LARGEST match
-// (by paragraph count). Defends against SPAs where <article> tags are used
-// for sidebar teaser cards and the first one isn't the real story.
-const MULTI_MATCH_SELECTORS = new Set([
-  'article', 'main', 'main article', '[role="article"]', '.article-wrapper',
-]);
-
-// Chrome blocks that frequently sit INSIDE the main article container on
-// WordPress + Jetpack sites (newyorktheater.me, NYSR, etc.). Paragraphs
-// inside these subtrees ("Reading Broadway: …", related-post excerpts,
-// share buttons) are not part of the review and confuse the ensemble
-// scoreability LLM into rejecting the page as not_a_review.
-// Joe Turner Jonathan Mandell 2026-04-26 incident.
-//
-// ⚠️ DO NOT REMOVE OR NARROW. CHROME_SELECTORS audit (2026-04-27) confirmed
-// these selectors do NOT match wrapper elements on newyorktheater.me,
-// artsfuse.org, nystagereview.com — only actual chrome blocks. The
-// theoretical Genesis Framework risk did not materialize.
-const CHROME_SELECTORS = '.sharedaddy, .jp-relatedposts, #jp-post-flair, .sd-sharing, .sd-like, .wpcnt, .related-posts, [class*="related-posts"], .author-bio, .post-tags, .post-meta, .social-share';
-
 /**
  * Extract article text from a Document.
  * @param {Document} document - Browser DOM or jsdom document.
  * @returns {string} Cleaned article text, or '' if no plausible body found.
  */
 function extractArticleTextFromDocument(document) {
+  // Constants live INSIDE the function body so they survive .toString()
+  // serialization for page.evaluate. Do not move them out.
+  const SELECTORS = [
+    // New Yorker (Condé Nast) - most precise selector
+    '.body__inner-container',
+    // NYT
+    '[data-testid="article-body"]',
+    'section[name="articleBody"]',
+    // Vulture / NY Mag / Condé Nast
+    '[class*="ArticlePageChunks"]',
+    '[class*="RawHtmlBody"]',
+    // TimeOut (uses hashed class names like _articleContent_3h2iz_20)
+    '[class*="_articleContent_"]',
+    // Variety / THR / Deadline (PMC sites - free content)
+    '.a-content',
+    // WSJ
+    '.article-content .wsj-snippet-body',
+    'div.article-content',
+    '[class*="article_body"]',
+    // WaPo
+    '[data-qa="article-body"]',
+    '.article-body',
+    // Entertainment Weekly / People
+    '[data-testid="article-body-content"]',
+    // Talkin' Broadway — review content in <section class="page">
+    'section.page',
+    // NY Sun (Next.js) — main body in `article-wrapper`. Without this the
+    // generic `article` fallback below picks the first of 8 sidebar teaser
+    // cards (Joe Turner 2026-04-26 incident).
+    '.article-wrapper',
+    // Generic (ordered by specificity)
+    'article .entry-content',
+    'article .post-content',
+    'article .article-body',
+    '.story-body',
+    '.entry-content',
+    '.post-content',
+    '.review-content',
+    '.article__body',
+    '.article-content',
+    '.rich-text',
+    '[class*="ArticleBody"]',
+    '[class*="article-body"]',
+    '[class*="story-body"]',
+    '[class*="StoryBody"]',
+    'main article',
+    '.story-content',
+    '[role="article"]',
+    'article',
+    'main',
+  ];
+
+  // For these broad selectors, use querySelectorAll + pick the LARGEST match
+  // (by paragraph count). Defends against SPAs where <article> tags are used
+  // for sidebar teaser cards and the first one isn't the real story.
+  const MULTI_MATCH_SELECTORS = new Set([
+    'article', 'main', 'main article', '[role="article"]', '.article-wrapper',
+  ]);
+
+  // Chrome blocks that frequently sit INSIDE the main article container on
+  // WordPress + Jetpack sites (newyorktheater.me, NYSR, etc.). Paragraphs
+  // inside these subtrees ("Reading Broadway: …", related-post excerpts,
+  // share buttons) are not part of the review and confuse the ensemble
+  // scoreability LLM into rejecting the page as not_a_review.
+  // Joe Turner Jonathan Mandell 2026-04-26 incident.
+  //
+  // ⚠️ DO NOT REMOVE OR NARROW. CHROME_SELECTORS audit (2026-04-27) confirmed
+  // these selectors do NOT match wrapper elements on newyorktheater.me,
+  // artsfuse.org, nystagereview.com — only actual chrome blocks. The
+  // theoretical Genesis Framework risk did not materialize.
+  const CHROME_SELECTORS = '.sharedaddy, .jp-relatedposts, #jp-post-flair, .sd-sharing, .sd-like, .wpcnt, .related-posts, [class*="related-posts"], .author-bio, .post-tags, .post-meta, .social-share';
+
   let bestText = '';
 
   // Try JSON-LD first — many major sites embed articleBody in structured data
@@ -194,6 +201,23 @@ function extractArticleTextFromDocument(document) {
 
   return cleaned;
 }
+
+// Re-export the constants for tests by reading them out of the function source.
+// (The function is self-contained so these aren't usable as imports — extract
+// for assertion only.)
+const _src = extractArticleTextFromDocument.toString();
+const SELECTORS = (() => {
+  const m = _src.match(/const SELECTORS = (\[[\s\S]*?\]);/);
+  return m ? eval(m[1]) : [];
+})();
+const MULTI_MATCH_SELECTORS = (() => {
+  const m = _src.match(/const MULTI_MATCH_SELECTORS = new Set\((\[[\s\S]*?\])\);/);
+  return m ? new Set(eval(m[1])) : new Set();
+})();
+const CHROME_SELECTORS = (() => {
+  const m = _src.match(/const CHROME_SELECTORS = '([^']+)'/);
+  return m ? m[1] : '';
+})();
 
 module.exports = {
   extractArticleTextFromDocument,
