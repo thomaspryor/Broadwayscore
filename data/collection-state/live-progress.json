@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-04-27T11:05:54.443Z",
+  "updatedAt": "2026-04-27T11:08:31.934Z",
   "processed": 12,
-  "failed": 96,
-  "successRate": "11.1%",
+  "failed": 106,
+  "successRate": "10.2%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 1,
@@ -13,7 +13,7 @@
     "archiveToday": 7,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -75,6 +75,17 @@
       "t": "2026-04-27T10:58:18.471Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T11:07:23.661Z",
+      "event": "bb-session",
+      "session": "4f82a7fa",
+      "url": "https://www.wsj.com/articles/1984-review-big-brother-is-watching-on-broadway-149"
+    },
+    {
+      "t": "2026-04-27T11:07:24.613Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
