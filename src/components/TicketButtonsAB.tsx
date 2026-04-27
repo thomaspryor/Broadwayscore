@@ -249,19 +249,25 @@ export default function TicketButtonsAB({
     const totalLinksInRow = visibleLinks.length + (!isSingleButton && officialUrl ? 1 : 0);
     const primaryLink = visibleLinks[0];
     const secondaryLinks = visibleLinks.slice(1);
-    const hasSecondary = !isSingleButton && (secondaryLinks.length > 0 || officialUrl);
-    const showSecondaryRow = hasSecondary || (secondaryAfter != null && !isSingleButton);
+    const hasSecondary = !isSingleButton && (secondaryLinks.length > 0 || Boolean(officialUrl));
+    // secondaryAfter (Lottery/Rush) ignores the single-button A/B — matches legacy
+    // page.tsx behavior where the discount-tickets pill always rendered alongside
+    // the primary CTA regardless of the multi/single bucket.
+    const showSecondaryRow = hasSecondary || secondaryAfter != null;
     return (
-      <>
+      // Mobile (< lg): primary CTA full-width on its own row, secondary scrolls below.
+      // Desktop (lg+): primary CTA + secondary pills share one flex row, all inline.
+      <div className="space-y-2 lg:space-y-0 lg:flex lg:flex-wrap lg:items-center lg:gap-2">
         {primaryLink && renderPrimary(primaryLink, 0, totalLinksInRow, primaryButtonClassName, /* withArrow */ true)}
         {showSecondaryRow && (
-          <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1">
-            {secondaryLinks.map((link, idx) => renderSecondary(link, idx + 1, totalLinksInRow))}
+          <div className="flex flex-nowrap gap-2 overflow-x-auto scrollbar-hide pb-1 -mx-1 px-1 lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible">
+            {!isSingleButton && secondaryLinks.map((link, idx) => renderSecondary(link, idx + 1, totalLinksInRow))}
             {!isSingleButton && renderOfficial(visibleLinks.length, totalLinksInRow)}
-            {!isSingleButton && secondaryAfter}
+            {/* Lottery/Rush always renders, regardless of single-button A/B variant */}
+            {secondaryAfter}
           </div>
         )}
-      </>
+      </div>
     );
   }
 

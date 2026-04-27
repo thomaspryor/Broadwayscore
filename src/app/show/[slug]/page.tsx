@@ -371,7 +371,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             entirely inside ShowHeroRedesign; the legacy block below is kept only for the
             unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md. */}
         {featureFlags.showPageRedesign && (
-          <div className="sm:hidden mb-6">
+          <div className="mb-6">
             <ShowHeroRedesign
               show={show}
               consensusText={consensus?.text ?? null}
@@ -387,8 +387,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </div>
         )}
 
-        {/* Metacritic-style Header: Poster + Title/Score integrated */}
-        <div className={`card p-5 sm:p-6 mb-6 ${featureFlags.showPageRedesign ? 'hidden sm:block' : ''}`} data-testid="show-header-card">
+        {/* Metacritic-style Header: Poster + Title/Score integrated.
+            Hidden when showPageRedesign flag is on — v2 hero handles all sizes. */}
+        <div className={`card p-5 sm:p-6 mb-6 ${featureFlags.showPageRedesign ? 'hidden' : ''}`} data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
