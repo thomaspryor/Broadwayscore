@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-04-27T11:54:15.149Z",
-  "processed": 14,
-  "failed": 278,
-  "successRate": "4.8%",
+  "updatedAt": "2026-04-27T11:59:54.844Z",
+  "processed": 15,
+  "failed": 287,
+  "successRate": "5.0%",
   "tierBreakdown": {
     "playwright": 11,
-    "amp": 1,
+    "amp": 2,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 9,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-04-27T09:11:06.977Z",
-      "event": "bb-session",
-      "session": "309ad9df",
-      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
-    },
     {
       "t": "2026-04-27T09:11:08.122Z",
       "event": "bb-cookie-inject",
@@ -117,6 +111,17 @@
     },
     {
       "t": "2026-04-27T11:44:13.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T11:59:05.482Z",
+      "event": "bb-session",
+      "session": "3e12e09e",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-27T11:59:06.602Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

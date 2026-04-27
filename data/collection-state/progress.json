@@ -13,7 +13,8 @@
     "becky-shaw-2026/cote-notices--david-cote.json",
     "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
     "joe-turners-come-and-gone-2009/nytg--unknown.json",
-    "kenrex-off-broadway-2026/theatermania--zachary-stewart.json"
+    "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
+    "matilda-the-musical-west-end-2021/telegraph--unknown.json"
   ],
   "failed": [
     "lost-in-del-valle-off-broadway-2026/variety--brent-lang.json",
@@ -293,7 +294,16 @@
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json"
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "showstopper-the-improvised-musical-west-end-2023/telegraph--unknown.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -311,6 +321,7 @@
       "kenrex-off-broadway-2026/theatermania--zachary-stewart.json"
     ],
     "amp": [
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
@@ -337,11 +348,12 @@
       "data/review-texts/the-devil-wears-prada-west-end-2024/thestage--tim-bano.json"
     ],
     "archive": [
-      "jesus-christ-superstar-west-end-2026/amny--matt-windman.json"
+      "jesus-christ-superstar-west-end-2026/amny--matt-windman.json",
+      "matilda-the-musical-west-end-2021/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-04-27T09:11:00.649Z",
-  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
+  "lastProcessed": "in-the-heights-off-broadway-2026/variety--david-rooney.json",
   "log": [
     {
       "t": "2026-04-27T09:11:06.977Z",
@@ -445,6 +457,17 @@
     },
     {
       "t": "2026-04-27T11:44:13.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T11:59:05.482Z",
+      "event": "bb-session",
+      "session": "3e12e09e",
+      "url": "http://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-04-27T11:59:06.602Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
