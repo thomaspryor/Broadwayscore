@@ -52,6 +52,13 @@ export default function TicketLink({
   // TicketLink call sites (compare/guides/showtimes) may render before the
   // SDK is ready — first paint without subId1 is acceptable; useEffect
   // populates it before the user can realistically click.
+  //
+  // ⚠ If anyone ever calls `posthog.identify()` (e.g. on login), this state
+  // snapshot goes stale: the rendered href keeps the old anonymous UUID
+  // while the click-time beacon (~line 78) reads the fresh identified ID.
+  // That breaks the join between PostHog clicks and Impact subId1. Either
+  // subscribe to PostHog's distinct_id changes here, or audit identify()
+  // call sites before adding one. There are no identify() calls today.
   const [distinctId, setDistinctId] = useState<string | undefined>(undefined);
   useEffect(() => {
     const id = window.posthog?.get_distinct_id?.();

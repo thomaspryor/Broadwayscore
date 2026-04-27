@@ -138,9 +138,12 @@ async function main() {
 
   // ── Apply correct filters (see memory/feedback_ab_test_analysis.md) ──
   // 1. Only show pages (excludes showtimes/compare/guide)
-  // 2. Has ab_variant matching new format "platform:X,buttons:Y"
+  // 2. Has ab_variant matching the new flag-prefixed format "flag:X,platform:Y,buttons:Z"
+  //    (legacy format "platform:X,buttons:Y" is still accepted for backward
+  //     compat with events fired before the flag-prefix shipped 2026-04-27)
   // 3. Excludes fallback variants (ad blockers / opt-outs)
   // 4. Within date range
+  const VARIANT_RE = new RegExp(`(?:^|^flag:${FLAG},)platform:[^,]+,buttons:[^,]+$`);
   const filtered = events.filter(e => {
     const t = new Date(e.timestamp);
     if (t < startDate || t > endDate) return false;
@@ -150,7 +153,7 @@ async function main() {
 
     const variant = props.ab_variant;
     if (typeof variant !== 'string') return false;
-    if (!variant.match(/^platform:[^,]+,buttons:[^,]+$/)) return false;
+    if (!VARIANT_RE.test(variant)) return false;
     if (variant.includes('fallback')) return false;
 
     return true;
@@ -195,17 +198,21 @@ async function main() {
   // Postback attribution: as of 2026-04-26, affiliate-utils.ts forwards
   // distinct_id (subId1) and ab_variant (subId2) on every Impact click URL
   // built by TicketLink. Impact echoes these back on each Action record
-  // (PascalCase: SubId1/SubId2). When SubId2 is present we can attribute
-  // the conversion directly to a variant; rows without SubId2 are pre-
-  // postback historical (or non-AB-tested click sources like
-  // DiscountTicketsTable) and fall back to proportional split.
+  // (PascalCase: SubId1/SubId2). A SubId2 only counts as "attributed to
+  // this test" if it carries the `flag:${FLAG}` cohort prefix added 2026-04-27
+  // (Codex ship-check #6) — without it, a future test reusing `buttons:single`
+  // would silently merge into this test's history.
+  // Rows without a matching SubId2 are pre-postback historical, non-AB-tested
+  // click sources (DiscountTicketsTable, lottery, rush, showtimes), or
+  // belong to a different test cohort, and feed the estimated split below.
   const subIdField = (a) => a.SubId2 || a.subId2 || '';
-  const attributedConversions = impactConversions.filter(a => subIdField(a));
-  const unattributedConversions = impactConversions.filter(a => !subIdField(a));
-  const unattributedCommission = unattributedConversions.reduce((s, c) => s + parseFloat(c.Payout || 0), 0);
+  const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : 0; };
+  const attributedConversions = impactConversions.filter(a => VARIANT_RE.test(subIdField(a)));
+  const unattributedConversions = impactConversions.filter(a => !VARIANT_RE.test(subIdField(a)));
+  const unattributedCommission = unattributedConversions.reduce((s, c) => s + num(c.Payout), 0);
   const totalConversions = impactConversions.length;
-  const totalRevenue = impactConversions.reduce((s, c) => s + parseFloat(c.Amount || 0), 0);
-  const totalCommission = impactConversions.reduce((s, c) => s + parseFloat(c.Payout || 0), 0);
+  const totalRevenue = impactConversions.reduce((s, c) => s + num(c.Amount), 0);
+  const totalCommission = impactConversions.reduce((s, c) => s + num(c.Payout), 0);
 
   // Group attributed conversions by the variant segment we're analyzing
   // (same regex as the click grouping above so the keys match).
@@ -217,8 +224,8 @@ async function main() {
     const v = m[1];
     if (!directByVariant[v]) directByVariant[v] = { conversions: 0, revenue: 0, commission: 0 };
     directByVariant[v].conversions++;
-    directByVariant[v].revenue += parseFloat(a.Amount || 0);
-    directByVariant[v].commission += parseFloat(a.Payout || 0);
+    directByVariant[v].revenue += num(a.Amount);
+    directByVariant[v].commission += num(a.Payout);
   }
 
   // ── Print per-variant metrics ──
@@ -237,14 +244,17 @@ async function main() {
     const data = byVariant[v];
     const userCount = data.users.size;
     const clicksPerUser = userCount > 0 ? (data.clicks / userCount).toFixed(2) : 'N/A';
-    // Direct attribution from Impact SubId2 (postback path)
+    // Direct attribution from Impact SubId2 (postback path).
     const direct = directByVariant[v] || { conversions: 0, revenue: 0, commission: 0 };
-    // Proportional fallback for unattributed conversions (pre-postback
-    // history + non-AB-tested click sources). Split by this variant's
-    // share of total clicks.
+    // Estimated split for unattributed conversions: we apply this variant's
+    // share of *show-page* AB clicks to ALL unattributed Impact conversions —
+    // including ones from non-AB surfaces (lottery, rush, discount-tickets,
+    // showtimes) and pre-postback historical rows. The populations don't
+    // match, so this is an estimate, not a measurement. Direct + estimate
+    // are NOT additive — they sum across populations the test never observed.
     const variantShare = totals.clicks > 0 ? data.clicks / totals.clicks : 0;
-    const propConversions = unattributedConversions.length * variantShare;
-    const propCommission = unattributedCommission * variantShare;
+    const estConversions = unattributedConversions.length * variantShare;
+    const estCommission = unattributedCommission * variantShare;
 
     console.log(`\nVariant: ${v}`);
     console.log(`  Clicks: ${data.clicks}`);
@@ -253,7 +263,7 @@ async function main() {
     console.log(`  Direct conversions (subId2): ${direct.conversions}`);
     console.log(`  Direct commission (subId2): $${direct.commission.toFixed(2)}`);
     if (unattributedConversions.length > 0) {
-      console.log(`  + Proportional (pre-postback): ${propConversions.toFixed(1)} conv / $${propCommission.toFixed(2)}`);
+      console.log(`  Estimated split (unattributed pool, assumes equal exposure): ${estConversions.toFixed(1)} conv / $${estCommission.toFixed(2)}`);
     }
     console.log(`  By platform:`);
     Object.entries(data.platforms).sort((a, b) => b[1] - a[1]).forEach(([p, c]) => {
@@ -321,8 +331,14 @@ async function main() {
   console.log('• Direct conversions use the SubId2 postback wired into affiliate-utils.ts');
   console.log('  on 2026-04-26 — distinct_id (subId1) + ab_variant (subId2) ride the click URL,');
   console.log('  Impact echoes them on each Action, this script joins on subId2.');
-  console.log('• Conversions without SubId2 are pre-postback historical OR clicks from non-AB');
-  console.log('  surfaces (DiscountTicketsTable, lottery/rush) — split proportionally as fallback.');
+  console.log(`• A SubId2 must carry the \`flag:${FLAG}\` cohort prefix (added 2026-04-27)`);
+  console.log('  to count toward THIS test. Bare `platform:X,buttons:Y` strings from before');
+  console.log('  the prefix shipped, and any future test reusing the same keys, fall into');
+  console.log('  the unattributed pool.');
+  console.log('• Estimated split is NOT a measurement — it imports show-page A/B click ratios');
+  console.log('  into a population (lottery/rush/discount/historical) the test never observed.');
+  console.log('  Treat as a sanity check, not a winner. Once postback coverage exceeds ~80%,');
+  console.log('  consider dropping the estimated line and reporting only direct conversions.');
   console.log('• Click tracking only works when PostHog loads (ad blockers excluded via fallback filter).');
   console.log('• Methodology: see memory/feedback_ab_test_analysis.md');
   console.log('');
