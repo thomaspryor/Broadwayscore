@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-27T07:14:10.871Z",
+  "generatedAt": "2026-04-27T08:03:18.778Z",
   "date": "2026-04-27",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 18969,
+  "entryCount": 18986,
   "shows": [
     {
       "showId": "proof-2026",
@@ -3656,7 +3656,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 804588,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -7391,7 +7391,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 862946,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
