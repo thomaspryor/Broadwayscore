@@ -63,6 +63,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const AUDIT_DIR = path.join(REPO_ROOT, 'data', 'audit');
@@ -349,7 +350,7 @@ function stampRecoveryMetadata(filePath, tier) {
     data.recoveredAt = new Date().toISOString();
     data.recoveredVia = tier || data.fetchMethod || data.sourceMethod || 'unknown';
     data.recoveredFromCohort = COHORT_TAG;
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
     return true;
   } catch (e) {
     console.error(`  ⚠ Failed to stamp metadata on ${filePath}: ${e.message}`);
