@@ -123,6 +123,111 @@ function isOffTopicExcerpt(excerpt, showId) {
   return true;
 }
 
+// Bug #15: Page-chrome lines that leak into the assignedExcerpt fallback.
+// Lost Boys 2026-04-26 Exeunt: "Review: The Lost Boys: The Musical at the
+// Palace Theatre\nPalace Theatre ⋄ March 27, 2026-open-ended\nThis vampire
+// musical succeeds...". Without a chrome-skip pass on the line-split text,
+// "Review: ..." landed in the first "substantive" sentence and into the
+// assignedExcerpt. These patterns identify lines that are header chrome,
+// not review content.
+const CHROME_LINE_PATTERNS = [
+  // "Review: ...", "By Author", "Photo: Photographer", "Credit: ...",
+  // "Venue: ...", "Production: ..."
+  /^(Review|By|Photo|Credit|Venue|Production)\b/i,
+  // Just-a-name lines (byline or credit on its own line). Two-token Anglo
+  // names; intentionally narrow — three-word/initial/hyphenated bylines
+  // fall through to the ambiguous-line stop in stripLeadingChrome (we
+  // don't risk over-stripping). Audit catches residual leakage.
+  /^[A-Z][a-z]+\s+[A-Z][a-z]+\s*$/,
+  // Venue line — 1-3 capitalized words (or "St", "The") followed by
+  // Theatre/Theater/Hall/Auditorium/Playhouse. Catches "Palace Theatre",
+  // "New Amsterdam Theatre", "Lincoln Center Theater", "St James Theatre".
+  /^(?:(?:[A-Z][\w'.-]*|St\.?|The)\s+){1,3}(?:Theatre|Theater|Hall|Auditorium|Playhouse)\b/,
+  // Date line MM/DD/YYYY or MM-DD-YYYY
+  /^\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}/,
+];
+
+// A line that looks like the start of the actual review body. We stop the
+// chrome skip here. Ambiguous starters that ALSO commonly start chrome
+// lines were intentionally excluded:
+//   "From the producers of..."     → marketing/preamble
+//   "As performed by..."           → cast credit
+//   "Now playing at the Booth..."  → venue announcement
+//   "But"                          → mid-sentence pivot, almost never the
+//                                    real opening of a review
+// Including these would let chrome lines win the narrative classification
+// and bypass the chrome-skip — see Codex review (Session C, P1).
+const NARRATIVE_STARTER_RE = /^(In|The|This|It|A|An|At|On|With|When|Watching|There|We|If|Although|Despite|After|While|My|His|Her|Its|Their|Director|Writer|For)\s+/;
+
+function isChromeLine(line) {
+  if (line == null) return true;
+  if (!line.trim()) return true; // blank
+  return CHROME_LINE_PATTERNS.some(re => re.test(line));
+}
+
+function isNarrativeLine(line) {
+  if (!line) return false;
+  const trimmed = line.trim();
+  const wordCount = trimmed.split(/\s+/).length;
+  const endsSentence = /[.!?][""'""]?\s*$/.test(trimmed);
+  if (wordCount >= 5 && endsSentence) return true;
+  if (NARRATIVE_STARTER_RE.test(trimmed)) return true;
+  return false;
+}
+
+/**
+ * Skip leading page-chrome lines from fullText (header, byline, photo credit,
+ * venue line, date line, blank lines) and return text starting from the first
+ * narrative line, sliced to `maxLen`.
+ *
+ * Defense-in-depth fallback for selectBestExcerpt when upstream excerpt
+ * sources (LLM keyPhrases, llmPullQuote, aggregator excerpts) are absent.
+ *
+ * Returns null when the heuristic would skip more than `maxSkipPct` of the
+ * text — that signals the caller should use the raw fullText slice rather
+ * than risk slicing in the wrong place.
+ *
+ * @param {string} fullText
+ * @param {object} [opts]
+ * @param {number} [opts.maxLen=600]     Max output length (chars)
+ * @param {number} [opts.maxSkipPct=0.7] Max fraction of fullText the heuristic may skip
+ * @returns {string|null}                Stripped text, or null on bail
+ */
+function stripLeadingChrome(fullText, opts = {}) {
+  if (!fullText || typeof fullText !== 'string') return null;
+  const maxLen = opts.maxLen != null ? opts.maxLen : 600;
+  const maxSkipPct = opts.maxSkipPct != null ? opts.maxSkipPct : 0.7;
+
+  const lines = fullText.split(/\r?\n/).map(l => l.trim());
+
+  let startIdx = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    // Chrome FIRST — so a header line that happens to satisfy narrative
+    // shape (e.g. "By Jesse Green for The New York Times." has 8 words +
+    // ends with period and would otherwise be classified as narrative)
+    // still gets stripped. Reordered per Codex review (Session C, P1).
+    if (isChromeLine(line)) continue;
+    if (isNarrativeLine(line)) { startIdx = i; break; }
+    // Ambiguous line — neither chrome nor narrative. Stop here so we
+    // don't over-skip and accidentally consume a real opening sentence.
+    startIdx = i;
+    break;
+  }
+
+  // No narrative line found anywhere — the heuristic can't help. Bail.
+  if (startIdx === -1) return null;
+
+  // No chrome detected — return the original slice (no-op).
+  if (startIdx === 0) return fullText.slice(0, maxLen);
+
+  const skippedChars = lines.slice(0, startIdx).join('\n').length;
+  if (skippedChars / fullText.length > maxSkipPct) return null;
+
+  const stripped = lines.slice(startIdx).join('\n').trim();
+  return stripped.slice(0, maxLen);
+}
+
 module.exports = {
   HEDGE_OPENER_RE,
   MID_SENTENCE_PIVOT_RE,
@@ -134,4 +239,9 @@ module.exports = {
   isOffTopicExcerpt,
   COPYRIGHT_CHROME_PATTERNS,
   THEATER_DOMAIN_RE,
+  CHROME_LINE_PATTERNS,
+  NARRATIVE_STARTER_RE,
+  isChromeLine,
+  isNarrativeLine,
+  stripLeadingChrome,
 };
