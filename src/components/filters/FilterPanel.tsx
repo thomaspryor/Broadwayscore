@@ -6,6 +6,7 @@ import { FILTER_GROUPS, type SingleGroupConfig } from './filter-ui-config';
 import { FilterPillGroup } from './FilterPillGroup';
 import { FilterSinglePillGroup } from './FilterSinglePillGroup';
 import { TimePeriodSection } from './TimePeriodSection';
+import type { DateRange } from '@/lib/tony-seasons';
 
 interface FilterPanelProps {
   isOpen: boolean;
@@ -16,8 +17,8 @@ interface FilterPanelProps {
   singleGroups?: SingleGroupConfig[];
   singleValueByGroup?: Record<string, string>;
   onSetSingleValue?: (paramKey: string, value: string) => void;
-  yearRange: { from: number; to: number } | null;
-  onYearRangeChange: (range: { from: number; to: number } | null) => void;
+  dateRanges: DateRange[];
+  onDateRangesChange: (ranges: DateRange[] | ((prev: DateRange[]) => DateRange[])) => void;
   onClearAll: () => void;
   resultCount: number;
 }
@@ -35,8 +36,8 @@ export function FilterPanel({
   singleGroups,
   singleValueByGroup,
   onSetSingleValue,
-  yearRange,
-  onYearRangeChange,
+  dateRanges,
+  onDateRangesChange,
   onClearAll,
   resultCount,
 }: FilterPanelProps) {
@@ -137,7 +138,7 @@ export function FilterPanel({
                   <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
                     Time period
                   </h3>
-                  <TimePeriodSection yearRange={yearRange} onChange={onYearRangeChange} />
+                  <TimePeriodSection dateRanges={dateRanges} onChange={onDateRangesChange} />
                 </div>
               )}
             </div>

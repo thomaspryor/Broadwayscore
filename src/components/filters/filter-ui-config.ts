@@ -182,7 +182,7 @@ export const SINGLE_PARAM_KEYS: ReadonlySet<string> = new Set(SINGLE_PARAM_KEY_L
 export const PANEL_PARAM_KEYS: ReadonlySet<string> = new Set([
   ...FILTER_GROUPS.map((g) => g.paramKey),
   ...SINGLE_PARAM_KEY_LIST,
-  'years', // time-period range
+  'dates', // time-period date ranges (multi)
 ]);
 
 /** Look up a multi-select option by paramKey + id */
