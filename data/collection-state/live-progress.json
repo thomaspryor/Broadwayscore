@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-04-27T03:35:07.830Z",
-  "processed": 185,
-  "failed": 1566,
-  "successRate": "10.6%",
+  "updatedAt": "2026-04-27T03:41:18.439Z",
+  "processed": 193,
+  "failed": 1568,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 59,
     "amp": 2,
-    "browserbase": 18,
+    "browserbase": 23,
     "directCookies": 0,
-    "scrapingbee": 97,
+    "scrapingbee": 101,
     "brightdata": 3,
-    "archiveToday": 21,
-    "archive": 21
+    "archiveToday": 22,
+    "archive": 22
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 11,
   "recentActivity": [
-    {
-      "t": "2026-04-26T18:37:51.981Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:38:30.315Z",
-      "event": "bb-session",
-      "session": "ca75d123",
-      "url": "http://theater.nytimes.com/2011/10/10/theater/reviews/man-and-boy-with-frank-lan"
-    },
-    {
-      "t": "2026-04-26T18:38:31.366Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-26T18:39:10.100Z",
-      "event": "bb-session",
-      "session": "823bd7ec",
-      "url": "http://theater.nytimes.com/2011/09/13/theater/reviews/follies-on-broadway-review"
-    },
-    {
-      "t": "2026-04-26T18:39:11.181Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-04-27T03:15:07.653Z",
-      "event": "bb-session",
-      "session": "6ad83483",
-      "url": "https://variety.com/2026/legit/news/tom-cavanagh-tony-danza-michael-longfellow-b"
-    },
     {
       "t": "2026-04-27T03:15:08.637Z",
       "event": "bb-cookie-inject",
@@ -124,6 +91,39 @@
       "t": "2026-04-27T03:31:17.080Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-27T03:37:04.757Z",
+      "event": "bb-session",
+      "session": "8fb6afff",
+      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
+    },
+    {
+      "t": "2026-04-27T03:37:05.586Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-04-27T03:39:32.646Z",
+      "event": "bb-session",
+      "session": "93aadace",
+      "url": "http://www.hollywoodreporter.com/review/war-horse-theater-review-178714"
+    },
+    {
+      "t": "2026-04-27T03:39:33.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-04-27T03:39:51.589Z",
+      "event": "bb-session",
+      "session": "430b4a48",
+      "url": "http://www.variety.com/review/VE1117945025"
+    },
+    {
+      "t": "2026-04-27T03:39:52.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
