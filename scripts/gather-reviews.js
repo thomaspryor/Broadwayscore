@@ -2877,10 +2877,11 @@ function createReviewFile(showId, reviewData, options = {}) {
   const outletText = reviewData.outlet || reviewData.outletId || '';
   const allowOffBroadway = options.allowOffBroadway || false;
   const allowWestEnd = options.allowWestEnd || false;
+  const allowOpera = options.allowOpera || false;
   const fromPostOpening = options.fromPostOpening || false;
   // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
   let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
-  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd })) {
+  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
   }
@@ -3853,7 +3854,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // BWW roundup article URLs/titles clearly indicate: "National-Tour-of-...", "on-Tour",
     // "at-the-Kennedy-Center", "at-the-Ahmanson" etc. Reject the entire page if so.
     const roundupTitle = (bwwResult.url || '').replace(/-/g, ' ').toLowerCase();
-    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd }) ||
+    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }) ||
         /\bon tour\b/.test(roundupTitle) || /\bat the kennedy center\b/.test(roundupTitle) ||
         /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
@@ -4683,7 +4684,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         }
       }
 
-      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd });
+      const result = createReviewFile(showId, review, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' });
       if (result === true) {
         created++;
       } else if (typeof result === 'string' && health.rejections[result] !== undefined) {
@@ -4756,7 +4757,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd })) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }
