@@ -422,8 +422,14 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     }
   }
 
-  // Filter to roundup URLs only
-  const roundupUrls = allCandidateUrls.filter(u => u.includes('Review-Roundup') || u.includes('review-roundup'));
+  // Filter to roundup URLs only — for opera shows, also accept single-critic
+  // /bwwopera/article/Review-{title}-... URLs (BWW opera reviews aren't roundups,
+  // they're individual critic reviews under the BWW Opera vertical).
+  const roundupUrls = allCandidateUrls.filter(u => {
+    if (u.includes('Review-Roundup') || u.includes('review-roundup')) return true;
+    if (isOpera && u.includes('/bwwopera/article/Review-')) return true;
+    return false;
+  });
 
   if (roundupUrls.length === 0) {
     stats.roundupsMiss++;
@@ -437,7 +443,7 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
-    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
+    if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: isOpera })) {
       console.log(`  [SKIP] roundup: non-Broadway article: ${url.split('/article/')[1] || url}`);
       return false;
     }
@@ -830,7 +836,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category) })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera' })) {
           stats.skippedGuards++;
           continue;
         }
