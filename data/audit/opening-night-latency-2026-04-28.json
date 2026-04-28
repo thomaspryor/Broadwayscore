@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-28T17:55:01.187Z",
+  "generatedAt": "2026-04-28T18:51:42.888Z",
   "date": "2026-04-28",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 25351,
+  "entryCount": 25358,
   "shows": [
     {
       "showId": "proof-2026",
@@ -11662,6 +11662,36 @@
     {
       "showId": "rheology-off-broadway-2026",
       "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "an-american-in-paris-2015",
+      "reviewCount": 40,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "superior-donuts-2009",
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
