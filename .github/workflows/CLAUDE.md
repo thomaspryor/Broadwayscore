@@ -455,6 +455,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Optional:** GEMINI_API_KEY (enables 3-model mode)
 - **Pre-flight test:** `npx ts-node scripts/llm-scoring/test-ensemble.ts` (tests ensemble logic with all 3 models)
 - **Ensemble calibration:** `npx ts-node scripts/llm-scoring/index.ts --ensemble-calibrate` (analyzes per-model performance)
+- **Phase 4 — stuck-emergency retry:** Daily check after Phase 3 (stale-scores). Counts reviews flagged `ensembleData.singleModelEmergency=true` with `singleModelEmergencyRetryCount<1` (and otherwise scoreable). If 1-50 found, dispatches `--retry-emergency` mode. Most cases are transient Gemini outages — the retry succeeds with 2+ models, the flag clears naturally inside `ensemble.ts:261`. If retry still single-model, `singleModelEmergencyRetryCount=1` is written so the next cron skips. Cap >50 disables auto-retry and emits a `::warning::` (manual investigation required — likely a model API-key revocation). Manual trigger: `gh workflow run "LLM Ensemble Score Reviews" -f retry_emergency=true`.
 
 ## `scrape-nysr.yml`
 - **Runs:** Weekly on Sundays at 10 AM UTC, or manually
