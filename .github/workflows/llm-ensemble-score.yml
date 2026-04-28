@@ -73,6 +73,14 @@ on:
         options:
           - 'false'
           - 'true'
+      retry_emergency:
+        description: 'Retry stuck singleModelEmergency reviews once (auto-clears flag if 2+ models succeed)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
       upgrade_ensemble:
         description: 'Upgrade old single-model scores to ensemble scoring (llmScore but no ensembleData)'
         required: false
@@ -275,11 +283,61 @@ jobs:
                 echo "skip=false" >> $GITHUB_OUTPUT
                 echo "run_rescore=false" >> $GITHUB_OUTPUT
                 echo "run_stale=true" >> $GITHUB_OUTPUT
+                echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
               else
-                echo "No unscored, no rescore, no stale. Skipping."
-                echo "skip=true" >> $GITHUB_OUTPUT
-                echo "run_rescore=false" >> $GITHUB_OUTPUT
-                echo "run_stale=false" >> $GITHUB_OUTPUT
+                # Phase 4: stuck-emergency retry (lowest priority)
+                # Reviews flagged singleModelEmergency=true that haven't been auto-retried yet.
+                # Most common cause: Gemini was rate-limited at original scoring time. Retry once;
+                # if 2+ models succeed now, the flag clears naturally inside ensemble.ts. If still
+                # single-model, retryCount=1 sticks and the next cron skips it (see scripts/llm-scoring/index.ts retryEmergency filter).
+                EMERGENCY=$(node -e "
+                  const fs = require('fs'), path = require('path');
+                  const base = 'data/review-texts';
+                  const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
+                  let n = 0;
+                  dirs.forEach(d => {
+                    fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                      try {
+                        const r = JSON.parse(fs.readFileSync(path.join(base,d,f),'utf8'));
+                        const ed = r.ensembleData;
+                        if (!ed || !ed.singleModelEmergency) return;
+                        if ((ed.singleModelEmergencyRetryCount || 0) >= 1) return;
+                        if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                        if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                        if (r.contentTier === 'invalid') return;
+                        if (r.showNotMentioned && !r.bwwExcerpt && !r.dtliExcerpt && !r.showScoreExcerpt) return;
+                        const hasText = r.fullText && r.fullText.length > 100;
+                        const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                        if (!hasText && !hasExcerpt) return;
+                        n++;
+                      } catch(e) {}
+                    });
+                  });
+                  console.log(n);
+                ")
+                echo "Stuck-emergency reviews eligible for retry: $EMERGENCY"
+                if [ "$EMERGENCY" -gt 50 ]; then
+                  # Runaway guard: a model outage that flagged dozens of reviews per day means
+                  # something is systemically broken (e.g. a model API key revoked). Don't burn
+                  # the daily budget retrying — alert and require manual intervention.
+                  echo "::warning::Stuck-emergency count ($EMERGENCY) exceeds runaway cap (50). Auto-retry disabled — investigate before manual rescore."
+                  echo "skip=true" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+                elif [ "$EMERGENCY" -gt 0 ]; then
+                  echo "Found $EMERGENCY stuck-emergency reviews — dispatching one-shot retry."
+                  echo "skip=false" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=true" >> $GITHUB_OUTPUT
+                else
+                  echo "No unscored, no rescore, no stale, no stuck-emergency. Skipping."
+                  echo "skip=true" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+                fi
               fi
             fi
           fi
@@ -343,6 +401,11 @@ jobs:
           # Stale scores (fullText + old excerpt-based score)
           if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
             ARGS="$ARGS --stale-scores"
+          fi
+
+          # Retry stuck singleModelEmergency reviews (auto-clears flag if 2+ models succeed on retry)
+          if [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_emergency_retry }}" == "true" ]; then
+            ARGS="$ARGS --retry-emergency"
           fi
 
           # Upgrade single-model scores to ensemble
@@ -594,6 +657,11 @@ jobs:
           # Pass through upgrade_ensemble flag so upgrade chains continue
           if [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ]; then
             CHAIN_ARGS="$CHAIN_ARGS -f upgrade_ensemble=true"
+          fi
+          # Pass through retry_emergency flag so emergency-retry chains continue
+          # (capped at 50 reviews/run by Phase 4, so chaining is rare but kept for symmetry)
+          if [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_emergency_retry }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f retry_emergency=true"
           fi
 
           gh workflow run llm-ensemble-score.yml $CHAIN_ARGS
