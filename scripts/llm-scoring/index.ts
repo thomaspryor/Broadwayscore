@@ -939,9 +939,24 @@ async function main(): Promise<void> {
   // Pre-filter: skip reviews flagged as unscorable (uses shared isScoreable utility)
   // Per-file rejection logging added after Titanique postmortem ("0 valid files" with no explanation)
   let dataQualitySkipped = 0;
+  let starRatingSkipped = 0;
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
+    // Skip reviews where the page itself published an explicit star rating that
+    // a human extracted into assignedScore. The star rating is authoritative —
+    // running an ensemble can only INTRODUCE singleModelEmergency by overriding
+    // the score with an LLM read of partial/paywalled text. (Innocence 2026-04-27:
+    // Bachtrack 4★ + NYSR 5★ silently excluded after ensemble override.)
+    if (
+      d.assignedScore != null &&
+      d.scoreSource === 'manual_extracted_star_rating' &&
+      !options.needsRescore &&
+      !options.outdated
+    ) {
+      starRatingSkipped++;
+      return false;
+    }
     if (!isScoreable(d, showFor(d))) {
       dataQualitySkipped++;
       // Log the specific reason for rejection
@@ -969,6 +984,9 @@ async function main(): Promise<void> {
   });
   if (dataQualitySkipped > 0) {
     console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/wrongAttribution/multiShow/roundup/showNotMentioned-no-excerpts/invalid)\n`);
+  }
+  if (starRatingSkipped > 0) {
+    console.log(`Skipped ${starRatingSkipped} reviews with manual_extracted_star_rating (page-published star rating is authoritative)\n`);
   }
   if (showNotMentionedWithExcerpts > 0) {
     console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);

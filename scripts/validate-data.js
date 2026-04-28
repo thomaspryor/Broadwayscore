@@ -607,7 +607,7 @@ function validatePlaceholderImageHashes(shows) {
 
 function validateShowTypes(shows) {
   info('Checking show types...');
-  const validTypes = ['musical', 'play', 'special'];
+  const validTypes = ['musical', 'play', 'special', 'opera'];
   let issues = 0;
 
   for (const show of shows) {
