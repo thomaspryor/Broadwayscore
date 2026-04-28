@@ -326,6 +326,25 @@ export function getEligibleShowsForPastSeason(allShows: ComputedShow[], season: 
 }
 
 /**
+ * Build a map of categoryTitle → showId for Tony winners in a given season.
+ * Sourced from awards.json, independent of how groupIntoCategories classifies
+ * the show (some past winners have isRevival mis-flagged in shows.json).
+ */
+export function getWinnersForSeason(season: TonySeasonWindow): Map<string, string> {
+  const awardsShows = getAwardsShows();
+  const awardsSeason = toAwardsSeason(season.label);
+  const map = new Map<string, string>();
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    const wins = data.tony?.wins || [];
+    for (const cat of TOP_CATEGORIES) {
+      if (wins.includes(cat as string)) map.set(cat as string, showId);
+    }
+  }
+  return map;
+}
+
+/**
  * Get Tony outcomes for a season: slug → 'winner' | 'nominated'.
  * For past seasons: returns both winners and nominees.
  * For current season with nominations announced: returns 'nominated' for all nominees.
