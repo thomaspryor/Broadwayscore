@@ -1373,7 +1373,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
  * Handles dedup against existing files.
  */
 function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
-  const { allowOffBroadway = false, allowWestEnd = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false } = options;
   let created = 0;
   let skipped = 0;
   let rejected = 0;
@@ -1439,7 +1439,7 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
       continue;
     }
 
-    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, fromPostOpening: true });
+    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, allowOpera, fromPostOpening: true });
     if (result === true) {
       created++;
       knownUrls.add(review.url);
@@ -1690,7 +1690,7 @@ async function pollCycle() {
     SHOW_ID,
     allDiscovered,
     knownUrls,
-    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd }
+    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }
   );
 
   // ── Aggregator thumb enrichment pass ──

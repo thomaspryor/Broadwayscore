@@ -344,15 +344,15 @@ const SITE_SEARCH_ENDPOINTS = {
     // and let the dedup/processing layer handle validation.
     skipUrlFilter: true,
     fetchAndParse: async (showTitle, market, openingDate) => {
-      let afterParam = '';
-      let beforeParam = '';
-      if (openingDate) {
-        const opening = new Date(openingDate);
-        const after = new Date(opening); after.setDate(after.getDate() - 2);
-        const before = new Date(opening); before.setDate(before.getDate() + 14);
-        afterParam = `&after=${after.toISOString()}`;
-        beforeParam = `&before=${before.toISOString()}`;
-      }
+      // Fail closed without openingDate: Parterre posts daily art-song items, so an
+      // unbounded fetch returns 100 unrelated URLs that all flow downstream as
+      // candidate review files (~$0.005 × 100 SB credits per call).
+      if (!openingDate) return [];
+      const opening = new Date(openingDate);
+      const after = new Date(opening); after.setDate(after.getDate() - 2);
+      const before = new Date(opening); before.setDate(before.getDate() + 14);
+      const afterParam = `&after=${after.toISOString()}`;
+      const beforeParam = `&before=${before.toISOString()}`;
       // per_page=100 needed: Parterre posts ~2/day (reviews + song-of-day items), so
       // a 16-day window generates ~32 posts. Use 100 to avoid pagination.
       const url = `https://parterre.com/wp-json/wp/v2/posts?per_page=100&_fields=link,date${afterParam}${beforeParam}`;
@@ -539,9 +539,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     return [];
   }
 
-  // Skip outlets that don't apply to this show type (e.g. opera-only outlets for non-opera shows)
-  if (config.applies && show && !config.applies(show)) {
-    if (verbose) console.log(`    Site search [${config.name}]: skipped (applies() gate — show.type=${show.type})`);
+  // Skip outlets that don't apply to this show type (e.g. opera-only outlets for non-opera shows).
+  // Fail CLOSED: if config has applies() but caller didn't pass `show`, treat as not-applicable.
+  // Otherwise opera outlets would silently fire on every Broadway show whenever a future caller
+  // omits the show argument.
+  if (config.applies && (!show || !config.applies(show))) {
+    if (verbose) console.log(`    Site search [${config.name}]: skipped (applies() gate — show=${show ? `type=${show.type}` : 'null'})`);
     return [];
   }
 
