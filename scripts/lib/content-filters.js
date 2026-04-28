@@ -20,7 +20,7 @@ const { hasOnlyForwardTenseTourMention } = require('./excerpt-validation');
 function isNotBroadway(text, options = {}) {
   if (!text) return false;
   const lower = text.toLowerCase();
-  const { allowOffBroadway = false, allowWestEnd = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false } = options;
 
   // Off-Broadway / regional — skip these checks if allowOffBroadway
   if (!allowOffBroadway) {
@@ -57,8 +57,9 @@ function isNotBroadway(text, options = {}) {
   }
 
   return (
-    // Always rejected regardless of category
-    lower.includes('opera') ||
+    // Always rejected regardless of category — but allowOpera={true} for shows
+    // tagged type='opera' (Met Opera productions etc.)
+    (!allowOpera && lower.includes('opera')) ||
     lower.includes('in chicago') ||
     // Film / movie
     lower.includes('film review') ||
