@@ -59,6 +59,7 @@ import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
+import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 
 export const revalidate = 86400;
@@ -372,8 +373,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* Redesigned mobile header — feature-flagged. v2 (Broadway Radar–inspired) lives
             entirely inside ShowHeroRedesign; the legacy block below is kept only for the
-            unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md. */}
-        {featureFlags.showPageRedesign && (
+            unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md.
+            RedesignOn/RedesignOff live in 'use client' so the demo-flag check runs both
+            during build (with the demo source-rewrite) and at hydration (without it). */}
+        <RedesignOn>
           <div className="mb-6">
             <ShowHeroRedesign
               show={show}
@@ -388,11 +391,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               isOffBroadway={isOffBroadway}
             />
           </div>
-        )}
+        </RedesignOn>
 
-        {/* Metacritic-style Header: Poster + Title/Score integrated.
-            Hidden when showPageRedesign flag is on — v2 hero handles all sizes. */}
-        <div className={`card p-5 sm:p-6 mb-6 ${featureFlags.showPageRedesign ? 'hidden' : ''}`} data-testid="show-header-card">
+        {/* Metacritic-style Header: Poster + Title/Score integrated. Rendered only
+            when the redesign is off; visual-regression.spec.ts asserts on this id
+            in the prod build (where the flag is false). */}
+        <RedesignOff>
+        <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
@@ -658,6 +663,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             closingDate={show.closingDate}
           />
         </div>
+        </RedesignOff>
 
         {/* Gold List Badges */}
         {featureFlags.goldLists && goldListMemberships.length > 0 && (
@@ -756,12 +762,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </div>
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
-            {featureFlags.showPageRedesign && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
-              <ScoreBreakdownBar
-                reviews={show.criticScore.reviews}
-                category={show.category}
-                className="sm:hidden mb-4"
-              />
+            {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+              <RedesignOn>
+                <ScoreBreakdownBar
+                  reviews={show.criticScore.reviews}
+                  category={show.category}
+                  className="sm:hidden mb-4"
+                />
+              </RedesignOn>
             )}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
