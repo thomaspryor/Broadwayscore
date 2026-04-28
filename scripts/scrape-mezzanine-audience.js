@@ -44,6 +44,10 @@ const MEZZANINE_OVERRIDES = {
   'little-women-the-musical-off-broadway-2026': 'Little Women',
   'the-little-mermaid-the-musical-off-broadway-2026': 'The Little Mermaid',
   'friends-the-musical-parody-off-broadway-2022': 'Friends! The Musical Parody',
+  // Subtitle differences vs Mezzanine's short title
+  'beaches-2026': 'Beaches',
+  // & vs "and" (normalize() strips & to nothing, leaving "drunk romeo juliet")
+  'drunk-romeo-and-juliet-off-broadway-2025': 'Drunk Romeo and Juliet',
 };
 
 // Paths
@@ -180,7 +184,7 @@ function parseDate(val) {
  */
 function normalize(s) {
   return s.toLowerCase()
-    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
+    .replace(/['\u2018\u2019\u201C\u201D!?:,.;\-\u2013\u2014\u2026&+()/*]/g, '')
     .replace(/\s+/g, ' ')
     .replace(/^the\s+/g, '')
     .trim();
