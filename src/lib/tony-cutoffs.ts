@@ -135,6 +135,14 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     end: '2026-04-26',
     source: 'tonyawards.com/press/the-tony-awards-announces-calendar-of-events-for-2025-2026-season; broadwaydirect.com/shows-eligible-for-the-2026-tony-awards',
   },
+  {
+    ceremonyYear: 2027,
+    label: '2026-27',
+    start: '2026-04-27',
+    end: '2027-04-25',
+    notes: 'PROVISIONAL — Tony Awards Administration Committee has not yet announced the 80th cutoff. Start is the day after the 79th cutoff. End is a placeholder using the recent ~Apr 25 trend; update when announced (typically released summer/fall of the season-start year).',
+    source: 'projected — pending official 80th announcement',
+  },
 ];
 
 /** Map for O(1) lookup by ceremony year. Frozen — mutate via TONY_CUTOFFS only. */
