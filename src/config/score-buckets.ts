@@ -101,6 +101,13 @@ export const MIN_REVIEWS_FOR_SCORE_WEST_END = 5;
 /** Minimum reviews for Off-West End (smaller fringe venues, fewer reviews available) */
 export const MIN_REVIEWS_FOR_SCORE_OFF_WEST_END = 3;
 
+/**
+ * Curated historical shows qualify with 1 fewer review (4 vs 5 for Broadway)
+ * because their universe of recoverable critic coverage is more constrained.
+ * Only applies to Broadway; requires at least 1 T1+T2 review.
+ */
+export const MIN_REVIEWS_FOR_SCORE_CURATED_HISTORICAL = 4;
+
 /** Extra reviews required when all reviews are T3 (no T1/T2 coverage) */
 export const T3_ONLY_EXTRA_REVIEWS = 2;
 
@@ -189,8 +196,13 @@ export function getScoreBgColor(score: number | null, category?: string): string
  * Check if a score meets the minimum threshold for display.
  * T3-only shows (no T1/T2 reviews) require extra reviews for qualification.
  */
-export function hasEnoughReviews(reviewCount: number, category?: string, tier1And2Count?: number): boolean {
-  return reviewsRemainingForScore(reviewCount, category, tier1And2Count) === 0;
+export function hasEnoughReviews(
+  reviewCount: number,
+  category?: string,
+  tier1And2Count?: number,
+  isCuratedHistorical?: boolean,
+): boolean {
+  return reviewsRemainingForScore(reviewCount, category, tier1And2Count, isCuratedHistorical) === 0;
 }
 
 /**
@@ -198,11 +210,23 @@ export function hasEnoughReviews(reviewCount: number, category?: string, tier1An
  * Returns 0 when the show already qualifies. Mirrors `hasEnoughReviews` —
  * if you change the threshold logic, change it here too.
  */
-export function reviewsRemainingForScore(reviewCount: number, category?: string, tier1And2Count?: number): number {
+export function reviewsRemainingForScore(
+  reviewCount: number,
+  category?: string,
+  tier1And2Count?: number,
+  isCuratedHistorical?: boolean,
+): number {
   let min = category === 'off-broadway' ? MIN_REVIEWS_FOR_SCORE_OFF_BROADWAY
     : category === 'off-west-end' ? MIN_REVIEWS_FOR_SCORE_OFF_WEST_END
     : category === 'west-end' ? MIN_REVIEWS_FOR_SCORE_WEST_END
     : MIN_REVIEWS_FOR_SCORE;
+
+  // Curated historical override: only applies to Broadway (the bigger threshold)
+  // and requires at least 1 T1+T2 review (so we don't accept e.g. 4 random blogs).
+  if (isCuratedHistorical && (!category || category === 'broadway') && (tier1And2Count ?? 0) >= 1) {
+    min = MIN_REVIEWS_FOR_SCORE_CURATED_HISTORICAL;
+  }
+
   if (tier1And2Count !== undefined && tier1And2Count === 0) {
     min += T3_ONLY_EXTRA_REVIEWS;
   }

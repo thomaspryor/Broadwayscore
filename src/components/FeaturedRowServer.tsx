@@ -10,6 +10,7 @@ import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import type { HomepageShow } from '@/components/HomePageClient';
 
@@ -17,7 +18,7 @@ function ServerMiniShowCard({ show, priority }: { show: HomepageShow; priority: 
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
-  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2) ? rawScore : null;
+  const score = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? rawScore : null;
   const category = show.category ?? 'broadway';
   const imgSrc = show.images?.poster
     ? getOptimizedImageUrl(show.images.poster, 'card')

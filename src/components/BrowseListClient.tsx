@@ -3,6 +3,7 @@
 import { useState, useMemo, startTransition } from 'react';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -101,7 +102,7 @@ export default function BrowseListClient({
     const getEffectiveScore = (s: BrowseShow) => {
       const reviewCount = s.criticScore?.reviewCount ?? 0;
       const t1t2 = (s.criticScore?.tier1Count ?? 0) + (s.criticScore?.tier2Count ?? 0);
-      if (!hasEnoughReviews(reviewCount, s.category, t1t2)) return -1;
+      if (!hasEnoughReviews(reviewCount, s.category, t1t2, CURATED_HISTORICAL_SHOWS.has(s.id))) return -1;
       return s.criticScore?.score ?? -1;
     };
 

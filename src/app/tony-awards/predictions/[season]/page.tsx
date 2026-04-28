@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { ScoreBadge } from '@/components/show-cards';
+import { BlendedTrioDisplay } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
@@ -267,7 +267,14 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                         <p className="text-xs text-gray-500">Our #1 pick</p>
                         <p className="text-sm font-medium text-white truncate">{rc.predicted.title}</p>
                       </div>
-                      <ScoreBadge score={rc.predicted.blendedScore} size="sm" reviewCount={rc.predicted.reviewCount} status={rc.predicted.status} />
+                      <BlendedTrioDisplay
+                        blendedScore={rc.predicted.blendedScore}
+                        compositeScore={rc.predicted.compositeScore}
+                        reviewCount={rc.predicted.reviewCount}
+                        status={rc.predicted.status}
+                        audienceGrade={rc.predicted.audienceGrade}
+                        size="sm"
+                      />
                     </div>
                   )}
                   {/* Actual winner (only show if different from predicted) */}
@@ -284,7 +291,14 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                         <p className="text-xs text-amber-400">Actual winner</p>
                         <p className="text-sm font-medium text-white truncate">{rc.winner.title}</p>
                       </div>
-                      <ScoreBadge score={rc.winner.blendedScore} size="sm" reviewCount={rc.winner.reviewCount} status={rc.winner.status} />
+                      <BlendedTrioDisplay
+                        blendedScore={rc.winner.blendedScore}
+                        compositeScore={rc.winner.compositeScore}
+                        reviewCount={rc.winner.reviewCount}
+                        status={rc.winner.status}
+                        audienceGrade={rc.winner.audienceGrade}
+                        size="sm"
+                      />
                     </div>
                   )}
                 </div>
