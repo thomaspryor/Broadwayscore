@@ -1,6 +1,7 @@
 import { getShowBySlug } from '@/lib/data-core';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews, isCriticalGold } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { BASE_URL } from '@/lib/seo';
 
 // Server-render each request so ?theme= query params actually vary the output.
@@ -199,7 +200,7 @@ export async function GET(
   const rawScore = show.criticScore?.score;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  const enoughReviews = hasEnoughReviews(reviewCount, show.category, t1t2);
+  const enoughReviews = hasEnoughReviews(reviewCount, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id));
   const isPreviewsOrUpcoming = show.status === 'previews' || show.status === 'upcoming';
   const isTbd = !enoughReviews || isPreviewsOrUpcoming || rawScore == null;
 
