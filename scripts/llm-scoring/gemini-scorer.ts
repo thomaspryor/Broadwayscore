@@ -64,8 +64,16 @@ export class GeminiScorer {
       generationConfig: {
         temperature: this.options.temperature,
         topP: 0.8,
-        maxOutputTokens: 500
-      }
+        maxOutputTokens: 500,
+        // Gemini 2.5 enables "thinking mode" by default — hidden reasoning
+        // tokens are deducted from maxOutputTokens before any output text is
+        // generated. With maxOutputTokens=500 and ~400 thinking tokens, the
+        // V5 JSON gets cut off mid-string and parses as malformed. Setting
+        // thinkingBudget=0 disables thinking entirely. Ignored by 2.0-flash
+        // and earlier models. (Caught 2026-04-28 when migrating A/B harness
+        // to 2.5-flash for separate quota pool.)
+        thinkingConfig: { thinkingBudget: 0 },
+      } as any,
     });
 
     const prompt = buildPromptV5(reviewText, context);

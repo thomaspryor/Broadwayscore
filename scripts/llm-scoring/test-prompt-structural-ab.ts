@@ -485,7 +485,11 @@ async function main() {
   const scorers = {
     claude: new ReviewScorer(claudeKey, { model: 'claude-sonnet-4-20250514', verbose: false }),
     openai: new OpenAIReviewScorer(openaiKey, { model: 'gpt-4o', verbose: false }),
-    gemini: new GeminiScorer(geminiKey, { model: 'gemini-2.0-flash', verbose: false }),
+    // gemini-2.5-flash has separate quota pool from 2.0-flash; A/B uses 2.5
+    // because the production 2.0 quota is exhausted by daily CI cycles.
+    // Production scorer still uses 2.0-flash — slight model mismatch in A/B
+    // is acceptable since both are Gemini Flash family with similar behavior.
+    gemini: new GeminiScorer(geminiKey, { model: 'gemini-2.5-flash' as any, verbose: false }),
   };
 
   console.log('='.repeat(70));
