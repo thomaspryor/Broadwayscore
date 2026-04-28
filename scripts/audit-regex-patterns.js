@@ -50,12 +50,14 @@ const PATTERN_FAMILIES = [
 // isGarbageContent (trailing/leading-junk mitigation, 5+ threshold for nav).
 //
 // Allowances are calibrated against the full review-text corpus (`--full`) on
-// 2026-04-24 with ~30% headroom. If a pattern's baseline shifts materially,
+// 2026-04-28 with ~30% headroom. If a pattern's baseline shifts materially,
 // update this list rather than raising DEFAULT_MAX_HITS.
 // Entry format: `${FAMILY}::${index}` → max allowed hits.
 const PATTERN_ALLOWLIST = {
-  // Paywall: HuffPost "Already a member"/"BECOME A MEMBER", subscriber prompts
-  'PAYWALL_PATTERNS::7': 25,    // /already\s+a\s+(member|subscriber)/
+  // Paywall: HuffPost "Already a member"/"BECOME A MEMBER", subscriber prompts.
+  // 2026-04-28 recalibration: NYT "Already a subscriber? Log in" chrome bleeds
+  // into ~28 archived NYT reviews (raw 28). Sized to baseline + 30%.
+  'PAYWALL_PATTERNS::7': 40,    // /already\s+a\s+(member|subscriber)/ — raw 28
   'PAYWALL_PATTERNS::8': 15,    // /become\s+a\s+(member|subscriber)/
   'PAYWALL_PATTERNS::11': 20,   // /exclusive\s+(content|access)/
   // Legal: copyright footers are ubiquitous in scraped content
@@ -69,15 +71,22 @@ const PATTERN_ALLOWLIST = {
   // leading/trailing-junk mitigation absorbs them in isGarbageContent
   'NEWSLETTER_PATTERNS::0': 150,  // /thanks?\s+for\s+subscribing/
   'NEWSLETTER_PATTERNS::1': 150,  // /enter\s+your\s+email/
+  'NEWSLETTER_PATTERNS::5': 15,   // /newsletter\s+sign[-\s]?up/ — raw 10 (HuffPost/TheaterMania footer)
   'NEWSLETTER_PATTERNS::6': 60,   // /join\s+(our\s+)?(mailing\s+)?list/
   // Navigation: scraped pages have real nav/footer bleed; the 5+ threshold in
-  // detectNavigationJunk prevents single-match rejection
+  // detectNavigationJunk prevents single-match rejection.
+  // 2026-04-28 recalibration: NAVIGATION_PATTERNS::1 baseline jumped 30 → 143
+  // as more archived NYT/about-entertainment scrapes accumulated unstripped
+  // "Skip to main content" headers. Each is real chrome bleed at the start of
+  // fullText; the multi-keyword guard in detectNavigationJunk still rejects
+  // garbage content. Sized to current baseline + 30%.
   'NAVIGATION_PATTERNS::0': 50,   // /^(home|about|contact|faq|...)\s*$/im
-  'NAVIGATION_PATTERNS::1': 30,   // /skip\s+to\s+(main\s+)?content/
+  'NAVIGATION_PATTERNS::1': 200,  // /skip\s+to\s+(main\s+)?content/ — raw 143
   'NAVIGATION_PATTERNS::2': 200,  // /\b(footer|header|sidebar|navigation|...)\b/
   'NAVIGATION_PATTERNS::4': 1200, // /related\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::5': 70,   // /popular\s+(articles?|stories|posts)/
   'NAVIGATION_PATTERNS::6': 400,  // /latest\s+(articles?|stories|news)/
+  'NAVIGATION_PATTERNS::7': 10,   // /trending\s+(now|stories|articles)/ — raw 6
   // Wrong-article: ^breaking news catches genuine news-sidebar pollution
   'WRONG_ARTICLE_PATTERNS::7': 50, // /^breaking\s+news/im
   // Paywall: bare /paywall/i matches critics discussing their publication's
