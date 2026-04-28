@@ -16,7 +16,9 @@ import {
   getEligibleShowsForPastSeason,
   groupIntoCategories,
   getSeasonOutcomes,
+  getWinnersForSeason,
   hasNominationsBeenAnnounced,
+  serializeShow,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -81,31 +83,50 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const outcomeValues = Object.values(outcomes);
   const winnerCount = outcomeValues.filter(o => o === 'winner').length;
 
-  // How many categories had the #1 scored show win?
-  let rank1Wins = 0;
-  if (!isCurrent) {
-    for (const cat of categories) {
-      if (cat.shows.length > 0) {
-        const topSlug = cat.shows[0].slug;
-        if (outcomes[topSlug] === 'winner') rank1Wins++;
-      }
-    }
-  }
+  // Build per-category report card for past seasons.
+  // Winner lookup uses awards.json directly so a show whose isRevival flag
+  // is mis-set in shows.json (e.g., A Soldier's Play 2020 won Best Revival
+  // of a Play but is flagged isRevival:false) still appears in the right
+  // category card.
+  const reportCard = !isCurrent && winnerCount > 0
+    ? (() => {
+        const winnersByCategory = getWinnersForSeason(season);
+        const showById = new Map(allShows.map(s => [s.id, s]));
+        return categories.map(cat => {
+          const predicted = cat.shows[0] || null;
+          const winnerShowId = winnersByCategory.get(cat.title);
+          const winnerShow = winnerShowId ? showById.get(winnerShowId) : null;
+          const winner = winnerShow ? serializeShow(winnerShow) : null;
+          const correct = !!(predicted && winner && predicted.slug === winner.slug);
+          const winnerRankInOurList = winner
+            ? cat.shows.findIndex(s => s.slug === winner.slug)
+            : -1;
+          return {
+            category: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
+            categoryKey: cat.key,
+            predicted,
+            winner,
+            correct,
+            winnerRank: winnerRankInOurList >= 0 ? winnerRankInOurList + 1 : null,
+          };
+        }).filter(rc => rc.winner);
+      })()
+    : [];
 
-  // Build per-category report card for past seasons
-  const reportCard = !isCurrent && winnerCount > 0 ? categories.map(cat => {
-    const predicted = cat.shows[0] || null;
-    const winner = cat.shows.find(s => outcomes[s.slug] === 'winner') || null;
-    const correct = predicted && winner && predicted.slug === winner.slug;
-    const winnerRank = winner ? cat.shows.findIndex(s => s.slug === winner.slug) + 1 : null;
-    return {
-      category: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
-      predicted,
-      winner,
-      correct,
-      winnerRank,
+  // How many of our #1 picks won? Count from the same source we render.
+  const rank1Wins = reportCard.filter(rc => rc.correct).length;
+  const reportCardCount = reportCard.length;
+  // Map of categoryKey → 'correct' | 'missed' for the list section badges
+  const categoryOutcomeStatus: Record<string, { status: 'correct' | 'missed'; winnerTitle: string; winnerRank: number | null; predictedTitle: string | null }> = {};
+  for (const rc of reportCard) {
+    if (!rc.winner) continue;
+    categoryOutcomeStatus[rc.categoryKey] = {
+      status: rc.correct ? 'correct' : 'missed',
+      winnerTitle: rc.winner.title,
+      winnerRank: rc.winnerRank,
+      predictedTitle: rc.predicted?.title || null,
     };
-  }).filter(rc => rc.winner) : [];
+  }
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -236,21 +257,39 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <div className="flex items-center gap-3 mb-4">
               <h2 className="text-lg font-bold text-white">Prediction Report Card</h2>
               <span className={`text-sm font-bold px-2 py-0.5 rounded ${
-                rank1Wins === winnerCount ? 'bg-emerald-500/20 text-emerald-400' :
-                rank1Wins >= winnerCount * 0.75 ? 'bg-blue-500/20 text-blue-400' :
-                rank1Wins >= winnerCount * 0.5 ? 'bg-amber-500/20 text-amber-400' :
+                rank1Wins === reportCardCount ? 'bg-emerald-500/20 text-emerald-400' :
+                rank1Wins >= reportCardCount * 0.75 ? 'bg-blue-500/20 text-blue-400' :
+                rank1Wins >= reportCardCount * 0.5 ? 'bg-amber-500/20 text-amber-400' :
                 'bg-red-500/20 text-red-400'
               }`}>
-                {rank1Wins}/{winnerCount}
+                {rank1Wins}/{reportCardCount}
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {reportCard.map(rc => (
-                <div key={rc.category} className={`p-4 rounded-xl border ${rc.correct ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-white/5 bg-surface-overlay'}`}>
-                  <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">{rc.category}</p>
-                    <span className={`text-xs font-bold ${rc.correct ? 'text-emerald-400' : 'text-amber-400'}`}>
-                      {rc.correct ? 'Correct' : rc.winnerRank ? `Winner was #${rc.winnerRank}` : 'Missed'}
+                <div key={rc.category} className={`p-4 rounded-xl border-2 ${rc.correct ? 'border-emerald-500/40 bg-emerald-500/10' : 'border-amber-500/40 bg-amber-500/5'}`}>
+                  <div className="flex items-center justify-between mb-3 gap-2">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{rc.category}</p>
+                    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide ${
+                      rc.correct
+                        ? 'bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-400/40'
+                        : 'bg-amber-500/25 text-amber-300 ring-1 ring-amber-400/40'
+                    }`}>
+                      {rc.correct ? (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          Correct
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                          Missed{rc.winnerRank ? ` (#${rc.winnerRank})` : ''}
+                        </>
+                      )}
                     </span>
                   </div>
                   {/* Predicted #1 */}
@@ -340,6 +379,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         <TonyPredictionsClient
           categories={categories}
           outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
+          categoryOutcomes={Object.keys(categoryOutcomeStatus).length > 0 ? categoryOutcomeStatus : undefined}
         />
 
         {/* Data Source Note */}
