@@ -386,7 +386,15 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   let allCandidateUrls = [];
 
   // Source 1: Google search (10 results)
-  const query = `site:broadwayworld.com/article "Review Roundup" "${searchTitle}" broadway ${year}`;
+  // For opera shows, drop the "broadway" keyword AND the /article path filter — BWW
+  // opera reviews live at /bwwopera/article/Review-... not /article/Review-Roundup-...
+  // (Innocence Met Opera 2026-04-06: Sasanow's review at
+  // broadwayworld.com/bwwopera/article/Review-Kaija-Saariahos-INNOCENCE-...-20260407
+  // was missed because the SERP query filtered to /article/ + "broadway".)
+  const isOpera = show.type === 'opera';
+  const query = isOpera
+    ? `site:broadwayworld.com "${searchTitle}" review ${year}`
+    : `site:broadwayworld.com/article "Review Roundup" "${searchTitle}" broadway ${year}`;
   try {
     stats.googleSearches++;
     const googleUrls = await googleSearch(query, 10);
