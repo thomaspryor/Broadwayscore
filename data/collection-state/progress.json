@@ -654,7 +654,11 @@
     "pygmalion-2007/variety--david-rooney.json",
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
-    "tarzan-2006/variety--charles-isherwood.json"
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "by-jeeves-2001/nytimes--bruce-weber.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -666,6 +670,7 @@
     "browserbase": [
       "data/review-texts/the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
       "the-mousetrap-west-end-2021/nytimes--dave-itzkoff.json",
+      "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json",
       "data/review-texts/by-jeeves-2001/nytimes--bruce-weber.json"
     ],
     "directCookies": [
@@ -683,7 +688,7 @@
     "archive": []
   },
   "startTime": "2026-04-27T16:18:52.228Z",
-  "lastProcessed": "tarzan-2006/variety--charles-isherwood.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-04-27T19:28:06.591Z",
@@ -715,6 +720,17 @@
     },
     {
       "t": "2026-04-27T20:00:02.585Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-28T03:46:44.857Z",
+      "event": "bb-session",
+      "session": "1871774b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9c0cefde1630f93aa15753c1"
+    },
+    {
+      "t": "2026-04-28T03:46:45.914Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
