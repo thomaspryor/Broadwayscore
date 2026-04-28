@@ -456,7 +456,12 @@ async function processShowViaGoogle(show, showId, shows) {
 
     const verdictUrls = urls.filter(u => {
       const slug = u.split('/article/')[1] || '';
-      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are') || slug.includes('what-do');
+      // Playbill roundup slug forms vary: "what-do-critics-think", "what-are-critics-saying",
+      // "what-did-reviews-say-about-X" (Innocence Met Opera 2026-04-06 used this form and
+      // was missed before this filter was extended). Keep adding verbs as Playbill invents them.
+      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics')
+        || slug.includes('what-are') || slug.includes('what-do') || slug.includes('what-did')
+        || slug.includes('did-the') || slug.includes('how-did');
     });
 
     // Prefer URLs with "broadway" in slug (more likely to be the right production)
