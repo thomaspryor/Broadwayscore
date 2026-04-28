@@ -1,15 +1,15 @@
 /**
  * Tony season definitions and date-range helpers for the Time Period filter.
  *
- * A Tony season runs from April 28 of year N to April 27 of year N+1 — the
- * day after the prior eligibility cutoff to the day of the next. Project
- * convention (see src/lib/data-tony-predictions.ts:43-66). COVID-era seasons
- * (2019-20, 2020-21) use the same uniform window for now.
+ * Per-year cutoffs come from src/lib/tony-cutoffs.ts (single source of truth,
+ * cited from Tony Awards Administration Committee announcements). COVID-era
+ * seasons (2019-20, 2020-21, 2021-22) use the actual COVID-affected windows.
  *
  * The Time Period filter compares show.openingDate (ISO YYYY-MM-DD) directly
  * against these ranges — string comparison is correct because ISO 8601 dates
  * sort lexicographically.
  */
+import { TONY_CUTOFFS } from '@/lib/tony-cutoffs';
 
 export interface DateRange {
   from: string;
@@ -23,24 +23,24 @@ export interface RangeDef {
   to: string;
 }
 
-// Captured once at module load. Build-time on the server bundle, page-load
-// on the client bundle — both run in the same webpack pass so there's no
-// hydration mismatch. The list goes one year stale if no rebuild happens
-// between Dec 31 and Jan 1; static export deploys run daily so practical
-// exposure is the gap between the year-flip cron and the next deploy.
-const CURRENT_YEAR = new Date().getFullYear();
-
-/** 8 most recent Tony seasons, newest first. */
-export const TONY_SEASONS: RangeDef[] = Array.from({ length: 8 }, (_, i) => {
-  const startYear = CURRENT_YEAR - i;
-  const endShort = String((startYear + 1) % 100).padStart(2, '0');
-  return {
-    id: `${startYear}-${endShort}`,
-    label: `${startYear}–${endShort}`,
-    from: `${startYear}-04-28`,
-    to: `${startYear + 1}-04-27`,
-  };
-});
+/**
+ * 8 most recent Tony seasons, newest first.
+ *
+ * Sourced from TONY_CUTOFFS (canonical per-year start/end dates with citations).
+ * The label uses an en-dash for display ("2025–26") while TONY_CUTOFFS stores
+ * the canonical short form ("2025-26") that matches awards.json season fields
+ * and our URL conventions.
+ */
+export const TONY_SEASONS: RangeDef[] = TONY_CUTOFFS
+  .slice()
+  .reverse()
+  .slice(0, 8)
+  .map((s) => ({
+    id: s.label,
+    label: s.label.replace('-', '–'),
+    from: s.start,
+    to: s.end,
+  }));
 
 /** Decade pills — calendar-year ranges. */
 export const DECADES: RangeDef[] = [
@@ -54,7 +54,9 @@ export const DECADES: RangeDef[] = [
 ];
 
 export const SLIDER_MIN_YEAR = 1950;
-export const SLIDER_MAX_YEAR = CURRENT_YEAR;
+// Module-load year — used only as the upper bound on the custom-range slider.
+// See note on TONY_SEASONS for the static-export staleness consideration.
+export const SLIDER_MAX_YEAR = new Date().getFullYear();
 
 export function rangesEqual(a: DateRange, b: DateRange): boolean {
   return a.from === b.from && a.to === b.to;
