@@ -1,5 +1,10 @@
 {
-  "processed": [],
+  "processed": [
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-balusters-2026/variety--unknown.json",
+    "the-balusters-2026/ew--unknown.json",
+    "avenue-q-west-end-2026/timeout--unknown.json"
+  ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
@@ -8,13 +13,26 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "please-please-me-west-end-2026/guardian--unknown.json",
+    "please-please-me-west-end-2026/timeout--unknown.json",
+    "please-please-me-west-end-2026/financialtimes--unknown.json",
+    "please-please-me-west-end-2026/independent--unknown.json",
+    "please-please-me-west-end-2026/standard--unknown.json",
+    "please-please-me-west-end-2026/telegraph--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-balusters-2026/ew--unknown.json",
+      "avenue-q-west-end-2026/timeout--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-balusters-2026/variety--unknown.json",
+      "the-balusters-2026/variety--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -22,6 +40,18 @@
     "archive": []
   },
   "startTime": "2026-04-28T09:09:57.103Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "please-please-me-west-end-2026/telegraph--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-28T10:46:49.172Z",
+      "event": "bb-session",
+      "session": "19179726",
+      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose"
+    },
+    {
+      "t": "2026-04-28T10:46:50.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
