@@ -422,8 +422,14 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     }
   }
 
-  // Filter to roundup URLs only
-  const roundupUrls = allCandidateUrls.filter(u => u.includes('Review-Roundup') || u.includes('review-roundup'));
+  // Filter to roundup URLs only — for opera shows, also accept single-critic
+  // /bwwopera/article/Review-{title}-... URLs (BWW opera reviews aren't roundups,
+  // they're individual critic reviews under the BWW Opera vertical).
+  const roundupUrls = allCandidateUrls.filter(u => {
+    if (u.includes('Review-Roundup') || u.includes('review-roundup')) return true;
+    if (isOpera && u.includes('/bwwopera/article/Review-')) return true;
+    return false;
+  });
 
   if (roundupUrls.length === 0) {
     stats.roundupsMiss++;
