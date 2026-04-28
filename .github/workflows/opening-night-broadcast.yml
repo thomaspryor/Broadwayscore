@@ -412,6 +412,78 @@ jobs:
             echo "Drift gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
+      - name: Orphan-unscored gate — block send if marker file exists for any pending show
+        if: steps.check.outputs.pending_shows != ''
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # Lost Boys 2026-04-26 #8 defense (Gap 1). scripts/verify-all-scored.js
+          # writes data/audit/orphan-unscored-{showId}.json when reviews with
+          # includable text+excerpt land on disk without an assignedScore. The
+          # marker means: the LLM ensemble dispatch is in flight; sending the
+          # broadcast now would email a composite that's missing those critics.
+          # Wait for the next rebuild cycle (it'll re-run verify-all-scored and
+          # delete the marker if all scores landed).
+          FORCE="${{ inputs.force_broadcast }}"
+          BLOCKED=false
+          BREACHED_SHOWS=()
+          # Track whether at least one breach has a successful dispatch in
+          # flight, so the alert message is honest about expected resolution
+          # path (wait for ensemble vs. operator must dispatch manually).
+          ANY_DISPATCH_OK=false
+          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
+          for SHOW in "${SHOWS[@]}"; do
+            MARKER="data/audit/orphan-unscored-${SHOW}.json"
+            if [ -f "$MARKER" ]; then
+              # Pass marker path via env to avoid quoting issues in node -e.
+              MARKER_INFO=$(MARKER="$MARKER" node -e "
+                try {
+                  const d = JSON.parse(require('fs').readFileSync(process.env.MARKER, 'utf8'));
+                  console.log(JSON.stringify({
+                    orphanCount: d.orphanCount || 0,
+                    lastDispatch: d.lastDispatch || 'unknown',
+                  }));
+                } catch (e) { console.log('{\"orphanCount\":0,\"lastDispatch\":\"parse-failed\"}'); }
+              " 2>/dev/null || echo '{"orphanCount":0,"lastDispatch":"missing"}')
+              ORPHAN_COUNT=$(echo "$MARKER_INFO" | node -e "console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).orphanCount)")
+              LAST_DISPATCH=$(echo "$MARKER_INFO" | node -e "console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).lastDispatch)")
+              echo "Show $SHOW: orphan-unscored marker present ($ORPHAN_COUNT orphan(s), dispatch=$LAST_DISPATCH)"
+              if [ "$ORPHAN_COUNT" -gt 0 ]; then
+                BLOCKED=true
+                BREACHED_SHOWS+=("$SHOW:$ORPHAN_COUNT/$LAST_DISPATCH")
+                if [ "$LAST_DISPATCH" = "ok" ]; then
+                  ANY_DISPATCH_OK=true
+                fi
+              fi
+            else
+              echo "Show $SHOW: no orphan-unscored marker (clear)"
+            fi
+          done
+
+          if [ "$BLOCKED" = "true" ] && [ "$FORCE" != "true" ]; then
+            BREACHED_LIST=$(IFS=,; echo "${BREACHED_SHOWS[*]}")
+            if [ "$ANY_DISPATCH_OK" = "true" ]; then
+              RESOLUTION_HINT="Wait for next rebuild cycle (rescore in flight)"
+            else
+              RESOLUTION_HINT="No rescore is queued (cooldown or dispatch failed) — operator must run: gh workflow run llm-ensemble-score.yml -f show_id=<id> -f fast_rebuild=true"
+            fi
+            echo "::error::Orphan-unscored gate blocked broadcast — reviews with includable text are unscored for: $BREACHED_LIST. ${RESOLUTION_HINT}. Or re-run with force_broadcast=true to override."
+            BREACHED_LIST="$BREACHED_LIST" RESOLUTION_HINT="$RESOLUTION_HINT" node -e "
+              const { sendAlert } = require('./scripts/lib/discord-notify');
+              sendAlert({
+                title: 'Opening Night Broadcast Blocked — Orphan-Unscored Reviews',
+                description: 'Automated broadcast halted: scripts/verify-all-scored.js detected reviews with substantive text but no source-of-truth score on one or more pending shows. The composite would be missing critics. ' + (process.env.RESOLUTION_HINT || '') + '. Or re-run with force_broadcast=true to override.',
+                severity: 'warning',
+                email: true,
+                fields: [{ name: 'Shows (showId:orphanCount/dispatch)', value: process.env.BREACHED_LIST || '(unknown)' }],
+              }).then(() => process.exit(1)).catch(e => { process.stderr.write(e.message+'\n'); process.exit(1); });
+            "
+          else
+            echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
+          fi
+
       - uses: actions/setup-node@v5
         if: steps.check.outputs.pending_shows != ''
         with:
