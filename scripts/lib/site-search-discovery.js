@@ -300,6 +300,123 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
     requiresJs: true,
   },
+
+  // ── Opera outlets (applies only when show.type === 'opera') ──────────────────
+  // All five fire exclusively for opera shows. Broadway/West End shows should
+  // never hit these; the applies() gate at the call site enforces this.
+
+  'bachtrack': {
+    name: 'Bachtrack',
+    domain: 'bachtrack.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Bachtrack opera category page — lists the ~40 most recent opera reviews.
+    // URL slugs contain opera/venue/city keywords, so urlLooksLikeReview()
+    // title-matches correctly against them.
+    // NOTE: paywall — rating is in <div class='article-rating-simple star-rating'>
+    // encoded as &#x2a; (asterisk, filled star) and &#x31; (digit 1, empty star).
+    // e.g. ****1 = 4/5 stars. Author is in div.article-author, not the meta tag
+    // (meta tag may show a performer name, not the critic).
+    fetchAndParse: async (showTitle) => {
+      const html = await fetchSSR('https://bachtrack.com/find-reviews/category=2');
+      const urls = [];
+      const pattern = /href="(\/review-[^"]+)"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) {
+        urls.push('https://bachtrack.com' + m[1]);
+      }
+      const unique = [...new Set(urls)];
+      if (unique.length === 0) {
+        console.warn('    Site search [Bachtrack]: WARNING — opera category page returned 0 links (possible structural change)');
+      }
+      return unique;
+    },
+  },
+
+  'parterre-box': {
+    name: 'Parterre Box',
+    domain: 'parterre.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Parterre uses WP REST API (no auth needed) with a date window around the
+    // show's opening date. URL slugs are poetic ("a-specter-haunting" for
+    // Innocence), so skipUrlFilter: true — we return all posts in the window
+    // and let the dedup/processing layer handle validation.
+    skipUrlFilter: true,
+    fetchAndParse: async (showTitle, market, openingDate) => {
+      let afterParam = '';
+      let beforeParam = '';
+      if (openingDate) {
+        const opening = new Date(openingDate);
+        const after = new Date(opening); after.setDate(after.getDate() - 2);
+        const before = new Date(opening); before.setDate(before.getDate() + 14);
+        afterParam = `&after=${after.toISOString()}`;
+        beforeParam = `&before=${before.toISOString()}`;
+      }
+      // per_page=100 needed: Parterre posts ~2/day (reviews + song-of-day items), so
+      // a 16-day window generates ~32 posts. Use 100 to avoid pagination.
+      const url = `https://parterre.com/wp-json/wp/v2/posts?per_page=100&_fields=link,date${afterParam}${beforeParam}`;
+      const data = await fetchSSR(url);
+      const posts = JSON.parse(data);
+      if (!Array.isArray(posts)) return [];
+      return posts.map(p => p.link).filter(Boolean);
+    },
+  },
+
+  'operawire': {
+    name: 'Operawire',
+    domain: 'operawire.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Operawire WP REST API — search by show title. Review URLs reliably contain
+    // the show name in the slug (e.g. /metropolitan-opera-2025-26-review-{title}/).
+    fetchAndParse: async (showTitle) => {
+      const q = encodeURIComponent(showTitle);
+      const url = `https://operawire.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
+      const data = await fetchSSR(url);
+      const posts = JSON.parse(data);
+      if (!Array.isArray(posts)) return [];
+      return posts.map(p => p.link).filter(Boolean);
+    },
+  },
+
+  'new-york-classical-review': {
+    name: 'New York Classical Review',
+    domain: 'newyorkclassicalreview.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // NYCR WP REST API — search by show title. NYCR uses WordPress with the
+    // el-clasico theme; REST API is enabled and unauthenticated. URL pattern
+    // is YYYY/MM/slug, so urlLooksLikeReview can title-match on slugs.
+    fetchAndParse: async (showTitle) => {
+      const q = encodeURIComponent(showTitle);
+      const url = `https://newyorkclassicalreview.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
+      const data = await fetchSSR(url);
+      const posts = JSON.parse(data);
+      if (!Array.isArray(posts)) return [];
+      return posts.map(p => p.link).filter(Boolean);
+    },
+  },
+
+  'classical-voice-america': {
+    name: 'Classical Voice America',
+    domain: 'classicalvoiceamerica.org',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // CVA WP REST API is blocked (Solid Security). Fallback: HTML search page.
+    // URL pattern is YYYY/MM/DD/slug. Filter to date-path links only.
+    fetchAndParse: async (showTitle) => {
+      const q = encodeURIComponent(`${showTitle} opera`);
+      const html = await fetchSSR(`https://classicalvoiceamerica.org/?s=${q}`);
+      const urls = [];
+      const pattern = /href="(https:\/\/classicalvoiceamerica\.org\/\d{4}\/\d{2}\/\d{2}\/[^"]+)"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) {
+        urls.push(m[1]);
+      }
+      return [...new Set(urls)];
+    },
+  },
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
@@ -404,10 +521,14 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
  * @param {boolean} options.skipJs - Skip JS-rendered endpoints (save ScrapingBee credits)
  * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). Passed to
  *   fetchAndParse implementations that support date-window filtering (e.g. TheaterMania).
+ * @param {Object} [options.show] - Full show object for applies() predicate evaluation.
+ *   Opera outlets (bachtrack, parterre-box, operawire, nycr, cva) use
+ *   applies: (show) => show.type === 'opera' — they must be gated or they fire
+ *   on every non-opera show and burn HTTP/ScrapingBee budget needlessly.
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSite(outletId, showTitle, options = {}) {
-  const { verbose = false, skipJs = false, market = 'broadway', openingDate = null } = options;
+  const { verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
   // Clean title for search queries (strip suffixes, normalize quotes/ampersands)
@@ -415,6 +536,12 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
   // Skip outlets limited to a different market
   if (config.market && config.market !== market) {
+    return [];
+  }
+
+  // Skip outlets that don't apply to this show type (e.g. opera-only outlets for non-opera shows)
+  if (config.applies && show && !config.applies(show)) {
+    if (verbose) console.log(`    Site search [${config.name}]: skipped (applies() gate — show.type=${show.type})`);
     return [];
   }
 
@@ -487,16 +614,18 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
  * @param {Set} options.knownUrls - Already-discovered URLs to skip
  * @param {boolean} options.verbose - Log progress
  * @param {boolean} options.skipJs - Skip JS-rendered endpoints
+ * @param {Object} [options.show] - Full show object; passed to applies() predicates on
+ *   outlet configs. Opera outlets use applies: (show) => show.type === 'opera'.
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSites(showTitle, outletIds, options = {}) {
-  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null } = options;
+  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
   const results = [];
 
   for (const outletId of outletIds) {
     if (!SITE_SEARCH_ENDPOINTS[outletId]) continue;
 
-    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate });
+    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate, show });
     for (const result of found) {
       if (!knownUrls.has(result.url)) {
         results.push(result);

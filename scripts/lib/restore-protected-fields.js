@@ -33,6 +33,13 @@ const { execSync } = require('child_process');
 // If the remote has these and local doesn't, always restore from remote.
 const MANUAL_FIELDS = [
   // (a) Human-only corrections
+  // Identity fields — added to protect opera outlet review files (bachtrack,
+  // parterre-box, operawire, new-york-classical-review, classical-voice-america)
+  // from having their outletId/outlet silently cleared on rebase. Without this,
+  // a CI rebase that wins on an opera review file could wipe outlet attribution,
+  // causing the rebuild to lose the review's outlet association.
+  'outletId',
+  'outlet',
   'humanReviewScore',
   'humanReviewNote',
   'manualContentTier',

@@ -223,6 +223,11 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 
   return shows.filter(s => {
     if (s.status !== 'open' || !s.openingDate) return false;
+    // Opera shows: skip broadcast entirely. Broadway subscribers did not opt in
+    // to opera coverage; treating an opera opening as a Broadway broadcast would
+    // be perceived as off-topic spam by ~160 subscribers. Proper Resend audience
+    // segmentation is a separate card; until then, fail-closed.
+    if (s.type === 'opera') return false;
     // Filter by market
     if (isLondonMarket(MARKET)) {
       if (!isLondonMarket(s.category)) return false;
@@ -785,7 +790,7 @@ async function main() {
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.
-module.exports = { syncTrackerToOrigin, mergeTrackerEntries };
+module.exports = { syncTrackerToOrigin, mergeTrackerEntries, findRecentlyOpenedShows };
 
 if (require.main === module) {
   main().catch(err => {
