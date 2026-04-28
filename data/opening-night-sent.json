@@ -230,7 +230,7 @@
       "draftStatus": "draft",
       "sentAt": null,
       "recipientCount": null,
-      "lastReconciledAt": "2026-04-27T13:39:38.056Z"
+      "lastReconciledAt": "2026-04-28T11:38:00.963Z"
     },
     "the-balusters-2026": {
       "draftCreatedAt": "2026-04-22T14:06:25.171Z",
@@ -243,7 +243,7 @@
       "draftStatus": "draft",
       "sentAt": null,
       "recipientCount": null,
-      "lastReconciledAt": "2026-04-27T13:39:38.166Z"
+      "lastReconciledAt": "2026-04-28T11:38:01.082Z"
     },
     "broadway:beaches-2026": {
       "draftCreatedAt": "2026-04-23T16:55:22.415Z",
@@ -342,7 +342,9 @@
     "preview:broadway:the-lost-boys-2026:2026-04-27": {
       "sentAt": "2026-04-27T13:05:16.281Z",
       "previewTo": "thomas.pryor@gmail.com",
-      "reviewCount": 24
+      "reviewCount": 24,
+      "draftStatus": "draft",
+      "_migratedAt": "2026-04-28T11:38:00.701Z"
     },
     "broadway:the-lost-boys-2026": {
       "draftCreatedAt": "2026-04-27T13:05:19.415Z",
@@ -351,9 +353,10 @@
       "method": "resend-draft",
       "reviewCount": 24,
       "completed": true,
-      "draftStatus": "draft",
-      "sentAt": null,
-      "recipientCount": null
+      "draftStatus": "sent",
+      "sentAt": "2026-04-27 13:34:39.387+00",
+      "recipientCount": null,
+      "lastReconciledAt": "2026-04-28T11:38:01.337Z"
     },
     "the-lost-boys-2026": {
       "draftCreatedAt": "2026-04-27T13:05:19.415Z",
@@ -362,10 +365,11 @@
       "method": "resend-draft",
       "reviewCount": 24,
       "completed": true,
-      "draftStatus": "draft",
-      "sentAt": null,
+      "draftStatus": "sent",
+      "sentAt": "2026-04-27 13:34:39.387+00",
       "recipientCount": null,
-      "broadcastKey": "broadway:the-lost-boys-2026"
+      "broadcastKey": "broadway:the-lost-boys-2026",
+      "lastReconciledAt": "2026-04-28T11:38:01.583Z"
     }
   }
 }
