@@ -456,7 +456,12 @@ async function processShowViaGoogle(show, showId, shows) {
 
     const verdictUrls = urls.filter(u => {
       const slug = u.split('/article/')[1] || '';
-      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics') || slug.includes('what-are') || slug.includes('what-do');
+      // Playbill roundup slug forms vary: "what-do-critics-think", "what-are-critics-saying",
+      // "what-did-reviews-say-about-X" (Innocence Met Opera 2026-04-06 used this form and
+      // was missed before this filter was extended). Keep adding verbs as Playbill invents them.
+      return slug.includes('review') || slug.includes('verdict') || slug.includes('critics')
+        || slug.includes('what-are') || slug.includes('what-do') || slug.includes('what-did')
+        || slug.includes('did-the') || slug.includes('how-did');
     });
 
     // Prefer URLs with "broadway" in slug (more likely to be the right production)
@@ -492,7 +497,7 @@ async function processShowViaGoogle(show, showId, shows) {
 
         const $ = cheerio.load(html);
         const pageTitle = $('title').text() + ' ' + $('h1').text();
-        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && isLondonMarket(showEntry.category) })) {
+        if (isNotBroadway(pageTitle, { allowOffBroadway: showEntry && showEntry.category === 'off-broadway', allowWestEnd: showEntry && isLondonMarket(showEntry.category), allowOpera: showEntry && showEntry.type === 'opera' })) {
           console.log(`    [SKIP] Article is not about Broadway: "${pageTitle.slice(0, 80)}"`);
           continue;
         }
@@ -644,8 +649,9 @@ async function scrapePlaybillVerdict() {
   const unmatchedShows = new Set(shows.map(s => s.id));
 
   for (const article of uniqueArticles) {
-    // Allow off-Broadway articles through at pre-match stage — per-show filtering happens at save time
-    if (isNotBroadway(article.title, { allowOffBroadway: true, allowWestEnd: true })) {
+    // Allow off-Broadway, West End, AND opera articles through at pre-match stage —
+    // per-show filtering happens at save time
+    if (isNotBroadway(article.title, { allowOffBroadway: true, allowWestEnd: true, allowOpera: true })) {
       stats.skippedOffBroadway++;
       continue;
     }
@@ -714,7 +720,7 @@ async function scrapePlaybillVerdict() {
     // Validate the fetched article is about Broadway (not London, Chicago, film, etc.)
     const $article = cheerio.load(html);
     const articlePageTitle = $article('title').text() + ' ' + $article('h1').text();
-    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category) })) {
+    if (isNotBroadway(articlePageTitle, { allowOffBroadway: matchedShow && matchedShow.category === 'off-broadway', allowWestEnd: matchedShow && isLondonMarket(matchedShow.category), allowOpera: matchedShow && matchedShow.type === 'opera' })) {
       console.log(`    [SKIP] Article is not about Broadway: "${articlePageTitle.slice(0, 80)}"`);
       continue;
     }

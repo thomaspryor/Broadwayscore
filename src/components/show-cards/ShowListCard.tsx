@@ -7,6 +7,7 @@ import ShowImage from '@/components/ShowImage';
 import { getScoreTier, getScoreColorClass, ScoreBadge, MustSeeCrown, StatusBadge, FormatPill, ProductionPill, AudienceChip, CategoryBadge } from '@/components/show-cards';
 import type { ScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -94,7 +95,7 @@ const ShowListCard = memo(function ShowListCard({
     }
   } else {
     score = criticScore;
-    tier = hasEnoughReviews(reviewCount, category, t1t2) ? getScoreTier(score, category) : null;
+    tier = hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? getScoreTier(score, category) : null;
     audienceGrade = show.audienceGrade;
   }
 
@@ -280,7 +281,7 @@ const ShowListCard = memo(function ShowListCard({
       ) : (
         // Critics mode
         <>
-          {show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, category, t1t2) ? (
+          {show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? (
             <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-gray-500">
               Not Yet Rated
             </span>

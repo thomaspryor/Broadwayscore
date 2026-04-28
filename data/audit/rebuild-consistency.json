@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T18:12:36.782Z",
+  "generatedAt": "2026-04-28T22:55:31.321Z",
   "issues": [
     {
       "type": "rating-score-mismatch",
@@ -20,6 +20,14 @@
     {
       "type": "rating-score-mismatch",
       "severity": "high",
+      "showId": "kenrex-off-broadway-2026",
+      "outlet": "nysr",
+      "critic": "David Finkle",
+      "detail": "originalRating \"5\" (=5) vs score 95 (source: originalScore-priority0)"
+    },
+    {
+      "type": "rating-score-mismatch",
+      "severity": "high",
       "showId": "the-piano-lesson-2022",
       "outlet": "ew",
       "critic": "Dave Quinn",
@@ -36,12 +44,6 @@
       "severity": "low",
       "showId": "im-sorry-prime-minister-west-end-2026",
       "detail": "9/18 reviews (50%) scored exactly 60"
-    },
-    {
-      "type": "score-clustering",
-      "severity": "low",
-      "showId": "paranormal-activity-west-end-2025",
-      "detail": "10/20 reviews (50%) scored exactly 80"
     },
     {
       "type": "score-clustering",

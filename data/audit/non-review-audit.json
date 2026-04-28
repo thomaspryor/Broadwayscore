@@ -1,19 +1,19 @@
 {
   "_meta": {
-    "generatedAt": "2026-04-21T05:47:46.820Z",
-    "totalScanned": 32704,
-    "flagged": 239,
+    "generatedAt": "2026-04-28T06:05:07.265Z",
+    "totalScanned": 33106,
+    "flagged": 228,
     "byType": {
-      "preview_article": 74,
-      "awards_coverage": 43,
+      "preview_article": 72,
+      "awards_coverage": 40,
       "interview": 6,
       "news_article": 15,
-      "garbage_scrape": 59,
-      "obituary": 24,
-      "press_release": 11,
-      "cast_announcement": 1,
+      "garbage_scrape": 57,
+      "obituary": 22,
+      "cast_announcement": 2,
       "listicle": 1,
-      "photo_gallery": 5
+      "photo_gallery": 5,
+      "press_release": 8
     }
   },
   "flagged": [
@@ -21,9 +21,9 @@
       "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
       "file": "theatermania--adam-feldman.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -87,9 +87,9 @@
       "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
       "file": "theatermania--david-gordon.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: The text is an error message indicating the page was not found, not a review of the musi",
       "outlet": "TheaterMania",
       "critic": "David Gordon",
       "score": 76
@@ -98,9 +98,9 @@
       "showId": "after-midnight-2013",
       "file": "theatermania--charles-isherwood.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page cannot be found, suggesting it is not a review but rath",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 90
@@ -114,18 +114,7 @@
       "evidence": "closing notice",
       "outlet": "Exeunt Magazine",
       "critic": "Nicole Serratore",
-      "score": 82
-    },
-    {
-      "showId": "airline-highway-2015",
-      "file": "wsj--terry-teachout.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
-      "outlet": "The Wall Street Journal",
-      "critic": "Terry Teachout",
-      "score": 43
+      "score": 87
     },
     {
       "showId": "allegiance-2015",
@@ -142,9 +131,9 @@
       "showId": "allegiance-2015",
       "file": "womens-voices-for-change--alexandra-macaaron.json",
       "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Please upgrade your browser",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text primarily describes the background of George Takei and the premise of the music",
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
@@ -153,9 +142,9 @@
       "showId": "an-enemy-of-the-people-2024",
       "file": "theatermania--adam-feldman.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of a perfor",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 77
@@ -170,17 +159,6 @@
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 77
-    },
-    {
-      "showId": "ann-2013",
-      "file": "amny--matt-windman.json",
-      "type": "obituary",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "passed away",
-      "outlet": "amNewYork",
-      "critic": "Matt Windman",
-      "score": 64
     },
     {
       "showId": "ann-2013",
@@ -225,6 +203,17 @@
       "outlet": "DC Theatre Scene",
       "critic": "Richard Seff",
       "score": 86
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "variety--frank-rizzo.json",
+      "type": "preview_article",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "what to expect",
+      "outlet": "Variety",
+      "critic": "Frank Rizzo",
+      "score": 34
     },
     {
       "showId": "beautiful-the-carole-king-musical-2014",
@@ -296,23 +285,12 @@
       "showId": "born-yesterday-2011",
       "file": "theatermania--andy-propst.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 81
-    },
-    {
-      "showId": "bring-it-on-the-musical-2012",
-      "file": "faster-times--jonathan-mandell.json",
-      "type": "awards_coverage",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Tony winners",
-      "outlet": "The Faster Times",
-      "critic": "Jonathan Mandell",
-      "score": 62
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -357,17 +335,6 @@
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 62
-    },
-    {
-      "showId": "cirque-du-soleil-paramour-2016",
-      "file": "wsj--robert-greskovic.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
-      "outlet": "Wall Street Journal",
-      "critic": "Robert Greskovic",
-      "score": 43
     },
     {
       "showId": "clybourne-park-2012",
@@ -502,17 +469,6 @@
       "score": 55
     },
     {
-      "showId": "dracula-west-end-2025",
-      "file": "theatre-weekly--greg-stewart.json",
-      "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "what to expect",
-      "outlet": "Theatre Weekly",
-      "critic": "Greg Stewart",
-      "score": 16
-    },
-    {
       "showId": "eclipsed-2016",
       "file": "wsj--terry-teachout.json",
       "type": "garbage_scrape",
@@ -538,9 +494,9 @@
       "showId": "end-of-the-rainbow-2012",
       "file": "theatermania--adam-feldman.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is a \"404 not found\" error message from a website, indicating the page (presuma",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -623,17 +579,6 @@
       "score": 88
     },
     {
-      "showId": "fiddler-on-the-roof-2015",
-      "file": "deadline--jeremy-gerard.json",
-      "type": "press_release",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "announce the",
-      "outlet": "Deadline",
-      "critic": "Jeremy Gerard",
-      "score": 59
-    },
-    {
       "showId": "follies-2011",
       "file": "village-voice--michael-musto.json",
       "type": "awards_coverage",
@@ -701,17 +646,6 @@
     },
     {
       "showId": "fun-home-2015",
-      "file": "ew--leah-greenblatt.json",
-      "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First look at",
-      "outlet": "Entertainment Weekly",
-      "critic": "Leah Greenblatt",
-      "score": 83
-    },
-    {
-      "showId": "fun-home-2015",
       "file": "huffpost--steven-suskin.json",
       "type": "garbage_scrape",
       "confidence": "medium",
@@ -755,17 +689,6 @@
       "score": 74
     },
     {
-      "showId": "girl-from-the-north-country-2022",
-      "file": "wsj--terry-teachout.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
-      "outlet": "Wall Street Journal",
-      "critic": "Terry Teachout",
-      "score": 89
-    },
-    {
       "showId": "glengarry-glen-ross-2012",
       "file": "theatermania--charles-isherwood.json",
       "type": "preview_article",
@@ -780,9 +703,9 @@
       "showId": "golden-boy-2012",
       "file": "theatermania--charles-isherwood.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text indicates that the page was not found, suggesting it's an error message rather ",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 61
@@ -808,17 +731,6 @@
       "outlet": "The Wall Street Journal",
       "critic": "Charles Isherwood",
       "score": 73
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "file": "njcom--christopher-kelly.json",
-      "type": "awards_coverage",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Tony nominations",
-      "outlet": "NJ.com",
-      "critic": "Christopher Kelly",
-      "score": 76
     },
     {
       "showId": "gutenberg-2023",
@@ -898,17 +810,6 @@
       "score": 50
     },
     {
-      "showId": "heart-wall-west-end-2026",
-      "file": "theupcoming--benedetta-mancusi.json",
-      "type": "interview",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Q&A with",
-      "outlet": "The Upcoming",
-      "critic": "Benedetta Mancusi",
-      "score": 88
-    },
-    {
       "showId": "hello-dolly-2017",
       "file": "more-than-the-play-blog--domenick-danza.json",
       "type": "awards_coverage",
@@ -918,6 +819,17 @@
       "outlet": "more-than-the-play-blog",
       "critic": "Domenick Danza",
       "score": 90
+    },
+    {
+      "showId": "hello-dolly-2017",
+      "file": "theatermania--pete-hempstead.json",
+      "type": "cast_announcement",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "joins the cast",
+      "outlet": "TheaterMania",
+      "critic": "Pete Hempstead",
+      "score": 86
     },
     {
       "showId": "hells-kitchen-2024",
@@ -994,7 +906,7 @@
       "evidence": "passed away",
       "outlet": "Chicago Tribune",
       "critic": "Chris Jones",
-      "score": 82
+      "score": 86
     },
     {
       "showId": "home-2024",
@@ -1005,7 +917,7 @@
       "evidence": "died on May 13, aged 78",
       "outlet": "The Daily Beast",
       "critic": "Tim Teeman",
-      "score": 83
+      "score": 85
     },
     {
       "showId": "home-2024",
@@ -1027,7 +939,7 @@
       "evidence": "passed away",
       "outlet": "New York Daily News",
       "critic": "Chris Jones",
-      "score": 82
+      "score": 86
     },
     {
       "showId": "home-2024",
@@ -1071,7 +983,7 @@
       "evidence": "Tony winners",
       "outlet": "TheWrap",
       "critic": "Thom Geier",
-      "score": 86
+      "score": 78
     },
     {
       "showId": "irving-berlins-white-christmas-2009",
@@ -1129,6 +1041,17 @@
       "score": 50
     },
     {
+      "showId": "joe-turners-come-and-gone-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "type": "interview",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "In an interview",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "score": 83
+    },
+    {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "type": "awards_coverage",
@@ -1137,7 +1060,7 @@
       "evidence": "Award nominations",
       "outlet": "London Box Office",
       "critic": "Stuart King",
-      "score": 74
+      "score": 85
     },
     {
       "showId": "king-charles-iii-2015",
@@ -1182,6 +1105,17 @@
       "outlet": "The Wall Street Journal",
       "critic": "Charles Isherwood",
       "score": 73
+    },
+    {
+      "showId": "king-lear-2019",
+      "file": "huffpost--unknown.json",
+      "type": "garbage_scrape",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Please upgrade your browser",
+      "outlet": "Huffington Post",
+      "critic": "Unknown",
+      "score": 64
     },
     {
       "showId": "kinky-boots-2013",
@@ -1316,17 +1250,6 @@
       "score": 41
     },
     {
-      "showId": "magicbird-2012",
-      "file": "faster-times--jonathan-mandell.json",
-      "type": "press_release",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "announces that",
-      "outlet": "the-faster-times",
-      "critic": "Jonathan Mandell",
-      "score": 74
-    },
-    {
       "showId": "marvins-room-2017",
       "file": "broadwayworld--michael-dale.json",
       "type": "awards_coverage",
@@ -1445,7 +1368,7 @@
       "evidence": "announce that",
       "outlet": "CurtainUp",
       "critic": "Elyse Sommer",
-      "score": 73
+      "score": 78
     },
     {
       "showId": "new-york-new-york-2023",
@@ -1457,6 +1380,17 @@
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
+    },
+    {
+      "showId": "next-to-normal-2009",
+      "file": "ap--michael-kuchwara.json",
+      "type": "garbage_scrape",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Please upgrade your browser",
+      "outlet": "Associated Press",
+      "critic": "Michael Kuchwara",
+      "score": 82
     },
     {
       "showId": "nice-work-if-you-can-get-it-2012",
@@ -1547,17 +1481,6 @@
       "score": 62
     },
     {
-      "showId": "on-the-town-1998",
-      "file": "wsj--terry-teachout.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "BROWSER UPDATE",
-      "outlet": "The Wall Street Journal",
-      "critic": "Terry Teachout",
-      "score": 93
-    },
-    {
       "showId": "on-the-town-2014",
       "file": "huffpost--steven-suskin.json",
       "type": "garbage_scrape",
@@ -1594,9 +1517,9 @@
       "showId": "once-upon-a-one-more-time-2023",
       "file": "theatermania--adam-feldman.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the show",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -1693,9 +1616,9 @@
       "showId": "patriots-2024",
       "file": "theatermania--frank-scheck.json",
       "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "First Look at",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "First Look at | LLM: NOT_REVIEW: This is an error message indicating the page or review could not be found, not an actual",
       "outlet": "TheaterMania",
       "critic": "Frank Scheck",
       "score": 79
@@ -1825,9 +1748,9 @@
       "showId": "seminar-2011",
       "file": "theatermania--david-rooney.json",
       "type": "preview_article",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the page was not found, not a review of the play",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "First Look at",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 77
@@ -1880,9 +1803,9 @@
       "showId": "skeleton-crew-2022",
       "file": "hollywood-reporter--angie-han.json",
       "type": "news_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "close on",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "close on | LLM: NOT_REVIEW. The text focuses on the play's context and the playwright's comments about its relevance",
       "outlet": "The Hollywood Reporter",
       "critic": "Angie Han",
       "score": 77
@@ -1922,17 +1845,6 @@
     },
     {
       "showId": "slave-play-2021",
-      "file": "times-uk--dominic-maxwell.json",
-      "type": "awards_coverage",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "award nominations",
-      "outlet": "The Times",
-      "critic": "Dominic Maxwell",
-      "score": 63
-    },
-    {
-      "showId": "slave-play-2021",
       "file": "wsj--terry-teachout.json",
       "type": "garbage_scrape",
       "confidence": "medium",
@@ -1965,28 +1877,6 @@
       "score": 87
     },
     {
-      "showId": "spring-awakening-2015",
-      "file": "huffpost--steven-suskin.json",
-      "type": "garbage_scrape",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "Please upgrade your browser",
-      "outlet": "HuffPost",
-      "critic": "Steven Suskin",
-      "score": 67
-    },
-    {
-      "showId": "starlight-express-1987",
-      "file": "telegraph--the-telegraph.json",
-      "type": "press_release",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "announces the",
-      "outlet": "The Telegraph",
-      "critic": "The Telegraph",
-      "score": 80
-    },
-    {
       "showId": "starlight-express-west-end-2024",
       "file": "telegraph--the-telegraph.json",
       "type": "press_release",
@@ -1996,17 +1886,6 @@
       "outlet": "The Telegraph",
       "critic": "The Telegraph",
       "score": 86
-    },
-    {
-      "showId": "stephen-sondheims-old-friends-2025",
-      "file": "amny--matt-windman.json",
-      "type": "obituary",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "death of Stephen Sondheim at age 91",
-      "outlet": "AMNY",
-      "critic": "Matt Windman",
-      "score": 47
     },
     {
       "showId": "stereophonic-2024",
@@ -2185,17 +2064,6 @@
       "score": 89
     },
     {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "whatsonstage--alun-hood.json",
-      "type": "preview_article",
-      "confidence": "medium",
-      "method": "heuristic-only",
-      "evidence": "what to expect",
-      "outlet": "WhatsOnStage",
-      "critic": "Alun Hood",
-      "score": 61
-    },
-    {
       "showId": "the-crucible-2016",
       "file": "out-magazine--michael-musto.json",
       "type": "preview_article",
@@ -2347,7 +2215,7 @@
       "evidence": "BROWSER UPDATE",
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
-      "score": 82
+      "score": 85
     },
     {
       "showId": "the-mountaintop-2011",
@@ -2446,7 +2314,7 @@
       "evidence": "BROWSER UPDATE",
       "outlet": "Wall Street Journal",
       "critic": "Terry Teachout",
-      "score": 82
+      "score": 77
     },
     {
       "showId": "the-road-to-mecca-2012",
@@ -2592,6 +2460,17 @@
       "score": 50
     },
     {
+      "showId": "waiting-for-godot-2009",
+      "file": "ap--michael-kuchwara.json",
+      "type": "garbage_scrape",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Please upgrade your browser",
+      "outlet": "Associated Press",
+      "critic": "Michael Kuchwara",
+      "score": 71
+    },
+    {
       "showId": "war-paint-2017",
       "file": "amny--matt-windman.json",
       "type": "awards_coverage",
@@ -2622,7 +2501,7 @@
       "evidence": "Please upgrade your browser",
       "outlet": "Theatre is Easy",
       "critic": "Dan Dinero & Molly Marinik",
-      "score": 78
+      "score": 79
     },
     {
       "showId": "witness-for-the-prosecution-west-end-2022",

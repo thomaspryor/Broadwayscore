@@ -44,6 +44,17 @@ const MEZZANINE_OVERRIDES = {
   'little-women-the-musical-off-broadway-2026': 'Little Women',
   'the-little-mermaid-the-musical-off-broadway-2026': 'The Little Mermaid',
   'friends-the-musical-parody-off-broadway-2022': 'Friends! The Musical Parody',
+  // Subtitle differences vs Mezzanine's short title
+  'beaches-2026': 'Beaches',
+  // Reordered titles (Mezzanine puts disambiguator in parens, we put it leading)
+  'the-tragedy-of-coriolanus-off-broadway-2026': 'Coriolanus',
+  // Censored vs uncensored title
+  'meat-suit-or-the-stshow-of-motherhood-off-broadway-2026': 'Meat Suit, or the shitshow of motherhood',
+  // We embed venue in title; Mezzanine uses bare title. Override aligns to Mezz.
+  'the-fever-greenwich-house-theater-off-broadway-2026': 'The Fever',
+  // Short title (<8 chars) where Mezzanine has parenthesized disambiguator —
+  // prefix-match guard requires shorter≥8 chars; explicit override needed.
+  'trash-off-broadway-2026': 'Trash (Comedy, Caverly/Morrill)',
 };
 
 // Paths
@@ -178,12 +189,34 @@ function parseDate(val) {
 /**
  * Normalize title for comparison
  */
+// Type-designator parens are LOAD-BEARING: "Redwood (Play)" must stay distinct
+// from "Redwood (Musical)". Anything else (venue, composer) is a noise
+// disambiguator and gets stripped so bare-title Mezzanine entries can match.
+const TYPE_DESIGNATOR_RE = /\((play|musical|comedy|drama|dance|opera|new musical|new play)\)/i;
+
 function normalize(s) {
+  if (!s) return '';
   return s.toLowerCase()
-    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
+    // Map ampersand to "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
+    .replace(/&/g, ' and ')
+    // Strip non-type parens content ("Cable Street (59e59)", "Monte Cristo
+    // (The York Theatre Company)"). Type designators kept as plain text so
+    // Redwood (Play) and Redwood (Musical) still diverge after parens strip.
+    .replace(/\(([^)]*)\)/g, (m, inner) => TYPE_DESIGNATOR_RE.test(m) ? ' ' + inner + ' ' : ' ')
+    // Joiners (apostrophes, quotes, hyphens) \u2192 empty so words don't split.
+    // "Grown-Ups" \u2192 "grownups" (NOT "grown ups", a different play).
+    .replace(/['\u2018\u2019"\u201C\u201D\-\u2013\u2014]/g, '')
+    // Separators/terminators \u2192 space so "foo/bar" === "foo / bar" and
+    // "Master Harold...and the Boys" === "Master Harold\u2026and the boys".
+    .replace(/[!?:,.;+*\u2026/\[\]]/g, ' ')
     .replace(/\s+/g, ' ')
+    .trim()
+    // Drop leading "the "
     .replace(/^the\s+/g, '')
-    .trim();
+    // Drop trailing " (the )?musical" so "Urinetown" === "Urinetown The Musical"
+    // and "Redwood" === "Redwood (Musical)" (after parens-content kept as text).
+    // "Redwood (Play)" stays distinct ("redwood play" — strip is musical-only).
+    .replace(/\s+(the\s+)?musical$/, '');
 }
 
 /**
@@ -552,6 +585,89 @@ async function main() {
       if (existing.score !== match.score || existing.reviewCount !== match.ratingsCount) {
         updated++;
         console.log(`~ ${match.title}: ${existing.starRating}/5 → ${match.starRating}/5 (${existing.reviewCount} → ${match.ratingsCount} ratings)`);
+      }
+    }
+  }
+
+  // Coverage audit: surface unmatched Mezzanine productions whose title is
+  // SIMILAR to one of our open/recent shows that lacks Mezzanine data.
+  // This catches title-drift (normalize gaps, missing MEZZANINE_OVERRIDES).
+  // Tight by design: ignores productions of shows we don't track at all
+  // (e.g., West End-only runs of Broadway shows).
+  if (!showFilter && !showsArg) {
+    const matchedProdIds = new Set();
+    for (const m of matches) for (const pid of (m.prodIds || [])) matchedProdIds.add(pid);
+
+    // Token-set similarity (Jaccard, stop-words filtered)
+    const STOP = new Set(['the','and','for','with','from','your','our','musical','play','a','an','of','to']);
+    const tokens = (s) => new Set(normalize(s).split(' ').filter(t => t.length >= 3 && !STOP.has(t)));
+    const jaccard = (a, b) => {
+      if (!a.size || !b.size) return 0;
+      const inter = [...a].filter(x => b.has(x)).length;
+      return inter / new Set([...a, ...b]).size;
+    };
+
+    // Index shows that lack Mezzanine data and are open/recent
+    const today = new Date().toISOString().slice(0, 10);
+    const candidateShows = shows.filter(s => {
+      if (audienceBuzz.shows[s.id]?.sources?.mezzanine) return false;
+      // Only flag for shows that opened (or will soon) — skip ancient closed ones
+      const open = s.openingDate || s.previewsStartDate;
+      if (open && open < '2015-01-01') return false;
+      return true;
+    });
+    const candidateIndex = candidateShows.map(s => ({
+      s, t: tokens(s.title), n: normalize(s.title), year: parseInt((s.openingDate || '').slice(0,4))
+    }));
+
+    const flagged = [];
+    const RATING_THRESHOLD = 20;
+    for (const p of [...nycProductions, ...londonProductions]) {
+      if ((p.ratingsCount || 0) < RATING_THRESHOLD) continue;
+      const pid = p.objectId || `${normalize(p.show?.name || p.showName || '')}-${(p.opened?.iso || p.firstPreview?.iso || '').slice(0,4)}`;
+      if (matchedProdIds.has(pid)) continue;
+      const mName = p.show?.name || p.showName || '';
+      const mNorm = normalize(mName);
+      const mTokens = tokens(mName);
+      if (!mTokens.size) continue;
+      const mYear = parseInt(parseDate(p.opened || p.firstPreview).slice(0, 4));
+
+      // Find the best fuzzy match among shows missing Mezzanine
+      let best = null;
+      for (const c of candidateIndex) {
+        if (!c.t.size) continue;
+        const j = jaccard(mTokens, c.t);
+        if (j < 0.6) continue;
+        if (mYear && c.year && Math.abs(mYear - c.year) > 2) continue;
+        if (!best || j > best.j) best = { showId: c.s.id, showTitle: c.s.title, showYear: c.year, j };
+      }
+      if (best) flagged.push({
+        mezzName: mName,
+        theater: p.theater?.name,
+        ratingsCount: p.ratingsCount,
+        mYear: mYear || null,
+        ourShowId: best.showId,
+        ourTitle: best.showTitle,
+        ourYear: best.showYear || null,
+        jaccard: Number(best.j.toFixed(2)),
+        objectId: p.objectId
+      });
+    }
+    if (flagged.length > 0) {
+      flagged.sort((a, b) => b.ratingsCount - a.ratingsCount);
+      console.log(`\n⚠ Coverage audit: ${flagged.length} Mezzanine productions look like they should match an open/recent show but don't.`);
+      console.log(`  Likely missing MEZZANINE_OVERRIDES entry, or a normalize gap:`);
+      for (const f of flagged.slice(0, 10)) {
+        console.log(`    ${f.ratingsCount.toString().padStart(4)} j=${f.jaccard}  ${f.ourTitle} (${f.ourYear || '?'}) [${f.ourShowId}] ↔ ${f.mezzName} (${f.mYear || '?'}) @ ${f.theater}`);
+      }
+      if (!dryRun) {
+        const auditDir = path.join(__dirname, '../data/audit');
+        if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+        fs.writeFileSync(
+          path.join(auditDir, 'mezzanine-coverage.json'),
+          JSON.stringify({ lastUpdated: new Date().toISOString(), ratingThreshold: RATING_THRESHOLD, jaccardThreshold: 0.6, count: flagged.length, flagged }, null, 2)
+        );
+        console.log(`  Written to data/audit/mezzanine-coverage.json`);
       }
     }
   }

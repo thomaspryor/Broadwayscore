@@ -15,6 +15,7 @@
  *   --outdated            Re-score reviews with promptVersion older than current PROMPT_VERSION
  *   --force-full-run      Skip the A/B distribution check (required for --outdated runs >100 reviews)
  *   --stale-scores        Score reviews with stale excerpt-based scores that now have fullText
+ *   --retry-emergency     Retry stuck singleModelEmergency reviews once (clears flag if 2+ models succeed)
  *   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)
  *   --score-range=MIN-MAX Only process reviews with existing LLM score in this range (e.g. 78-82)
  *   --dry-run             Don't save results, just print what would happen
@@ -500,6 +501,7 @@ function parseArgs(): ScoringPipelineOptions & {
   ensembleSource?: string;
   ensembleCalibrateOnly: boolean;
   upgradeEnsemble: boolean;
+  retryEmergency: boolean;
   checkpointInterval: number;
   shard?: number;
   totalShards?: number;
@@ -544,13 +546,14 @@ function parseArgs(): ScoringPipelineOptions & {
   const maxPromptVersion = maxPromptVersionArg ? maxPromptVersionArg.split('=')[1] : undefined;
 
   const upgradeEnsemble = args.includes('--upgrade-ensemble');
+  const retryEmergency = args.includes('--retry-emergency');
 
   const rescoreReasonArg = args.find(a => a.startsWith('--rescore-reason='));
   const rescoreReason = rescoreReasonArg ? rescoreReasonArg.split('=').slice(1).join('=') : undefined;
 
   return {
     showId,
-    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble,
+    unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
     minTextLength: 50,
     model,
     dryRun: args.includes('--dry-run'),
@@ -570,6 +573,7 @@ function parseArgs(): ScoringPipelineOptions & {
     ensembleSource,
     ensembleCalibrateOnly: args.includes('--ensemble-calibrate'),
     upgradeEnsemble,
+    retryEmergency,
     checkpointInterval,
     shard,
     totalShards,
@@ -832,6 +836,21 @@ async function main(): Promise<void> {
       return true;
     });
     console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
+  } else if (options.retryEmergency) {
+    // Filter to reviews stuck with singleModelEmergency that haven't been auto-retried yet.
+    // One retry per stuck review; if Gemini was down at the original scoring time and is
+    // back up now, the retry produces a 2-of-N+ ensemble and the flag clears naturally.
+    // If still single-model after retry, retryCount=1 sticks and the predicate excludes it
+    // from future auto-retries (human review takes over).
+    filesToProcess = allFiles.filter(f => {
+      const d = f.data as any;
+      const ed = d.ensembleData;
+      if (!ed || !ed.singleModelEmergency) return false;
+      if ((ed.singleModelEmergencyRetryCount || 0) >= 1) return false;
+      if (!isScoreable(d, showFor(d))) return false;
+      return true;
+    });
+    console.log(`Filtering to stuck-emergency reviews for one-shot retry: ${filesToProcess.length} reviews\n`);
   } else if (options.unscoredOnly) {
     // Filter to unscored reviews
     filesToProcess = allFiles.filter(f => !(f.data as any).llmScore);
@@ -939,9 +958,24 @@ async function main(): Promise<void> {
   // Pre-filter: skip reviews flagged as unscorable (uses shared isScoreable utility)
   // Per-file rejection logging added after Titanique postmortem ("0 valid files" with no explanation)
   let dataQualitySkipped = 0;
+  let starRatingSkipped = 0;
   let showNotMentionedWithExcerpts = 0;
   const scorableFiles = filesToProcess.filter(f => {
     const d = f.data as any;
+    // Skip reviews where the page itself published an explicit star rating that
+    // a human extracted into assignedScore. The star rating is authoritative —
+    // running an ensemble can only INTRODUCE singleModelEmergency by overriding
+    // the score with an LLM read of partial/paywalled text. (Innocence 2026-04-27:
+    // Bachtrack 4★ + NYSR 5★ silently excluded after ensemble override.)
+    if (
+      d.assignedScore != null &&
+      d.scoreSource === 'manual_extracted_star_rating' &&
+      !options.needsRescore &&
+      !options.outdated
+    ) {
+      starRatingSkipped++;
+      return false;
+    }
     if (!isScoreable(d, showFor(d))) {
       dataQualitySkipped++;
       // Log the specific reason for rejection
@@ -969,6 +1003,9 @@ async function main(): Promise<void> {
   });
   if (dataQualitySkipped > 0) {
     console.log(`Skipped ${dataQualitySkipped} reviews (duplicateOf/wrongShow/wrongProduction/wrongAttribution/multiShow/roundup/showNotMentioned-no-excerpts/invalid)\n`);
+  }
+  if (starRatingSkipped > 0) {
+    console.log(`Skipped ${starRatingSkipped} reviews with manual_extracted_star_rating (page-published star rating is authoritative)\n`);
   }
   if (showNotMentionedWithExcerpts > 0) {
     console.log(`Including ${showNotMentionedWithExcerpts} showNotMentioned reviews with valid aggregator excerpts\n`);
@@ -1038,7 +1075,7 @@ async function main(): Promise<void> {
   // When rescoring >100 reviews (--outdated or --rescore), run a sample comparison
   // to catch unintended distribution shifts BEFORE spending hundreds of dollars.
   // upgradeEnsemble = first-time ensemble scores (not a rescore), skip A/B check
-  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble);
+  const isRescore = options.outdated || (!options.unscoredOnly && !options.needsRescore && !options.ensembleSource && !options.upgradeEnsemble && !options.retryEmergency);
   if (isRescore && finalFiles.length > 100 && !options.forceFullRun && !options.dryRun && options.ensemble) {
     const abResult = await runABDistributionCheck(
       finalFiles,
@@ -1072,6 +1109,12 @@ async function main(): Promise<void> {
 
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
+
+    // Capture prior retry count BEFORE scoring rebuilds ensembleData (ensemble-scorer.ts:464).
+    // If retry succeeds (2+ models), the new ensembleData has no singleModelEmergency and
+    // the count naturally clears. If retry still single-model, we increment in the success
+    // path below so the next cron skips this file (one-shot retry).
+    const priorEmergencyRetryCount = ((reviewFile as any).ensembleData?.singleModelEmergencyRetryCount) || 0;
 
     // Attach show metadata for LLM context (input-builder uses these)
     reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
@@ -1262,6 +1305,19 @@ async function main(): Promise<void> {
         if (scoredAny.needsRescore) {
           delete scoredAny.needsRescore;
           scoredAny.rescoreCompletedAt = new Date().toISOString();
+        }
+
+        // singleModelEmergency retry lifecycle: if scoring rebuilt ensembleData with the
+        // emergency flag still set (Gemini/etc still down), record the retry attempt so
+        // the daily auto-retry phase skips this file going forward. If the flag cleared,
+        // ensembleData was rebuilt without it and the count is naturally absent.
+        if (
+          options.retryEmergency &&
+          priorEmergencyRetryCount === 0 &&
+          scoredAny.ensembleData?.singleModelEmergency === true
+        ) {
+          scoredAny.ensembleData.singleModelEmergencyRetryCount = priorEmergencyRetryCount + 1;
+          scoredAny.ensembleData.singleModelEmergencyRetriedAt = new Date().toISOString();
         }
 
         // Post-scoring garbage detection: check if LLM reasoning indicates
@@ -1500,6 +1556,7 @@ Options:
   --unscored-only       Only score reviews without existing LLM scores (default)
   --rescore             Re-score even if already scored
   --needs-rescore       Only score reviews flagged with needsRescore=true
+  --retry-emergency     Retry stuck singleModelEmergency reviews once (one-shot per file)
   --outdated            Re-score reviews with promptVersion older than current
   --force-full-run      Skip A/B distribution check (required for rescore >100 reviews)
   --ensemble-source=X   Only rescore reviews with this ensembleSource (e.g. two-model-fallback)

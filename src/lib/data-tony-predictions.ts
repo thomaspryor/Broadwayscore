@@ -6,6 +6,11 @@
 import { getBroadwayShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/engine';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import {
+  tonySeasonForCeremonyYear,
+  currentTonySeason,
+  FIRST_TRACKED_CEREMONY_YEAR,
+} from '@/lib/tony-cutoffs';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
@@ -41,27 +46,21 @@ export interface TonySeasonWindow {
 }
 
 export function getTonySeasonWindow(): TonySeasonWindow {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth(); // 0-indexed
+  // Sourced from src/lib/tony-cutoffs.ts — exact per-year cutoffs with citations.
+  const record = currentTonySeason();
+  return recordToWindow(record);
+}
 
-  // Tony eligibility windows (season starts the day after previous ceremony's cutoff)
-  // 2024-25 cutoff: April 27, 2025 → 2025-26 season starts April 28, 2025
-  // Jan-Jun: current Tony season started previous April
-  // Jul-Dec: current Tony season started this April
-  if (month <= 5) {
-    return {
-      start: `${year - 1}-04-28`,
-      end: `${year}-04-27`,
-      label: `${year - 1}-${year}`,
-      ceremonyYear: year,
-    };
-  }
+function recordToWindow(record: { ceremonyYear: number; label: string; start: string; end: string }): TonySeasonWindow {
+  // The TonySeasonWindow.label uses the long form "2025-2026" expected by
+  // existing callers (sitemap, page generation). tony-cutoffs uses the short
+  // form "2025-26" that matches awards.json season fields. Translate here.
+  const [yearA] = record.label.split('-');
   return {
-    start: `${year}-04-28`,
-    end: `${year + 1}-04-27`,
-    label: `${year}-${year + 1}`,
-    ceremonyYear: year + 1,
+    start: record.start,
+    end: record.end,
+    label: `${yearA}-${record.ceremonyYear}`,
+    ceremonyYear: record.ceremonyYear,
   };
 }
 
@@ -270,6 +269,11 @@ function getAwardsShows(): Record<string, AwardsShowEntry> {
 }
 
 export function getTonySeasonWindowFor(ceremonyYear: number): TonySeasonWindow {
+  // Sourced from src/lib/tony-cutoffs.ts. For ceremony years outside the
+  // tracked range (pre-2014 or speculative future years), fall back to the
+  // standard April 28 → April 27 convention.
+  const record = tonySeasonForCeremonyYear(ceremonyYear);
+  if (record) return recordToWindow(record);
   return {
     start: `${ceremonyYear - 1}-04-28`,
     end: `${ceremonyYear}-04-27`,
@@ -284,13 +288,11 @@ function toAwardsSeason(label: string): string {
   return `${parts[0]}-${parts[1].slice(2)}`;
 }
 
-const FIRST_PREDICTION_SEASON = 2014; // ceremony year — gives us 2013-2014 as first season
-
 /** Returns all seasons we generate prediction pages for, most recent first. */
 export function getAllPredictionSeasons(): TonySeasonWindow[] {
   const current = getTonySeasonWindow();
   const seasons: TonySeasonWindow[] = [];
-  for (let cy = FIRST_PREDICTION_SEASON; cy <= current.ceremonyYear; cy++) {
+  for (let cy = FIRST_TRACKED_CEREMONY_YEAR; cy <= current.ceremonyYear; cy++) {
     seasons.push(getTonySeasonWindowFor(cy));
   }
   return seasons.reverse();
@@ -321,6 +323,25 @@ export function getEligibleShowsForPastSeason(allShows: ComputedShow[], season: 
   }
 
   return Array.from(eligible.values());
+}
+
+/**
+ * Build a map of categoryTitle → showId for Tony winners in a given season.
+ * Sourced from awards.json, independent of how groupIntoCategories classifies
+ * the show (some past winners have isRevival mis-flagged in shows.json).
+ */
+export function getWinnersForSeason(season: TonySeasonWindow): Map<string, string> {
+  const awardsShows = getAwardsShows();
+  const awardsSeason = toAwardsSeason(season.label);
+  const map = new Map<string, string>();
+  for (const [showId, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    const wins = data.tony?.wins || [];
+    for (const cat of TOP_CATEGORIES) {
+      if (wins.includes(cat as string)) map.set(cat as string, showId);
+    }
+  }
+  return map;
 }
 
 /**

@@ -7,6 +7,7 @@ import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 // Lazy-load below-fold email capture to reduce initial hydration cost
 const FooterEmailCapture = lazy(() => import('@/components/FooterEmailCapture'));
@@ -400,7 +401,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     const cutoff = twelveMonthsAgo.toISOString().slice(0, 10);
     return shows
       .filter(show => (show.type === 'musical' || show.type === 'play') && show.status === 'open' && show.openingDate >= cutoff && show.criticScore?.score
-        && hasEnoughReviews(show.criticScore.reviewCount ?? 0, show.category, (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0)))
+        && hasEnoughReviews(show.criticScore.reviewCount ?? 0, show.category, (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0), CURATED_HISTORICAL_SHOWS.has(show.id)))
       .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0));
   }, [shows, skipFirstMusicals]);
 
@@ -657,8 +658,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
         singleGroups={panelSingleGroups}
         singleValueByGroup={panel.singleValueByGroup}
         onSetSingleValue={panel.setSingleValue}
-        yearRange={panel.yearRange}
-        onYearRangeChange={panel.setYearRange}
+        dateRanges={panel.dateRanges}
+        onDateRangesChange={panel.setDateRanges}
         onClearAll={handlePanelClearAll}
         resultCount={panel.filteredShows.length}
       />

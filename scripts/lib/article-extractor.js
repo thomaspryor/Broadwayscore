@@ -95,6 +95,21 @@ const PATTERNS = [
   // the whole page as url_content_mismatch (Joe Turner 2026-04-26 incident).
   ['nysun.com', /<div[^>]+class="[^"]*article-wrapper[^"]*"[^>]*>([\s\S]*?)<\/main>/, 300],
 
+  // Opera outlets — added when SERP discovery for opera shows landed (Innocence
+  // Met Opera 2026-04-27). Each is a WordPress install with a distinct theme.
+  // newyorkclassicalreview.com — el-clasico theme uses id="post-body" (not class)
+  ['newyorkclassicalreview.com', /<div[^>]+id="post-body"[^>]*>([\s\S]*?)<div[^>]+id="content-post-footer"/, 300],
+  // classicalvoiceamerica.org — WordPress, entry-content
+  ['classicalvoiceamerica.org', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*sharedaddy)/, 300],
+  // parterre.com — WordPress, entry-content
+  ['parterre.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
+  // operawire.com — WordPress, entry-content (similar pattern)
+  ['operawire.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
+  // bachtrack.com — paywalled; .ar-main contains carousel + meta + (paywalled body).
+  // Best-effort: capture meta description as fullText since body itself isn't free.
+  // The S6 star-rating skip handles ensemble bypass for these.
+  ['bachtrack.com', /<meta[^>]+name="description"[^>]+content="([^"]+)"/, 100],
+
   // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
   [null, /<main[^>]*>([\s\S]*?)<\/main>/, 500],

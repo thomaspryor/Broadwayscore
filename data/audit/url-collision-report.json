@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-27T16:26:16.168Z",
+  "generatedAt": "2026-04-28T20:25:17.746Z",
   "summary": {
-    "total": 17,
-    "high": 9,
+    "total": 18,
+    "high": 10,
     "medium": 7,
     "low": 1
   },
@@ -357,6 +357,33 @@
       "suggestedWinner": "moulin-rouge-the-musical-west-end-2021",
       "reason": "publishDate 2022-01-21 is 2 days from moulin-rouge-the-musical-west-end-2021 but also 2 days from paddington-the-musical-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=9545",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "moulin-rouge-the-musical-west-end-2021",
+          "file": "london-theatre--marianka-swain.json",
+          "publishDate": "2025-12-01",
+          "openingDate": "2022-01-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        },
+        {
+          "showId": "paranormal-activity-west-end-2025",
+          "file": "london-theatre--the-anonymous-critic.json",
+          "publishDate": "2025-12-17",
+          "openingDate": "2025-12-14",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "london-theatre"
+        }
+      ],
+      "suggestedWinner": "paranormal-activity-west-end-2025",
+      "reason": "publishDate 2025-12-17 is 3 days from paranormal-activity-west-end-2025 opening (2025-12-14); next closest is 1412 days from moulin-rouge-the-musical-west-end-2021",
+      "confidence": "high"
     },
     {
       "url": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",

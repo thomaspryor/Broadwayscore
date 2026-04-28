@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, getScoreTier, StatusBadge } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier, StatusBadge, BlendedTrioDisplay } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
@@ -11,6 +11,13 @@ import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 export type PredictionMode = 'combined' | 'critics' | 'audience';
 
 export type { SerializedTonyShow };
+
+export interface CategoryOutcome {
+  status: 'correct' | 'missed';
+  winnerTitle: string;
+  winnerRank: number | null;
+  predictedTitle: string | null;
+}
 
 interface TonyPredictionsTableProps {
   title: string;
@@ -23,6 +30,8 @@ interface TonyPredictionsTableProps {
   startIndex?: number;
   /** Tony outcomes for historical seasons: slug → 'winner' | 'nominated' */
   outcomes?: Record<string, 'winner' | 'nominated'>;
+  /** Past-season prediction result for THIS category (correct/missed + winner info). */
+  categoryOutcome?: CategoryOutcome;
   /** Which scoring mode to rank and display */
   mode?: PredictionMode;
 }
@@ -80,41 +89,16 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   }
 
   if (mode === 'combined') {
-    const grade = show.audienceGrade;
-    const hasGrade = grade && grade.grade !== '—';
     return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="flex items-center gap-1.5">
-          <ScoreBadge
-            score={show.compositeScore}
-            size="md"
-            showCrown
-            reviewCount={show.reviewCount}
-            status={show.status}
-          />
-          {hasGrade ? (
-            <div
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-xl sm:text-2xl font-bold"
-              style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
-              title={grade.tooltip}
-            >
-              {grade.grade}
-            </div>
-          ) : (
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base font-bold bg-surface-overlay text-gray-500">
-              —
-            </div>
-          )}
-        </div>
-        {show.blendedScore != null && (
-          <div className="flex flex-col items-center gap-0.5">
-            <TierLabel score={show.blendedScore} reviewCount={show.reviewCount} status={show.status} />
-            <span className="text-[10px] text-gray-400 whitespace-nowrap">
-              Blended: {Math.round(show.blendedScore)}
-            </span>
-          </div>
-        )}
-      </div>
+      <BlendedTrioDisplay
+        blendedScore={show.blendedScore}
+        compositeScore={show.compositeScore}
+        reviewCount={show.reviewCount}
+        status={show.status}
+        audienceGrade={show.audienceGrade}
+        size="md"
+        showCrown
+      />
     );
   }
 
@@ -127,7 +111,7 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   );
 }
 
-export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, mode = 'combined' }: TonyPredictionsTableProps) {
+export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, categoryOutcome, mode = 'combined' }: TonyPredictionsTableProps) {
   // Re-sort scored shows by the active mode's score
   const scored = useMemo(() => {
     return [...shows].sort((a, b) => {
@@ -154,8 +138,41 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
   return (
     <section className="mb-10" id={sectionId}>
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-white">{title}</h2>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <h2 className="text-xl font-bold text-white">{title}</h2>
+          {categoryOutcome && (
+            <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide ${
+              categoryOutcome.status === 'correct'
+                ? 'bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-400/40'
+                : 'bg-amber-500/25 text-amber-300 ring-1 ring-amber-400/40'
+            }`}>
+              {categoryOutcome.status === 'correct' ? (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Correct
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Missed{categoryOutcome.winnerRank ? ` (#${categoryOutcome.winnerRank})` : ''}
+                </>
+              )}
+            </span>
+          )}
+        </div>
         <p className="text-sm text-gray-400 mt-1">{description}</p>
+        {categoryOutcome && categoryOutcome.status === 'missed' && (
+          <p className="text-xs text-gray-400 mt-1.5">
+            Winner: <span className="text-white font-medium">{categoryOutcome.winnerTitle}</span>
+            {categoryOutcome.predictedTitle && (
+              <> · We picked <span className="text-gray-300">{categoryOutcome.predictedTitle}</span></>
+            )}
+          </p>
+        )}
       </div>
 
       <div className="space-y-3 sm:space-y-4">

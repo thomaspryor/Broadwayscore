@@ -45,6 +45,7 @@ import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
@@ -58,6 +59,7 @@ import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
+import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 
 export const revalidate = 86400;
@@ -103,8 +105,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // exist; scored shows must clear the per-market minimum-reviews threshold.
   // Without this, a previews show with 2 high-T1 reviews would show "Rave
   // Reviews (84/100)" in OG/Twitter/title while the page itself shows TBD.
+  const isCuratedHistorical = CURATED_HISTORICAL_SHOWS.has(show.id);
   const isTBD = show.status === 'previews' || show.status === 'upcoming' ||
-    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+    !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistorical);
   const synopsisSnippet = show.synopsis
     ? show.synopsis.slice(0, 120).replace(/\s+\S*$/, '...')
     : '';
@@ -340,7 +343,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const reviewCount = show.criticScore?.reviewCount || 0;
   const tier1Count = show.criticScore?.tier1Count || 0;
   const tier2Count = show.criticScore?.tier2Count || 0;
-  const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+  const isCuratedHistoricalShow = CURATED_HISTORICAL_SHOWS.has(show.id);
+  const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
   const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
@@ -369,8 +373,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* Redesigned mobile header — feature-flagged. v2 (Broadway Radar–inspired) lives
             entirely inside ShowHeroRedesign; the legacy block below is kept only for the
-            unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md. */}
-        {featureFlags.showPageRedesign && (
+            unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md.
+            RedesignOn/RedesignOff live in 'use client' so the demo-flag check runs both
+            during build (with the demo source-rewrite) and at hydration (without it). */}
+        <RedesignOn>
           <div className="mb-6">
             <ShowHeroRedesign
               show={show}
@@ -385,11 +391,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               isOffBroadway={isOffBroadway}
             />
           </div>
-        )}
+        </RedesignOn>
 
-        {/* Metacritic-style Header: Poster + Title/Score integrated.
-            Hidden when showPageRedesign flag is on — v2 hero handles all sizes. */}
-        <div className={`card p-5 sm:p-6 mb-6 ${featureFlags.showPageRedesign ? 'hidden' : ''}`} data-testid="show-header-card">
+        {/* Metacritic-style Header: Poster + Title/Score integrated. Rendered only
+            when the redesign is off; visual-regression.spec.ts asserts on this id
+            in the prod build (where the flag is false). */}
+        <RedesignOff>
+        <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
             {/* Poster Card + pills underneath on mobile */}
             <div className="flex-shrink-0 w-28 sm:w-36 lg:w-40 flex flex-col gap-2">
@@ -484,7 +492,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 const reviewCount = show.criticScore?.reviewCount || 0;
                 const tier1Count = show.criticScore?.tier1Count || 0;
                 const tier2Count = show.criticScore?.tier2Count || 0;
-                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+                const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
                 const roundedScore = score ? Math.round(score) : null;
                 const sentiment = score ? getSentimentLabel(score, show.category) : null;
 
@@ -521,7 +529,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                             // bare "Based on N Critic Reviews" (which sits next to "TBD" and
                             // reads as contradictory).
                             const remaining = showTBD
-                              ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count)
+                              ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
                               : 0;
                             const isGatedByReviewCount = showTBD && show.status !== 'previews' && show.status !== 'upcoming' && remaining > 0;
                             if (isGatedByReviewCount) {
@@ -589,7 +597,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             const reviewCount = show.criticScore?.reviewCount || 0;
             const tier1Count = show.criticScore?.tier1Count || 0;
             const tier2Count = show.criticScore?.tier2Count || 0;
-            const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count);
+            const showTBD = show.status === 'previews' || show.status === 'upcoming' || !hasEnoughReviews(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow);
             if (showTBD || !show.criticScore?.reviews || show.criticScore.reviews.length === 0) return null;
             return (
               <ScoreBreakdownBar
@@ -655,6 +663,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             closingDate={show.closingDate}
           />
         </div>
+        </RedesignOff>
 
         {/* Gold List Badges */}
         {featureFlags.goldLists && goldListMemberships.length > 0 && (
@@ -753,12 +762,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </div>
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
-            {featureFlags.showPageRedesign && show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
-              <ScoreBreakdownBar
-                reviews={show.criticScore.reviews}
-                category={show.category}
-                className="sm:hidden mb-4"
-              />
+            {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
+              <RedesignOn>
+                <ScoreBreakdownBar
+                  reviews={show.criticScore.reviews}
+                  category={show.category}
+                  className="sm:hidden mb-4"
+                />
+              </RedesignOn>
             )}
 
             <ReviewsList reviews={show.criticScore.reviews.map(r => ({
@@ -971,7 +982,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             {/* Key metrics first for AI extractability */}
-            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0)) && (
+            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0), isCuratedHistoricalShow) && (
               <div>
                 <dt className="text-gray-500">CriticScore</dt>
                 <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>

@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-04-27T16:24:45.501Z",
-  "processed": 4,
-  "failed": 2,
-  "successRate": "66.7%",
+  "updatedAt": "2026-04-28T21:17:53.512Z",
+  "processed": 66,
+  "failed": 832,
+  "successRate": "7.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 59,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 6,
     "brightdata": 1,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-04-28T10:46:49.172Z",
+      "event": "bb-session",
+      "session": "19179726",
+      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose"
+    },
+    {
+      "t": "2026-04-28T10:46:50.030Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

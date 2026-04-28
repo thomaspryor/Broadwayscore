@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-27T18:12:39.508Z",
+    "lastUpdated": "2026-04-28T22:55:35.238Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 36697,
-    "skippedFiles": 16655,
-    "totalCritics": 1331,
-    "registryCritics": 493,
-    "flaggedReviews": 14
+    "totalFilesScanned": 36917,
+    "skippedFiles": 16669,
+    "totalCritics": 1332,
+    "registryCritics": 494,
+    "flaggedReviews": 15
   },
   "flaggedReviews": [
     {
@@ -20,28 +20,6 @@
       "primaryOutlet": "northjerseycom",
       "primaryShare": 99,
       "totalReviews": 166
-    },
-    {
-      "critic": "Tim Teeman",
-      "criticSlug": "tim-teeman",
-      "outlet": "timteeman",
-      "showId": "network-2018",
-      "file": "timteeman--tim-teeman.json",
-      "outletShare": 1,
-      "primaryOutlet": "dailybeast",
-      "primaryShare": 99,
-      "totalReviews": 240
-    },
-    {
-      "critic": "Tim Teeman",
-      "criticSlug": "tim-teeman",
-      "outlet": "timteeman",
-      "showId": "what-the-constitution-means-to-me-2019",
-      "file": "timteeman--tim-teeman.json",
-      "outletShare": 1,
-      "primaryOutlet": "dailybeast",
-      "primaryShare": 99,
-      "totalReviews": 240
     },
     {
       "critic": "Robert Hofler",
@@ -74,7 +52,29 @@
       "outletShare": 1,
       "primaryOutlet": "vulture",
       "primaryShare": 99,
-      "totalReviews": 86
+      "totalReviews": 87
+    },
+    {
+      "critic": "Lucy Komisar",
+      "criticSlug": "lucy-komisar",
+      "outlet": "nytheatre",
+      "showId": "miss-saigon-2017",
+      "file": "nytheatre--lucy-komisar.json",
+      "outletShare": 1,
+      "primaryOutlet": "the-komisar-scoop",
+      "primaryShare": 99,
+      "totalReviews": 155
+    },
+    {
+      "critic": "Lucy Komisar",
+      "criticSlug": "lucy-komisar",
+      "outlet": "nytheatre",
+      "showId": "war-paint-2017",
+      "file": "nytheatre--lucy-komisar.json",
+      "outletShare": 1,
+      "primaryOutlet": "the-komisar-scoop",
+      "primaryShare": 99,
+      "totalReviews": 155
     },
     {
       "critic": "Pete Hempstead",
@@ -163,6 +163,17 @@
       "primaryOutlet": "londontheatre1",
       "primaryShare": 95,
       "totalReviews": 20
+    },
+    {
+      "critic": "Frank J. Avella",
+      "criticSlug": "frank-j-avella",
+      "outlet": "edge-new-york",
+      "showId": "heisenberg-2016",
+      "file": "edge-new-york--frank-j-avella.json",
+      "outletShare": 6,
+      "primaryOutlet": "the-contending",
+      "primaryShare": 94,
+      "totalReviews": 17
     }
   ],
   "freelancers": [
@@ -199,7 +210,7 @@
         "theatermania",
         "the-clyde-fitch-report"
       ],
-      "totalReviews": 167
+      "totalReviews": 168
     },
     {
       "critic": "David Rooney",
@@ -257,7 +268,7 @@
         "broadwayworld",
         "journaltimes"
       ],
-      "totalReviews": 122
+      "totalReviews": 123
     },
     {
       "critic": "Elisabeth Vincentelli",
@@ -270,7 +281,7 @@
         "broadwayworld",
         "newyorker"
       ],
-      "totalReviews": 217
+      "totalReviews": 218
     },
     {
       "critic": "Brittani Samuel",
@@ -296,6 +307,16 @@
         "zeal-nyc"
       ],
       "totalReviews": 239
+    },
+    {
+      "critic": "Tim Teeman",
+      "slug": "tim-teeman",
+      "outlets": [
+        "dailybeast",
+        "timteeman",
+        "nytimes"
+      ],
+      "totalReviews": 241
     },
     {
       "critic": "Greg Evans",
@@ -375,43 +396,47 @@
         "theatermania",
         "frontmezzjunkies",
         "ap",
+        "timeout",
+        "thestage",
         "playbill",
         "nytimes",
-        "thestage",
+        "whatsonstage",
         "ny1",
-        "timeout",
         "nydailynews",
         "musical-theatre-review",
         "backstage",
         "newsday",
+        "london-theatre",
         "chicagotribune",
-        "variety",
-        "nytg",
-        "new-york-city-theatre",
+        "guardian",
         "theatre-weekly",
+        "nytg",
+        "times-uk",
+        "variety",
+        "new-york-city-theatre",
         "west-end-wilma",
         "washpost",
-        "london-theatre",
-        "whatsonstage",
+        "i-paper",
         "cititour",
+        "independent",
         "artsdesk",
         "british-theatre",
+        "broadwayworld",
         "ew",
+        "standard",
+        "telegraph",
         "stagebuddy",
-        "guardian",
         "theupcoming",
         "plays-international",
-        "broadwayworld",
         "hollywood-reporter",
+        "financialtimes",
         "stageandcinema",
-        "times-uk",
         "huffpost",
         "all-that-dazzles-uk",
         "culturesauce",
         "bloomberg",
         "amny",
         "vulture",
-        "standard",
         "buy-tickets",
         "londonist",
         "theatrely",
@@ -422,22 +447,19 @@
         "usatoday",
         "city-am",
         "theater-pizzazz",
-        "telegraph",
+        "daily-mail",
         "dctheatrescene",
         "broadwaynews",
         "stannswarehouseorg",
         "american-theater-web",
         "americanpsychothemusicalcomlottery",
         "the-recs",
-        "financialtimes",
         "theater-life",
-        "i-paper",
         "ct-now",
         "nycitycenterorg",
         "curtainup",
         "indiewire",
         "minneapolis-star-tribune",
-        "independent",
         "ricky-martin",
         "burlington-free-press",
         "cnn",
@@ -449,6 +471,7 @@
         "the-daily",
         "nypost",
         "nysr",
+        "reddit",
         "3news",
         "aussie-theatre",
         "herald-sun",
@@ -463,7 +486,6 @@
         "theater-news-online",
         "josh-at-the-movies",
         "schoolofrockthemusicalcomtickets",
-        "daily-mail",
         "abc-news",
         "by-clicking-here",
         "newyorker",
@@ -476,9 +498,10 @@
         "metro-uk",
         "manhattantheatreclubcom",
         "bamorg",
-        "everything-theatre"
+        "everything-theatre",
+        "metro"
       ],
-      "totalReviews": 519
+      "totalReviews": 568
     },
     {
       "critic": "Jesse Green",
@@ -614,7 +637,7 @@
         "nypost",
         "variety"
       ],
-      "totalReviews": 388
+      "totalReviews": 387
     },
     {
       "critic": "Thom Geier",
@@ -625,7 +648,7 @@
         "thewrap",
         "nytg"
       ],
-      "totalReviews": 214
+      "totalReviews": 215
     },
     {
       "critic": "Marilyn Stasio.",
@@ -635,7 +658,7 @@
         "boston-herald",
         "chicagotribune"
       ],
-      "totalReviews": 305
+      "totalReviews": 304
     },
     {
       "critic": "John Simon",
@@ -999,7 +1022,7 @@
         "nytimes",
         "variety"
       ],
-      "totalReviews": 33
+      "totalReviews": 34
     },
     {
       "critic": "Jesse Oxfeld",
@@ -1137,7 +1160,7 @@
         "exeunt-magazine",
         "dread-central"
       ],
-      "totalReviews": 25
+      "totalReviews": 26
     },
     {
       "critic": "Robert Gore-Langton",
@@ -1339,11 +1362,11 @@
       "slug": "billy-mcentee",
       "outlets": [
         "broadway-blog",
-        "one-minute-critic",
         "timeout",
+        "one-minute-critic",
         "theatre-is-easy"
       ],
-      "totalReviews": 10
+      "totalReviews": 11
     },
     {
       "critic": "Deirdre Donovan",
@@ -1432,7 +1455,7 @@
         "thestage",
         "london-theatre"
       ],
-      "totalReviews": 15
+      "totalReviews": 16
     },
     {
       "critic": "Emlyn Travis",
@@ -1450,7 +1473,7 @@
       "outlets": [
         "nytg"
       ],
-      "totalReviews": 20
+      "totalReviews": 21
     },
     {
       "critic": "Richard Seff",
@@ -1656,10 +1679,10 @@
       "critic": "Brooke Ivey Johnson",
       "slug": "brooke-ivey-johnson",
       "outlets": [
-        "metro-uk",
-        "metro"
+        "metro",
+        "metro-uk"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
     },
     {
       "critic": "Regina Robbins",
@@ -1766,21 +1789,25 @@
       "totalReviews": 3
     },
     {
-      "critic": "Lucy Komisar",
-      "slug": "lucy-komisar",
-      "outlets": [
-        "nytheatre",
-        "the-komisar-scoop"
-      ],
-      "totalReviews": 3
-    },
-    {
       "critic": "Franco Milazzo",
       "slug": "franco-milazzo",
       "outlets": [
         "broadwayworld",
         "londonist",
         "theatreandtonic"
+      ],
+      "totalReviews": 6
+    },
+    {
+      "critic": "Julianna Barnaby",
+      "slug": "julianna-barnaby",
+      "outlets": [
+        "financialtimes",
+        "independent",
+        "standard",
+        "telegraph",
+        "thestage",
+        "times-uk"
       ],
       "totalReviews": 6
     },

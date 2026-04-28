@@ -6,9 +6,17 @@ import TonyPredictionsTable from '@/components/TonyPredictionsTable';
 import type { PredictionMode } from '@/components/TonyPredictionsTable';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 
+export interface CategoryOutcome {
+  status: 'correct' | 'missed';
+  winnerTitle: string;
+  winnerRank: number | null;
+  predictedTitle: string | null;
+}
+
 interface TonyPredictionsClientProps {
   categories: TonyCategory[];
   outcomes?: Record<string, 'winner' | 'nominated'>;
+  categoryOutcomes?: Record<string, CategoryOutcome>;
 }
 
 const MODE_OPTIONS: Array<{ value: PredictionMode; label: string }> = [
@@ -17,7 +25,7 @@ const MODE_OPTIONS: Array<{ value: PredictionMode; label: string }> = [
   { value: 'audience', label: 'Audience' },
 ];
 
-export default function TonyPredictionsClient({ categories, outcomes }: TonyPredictionsClientProps) {
+export default function TonyPredictionsClient({ categories, outcomes, categoryOutcomes }: TonyPredictionsClientProps) {
   const [mode, setMode] = useState<PredictionMode>('combined');
 
   let runningIndex = 0;
@@ -47,6 +55,7 @@ export default function TonyPredictionsClient({ categories, outcomes }: TonyPred
             upcoming={cat.upcoming}
             startIndex={startIndex}
             outcomes={outcomes && Object.keys(outcomes).length > 0 ? outcomes : undefined}
+            categoryOutcome={categoryOutcomes?.[cat.key]}
             mode={mode}
           />
         );

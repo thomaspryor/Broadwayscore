@@ -2,6 +2,7 @@ import { ImageResponse } from 'next/og';
 import { getShowBySlug, getAllShowSlugs } from '@/lib/data-core';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 import type { ComputedShow } from '@/lib/data-types';
 
@@ -73,7 +74,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
   const rawScore = show.criticScore?.score;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
-  const hasScore = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2);
+  const hasScore = rawScore != null && hasEnoughReviews(reviewCount, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id));
   const score = hasScore ? Math.round(rawScore!) : null;
   const tier = score != null ? getScoreTier(score, show.category) : null;
   const tierStyle = tier ? TIER_STYLE[tier.label] : null;

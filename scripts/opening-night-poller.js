@@ -1234,8 +1234,9 @@ async function runRSSFeeds(showTitle, knownUrls, openingDate = null, market = 'b
  * @param {Set} knownUrls
  * @param {string} [market]
  * @param {string} [openingDate] - Show's opening date. Passed to date-aware endpoints (e.g. TheaterMania).
+ * @param {Object} [show] - Full show object; passed to applies() predicates (e.g. opera-only outlets).
  */
-async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null) {
+async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null, show = null) {
   console.log('\n[Layer 3] Site Search...');
 
   // Only search outlets that have site-search configs AND are missing
@@ -1254,6 +1255,7 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
       skipJs: !process.env.SCRAPINGBEE_API_KEY, // Skip JS-rendered if no API key
       market,
       openingDate,
+      show,
     });
     console.log(`  [Layer 3 Total] ${results.length} reviews from site search`);
     return results;
@@ -1371,7 +1373,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
  * Handles dedup against existing files.
  */
 function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
-  const { allowOffBroadway = false, allowWestEnd = false } = options;
+  const { allowOffBroadway = false, allowWestEnd = false, allowOpera = false } = options;
   let created = 0;
   let skipped = 0;
   let rejected = 0;
@@ -1437,7 +1439,7 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
       continue;
     }
 
-    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, fromPostOpening: true });
+    const result = createReviewFile(showId, review, { allowOffBroadway, allowWestEnd, allowOpera, fromPostOpening: true });
     if (result === true) {
       created++;
       knownUrls.add(review.url);
@@ -1517,10 +1519,15 @@ async function pollCycle() {
 
   // SSR outlets are free (plain HTTP) — run unconditionally in parallel.
   // JS-rendered outlets cost SB credits — run only for still-missing outlets after parallel phase.
+  // applies() gate: opera outlets only fire when show.type === 'opera'. Without this,
+  // bachtrack/parterre/operawire/nycr/cva would fire on every Broadway show, burning
+  // ~5 extra HTTP calls per poll cycle across 700+ Broadway shows.
   const ssrSiteSearchIds = !SKIP_SITE_SEARCH
     ? Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
         const ep = SITE_SEARCH_ENDPOINTS[id];
-        return !ep.requiresJs && (!ep.market || ep.market === market);
+        return !ep.requiresJs
+          && (!ep.market || ep.market === market)
+          && (!ep.applies || ep.applies(show));
       })
     : [];
 
@@ -1528,7 +1535,7 @@ async function pollCycle() {
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
     ssrSiteSearchIds.length > 0
-      ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null)
+      ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
       : Promise.resolve([]),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
@@ -1547,10 +1554,11 @@ async function pollCycle() {
       const ep = SITE_SEARCH_ENDPOINTS[id];
       return ep.requiresJs
         && (!ep.market || ep.market === market)
+        && (!ep.applies || ep.applies(show))
         && !foundAfterParallel.has(id.toLowerCase());
     });
     if (missingJsIds.length > 0) {
-      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null);
+      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
     }
   }
 
@@ -1682,7 +1690,7 @@ async function pollCycle() {
     SHOW_ID,
     allDiscovered,
     knownUrls,
-    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd }
+    { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera' }
   );
 
   // ── Aggregator thumb enrichment pass ──
