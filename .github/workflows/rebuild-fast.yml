@@ -124,6 +124,22 @@ jobs:
         run: node scripts/check-opening-night-completeness.js
         continue-on-error: true
 
+      - name: Verify all eligible reviews scored (orphan-unscored guard)
+        # Lost Boys 2026-04-26 #8 defense: walks data/review-texts/ for every
+        # show in the ±7d opening-night window and asserts every includable
+        # review with substantial text/excerpt has assignedScore. Writes
+        # data/audit/orphan-unscored-{showId}.json marker files that
+        # opening-night-broadcast.yml reads as an early-exit gate. Dispatches
+        # llm-ensemble-score.yml (per-show) so the next rebuild has scores.
+        # Discord warning, 60-min cooldown per show. continue-on-error so a
+        # failure here never blocks the rebuild itself.
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/verify-all-scored.js
+        continue-on-error: true
+
       - name: Check for changes
         if: always()
         id: changes
@@ -165,6 +181,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           git add data/audit/*.json 2>/dev/null || true
+          # Stage deletions of orphan-unscored marker files. verify-all-scored.js
+          # deletes them when scores have filled in; without -u those deletions
+          # never make it back to main and the broadcast gate stays permanently
+          # blocked even after the LLM ensemble resolves the orphan(s).
+          git add -u data/audit/ 2>/dev/null || true
           git add public/opening-night-status.json public/status.html 2>/dev/null || true
           git add public/data/shows/ 2>/dev/null || true
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true

@@ -94,6 +94,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
+const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
@@ -4294,6 +4295,59 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         // Clear pending flag — we just succeeded.
         delete data.scoreExtractionPending;
       }
+    }
+  }
+
+  // Score-extractor pre-pass — Gap 2 (Lost Boys 2026-04-26 #8 defense).
+  //
+  // Mirrors the /ingest UI flow's gate (src/app/api/admin/ingest-review/route.ts:228-335).
+  // The two preceding passes already tried extractScore against html+text and
+  // (when html is present) re-extracted against fullText for outlets with a
+  // dedicated extractor. This third pass is the last line of defense for
+  // orchestrator-discovered files that landed with fullText but no html and
+  // weren't covered by either earlier pass — typically BWW Review Roundup,
+  // Playbill Verdict, and DTLI scrapes that wrote excerpts directly. Without
+  // it, those files reach the LLM ensemble unscored, and if the ensemble
+  // skips the file (budget cap, contentTier gate, dispatch failure), the
+  // review never renders on the live page.
+  //
+  // Lost Boys 2026-04-26 burned amNY Matt Windman + Exeunt Loren Noveck this
+  // way. Joe Turner 2026-04-25/26 had ~4-6 similar cases.
+  //
+  // Helper enforces the same gate /ingest does:
+  //   - no humanReviewScore + no originalScore (never clobber prior reads)
+  //   - score in 1-100
+  //   - source in OUTLET_VERIFIED_SOURCES OR 'unicode-stars-fallthrough'
+  // (Generic text-pattern fallthrough excluded — no positional anchor when
+  // html='', FP risk on quoted critic mentions and page chrome.)
+  {
+    const outletIdForPrepass = (data.outletId || review.outletId || '').toLowerCase();
+    const prepass = runScoreExtractorPrePass(data, {
+      fullText: data.fullText,
+      outletId: outletIdForPrepass,
+    });
+    if (prepass) {
+      // Route via setExtractedScore so files whose existing scoreSource is
+      // an aggregator (e.g. bww-roundup, dtli) land in aggregatorStars
+      // instead of originalScore — preserves the validate-data.js
+      // aggregator-vs-outlet invariant.
+      const routed = setExtractedScore(data, {
+        value: prepass.originalScore,
+        normalizedValue: prepass.originalScoreNormalized,
+        source: prepass.originalScoreSource,
+      });
+      // Only set humanReviewScore when routed to the outlet slot. When the
+      // file's source is an aggregator, the rating is a third-party relay;
+      // letting it claim P0 priority would bypass the WE aggregator-trust
+      // downgrade that getBestScore applies at P3b (rebuild-helpers.js:391).
+      if (!routed.wasAggregator) {
+        data.humanReviewScore = prepass.humanReviewScore;
+      }
+      delete data.scoreExtractionPending;
+      console.log(
+        `    → [TEXT-ONLY PRE-PASS] ${outletIdForPrepass}: ${prepass.originalScore} (${prepass.originalScoreNormalized}/100) via ${prepass.sourceLabel}` +
+        (routed.wasAggregator ? ' [routed to aggregatorStars]' : '')
+      );
     }
   }
 
