@@ -1,7 +1,7 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-04-27T07:49:47.011Z",
+  "lastChecked": "2026-04-28T07:49:53.223Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -10,6 +10,11 @@
       "name": "Cron failed: Test Suite",
       "status": "warn",
       "message": "Last run failed (1h ago)"
+    },
+    {
+      "name": "Cron failed: Update Show Score",
+      "status": "warn",
+      "message": "Last run failed (2h ago)"
     }
   ]
 }
