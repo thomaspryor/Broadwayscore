@@ -47,9 +47,14 @@ const MEZZANINE_OVERRIDES = {
   // Subtitle differences vs Mezzanine's short title
   'beaches-2026': 'Beaches',
   // Reordered titles (Mezzanine puts disambiguator in parens, we put it leading)
-  'the-tragedy-of-coriolanus-2026': 'Coriolanus',
+  'the-tragedy-of-coriolanus-off-broadway-2026': 'Coriolanus',
   // Censored vs uncensored title
   'meat-suit-or-the-stshow-of-motherhood-off-broadway-2026': 'Meat Suit, or the shitshow of motherhood',
+  // We embed venue in title; Mezzanine uses bare title. Override aligns to Mezz.
+  'the-fever-greenwich-house-theater-off-broadway-2026': 'The Fever',
+  // Short title (<8 chars) where Mezzanine has parenthesized disambiguator —
+  // prefix-match guard requires shorter≥8 chars; explicit override needed.
+  'trash-off-broadway-2026': 'Trash (Comedy, Caverly/Morrill)',
 };
 
 // Paths
@@ -184,13 +189,20 @@ function parseDate(val) {
 /**
  * Normalize title for comparison
  */
+// Type-designator parens are LOAD-BEARING: "Redwood (Play)" must stay distinct
+// from "Redwood (Musical)". Anything else (venue, composer) is a noise
+// disambiguator and gets stripped so bare-title Mezzanine entries can match.
+const TYPE_DESIGNATOR_RE = /\((play|musical|comedy|drama|dance|opera|new musical|new play)\)/i;
+
 function normalize(s) {
   if (!s) return '';
   return s.toLowerCase()
     // Map ampersand to "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
     .replace(/&/g, ' and ')
-    // Strip parenthesized disambiguators ("Cinderella (Andrew Lloyd Webber)")
-    .replace(/\([^)]*\)/g, ' ')
+    // Strip non-type parens content ("Cable Street (59e59)", "Monte Cristo
+    // (The York Theatre Company)"). Type designators kept as plain text so
+    // Redwood (Play) and Redwood (Musical) still diverge after parens strip.
+    .replace(/\(([^)]*)\)/g, (m, inner) => TYPE_DESIGNATOR_RE.test(m) ? ' ' + inner + ' ' : ' ')
     // Joiners (apostrophes, quotes, hyphens) \u2192 empty so words don't split.
     // "Grown-Ups" \u2192 "grownups" (NOT "grown ups", a different play).
     .replace(/['\u2018\u2019"\u201C\u201D\-\u2013\u2014]/g, '')
@@ -198,11 +210,13 @@ function normalize(s) {
     // "Master Harold...and the Boys" === "Master Harold\u2026and the boys".
     .replace(/[!?:,.;+*\u2026/\[\]]/g, ' ')
     .replace(/\s+/g, ' ')
+    .trim()
     // Drop leading "the "
     .replace(/^the\s+/g, '')
-    // Drop trailing " the musical" so "Urinetown" === "Urinetown The Musical"
-    .replace(/\s+the\s+musical$/, '')
-    .trim();
+    // Drop trailing " (the )?musical" so "Urinetown" === "Urinetown The Musical"
+    // and "Redwood" === "Redwood (Musical)" (after parens-content kept as text).
+    // "Redwood (Play)" stays distinct ("redwood play" — strip is musical-only).
+    .replace(/\s+(the\s+)?musical$/, '');
 }
 
 /**
