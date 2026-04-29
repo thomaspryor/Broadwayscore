@@ -170,6 +170,65 @@ function hasTryoutUrlMarker(url) {
 }
 
 /**
+ * Opera production disambiguation — Met opera URLs vs. all OTHER opera companies'
+ * productions of the same title. "Eugene Onegin" / "La Traviata" / "Tristan und
+ * Isolde" are performed by Met, Royal Opera, Paris Opera, Sydney, Bolshoi, etc.;
+ * Operawire/Bachtrack/NYCR/CVA review every major production. Without a filter,
+ * a search for the show title returns the wrong production's review.
+ *
+ * REJECT-list (not a Met-keep regex) by design: fails OPEN. Unknown opera houses'
+ * URLs pass through and get title-validated downstream. A keep-regex would silently
+ * return zero results when Operawire's slug format changes (caught in pre-mortem).
+ *
+ * Use opera-house slugs that appear in URL patterns of the major reviewers.
+ * Add new houses as you encounter them in the wild.
+ */
+const NON_MET_OPERA_URL_MARKERS = [
+  // Australia
+  'opera-australia', 'sydney-opera',
+  // UK
+  'royal-opera-house', 'royal-opera-', 'covent-garden', 'glyndebourne',
+  'london-coliseum', 'english-national-opera', '/eno-', '-eno-',
+  // France
+  'paris-opera', 'opera-bastille', 'opera-de-paris', 'opera-comique',
+  // Germany / Austria
+  'wiener-staatsoper', 'staatsoper-berlin', 'deutsche-oper-berlin',
+  'bayerische-staatsoper', 'munich-opera',
+  // Italy
+  'la-scala', 'teatro-alla-scala',
+  // Russia
+  'bolshoi', 'mariinsky',
+  // US (non-Met)
+  'lyric-opera-chicago', 'chicago-lyric-opera', 'houston-grand-opera',
+  'sf-opera', 'san-francisco-opera', 'seattle-opera', 'pittsburgh-opera',
+  'washington-national-opera', 'la-opera-', 'los-angeles-opera',
+  'santa-fe-opera', 'opera-philadelphia',
+  // Festivals
+  'salzburg-festival', 'bayreuth', 'aix-festival',
+  'adelaide-festival', 'edinburgh-festival',
+];
+
+/**
+ * Returns true if the URL matches a known non-Met opera company slug.
+ * Used by opera outlet fetchAndParse callbacks (Operawire, Bachtrack, NYCR, CVA,
+ * Parterre) to filter out wrong-production URLs before returning to the discovery
+ * pipeline. Does NOT replace title/year filters — it complements them.
+ *
+ * @param {string} url - Full URL or URL slug
+ * @returns {{ rejected: boolean, marker?: string }}
+ */
+function hasNonMetOperaUrlMarker(url) {
+  if (!url || typeof url !== 'string') return { rejected: false };
+  const lower = url.toLowerCase();
+  for (const marker of NON_MET_OPERA_URL_MARKERS) {
+    if (lower.includes(marker)) {
+      return { rejected: true, marker };
+    }
+  }
+  return { rejected: false };
+}
+
+/**
  * Outlets known to publish "anticipation" / preview / feature pieces well
  * before opening night. For these outlets an ingest-time gate is tighter:
  * anything published before openingDate is rejected unless manually cleared
@@ -266,6 +325,8 @@ module.exports = {
   isUrlYearOutsideWindow,
   TRYOUT_URL_MARKERS,
   hasTryoutUrlMarker,
+  NON_MET_OPERA_URL_MARKERS,
+  hasNonMetOperaUrlMarker,
   PREVIEW_HEAVY_OUTLETS,
   DEFAULT_GRACE_DAYS_BEFORE_OPENING,
   PREVIEW_HEAVY_GRACE_DAYS,
