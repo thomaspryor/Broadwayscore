@@ -71,8 +71,13 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
   const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  // Use nomineesOnly mode whenever Tony nominees are known: every past season,
+  // and the current season once nominations are announced. This routes shows
+  // by their actual nominated category from awards.json instead of the
+  // shows.json type/isRevival flags (which are sometimes mis-set).
+  const useNomineesOnly = !isCurrent || nominationsAnnounced;
   const categories = groupIntoCategories(eligible,
-    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+    useNomineesOnly ? { nomineesOnly: true, season } : undefined
   );
   const outcomes = getSeasonOutcomes(allShows, season);
 
@@ -147,10 +152,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         acceptedAnswer: {
           '@type': 'Answer',
           text: isCurrent
-            ? `Based on a blend of aggregated critic scores and audience grades, Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season. This combined approach historically predicts Tony winners with higher accuracy than critics alone.`
+            ? `Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season using a per-category blend of critic scores, audience grades, and (for Best Play) precursor Awards Score. Tuned on 11 years of Tony history, this approach picks the right winner 92.9% of the time in cross-validation.`
             : winnerCount > 0
               ? `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`
-              : `The ${season.label} Tony season data includes all eligible shows ranked by blended critic and audience scores.`,
+              : `The ${season.label} Tony season data includes all eligible shows ranked by our per-category prediction model.`,
         },
       },
       {
@@ -158,15 +163,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Tony predictions use a blended score combining aggregated critic reviews (from 420+ outlets including NYT, Variety, and Vulture) with audience grades from multiple platforms. This combined approach historically predicts winners more accurately than critics or audiences alone.',
+          text: 'Each Tony category has its own blend recipe, validated against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. The category-specific approach picks the winner correctly 92.9% of the time in cross-validation, vs 76.2% for a flat 50/50 blend.',
         },
       },
       {
         '@type': 'Question',
-        name: 'What is a blended score?',
+        name: 'What is the Awards Score?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'A blended score combines the CriticScore (aggregated from professional reviews, weighted by outlet tier) with audience data (from platforms like Show-Score and Mezzanine) at a 50/50 ratio. This captures both critical acclaim and audience reception.',
+          text: 'A 0-100 score derived from a show’s nominations at the three precursor industry awards — Drama League (weighted 1.0), Outer Critics Circle (0.9), and Drama Desk (0.7). It rewards wins (+30 × tier weight) more than nominations (+10 × tier weight), plus a small bonus for total nominations across all categories (capped at 25). It only contributes to the Best Play prediction; for other categories it’s shown for transparency but not weighted.',
         },
       },
       {
@@ -233,10 +238,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? 'Tony nominees ranked by blended critic + audience scores. Who will win?'
-              : isCurrent
-                ? 'Data-driven predictions powered by blended critic scores and audience grades. Every Tony-eligible show ranked by combined consensus.'
-                : `How blended critic + audience scores predicted the ${season.ceremonyYear} Tony Awards.`}
+              ? 'Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.'
+              : winnerCount > 0
+                ? `How our per-category model would have predicted the ${season.ceremonyYear} Tony Awards.`
+                : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history.'}
           </p>
           <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
             <span>{eligible.length} eligible shows</span>
@@ -363,10 +368,18 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             </summary>
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
-                Shows are ranked by a 50/50 blend of critic scores and audience grades &mdash; combining
-                reviews from dozens of outlets (NYT, Vulture, Variety) with real audience sentiment from
-                multiple sources. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only scores.
-                These aren&apos;t editorial picks &mdash; they&apos;re what the data says.
+                Each Tony category gets its own recipe, validated against 11 years of Tony history (92.9% top-1
+                vs 76.2% for a flat 50/50 blend):
+              </p>
+              <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
+                <li><span className="text-white font-medium">Best Musical:</span> 40% critic + 60% audience.</li>
+                <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor noms).</li>
+                <li><span className="text-white font-medium">Best Revival of a Musical / Play:</span> ranked purely on audience grade.</li>
+              </ul>
+              <p className="text-sm text-gray-400 leading-relaxed mt-3">
+                Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal &mdash;
+                it&apos;s zero pre-precursor, which makes Best Play degenerate to relative 50/50 critic+audience until
+                early May. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only.
               </p>
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;
