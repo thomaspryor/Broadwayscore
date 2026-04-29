@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-29T03:28:14.484Z",
+  "generatedAt": "2026-04-29T05:28:25.086Z",
   "date": "2026-04-29",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 29600,
+  "entryCount": 29617,
   "shows": [
     {
       "showId": "proof-2026",
@@ -876,7 +876,7 @@
     },
     {
       "showId": "oh-mary-west-end-2025",
-      "reviewCount": 22,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2921,7 +2921,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 185314336,
+        "collected-to-scored": 4280566,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -3081,7 +3081,7 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "reviewCount": 17,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
