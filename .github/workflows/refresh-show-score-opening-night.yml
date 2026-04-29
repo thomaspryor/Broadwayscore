@@ -76,7 +76,15 @@ jobs:
             exit 0
           fi
 
-          LOOKBACK="${{ inputs.lookback_days || '2' }}"
+          # Validate lookback_days is a positive integer (operator-controlled
+          # input, but treat as untrusted — non-numeric crashes the node -e
+          # silently and shows=0 candidates with a confusing error).
+          LOOKBACK_RAW="${{ inputs.lookback_days || '2' }}"
+          if ! [[ "$LOOKBACK_RAW" =~ ^[0-9]+$ ]]; then
+            echo "::error::lookback_days must be a non-negative integer; got: $LOOKBACK_RAW"
+            exit 1
+          fi
+          LOOKBACK="$LOOKBACK_RAW"
           SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
             const now = new Date();
