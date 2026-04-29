@@ -16,7 +16,7 @@ interface Review {
   criticSlug?: string | null;
   url: string | null;
   publishDate: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   reviewScore: number;
   designation?: string;
   quote?: string;

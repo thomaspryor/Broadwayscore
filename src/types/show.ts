@@ -27,7 +27,7 @@ export interface ShowMetadata {
 // CRITIC SCORE (gathered by critics agent)
 // ============================================
 
-export type OutletTier = 1 | 2 | 3;
+export type OutletTier = 1 | 2 | 3 | 4;
 
 export interface CriticReview {
   outlet: string;

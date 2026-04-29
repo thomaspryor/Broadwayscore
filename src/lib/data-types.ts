@@ -542,7 +542,7 @@ export interface ProfileReview {
   publishDate: string | null;
   parsedDate: number | null;
   reviewScore: number;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   originalRating: string | null;
   quote: string | null;
 }
@@ -551,7 +551,7 @@ export interface OutletProfile {
   name: string;
   slug: string;
   outletId: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   reviews: ProfileReview[];
   reviewCount: number;
   avgScore: number;
