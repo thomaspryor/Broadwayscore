@@ -20,6 +20,25 @@ const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
 
+// Helper: parse JSON response, returning empty array if the body is HTML
+// (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
+// if BD/SB returned a different challenge variant). Logs once for visibility.
+function _safeJsonArray(body, outletId) {
+  if (typeof body !== 'string') return [];
+  const trimmed = body.trim();
+  if (!trimmed.startsWith('[') && !trimmed.startsWith('{')) {
+    console.warn(`    [opera-discovery] WARN: ${outletId} response was not JSON (got HTML, likely a residual Cloudflare/error page) — returning []`);
+    return [];
+  }
+  try {
+    const parsed = JSON.parse(trimmed);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.warn(`    [opera-discovery] WARN: ${outletId} JSON.parse failed: ${e.message.slice(0, 80)} — returning []`);
+    return [];
+  }
+}
+
 /**
  * Post-filter for opera-outlet fetchAndParse callbacks.
  * Applied centrally so adding outlets doesn't reinvent the same filtering.
@@ -445,8 +464,8 @@ const SITE_SEARCH_ENDPOINTS = {
       try {
         const catUrl = 'https://parterre.com/wp-json/wp/v2/categories?slug=performance-reviews&_fields=id,slug';
         const catData = await fetchSSR(catUrl);
-        const cats = JSON.parse(catData);
-        if (Array.isArray(cats) && cats.length > 0) perfCategoryId = cats[0].id;
+        const cats = _safeJsonArray(catData, 'parterre-box-category');
+        if (cats.length > 0) perfCategoryId = cats[0].id;
       } catch (e) {
         console.warn(`    [opera-discovery] WARN: parterre-box category lookup failed: ${e.message} — falling back to no category filter`);
       }
@@ -464,8 +483,8 @@ const SITE_SEARCH_ENDPOINTS = {
       // Include excerpt so we can validate body content without a second fetch.
       const url = `https://parterre.com/wp-json/wp/v2/posts?per_page=100&_fields=link,date,title,excerpt${afterParam}${beforeParam}${catParam}`;
       const data = await fetchSSR(url);
-      const posts = JSON.parse(data);
-      if (!Array.isArray(posts)) return [];
+      const posts = _safeJsonArray(data, 'parterre-box');
+      if (posts.length === 0) return [];
 
       // 3. Match posts to show: title/slug/excerpt all checked. Parterre uses
       // POETIC titles ("A specter, haunting" for Innocence) but their excerpts
@@ -498,8 +517,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const q = encodeURIComponent(showTitle);
       const url = `https://operawire.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
-      const posts = JSON.parse(data);
-      if (!Array.isArray(posts)) return [];
+      const posts = _safeJsonArray(data, 'operawire');
       const urls = posts.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'operawire', showId, openingDate);
     },
@@ -518,8 +536,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const q = encodeURIComponent(showTitle);
       const url = `https://newyorkclassicalreview.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
-      const posts = JSON.parse(data);
-      if (!Array.isArray(posts)) return [];
+      const posts = _safeJsonArray(data, 'new-york-classical-review');
       const urls = posts.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'new-york-classical-review', showId, openingDate);
     },
@@ -560,32 +577,101 @@ function getMarketKeyword(market) {
 }
 
 /**
- * Simple HTTP fetch (for SSR search pages)
+ * Direct HTTP fetch (cheap path used by fetchSSR before any fallback).
+ * Resolves with { status, body } so the wrapper can decide whether to fall
+ * back to the heavyweight scraper. NEVER rejects on non-200 — surfaces the
+ * status code so Cloudflare/blocking patterns are inspectable.
  */
-function fetchSSR(url, timeoutMs = 15000) {
+function _fetchSSRDirect(url, timeoutMs = 15000) {
   return new Promise((resolve, reject) => {
     const proto = url.startsWith('https') ? https : http;
     const req = proto.get(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
+        // Include application/json so outlets that content-negotiate (WP REST APIs)
+        // get JSON instead of HTML challenge pages when they would otherwise infer
+        // a browser request.
+        'Accept': 'application/json, text/html;q=0.9, application/xhtml+xml;q=0.8',
       }
     }, (res) => {
       // Follow redirects
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchSSR(res.headers.location, timeoutMs).then(resolve).catch(reject);
-      }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`HTTP ${res.statusCode}`));
+        return _fetchSSRDirect(res.headers.location, timeoutMs).then(resolve).catch(reject);
       }
       let data = '';
       res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
+      res.on('end', () => resolve({ status: res.statusCode, body: data }));
       res.on('error', reject);
     });
     req.on('error', reject);
     req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error('Timeout')); });
   });
+}
+
+// Cloudflare-challenge markers — same set scraper.js:478-486 uses for BD detection.
+const _CLOUDFLARE_MARKERS = ['cf_chl_opt', 'challenge-platform', 'Just a moment...', 'Enable JavaScript and cookies'];
+function _looksLikeCloudflareChallenge(body) {
+  if (!body || typeof body !== 'string') return false;
+  if (body.length > 50000) return false; // challenge pages are tiny
+  return _CLOUDFLARE_MARKERS.some(m => body.includes(m));
+}
+
+/**
+ * HTTP fetch (for SSR search pages) with Cloudflare-challenge fallback.
+ *
+ * Tries direct fetch first (cheap, ~200ms). On 403/503/Cloudflare-challenge
+ * markers, falls back to scraper.js fetchPage (BD → SB → Playwright chain,
+ * ~1-3s, costs $0.001-0.005). Logs the fallback so cost is visible.
+ *
+ * 2026-04-29: Added after NYCR + Operawire WP REST endpoints started returning
+ * 403 with Cloudflare challenge HTML. Without this, opera-outlet discovery
+ * silently returned 0 URLs (rejecting on non-200) when the outlet was simply
+ * blocked, making it indistinguishable from "no review yet."
+ *
+ * Returns: string body (JSON callers must wrap JSON.parse in try-catch — fallback
+ * path may return HTML rather than JSON if the cheap path's content-negotiation
+ * fails).
+ */
+async function fetchSSR(url, timeoutMs = 15000) {
+  let direct;
+  try {
+    direct = await _fetchSSRDirect(url, timeoutMs);
+  } catch (e) {
+    // Network error: fall through to fetchPage fallback.
+    direct = null;
+  }
+
+  // Happy path: 200 + no Cloudflare marker = use direct response.
+  if (direct && direct.status === 200 && !_looksLikeCloudflareChallenge(direct.body)) {
+    return direct.body;
+  }
+
+  // Determine whether to fall back. Only burn BD/SB credits when the response
+  // looks blocked, not for every legitimate 4xx (e.g. 404 = post truly missing).
+  const shouldFallback = !direct
+    || direct.status === 403
+    || direct.status === 503
+    || _looksLikeCloudflareChallenge(direct.body);
+
+  if (!shouldFallback) {
+    // 4xx that isn't blocking — surface to caller so they handle (e.g. 404 → empty list).
+    throw new Error(`HTTP ${direct.status}`);
+  }
+
+  // Lazy-require to avoid pulling scraper.js dependencies into every consumer.
+  let fetchPage;
+  try {
+    ({ fetchPage } = require('./scraper'));
+  } catch (e) {
+    // Scraper unavailable — surface the original error
+    throw new Error(`fetchSSR fallback unavailable: ${direct ? `HTTP ${direct.status}` : 'network error'} (scraper.js not loadable)`);
+  }
+  console.log(`    [fetchSSR] cheap path returned ${direct ? `HTTP ${direct.status}${_looksLikeCloudflareChallenge(direct.body) ? ' (Cloudflare challenge)' : ''}` : 'network error'} — falling back to fetchPage for ${url}`);
+  const result = await fetchPage(url, { skipVerify: true });
+  if (!result || !result.content) {
+    throw new Error(`fetchSSR: fallback returned no content for ${url}`);
+  }
+  return result.content;
 }
 
 /**

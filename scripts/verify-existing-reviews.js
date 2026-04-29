@@ -158,7 +158,7 @@ async function processVerify(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.category || 'broadway',
+        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
       });
 
       const provider = result.verifiedBy || 'unknown';
@@ -249,7 +249,7 @@ async function processRecover(items) {
         openingDate: show?.openingDate || '',
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
-        market: show?.category || 'broadway',
+        market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
       });
 
       const provider = result.verifiedBy || 'unknown';

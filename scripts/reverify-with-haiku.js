@@ -98,7 +98,7 @@ function buildVerifyInput(showId, r) {
     openingDate: show?.openingDate || '',
     publishDate: r.publishDate || '',
     venue: show?.venue || '',
-    market: show?.category || 'broadway',
+    market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
   };
 }
 

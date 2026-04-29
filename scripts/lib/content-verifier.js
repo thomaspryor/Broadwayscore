@@ -341,6 +341,23 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         'Regional theater production',
         'West End / London production'
       ]
+    },
+    // 'opera' is set by callers when show.type === 'opera' (e.g. Met Opera at
+    // Lincoln Center). Met productions are tagged category=off-broadway in our
+    // data model but the off-broadway prompt flags Met-venue mentions as wrong.
+    // Met IS the canonical venue for these shows; flag wrong PRODUCTION (different
+    // season, different cast, prior revival) but NOT wrong VENUE.
+    'opera': {
+      label: 'Met Opera',
+      description: 'opera productions performed at the Metropolitan Opera House in New York City',
+      dateLabel: 'Met Opera opening date',
+      venueLabel: 'Met Opera venue',
+      wrongProdExamples: [
+        'Different opera house (Royal Opera House, Paris Opera, Sydney Opera, Bolshoi, Glyndebourne, etc.)',
+        'Prior season or prior Met revival of the same opera (different cast/conductor/year)',
+        'Touring production / Met "Live in HD" cinema broadcast (not the staged production)',
+        'Festival performance (Salzburg, Bayreuth, etc.)'
+      ]
     }
   };
   const mc = marketConfig[effectiveMarket] || marketConfig['broadway'];
