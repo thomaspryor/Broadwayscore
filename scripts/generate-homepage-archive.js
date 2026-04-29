@@ -107,9 +107,11 @@ for (const review of reviews) {
 }
 
 // ===========================================
-// Uses shared scoring module — single source of truth
+// Uses shared scoring module — single source of truth.
+// Homepage archive is filtered to Broadway-only (see archiveShows filter below),
+// so showCategory is hardcoded to 'broadway' for v5 region-aware tier lookup.
 function computeCriticScore(showReviews) {
-  const result = _computeRaw(showReviews, outletRegistry);
+  const result = _computeRaw(showReviews, outletRegistry, 'broadway');
   if (!result) return null;
   return { score: result.s, reviewCount: result.rc, tier1Count: result.t1 };
 }

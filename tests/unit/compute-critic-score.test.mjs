@@ -115,11 +115,12 @@ describe('computeCriticScore — tier weighting (regression coverage)', () => {
     const reviews = [
       { criticName: 'A', outletId: 'nyt',    assignedScore: 100, publishDate: '2024-01-01' }, // T1 w=1.0
       { criticName: 'B', outletId: 'nysr',   assignedScore: 60,  publishDate: '2024-01-01' }, // T2 w=0.75
-      { criticName: 'C', outletId: 'blog-a', assignedScore: 0,   publishDate: '2024-01-01' }, // T3 w=0.35
+      { criticName: 'C', outletId: 'blog-a', assignedScore: 0,   publishDate: '2024-01-01' }, // T3 w=0.40
     ];
     const result = computeCriticScore(reviews, outletRegistry);
-    // (100*1.0 + 60*0.75 + 0*0.35) / (1.0 + 0.75 + 0.35) = 145 / 2.1 ≈ 69.05
-    assert.equal(result.s, 69.05);
+    // v5 weights: T1=1.0, T2=0.75, T3=0.40 (was 0.35)
+    // (100*1.0 + 60*0.75 + 0*0.40) / (1.0 + 0.75 + 0.40) = 145 / 2.15 ≈ 67.44
+    assert.equal(result.s, 67.44);
     assert.equal(result.rc, 3);
     assert.equal(result.t1, 1);
   });
@@ -238,20 +239,25 @@ describe('OUTLET_TIERS source-of-truth sanity checks', () => {
     assert.ok(Object.keys(tiers).length >= 80, `expected 80+ outlets, got ${Object.keys(tiers).length}`);
 
     // Sanity: every entry has tier/name/scoreFormat
+    // v5 (2026-04-29): T4 added (0.20), so valid tiers are now [1, 2, 3, 4]
     for (const [id, entry] of Object.entries(tiers)) {
-      assert.ok([1, 2, 3].includes(entry.tier), `${id}: invalid tier ${entry.tier}`);
+      assert.ok([1, 2, 3, 4].includes(entry.tier), `${id}: invalid tier ${entry.tier}`);
       assert.ok(typeof entry.name === 'string' && entry.name.length > 0, `${id}: missing name`);
       assert.ok(typeof entry.scoreFormat === 'string', `${id}: missing scoreFormat`);
+      // v5: optional `tiers: { nyc, london }` for region-aware lookup
+      if (entry.tiers) {
+        if (entry.tiers.nyc != null) assert.ok([1, 2, 3, 4].includes(entry.tiers.nyc), `${id}: invalid tiers.nyc ${entry.tiers.nyc}`);
+        if (entry.tiers.london != null) assert.ok([1, 2, 3, 4].includes(entry.tiers.london), `${id}: invalid tiers.london ${entry.tiers.london}`);
+      }
     }
 
     // Regression guard: the 5 UK outlets the April 2026 Stereophonic
-    // incident surfaced. These had wrong tiers in outlet-registry.json
-    // but correct tiers here — ensure they're still here and correct.
-    assert.equal(tiers['thestage']?.tier, 1, 'The Stage must be T1');
-    assert.equal(tiers['timeout-london']?.tier, 1, 'Time Out London must be T1');
-    assert.equal(tiers['financialtimes']?.tier, 1, 'Financial Times must be T1');
-    assert.equal(tiers['daily-mail']?.tier, 2, 'Daily Mail must be T2');
-    assert.equal(tiers['artsdesk']?.tier, 2, 'The Arts Desk must be T2');
+    // incident surfaced. v5 default tier reflects PRIMARY region (London for UK).
+    assert.equal(tiers['thestage']?.tier, 1, 'The Stage must be T1 default (London-primary)');
+    assert.equal(tiers['timeout-london']?.tier, 1, 'Time Out London must be T1 default');
+    assert.equal(tiers['financialtimes']?.tier, 1, 'Financial Times must be T1 default');
+    assert.equal(tiers['daily-mail']?.tier, 1, 'Daily Mail default tier is now T1 (London-primary; v5 — was T2 pre-v5)');
+    assert.equal(tiers['artsdesk']?.tier, 2, 'The Arts Desk T2');
   });
 });
 

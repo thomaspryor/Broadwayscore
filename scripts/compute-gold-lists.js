@@ -143,7 +143,7 @@ function computeCriticalGoldForMarket(listType, membershipFilter, season, uncapp
     if (revs.length < cfg.minReviews) continue;
 
     // Canonical tier-weighted score: dedup + OUTLET_TIERS + designation bumps + confidence weights
-    const scoreResult = computeCriticScore(revs, outletRegistry);
+    const scoreResult = computeCriticScore(revs, outletRegistry, show.category);
     if (!scoreResult) continue;
     // Apply minReviews to the deduped count, not raw count
     if (scoreResult.rc < cfg.minReviews) continue;
