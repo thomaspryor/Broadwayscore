@@ -21,8 +21,12 @@ const { isLondonMarket } = require("./lib/venue-classification");
 const dir = path.join(__dirname, "..", "data", "review-texts");
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "shows.json"), "utf8"));
 const showTitleMap = {};
+const showTypeMap = {};
+const showCategoryMap = {};
 for (const s of showsData.shows) {
   showTitleMap[s.id] = s.title;
+  showTypeMap[s.id] = s.type;
+  showCategoryMap[s.id] = s.category;
 }
 
 async function main() {
@@ -59,9 +63,13 @@ async function main() {
     const outletName = outletCritic[0] || "unknown";
     const criticName = outletCritic[1] || "unknown";
 
-    // Determine market from show category
+    // Determine market from show category. Opera shows (type='opera') get the
+    // 'opera' market in marketConfig — Met is canonical venue. Without this,
+    // Met opera reviews get false-positive wrongProduction flags.
     let market = "broadway";
-    if (c.showId.includes("off-west-end")) market = "off-west-end";
+    if (showTypeMap[c.showId] === 'opera') market = 'opera';
+    else if (showCategoryMap[c.showId]) market = showCategoryMap[c.showId];
+    else if (c.showId.includes("off-west-end")) market = "off-west-end";
     else if (c.showId.includes("west-end")) market = "west-end";
     else if (c.showId.includes("off-broadway")) market = "off-broadway";
 

@@ -406,7 +406,11 @@ function isRoundupUrl(url) {
   }
 
   // LBO review roundups (aggregate other critics, not original reviews)
-  if (/londonboxoffice\.co\.uk\/.*review-roundup/i.test(url)) {
+  // Match both `review-roundup` (1 hyphen) and `Review-Round-Up` (2 hyphens, the actual
+  // pattern LBO uses, e.g. /news/post/Review-Round-Up%3A-PARANORMAL-ACTIVITY-...).
+  // Stuart King email 2026-04-27 surfaced 17 LBO roundups that were being scored
+  // because the 2-hyphen variant slipped through.
+  if (/londonboxoffice\.co\.uk\/.*review-round[-_ ]?up/i.test(url)) {
     return { isRoundup: true, reason: 'LBO review roundup page' };
   }
 
@@ -452,9 +456,10 @@ const INDIVIDUAL_REVIEW_URL_PATTERNS = [
   /^https?:\/\/(?:www\.)?clydefitchreport\.com\/\d{4}\/\d{2}\/[^/]+\/?(?:[?#]|$)/i,
   // The Interested Bystander — Blogger `/YYYY/MM/{slug}.html` per individual review
   /^https?:\/\/(?:www\.)?interestedbystander\.com\/\d{4}\/\d{2}\/[^/]+\.html(?:[?#]|$)/i,
-  // London Box Office — `/news/post/{slug}` is per-show; `*review-roundup*` is multi-show
-  // (the latter is already caught by isRoundupUrl above)
-  /^https?:\/\/(?:www\.)?londonboxoffice\.co\.uk\/news\/post\/(?!.*review-roundup)[^/]+\/?(?:[?#]|$)/i,
+  // London Box Office — `/news/post/{slug}` is per-show; multi-show roundups use either
+  // `review-roundup` (1 hyphen) or `Review-Round-Up` (2 hyphens) — exclude both.
+  // (Caught by isRoundupUrl above; this lookahead is the secondary gate.)
+  /^https?:\/\/(?:www\.)?londonboxoffice\.co\.uk\/news\/post\/(?!.*review-round[-_ ]?up)[^/]+\/?(?:[?#]|$)/i,
 ];
 
 function isLikelyStaleRoundupFlag(data) {

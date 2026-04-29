@@ -110,7 +110,7 @@ function main() {
       else negative++;
     }
 
-    const scoreResult = computeCriticScore(showRevs, outlets);
+    const scoreResult = computeCriticScore(showRevs, outlets, show.category);
     const siteData = getSiteScore(show.id);
     const liveScore = scoreResult ? Math.round(scoreResult.s) : null;
     const siteScore = siteData?.score ?? null;

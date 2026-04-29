@@ -1,0 +1,66 @@
+name: Snapshot Audience Grades
+
+# Captures audience-grade snapshots at fixed points before/after Tony Awards.
+# These snapshots preserve "what audience scores looked like AT VOTING TIME"
+# so future Tony Predictions backtests aren't biased by post-Tony halo ratings
+# accumulating on winners.
+
+on:
+  schedule:
+    # Weekly during Tony awards season (April 1 → June 30)
+    # Cron runs every Tuesday at 14:00 UTC (10am ET) — covers nominee window
+    - cron: '0 14 * 4-6 2'
+  workflow_dispatch:
+    inputs:
+      season:
+        description: 'Tony season (e.g. 2025-26). Default: current season.'
+        required: false
+        type: string
+      tag:
+        description: 'Snapshot tag (e.g. pre-noms, post-precursors, day-of). Default: ISO date.'
+        required: false
+        type: string
+      include_eligible:
+        description: 'Include all season-eligible shows (not just Tony nominees). Useful pre-nominations.'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Take audience-grade snapshot
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.season }}" ]; then ARGS="$ARGS --season=${{ inputs.season }}"; fi
+          if [ -n "${{ inputs.tag }}" ]; then ARGS="$ARGS --tag=${{ inputs.tag }}"; fi
+          if [ "${{ inputs.include_eligible }}" != "false" ]; then ARGS="$ARGS --include-eligible"; fi
+          echo "Running: node scripts/snapshot-audience-grades.js $ARGS"
+          node scripts/snapshot-audience-grades.js $ARGS
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/audience-snapshots/
+          if git diff --cached --quiet; then
+            echo "No new snapshot to commit"
+            exit 0
+          fi
+          git commit -m "snapshot: audience grades $(date -u +%Y-%m-%d)"
+          git push

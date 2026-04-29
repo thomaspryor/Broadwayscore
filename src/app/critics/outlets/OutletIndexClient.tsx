@@ -13,7 +13,7 @@ interface OutletSummary {
   name: string;
   slug: string;
   outletId: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   reviewCount: number;
   avgScore: number;
   highScore: number;

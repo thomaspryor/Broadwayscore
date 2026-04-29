@@ -249,6 +249,18 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     fields.roundupArticleReason = 'auto: URL matches BWW Review-Roundup page pattern';
   }
 
+  // --- Guard E2: LBO Review-Round-Up page detection ---
+  // London Box Office publishes aggregator roundups at /news/post/Review-Round-Up%3A-...
+  // (and `review-round-up-...`) URLs. The actual roundup pages alternate hyphenation;
+  // the older `review-roundup` (1-hyphen) form was already caught by isRoundupUrl.
+  // NOTE: The `source: lbo-roundup` field is a discovery-path tag — many files with
+  // that tag are full Stuart King individual reviews at `/news/post/{show-slug}-review`
+  // URLs. Don't auto-flag on source — only on URL pattern.
+  if (input.url && /\/news\/post\/(?:review-round[-_ ]?up|Review-Round-?Up)/i.test(input.url)) {
+    fields.isRoundupArticle = true;
+    fields.roundupArticleReason = 'auto: URL matches LBO Review-Round-Up page pattern';
+  }
+
   // --- Guard F: Empty unknown rejection ---
   // Don't create files for unknown critics with no URL and no text content.
   // These are pure scrape garbage that clutter the directory.

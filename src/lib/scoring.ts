@@ -97,10 +97,12 @@ export function normalizeRating(rating: string): { score: number; isInferred: bo
 // ============================================
 
 // Tier weights (must match src/config/scoring.ts)
+// T4 added 2026-04-29 with v5 tier reassignment.
 const TIER_WEIGHTS: Record<OutletTier, number> = {
   1: 1.0,
   2: 0.75,
-  3: 0.35,
+  3: 0.40,
+  4: 0.20,
 };
 
 /**

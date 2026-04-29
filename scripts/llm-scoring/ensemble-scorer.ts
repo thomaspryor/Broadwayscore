@@ -22,7 +22,7 @@ import { ensembleScore, toModelScore } from './ensemble';
 export interface EnsembleScoringOptions {
   claudeModel: 'claude-sonnet-4-20250514' | 'claude-3-5-haiku-20241022';
   openaiModel: 'gpt-4o-mini' | 'gpt-4o';
-  geminiModel: 'gemini-2.0-flash' | 'gemini-1.5-flash';
+  geminiModel: 'gemini-2.5-flash' | 'gemini-2.0-flash' | 'gemini-1.5-flash';
   kimiModel: string;
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
@@ -51,7 +51,7 @@ export class EnsembleReviewScorer {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-20250514',
       openaiModel: options.openaiModel || 'gpt-4o',
-      geminiModel: options.geminiModel || 'gemini-2.0-flash',
+      geminiModel: options.geminiModel || 'gemini-2.5-flash',
       kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',
       maxDelta: options.maxDelta ?? 15,
       verbose: options.verbose ?? false,

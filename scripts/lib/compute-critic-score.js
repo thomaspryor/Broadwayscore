@@ -19,8 +19,11 @@
 
 const path = require('path');
 
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
+// v5 (2026-04-29): T4 added (0.20), T3 raised 0.35→0.40
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.40, 4: 0.20 };
 const DEFAULT_TIER = 3;
+// Off-market multiplier — applied to off-broadway / off-west-end reviews
+const OFF_MARKET_MULTIPLIER = 0.8;
 
 const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
 const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
@@ -31,11 +34,29 @@ const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
 // file, so drift between the two code paths is impossible by construction.
 // Before April 2026, a duplicate copy of this data in multiple files
 // caused silent score drift — see memory/feedback_outlet_tiers_two_sources.md.
+//
+// v5 (2026-04-29): entries can declare `tiers: { nyc, london }` for region-
+// aware lookup. Falls back to legacy `tier` field when showCategory absent.
 const OUTLET_TIERS_DATA = require(path.join(__dirname, '..', '..', 'src', 'config', 'outlet-tiers.json'));
-// Flatten to { id: tier } for fast lookup in the scoring loop
+// Flatten to { id: { default, nyc?, london? } } for fast lookup
 const OUTLET_TIER_OVERRIDES = {};
 for (const [id, entry] of Object.entries(OUTLET_TIERS_DATA)) {
-  OUTLET_TIER_OVERRIDES[id] = entry.tier;
+  const norm = { default: entry.tier };
+  if (entry.tiers && typeof entry.tiers === 'object') {
+    if (entry.tiers.nyc != null) norm.nyc = entry.tiers.nyc;
+    if (entry.tiers.london != null) norm.london = entry.tiers.london;
+  }
+  OUTLET_TIER_OVERRIDES[id] = norm;
+}
+
+function _resolveOverrideTier(id, showCategory) {
+  const entry = OUTLET_TIER_OVERRIDES[id];
+  if (!entry) return undefined;
+  if (showCategory) {
+    const region = (showCategory === 'west-end' || showCategory === 'off-west-end') ? 'london' : 'nyc';
+    if (entry[region] != null) return entry[region];
+  }
+  return entry.default;
 }
 
 const TOP_CRITICS = new Set([
@@ -50,9 +71,12 @@ const TOP_CRITICS = new Set([
  *
  * @param {Array} showReviews - Reviews for a single show
  * @param {Object} outletRegistry - Outlet registry keyed by lowercase outletId
+ * @param {string} [showCategory] - Show market category for region-aware tier lookup
+ *   (broadway / off-broadway / west-end / off-west-end). When omitted, uses default
+ *   (NYC) tier — backwards-compatible with pre-v5 callers.
  * @returns {{ s: number, rc: number, t1: number } | null}
  */
-function computeCriticScore(showReviews, outletRegistry = {}) {
+function computeCriticScore(showReviews, outletRegistry = {}, showCategory) {
   if (!showReviews || showReviews.length === 0) return null;
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
@@ -98,10 +122,24 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
     //   4. DEFAULT_TIER
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
     const normalizedId = review.outletId?.toLowerCase()?.trim();
-    const overrideTier = normalizedId ? OUTLET_TIER_OVERRIDES[normalizedId] : undefined;
-    const registryTier = normalizedId ? outletRegistry[normalizedId]?.tier : undefined;
+    const overrideTier = normalizedId ? _resolveOverrideTier(normalizedId, showCategory) : undefined;
+    let registryTier;
+    if (normalizedId && outletRegistry[normalizedId]) {
+      const regEntry = outletRegistry[normalizedId];
+      // Region-aware: prefer regEntry.tiers[region] if present
+      if (showCategory && regEntry.tiers) {
+        const region = (showCategory === 'west-end' || showCategory === 'off-west-end') ? 'london' : 'nyc';
+        registryTier = regEntry.tiers[region] != null ? regEntry.tiers[region] : regEntry.tier;
+      } else {
+        registryTier = regEntry.tier;
+      }
+    }
     const tier = isTopCritic ? 1 : (overrideTier || registryTier || DEFAULT_TIER);
-    const tierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
+    const baseTierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
+    // Off-market multiplier — Off-Broadway and Off-West-End reviews carry 80%
+    // of base tier weight. (v5 — 2026-04-29)
+    const isOffMarket = showCategory === 'off-broadway' || showCategory === 'off-west-end';
+    const tierWeight = isOffMarket ? baseTierWeight * OFF_MARKET_MULTIPLIER : baseTierWeight;
 
     // Determine score. assignedScore is the canonical scoring output written by
     // scripts/rebuild-all-reviews.js (via getBestScore in scripts/lib/rebuild-helpers.js),
@@ -158,4 +196,4 @@ function computeCriticScore(showReviews, outletRegistry = {}) {
   };
 }
 
-module.exports = { computeCriticScore, TIER_WEIGHTS, TOP_CRITICS, DEFAULT_TIER };
+module.exports = { computeCriticScore, TIER_WEIGHTS, OFF_MARKET_MULTIPLIER, TOP_CRITICS, DEFAULT_TIER };

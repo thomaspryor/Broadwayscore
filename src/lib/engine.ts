@@ -142,7 +142,7 @@ export interface ComputedReview {
   criticName?: string;
   url: string;
   publishDate: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   tierWeight: number;
   assignedScore: number;
   bucketScore?: number;
@@ -244,12 +244,25 @@ export interface ComputedShow {
 // HELPER: GET OUTLET CONFIG
 // ===========================================
 
-export function getOutletConfig(outletId?: string, outletName?: string) {
+export function getOutletConfig(outletId?: string, outletName?: string, showCategory?: string) {
+  // Per-region tier resolver: when showCategory is provided and the entry has
+  // `tiers: { nyc, london }`, return the regional tier. Otherwise return the
+  // legacy single `tier` field. (v5 — 2026-04-29)
+  const resolveTier = (entry: { tier: 1 | 2 | 3 | 4; tiers?: { nyc?: 1 | 2 | 3 | 4; london?: 1 | 2 | 3 | 4 } }): 1 | 2 | 3 | 4 => {
+    if (showCategory && entry.tiers) {
+      const region = (showCategory === 'west-end' || showCategory === 'off-west-end') ? 'london' : 'nyc';
+      const regionalTier = entry.tiers[region];
+      if (regionalTier != null) return regionalTier;
+    }
+    return entry.tier;
+  };
+
   // Direct lookup — OUTLET_TIERS keys are lowercase registry IDs
   if (outletId) {
     const normalized = outletId.toLowerCase().trim();
     if (OUTLET_TIERS[normalized]) {
-      return { ...OUTLET_TIERS[normalized], id: outletId };
+      const entry = OUTLET_TIERS[normalized];
+      return { ...entry, tier: resolveTier(entry), id: outletId };
     }
   }
 
@@ -257,17 +270,17 @@ export function getOutletConfig(outletId?: string, outletName?: string) {
   if (outletName) {
     for (const [id, config] of Object.entries(OUTLET_TIERS)) {
       if (config.name.toLowerCase() === outletName.toLowerCase()) {
-        return { ...config, id };
+        return { ...config, tier: resolveTier(config), id };
       }
     }
   }
 
   // Fallback to outlet-registry.json tier (covers ~775 outlets not in OUTLET_TIERS)
   if (outletId) {
-    const registryTier = getRegistryTier(outletId);
+    const registryTier = getRegistryTier(outletId, showCategory);
     if (registryTier) {
       return {
-        tier: registryTier as 1 | 2 | 3,
+        tier: registryTier as 1 | 2 | 3 | 4,
         name: outletName || outletId,
         scoreFormat: 'text_bucket',
         id: outletId,
@@ -277,7 +290,7 @@ export function getOutletConfig(outletId?: string, outletName?: string) {
 
   // Default tier 3
   return {
-    tier: DEFAULT_TIER as 1 | 2 | 3,
+    tier: DEFAULT_TIER as 1 | 2 | 3 | 4,
     name: outletName || 'Unknown',
     scoreFormat: 'text_bucket',
     id: outletId || 'UNKNOWN',
@@ -318,7 +331,7 @@ function parseOriginalRating(rating: string): number | null {
 // CRITIC SCORE CALCULATION
 // ===========================================
 
-export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | null {
+export function computeCriticScore(reviews: RawReview[], showCategory?: string): CriticScoreResult | null {
   if (reviews.length === 0) return null;
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
@@ -354,10 +367,15 @@ export function computeCriticScore(reviews: RawReview[]): CriticScoreResult | nu
   }
 
   const computedReviews: ComputedReview[] = dedupedReviews.map(review => {
-    const outletConfig = getOutletConfig(review.outletId, review.outlet);
+    const outletConfig = getOutletConfig(review.outletId, review.outlet, showCategory);
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
     const tier = isTopCritic ? 1 : outletConfig.tier;
-    const tierWeight = TIER_WEIGHTS[tier];
+    // Off-market multiplier: Off-Broadway and Off-West-End reviews carry 80%
+    // of their tier weight, reflecting that off-market coverage is typically
+    // lighter critical engagement than the parent market. (v5 — 2026-04-29)
+    const isOffMarket = showCategory === 'off-broadway' || showCategory === 'off-west-end';
+    const baseTierWeight = TIER_WEIGHTS[tier];
+    const tierWeight = isOffMarket ? baseTierWeight * 0.8 : baseTierWeight;
 
     // Determine the review score.
     // assignedScore is the canonical scoring output from scripts/rebuild-all-reviews.js
@@ -656,7 +674,7 @@ export function computeShowData(
   // Exclude single-model emergency reviews: only 1 of N ensemble models succeeded,
   // so the score is unreliable until a human review clears the flag.
   const eligibleReviews = showReviews.filter(r => !r.singleModelEmergency);
-  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews);
+  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews, show.category);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)

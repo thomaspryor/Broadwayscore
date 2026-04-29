@@ -290,6 +290,50 @@ jobs:
           fi
           echo "All detected review-texts writes route through safeWriteReview"
 
+      - name: Check scripts route reviews.json writes through rebuild-all-reviews
+        run: |
+          # data/reviews.json is a derived aggregate produced by
+          # scripts/rebuild-all-reviews.js. New scripts MUST NOT write to it
+          # directly — they should modify the source-of-truth files in
+          # data/review-texts/<showId>/ and let the rebuild produce the
+          # aggregate. Direct writes bypass the rebuild's audit trail
+          # (rebuild-score-drift, rebuild-regression, opening-night-completeness).
+          #
+          # See Notion card 351637c5-416f-81f8-a8fd-c3e0570f1454 for the
+          # broader plan to extend this to shows.json + audience-buzz.json
+          # once those acquire canonical writer helpers.
+          ALLOWLIST=".reviews-json-write-exempt.txt"
+          if [ ! -f "$ALLOWLIST" ]; then
+            echo "::error::missing allowlist file: $ALLOWLIST"
+            exit 1
+          fi
+          EXEMPT=$(grep -v '^[[:space:]]*#' "$ALLOWLIST" | grep -v '^[[:space:]]*$' | awk -F' --' '{print $1}' | tr -d ' ')
+          VIOLATIONS=""
+          for f in scripts/*.js; do
+            name=$(basename "$f")
+            if echo "$EXEMPT" | grep -Fxq "$name"; then continue; fi
+            # Two-condition check:
+            # (1) File references data/reviews.json (literal or path.join
+            #     multi-arg shape).
+            # (2) File has fs.writeFileSync to a target that's a known
+            #     reviews-path constant OR a literal data/reviews.json string.
+            #     Includes targetPath as a common indirection (realpathSync).
+            #     Excludes outPath (too generic — audit scripts use it for
+            #     report files).
+            if grep -qE "['\"][^'\"]*data/reviews\.json['\"]|path\.join\([^)]*['\"]data['\"][^)]*['\"]reviews\.json['\"]" "$f" \
+              && grep -qE "fs\.writeFileSync\([^)]*(REVIEWS_PATH|reviewsTmpPath|reviewsJsonPath|reviewsPath|targetPath|['\"][^'\"]*data/reviews\.json['\"])" "$f"; then
+              VIOLATIONS="$VIOLATIONS $name"
+            fi
+          done
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Scripts write data/reviews.json directly (bypasses rebuild audit trail):"
+            for v in $VIOLATIONS; do echo "  $v"; done
+            echo "Fix: modify the source files in data/review-texts/<showId>/ instead, then trigger 'Rebuild Reviews Data'."
+            echo "If this script genuinely must write reviews.json (e.g., it IS the rebuild), add it to .reviews-json-write-exempt.txt with a one-line reason."
+            exit 1
+          fi
+          echo "All detected reviews.json writes route through rebuild-all-reviews"
+
   dependency-audit:
     name: Dependency Audit
     runs-on: ubuntu-latest

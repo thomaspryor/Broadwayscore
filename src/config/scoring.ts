@@ -52,14 +52,23 @@ export const COMPONENT_WEIGHTS = {
 // OUTLET TIER DEFINITIONS & WEIGHTS
 // ===========================================
 // Note: These weights are distinct from other aggregators' methodologies
-// to ensure our scoring approach is uniquely calibrated for Broadway
+// to ensure our scoring approach is uniquely calibrated for Broadway.
+// T4 added 2026-04-29 with v5 tier reassignment — single-author blog floor
+// for outlets with neither aggregator pickup nor recognized-critic status.
+// T3 raised from 0.35 to 0.40 to reflect that the noise floor now sits at T4.
 export const TIER_WEIGHTS = {
   1: 1.0,
   2: 0.75,
-  3: 0.35,
+  3: 0.40,
+  4: 0.20,
 } as const;
 
 export const DEFAULT_TIER = 3 as const;
+
+// Off-market multiplier applied to Off-Broadway / Off-West-End reviews.
+// Acknowledges that off-market coverage is typically lighter / different
+// critical engagement than the parent market. Set to 1.0 to disable.
+export const OFF_MARKET_MULTIPLIER = 0.8 as const;
 
 // Outlet ID → Tier mapping (keys are canonical lowercase registry IDs).
 //
@@ -73,7 +82,15 @@ export const DEFAULT_TIER = 3 as const;
 // mismatches (Stereophonic incident, April 10, 2026).
 import outletTiersJson from './outlet-tiers.json';
 
-type OutletTierEntry = { tier: 1 | 2 | 3; name: string; scoreFormat: string; maxScale?: number };
+type OutletTierEntry = {
+  tier: 1 | 2 | 3 | 4;
+  // Per-region overrides — when present, overrides `tier` based on show region.
+  // NYC = Broadway + Off-Broadway. London = West End + Off-West-End.
+  tiers?: { nyc?: 1 | 2 | 3 | 4; london?: 1 | 2 | 3 | 4 };
+  name: string;
+  scoreFormat: string;
+  maxScale?: number;
+};
 export const OUTLET_TIERS: Record<string, OutletTierEntry> = outletTiersJson as Record<string, OutletTierEntry>;
 
 // ===========================================
