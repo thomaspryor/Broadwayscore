@@ -1,0 +1,169 @@
+name: Refresh Show Score (opening-night window)
+
+# Why this exists:
+# scrape-dtli-show-score.yml runs Sunday 3 PM UTC weekly. Shows that open
+# Sun-Sat get their Show Score archive frozen up to 7 days post-opening,
+# missing the critic-review wave entirely (KENREX 2026-04-26 had 11 critic
+# reviews on Show Score within 24h of opening but our archive was from
+# March 25 pre-opening).
+#
+# This workflow runs daily during the opening-night window, refreshing only
+# shows opening within the ±2 day lookback. ~1-3 shows per run on most days.
+# Combined with the carousel-scroll fix in scripts/fetch-aggregator-pages.ts
+# and the loud-fail extractor changes in scripts/extract-show-score-reviews.js
+# (all 2026-04-28), this closes the Show Score side of the opening-night gap
+# documented in memory/feedback_off_broadway_opening_date_gap.md.
+
+on:
+  schedule:
+    # 03:45 UTC — runs before the daily rebuild at 04:00 UTC, so freshly
+    # extracted Show Score reviews flow into the rebuild's reviews.json.
+    - cron: '45 3 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'Days before/after openingDate to include (default 2)'
+        required: false
+        default: '2'
+        type: string
+      shows:
+        description: 'Optional comma-separated show IDs (overrides opening-night window)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-show-score-opening-night
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Identify shows in opening-night window
+        id: window
+        run: |
+          MANUAL_SHOWS="${{ inputs.shows }}"
+          if [ -n "$MANUAL_SHOWS" ]; then
+            echo "shows=$MANUAL_SHOWS" >> "$GITHUB_OUTPUT"
+            echo "Using manual show list: $MANUAL_SHOWS"
+            exit 0
+          fi
+
+          LOOKBACK="${{ inputs.lookback_days || '2' }}"
+          SHOWS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const now = new Date();
+            const lookAhead = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+            const cutoff = new Date(now.getTime() - $LOOKBACK * 24 * 60 * 60 * 1000);
+            const candidates = shows.filter(s => {
+              if (!s.openingDate) return false;
+              const validStatus = s.status === 'open' || s.status === 'previews';
+              if (!validStatus) return false;
+              const d = new Date(s.openingDate);
+              return d >= cutoff && d <= lookAhead;
+            });
+            console.log(candidates.map(s => s.id).join(','));
+          ")
+          if [ -z "$SHOWS" ]; then
+            echo "No shows in opening-night window — exiting early"
+            echo "shows=" >> "$GITHUB_OUTPUT"
+            echo "has_shows=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Shows to refresh: $SHOWS"
+            echo "shows=$SHOWS" >> "$GITHUB_OUTPUT"
+            echo "has_shows=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Refresh Show Score archives
+        if: steps.window.outputs.has_shows == 'true'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: |
+          npx tsx scripts/fetch-aggregator-pages.ts \
+            --aggregator show-score \
+            --shows "${{ steps.window.outputs.shows }}" \
+            --force
+
+      - name: Push aggregator-archive to private repo
+        if: steps.window.outputs.has_shows == 'true'
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Refresh Show Score (opening-night window)"
+
+      - name: Checkout review-texts (private repo)
+        if: steps.window.outputs.has_shows == 'true'
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Extract Show Score reviews from refreshed archives
+        if: steps.window.outputs.has_shows == 'true'
+        run: node scripts/extract-show-score-reviews.js
+
+      - name: Convert Show Score data to review-text stubs
+        if: steps.window.outputs.has_shows == 'true'
+        run: node scripts/convert-show-score-to-review-texts.js
+
+      - name: Push review-texts to private repo
+        if: steps.window.outputs.has_shows == 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Refresh Show Score opening-night reviews"
+
+      - name: Commit audit + show-score data
+        if: steps.window.outputs.has_shows == 'true'
+        run: |
+          git add data/audit/show-score-extraction-gaps.json 2>/dev/null || true
+          git add data/show-score.json 2>/dev/null || true
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+          git commit -m "data: Refresh Show Score opening-night extraction"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Trigger rebuild for opening-night shows
+        if: steps.window.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fast rebuild picks up the new review-text stubs in time for any
+          # downstream broadcasts. Guarded against double-fire by the existing
+          # opening-night-sent.json completed:true flag.
+          gh workflow run "Rebuild Reviews (Fast)" \
+            -f reason="Show Score opening-night refresh"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Refresh Show Score (opening-night window) failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
