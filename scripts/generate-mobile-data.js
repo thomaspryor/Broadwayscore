@@ -129,9 +129,10 @@ for (const review of reviews) {
 }
 
 // computeCriticScore imported from ./lib/compute-critic-score.js
-// Wrap to pass outletRegistry and add critic label
-function computeShowScore(showReviews) {
-  const result = computeCriticScore(showReviews, outletRegistry);
+// Wrap to pass outletRegistry and add critic label.
+// v5 (2026-04-29): pass showCategory so per-region tier + off-market multiplier apply.
+function computeShowScore(showReviews, showCategory) {
+  const result = computeCriticScore(showReviews, outletRegistry, showCategory);
   if (!result) return null;
   return { ...result, l: getCriticLabel(result.s) };
 }
@@ -164,7 +165,7 @@ const mobileShows = visibleShows.map(show => {
 
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
   const hideReviews = shouldHideReviews(show);
-  let criticScore = hideReviews ? null : computeShowScore(showReviews);
+  let criticScore = hideReviews ? null : computeShowScore(showReviews, show.category);
 
   // Composite score = critic score (V1: critic-only, same as engine.ts line 618)
   const compositeScore = criticScore ? criticScore.s : null;
