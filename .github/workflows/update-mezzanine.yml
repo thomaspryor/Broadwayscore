@@ -125,10 +125,15 @@ jobs:
 
           git commit -m "data: Update Mezzanine audience scores"
 
-          bash scripts/lib/push-with-retry.sh
-
-          echo "Failed to push after 5 attempts"
-          exit 1
+          # push-with-retry.sh exits 0 on success, 1 on permanent failure.
+          # Without the explicit exit 0, the trailing fallback always runs and
+          # marks the workflow failed even when the push went through.
+          if bash scripts/lib/push-with-retry.sh; then
+            exit 0
+          else
+            echo "Failed to push after 5 attempts"
+            exit 1
+          fi
 
 
       - name: Push core data to private repo
