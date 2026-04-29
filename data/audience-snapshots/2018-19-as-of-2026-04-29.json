@@ -1,0 +1,388 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.310Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2018-19",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 17,
+    "eligibleShowCount": 0,
+    "totalShows": 17,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "hadestown-2019": {
+      "title": "Hadestown",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 92.17,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 91,
+          "reviewCount": 5245
+        },
+        "mezzanine": {
+          "score": 93,
+          "reviewCount": 11038
+        },
+        "theatr": {
+          "score": 91,
+          "reviewCount": 5272
+        },
+        "broadwayCom": {
+          "score": 96,
+          "reviewCount": 503
+        },
+        "reddit": {
+          "score": 90,
+          "reviewCount": 421
+        }
+      }
+    },
+    "choir-boy-2019": {
+      "title": "Choir Boy",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 85.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 434
+        },
+        "mezzanine": {
+          "score": 87,
+          "reviewCount": 88
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 3
+        },
+        "reddit": {
+          "score": 64,
+          "reviewCount": 732
+        }
+      }
+    },
+    "kiss-me-kate-2019": {
+      "title": "Kiss Me, Kate",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 81.64,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 688
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 302
+        },
+        "theatr": {
+          "score": 63,
+          "reviewCount": 8
+        }
+      }
+    },
+    "aint-too-proud-2019": {
+      "title": "Ain't Too Proud",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 78.4,
+      "designation": "Liking",
+      "sources": {
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 394
+        },
+        "theatr": {
+          "score": 88,
+          "reviewCount": 16
+        },
+        "reddit": {
+          "score": 64,
+          "reviewCount": 27
+        }
+      }
+    },
+    "what-the-constitution-means-to-me-2019": {
+      "title": "What the Constitution Means to Me",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 86.31,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 410
+        },
+        "mezzanine": {
+          "score": 87,
+          "reviewCount": 181
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 3
+        }
+      }
+    },
+    "oklahoma-2019": {
+      "title": "Oklahoma!",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 81.83,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 80,
+          "reviewCount": 874
+        },
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 734
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 9
+        }
+      }
+    },
+    "burn-this-2019": {
+      "title": "Burn This",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 77.9,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 79,
+          "reviewCount": 409
+        },
+        "mezzanine": {
+          "score": 75,
+          "reviewCount": 128
+        },
+        "theatr": {
+          "score": 70,
+          "reviewCount": 10
+        },
+        "reddit": {
+          "score": 72,
+          "reviewCount": 50
+        }
+      }
+    },
+    "gary-a-sequel-to-titus-andronicus-2019": {
+      "title": "Gary: A Sequel to Titus Andronicus",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 63.6,
+      "designation": "Disliking",
+      "sources": {
+        "showScore": {
+          "score": 65,
+          "reviewCount": 541
+        },
+        "mezzanine": {
+          "score": 58,
+          "reviewCount": 117
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 3
+        }
+      }
+    },
+    "all-my-sons-2019": {
+      "title": "All My Sons",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 83,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 399
+        },
+        "mezzanine": {
+          "score": 75,
+          "reviewCount": 58
+        },
+        "theatr": {
+          "score": 50,
+          "reviewCount": 2
+        }
+      }
+    },
+    "tootsie-2019": {
+      "title": "Tootsie",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 76.37,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 1256
+        },
+        "mezzanine": {
+          "score": 63,
+          "reviewCount": 584
+        },
+        "theatr": {
+          "score": 33,
+          "reviewCount": 12
+        }
+      }
+    },
+    "ink-2019": {
+      "title": "Ink",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 81.8,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 457
+        },
+        "mezzanine": {
+          "score": 77,
+          "reviewCount": 50
+        }
+      }
+    },
+    "beetlejuice-2019": {
+      "title": "Beetlejuice",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 85,
+      "designation": "Liking",
+      "sources": {
+        "mezzanine": {
+          "score": 85,
+          "reviewCount": 1819
+        }
+      }
+    },
+    "the-ferryman-2018": {
+      "title": "The Ferryman",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 87.35,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 1083
+        },
+        "mezzanine": {
+          "score": 85,
+          "reviewCount": 298
+        },
+        "theatr": {
+          "score": 78,
+          "reviewCount": 9
+        }
+      }
+    },
+    "the-prom-2018": {
+      "title": "The Prom",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 84.13,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 85,
+          "reviewCount": 1219
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 913
+        },
+        "theatr": {
+          "score": 83,
+          "reviewCount": 24
+        }
+      }
+    },
+    "the-boys-in-the-band-2018": {
+      "title": "The Boys in the Band",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 84,
+      "designation": "Liking",
+      "sources": {
+        "mezzanine": {
+          "score": 84,
+          "reviewCount": 147
+        },
+        "theatr": {
+          "score": 86,
+          "reviewCount": 7
+        }
+      }
+    },
+    "torch-song-2018": {
+      "title": "Torch Song",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 86.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 416
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 102
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 3
+        }
+      }
+    },
+    "the-waverly-gallery-2018": {
+      "title": "The Waverly Gallery",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 82.4,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 587
+        },
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 91
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 1
+        }
+      }
+    }
+  }
+}
