@@ -1,52 +1,21 @@
 {
-  "processed": [
-    "the-lost-boys-2026/wsj--unknown.json",
-    "kenrex-off-broadway-2026/broadwayworld--unknown.json",
-    "kenrex-off-broadway-2026/frontmezzjunkies--mezz-junkies.json",
-    "kenrex-off-broadway-2026/times-square-chronicles--suzannah-bowling.json",
-    "the-lost-boys-2026/forum-broadwayworld--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
-    "the-lost-boys-2026/reddit--unknown.json"
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/standard--nick-curtis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "kenrex-off-broadway-2026/frontmezzjunkies--mezz-junkies.json",
-      "kenrex-off-broadway-2026/times-square-chronicles--suzannah-bowling.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-lost-boys-2026/wsj--unknown.json",
-      "the-lost-boys-2026/wsj--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-lost-boys-2026/forum-broadwayworld--unknown.json"
-    ],
-    "archiveToday": [
-      "data/review-texts/the-lost-boys-2026/reddit--unknown.json"
-    ],
-    "archive": [
-      "kenrex-off-broadway-2026/broadwayworld--unknown.json"
-    ]
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
   },
-  "startTime": "2026-04-29T06:53:41.387Z",
-  "lastProcessed": "the-lost-boys-2026/reddit--unknown.json",
-  "log": [
-    {
-      "t": "2026-04-29T06:53:42.923Z",
-      "event": "bb-session",
-      "session": "d17fac7f",
-      "url": "https://www.wsj.com/articles/the-lost-boys-review-broadways-new-bloodsuckers-e6a"
-    },
-    {
-      "t": "2026-04-29T06:53:44.119Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "startTime": "2026-04-29T07:21:17.528Z",
+  "lastProcessed": "mass-west-end-2026/standard--nick-curtis.json",
+  "log": []
 }
