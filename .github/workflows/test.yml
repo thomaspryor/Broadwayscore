@@ -53,7 +53,6 @@ jobs:
     name: Lint Workflows
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -201,12 +200,19 @@ jobs:
           echo "Theatr token restricted to authorized workflows only"
 
       - name: Check demo feature flags not used in server components
-        continue-on-error: true  # TODO: fix showPageRedesign in page.tsx + userAccounts in test/layout.tsx, then remove
         run: |
           # Demo feature flags require window (runtime) and MUST be checked
           # inside 'use client' components. In server components / SSR pages,
           # isDemo() returns false and the feature silently disappears.
           # See: fix 7770e1b567 (theater scorecard invisible on demo).
+          #
+          # Emergency escape hatch (opening-night hotfixes only): if the
+          # commit message contains the literal "[skip-demo-flag-check]",
+          # this gate exits 0. Use sparingly and follow up with a real fix.
+          if git log -1 --format=%B | grep -Fq "[skip-demo-flag-check]"; then
+            echo "::warning::demo-flag check skipped via [skip-demo-flag-check] commit-message tag"
+            exit 0
+          fi
           DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes"
           VIOLATIONS=""
           for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
@@ -219,6 +225,7 @@ jobs:
             echo "::error::Demo feature flags used in server components (will always be false during SSR):"
             echo "::error::$VIOLATIONS"
             echo "Move the featureFlags check inside a 'use client' component."
+            echo "Emergency bypass (opening-night hotfix only): include [skip-demo-flag-check] in the commit message."
             exit 1
           fi
           echo "All demo feature flag checks are in client components"
