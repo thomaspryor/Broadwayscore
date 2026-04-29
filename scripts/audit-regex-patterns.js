@@ -54,27 +54,9 @@ const PATTERN_FAMILIES = [
 // update this list rather than raising DEFAULT_MAX_HITS.
 // Entry format: `${FAMILY}::${index}` → max allowed hits.
 //
-// Calibration provenance — when a number changes, jot it here so a future
-// regression is traceable instead of being silently re-baselined:
-//
-//   PATTERN_CALIBRATION = {
-//     'NAVIGATION_PATTERNS::1': {
-//       commit: 'b0017ebc26',  // Item 4 of systematic CI plan
-//       date: '2026-04-28',
-//       rawHits: 143,
-//       headroom: 0.4,         // 200 / 143 ≈ 1.4
-//       note: 'Diffuse across defunct archive outlets (theater-news-online, '
-//           + 'about-entertainment, new-jersey-newsroom — top 5 = 54% of hits, '
-//           + '51% of dated fetches from 2026-02). No single commit drives the '
-//           + 'baseline; mostly cached chrome bleed in re-unscrapable archives. '
-//           + 'detectNavigationJunk\'s 5+ keyword guard absorbs these at runtime '
-//           + 'so review scoring is unaffected.',
-//     },
-//   };
-//
-// Read this when the next regression hits — does the bump come from one of
-// the documented archive outlets (acceptable) or a new active outlet (real
-// regression, scraper bug to fix)?
+// Calibration provenance lives in PATTERN_CALIBRATION below — when you bump
+// a threshold, ALSO add an entry there so the next regression triage gets
+// the date/commit/reasoning auto-surfaced in the audit failure message.
 const PATTERN_ALLOWLIST = {
   // Paywall: HuffPost "Already a member"/"BECOME A MEMBER", subscriber prompts.
   // 2026-04-28 recalibration: NYT "Already a subscriber? Log in" chrome bleeds
@@ -129,6 +111,66 @@ const PATTERN_ALLOWLIST = {
   'HORROR_FILM_PATTERNS::4': 20,  // /spirit\s+world/ — raw 9
   'HORROR_FILM_PATTERNS::5': 15,  // /scary\s+movies?/ — raw 5
   'HORROR_FILM_PATTERNS::6': 80,  // /horror\s+film/ — raw 43 (duplicate of ::1)
+};
+
+// Per-pattern calibration provenance. Optional companion to PATTERN_ALLOWLIST.
+// When a threshold is bumped, add an entry here documenting WHEN, WHY, and
+// AGAINST WHAT. The audit's failure message renders these inline next to
+// the offending pattern so the next regression triage doesn't have to
+// excavate commit history. Read this BEFORE bumping a threshold —
+// duplicate calibrations on a pattern are a smell ("we keep raising
+// because the scraper keeps regressing").
+//
+// Schema:
+//   '${FAMILY}::${index}': {
+//     commit: '<git-sha>',  // commit that set the current threshold
+//     date: 'YYYY-MM-DD',   // when the calibration was done
+//     rawHits: <number>,    // observed corpus count at calibration time
+//     headroom: <ratio>,    // allowlist value / rawHits (1.3 = 30% headroom)
+//     note: '<short prose>' // why hits diffuse vs concentrated, what to look
+//                           //   for if the threshold trips again
+//   }
+const PATTERN_CALIBRATION = {
+  'NAVIGATION_PATTERNS::1': {
+    commit: '5eab60d60c',
+    date: '2026-04-28',
+    rawHits: 143,
+    headroom: 1.4,
+    note: 'Diffuse across defunct archive outlets (theater-news-online, '
+        + 'about-entertainment, new-jersey-newsroom — top 5 = 54% of hits, '
+        + '51% of dated fetches from 2026-02). No single commit drives the '
+        + 'baseline; mostly cached chrome bleed in re-unscrapable archives. '
+        + "detectNavigationJunk's 5+ keyword guard absorbs these at runtime "
+        + 'so review scoring is unaffected. Next bump: probe by-outlet — '
+        + 'if the bump comes from an ACTIVE outlet (not the documented '
+        + 'archives), it is a scraper regression, fix the strip; if from '
+        + 'an archive, accept and bump.',
+  },
+  'NAVIGATION_PATTERNS::7': {
+    commit: '07bfb0c497',
+    date: '2026-04-28',
+    rawHits: 6,
+    headroom: 1.7,
+    note: '/trending (now|stories|articles)/ — recent-articles widget bleed. '
+        + 'Sized to default-+30%; widget appears on most modern outlet '
+        + 'review pages.',
+  },
+  'NEWSLETTER_PATTERNS::5': {
+    commit: '07bfb0c497',
+    date: '2026-04-28',
+    rawHits: 10,
+    headroom: 1.5,
+    note: 'HuffPost/TheaterMania newsletter widget footer. Caught in '
+        + 'leading/trailing-junk mitigation downstream.',
+  },
+  'PAYWALL_PATTERNS::7': {
+    commit: '07bfb0c497',
+    date: '2026-04-28',
+    rawHits: 28,
+    headroom: 1.4,
+    note: 'NYT "Already a subscriber? Log in" chrome that bleeds into '
+        + '~28 archived NYT reviews. Sized baseline + 30%.',
+  },
 };
 
 const DEFAULT_MAX_HITS = 5;
@@ -268,6 +310,13 @@ function reportText({ scanned, counts, violations, args, families }) {
     const regex = families[v.family][v.index];
     lines.push(`  ${v.family}[${v.index}] — ${v.hits} hits (allow ${v.allow})`);
     lines.push(`    regex: ${regex}`);
+    const cal = PATTERN_CALIBRATION[`${v.family}::${v.index}`];
+    if (cal) {
+      lines.push(`    calibrated: ${cal.date} @ ${cal.commit} (rawHits ${cal.rawHits}, headroom ${cal.headroom}x)`);
+      lines.push(`    note: ${cal.note}`);
+    } else {
+      lines.push('    calibrated: <no provenance entry — add one to PATTERN_CALIBRATION when bumping>');
+    }
     for (const ex of v.examples) {
       lines.push(`    [${ex.show}/${ex.file}] match: "${ex.match}"`);
       lines.push(`      …${ex.snippet}…`);
@@ -285,7 +334,7 @@ function main() {
   const violations = evaluate({ counts, maxHits: args.maxHits });
 
   if (args.json) {
-    const out = { scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST };
+    const out = { scanned, maxHits: args.maxHits, violations, allowlist: PATTERN_ALLOWLIST, calibration: PATTERN_CALIBRATION };
     console.log(JSON.stringify(out, null, 2));
   } else {
     console.log(reportText({ scanned, counts, violations, args, families }));
