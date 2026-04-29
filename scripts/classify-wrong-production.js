@@ -34,7 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
 
 let lockedSkipCount = 0;
 
@@ -596,24 +596,20 @@ async function main() {
           stats.applied++;
           console.log(`  FLAGGED ${result.showId}/${result.file} (dup at ${result.targetShowId})`);
         } else {
-          // TOPOLOGY: file moves do not honor _locked — see S1-T5.
-          // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target
-          // path exists and is itself locked. The "if (fs.existsSync(targetPath))"
-          // branch above (duplicate-at-target) handles the source-flag case;
-          // this catches the case where targetPath exists but our reviewData
-          // would have created a NEW file there had we not collided.
-          if (fs.existsSync(targetPath)) {
-            try {
-              const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
-              if (targetData._locked === true) {
-                lockedSkipCount++;
-                console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.targetShowId}/${result.file} is locked — refusing MOVE`);
-                continue;
-              }
-            } catch { /* corrupt target — fall through */ }
+          const moveResult = safeRenameReview(filePath, targetPath, { newData: reviewData });
+          if (moveResult.skipped === 'locked') {
+            lockedSkipCount++;
+            console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: source is locked — refusing MOVE`);
+            continue;
           }
-          fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
-          fs.unlinkSync(filePath);
+          if (moveResult.skipped === 'conflict') {
+            console.log(`  [CONFLICT] ${result.showId}/${result.file}: target ${result.targetShowId}/${result.file} appeared mid-flight — skipping MOVE`);
+            continue;
+          }
+          if (!moveResult.wrote) {
+            console.log(`  [SKIP-${moveResult.skipped}] ${result.showId}/${result.file}: ${moveResult.error || ''}`);
+            continue;
+          }
           stats.moved++;
           console.log(`  MOVED ${result.showId}/${result.file} → ${result.targetShowId}/`);
         }

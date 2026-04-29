@@ -4,8 +4,10 @@
  * lockedOverride doesn't block it. shouldSkipLockedEnrichment is the
  * required early-return.
  *
- * The merge-then-unlink path (line ~128) is explicitly out of scope
- * (TOPOLOGY marker) — file moves don't honor _locked.
+ * Topology follow-up (2026-04-29): the merge-then-unlink path now routes
+ * through safeWriteReview + safeUnlinkReview. The pre-check that refuses
+ * merge when either side is locked stays as a defense-in-depth guard.
+ * The TOPOLOGY: comment is removed.
  */
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
@@ -65,22 +67,42 @@ describe('cleanup-phantom-outlets locked-file behavior (S1-T3f)', () => {
     assert.equal(written.outletId, 'canonical-id');
   });
 
-  test('TOPOLOGY marker is present on the merge-then-unlink path', () => {
+  test('TOPOLOGY marker has been REMOVED post-helper-migration (2026-04-29)', () => {
+    // Topology follow-up landed safeRenameReview + safeUnlinkReview. The
+    // merge-then-unlink path now routes through the helpers. The TOPOLOGY:
+    // comment was a tombstone for the bypass — once the bypass is gone, the
+    // tombstone must be too. (Counterpart assertion guarding against drift.)
     const src = fs.readFileSync(
       path.resolve('scripts/cleanup-phantom-outlets.js'),
       'utf8',
     );
     assert.ok(
-      src.includes('TOPOLOGY: merge-then-unlink does not honor _locked'),
-      'cleanup-phantom-outlets.js must mark merge-then-unlink with a TOPOLOGY comment',
+      !src.includes('TOPOLOGY:'),
+      'cleanup-phantom-outlets.js must no longer carry a TOPOLOGY marker — the bypass has been migrated to safeUnlinkReview',
     );
   });
 
-  test('topology stop-gap: merge refuses when canonical or phantom is locked (ship-check P0)', () => {
-    // Verifies the stop-gap added 2026-04-26 after Codex review flagged that
-    // mergeReviews + raw write at line 132 would blend phantom data into a
-    // locked canonical and bypass lockedOverride. The stop-gap reads _locked
-    // from BOTH sides before merging.
+  test('routes through safeWriteReview + safeUnlinkReview after migration', () => {
+    const src = fs.readFileSync(
+      path.resolve('scripts/cleanup-phantom-outlets.js'),
+      'utf8',
+    );
+    assert.ok(
+      /safeUnlinkReview\b/.test(src),
+      'cleanup-phantom-outlets must use safeUnlinkReview for phantom deletion',
+    );
+    assert.ok(
+      !/fs\.unlinkSync\(path\.join\(showDir, phantom\.file\)\)/.test(src),
+      'raw fs.unlinkSync of phantom file must be removed',
+    );
+  });
+
+  test('topology stop-gap: merge refuses when canonical or phantom is locked (defense-in-depth)', () => {
+    // Pre-check kept as defense-in-depth: short-circuits the entire merge if
+    // either side is locked, even though safeWriteReview's lockedOverride
+    // would partially protect canonical and safeUnlinkReview would refuse to
+    // delete a locked phantom. Pre-check ensures all-or-nothing: we don't
+    // want canonical mutated when we can't also delete phantom.
     const src = fs.readFileSync(
       path.resolve('scripts/cleanup-phantom-outlets.js'),
       'utf8',

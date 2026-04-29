@@ -34,6 +34,8 @@ jobs:
             "collect-we-ob-reviews.yml|50|Collect WE/OB Reviews"
             "sweep-we-aggregators.yml|192|Sweep WE Aggregators"
             "enrich-west-end-dates.yml|50|Enrich West End Dates"
+            "enrich-off-broadway-dates.yml|50|Enrich Off-Broadway Dates"
+            "refresh-show-score-opening-night.yml|50|Refresh Show Score (opening-night)"
             "scrape-westendtheatre.yml|192|Scrape WestEndTheatre"
             # User-facing data refresh workflows. Stale data hits /lotteries,
             # /rush, /standing-room, /discount-tickets, /box-office — pages

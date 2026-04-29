@@ -1,7 +1,9 @@
 /**
  * Verifies audit-pre2005-reviews.js's flag-write paths preserve PROTECTED
  * fields on locked files (S1-T3b). The cross-show MOVE path is explicitly
- * out of scope (TOPOLOGY marker) and tracked in a separate Notion card.
+ * Topology follow-up (2026-04-29): cross-show MOVE now routes through
+ * safeRenameReview which honors source `_locked` directly. The TOPOLOGY:
+ * marker is removed.
  */
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
@@ -69,29 +71,33 @@ describe('audit-pre2005-reviews flag-write paths (S1-T3b)', () => {
     assert.equal(written.auditSuggested, 'wrongProduction');
   });
 
-  test('TOPOLOGY marker is present on the cross-show MOVE write', () => {
+  test('TOPOLOGY marker has been REMOVED post-helper-migration (2026-04-29)', () => {
     const src = fs.readFileSync(
       path.resolve('scripts/audit-pre2005-reviews.js'),
       'utf8',
     );
     assert.ok(
-      src.includes('TOPOLOGY: file moves do not honor _locked'),
-      'audit-pre2005-reviews.js must mark the MOVE write with a TOPOLOGY comment',
+      !src.includes('TOPOLOGY:'),
+      'audit-pre2005-reviews.js must no longer carry a TOPOLOGY marker — the bypass has been migrated to safeRenameReview',
     );
   });
 
-  test('topology stop-gap: cross-show MOVE refuses when target is locked (ship-check P0)', () => {
+  test('cross-show MOVE routes through safeRenameReview after migration', () => {
     const src = fs.readFileSync(
       path.resolve('scripts/audit-pre2005-reviews.js'),
       'utf8',
     );
     assert.ok(
-      /targetData\._locked\s*===\s*true/.test(src),
-      'cross-show MOVE must check target _locked before raw write',
+      /safeRenameReview\b/.test(src),
+      'audit-pre2005-reviews must use safeRenameReview for cross-show MOVE',
     );
     assert.ok(
-      src.includes('target') && src.includes('is locked') && src.includes('refusing MOVE'),
-      'MOVE refusal must log [LOCKED-SKIP] target-is-locked for operator visibility',
+      !/fs\.writeFileSync\(targetPath/.test(src),
+      'raw fs.writeFileSync to targetPath must be removed',
+    );
+    assert.ok(
+      src.includes('LOCKED-SKIP') && src.includes('source is locked'),
+      'MOVE refusal must log [LOCKED-SKIP] source-is-locked for operator visibility',
     );
   });
 });

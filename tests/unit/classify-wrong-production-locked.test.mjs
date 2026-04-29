@@ -1,7 +1,9 @@
 /**
  * Verifies classify-wrong-production.js's flag-write paths preserve PROTECTED
  * fields on locked files (S1-T3c). The cross-show MOVE path is explicitly
- * out of scope (TOPOLOGY marker).
+ * Topology follow-up (2026-04-29): cross-show MOVE now routes through
+ * safeRenameReview which honors source `_locked`. The TOPOLOGY: marker
+ * is removed.
  */
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
@@ -92,25 +94,29 @@ describe('classify-wrong-production locked-file behavior (S1-T3c)', () => {
     assert.equal(written.contentTier, 'complete');
   });
 
-  test('TOPOLOGY marker is present on the cross-show MOVE write', () => {
+  test('TOPOLOGY marker has been REMOVED post-helper-migration (2026-04-29)', () => {
     const src = fs.readFileSync(
       path.resolve('scripts/classify-wrong-production.js'),
       'utf8',
     );
     assert.ok(
-      src.includes('TOPOLOGY: file moves do not honor _locked'),
-      'classify-wrong-production.js must mark the MOVE write with a TOPOLOGY comment',
+      !src.includes('TOPOLOGY:'),
+      'classify-wrong-production.js must no longer carry a TOPOLOGY marker — the bypass has been migrated to safeRenameReview',
     );
   });
 
-  test('topology stop-gap: cross-show MOVE refuses when target is locked (ship-check P0)', () => {
+  test('cross-show MOVE routes through safeRenameReview after migration', () => {
     const src = fs.readFileSync(
       path.resolve('scripts/classify-wrong-production.js'),
       'utf8',
     );
     assert.ok(
-      /targetData\._locked\s*===\s*true/.test(src),
-      'classify-wrong-production cross-show MOVE must check target _locked',
+      /safeRenameReview\b/.test(src),
+      'classify-wrong-production must use safeRenameReview for cross-show MOVE',
+    );
+    assert.ok(
+      !/fs\.writeFileSync\(targetPath/.test(src),
+      'raw fs.writeFileSync to targetPath must be removed',
     );
   });
 });

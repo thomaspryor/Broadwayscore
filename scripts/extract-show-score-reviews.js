@@ -46,14 +46,24 @@ function detectCategory(html, showId) {
 // extracted URLs and excerpts. Used to guard against cross-show contamination
 // (Show Score's "Recent Reviews" sidebar leaking into the show's tile list
 // when the show is in their content-pipeline upgrade state).
+//
+// Edge case: numeric-title shows like "1776-2022" — naively stripping the
+// year suffix leaves "" with no tokens, which short-circuits the contamination
+// check (returns true unconditionally). When the year IS the title, keep it
+// as a token. Detected by checking whether stripping year-suffix removes
+// the only meaningful content.
 function _showProbeTokens(showId) {
-  const stripped = showId
-    .replace(/-(\d{4})$/, '')
+  const yearStripped = showId.replace(/-(\d{4})$/, '');
+  const yearToken = (showId.match(/-(\d{4})$/) || [])[1];
+  const fullyStripped = yearStripped
     .replace(/-(broadway|off-broadway|west-end|off-west-end|the-musical)$/g, '')
     .replace(/-the-musical-(broadway|off-broadway|west-end|off-west-end)$/, '')
     .replace(/-(broadway|off-broadway|west-end|off-west-end)$/g, '');
-  // Use first 1-2 distinctive tokens (most show titles have a recognizable name in slug pos 0-1)
-  const parts = stripped.split('-').filter(t => t.length >= 3);
+  const parts = fullyStripped.split('-').filter(t => t.length >= 3);
+  // If stripping market-suffixes left no meaningful tokens AND the year IS
+  // the title (e.g. "1776"), retain the year as a probe token. Without this,
+  // numeric-titled revivals get a no-op contamination check.
+  if (parts.length === 0 && yearToken) return [yearToken];
   return parts.slice(0, 3);
 }
 

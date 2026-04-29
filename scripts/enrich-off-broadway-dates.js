@@ -94,7 +94,11 @@ function parseUSDate(text, defaultYear) {
   const year = m[3] || String(defaultYear || new Date().getFullYear());
   if (!month) return null;
   const y = parseInt(year, 10);
-  if (y < 2020 || y > 2030) return null; // sanity-bound
+  // Sanity-bound: rolling window relative to current year so this doesn't
+  // rot in 2031. Allow 5 years past, 5 years future — covers reasonable
+  // schedule announcements without admitting obvious garbage.
+  const currentYear = new Date().getFullYear();
+  if (y < currentYear - 5 || y > currentYear + 5) return null;
   return `${year}-${month}-${day}`;
 }
 
@@ -358,13 +362,15 @@ async function main() {
   const allShows = data.shows || data;
 
   // Filter to off-broadway shows.
-  // Closed shows are EXCLUDED from match-back: their slug may be reused (or
-  // title-matched) by a new upcoming production, and we'd corrupt the closed
-  // show's historical dates. Romeo & Juliet Suite 2026 (closed 2026-03-21)
-  // got its dates overwritten with a 2026-06-11 future production's data
-  // before this guard existed (caught in /ship-check 2026-04-29; reverted
-  // in private repo).
-  let obShows = allShows.filter(s => s.category === 'off-broadway' && s.status !== 'closed');
+  // Status allowlist: only `open`, `previews`, `upcoming`, `announced` shows
+  // are eligible for date-correction. Closed/cancelled/postponed/transferred
+  // shows are EXCLUDED — their slug may be reused (or title-matched) by a
+  // new upcoming production, and we'd corrupt the historical entry's dates.
+  // Romeo & Juliet Suite 2026 (status=closed) got its dates overwritten with
+  // a 2026-06-11 future production's data before this guard existed (caught
+  // in /ship-check 2026-04-29; reverted in private repo).
+  const ELIGIBLE_STATUSES = new Set(['open', 'previews', 'upcoming', 'announced']);
+  let obShows = allShows.filter(s => s.category === 'off-broadway' && ELIGIBLE_STATUSES.has(s.status));
   console.log(`Off-Broadway shows in shows.json: ${obShows.length}`);
   if (showFilter) {
     obShows = obShows.filter(s => s.id === showFilter || s.slug === showFilter);
@@ -413,7 +419,12 @@ async function main() {
 
   for (const entry of merged) {
     if (!entry.opening) continue; // skip entries without an opening date
-    const result = matchTitleToShow(entry.title, obShows, { market: 'broadway' });
+    // Pass market: 'off-broadway' (NOT 'broadway') so pickBestProduction's
+    // market-aware filter at scripts/lib/show-matching.js:507-518 keeps OB
+    // candidates when a title has both Broadway and OB productions. Passing
+    // 'broadway' would filter to !cat||cat==='broadway' and silently drop
+    // the OB show from candidates. (Caught in /ship-check 2026-04-29.)
+    const result = matchTitleToShow(entry.title, obShows, { market: 'off-broadway' });
     if (!result || result.confidence !== 'high' || result.show.category !== 'off-broadway') continue;
     const show = result.show;
     const isCandidate = candidateShows.some(s => s.id === show.id);
@@ -494,7 +505,12 @@ async function main() {
     name: 'enrich-off-broadway-dates',
     changes,
     candidateCount: candidateShows.length,
-    thresholds: { absoluteChanges: 50, changePercent: 0.5 },
+    // Tightened from absoluteChanges:50, changePercent:0.5 after /ship-check
+    // 2026-04-29: 217 OB candidates × 0.5 = 108-change ceiling was wide enough
+    // to mask a parser regression that flips most candidates. Daily steady-state
+    // should be 0-3 corrections; --initial-backfill bypass is the single
+    // operator-acknowledged exception.
+    thresholds: { absoluteChanges: 20, changePercent: 0.15 },
     forceFlag: force,
     initialBackfillFlag: initialBackfill,
     snapshotPath: ABORT_SNAPSHOT_PATH,
@@ -524,6 +540,22 @@ async function main() {
     saveShows(data);
     console.log('');
     console.log(`Wrote ${changes.length} change(s) to shows.json`);
+
+    // Post-write validation pass. Mirrors enrich-west-end-dates.js:684-694
+    // — if validate-data.js fails, we exit non-zero so the workflow's push
+    // step is skipped and the bad write doesn't leave the local repo. CI's
+    // checkout-core-data + push-core-data would normally rebase + push, but
+    // a non-zero exit here aborts the job before push.
+    console.log('');
+    console.log('Running data validation...');
+    try {
+      const { execSync } = require('child_process');
+      execSync('node scripts/validate-data.js', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
+      console.log('Validation passed');
+    } catch (e) {
+      console.error('Validation failed after write — review changes and revert if needed.');
+      process.exit(1);
+    }
   } else if (changes.length > 0) {
     console.log('');
     console.log(`(${verify ? 'verify' : 'dry-run'} mode — no writes)`);

@@ -27,7 +27,7 @@ const {
   loadOutletRegistry,
   levenshteinDistance,
 } = require('./lib/review-normalization');
-const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { safeWriteReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 
 let lockedSkipCount = 0;
 
@@ -127,20 +127,38 @@ function run() {
           console.log(`    Phantom: ${phantomOutletId} | Canonical: ${normalizeOutlet(canonical.data.outlet || canonical.data.outletId)}`);
 
           if (apply) {
-            // TOPOLOGY: merge-then-unlink does not honor _locked — see S1-T5.
-            // Stop-gap (ship-check P0 2026-04-26): refuse the merge if EITHER side
-            // is locked. mergeReviews would otherwise blend phantom into a locked
-            // canonical via raw write, bypassing lockedOverride. Real fix lands
-            // with safeRenameReview/safeUnlinkReview in the topology follow-up card.
+            // Refuse the merge if EITHER side is locked. Pre-check preserves
+            // the all-or-nothing semantics: we won't write merged data to
+            // canonical if we can't also delete phantom (and vice versa).
+            // safeUnlinkReview gates phantom-locked at delete time, but we
+            // also pre-check to avoid the partial state where canonical is
+            // already mutated.
             if (canonical.data._locked === true || phantom.data._locked === true) {
               lockedSkipCount++;
               console.log(`  [LOCKED-SKIP] ${showId}: refusing merge — ${canonical.data._locked ? 'canonical' : 'phantom'} is locked`);
             } else {
               const merged = mergeReviews(canonical.data, phantom.data);
-              fs.writeFileSync(path.join(showDir, canonical.file), JSON.stringify(merged, null, 2) + '\n');
-              fs.unlinkSync(path.join(showDir, phantom.file));
-              totalMerged++;
-              totalDeleted++;
+              const canonicalPath = path.join(showDir, canonical.file);
+              const phantomPath = path.join(showDir, phantom.file);
+              const writeResult = safeWriteReview(canonicalPath, merged);
+              if (writeResult.lockedSkipped) {
+                lockedSkipCount++;
+                console.log(`  [LOCKED-SKIP] ${showId}: canonical locked between read and write — ${canonical.file}`);
+              } else {
+                const unlinkResult = safeUnlinkReview(phantomPath);
+                if (!unlinkResult.wrote) {
+                  if (unlinkResult.lockedSkipped) lockedSkipCount++;
+                  // Partial-state warning: canonical was just merged with phantom's
+                  // non-protected fields, but phantom couldn't be unlinked. The
+                  // pre-check at line ~135 normally prevents this — we hit this
+                  // branch only on TOCTOU (phantom became locked between pre-check
+                  // and unlink). Operator must reconcile the pair manually.
+                  console.warn(`  [PARTIAL-STATE] ${showId}: phantom ${phantom.file} could not be unlinked (${unlinkResult.skipped}); canonical ${canonical.file} HAS merged data — manual reconciliation required`);
+                } else {
+                  totalMerged++;
+                  totalDeleted++;
+                }
+              }
             }
           }
         }

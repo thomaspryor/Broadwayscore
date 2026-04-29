@@ -114,7 +114,76 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
+
+/**
+ * Rename a review-text file to match its in-memory criticName when one of the
+ * three criticName-override branches in updateReviewJson() (1A-bis HC override,
+ * 1B byline cross-check, 1B-iii Unknown→real-name enrichment) changes the
+ * canonical filename.
+ *
+ * Conflict-mode design (post PR #290 revert, 2026-04-29):
+ * - On clean rename (dst doesn't exist): route through safeRenameReview which
+ *   honors source `_locked` and updates the llm-scores sidecar + sibling
+ *   duplicateTextOf pointers. Update review.filePath so the trailing
+ *   updateReviewJson write lands at the new path.
+ * - On conflict (dst exists): leave source untouched. Set data.duplicateOf =
+ *   newFilename so validate-review-texts.js's skip-gate (line 185) catches
+ *   the file before reviews.json. The trailing write at line ~4987 picks
+ *   that up. Crucially, review.filePath stays at the SOURCE path — that's
+ *   what kills the "merge undone by line 5069" bug PR #290 fell to.
+ *
+ * @param {object} review - The in-flight review object (mutates review.filePath)
+ * @param {object} data - The in-memory review data (mutates data.duplicateOf on conflict)
+ * @param {string} extractedAuthor - The new canonical critic name
+ * @returns {{ action: 'noop'|'renamed'|'conflict'|'skipped-locked', newFile?: string }}
+ */
+function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
+  if (!review.filePath || !extractedAuthor) {
+    return { action: 'noop' };
+  }
+  const currentFile = path.basename(review.filePath);
+  const showDir = path.dirname(review.filePath);
+  const outletId = normalizeOutlet(data.outletId || data.outlet);
+  const newFilename = generateReviewFilename(outletId, extractedAuthor);
+
+  if (newFilename === currentFile) {
+    return { action: 'noop' };
+  }
+
+  const newPath = path.join(showDir, newFilename);
+  if (fs.existsSync(newPath)) {
+    // Conflict: do NOT merge, do NOT delete source. Mark this file as a
+    // duplicate so validate-review-texts skips it, and let the operator
+    // (or the dedup audit) decide which file is canonical.
+    data.duplicateOf = newFilename;
+    data.duplicateReason = 'criticName-override-collided-at-rename';
+    console.warn(`    ⚠ Rename conflict: ${currentFile} → ${newFilename} already exists. Marking duplicateOf=${newFilename}; source kept at ${currentFile} for triage.`);
+    return { action: 'conflict', newFile: newFilename };
+  }
+
+  // Pass newData=data so the freshly-overridden criticName etc. land at the
+  // new path (the helper writes our in-memory data, not the on-disk source).
+  const result = safeRenameReview(review.filePath, newPath, { newData: data });
+  if (result.skipped === 'locked') {
+    console.warn(`    ⚠ Rename refused: ${currentFile} is _locked. Leaving filename as-is; criticName mismatch will be caught by validate-review-texts on next CI run.`);
+    return { action: 'skipped-locked' };
+  }
+  if (result.skipped === 'conflict') {
+    // TOCTOU: another writer created newPath after our existsSync check.
+    data.duplicateOf = newFilename;
+    data.duplicateReason = 'criticName-override-collided-at-rename';
+    return { action: 'conflict', newFile: newFilename };
+  }
+  if (!result.wrote) {
+    console.warn(`    ⚠ Rename skipped (${result.skipped}): ${result.error || ''}`);
+    return { action: 'noop' };
+  }
+
+  review.filePath = newPath;
+  console.log(`    → Renamed ${currentFile} → ${newFilename}`);
+  return { action: 'renamed', newFile: newFilename };
+}
 
 // Domain-specific tier ordering — prioritizes tiers by historical success rate per domain.
 // Generated from 30K+ review collection results. Tiers not listed for a domain stay in default order.
@@ -4535,6 +4604,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.expectedCritic;
       delete data.fullTextWrongAuthor;
       delete data._authorMismatch;
+
+      // Rename the file to match the new canonical critic. On conflict,
+      // sets data.duplicateOf so validate-review-texts skips it.
+      renameReviewFileForCriticOverride(review, data, hcAuthor.name);
     }
   }
 
@@ -4577,6 +4650,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         delete data.expectedCritic;
         delete data.fullTextWrongAuthor;
         delete data._authorMismatch;
+        // Rename the file to match the new canonical critic.
+        renameReviewFileForCriticOverride(review, data, hcAuthor.name);
       } else {
         data.misattributedFullText = true;
         data.extractedByline = bylineResult.name;
@@ -4620,42 +4695,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       delete data.extractedByline;
       delete data.expectedCritic;
 
-      // Rename file to match enriched critic name (prevents stale --unknown filenames)
-      const currentFile = path.basename(review.filePath);
-      if (currentFile.includes('--unknown')) {
-        const showDir = path.dirname(review.filePath);
-        const outletId = normalizeOutlet(data.outletId || data.outlet);
-        const newFilename = generateReviewFilename(outletId, extractedAuthor);
-        if (newFilename !== currentFile) {
-          const newPath = path.join(showDir, newFilename);
-          if (fs.existsSync(newPath)) {
-            // Named file already exists — merge unique fields from --unknown into it, then delete --unknown
-            try {
-              const existingData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
-              let merged = false;
-              for (const [key, val] of Object.entries(data)) {
-                if (val != null && !existingData[key]) {
-                  existingData[key] = val;
-                  merged = true;
-                }
-              }
-              if (merged) {
-                fs.writeFileSync(newPath, JSON.stringify(existingData, null, 2) + '\n');
-              }
-              fs.unlinkSync(review.filePath);
-              console.log(`    → Merged enriched --unknown into existing ${newFilename} and deleted stale file`);
-              review.filePath = newPath;
-            } catch (mergeErr) {
-              console.warn(`    → Warning: could not merge into ${newFilename}: ${mergeErr.message}`);
-            }
-          } else {
-            // No named file exists — just rename
-            fs.renameSync(review.filePath, newPath);
-            review.filePath = newPath;
-            console.log(`    → Renamed ${currentFile} → ${newFilename}`);
-          }
-        }
-      }
+      // Rename file to match enriched critic name (prevents stale --unknown filenames).
+      // Conflict-mode (post PR #290 revert): no inline merge — helper sets
+      // data.duplicateOf on conflict and validate-review-texts skips the file.
+      // Removing the merge eliminates the line-5069 corruption surface.
+      renameReviewFileForCriticOverride(review, data, extractedAuthor);
     }
   }
 
