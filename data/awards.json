@@ -1,13 +1,14 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-02-24",
+    "lastUpdated": "2026-04-29T04:43:17.892Z",
     "sources": [
       "Wikipedia",
       "Playbill",
       "TonyAwards.com",
       "BroadwayWorld",
-      "Wikipedia (Olivier Awards)"
+      "Wikipedia (Olivier Awards)",
+      "Wikipedia (Tony, Drama Desk, Outer Critics Circle, Drama League, NY Drama Critics' Circle, Pulitzer Drama)"
     ]
   },
   "shows": {
@@ -372,13 +373,13 @@
       "dramadesk": {
         "season": "2015-16",
         "wins": [
-          "Outstanding Musical",
-          "Outstanding Music",
-          "Outstanding Lyrics",
           "Outstanding Book of a Musical",
+          "Outstanding Choreography",
           "Outstanding Featured Actress in a Musical",
-          "Outstanding Sound Design in a Musical",
-          "Outstanding Choreography"
+          "Outstanding Lyrics",
+          "Outstanding Music",
+          "Outstanding Musical",
+          "Outstanding Sound Design in a Musical"
         ],
         "nominations": 13,
         "nominatedFor": [
@@ -398,8 +399,8 @@
       "dramaLeague": {
         "season": "2015-16",
         "wins": [
-          "Outstanding Production of a Broadway or Off-Broadway Musical",
           "Distinguished Performance",
+          "Outstanding Production of a Broadway or Off-Broadway Musical",
           "Outstanding Production of a Musical"
         ],
         "nominatedFor": [
@@ -407,12 +408,11 @@
         ]
       },
       "pulitzer": {
-        "year": 2016,
-        "category": "Drama",
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2016
       },
       "nyDramaCritics": {
         "wins": [
@@ -420,7 +420,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2015-16"
       }
     },
     "hadestown-2019": {
@@ -471,12 +472,12 @@
       "outerCriticsCircle": {
         "season": "2018-19",
         "wins": [
-          "Outstanding New Broadway Musical",
+          "Outstanding Director of a Musical",
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
-          "Outstanding New Score",
-          "Outstanding Director of a Musical",
-          "Outstanding Lighting Design"
+          "Outstanding Lighting Design",
+          "Outstanding New Broadway Musical",
+          "Outstanding New Score"
         ],
         "nominations": 12,
         "nominatedFor": [
@@ -558,8 +559,8 @@
       "dramaLeague": {
         "season": "2019-20",
         "wins": [
-          "Outstanding Production of a Musical",
-          "Distinguished Performance Award"
+          "Distinguished Performance Award",
+          "Outstanding Production of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Production of a Musical"
@@ -589,10 +590,10 @@
       "dramadesk": {
         "season": "2021-22",
         "wins": [
-          "Outstanding Music",
-          "Outstanding Lyrics",
+          "Ensemble Award",
           "Outstanding Costume Design for a Musical",
-          "Ensemble Award"
+          "Outstanding Lyrics",
+          "Outstanding Music"
         ],
         "nominations": 10,
         "nominatedFor": [
@@ -602,9 +603,9 @@
       "outerCriticsCircle": {
         "season": "2021-22",
         "wins": [
+          "Outstanding Costume Design",
           "Outstanding New Broadway Musical",
-          "Outstanding New Score",
-          "Outstanding Costume Design"
+          "Outstanding New Score"
         ],
         "nominations": 6,
         "nominatedFor": [
@@ -660,12 +661,12 @@
       "outerCriticsCircle": {
         "season": "2017-18",
         "wins": [
-          "Outstanding New Broadway Play",
           "Outstanding Director of a Play",
-          "Outstanding Set Design",
           "Outstanding Lighting Design",
-          "Outstanding Sound Design",
-          "Outstanding Projection Design"
+          "Outstanding New Broadway Play",
+          "Outstanding Projection Design",
+          "Outstanding Set Design",
+          "Outstanding Sound Design"
         ],
         "nominations": 10,
         "nominatedFor": [
@@ -978,8 +979,8 @@
       "outerCriticsCircle": {
         "season": "2023-24",
         "wins": [
-          "Outstanding New Broadway Musical",
           "Outstanding Book of a Musical",
+          "Outstanding New Broadway Musical",
           "Outstanding Score"
         ],
         "nominations": 5,
@@ -1027,13 +1028,13 @@
       "dramadesk": {
         "season": "2023-24",
         "wins": [
-          "Outstanding Play",
+          "Ensemble Award",
           "Outstanding Direction of a Play",
-          "Outstanding Sound Design of a Play",
           "Outstanding Music in a Play",
           "Outstanding Orchestrations",
+          "Outstanding Play",
           "Outstanding Scenic Design of a Play",
-          "Ensemble Award"
+          "Outstanding Sound Design of a Play"
         ],
         "nominations": 8,
         "nominatedFor": [
@@ -1043,8 +1044,8 @@
       "outerCriticsCircle": {
         "season": "2023-24",
         "wins": [
-          "Outstanding New Broadway Play",
           "Outstanding Direction of a Play",
+          "Outstanding New Broadway Play",
           "Outstanding Scenic Design",
           "Outstanding Sound Design"
         ],
@@ -1056,8 +1057,8 @@
       "dramaLeague": {
         "season": "2023-24",
         "wins": [
-          "Outstanding Production of a Play",
-          "Outstanding Direction of a Play"
+          "Outstanding Direction of a Play",
+          "Outstanding Production of a Play"
         ],
         "nominatedFor": [
           "Outstanding Production of a Play"
@@ -1073,7 +1074,8 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2023-24"
       }
     },
     "hells-kitchen-2024": {
@@ -1245,8 +1247,8 @@
       "dramaLeague": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Production of a Play",
-          "Outstanding Direction of a Play"
+          "Outstanding Direction of a Play",
+          "Outstanding Production of a Play"
         ],
         "nominatedFor": [
           "Outstanding Production of a Play"
@@ -1260,7 +1262,8 @@
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2025
       }
     },
     "the-roommate-2024": {
@@ -1345,11 +1348,11 @@
       "dramadesk": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Musical",
-          "Outstanding Director of a Musical",
-          "Outstanding Music",
-          "Outstanding Lyrics",
           "Outstanding Book of a Musical",
+          "Outstanding Director of a Musical",
+          "Outstanding Lyrics",
+          "Outstanding Music",
+          "Outstanding Musical",
           "Outstanding Scenic Design of a Musical"
         ],
         "nominations": 9,
@@ -1360,9 +1363,9 @@
       "outerCriticsCircle": {
         "season": "2024-25",
         "wins": [
-          "Outstanding New Broadway Musical",
-          "Outstanding Director of a Musical",
           "Outstanding Book of a Musical",
+          "Outstanding Director of a Musical",
+          "Outstanding New Broadway Musical",
           "Outstanding New Score"
         ],
         "nominations": 9,
@@ -1373,8 +1376,8 @@
       "dramaLeague": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Production of a Musical",
-          "Outstanding Direction of a Musical"
+          "Outstanding Direction of a Musical",
+          "Outstanding Production of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Production of a Musical"
@@ -1386,7 +1389,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2024-25"
       }
     },
     "death-becomes-her-2024": {
@@ -4826,13 +4830,15 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2014-15"
       },
       "pulitzer": {
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2014
       }
     },
     "an-american-in-paris-2015": {
@@ -5385,13 +5391,15 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2015-16"
       },
       "pulitzer": {
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2016
       }
     },
     "eclipsed-2016": {
@@ -5461,14 +5469,16 @@
         "season": "2015-16",
         "wins": [],
         "nominatedFor": [
-          "Outstanding Production of a Play"
+          "Outstanding Production of a Play",
+          "Outstanding Revival of a Play"
         ]
       },
       "pulitzer": {
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2015
       }
     },
     "king-charles-iii-2015": {
@@ -5865,14 +5875,18 @@
       },
       "dramadesk": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Revival of a Musical"
         ]
       },
       "outerCriticsCircle": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Revival of a Musical"
         ]
@@ -6563,7 +6577,8 @@
         ],
         "nominatedFor": [
           "Best Foreign Play"
-        ]
+        ],
+        "season": "2021-22"
       }
     },
     "skeleton-crew-2022": {
@@ -6591,7 +6606,15 @@
         "season": "2021-22",
         "wins": [],
         "nominatedFor": [
-          "Outstanding Production of a Play"
+          "Outstanding Production of a Play",
+          "Outstanding Revival of a Play"
+        ]
+      },
+      "dramadesk": {
+        "season": "2021-22",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
         ]
       }
     },
@@ -6623,7 +6646,8 @@
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2018
       }
     },
     "a-strange-loop-2022": {
@@ -6681,13 +6705,15 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2021-22"
       },
       "pulitzer": {
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2020
       }
     },
     "girl-from-the-north-country-2022": {
@@ -7234,7 +7260,8 @@
         ],
         "nominatedFor": [
           "Best Foreign Play"
-        ]
+        ],
+        "season": "2022-23"
       }
     },
     "aint-no-mo-2022": {
@@ -7284,13 +7311,15 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2022-23"
       },
       "pulitzer": {
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2015
       }
     },
     "cost-of-living-2022": {
@@ -7318,7 +7347,8 @@
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2018
       }
     },
     "fat-ham-2023": {
@@ -7353,7 +7383,8 @@
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2022
       }
     },
     "kimberly-akimbo-2022": {
@@ -7401,7 +7432,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2022-23"
       }
     },
     "new-york-new-york-2023": {
@@ -7947,6 +7979,21 @@
         ],
         "nominatedFor": [
           "Best Play"
+        ],
+        "season": "2023-24"
+      },
+      "outerCriticsCircle": {
+        "season": "2023-24",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2023-24",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
         ]
       }
     },
@@ -8356,13 +8403,15 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2024-25"
       },
       "pulitzer": {
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2025
       }
     },
     "english-2025": {
@@ -8397,7 +8446,8 @@
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2023
       }
     },
     "the-hills-of-california-2024": {
@@ -8504,7 +8554,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2024-25"
       }
     },
     "eureka-day-2024": {
@@ -9149,6 +9200,13 @@
         "wins": [
           "Best Sound Design of a Play"
         ]
+      },
+      "dramaLeague": {
+        "season": "2018-19",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
+        ]
       }
     },
     "true-west-2019": {
@@ -9276,7 +9334,8 @@
         "wins": [],
         "finalist": [
           "Drama"
-        ]
+        ],
+        "year": 2019
       }
     },
     "king-lear-2019": {
@@ -9469,7 +9528,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2018-19"
       }
     },
     "ink-2019": {
@@ -10164,7 +10224,8 @@
         "wins": [
           "Drama"
         ],
-        "finalist": []
+        "finalist": [],
+        "year": 2017
       }
     },
     "the-play-that-goes-wrong-2017": {
@@ -10309,7 +10370,8 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2016-17"
       }
     },
     "groundhog-day-2017": {
@@ -12297,6 +12359,13 @@
         "nominatedFor": [
           "Outstanding New Broadway Play"
         ]
+      },
+      "dramaLeague": {
+        "season": "2017-18",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
+        ]
       }
     },
     "farinelli-and-the-king-2017": {
@@ -12416,7 +12485,8 @@
         ],
         "nominatedFor": [
           "Best Musical"
-        ]
+        ],
+        "season": "2017-18"
       }
     },
     "spongebob-squarepants-2017": {
@@ -12650,7 +12720,8 @@
         ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "season": "2018-19"
       }
     },
     "the-prom-2018": {
