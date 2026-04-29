@@ -33,7 +33,7 @@ jobs:
   rebuild-fast:
     name: Fast rebuild reviews.json
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -260,6 +260,7 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
       - name: Summary
+        if: always()
         run: |
           echo "## Fast Rebuild Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
