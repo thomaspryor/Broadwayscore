@@ -229,7 +229,7 @@ for (const show of (showsData as { shows: Array<{
 // Tier lookup helper
 // ============================================
 
-function getOutletTier(outletId: string): { tier: 1 | 2 | 3; name: string } {
+function getOutletTier(outletId: string): { tier: 1 | 2 | 3 | 4; name: string } {
   const normalized = outletId?.toLowerCase().trim();
   if (normalized && OUTLET_TIERS[normalized]) {
     return { tier: OUTLET_TIERS[normalized].tier, name: OUTLET_TIERS[normalized].name };

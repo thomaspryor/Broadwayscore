@@ -6,10 +6,21 @@
 //
 // This file retains only getRegistryTier() — a fallback for the ~700+ outlets
 // in outlet-registry.json that don't have explicit entries in OUTLET_TIERS.
+//
+// Per-region tiers (added 2026-04-29 with v5):
+// Outlets can declare `tiers: { nyc, london }` in the registry. The regional
+// tier is selected based on the show's category. Falls back to legacy `tier`
+// field if regional tiers absent.
 
-let _registryTierCache: Record<string, number> | null = null;
+type RegistryTierEntry = {
+  default: number;
+  nyc?: number;
+  london?: number;
+};
 
-function _loadRegistryTiers(): Record<string, number> {
+let _registryTierCache: Record<string, RegistryTierEntry> | null = null;
+
+function _loadRegistryTiers(): Record<string, RegistryTierEntry> {
   if (_registryTierCache) return _registryTierCache;
   _registryTierCache = {};
   try {
@@ -20,8 +31,20 @@ function _loadRegistryTiers(): Record<string, number> {
       const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
       const outlets = registry.outlets || registry;
       for (const [id, entry] of Object.entries(outlets)) {
-        const e = entry as { tier?: number };
-        if (e.tier) _registryTierCache[id] = e.tier;
+        const e = entry as { tier?: number; tiers?: { nyc?: number; london?: number } };
+        const norm: RegistryTierEntry = { default: 0 };
+        if (e.tiers && typeof e.tiers === 'object') {
+          if (e.tiers.nyc != null) norm.nyc = e.tiers.nyc;
+          if (e.tiers.london != null) norm.london = e.tiers.london;
+        }
+        if (e.tier != null) {
+          norm.default = e.tier;
+        } else if (norm.nyc != null) {
+          norm.default = norm.nyc;
+        } else if (norm.london != null) {
+          norm.default = norm.london;
+        }
+        if (norm.default) _registryTierCache[id] = norm;
       }
     }
   } catch {
@@ -33,11 +56,19 @@ function _loadRegistryTiers(): Record<string, number> {
 /**
  * Get the tier for an outlet directly from outlet-registry.json.
  * Used as a fallback in getOutletConfig() for outlets not in OUTLET_TIERS.
+ *
  * @param outletId - A canonical (lowercase) outlet ID
- * @returns The tier (1, 2, or 3), or undefined if not in registry
+ * @param showCategory - Optional show category for region-aware lookup
+ * @returns The tier (1, 2, 3, or 4), or undefined if not in registry
  */
-export function getRegistryTier(outletId: string): number | undefined {
+export function getRegistryTier(outletId: string, showCategory?: string): number | undefined {
   if (!outletId) return undefined;
   const tiers = _loadRegistryTiers();
-  return tiers[outletId.toLowerCase().trim()];
+  const entry = tiers[outletId.toLowerCase().trim()];
+  if (!entry) return undefined;
+  if (showCategory) {
+    const region = (showCategory === 'west-end' || showCategory === 'off-west-end') ? 'london' : 'nyc';
+    if (entry[region] != null) return entry[region];
+  }
+  return entry.default;
 }

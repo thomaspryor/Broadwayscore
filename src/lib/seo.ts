@@ -230,7 +230,7 @@ export function generateCriticReviewsSchema(
     criticName?: string;
     url: string;
     publishDate: string;
-    tier: 1 | 2 | 3;
+    tier: 1 | 2 | 3 | 4;
     reviewScore: number;
     bucket?: string;
     quote?: string;
@@ -649,7 +649,7 @@ export function generateOutletSchema(outlet: {
   slug: string;
   reviewCount: number;
   avgScore: number;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   logoDomain?: string | null;
   criticCount?: number;
 }) {
@@ -728,7 +728,7 @@ export function generateOutletItemListSchema(outlets: {
   name: string;
   slug: string;
   reviewCount: number;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
 }[]) {
   return {
     '@context': 'https://schema.org',
@@ -791,7 +791,7 @@ export function generateCriticFAQSchema(critic: {
 // FAQ Schema - For outlet detail pages
 export function generateOutletFAQSchema(outlet: {
   name: string;
-  tier: 1 | 2 | 3;
+  tier: 1 | 2 | 3 | 4;
   reviewCount: number;
   avgScore: number;
   criticCount: number;

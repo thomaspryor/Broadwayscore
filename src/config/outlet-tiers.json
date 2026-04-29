@@ -1,4 +1,12 @@
 {
+  "about-entertainment": {
+    "tier": 1,
+    "tiers": {
+      "nyc": 1
+    },
+    "name": "About Entertainment (theater.about.com — defunct)",
+    "scoreFormat": "text_bucket"
+  },
   "amny": {
     "tier": 2,
     "name": "amNewYork",
@@ -7,7 +15,11 @@
   "ap": {
     "tier": 1,
     "name": "Associated Press",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 3
+    }
   },
   "artsdesk": {
     "tier": 2,
@@ -30,15 +42,40 @@
     "name": "Bloomberg",
     "scoreFormat": "text_bucket"
   },
+  "british-theatre": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "British Theatre Guide",
+    "scoreFormat": "stars",
+    "maxScale": 5
+  },
+  "broadway-blog": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "Broadway Blog",
+    "scoreFormat": "text_bucket"
+  },
   "broadwaynews": {
     "tier": 1,
     "name": "Broadway News",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "broadwayworld": {
-    "tier": 3,
+    "tier": 2,
     "name": "BroadwayWorld",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2,
+      "london": 2
+    }
   },
   "chicago-sun-times": {
     "tier": 2,
@@ -51,9 +88,12 @@
     "scoreFormat": "text_bucket"
   },
   "cititour": {
-    "tier": 3,
+    "tier": 2,
     "name": "Cititour",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
   "culturesauce": {
     "tier": 3,
@@ -63,24 +103,60 @@
   },
   "curtainup": {
     "tier": 2,
-    "name": "CurtainUp",
-    "scoreFormat": "text_bucket"
+    "name": "CurtainUp (defunct)",
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
   "daily-mail": {
     "tier": 2,
     "name": "Daily Mail",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "dailybeast": {
     "tier": 2,
     "name": "The Daily Beast",
     "scoreFormat": "text_bucket"
   },
-  "deadline": {
+  "dc-theater-arts": {
     "tier": 2,
-    "name": "Deadline",
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "DC Theater Arts",
     "scoreFormat": "text_bucket"
+  },
+  "dctheatrescene": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "DC Theatre Scene",
+    "scoreFormat": "text_bucket"
+  },
+  "deadline": {
+    "tier": 1,
+    "name": "Deadline",
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
+  },
+  "everything-theatre": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "Everything Theatre",
+    "scoreFormat": "stars",
+    "maxScale": 5
   },
   "ew": {
     "tier": 2,
@@ -88,14 +164,22 @@
     "scoreFormat": "letter"
   },
   "exeunt-magazine": {
-    "tier": 3,
+    "tier": 2,
     "name": "Exeunt Magazine",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2,
+      "london": 2
+    }
   },
   "financialtimes": {
-    "tier": 1,
+    "tier": 2,
     "name": "Financial Times",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "fort-worth-star-telegram": {
     "tier": 3,
@@ -107,6 +191,14 @@
     "name": "The Forward",
     "scoreFormat": "text_bucket"
   },
+  "front-row-center": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "Front Row Center",
+    "scoreFormat": "text_bucket"
+  },
   "frontmezzjunkies": {
     "tier": 3,
     "name": "Front Mezz Junkies",
@@ -116,12 +208,20 @@
     "tier": 1,
     "name": "The Guardian",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 1,
+      "london": 1
+    }
   },
   "hollywood-reporter": {
     "tier": 1,
     "name": "The Hollywood Reporter",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "huffpost": {
     "tier": 2,
@@ -132,13 +232,21 @@
     "tier": 2,
     "name": "The i",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "independent": {
     "tier": 2,
     "name": "The Independent",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "indiewire": {
     "tier": 2,
@@ -150,9 +258,34 @@
     "name": "Los Angeles Times",
     "scoreFormat": "text_bucket"
   },
+  "lighting-and-sound-america": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "Lighting & Sound America",
+    "scoreFormat": "text_bucket"
+  },
+  "london-box-office": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "London Box Office",
+    "scoreFormat": "text_bucket"
+  },
   "london-theatre": {
     "tier": 2,
     "name": "London Theatre",
+    "scoreFormat": "stars",
+    "maxScale": 5
+  },
+  "londontheatre1": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "LondonTheatre1",
     "scoreFormat": "stars",
     "maxScale": 5
   },
@@ -182,14 +315,22 @@
     "scoreFormat": "text_bucket"
   },
   "newsday": {
-    "tier": 2,
+    "tier": 1,
     "name": "Newsday",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "newyorker": {
     "tier": 1,
     "name": "The New Yorker",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "njcom": {
     "tier": 2,
@@ -224,22 +365,36 @@
   "nyt-theater": {
     "tier": 2,
     "name": "New York Theater",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
   "nytg": {
     "tier": 2,
     "name": "New York Theatre Guide",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
   "nytimes": {
     "tier": 1,
     "name": "The New York Times",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "observer": {
     "tier": 2,
     "name": "Observer",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "one-minute-critic": {
     "tier": 3,
@@ -294,10 +449,14 @@
     "scoreFormat": "text_bucket"
   },
   "standard": {
-    "tier": 1,
+    "tier": 2,
     "name": "Evening Standard",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "talkinbroadway": {
     "tier": 2,
@@ -305,14 +464,34 @@
     "scoreFormat": "text_bucket"
   },
   "telegraph": {
-    "tier": 1,
+    "tier": 2,
     "name": "The Telegraph",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "the-recs": {
     "tier": 3,
     "name": "The Recs",
+    "scoreFormat": "text_bucket"
+  },
+  "the-spectator-uk": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "The Spectator (UK)",
+    "scoreFormat": "text_bucket"
+  },
+  "theater-life": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "Theater Life",
     "scoreFormat": "text_bucket"
   },
   "theater-news-online": {
@@ -320,26 +499,65 @@
     "name": "Theater News Online",
     "scoreFormat": "text_bucket"
   },
-  "theater-scene": {
-    "tier": 3,
-    "name": "TheaterScene",
+  "theater-pizzazz": {
+    "tier": 2,
+    "tiers": {
+      "nyc": 2
+    },
+    "name": "Theater Pizzazz",
     "scoreFormat": "text_bucket"
+  },
+  "theater-scene": {
+    "tier": 2,
+    "name": "TheaterScene",
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
   "theatermania": {
     "tier": 2,
     "name": "TheaterMania",
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
+  },
+  "theatre-weekly": {
+    "tier": 2,
+    "tiers": {
+      "london": 2
+    },
+    "name": "Theatre Weekly",
     "scoreFormat": "text_bucket"
   },
   "theatrely": {
     "tier": 2,
     "name": "Theatrely",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 2
+    }
   },
-  "thestage": {
-    "tier": 1,
-    "name": "The Stage",
+  "thereviewshub": {
+    "tier": 2,
+    "tiers": {
+      "london": 2,
+      "nyc": 2
+    },
+    "name": "The Reviews Hub",
     "scoreFormat": "stars",
     "maxScale": 5
+  },
+  "thestage": {
+    "tier": 2,
+    "name": "The Stage",
+    "scoreFormat": "stars",
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "thewrap": {
     "tier": 2,
@@ -355,19 +573,31 @@
     "tier": 1,
     "name": "Time Out New York",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 1,
+      "london": 3
+    }
   },
   "timeout-london": {
-    "tier": 1,
+    "tier": 2,
     "name": "Time Out London",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "times-uk": {
-    "tier": 1,
+    "tier": 2,
     "name": "The Times (UK)",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "nyc": 2,
+      "london": 1
+    }
   },
   "towleroad": {
     "tier": 3,
@@ -382,7 +612,11 @@
   "variety": {
     "tier": 1,
     "name": "Variety",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "village-voice": {
     "tier": 2,
@@ -397,18 +631,30 @@
   "vulture": {
     "tier": 1,
     "name": "Vulture",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "washpost": {
     "tier": 1,
     "name": "The Washington Post",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   },
   "whatsonstage": {
     "tier": 2,
     "name": "WhatsOnStage",
     "scoreFormat": "stars",
-    "maxScale": 5
+    "maxScale": 5,
+    "tiers": {
+      "london": 2,
+      "nyc": 2
+    }
   },
   "wnyc": {
     "tier": 2,
@@ -418,6 +664,10 @@
   "wsj": {
     "tier": 1,
     "name": "The Wall Street Journal",
-    "scoreFormat": "text_bucket"
+    "scoreFormat": "text_bucket",
+    "tiers": {
+      "nyc": 1,
+      "london": 2
+    }
   }
 }

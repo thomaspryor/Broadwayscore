@@ -26,7 +26,7 @@ export function formatDate(parsedDate: number | null): string {
   return new Date(parsedDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
-export function TierBadge({ tier }: { tier: 1 | 2 | 3 }) {
+export function TierBadge({ tier }: { tier: 1 | 2 | 3 | 4 }) {
   const cls = tier === 1
     ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
     : tier === 2
@@ -39,7 +39,7 @@ export function TierBadge({ tier }: { tier: 1 | 2 | 3 }) {
   );
 }
 
-export function TierBadgeSmall({ tier }: { tier: 1 | 2 | 3 }) {
+export function TierBadgeSmall({ tier }: { tier: 1 | 2 | 3 | 4 }) {
   const cls = tier === 1
     ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
     : tier === 2
