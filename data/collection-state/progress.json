@@ -10,7 +10,8 @@
     "oh-mary-west-end-2025/timeout--paul-raven.json",
     "oh-mary-west-end-2025/financialtimes--paul-raven.json",
     "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025/operawire--david-salazar.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -239,7 +240,16 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "eugene-onegin-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "romeo-and-juliet-west-end-2026/telegraph--paul-raven.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "operation-mincemeat-west-end-2024/timeout--unknown.json",
+    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -252,7 +262,8 @@
       "shadowlands-west-end-2026/timeout--paul-raven.json",
       "oh-mary-west-end-2025/timeout--paul-raven.json",
       "oh-mary-west-end-2025/financialtimes--paul-raven.json",
-      "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025/operawire--david-salazar.json"
+      "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025/operawire--david-salazar.json",
+      "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -262,13 +273,21 @@
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/eugene-onegin-off-broadway-2026/bachtrack--susan-stempleski.json"
     ],
     "archive": [
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
   "startTime": "2026-04-29T01:08:30.767Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-29T04:01:36.241Z",
+      "event": "bb-session",
+      "session": "778fb94d",
+      "url": "https://bachtrack.com/review-eugene-onegin-zangiev-grigorian-samoilov-metropolit"
+    }
+  ]
 }
