@@ -5,7 +5,9 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-fear-of-13-2026/washpost--unknown.json",
     "dracula-west-end-2025/financialtimes--paul-raven.json",
-    "oh-mary-west-end-2025/financialtimes--paul-raven.json"
+    "oh-mary-west-end-2025/financialtimes--paul-raven.json",
+    "wicked-2003/front-row-center--molly-marinik.json",
+    "wicked-2003/frontmezzjunkies--stanford-friedman.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -37,7 +39,15 @@
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+    "witness-for-the-prosecution-west-end-2022/financialtimes--sarah-hemming.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,16 +61,20 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "wicked-2003/front-row-center--molly-marinik.json"
+    ],
     "brightdata": [
       "the-lost-boys-2026/forum-broadwayworld--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/the-lost-boys-2026/reddit--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "wicked-2003/frontmezzjunkies--stanford-friedman.json"
+    ]
   },
   "startTime": "2026-04-29T09:10:21.075Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/timeout--unknown.json",
+  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
   "log": []
 }
