@@ -195,12 +195,7 @@
         "tmania"
       ],
       "domain": "theatermania.com",
-      "accessModel": "free",
-      "discoveryMethod": {
-        "primary": "theatermania-discovery",
-        "endpoint": "https://www.theatermania.com/wp-json/wp/v2/news?categories=157",
-        "notes": "WordPress REST API, Reviews category. Slug pattern: /news/review-{slug}_{numeric_id}/."
-      }
+      "accessModel": "free"
     },
     "broadwayworld": {
       "displayName": "BroadwayWorld",
@@ -785,12 +780,7 @@
       "domainAliases": [
         "oneminutecritic.com"
       ],
-      "accessModel": "free",
-      "discoveryMethod": {
-        "primary": "omc-discovery",
-        "endpoint": "https://1minutecritic.com/feed/",
-        "notes": "WordPress RSS feed. URL slug pattern: *-review/. Filters non-theater categories (books/film/TV/music)."
-      }
+      "accessModel": "free"
     },
     "curtainup": {
       "displayName": "CurtainUp",

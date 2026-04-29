@@ -44,8 +44,6 @@ const {
 const { checkRSSFeeds } = require('./lib/rss-discovery');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
-const { discoverNewReviews: discoverTheaterMania } = require('./lib/theatermania-discovery');
-const { discoverNewReviews: discoverOmc } = require('./lib/omc-discovery');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtract, hasStructuralMarkers } = require('./lib/llm-extractor');
@@ -1230,58 +1228,6 @@ async function runRSSFeeds(showTitle, knownUrls, openingDate = null, market = 'b
 }
 
 /**
- * Run Direct Outlet Discovery (TheaterMania + OMC).
- *
- * These outlets don't surface reliably via SERP (TM's URLs are opaque
- * numeric IDs; OMC has no SERP coverage at all) and were previously
- * dependent on DTLI listing. This layer polls each outlet directly via
- * its REST API or RSS feed, in parallel with aggregators/RSS/SSR.
- *
- * Cheap: 2 HTTP requests total per cycle. Idempotent: dedup happens
- * downstream via knownUrls in processDiscoveredReviews. Only-Broadway
- * (and Off-Broadway): both outlets are US-only, so we skip them on WE
- * shows — saves the round-trip and avoids polluting WE result sets with
- * coincidentally-titled American shows.
- *
- * @param {Object} show - Full show object (needs title + dates + category)
- * @param {Set} knownUrls - URLs already known (logged only; dedup is downstream)
- * @param {string} market - 'broadway' | 'west-end' | 'off-broadway' | ...
- * @returns {Promise<Array>}
- */
-async function runDirectOutletDiscovery(show, knownUrls, market = 'broadway') {
-  console.log('\n[Layer 1.5] Direct Outlet Discovery (TheaterMania + OMC)...');
-  if (!show || !show.title) return [];
-
-  // TM + OMC are US-only. WE shows: skip both (no false positives, no wasted HTTP).
-  if (market === 'west-end' || market === 'off-west-end') {
-    console.log('  Skipped: market is West End (TM + OMC are US-only)');
-    return [];
-  }
-
-  const since = show.previewsStartDate
-    ? new Date(new Date(show.previewsStartDate).getTime() - 3 * 86400000)
-    : show.openingDate
-      ? new Date(new Date(show.openingDate).getTime() - 7 * 86400000)
-      : new Date(Date.now() - 30 * 86400000);
-
-  const [tmSettled, omcSettled] = await Promise.allSettled([
-    discoverTheaterMania(show.id, show, since, { verbose: false }),
-    discoverOmc(show.id, show, since, { verbose: false }),
-  ]);
-
-  const tmHits = tmSettled.status === 'fulfilled' ? tmSettled.value : [];
-  const omcHits = omcSettled.status === 'fulfilled' ? omcSettled.value : [];
-  if (tmSettled.status === 'rejected') console.log(`  TM error: ${tmSettled.reason?.message}`);
-  if (omcSettled.status === 'rejected') console.log(`  OMC error: ${omcSettled.reason?.message}`);
-
-  const newTm = tmHits.filter(h => !knownUrls.has(h.url));
-  const newOmc = omcHits.filter(h => !knownUrls.has(h.url));
-  console.log(`  TheaterMania: ${tmHits.length} hits (${newTm.length} new)`);
-  console.log(`  1 Minute Critic: ${omcHits.length} hits (${newOmc.length} new)`);
-  return [...tmHits, ...omcHits];
-}
-
-/**
  * Run Layer 3: Direct Site Search
  * @param {string} showTitle
  * @param {string[]} missingOutletIds
@@ -1585,29 +1531,22 @@ async function pollCycle() {
       })
     : [];
 
-  const [aggSettled, rssSettled, ssrSettled, directSettled] = await Promise.allSettled([
+  const [aggSettled, rssSettled, ssrSettled] = await Promise.allSettled([
     runAggregators(show),
     runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
     ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
       : Promise.resolve([]),
-    runDirectOutletDiscovery(show, knownUrls, market),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
   const ssrSiteSearchResults = ssrSettled.status === 'fulfilled' ? ssrSettled.value : (console.log(`  [Layer 3 SSR] ERROR: ${ssrSettled.reason?.message}`), []);
-  const directResults = directSettled.status === 'fulfilled' ? directSettled.value : (console.log(`  [Layer 1.5] ERROR: ${directSettled.reason?.message}`), []);
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
   let jsSiteSearchResults = [];
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID);
-    // NOTE: directResults intentionally NOT added here. Direct-discovery URLs
-    // can still get rejected downstream (URL validation, opera-flag, market-
-    // mismatch). If a direct-discovery URL is rejected, we want SERP/JS site-
-    // search to still consider TM/OMC missing and re-discover. URL-level dedup
-    // happens via knownUrls in processDiscoveredReviews. Ship-check P1.
     for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
@@ -1658,7 +1597,6 @@ async function pollCycle() {
   let serpResults = [];
   if (!SKIP_SERP && shouldRunSerp()) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
-    // directResults intentionally excluded — see note above. URL-dedup via knownUrls.
     for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
@@ -1745,7 +1683,7 @@ async function pollCycle() {
   }
 
   // ── Process discovered reviews ──
-  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...directResults, ...serpResults];
+  const allDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...serpResults];
   console.log(`\n━━━ Processing ${allDiscovered.length} discovered reviews ━━━`);
 
   const { created, skipped, rejected } = processDiscoveredReviews(
