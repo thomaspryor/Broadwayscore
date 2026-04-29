@@ -25,7 +25,10 @@ const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-f
  * Applied centrally so adding outlets doesn't reinvent the same filtering.
  *
  *  - Rejects URLs matching known non-Met opera house slugs (reject-list, fails open)
- *  - Rejects URLs whose embedded year is outside the show's opening window
+ *  - Rejects URLs whose embedded year is outside ±1 year of opening (tighter than
+ *    the shared isUrlYearOutsideWindow helper — opera revivals run every 3-5 years
+ *    and 2023's La Traviata is a different production from 2026's, even though the
+ *    shared helper would accept it within its openingYear-3 window)
  *  - Emits a WARN log to surface silent zero-result returns (pre-mortem #1 scenario:
  *    a slug-format change → empty array → indistinguishable from "no review yet")
  *
@@ -42,7 +45,15 @@ function filterOperaUrls(urls, outletId, showId, openingDate) {
 
   const filtered = urls.filter(url => {
     if (hasNonMetOperaUrlMarker(url).rejected) return false;
-    if (openingYear && isUrlYearOutsideWindow(url, openingYear, null)) return false;
+    // Tight ±1-year window for opera (vs the shared helper's ±3 year window).
+    // Opera revivals are different productions worth disambiguating.
+    if (openingYear) {
+      const m = url.match(/\/((?:19|20)\d{2})\b/);
+      if (m) {
+        const urlYear = parseInt(m[1], 10);
+        if (Math.abs(urlYear - openingYear) > 1) return false;
+      }
+    }
     return true;
   });
 
@@ -50,6 +61,24 @@ function filterOperaUrls(urls, outletId, showId, openingDate) {
     console.warn(`    [opera-discovery] WARN: ${outletId} returned ${total} URLs but ALL were filtered out for ${showId || '(unknown show)'} — possible slug drift, year-filter mismatch, or genuine no-coverage`);
   }
   return filtered;
+}
+
+/**
+ * Opera title normalization: strip multilingual conjunctions ("und", "et", "y",
+ * "e", "and") that appear in opera titles ("Tristan und Isolde", "Romeo et Juliette",
+ * "Caballeria Rusticana e Pagliacci"). Slug forms typically omit these, so keeping
+ * them in title-match logic causes false rejections (Tristan und Isolde → slug
+ * tristan-isolde fails standard 50%-overlap match).
+ *
+ * Returns a list of meaningful title words (lowercase, ≥3 chars, no conjunctions).
+ */
+function operaTitleWords(title) {
+  if (!title) return [];
+  const stop = new Set(['the','and','und','et','y','le','la','les','el','un','una','di','da','du','dei','der','die','das','of','for','to','at','in','on','with','from']);
+  return title.toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 3 && !stop.has(w));
 }
 
 /**
@@ -357,6 +386,11 @@ const SITE_SEARCH_ENDPOINTS = {
     // encoded as &#x2a; (asterisk, filled star) and &#x31; (digit 1, empty star).
     // e.g. ****1 = 4/5 stars. Author is in div.article-author, not the meta tag
     // (meta tag may show a performer name, not the critic).
+    // skipUrlFilter so the dispatcher's default urlLooksLikeReview doesn't drop
+    // Bachtrack URLs whose slugs omit opera-title conjunctions (e.g. "tristan-isolde"
+    // vs "Tristan und Isolde"). filterOperaUrls + the per-outlet title-words check
+    // below handle title matching with opera-aware tokenization.
+    skipUrlFilter: true,
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const html = await fetchSSR('https://bachtrack.com/find-reviews/category=2');
       const urls = [];
@@ -369,7 +403,15 @@ const SITE_SEARCH_ENDPOINTS = {
       if (unique.length === 0) {
         console.warn('    Site search [Bachtrack]: WARNING — opera category page returned 0 links (possible structural change)');
       }
-      return filterOperaUrls(unique, 'bachtrack', showId, openingDate);
+      // Opera-aware title match against URL slug (handles "Tristan und Isolde" → tristan-isolde)
+      const titleWords = operaTitleWords(showTitle);
+      const titleMatched = unique.filter(url => {
+        const slug = (url.split('/review-')[1] || '').toLowerCase();
+        if (!slug) return false;
+        const hits = titleWords.filter(w => slug.includes(w)).length;
+        return hits >= Math.min(2, titleWords.length);
+      });
+      return filterOperaUrls(titleMatched, 'bachtrack', showId, openingDate);
     },
   },
 
@@ -378,24 +420,30 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'parterre.com',
     requiresJs: false,
     applies: (show) => show.type === 'opera',
-    // Parterre uses WP REST API (no auth needed). Two-step query:
-    //  1. Resolve "performances" category ID at runtime (NOT hardcoded — caught
-    //     in pre-mortem secondary scenario as a silent-break-on-WP-migration risk)
-    //  2. Fetch posts in opening±2/+14 day window AND in performances category
-    //  3. Title-validate against show title (WP returns title.rendered for free
-    //     in the same response, no second fetch needed)
+    // skipUrlFilter: Parterre uses POETIC slugs ("a-specter-haunting") that the
+    // dispatcher's urlLooksLikeReview() title-matcher would reject. Title/slug
+    // validation happens INSIDE fetchAndParse below using show-aware logic.
+    skipUrlFilter: true,
+    // Parterre uses WP REST API (no auth needed). Three-step query:
+    //  1. Resolve "performance-reviews" category ID at runtime (NOT hardcoded —
+    //     caught in pre-mortem secondary scenario as silent-break-on-WP-migration risk)
+    //  2. Fetch posts in opening±2/+14 day window AND in performance-reviews category
+    //  3. Best-effort title/slug match; fall back to all category+date posts since
+    //     Parterre's slugs are poetic ("a-specter-haunting" for Innocence)
     //
-    // Parterre publishes ~2/day; without category + title filter, a 16-day window
-    // returns 25-43 unrelated daily art-song posts that all flow downstream as
-    // wrong-production stubs.
+    // Parterre publishes ~weekly performance reviews; with category filter, a
+    // 16-day window yields ~5-10 posts (vs 25-43 with date-only).
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       // Fail closed without openingDate
       if (!openingDate) return [];
 
-      // 1. Resolve "performances" category ID at runtime.
+      // 1. Resolve "performance-reviews" category ID at runtime.
+      // Verified slug 2026-04-28 via /wp-json/wp/v2/categories listing — Parterre
+      // uses 'performance-reviews' (id=4681), NOT 'performances'. Don't hardcode
+      // the ID — Parterre could re-id on a WP migration (pre-mortem secondary scenario).
       let perfCategoryId = null;
       try {
-        const catUrl = 'https://parterre.com/wp-json/wp/v2/categories?slug=performances&_fields=id,slug';
+        const catUrl = 'https://parterre.com/wp-json/wp/v2/categories?slug=performance-reviews&_fields=id,slug';
         const catData = await fetchSSR(catUrl);
         const cats = JSON.parse(catData);
         if (Array.isArray(cats) && cats.length > 0) perfCategoryId = cats[0].id;
@@ -403,7 +451,7 @@ const SITE_SEARCH_ENDPOINTS = {
         console.warn(`    [opera-discovery] WARN: parterre-box category lookup failed: ${e.message} — falling back to no category filter`);
       }
       if (!perfCategoryId) {
-        console.warn(`    [opera-discovery] WARN: parterre-box "performances" category slug not found — falling back to no category filter`);
+        console.warn(`    [opera-discovery] WARN: parterre-box "performance-reviews" category slug not found — falling back to no category filter`);
       }
 
       // 2. Fetch posts in date window + (optional) performances category
@@ -413,24 +461,25 @@ const SITE_SEARCH_ENDPOINTS = {
       const afterParam = `&after=${after.toISOString()}`;
       const beforeParam = `&before=${before.toISOString()}`;
       const catParam = perfCategoryId ? `&categories=${perfCategoryId}` : '';
-      const url = `https://parterre.com/wp-json/wp/v2/posts?per_page=100&_fields=link,date,title${afterParam}${beforeParam}${catParam}`;
+      // Include excerpt so we can validate body content without a second fetch.
+      const url = `https://parterre.com/wp-json/wp/v2/posts?per_page=100&_fields=link,date,title,excerpt${afterParam}${beforeParam}${catParam}`;
       const data = await fetchSSR(url);
       const posts = JSON.parse(data);
       if (!Array.isArray(posts)) return [];
 
-      // 3. Title-validate: keep posts whose title shares ≥2 words with show title.
-      // Parterre's slugs are poetic but their titles ARE descriptive.
-      const showWords = showTitle.toLowerCase()
-        .replace(/[^\w\s]/g, ' ')
-        .split(/\s+/)
-        .filter(w => w.length > 2 && !['the','and','for','with','from'].includes(w));
+      // 3. Match posts to show: title/slug/excerpt all checked. Parterre uses
+      // POETIC titles ("A specter, haunting" for Innocence) but their excerpts
+      // typically name the opera + composer + venue, so excerpt-search catches
+      // posts that title/slug miss.
+      const showWords = operaTitleWords(showTitle);
       const matches = posts.filter(p => {
         const title = (p.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
-        if (!title) return false;
-        const matchCount = showWords.filter(w => title.includes(w)).length;
-        return matchCount >= Math.min(2, showWords.length);
+        const slug = (p.link || '').toLowerCase();
+        const excerpt = (p.excerpt?.rendered || '').toLowerCase().replace(/<[^>]+>/g, ' ');
+        const text = title + ' ' + slug + ' ' + excerpt;
+        const hits = showWords.filter(w => text.includes(w)).length;
+        return hits >= Math.min(2, showWords.length);
       });
-
       const urls = matches.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'parterre-box', showId, openingDate);
     },
