@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview, safeRenameReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 
 let lockedSkipCount = 0;
 
@@ -212,7 +212,17 @@ function phaseA(unknownOutlets) {
 
     if (fileResult.duplicate) {
       duplicatesRemoved++;
-      if (!dryRun) fs.unlinkSync(u.filePath);
+      if (!dryRun) {
+        // Honor _locked on the duplicate-delete path (ship-check P0 2026-04-29).
+        // The rename path went through safeRenameReview; this delete path was a
+        // raw fs.unlinkSync that bypassed _locked. Migrate it too.
+        const u1 = safeUnlinkReview(u.filePath);
+        if (u1.lockedSkipped) {
+          lockedSkipCount++;
+          console.log(`  [${i+1}] LOCKED-SKIP: ${u.dir}/${u.file} would be a duplicate of ${fileResult.newFile} but is _locked — kept`);
+          continue;
+        }
+      }
       if (duplicatesRemoved <= 10) {
         console.log(`  [${i+1}] DUPE: ${u.dir}/${u.file} → ${fileResult.newFile} already exists`);
       }
@@ -312,7 +322,15 @@ async function phaseB(unknownCritics) {
 
     if (result.duplicate) {
       duplicatesRemoved++;
-      if (!dryRun) fs.unlinkSync(u.filePath);
+      if (!dryRun) {
+        // Honor _locked on the duplicate-delete path (ship-check P0 2026-04-29).
+        const u1 = safeUnlinkReview(u.filePath);
+        if (u1.lockedSkipped) {
+          lockedSkipCount++;
+          console.log(`  [${i+1}] LOCKED-SKIP: ${u.dir}/${u.file} would be a duplicate of ${result.newFile} but is _locked — kept`);
+          continue;
+        }
+      }
       if (duplicatesRemoved <= 10) {
         console.log(`  [${i+1}] DUPE: ${u.dir}/${u.file} → ${result.newFile} already exists`);
       }

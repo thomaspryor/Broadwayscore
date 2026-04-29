@@ -659,6 +659,8 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     wrote: true,
     renamed: true,
     sisterStoreMoved: sister.llmScoreMoved,
+    sisterStoreConflict: sister.sisterStoreConflict,
+    sisterStoreError: sister.sisterStoreError,
     siblingPointersUpdated: sister.pointersUpdated,
   };
 }
@@ -710,9 +712,24 @@ function safeUnlinkReview(filePath, options = {}) {
 
 /**
  * Internal: rename the llm-scores sidecar and rewrite same-show
- * duplicateTextOf sibling pointers. Best-effort — logs and continues on
- * partial failures. Cross-show: pointers in the source show dir become
- * orphaned (left for validate-review-texts to catch).
+ * duplicateTextOf sibling pointers. Returns a result describing partial
+ * failures so callers (and the calling helper's return value) can surface
+ * them rather than silently log-and-drop.
+ *
+ * Sister-store scope notes:
+ *   - llm-scores: at data/llm-scores/{showId}/{file}.json. Conflict at the
+ *     sister store means BOTH sidecars existed. We MUST NOT silently delete
+ *     the loser — that drops scoring data. Instead we surface
+ *     `sisterStoreConflict: true` so the caller can log + the operator can
+ *     triage. The old sidecar stays in place under the source's filename
+ *     until reconciled.
+ *   - duplicateTextOf pointer rewrites: ONLY srcDir is scanned. For same-
+ *     show renames srcDir === dstDir so siblings get correctly retargeted.
+ *     For cross-show MOVE, scanning dstDir would falsely rewrite any
+ *     dstDir sibling whose duplicateTextOf coincidentally equals srcFile
+ *     (basename collision across shows). Cross-show pointers in srcDir
+ *     become orphaned references — left for validate-review-texts to flag.
+ *     (Codex ship-check P0 2026-04-29.)
  */
 function _updateSisterStoresOnRename(srcPath, dstPath) {
   const srcDir = path.dirname(srcPath);
@@ -724,6 +741,8 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
   const repoRoot = path.resolve(__dirname, '..', '..');
 
   let llmScoreMoved = false;
+  let sisterStoreConflict = false;
+  let sisterStoreError = null;
   const oldLlmPath = path.join(repoRoot, 'data', 'llm-scores', srcShowId, srcFile);
   if (fs.existsSync(oldLlmPath)) {
     const newLlmPath = path.join(repoRoot, 'data', 'llm-scores', dstShowId, dstFile);
@@ -733,25 +752,31 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
         fs.renameSync(oldLlmPath, newLlmPath);
         llmScoreMoved = true;
       } else {
-        console.warn(`[review-write-guard] llm-scores sidecar conflict at ${path.relative(repoRoot, newLlmPath)} — keeping existing, removing ${path.relative(repoRoot, oldLlmPath)}`);
-        fs.unlinkSync(oldLlmPath);
+        // CONFLICT: both sidecars exist. Do not silently drop either —
+        // surface to caller. Old sidecar stays at oldLlmPath until operator
+        // reconciles. (Pre-ship-check this branch silently unlinked old.)
+        sisterStoreConflict = true;
+        console.warn(`[review-write-guard] llm-scores sidecar conflict — KEEPING BOTH for triage. old=${path.relative(repoRoot, oldLlmPath)} new=${path.relative(repoRoot, newLlmPath)}`);
       }
     } catch (e) {
+      sisterStoreError = e.message;
       console.warn(`[review-write-guard] llm-scores sidecar move failed: ${e.message}`);
     }
   }
 
   let pointersUpdated = 0;
-  const dirsToScan = srcDir === dstDir ? [srcDir] : [srcDir, dstDir];
-  for (const dir of dirsToScan) {
-    if (!fs.existsSync(dir)) continue;
+  // Only scan srcDir. For cross-show MOVE, dstDir siblings sharing srcFile
+  // basename are coincidental and must NOT be retargeted. Same-show case:
+  // srcDir === dstDir so the single scan covers everything.
+  if (fs.existsSync(srcDir)) {
     let files;
     try {
-      files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
-    } catch { continue; }
+      files = fs.readdirSync(srcDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    } catch { files = []; }
     for (const f of files) {
-      if (f === dstFile && dir === dstDir) continue;
-      const sibPath = path.join(dir, f);
+      if (f === dstFile && srcDir === dstDir) continue;
+      if (f === srcFile) continue;
+      const sibPath = path.join(srcDir, f);
       let sibData;
       try {
         sibData = JSON.parse(fs.readFileSync(sibPath, 'utf-8'));
@@ -768,7 +793,7 @@ function _updateSisterStoresOnRename(srcPath, dstPath) {
     }
   }
 
-  return { llmScoreMoved, pointersUpdated };
+  return { llmScoreMoved, pointersUpdated, sisterStoreConflict, sisterStoreError };
 }
 
 module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };

@@ -148,7 +148,12 @@ function run() {
                 const unlinkResult = safeUnlinkReview(phantomPath);
                 if (!unlinkResult.wrote) {
                   if (unlinkResult.lockedSkipped) lockedSkipCount++;
-                  console.log(`  [UNLINK-SKIP-${unlinkResult.skipped}] ${showId}: phantom ${phantom.file} kept — canonical now has merged data`);
+                  // Partial-state warning: canonical was just merged with phantom's
+                  // non-protected fields, but phantom couldn't be unlinked. The
+                  // pre-check at line ~135 normally prevents this — we hit this
+                  // branch only on TOCTOU (phantom became locked between pre-check
+                  // and unlink). Operator must reconcile the pair manually.
+                  console.warn(`  [PARTIAL-STATE] ${showId}: phantom ${phantom.file} could not be unlinked (${unlinkResult.skipped}); canonical ${canonical.file} HAS merged data — manual reconciliation required`);
                 } else {
                   totalMerged++;
                   totalDeleted++;
