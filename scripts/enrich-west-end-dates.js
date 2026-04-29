@@ -23,6 +23,8 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { matchTitleToShow } = require('./lib/show-matching');
+const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
+const { inferPressNightFromReviews } = require('./lib/infer-press-night-from-reviews');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PLAYBILL_URL = 'https://playbill.com/article/schedule-of-upcoming-london-shows';
@@ -454,11 +456,16 @@ async function main() {
   // - missing-only mode: shows without previewsStartDate
   // - fix-unconfirmed mode: also includes shows with unconfirmed openingDate sources
   //   (todaytix, showscore, unknown, null) — these need press night confirmation
-  const UNCONFIRMED_SOURCES = new Set(['todaytix', 'showscore', 'unknown', null, undefined]);
+  // The "is this date source unconfirmed?" predicate moved to
+  // scripts/lib/date-source-confidence.js (2026-04-28). For West End shows
+  // the rule matches the previous inline Set exactly. Off-Broadway adds
+  // 'ibdb' to the unconfirmed set — irrelevant here since this script
+  // filters to WE/OWE category, but the helper handles category-specific
+  // cases so the new OB sibling can reuse it.
   const candidateShows = verify || showSlug
     ? weShows
     : fixUnconfirmed
-      ? weShows.filter(s => !s.previewsStartDate || UNCONFIRMED_SOURCES.has(s.openingDateSource))
+      ? weShows.filter(s => !s.previewsStartDate || isUnconfirmedDateSource(s))
       : missingOnly
         ? weShows.filter(s => !s.previewsStartDate)
         : weShows;
@@ -520,14 +527,14 @@ async function main() {
     // Also catches shows with unconfirmed sources where we now have a real press night
     const todaytixMismatch = entry.firstPreview && entry.opening && (
       (show.openingDate === entry.firstPreview && !show.previewsStartDate) ||
-      (show.openingDate === entry.firstPreview && UNCONFIRMED_SOURCES.has(show.openingDateSource))
+      (show.openingDate === entry.firstPreview && isUnconfirmedDateSource(show))
     );
 
     // Same-date fix: openingDate === previewsStartDate and we now have a distinct press night
     const sameDateFix = entry.opening && show.openingDate && show.previewsStartDate &&
       show.openingDate === show.previewsStartDate &&
       entry.opening !== show.openingDate &&
-      UNCONFIRMED_SOURCES.has(show.openingDateSource);
+      isUnconfirmedDateSource(show);
 
     if (todaytixMismatch) {
       showChanges.push({ field: 'previewsStartDate', old: show.previewsStartDate, new: entry.firstPreview });
@@ -574,7 +581,7 @@ async function main() {
           } else {
             showDiscrepancies.push({ field: 'openingDate', current: show.openingDate, external: entry.opening, source: entry.source });
           }
-        } else if (show.openingDate === entry.opening && UNCONFIRMED_SOURCES.has(show.openingDateSource)) {
+        } else if (show.openingDate === entry.opening && isUnconfirmedDateSource(show)) {
           // TM/Playbill confirms the existing date — upgrade source to trusted
           // This handles legitimate cold-open shows where preview === press night
           showChanges.push({ field: 'openingDateSource', old: show.openingDateSource || null, new: entryDateSource });
@@ -591,58 +598,32 @@ async function main() {
     }
   }
 
-  // Phase 4: Infer press nights from review dates (fallback)
-  // For shows where TM/PB had no data and the source is still unconfirmed,
-  // use the mode (most common) review publish date as the press night.
-  // Guards: 3+ dated reviews, mode date has 2+ reviews, gap 8-90 days.
+  // Phase 4: Infer press nights from review dates (fallback).
+  // The detection logic moved to scripts/lib/infer-press-night-from-reviews.js
+  // (2026-04-28) so the new off-Broadway sibling can opt-OUT of this phase
+  // — sparse OB review counts make the inference too fabrication-prone.
+  // For West End the call shape preserves prior behavior exactly.
   if (fixUnconfirmed) {
     console.log('');
     console.log('--- PHASE 4: INFER FROM REVIEW DATES ---');
     const reviewsData = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'reviews.json'), 'utf8'));
     const allReviews = reviewsData.reviews || [];
-    let inferred = 0;
-
-    for (const show of candidateShows) {
-      if (changes.some(c => c.id === show.id)) continue;
-      if (!UNCONFIRMED_SOURCES.has(show.openingDateSource)) continue;
-      if (!show.openingDate) continue;
-
-      const showReviews = allReviews.filter(r => r.showId === show.id);
-      const validDates = showReviews
-        .map(r => r.publishDate)
-        .filter(d => d && !isNaN(new Date(d).getTime()) && new Date(d) > new Date(show.openingDate))
-        .sort();
-
-      if (validDates.length < 3) continue;
-
-      // Press night = earliest review date - 1 day (critics attend evening, publish next morning)
-      // Use date clustering as confidence check: require 2+ reviews within 3 days of earliest
-      const earliestIso = new Date(validDates[0]).toISOString().split('T')[0];
-      const earliestMs = new Date(earliestIso).getTime();
-      const nearEarliest = validDates.filter(d => {
-        const ms = new Date(d).getTime();
-        return ms >= earliestMs && ms <= earliestMs + 3 * 86400000;
-      });
-      if (nearEarliest.length < 2) continue; // Only 1 review near earliest — could be a preview outlier
-
-      const pressNight = new Date(earliestMs - 86400000).toISOString().split('T')[0];
-      const gapDays = Math.round((earliestMs - new Date(show.openingDate).getTime()) / 86400000);
-
-      if (gapDays <= 7) continue;
-      if (gapDays > 90) continue;
-
-      console.log(`  INFER ${show.title}: earliest review ${earliestIso} (${nearEarliest.length} within 3d) → press night ${pressNight} (${gapDays}d after opening ${show.openingDate})`);
-      changes.push({
-        show: show.title, slug: show.slug, id: show.id,
-        changes: [
-          { field: 'previewsStartDate', old: show.previewsStartDate, new: show.openingDate },
-          { field: 'openingDate', old: show.openingDate, new: pressNight },
-          { field: 'openingDateSource', old: show.openingDateSource, new: 'inferred-from-reviews' },
-        ],
-      });
-      inferred++;
+    const skipShowIds = new Set(changes.map(c => c.id));
+    const inferences = inferPressNightFromReviews({
+      candidateShows,
+      reviews: allReviews,
+      enabled: true,
+      skipShowIds,
+    });
+    for (const inf of inferences) {
+      const pressNightIso = inf.changes.find(c => c.field === 'openingDate').new;
+      const earliestReviewIso = new Date(new Date(pressNightIso).getTime() + 86400000)
+        .toISOString().split('T')[0];
+      const oldOpening = inf.changes.find(c => c.field === 'openingDate').old;
+      console.log(`  INFER ${inf.title}: earliest review ${earliestReviewIso} (${inf.clusterSize} within 3d) → press night ${pressNightIso} (${inf.gapDays}d after opening ${oldOpening})`);
+      changes.push({ show: inf.title, slug: inf.slug, id: inf.id, changes: inf.changes });
     }
-    console.log(`Inferred ${inferred} press night(s) from review dates`);
+    console.log(`Inferred ${inferences.length} press night(s) from review dates`);
   }
 
   // Report
