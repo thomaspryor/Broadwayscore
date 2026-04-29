@@ -872,7 +872,17 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "mass-west-end-2026/guardian--alexis-soloski.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/independent--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -884,7 +894,9 @@
       "oh-mary-west-end-2025/financialtimes--paul-raven.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "wicked-2003/front-row-center--molly-marinik.json"
@@ -903,6 +915,18 @@
     ]
   },
   "startTime": "2026-04-29T09:10:21.075Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-29T22:00:50.725Z",
+      "event": "bb-session",
+      "session": "241f0f63",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-04-29T22:00:51.368Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
