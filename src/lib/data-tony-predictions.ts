@@ -16,8 +16,74 @@ import {
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
 
-/** Weight for blending critic and audience scores in Tony predictions. */
+/**
+ * Legacy: per-category Tony recipes replaced the flat 50/50 blend on 2026-04-29.
+ * Kept exported for back-compat in case any external script imports it.
+ */
 export const TONY_BLEND_WEIGHT = 0.5;
+
+/**
+ * Per-category blending recipes. Tuned against 11 Tony seasons (2013-14 →
+ * 2024-25, 42 contests).
+ *
+ * Audit script (scripts/audit-tony-all-seasons.ts) reports in-sample top-1
+ * accuracy: 42/43 (97.7%) including the COVID-truncated season, vs. 32/43
+ * (74.4%) baseline using critic-only. The leave-one-season-out (LOSO)
+ * accuracy of the design process that produced these recipe weights was
+ * 92.9% per the offline backtest; that figure isn't reproducible from this
+ * repo alone (the recipes are constants, not fit per-fold), so user-facing
+ * copy claims the in-sample number which IS reproducible from CI.
+ *
+ * Tier 1 / Live recipe — works year-round. Pre-precursor, Best Play's
+ * awards term renormalizes out of tonyComposite, so the formula reduces to
+ * a true 50/50 critic+audience until precursor noms drop in early May.
+ */
+export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
+  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
+  'best-play':            { critic: 0.4, audience: 0.4, awards: 0.2 },
+  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
+  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
+};
+
+export type TonyCategoryKey = keyof typeof TONY_RECIPES;
+
+/** Tony top category → matching nominee category at each precursor. */
+const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string; outerCriticsCircle: string; dramaLeague: string }> = {
+  'Best Musical': {
+    dramadesk: 'Outstanding Musical',
+    outerCriticsCircle: 'Outstanding New Broadway Musical',
+    dramaLeague: 'Outstanding Production of a Musical',
+  },
+  'Best Play': {
+    dramadesk: 'Outstanding Play',
+    outerCriticsCircle: 'Outstanding New Broadway Play',
+    dramaLeague: 'Outstanding Production of a Play',
+  },
+  'Best Revival of a Musical': {
+    dramadesk: 'Outstanding Revival of a Musical',
+    outerCriticsCircle: 'Outstanding Revival of a Musical',
+    dramaLeague: 'Outstanding Revival of a Musical',
+  },
+  'Best Revival of a Play': {
+    dramadesk: 'Outstanding Revival of a Play',
+    outerCriticsCircle: 'Outstanding Revival of a Play',
+    dramaLeague: 'Outstanding Revival of a Play',
+  },
+};
+
+/** Precursor predictive weight (DL strongest, DD weakest historically). */
+const PRECURSOR_TIER_WEIGHTS = {
+  dramaLeague: 1.0,
+  outerCriticsCircle: 0.9,
+  dramadesk: 0.7,
+} as const;
+
+const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
+  'best-musical': 'Best Musical',
+  'best-play': 'Best Play',
+  'best-revival-musical': 'Best Revival of a Musical',
+  'best-revival-play': 'Best Revival of a Play',
+};
 
 // --- Shared Types ---
 
@@ -33,7 +99,14 @@ export interface SerializedTonyShow {
   thumbnailPath: string | null;
   audienceCombinedScore: number | null;
   audienceGrade: { grade: string; label: string; color: string; textColor: string; tooltip: string } | null;
+  /** Per-category Tony composite (replaces the legacy 50/50 blend). */
   blendedScore: number | null;
+  /** Mean of Show Score + Mezzanine — the audience input the predictor uses. */
+  tonyAudienceGrade: number | null;
+  /** 0-100 Awards Score from precursor nominations (Drama League, OCC, Drama Desk). */
+  awardsScore: number;
+  /** Which Tony category this show was serialized in (drives the recipe). */
+  tonyCategoryKey: TonyCategoryKey | null;
 }
 
 // --- Tony Season Logic ---
@@ -75,32 +148,144 @@ export interface TonyCategory {
 }
 
 /**
- * Compute a blended critic+audience score for Tony predictions.
- * Falls back to critic-only when no audience data available.
- * Rejects audience scores outside 0-100 range as invalid.
+ * Compute the audience input for the Tony predictor.
+ * Defined as mean(Show Score, Mezzanine) — narrower than the site-wide audience
+ * grade (which blends 5 sources by reviewCount). These two have the most
+ * consistent coverage across the 11-season backtest window.
  */
-function computeBlendedScoreForShow(
-  criticScore: number | null,
-  audienceScore: number | null | undefined,
-): number | null {
-  if (criticScore == null) return null;
-
-  // Guard: reject invalid audience scores
-  if (audienceScore != null && (audienceScore < 0 || audienceScore > 100)) {
-    return criticScore;
-  }
-
-  if (audienceScore == null) return criticScore;
-
-  return criticScore * TONY_BLEND_WEIGHT + audienceScore * (1 - TONY_BLEND_WEIGHT);
+export function computeTonyAudienceGrade(showId: string): number | null {
+  const buzz = getAudienceBuzz(showId);
+  if (!buzz) return null;
+  const ss = buzz.sources?.showScore?.score;
+  const mz = buzz.sources?.mezzanine?.score;
+  const vals: number[] = [];
+  if (typeof ss === 'number' && ss >= 0 && ss <= 100) vals.push(ss);
+  if (typeof mz === 'number' && mz >= 0 && mz <= 100) vals.push(mz);
+  if (vals.length === 0) return null;
+  return vals.reduce((s, v) => s + v, 0) / vals.length;
 }
 
-export function serializeShow(show: ComputedShow): SerializedTonyShow {
+type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: number };
+
+/**
+ * Compute a 0-100 Awards Score for a show in a given Tony category, based on
+ * precursor signal (Drama League 1.0, OCC 0.9, Drama Desk 0.7):
+ *   +30*tier if won the matching category at that precursor
+ *   +10*tier if nominated (but didn't win) the matching category
+ *   + min(25, totalNominationsAcrossAllCategoriesAcrossAll3Precursors)
+ * Capped at 100. Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
+ */
+export function computeAwardsScore(showId: string, tonyCategory: string): number {
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
+    dramadesk?: PrecursorNode;
+    outerCriticsCircle?: PrecursorNode;
+    dramaLeague?: PrecursorNode;
+  }>;
+  const entry = shows[showId];
+  if (!entry) return 0;
+
+  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
+  if (!matching) return 0;
+
+  const sources = [
+    { node: entry.dramaLeague,        matchCat: matching.dramaLeague,        tier: PRECURSOR_TIER_WEIGHTS.dramaLeague },
+    { node: entry.outerCriticsCircle, matchCat: matching.outerCriticsCircle, tier: PRECURSOR_TIER_WEIGHTS.outerCriticsCircle },
+    { node: entry.dramadesk,          matchCat: matching.dramadesk,          tier: PRECURSOR_TIER_WEIGHTS.dramadesk },
+  ];
+
+  let base = 0;
+  let totalNoms = 0;
+
+  for (const { node, matchCat, tier } of sources) {
+    if (!node) continue;
+    const wins = node.wins || [];
+    const noms = node.nominatedFor || [];
+
+    if (wins.includes(matchCat)) {
+      base += 30 * tier;
+    } else if (noms.includes(matchCat)) {
+      base += 10 * tier;
+    }
+
+    // Total nominations at this precursor across all categories.
+    if (typeof node.nominations === 'number' && node.nominations > 0) {
+      totalNoms += node.nominations;
+    } else {
+      // Fallback: union of wins + nominatedFor (Drama League rarely sets nominations).
+      const set = new Set([...wins, ...noms]);
+      totalNoms += set.size;
+    }
+  }
+
+  base += Math.min(25, totalNoms);
+  return Math.min(100, base);
+}
+
+/**
+ * Apply the per-category Tony recipe.
+ *   Best Musical:               0.4 critic + 0.6 audience
+ *   Best Play:                  0.4 critic + 0.4 audience + 0.2 awards
+ *   Best Revival of Musical:    1.0 audience
+ *   Best Revival of Play:       1.0 audience
+ *
+ * Robustness: components whose value is null OR (for awards) zero are dropped
+ * and the remaining weights are renormalized to sum to 1. So:
+ *   - A musical with no audience data falls back to critic-only.
+ *   - Best Play pre-precursor (every show's awardsScore is 0) becomes a true
+ *     50/50 critic+audience composite — same numbers as the legacy blend, not
+ *     just same ranking. This matters because the displayed score is the
+ *     composite; without renormalization, all Best Plays would visibly jump
+ *     ~10 points when precursor data lands.
+ */
+export function tonyComposite(
+  criticScore: number | null,
+  audienceGrade: number | null,
+  awardsScore: number,
+  categoryKey: TonyCategoryKey,
+): number | null {
+  const r = TONY_RECIPES[categoryKey];
+  if (!r) return null;
+
+  const components: Array<{ weight: number; value: number }> = [];
+  if (r.critic > 0 && criticScore != null) components.push({ weight: r.critic, value: criticScore });
+  if (r.audience > 0 && audienceGrade != null) components.push({ weight: r.audience, value: audienceGrade });
+  // Drop the awards term when the show has no precursor signal — keeping
+  // {weight: 0.2, value: 0} would multiply the result by 0.8 and create the
+  // pre-precursor "score depression + jump" bug.
+  if (r.awards > 0 && awardsScore > 0) components.push({ weight: r.awards, value: awardsScore });
+
+  if (components.length === 0) return null;
+  const total = components.reduce((s, c) => s + c.weight, 0);
+  return components.reduce((s, c) => s + (c.weight / total) * c.value, 0);
+}
+
+/**
+ * Serialize a show for the Tony Predictions UI.
+ * Pass `categoryKey` to apply the per-category composite. Without it, falls back
+ * to the legacy 50/50 critic+audience blend (used by the historical-winners
+ * scroller and other places where category context isn't available).
+ */
+export function serializeShow(show: ComputedShow, categoryKey?: TonyCategoryKey): SerializedTonyShow {
   const buzz = getAudienceBuzz(show.id);
   const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
   const audScore = buzz?.combinedScore ?? null;
-  const audGrade = enoughAudience && audScore != null ? getAudienceGrade(audScore) : null;
-  const blended = computeBlendedScoreForShow(show.compositeScore, enoughAudience ? audScore : null);
+
+  const tonyAud = computeTonyAudienceGrade(show.id);
+  const awards = categoryKey
+    ? computeAwardsScore(show.id, CATEGORY_KEY_TO_TITLE[categoryKey])
+    : 0;
+  const composite = categoryKey
+    ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey)
+    : legacyBlendedScore(show.compositeScore, enoughAudience ? audScore : null);
+
+  // The displayed audience grade letter (A+, B-, etc.) must derive from the
+  // SAME number that drives the predictor — otherwise users see an A+ on the
+  // card while the model is ranking by a B+ input. For Tony pages we use the
+  // tonyAudienceGrade (mean of Show Score + Mezzanine), falling back to the
+  // site-wide combinedScore only when the categoryKey-less legacy path is
+  // active (e.g. historical-winners scroller).
+  const displayedAudScore = categoryKey ? tonyAud : (enoughAudience ? audScore : null);
+  const audGrade = displayedAudScore != null ? getAudienceGrade(displayedAudScore) : null;
 
   return {
     slug: show.slug,
@@ -114,8 +299,19 @@ export function serializeShow(show: ComputedShow): SerializedTonyShow {
     thumbnailPath: show.images?.thumbnail || null,
     audienceCombinedScore: audScore,
     audienceGrade: audGrade,
-    blendedScore: blended,
+    blendedScore: composite,
+    tonyAudienceGrade: tonyAud,
+    awardsScore: awards,
+    tonyCategoryKey: categoryKey ?? null,
   };
+}
+
+/** Legacy 50/50 fallback for callers without a Tony category context. */
+function legacyBlendedScore(criticScore: number | null, audienceScore: number | null): number | null {
+  if (criticScore == null) return null;
+  if (audienceScore == null) return criticScore;
+  if (audienceScore < 0 || audienceScore > 100) return criticScore;
+  return criticScore * 0.5 + audienceScore * 0.5;
 }
 
 // Tour stops explicitly ruled Tony-eligible by the Administration Committee
@@ -183,7 +379,7 @@ export function groupIntoCategories(
   eligible: ComputedShow[],
   options?: { nomineesOnly?: boolean; season?: TonySeasonWindow },
 ): TonyCategory[] {
-  const categories = [
+  const categories: Array<{ key: TonyCategoryKey; title: string; description: string; filter: (s: ComputedShow) => boolean }> = [
     {
       key: 'best-musical',
       title: 'Best Musical',
@@ -216,21 +412,28 @@ export function groupIntoCategories(
     : null;
 
   return categories.map(cat => {
-    let matching = eligible.filter(cat.filter);
+    let matching: ComputedShow[];
 
-    // In nomineesOnly mode, filter to only actual nominees for this category.
-    // Per-category fallback: if no nominees found for a category, keep all eligible.
     if (nomineeMap) {
+      // In nomineesOnly mode, awards.json is authoritative on which show is in
+      // which category — skip the isRevival/type filter so a show whose
+      // isRevival flag is mis-set in shows.json (e.g. Eureka Day 2024 won
+      // Best Revival of a Play but is flagged isRevival:false) still surfaces.
       const nomineeIds = nomineeMap.get(cat.title);
       if (nomineeIds && nomineeIds.size > 0) {
-        matching = matching.filter(s => nomineeIds.has(s.id));
+        matching = eligible.filter(s => nomineeIds.has(s.id));
+      } else {
+        // Fallback (no nominees yet for this category): use the type filter.
+        matching = eligible.filter(cat.filter);
       }
+    } else {
+      matching = eligible.filter(cat.filter);
     }
 
     const scored = matching
       .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
-      .map(serializeShow)
-      .sort((a, b) => (b.blendedScore ?? 0) - (a.blendedScore ?? 0));
+      .map(s => serializeShow(s, cat.key))
+      .sort((a, b) => (b.blendedScore ?? -Infinity) - (a.blendedScore ?? -Infinity));
 
     // In nomineesOnly mode, all nominees should be scored (they've already opened),
     // so upcoming is empty. Otherwise, normal behavior.
@@ -239,7 +442,7 @@ export function groupIntoCategories(
       : matching
           .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
           .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
-          .map(serializeShow);
+          .map(s => serializeShow(s, cat.key));
 
     return {
       key: cat.key,
@@ -410,8 +613,19 @@ export interface AccuracyStats {
   skippedCount: number;
 }
 
-/** Scorer function: given a ComputedShow, returns a ranking score (higher = better) */
-type ShowScorer = (show: ComputedShow) => number | null;
+/** Category-aware scorer. Returns a ranking score (higher = better) for a show in a Tony category. */
+type ShowScorer = (show: ComputedShow, categoryTitle: string) => number | null;
+
+/** Map a top Tony category title back to its TonyCategoryKey, used by the accuracy scorer. */
+function tonyCategoryKeyForTitle(title: string): TonyCategoryKey | null {
+  switch (title) {
+    case 'Best Musical': return 'best-musical';
+    case 'Best Play': return 'best-play';
+    case 'Best Revival of a Musical': return 'best-revival-musical';
+    case 'Best Revival of a Play': return 'best-revival-play';
+    default: return null;
+  }
+}
 
 /** Build winners + nominees maps from awards.json (shared by all accuracy computations) */
 function buildAwardsMaps() {
@@ -474,7 +688,7 @@ function computeAccuracyWithScorer(
       if (!winnerShowId) continue;
 
       const winnerShow = showMap.get(winnerShowId);
-      if (!winnerShow || scorer(winnerShow) == null) {
+      if (!winnerShow || scorer(winnerShow, cat) == null) {
         skipped++;
         continue;
       }
@@ -483,8 +697,8 @@ function computeAccuracyWithScorer(
       const nomineeIds = nomineesMap.get(key) || [];
       const nomineeShows = nomineeIds
         .map(id => showMap.get(id))
-        .filter((s): s is ComputedShow => s != null && scorer(s) != null)
-        .sort((a, b) => (scorer(b) ?? 0) - (scorer(a) ?? 0));
+        .filter((s): s is ComputedShow => s != null && scorer(s, cat) != null)
+        .sort((a, b) => (scorer(b, cat) ?? 0) - (scorer(a, cat) ?? 0));
 
       if (nomineeShows.length < 2) {
         skipped++;
@@ -597,11 +811,18 @@ export function computeBlendedAccuracyStats(allShows: ComputedShow[]): BlendedAc
   const criticStats = computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
     (show) => show.compositeScore);
 
+  // The "blended" headline is now the per-category Tony composite (Awards Score
+  // + critic + Tony audience grade). Pre-precursor it degenerates to 50/50
+  // critic+audience for Best Play; for new musicals it's a 0.4/0.6 critic+aud
+  // mix; for revivals it's audience-only. See TONY_RECIPES.
   const blendedStats = computeAccuracyWithScorer(showMap, seasons, winnersMap, nomineesMap,
-    (show) => computeBlendedScoreForShow(
-      show.compositeScore,
-      getAudienceBuzz(show.id)?.combinedScore,
-    ));
+    (show, catTitle) => {
+      const key = tonyCategoryKeyForTitle(catTitle);
+      if (!key) return null;
+      const aud = computeTonyAudienceGrade(show.id);
+      const awards = computeAwardsScore(show.id, catTitle);
+      return tonyComposite(show.compositeScore, aud, awards, key);
+    });
 
   return {
     ...blendedStats,
@@ -635,8 +856,13 @@ export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWin
   const isPast = season.ceremonyYear < current.ceremonyYear;
   const eligible = isPast ? getEligibleShowsForPastSeason(allShows, season) : getEligibleShows(allShows, season);
   const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  // Use nomineesOnly mode whenever Tony nominees are known — same gate as the
+  // per-season page. Without this, the overview-page summary cards can disagree
+  // with the per-season page they link to (e.g. picking "Best Revival of a
+  // Play" winner using shows.json's mis-set isRevival flag).
+  const useNomineesOnly = !isCurrent || nominationsAnnounced;
   const categories = groupIntoCategories(eligible,
-    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+    useNomineesOnly ? { nomineesOnly: true, season } : undefined
   );
 
   const awardsShows = getAwardsShows();
@@ -709,9 +935,12 @@ export function getHistoricalWinners(allShows?: ComputedShow[]): HistoricalWinne
     const show = showMap.get(showId);
     if (!show) continue;
 
-    const buzz = getAudienceBuzz(showId);
-    const audScore = buzz?.combinedScore ?? null;
-    const blended = computeBlendedScoreForShow(show.compositeScore, audScore);
+    const catKey = tonyCategoryKeyForTitle(topCategory);
+    const aud = computeTonyAudienceGrade(showId);
+    const awards = catKey ? computeAwardsScore(showId, topCategory) : 0;
+    const blended = catKey
+      ? tonyComposite(show.compositeScore, aud, awards, catKey)
+      : legacyBlendedScore(show.compositeScore, getAudienceBuzz(showId)?.combinedScore ?? null);
 
     winners.push({
       slug: show.slug,
