@@ -89,8 +89,9 @@ describe('computeCriticScore', () => {
     assert.ok(result);
     assert.strictEqual(result.tier3Count, 1);
     assert.strictEqual(result.reviews[0].tier, 3);
-    assert.strictEqual(result.reviews[0].tierWeight, 0.35);
-    // Weighted: 70 * 0.35 / 0.35 = 70
+    // v5 (2026-04-29): T3 weight raised 0.35 → 0.40
+    assert.strictEqual(result.reviews[0].tierWeight, 0.40);
+    // Weighted: 70 * 0.40 / 0.40 = 70
     assert.strictEqual(result.weightedScore, 70);
   });
 
@@ -103,10 +104,11 @@ describe('computeCriticScore', () => {
     assert.strictEqual(result.reviewCount, 2);
     assert.strictEqual(result.tier1Count, 1);
     assert.strictEqual(result.tier3Count, 1);
-    // T1: 90 * 1.0 = 90, T3: 60 * 0.35 = 21
-    // Total weight: 1.0 + 0.35 = 1.35
-    // Weighted avg: (90 + 21) / 1.35 = 82.22...
-    const expected = Math.round(((90 * 1.0 + 60 * 0.35) / (1.0 + 0.35)) * 100) / 100;
+    // v5 weights: T1=1.0, T3=0.40 (was 0.35)
+    // T1: 90 * 1.0 = 90, T3: 60 * 0.40 = 24
+    // Total weight: 1.0 + 0.40 = 1.40
+    // Weighted avg: (90 + 24) / 1.40 = 81.43
+    const expected = Math.round(((90 * 1.0 + 60 * 0.40) / (1.0 + 0.40)) * 100) / 100;
     assert.strictEqual(result.weightedScore, expected);
   });
 
