@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -514,19 +515,26 @@ async function main() {
             }
           }
 
-          const reviewData = {
-            showId,
+          // Route through createOrMergeReviewFile for Guard E (auto-flag
+          // BWW Review-Roundup URLs) and URL-based outletId refinement
+          // (resolveOutletFromUrl handles cases like metro.co.uk → metro-uk
+          // that the local domainToOutletId fallback misses).
+          const writeResult = createOrMergeReviewFile(showId, {
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
             criticName: criticName || 'Unknown',
             url,
-            publishDate: null,
-            fullText: null,
             source: 'opening-night-discovery',
-            contentTier: 'excerpt',
-          };
-
-          fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
+            fields: {
+              publishDate: null,
+              fullText: null,
+              contentTier: 'excerpt',
+            },
+          });
+          if (writeResult.action === 'skipped') {
+            console.log(`  skipped (${writeResult.reason}): ${url}`);
+            continue;
+          }
         }
 
         existingUrls.add(url.toLowerCase());
@@ -651,19 +659,24 @@ async function main() {
           }
         }
 
-        const reviewData = {
-          showId,
+        // Route through createOrMergeReviewFile for Guard E (auto-flag
+        // BWW Review-Roundup URLs) and URL-based outletId refinement.
+        const writeResult = createOrMergeReviewFile(showId, {
           outletId: canonicalOutletId,
           outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
           criticName: criticName || 'Unknown',
           url,
-          publishDate: null,
-          fullText: null,
           source: 'opening-night-discovery',
-          contentTier: 'excerpt',
-        };
-
-        fs.writeFileSync(filepath, JSON.stringify(reviewData, null, 2));
+          fields: {
+            publishDate: null,
+            fullText: null,
+            contentTier: 'excerpt',
+          },
+        });
+        if (writeResult.action === 'skipped') {
+          console.log(`  skipped (${writeResult.reason}): ${url}`);
+          continue;
+        }
       }
 
       existingUrls.add(url.toLowerCase());
