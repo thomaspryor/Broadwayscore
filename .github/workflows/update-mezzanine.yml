@@ -110,6 +110,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          # Stage the public-repo coverage audit so health-check.js can read it
+          # in tomorrow's digest. (audience-buzz.json lives in the private repo
+          # and is pushed by the push-core-data action below.)
+          if [ -f data/audit/mezzanine-coverage.json ]; then
+            git add data/audit/mezzanine-coverage.json
+          fi
+
           # Core data files pushed to private repo by push-core-data action
           if git diff --staged --quiet; then
             echo "No changes to commit"

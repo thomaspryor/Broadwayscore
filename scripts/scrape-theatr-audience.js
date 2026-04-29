@@ -22,6 +22,7 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { normalizeTitle } = require('./lib/title-match');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -157,13 +158,11 @@ async function fetchShowStats(showId) {
 
 // ---- Title matching ----
 
-function normalize(s) {
-  return s.toLowerCase()
-    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
-    .replace(/\s+/g, ' ')
-    .replace(/^the\s+/g, '')
-    .trim();
-}
+// normalize() lives in scripts/lib/title-match.js (shared across audience
+// scrapers, unit-tested at scripts/lib/title-match.test.js). Migrating this
+// scraper closes the drift gap that caused the 2026-04-28 What Happened Was
+// incident \u2014 Theatr's normalize was an older copy of the same logic.
+const normalize = normalizeTitle;
 
 // Manual overrides: Theatr name → our show ID
 const THEATR_OVERRIDES = {

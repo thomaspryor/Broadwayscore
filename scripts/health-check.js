@@ -1286,6 +1286,45 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     actionHtml = autoFixedHtml + needsAttentionHtml;
   }
 
+  // Mezzanine title-coverage drift section. Surfaces likely-mismatched titles
+  // that the scraper failed to bridge (normalize gap or missing override).
+  // Audit file is written by scripts/scrape-mezzanine-audience.js on every
+  // full run. Wired to email after the 2026-04-28 What Happened Was incident.
+  let mezzanineCoverageHtml = '';
+  try {
+    const mezzAuditPath = path.join(__dirname, '..', 'data', 'audit', 'mezzanine-coverage.json');
+    if (fs.existsSync(mezzAuditPath)) {
+      const audit = JSON.parse(fs.readFileSync(mezzAuditPath, 'utf8'));
+      const count = audit.count || 0;
+      if (count > 0) {
+        const ageMs = Date.now() - new Date(audit.lastUpdated || 0).getTime();
+        const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
+        const stale = ageDays > 14;
+        const color = count >= 10 ? '#e74c3c' : count >= 5 ? '#f39c12' : '#aaa';
+        const heading = count >= 10
+          ? '⚠️ Mezzanine Coverage Drift (action recommended)'
+          : count >= 5
+          ? 'Mezzanine Coverage — Review When Convenient'
+          : 'Mezzanine Coverage';
+        const top = (audit.flagged || []).slice(0, 5).map(f =>
+          `<li style="color:#ccc;margin-bottom:4px;font-size:13px;">${f.ratingsCount} ratings · ${f.ourTitle} <span style="color:#666;">↔</span> ${f.mezzName} <span style="color:#666;">@ ${f.theater || '?'}</span></li>`
+        ).join('');
+        mezzanineCoverageHtml = `
+          <h3 style="color:${color};margin:24px 0 8px;">${heading}</h3>
+          <p style="color:#ccc;margin:4px 0;font-size:13px;">
+            ${count} Mezzanine production${count === 1 ? '' : 's'} fuzzy-matches an open/recent show but didn't link.
+            Likely a missing MEZZANINE_OVERRIDES entry or a normalize gap in scripts/lib/title-match.js.
+            ${stale ? `<br><span style="color:#888;">Last audit run ${ageDays}d ago — Mezzanine cron may be stuck.</span>` : ''}
+          </p>
+          ${top ? `<ul style="padding-left:20px;margin:4px 0;">${top}</ul>` : ''}
+          <p style="color:#666;font-size:12px;margin:4px 0;">Full list: data/audit/mezzanine-coverage.json</p>
+        `;
+      }
+    }
+  } catch (e) {
+    console.log(`[Mezzanine Coverage] Skipped — ${e.message}`);
+  }
+
   // Workflow runs section
   let workflowHtml = '';
   if (workflowSummary && !workflowSummary.skipped) {
@@ -1356,6 +1395,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     </table>
 
     ${actionHtml}
+    ${mezzanineCoverageHtml}
     ${workflowHtml}
     ${buildExclusionSummaryHtml()}
 

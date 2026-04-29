@@ -19,6 +19,7 @@ const path = require('path');
 const https = require('https');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { normalizeTitle, titleTokens, jaccard } = require('./lib/title-match');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -66,6 +67,14 @@ const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
 const showMapById = {};
 for (const s of showsData.shows) showMapById[s.id] = s;
 const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+
+// Validate override show IDs exist (catches drift when shows.json renames an
+// ID and silently leaves the override pointing at nothing — Claude review #4).
+for (const overrideId of Object.keys(MEZZANINE_OVERRIDES)) {
+  if (!showMapById[overrideId]) {
+    console.warn(`⚠ MEZZANINE_OVERRIDES key "${overrideId}" is not in shows.json — override is dead config and should be removed or updated.`);
+  }
+}
 
 /**
  * Query Parse Server API
@@ -186,38 +195,8 @@ function parseDate(val) {
   return '';
 }
 
-/**
- * Normalize title for comparison
- */
-// Type-designator parens are LOAD-BEARING: "Redwood (Play)" must stay distinct
-// from "Redwood (Musical)". Anything else (venue, composer) is a noise
-// disambiguator and gets stripped so bare-title Mezzanine entries can match.
-const TYPE_DESIGNATOR_RE = /\((play|musical|comedy|drama|dance|opera|new musical|new play)\)/i;
-
-function normalize(s) {
-  if (!s) return '';
-  return s.toLowerCase()
-    // Map ampersand to "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
-    .replace(/&/g, ' and ')
-    // Strip non-type parens content ("Cable Street (59e59)", "Monte Cristo
-    // (The York Theatre Company)"). Type designators kept as plain text so
-    // Redwood (Play) and Redwood (Musical) still diverge after parens strip.
-    .replace(/\(([^)]*)\)/g, (m, inner) => TYPE_DESIGNATOR_RE.test(m) ? ' ' + inner + ' ' : ' ')
-    // Joiners (apostrophes, quotes, hyphens) \u2192 empty so words don't split.
-    // "Grown-Ups" \u2192 "grownups" (NOT "grown ups", a different play).
-    .replace(/['\u2018\u2019"\u201C\u201D\-\u2013\u2014]/g, '')
-    // Separators/terminators \u2192 space so "foo/bar" === "foo / bar" and
-    // "Master Harold...and the Boys" === "Master Harold\u2026and the boys".
-    .replace(/[!?:,.;+*\u2026/\[\]]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    // Drop leading "the "
-    .replace(/^the\s+/g, '')
-    // Drop trailing " (the )?musical" so "Urinetown" === "Urinetown The Musical"
-    // and "Redwood" === "Redwood (Musical)" (after parens-content kept as text).
-    // "Redwood (Play)" stays distinct ("redwood play" — strip is musical-only).
-    .replace(/\s+(the\s+)?musical$/, '');
-}
+// normalize() lives in scripts/lib/title-match.js (shared, unit-tested).
+const normalize = normalizeTitle;
 
 /**
  * Deduplicate matches: when the same Mezzanine production is claimed by
@@ -451,11 +430,14 @@ function updateAudienceBuzz(match) {
   const show = audienceBuzz.shows[showId];
   if (!show.sources) show.sources = {};
 
-  // Update Mezzanine data
+  // Update Mezzanine data. prodIds persisted so wrong-merge regressions can be
+  // diagnosed without git archaeology (Codex review: previously rollback
+  // depended on external git history).
   show.sources.mezzanine = {
     score: match.score,
     reviewCount: match.ratingsCount,
-    starRating: match.starRating
+    starRating: match.starRating,
+    prodIds: match.prodIds || []
   };
 
   // Recalculate combined score
@@ -598,14 +580,12 @@ async function main() {
     const matchedProdIds = new Set();
     for (const m of matches) for (const pid of (m.prodIds || [])) matchedProdIds.add(pid);
 
-    // Token-set similarity (Jaccard, stop-words filtered)
-    const STOP = new Set(['the','and','for','with','from','your','our','musical','play','a','an','of','to']);
-    const tokens = (s) => new Set(normalize(s).split(' ').filter(t => t.length >= 3 && !STOP.has(t)));
-    const jaccard = (a, b) => {
-      if (!a.size || !b.size) return 0;
-      const inter = [...a].filter(x => b.has(x)).length;
-      return inter / new Set([...a, ...b]).size;
-    };
+    // titleTokens() from scripts/lib/title-match.js keeps "play"/"musical" so
+    // type-disambiguated titles don't collapse to identical token sets (Claude
+    // review #2: dropping them made Redwood (Play) ≡ Redwood (Musical) ≡
+    // Redwood and audit would flag the play production as a candidate match
+    // for the musical's show entry).
+    const tokens = titleTokens;
 
     // Index shows that lack Mezzanine data and are open/recent
     const today = new Date().toISOString().slice(0, 10);
