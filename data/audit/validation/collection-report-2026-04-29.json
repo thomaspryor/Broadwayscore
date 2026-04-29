@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-04-29T07:21:46.330Z",
+  "runDate": "2026-04-29T07:44:03.666Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
     "showFilter": "mass-west-end-2026",
     "aggressive": false,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 2,
+    "failed": 10,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -27,8 +27,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 10,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -41,7 +41,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 10,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -52,8 +52,16 @@
   },
   "processed": [],
   "failed": [
-    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "mass-west-end-2026/standard--nick-curtis.json"
+    "mass-west-end-2026/guardian--alexis-soloski.json",
+    "mass-west-end-2026/timeout--andrzej-lukowski.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/independent--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
