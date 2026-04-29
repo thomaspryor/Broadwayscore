@@ -50,16 +50,26 @@ function showIds() {
   process.exit(1);
 }
 
+function loadShow(showId) {
+  const showsPath = path.join(__dirname, '../data/shows.json');
+  const data = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  return (data.shows || data).find(s => s.id === showId);
+}
+
+const NON_MET_OPERA_URL_MARKERS = require('./lib/content-filters').NON_MET_OPERA_URL_MARKERS;
+
 async function processShow(showId) {
   const pendingDir = path.join(PENDING_ROOT, showId);
   if (!fs.existsSync(pendingDir)) {
     console.log(`[${showId}] no _pending dir`);
-    return { promoted: 0, kept: 0 };
+    return { promoted: 0, kept: 0, rejected: 0 };
   }
+  const show = loadShow(showId);
+  const openingYear = show?.openingDate ? new Date(show.openingDate).getFullYear() : null;
   const files = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json'));
-  console.log(`[${showId}] ${files.length} pending files to inspect`);
+  console.log(`[${showId}] ${files.length} pending files to inspect (opening ${show?.openingDate || '?'})`);
 
-  let promoted = 0, kept = 0;
+  let promoted = 0, kept = 0, rejected = 0;
   for (const file of files) {
     const filepath = path.join(pendingDir, file);
     const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
@@ -68,6 +78,23 @@ async function processShow(showId) {
       console.log(`  [${file}] no URL — skip`);
       kept++;
       continue;
+    }
+
+    // Pre-promotion filters: don't bother fetching wrong-production URLs.
+    if (NON_MET_OPERA_URL_MARKERS && NON_MET_OPERA_URL_MARKERS.some(m => url.toLowerCase().includes(m))) {
+      console.log(`  [${file}] REJECT: non-Met opera house URL — deleting`);
+      fs.unlinkSync(filepath);
+      rejected++;
+      continue;
+    }
+    if (openingYear) {
+      const m = url.match(/\/((?:19|20)\d{2})\b/);
+      if (m && Math.abs(parseInt(m[1], 10) - openingYear) > 1) {
+        console.log(`  [${file}] REJECT: URL year ${m[1]} > ±1y from ${openingYear} — deleting`);
+        fs.unlinkSync(filepath);
+        rejected++;
+        continue;
+      }
     }
 
     let byline = null;
@@ -127,22 +154,24 @@ async function processShow(showId) {
     promoted++;
   }
 
-  return { promoted, kept };
+  return { promoted, kept, rejected };
 }
 
 (async () => {
   const ids = showIds();
   console.log(`Processing ${ids.length} show(s)${dryRun ? ' [DRY RUN]' : ''}\n`);
 
-  let totalPromoted = 0, totalKept = 0;
+  let totalPromoted = 0, totalKept = 0, totalRejected = 0;
   for (const id of ids) {
-    const { promoted, kept } = await processShow(id);
+    const { promoted, kept, rejected } = await processShow(id);
     totalPromoted += promoted;
     totalKept += kept;
+    totalRejected += rejected || 0;
   }
 
   console.log(`\n━━━ Replay complete ━━━`);
   console.log(`Promoted: ${totalPromoted}`);
+  console.log(`Rejected (wrong-prod or wrong-year, deleted): ${totalRejected}`);
   console.log(`Kept in _pending: ${totalKept}`);
 })().catch(e => {
   console.error(e);
