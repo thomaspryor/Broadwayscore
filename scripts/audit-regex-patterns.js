@@ -53,6 +53,28 @@ const PATTERN_FAMILIES = [
 // 2026-04-28 with ~30% headroom. If a pattern's baseline shifts materially,
 // update this list rather than raising DEFAULT_MAX_HITS.
 // Entry format: `${FAMILY}::${index}` → max allowed hits.
+//
+// Calibration provenance — when a number changes, jot it here so a future
+// regression is traceable instead of being silently re-baselined:
+//
+//   PATTERN_CALIBRATION = {
+//     'NAVIGATION_PATTERNS::1': {
+//       commit: 'b0017ebc26',  // Item 4 of systematic CI plan
+//       date: '2026-04-28',
+//       rawHits: 143,
+//       headroom: 0.4,         // 200 / 143 ≈ 1.4
+//       note: 'Diffuse across defunct archive outlets (theater-news-online, '
+//           + 'about-entertainment, new-jersey-newsroom — top 5 = 54% of hits, '
+//           + '51% of dated fetches from 2026-02). No single commit drives the '
+//           + 'baseline; mostly cached chrome bleed in re-unscrapable archives. '
+//           + 'detectNavigationJunk\'s 5+ keyword guard absorbs these at runtime '
+//           + 'so review scoring is unaffected.',
+//     },
+//   };
+//
+// Read this when the next regression hits — does the bump come from one of
+// the documented archive outlets (acceptable) or a new active outlet (real
+// regression, scraper bug to fix)?
 const PATTERN_ALLOWLIST = {
   // Paywall: HuffPost "Already a member"/"BECOME A MEMBER", subscriber prompts.
   // 2026-04-28 recalibration: NYT "Already a subscriber? Log in" chrome bleeds
