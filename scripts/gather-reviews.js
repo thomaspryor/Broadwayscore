@@ -4442,6 +4442,32 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     }
   }
 
+  // STEP 1.5: Direct outlet discovery for TheaterMania + OMC
+  // These outlets don't surface reliably via SERP (TM uses opaque numeric IDs;
+  // OMC has zero SERP coverage) and historically required DTLI listing or
+  // manual ingest. Polled before SERP so SERP budget isn't burned re-discovering them.
+  // US-only outlets — skip for WE shows.
+  if (!isWestEnd) {
+    console.log(`\n[1.5/4] Direct outlet discovery (TheaterMania + OMC)...`);
+    try {
+      const { discoverNewReviews: tmDiscover } = require('./lib/theatermania-discovery');
+      const { discoverNewReviews: omcDiscover } = require('./lib/omc-discovery');
+      const since = show.previewsStartDate
+        ? new Date(new Date(show.previewsStartDate).getTime() - 3 * 86400000)
+        : show.openingDate
+          ? new Date(new Date(show.openingDate).getTime() - 7 * 86400000)
+          : new Date(Date.now() - 30 * 86400000);
+      const [tm, omc] = await Promise.all([
+        tmDiscover(showId, show, since, { verbose: false }).catch(e => (console.log(`    TM error: ${e.message}`), [])),
+        omcDiscover(showId, show, since, { verbose: false }).catch(e => (console.log(`    OMC error: ${e.message}`), [])),
+      ]);
+      console.log(`    TheaterMania: ${tm.length} hit(s); 1 Minute Critic: ${omc.length} hit(s)`);
+      foundReviews.push(...tm, ...omc);
+    } catch (e) {
+      console.log(`  Direct discovery non-fatal: ${e.message}`);
+    }
+  }
+
   // STEP 2: Search outlets via Google SERP (ScrapingBee / Bright Data)
   if (aggregatorsOnly) {
     health.serp.skipped = true;
