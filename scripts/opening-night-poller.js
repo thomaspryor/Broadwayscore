@@ -1603,7 +1603,12 @@ async function pollCycle() {
   let jsSiteSearchResults = [];
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID);
-    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...directResults]) {
+    // NOTE: directResults intentionally NOT added here. Direct-discovery URLs
+    // can still get rejected downstream (URL validation, opera-flag, market-
+    // mismatch). If a direct-discovery URL is rejected, we want SERP/JS site-
+    // search to still consider TM/OMC missing and re-discover. URL-level dedup
+    // happens via knownUrls in processDiscoveredReviews. Ship-check P1.
+    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
     const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
@@ -1653,7 +1658,8 @@ async function pollCycle() {
   let serpResults = [];
   if (!SKIP_SERP && shouldRunSerp()) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID);
-    for (const r of [...aggResults, ...rssResults, ...siteSearchResults, ...directResults]) {
+    // directResults intentionally excluded — see note above. URL-dedup via knownUrls.
+    for (const r of [...aggResults, ...rssResults, ...siteSearchResults]) {
       if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
     }
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first

@@ -24,60 +24,53 @@
  * undefined, not 'Unknown'; routing is gated on the literal 'Unknown'.)
  */
 
-const https = require('https');
+const { fetchJSON } = require('./scraper');
 const { titleMatchesShow } = require('./rss-discovery');
 
-// Try the full title; if it fails, fall back to "primary title" — everything
-// before the first comma or " - ". Mirrors url-discovery.js's primaryTitle
-// strategy. Reviewers regularly drop subtitles ("Beaches, A New Musical" →
-// "Beaches"; "Dog Man - The Musical" → "Dog Man").
+// Try the full title; if it fails, fall back to "primary title" extracted by
+// safeSubtitlePrefix. Comma-internal titles ("Hello, Dolly!", "Caroline, or
+// Change", "Inherit, the Wind") collapse to dangerously generic 1-word
+// primaries ("Hello", "Caroline", "Inherit") that false-match anything in the
+// feed window — ship-check P0. So:
+//
+//   - " - " (em-dash) is always a safe subtitle separator (mirrors url-
+//     discovery.js's primaryTitle convention).
+//   - ", A "/", An "/", ", The "/", or " comma+article patterns are subtitle-
+//     like — split, BUT require the primary to have ≥2 significant words after
+//     stop-filter. Drops Beaches' bare-"Beaches" fallback (1 word) but keeps
+//     "A Beautiful Noise, The Neil Diamond Musical" → "A Beautiful Noise".
+function safeSubtitlePrefix(showTitle) {
+  if (!showTitle) return null;
+  if (showTitle.includes(' - ')) {
+    const p = showTitle.split(' - ')[0].trim();
+    if (p.length >= 3 && p !== showTitle) return p;
+  }
+  const m = showTitle.match(/^(.+?),\s+(?:[Aa]|[Aa]n|[Tt]he|[Oo]r)\s+\S/);
+  if (m) {
+    const p = m[1].trim();
+    const stop = new Set(['the','a','an','of','and','in','at','on','to','for']);
+    const sigWords = p.toLowerCase().split(/\s+/).filter(w => w.length > 1 && !stop.has(w));
+    if (sigWords.length >= 2 && p.length >= 3 && p !== showTitle) return p;
+  }
+  return null;
+}
+
 function titleMatchesShowOrPrimary(itemTitle, showTitle) {
   if (!itemTitle || !showTitle) return false;
   if (titleMatchesShow(itemTitle, showTitle)) return true;
-  const primary = showTitle.split(/,| - /)[0].trim();
-  if (primary && primary !== showTitle && primary.length >= 3) {
-    return titleMatchesShow(itemTitle, primary);
-  }
+  const primary = safeSubtitlePrefix(showTitle);
+  if (primary) return titleMatchesShow(itemTitle, primary);
   return false;
 }
 
+// per_page=100 is WP's max — accommodates long opening windows
+// (openingDate ± 30d) without truncation. The Reviews category publishes
+// ~1-2 posts/day on busy weeks; 100 is comfortable headroom.
 const TM_REST_REVIEWS_URL =
-  'https://www.theatermania.com/wp-json/wp/v2/news?categories=157&per_page=30&_fields=link,date,title';
+  'https://www.theatermania.com/wp-json/wp/v2/news?categories=157&per_page=100&_fields=link,date,title';
 
 const OUTLET_ID = 'theatermania';
 const OUTLET_NAME = 'TheaterMania';
-
-function fetchJson(url, timeoutMs = 12000) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(
-      url,
-      { headers: { 'User-Agent': 'BroadwayScorecard/1.0 (+TM-discovery)' } },
-      (res) => {
-        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          return fetchJson(res.headers.location, timeoutMs).then(resolve).catch(reject);
-        }
-        if (res.statusCode !== 200) {
-          return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
-        }
-        let data = '';
-        res.on('data', (chunk) => (data += chunk));
-        res.on('end', () => {
-          try {
-            resolve(JSON.parse(data));
-          } catch (err) {
-            reject(new Error(`Invalid JSON: ${err.message}`));
-          }
-        });
-        res.on('error', reject);
-      }
-    );
-    req.on('error', reject);
-    req.setTimeout(timeoutMs, () => {
-      req.destroy();
-      reject(new Error('Timeout'));
-    });
-  });
-}
 
 // Curly→straight quote/dash normalization — done here (not just entity decoding)
 // because rss-discovery.js's titleMatchesShow has a known apostrophe-class bug
@@ -117,19 +110,26 @@ async function discoverNewReviews(showId, show, since, options = {}) {
   const { verbose = false } = options;
   if (!show || !show.title) return [];
 
-  // Default lookback: prefer previewsStartDate-3d, fall back to openingDate-7d,
-  // then 30d ago. Matches the windowing used by aggregator polling.
+  // Dateless-show guard: without an openingDate or previewsStartDate, the
+  // default 30-day lookback can ingest arbitrary current TM reviews — a
+  // ship-check P0 (any title-match coincidence in the open feed window
+  // would flow through). Only run when at least one anchor date is set.
   const opening = show.openingDate ? new Date(show.openingDate) : null;
   const previews = show.previewsStartDate ? new Date(show.previewsStartDate) : null;
+  if (!opening && !previews && !(since instanceof Date && !isNaN(since.getTime()))) {
+    if (verbose) console.log(`  [TM-discovery] skip ${showId}: no openingDate/previewsStartDate/since anchor`);
+    return [];
+  }
+
+  // Default lookback: prefer previewsStartDate-3d, fall back to openingDate-7d.
+  // Matches the windowing used by aggregator polling.
   const DAY = 86400000;
   const sinceDate =
     since instanceof Date && !isNaN(since.getTime())
       ? since
       : previews
         ? new Date(previews.getTime() - 3 * DAY)
-        : opening
-          ? new Date(opening.getTime() - 7 * DAY)
-          : new Date(Date.now() - 30 * DAY);
+        : new Date(opening.getTime() - 7 * DAY);
 
   // Upper bound: openingDate+30d, else now+1d. Prevents stale-cache surprises.
   const untilDate = opening
@@ -140,9 +140,10 @@ async function discoverNewReviews(showId, show, since, options = {}) {
   const before = untilDate.toISOString();
   const url = `${TM_REST_REVIEWS_URL}&after=${after}&before=${before}`;
 
+  // fetchJSON: ScrapingBee → direct fallback (per scraper architecture rule).
   let posts;
   try {
-    posts = await fetchJson(url);
+    posts = await fetchJSON(url);
   } catch (err) {
     if (verbose) console.log(`  [TM-discovery] fetch error: ${err.message}`);
     return [];

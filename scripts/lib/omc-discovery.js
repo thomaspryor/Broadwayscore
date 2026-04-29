@@ -18,7 +18,7 @@
  *   Promise<Array<{url, outlet, outletId, criticName, publishDate, title}>>
  */
 
-const https = require('https');
+const { fetchPage } = require('./scraper');
 
 const OMC_FEED_URL = 'https://1minutecritic.com/feed/';
 const OUTLET_ID = 'one-minute-critic';
@@ -46,32 +46,6 @@ const NON_THEATER_CATEGORIES = new Set([
   'albums',
 ]);
 
-function fetchUrl(url, timeoutMs = 12000) {
-  return new Promise((resolve, reject) => {
-    const req = https.get(
-      url,
-      { headers: { 'User-Agent': 'BroadwayScorecard/1.0 (+OMC-discovery)' } },
-      (res) => {
-        if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          return fetchUrl(res.headers.location, timeoutMs).then(resolve).catch(reject);
-        }
-        if (res.statusCode !== 200) {
-          return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
-        }
-        let data = '';
-        res.on('data', (c) => (data += c));
-        res.on('end', () => resolve(data));
-        res.on('error', reject);
-      }
-    );
-    req.on('error', reject);
-    req.setTimeout(timeoutMs, () => {
-      req.destroy();
-      reject(new Error('Timeout'));
-    });
-  });
-}
-
 function decodeEntities(s) {
   return s
     .replace(/&amp;/g, '&')
@@ -95,16 +69,18 @@ function decodeEntities(s) {
     .replace(/[–—]/g, '-');
 }
 
-// Strip RSS tracking parameters (utm_source, utm_medium, etc.) from a URL.
-// OMC's RSS appends `?utm_source=rss&utm_medium=rss&utm_campaign=...`; the
-// canonical URL is the path without those params. Without stripping, dedup
-// against the registry's existing fetched URLs fails.
+// Strip RSS tracking parameters so the URL is fetchable + dedups correctly
+// against existing files. We deliberately keep the protocol/host so URL.parse
+// succeeds downstream (review-normalization.normalizeUrl strips the scheme,
+// which is fine for canonical comparison in dedup but breaks `new URL(x)` here).
+// Downstream pipeline (gather-reviews / processDiscoveredReviews) calls
+// normalizeUrl for the final canonical form.
 function cleanUrl(url) {
   try {
     const u = new URL(url);
     const drop = [];
     for (const key of u.searchParams.keys()) {
-      if (key.startsWith('utm_') || key === 'fbclid' || key === 'gclid') drop.push(key);
+      if (key.startsWith('utm_') || key === 'fbclid' || key === 'gclid' || key === 'mc_cid' || key === 'mc_eid') drop.push(key);
     }
     for (const k of drop) u.searchParams.delete(k);
     return u.toString();
@@ -174,14 +150,31 @@ function titleMatchesOnce(itemTitle, showTitle) {
   return matched >= Math.ceil(showWords.length * 0.8);
 }
 
-// Two-pass: full title first, then primary title (before first comma or " - ").
-// "Beaches, A New Musical" → tries "Beaches" if the full match fails.
+// Subtitle-prefix extraction with a guard against dangerous 1-word collapses.
+// See identical helper in theatermania-discovery.js for rationale (ship-check P0:
+// "Inherit, the Wind" → "Inherit", "Hello, Dolly!" → "Hello", etc. — false-match
+// any feed item containing those words). Em-dash subtitle: always safe.
+// Comma+article ("Beaches, A New Musical"): split, BUT require ≥2 sig words.
+function safeSubtitlePrefix(showTitle) {
+  if (!showTitle) return null;
+  if (showTitle.includes(' - ')) {
+    const p = showTitle.split(' - ')[0].trim();
+    if (p.length >= 3 && p !== showTitle) return p;
+  }
+  const m = showTitle.match(/^(.+?),\s+(?:[Aa]|[Aa]n|[Tt]he|[Oo]r)\s+\S/);
+  if (m) {
+    const p = m[1].trim();
+    const stop = new Set(['the','a','an','of','and','in','at','on','to','for']);
+    const sigWords = p.toLowerCase().split(/\s+/).filter(w => w.length > 1 && !stop.has(w));
+    if (sigWords.length >= 2 && p.length >= 3 && p !== showTitle) return p;
+  }
+  return null;
+}
+
 function titleMatches(itemTitle, showTitle) {
   if (titleMatchesOnce(itemTitle, showTitle)) return true;
-  const primary = showTitle.split(/,| - /)[0].trim();
-  if (primary && primary !== showTitle && primary.length >= 3) {
-    return titleMatchesOnce(itemTitle, primary);
-  }
+  const primary = safeSubtitlePrefix(showTitle);
+  if (primary) return titleMatchesOnce(itemTitle, primary);
   return false;
 }
 
@@ -199,36 +192,47 @@ async function discoverNewReviews(showId, show, since, options = {}) {
   const { verbose = false } = options;
   if (!show || !show.title) return [];
 
+  // Dateless-show guard: without an anchor, the default 30-day lookback can
+  // ingest arbitrary current OMC reviews — ship-check P0.
   const opening = show.openingDate ? new Date(show.openingDate) : null;
   const previews = show.previewsStartDate ? new Date(show.previewsStartDate) : null;
+  if (!opening && !previews && !(since instanceof Date && !isNaN(since.getTime()))) {
+    if (verbose) console.log(`  [OMC-discovery] skip ${showId}: no openingDate/previewsStartDate/since anchor`);
+    return [];
+  }
+
   const DAY = 86400000;
   const sinceDate =
     since instanceof Date && !isNaN(since.getTime())
       ? since
       : previews
         ? new Date(previews.getTime() - 3 * DAY)
-        : opening
-          ? new Date(opening.getTime() - 7 * DAY)
-          : new Date(Date.now() - 30 * DAY);
+        : new Date(opening.getTime() - 7 * DAY);
   const untilDate = opening
     ? new Date(opening.getTime() + 30 * DAY)
     : new Date(Date.now() + DAY);
 
+  // fetchPage: Playwright/BD/SB fallback chain (per scraper architecture rule).
   let xml;
   try {
-    xml = await fetchUrl(OMC_FEED_URL);
+    const result = await fetchPage(OMC_FEED_URL, { skipVerify: true });
+    xml = (result && result.content) || '';
   } catch (err) {
     if (verbose) console.log(`  [OMC-discovery] fetch error: ${err.message}`);
     return [];
   }
+  if (!xml) return [];
 
   const items = parseRssItems(xml);
   const hits = [];
   for (const item of items) {
     if (!item.link) continue;
 
-    // URL pattern guard — OMC reviews always end in `-review/` or
-    // `-review-{slug}/`. Excludes /tag/, /category/, /author/ pages.
+    // URL pattern guard — OMC reviews use `{show-slug}-review/` or
+    // `{show-slug}-review-{theater-or-star}/`. Excludes /tag/, /category/,
+    // /author/. Also excludes year-in-review/listicle slugs that share the
+    // suffix (`/year-in-review/`, `/2025-in-review/`, `/our-review-of-X/`,
+    // `/best-of-Y-review/`) — flagged by ship-check P1.
     const path = (() => {
       try {
         return new URL(item.link).pathname.toLowerCase();
@@ -237,6 +241,20 @@ async function discoverNewReviews(showId, show, since, options = {}) {
       }
     })();
     if (!/-review(?:-[a-z0-9-]+)?\/?$/.test(path)) continue;
+    // Reject listicle/year-end patterns. These are review-themed but not
+    // single-show critic reviews.
+    const NON_REVIEW_SLUG_PATTERNS = [
+      /\byear-in-review\b/,
+      /\b\d{4}-in-review\b/, // 2025-in-review, 2024-in-review, etc.
+      /\bin-review\/?$/, // catches plain "in-review/" tail
+      /\bour-review\b/,
+      /\bbest-of-[a-z0-9-]+-review\b/,
+      /\breview-(?:roundup|recap|wrap)\b/,
+    ];
+    if (NON_REVIEW_SLUG_PATTERNS.some((re) => re.test(path))) {
+      if (verbose) console.log(`  [OMC-discovery] skip listicle/roundup: ${item.link}`);
+      continue;
+    }
 
     // Date window
     if (item.pubDate) {
