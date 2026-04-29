@@ -20,14 +20,14 @@ const currentSeason = getTonySeasonWindow();
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Tony Awards Predictions — Blended Critic + Audience Rankings',
-    description: `Data-driven Tony Awards predictions across ${getAllPredictionSeasons().length} seasons. Blended critic + audience scores predict Tony winners more accurately than critics alone.`,
+    title: 'Tony Awards Predictions — Per-Category Critic, Audience & Awards Score',
+    description: `Data-driven Tony Awards predictions across ${getAllPredictionSeasons().length} seasons. Each category gets its own blend of critic, audience, and (for Best Play) precursor Awards Score.`,
     alternates: {
       canonical: `${BASE_URL}/tony-awards/predictions`,
     },
     openGraph: {
       title: 'Tony Awards Predictions — Broadway Scorecard',
-      description: 'Every Tony-eligible show ranked by blended critic + audience scores, with historical accuracy analysis.',
+      description: 'Every Tony-eligible show ranked by our per-category prediction model — critic, audience, and precursor signal.',
       url: `${BASE_URL}/tony-awards/predictions`,
       type: 'website',
       images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: 'Tony Awards Predictions' }],
@@ -35,7 +35,7 @@ export function generateMetadata(): Metadata {
     twitter: {
       card: 'summary_large_image',
       title: 'Tony Awards Predictions — Broadway Scorecard',
-      description: 'Every Tony-eligible show ranked by blended critic + audience scores.',
+      description: 'Every Tony-eligible show ranked by our per-category prediction model.',
     },
   };
 }
@@ -84,10 +84,10 @@ export default function TonyPredictionsOverviewPage() {
     mainEntity: [
       {
         '@type': 'Question',
-        name: 'How accurate are blended critic + audience scores at predicting Tony Awards?',
+        name: 'How accurate is the per-category prediction model at predicting Tony Awards?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Over ${stats.seasonCount} Tony seasons, blending critic scores with audience grades predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.criticsOnlyRank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
+          text: `Over ${stats.seasonCount} Tony seasons, the per-category model (critic + audience + precursor Awards Score) predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.criticsOnlyRank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
         },
       },
     ],
@@ -114,8 +114,8 @@ export default function TonyPredictionsOverviewPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? `${currentSeason.label} nominees ranked by blended critic + audience scores. Who will win?`
-              : `${seasons.length} seasons of data-driven Tony predictions. Every eligible show ranked by blended critic + audience scores.`}
+              ? `${currentSeason.label} nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.`
+              : `${seasons.length} seasons of data-driven Tony predictions. Each category gets its own blend of critic, audience, and precursor signal.`}
           </p>
         </div>
 
@@ -220,9 +220,9 @@ export default function TonyPredictionsOverviewPage() {
               {/* Hero stats */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { stat: `${stats.blendedRank1WinPct}%`, label: 'Blended #1 wins' },
+                  { stat: `${stats.blendedRank1WinPct}%`, label: 'Per-category #1 wins' },
                   { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
-                  { stat: `${stats.improvement >= 0 ? '+' : ''}${stats.improvement}pts`, label: 'Improvement from audience' },
+                  { stat: `${stats.improvement >= 0 ? '+' : ''}${stats.improvement}pts`, label: 'Improvement vs critics-only' },
                   { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
                 ].map(({ stat, label }) => (
                   <div key={label} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-center">

@@ -152,7 +152,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         acceptedAnswer: {
           '@type': 'Answer',
           text: isCurrent
-            ? `Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season using a per-category blend of critic scores, audience grades, and (for Best Play) precursor Awards Score. Tuned on 11 years of Tony history, this approach picks the right winner 92.9% of the time in cross-validation.`
+            ? `Broadway Scorecard ranks every Tony-eligible show in the ${season.label} season using a per-category blend of critic scores, audience grades, and (for Best Play) a precursor Awards Score. The model was tuned against 11 years of Tony history.`
             : winnerCount > 0
               ? `The ${season.label} Tony season saw ${winnerCount} major category winners. The #1 ranked show won ${rank1Wins} of ${winnerCount} categories.`
               : `The ${season.label} Tony season data includes all eligible shows ranked by our per-category prediction model.`,
@@ -163,7 +163,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Each Tony category has its own blend recipe, validated against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. The category-specific approach picks the winner correctly 92.9% of the time in cross-validation, vs 76.2% for a flat 50/50 blend.',
+          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 42 of 43 contests.',
         },
       },
       {
@@ -368,8 +368,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             </summary>
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
-                Each Tony category gets its own recipe, validated against 11 years of Tony history (92.9% top-1
-                vs 76.2% for a flat 50/50 blend):
+                Each Tony category gets its own recipe, tuned against 11 years of Tony history. The model
+                correctly picked the winner in 42 of 43 contests across that backtest, vs 32 of 43 for
+                critic-only:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
                 <li><span className="text-white font-medium">Best Musical:</span> 40% critic + 60% audience.</li>
@@ -378,8 +379,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               </ul>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">
                 Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal &mdash;
-                it&apos;s zero pre-precursor, which makes Best Play degenerate to relative 50/50 critic+audience until
-                early May. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only.
+                it&apos;s zero pre-precursor, which makes Best Play reduce to a true 50/50 critic+audience composite
+                until early May. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only.
               </p>
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;

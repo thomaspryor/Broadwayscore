@@ -23,10 +23,20 @@ import awardsData from '../../data/awards.json';
 export const TONY_BLEND_WEIGHT = 0.5;
 
 /**
- * Per-category blending recipes. Validated via leave-one-season-out cross-validation
- * over 11 Tony seasons (2013-14 → 2024-25, 42 contests): 92.9% top-1 vs 76.2% baseline.
- * Tier 1 / Live recipe — works year-round (Awards Score is 0 pre-precursor, so Best Play
- * naturally reduces to 50/50 critic+audience until precursor noms drop in early May).
+ * Per-category blending recipes. Tuned against 11 Tony seasons (2013-14 →
+ * 2024-25, 42 contests).
+ *
+ * Audit script (scripts/audit-tony-all-seasons.ts) reports in-sample top-1
+ * accuracy: 42/43 (97.7%) including the COVID-truncated season, vs. 32/43
+ * (74.4%) baseline using critic-only. The leave-one-season-out (LOSO)
+ * accuracy of the design process that produced these recipe weights was
+ * 92.9% per the offline backtest; that figure isn't reproducible from this
+ * repo alone (the recipes are constants, not fit per-fold), so user-facing
+ * copy claims the in-sample number which IS reproducible from CI.
+ *
+ * Tier 1 / Live recipe — works year-round. Pre-precursor, Best Play's
+ * awards term renormalizes out of tonyComposite, so the formula reduces to
+ * a true 50/50 critic+audience until precursor noms drop in early May.
  */
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
   'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
@@ -218,10 +228,14 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
  *   Best Revival of Musical:    1.0 audience
  *   Best Revival of Play:       1.0 audience
  *
- * Robustness: if a non-zero-weight component is null, the remaining weights are
- * renormalized to sum to 1 so the show stays rankable. (E.g. a musical with no
- * audience data falls back to critic-only.) Awards Score defaults to 0 when no
- * precursor data exists, which keeps the formula well-defined year-round.
+ * Robustness: components whose value is null OR (for awards) zero are dropped
+ * and the remaining weights are renormalized to sum to 1. So:
+ *   - A musical with no audience data falls back to critic-only.
+ *   - Best Play pre-precursor (every show's awardsScore is 0) becomes a true
+ *     50/50 critic+audience composite — same numbers as the legacy blend, not
+ *     just same ranking. This matters because the displayed score is the
+ *     composite; without renormalization, all Best Plays would visibly jump
+ *     ~10 points when precursor data lands.
  */
 export function tonyComposite(
   criticScore: number | null,
@@ -235,7 +249,10 @@ export function tonyComposite(
   const components: Array<{ weight: number; value: number }> = [];
   if (r.critic > 0 && criticScore != null) components.push({ weight: r.critic, value: criticScore });
   if (r.audience > 0 && audienceGrade != null) components.push({ weight: r.audience, value: audienceGrade });
-  if (r.awards > 0) components.push({ weight: r.awards, value: awardsScore });
+  // Drop the awards term when the show has no precursor signal — keeping
+  // {weight: 0.2, value: 0} would multiply the result by 0.8 and create the
+  // pre-precursor "score depression + jump" bug.
+  if (r.awards > 0 && awardsScore > 0) components.push({ weight: r.awards, value: awardsScore });
 
   if (components.length === 0) return null;
   const total = components.reduce((s, c) => s + c.weight, 0);
@@ -252,7 +269,6 @@ export function serializeShow(show: ComputedShow, categoryKey?: TonyCategoryKey)
   const buzz = getAudienceBuzz(show.id);
   const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
   const audScore = buzz?.combinedScore ?? null;
-  const audGrade = enoughAudience && audScore != null ? getAudienceGrade(audScore) : null;
 
   const tonyAud = computeTonyAudienceGrade(show.id);
   const awards = categoryKey
@@ -261,6 +277,15 @@ export function serializeShow(show: ComputedShow, categoryKey?: TonyCategoryKey)
   const composite = categoryKey
     ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey)
     : legacyBlendedScore(show.compositeScore, enoughAudience ? audScore : null);
+
+  // The displayed audience grade letter (A+, B-, etc.) must derive from the
+  // SAME number that drives the predictor — otherwise users see an A+ on the
+  // card while the model is ranking by a B+ input. For Tony pages we use the
+  // tonyAudienceGrade (mean of Show Score + Mezzanine), falling back to the
+  // site-wide combinedScore only when the categoryKey-less legacy path is
+  // active (e.g. historical-winners scroller).
+  const displayedAudScore = categoryKey ? tonyAud : (enoughAudience ? audScore : null);
+  const audGrade = displayedAudScore != null ? getAudienceGrade(displayedAudScore) : null;
 
   return {
     slug: show.slug,
@@ -831,8 +856,13 @@ export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWin
   const isPast = season.ceremonyYear < current.ceremonyYear;
   const eligible = isPast ? getEligibleShowsForPastSeason(allShows, season) : getEligibleShows(allShows, season);
   const nominationsAnnounced = isCurrent && hasNominationsBeenAnnounced(season);
+  // Use nomineesOnly mode whenever Tony nominees are known — same gate as the
+  // per-season page. Without this, the overview-page summary cards can disagree
+  // with the per-season page they link to (e.g. picking "Best Revival of a
+  // Play" winner using shows.json's mis-set isRevival flag).
+  const useNomineesOnly = !isCurrent || nominationsAnnounced;
   const categories = groupIntoCategories(eligible,
-    nominationsAnnounced ? { nomineesOnly: true, season } : undefined
+    useNomineesOnly ? { nomineesOnly: true, season } : undefined
   );
 
   const awardsShows = getAwardsShows();
