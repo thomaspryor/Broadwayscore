@@ -1,0 +1,123 @@
+name: Enrich Off-Broadway Dates
+
+# Sibling workflow to enrich-west-end-dates.yml. Same shape, OB-specific source.
+#
+# Runs daily 7:15 UTC (15-min offset from WE 7:00 UTC) — disjoint pushes to
+# shows.json. Concurrency-grouped against any other shows.json writer to
+# prevent rebase races (KENREX 2026-04-28 root cause was partly a discovery
+# gap, partly the absence of date fields in push-core-data's reconciliation
+# safelist; the safelist was fixed in PR #A0).
+#
+# See memory/feedback_off_broadway_opening_date_gap.md.
+
+on:
+  schedule:
+    # Daily 7:15 UTC — fix shows with unconfirmed press-night sources before
+    # the opening-night-orchestrator's Broadway window (BW orchestrator runs
+    # 03:00, 23:00 UTC; this lands well before either).
+    - cron: '15 7 * * *'
+    # Weekly Thursday 8:15 UTC — full enrichment for newly announced OB shows.
+    - cron: '15 8 * * 4'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/ibdb/etc. dates), initial-backfill (bypass stability guard once)'
+        required: true
+        default: 'fix-unconfirmed'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+          - fix-unconfirmed
+          - initial-backfill
+      show:
+        description: 'Optional: specific show id or slug to process'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+# Critical: serializes against any other workflow that writes shows.json.
+# Without this, parallel crons can rebase-race (the post-rebase reconciliation
+# in push-core-data only restores SOME fields; date fields were not on the
+# safelist before PR #A0 on 2026-04-28).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Determine mode flag
+        id: mode
+        run: |
+          MODE="${{ inputs.mode || 'fix-unconfirmed' }}"
+          case "$MODE" in
+            enrich) FLAGS="" ;;
+            verify) FLAGS="--verify" ;;
+            force) FLAGS="--force" ;;
+            fix-unconfirmed) FLAGS="--fix-unconfirmed" ;;
+            initial-backfill) FLAGS="--fix-unconfirmed --initial-backfill" ;;
+            *) FLAGS="--fix-unconfirmed" ;;
+          esac
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+          echo "flags=$FLAGS" >> "$GITHUB_OUTPUT"
+          echo "Running with: $FLAGS"
+
+      - name: Run OB date enrichment
+        id: enrich
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+        run: node scripts/enrich-off-broadway-dates.js ${{ steps.mode.outputs.flags }}
+
+      - name: Commit audit (always)
+        if: always()
+        run: |
+          # Audit-trail file is uniform across WE + OB scripts. Must be
+          # explicitly staged; rebuild workflows do NOT auto-include data/audit/.
+          # (memory/feedback_audit_trail_must_ship_via_workflow.md)
+          git add data/audit/date-enrichment-corrections.json 2>/dev/null || true
+          git add data/audit/enrich-off-broadway-dates-aborted.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No audit changes to commit"
+            exit 0
+          fi
+          git commit -m "data: enrich-off-broadway-dates audit trail"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Push core data (shows.json)
+        if: steps.enrich.outcome == 'success'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: enrich-off-broadway-dates ${{ steps.mode.outputs.flags }}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Off-Broadway Dates failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
