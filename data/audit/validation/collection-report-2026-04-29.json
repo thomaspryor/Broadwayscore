@@ -1,88 +1,69 @@
 {
-  "runDate": "2026-04-29T06:58:53.734Z",
+  "runDate": "2026-04-29T07:21:46.330Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "the-lost-boys-2026,kenrex-off-broadway-2026,the-karate-kid-the-musical-west-end-2026",
+    "showFilter": "mass-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 3,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "62.5%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 1
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "the-lost-boys-2026/wsj--unknown.json",
-    "kenrex-off-broadway-2026/broadwayworld--unknown.json",
-    "kenrex-off-broadway-2026/frontmezzjunkies--mezz-junkies.json",
-    "kenrex-off-broadway-2026/times-square-chronicles--suzannah-bowling.json",
-    "the-lost-boys-2026/forum-broadwayworld--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
-    "the-lost-boys-2026/reddit--unknown.json"
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/standard--nick-curtis.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "kenrex-off-broadway-2026/frontmezzjunkies--mezz-junkies.json",
-      "kenrex-off-broadway-2026/times-square-chronicles--suzannah-bowling.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-lost-boys-2026/wsj--unknown.json",
-      "the-lost-boys-2026/wsj--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [
-      "the-lost-boys-2026/forum-broadwayworld--unknown.json"
-    ],
-    "archiveToday": [
-      "data/review-texts/the-lost-boys-2026/reddit--unknown.json"
-    ],
-    "archive": [
-      "kenrex-off-broadway-2026/broadwayworld--unknown.json"
-    ]
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []

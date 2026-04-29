@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-26T08:38:07.605Z",
+  "generatedAt": "2026-04-29T07:17:57.488Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -16576,6 +16576,58 @@
       "researchedAt": "2026-04-20T00:49:49.177Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "backlog"
+    },
+    "mass-west-end-2026": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public data found for the production budget or weekly running costs of Mass at Donmar Warehouse. The production has not filed for NYC tax credits, not appeared in investor filings, and trade and official sources provide no financial disclosures.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/17pejj8",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://forum.broadwayworld.com/thread/The--30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
+        },
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1686192/000168619216000001/xslFormDX07/primary_doc.xml",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://theatreweekly.com/donmar-warehouse-announces-2026-season-with-three-world-premieres-and-major-revival/",
+          "date": "2026-01-29"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.donmarwarehouse.com/events/mass/",
+          "date": null
+        }
+      ],
+      "title": "Mass",
+      "slug": "mass-west-end-2026",
+      "openingDate": "2026-04-29",
+      "status": "open",
+      "researchedAt": "2026-04-29T07:17:57.488Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     }
   }
 }
