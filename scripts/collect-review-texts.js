@@ -6072,7 +6072,11 @@ async function processReview(review) {
           criticName: review.critic,
           openingDate: showMeta?.openingDate || null,
           venue: showMeta?.venue || null,
-          market: showMeta?.category || 'broadway',
+          // Opera shows (type='opera') get the 'opera' market in marketConfig — Met
+          // is the canonical venue, so the prompt asks LLM to flag wrong PRODUCTION
+          // (different season/cast) but NOT wrong VENUE. Without this, off-broadway
+          // prompt flags Met-venue mentions on every Met review.
+          market: showMeta?.type === 'opera' ? 'opera' : (showMeta?.category || 'broadway'),
           // Long-runners (Mousetrap 1952, Phantom WE 1986, etc.) get a prompt
           // adjustment that tells the LLM not to flag wrongProduction based on
           // publishDate-vs-openingDate age gap alone. See scripts/lib/long-runner-registry.js
