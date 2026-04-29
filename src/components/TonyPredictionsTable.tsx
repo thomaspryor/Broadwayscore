@@ -71,6 +71,35 @@ function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number
   }
 }
 
+/**
+ * Shows the show's 0-100 Awards Score (precursor signal from Drama League,
+ * OCC, and Drama Desk). The chip is muted when the show's category doesn't
+ * weight awards (only Best Play does), and hidden entirely when the score is
+ * zero (pre-precursor or non-nominated).
+ */
+function AwardsScoreChip({ score, weighted }: { score: number; weighted: boolean }) {
+  if (score <= 0) return null;
+  const tooltip = weighted
+    ? `Awards Score ${Math.round(score)} — composite of Drama League, OCC, and Drama Desk nominations. Counts for 20% of the Best Play prediction.`
+    : `Awards Score ${Math.round(score)} — shown for transparency; not weighted in this category's prediction.`;
+  return (
+    <span
+      className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide rounded border ${
+        weighted
+          ? 'bg-brand/15 text-brand border-brand/25'
+          : 'bg-white/5 text-gray-400 border-white/10'
+      }`}
+      title={tooltip}
+      aria-label={tooltip}
+    >
+      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
+      </svg>
+      Awards {Math.round(score)}
+    </span>
+  );
+}
+
 function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: PredictionMode }) {
   if (mode === 'audience') {
     const grade = show.audienceGrade;
@@ -232,6 +261,12 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                 </div>
                 <div className="flex flex-wrap items-center gap-1 mt-1">
                   <StatusBadge status={getEffectiveStatus(show)} />
+                  {mode === 'combined' && (
+                    <AwardsScoreChip
+                      score={show.awardsScore}
+                      weighted={show.tonyCategoryKey === 'best-play'}
+                    />
+                  )}
                 </div>
                 <p className="text-xs text-gray-400 mt-1.5 truncate">
                   {notYetOpen
