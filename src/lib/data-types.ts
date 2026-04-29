@@ -224,23 +224,43 @@ export interface TonyAwards {
 export interface DramaDeskAwards {
   season: string;
   wins: string[];
+  /** Tony-cat-matching nominations, populated by enrich-awards-with-precursors.js.
+   *  Used by the Tony Predictions Awards Score formula.
+   *  NOT a count of total DD nominations — for that use `nominations`. */
+  nominatedFor?: string[];
+  /** Total nominations across all DD categories (count, from canonical scrape). */
   nominations: string[] | number;
 }
 
 export interface OuterCriticsCircleAwards {
   season: string;
   wins: string[];
+  /** See note on DramaDeskAwards.nominatedFor. */
+  nominatedFor?: string[];
   nominations: number;
 }
 
 export interface DramaLeagueAwards {
   season: string;
   wins: string[];
+  /** See note on DramaDeskAwards.nominatedFor. */
+  nominatedFor?: string[];
 }
 
+/** NY Drama Critics' Circle Awards. Winners only — NYDCCC does not publish a
+ *  full nominee list, so there is no `nominatedFor`. */
+export interface NyDramaCriticsAwards {
+  season: string;
+  wins: string[];
+}
+
+/** Pulitzer Prize for Drama. Single category ("Drama"), so `wins` and
+ *  `finalist` arrays will at most contain `["Drama"]`. `year` is the calendar
+ *  year of the prize (matches Wikipedia ceremony year). */
 export interface PulitzerPrize {
-  year: number;
-  category: string;
+  wins?: string[];
+  finalist?: string[];
+  year?: number;
 }
 
 export interface ShowAwards {
@@ -248,6 +268,7 @@ export interface ShowAwards {
   dramadesk?: DramaDeskAwards;
   outerCriticsCircle?: OuterCriticsCircleAwards;
   dramaLeague?: DramaLeagueAwards;
+  nyDramaCritics?: NyDramaCriticsAwards;
   pulitzer?: PulitzerPrize;
   note?: string;
 }

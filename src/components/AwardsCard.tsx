@@ -149,6 +149,15 @@ function TonyExpandableSection({
   );
 }
 
+// Resolve a precursor's nomination count. The `nominations` field is
+// historically either a number (total count) or string[] (rare legacy shape).
+// Returns null if the precursor doesn't track total noms (Drama League, NYDCCC).
+function nomCount(nominations: unknown): number | null {
+  if (typeof nominations === 'number') return nominations;
+  if (Array.isArray(nominations)) return nominations.length;
+  return null;
+}
+
 // Expandable section for Other Major Awards
 function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
   const [expanded, setExpanded] = useState(false);
@@ -156,12 +165,21 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
   const dramaDeskWins = awards.dramadesk?.wins || [];
   const occWins = awards.outerCriticsCircle?.wins || [];
   const dramaLeagueWins = awards.dramaLeague?.wins || [];
+  const nydcccWins = awards.nyDramaCritics?.wins || [];
 
-  const hasAwards = dramaDeskWins.length > 0 || occWins.length > 0 || dramaLeagueWins.length > 0;
+  const dramaDeskNomCount = nomCount(awards.dramadesk?.nominations);
+  const occNomCount = nomCount(awards.outerCriticsCircle?.nominations);
+
+  const hasAwards =
+    dramaDeskWins.length > 0 ||
+    occWins.length > 0 ||
+    dramaLeagueWins.length > 0 ||
+    nydcccWins.length > 0;
 
   if (!hasAwards) return null;
 
-  const totalCount = dramaDeskWins.length + occWins.length + dramaLeagueWins.length;
+  const totalWins =
+    dramaDeskWins.length + occWins.length + dramaLeagueWins.length + nydcccWins.length;
 
   return (
     <div className="mt-4 pt-4 border-t border-white/5">
@@ -173,29 +191,42 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
           <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
             Other Major Awards
           </span>
-          <span className="text-xs text-gray-500">({totalCount} wins)</span>
+          <span className="text-xs text-gray-500">({totalWins} wins)</span>
         </div>
         <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
       </button>
 
-      {/* Summary badges - always visible */}
+      {/* Summary badges - always visible. "X / Y" = noms / wins when noms count
+          is available; otherwise just wins. */}
       <div className="flex flex-wrap gap-2 mt-2">
         {dramaDeskWins.length > 0 && (
           <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">
             <TrophyIcon className="w-3.5 h-3.5" />
-            {dramaDeskWins.length} Drama Desk
+            {dramaDeskNomCount && dramaDeskNomCount > dramaDeskWins.length
+              ? `${dramaDeskNomCount} noms / ${dramaDeskWins.length} wins`
+              : `${dramaDeskWins.length} wins`}{' '}
+            Drama Desk
           </span>
         )}
         {occWins.length > 0 && (
           <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">
             <TrophyIcon className="w-3.5 h-3.5" />
-            {occWins.length} Outer Critics
+            {occNomCount && occNomCount > occWins.length
+              ? `${occNomCount} noms / ${occWins.length} wins`
+              : `${occWins.length} wins`}{' '}
+            Outer Critics
           </span>
         )}
         {dramaLeagueWins.length > 0 && (
           <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-teal-500/10 text-teal-400 text-xs font-medium border border-teal-500/20">
             <TrophyIcon className="w-3.5 h-3.5" />
-            {dramaLeagueWins.length} Drama League
+            {dramaLeagueWins.length} wins Drama League
+          </span>
+        )}
+        {nydcccWins.length > 0 && (
+          <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-rose-500/10 text-rose-400 text-xs font-medium border border-rose-500/20">
+            <TrophyIcon className="w-3.5 h-3.5" />
+            {nydcccWins.length} NY Drama Critics
           </span>
         )}
       </div>
@@ -205,7 +236,14 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
         <div className="mt-3 space-y-3">
           {dramaDeskWins.length > 0 && (
             <div>
-              <div className="text-xs text-purple-400 font-medium mb-1.5">Drama Desk Awards</div>
+              <div className="text-xs text-purple-400 font-medium mb-1.5">
+                Drama Desk Awards
+                {dramaDeskNomCount && dramaDeskNomCount > dramaDeskWins.length && (
+                  <span className="text-gray-500 font-normal ml-1.5">
+                    · {dramaDeskNomCount} total noms
+                  </span>
+                )}
+              </div>
               <ul className="space-y-1 pl-4">
                 {dramaDeskWins.map((win, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
@@ -218,7 +256,14 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
           )}
           {occWins.length > 0 && (
             <div>
-              <div className="text-xs text-cyan-400 font-medium mb-1.5">Outer Critics Circle Awards</div>
+              <div className="text-xs text-cyan-400 font-medium mb-1.5">
+                Outer Critics Circle Awards
+                {occNomCount && occNomCount > occWins.length && (
+                  <span className="text-gray-500 font-normal ml-1.5">
+                    · {occNomCount} total noms
+                  </span>
+                )}
+              </div>
               <ul className="space-y-1 pl-4">
                 {occWins.map((win, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
@@ -242,6 +287,21 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
               </ul>
             </div>
           )}
+          {nydcccWins.length > 0 && (
+            <div>
+              <div className="text-xs text-rose-400 font-medium mb-1.5">
+                NY Drama Critics&apos; Circle Awards
+              </div>
+              <ul className="space-y-1 pl-4">
+                {nydcccWins.map((win, idx) => (
+                  <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
+                    <TrophyIcon className="w-3 h-3 text-rose-400 flex-shrink-0" />
+                    {win}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -252,7 +312,9 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
   const designation = getAwardsDesignation(showId);
   const tonyWins = getTonyWinCount(showId);
   const tonyNoms = getTonyNominationCount(showId);
-  const hasPulitzer = !!awards?.pulitzer;
+  const isPulitzerWinner = !!awards?.pulitzer?.wins?.includes('Drama');
+  const isPulitzerFinalist = !!awards?.pulitzer?.finalist?.includes('Drama');
+  const hasPulitzer = isPulitzerWinner || isPulitzerFinalist;
   const config = DESIGNATION_CONFIG[designation];
 
   // Get wins and nominations lists
@@ -319,13 +381,24 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
         </div>
       </div>
 
-      {/* Pulitzer Special Callout */}
+      {/* Pulitzer Special Callout — Winner gets full amber callout; Finalist
+          gets a quieter "Finalist" treatment. Year suffix omitted if absent. */}
       {hasPulitzer && awards?.pulitzer && (
-        <div className="bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-lg p-3 border border-amber-500/20 mb-4">
+        <div
+          className={
+            isPulitzerWinner
+              ? 'bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-lg p-3 border border-amber-500/20 mb-4'
+              : 'bg-amber-500/5 rounded-lg p-3 border border-amber-500/15 mb-4'
+          }
+        >
           <div className="flex items-center gap-2">
-            <PulitzerIcon className="text-amber-400" />
-            <span className="text-amber-300 font-medium">
-              Pulitzer Prize for Drama ({awards.pulitzer.year})
+            <PulitzerIcon className={isPulitzerWinner ? 'text-amber-400' : 'text-amber-400/70'} />
+            <span
+              className={isPulitzerWinner ? 'text-amber-300 font-medium' : 'text-amber-200/80'}
+            >
+              Pulitzer Prize for Drama
+              {isPulitzerWinner ? ' Winner' : ' Finalist'}
+              {typeof awards.pulitzer.year === 'number' ? ` (${awards.pulitzer.year})` : ''}
             </span>
           </div>
         </div>
