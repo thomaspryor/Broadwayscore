@@ -96,7 +96,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           const predicted = cat.shows[0] || null;
           const winnerShowId = winnersByCategory.get(cat.title);
           const winnerShow = winnerShowId ? showById.get(winnerShowId) : null;
-          const winner = winnerShow ? serializeShow(winnerShow) : null;
+          const winner = winnerShow ? serializeShow(winnerShow, cat.key as Parameters<typeof serializeShow>[1]) : null;
           const correct = !!(predicted && winner && predicted.slug === winner.slug);
           const winnerRankInOurList = winner
             ? cat.shows.findIndex(s => s.slug === winner.slug)
