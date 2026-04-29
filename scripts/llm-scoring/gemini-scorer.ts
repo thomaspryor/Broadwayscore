@@ -54,20 +54,31 @@ export class GeminiScorer {
   }
 
   /**
-   * Score a single review text
+   * Score a single review text.
+   * Optional `systemPromptOverride` lets the A/B harness swap in a candidate
+   * prompt while leaving the live SYSTEM_PROMPT_V5 untouched.
    */
-  async scoreReview(reviewText: string, context: string = ''): Promise<GeminiScoringOutcome> {
+  async scoreReview(reviewText: string, context: string = '', systemPromptOverride?: string): Promise<GeminiScoringOutcome> {
     const model = this.client.getGenerativeModel({
       model: this.options.model,
       generationConfig: {
         temperature: this.options.temperature,
         topP: 0.8,
-        maxOutputTokens: 500
-      }
+        maxOutputTokens: 500,
+        // Gemini 2.5 enables "thinking mode" by default — hidden reasoning
+        // tokens are deducted from maxOutputTokens before any output text is
+        // generated. With maxOutputTokens=500 and ~400 thinking tokens, the
+        // V5 JSON gets cut off mid-string and parses as malformed. Setting
+        // thinkingBudget=0 disables thinking entirely. Ignored by 2.0-flash
+        // and earlier models. (Caught 2026-04-28 when migrating A/B harness
+        // to 2.5-flash for separate quota pool.)
+        thinkingConfig: { thinkingBudget: 0 },
+      } as any,
     });
 
     const prompt = buildPromptV5(reviewText, context);
-    const fullPrompt = SYSTEM_PROMPT_V5 + '\n\n' + prompt;
+    const systemPrompt = systemPromptOverride || SYSTEM_PROMPT_V5;
+    const fullPrompt = systemPrompt + '\n\n' + prompt;
 
     let lastError: string = '';
     let inputTokens = 0;

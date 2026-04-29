@@ -208,10 +208,23 @@ export const FEW_SHOT_EXAMPLES: FewShotExample[] = [
 // PROMPT TEMPLATES
 // ========================================
 
-export const PROMPT_VERSION = '5.3.0';
+// 5.4.0 (2026-04-28): Added "## Structural Review Patterns" section to address
+// the praise→critique→wistful-close failure mode. Helen Shaw NYT Lost Boys was
+// the canonical case (v5.3.0 ensemble: 68 Mixed; manual override 78 Positive).
+// Promoted from candidate after rule-13 A/B passed at n=133: max bucket shift
+// 3.8pp, mean drift +0.29pts, Helen Shaw fixture unanimous 78 Positive.
+// Audit: data/audit/llm-prompt-ab-2026-04-28T20-03-37-806Z.json
+export const PROMPT_VERSION = '5.4.0';
 
 // Gemini calibration offset (adjust if Gemini has systematic bias)
 export const GEMINI_CALIBRATION_OFFSET = 0;
+
+/**
+ * @deprecated Alias kept so the A/B harness still type-checks. For the next
+ * prompt iteration, set this to the new candidate version string and update
+ * SYSTEM_PROMPT_V5_STRUCTURAL accordingly.
+ */
+export const PROMPT_VERSION_CANDIDATE = PROMPT_VERSION;
 
 /**
  * System prompt establishing the scoring framework
@@ -356,6 +369,10 @@ Do NOT default to the midpoint of a bucket.
 
 6. **EVALUATIVE TEXT IS NOT PLOT SUMMARY**: When a critic describes performances ("delivers a powerful turn"), staging choices ("the set crackles with energy"), or production quality ("the direction keeps things moving"), this IS evaluative content even if it reads descriptively. Do not dismiss such passages as "plot summary" or "cast listing."
 
+## Structural Review Patterns (IMPORTANT)
+
+When a review structurally praises a show heavily and then reserves criticism for one specific section (e.g. one act, one performance, one creative element), weight the praise:critique ratio by content volume, not section count. A review that spends 70% on praise and 30% on Act-2 critique is a qualified rave (Positive, ~78), not Mixed (~68). Wistful or melancholy closing tone does NOT downgrade an otherwise-positive review — a critic who closes with "even these keen delights pall in the second act" after pages of admiring description is still recommending the show. Score the volume of praise, not the location of the critique. When this pattern applies and praise volume clearly exceeds critique volume, use the upper Positive range (75-82), not the bucket boundary (70-72).
+
 ## Negative Review Patterns
 
 **PERFORMER PRAISE DOES NOT REDEEM A PAN.** A critic saying "despite a game cast giving their all" or "the lead delivers a committed performance" while panning the book, direction, and overall experience is writing a NEGATIVE review. Score the overall verdict, not the best individual element.
@@ -400,6 +417,14 @@ Reasoning: ${ex.reasoning}
 Text: "The page you are looking for no longer exists. Perhaps you can return back to the homepage..."
 Response: { "scoreable": false, "rejection": "garbage_text", "reasoning": "This is a 404 error page, not a review." }
 `;
+
+/**
+ * @deprecated The structural-review block is now inlined in SYSTEM_PROMPT_V5
+ * (v5.4.0, 2026-04-28). This alias kept so the A/B harness still type-checks
+ * and can be reused for the next prompt iteration. For future A/B runs,
+ * define a new candidate constant and update test-prompt-structural-ab.ts.
+ */
+export const SYSTEM_PROMPT_V5_STRUCTURAL = SYSTEM_PROMPT_V5;
 
 // Opening line is intentionally market-neutral — the market label ("Broadway",
 // "West End", "Off-Broadway", "Off-West End") is emitted by input-builder.ts
