@@ -18,6 +18,7 @@ audit-pre2005-reviews.js -- cross-show MOVE write at line 455 (TOPOLOGY marker),
 classify-wrong-production.js -- cross-show MOVE write at line 599 (TOPOLOGY marker), bypasses _locked by design
 backfill-unknown-critics.js -- rename path at line 164 (TOPOLOGY marker), bypasses _locked by design
 cleanup-phantom-outlets.js -- merge-then-unlink at line 130 (TOPOLOGY marker), bypasses _locked by design
+replay-pending-bylines.js -- _pending/{showId}/ → {showId}/ MOVE at line 151 (TOPOLOGY marker), promotes byline-resolved drafts
 
 # === Legacy violators (pre-Sprint-1 P0 #2) ===
 # These scripts have raw fs.writeFileSync to review-texts paths but predate the
