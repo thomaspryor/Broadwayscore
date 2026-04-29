@@ -63,6 +63,15 @@ jobs:
           sudo mv actionlint /usr/local/bin/
       - name: Lint workflow files
         run: |
+          # Emergency escape hatch (opening-night hotfixes only): if the
+          # commit message contains "[skip-actionlint]", this gate exits 0.
+          # Symmetric with [skip-demo-flag-check] above. Use sparingly; the
+          # most likely cause of needing it is a transient actionlint bump
+          # that adds a new rule mid-incident. Follow up with a real fix.
+          if git log -1 --format=%B | grep -Fq "[skip-actionlint]"; then
+            echo "::warning::actionlint check skipped via [skip-actionlint] commit-message tag"
+            exit 0
+          fi
           actionlint -color -shellcheck="" \
             -ignore 'maximum number of inputs' \
             .github/workflows/*.yml

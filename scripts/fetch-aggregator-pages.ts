@@ -141,7 +141,14 @@ function archiveExists(aggregator: string, showId: string): boolean {
 }
 
 // === SHOW SCORE ===
-// Try direct URLs with -broadway suffix first (most reliable)
+// URL discovery order:
+//   1. Stored URL from data/show-score-urls.json (authoritative for OB shows where
+//      Show Score's slug is {title}-{venue} not {title} — KENREX 2026-04-28 root cause)
+//   2. Title-derived URL patterns (fallback for shows missing from the URL map)
+// After landing on a valid page, scroll the critic-reviews carousel to render all
+// tiles. Show Score lazy-renders past the first ~8 visible — without scrolling,
+// the saved HTML undercounts critic reviews (KENREX had 11 critics but static
+// fetch only captured 8).
 async function fetchShowScore(page: Page, showId: string, shows: Record<string, Show>, urlMappings: Record<string, string>): Promise<FetchResult> {
   const show = shows[showId];
   if (!show) {
@@ -164,7 +171,8 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
     : 'https://www.show-score.com/broadway-shows';
   const expectedPath = isOffBroadway ? '/off-broadway-shows/' : '/broadway-shows/';
 
-  const urlPatterns = isOffBroadway
+  // Stored URL goes FIRST. Title-derived patterns are fallback only.
+  const generatedPatterns = isOffBroadway
     ? [
         `${showScoreBase}/${baseSlug}`,
         `${showScoreBase}/${baseSlug}-the-musical`,
@@ -174,6 +182,10 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
         `${showScoreBase}/${baseSlug}`,
         `${showScoreBase}/${baseSlug}-the-musical-broadway`,
       ];
+  const storedUrl = urlMappings[showId];
+  const urlPatterns = storedUrl
+    ? [storedUrl, ...generatedPatterns.filter(u => u !== storedUrl)]
+    : generatedPatterns;
 
   try {
     for (const tryUrl of urlPatterns) {
@@ -197,25 +209,67 @@ async function fetchShowScore(page: Page, showId: string, shows: Record<string, 
         continue; // Try next pattern
       }
 
-      const html = await page.content();
-
-      // Verify it has show data
+      // Initial HTML check — must look like a show page
+      let html = await page.content();
       if (!html.includes('aggregateRating') && !html.includes('Critic Reviews')) {
         continue; // Try next pattern
       }
 
-      // Success! Save and return
+      // Read on-page critic count BEFORE scrolling so we know when to stop.
+      const headingText = html.match(/Critic Reviews \((\d+)\)/);
+      const expectedCount = headingText ? parseInt(headingText[1], 10) : 0;
+
+      // Render the full carousel by scrolling its container to the right until
+      // the tile count stops growing OR matches the heading count. The carousel
+      // root element has class `js-show-page-v2__critic-reviews`.
+      // Bounded loop: max 12 iterations (≥ ~96 tiles at 8/page), each with a
+      // post-scroll wait for lazy-rendering; abort if 2 consecutive iterations
+      // produce zero new tiles.
+      if (expectedCount > 8) {
+        let lastCount = 0;
+        let stableIterations = 0;
+        for (let i = 0; i < 12; i++) {
+          const tilesBefore = await page.locator('.review-tile-v2.-critic').count();
+          if (tilesBefore >= expectedCount) break;
+          await page.evaluate(() => {
+            const el = document.querySelector('.js-show-page-v2__critic-reviews');
+            if (el) el.scrollLeft = el.scrollWidth;
+          });
+          await page.waitForTimeout(800);
+          const tilesAfter = await page.locator('.review-tile-v2.-critic').count();
+          if (tilesAfter === tilesBefore) {
+            stableIterations++;
+            if (stableIterations >= 2) break;
+          } else {
+            stableIterations = 0;
+          }
+          lastCount = tilesAfter;
+        }
+      }
+
+      // Re-capture HTML AFTER scroll so saved file has all rendered tiles
+      html = await page.content();
+      const finalTiles = (html.match(/id=['"]critic_review_\d+['"]/g) || []).length;
+
+      // Save and return; report extracted-vs-expected for downstream visibility
       saveHtml('show-score', showId, html, show.title, pageUrl);
 
       if (urlMappings[showId] !== pageUrl) {
         urlMappings[showId] = pageUrl;
       }
 
+      const ratio = expectedCount > 0 ? `${finalTiles}/${expectedCount}` : `${finalTiles}/?`;
+      console.log(`  [show-score] ${showId}: captured ${ratio} critic tiles`);
+      if (expectedCount > 0 && finalTiles < expectedCount) {
+        console.warn(`  ⚠️  [show-score] ${showId}: only ${finalTiles} of ${expectedCount} critic tiles rendered (carousel scroll may have hit a stall)`);
+      }
+
       return { showId, aggregator: 'show-score', success: true };
     }
 
     // All patterns failed
-    return { showId, aggregator: 'show-score', success: false, error: `No Broadway page found (tried ${urlPatterns.length} URL patterns)` };
+    const tried = storedUrl ? `${urlPatterns.length} URL patterns (incl. stored)` : `${urlPatterns.length} URL patterns`;
+    return { showId, aggregator: 'show-score', success: false, error: `No Show Score page found (tried ${tried})` };
   } catch (error) {
     return { showId, aggregator: 'show-score', success: false, error: String(error) };
   }

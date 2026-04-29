@@ -41,6 +41,33 @@ function detectCategory(html, showId) {
   return 'broadway';
 }
 
+// Build a relevance probe from a show ID — strips year suffixes and market
+// markers so that "kenrex-off-broadway-2026" probes for "kenrex" against
+// extracted URLs and excerpts. Used to guard against cross-show contamination
+// (Show Score's "Recent Reviews" sidebar leaking into the show's tile list
+// when the show is in their content-pipeline upgrade state).
+function _showProbeTokens(showId) {
+  const stripped = showId
+    .replace(/-(\d{4})$/, '')
+    .replace(/-(broadway|off-broadway|west-end|off-west-end|the-musical)$/g, '')
+    .replace(/-the-musical-(broadway|off-broadway|west-end|off-west-end)$/, '')
+    .replace(/-(broadway|off-broadway|west-end|off-west-end)$/g, '');
+  // Use first 1-2 distinctive tokens (most show titles have a recognizable name in slug pos 0-1)
+  const parts = stripped.split('-').filter(t => t.length >= 3);
+  return parts.slice(0, 3);
+}
+
+// Reject extracted critic URLs that don't mention the show's title in the URL
+// path. Show Score's mid-upgrade pages serve cross-show content in the show's
+// own carousel container; this guard prevents propagating Lost Boys reviews
+// into KENREX's record (KENREX 2026-04-28 root cause).
+function _criticUrlMatchesShow(url, showProbeTokens) {
+  if (!url || showProbeTokens.length === 0) return true; // can't probe → don't block
+  const lc = url.toLowerCase();
+  // Match any one of the show's distinctive tokens in the URL path
+  return showProbeTokens.some(tok => lc.includes(tok));
+}
+
 function extractShowData(html, showId, sourceUrl) {
   const $ = cheerio.load(html);
 
@@ -52,6 +79,7 @@ function extractShowData(html, showId, sourceUrl) {
     audienceReviewCount: null,
     criticReviewCount: 0,
     criticReviews: [],
+    rejectedCriticUrls: [], // populated when cross-show contamination is detected
     lastFetched: new Date().toISOString().split('T')[0]
   };
 
@@ -162,6 +190,25 @@ function extractShowData(html, showId, sourceUrl) {
     }
   });
 
+  // Cross-show contamination guard: if extracted URLs don't mention the show
+  // title at all, the page was likely serving cross-show content (Show Score's
+  // mid-upgrade state — KENREX 2026-04-28 returned Lost Boys URLs in KENREX's
+  // own critic-reviews block). Reject the contaminated set rather than poison
+  // downstream review-text records.
+  const probeTokens = _showProbeTokens(showId);
+  if (probeTokens.length > 0 && result.criticReviews.length > 0) {
+    const withUrl = result.criticReviews.filter(r => r.url);
+    if (withUrl.length >= 2) {
+      const matching = withUrl.filter(r => _criticUrlMatchesShow(r.url, probeTokens));
+      // If <30% of URL-bearing reviews mention the show, treat as contamination
+      if (matching.length / withUrl.length < 0.3) {
+        result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
+        result.criticReviews = [];
+        result._rejectionReason = `cross-show-contamination: ${matching.length}/${withUrl.length} URLs mention show probe tokens [${probeTokens.join(',')}]`;
+      }
+    }
+  }
+
   return result;
 }
 
@@ -190,6 +237,12 @@ function main() {
   let successCount = 0;
   let failCount = 0;
   const categoryCounts = { broadway: 0, 'off-broadway': 0, 'west-end': 0, 'off-west-end': 0 };
+  // Per-show extraction-gap report. Surfaces shows where the carousel scroll
+  // didn't load the full critic-review set (Bug 2/3 in the 2026-04-28 fix).
+  // KENREX root cause: "Critic Reviews (11)" header but only 8 tiles in static
+  // HTML. This file feeds audit-aggregator-coverage and the daily digest so
+  // future drift surfaces in <24h.
+  const extractionGaps = [];
 
   for (const showId of [...allShowIds].sort()) {
     const archiveFile = path.join(archivePath, `${showId}.html`);
@@ -219,7 +272,32 @@ function main() {
       if (data) {
         showScoreData.shows[showId] = data;
         categoryCounts[data.category] = (categoryCounts[data.category] || 0) + 1;
-        console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, ${data.criticReviews.length}/${data.criticReviewCount} critic reviews extracted`);
+        const extracted = data.criticReviews.length;
+        const expected = data.criticReviewCount || 0;
+        // Surface contamination rejections distinctly from regular gaps
+        if (data._rejectionReason) {
+          console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, 0/${expected} critic reviews — ${data._rejectionReason}`);
+          console.log(`::warning::[show-score] ${showId} all critic tiles rejected as cross-show contamination (Show Score upgrade state) — see rejectedCriticUrls in show-score.json`);
+        } else {
+          console.log(`  OK: [${data.category}] Score ${data.audienceScore}%, ${data.audienceReviewCount} audience reviews, ${extracted}/${expected} critic reviews extracted`);
+        }
+        // Loud-fail when extracted < expected. The page header is authoritative
+        // ("Critic Reviews (N)") and the carousel-scroll in fetch-aggregator-pages.ts
+        // SHOULD render all N tiles. A shortfall means either (a) carousel-scroll
+        // stalled, (b) page format changed, or (c) archive is from a stale fetch
+        // that pre-dates current critic count. All three need operator visibility.
+        if (expected > 0 && extracted < expected) {
+          const ratio = extracted / expected;
+          const severity = ratio < 0.5 ? 'error' : 'warning';
+          const gap = expected - extracted;
+          extractionGaps.push({ showId, category: data.category, expected, extracted, gap, ratio: +ratio.toFixed(2), severity });
+          if (severity === 'error') {
+            // GitHub Actions surfaces ::error:: in the run summary
+            console.log(`::error::[show-score] ${showId} extracted ${extracted}/${expected} critic reviews (${Math.round(ratio*100)}%) — likely carousel-scroll stall or format change`);
+          } else {
+            console.log(`::warning::[show-score] ${showId} extracted ${extracted}/${expected} critic reviews (${Math.round(ratio*100)}%) — partial`);
+          }
+        }
         successCount++;
       } else {
         console.log(`  SKIP: Could not extract data`);
@@ -231,13 +309,32 @@ function main() {
     }
   }
 
-  // Write output
+  // Write main output
   fs.writeFileSync(outputPath, JSON.stringify(showScoreData, null, 2));
+
+  // Write extraction-gap audit (always — empty file is a useful signal of "all good")
+  const gapsPath = path.join(__dirname, '../data/audit/show-score-extraction-gaps.json');
+  fs.mkdirSync(path.dirname(gapsPath), { recursive: true });
+  fs.writeFileSync(gapsPath, JSON.stringify({
+    _meta: {
+      generatedAt: new Date().toISOString(),
+      description: 'Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic.',
+    },
+    totalGaps: extractionGaps.length,
+    errorSeverity: extractionGaps.filter(g => g.severity === 'error').length,
+    warningSeverity: extractionGaps.filter(g => g.severity === 'warning').length,
+    gaps: extractionGaps,
+  }, null, 2));
 
   console.log(`\n=== Summary ===`);
   console.log(`Successful: ${successCount} (Broadway: ${categoryCounts.broadway}, Off-Broadway: ${categoryCounts['off-broadway']}, West End: ${categoryCounts['west-end']}, Off-West End: ${categoryCounts['off-west-end']})`);
   console.log(`Failed/Skipped: ${failCount}`);
+  if (extractionGaps.length > 0) {
+    console.log(`Critic-review extraction gaps: ${extractionGaps.length} shows (${extractionGaps.filter(g => g.severity === 'error').length} error, ${extractionGaps.filter(g => g.severity === 'warning').length} warning)`);
+    console.log(`  Top 5 gaps: ${extractionGaps.slice().sort((a,b) => b.gap - a.gap).slice(0,5).map(g => `${g.showId} (${g.extracted}/${g.expected})`).join(', ')}`);
+  }
   console.log(`Output written to: ${outputPath}`);
+  console.log(`Extraction gaps written to: ${gapsPath}`);
 }
 
 try {
