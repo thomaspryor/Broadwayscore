@@ -325,9 +325,11 @@ export class ReviewScorer {
   }
 
   /**
-   * Score a review using V5 simplified prompt (bucket-first approach)
+   * Score a review using V5 simplified prompt (bucket-first approach).
+   * Optional `systemPromptOverride` lets the A/B harness swap in a candidate
+   * prompt while leaving the live SYSTEM_PROMPT_V5 untouched.
    */
-  async scoreReviewV5(reviewText: string, context: string = ''): Promise<{
+  async scoreReviewV5(reviewText: string, context: string = '', systemPromptOverride?: string): Promise<{
     success: boolean;
     result?: SimplifiedLLMResult;
     rejected?: boolean;
@@ -338,6 +340,7 @@ export class ReviewScorer {
     outputTokens: number;
   }> {
     const prompt = buildPromptV5(reviewText, context);
+    const systemPrompt = systemPromptOverride || SYSTEM_PROMPT_V5;
 
     let lastError: string = '';
     let inputTokens = 0;
@@ -353,7 +356,13 @@ export class ReviewScorer {
         const response = await this.client.messages.create({
           model: this.options.model,
           max_tokens: 500,
-          system: SYSTEM_PROMPT_V5,
+          // Pin temperature so A/B reruns on the same input give the same score.
+          // Without this, Anthropic SDK defaults to ~1.0 — re-scoring the same
+          // review with the same prompt produces non-zero drift, contaminating
+          // the rule-13 A/B baseline (ship-check P0, Claude reviewer 2026-04-27).
+          // Matches OpenAI/Gemini defaults of 0.3 for ensemble consistency.
+          temperature: 0.3,
+          system: systemPrompt,
           messages: [
             { role: 'user', content: prompt }
           ]
