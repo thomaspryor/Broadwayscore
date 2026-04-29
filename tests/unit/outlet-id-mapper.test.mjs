@@ -28,13 +28,20 @@ before(async () => {
 
 describe('getOutletConfig() — Default tier (no showCategory)', () => {
 
-  describe('Tier 1 outlets — anchors with NYC primary or genuine dual-anchor', () => {
+  // v5 semantic: outlet "default tier" reflects its institutional standing in its
+  // PRIMARY region. UK papers default = T1 (London-primary), NYC anchors default = T1
+  // (NYC-primary). Per-region tiers (tiers.nyc, tiers.london) only apply when
+  // showCategory is passed at lookup time.
+  describe('Tier 1 outlets — anchor publications (default tier)', () => {
     const tier1Tests = [
       // NYC anchors
       'nytimes', 'vulture', 'variety', 'hollywood-reporter', 'wsj',
       'timeout', 'washpost', 'ap', 'broadwaynews', 'newyorker',
       'deadline', 'newsday', 'latimes',
-      // Dual-anchor (T1 in both regions)
+      // UK anchors (default = London-primary tier 1)
+      'telegraph', 'standard', 'times-uk', 'financialtimes',
+      'thestage', 'timeout-london', 'daily-mail', 'independent',
+      // Dual-anchor
       'guardian',
     ];
 
@@ -47,18 +54,13 @@ describe('getOutletConfig() — Default tier (no showCategory)', () => {
 
   describe('Tier 2 outlets — major editorial', () => {
     const tier2Tests = [
-      // Existing T2 outlets
       'nypost', 'theatermania', 'ew', 'thewrap',
-      'indiewire', 'dailybeast', 'observer', 'nytg', 'nysr',
+      'indiewire', 'dailybeast', 'nytg', 'nysr',
       'theatrely', 'time', 'bloomberg', 'slate',
       'chicagotribune', 'usatoday', 'nydailynews', 'rollingstone',
       'people', 'parade', 'billboard', 'huffpost', 'backstage',
-      'village-voice', 'whatsonstage',
-      'amny', 'talkinbroadway',
+      'village-voice', 'amny', 'talkinbroadway',
       'ny1', 'nbcny', 'curtainup',
-      // UK national newspapers — T1 London but T2 NYC (default = NYC)
-      'telegraph', 'standard', 'times-uk', 'financialtimes',
-      'thestage', 'timeout-london', 'daily-mail', 'independent',
       // BroadwayWorld — promoted from T3 to T2 in v5
       'broadwayworld',
     ];

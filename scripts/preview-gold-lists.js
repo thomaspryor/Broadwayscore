@@ -83,7 +83,7 @@ function computeCriticalGold() {
       if (revs.length < 5) continue;
 
       // Canonical tier-weighted score (matches engine.ts + gold list computer)
-      const scoreResult = computeCriticScore(revs, outletRegistry);
+      const scoreResult = computeCriticScore(revs, outletRegistry, show.category);
       if (!scoreResult || scoreResult.rc < 5) continue;
       if (scoreResult.s < 73) continue;
 

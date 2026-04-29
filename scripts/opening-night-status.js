@@ -107,7 +107,7 @@ function getSiteScore(showId) {
  * Get review stats for a show from reviews.json (live data, may be ahead of site).
  * Uses assignedScore > 0 to match checkReadiness() in the poller.
  */
-function getShowReviewStats(reviewsArr, showId, outletRegistry) {
+function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
   const showRevs = reviewsArr.filter(r => r.showId === showId && r.assignedScore > 0);
   const outlets = outletRegistry.outlets || outletRegistry;
 
@@ -129,7 +129,7 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry) {
   }
 
   // Live-computed score (may differ from site if rebuild hasn't run)
-  const scoreResult = computeCriticScore(showRevs, outlets);
+  const scoreResult = computeCriticScore(showRevs, outlets, showCategory);
 
   // Site score (what's actually on broadwayscorecard.com)
   const siteData = getSiteScore(showId);
@@ -440,7 +440,7 @@ function renderDashboard() {
 
   for (const show of openingShows) {
     const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
-    const stats = getShowReviewStats(reviewsArr, show.id, outletRegistry);
+    const stats = getShowReviewStats(reviewsArr, show.id, outletRegistry, show.category);
     const readiness = checkReadiness(show.id, market);
     const missing = getMissingT1T2Outlets(show.id, market);
     const broadcast = getBroadcastStatus(sentData, show.id, market);

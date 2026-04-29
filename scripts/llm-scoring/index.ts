@@ -736,15 +736,15 @@ async function main(): Promise<void> {
     scorer = new EnsembleReviewScorer(claudeApiKey, openaiApiKey!, geminiApiKey, openrouterApiKey, {
       claudeModel: options.model,
       openaiModel: 'gpt-4o',
-      geminiModel: 'gemini-2.0-flash',
+      geminiModel: 'gemini-2.5-flash',
       kimiModel: 'moonshotai/kimi-k2.5',
       verbose: options.verbose
     });
     const modelCount = (scorer as EnsembleReviewScorer).getModelCount();
     if (modelCount === 4) {
-      console.log('Using 4-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.0 Flash + Kimi K2.5)\n');
+      console.log('Using 4-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.5 Flash + Kimi K2.5)\n');
     } else if (modelCount === 3) {
-      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.0 Flash)\n');
+      console.log('Using 3-MODEL ensemble mode (Claude Sonnet + GPT-4o + Gemini 2.5 Flash)\n');
       if (!openrouterApiKey) {
         console.log('  (Set OPENROUTER_API_KEY to enable 4-model mode with Kimi K2.5)\n');
       }
