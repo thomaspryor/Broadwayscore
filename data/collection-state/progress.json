@@ -1,6 +1,11 @@
 {
   "processed": [
-    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "the-lost-boys-2026/forum-broadwayworld--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-fear-of-13-2026/washpost--unknown.json",
+    "dracula-west-end-2025/financialtimes--paul-raven.json",
+    "oh-mary-west-end-2025/financialtimes--paul-raven.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -17,22 +22,35 @@
     "mass-west-end-2026/telegraph--unknown.json",
     "mass-west-end-2026/thestage--unknown.json",
     "mass-west-end-2026/times-uk--unknown.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "the-lost-boys-2026/reddit--unknown.json",
+    "romeo-and-juliet-west-end-2026/telegraph--paul-raven.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-fear-of-13-2026/washpost--unknown.json",
+      "dracula-west-end-2025/financialtimes--paul-raven.json",
+      "oh-mary-west-end-2025/financialtimes--paul-raven.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [],
+    "brightdata": [
+      "the-lost-boys-2026/forum-broadwayworld--unknown.json"
+    ],
+    "archiveToday": [
+      "data/review-texts/the-lost-boys-2026/reddit--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-04-29T09:10:21.075Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "hadestown-west-end-2024/times-uk--clive-davis.json",
   "log": []
 }
