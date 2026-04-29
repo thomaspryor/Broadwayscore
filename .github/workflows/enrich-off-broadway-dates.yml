@@ -39,10 +39,14 @@ on:
 permissions:
   contents: write
 
-# Critical: serializes against any other workflow that writes shows.json.
-# Without this, parallel crons can rebase-race (the post-rebase reconciliation
-# in push-core-data only restores SOME fields; date fields were not on the
-# safelist before PR #A0 on 2026-04-28).
+# NOTE: this concurrency group is named so that future shows.json writers
+# (update-show-status.yml, enrich-ibdb-dates.yml, enrich-west-end-dates.yml,
+# fetch-todaytix-showtimes.yml, etc.) can opt in by adopting the same group.
+# As of 2026-04-29 only THIS workflow declares it, so the group serializes
+# only against itself. The actual rebase-race mitigation is in
+# .github/actions/push-core-data/action.yml's reconciliation safelist
+# (date fields added 2026-04-28). Adopting this group across other writers
+# is a follow-up. See memory/feedback_off_broadway_opening_date_gap.md.
 concurrency:
   group: shows-json-writer
   cancel-in-progress: false
