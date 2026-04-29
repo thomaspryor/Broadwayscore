@@ -80,8 +80,12 @@ async function processShow(showId) {
         kept++;
         continue;
       }
-      // Try the high-confidence HTML extractors first
-      byline = extractHighConfidenceAuthor(html) || extractAuthorFromHtml(html, '', { outletId: data.outletId });
+      // extractHighConfidenceAuthor returns string|null; extractAuthorFromHtml returns
+      // { name, source } | null. Normalize to plain string.
+      const hcRaw = extractHighConfidenceAuthor(html);
+      const fallbackRaw = hcRaw ? null : extractAuthorFromHtml(html, '', { outletId: data.outletId });
+      const raw = hcRaw || fallbackRaw;
+      byline = raw ? (typeof raw === 'string' ? raw : raw.name || null) : null;
     } catch (e) {
       console.log(`  [${file}] fetch failed: ${e.message.slice(0, 80)} — keep`);
       kept++;
