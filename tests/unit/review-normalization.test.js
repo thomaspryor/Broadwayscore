@@ -916,6 +916,52 @@ describe('normalizeUrl', () => {
     assert.ok(typeof result === 'string');
     assert.strictEqual(result, 'not a url at all');
   });
+
+  // AMP-suffix support added 2026-04-28 (Item 3 of systematic CI plan).
+  // Origin: dracula-west-end-2025/metro--brooke-ivey-johnson AMP re-scrape
+  // produced a parallel file alongside the canonical metro-uk entry. The
+  // tightening here is anchored: only path-final `/amp` and ?amp=1 are
+  // stripped — mid-path `/amp/` segments remain (false-positive guard,
+  // verified by the matching ship-check test in review-write-guard.test.mjs).
+  describe('AMP-suffix handling', () => {
+    test('strips /amp path suffix — same canonical', () => {
+      assert.strictEqual(
+        normalizeUrl('https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-26951617/amp'),
+        normalizeUrl('https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-26951617/')
+      );
+    });
+
+    test('strips /amp path suffix — without trailing slash', () => {
+      assert.strictEqual(
+        normalizeUrl('https://www.metro.co.uk/2026/02/17/article-name/amp'),
+        normalizeUrl('https://www.metro.co.uk/2026/02/17/article-name')
+      );
+    });
+
+    test('strips ?amp=1 query param — Google AMP cache shape', () => {
+      assert.strictEqual(
+        normalizeUrl('https://example.com/2026/02/17/article-name?amp=1'),
+        normalizeUrl('https://example.com/2026/02/17/article-name')
+      );
+    });
+
+    test('does NOT strip mid-path /amp/ segment', () => {
+      // A path-internal /amp/ may be a legitimate route segment (e.g. a
+      // section-named "amp"). Stripping it would silently collapse unrelated
+      // URLs into one and produce false-positive duplicates.
+      assert.notStrictEqual(
+        normalizeUrl('https://example.com/news/amp/election-results'),
+        normalizeUrl('https://example.com/news/election-results')
+      );
+    });
+
+    test('AMP-strip composes with utm tracking-param strip', () => {
+      assert.strictEqual(
+        normalizeUrl('https://metro.co.uk/2026/02/17/article-name/amp?utm_source=tw'),
+        normalizeUrl('https://metro.co.uk/2026/02/17/article-name')
+      );
+    });
+  });
 });
 
 // ============================================================================

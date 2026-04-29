@@ -1283,17 +1283,22 @@ function normalizeUrl(url) {
       .replace(/^www\./, '')
       .replace(/\/+$/, '')
       .replace(/#.*$/, '');
-    // AMP-suffix strip (added 2026-04-28). Only matches a path-final `/amp`
-    // segment; never a mid-path `/amp/` to avoid false collisions on
-    // outlets that legitimately use `/amp/` as a non-AMP route segment.
-    // Origin: dracula-west-end-2025 metro--brooke-ivey-johnson AMP-URL
-    // re-scrape produced a parallel file alongside the canonical metro-uk
-    // entry. /amp/ + ?amp=1 are the two BWW/Metro/NYT AMP shapes seen in
-    // the corpus.
-    u = u.replace(/\/amp$/, '').replace(/[?&]amp=1\b/g, '');
+    // Tracking-param strip first so any later regex can anchor on the
+    // post-strip path/query state.
     u = u.replace(/[?&](utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc)=[^&]*/g, '')
       .replace(/\?$/, '')
       .replace(/\?&/, '?');
+    // AMP-suffix strip (added 2026-04-28, Item 3 of systematic CI plan).
+    // Only matches a path-final `/amp` segment; never a mid-path `/amp/`
+    // to avoid false collisions on outlets that legitimately use `/amp/`
+    // as a non-AMP route segment. Origin: dracula-west-end-2025
+    // metro--brooke-ivey-johnson AMP-URL re-scrape produced a parallel file
+    // alongside the canonical metro-uk entry. `/amp` + `?amp=1` are the two
+    // BWW/Metro/NYT AMP shapes seen in the corpus. MUST run AFTER tracking
+    // strip so URLs like `/foo/amp?utm_source=x` lose the utm and then
+    // strip `/amp` cleanly (otherwise `/amp$` doesn't match while `?utm`
+    // is still present).
+    u = u.replace(/\/amp$/, '').replace(/[?&]amp=1\b/g, '');
     return u;
   } catch (e) {
     return url.toLowerCase().trim();
