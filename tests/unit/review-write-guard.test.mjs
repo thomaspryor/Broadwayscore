@@ -228,6 +228,58 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       fs.rmSync(dir, { recursive: true, force: true });
     }
   });
+
+  // Item 3 (2026-04-28): AMP-suffix should collide with the canonical URL.
+  // Origin: dracula-west-end-2025/metro--brooke-ivey-johnson.json — an AMP
+  // re-scrape produced a parallel file alongside the manually-fixed metro-uk
+  // entry. Pre-fix: _normalizeUrlForCollision didn't strip /amp/ so the two
+  // URLs hashed differently and both files lived in reviews.json as duplicates.
+  test('checkUrlCollision strips /amp/ suffix — same article via AMP URL', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'amp-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'metro-uk--brooke-ivey-johnson.json'), JSON.stringify({
+        url: 'https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-26951617/',
+      }, null, 2));
+      const result = checkUrlCollision(path.join(dir, 'metro-uk--unknown.json'), {
+        url: 'https://metro.co.uk/2026/02/17/cynthia-erivos-dracula-26951617/amp/',
+      });
+      assert.equal(result, 'metro-uk--brooke-ivey-johnson.json');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('checkUrlCollision strips ?amp=1 query param — Google AMP cache shape', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ampq-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({
+        url: 'https://example.com/2026/02/17/article-name',
+      }, null, 2));
+      const result = checkUrlCollision(path.join(dir, 'b.json'), {
+        url: 'https://example.com/2026/02/17/article-name?amp=1',
+      });
+      assert.equal(result, 'a.json');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('checkUrlCollision does NOT strip mid-path /amp/ (false positive guard)', () => {
+    // A path-internal /amp/ segment must NOT be stripped or we'd silently
+    // collapse e.g. `/news/amp/election-results` into `/news/election-results`.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mid-amp-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({
+        url: 'https://example.com/news/election-results',
+      }, null, 2));
+      const result = checkUrlCollision(path.join(dir, 'b.json'), {
+        url: 'https://example.com/news/amp/election-results',
+      });
+      assert.equal(result, null, 'mid-path /amp/ should not collide with canonical');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe('force=true audit trail', () => {
