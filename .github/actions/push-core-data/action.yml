@@ -149,6 +149,11 @@ runs:
           # are typically set by manual corrections (venue, synopsis, dates, runtime).
           # Excludes derived/internal fields (_meta, lastUpdated, tags, images) and
           # fields that may be intentionally nulled (closingDate clearing, etc.).
+          # Date fields (openingDate, previewsStartDate, openingDateSource) are on
+          # the safelist as of 2026-04-28 — without them, parallel crons writing
+          # date corrections (e.g. enrich-west-end-dates, the new OB equivalent)
+          # silently lost their work on rebase races. See KENREX 2026-04-28 root
+          # cause and memory/feedback_off_broadway_opening_date_gap.md.
           if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
             node -e '
               const fs = require("fs");
@@ -156,6 +161,7 @@ runs:
               const RECONCILABLE = new Set([
                 "venue", "synopsis", "runtime", "intermissions", "ageRecommendation",
                 "officialUrl", "wikipediaUrl", "ibdbUrl",
+                "openingDate", "previewsStartDate", "openingDateSource",
               ]);
               try {
                 const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
