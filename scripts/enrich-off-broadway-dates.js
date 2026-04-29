@@ -358,7 +358,13 @@ async function main() {
   const allShows = data.shows || data;
 
   // Filter to off-broadway shows.
-  let obShows = allShows.filter(s => s.category === 'off-broadway');
+  // Closed shows are EXCLUDED from match-back: their slug may be reused (or
+  // title-matched) by a new upcoming production, and we'd corrupt the closed
+  // show's historical dates. Romeo & Juliet Suite 2026 (closed 2026-03-21)
+  // got its dates overwritten with a 2026-06-11 future production's data
+  // before this guard existed (caught in /ship-check 2026-04-29; reverted
+  // in private repo).
+  let obShows = allShows.filter(s => s.category === 'off-broadway' && s.status !== 'closed');
   console.log(`Off-Broadway shows in shows.json: ${obShows.length}`);
   if (showFilter) {
     obShows = obShows.filter(s => s.id === showFilter || s.slug === showFilter);
