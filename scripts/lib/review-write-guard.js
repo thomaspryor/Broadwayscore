@@ -371,18 +371,19 @@ function checkUrlCollision(filePath, newData) {
   return null;
 }
 
-/** Normalize a URL for collision comparison: lowercase domain, strip trailing slash and utm_* params. */
+// Normalize a URL for collision comparison.
+//
+// Delegates to review-normalization.normalizeUrl (the project's canonical
+// URL-comparison primitive), which handles protocol/www/trailing-slash
+// stripping, fragment removal, AMP-suffix strip (added 2026-04-28), and
+// the shared tracking-param allowlist (utm_, ref, source, fbclid, etc.).
+// Inlining a second normalizer here was the design problem flagged in
+// tonight's plan-review — two normalizers drift over time. Single source
+// of truth: review-normalization.normalizeUrl.
 function _normalizeUrlForCollision(url) {
-  try {
-    const u = new URL(url);
-    u.hostname = u.hostname.toLowerCase();
-    for (const key of [...u.searchParams.keys()]) {
-      if (/^utm_|^fbclid/.test(key)) u.searchParams.delete(key);
-    }
-    return u.toString().replace(/\/$/, '');
-  } catch {
-    return url.toLowerCase().replace(/\/$/, '');
-  }
+  // Lazy require to avoid circular dep at module load.
+  const { normalizeUrl } = require('./review-normalization');
+  return normalizeUrl(url);
 }
 
 /**
