@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
 
 let lockedSkipCount = 0;
 
@@ -161,23 +161,19 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
   }
 
   if (!dryRun) {
-    // TOPOLOGY: rename paths do not honor _locked — see S1-T5.
-    // Stop-gap (ship-check P0 2026-04-26): the source is already gated by
-    // shouldSkipLockedEnrichment at function entry. The newPath collision
-    // is caught above by `if (fs.existsSync(newPath))`. This guard covers
-    // the case where another writer created a locked file at newPath
-    // between the existsSync check and our rename (TOCTOU narrow window).
-    if (fs.existsSync(newPath)) {
-      try {
-        const targetData = JSON.parse(fs.readFileSync(newPath, 'utf8'));
-        if (targetData._locked === true) {
-          lockedSkipCount++;
-          return { renamed: false, lockedSkipped: true };
-        }
-      } catch { /* corrupt target — fall through */ }
+    const renameResult = safeRenameReview(filePath, newPath, { newData: data });
+    if (renameResult.skipped === 'locked') {
+      lockedSkipCount++;
+      return { renamed: false, lockedSkipped: true };
     }
-    fs.writeFileSync(newPath, JSON.stringify(data, null, 2) + '\n');
-    fs.unlinkSync(filePath);
+    if (renameResult.skipped === 'conflict') {
+      // TOCTOU: another writer created newPath between our existsSync check
+      // above and the rename. Treat as duplicate.
+      return { renamed: false, duplicate: true, newFile };
+    }
+    if (!renameResult.wrote) {
+      return { renamed: false };
+    }
   }
 
   return { renamed: true, newFile };

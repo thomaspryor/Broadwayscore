@@ -48,14 +48,29 @@ describe('backfill-unknown-critics locked-file behavior (S1-T3e)', () => {
     assert.equal(written.outletId, 'unknown');
   });
 
-  test('TOPOLOGY marker present on rename path', () => {
+  test('TOPOLOGY marker has been REMOVED post-helper-migration (2026-04-29)', () => {
     const src = fs.readFileSync(
       path.resolve('scripts/backfill-unknown-critics.js'),
       'utf8',
     );
     assert.ok(
-      src.includes('TOPOLOGY: rename paths do not honor _locked'),
-      'backfill-unknown-critics.js must mark the rename path with TOPOLOGY',
+      !src.includes('TOPOLOGY:'),
+      'backfill-unknown-critics.js must no longer carry a TOPOLOGY marker — the bypass has been migrated to safeRenameReview',
+    );
+  });
+
+  test('rename path routes through safeRenameReview after migration', () => {
+    const src = fs.readFileSync(
+      path.resolve('scripts/backfill-unknown-critics.js'),
+      'utf8',
+    );
+    assert.ok(
+      /safeRenameReview\b/.test(src),
+      'backfill-unknown-critics must use safeRenameReview for the rename path',
+    );
+    assert.ok(
+      !/fs\.writeFileSync\(newPath/.test(src),
+      'raw fs.writeFileSync to newPath must be removed',
     );
   });
 });

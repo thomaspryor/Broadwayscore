@@ -315,6 +315,13 @@ function auditCriticCollisions(show) {
     const outletId = outletFromFilename(f.filename);
     const name = (f.data?.criticName || '').toLowerCase().trim();
     if (!outletId || !name || name === 'unknown') continue;
+    // Skip files that have already been marked as duplicates — the
+    // collect-review-texts rename path sets data.duplicateOf on conflict so
+    // the stale-slug source doesn't trip this audit. Same gate as
+    // validate-review-texts.js line 185 + rebuild-all-reviews. Aligned with
+    // the topology-rename redesign (Notion 34f637c5-416f-81a1).
+    if (f.data?.duplicateOf || f.data?.duplicateTextOf) continue;
+    if (f.data?.wrongShow || f.data?.wrongProduction || f.data?.wrongAttribution) continue;
     const key = `${outletId}|${name}`;
     if (seen[key]) {
       findings.push({

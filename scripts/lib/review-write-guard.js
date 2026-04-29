@@ -579,4 +579,196 @@ function shouldSkipPollerUpdate(existingData, newText) {
   return { skip: false, reason: null };
 }
 
-module.exports = { safeWriteReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };
+/**
+ * Move/rename a review-text file under the lock contract.
+ *
+ * Refuses to move when the SOURCE is `_locked: true` unless `force: true` is
+ * passed. This is the topology-side counterpart to safeWriteReview's
+ * lockedOverride: the field-level guard cannot stop a rename, an unlink, or
+ * a cross-show MOVE — those operations bypass the writer entirely. This
+ * helper closes the gap.
+ *
+ * Conflict semantics: if `dstPath` already exists, the helper returns
+ * `{ skipped: 'conflict', conflictPath }` and DOES NOT touch either file.
+ * The caller decides what to do (set data.duplicateOf, flag wrongProduction,
+ * etc.). This explicit non-merge eliminates the PR #290 corruption surface
+ * where merging into existing dest was silently undone by a downstream
+ * write to the original (source) path.
+ *
+ * Sister-store side effects on a successful rename:
+ * 1. data/llm-scores/{srcShow}/{srcFile}.json → {dstShow}/{dstFile}.json
+ *    (renamed if present; conflict at sister store is logged + source unlinked).
+ * 2. Same-show duplicateTextOf pointers in sibling files referencing the old
+ *    basename are rewritten to the new basename. Cross-show pointers become
+ *    orphaned (validate-review-texts catches them as missing-target).
+ *
+ * @param {string} srcPath - Absolute path to the source file
+ * @param {string} dstPath - Absolute path the file should land at
+ * @param {object} [options]
+ * @param {boolean} [options.force=false] - Bypass the source `_locked` check
+ * @param {object|null} [options.newData=null] - Optional updated content to
+ *   write at dstPath. When omitted, the helper writes the source file's
+ *   content verbatim. Pass updated data when migrating cross-show MOVEs that
+ *   stamp `movedFrom`/`movedReason`/`showId` fields onto the moved file.
+ * @returns {{
+ *   wrote: boolean,
+ *   renamed?: boolean,
+ *   skipped?: 'source-missing'|'source-unreadable'|'locked'|'conflict'|'noop',
+ *   conflictPath?: string,
+ *   lockedSkipped?: boolean,
+ *   sisterStoreMoved?: boolean,
+ *   siblingPointersUpdated?: number,
+ *   error?: string,
+ * }}
+ */
+function safeRenameReview(srcPath, dstPath, options = {}) {
+  const { force = false, newData = null } = options;
+
+  if (!fs.existsSync(srcPath)) {
+    return { wrote: false, skipped: 'source-missing' };
+  }
+
+  let srcData;
+  try {
+    srcData = JSON.parse(fs.readFileSync(srcPath, 'utf-8'));
+  } catch (e) {
+    return { wrote: false, skipped: 'source-unreadable', error: e.message };
+  }
+
+  if (srcData && srcData._locked === true && !force) {
+    console.warn(`[review-write-guard] Refusing rename of locked file ${path.basename(srcPath)} → ${path.basename(dstPath)}`);
+    return { wrote: false, skipped: 'locked', lockedSkipped: true };
+  }
+
+  if (path.resolve(srcPath) === path.resolve(dstPath)) {
+    return { wrote: false, skipped: 'noop' };
+  }
+
+  if (fs.existsSync(dstPath)) {
+    return { wrote: false, skipped: 'conflict', conflictPath: dstPath };
+  }
+
+  fs.mkdirSync(path.dirname(dstPath), { recursive: true });
+  const contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
+  fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
+  fs.unlinkSync(srcPath);
+
+  const sister = _updateSisterStoresOnRename(srcPath, dstPath);
+
+  return {
+    wrote: true,
+    renamed: true,
+    sisterStoreMoved: sister.llmScoreMoved,
+    siblingPointersUpdated: sister.pointersUpdated,
+  };
+}
+
+/**
+ * Delete a review-text file under the lock contract.
+ *
+ * Refuses to delete when the file is `_locked: true` unless `force: true`.
+ * Mirrors safeRenameReview's source-side gate. Used by topology operations
+ * that delete a redundant file (cleanup-phantom-outlets merge-then-unlink,
+ * any future unlink path on review-texts).
+ *
+ * @param {string} filePath - Absolute path to the file to delete
+ * @param {object} [options]
+ * @param {boolean} [options.force=false] - Bypass `_locked`
+ * @returns {{
+ *   wrote: boolean,
+ *   unlinked?: boolean,
+ *   skipped?: 'source-missing'|'unreadable'|'locked',
+ *   lockedSkipped?: boolean,
+ *   error?: string,
+ * }}
+ */
+function safeUnlinkReview(filePath, options = {}) {
+  const { force = false } = options;
+
+  if (!fs.existsSync(filePath)) {
+    return { wrote: false, skipped: 'source-missing' };
+  }
+
+  let data = null;
+  try {
+    data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  } catch (e) {
+    if (!force) {
+      return { wrote: false, skipped: 'unreadable', error: e.message };
+    }
+    // force=true on a corrupt file: allow unlink (file is already broken).
+  }
+
+  if (data && data._locked === true && !force) {
+    console.warn(`[review-write-guard] Refusing unlink of locked file ${path.basename(filePath)}`);
+    return { wrote: false, skipped: 'locked', lockedSkipped: true };
+  }
+
+  fs.unlinkSync(filePath);
+  return { wrote: true, unlinked: true };
+}
+
+/**
+ * Internal: rename the llm-scores sidecar and rewrite same-show
+ * duplicateTextOf sibling pointers. Best-effort — logs and continues on
+ * partial failures. Cross-show: pointers in the source show dir become
+ * orphaned (left for validate-review-texts to catch).
+ */
+function _updateSisterStoresOnRename(srcPath, dstPath) {
+  const srcDir = path.dirname(srcPath);
+  const dstDir = path.dirname(dstPath);
+  const srcFile = path.basename(srcPath);
+  const dstFile = path.basename(dstPath);
+  const srcShowId = path.basename(srcDir);
+  const dstShowId = path.basename(dstDir);
+  const repoRoot = path.resolve(__dirname, '..', '..');
+
+  let llmScoreMoved = false;
+  const oldLlmPath = path.join(repoRoot, 'data', 'llm-scores', srcShowId, srcFile);
+  if (fs.existsSync(oldLlmPath)) {
+    const newLlmPath = path.join(repoRoot, 'data', 'llm-scores', dstShowId, dstFile);
+    try {
+      fs.mkdirSync(path.dirname(newLlmPath), { recursive: true });
+      if (!fs.existsSync(newLlmPath)) {
+        fs.renameSync(oldLlmPath, newLlmPath);
+        llmScoreMoved = true;
+      } else {
+        console.warn(`[review-write-guard] llm-scores sidecar conflict at ${path.relative(repoRoot, newLlmPath)} — keeping existing, removing ${path.relative(repoRoot, oldLlmPath)}`);
+        fs.unlinkSync(oldLlmPath);
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] llm-scores sidecar move failed: ${e.message}`);
+    }
+  }
+
+  let pointersUpdated = 0;
+  const dirsToScan = srcDir === dstDir ? [srcDir] : [srcDir, dstDir];
+  for (const dir of dirsToScan) {
+    if (!fs.existsSync(dir)) continue;
+    let files;
+    try {
+      files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+    } catch { continue; }
+    for (const f of files) {
+      if (f === dstFile && dir === dstDir) continue;
+      const sibPath = path.join(dir, f);
+      let sibData;
+      try {
+        sibData = JSON.parse(fs.readFileSync(sibPath, 'utf-8'));
+      } catch { continue; }
+      if (sibData && sibData.duplicateTextOf === srcFile) {
+        sibData.duplicateTextOf = dstFile;
+        try {
+          fs.writeFileSync(sibPath, JSON.stringify(sibData, null, 2) + '\n');
+          pointersUpdated++;
+        } catch (e) {
+          console.warn(`[review-write-guard] failed to rewrite duplicateTextOf in ${path.relative(repoRoot, sibPath)}: ${e.message}`);
+        }
+      }
+    }
+  }
+
+  return { llmScoreMoved, pointersUpdated };
+}
+
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, PROTECTED_FIELDS };

@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -456,23 +456,22 @@ if (applyMode) {
         continue;
       }
 
-      // TOPOLOGY: file moves do not honor _locked — see S1-T5.
-      // Stop-gap (ship-check P0 2026-04-26): refuse the move if the target path
-      // exists and is itself locked. shouldSkipLockedEnrichment already short-
-      // circuits when the SOURCE is locked (function entry), so this guard
-      // covers the remaining target-collision case.
-      if (fs.existsSync(targetPath)) {
-        try {
-          const targetData = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
-          if (targetData._locked === true) {
-            lockedSkipCount++;
-            console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: target ${result.suggestedShowId}/${result.file} is locked — refusing MOVE`);
-            continue;
-          }
-        } catch { /* corrupt target — let the original path handle it */ }
+      const moveResult = safeRenameReview(filePath, targetPath, { newData: reviewData });
+      if (moveResult.skipped === 'locked') {
+        lockedSkipCount++;
+        console.log(`  [LOCKED-SKIP] ${result.showId}/${result.file}: source is locked — refusing MOVE`);
+        continue;
       }
-      fs.writeFileSync(targetPath, JSON.stringify(reviewData, null, 2));
-      fs.unlinkSync(filePath);
+      if (moveResult.skipped === 'conflict') {
+        // Target appeared between the existsSync check above and our move
+        // (TOCTOU). Leave source in place; next audit run will re-evaluate.
+        console.log(`  [CONFLICT] ${result.showId}/${result.file}: target ${result.suggestedShowId}/${result.file} appeared mid-flight — skipping MOVE`);
+        continue;
+      }
+      if (!moveResult.wrote) {
+        console.log(`  [SKIP-${moveResult.skipped}] ${result.showId}/${result.file}: ${moveResult.error || ''}`);
+        continue;
+      }
       moved++;
       console.log(`  MOVED ${result.showId}/${result.file} → ${result.suggestedShowId}/`);
     } else {
