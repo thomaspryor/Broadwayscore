@@ -1,22 +1,55 @@
 {
   "processed": [
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "proof-2026/washpost--unknown.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "titus-andronicus-off-broadway-2026/nytg--unknown.json",
+    "titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "kenrex-off-broadway-2026/thestage--unknown.json",
+    "the-price-off-west-end-2026/times-uk--unknown.json",
+    "avenue-q-west-end-2026/london-theatre--the-anonymous-reviewer.json",
+    "the-fear-of-13-2026/nydailynews--brian-niemietz.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "proof-2026/washpost--unknown.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "titus-andronicus-off-broadway-2026/nytg--unknown.json"
+    ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json",
+      "titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/kenrex-off-broadway-2026/thestage--unknown.json"
+    ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-04-30T10:01:27.394Z",
-  "lastProcessed": "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-  "log": []
+  "lastProcessed": "titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json",
+  "log": [
+    {
+      "t": "2026-04-30T10:46:04.482Z",
+      "event": "bb-session",
+      "session": "83ba84a3",
+      "url": "https://www.wsj.com/articles/titus-andronicus-review-patrick-page-in-the-bards-b"
+    },
+    {
+      "t": "2026-04-30T10:46:05.807Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
