@@ -71,7 +71,11 @@ function classifyRebuildExclusion(data, show) {
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
   if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
   if (data.crossOutletDuplicate === true) return 'crossOutletDuplicate';
-  if (data.suspectedMisattribution === true) return 'suspectedMisattribution_noStaleOverride';
+  // 2026-04-29: rebuild now mirrors LLM's stale-override (review-guards.js:1759).
+  // Classifier must defer to the same helper or it drifts.
+  if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) {
+    return 'suspectedMisattribution';
+  }
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high'

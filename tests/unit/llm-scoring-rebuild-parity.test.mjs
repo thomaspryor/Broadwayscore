@@ -83,11 +83,71 @@ describe('Parity contract — LLM no more permissive than rebuild', () => {
     assert.equal(isScoreable(data), false);
   });
 
-  test('incompleteReason=wrong_content + wrongShow: rebuild excludes ⇒ LLM excludes', () => {
+  test('incompleteReason=wrong_content + unclear wrongProduction: rebuild excludes ⇒ LLM excludes', () => {
+    // Exercise the wrong_content branch directly (wrongShow=false, wrongProduction=true
+    // without manual-clear). Setting wrongShow:true short-circuits at the earlier
+    // wrongShow gate (review-guards.js:1726) before reaching wrong_content logic.
     const data = {
       ...COMPLETE_BASE,
       incompleteReason: 'wrong_content',
-      wrongShow: true,
+      wrongProduction: true,
+    };
+    assert.equal(isIncludableForRebuild(data), false);
+    assert.equal(isScoreable(data), false);
+  });
+
+  test('rejectedAt re-fetch exception: textFetchedAt > rejectedAt ⇒ both include', () => {
+    // The re-fetch exception (review-guards.js:1786) defers the rejectedAt block
+    // when text was re-scraped after rejection — collect-review-texts SHOULD have
+    // cleared rejectedAt but only does so when rejectionReason is still set.
+    const data = {
+      ...COMPLETE_BASE,
+      rejectedAt: '2026-04-20T00:00:00Z',
+      textFetchedAt: '2026-04-25T00:00:00Z', // newer than rejectedAt
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
+  });
+
+  test('rejectedAt + wrongProductionManualClear: both include (clears stale rejection)', () => {
+    // The wpCleared exception (review-guards.js:1788, Notion 34b637c5-416f-81ff)
+    // fires when a human clears wrongProduction — the rejection is a stale FP.
+    const data = {
+      ...COMPLETE_BASE,
+      rejectedAt: '2026-04-20T00:00:00Z',
+      wrongProduction: true,
+      wrongProductionManualClear: true,
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
+  });
+
+  test('fullTextWrongAuthor + dtliExcerpt: rebuild includes (excerpt-only) ⇒ LLM scores', () => {
+    // review-guards.js:1830 early-returns true when fullTextWrongAuthor has any
+    // excerpt. Test the early-return path explicitly.
+    const data = {
+      ...COMPLETE_BASE,
+      fullTextWrongAuthor: true,
+      dtliExcerpt: 'A real excerpt about the show.',
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
+  });
+
+  test('fullTextWrongAuthor + stagedoorExcerpt: rebuild includes ⇒ LLM scores', () => {
+    const data = {
+      ...COMPLETE_BASE,
+      fullTextWrongAuthor: true,
+      stagedoorExcerpt: 'Stagedoor pull-quote about the show.',
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
+  });
+
+  test('fullTextWrongAuthor without excerpt: both exclude', () => {
+    const data = {
+      ...COMPLETE_BASE,
+      fullTextWrongAuthor: true,
     };
     assert.equal(isIncludableForRebuild(data), false);
     assert.equal(isScoreable(data), false);
@@ -97,6 +157,45 @@ describe('Parity contract — LLM no more permissive than rebuild', () => {
     const data = { contentTier: 'complete', isFullReview: true };
     assert.equal(isIncludableForRebuild(data), false);
     assert.equal(isScoreable(data), false);
+  });
+
+});
+
+describe('Symmetric stale-overrides — both predicates honor the same overrides', () => {
+
+  test('suspectedMisattribution flagged + registry confirms misattribution: both exclude', () => {
+    // Susannah Clapp at WSJ — registry has Clapp as Guardian/Observer non-freelancer,
+    // wsj NOT in knownOutlets and NOT in KNOWN_MULTI_OUTLET_PAIRS. Stale-override
+    // does NOT fire; both predicates must exclude.
+    const data = {
+      ...COMPLETE_BASE,
+      suspectedMisattribution: true,
+      criticName: 'Susannah Clapp',
+      outletId: 'wsj',
+    };
+    assert.equal(isIncludableForRebuild(data), false, 'rebuild should exclude (registry confirms)');
+    assert.equal(isScoreable(data), false);
+  });
+
+  test('wrongShow + wrongShowManualClear: both include (manual clear honored)', () => {
+    // wrongShowCleared() (review-guards.js:490) tests 5 flags; use the canonical one.
+    const data = {
+      ...COMPLETE_BASE,
+      wrongShow: true,
+      wrongShowManualClear: true,
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
+  });
+
+  test('wrongShow + wrongShowOverride: both include', () => {
+    const data = {
+      ...COMPLETE_BASE,
+      wrongShow: true,
+      wrongShowOverride: true,
+    };
+    assert.equal(isIncludableForRebuild(data), true);
+    assert.equal(isScoreable(data), true);
   });
 
 });

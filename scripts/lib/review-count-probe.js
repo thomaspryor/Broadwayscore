@@ -10,9 +10,13 @@ const { isIncludableForRebuild } = require('./review-guards');
  *
  * @param {string} showId
  * @param {string} reviewTextsRoot  default: 'data/review-texts'
+ * @param {object} [show]  optional show context — pass when available so
+ *   the predicate's stale-wrongShow override can fire (Codex ship-check
+ *   2026-04-29). Omitted callers fail safe (over-exclude wrongShow files
+ *   that would have cleared with show context).
  * @returns {{ total: number, included: number, excluded: number }}
  */
-function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts') {
+function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show) {
   const dir = path.join(reviewTextsRoot, showId);
   if (!fs.existsSync(dir)) {
     return { total: 0, included: 0, excluded: 0 };
@@ -28,7 +32,7 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts') {
       excluded++;
       continue;
     }
-    if (isIncludableForRebuild(data)) {
+    if (isIncludableForRebuild(data, show)) {
       included++;
     } else {
       excluded++;
