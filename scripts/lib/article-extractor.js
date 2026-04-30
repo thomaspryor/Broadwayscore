@@ -109,6 +109,10 @@ const PATTERNS = [
   // Best-effort: capture meta description as fullText since body itself isn't free.
   // The S6 star-rating skip handles ensemble bypass for these.
   ['bachtrack.com', /<meta[^>]+name="description"[^>]+content="([^"]+)"/, 100],
+  // seenandheard-international.com — WordPress, entry-content
+  ['seenandheard-international.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside|div[^>]+class="[^"]*(?:sharedaddy|jp-relatedposts))/, 300],
+  // newcriterion.com — uses div.dispatch-body or entry-content depending on template
+  ['newcriterion.com', /<div[^>]+class="[^"]*(?:dispatch-body|entry-content|article-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside)/, 300],
 
   // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
