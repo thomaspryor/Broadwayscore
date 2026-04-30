@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -47,6 +48,7 @@ function run() {
   );
 
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
+  let priorRunSkipped = 0;
   let lockedSkipCount = 0;
   const flaggedDetails = [];
 
@@ -97,6 +99,13 @@ function run() {
 
       if (!issue) { ok++; continue; }
 
+      // Production-continuity exemption: pubDate falls inside a declared priorRuns
+      // window — legitimate coverage of an earlier run of THIS production.
+      if (issue === 'before_preview' && isWithinPriorRun(pubDate, show.priorRuns)) {
+        priorRunSkipped++;
+        continue;
+      }
+
       const note = issue === 'before_preview'
         ? `Date guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
         : `Date guard: review ${data.publishDate} is ${diffDays}d after ${show.closingDate} (close+${DAYS_AFTER_CLOSE}d) — likely different production`;
@@ -145,6 +154,7 @@ function run() {
 
   console.log(`\n--- Summary ---`);
   console.log(`OK (within window):    ${ok}`);
+  console.log(`Skipped (priorRuns):   ${priorRunSkipped}`);
   console.log(`Already flagged:       ${skipped}`);
   console.log(`No publishDate:        ${noDate}`);
   console.log(`No show date window:   ${noWindow}`);
