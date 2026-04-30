@@ -232,34 +232,55 @@ export default function MethodologyPage() {
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Outlet Tiers</h3>
+          <p className="text-sm text-gray-400 mb-3">
+            Tiers are <strong>per-region</strong>: an outlet can be Tier 1 in one market and Tier 2 in another. Example: The New York Times is Tier 1 for Broadway shows but Tier 2 for West End shows (where it has minimal bureau coverage). The Stage is Tier 1 for West End but Tier 2 for Broadway.
+          </p>
           <div className="space-y-3">
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
                 <span className="px-2 py-0.5 rounded bg-accent-gold/20 text-accent-gold text-xs font-medium">Tier 1</span>
+                <span className="text-xs text-gray-400">weight 1.0 · anchor outlets</span>
               </div>
               <p className="text-gray-300 text-sm">
-                The New York Times, Washington Post, Variety, Hollywood Reporter, Vulture, The New Yorker, The Guardian, Time Out, Broadway News, LA Times, Wall Street Journal, AP
+                NYC anchors: The New York Times, Vulture, Variety, Hollywood Reporter, WSJ, Washington Post, The New Yorker, Time Out NY, Broadway News, Deadline, AP, Newsday, LA Times.
+                London anchors: The Guardian (dual), Times UK, Telegraph, Standard, Daily Mail, Financial Times, The Stage, Time Out London, Independent, Observer.
               </p>
             </div>
 
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
+                <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-xs font-medium">Tier 2</span>
+                <span className="text-xs text-gray-400">weight 0.75 · major editorial</span>
               </div>
               <p className="text-gray-300 text-sm">
-                Regional papers, entertainment trades, and theater-specific publications (30+ outlets)
+                NYC: TheaterMania, NYSR, BroadwayWorld, NY Theatre Guide, Theatrely, NY Daily News, NY Post, Observer (US), Theater Life, Front Row Center, NYTG, Theater Scene, Cititour, Playbill, EW, Rolling Stone, People, Newsweek, Slate, IndieWire.
+                London: WhatsOnStage, London Theatre, The Reviews Hub, BroadwayWorld UK, Arts Desk, British Theatre Guide, Spectator UK, Everything Theatre, Theatre Weekly.
               </p>
             </div>
 
             <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
               <div className="flex items-center gap-2 mb-2">
-                <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
+                <span className="px-2 py-0.5 rounded bg-surface text-gray-400 text-xs font-medium">Tier 3</span>
+                <span className="text-xs text-gray-400">weight 0.40 · general coverage / single-author professional</span>
               </div>
               <p className="text-gray-300 text-sm">
-                Smaller outlets, blogs, and niche theater sites
+                Smaller theater publications and recognized single-author critics with cross-outlet history or aggregator pickup. Includes Front Mezz Junkies (Ross), The Komisar Scoop (Lucy Komisar), Pages on Stages (Mason Pilevsky), Broadway & Me (Janice C. Simpson), and ~280 other outlets.
+              </p>
+            </div>
+
+            <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 4</span>
+                <span className="text-xs text-gray-400">weight 0.20 · unverified single-author blogs</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Single-author blogs without aggregator pickup or recognized-critic credentials. Counted at reduced weight rather than excluded entirely.
               </p>
             </div>
           </div>
+          <p className="text-xs text-gray-400 mt-4">
+            Off-Broadway and Off-West-End shows share the parent-region tier (Off-Broadway uses NYC tier; Off-West-End uses London tier).
+          </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Designation Bumps</h3>
           <p className="text-gray-300 text-sm mb-3">

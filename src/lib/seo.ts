@@ -798,7 +798,10 @@ export function generateOutletFAQSchema(outlet: {
   highScore: number;
   lowScore: number;
 }) {
-  const tierLabel = outlet.tier === 1 ? 'Tier 1 (highest weight)' : outlet.tier === 2 ? 'Tier 2' : 'Tier 3';
+  const tierLabel = outlet.tier === 1 ? 'Tier 1 (highest weight)'
+    : outlet.tier === 2 ? 'Tier 2'
+    : outlet.tier === 4 ? 'Tier 4'
+    : 'Tier 3';
   const faqs: { question: string; answer: string }[] = [];
 
   faqs.push({
@@ -1025,7 +1028,7 @@ export function generateHomepageFAQSchema(stats: { totalShows: number; totalRevi
     },
     {
       question: 'How are Broadway show scores calculated?',
-      answer: 'Each show gets a CriticScore from 0-100 based on a tier-weighted average of professional reviews. Tier 1 outlets (The New York Times, Vulture, Variety) carry full weight. Tier 2 outlets (NY Post, TheaterMania) carry 75% weight. Tier 3 outlets carry 45% weight. Shows need a minimum number of reviews to display a score.',
+      answer: 'Each show gets a CriticScore from 0-100 based on a tier-weighted average of professional reviews. Tier 1 outlets (The New York Times, Vulture, Variety, Guardian) carry full weight (1.0). Tier 2 outlets (NY Post, TheaterMania, BroadwayWorld, Times UK) carry 0.75 weight. Tier 3 outlets carry 0.40 weight. Tier 4 (unverified single-author blogs) carry 0.20 weight. Tiers are per-region: NYT is Tier 1 for Broadway and Tier 2 for West End. Shows need a minimum number of reviews to display a score.',
     },
     {
       question: 'What are the best Broadway shows right now?',

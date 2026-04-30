@@ -85,7 +85,7 @@ try {
   const reviewsRaw = JSON.parse(fs.readFileSync(REVIEWS_JSON, 'utf8'));
   const allReviews = reviewsRaw.reviews || (Array.isArray(reviewsRaw) ? reviewsRaw : []);
   const showReviews = allReviews.filter(r => r && r.showId === showId && !r.singleModelEmergency);
-  const deployed = computeCriticScore(showReviews, outletRegistry);
+  const deployed = computeCriticScore(showReviews, outletRegistry, show.category);
   if (deployed) deployedComposite = Math.round(deployed.s);
 } catch { /* reviews.json unavailable */ }
 
@@ -137,7 +137,7 @@ for (const f of files) {
 
 // ─── Compute predicted composite ─────────────────────────────────────────────
 
-const result = computeCriticScore(included, outletRegistry);
+const result = computeCriticScore(included, outletRegistry, show.category);
 
 // ─── Output ──────────────────────────────────────────────────────────────────
 

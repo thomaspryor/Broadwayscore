@@ -70,8 +70,15 @@ function loadDriftState() {
   }
 }
 
-function computeCompositeForShow(showReviews) {
-  const result = computeCriticScore(showReviews);
+// v5 (2026-04-29): pass outletRegistry + showCategory so per-region tier and
+// off-market multiplier apply. Also fixes pre-v5 bug where outletRegistry was
+// never passed (registry-fallback path was dead — every long-tail outlet
+// silently treated as DEFAULT_TIER).
+const _ocOutletRegistry = (() => {
+  try { return require('../data/outlet-registry.json').outlets || {}; } catch { return {}; }
+})();
+function computeCompositeForShow(showReviews, showCategory) {
+  const result = computeCriticScore(showReviews, _ocOutletRegistry, showCategory);
   return result ? Math.round(result.s) : null;
 }
 
@@ -88,7 +95,7 @@ function resolveTargetShows(shows, reviewsDoc, now) {
   if (showIdArg) {
     const show = shows.find(s => s.id === showIdArg);
     if (!show) return [];
-    const compositeScore = computeCompositeForShow(reviewsDoc[show.id] || []);
+    const compositeScore = computeCompositeForShow(reviewsDoc[show.id] || [], show.category);
     const reviewCount = (reviewsDoc[show.id] || []).length;
     return [{ ...show, compositeScore, reviewCount }];
   }
@@ -97,7 +104,7 @@ function resolveTargetShows(shows, reviewsDoc, now) {
     .filter(s => isWithinTwoDays(s.openingDate, now))
     .map(s => ({
       ...s,
-      compositeScore: computeCompositeForShow(reviewsDoc[s.id] || []),
+      compositeScore: computeCompositeForShow(reviewsDoc[s.id] || [], s.category),
       reviewCount: (reviewsDoc[s.id] || []).length,
     }));
 }
