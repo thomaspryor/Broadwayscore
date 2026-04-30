@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-04-30T05:29:55.372Z",
+  "lastRunAt": "2026-04-30T07:12:50.726Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -42,7 +42,8 @@
     "google:8b045df2e05a3e55": true,
     "google:c3d31a9614e2dfd3": true,
     "google:a230d0cfcbcc1d86": true,
-    "news:908494ada0683d6d": true
+    "news:908494ada0683d6d": true,
+    "google:b17bf9614d78378b": true
   },
   "mentions": [
     {
@@ -867,10 +868,30 @@
       "draftReason": "Just a link share with a movie quote — no question, discussion prompt, or conversational opening that warrants a reply.",
       "draftResponse": null,
       "dispatched": "2026-04-27T20:41:41.574Z"
+    },
+    {
+      "id": "google:b17bf9614d78378b",
+      "source": "google",
+      "url": "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3/",
+      "title": "79th Tony Awards Thread",
+      "excerpt": "Although according to Broadway Score Card, Schmigadoon! and Two Strangers both have nearly identical critical scores. https://broadwayscorecard.com/show/ ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-04-30T07:12:39.252Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-04-30T07:12:50.726Z"
     }
   ],
   "stats": {
-    "totalSeen": 42,
+    "totalSeen": 43,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -915,6 +936,7 @@
     "https://forum.broadwayworld.com/thread/THE-ROCKY-HORROR-SHOW-reviews/2": true,
     "https://forum.broadwayworld.com/latest-posts.php": true,
     "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true,
-    "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true
+    "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true,
+    "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true
   }
 }
