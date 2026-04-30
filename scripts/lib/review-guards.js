@@ -1751,7 +1751,12 @@ function isIncludableForRebuild(data, show) {
   if (data.fabricatedEntry === true) return false;
   if (data.isSyndicatedDuplicate === true) return false;
   if (data.crossOutletDuplicate === true) return false;
-  if (data.suspectedMisattribution === true) return false;
+  // suspectedMisattribution: stale-flag override mirrors wrongShow's pattern at
+  // line 1726. Pre-2026-04-29 only is-scoreable.ts honored isLikelyStale*; rebuild
+  // unconditionally blocked, which made the LLM/rebuild parity refactor (Notion
+  // 34f637c5-416f-810d) lose the override on delegation. Adding it here keeps both
+  // predicates symmetric and preserves the registry-aware behavior.
+  if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return false;
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high'

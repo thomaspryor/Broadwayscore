@@ -1,42 +1,38 @@
 /**
  * Shared scoreability check for review-text files.
  *
- * A review is "scoreable" if it hasn't been flagged with any data-quality
- * issue that makes LLM scoring impossible or meaningless. This function
- * is the single source of truth — used by the scoring pipeline, flag-setting
- * scripts, and workflow counting steps.
+ * Delegates to scripts/lib/review-guards.js#isIncludableForRebuild for the
+ * canonical inclusion gate, then layers two LLM-only extras that exist
+ * because the LLM scores from text content while rebuild can fall back to
+ * aggregator stars or pre-existing originalScore.
+ *
+ * Why delegate: pre-2026-04-29 these two predicates diverged on 14 flag
+ * checks (Codex audit, Notion 34f637c5-416f-810d). LLM was more permissive
+ * than rebuild on 10 of them — wasting credits on files rebuild excludes.
+ * LLM was more restrictive than rebuild on 2 — orphan-unscored bug
+ * (Lost Boys 2026-04-26 #8: humans cleared wrongProduction, rebuild
+ * included the file, LLM still skipped it). Delegating to the canonical
+ * helper closes both classes in one move.
+ *
+ * Parity baseline before/after lives in
+ * data/audit/llm-scoring-parity-baseline.json (run
+ * scripts/audit-llm-scoring-parity.js to regenerate).
  */
 
-// Canonical excerpt field list — single source of truth in excerpt-fields.js
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
-const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared, isLikelyStaleSuspectedMisattribution, getCriticRegistry } = require('../lib/review-guards');
+const { isIncludableForRebuild } = require('../lib/review-guards');
 
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>): boolean {
-  if (data.duplicateOf || data.wrongProduction || data.wrongAttribution || data.contentTier === 'invalid') return false;
-  // wrongShow: same manual-clear + stale-override semantics as isIncludableForRebuild
-  // (Notion 34e637c5-416f-8121). Without the override, a human-cleared file
-  // could pass rebuild but be skipped by the LLM rescore — leaving it scoreless.
-  if (data.wrongShow && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
+  if (!isIncludableForRebuild(data, show)) return false;
+
+  // LLM-only extras — files rebuild includes (because aggregator/originalScore
+  // signal exists) but LLM cannot score (because LLM scores from text):
+  //   scraper_garbage: fullText is non-empty enough to pass rebuild's content
+  //     gate but is scraper noise; LLM scoring it is meaningless.
+  //   showNotMentioned without excerpt: the show isn't named in the text;
+  //     no anchor for LLM to score against.
   if (data.incompleteReason === 'scraper_garbage') return false;
-  // fullTextWrongAuthor: fullText is from wrong author but excerpts may be valid.
-  // Scoreable only if there's excerpt content to score from (not fullText).
-  if (data.fullTextWrongAuthor) {
-    if (!hasAnyExcerpt(data)) return false;
-    // Has excerpts — fall through to remaining checks (will be scored from excerpts only)
-  }
-  // isMultiShowReview is no longer a hard block — the trimmer in index.ts handles these.
-  // isRoundupArticle (10+ shows) stays blocked — too many shows for reliable trimming.
-  // Defensive override: stale flag on a substantial individual review — Notion 34e637c5.
-  if (data.isRoundupArticle && !isLikelyStaleRoundupFlag(data)) return false;
-  // suspectedMisattribution: Guard G in review-file-writer.js fires when a
-  // non-freelancer critic publishes at an outletId outside their knownOutlets.
-  // Defensive override: stale flag where current registry would no longer fire
-  // (Notion 34e637c5-416f-81b8). The LLM scorer was previously not gating on
-  // this flag at all, burning budget re-scoring files rebuild correctly excluded.
-  if (data.suspectedMisattribution && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return false;
-  if (data.rejectionReason) return false;
-  if (data.showNotMentioned) {
-    if (!hasAnyExcerpt(data)) return false;
-  }
+  if (data.showNotMentioned && !hasAnyExcerpt(data)) return false;
+
   return true;
 }

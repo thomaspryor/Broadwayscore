@@ -213,7 +213,7 @@ async function main() {
 
   for (const show of targetShows) {
     const showId = show.id;
-    const local     = countLocalIncluded(showId, REVIEW_TEXTS);
+    const local     = countLocalIncluded(showId, REVIEW_TEXTS, show);
     const agg       = countAggregate(showId, reviewsDoc);
     const localJson = countLocalPerShowJson(showId, PER_SHOW_JSON); // may be null
     const live      = await fetchLiveRc(showId);

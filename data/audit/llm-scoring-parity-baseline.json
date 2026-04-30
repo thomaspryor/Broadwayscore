@@ -1,0 +1,253 @@
+{
+  "generatedAt": "2026-04-30T02:43:14.288Z",
+  "scanned": 36903,
+  "agree": 36294,
+  "llmPermissiveCount": 0,
+  "llmRestrictiveCount": 609,
+  "groundTruthMismatches": 0,
+  "buckets": {
+    "LLM_RESTRICTIVE::scraper_garbage": {
+      "count": 606,
+      "samples": [
+        {
+          "showId": "1984-2017",
+          "file": "talkinbroadway--matthew-murray.json",
+          "criticName": "Matthew Murray",
+          "outletId": "talkinbroadway",
+          "url": "https://www.talkinbroadway.com/world/1984.html",
+          "publishDate": "June 23, 2017",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-02-14T01:14:58.020Z",
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "700-sundays-2013",
+          "file": "northjerseycom--robert-feldberg.json",
+          "criticName": "Robert Feldberg",
+          "outletId": "northjerseycom",
+          "url": "https://www.northjersey.com/arts_entertainment/theater/231859841_Theater_review___700_Sundays_.html?page=all",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+          "file": "talkinbroadway--nancy-grossman.json",
+          "criticName": "Nancy Grossman",
+          "outletId": "talkinbroadway",
+          "url": "https://www.talkinbroadway.com/page/regional/boston/bos671.html",
+          "publishDate": "July 11, 2022",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 130,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-behanding-in-spokane-2010",
+          "file": "ap--michael-kuchwara.json",
+          "criticName": "Michael Kuchwara",
+          "outletId": "ap",
+          "url": "https://www.sfexaminer.com/entertainment/a-creepy-christopher-walken-jump-starts-martin-mcdonaghs-a-behanding-in-spokane-86421027.html",
+          "publishDate": "March 4, 2010",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-behanding-in-spokane-2010",
+          "file": "ap--unknown.json",
+          "criticName": "Unknown",
+          "outletId": "ap",
+          "url": "https://hosted.ap.org/dynamic/stories/U/US_THEATER_REVIEW_BEHANDING_IN_SPOKANE_GCLB-?SITE=MAHYC&amp;SECTION=HOME&amp;TEMPLATE=DEFAULT",
+          "publishDate": "March 4, 2010",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-bronx-tale-2007",
+          "file": "zeal-nyc--sheila-kogan.json",
+          "criticName": "Sheila Kogan",
+          "outletId": "zeal-nyc",
+          "url": "https://www.zealnyc.com/review-a-familiar-tale-from-a-bronx-perspective/",
+          "publishDate": null,
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-bronx-tale-the-musical-2016",
+          "file": "talkinbroadway--matthew-murray.json",
+          "criticName": "Matthew Murray",
+          "outletId": "talkinbroadway",
+          "url": "http://talkinbroadway.com/page2/world3204.html",
+          "publishDate": "December 2, 2016",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 121,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-chorus-line-2006",
+          "file": "nydailynews--joe-dziemianowicz.json",
+          "criticName": "Joe Dziemianowicz",
+          "outletId": "nydailynews",
+          "url": "https://www.newspapers.com/image/409376038/",
+          "publishDate": "2006-10-06",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 1716,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-chorus-line-2006",
+          "file": "washpost--peter-marks.json",
+          "criticName": "Peter Marks",
+          "outletId": "washpost",
+          "url": "https://www.washingtonpost.com/archive/lifestyle/2006/10/06/a-chorus-line-back-in-step/8f5c8e6e-8b9f-4d2f-9c5f-2a1b3c4d5e6f/",
+          "publishDate": "October 6, 2006",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 229,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "a-christmas-carol-2019",
+          "file": "talkinbroadway--matthew-murray.json",
+          "criticName": "Matthew Murray",
+          "outletId": "talkinbroadway",
+          "url": "https://www.talkinbroadway.com/world/ChristmasCarol.html",
+          "publishDate": "December 6, 2019",
+          "rebuildReason": "(included)",
+          "llmReason": "scraper_garbage",
+          "flags": {
+            "contentTier": "excerpt",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-02-12T16:56:03.044Z",
+            "incompleteReason": "scraper_garbage",
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        }
+      ]
+    },
+    "LLM_RESTRICTIVE::showNotMentioned_noExcerpt": {
+      "count": 3,
+      "samples": [
+        {
+          "showId": "the-lehman-trilogy-2021",
+          "file": "thestage--nicole-serratore.json",
+          "criticName": "Nicole Serratore",
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/reviews/the-lehman-trilogy-nederlander-theatre-new-york",
+          "publishDate": "2021-10-15",
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "contentTier": "truncated",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-02-14T07:53:42.683Z",
+            "incompleteReason": "partial_text",
+            "showNotMentioned": true,
+            "fullTextLen": 2286,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "the-little-mermaid-the-musical-off-broadway-2026",
+          "file": "thestage--unknown.json",
+          "criticName": "Unknown",
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/musical-theatre",
+          "publishDate": null,
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "contentTier": "complete",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-03-05T05:00:36.700Z",
+            "showNotMentioned": true,
+            "fullTextLen": 16592,
+            "hasAggregatorSignal": true
+          }
+        },
+        {
+          "showId": "the-present-2017",
+          "file": "thestage--unknown.json",
+          "criticName": "Unknown",
+          "outletId": "thestage",
+          "url": "https://www.thestage.co.uk/reviews/2017/cate-blanchett-in-the-present-review-at-barrymore-theatre/",
+          "rebuildReason": "(included)",
+          "llmReason": "showNotMentioned_noExcerpt",
+          "flags": {
+            "contentTier": "stub",
+            "contentVerificationWrong": false,
+            "contentVerificationConfidence": "high",
+            "rejectedByLength": 0,
+            "textFetchedAt": "2026-02-22T21:31:16.591Z",
+            "incompleteReason": "partial_text",
+            "showNotMentioned": true,
+            "fullTextLen": 0,
+            "hasAggregatorSignal": true
+          }
+        }
+      ]
+    }
+  },
+  "semantics": {
+    "LLM_PERMISSIVE": "rebuild EXCLUDES, llm SCORES — wasted credit; LLM rescores files rebuild will not include",
+    "LLM_RESTRICTIVE": "rebuild INCLUDES, llm SKIPS — orphan-unscored class (Lost Boys 2026-04-26 #8)",
+    "groundTruthMismatches": "Files where the inline classifier disagreed with the actual predicate. Should be 0."
+  }
+}
