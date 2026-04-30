@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T03:29:46.370Z",
+  "timestamp": "2026-04-30T03:49:09.459Z",
   "stats": {
-    "totalReviews": 36237,
-    "alreadyFlagged": 15804,
-    "dateGuardCatches": 102,
+    "totalReviews": 36236,
+    "alreadyFlagged": 15808,
+    "dateGuardCatches": 99,
     "directorMismatch": 839,
     "tvFilmSignals": 1003,
     "londonSignals": 554,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3724
+    "noPublishDate": 3723
   },
   "findings": [
     {
@@ -34421,44 +34421,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
-      "file": "nysr--frank-scheck.json",
-      "publishDate": "2025-05-08",
-      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
-        }
-      ]
-    },
-    {
-      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
-      "file": "nysr--melissa-rose-bernardo.json",
-      "publishDate": "2025-05-08",
-      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
-        }
-      ]
-    },
-    {
-      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
-      "file": "nysr--unknown.json",
-      "score": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
         }
       ]
     },
