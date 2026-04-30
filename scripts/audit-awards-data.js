@@ -795,10 +795,21 @@ for (const [showId, showAwards] of Object.entries(awardsShows)) {
     }
   }
 
-  // Pulitzer - check year
+  // Pulitzer - canonical shape is {wins?: string[], finalist?: string[], year?: number}
+  // Year is OPTIONAL — finalist-only records may lack a year. The migration in
+  // scripts/enrich-awards-with-precursors.js sets year for all current data, but the
+  // type permits absence. Only flag if year IS present but isn't a number, or if
+  // both wins and finalist are absent (missing semantic content).
   if (showAwards.pulitzer) {
-    if (!showAwards.pulitzer.year || typeof showAwards.pulitzer.year !== 'number') {
-      addIssue('field-type-error', 'medium', `"${showId}" pulitzer.year is missing or not a number`, { showId, body: 'pulitzer' });
+    const p = showAwards.pulitzer;
+    if (p.year !== undefined && typeof p.year !== 'number') {
+      addIssue('field-type-error', 'medium', `"${showId}" pulitzer.year is present but not a number`, { showId, body: 'pulitzer' });
+      nonTonyIssues++;
+    }
+    const hasWins = Array.isArray(p.wins) && p.wins.length > 0;
+    const hasFinalist = Array.isArray(p.finalist) && p.finalist.length > 0;
+    if (!hasWins && !hasFinalist) {
+      addIssue('missing-field', 'low', `"${showId}" pulitzer node has no wins or finalist content`, { showId, body: 'pulitzer' });
       nonTonyIssues++;
     }
   }
