@@ -1,106 +1,56 @@
 {
   "meta": {
-    "generatedAt": "2026-04-30T05:16:30.583Z",
+    "generatedAt": "2026-04-30T11:34:32.723Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36927,
-      "inReviewsJson": 17022,
-      "skippedExcluded": 68,
-      "withFullText": 279,
-      "excerptOnly": 1287,
+      "totalFiles": 36926,
+      "inReviewsJson": 17008,
+      "skippedExcluded": 80,
+      "withFullText": 182,
+      "excerptOnly": 1285,
       "llmClassified": 24,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 8,
-      "uncertainCases": 2,
+      "nonReviewsFound": 3,
+      "uncertainCases": 10,
       "budgetUsed": 0.005,
       "llmCalls": 50,
-      "rateLimitHits": 101,
+      "rateLimitHits": 85,
       "errors": 26,
-      "skippedAlreadyClassified": 15388
+      "skippedAlreadyClassified": 15461
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "in-the-heights-2008/nypost--unknown.json",
-      "showId": "in-the-heights-2008",
-      "outlet": "New York Post",
-      "outletId": "nypost",
+      "file": "leap-of-faith-2012/usatoday--elysa-gardner.json",
+      "showId": "leap-of-faith-2012",
+      "outlet": "USA Today",
+      "outletId": "usatoday",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a 'page not found' error message from the New York Post website, not an article about 'In the Heights'.",
-      "currentScore": 49
+      "reasoning": "This is a 404 error page from USA Today, not an article about 'Leap of Faith'.",
+      "currentScore": 72
     },
     {
-      "file": "is-this-a-room-2021/hollywood-reporter--angie-han.json",
-      "showId": "is-this-a-room-2021",
-      "outlet": "The Hollywood Reporter",
-      "outletId": "hollywood-reporter",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news item about the delay of the 'Wicked' movie production and does not contain any review or evaluation of the play 'Is This a Room'.",
-      "currentScore": 82
-    },
-    {
-      "file": "junk-2017/theater-news-online--david-cote.json",
-      "showId": "junk-2017",
-      "outlet": "Theater New Online",
+      "file": "little-shop-of-horrors-off-broadway-2019/theater-news-online--brian-scott-lipton.json",
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "outlet": "Theater News Online",
       "outletId": "theater-news-online",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This appears to be an advertisement for a domain name, not a review or article about 'Junk'.",
-      "currentScore": 88
+      "reasoning": "This is an advertisement for a domain name, not a review of a theatrical production.",
+      "currentScore": 85
     },
     {
-      "file": "kinky-boots-2013/ap--mark-kennedy.json",
-      "showId": "kinky-boots-2013",
-      "outlet": "Associated Press",
-      "outletId": "ap",
+      "file": "other-desert-cities-2011/bloomberg--jeremy-gerard.json",
+      "showId": "other-desert-cities-2011",
+      "outlet": "Bloomberg",
+      "outletId": "bloomberg",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is an error page from the Miami Herald website, not an article about Kinky Boots.",
-      "currentScore": 78
-    },
-    {
-      "file": "kinky-boots-2013/theatermania--charles-isherwood.json",
-      "showId": "kinky-boots-2013",
-      "outlet": "TheaterMania",
-      "outletId": "theatermania",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This article is a news item about casting for 'A Raisin in the Sun,' not a review of 'Kinky Boots' or any other show.",
-      "currentScore": 82
-    },
-    {
-      "file": "la-bete-2010/ap--ben-brantley.json",
-      "showId": "la-bete-2010",
-      "outlet": "Associated Press",
-      "outletId": "ap",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is a generic error page from the Washington Examiner website, not an article about \"La Bête\" or any other show.",
-      "currentScore": 76
-    },
-    {
-      "file": "leap-of-faith-2012/faster-times--jonathan-mandell.json",
-      "showId": "leap-of-faith-2012",
-      "outlet": "Faster Times",
-      "outletId": "faster-times",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a general news website, not a theater review site. There is no mention of 'Leap of Faith' or any theater productions.",
-      "currentScore": 54
-    },
-    {
-      "file": "love-letters-1989/ap--mark-kennedy.json",
-      "showId": "love-letters-1989",
-      "outlet": "Associated Press",
-      "outletId": "ap",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a newspaper website's homepage or index page, listing various news articles and features. There is no review content present.",
-      "currentScore": 59
+      "reasoning": "This is a 404 error page from Bloomberg, indicating the article is not found. It is not a review or any other type of article about \"Other Desert Cities\".",
+      "currentScore": 44
     }
   ],
   "uncertainCases": [
@@ -111,8 +61,18 @@
       "outletId": "timeout",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a website template or general information page from Time Out New York, rather than a specific article about \"Act One.\" It contains subscription prompts, navigation links, and copyright information, lacking any evaluative content about the show.",
+      "reasoning": "The provided text appears to be a website template or general information page from Time Out New York, rather than a specific article about \"Act One.\" It contains subscription prompts, navigation links, and copyright information, lacking any evaluative content about the play.",
       "currentScore": 60
+    },
+    {
+      "file": "bandstand-2017/li-herald--elyse-trevers.json",
+      "showId": "bandstand-2017",
+      "outlet": "li-herald",
+      "outletId": "li-herald",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a newspaper website, not a specific article. It mentions 'Two New Musicals: ‘Anastasia’ and ‘Bandstand’' but does not contain a review of either show.",
+      "currentScore": 65
     },
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -121,61 +81,108 @@
       "outletId": "theatre-reviews-limited",
       "contentType": "feature",
       "confidence": "medium",
-      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
+      "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion about the quality of the production. It also includes unrelated theater news.",
       "currentScore": 82
+    },
+    {
+      "file": "fences-2010/talkinbroadway--matthew-murray.json",
+      "showId": "fences-2010",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "The text appears to be a collection of keywords and phrases related to theater, rather than a review or any other specific type of article. It seems more like a list of search terms or categories.",
+      "currentScore": 82
+    },
+    {
+      "file": "funny-girl-2022/talkinbroadway--matthew-murray.json",
+      "showId": "funny-girl-2022",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and keywords related to theater, including \"Broadway news updates\" and \"Music album reviews,\" but it does not contain any evaluative content about a specific production.",
+      "currentScore": 62
+    },
+    {
+      "file": "once-on-this-island-2017/talkinbroadway--matthew-murray.json",
+      "showId": "once-on-this-island-2017",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a collection of links and categories related to theater and music, not a review of a specific show.",
+      "currentScore": 89
+    },
+    {
+      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
+      "showId": "one-man-two-guvnors-2012",
+      "outlet": "Faster Times",
+      "outletId": "faster-times",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
+      "currentScore": 74
+    },
+    {
+      "file": "paranormal-activity-west-end-2025/telegraph--tim-robey.json",
+      "showId": "paranormal-activity-west-end-2025",
+      "outlet": "The Telegraph",
+      "outletId": "telegraph",
+      "contentType": "preview",
+      "confidence": "medium",
+      "reasoning": "The article describes the plot of the play 'Paranormal Activity' but does not offer an evaluation or opinion on its quality. It sets the stage for the audience but does not review the production.",
+      "currentScore": 80
+    },
+    {
+      "file": "pippin-2013/talkinbroadway--matthew-murray.json",
+      "showId": "pippin-2013",
+      "outlet": "Talkin' Broadway",
+      "outletId": "talkinbroadway",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This appears to be a list of links and categories related to musical theatre, not a review of a specific production.",
+      "currentScore": 80
+    },
+    {
+      "file": "sunday-in-the-park-with-george-2017/out-magazine--michael-musto.json",
+      "showId": "sunday-in-the-park-with-george-2017",
+      "outlet": "Out Magazine",
+      "outletId": "out-magazine",
+      "contentType": "news",
+      "confidence": "low",
+      "reasoning": "This article discusses various topics, including the Oscars and other news items. It does not contain a review of \"Sunday in the Park with George\".",
+      "currentScore": 80
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
-    "innocence-off-broadway-2026/new-york-classical-review--george-grella.json",
-    "innocence-off-broadway-2026/nysr--frank-scheck.json",
-    "into-the-woods-west-end-2025/thestage--sam-marlowe.json",
-    "kenrex-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
-    "kimberly-akimbo-2022/the-komisar-scoop--lucy-komisar.json",
-    "king-kong-2018/rollingstone--jerry-portwood.json",
-    "kiss-me-kate-2019/thestage--nicole-serratore.json",
-    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
-    "lend-me-a-tenor-2010/about-entertainment--charles-isherwood.json",
-    "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
-    "life-of-pi-2023/fort-worth-star-telegram--rick-mauch.json",
-    "lifeline-off-west-end-2026/london-box-office--stuart-king.json",
-    "living-on-love-2015/deadline--jeremy-gerard.json"
+    "one-man-two-guvnors-2012/new-jersey-newsroom--michael-sommers.json",
+    "peter-and-the-starcatcher-2012/the-komisar-scoop--lucy-komisar.json",
+    "pippin-2013/new-jersey-newsroom--michael-sommers.json",
+    "please-please-me-west-end-2026/timeout-london--anya-ryan.json",
+    "prayer-for-the-french-republic-2024/the-komisar-scoop--lucy-komisar.json",
+    "present-laughter-2010/the-komisar-scoop--lucy-komisar.json",
+    "schmigadoon-2026/wsj--charles-isherwood.json",
+    "sondheim-on-sondheim-2010/about-entertainment--ben-brantley.json",
+    "souvenir-2005/about-entertainment--ben-brantley.json",
+    "sunday-in-the-park-with-george-2017/wsj--edward-rothstein.json",
+    "the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025/new-york-classical-review--george-grella.json"
   ],
   "perShowSummary": [
-    {
-      "showId": "in-the-heights-2008",
-      "currentCount": 7,
-      "removed": 1
-    },
-    {
-      "showId": "is-this-a-room-2021",
-      "currentCount": 20,
-      "removed": 1
-    },
-    {
-      "showId": "junk-2017",
-      "currentCount": 35,
-      "removed": 1
-    },
-    {
-      "showId": "kinky-boots-2013",
-      "currentCount": 35,
-      "removed": 2
-    },
-    {
-      "showId": "la-bete-2010",
-      "currentCount": 12,
-      "removed": 1
-    },
     {
       "showId": "leap-of-faith-2012",
       "currentCount": 16,
       "removed": 1
     },
     {
-      "showId": "love-letters-1989",
-      "currentCount": 2,
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "currentCount": 21,
+      "removed": 1
+    },
+    {
+      "showId": "other-desert-cities-2011",
+      "currentCount": 14,
       "removed": 1
     }
   ]
