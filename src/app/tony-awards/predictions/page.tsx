@@ -183,6 +183,8 @@ export default function TonyPredictionsOverviewPage() {
                       reviewCount={pick.show.reviewCount}
                       status={pick.show.status}
                       audienceGrade={pick.show.audienceGrade}
+                      awardsScore={pick.show.awardsScore}
+                      awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
                       size="md"
                       showCrown
                     />

@@ -71,35 +71,6 @@ function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number
   }
 }
 
-/**
- * Shows the show's 0-100 Awards Score (precursor signal from Drama League,
- * OCC, and Drama Desk). The chip is muted when the show's category doesn't
- * weight awards (only Best Play does), and hidden entirely when the score is
- * zero (pre-precursor or non-nominated).
- */
-function AwardsScoreChip({ score, weighted }: { score: number; weighted: boolean }) {
-  if (score <= 0) return null;
-  const tooltip = weighted
-    ? `Awards Score ${Math.round(score)} — composite of Drama League, OCC, and Drama Desk nominations. Counts for 20% of the Best Play prediction.`
-    : `Awards Score ${Math.round(score)} — shown for transparency; not weighted in this category's prediction.`;
-  return (
-    <span
-      className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide rounded border ${
-        weighted
-          ? 'bg-brand/15 text-brand border-brand/25'
-          : 'bg-white/5 text-gray-400 border-white/10'
-      }`}
-      title={tooltip}
-      aria-label={tooltip}
-    >
-      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-        <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
-      </svg>
-      Awards {Math.round(score)}
-    </span>
-  );
-}
-
 function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: PredictionMode }) {
   if (mode === 'audience') {
     const grade = show.audienceGrade;
@@ -125,6 +96,8 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
         reviewCount={show.reviewCount}
         status={show.status}
         audienceGrade={show.audienceGrade}
+        awardsScore={show.awardsScore}
+        awardsWeighted={show.tonyCategoryKey === 'best-play'}
         size="md"
         showCrown
       />
@@ -243,10 +216,22 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
               {/* Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 min-w-0">
-                  <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
+                  <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate w-full sm:w-auto sm:min-w-0 ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
                     {show.title}
                   </h3>
+                  {rank === 1 && mode === 'combined' && !isInUpcomingSection && (
+                    <span
+                      className="flex-shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white/85 rounded border border-white/30 bg-transparent"
+                      title="Our model's #1 pick in this category."
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 20 20" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
+                      </svg>
+                      <span className="hidden sm:inline">Predicted Winner</span>
+                      <span className="sm:hidden">Predicted</span>
+                    </span>
+                  )}
                   {outcomes?.[show.slug] === 'winner' && (
                     <span className="flex-shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
@@ -261,12 +246,6 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                 </div>
                 <div className="flex flex-wrap items-center gap-1 mt-1">
                   <StatusBadge status={getEffectiveStatus(show)} />
-                  {mode === 'combined' && (
-                    <AwardsScoreChip
-                      score={show.awardsScore}
-                      weighted={show.tonyCategoryKey === 'best-play'}
-                    />
-                  )}
                 </div>
                 <p className="text-xs text-gray-400 mt-1.5 truncate">
                   {notYetOpen
