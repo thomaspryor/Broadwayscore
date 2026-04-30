@@ -20,9 +20,18 @@
  *      via the same shape as the WE script's Playbill London handling.
  *   2. Lortel.org currently-playing page (secondary, only for shows at the
  *      Lucille Lortel Theatre — these have authoritative dates from the venue).
+ *   3. Playbill per-show production page (tertiary, gap-filler for shows the
+ *      schedule article doesn't list — typically already-running OB shows that
+ *      came in via IBDB with openingDate==previewsStartDate). SERP-discovery
+ *      per show, page-title validation, then parses the bsp-list-promo blocks
+ *      (First Preview / Opening Date / Closing Date) on
+ *      playbill.com/production/{slug}.
  *
  *   Two-source agreement = high-confidence auto-mutation.
- *   Single-source = audit-only entry (no shows.json write).
+ *   Single-source = audit-only entry (no shows.json write), EXCEPT when the
+ *   same-date-fix bypass kicks in (openingDate==previewsStartDate from an
+ *   unconfirmed source like ibdb): single-source playbill is enough to write,
+ *   because the existing data is provably wrong.
  *
  * Usage:
  *   node scripts/enrich-off-broadway-dates.js [options]
@@ -36,6 +45,11 @@
  *   --fix-unconfirmed    Process shows with unconfirmed openingDateSource
  *                        (todaytix, showscore, unknown, ibdb-for-OB) — daily cron
  *   --initial-backfill   Bypass the change-stability guard once (first run only)
+ *   --phase3-broad       Phase 3 probes ALL eligible candidates (not just the
+ *                        same-date class). Use for one-time catalog audits
+ *                        only — burns ~120 SERP+fetch on a daily cron. Default
+ *                        Phase 3 scope is openingDate==previewsStartDate or
+ *                        missing openingDate (the auto-apply class).
  *
  * Audit output: data/audit/date-enrichment-corrections.json (per-script entries
  * appended each run; uniform schema across WE + OB scripts).
@@ -51,12 +65,14 @@ const { fetchPage } = require('./lib/scraper');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { validateChangeStability } = require('./lib/change-stability-guard');
+const { serpQuery } = require('./lib/url-discovery');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const PLAYBILL_OB_URL = 'https://playbill.com/article/schedule-of-upcoming-off-broadway-shows-2';
 const LORTEL_URL = 'https://lortel.org/currently-playing/';
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'date-enrichment-corrections.json');
 const ABORT_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'enrich-off-broadway-dates-aborted.json');
+const PLAYBILL_URL_CACHE_PATH = path.join(__dirname, '..', 'data', 'playbill-urls.json');
 
 const MONTHS = {
   january: '01', february: '02', march: '03', april: '04',
@@ -73,6 +89,11 @@ const verify = args.includes('--verify');
 const force = args.includes('--force');
 const fixUnconfirmed = args.includes('--fix-unconfirmed');
 const initialBackfill = args.includes('--initial-backfill');
+// Phase 3 (per-show production-page lookup) defaults to ONLY same-date-class
+// candidates (openingDate==previewsStartDate) so the daily cron stays cheap —
+// 0–3 SERP+fetch per day in steady state. `--phase3-broad` opts in to probing
+// every Phase-3-eligible candidate (initial backfill use only).
+const phase3Broad = args.includes('--phase3-broad');
 const missingOnly = !force && !fixUnconfirmed;
 const showArg = args.find(a => a.startsWith('--show='));
 const showFilter = showArg ? showArg.split('=')[1] : null;
@@ -246,6 +267,290 @@ async function scrapeLortel() {
 }
 
 // =========================================================
+// SOURCE 3: PLAYBILL PRODUCTION PAGE (PER-SHOW DIRECT)
+// =========================================================
+//
+// Gap-filler for OB shows the schedule article doesn't carry — typically
+// already-running productions whose openingDate==previewsStartDate came in
+// from IBDB. Per-show SERP query → fetch playbill.com/production/{slug} →
+// parse the bsp-list-promo blocks (First Preview / Opening Date) inline on
+// the production page.
+//
+// Why SERP-first (not URL guessing): OB Playbill slugs are far less
+// predictable than Broadway. Real examples include
+// `the-adding-machine-off-broadway-the-new-group-theatre-at-st-clements-2026`
+// and `heathers-the-musical-off-broadway-new-world-stages-stage-1-2025` —
+// venue tokens are full strings (no "the"/"at" stripping), and sub-stages
+// ("stage 1") appear without a separate canonical form. Three URL-guess
+// attempts vs one SERP query: SERP wins on reliability and total fetches.
+
+function loadPlaybillUrlCache() {
+  try {
+    return JSON.parse(fs.readFileSync(PLAYBILL_URL_CACHE_PATH, 'utf8'));
+  } catch {
+    return { shows: {}, lastUpdated: '' };
+  }
+}
+
+function savePlaybillUrlCache(cache) {
+  cache.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(PLAYBILL_URL_CACHE_PATH, JSON.stringify(cache, null, 2) + '\n');
+}
+
+function decodeBasicEntities(s) {
+  return (s || '')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'");
+}
+
+function normalizeForCompare(s) {
+  return decodeBasicEntities(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+/**
+ * Pull the canonical year out of a show id (e.g., music-city-off-broadway-2026)
+ * or from openingDate (the more reliable source when present).
+ */
+function getShowYear(show) {
+  if (show.openingDate) {
+    const y = parseInt(show.openingDate.slice(0, 4), 10);
+    if (!Number.isNaN(y)) return y;
+  }
+  const m = (show.id || '').match(/-(\d{4})$/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+/**
+ * Pull the year out of a Playbill production-page <title>. Page format:
+ *   "Show Name (Off-Broadway, Venue Name, 2025) | Playbill"
+ * Returns the year as a number, or null if not found.
+ */
+function getPlaybillPageYear(html) {
+  const m = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (!m) return null;
+  const yr = m[1].match(/\b(20\d{2})\b/);
+  return yr ? parseInt(yr[1], 10) : null;
+}
+
+/**
+ * Pull the trailing year from a Playbill production URL (e.g., -2025 at end).
+ */
+function getPlaybillUrlYear(url) {
+  const m = (url || '').match(/-(\d{4})(?:[/?#]|$)/);
+  return m ? parseInt(m[1], 10) : null;
+}
+
+/**
+ * Validate a Playbill production page. Three checks:
+ *   1. <title> contains the show's title (loose substring after diacritic +
+ *      entity decode + punctuation strip)
+ *   2. <title> contains "off-broadway" or "off broadway" (rejects Broadway,
+ *      concert, regional, and West End pages that SERP might return for shows
+ *      with cross-market revivals)
+ *   3. Year in the page title is within ±1 of the expected show year. Guards
+ *      against cross-production false-matches — e.g. SERP returning a 2024
+ *      Playbill production page for "Music City" when shows.json has
+ *      music-city-off-broadway-2026 with openingDate 2026-03-23. Without this
+ *      check, single-source same-date-fix would auto-write 2024 dates to a
+ *      2026 show. Caught in dry-run 2026-04-29.
+ * Returns true on pass, false on reject.
+ */
+function validateOBProductionPageTitle(html, show) {
+  if (!html) return false;
+  const showTitle = typeof show === 'string' ? show : show.title;
+  const m = html.match(/<title[^>]*>([^<]+)<\/title>/i);
+  if (!m) return false;
+  const pageTitleNorm = normalizeForCompare(m[1]);
+  const showTitleNorm = normalizeForCompare(showTitle);
+  if (!pageTitleNorm.includes('off-broadway') && !pageTitleNorm.includes('off broadway')) return false;
+  // Strip parenthetical metadata (Playbill format: "Title (Off-Broadway, Venue, Year) | Playbill")
+  const showHead = pageTitleNorm.split(/[(|]/)[0].trim();
+  if (!showHead) return false;
+  // Loose match: full title OR substring after punctuation collapse.
+  // Handles "Heathers: The Musical" page-title vs "Heathers The Musical"
+  // show-title and similar punctuation drift.
+  const stripPunct = (s) => s.replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const a = stripPunct(showHead);
+  const b = stripPunct(showTitleNorm);
+  const titleMatches = showHead.includes(showTitleNorm) || a.includes(b) || b.includes(a);
+  if (!titleMatches) return false;
+  // Year window check — only enforced when both expected and page year exist.
+  if (typeof show === 'object') {
+    const expectedYear = getShowYear(show);
+    const pageYear = getPlaybillPageYear(html);
+    if (expectedYear && pageYear && Math.abs(pageYear - expectedYear) > 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Extract First Preview + Opening Date from a Playbill production page's
+ * `bsp-list-promo-title` blocks. Each block pairs a label (e.g., "First
+ * Preview", "Opening Date") with an `info-circular` block that decomposes
+ * the date into pre-text (month abbreviation) / text (day) / post-text (year).
+ * Returns { firstPreview: ISO|null, opening: ISO|null } or null on parse miss.
+ */
+function extractDatesFromProductionPage(html) {
+  if (!html) return null;
+  const dates = { firstPreview: null, opening: null };
+  // Tight regex: pair the label with the FIRST info-circular block that
+  // follows within ~2000 chars. The Playbill template puts each label and
+  // its date in the same UL/LI, so this proximity bound is safe.
+  const re = /<div class="bsp-list-promo-title">([^<]+)<\/div>([\s\S]{0,2000}?)<div class="info-circular">([\s\S]{0,500}?)<\/div>/g;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const label = m[1].trim().toLowerCase();
+    const block = m[3];
+    const pre = block.match(/info-circular-pre-text">([^<]+)</)?.[1]?.trim();
+    const day = block.match(/info-circular-text">([^<]+)</)?.[1]?.trim();
+    const post = block.match(/info-circular-post-text">([^<]+)</)?.[1]?.trim();
+    if (!pre || !day || !post) continue;
+    const iso = parseUSDate(`${pre} ${day}, ${post}`);
+    if (!iso) continue;
+    if (label.includes('first preview')) dates.firstPreview = iso;
+    else if (label.includes('opening')) dates.opening = iso;
+    // ignore "Closing Date" — out of scope for this script
+  }
+  return (dates.firstPreview || dates.opening) ? dates : null;
+}
+
+/**
+ * SERP-discover the OB Playbill production page for a single show. Returns
+ * a URL string, or null if no `/production/` URL containing `off-broadway`
+ * comes back. Three filters:
+ *   - URL contains `/production/` (drops articles, news posts)
+ *   - URL contains `off-broadway` (drops Broadway revivals of the same title)
+ *   - URL trailing year is within ±1 of expected show year (drops prior
+ *     productions of the same title — e.g. a 2024 Music City vs a 2026
+ *     Music City). Without this filter, the per-show year mismatch is only
+ *     caught later in validateOBProductionPageTitle, which still costs us a
+ *     fetchPage. Catching it at SERP avoids the wasted fetch.
+ */
+async function discoverOBPlaybillUrl(show) {
+  // Strip diacritics from title for SERP query — "Pied à Terre" returns better
+  // results without the accent vs with it.
+  const cleanTitle = normalizeForCompare(show.title).replace(/"/g, '');
+  const query = `site:playbill.com "${cleanTitle}" off-broadway production`;
+  const results = await serpQuery(query, { nbResults: 5 });
+  if (!results || results.length === 0) return null;
+  const expectedYear = getShowYear(show);
+  for (const r of results) {
+    if (!r.url || !r.url.includes('/production/')) continue;
+    if (!r.url.includes('off-broadway')) continue;
+    if (expectedYear) {
+      const urlYear = getPlaybillUrlYear(r.url);
+      if (urlYear && Math.abs(urlYear - expectedYear) > 1) continue;
+    }
+    return r.url;
+  }
+  return null;
+}
+
+/**
+ * Phase 3 entry point: for each candidate show NOT covered by Phase 1+2
+ * merged entries, discover its Playbill production page and extract
+ * First Preview / Opening Date.
+ *
+ * Returns:
+ *   - entries: array of merge-shaped entries (title/firstPreview/opening/source)
+ *   - misses: array of {showId, reason} for explicit audit-only logging
+ *   - cacheChanged: bool, true if urlCache picked up new entries
+ */
+async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowIds, urlCache, opts = {}) {
+  console.log('--- PLAYBILL PRODUCTION PAGES (per-show direct) ---');
+  const entries = [];
+  const misses = [];
+  let cacheChanged = false;
+  const broad = !!opts.broad;
+
+  // Default scope: same-date class (openingDate==previewsStartDate). These
+  // are the urgent IBDB-conflated candidates where a single-source Playbill
+  // date auto-applies via the same-date-fix bypass downstream. Probing the
+  // broader unconfirmed-source set runs ~120 SERP+fetch/day with no
+  // auto-apply (results land in audit-only). `--phase3-broad` enables the
+  // wider sweep for one-time catalog audits.
+  // Shows with no openingDate at all are intentionally NOT included in the
+  // default queue — Phase 1 (Playbill schedule article) is the right source
+  // for upcoming/announced shows; Phase 3 is the gap-filler for shows the
+  // schedule article doesn't carry.
+  const sameDateClass = (s) => s.openingDate && s.previewsStartDate && s.openingDate === s.previewsStartDate;
+  const queue = candidateShows.filter(s => {
+    if (alreadyMatchedShowIds.has(s.id)) return false;
+    if (broad) return true;
+    return sameDateClass(s);
+  });
+  console.log(`Queue: ${queue.length} candidate shows not covered by schedule article` +
+    (broad ? ' [broad]' : ' [same-date-only — pass --phase3-broad to widen]'));
+
+  for (const show of queue) {
+    let url = urlCache.shows?.[show.id];
+    let usedCache = !!url;
+    if (!url) {
+      try {
+        url = await discoverOBPlaybillUrl(show);
+      } catch (e) {
+        console.warn(`  ${show.id}: SERP error: ${e.message}`);
+        misses.push({ showId: show.id, reason: 'serp-error', detail: e.message });
+        continue;
+      }
+      if (!url) {
+        console.log(`  ${show.id}: no playbill production URL found via SERP`);
+        misses.push({ showId: show.id, reason: 'no-playbill-production-url' });
+        continue;
+      }
+    }
+
+    let html;
+    try {
+      const r = await fetchPage(url, { tier: 1 });
+      html = r?.content || '';
+    } catch (e) {
+      console.warn(`  ${show.id}: fetch error for ${url}: ${e.message}`);
+      misses.push({ showId: show.id, reason: 'fetch-error', detail: e.message, url });
+      continue;
+    }
+
+    if (!validateOBProductionPageTitle(html, show)) {
+      console.warn(`  ${show.id}: page title or year rejected (${url})`);
+      misses.push({ showId: show.id, reason: 'page-title-or-year-mismatch', url });
+      continue;
+    }
+
+    const dates = extractDatesFromProductionPage(html);
+    if (!dates || !dates.opening) {
+      console.warn(`  ${show.id}: no opening date extracted (${url})`);
+      misses.push({ showId: show.id, reason: 'no-opening-date-on-page', url });
+      continue;
+    }
+
+    // Page validated — cache the URL for future runs.
+    if (!usedCache) {
+      urlCache.shows[show.id] = url;
+      cacheChanged = true;
+    }
+
+    entries.push({
+      title: show.title,
+      showId: show.id, // explicit ID — bypasses fuzzy title-match in Phase 4 for diacritics
+      firstPreview: dates.firstPreview,
+      opening: dates.opening,
+      source: 'playbill-production-page',
+      url,
+    });
+    console.log(`  ${show.id}: preview=${dates.firstPreview || '(none)'}, opening=${dates.opening} [${url}]`);
+  }
+
+  console.log(`Production-page hits: ${entries.length} | misses: ${misses.length}`);
+  return { entries, misses, cacheChanged };
+}
+
+// =========================================================
 // MERGE + APPLY
 // =========================================================
 
@@ -398,18 +703,54 @@ async function main() {
   // Only fetched once per run; cheap on the hosting side.
   const lortelEntries = await scrapeLortel();
 
-  // Phase 3: Merge two sources by title.
+  // Phase 3a: Initial merge of Playbill schedule + Lortel.
   console.log('');
-  console.log('--- MERGING SOURCES ---');
+  console.log('--- MERGING SCHEDULE + LORTEL ---');
   const merged = mergeSources(playbillEntries, lortelEntries);
   const highConfidence = merged.filter(e => e.confidence === 'high').length;
   const singleSource = merged.filter(e => e.confidence === 'single-source').length;
   const discrepancy = merged.filter(e => e.confidence === 'discrepancy').length;
   console.log(`Merged: ${merged.length} unique entries (${highConfidence} two-source agree, ${singleSource} single-source, ${discrepancy} discrepancy)`);
+
+  // Phase 3b: Per-show Playbill production-page lookup for shows NOT already
+  // covered by the schedule article. Targets the 33 OB shows currently stuck
+  // in audit-only with openingDate==previewsStartDate from IBDB.
+  // Only candidate shows go through Phase 3 — non-candidates (already-confirmed
+  // dates) don't need the gap-fill, and probing them would burn SERP credits
+  // with no ability to improve their data.
+  console.log('');
+  const alreadyMatched = new Set();
+  for (const entry of merged) {
+    const result = matchTitleToShow(entry.title, candidateShows, { market: 'off-broadway' });
+    if (result?.confidence === 'high' && result.show.category === 'off-broadway') {
+      alreadyMatched.add(result.show.id);
+    }
+  }
+  const urlCache = loadPlaybillUrlCache();
+  const phase3 = await scrapePlaybillProductionPages(candidateShows, alreadyMatched, urlCache, { broad: phase3Broad });
+  for (const e of phase3.entries) {
+    merged.push({
+      title: e.title,
+      showId: e.showId, // surfaces in Phase 4 as a direct-match shortcut
+      firstPreview: e.firstPreview,
+      opening: e.opening,
+      sources: ['playbill-production-page'],
+      confidence: 'single-source',
+      raw: { 'playbill-production-page': { ...e } },
+    });
+  }
+  // Save the URL cache even in dry-run/verify mode. The cache is discovery
+  // data (URL strings), not show data — there's no risk to writing it during
+  // a dry-run, and skipping the save means the real follow-up run has to
+  // re-SERP every show, doubling the BD/SB cost of a backfill.
+  if (phase3.cacheChanged) {
+    savePlaybillUrlCache(urlCache);
+    console.log(`Updated ${PLAYBILL_URL_CACHE_PATH} (${Object.keys(urlCache.shows || {}).length} entries total)`);
+  }
   console.log('');
 
   if (merged.length === 0) {
-    console.warn('WARNING: 0 merged entries — both sources returned empty');
+    console.warn('WARNING: 0 merged entries — all sources returned empty');
     process.exit(0);
   }
 
@@ -417,16 +758,48 @@ async function main() {
   const changes = [];
   const auditEntries = [];
 
+  // Carry Phase 3 misses through to audit output so operators can see *why*
+  // an audit-only show stayed audit-only (no Playbill URL, page mismatch,
+  // missing date markup, etc).
+  for (const miss of phase3.misses) {
+    const show = candidateShows.find(s => s.id === miss.showId);
+    if (!show) continue;
+    auditEntries.push({
+      showId: show.id,
+      title: show.title,
+      confidence: 'phase3-miss',
+      sources: ['playbill-production-page'],
+      currentOpening: show.openingDate,
+      currentPreviews: show.previewsStartDate,
+      currentSource: show.openingDateSource,
+      proposedOpening: null,
+      proposedPreviews: null,
+      reason: miss.reason,
+      raw: { miss },
+    });
+  }
+
   for (const entry of merged) {
     if (!entry.opening) continue; // skip entries without an opening date
-    // Pass market: 'off-broadway' (NOT 'broadway') so pickBestProduction's
-    // market-aware filter at scripts/lib/show-matching.js:507-518 keeps OB
-    // candidates when a title has both Broadway and OB productions. Passing
-    // 'broadway' would filter to !cat||cat==='broadway' and silently drop
-    // the OB show from candidates. (Caught in /ship-check 2026-04-29.)
-    const result = matchTitleToShow(entry.title, obShows, { market: 'off-broadway' });
-    if (!result || result.confidence !== 'high' || result.show.category !== 'off-broadway') continue;
-    const show = result.show;
+    // Phase 3 entries carry an explicit showId — use that as a direct lookup
+    // and skip the fuzzy title-match path. Without this, titles with
+    // diacritics ("Pied à Terre") fall to medium-confidence in matchTitleToShow
+    // because the diacritic-stripped query doesn't equal the un-stripped
+    // show.title, and the script silently skips a known-good fix.
+    let show;
+    if (entry.showId) {
+      show = obShows.find(s => s.id === entry.showId);
+      if (!show || show.category !== 'off-broadway') continue;
+    } else {
+      // Pass market: 'off-broadway' (NOT 'broadway') so pickBestProduction's
+      // market-aware filter at scripts/lib/show-matching.js:507-518 keeps OB
+      // candidates when a title has both Broadway and OB productions. Passing
+      // 'broadway' would filter to !cat||cat==='broadway' and silently drop
+      // the OB show from candidates. (Caught in /ship-check 2026-04-29.)
+      const result = matchTitleToShow(entry.title, obShows, { market: 'off-broadway' });
+      if (!result || result.confidence !== 'high' || result.show.category !== 'off-broadway') continue;
+      show = result.show;
+    }
     const isCandidate = candidateShows.some(s => s.id === show.id);
 
     // Data integrity: previews must be before opening.
@@ -441,21 +814,54 @@ async function main() {
       ? 'playbill+lortel'
       : (entry.sources[0] || 'playbill');
 
-    // Same-date fix: openingDate === previewsStartDate AND we have a distinct
-    // press-night date from external source. This is the KENREX class — the
-    // existing data is provably wrong (IBDB shipped both fields with the
-    // previews-start value), so single-source correction is safe. The change-
-    // stability guard still gates against mass-corruption from a Playbill
-    // format change.
+    // Same-date fix: openingDate === previewsStartDate AND the external
+    // source has a corrected opening OR a corrected preview. This is the
+    // KENREX class — the existing data is provably wrong (IBDB shipped both
+    // fields with the previews-start value), so single-source correction is
+    // safe. The change-stability guard still gates against mass-corruption
+    // from a Playbill format change.
+    //
+    // Both opening AND preview are eligible to trigger a fix: when Playbill
+    // confirms IBDB's opening date but reports an earlier first-preview
+    // (the more common scenario for the 33-show class), only the preview
+    // update is needed to break the show out of the same-date class. Without
+    // this branch, those shows stay audit-only forever and burn SERP credits
+    // on every daily cron run.
+    //
+    // Magnitude guard: opening-date shift > 60 days is suspicious for an
+    // IBDB-conflated correction — likely indicates a wrong-production match
+    // that survived the year-window filter (e.g. two productions of the same
+    // show in the same year at different venues). Caught 2026-04-29 dry-run:
+    // music-city-off-broadway-2026 had a 93-day proposed shift (March → June)
+    // because the only Playbill production page for that title in 2026 was
+    // a different venue/date production. Forcing audit-only on shifts > 60
+    // days lets a human review the candidate before an auto-apply.
+    const SAME_DATE_FIX_MAX_SHIFT_DAYS = 60;
+    const dayShift = (a, b) => {
+      if (!a || !b) return 0;
+      const ms = Math.abs(new Date(a).getTime() - new Date(b).getTime());
+      return Math.round(ms / 86400000);
+    };
+    const shiftDays = dayShift(entry.opening, show.openingDate);
+    const shiftTooLarge = shiftDays > SAME_DATE_FIX_MAX_SHIFT_DAYS;
+    const openingChanges = entry.opening !== show.openingDate;
+    const previewChanges = entry.firstPreview && entry.firstPreview !== show.previewsStartDate;
     const sameDateFix = show.openingDate && show.previewsStartDate &&
       show.openingDate === show.previewsStartDate &&
-      entry.opening !== show.openingDate &&
-      isUnconfirmedDateSource(show);
+      (openingChanges || previewChanges) &&
+      isUnconfirmedDateSource(show) &&
+      !shiftTooLarge;
 
     // For NON-same-date-fix changes, require two-source agreement OR --force.
     // This protects the bulk of OB shows (where the existing date may already
     // be correct) from being silently overwritten by a single-source error.
     if (!sameDateFix && entry.confidence !== 'high' && !force) {
+      // Pick the most informative reason for audit operators. Magnitude veto
+      // is the most actionable signal — it usually means a wrong-production
+      // match. Otherwise fall back to the generic single-source label.
+      const auditReason = shiftTooLarge && show.openingDate === show.previewsStartDate
+        ? `shift-too-large (${shiftDays}d > ${SAME_DATE_FIX_MAX_SHIFT_DAYS}d cap) — likely cross-production`
+        : 'single-source-and-not-same-date-fix';
       auditEntries.push({
         showId: show.id,
         title: show.title,
@@ -466,20 +872,25 @@ async function main() {
         currentSource: show.openingDateSource,
         proposedOpening: entry.opening,
         proposedPreviews: entry.firstPreview,
-        reason: 'single-source-and-not-same-date-fix',
+        shiftDays,
+        reason: auditReason,
         raw: entry.raw,
       });
       continue;
     }
 
     if (sameDateFix && isCandidate) {
-      const showChanges = [
-        { field: 'openingDate', old: show.openingDate, new: entry.opening },
-        { field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource },
-      ];
-      if (entry.firstPreview && entry.firstPreview !== show.previewsStartDate) {
+      const showChanges = [];
+      if (openingChanges) {
+        showChanges.push({ field: 'openingDate', old: show.openingDate, new: entry.opening });
+      }
+      if (previewChanges) {
         showChanges.push({ field: 'previewsStartDate', old: show.previewsStartDate, new: entry.firstPreview });
       }
+      // Always rotate openingDateSource off ibdb when we have a corroborating
+      // Playbill source — even on preview-only fixes — so the next daily run
+      // doesn't re-process this show via isUnconfirmedDateSource.
+      showChanges.push({ field: 'openingDateSource', old: show.openingDateSource, new: entryDateSource });
       changes.push({ id: show.id, title: show.title, slug: show.slug, changes: showChanges });
       console.log(`  FIX ${show.title}: same-date ${show.openingDate} → preview=${entry.firstPreview || show.previewsStartDate}, opening=${entry.opening} [${entryDateSource}]`);
     } else if (force && isCandidate) {
