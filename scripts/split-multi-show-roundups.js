@@ -19,9 +19,19 @@
  * subsequent runs.
  *
  * Usage:
- *   node scripts/split-multi-show-roundups.js              # dry-run (default)
- *   node scripts/split-multi-show-roundups.js --apply      # write changes
+ *   node scripts/split-multi-show-roundups.js              # dry-run (default), flagged files only
+ *   node scripts/split-multi-show-roundups.js --scan-all   # dry-run, scan EVERY review file
+ *   node scripts/split-multi-show-roundups.js --apply      # write changes (flagged-only)
+ *   node scripts/split-multi-show-roundups.js --apply --scan-all
  *   node scripts/split-multi-show-roundups.js --show=ID    # one show only
+ *
+ * E2E sequence (manual until CI-wired):
+ *   1. node scripts/split-multi-show-roundups.js --scan-all                    # dry-run audit
+ *   2. node scripts/split-multi-show-roundups.js --scan-all --apply            # write child files
+ *   3. cd data/review-texts && git add -A && git commit -m "split multi-show" && git push
+ *   4. gh workflow run llm-ensemble-score.yml                                  # score new children
+ *   5. gh workflow run rebuild-fast.yml                                        # land in reviews.json
+ *   6. gh workflow run "Deploy to Vercel"                                      # publish
  *
  * Notion: 352637c5-416f-819c (multi-show roundup parser)
  */
