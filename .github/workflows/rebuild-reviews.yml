@@ -79,12 +79,13 @@ jobs:
             echo "count=0" >> $GITHUB_OUTPUT
           fi
 
-      - name: Extract pull quotes for new reviews
-        if: inputs.skip_enrichment != 'true'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/extract-pull-quotes.js --limit=500
-        continue-on-error: true
+      # NOTE: Pull-quote extraction (`scripts/extract-pull-quotes.js`) was previously HERE
+      # (pre step-19 rebuild). It is an LLM enrichment step (~0.3 reviews/sec via Gemini)
+      # whose output is display-only metadata (`llmPullQuote`), NOT a scoring input. When
+      # the per-step or job-level deadline fired, the cancellation killed the rebuild
+      # before step 19 could run, so reviews.json went stale for hours. Moved AFTER step 19
+      # (Rebuild reviews.json) so cancellation cannot block the canonical rebuild output.
+      # Notion: 351637c5-416f-8177. Stuart King email 2026-04-27 surfaced the impact.
 
       - name: Classify new review files
         if: inputs.skip_enrichment != 'true'
@@ -194,6 +195,19 @@ jobs:
             fi
           done
           echo "Updated core-data snapshot with rebuilt files"
+
+      - name: Extract pull quotes for new reviews
+        # Moved AFTER Rebuild reviews.json + snapshot (Notion 351637c5-416f-8177).
+        # Display-only enrichment of llmPullQuote field — no scoring impact. If this
+        # step times out / cancels, reviews.json + the core-data snapshot are already
+        # in place and the next push step will publish them. Pull quotes drain over
+        # multiple runs at --limit=200/run; the prior 500/run was timing out at ~28min.
+        if: inputs.skip_enrichment != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/extract-pull-quotes.js --limit=200
+        continue-on-error: true
+        timeout-minutes: 12
 
       - name: Analyze review drops and send alert email
         env:

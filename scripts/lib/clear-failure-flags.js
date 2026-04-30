@@ -138,6 +138,17 @@ function clearFailureFlags(data) {
     cleared.push('fetchAttempts');
   }
 
+  // scoreStatus: 'TO_BE_CALCULATED' is set by score-all-unscored.js / mark-uncalculated-reviews.js
+  // when a review couldn't be scored at the time. Once the LLM ensemble (or any other path) writes
+  // a finalized score, the placeholder is stale and must clear — getBestScore() in
+  // rebuild-helpers.js returns null on TO_BE_CALCULATED at line 336, silently excluding the
+  // review from reviews.json with no audit signal beyond a 'no score' counter.
+  // Stuart King email 2026-04-27 surfaced this on Flyby (Notion 351637c5-416f-81f2).
+  if (data.scoreStatus === 'TO_BE_CALCULATED' && hasLlmScore(data)) {
+    data.scoreStatus = null;
+    cleared.push('scoreStatus');
+  }
+
   return cleared;
 }
 
