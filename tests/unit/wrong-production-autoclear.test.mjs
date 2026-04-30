@@ -22,6 +22,8 @@ const {
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
+  isWithinPriorRun,
+  shouldAutoClearWrongProductionPriorRun,
 } = require('../../scripts/lib/wrong-production-autoclear');
 
 describe('shouldAutoClearWrongProduction', () => {
@@ -311,6 +313,231 @@ describe('shouldAutoClearWrongShowUkUrl', () => {
       shouldAutoClearWrongShowUkUrl(
         { wrongShow: true },
         { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: true }
+      ),
+      false
+    );
+  });
+});
+
+describe('isWithinPriorRun', () => {
+  it('returns false for missing review date', () => {
+    assert.strictEqual(isWithinPriorRun(null, [{ openingDate: '2025-04-15' }]), false);
+    assert.strictEqual(isWithinPriorRun('', [{ openingDate: '2025-04-15' }]), false);
+  });
+
+  it('returns false for empty / missing priorRuns', () => {
+    assert.strictEqual(isWithinPriorRun('2025-04-20', undefined), false);
+    assert.strictEqual(isWithinPriorRun('2025-04-20', null), false);
+    assert.strictEqual(isWithinPriorRun('2025-04-20', []), false);
+  });
+
+  it('returns true when review date falls inside an explicit window', () => {
+    assert.strictEqual(
+      isWithinPriorRun('2025-04-26', [
+        { openingDate: '2025-04-15', closingDate: '2025-05-15', venue: 'Bushwick Starr' },
+      ]),
+      true
+    );
+  });
+
+  it('returns false when review date is before window opening', () => {
+    assert.strictEqual(
+      isWithinPriorRun('2025-04-10', [
+        { openingDate: '2025-04-15', closingDate: '2025-05-15' },
+      ]),
+      false
+    );
+  });
+
+  it('returns false when review date is after window closing', () => {
+    assert.strictEqual(
+      isWithinPriorRun('2025-06-01', [
+        { openingDate: '2025-04-15', closingDate: '2025-05-15' },
+      ]),
+      false
+    );
+  });
+
+  it('uses 180-day default window when closingDate is missing', () => {
+    // 2025-04-15 + 180d = ~2025-10-12
+    assert.strictEqual(
+      isWithinPriorRun('2025-09-01', [{ openingDate: '2025-04-15' }]),
+      true
+    );
+    assert.strictEqual(
+      isWithinPriorRun('2025-11-01', [{ openingDate: '2025-04-15' }]),
+      false
+    );
+  });
+
+  it('returns true when any window matches in a multi-run array', () => {
+    const runs = [
+      { openingDate: '2024-11-01', closingDate: '2024-12-31', venue: 'Bedlam' },
+      { openingDate: '2025-04-15', closingDate: '2025-05-15', venue: 'Bushwick Starr' },
+    ];
+    assert.strictEqual(isWithinPriorRun('2024-11-17', runs), true);
+    assert.strictEqual(isWithinPriorRun('2025-04-26', runs), true);
+    assert.strictEqual(isWithinPriorRun('2025-01-15', runs), false);
+  });
+
+  it('skips priorRun entries with unparseable openingDate', () => {
+    const runs = [
+      { openingDate: 'not-a-date' },
+      { openingDate: '2025-04-15', closingDate: '2025-05-15' },
+    ];
+    assert.strictEqual(isWithinPriorRun('2025-04-26', runs), true);
+  });
+
+  it('handles a Date object as input', () => {
+    assert.strictEqual(
+      isWithinPriorRun(new Date('2025-04-26'), [
+        { openingDate: '2025-04-15', closingDate: '2025-05-15' },
+      ]),
+      true
+    );
+  });
+});
+
+describe('shouldAutoClearWrongProductionPriorRun', () => {
+  const show = {
+    priorRuns: [
+      { openingDate: '2025-04-15', closingDate: '2025-05-15', venue: 'Bushwick Starr' },
+    ],
+  };
+
+  it('returns true when Pre-opening guard flag now falls inside priorRuns', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26 is 90+ days before show starts 2026-04-14',
+          publishDate: '2025-04-26',
+        },
+        show
+      ),
+      true
+    );
+  });
+
+  it('returns true for Date guard flag when priorRuns covers', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Date guard: review 2025-05-08 is 292d before 2026-03-17',
+          publishDate: '2025-05-08',
+        },
+        { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+      ),
+      true
+    );
+  });
+
+  it('returns false when priorRuns is missing on show', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+          publishDate: '2025-04-26',
+        },
+        {}
+      ),
+      false
+    );
+  });
+
+  it('returns false when wrongProductionNote is not a date-only auto-flag', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Cross-market: London outlet reviewing off-broadway show',
+          publishDate: '2025-04-26',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when manual wrongProductionReason is set', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+          wrongProductionReason: 'manual: confirmed prior staging',
+          publishDate: '2025-04-26',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when CV high-conf wrongProduction is set', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+          publishDate: '2025-04-26',
+          contentVerification: { wrongProduction: true, confidence: 'high' },
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when CV high-conf wrongArticle is set', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+          publishDate: '2025-04-26',
+          contentVerification: { wrongArticle: true, confidence: 'high' },
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when publishDate is missing', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2025-04-26',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when publishDate is outside all priorRuns windows', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Pre-opening guard: review dated 2024-01-15',
+          publishDate: '2024-01-15',
+        },
+        show
+      ),
+      false
+    );
+  });
+
+  it('returns false when wrongProduction is not set', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        { publishDate: '2025-04-26' },
+        show
       ),
       false
     );
