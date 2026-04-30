@@ -317,6 +317,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                         reviewCount={rc.predicted.reviewCount}
                         status={rc.predicted.status}
                         audienceGrade={rc.predicted.audienceGrade}
+                        awardsScore={rc.predicted.awardsScore}
+                        awardsWeighted={rc.predicted.tonyCategoryKey === 'best-play'}
                         size="sm"
                       />
                     </div>
@@ -341,6 +343,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                         reviewCount={rc.winner.reviewCount}
                         status={rc.winner.status}
                         audienceGrade={rc.winner.audienceGrade}
+                        awardsScore={rc.winner.awardsScore}
+                        awardsWeighted={rc.winner.tonyCategoryKey === 'best-play'}
                         size="sm"
                       />
                     </div>
