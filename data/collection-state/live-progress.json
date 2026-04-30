@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-04-30T12:42:44.414Z",
-  "processed": 12,
-  "failed": 636,
-  "successRate": "1.9%",
+  "updatedAt": "2026-04-30T18:53:33.824Z",
+  "processed": 14,
+  "failed": 644,
+  "successRate": "2.1%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 7,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
+    "brightdata": 1,
+    "archiveToday": 4,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-04-30T10:46:04.482Z",
@@ -36,6 +36,28 @@
       "t": "2026-04-30T10:46:49.606Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-30T18:49:44.233Z",
+      "event": "bb-session",
+      "session": "4692c6ba",
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
+    },
+    {
+      "t": "2026-04-30T18:49:44.647Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-04-30T18:51:52.967Z",
+      "event": "bb-session",
+      "session": "441d9829",
+      "url": "https://deadline.com/2026/04/proof-broadway-review-ayo-edebiri-don-cheadle-kara-"
+    },
+    {
+      "t": "2026-04-30T18:51:53.359Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
