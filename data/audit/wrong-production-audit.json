@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T02:25:39.391Z",
+  "timestamp": "2026-04-30T03:29:46.370Z",
   "stats": {
-    "totalReviews": 36238,
-    "alreadyFlagged": 15816,
-    "dateGuardCatches": 99,
+    "totalReviews": 36237,
+    "alreadyFlagged": 15804,
+    "dateGuardCatches": 102,
     "directorMismatch": 839,
-    "tvFilmSignals": 1002,
-    "londonSignals": 552,
+    "tvFilmSignals": 1003,
+    "londonSignals": 554,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3731
+    "noPublishDate": 3724
   },
   "findings": [
     {
@@ -13708,6 +13708,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "music-city-off-broadway-2026",
+      "file": "theater-scene--christopher-caz-caswell.json",
+      "score": 79,
+      "publishDate": "November 17th, 2024",
+      "url": "https://www.theaterscene.net/musicals/offbway/music-city/christopher-caz/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
         }
       ]
     },
@@ -28783,6 +28797,34 @@
       ]
     },
     {
+      "showId": "evita-west-end-2025",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 88,
+      "publishDate": "2025-07-01",
+      "url": "https://www.londontheatre.co.uk/reviews/evita-review-london-palladium",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "file": "nytimes--houman-barekat.json",
+      "score": 72,
+      "publishDate": "2025-07-02",
+      "url": "https://www.nytimes.com/2025/07/02/theater/evita-rachel-zegler-jamie-lloyd.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "faith-healer-2006",
       "file": "theatermania--unknown.json",
       "score": 66,
@@ -34383,6 +34425,57 @@
       ]
     },
     {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2025-05-08",
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2025-05-08",
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nysr--unknown.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nytimes--jesse-green.json",
+      "publishDate": "May 8, 2025",
+      "url": "https://www.nytimes.com/2025/05/08/theater/review-hugh-jackman-in-a-twisty-tale-of-sexual-misconduct.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (May 8, 2025 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
       "showId": "showstopper-the-improvised-musical-west-end-2023",
       "file": "thestage--paul-vale.json",
       "score": 74,
@@ -39310,20 +39403,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "what-we-did-before-our-moth-days-off-broadway-2026",
-      "file": "theatermania--zachary-stewart.json",
-      "score": 80,
-      "publishDate": "January 23, 2026",
-      "url": "https://www.theatermania.com/news/review-what-we-did-before-our-moth-days-wallace-shawn-on-death-and-sex_1826595/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 41d before show (January 23, 2026 vs 2026-03-05)"
         }
       ]
     },
