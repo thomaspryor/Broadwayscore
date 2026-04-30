@@ -25,7 +25,12 @@
     "mass-west-end-2026/telegraph--unknown.json",
     "mass-west-end-2026/whatsonstage--unknown.json",
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json"
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -34,6 +39,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -50,6 +56,18 @@
     ]
   },
   "startTime": "2026-04-30T09:21:22.212Z",
-  "lastProcessed": "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-30T09:45:08.975Z",
+      "event": "bb-session",
+      "session": "d87458f5",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-04-30T09:45:09.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
