@@ -318,6 +318,329 @@
           }
         }
       ]
+    },
+    {
+      "runAt": "2026-04-30T01:50:41.064Z",
+      "script": "enrich-off-broadway-dates",
+      "mode": {
+        "dryRun": false,
+        "verify": true,
+        "force": false,
+        "fixUnconfirmed": false,
+        "initialBackfill": false,
+        "showFilter": null
+      },
+      "entries": [
+        {
+          "kind": "audit-only",
+          "showId": "kenrex-off-broadway-2026",
+          "title": "KENREX",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-04-26",
+          "currentPreviews": "2026-04-16",
+          "currentSource": "kenrextheplay.com,playbill",
+          "proposedOpening": "2026-04-26",
+          "proposedPreviews": "2026-04-15",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "KENREX",
+              "firstPreview": "2026-04-15",
+              "opening": "2026-04-26",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "hamlet-off-broadway-2026",
+          "title": "Hamlet",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-04",
+          "currentPreviews": "2026-04-19",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-05-04",
+          "proposedPreviews": "2026-04-19",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "HAMLET",
+              "firstPreview": "2026-04-19",
+              "opening": "2026-05-04",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-receptionist-off-broadway-2026",
+          "title": "The Receptionist",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-07",
+          "currentPreviews": "2026-04-15",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-05-07",
+          "proposedPreviews": "2026-04-15",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE RECEPTIONIST",
+              "firstPreview": "2026-04-15",
+              "opening": "2026-05-07",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "new-born-off-broadway-2026",
+          "title": "New Born",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-08",
+          "currentPreviews": null,
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-08",
+          "proposedPreviews": null,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "NEW BORN",
+              "firstPreview": null,
+              "opening": "2026-05-08",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "animal-wisdom-off-broadway-2022",
+          "title": "Animal Wisdom",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-16",
+          "proposedPreviews": "2026-05-05",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "ANIMAL WISDOM",
+              "firstPreview": "2026-05-05",
+              "opening": "2026-05-16",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-maids-off-broadway-2026",
+          "title": "The Maids",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-17",
+          "currentPreviews": "2026-05-17",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-17",
+          "proposedPreviews": null,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE MAIDS",
+              "firstPreview": null,
+              "opening": "2026-05-17",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "thornton-wilders-the-emporium-off-broadway-2026",
+          "title": "Thornton Wilder's The Emporium",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-18",
+          "currentPreviews": "2026-04-30",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-05-18",
+          "proposedPreviews": "2026-04-30",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THORNTON WILDER'S THE EMPORIUM",
+              "firstPreview": "2026-04-30",
+              "opening": "2026-05-18",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "indian-princesses-off-broadway-2025",
+          "title": "Indian Princesses",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-19",
+          "proposedPreviews": "2026-04-30",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "INDIAN PRINCESSES",
+              "firstPreview": "2026-04-30",
+              "opening": "2026-05-19",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "well-ill-let-you-go-off-broadway-2026",
+          "title": "Well, I'll Let You Go",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-04-30",
+          "currentPreviews": null,
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-19",
+          "proposedPreviews": "2026-04-30",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "WELL, I'LL LET YOU GO",
+              "firstPreview": "2026-04-30",
+              "opening": "2026-05-19",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "girls-chance-music-off-broadway-2024",
+          "title": "||: Girls :||: Chance :||: Music :||",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-28",
+          "proposedPreviews": "2026-05-12",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "||: GIRLS :||: CHANCE :||: MUSIC :||",
+              "firstPreview": "2026-05-12",
+              "opening": "2026-05-28",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "jerome-off-broadway-2025",
+          "title": "Jerome",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-01",
+          "currentPreviews": "2026-05-14",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-06-02",
+          "proposedPreviews": "2026-05-14",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "JEROME",
+              "firstPreview": "2026-05-14",
+              "opening": "2026-06-02",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "girl-interrupted-off-broadway-2026",
+          "title": "Girl, Interrupted",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-04",
+          "currentPreviews": "2026-05-13",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-06-04",
+          "proposedPreviews": "2026-05-13",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "GIRL, INTERRUPTED",
+              "firstPreview": "2026-05-13",
+              "opening": "2026-06-04",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "a-woman-among-women-off-broadway-2026",
+          "title": "A Woman Among Women",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-04",
+          "currentPreviews": "2026-05-16",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-06-04",
+          "proposedPreviews": "2026-05-16",
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "A WOMAN AMONG WOMEN",
+              "firstPreview": "2026-05-16",
+              "opening": "2026-06-04",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        }
+      ]
     }
   ]
 }

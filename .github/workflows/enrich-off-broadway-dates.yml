@@ -102,6 +102,11 @@ jobs:
           # Audit-trail file is uniform across WE + OB scripts. Must be
           # explicitly staged; rebuild workflows do NOT auto-include data/audit/.
           # (memory/feedback_audit_trail_must_ship_via_workflow.md)
+          # Set git identity for the commit — actions/checkout doesn't set it
+          # by default, and the bare workspace inherits no global config.
+          # Caught by manual-fire smoke test 2026-04-29 (run 25143060961).
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
           git add data/audit/date-enrichment-corrections.json 2>/dev/null || true
           git add data/audit/enrich-off-broadway-dates-aborted.json 2>/dev/null || true
           if git diff --staged --quiet; then
