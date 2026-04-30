@@ -649,7 +649,14 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -668,7 +675,8 @@
       "data/review-texts/titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json",
       "titus-andronicus-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/la-traviata-off-broadway-2026/wsj--charles-isherwood.json",
-      "la-traviata-off-broadway-2026/wsj--charles-isherwood.json"
+      "la-traviata-off-broadway-2026/wsj--charles-isherwood.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -684,7 +692,7 @@
     ]
   },
   "startTime": "2026-04-30T10:01:27.394Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-04-30T10:46:04.482Z",
@@ -707,6 +715,17 @@
       "t": "2026-04-30T10:46:49.606Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-04-30T18:50:24.170Z",
+      "event": "bb-session",
+      "session": "1372c58f",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-04-30T18:50:25.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
