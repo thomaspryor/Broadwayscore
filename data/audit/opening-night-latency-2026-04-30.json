@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-30T18:48:46.796Z",
+  "generatedAt": "2026-04-30T19:50:57.798Z",
   "date": "2026-04-30",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 37872,
+  "entryCount": 37878,
   "shows": [
     {
       "showId": "the-balusters-2026",
@@ -10601,7 +10601,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 623778,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
