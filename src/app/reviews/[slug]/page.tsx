@@ -11,7 +11,7 @@ import { AUTHOR } from '@/config/author';
 import { BASE_URL, toAbsoluteUrl, generateBreadcrumbSchema } from '@/lib/seo';
 import { getDataStats } from '@/lib/data-core';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   try {

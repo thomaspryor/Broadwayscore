@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { client } from '@/sanity/client';
 import { postsListQuery, type PostListItem } from '@/sanity/queries';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Blog · Broadway Scorecard',

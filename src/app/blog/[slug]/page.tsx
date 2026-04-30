@@ -9,7 +9,7 @@ import {
   type PostDetail,
 } from '@/sanity/queries';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(postSlugsQuery);

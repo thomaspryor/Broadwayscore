@@ -1,7 +1,7 @@
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { AUTHOR } from '@/config/author';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
