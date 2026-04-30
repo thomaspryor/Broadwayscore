@@ -1,79 +1,48 @@
 {
   "meta": {
-    "generatedAt": "2026-04-30T12:10:46.529Z",
+    "generatedAt": "2026-04-30T12:50:08.424Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36926,
-      "inReviewsJson": 17011,
+      "totalFiles": 36925,
+      "inReviewsJson": 17010,
       "skippedExcluded": 80,
-      "withFullText": 174,
+      "withFullText": 171,
       "excerptOnly": 1285,
-      "llmClassified": 6,
+      "llmClassified": 3,
       "heuristicFlagged": 0,
       "nonReviewsFound": 1,
-      "uncertainCases": 3,
+      "uncertainCases": 0,
       "budgetUsed": 0.005,
       "llmCalls": 50,
-      "rateLimitHits": 141,
-      "errors": 44,
-      "skippedAlreadyClassified": 15472
+      "rateLimitHits": 143,
+      "errors": 47,
+      "skippedAlreadyClassified": 15474
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "swept-away-2024/nytg--allison-considine.json",
-      "showId": "swept-away-2024",
-      "outlet": "New York Theatre Guide",
-      "outletId": "nytg",
+      "file": "lobby-hero-2018/theater-news-online--brian-scott-lipton.json",
+      "showId": "lobby-hero-2018",
+      "outlet": "Theater News Online",
+      "outletId": "theater-news-online",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a news and information page from New York Theatre Guide, with links to various articles and show listings. It mentions 'Swept Away' in the context of news and updates, but does not contain a review.",
-      "currentScore": 61
+      "reasoning": "This appears to be an advertisement for a domain name, not a review or article about 'Lobby Hero'.",
+      "currentScore": 78
     }
   ],
-  "uncertainCases": [
-    {
-      "file": "bandstand-2017/li-herald--elyse-trevers.json",
-      "showId": "bandstand-2017",
-      "outlet": "li-herald",
-      "outletId": "li-herald",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a newspaper website, not a review. The title mentions two musicals, but the article itself is not present.",
-      "currentScore": 65
-    },
-    {
-      "file": "in-transit-2016/the-mama-maven--maytal-wichman.json",
-      "showId": "in-transit-2016",
-      "outlet": "the-mama-maven",
-      "outletId": "the-mama-maven",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text is a blog page that mentions Broadway Magic Hour, but it's not a review of In Transit or any other specific show. It's more of a listing of events or news items.",
-      "currentScore": 81
-    },
-    {
-      "file": "one-man-two-guvnors-2012/faster-times--jonathan-mandell.json",
-      "showId": "one-man-two-guvnors-2012",
-      "outlet": "Faster Times",
-      "outletId": "faster-times",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a website index page or author bio, not a review of \"One Man, Two Guvnors.\"",
-      "currentScore": 74
-    }
-  ],
+  "uncertainCases": [],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "schmigadoon-2026/stagezine--scott-harrah.json",
-    "suffs-2024/thestage--lane-williamson.json"
+    "the-balusters-2026/variety--brent-lang.json",
+    "the-bands-visit-2017/the-komisar-scoop--lucy-komisar.json"
   ],
   "perShowSummary": [
     {
-      "showId": "swept-away-2024",
-      "currentCount": 29,
+      "showId": "lobby-hero-2018",
+      "currentCount": 47,
       "removed": 1
     }
   ]
