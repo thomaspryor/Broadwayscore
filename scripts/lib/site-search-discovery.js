@@ -518,7 +518,14 @@ const SITE_SEARCH_ENDPOINTS = {
       const url = `https://operawire.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
       const data = await fetchSSR(url);
       const posts = _safeJsonArray(data, 'operawire');
-      const urls = posts.map(p => p.link).filter(Boolean);
+      // Operawire publishes BOTH announcements ("Asmik Grigorian Headline...") AND
+      // actual reviews ("metropolitan-opera-2025-26-review-eugene-onegin"). The WP
+      // search returns BOTH; without prioritization, the announcement gets picked
+      // first as the "Operawire/Salazar" file and the actual review is lost.
+      // Strategy: keep ONLY review URLs (slug contains 'review'). Announcement
+      // URLs are not reviews; we don't want them.
+      const reviewPosts = posts.filter(p => p.link && /\breview\b|-review-/i.test(p.link));
+      const urls = (reviewPosts.length > 0 ? reviewPosts : posts).map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'operawire', showId, openingDate);
     },
   },
@@ -539,6 +546,41 @@ const SITE_SEARCH_ENDPOINTS = {
       const posts = _safeJsonArray(data, 'new-york-classical-review');
       const urls = posts.map(p => p.link).filter(Boolean);
       return filterOperaUrls(urls, 'new-york-classical-review', showId, openingDate);
+    },
+  },
+
+  'seen-and-heard-international': {
+    name: 'Seen and Heard International',
+    domain: 'seenandheard-international.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Seen and Heard International — UK/international classical reviews. WP REST
+    // is Cloudflare-protected (403 direct); fetchSSR's fallback handles it.
+    // URL pattern: /YYYY/MM/slug/
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const q = encodeURIComponent(showTitle);
+      const url = `https://seenandheard-international.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
+      const data = await fetchSSR(url);
+      const posts = _safeJsonArray(data, 'seen-and-heard-international');
+      const urls = posts.map(p => p.link).filter(Boolean);
+      return filterOperaUrls(urls, 'seen-and-heard-international', showId, openingDate);
+    },
+  },
+
+  'the-new-criterion': {
+    name: 'The New Criterion',
+    domain: 'newcriterion.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // The New Criterion — opera dispatch column. WP REST is unauthenticated.
+    // URL pattern: /dispatch/{slug}/
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const q = encodeURIComponent(showTitle);
+      const url = `https://newcriterion.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
+      const data = await fetchSSR(url);
+      const posts = _safeJsonArray(data, 'the-new-criterion');
+      const urls = posts.map(p => p.link).filter(Boolean);
+      return filterOperaUrls(urls, 'the-new-criterion', showId, openingDate);
     },
   },
 

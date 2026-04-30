@@ -500,6 +500,89 @@ async function discoverBwwRoundup(show, showId, options = {}) {
 // Roundup articles: Extraction (handles both old and new formats)
 // ---------------------------------------------------------------------------
 
+/**
+ * Extract single-critic review from a BWW Opera article page.
+ *
+ * BWW Opera reviews live at /bwwopera/article/Review-{slug}-{YYYYMMDD} and use a
+ * different DOM than /article/Review-Roundup-* pages: single critic, no /10 score
+ * on the page itself (unlike /reviews/ pages). The roundup extractor returns 0
+ * reviews on this format, so opera shows need this dedicated extractor.
+ *
+ * Returns the same single-review array shape as extractBwwRoundupData so the
+ * caller in processShow can iterate it identically.
+ *
+ * @param {string} html - Raw page HTML
+ * @param {string} showId - Show ID for logging
+ * @param {string} url - Article URL (used as review.url)
+ * @returns {{ reviews: Array, hasThumbImages: boolean, averageRating: number|null }}
+ */
+function extractBwwOperaArticleData(html, showId, url) {
+  const $ = cheerio.load(html);
+  const reviews = [];
+
+  // Critic byline: `.author-area` contains `<a href="/author/Richard-Sasanow">Richard Sasanow</a>`.
+  // Fall back to og:article:author meta tag if .author-area missing.
+  let critic = null;
+  const authorLink = $('.author-area a[href^="/author/"]').first();
+  if (authorLink.length) critic = authorLink.text().trim();
+  if (!critic) {
+    const meta = $('meta[property="article:author"], meta[name="author"]').first();
+    if (meta.length) critic = (meta.attr('content') || '').trim();
+  }
+
+  // Title (for excerpt fallback only)
+  const title = $('h1.weight-700').first().text().trim() || $('title').first().text().trim();
+
+  // Body — BWW opera articles wrap the review prose in `.disnep-area` (verified
+  // 2026-04-29 against Innocence Sasanow review: 25 <p> tags, ~12k chars).
+  // Fall back to other containers, then to "longest contiguous <p> block" as a
+  // last resort if BWW changes their wrapper class.
+  let body = '';
+  const candidates = ['.disnep-area', '.article-content', '.review-content', '.content-area', 'article .content', 'main article'];
+  for (const sel of candidates) {
+    const el = $(sel).first();
+    if (el.length) {
+      body = el.text().trim();
+      if (body.length > 300) break;
+    }
+  }
+  // Fallback: gather all <p> tags with >200 chars under the same parent
+  if (body.length < 300) {
+    let bestParent = null;
+    let bestLen = 0;
+    $('p').each((i, el) => {
+      const t = $(el).text().trim();
+      if (t.length > 200) {
+        const parent = $(el).parent();
+        const parentLen = parent.text().trim().length;
+        if (parentLen > bestLen) { bestParent = parent; bestLen = parentLen; }
+      }
+    });
+    if (bestParent) body = bestParent.text().trim();
+  }
+
+  if (!critic || body.length < 100) {
+    // Not a usable opera article — bail with empty result so caller doesn't
+    // create a stub. Logged by caller.
+    return { reviews: [], hasThumbImages: false, averageRating: null };
+  }
+
+  reviews.push({
+    outletId: 'broadwayworld',
+    outlet: 'BroadwayWorld',
+    critic,
+    criticName: critic,
+    url,
+    excerpt: title.slice(0, 240),
+    fullText: body,
+    bwwRoundupUrl: url,
+    // No 1-10 score on opera article pages; LLM will score from fullText.
+    score: null,
+  });
+
+  return { reviews, hasThumbImages: false, averageRating: null };
+}
+
 function extractBwwRoundupData(html, showId) {
   const reviews = [];
   const $ = cheerio.load(html);
@@ -830,7 +913,26 @@ async function processShow(show, showId, options = {}) {
   if (options.type === 'all' || options.type === 'roundup') {
     const html = await discoverBwwRoundup(show, showId, options);
     if (html) {
-      const { reviews, averageRating, hasThumbImages } = extractBwwRoundupData(html, showId);
+      let { reviews, averageRating, hasThumbImages } = extractBwwRoundupData(html, showId);
+      // Opera fallback: BWW Opera reviews aren't roundups — they're single-critic
+      // articles at /bwwopera/article/Review-* with a different DOM. If the roundup
+      // extractor returns 0 reviews on an opera show, try the dedicated opera
+      // article extractor before giving up.
+      if (reviews.length === 0 && show.type === 'opera') {
+        // Recover the URL from discoverBwwRoundup output via an HTML marker —
+        // the canonical URL is in the og:url meta tag or in a <link rel="canonical">.
+        const $tmp = cheerio.load(html);
+        const operaUrl = $tmp('link[rel="canonical"]').attr('href') || $tmp('meta[property="og:url"]').attr('content') || '';
+        if (operaUrl.includes('/bwwopera/article/')) {
+          const operaResult = extractBwwOperaArticleData(html, showId, operaUrl);
+          if (operaResult.reviews.length > 0) {
+            console.log(`    Extracted ${operaResult.reviews.length} review from BWW Opera article (single-critic format)`);
+            reviews = operaResult.reviews;
+            hasThumbImages = false;
+            averageRating = null;
+          }
+        }
+      }
       stats.reviewsExtracted += reviews.length;
       const format = hasThumbImages ? 'new' : 'old';
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
