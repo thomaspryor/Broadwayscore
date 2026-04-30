@@ -14,7 +14,10 @@
     "my-neighbour-totoro-west-end-2025/standard--unknown.json",
     "oliver-west-end-2024/theatre-weekly--unknown.json",
     "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
-    "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json"
+    "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--unknown.json",
+    "mass-west-end-2026/guardian--alexis-soloski.json",
+    "mass-west-end-2026/theatre-weekly--unknown.json"
   ],
   "failed": [
     "mass-west-end-2026/theatre-weekly--unknown.json",
@@ -31,7 +34,13 @@
     "magic-mike-live-west-end-2021/times-uk--clive-davis.json",
     "witness-for-the-prosecution-west-end-2022/financialtimes--sarah-hemming.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -48,12 +57,18 @@
       "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
       "my-neighbour-totoro-west-end-2025/standard--unknown.json",
       "oliver-west-end-2024/theatre-weekly--unknown.json",
-      "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json"
+      "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
+      "mass-west-end-2026/guardian--alexis-soloski.json",
+      "mass-west-end-2026/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/the-price-off-west-end-2026/theatre-reviews--unknown.json",
@@ -65,6 +80,18 @@
     ]
   },
   "startTime": "2026-04-30T08:48:41.584Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-04-30T09:18:00.251Z",
+      "event": "bb-session",
+      "session": "77d14955",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-04-30T09:18:01.302Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
