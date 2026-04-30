@@ -118,21 +118,13 @@ function classifyRebuildExclusion(data, show) {
 
 /**
  * First firing LLM-side exclusion reason, or '' if scoreable.
- * Mirrors scripts/lib/is-scoreable.js (the JS twin of is-scoreable.ts).
+ * Post-2026-04-29 refactor: LLM delegates to rebuild and layers two extras.
+ * Mirrors scripts/lib/is-scoreable.js / scripts/llm-scoring/is-scoreable.ts.
  */
-function classifyLlmExclusion(data, show, criticRegistry) {
-  if (data.duplicateOf) return 'duplicateOf';
-  if (data.wrongProduction) return 'wrongProduction_anyTruthy'; // LLM does not honor manual-clears
-  if (data.wrongAttribution) return 'wrongAttribution';
-  if (data.contentTier === 'invalid') return 'contentTier_invalid_anyTruthy';
-  if (data.wrongShow && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
+function classifyLlmExclusion(data, show /* unused criticRegistry now */) {
+  const rebuildReason = classifyRebuildExclusion(data, show);
+  if (rebuildReason) return rebuildReason;
   if (data.incompleteReason === 'scraper_garbage') return 'scraper_garbage';
-  if (data.fullTextWrongAuthor && !hasExcerpt(data)) return 'fullTextWrongAuthor_noExcerpt';
-  if (data.isRoundupArticle && !isLikelyStaleRoundupFlag(data)) return 'isRoundupArticle';
-  if (data.suspectedMisattribution && !isLikelyStaleSuspectedMisattribution(data, criticRegistry)) {
-    return 'suspectedMisattribution';
-  }
-  if (data.rejectionReason) return 'rejectionReason';
   if (data.showNotMentioned && !hasExcerpt(data)) return 'showNotMentioned_noExcerpt';
   return '';
 }
@@ -189,7 +181,7 @@ for (const dirent of showDirs) {
     }
 
     const rebuildReason = classifyRebuildExclusion(data, show);
-    const llmReason = classifyLlmExclusion(data, show, criticRegistry);
+    const llmReason = classifyLlmExclusion(data, show);
 
     // Self-check: classifier should agree with the actual predicate's verdict
     const classifierRebuildIncludes = rebuildReason === '';
