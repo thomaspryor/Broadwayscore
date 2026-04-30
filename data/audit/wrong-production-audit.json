@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T02:25:39.391Z",
+  "timestamp": "2026-04-29T06:52:58.194Z",
   "stats": {
-    "totalReviews": 36238,
-    "alreadyFlagged": 15816,
+    "totalReviews": 36266,
+    "alreadyFlagged": 15814,
     "dateGuardCatches": 99,
     "directorMismatch": 839,
-    "tvFilmSignals": 1002,
-    "londonSignals": 552,
-    "offBroadwaySignals": 439,
+    "tvFilmSignals": 1006,
+    "londonSignals": 556,
+    "offBroadwaySignals": 440,
     "yearMismatch": 76,
-    "noPublishDate": 3731
+    "noPublishDate": 3766
   },
   "findings": [
     {
@@ -11100,19 +11100,6 @@
       ]
     },
     {
-      "showId": "kenrex-off-broadway-2026",
-      "file": "times-square-chronicles--suzannah-bowling.json",
-      "publishDate": "2026-04-27",
-      "url": "https://t2conline.com/mob-silence-kenrex-turns-true-crime-into-a-chilling-act-of-collective-complicity/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "kimberly-akimbo-2022",
       "file": "nypost--johnny-oleksinski.json",
       "score": 72,
@@ -11612,7 +11599,7 @@
       "showId": "les-liaisons-dangereuses-2016",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 25,
-      "publishDate": "November 3, 2016",
+      "publishDate": null,
       "url": "https://t2conline.com/liev-schrieber-in-les-liaisons-dangereuses-is-anemic/",
       "findings": [
         {
@@ -11631,7 +11618,7 @@
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 64,
-      "publishDate": "2026-04-04",
+      "publishDate": null,
       "url": "https://www.theartsdesk.com/theatre/les-liaisons-dangereuses-national-theatre-review-liaison-lite",
       "findings": [
         {
@@ -11650,7 +11637,7 @@
       "showId": "les-liaisons-dangereuses-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 81,
-      "publishDate": "2026-04-04",
+      "publishDate": null,
       "url": "https://www.whatsonstage.com/news/les-liaisons-dangereuses-with-aidan-turner-lesley-manville-and-monica-barbaro-at-the-national-theatre-review_1717243/",
       "findings": [
         {
@@ -14523,7 +14510,100 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "financialtimes--julianna-barnaby.json",
+      "score": null,
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "independent--julianna-barnaby.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "standard--julianna-barnaby.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "telegraph--julianna-barnaby.json",
+      "score": 82,
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "thestage--julianna-barnaby.json",
+      "score": null,
+      "publishDate": "2026-04-16",
+      "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "times-uk--julianna-barnaby.json",
       "publishDate": "2026-04-16",
       "url": "https://www.westendtheatre.com/350117/news/reviews/one-flew-over-cuckoos-nest-aaron-pierre-reviews/",
       "findings": [
@@ -16687,7 +16767,7 @@
       "file": "guardian--arifa-akbar.json",
       "score": 73,
       "publishDate": "2026-04-01",
-      "url": "https://www.theguardian.com/stage/2023/jun/15/romeo-and-juliet-review-almeida-theatre-london-rebecca-frecknall",
+      "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34187,6 +34267,20 @@
       ]
     },
     {
+      "showId": "romeo-juliet-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": 34,
+      "publishDate": "October 24, 2024",
+      "url": "https://www.vulture.com/article/theater-review-connor-zegler-gold-romeo-juliet.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
       "showId": "saint-joan-2018",
       "file": "nysr--elysa-gardner.json",
       "score": 77,
@@ -37001,19 +37095,6 @@
       "score": 64,
       "publishDate": "2026-04-15",
       "url": "https://www.vulture.com/article/theater-review-adrien-brody-on-broadway-in-the-fear-of-13.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-fear-of-13-2026",
-      "file": "washpost--thomas-floyd.json",
-      "publishDate": "2026-04-24",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2026/04/24/fear-of-13-proof-rocky-horror-broadway-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
