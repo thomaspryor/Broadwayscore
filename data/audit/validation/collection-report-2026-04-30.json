@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-04-30T07:03:44.569Z",
+  "runDate": "2026-04-30T10:02:06.815Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-karate-kid-the-musical-west-end-2026,mass-west-end-2026",
+    "showFilter": "grace-pervades-west-end-2026,mercury-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 8,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,25 +24,25 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 7,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 8,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -50,17 +50,10 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
-  "failed": [
-    "mass-west-end-2026/guardian--alexis-soloski.json",
-    "mass-west-end-2026/timeout--unknown.json",
-    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
-    "mass-west-end-2026/financialtimes--unknown.json",
-    "mass-west-end-2026/standard--nick-curtis.json",
-    "mass-west-end-2026/telegraph--unknown.json",
-    "mass-west-end-2026/theatre-weekly--unknown.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+  "processed": [
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [],
     "amp": [],
@@ -69,7 +62,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
