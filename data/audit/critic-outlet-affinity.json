@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-04-30T01:11:07.638Z",
+    "lastUpdated": "2026-04-30T02:07:27.596Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 36946,
+    "totalFilesScanned": 36958,
     "skippedFiles": 16678,
     "totalCritics": 1336,
     "registryCritics": 495,
-    "flaggedReviews": 15
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -128,8 +128,63 @@
       "file": "timeout-london--dominic-cavendish.json",
       "outletShare": 3,
       "primaryOutlet": "telegraph",
-      "primaryShare": 97,
-      "totalReviews": 39
+      "primaryShare": 98,
+      "totalReviews": 40
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "dog-man-the-musical-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 10,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 90,
+      "totalReviews": 51
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "machinal-2014",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 10,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 90,
+      "totalReviews": 51
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 10,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 90,
+      "totalReviews": 51
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "much-ado-about-nothing-globe-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 10,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 90,
+      "totalReviews": 51
+    },
+    {
+      "critic": "Andrzej Lukowski",
+      "criticSlug": "andrzej-lukowski",
+      "outlet": "timeout",
+      "showId": "skylight-2015",
+      "file": "timeout--andrzej-lukowski.json",
+      "outletShare": 10,
+      "primaryOutlet": "timeout-london",
+      "primaryShare": 90,
+      "totalReviews": 51
     },
     {
       "critic": "Dominic Maxwell",
@@ -501,7 +556,7 @@
         "everything-theatre",
         "metro"
       ],
-      "totalReviews": 576
+      "totalReviews": 577
     },
     {
       "critic": "Jesse Green",
@@ -557,9 +612,10 @@
       "outlets": [
         "timeout",
         "theatermania",
-        "nytimes"
+        "nytimes",
+        "timeout-london"
       ],
-      "totalReviews": 370
+      "totalReviews": 371
     },
     {
       "critic": "Charles Isherwood",
@@ -1209,7 +1265,7 @@
         "timeout",
         "london-theatre"
       ],
-      "totalReviews": 19
+      "totalReviews": 20
     },
     {
       "critic": "Tim Bano",
@@ -1426,7 +1482,7 @@
         "broadwayworld",
         "artsdesk"
       ],
-      "totalReviews": 27
+      "totalReviews": 28
     },
     {
       "critic": "Philip Boroff",
