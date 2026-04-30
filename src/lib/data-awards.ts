@@ -161,7 +161,10 @@ export function getAwardWinnerSets(): AwardWinnerSets {
       if (wins > 0 || noms > 0) olivierNomineeIds.push(showId);
     }
     if (showAwards.dramadesk?.wins?.length) dramaDeskWinnerIds.push(showId);
-    if (showAwards.pulitzer) pulitzerWinnerIds.push(showId);
+    // Only count actual Pulitzer winners — finalists go in `pulitzer.finalist`,
+    // not `pulitzer.wins`. The legacy {year, category} shape always meant a win
+    // and is migrated to wins:["Drama"] by enrich-awards-with-precursors.js.
+    if (showAwards.pulitzer?.wins?.includes('Drama')) pulitzerWinnerIds.push(showId);
   }
 
   return {

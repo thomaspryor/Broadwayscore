@@ -248,10 +248,14 @@ export interface DramaLeagueAwards {
 }
 
 /** NY Drama Critics' Circle Awards. Winners only — NYDCCC does not publish a
- *  full nominee list, so there is no `nominatedFor`. */
+ *  full nominee list. `nominatedFor` is populated by the shared enrichment
+ *  helper for symmetry with DD/OCC/DL types, and for NYDCCC it always equals
+ *  `wins` (since every recognized show is a winner). Don't use it as a "they
+ *  were nominated but didn't win" signal — that signal doesn't exist for NYDCCC. */
 export interface NyDramaCriticsAwards {
   season: string;
   wins: string[];
+  nominatedFor?: string[];
 }
 
 /** Pulitzer Prize for Drama. Single category ("Drama"), so `wins` and
