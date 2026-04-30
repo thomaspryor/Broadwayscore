@@ -1,116 +1,106 @@
 {
   "meta": {
-    "generatedAt": "2026-04-30T04:32:27.807Z",
+    "generatedAt": "2026-04-30T05:16:30.583Z",
     "mode": "incremental",
     "provider": "gemini",
     "stats": {
-      "totalFiles": 36901,
-      "inReviewsJson": 17028,
+      "totalFiles": 36927,
+      "inReviewsJson": 17022,
       "skippedExcluded": 68,
-      "withFullText": 289,
+      "withFullText": 279,
       "excerptOnly": 1287,
-      "llmClassified": 39,
+      "llmClassified": 24,
       "heuristicFlagged": 0,
-      "nonReviewsFound": 9,
-      "uncertainCases": 6,
+      "nonReviewsFound": 8,
+      "uncertainCases": 2,
       "budgetUsed": 0.005,
       "llmCalls": 50,
-      "rateLimitHits": 67,
-      "errors": 11,
-      "skippedAlreadyClassified": 15384
+      "rateLimitHits": 101,
+      "errors": 26,
+      "skippedAlreadyClassified": 15388
     },
     "calibration": null
   },
   "nonReviews": [
     {
-      "file": "bring-it-on-the-musical-2012/bloomberg--jeremy-gerard.json",
-      "showId": "bring-it-on-the-musical-2012",
-      "outlet": "Bloomberg",
-      "outletId": "bloomberg",
+      "file": "in-the-heights-2008/nypost--unknown.json",
+      "showId": "in-the-heights-2008",
+      "outlet": "New York Post",
+      "outletId": "nypost",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "The article is a 404 error page from Bloomberg, indicating the content is unavailable, not a review or any other type of article about \"Bring It On The Musical\".",
-      "currentScore": 71
+      "reasoning": "This is a 'page not found' error message from the New York Post website, not an article about 'In the Heights'.",
+      "currentScore": 49
     },
     {
-      "file": "disaster-2016/usatoday--elysa-gardner.json",
-      "showId": "disaster-2016",
-      "outlet": "USA Today",
-      "outletId": "usatoday",
+      "file": "is-this-a-room-2021/hollywood-reporter--angie-han.json",
+      "showId": "is-this-a-room-2021",
+      "outlet": "The Hollywood Reporter",
+      "outletId": "hollywood-reporter",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is a 404 error page from USA Today, not an article about \"Disaster!\" or any other show.",
-      "currentScore": 78
+      "reasoning": "This article is a news item about the delay of the 'Wicked' movie production and does not contain any review or evaluation of the play 'Is This a Room'.",
+      "currentScore": 82
     },
     {
-      "file": "ghost-the-musical-2012/faster-times--jonathan-mandell.json",
-      "showId": "ghost-the-musical-2012",
-      "outlet": "Faster Times",
-      "outletId": "faster-times",
-      "contentType": "other",
-      "confidence": "high",
-      "reasoning": "This appears to be a general blog or news website, not a theater review publication. There is no mention of 'Ghost The Musical' or any theater production.",
-      "currentScore": 80
-    },
-    {
-      "file": "how-to-succeed-in-business-without-really-trying-2011/newsday--linda-winer.json",
-      "showId": "how-to-succeed-in-business-without-really-trying-2011",
-      "outlet": "Newsday",
-      "outletId": "newsday",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This is an error page from Newsday, not an article about 'How to Succeed in Business Without Really Trying'.",
-      "currentScore": 78
-    },
-    {
-      "file": "in-transit-2016/theater-news-online--brian-scott-lipton.json",
-      "showId": "in-transit-2016",
-      "outlet": "Theater News Online",
+      "file": "junk-2017/theater-news-online--david-cote.json",
+      "showId": "junk-2017",
+      "outlet": "Theater New Online",
       "outletId": "theater-news-online",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This appears to be an advertisement for a domain name, not a review or article about a Broadway show.",
-      "currentScore": 68
+      "reasoning": "This appears to be an advertisement for a domain name, not a review or article about 'Junk'.",
+      "currentScore": 88
     },
     {
-      "file": "indecent-2017/ap--jennifer-farrar.json",
-      "showId": "indecent-2017",
+      "file": "kinky-boots-2013/ap--mark-kennedy.json",
+      "showId": "kinky-boots-2013",
       "outlet": "Associated Press",
       "outletId": "ap",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This appears to be a website template or error page from a news site, not an actual article about \"Indecent.\"",
-      "currentScore": 84
+      "reasoning": "This is an error page from the Miami Herald website, not an article about Kinky Boots.",
+      "currentScore": 78
     },
     {
-      "file": "indecent-2017/the-culture-trip--bill-stevenson.json",
-      "showId": "indecent-2017",
-      "outlet": "the-culture-trip",
-      "outletId": "the-culture-trip",
-      "contentType": "news",
-      "confidence": "high",
-      "reasoning": "This appears to be a generic website footer or error page, not a review or article about 'Indecent'.",
-      "currentScore": 82
-    },
-    {
-      "file": "indecent-2017/theatermania--jesse-green.json",
-      "showId": "indecent-2017",
+      "file": "kinky-boots-2013/theatermania--charles-isherwood.json",
+      "showId": "kinky-boots-2013",
       "outlet": "TheaterMania",
       "outletId": "theatermania",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This article is a news announcement about casting for a musical theatre festival, and does not contain any review or evaluation of 'Indecent'.",
-      "currentScore": 78
+      "reasoning": "This article is a news item about casting for 'A Raisin in the Sun,' not a review of 'Kinky Boots' or any other show.",
+      "currentScore": 82
     },
     {
-      "file": "jekyll-and-hyde-2013/ap--mark-kennedy.json",
-      "showId": "jekyll-and-hyde-2013",
+      "file": "la-bete-2010/ap--ben-brantley.json",
+      "showId": "la-bete-2010",
       "outlet": "Associated Press",
       "outletId": "ap",
       "contentType": "news",
       "confidence": "high",
-      "reasoning": "This is an error page from a news website, not a review or any other type of article about \"Jekyll & Hyde\".",
-      "currentScore": 72
+      "reasoning": "This is a generic error page from the Washington Examiner website, not an article about \"La Bête\" or any other show.",
+      "currentScore": 76
+    },
+    {
+      "file": "leap-of-faith-2012/faster-times--jonathan-mandell.json",
+      "showId": "leap-of-faith-2012",
+      "outlet": "Faster Times",
+      "outletId": "faster-times",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This appears to be a general news website, not a theater review site. There is no mention of 'Leap of Faith' or any theater productions.",
+      "currentScore": 54
+    },
+    {
+      "file": "love-letters-1989/ap--mark-kennedy.json",
+      "showId": "love-letters-1989",
+      "outlet": "Associated Press",
+      "outletId": "ap",
+      "contentType": "news",
+      "confidence": "high",
+      "reasoning": "This appears to be a newspaper website's homepage or index page, listing various news articles and features. There is no review content present.",
+      "currentScore": 59
     }
   ],
   "uncertainCases": [
@@ -121,18 +111,8 @@
       "outletId": "timeout",
       "contentType": "news",
       "confidence": "low",
-      "reasoning": "The provided text appears to be a website template or general information page from Time Out New York, rather than a specific article about \"Act One.\" It contains subscription prompts, navigation links, and copyright information, but no evaluative content about the play.",
+      "reasoning": "The provided text appears to be a website template or general information page from Time Out New York, rather than a specific article about \"Act One.\" It contains subscription prompts, navigation links, and copyright information, lacking any evaluative content about the show.",
       "currentScore": 60
-    },
-    {
-      "file": "bandstand-2017/li-herald--elyse-trevers.json",
-      "showId": "bandstand-2017",
-      "outlet": "li-herald",
-      "outletId": "li-herald",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a newspaper website, not a specific review of Bandstand. It mentions two musicals but doesn't provide any evaluative content.",
-      "currentScore": 65
     },
     {
       "file": "eclipsed-2016/theatre-reviews-limited--david-roberts.json",
@@ -143,99 +123,59 @@
       "confidence": "medium",
       "reasoning": "The article describes the plot and context of \"Eclipsed\" but does not offer a critical evaluation or opinion on the quality of the production. It also includes unrelated news items.",
       "currentScore": 82
-    },
-    {
-      "file": "fences-2010/talkinbroadway--matthew-murray.json",
-      "showId": "fences-2010",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text is a list of theater-related items and links, suggesting a directory or advertisement rather than a review of a specific show.",
-      "currentScore": 82
-    },
-    {
-      "file": "funny-girl-2022/talkinbroadway--matthew-murray.json",
-      "showId": "funny-girl-2022",
-      "outlet": "Talkin' Broadway",
-      "outletId": "talkinbroadway",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "This appears to be a collection of links and keywords related to theater, not a review of a specific production. It mentions \"Broadway news updates\" and other general theater topics.",
-      "currentScore": 62
-    },
-    {
-      "file": "in-transit-2016/the-mama-maven--maytal-wichman.json",
-      "showId": "in-transit-2016",
-      "outlet": "the-mama-maven",
-      "outletId": "the-mama-maven",
-      "contentType": "news",
-      "confidence": "low",
-      "reasoning": "The text is a blog page that mentions Broadway Magic Hour but does not contain a review of In Transit or any other show. It's a listing of events.",
-      "currentScore": 81
     }
   ],
   "heuristicFlags": [],
   "reviewsConfirmed": [
-    "ifthen-2014/huffpost--mark-kennedy.json",
-    "ill-eat-you-last-a-chat-with-sue-mengers-2013/the-komisar-scoop--lucy-komisar.json",
-    "inherit-the-wind-2007/the-komisar-scoop--lucy-komisar.json",
-    "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json",
-    "innocence-off-broadway-2026/broadwayworld--richard-sasanow.json",
-    "innocence-off-broadway-2026/parterre-box--dan-johnson.json",
-    "inter-alia-west-end-2026/broadwayworld--harlan-clementine-scott.json",
-    "inter-alia-west-end-2026/london-box-office--stuart-king.json",
-    "jagged-little-pill-2019/the-komisar-scoop--lucy-komisar.json",
-    "joe-turners-come-and-gone-2009/the-komisar-scoop--lucy-komisar.json",
-    "joe-turners-come-and-gone-2026/amny--matt-windman.json",
-    "john-lithgow-stories-by-heart-2018/gotham-playgoer--robert-sholiton.json",
-    "john-proctor-is-the-villain-2025/the-komisar-scoop--lucy-komisar.json",
-    "kenrex-off-broadway-2026/culturesauce--thom-geier.json",
-    "kenrex-off-broadway-2026/frontmezzjunkies--ross.json",
-    "kenrex-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "kenrex-off-broadway-2026/nysr--david-finkle.json",
-    "kenrex-off-broadway-2026/nysr--michael-sommers.json",
-    "kenrex-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "kenrex-off-broadway-2026/nytg--amelia-merrill.json",
-    "kenrex-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
-    "kenrex-off-broadway-2026/theatermania--zachary-stewart.json",
-    "kenrex-off-broadway-2026/thewrap--robert-hofler.json",
-    "kenrex-off-broadway-2026/vulture--jackson-mchenry.json"
+    "high-noon-west-end-2025/timeout-london--andrzej-lukowski.json",
+    "innocence-off-broadway-2026/new-york-classical-review--george-grella.json",
+    "innocence-off-broadway-2026/nysr--frank-scheck.json",
+    "into-the-woods-west-end-2025/thestage--sam-marlowe.json",
+    "kenrex-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "kimberly-akimbo-2022/the-komisar-scoop--lucy-komisar.json",
+    "king-kong-2018/rollingstone--jerry-portwood.json",
+    "kiss-me-kate-2019/thestage--nicole-serratore.json",
+    "la-cage-aux-folles-2010/new-jersey-newsroom--michael-sommers.json",
+    "lend-me-a-tenor-2010/about-entertainment--charles-isherwood.json",
+    "lend-me-a-tenor-2010/new-jersey-newsroom--michael-sommers.json",
+    "life-of-pi-2023/fort-worth-star-telegram--rick-mauch.json",
+    "lifeline-off-west-end-2026/london-box-office--stuart-king.json",
+    "living-on-love-2015/deadline--jeremy-gerard.json"
   ],
   "perShowSummary": [
     {
-      "showId": "bring-it-on-the-musical-2012",
-      "currentCount": 11,
+      "showId": "in-the-heights-2008",
+      "currentCount": 7,
       "removed": 1
     },
     {
-      "showId": "disaster-2016",
-      "currentCount": 24,
+      "showId": "is-this-a-room-2021",
+      "currentCount": 20,
       "removed": 1
     },
     {
-      "showId": "ghost-the-musical-2012",
+      "showId": "junk-2017",
+      "currentCount": 35,
+      "removed": 1
+    },
+    {
+      "showId": "kinky-boots-2013",
+      "currentCount": 35,
+      "removed": 2
+    },
+    {
+      "showId": "la-bete-2010",
+      "currentCount": 12,
+      "removed": 1
+    },
+    {
+      "showId": "leap-of-faith-2012",
       "currentCount": 16,
       "removed": 1
     },
     {
-      "showId": "how-to-succeed-in-business-without-really-trying-2011",
-      "currentCount": 21,
-      "removed": 1
-    },
-    {
-      "showId": "in-transit-2016",
-      "currentCount": 39,
-      "removed": 1
-    },
-    {
-      "showId": "indecent-2017",
-      "currentCount": 52,
-      "removed": 3
-    },
-    {
-      "showId": "jekyll-and-hyde-2013",
-      "currentCount": 15,
+      "showId": "love-letters-1989",
+      "currentCount": 2,
       "removed": 1
     }
   ]
