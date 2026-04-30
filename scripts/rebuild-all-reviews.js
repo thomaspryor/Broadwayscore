@@ -45,7 +45,12 @@ const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { parseDate } = require('./lib/date-utils');
-const { shouldAutoClearWrongProduction, shouldAutoClearWrongShow } = require('./lib/wrong-production-autoclear');
+const {
+  shouldAutoClearWrongProduction,
+  shouldAutoClearWrongShow,
+  isWithinPriorRun,
+  shouldAutoClearWrongProductionPriorRun,
+} = require('./lib/wrong-production-autoclear');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -1035,18 +1040,43 @@ const crossShowFingerprints = new Map();
 // Pre-opening guard pass: flag reviews published 90+ days before a show's earliest date
 // as wrongProduction. Runs on ALL shows regardless of status — a 2019 review filed under
 // a 2026 remount is wrong whether the show is in previews, open, or closed.
+//
+// Production-continuity exemption (Phase 1, 2026-04-29): when a show declares a
+// priorRuns[] window and the review's publishDate falls inside it, the review
+// is legitimate coverage of an earlier run of THIS production (workshop →
+// mainstage transfer, return engagement). Skip the flag — and auto-clear any
+// stale flag on the same file from a prior rebuild run.
 {
   let preOpenFlagged = 0;
+  let priorRunSkipped = 0;
+  let priorRunAutoCleared = 0;
   for (const sid of showDirs) {
     const showEarliest = showDateMap[sid];
     if (!showEarliest) continue;
     // Long-run WE shows (opened before 2015) — skip pre-opening guard.
     // A 2004 Stage review of Phantom is perfectly valid for a show running since 1986.
     if (showLongRunWE.has(sid)) continue;
+    const showRecord = showById[sid];
     const sDir = path.join(reviewTextsDir, sid);
     for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
       try {
-        const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+        const fp = path.join(sDir, f);
+        const d = JSON.parse(fs.readFileSync(fp, 'utf8'));
+
+        // Production-continuity auto-clear: strip stale Pre-opening/Date guard
+        // flags on files whose publishDate now falls inside a priorRuns window.
+        // Respects manual reasons + high-confidence CV (mirrors URL-year auto-clear).
+        if (shouldAutoClearWrongProductionPriorRun(d, showRecord)) {
+          const wasNote = d.wrongProductionNote;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: priorRuns covers publishDate (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          safeWriteReview(fp, d, { force: true });
+          priorRunAutoCleared++;
+          // Fall through — don't skip, file may still need other guards
+        }
+
         if (d.wrongProduction || d.wrongShow) continue;
         // routedFromShowId: already rerouted — publish date reflects the original show's era
         if (d.routedFromShowId) continue;
@@ -1074,10 +1104,15 @@ const crossShowFingerprints = new Map();
           // in the Class B audit (2026-04-12). Only YYYYMMDD is specific enough.
         }
         if (reviewDate && (showEarliest - reviewDate) > 90 * 86400000 && !d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+          // Production-continuity skip: review falls inside a declared priorRuns window
+          if (showRecord && isWithinPriorRun(reviewDate, showRecord.priorRuns)) {
+            priorRunSkipped++;
+            continue;
+          }
           console.log(`  [PRE-OPENING] ${sid}/${f}: review ${reviewDate.toISOString().split('T')[0]} is 90+ days before show ${showEarliest.toISOString().split('T')[0]}`);
           d.wrongProduction = true;
           d.wrongProductionNote = `Pre-opening guard: review dated ${reviewDate.toISOString().split('T')[0]} is 90+ days before show starts ${showEarliest.toISOString().split('T')[0]}`;
-          safeWriteReview(path.join(sDir, f), d);
+          safeWriteReview(fp, d);
           preOpenFlagged++;
         }
       } catch { /* skip unreadable */ }
@@ -1086,7 +1121,15 @@ const crossShowFingerprints = new Map();
   if (preOpenFlagged > 0) {
     console.log(`Pre-opening guard: flagged ${preOpenFlagged} reviews as wrongProduction\n`);
   }
+  if (priorRunAutoCleared > 0) {
+    console.log(`Pre-opening guard: auto-cleared ${priorRunAutoCleared} reviews via priorRuns window\n`);
+  }
+  if (priorRunSkipped > 0) {
+    console.log(`Pre-opening guard: skipped ${priorRunSkipped} reviews via priorRuns window\n`);
+  }
   stats.preOpeningFlagged = preOpenFlagged;
+  stats.priorRunAutoCleared = priorRunAutoCleared;
+  stats.priorRunSkipped = priorRunSkipped;
 }
 
 // Stale --unknown filename cleanup: when a file is named --unknown but its critic was enriched,
@@ -1591,7 +1634,9 @@ showDirs.forEach(showId => {
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
             const threshold = isFlexCat ? 90 : 14;
-            if (daysBefore > threshold) refExcluded = true;
+            // Production-continuity exemption: refData falls inside a declared priorRuns window
+            const inPriorRun = isWithinPriorRun(refPubDate, showById[showId]?.priorRuns);
+            if (daysBefore > threshold && !inPriorRun) refExcluded = true;
           }
           if (refExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
         } catch {
@@ -1643,7 +1688,9 @@ showDirs.forEach(showId => {
             const daysBefore = Math.ceil((openDate - refPubDate) / (1000 * 60 * 60 * 24));
             const isFlexCat = showCat === 'off-broadway' || isLondonMarket(showCat);
             const threshold = isFlexCat ? 90 : 14;
-            if (daysBefore > threshold) refWouldBeExcluded = true;
+            // Production-continuity exemption: refData falls inside a declared priorRuns window
+            const inPriorRun = isWithinPriorRun(refPubDate, showById[showId]?.priorRuns);
+            if (daysBefore > threshold && !inPriorRun) refWouldBeExcluded = true;
           }
           if (refWouldBeExcluded) stats.dupeRefExcludedRecovered = (stats.dupeRefExcludedRecovered || 0) + 1;
           // Verify fingerprints still match — flag may be stale after text re-fetch or deletion
@@ -2176,13 +2223,15 @@ showDirs.forEach(showId => {
       // Long-run WE shows (opened before 2015): skip this guard entirely — decades of valid reviews.
       // Reviews with allowEarlyDate: true bypass all date checks.
       // routedFromShowId: already rerouted — publish date reflects the original show's era
+      // priorRuns: review falls inside a declared earlier-run window (Phase 1 production-continuity)
       if (data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId && !showLongRunWE.has(showId)) {
         const pubDate = new Date(data.publishDate);
         const openDate = showDateMap[showId];
         const daysBefore = Math.ceil((openDate - pubDate) / (1000 * 60 * 60 * 24));
         const isFlexCategory = showCategory === 'off-broadway' || isLondonMarket(showCategory);
         const threshold = isFlexCategory ? 90 : 14;
-        if (daysBefore > threshold) {
+        const inPriorRun = isWithinPriorRun(pubDate, showById[showId]?.priorRuns);
+        if (daysBefore > threshold && !inPriorRun) {
           console.log(`  [PRE-OPENING] ${showId}/${file}: published ${daysBefore} days before opening (${data.publishDate} vs ${openDate.toISOString().split('T')[0]})`);
           logExclusion("skippedPreOpening", showId, file, data);
           stats.skippedPreOpening = (stats.skippedPreOpening || 0) + 1;
@@ -3436,12 +3485,14 @@ if (fs.existsSync(reviewsJsonPath)) {
                   }
                 }
                 // 2. Pre-opening date: review published well before show opened
+                //    (priorRuns exemption mirrors the inclusion guard above)
                 if (!wouldBeExcluded && d.publishDate && sEarliest && !d.allowEarlyDate && !d.routedFromShowId && !showLongRunWE.has(showId)) {
                   const pubDate = parseDate(d.publishDate);
                   if (pubDate) {
                     const daysBefore = Math.ceil((sEarliest - pubDate) / (1000 * 60 * 60 * 24));
                     const threshold = (sCat === 'off-broadway' || isLondonMarket(sCat)) ? 90 : 14;
-                    if (daysBefore > threshold) wouldBeExcluded = true;
+                    const inPriorRun = isWithinPriorRun(pubDate, showById[showId]?.priorRuns);
+                    if (daysBefore > threshold && !inPriorRun) wouldBeExcluded = true;
                   }
                 }
                 // 3. Syndication dedup

@@ -12,8 +12,95 @@
  *
  * Used by:
  * - scripts/rebuild-all-reviews.js (main rebuild loop, allowEarlyDate auto-clear)
+ * - scripts/flag-wrong-production-by-date.js (Date-guard pre-flag check)
  * - tests/unit/wrong-production-autoclear.test.mjs
  */
+
+const { parseDate } = require('./date-utils');
+
+/**
+ * Decide whether a review's publishDate falls inside any of the show's
+ * prior-run windows (Phase 1 production-continuity model).
+ *
+ * Each priorRun describes a previous run of the same artistic production
+ * (workshop → mainstage transfer, return engagement, etc.). A review whose
+ * publishDate sits inside priorRun.openingDate..closingDate is legitimate
+ * coverage of an earlier run of THIS production and must not be flagged
+ * wrongProduction by date-only guards.
+ *
+ * Defaults / edge cases:
+ *  - reviewDate / priorRuns missing or empty → false (caller falls back to
+ *    the existing 90-day pre-opening guard).
+ *  - openingDate missing / unparseable on a priorRun entry → that entry is
+ *    skipped (other entries still evaluated).
+ *  - closingDate missing on a priorRun → window extends 180 days past
+ *    openingDate (limited-run default; matches OB lab/showcase typical run).
+ *  - Comparison is inclusive of both bounds and date-only (UTC midnight).
+ *
+ * @param {Date|string|null} reviewDate - Review publish date (Date or ISO/parseable string)
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} priorRuns
+ * @returns {boolean}
+ */
+function isWithinPriorRun(reviewDate, priorRuns) {
+  if (!reviewDate || !Array.isArray(priorRuns) || priorRuns.length === 0) return false;
+  const rd = reviewDate instanceof Date ? reviewDate : parseDate(reviewDate);
+  if (!rd || isNaN(rd.getTime())) return false;
+  const rdMs = rd.getTime();
+
+  for (const run of priorRuns) {
+    if (!run || !run.openingDate) continue;
+    const open = parseDate(run.openingDate);
+    if (!open || isNaN(open.getTime())) continue;
+    let close;
+    if (run.closingDate) {
+      close = parseDate(run.closingDate);
+      if (!close || isNaN(close.getTime())) close = undefined;
+    }
+    if (!close) {
+      close = new Date(open.getTime());
+      close.setUTCDate(close.getUTCDate() + 180);
+    }
+    if (rdMs >= open.getTime() && rdMs <= close.getTime()) return true;
+  }
+  return false;
+}
+
+/**
+ * Decide whether an existing wrongProduction flag — set by the date-only
+ * Pre-opening guard or Date guard — should be auto-cleared because the
+ * show now declares a priorRuns window that covers the review's date.
+ *
+ * Returns true ONLY if all conditions hold:
+ *  - data.wrongProduction === true
+ *  - data.wrongProductionNote starts with "Pre-opening guard" OR "Date guard"
+ *    (the auto-flagger family — never strips flags from manual / CV / cross-market)
+ *  - data.publishDate parses
+ *  - show.priorRuns covers data.publishDate
+ *  - No data.wrongProductionReason (manual / audit reason)
+ *  - No high-confidence CV wrongProduction or wrongArticle
+ *
+ * Mirrors the safety guards used by shouldAutoClearWrongProductionUrlYear.
+ *
+ * @param {object} data - The review JSON object
+ * @param {{ priorRuns?: Array<object> }} show - The show config
+ * @returns {boolean}
+ */
+function shouldAutoClearWrongProductionPriorRun(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
+  const note = data.wrongProductionNote || '';
+  const isDateOnlyAutoFlag = note.startsWith('Pre-opening guard')
+    || note.startsWith('Date guard');
+  if (!isDateOnlyAutoFlag) return false;
+  if (!data.publishDate) return false;
+  if (!isWithinPriorRun(data.publishDate, show.priorRuns)) return false;
+  const hasManualReason = !!data.wrongProductionReason;
+  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
+    && data.contentVerification?.confidence === 'high';
+  const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
+    && data.contentVerification?.confidence === 'high';
+  return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
+}
 
 /**
  * Decide whether the allowEarlyDate/allowCrossMarket auto-clear should
@@ -113,4 +200,6 @@ module.exports = {
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
+  isWithinPriorRun,
+  shouldAutoClearWrongProductionPriorRun,
 };
