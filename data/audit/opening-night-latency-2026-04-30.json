@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-30T10:58:22.976Z",
+  "generatedAt": "2026-04-30T11:52:40.541Z",
   "date": "2026-04-30",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 31505,
+  "entryCount": 31522,
   "shows": [
     {
       "showId": "the-balusters-2026",
@@ -5081,7 +5081,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2510344,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6146,7 +6146,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2244874,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -6176,7 +6176,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 2190741,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -10611,6 +10611,21 @@
     },
     {
       "showId": "please-please-me-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "la-traviata-off-broadway-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
