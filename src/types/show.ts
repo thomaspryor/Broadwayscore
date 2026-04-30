@@ -9,6 +9,18 @@ export type ShowStatus = 'previews' | 'opened' | 'closing' | 'closed';
 
 export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end';
 
+/**
+ * A prior run of the SAME artistic production at a different venue or in
+ * an earlier limited engagement (workshop → mainstage transfer, return
+ * engagement, etc.). Reviews dated inside any priorRun window pass the
+ * date-based wrongProduction guards. See scripts/lib/wrong-production-autoclear.js.
+ */
+export interface PriorRun {
+  openingDate: string; // ISO date — start of the prior run
+  closingDate?: string; // ISO date — end of the prior run (defaults to openingDate + 180 days)
+  venue?: string; // Display label, e.g. "Bushwick Starr"
+}
+
 export interface ShowMetadata {
   id: string;
   title: string;
@@ -21,6 +33,7 @@ export interface ShowMetadata {
   category?: ShowCategory; // 'broadway' (default), 'off-broadway', or 'west-end'
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
+  priorRuns?: PriorRun[];
 }
 
 // ============================================

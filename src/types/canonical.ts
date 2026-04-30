@@ -110,6 +110,18 @@ export interface CreativeMember {
   role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
 }
 
+/**
+ * A prior run of the SAME artistic production at a different venue or in
+ * an earlier limited engagement (workshop → mainstage transfer, return
+ * engagement, etc.). Reviews dated inside any priorRun window pass the
+ * date-based wrongProduction guards. See scripts/lib/wrong-production-autoclear.js.
+ */
+export interface PriorRun {
+  openingDate: string;            // ISO date — start of the prior run
+  closingDate?: string;           // ISO date — end of the prior run (defaults to openingDate + 180 days)
+  venue?: string;                 // Display label, e.g. "Bushwick Starr"
+}
+
 export interface Show {
   // Core identification
   id: string;                     // e.g., "two-strangers-bway-2025"
@@ -132,6 +144,7 @@ export interface Show {
   synopsis?: string;
   ageRecommendation?: string;     // e.g., "Ages 12+", "All ages"
   limitedRun?: boolean;           // true for shows with announced closing dates
+  priorRuns?: PriorRun[];         // Earlier runs of the same artistic production
 
   // Media
   images?: ShowImages;
