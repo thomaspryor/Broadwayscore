@@ -1073,7 +1073,15 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "mass-west-end-2026/broadwayworld--cheryl-markosky.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1095,7 +1103,8 @@
       "la-traviata-off-broadway-2026/wsj--charles-isherwood.json",
       "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "data/review-texts/proof-2026/deadline--anthony-dalessandro.json",
-      "proof-2026/deadline--anthony-dalessandro.json"
+      "proof-2026/deadline--anthony-dalessandro.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -1115,7 +1124,7 @@
     ]
   },
   "startTime": "2026-04-30T10:01:27.394Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-04-30T10:46:04.482Z",
@@ -1160,6 +1169,17 @@
       "t": "2026-04-30T18:51:53.359Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-04-30T21:54:03.936Z",
+      "event": "bb-session",
+      "session": "55bf89da",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-04-30T21:54:04.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
