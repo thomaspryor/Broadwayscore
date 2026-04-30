@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T05:28:08.589Z",
+  "timestamp": "2026-04-30T11:56:09.917Z",
   "stats": {
-    "totalReviews": 36238,
-    "alreadyFlagged": 15806,
+    "totalReviews": 36261,
+    "alreadyFlagged": 15812,
     "dateGuardCatches": 99,
-    "directorMismatch": 839,
+    "directorMismatch": 838,
     "tvFilmSignals": 1004,
-    "londonSignals": 554,
+    "londonSignals": 556,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3723
+    "noPublishDate": 3727
   },
   "findings": [
     {
@@ -18503,20 +18503,6 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 85,
-      "publishDate": "October 30, 2023",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stereophonic-off-broadway-2023",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 67,
       "publishDate": "October 31, 2023",
@@ -29386,6 +29372,20 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Grace-Pervades-335731.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
       "score": 60,
       "publishDate": "2026-01-26",
@@ -32325,6 +32325,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 95,
+      "publishDate": "2026-04-29",
+      "url": "https://theatreweekly.com/review-mass-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },

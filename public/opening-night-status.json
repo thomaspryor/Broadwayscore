@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T05:28:12.470Z",
+  "generatedAt": "2026-04-30T11:56:14.465Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-04-30",
-      "status": "previews",
+      "status": "open",
       "slug": "grace-pervades-west-end",
       "thumbnail": "/images/shows/grace-pervades-west-end-2026/thumbnail.webp",
       "siteScore": null,
@@ -89,10 +89,6 @@
           "isDualMarket": true
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theatre Guide",
           "isDualMarket": true
         },
@@ -123,28 +119,28 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-30",
-      "status": "upcoming",
+      "status": "open",
       "slug": "well-ill-let-you-go-off-broadway",
       "thumbnail": "/images/shows/well-ill-let-you-go-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 86,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:1/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -494,6 +490,20 @@
           "name": "London Box Office",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-04-30T11:56:14.465Z",
+          "rc": 1,
+          "s": 86,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -503,7 +513,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-04-30",
-      "status": "previews",
+      "status": "open",
       "slug": "mercury-off-broadway",
       "thumbnail": "/images/shows/mercury-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -891,22 +901,22 @@
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 92,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
-      "positive": 1,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:1/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -924,6 +934,10 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -984,6 +998,18 @@
           "t2": 0,
           "t3": 0,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-30T11:56:14.465Z",
+          "rc": 2,
+          "s": 92,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
           "m": 0,
           "n": 0,
           "bc": "waiting"
