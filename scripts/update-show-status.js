@@ -606,6 +606,26 @@ async function updateShowStatuses() {
       }
     }
 
+    // Check 2c: Revert open → previews when openingDate is in the future.
+    // Triggers when an enrichment script (enrich-off-broadway-dates.js,
+    // enrich-west-end-dates.js, enrich-ibdb-dates.js) corrects an openingDate
+    // FORWARD after a previous run had already flipped the show to 'open'.
+    // Without this revert, the UI shows "Now Playing" during the previews
+    // window. Requires today >= previewsStartDate so we don't pull a true
+    // upcoming show into 'previews'. Skips Check 2's path because Check 2
+    // requires status==='previews' (mutually exclusive with this branch).
+    if (
+      show.status === 'open' &&
+      show.openingDate && !isDateReached(show.openingDate) &&
+      show.previewsStartDate && isDateReached(show.previewsStartDate)
+    ) {
+      changes.status = { from: 'open', to: 'previews' };
+      changes.note = `openingDate ${show.openingDate} is in the future; previews started ${show.previewsStartDate}`;
+      if (!dryRun) {
+        show.status = 'previews';
+      }
+    }
+
     // Check 2b: Move upcoming shows to open/previews based on dates
     if (show.status === 'upcoming' && show.openingDate && isDateReached(show.openingDate)) {
       changes.status = { from: 'upcoming', to: 'open' };

@@ -109,6 +109,12 @@ jobs:
           git config user.email "action@github.com"
           git add data/audit/date-enrichment-corrections.json 2>/dev/null || true
           git add data/audit/enrich-off-broadway-dates-aborted.json 2>/dev/null || true
+          # data/playbill-urls.json is the URL cache populated by Phase 3
+          # production-page discovery. Without staging it, every daily run
+          # re-pays the SERP cost for the same audit-only OB shows. Pattern
+          # mirrors update-show-status.yml:828-832. Caught by Codex
+          # adversarial review 2026-04-29.
+          git add data/playbill-urls.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No audit changes to commit"
             exit 0
