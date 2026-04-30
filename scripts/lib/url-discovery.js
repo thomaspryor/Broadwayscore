@@ -17,6 +17,7 @@ const { domainMatchesExpected, setRegistryDomainAliases } = scraper;
 const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filters');
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview } = require('./review-guards');
+const { validateSerpCandidate } = require('./serp-candidate-validator');
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
@@ -97,12 +98,15 @@ function getShowInfo(showId) {
       const leadActor = Array.isArray(showEntry.cast) && showEntry.cast.length > 0
         ? showEntry.cast[0].name : null;
       return {
+        id: showEntry.id,
         title: showEntry.title,
         year: (showEntry.openingDate || '').substring(0, 4),
         category: showEntry.category || 'broadway',
         openingDate: showEntry.openingDate || null,
         closingDate: showEntry.closingDate || null,
         previewsStartDate: showEntry.previewsStartDate || null,
+        venue: showEntry.venue || showEntry.theater || null,
+        cast: Array.isArray(showEntry.cast) ? showEntry.cast : [],
         leadActor,
       };
     }
@@ -642,6 +646,20 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     // (e.g., Monte Cristo review when searching for Becky Shaw).
     if (showInfo.title && !urlLooksLikeReview(url, showInfo.title)) {
       log(`    ✗ URL slug doesn't match "${showInfo.title}": ${url.substring(0, 80)}`);
+      continue;
+    }
+
+    // Pre-fetch wrong-production validator: inspect title + snippet for
+    // sibling-venue / cross-market markers. Rejects same-titled results
+    // from prior productions (Hamlet 1995 Belasco, RSC tour, etc.) and
+    // cross-market hits (UK production for an OB target). High-precision —
+    // only reject on POSITIVE evidence of a different production.
+    const candValidation = validateSerpCandidate({
+      show: { id: review.showId, ...showInfo },
+      candidate: { url, title: result.title, snippet: result.snippet },
+    });
+    if (!candValidation.ok) {
+      log(`    ✗ ${candValidation.reason}: ${candValidation.detail} — ${url.substring(0, 80)}`);
       continue;
     }
 
