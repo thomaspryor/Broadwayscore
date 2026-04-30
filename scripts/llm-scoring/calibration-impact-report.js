@@ -487,8 +487,8 @@ function main() {
   for (const [showId, before] of reviewsByShow.entries()) {
     const meta = showMeta.get(showId);
     if (!meta) continue;
-    const beforeResult = computeCriticScore(before, outletRegistry);
-    const afterResult = computeCriticScore(calibratedReviewsByShow.get(showId), outletRegistry);
+    const beforeResult = computeCriticScore(before, outletRegistry, meta.category);
+    const afterResult = computeCriticScore(calibratedReviewsByShow.get(showId), outletRegistry, meta.category);
     if (!beforeResult || !afterResult) continue;
     const beforeScore = Math.round(beforeResult.s);
     const afterScore = Math.round(afterResult.s);

@@ -83,6 +83,12 @@ function computeShowScores() {
   const allReviews = loadReviewsWithBlog();
   if (allReviews.length === 0) return {};
 
+  // v5 (2026-04-29): build show-id → category lookup so we can pass showCategory
+  // to computeCriticScore for region-aware tier resolution.
+  const _shows = loadShows();
+  const _categoryById = {};
+  for (const s of _shows) _categoryById[s.id] = s.category;
+
   const byShow = {};
   for (const r of allReviews) {
     if (!r.showId || r.assignedScore == null) continue;
@@ -93,7 +99,7 @@ function computeShowScores() {
   const result = {};
   for (const [showId, { reviews, title }] of Object.entries(byShow)) {
     if (reviews.length === 0) continue;
-    const scoreResult = computeCriticScore(reviews, _outletRegistry);
+    const scoreResult = computeCriticScore(reviews, _outletRegistry, _categoryById[showId]);
     if (!scoreResult) continue;
     result[showId] = {
       compositeScore: Math.round(scoreResult.s * 10) / 10,

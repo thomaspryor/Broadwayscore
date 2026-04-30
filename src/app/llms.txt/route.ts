@@ -46,10 +46,13 @@ Broadway Scorecard™ aggregates reviews from professional theatre critics (New 
 
 ## How Scoring Works
 
-We use a tier-weighted system:
-- **Tier 1** (weight 1.0): Major outlets like New York Times, Vulture, Variety
-- **Tier 2** (weight 0.75): Regional/specialty outlets like TheaterMania, NY Post
-- **Tier 3** (weight 0.35): Blogs and smaller publications
+We use a per-region tier-weighted system:
+- **Tier 1** (weight 1.0): Anchor outlets — NYT, Vulture, Variety (NYC anchors); Guardian, Times UK, Telegraph, Daily Mail, The Stage (London anchors)
+- **Tier 2** (weight 0.75): Major editorial — TheaterMania, BroadwayWorld, Theater Life (NYC); WhatsOnStage, Arts Desk, British Theatre Guide (London)
+- **Tier 3** (weight 0.40): General coverage and recognized single-author critics
+- **Tier 4** (weight 0.20): Unverified single-author blogs
+
+Tiers are per-region: NYT is T1 for Broadway shows but T2 for West End shows; The Stage is T1 for West End but T2 for Broadway. Off-Broadway shares NYC tier; Off-West-End shares London tier.
 
 Each review is normalized to a 0-100 scale. The final score is a weighted average.
 

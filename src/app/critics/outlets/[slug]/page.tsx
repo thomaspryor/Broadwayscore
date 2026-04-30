@@ -15,7 +15,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!outlet) return { title: 'Outlet Not Found' };
 
   const canonicalUrl = `${BASE_URL}/critics/outlets/${params.slug}`;
-  const tierLabel = outlet.tier === 1 ? 'Tier 1' : outlet.tier === 2 ? 'Tier 2' : 'Tier 3';
+  const tierLabel = outlet.tier === 1 ? 'Tier 1'
+    : outlet.tier === 2 ? 'Tier 2'
+    : outlet.tier === 4 ? 'Tier 4'
+    : 'Tier 3';
   const description = `${outlet.name} (${tierLabel}) has published ${outlet.reviewCount} theatre reviews with an average score of ${outlet.avgScore}/100. ${outlet.criticCount} critics, full review history covering Broadway and the West End.`;
 
   return {

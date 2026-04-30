@@ -234,34 +234,53 @@ export default function WestEndMethodologyPage() {
             </p>
 
             <h3 className="text-base font-semibold text-white mt-6 mb-3">Outlet Tiers</h3>
+            <p className="text-sm text-gray-400 mb-3">
+              Tiers are <strong>per-region</strong>. UK national papers are Tier 1 for West End shows (their primary beat) but Tier 2 for Broadway shows (light cross-coverage). The Stage is Tier 1 in both regions when it covers them; The Guardian has a true dual-anchor presence.
+            </p>
             <div className="space-y-3">
               <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="px-2 py-0.5 rounded bg-accent-gold/20 text-accent-gold text-xs font-medium">Tier 1</span>
+                  <span className="text-xs text-gray-400">weight 1.0</span>
                 </div>
                 <p className="text-gray-300 text-sm">
-                  The Guardian, The Times, The Telegraph, Evening Standard, Financial Times, The Observer, The Stage, Time Out, WhatsOnStage, Variety, The New York Times
+                  The Guardian, The Times (UK), The Telegraph, Evening Standard, Daily Mail, Financial Times, The Observer, i Paper, The Independent, The Stage, Time Out London.
                 </p>
               </div>
 
               <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-400 text-xs font-medium">Tier 2</span>
+                  <span className="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-xs font-medium">Tier 2</span>
+                  <span className="text-xs text-gray-400">weight 0.75</span>
                 </div>
                 <p className="text-gray-300 text-sm">
-                  British Theatre Guide, Broadway World UK, LondonTheatre.co.uk, LondonTheatre1, TheatreMania, Exeunt Magazine (20+ outlets)
+                  WhatsOnStage, London Theatre, The Reviews Hub, BroadwayWorld UK, Arts Desk, British Theatre Guide, Spectator UK, Everything Theatre, Theatre Weekly, London Box Office, plus NYC anchor outlets covering London (NY Times, Variety, Vulture, etc.) at reduced weight.
                 </p>
               </div>
 
               <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 3</span>
+                  <span className="px-2 py-0.5 rounded bg-surface text-gray-400 text-xs font-medium">Tier 3</span>
+                  <span className="text-xs text-gray-400">weight 0.40 · general / single-author professional</span>
                 </div>
                 <p className="text-gray-300 text-sm">
-                  Smaller outlets, theatre blogs, and niche London theatre sites
+                  Smaller theatre publications and recognised single-author critics with cross-outlet history or aggregator pickup. Includes ~50 active London theatre outlets.
+                </p>
+              </div>
+
+              <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 rounded bg-surface text-gray-500 text-xs font-medium">Tier 4</span>
+                  <span className="text-xs text-gray-400">weight 0.20 · unverified blogs</span>
+                </div>
+                <p className="text-gray-300 text-sm">
+                  Single-author blogs without aggregator pickup or recognised critic credentials. Counted at reduced weight rather than excluded entirely.
                 </p>
               </div>
             </div>
+            <p className="text-xs text-gray-400 mt-4">
+              Off-West-End shows share the same London tier as West End shows.
+            </p>
 
             <h3 className="text-base font-semibold text-white mt-6 mb-3">Designation Bumps</h3>
             <p className="text-gray-300 text-sm mb-3">

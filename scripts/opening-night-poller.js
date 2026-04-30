@@ -327,21 +327,31 @@ function getFoundOutletIds(showId) {
 }
 
 /**
- * Get T1/T2 outlets that haven't been found yet for a show
+ * Get T1/T2 outlets that haven't been found yet for a show.
+ * v5 (2026-04-29): use region-aware getTier() so per-region tiers from
+ * outlet-tiers.json (e.g. NYT T2 in London, The Stage T1 in London) override
+ * the registry's plain `tier` field. Without this, opening-night discovery
+ * would treat NYT as T1 for West End shows even though it's effectively T2
+ * cross-coverage.
  */
 function getMissingT1T2Outlets(showId, market) {
   const registry = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
   const outlets = registry.outlets || registry;
   const foundIds = getFoundOutletIds(showId);
 
+  const { getTier } = require('./lib/outlet-tiers');
+  // Map market to showCategory for tier lookup
+  const showCategory = isLondonMarket(market) ? 'west-end' : 'broadway';
+
   const missing = [];
   for (const [outletId, outlet] of Object.entries(outlets)) {
-    if (outlet.tier > 2) continue;
+    const effectiveTier = getTier(outletId, { showCategory });
+    if (effectiveTier > 2) continue;
     if (foundIds.has(outletId.toLowerCase())) continue;
     // Market filter
     if (isLondonMarket(market) && !outlet.isDualMarket && outlet.region !== 'uk') continue;
     if (market === 'broadway' && outlet.region === 'uk' && !outlet.isDualMarket) continue;
-    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: outlet.tier, domain: outlet.domain, isDualMarket: !!outlet.isDualMarket });
+    missing.push({ id: outletId, name: outlet.displayName || outletId, tier: effectiveTier, domain: outlet.domain, isDualMarket: !!outlet.isDualMarket });
   }
 
   return missing.sort((a, b) => a.tier - b.tier); // T1 first
