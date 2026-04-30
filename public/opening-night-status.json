@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T13:13:40.795Z",
+  "generatedAt": "2026-04-30T17:18:30.149Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -877,10 +877,6 @@
           "isDualMarket": true
         },
         {
-          "name": "The Stage",
-          "isDualMarket": true
-        },
-        {
           "name": "Everything Theatre",
           "isDualMarket": false
         },
@@ -900,25 +896,25 @@
       "status": "open",
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 92,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 86.67,
+      "liveScore": 87,
+      "scoreDrift": 0.3299999999999983,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
-      "t1": 1,
+      "total": 3,
+      "t1": 2,
       "t2": 1,
       "t3": 0,
-      "positive": 2,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/8 total",
+          "3/8 total",
           "T1:1/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -935,10 +931,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -947,15 +939,7 @@
           "isDualMarket": true
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1010,6 +994,18 @@
           "t2": 1,
           "t3": 0,
           "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-04-30T17:18:30.149Z",
+          "rc": 3,
+          "s": 86.67,
+          "t1": 2,
+          "t2": 1,
+          "t3": 0,
+          "p": 3,
           "m": 0,
           "n": 0,
           "bc": "waiting"

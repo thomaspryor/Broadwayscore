@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T13:13:36.887Z",
+  "timestamp": "2026-04-30T17:18:26.175Z",
   "stats": {
-    "totalReviews": 36260,
+    "totalReviews": 36266,
     "alreadyFlagged": 15811,
-    "dateGuardCatches": 99,
+    "dateGuardCatches": 98,
     "directorMismatch": 838,
     "tvFilmSignals": 1004,
     "londonSignals": 556,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3727
+    "noPublishDate": 3734
   },
   "findings": [
     {
@@ -12805,6 +12805,19 @@
       ]
     },
     {
+      "showId": "mass-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-04-30",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/mass-donmar-warehouse-play-b2967922.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "master-class-2011",
       "file": "faster-times--jonathan-mandell.json",
       "score": 40,
@@ -24228,20 +24241,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-bway-2025",
-      "file": "nypost--entertainment-critic.json",
-      "score": 79,
-      "publishDate": "2025-11-20",
-      "url": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -39029,20 +39028,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-bway-2025",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 78,
-      "publishDate": "January 9, 2025",
-      "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 296d before show (January 9, 2025 vs 2025-11-01)"
         }
       ]
     },
