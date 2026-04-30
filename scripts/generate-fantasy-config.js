@@ -73,7 +73,18 @@ try {
 }
 
 // ── Compute critic scores per show ──────────────────────────────────
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.35 };
+// v5 (2026-04-29): use shared compute-critic-score.js so weights stay in sync
+// with engine.ts. Was using inline TIER_WEIGHTS which drifted (T3=0.35 stale,
+// no T4, no per-region tier resolution).
+const { computeCriticScore: _sharedComputeCriticScore } = require('./lib/compute-critic-score');
+const _outletRegistry = (() => {
+  try { return require('../data/outlet-registry.json').outlets || {}; } catch { return {}; }
+})();
+const _showById = (() => {
+  const map = {};
+  for (const s of (require('../data/shows.json').shows || [])) map[s.id] = s;
+  return map;
+})();
 // Don't show a CriticScore until a show has at least this many reviews.
 // Matches the main app's "reliable score" floor — a single T3 review at 84
 // shouldn't be treated as equivalent to 10 reviews averaging 84.
@@ -82,16 +93,9 @@ const MIN_REVIEWS_FOR_SCORE = 5;
 function computeCriticScore(showId) {
   const showReviews = reviews.filter(r => r.showId === showId && r.assignedScore != null);
   if (showReviews.length < MIN_REVIEWS_FOR_SCORE) return null;
-
-  let weightedSum = 0;
-  let weightSum = 0;
-  for (const r of showReviews) {
-    const tier = r.tier || 3;
-    const weight = TIER_WEIGHTS[tier] || 0.35;
-    weightedSum += r.assignedScore * weight;
-    weightSum += weight;
-  }
-  return weightSum > 0 ? Math.round((weightedSum / weightSum) * 100) / 100 : null;
+  const cat = _showById[showId]?.category;
+  const result = _sharedComputeCriticScore(showReviews, _outletRegistry, cat);
+  return result ? result.s : null;
 }
 
 // ── Compute audience grade per show ─────────────────────────────────
