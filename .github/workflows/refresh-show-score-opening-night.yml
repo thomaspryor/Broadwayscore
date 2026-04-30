@@ -151,6 +151,11 @@ jobs:
       - name: Commit audit + show-score data
         if: steps.window.outputs.has_shows == 'true'
         run: |
+          # Set git identity (actions/checkout doesn't, the bare workspace
+          # inherits no global config — caught in manual-fire of sibling
+          # enrich-off-broadway-dates.yml on 2026-04-29).
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
           git add data/audit/show-score-extraction-gaps.json 2>/dev/null || true
           git add data/show-score.json 2>/dev/null || true
           git diff --staged --quiet && echo "No changes to commit" && exit 0
