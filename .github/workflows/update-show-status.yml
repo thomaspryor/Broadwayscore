@@ -46,7 +46,7 @@ jobs:
       we_new_count: ${{ steps.discover.outputs.we_new_count }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -60,7 +60,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -370,7 +370,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -380,7 +380,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Create issue for new shows
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
@@ -444,7 +444,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to filter previews shows
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -516,7 +516,7 @@ jobs:
 
       - name: Trigger data agent workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Check if the gather-reviews workflow exists
@@ -539,7 +539,7 @@ jobs:
 
       - name: Trigger related shows generation for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Generate recommendations for each newly opened show individually
@@ -566,7 +566,7 @@ jobs:
 
       - name: Trigger Reddit sentiment workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger Reddit sentiment scraping for newly opened shows
@@ -587,7 +587,7 @@ jobs:
 
       - name: Trigger Reddit sentiment for new preview shows
         if: steps.filter.outputs.preview_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Reddit discussions start as soon as previews begin — don't wait for opening night
@@ -608,7 +608,7 @@ jobs:
 
       - name: Trigger Broadway.com audience workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger Broadway.com audience scraping for newly opened shows
@@ -629,7 +629,7 @@ jobs:
 
       - name: Trigger Show Score workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger Show Score scraping for newly opened shows
@@ -650,7 +650,7 @@ jobs:
 
       - name: Trigger Mezzanine workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger Mezzanine scraping for newly opened shows
@@ -671,7 +671,7 @@ jobs:
 
       - name: Trigger Theatr workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger Theatr scraping for newly opened shows (Broadway/OB only — Theatr doesn't cover WE)
@@ -692,7 +692,7 @@ jobs:
 
       - name: Trigger SeatPlan workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger SeatPlan scraping for newly opened London shows
@@ -713,7 +713,7 @@ jobs:
 
       - name: Trigger LBO workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger LBO scraping for newly opened London shows
@@ -734,7 +734,7 @@ jobs:
 
       - name: Trigger LTD workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger London Theatre Direct scraping for newly opened London shows
@@ -755,7 +755,7 @@ jobs:
 
       - name: Trigger WE aggregator sweep for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Pre-populate WET/TR/SD/TS archives before opening night poller runs
@@ -777,7 +777,7 @@ jobs:
 
       - name: Trigger image fetching workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger image fetching + archival for newly opened shows
@@ -798,7 +798,7 @@ jobs:
 
       - name: Trigger cast backfill for new shows
         if: steps.filter.outputs.cast_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger IBDB cast scraping for each new show (including previews)
@@ -843,7 +843,7 @@ jobs:
 
       - name: Trigger WE outlet-based SERP collection for new WE shows
         if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger outlet-based SERP collection for new West End shows
@@ -866,7 +866,7 @@ jobs:
 
       - name: Trigger social media post for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Post to social media for each newly opened show
@@ -891,7 +891,7 @@ jobs:
 
       - name: Trigger review text collection for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger full text collection for each newly opened show
@@ -917,7 +917,7 @@ jobs:
 
       - name: Trigger Deep Research for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             try {
@@ -940,7 +940,7 @@ jobs:
 
       - name: Trigger Opening Night Poller for opened shows
         if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Dispatch the opening night poller to discover reviews for newly opened shows
@@ -959,7 +959,7 @@ jobs:
 
       - name: Trigger Opening Night Broadcast (preview to owner)
         if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Dispatch the broadcast — defaults to preview-to-owner only.
@@ -1022,7 +1022,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -1032,7 +1032,7 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -1081,7 +1081,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -1115,7 +1115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 

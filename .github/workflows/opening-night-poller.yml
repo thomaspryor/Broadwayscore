@@ -86,7 +86,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -159,7 +159,7 @@ jobs:
         if: steps.find.outputs.has_shows != 'true'
         run: echo "No shows to poll. Exiting."
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         if: steps.find.outputs.has_shows == 'true'
         with:
           node-version: 20

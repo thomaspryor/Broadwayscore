@@ -17,12 +17,12 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Fetch private data repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: thomaspryor/broadway-scorecard-data
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

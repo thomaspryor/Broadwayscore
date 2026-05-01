@@ -86,7 +86,7 @@ jobs:
 
       - name: Full clone
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
           fetch-depth: 0

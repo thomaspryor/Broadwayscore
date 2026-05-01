@@ -57,7 +57,7 @@ jobs:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -484,7 +484,7 @@ jobs:
             echo "Orphan-unscored gate passed (blocked=$BLOCKED, force=$FORCE)"
           fi
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         if: steps.check.outputs.pending_shows != ''
         with:
           node-version: 20

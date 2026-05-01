@@ -38,7 +38,7 @@ jobs:
       historical_slugs: ${{ steps.discover.outputs.historical_slugs }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -48,7 +48,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
 
@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: main
 
@@ -145,7 +145,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Create issue for historical shows
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const fs = require('fs');
@@ -203,7 +203,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger gather-reviews workflow
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const slugs = '${{ needs.discover-historical.outputs.historical_slugs }}';
@@ -225,7 +225,7 @@ jobs:
             }
 
       - name: Trigger cast backfill for historical shows
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger IBDB cast scraping for each historical show
@@ -250,7 +250,7 @@ jobs:
             }
 
       - name: Trigger image fetching workflow
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // Trigger image fetching + archival for historical shows

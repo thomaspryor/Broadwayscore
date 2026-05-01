@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
 
       - name: Checkout core data
@@ -36,7 +36,7 @@ jobs:
             echo "has_followers=true" >> $GITHUB_OUTPUT
           fi
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         if: steps.check.outputs.has_followers == 'true'
         with:
           node-version: 20

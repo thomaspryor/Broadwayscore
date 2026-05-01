@@ -69,7 +69,7 @@ jobs:
       matrix:
         market: [broadway, west-end, off-broadway]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: ./.github/actions/checkout-review-texts
         with:
@@ -79,7 +79,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
 
@@ -113,7 +113,7 @@ jobs:
     if: github.event_name == 'schedule' && !cancelled()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Trigger rebuild
         run: |
           gh workflow run rebuild-reviews.yml -f reason="Post weekly outlet SERP collection"
@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: ./.github/actions/checkout-review-texts
         with:
@@ -136,7 +136,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: '20'
 

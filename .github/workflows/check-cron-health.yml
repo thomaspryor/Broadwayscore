@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Check critical crons ran recently
         id: check
@@ -174,7 +174,7 @@ jobs:
       - name: Cooldown check for warning alert
         id: warn_cooldown
         if: success() && steps.check.outputs.warnings != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const cooldownMinutes = 120;
@@ -208,7 +208,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           WARNINGS: ${{ steps.check.outputs.warnings }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const { sendAlert } = require('./scripts/lib/discord-notify.js');

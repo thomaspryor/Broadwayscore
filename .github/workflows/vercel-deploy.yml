@@ -64,7 +64,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
 
       - name: Checkout core data
@@ -110,7 +110,7 @@ jobs:
           fi
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -163,7 +163,7 @@ jobs:
           echo "✓ No demo-only flags leaked to production"
 
       - name: Cache Next.js build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: .next/cache
           key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
@@ -330,7 +330,7 @@ jobs:
       - name: Check if newer deploy is already queued
         if: failure()
         id: check-newer
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             // If a newer deploy is already queued/running, skip the alert —

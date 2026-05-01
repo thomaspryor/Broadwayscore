@@ -59,7 +59,7 @@ jobs:
 
       - name: Checkout for notify action
         if: failure()
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             .github/actions/notify-failure
