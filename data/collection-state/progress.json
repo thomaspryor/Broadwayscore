@@ -1,30 +1,56 @@
 {
   "processed": [
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-    "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json"
+    "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json",
+    "grace-pervades-west-end-2026/theatre-weekly--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
-    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json"
+      "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json",
+      "grace-pervades-west-end-2026/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-01T10:19:44.148Z",
+      "event": "bb-session",
+      "session": "78d97a37",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-01T10:19:45.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
