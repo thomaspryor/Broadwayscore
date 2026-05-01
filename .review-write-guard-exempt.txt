@@ -15,6 +15,7 @@
 # these exemptions can be tightened (e.g. to specific call sites only).
 
 replay-pending-bylines.js -- _pending/{showId}/ → {showId}/ MOVE at line 151, promotes byline-resolved drafts
+split-multi-show-roundups.js -- topology: rewrites parent fullText + creates parallel {otherShowId}/file.json children at lines 148/159/179
 
 # === Legacy violators (pre-Sprint-1 P0 #2) ===
 # These scripts have raw fs.writeFileSync to review-texts paths but predate the
