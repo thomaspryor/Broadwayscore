@@ -17,8 +17,42 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+let sharp;
+try {
+  sharp = require('sharp');
+} catch {
+  sharp = null;
+}
+
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+
+// Aspect-ratio thresholds — match scripts/check-image-aspect.js (canonical).
+// A wide-landscape file saved as poster.webp renders as a vertical sliver
+// inside the show page's aspect-[2/3] object-cover container (evita-west-end-2025
+// commit a71c3defe4). Reject after download so fetch-show-images-auto can re-source.
+const ASPECT_THRESHOLDS = {
+  poster:    { minRatio: 1.00, maxRatio: Infinity },
+  thumbnail: { minRatio: 0.85, maxRatio: 1.70 },
+  hero:      { minRatio: 0,    maxRatio: 0.85 },
+};
+
+async function checkAspect(filePath, role) {
+  if (!sharp) return { ok: true, reason: 'sharp unavailable, skipping' };
+  const t = ASPECT_THRESHOLDS[role];
+  if (!t) return { ok: true };
+  try {
+    const m = await sharp(filePath).metadata();
+    if (!m.width || !m.height) return { ok: false, reason: 'no dimensions' };
+    const ratio = m.height / m.width;
+    if (ratio < t.minRatio || ratio > t.maxRatio) {
+      return { ok: false, reason: `${m.width}x${m.height} h/w=${ratio.toFixed(2)} — wrong shape for ${role}` };
+    }
+    return { ok: true, ratio };
+  } catch (e) {
+    return { ok: false, reason: `sharp failed: ${e.message}` };
+  }
+}
 
 // MD5 hashes of known "Coming Soon" placeholder images.
 // Reject these after download to prevent overwriting real art with placeholders.
@@ -130,6 +164,7 @@ async function downloadImage(url, filepath) {
 async function main() {
   const args = process.argv.slice(2);
   const force = args.includes('--force');
+  const checkAspectFlag = args.includes('--check-aspect');
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 
   const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -199,8 +234,23 @@ async function main() {
         // Check that the local file actually exists
         const localPath = path.join(__dirname, '..', 'public', url);
         if (fs.existsSync(localPath)) {
-          totalSkipped++;
-          continue;
+          // --check-aspect: verify shape; if wrong, null + delete + re-source from imageSources
+          if (checkAspectFlag) {
+            const aspect = await checkAspect(localPath, format);
+            if (!aspect.ok) {
+              console.log(`  ⚠ ${show.title} ${format}: local file has wrong aspect (${aspect.reason}) — re-downloading`);
+              try { fs.unlinkSync(localPath); } catch {}
+              show.images[format] = null; // let downstream fall through to source-URL re-fetch below
+              showChanged = true;
+              // fall through to the source-URL block
+            } else {
+              totalSkipped++;
+              continue;
+            }
+          } else {
+            totalSkipped++;
+            continue;
+          }
         }
         // Local path in shows.json but file is missing - try to re-download from source
         const sourceUrl = imageSources[show.id]?.[format];
@@ -215,11 +265,23 @@ async function main() {
         try {
           const dlUrl = getDownloadUrl(sourceUrl, format);
           const size = await downloadImage(dlUrl, filepath);
-          show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
-          showDownloaded++;
-          totalDownloaded++;
-          totalBytes += size;
-          showChanged = true;
+          // Aspect-check: reject wide-landscape posters / portrait heroes / etc.
+          // The source URL can produce a wrong-shape file (Evita case) — fall through
+          // to fetch-show-images-auto on the next run rather than persisting bad shape.
+          const aspect = await checkAspect(filepath, format);
+          if (!aspect.ok) {
+            console.warn(`  ⚠ ${show.title} ${format}: re-download failed aspect check (${aspect.reason}) — leaving null`);
+            try { fs.unlinkSync(filepath); } catch {}
+            show.images[format] = null;
+            showChanged = true;
+            totalFailed++;
+          } else {
+            show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+            showDownloaded++;
+            totalDownloaded++;
+            totalBytes += size;
+            showChanged = true;
+          }
         } catch (e) {
           console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
           totalFailed++;
@@ -258,6 +320,16 @@ async function main() {
         // Reject known placeholder images — don't let them overwrite real art
         if (isPlaceholderFile(filepath)) {
           console.warn(`  ⚠ ${show.title} ${format}: Downloaded image is a "Coming Soon" placeholder — rejecting`);
+          fs.unlinkSync(filepath);
+          totalFailed++;
+          continue;
+        }
+
+        // Reject wrong-aspect downloads — wide poster, portrait hero, etc.
+        // (evita-west-end-2025 commit a71c3defe4 class).
+        const aspect = await checkAspect(filepath, format);
+        if (!aspect.ok) {
+          console.warn(`  ⚠ ${show.title} ${format}: Downloaded image has wrong aspect (${aspect.reason}) — rejecting`);
           fs.unlinkSync(filepath);
           totalFailed++;
           continue;

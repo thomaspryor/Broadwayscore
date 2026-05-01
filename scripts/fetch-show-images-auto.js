@@ -1417,6 +1417,16 @@ function isNativeSquareBuffer(buffer) {
   return ratio >= 0.85 && ratio <= 1.15;
 }
 
+// Reject wide-landscape buffers in the poster slot. The show page renders
+// poster.webp inside aspect-[2/3] object-cover — landscape inputs become
+// vertical slivers (evita-west-end-2025 commit a71c3defe4 class).
+// Threshold matches scripts/check-image-aspect.js: h/w >= 1.0.
+function isPortraitOrSquareBuffer(buffer) {
+  const dims = getImageDimensions(buffer);
+  if (!dims) return true; // can't tell — let downstream verification decide
+  return (dims.height / dims.width) >= 1.0;
+}
+
 function extractDirectImageUrl(url) {
   // Google redirect URLs: google.com/imgres?imgurl=ACTUAL_URL&...
   if (url.includes('google.com/imgres')) {
@@ -1616,6 +1626,11 @@ async function fetchFromGoogleImages(show) {
     for (const result of posterCandidates) {
       const buffer = await extractImageBuffer(result);
       if (buffer) {
+        if (!isPortraitOrSquareBuffer(buffer)) {
+          const dims = getImageDimensions(buffer);
+          console.log(`   ⚠ Skipping landscape image (${dims ? `${dims.width}x${dims.height}` : 'unknown dims'}) from ${result.domain} — wrong shape for poster`);
+          continue;
+        }
         console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
         posterBuffer = buffer;
         break;
@@ -1631,6 +1646,7 @@ async function fetchFromGoogleImages(show) {
       for (const result of posterCandidates) {
         const buffer = await extractImageBuffer(result);
         if (buffer) {
+          if (!isPortraitOrSquareBuffer(buffer)) continue;
           posterBuffer = buffer;
           break;
         }

@@ -429,6 +429,27 @@ jobs:
         # where label rows diverged between the two email template functions.
         run: node scripts/test-email-broadcast.js
 
+      - name: Check image aspect ratios for changed posters/thumbnails/heroes
+        # Catches the evita-west-end-2025 class (commit a71c3defe4) where a
+        # parallel session committed a wide 2.87:1 production still as
+        # poster.webp — it then rendered as a vertical sliver inside the
+        # show page's aspect-[2/3] object-cover container.
+        # Only checks files changed in this push/PR — pre-existing legacy
+        # violations (~1,179 historical thumbnails) are tracked separately
+        # via the audit-images-llm.js wrong_aspect remediation pipeline.
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            RANGE="origin/${{ github.base_ref }}...HEAD"
+          else
+            BEFORE="${{ github.event.before }}"
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              RANGE="HEAD~1..HEAD"
+            else
+              RANGE="${BEFORE}..${{ github.sha }}"
+            fi
+          fi
+          node scripts/check-image-aspect.js --changed "$RANGE"
+
   data-validation:
     name: Data Validation
     runs-on: ubuntu-latest
