@@ -662,7 +662,17 @@
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/standard--unknown.json",
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -684,6 +694,7 @@
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "data/review-texts/death-of-a-salesman-2022/wsj--chris-jones.json",
       "death-of-a-salesman-2022/wsj--chris-jones.json",
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
     ],
     "directCookies": [],
@@ -704,7 +715,8 @@
     ],
     "archiveToday": [
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
-      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json"
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2022/vulture--greg-evans.json",
@@ -717,7 +729,7 @@
     ]
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "mercury-off-broadway-2026/thestage--unknown.json",
+  "lastProcessed": "mj-2022/broadwaynews--charles-isherwood.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -760,6 +772,17 @@
     },
     {
       "t": "2026-05-01T11:25:21.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-01T18:42:36.248Z",
+      "event": "bb-session",
+      "session": "b3ed7b96",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-05-01T18:42:37.389Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
