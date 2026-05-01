@@ -30,6 +30,16 @@ const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE = process.argv.includes('--force');
 
+// --expect-add=N — bulk-import inverse-drop guard. When set, the script ALSO
+// fires if the actual added review count is less than EXPECT_ADD_TOLERANCE
+// (70%) of the expected. Wired by run-bulk-historical-import.js. The
+// expect/actual comparison rides on rebuild-show-drift.json's existing
+// per-show delta (positive = added). See scripts/lib/bulk-import-summary.js
+// for the parallel non-blocking summary path used by the orchestrator.
+const expectAddArg = process.argv.find(a => a.startsWith('--expect-add='));
+const EXPECT_ADD = expectAddArg ? parseInt(expectAddArg.split('=')[1], 10) : 0;
+const EXPECT_ADD_TOLERANCE = 0.7;
+
 // Thresholds: fire if total dropped > 30 OR any single show > 10
 const TOTAL_DROP_THRESHOLD = 30;
 const SINGLE_SHOW_THRESHOLD = 10;
@@ -67,11 +77,29 @@ const totalDropped = regressions.reduce((sum, r) => sum + r.dropped, 0);
 const maxSingleDrop = regressions.length > 0 ? Math.max(...regressions.map(r => r.dropped)) : 0;
 const significantDrift = drifts.filter(d => Math.abs(d.delta) > 8); // only flag large drifts
 
+// Inverse-drop check: when --expect-add=N is set, sum positive per-show deltas
+// from rebuild-show-drift.json and fire if too few reviews actually landed.
+// Bulk-import orchestrator passes the expected count; rebuild reports the actual.
+let inverseDropFired = false;
+let actualAdded = 0;
+let inverseRatio = null;
+if (EXPECT_ADD > 0) {
+  actualAdded = drifts.reduce((sum, d) => sum + (d.delta > 0 ? d.delta : 0), 0);
+  inverseRatio = actualAdded / EXPECT_ADD;
+  if (inverseRatio < EXPECT_ADD_TOLERANCE) {
+    inverseDropFired = true;
+    console.log(`[Drop Analysis] INVERSE-DROP: expected ${EXPECT_ADD} adds, got ${actualAdded} (${(inverseRatio * 100).toFixed(1)}%, threshold ${(EXPECT_ADD_TOLERANCE * 100).toFixed(0)}%)`);
+  }
+}
+
 const hasSignificantDrops = totalDropped > TOTAL_DROP_THRESHOLD || maxSingleDrop > SINGLE_SHOW_THRESHOLD;
 const hasSignificantDrift = significantDrift.length >= 5;
 
-if (!hasSignificantDrops && !hasSignificantDrift) {
-  console.log(`[Drop Analysis] No significant drops (total: ${totalDropped}, max single: ${maxSingleDrop}, drift: ${drifts.length}). Skipping.`);
+if (!hasSignificantDrops && !hasSignificantDrift && !inverseDropFired) {
+  const inverseNote = EXPECT_ADD > 0
+    ? `, expect-add: ${actualAdded}/${EXPECT_ADD} ratio=${(inverseRatio * 100).toFixed(1)}%`
+    : '';
+  console.log(`[Drop Analysis] No significant drops (total: ${totalDropped}, max single: ${maxSingleDrop}, drift: ${drifts.length}${inverseNote}). Skipping.`);
   process.exit(0);
 }
 
