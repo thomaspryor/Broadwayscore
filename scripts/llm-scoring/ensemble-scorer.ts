@@ -10,7 +10,7 @@ import { OpenAIReviewScorer } from './openai-scorer';
 import { GeminiScorer } from './gemini-scorer';
 import { KimiScorer } from './kimi-scorer';
 import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, EnsembleResult as EnsembleResultType } from './types';
-import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5 } from './config';
+import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 import { ensembleScore, toModelScore } from './ensemble';
@@ -27,6 +27,15 @@ export interface EnsembleScoringOptions {
   maxDelta: number;  // Maximum acceptable difference between models
   verbose: boolean;
   useV5Prompt: boolean;  // Use simplified bucket-first prompt
+  // Anchored-band scoring (Phase B / S1-T6, 2026-05-01).
+  // When `band` is set on a per-call basis (via scoreReview's third arg),
+  // the V6 prompt is built with a hard band constraint and the ensemble
+  // result is clamped post-hoc into [band.floor, band.ceiling]. Default
+  // OFF — ensemble continues using V5 prompt + no clamp.
+  // Note: Kimi scorer does not yet support systemPromptOverride. When
+  // a band is set, Kimi is skipped (3-model ensemble) to prevent it
+  // from voting against V6-prompted siblings using V5 rubric. Add Kimi
+  // override + remove this skip in a follow-up before Phase 4 rescore.
 }
 
 // ========================================
@@ -99,12 +108,32 @@ export class EnsembleReviewScorer {
   }
 
   /**
-   * Score a review using all available models and combine results
+   * Score a review using all available models and combine results.
+   *
+   * Optional band (3rd arg) activates V6 anchored-mode scoring:
+   *   - V6 system prompt built with hard band constraint, passed to per-model
+   *     scoreReviewV5 calls via systemPromptOverride
+   *   - Ensemble result clamped post-hoc into [band.floor, band.ceiling]
+   *   - Kimi skipped (lacks systemPromptOverride; voting V5 rubric against
+   *     V6-prompted siblings would skew the ensemble)
+   *
+   * @param reviewText - the review prose to score
+   * @param context    - context block for the user prompt
+   * @param band       - optional anchored-mode band (S1-T6, default OFF)
+   * @param starsRaw   - optional raw rating string for context in the prompt
    */
   async scoreReview(
     reviewText: string,
-    context: string = ''
+    context: string = '',
+    band?: ScoreBand,
+    starsRaw?: string
   ): Promise<EnsembleResultType> {
+    // Anchored mode: build V6 prompt and pass as override to scorers that
+    // support it. Default unanchored = V5 in-place.
+    const systemPromptOverride = band
+      ? buildSystemPromptV6(band, starsRaw)
+      : undefined;
+
     // Build promises for all available models
     const promises: Promise<{
       model: 'claude' | 'openai' | 'gemini' | 'kimi';
@@ -117,7 +146,7 @@ export class EnsembleReviewScorer {
 
     // Claude
     promises.push(
-      this.claudeScorer.scoreReviewV5(reviewText, context)
+      this.claudeScorer.scoreReviewV5(reviewText, context, systemPromptOverride)
         .then(outcome => ({
           model: 'claude' as const,
           result: outcome.success && !outcome.rejected ? outcome.result! : null,
@@ -135,7 +164,7 @@ export class EnsembleReviewScorer {
 
     // OpenAI
     promises.push(
-      this.openaiScorer.scoreReviewV5(reviewText, context)
+      this.openaiScorer.scoreReviewV5(reviewText, context, systemPromptOverride)
         .then(outcome => ({
           model: 'openai' as const,
           result: outcome.success && !outcome.rejected ? outcome.result! : null,
@@ -154,7 +183,7 @@ export class EnsembleReviewScorer {
     // Gemini (if available)
     if (this.geminiScorer) {
       promises.push(
-        this.geminiScorer.scoreReview(reviewText, context)
+        this.geminiScorer.scoreReview(reviewText, context, systemPromptOverride)
           .then(outcome => ({
             model: 'gemini' as const,
             result: outcome.success && !outcome.rejected ? outcome.result! : null,
@@ -171,8 +200,12 @@ export class EnsembleReviewScorer {
       );
     }
 
-    // Kimi via OpenRouter (if available)
-    if (this.kimiScorer) {
+    // Kimi via OpenRouter (if available AND not in band-anchored mode).
+    // Kimi lacks systemPromptOverride support — including it in band mode
+    // would mean Kimi votes V5-rubric against V6-prompted siblings, skewing
+    // the ensemble. Add override support to kimi-scorer.ts to remove this
+    // skip before Phase 4 full rescore.
+    if (this.kimiScorer && !band) {
       promises.push(
         this.kimiScorer.scoreReview(reviewText, context)
           .then(outcome => ({
@@ -261,6 +294,21 @@ export class EnsembleReviewScorer {
 
     // Use ensemble voting logic
     const ensembleResult = ensembleScore(claudeScore, openaiScore, geminiScore, kimiScore);
+
+    // S1-T6: Anchored-mode post-hoc clamp. The V6 prompt already instructs
+    // the LLM to score within the band, but defensively clamp the ensemble
+    // output here so a single rogue model can't pull the consensus outside
+    // the critic's stated band. No-op when no band passed.
+    if (band && typeof ensembleResult.score === 'number' && !ensembleResult.rejected) {
+      const raw = ensembleResult.score;
+      const clamped = clampScoreToBand(raw, band);
+      if (clamped !== raw) {
+        ensembleResult.score = clamped;
+        if (this.options.verbose) {
+          console.log(`  Anchored-mode clamp: ${raw} → ${clamped} (band [${band.floor},${band.ceiling}])`);
+        }
+      }
+    }
 
     if (this.options.verbose) {
       this.logVerbose(ensembleResult);

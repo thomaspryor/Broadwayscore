@@ -37,6 +37,81 @@ export function clampScoreToBucket(score: number, bucket: string): number {
   return Math.max(range.min, Math.min(range.max, score));
 }
 
+// ========================================
+// STAR / LETTER GRADE → BAND PROJECTIONS
+// ========================================
+// Bands constrain the LLM's output range when a critic provides a star
+// rating or letter grade. Distinct from BUCKET_RANGES (display buckets):
+// bands are LLM-input constraints, BUCKET_RANGES is downstream score→bucket
+// classification. A 5★ band [91,100] is INSIDE the Rave bucket [83,100],
+// but a 4★ band [71,90] straddles Positive [70,82] and lower Rave [83,90].
+// The asymmetry is intentional: rank preservation across stars beats bucket
+// alignment.
+
+export interface ScoreBand {
+  fraction: number;
+  floor: number;
+  ceiling: number;
+}
+
+/**
+ * Project a star rating onto a score band.
+ * Scale-agnostic: handles /4, /5, /10 identically via fraction.
+ *
+ * Mapping (fraction of max → band):
+ *   ≥90% → [91,100]   (5★ on /5, 4/4, 4.5/5)
+ *   70-89% → [71,90]  (4★ on /5, 3/4, 3.5/4)
+ *   50-69% → [51,70]  (3★ on /5)
+ *   30-49% → [31,50]  (2★ on /5)
+ *   <30%   → [0,30]   (1★ on /5, F territory)
+ *
+ * Half-stars land naturally: 3.5/4 = 87.5% → [71,90]; 4.5/5 = 90% → [91,100].
+ */
+export function starToBand(stars: number, max: number = 5): ScoreBand {
+  const fraction = stars / max;
+  if (fraction >= 0.9) return { fraction, floor: 91, ceiling: 100 };
+  if (fraction >= 0.7) return { fraction, floor: 71, ceiling: 90 };
+  if (fraction >= 0.5) return { fraction, floor: 51, ceiling: 70 };
+  if (fraction >= 0.3) return { fraction, floor: 31, ceiling: 50 };
+  return { fraction, floor: 0, ceiling: 30 };
+}
+
+/**
+ * Project a letter grade onto a narrow score band.
+ * Letter grades have 13 positions (A+ → F) so each gets ~6pt of within-band
+ * spread, preserving the granularity the +/- modifier already encodes.
+ * F gets a wide band because "merely failed" vs "actively offensive" is real.
+ *
+ * Returns null on unrecognized input. Case-insensitive; tolerates whitespace.
+ */
+export function letterGradeToBand(grade: string): { floor: number; ceiling: number } | null {
+  if (typeof grade !== 'string') return null;
+  const g = grade.trim().toUpperCase();
+  switch (g) {
+    case 'A+': return { floor: 95, ceiling: 100 };
+    case 'A':  return { floor: 89, ceiling: 94 };
+    case 'A-': return { floor: 83, ceiling: 88 };
+    case 'B+': return { floor: 77, ceiling: 82 };
+    case 'B':  return { floor: 71, ceiling: 76 };
+    case 'B-': return { floor: 65, ceiling: 70 };
+    case 'C+': return { floor: 59, ceiling: 64 };
+    case 'C':  return { floor: 53, ceiling: 58 };
+    case 'C-': return { floor: 47, ceiling: 52 };
+    case 'D+': return { floor: 41, ceiling: 46 };
+    case 'D':  return { floor: 35, ceiling: 40 };
+    case 'D-': return { floor: 29, ceiling: 34 };
+    case 'F':  return { floor: 0,  ceiling: 28 };
+    default:   return null;
+  }
+}
+
+/**
+ * Clamp a score into a band [floor, ceiling].
+ */
+export function clampScoreToBand(score: number, band: { floor: number; ceiling: number }): number {
+  return Math.max(band.floor, Math.min(band.ceiling, score));
+}
+
 /**
  * @deprecated Use BUCKET_RANGES with SYSTEM_PROMPT_V5 instead.
  * These V3 ranges conflict with V5 bucket definitions.
@@ -445,6 +520,222 @@ Respond with ONLY the JSON object.`;
  * Build the V5 prompt for a review
  */
 export function buildPromptV5(reviewText: string, context: string = ''): string {
+  return SCORING_PROMPT_V5
+    .replace('{reviewText}', reviewText)
+    .replace('{context}', context);
+}
+
+// ========================================
+// V6 PROMPT — STAR-ANCHORED BANDS + FULL-RANGE DECOMPRESSION
+// ========================================
+// V6 fixes two empirical biases in V5:
+//   1. Top-end compression: V5 FEW_SHOT_EXAMPLES anchors 5/5 at 87, no
+//      example >95. Phase A measurement (1,030 paired observations,
+//      2026-04-11) showed 5/5 critic ratings → LLM mean 88.7 (gap -11.3).
+//      Only 60 of 12,335 LLM scores ever reach 95+, max observed 98.
+//   2. Star-rated reviews collapse to a flat number (5★=100, 4★=80) via
+//      starsToNumeric and never see the LLM at all (V5 bypasses LLM when
+//      a high-reliability star exists).
+//
+// V6 design:
+//   - Anchored mode (band passed): "Critic awarded N/M (X%). Score MUST be
+//     in [floor, ceiling]. Use the FULL band — top for rapturous, floor
+//     for barely qualifying."
+//   - Unanchored mode (no band): rebuilt rubric. Few-shots include 100,
+//     95, 91 raves to kill the empirical 89-cap.
+//
+// NOT YET EXPORTED FROM index.ts. PROMPT_VERSION still '5.4.0'. Phase 2b
+// flips PROMPT_VERSION to '6.0.0' and switches index.ts to buildPromptV6.
+
+// Two extra few-shot examples that V5 lacks: a 100-score rave and a 91
+// floor-of-rave. These are designed to teach the model the FULL band.
+// Excerpts are composite — written to mirror real critic prose at these
+// score levels — and will be replaced with corpus-sourced excerpts during
+// Sprint 2 sample review if the user wants real-source examples.
+const FEW_SHOT_EXAMPLES_V6_HIGH_END: FewShotExample[] = [
+  // 100 — once-in-a-generation rave anchor
+  {
+    score: 100,
+    bucket: 'Rave',
+    reviewExcerpt: "There are nights in the theater you can feel are happening — the entire room leaning forward together — and this is one of them. Every choice on stage lands; every performance has been rehearsed into a kind of inevitability. I cannot remember the last time I left a Broadway house this exhilarated. See it now, see it twice, and tell everyone you know.",
+    reasoning: "Pure superlative throughout, explicit double-recommendation, no caveats anywhere. The critic uses 'cannot remember the last time' framing — that's career-best language. 96+ requires this kind of unqualified, generational claim.",
+  },
+  // 91 — floor of the Rave bucket: clear rave but not a career-best
+  {
+    score: 91,
+    bucket: 'Rave',
+    reviewExcerpt: "It's a strong, intelligent production with a fine cast and a director who clearly knows what she wants. The book is sharp, the songs land, and there are no sustained low patches. I left smiling and would happily go again — though I won't pretend it cracked the top tier of the season.",
+    reasoning: "Consistent praise without significant caveats = Rave. But the closing 'won't pretend it cracked the top tier' explicitly puts it at the floor of the Rave bucket, not the top.",
+  },
+];
+
+export const FEW_SHOT_EXAMPLES_V6: FewShotExample[] = [
+  ...FEW_SHOT_EXAMPLES_V6_HIGH_END,
+  ...FEW_SHOT_EXAMPLES,
+];
+
+// Anchored-mode block: emitted when the caller passes a band. Replaces
+// the V5 "Star Rating Calibration" + "Score Distribution" sections with
+// a hard-constrained band instruction.
+function buildAnchoredBandBlock(band: ScoreBand, starsRaw?: string): string {
+  const pctText = `${Math.round(band.fraction * 100)}%`;
+  const ratingLine = starsRaw
+    ? `## Original Rating\nThe critic awarded **${starsRaw}** (${pctText} of max).`
+    : `## Original Rating\nThe critic's rating maps to ${pctText} of max.`;
+  return `${ratingLine}
+
+## Anchored Score Band (HARD CONSTRAINT)
+
+Your score MUST be an integer in **[${band.floor}, ${band.ceiling}]**. Do not output a score outside this range. The critic's rating sets the floor and ceiling — your job is to pick the position WITHIN this band that best matches the prose.
+
+**Use the FULL range, not just the middle:**
+- Top of band (${band.ceiling}): the most rapturous version of this rating — career-best praise, sustained superlatives, "must-see" energy.
+- Floor of band (${band.floor}): the most measured/qualified version — clear rating but with reservations the critic chose not to demote.
+- Middle of band: standard expression of this rating.
+
+A 5-star review with rapturous prose should land at ${band.ceiling}. A 5-star review the critic seemed to give grudgingly should land at ${band.floor}. Both are valid. Spread your scores across the full band based on prose warmth.
+
+`;
+}
+
+// Unanchored-mode block: emitted when no band is passed. Rebuilt rubric
+// that explicitly authorizes 95-100 scores for the strongest raves, with
+// the V6 high-end few-shots showing what those look like.
+const UNANCHORED_FULL_RANGE_BLOCK = `## Score Distribution (USE THE FULL RANGE)
+
+Do NOT cluster scores in the 80-87 zone. The 0-100 range is real — use it.
+
+- **Rave 96-100** Once-in-a-season / once-in-a-career level. Career-best praise from the critic, sustained superlatives, explicit "must-see" / "go now" / "tell everyone" framing. No reservations anywhere. **Use 100 for the most rapturous reviews — do not cap at 95.**
+- **Rave 91-95** Strong rave with no caveats. "Superb," "first-rate," "one of the year's best." Clear and consistent praise.
+- **Rave 83-90** Floor of Rave. Consistent praise but tonally measured. Critic clearly recommends without reservations but doesn't reach for superlatives.
+- **Positive 78-82** Strong recommendation with at least one real caveat.
+- **Positive 74-77** Solid recommendation, notable reservations.
+- **Positive 70-73** Barely positive, heavily qualified.
+- **Mixed 55-69** Genuinely on the fence.
+- **Negative 35-54** Cannot recommend.
+- **Pan 0-34** Avoid. Use 0-15 for the most damning pans — do not cluster at 25-30.
+
+`;
+
+const SYSTEM_PROMPT_V6_BASE = `You are a theater critic review scorer for Broadway and West End shows. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
+
+## Step 0: Is This Text Scoreable?
+
+Before scoring, check if this text is actually a scoreable review of the target show. If ANY of the following apply, DO NOT score — return a rejection instead:
+
+| Rejection Reason | Description |
+|-----------------|-------------|
+| wrong_show | Text is about a completely different show or topic |
+| wrong_production | Reviews a different production than the one specified in the Show context. **Check the venue and market carefully**: same show title at the wrong venue/market = wrong production. Also reject touring, regional, transfer, or preview/workshop productions at other venues. |
+| not_a_review | Press release, plot summary with no evaluation, cast listing, or promotional content |
+| garbage_text | Navigation menus, error pages, ad copy, login prompts, or other non-article content |
+
+The following are NOT rejections — score them, but with reduced confidence:
+
+| Situation | How to Handle |
+|-----------|--------------|
+| **Multi-show roundup** | Score the portion about the target show. Set confidence to "low" if less than ~150 words about it. |
+| **Truncated text** | Score what's available. Set confidence to "low" if the verdict/conclusion appears cut off. |
+| **Excerpt only** | Score the excerpt. Set confidence to "low". |
+
+If rejecting, respond with ONLY this JSON:
+{
+  "scoreable": false,
+  "rejection": "wrong_show",
+  "reasoning": "Brief explanation of why this is not scoreable"
+}
+
+If scoreable, proceed to Step 1.
+
+## Step 1: Choose the Bucket
+
+Classify the review into ONE of these buckets:
+
+| Bucket | Description |
+|--------|-------------|
+| **Rave** | Strong recommendation with no significant reservations. Does NOT require superlatives — consistent praise is enough. |
+| **Positive** | Recommends seeing it, BUT with reservations, caveats, or mixed elements |
+| **Mixed** | Neither recommends nor discourages |
+| **Negative** | Does not recommend |
+| **Pan** | Strongly negative |
+
+## Critical Instructions
+
+1. **VERDICT OVER SETUP**: Many reviews open with negative context before delivering a positive verdict. Score the FINAL RECOMMENDATION.
+2. **CURRENT PRODUCTION ONLY**: If the review compares to previous productions, score only THIS production.
+3. **EXPLICIT RECOMMENDATIONS**: "must-see", "skip it", "don't miss", "not worth it" should heavily influence the bucket.
+4. **BIOGRAPHICAL CONTEXT IS NOT CRITICISM**: Background about the SUBJECT is not criticism of the SHOW.
+5. **EVALUATIVE TEXT IS NOT PLOT SUMMARY**: Performance/staging descriptions count as evaluation.
+
+## Structural Review Patterns
+
+When a review structurally praises a show heavily and then reserves criticism for one specific section, weight by content volume. A review that spends 70% on praise and 30% on Act-2 critique is a qualified rave (upper Positive ~78), not Mixed. Wistful closing tone does NOT downgrade an otherwise-positive review.
+
+## Negative Review Patterns
+
+**PERFORMER PRAISE DOES NOT REDEEM A PAN.** "A game cast giving their all" while panning the book/direction is NEGATIVE.
+
+**USE THE FULL PAN RANGE.** Reviews that warn audiences away should score 10-20.
+
+`;
+
+const SYSTEM_PROMPT_V6_OUTPUT = `## Output Format
+
+Respond with ONLY this JSON (no markdown code fences, no explanation outside the JSON):
+
+{
+  "scoreable": true,
+  "bucket": "Positive",
+  "score": 79,
+  "confidence": "high",
+  "verdict": "recommended with reservations",
+  "keyQuote": "One COMPLETE SENTENCE (40-150 chars) where the critic directly evaluates the show — an opinion, not plot summary or context.",
+  "reasoning": "1-2 sentences explaining your classification",
+  "publishDate": "YYYY-MM-DD or null"
+}
+
+## Confidence Levels
+- **high**: Clear verdict language, unambiguous tone
+- **medium**: Some ambiguity but overall direction is clear
+- **low**: Genuinely mixed signals, or truncated text with unclear verdict
+`;
+
+/**
+ * Build the V6 system prompt.
+ *
+ * @param band - if provided, emits anchored-mode prompt with hard constraint
+ *               on the score range. If omitted, emits unanchored-mode prompt
+ *               with full-range rubric and high-end few-shots.
+ * @param starsRaw - optional raw rating string (e.g. "5/5", "3.5/4", "A-")
+ *                   to surface to the LLM in anchored mode for context.
+ */
+export function buildSystemPromptV6(band?: ScoreBand, starsRaw?: string): string {
+  const middle = band
+    ? buildAnchoredBandBlock(band, starsRaw)
+    : UNANCHORED_FULL_RANGE_BLOCK;
+
+  const examples = FEW_SHOT_EXAMPLES_V6.map(
+    (ex, i) => `### Example ${i + 1}: Score ${ex.score} (${ex.bucket})
+Review: "${ex.reviewExcerpt}"
+Reasoning: ${ex.reasoning}
+`
+  ).join('\n');
+
+  return `${SYSTEM_PROMPT_V6_BASE}${middle}${SYSTEM_PROMPT_V6_OUTPUT}
+## Calibration Examples
+
+${examples}
+### Example: Not Scoreable
+Text: "The page you are looking for no longer exists..."
+Response: { "scoreable": false, "rejection": "garbage_text", "reasoning": "404 page, not a review." }
+`;
+}
+
+/**
+ * Build the V6 user-message prompt for a review.
+ * Same shape as buildPromptV5 — context + reviewText.
+ */
+export function buildPromptV6(reviewText: string, context: string = ''): string {
   return SCORING_PROMPT_V5
     .replace('{reviewText}', reviewText)
     .replace('{context}', context);
