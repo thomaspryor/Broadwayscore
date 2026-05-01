@@ -331,8 +331,13 @@ function parseOriginalRating(rating: string): number | null {
 // CRITIC SCORE CALCULATION
 // ===========================================
 
-export function computeCriticScore(reviews: RawReview[], showCategory?: string): CriticScoreResult | null {
+export function computeCriticScore(reviews: RawReview[], showCategory?: string, showType?: string): CriticScoreResult | null {
   if (reviews.length === 0) return null;
+  // Opera flat-weighting (2026-05-01): Met opera coverage doesn't follow theater's
+  // tier hierarchy (Operawire/Parterre/NYCR are first-class voices, not T3 blogs).
+  // Force tier=1 for all opera reviews and skip the off-market multiplier.
+  // Mirrors scripts/lib/compute-critic-score.js — drift = silent score divergence.
+  const isOpera = showType === 'opera';
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
   // publishDate. This dedups the case where the same critic re-reviews after a cast
@@ -369,11 +374,9 @@ export function computeCriticScore(reviews: RawReview[], showCategory?: string):
   const computedReviews: ComputedReview[] = dedupedReviews.map(review => {
     const outletConfig = getOutletConfig(review.outletId, review.outlet, showCategory);
     const isTopCritic = !!(review.criticName && TOP_CRITICS.has(review.criticName));
-    const tier = isTopCritic ? 1 : outletConfig.tier;
-    // Off-market multiplier: Off-Broadway and Off-West-End reviews carry 80%
-    // of their tier weight, reflecting that off-market coverage is typically
-    // lighter critical engagement than the parent market. (v5 — 2026-04-29)
-    const isOffMarket = showCategory === 'off-broadway' || showCategory === 'off-west-end';
+    const resolvedTier = isTopCritic ? 1 : outletConfig.tier;
+    const tier = isOpera ? 1 : resolvedTier;
+    const isOffMarket = !isOpera && (showCategory === 'off-broadway' || showCategory === 'off-west-end');
     const baseTierWeight = TIER_WEIGHTS[tier];
     const tierWeight = isOffMarket ? baseTierWeight * 0.8 : baseTierWeight;
 
@@ -674,7 +677,7 @@ export function computeShowData(
   // Exclude single-model emergency reviews: only 1 of N ensemble models succeeded,
   // so the score is unreliable until a human review clears the flag.
   const eligibleReviews = showReviews.filter(r => !r.singleModelEmergency);
-  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews, show.category);
+  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews, show.category, (show as { type?: string }).type);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)

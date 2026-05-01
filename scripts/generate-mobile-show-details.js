@@ -298,7 +298,7 @@ for (const show of visibleShows) {
   }
 
   // Compute composite score using shared module (matches engine.ts)
-  const scoreResult = computeCriticScore(showReviews, outletRegistry, show.category);
+  const scoreResult = computeCriticScore(showReviews, outletRegistry, show.category, show.type);
 
   // Minimum review thresholds per market (matches src/config/score-buckets.ts)
   const MIN_REVIEWS = 5;
