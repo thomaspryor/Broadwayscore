@@ -652,7 +652,16 @@ const OWE_VENUE_PAGES = [
   { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
   { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  // Stuart King email 2026-04-27: Marylebone Theatre is the newest major OWE venue, under new
+  // management and getting strong critic coverage (Stuart's Price review 2026-04-27 was the trigger).
   { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  // Premier Off-West-End venues per Stuart King 2026-04-27: A-list performers, strong critic coverage.
+  // Patterns probed 2026-05-01 — only static-HTML venues added here. Donmar (JS-rendered),
+  // Menier (ticketing-system-only static HTML), Regent's Park Open Air (JS-rendered) need
+  // Playwright-based discovery — tracked separately.
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true },
+  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
+  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
 ];
 
 // Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
