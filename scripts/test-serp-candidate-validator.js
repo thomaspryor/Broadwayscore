@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 /**
- * Test suite for scripts/lib/serp-candidate-validator.js
+ * Test suite for scripts/lib/serp-candidate-validator.js (v3).
  *
  * Test cases motivated by 2026-04-29 Notion card "Pre-fetch SERP-result
  * validator (cast/venue check)":
  *   - hamlet-off-broadway-2026 (BAM Harvey)
  *   - the-receptionist-off-broadway-2026 (Pershing Square Signature Center)
  *
- * The fixtures synthesize realistic SERP {url, title, snippet} shapes for
- * both wrong-production and correct-production candidates. We assert the
- * validator's reject/accept decision and the reason code.
+ * v3 design (after corpus-probe iteration in same session):
+ *   - Single check: cross-market hard markers, gated on URL DOMAIN
+ *   - Transfer-aware exemption: shows.json same-title sibling in opposite market
+ *   - SERP_PREFETCH_VALIDATOR=off env gate for rollback
  *
  * Run: node scripts/test-serp-candidate-validator.js
  */
@@ -73,38 +74,12 @@ if (!receptionist) throw new Error('the-receptionist-off-broadway-2026 not found
 console.log(`\nTarget shows:\n  ${hamlet.id} @ ${hamlet.venue}\n  ${receptionist.id} @ ${receptionist.venue}\n`);
 
 // ----------------------------------------------------------------------------
-// Hamlet OB 2026 cases
+// Hamlet OB 2026 — primary motivating case
 // ----------------------------------------------------------------------------
 console.log('Hamlet @ BAM Harvey (off-broadway-2026):');
 
-t('rejects sibling Broadway venue (Belasco / 1995)', () => {
+t('rejects UK-domain Old Vic review', () => {
   resetSerpValidatorStats();
-  const result = validateSerpCandidate({
-    show: hamlet,
-    candidate: {
-      url: 'https://www.nytimes.com/1995/05/03/theater/review-hamlet-belasco.html',
-      title: 'Theater Review; Ralph Fiennes Plays Hamlet at the Belasco',
-      snippet: "Ralph Fiennes brings a fresh, brooding intensity to the prince of Denmark in this Belasco Theatre revival.",
-    },
-  });
-  assertReject(result, 'sibling-venue', 'Belasco');
-});
-
-t('rejects sibling Broadway venue (Broadhurst / 2009 — Jude Law)', () => {
-  const result = validateSerpCandidate({
-    show: hamlet,
-    candidate: {
-      url: 'https://www.vulture.com/2009/10/jude_laws_hamlet_at_broadhurst.html',
-      title: 'Jude Law Stuns in Broadhurst Hamlet',
-      snippet: "Donmar Warehouse's transfer to the Broadhurst Theatre opened last night.",
-    },
-  });
-  // Could be flagged as sibling-venue OR cross-market (Donmar is UK).
-  // Sibling-venue is checked first.
-  assertReject(result, 'sibling-venue', 'Broadhurst');
-});
-
-t('rejects UK production via Old Vic marker', () => {
   const result = validateSerpCandidate({
     show: hamlet,
     candidate: {
@@ -113,19 +88,34 @@ t('rejects UK production via Old Vic marker', () => {
       snippet: 'Robert Icke directs Andrew Scott in a thrilling new Hamlet at the Old Vic.',
     },
   });
-  assertReject(result, 'cross-market', 'Old Vic');
+  assertReject(result, 'cross-market', 'Old Vic on Guardian');
 });
 
-t('rejects RSC/Stratford production', () => {
+t('rejects UK-domain RSC/Stratford review', () => {
   const result = validateSerpCandidate({
     show: hamlet,
     candidate: {
-      url: 'https://www.rsc.org.uk/hamlet/reviews',
-      title: 'Hamlet 2025 - Royal Shakespeare Company',
+      url: 'https://www.thestage.co.uk/reviews/hamlet-rsc-stratford',
+      title: 'Hamlet — Royal Shakespeare Company',
       snippet: "The RSC's Stratford-upon-Avon Hamlet transfers to the Barbican.",
     },
   });
-  assertReject(result, 'cross-market', 'RSC');
+  assertReject(result, 'cross-market', 'RSC on The Stage');
+});
+
+t('does NOT reject "Old Vic" mention on US domain (transfer history in NYT review)', () => {
+  // Critical false-positive guard: NYT/Vulture reviews of NYC productions
+  // routinely mention the originating Old Vic / Donmar / Royal Court run.
+  // Validator must accept these — only UK-domain hits are real wrong-production.
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://www.nytimes.com/2026/05/05/theater/hamlet-bam-review.html',
+      title: 'A Restless Hamlet at BAM',
+      snippet: 'After originating at the Old Vic last season, Robert Icke’s production opens at BAM Harvey.',
+    },
+  });
+  assertAccept(result, 'NYT review mentioning Old Vic transfer');
 });
 
 t('accepts BAM Harvey review (correct production)', () => {
@@ -140,19 +130,7 @@ t('accepts BAM Harvey review (correct production)', () => {
   assertAccept(result, 'BAM Harvey accept');
 });
 
-t('accepts when sibling venue mentioned but own venue ALSO mentioned (comparison piece)', () => {
-  const result = validateSerpCandidate({
-    show: hamlet,
-    candidate: {
-      url: 'https://www.vulture.com/2026/05/hamlet-bam-vs-belasco.html',
-      title: 'A Hamlet for Our Time: BAM Harvey vs. Belasco',
-      snippet: 'How does the new BAM Harvey staging compare to the 1995 Belasco production?',
-    },
-  });
-  assertAccept(result, 'comparison piece accept');
-});
-
-t('accepts non-marker review with title-only snippet (no positive reject signal)', () => {
+t('accepts non-marker snippet on neutral domain', () => {
   const result = validateSerpCandidate({
     show: hamlet,
     candidate: {
@@ -165,30 +143,11 @@ t('accepts non-marker review with title-only snippet (no positive reject signal)
 });
 
 // ----------------------------------------------------------------------------
-// Receptionist OB 2026 cases
+// Receptionist OB 2026 — second motivating case
 // ----------------------------------------------------------------------------
 console.log('\nThe Receptionist @ Signature Center (off-broadway-2026):');
 
-t('rejects 2007 Manhattan Theatre Club original (cross-market check)', () => {
-  // The 2007 OB production is NOT in shows.json — sibling-venue check
-  // can't catch it. But MTC is a US-market hard marker for a Broadway/OB
-  // show... wait, the validator's cross-market check only fires when target
-  // is in OPPOSING market. For an OB target, MTC is the SAME market. So MTC
-  // mention won't trigger cross-market. This test asserts the (correct)
-  // accept behavior. The user-facing protection here is the date-window
-  // filter upstream of discoverCorrectUrl — not this validator.
-  const result = validateSerpCandidate({
-    show: receptionist,
-    candidate: {
-      url: 'https://www.nytimes.com/2007/10/30/theater/reviews/30recep.html',
-      title: 'A Banal Office Job in The Receptionist',
-      snippet: "Adam Bock's play opened at Manhattan Theatre Club's Stage I last night.",
-    },
-  });
-  assertAccept(result, '2007 MTC version: validator does not catch (date filter does)');
-});
-
-t('rejects UK production via Royal Court marker', () => {
+t('rejects UK-domain Royal Court review', () => {
   const result = validateSerpCandidate({
     show: receptionist,
     candidate: {
@@ -197,10 +156,13 @@ t('rejects UK production via Royal Court marker', () => {
       snippet: "Bock's bleak comedy lands at the Royal Court Theatre this autumn.",
     },
   });
-  assertReject(result, 'cross-market', 'Royal Court');
+  assertReject(result, 'cross-market', 'Royal Court on Guardian');
 });
 
-t('rejects regional/touring with title in snippet', () => {
+t('does NOT reject regional/tour mention (regional-tour check removed in v2)', () => {
+  // v1 rejected on "Goodman Theatre" / "in chicago" + title co-occurrence.
+  // Removed in v2 after corpus probe showed this pattern dominates legit
+  // transfer-history references.
   const result = validateSerpCandidate({
     show: receptionist,
     candidate: {
@@ -209,7 +171,21 @@ t('rejects regional/touring with title in snippet', () => {
       snippet: 'Adam Bock’s The Receptionist arrives at the Goodman Theatre in Chicago.',
     },
   });
-  assertReject(result, 'regional-tour', 'Goodman/Chicago');
+  assertAccept(result, 'regional/tour now passes');
+});
+
+t('does NOT reject 2007 MTC original on US domain (no cross-market trigger)', () => {
+  const result = validateSerpCandidate({
+    show: receptionist,
+    candidate: {
+      url: 'https://www.nytimes.com/2007/10/30/theater/reviews/30recep.html',
+      title: 'A Banal Office Job in The Receptionist',
+      snippet: "Adam Bock's play opened at Manhattan Theatre Club's Stage I last night.",
+    },
+  });
+  // MTC is a US marker; target is OB (NYC pool). No cross-market fires.
+  // Date-window upstream is what catches the 2007 production.
+  assertAccept(result, 'MTC mention on NYT URL — same market, validator passes');
 });
 
 t('accepts Signature Center review (correct production)', () => {
@@ -224,16 +200,62 @@ t('accepts Signature Center review (correct production)', () => {
   assertAccept(result, 'Signature accept');
 });
 
-t('accepts off-Broadway review with mention of touring history when own venue named', () => {
+// ----------------------------------------------------------------------------
+// Transfer-aware cross-market exemption
+// ----------------------------------------------------------------------------
+console.log('\nTransfer-aware exemption:');
+
+t('cross-market exempted when transfer sibling exists in opposite market', () => {
+  // John Proctor Is the Villain: Broadway 2025 + West End 2026.
+  const johnProctor = showList.find(s => s.id === 'john-proctor-is-the-villain-2025');
+  const johnProctorWE = showList.find(s => s.id === 'john-proctor-is-the-villain-west-end-2026');
+  if (!johnProctor || !johnProctorWE) {
+    console.log('    ⊙ skipped (transfer pair not in shows.json)');
+    return;
+  }
+  // Even on a UK domain, the Donmar mention is exempted because the transfer
+  // sibling exists. (This is the conservative direction: better to fetch +
+  // verify than wrong-reject a transfer-relationship review.)
   const result = validateSerpCandidate({
-    show: receptionist,
+    show: johnProctor,
     candidate: {
-      url: 'https://www.vulture.com/the-receptionist-revival',
-      title: 'The Receptionist Reopens',
-      snippet: 'Before this Pershing Square Signature Center revival, the play had a national tour in the early 2010s.',
+      url: 'https://www.theguardian.com/stage/john-proctor-donmar',
+      title: 'John Proctor at the Donmar Warehouse',
+      snippet: 'After its run at the Donmar Warehouse last season, the production opens.',
     },
   });
-  assertAccept(result, 'tour-mention with own venue');
+  assertAccept(result, 'cross-market suppressed by transfer sibling');
+});
+
+// ----------------------------------------------------------------------------
+// URL-domain gating
+// ----------------------------------------------------------------------------
+console.log('\nURL-domain gating:');
+
+t('UK marker on neutral/unknown domain is NOT rejected', () => {
+  // The validator only fires when URL is on a known opposing-market domain.
+  // Unknown domains pass through.
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://www.somerandomblog.example/hamlet-old-vic',
+      title: 'Hamlet at the Old Vic',
+      snippet: 'Andrew Scott Old Vic',
+    },
+  });
+  assertAccept(result, 'unknown domain — no reject');
+});
+
+t('UK marker on .co.uk subdomain rejected (suffix match)', () => {
+  const result = validateSerpCandidate({
+    show: hamlet,
+    candidate: {
+      url: 'https://reviews.somecouk.co.uk/hamlet',
+      title: 'Hamlet review',
+      snippet: 'A new Hamlet at the Old Vic in London.',
+    },
+  });
+  assertReject(result, 'cross-market', '.co.uk suffix triggers UK-domain detection');
 });
 
 // ----------------------------------------------------------------------------
@@ -259,7 +281,6 @@ t('empty url accepts (handled upstream)', () => {
     show: hamlet,
     candidate: { url: '', title: 'Hamlet at Old Vic', snippet: '' },
   });
-  // Validator returns ok if URL is empty — upstream code handles
   assertAccept(result, 'empty url');
 });
 
@@ -279,17 +300,31 @@ t('stats counter increments correctly', () => {
   resetSerpValidatorStats();
   validateSerpCandidate({
     show: hamlet,
-    candidate: { url: 'https://x', title: 'BAM Harvey', snippet: '' },
-  }); // accept
+    candidate: { url: 'https://nytimes.com/x', title: 'BAM Harvey', snippet: '' },
+  });
   validateSerpCandidate({
     show: hamlet,
-    candidate: { url: 'https://y', title: 'Old Vic Hamlet', snippet: '' },
-  }); // reject
+    candidate: { url: 'https://theguardian.com/y', title: 'Old Vic Hamlet', snippet: 'Old Vic' },
+  });
   const stats = getSerpValidatorStats();
   assertEq(stats.total, 2, 'total');
   assertEq(stats.ok, 1, 'ok');
   assertEq(stats.rejected, 1, 'rejected');
   assertEq(stats.byReason['cross-market'], 1, 'cross-market count');
+});
+
+t('SERP_PREFETCH_VALIDATOR=off env gate disables all checks (source check)', () => {
+  if (String(process.env.SERP_PREFETCH_VALIDATOR || '').toLowerCase() === 'off') {
+    console.log('    ⊙ skipped (env already set to off)');
+    return;
+  }
+  const moduleSrc = require('fs').readFileSync(
+    require('path').join(process.cwd(), 'scripts/lib/serp-candidate-validator.js'),
+    'utf8'
+  );
+  if (!moduleSrc.includes('process.env.SERP_PREFETCH_VALIDATOR')) {
+    throw new Error('env gate not present in module source');
+  }
 });
 
 // ----------------------------------------------------------------------------

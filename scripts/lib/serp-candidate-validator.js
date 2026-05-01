@@ -7,40 +7,60 @@
  *
  * Test cases that motivated this (2026-04-29):
  *   - Hamlet (off-broadway-2026 at BAM): SERP for "Hamlet" in the
- *     opening-night window can return Old Vic / RSC / sibling Broadway
- *     productions (Belasco 1995, Broadhurst 2009, Beaumont 1975).
- *   - The Receptionist (off-broadway-2026 at Signature Center): same
- *     play has played MTC and regional houses. Date filter is the
- *     primary defense; this validator is the second.
+ *     opening-night window can return Old Vic / RSC productions.
+ *   - The Receptionist (off-broadway-2026 at Signature Center): same play
+ *     has a Royal Court / regional history.
+ *
+ * Design history (2026-04-30 corpus probes, fixed within the same session):
+ *
+ *   v1 used single-word venue tokens ("belasco", "hudson", "harvey",
+ *   "simon") and a regional-tour heuristic. Probe over 10k real reviews
+ *   showed 2.13% false-rejection rate dominated by surname/place collisions
+ *   ("David Belasco" the playwright, "Hudson Yards", "Neil Simon"), cross-
+ *   market sibling cross-talk (London Christmas Carol's Old Vic triggering
+ *   on Broadway Christmas Carol), and regional-tour mentions in legit
+ *   transfer-history snippets.
+ *
+ *   v2 tightened to multi-word tokens, same-market-pool siblings only,
+ *   transfer-aware cross-market, and dropped regional-tour. Probe at 0.46%.
+ *   But: remaining sibling-venue rejections were dominated by *person-named
+ *   venues* (Stephen Sondheim Theatre, Ethel Barrymore Theatre, John Golden
+ *   Theatre) collidng with critic-prose references to those people as
+ *   composers / actors / playwrights. Many Broadway theaters are named
+ *   after people; the structural collision is unfixable by tokenization.
+ *
+ *   v3 (this file) drops sibling-venue entirely and gates cross-market on
+ *   URL DOMAIN: a UK marker in a UK-domain SERP result is real signal; the
+ *   same marker in a US-domain result (NYT/Vulture/Variety) is almost
+ *   always a transfer-history reference in a legitimate review of the
+ *   target. The transfer-aware exemption is kept as a backstop. Rollback:
+ *   SERP_PREFETCH_VALIDATOR=off in env.
  *
  * Design rules:
- *   - Conservative rejection — only reject on POSITIVE evidence of a
- *     different production (sibling venue named, exclusive cross-market
- *     venue named). Missing-expected-venue is NOT a reason to reject:
- *     SERP snippets are too short to reliably mention the venue.
- *   - Pure function: cache shows.json read, do no I/O at call time.
- *   - Stats are exposed via getSerpValidatorStats() for instrumentation.
+ *   - Conservative: reject only on positive multi-signal evidence.
+ *   - URL domain is the primary disambiguator for cross-market.
+ *   - Pure function: cache shows.json, no I/O at call time.
  */
 
 const fs = require('fs');
 const path = require('path');
-const { isLondonMarket } = require('./venue-classification');
+const { isLondonMarket, getMarketPool } = require('./venue-classification');
 
 let _showsJsonCache = null;
-let _siblingVenueIndex = null;
-let _siblingCastIndex = null;
+let _siblingTitleIndex = null;
+
+const _DISABLED = String(process.env.SERP_PREFETCH_VALIDATOR || '').toLowerCase() === 'off';
 
 /**
- * UK-market venue / production-company markers. If a Broadway / Off-Broadway
- * candidate's text contains any of these, it's almost certainly a different
- * production. Each is specific enough that incidental mention in a
- * Broadway-show review is rare.
- *
- * Lowercase substring match against `${title} ${snippet} ${url}`.
+ * UK-market venue / production-company markers. Reject when:
+ *   - target market is NYC AND
+ *   - candidate URL is on a UK domain AND
+ *   - text contains any marker AND
+ *   - shows.json has no same-title sibling in London (transfer-aware bypass).
  */
 const UK_HARD_MARKERS = [
   'old vic',
-  'donmar',
+  'donmar warehouse',
   'royal shakespeare',
   ' rsc ',
   '/rsc/',
@@ -56,46 +76,43 @@ const UK_HARD_MARKERS = [
   'national theatre london',
   'sadler’s wells',
   "sadler's wells",
-  'bridge theatre',
-  'soho theatre',
   'menier chocolate factory',
   'noel coward theatre',
   'noël coward theatre',
 ];
 
-/**
- * US-market venue markers used in reverse: a West End candidate that mentions
- * these is likely the wrong production.
- */
 const US_HARD_MARKERS = [
   'lincoln center theater',
   'manhattan theatre club',
-  'public theater',
   'roundabout theatre',
   'second stage theater',
   'atlantic theater company',
-  'mcc theater',
   'signature theatre, new york',
   'new york theatre workshop',
-  'broadway theatre, new york',
 ];
 
 /**
- * Tokens that indicate a non-NYC, non-London regional production. Used as
- * supporting evidence (not solo-reject).
+ * Domain markers used to gate cross-market rejection. A UK-marker mention on
+ * an NYT URL is almost certainly transfer-history; on a Guardian URL it's a
+ * London-production review. We only fire on URL-domain alignment.
+ *
+ * The lists are SUFFIX matches (`hostname.endsWith(suffix)`) so subdomains
+ * resolve correctly (e.g., `arts.theguardian.com`).
  */
-const REGIONAL_TOUR_MARKERS = [
-  'national tour',
-  'touring production',
-  'in chicago',
-  'in los angeles',
-  'in san francisco',
-  'in boston',
-  'in washington',
-  'kennedy center',
-  'goodman theatre',
-  'oregon shakespeare',
-  'huntington theatre',
+const UK_DOMAIN_SUFFIXES = [
+  '.co.uk', '.uk',
+  'thestage.co.uk', 'theguardian.com', 'standard.co.uk', 'thetimes.co.uk',
+  'telegraph.co.uk', 'westendtheatre.com', 'whatsonstage.com',
+  'theartsdesk.com', 'broadwayworld.com/uk', // BWW UK section
+  'londontheatre.co.uk', 'londontheatre1.com',
+];
+
+const US_DOMAIN_SUFFIXES = [
+  'nytimes.com', 'vulture.com', 'variety.com', 'hollywoodreporter.com',
+  'theatermania.com', 'broadwayworld.com', 'newyorkstagereview.com',
+  'newyorktheatreguide.com', 'theatrely.com', 'showscoremagazine.com',
+  'wsj.com', 'washingtonpost.com', 'nymag.com', 'newyorker.com',
+  'playbill.com', 'time.com', 'rollingstone.com', 'usatoday.com',
 ];
 
 function _loadShowsJson() {
@@ -110,67 +127,51 @@ function _loadShowsJson() {
 }
 
 /**
- * Normalize a title for cross-production matching. Strips articles, punctuation,
- * subtitles after `:` or ` - `, and collapses whitespace.
+ * Normalize a title for cross-production matching.
  */
 function _normalizeTitleForMatch(t) {
   if (!t) return '';
   return String(t)
     .toLowerCase()
     .replace(/^\s*(the|a|an)\s+/, '')
-    .replace(/\s*[:\-–—].*$/, '') // strip subtitle after colon or em/en dash
+    .replace(/\s*[:\-–—].*$/, '')
     .replace(/[^a-z0-9 ]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
 
 /**
- * Build a one-shot index of {normalizedTitle -> Array<{showId, venueTokens, castTokens}>}.
- * Used to find sibling productions of the same title and pull their venue tokens.
+ * Build a one-shot index: normalizedTitle → Array<{showId, marketPool}>.
+ * Used solely for the cross-market transfer-aware exemption (v3 dropped
+ * sibling-venue check; venue tokens are no longer indexed).
  */
 function _buildSiblingIndex() {
-  if (_siblingVenueIndex && _siblingCastIndex) {
-    return { venueIndex: _siblingVenueIndex, castIndex: _siblingCastIndex };
-  }
+  if (_siblingTitleIndex) return _siblingTitleIndex;
   const data = _loadShowsJson();
   const shows = Array.isArray(data) ? data : (data.shows || []);
-  const venueIndex = new Map();
-  const castIndex = new Map();
+  const index = new Map();
   for (const s of shows) {
     const key = _normalizeTitleForMatch(s.title);
     if (!key) continue;
-    if (!venueIndex.has(key)) venueIndex.set(key, []);
-    if (!castIndex.has(key)) castIndex.set(key, []);
-    const venueTokens = [];
-    const venue = s.venue || s.theater;
-    if (venue) {
-      const tokens = _venueTokens(venue);
-      venueTokens.push(...tokens);
-    }
-    venueIndex.get(key).push({ showId: s.id, venueTokens });
-    const castNames = Array.isArray(s.cast)
-      ? s.cast.slice(0, 3).map(c => (c && c.name ? c.name.toLowerCase() : '')).filter(Boolean)
-      : [];
-    castIndex.get(key).push({ showId: s.id, castNames });
+    if (!index.has(key)) index.set(key, []);
+    index.get(key).push({
+      showId: s.id,
+      marketPool: getMarketPool(s.category),
+    });
   }
-  _siblingVenueIndex = venueIndex;
-  _siblingCastIndex = castIndex;
-  return { venueIndex, castIndex };
+  _siblingTitleIndex = index;
+  return index;
 }
 
 /**
- * Extract searchable tokens from a venue name. Drops generic words ("theatre",
- * "theater", "stage", "the", "at") so we match on the distinctive part.
- *   "BAM Harvey Theater"                 → ["bam harvey", "bam", "harvey"]
- *   "The Belasco Theatre"                → ["belasco"]
- *   "The Irene Diamond Stage at the Pershing Square Signature Center"
- *                                        → ["irene diamond", "pershing square signature", "signature center"]
+ * Test exposure only. Multi-word venue token extractor — currently unused
+ * by the validator but kept exported for downstream tools that might want
+ * to enumerate distinctive venue tokens.
  */
 function _venueTokens(venueRaw) {
   const v = String(venueRaw || '').toLowerCase().trim();
   if (!v) return [];
   const tokens = new Set();
-  // Full normalized
   const normalized = v
     .replace(/\bthe\b/g, '')
     .replace(/\btheatres?\b/g, '')
@@ -180,21 +181,16 @@ function _venueTokens(venueRaw) {
     .replace(/[^a-z0-9 ]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
-  if (normalized.length >= 4) tokens.add(normalized);
-  // Distinctive single words (>=5 chars, not generic)
+  if (normalized.length >= 4 && normalized.includes(' ')) tokens.add(normalized);
   const GENERIC = new Set([
     'theatre', 'theater', 'stage', 'house', 'hall', 'center', 'centre',
     'company', 'broadway', 'london', 'new', 'york', 'east', 'west', 'north',
-    'south', 'club', 'square', 'street', 'avenue', 'road', 'royal'
+    'south', 'club', 'square', 'street', 'avenue', 'road', 'royal',
   ]);
-  for (const word of normalized.split(' ')) {
-    if (word.length >= 5 && !GENERIC.has(word)) tokens.add(word);
-  }
-  // Distinctive two-word substrings (skipping generic-only pairs)
   const words = normalized.split(' ').filter(w => w.length >= 3);
   for (let i = 0; i < words.length - 1; i++) {
-    const pair = `${words[i]} ${words[i+1]}`;
-    const bothGeneric = GENERIC.has(words[i]) && GENERIC.has(words[i+1]);
+    const pair = `${words[i]} ${words[i + 1]}`;
+    const bothGeneric = GENERIC.has(words[i]) && GENERIC.has(words[i + 1]);
     if (!bothGeneric && pair.length >= 8) tokens.add(pair);
   }
   return [...tokens];
@@ -216,106 +212,84 @@ function _recordResult(ok, reason) {
   }
 }
 
+function _hostFromUrl(url) {
+  try {
+    return new URL(url).hostname.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+function _domainMatchesAnySuffix(host, suffixes) {
+  if (!host) return false;
+  for (const suffix of suffixes) {
+    if (host === suffix || host.endsWith(suffix.startsWith('.') ? suffix : `.${suffix}`) || host.includes(suffix)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Validate a single SERP candidate against a target show.
  *
  * @param {Object} args
- * @param {Object} args.show - Show object from shows.json (or a subset with
- *     id, title, category, venue, cast).
+ * @param {Object} args.show - Show object (or subset with id, title, category).
  * @param {Object} args.candidate - SERP result with {url, title, snippet}.
  * @returns {{ok: boolean, reason?: string, detail?: string, confidence?: 'high'|'medium'}}
  */
 function validateSerpCandidate({ show, candidate }) {
+  if (_DISABLED) {
+    _recordResult(true, null);
+    return { ok: true };
+  }
   if (!show || !candidate) {
     _recordResult(true, null);
     return { ok: true };
   }
-  const url = String(candidate.url || '').toLowerCase();
+  const url = String(candidate.url || '');
+  const urlLower = url.toLowerCase();
   const title = String(candidate.title || '').toLowerCase();
   const snippet = String(candidate.snippet || '').toLowerCase();
-  const text = `${title} ${snippet} ${url}`;
+  const text = `${title} ${snippet} ${urlLower}`;
 
   if (!url) {
     _recordResult(true, null);
     return { ok: true };
   }
 
-  // ---------- Check 1: sibling-production venue mention ----------
-  // If another show in shows.json has the same title and its distinctive
-  // venue tokens appear in the candidate text, this is a sibling production
-  // (revival, prior run) — unless the target show's OWN venue is also
-  // mentioned (in which case we have ambiguous text).
+  // ---------- Cross-market hard markers (URL-domain gated) ----------
+  // Reject only when the candidate URL is on a domain in the OPPOSITE market
+  // and the text contains a hard marker. This prevents transfer-history
+  // mentions in NYT/Vulture/Variety reviews from getting falsely rejected.
+  // Transfer-aware: also exempt when shows.json has a same-title sibling in
+  // the opposite market (Broadway run reviewing a West End-originated show).
   const titleKey = _normalizeTitleForMatch(show.title);
-  if (titleKey) {
-    const { venueIndex } = _buildSiblingIndex();
-    const siblings = venueIndex.get(titleKey) || [];
-    const ownVenue = show.venue || show.theater;
-    const ownTokens = ownVenue ? _venueTokens(ownVenue) : [];
-    const ownVenueMentioned = ownTokens.some(t => t && text.includes(t));
-
-    for (const sib of siblings) {
-      if (sib.showId === show.id) continue;
-      for (const tok of sib.venueTokens) {
-        if (!tok || tok.length < 4) continue;
-        // Don't reject on tokens that are also tokens of the target's venue
-        // (e.g., shared "harvey" between BAM Harvey and Harvey Pekar).
-        if (ownTokens.includes(tok)) continue;
-        if (text.includes(tok)) {
-          // If target's own venue is also explicitly mentioned, treat as
-          // ambiguous (could be a comparison piece) and accept.
-          if (ownVenueMentioned) break;
-          const result = {
-            ok: false,
-            reason: 'sibling-venue',
-            detail: `mentions sibling production venue "${tok}" (${sib.showId}); target venue not mentioned`,
-            confidence: 'high',
-          };
-          _recordResult(false, result.reason);
-          return result;
-        }
-      }
-    }
-  }
-
-  // ---------- Check 2: cross-market hard markers ----------
   const isLondon = isLondonMarket(show.category);
+  const ownPool = isLondon ? 'london' : 'nyc';
+  const oppositePool = ownPool === 'nyc' ? 'london' : 'nyc';
   const opposingMarkers = isLondon ? US_HARD_MARKERS : UK_HARD_MARKERS;
-  for (const marker of opposingMarkers) {
-    if (text.includes(marker)) {
-      const result = {
-        ok: false,
-        reason: 'cross-market',
-        detail: `target market is ${isLondon ? 'London' : 'NYC'}; candidate mentions "${marker.trim()}"`,
-        confidence: 'high',
-      };
-      _recordResult(false, result.reason);
-      return result;
-    }
+  const opposingDomainSuffixes = isLondon ? US_DOMAIN_SUFFIXES : UK_DOMAIN_SUFFIXES;
+
+  let hasTransferSibling = false;
+  if (titleKey) {
+    const siblings = _buildSiblingIndex().get(titleKey) || [];
+    hasTransferSibling = siblings.some(
+      s => s.showId !== show.id && s.marketPool === oppositePool
+    );
   }
 
-  // ---------- Check 3: known regional/tour markers (medium confidence) ----------
-  // Only reject when paired with the show title — if a snippet says
-  // "national tour" without naming this show, that's likely a different
-  // article entirely. Conservative: require "national tour" / "touring" AND
-  // the show title to co-occur.
-  const titleNormalized = _normalizeTitleForMatch(show.title);
-  if (titleNormalized && titleNormalized.length >= 3) {
-    const titleInText = text.includes(titleNormalized);
-    if (titleInText) {
-      for (const marker of REGIONAL_TOUR_MARKERS) {
+  if (!hasTransferSibling) {
+    const host = _hostFromUrl(url);
+    const isOpposingDomain = _domainMatchesAnySuffix(host, opposingDomainSuffixes);
+    if (isOpposingDomain) {
+      for (const marker of opposingMarkers) {
         if (text.includes(marker)) {
-          // For Broadway/OB shows: if the show's own venue is also mentioned,
-          // it's probably a "before Broadway, this had a tour" recap, not a
-          // wrong-production result. Accept.
-          const ownVenue = show.venue || show.theater;
-          const ownTokens = ownVenue ? _venueTokens(ownVenue) : [];
-          const ownVenueMentioned = ownTokens.some(t => t && text.includes(t));
-          if (ownVenueMentioned) break;
           const result = {
             ok: false,
-            reason: 'regional-tour',
-            detail: `candidate mentions "${marker}" with title; target venue not mentioned`,
-            confidence: 'medium',
+            reason: 'cross-market',
+            detail: `target market is ${isLondon ? 'London' : 'NYC'}; URL on ${isLondon ? 'US' : 'UK'} domain "${host}"; text mentions "${marker.trim()}"`,
+            confidence: 'high',
           };
           _recordResult(false, result.reason);
           return result;
@@ -328,10 +302,6 @@ function validateSerpCandidate({ show, candidate }) {
   return { ok: true };
 }
 
-/**
- * Return a snapshot of validator stats for instrumentation. Resets on
- * resetSerpValidatorStats().
- */
 function getSerpValidatorStats() {
   return {
     total: _stats.total,
@@ -348,14 +318,9 @@ function resetSerpValidatorStats() {
   _stats.byReason = Object.create(null);
 }
 
-/**
- * Test seam: clear cached shows.json + sibling indexes so a test that
- * mutates `data/shows.json` between cases sees the new state.
- */
 function _resetCachesForTest() {
   _showsJsonCache = null;
-  _siblingVenueIndex = null;
-  _siblingCastIndex = null;
+  _siblingTitleIndex = null;
 }
 
 module.exports = {
@@ -363,10 +328,10 @@ module.exports = {
   getSerpValidatorStats,
   resetSerpValidatorStats,
   _resetCachesForTest,
-  // Exported for unit tests
   _normalizeTitleForMatch,
   _venueTokens,
   UK_HARD_MARKERS,
   US_HARD_MARKERS,
-  REGIONAL_TOUR_MARKERS,
+  UK_DOMAIN_SUFFIXES,
+  US_DOMAIN_SUFFIXES,
 };
