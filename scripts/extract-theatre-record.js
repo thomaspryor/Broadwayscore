@@ -749,7 +749,13 @@ async function main() {
       });
     }
 
-    console.log(`  Found ${reviews.length} reviews`);
+    const filteredCount = reviews.filter(r =>
+      !r.fullText || r.fullText.length < 100 ||
+      r.outlet.toLowerCase().includes('theatre record') ||
+      r.outlet.toLowerCase().includes('summary') ||
+      r.outlet.toLowerCase().includes('editor')
+    ).length;
+    console.log(`  Found ${reviews.length - filteredCount} reviews`);
 
     const showDir = path.join(REVIEW_TEXTS_DIR, show.id);
     if (!dryRun && !fs.existsSync(showDir)) {
