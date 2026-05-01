@@ -87,12 +87,24 @@ jobs:
       # (Rebuild reviews.json) so cancellation cannot block the canonical rebuild output.
       # Notion: 351637c5-416f-8177. Stuart King email 2026-04-27 surfaced the impact.
 
-      - name: Classify new review files
-        if: inputs.skip_enrichment != 'true'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
+      # ---- Pre-rebuild utility steps ----
+      # The 4 LLM/scraper enrichment steps that previously lived here
+      # (classify-non-reviews, classify-wrong-production, classify-wrong-show,
+      # backfill-unknown-critics --critics-only) MOVED OUT to enrich-reviews.yml.
+      # They were running for 20-40min combined and made the rebuild job a
+      # cancellation magnet — when the job got cancelled, step 18 Rebuild
+      # reviews.json was skipped and reviews.json went stale. See Notion
+      # 351637c5-416f-8177 for the architectural rationale.
+      #
+      # The fast utility steps below STAY pre-rebuild because:
+      # - flag-wrong-production-by-date: deterministic flag-setter, ~5s
+      # - audit-pre2005-reviews: writes data/audit/wrong-production-flags.json
+      #   which classify-wrong-production.js (now in enrich-reviews.yml) reads.
+      #   Keeping it here keeps the audit fresh for the enrichment workflow.
+      # - backfill-unknown-outlets: local-only, no network, ~5s
+      # - cleanup-phantom-outlets, strip-stale-single-model-scores,
+      #   detect-syndicated-duplicates, apply-audit-flags: utility steps,
+      #   each <30s, shape data the rebuild reads.
 
       - name: Flag wrong-production reviews by date window
         if: inputs.skip_enrichment != 'true'
@@ -104,35 +116,10 @@ jobs:
         run: node scripts/audit-pre2005-reviews.js 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
-      - name: Classify medium-confidence wrong-production flags
-        if: inputs.skip_enrichment != 'true'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
-
-      - name: Classify wrong-show flags (LLM)
-        if: inputs.skip_enrichment != 'true'
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/classify-wrong-show.js --apply --resume --limit=100 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
-        timeout-minutes: 5
-
       - name: Backfill unknown outlets (local, free)
         if: inputs.skip_enrichment != 'true'
         run: node scripts/backfill-unknown-critics.js --outlets-only 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
-
-      - name: Backfill unknown critics (via scraper infrastructure)
-        if: inputs.skip_enrichment != 'true'
-        env:
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/backfill-unknown-critics.js --critics-only --limit=50 2>&1 | tee -a /tmp/locked-skip.log
-        continue-on-error: true
-        timeout-minutes: 15
 
       - name: Cleanup phantom outlet duplicates
         if: inputs.skip_enrichment != 'true'
@@ -269,8 +256,11 @@ jobs:
         if: always()
         run: |
           # Joe Turner postmortem P0 #2 (2026-04-26): each enrichment script logs
-          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. The 9 enrichment steps above
-          # tee their stdout to /tmp/locked-skip.log so we can aggregate here.
+          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. The pre-rebuild utility
+          # steps above tee their stdout to /tmp/locked-skip.log so we can
+          # aggregate here. The 4 LLM enrichment scripts moved to enrich-reviews.yml
+          # in 2026-04-30 (Notion 351637c5-416f-8177); their counts now aggregate
+          # in that workflow's separate run.
           #
           # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
           # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run

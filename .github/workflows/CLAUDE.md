@@ -88,7 +88,8 @@ Structural workflow linting runs in `test.yml` (`lint-workflows` job). Shellchec
 
 | Workflow | Modifies review-texts | Rebuilds reviews.json | Notes |
 |----------|----------------------|----------------------|-------|
-| `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger |
+| `rebuild-reviews.yml` | ❌ | ✅ | **PRIMARY sync** - daily + manual trigger. LLM enrichment moved to `enrich-reviews.yml` 2026-04-30. |
+| `enrich-reviews.yml` | ✅ | ❌ | LLM enrichment of review-text flags (isNonReview, wrongProduction, wrongShow, criticName backfill). Every 6h. |
 | `review-refresh.yml` | ✅ | ✅ | Weekly extraction + rebuild |
 | `gather-reviews.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline, **dispatches deploy** |
 | `collect-review-texts.yml` | ✅ | ✅ | Parallel-safe, rebuilds inline after commit |
@@ -119,9 +120,19 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Options:** `reason` (commit message), `force_write` (override regression guard)
 - **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy, **`check-opening-night-completeness.js`** (A #20 — strict per-show drop alert for shows in ±7d opening-night window).
 
+## `enrich-reviews.yml`
+- **Runs:** Every 6 hours at :30 (04:30, 10:30, 16:30, 22:30 UTC), or manually
+- **Does:** Runs the 4 LLM/scraper enrichers that previously lived in `rebuild-reviews.yml`: `classify-non-reviews.js`, `classify-wrong-production.js`, `classify-wrong-show.js`, `backfill-unknown-critics.js --critics-only`. Pushes flag updates back to `data/review-texts/` private repo. Does NOT rebuild reviews.json or deploy — flag changes land in the next rebuild via `isIncludableForRebuild`.
+- **Why decoupled (Notion 351637c5-416f-8177):** When these 4 steps lived inside `rebuild-reviews.yml`, their cumulative ~20-40min runtime made the rebuild job a cancellation magnet. Step 18 "Rebuild reviews.json" was getting skipped on most runs and reviews.json went stale for hours. Splitting moved the slow LLM work to its own concurrency group so cancellation can't block the canonical scored composite.
+- **Concurrency:** `enrich-reviews-${{ github.run_id }}` (per-run, queued, never cancels — same pattern as rebuild-fast.yml)
+- **Options (all default false):** `skip_classify_non_reviews`, `skip_classify_wrong_production`, `skip_classify_wrong_show`, `skip_backfill_critics`
+- **Manual trigger:** `gh workflow run "Enrich Reviews"`
+- **Requires:** `GEMINI_API_KEY` (3 of 4 steps), `BRIGHTDATA_TOKEN`+`BRIGHTDATA_ZONE`+`SCRAPINGBEE_API_KEY` (backfill-unknown-critics), `REVIEW_TEXTS_TOKEN` (push)
+- **All steps `continue-on-error: true`** — partial failure does not stop later enrichers, and the `if: always()` push step at the end commits whatever flags landed.
+
 ## `rebuild-reviews.yml`
 - **Runs:** Daily at 4 AM UTC (11 PM EST), auto-triggered via `workflow_run` when "Collect Review Texts" completes successfully, or manually triggered
-- **Does:** Rebuilds `reviews.json` from `review-texts/` source files
+- **Does:** Rebuilds `reviews.json` from `review-texts/` source files. Pre-rebuild utilities: `flag-wrong-production-by-date`, `audit-pre2005-reviews`, `backfill-unknown-outlets` (local), `cleanup-phantom-outlets`, `strip-stale-single-model-scores`, `detect-syndicated-duplicates`, `apply-audit-flags`. LLM enrichment (4 steps) MOVED to `enrich-reviews.yml` 2026-04-30.
 - **Manual trigger:** `gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"`
 - **Purpose:** PRIMARY sync mechanism for derived data
 - **Concurrency:** `rebuild-reviews` group (queued, not cancelled)

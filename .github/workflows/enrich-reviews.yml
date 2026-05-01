@@ -1,0 +1,200 @@
+# LLM enrichment of review-texts — flags and metadata only.
+#
+# Runs the 4 LLM/scraper enrichers that previously lived inside rebuild-reviews.yml
+# and that pushed total runtime over the cancellation threshold (rebuild step then
+# got skipped, leaving reviews.json stale for hours). Decoupled per Notion
+# 351637c5-416f-8177 review.
+#
+# This workflow does NOT rebuild reviews.json or trigger a deploy. It only mutates
+# `data/review-texts/{showId}/*.json` (sets isNonReview / wrongProduction / wrongShow
+# / criticName) and pushes those changes back to the broadway-review-texts private
+# repo. The next rebuild-reviews / rebuild-fast run picks the flags up and excludes
+# affected reviews via isIncludableForRebuild.
+#
+# Per CLAUDE.md §15 (Test Extraction Pattern): all four enrichment scripts already
+# live in scripts/ and are exercised independently. This workflow is just plumbing.
+
+name: Enrich Reviews
+
+concurrency:
+  # Per-run group so two enrichment runs can queue rather than cancel each other.
+  # Same pattern as rebuild-fast.yml — cancellation here would just lose progress
+  # on long-running scraper passes (backfill-unknown-critics) for no gain.
+  # See memory/feedback_gha_concurrency_queue_limit.md.
+  group: enrich-reviews-${{ github.run_id }}
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Every 6 hours, offset 30min from the daily 4 AM rebuild and the 5 AM scoring
+    # cron so they don't collide. Times: 04:30, 10:30, 16:30, 22:30 UTC.
+    - cron: '30 4,10,16,22 * * *'
+  workflow_dispatch:
+    inputs:
+      skip_classify_non_reviews:
+        description: 'Skip classify-non-reviews step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_classify_wrong_production:
+        description: 'Skip classify-wrong-production step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_classify_wrong_show:
+        description: 'Skip classify-wrong-show step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_backfill_critics:
+        description: 'Skip backfill-unknown-critics step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  enrich:
+    name: LLM enrichment of review-texts
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      # ---- LLM enrichment chain ----
+      # All four steps were previously in rebuild-reviews.yml between checkout and
+      # rebuild. Order preserved to keep per-script dependencies intact:
+      #   classify-non-reviews → flags isNonReview, narrows the corpus
+      #   audit-pre2005-reviews + flag-wrong-production-by-date already ran in
+      #     rebuild-reviews.yml and produced data/audit/wrong-production-flags.json,
+      #     which classify-wrong-production.js consumes (line ~337). Both stay in
+      #     rebuild-reviews.yml — they are fast utility steps. classify-wrong-production
+      #     here will fall back to running audit-pre2005-reviews itself if the audit
+      #     file is missing (handled internally; ~+90s slow path).
+
+      - name: Classify new review files
+        if: inputs.skip_classify_non_reviews != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Classify medium-confidence wrong-production flags
+        if: inputs.skip_classify_wrong_production != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Classify wrong-show flags (LLM)
+        if: inputs.skip_classify_wrong_show != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-wrong-show.js --apply --resume --limit=100 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Backfill unknown critics (via scraper infrastructure)
+        if: inputs.skip_backfill_critics != 'true'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=50 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 15
+
+      # ---- Push review-texts changes ----
+      # if: always() so even partial enrichment (one step cancelled / errored) still
+      # pushes the flags written by the steps that did complete. Same pattern as
+      # rebuild-reviews.yml / rebuild-fast.yml.
+
+      - name: Aggregate locked-skip counts (S2-T4)
+        if: always()
+        run: |
+          # Joe Turner postmortem P0 #2 (2026-04-26): each enrichment script logs
+          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. Mirrors the aggregation in
+          # rebuild-reviews.yml — when those scripts moved here, the metric had
+          # to come along.
+          LOG="${LOCKED_SKIP_TEST_LOG_OVERRIDE:-/tmp/locked-skip.log}"
+          if [ ! -f "$LOG" ]; then
+            echo "::notice::No locked-skip log produced — enrichment steps may have been skipped"
+            exit 0
+          fi
+          echo "## Locked-skip aggregation"
+          declare -A counts
+          while IFS= read -r line; do
+            script=$(echo "$line" | sed -nE 's/.*\[LOCKED-SKIP-COUNT\] ([^:]+):.*/\1/p')
+            count=$(echo "$line" | sed -nE 's/.*: ([0-9]+)$/\1/p')
+            [ -z "$script" ] || [ -z "$count" ] && continue
+            counts["$script"]=$count
+          done < <(grep '\[LOCKED-SKIP-COUNT\]' "$LOG")
+          MODIFIED=$(git -C data/review-texts diff --name-only 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+          [ "$MODIFIED" -lt 1 ] && MODIFIED=1
+          for script in "${!counts[@]}"; do
+            count=${counts[$script]}
+            echo "  $script: $count"
+            PCT_THRESHOLD=${LOCKED_SKIP_THRESHOLD_PCT:-50}
+            ratio=$(( count * 100 / MODIFIED ))
+            if [ "$ratio" -gt "$PCT_THRESHOLD" ]; then
+              echo "::warning::High locked-skip ratio in $script: $count skipped vs $MODIFIED files modified ($ratio%) — likely something is wrong"
+            fi
+          done
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: enrich-reviews — LLM flags + critic backfill'
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: enrich-reviews — audit-trail snapshots'
+
+      # We do NOT trigger a deploy here. Flag changes don't surface on the public
+      # site until the next rebuild reads them and regenerates reviews.json. The
+      # 4 AM UTC scheduled rebuild + the auto-trigger from collect-review-texts
+      # workflow_run will pick them up within the hour.
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Reviews Failed'
+          description: 'Enrich Reviews workflow failed. continue-on-error is set on every step so this means a setup/checkout/push failure, not a script error. Check run logs.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Enrich Reviews Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Ran 4 LLM/scraper enrichers against review-texts. Flag changes" >> $GITHUB_STEP_SUMMARY
+          echo "land in the next rebuild via isIncludableForRebuild." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Steps with cancellations or failures: see step logs above." >> $GITHUB_STEP_SUMMARY
