@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-05-01T10:21:32.003Z",
-  "processed": 3,
-  "failed": 11,
-  "successRate": "21.4%",
+  "updatedAt": "2026-05-01T10:38:32.580Z",
+  "processed": 5,
+  "failed": 19,
+  "successRate": "20.8%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
@@ -25,6 +25,17 @@
       "t": "2026-05-01T10:19:45.045Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-01T10:37:33.059Z",
+      "event": "bb-session",
+      "session": "c75f79f3",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-05-01T10:37:34.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

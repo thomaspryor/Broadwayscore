@@ -2,7 +2,9 @@
   "processed": [
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json",
-    "grace-pervades-west-end-2026/theatre-weekly--unknown.json"
+    "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "magic-mike-live-west-end-2021/i-paper--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -15,18 +17,29 @@
     "mass-west-end-2026/financialtimes--unknown.json",
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "titus-andronicus-off-broadway-2026/theater-scene--victor-gluck.json",
-      "grace-pervades-west-end-2026/theatre-weekly--unknown.json"
+      "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "magic-mike-live-west-end-2021/i-paper--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -39,7 +52,7 @@
     "archive": []
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "magic-mike-live-west-end-2021/i-paper--unknown.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -51,6 +64,17 @@
       "t": "2026-05-01T10:19:45.045Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-01T10:37:33.059Z",
+      "event": "bb-session",
+      "session": "c75f79f3",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-05-01T10:37:34.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
