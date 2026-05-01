@@ -113,6 +113,7 @@ function getNytCriticsPicks() {
 }
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 
@@ -4198,20 +4199,30 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // the post-broadcast audit check at publish-date-pre-opening.check.js).
   // Rejected reviews have their fetched text stripped and are flagged so the
   // rebuild excludes them. Clearable via humanReviewedEarlyPublish=true.
+  // Production-continuity exemption (Phase 1): skip the gate when publishDate
+  // falls inside a declared priorRuns window — the show's earlier run is the
+  // legitimate target. Without this, the ingest gate sets wrongProduction with
+  // a wrongProductionReason that the rebuild's auto-clear refuses to undo,
+  // creating a permanent re-flag loop. See scripts/lib/wrong-production-autoclear.js.
   {
     let showOpeningDate = null;
+    let showPriorRuns = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
       showOpeningDate = showMeta?.openingDate || null;
+      showPriorRuns = showMeta?.priorRuns || null;
     } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
 
-    const anticip = isAnticipatoryPreviewPost(
-      data.publishDate,
-      showOpeningDate,
-      data.outletId || review.outletId,
-      { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
-    );
+    const inPriorRun = isWithinPriorRun(data.publishDate, showPriorRuns);
+    const anticip = inPriorRun
+      ? { rejected: false }
+      : isAnticipatoryPreviewPost(
+          data.publishDate,
+          showOpeningDate,
+          data.outletId || review.outletId,
+          { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
+        );
     if (anticip.rejected && !shouldSkipWrongProductionAudit(data)) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;

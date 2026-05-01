@@ -85,21 +85,52 @@ function isWithinPriorRun(reviewDate, priorRuns) {
  * @param {{ priorRuns?: Array<object> }} show - The show config
  * @returns {boolean}
  */
+// Auto-set wrongProductionReason values that are date-only (NOT operator-set).
+// These are written by date-based setters and are valid candidates for priorRuns
+// auto-clear. Anything not in this set (and not in the auto-prefix list below)
+// is treated as a manual reason and protected.
+const DATE_ONLY_AUTO_REASONS = new Set([
+  'anticipatory_pre_opening_post', // collect-review-texts.js anticipatory gate
+]);
+// Auto-set wrongProductionReason PREFIXES that priorRuns is allowed to override.
+// CV-promoted reasons specifically include "CV identifies a different venue/run"
+// — exactly what an operator-declared priorRun overrides. Operator-trust over CV
+// is the Phase 1 design (parent card 351637c5-416f-81fe).
+const AUTO_REASON_PREFIXES = [
+  'CV-promoted:',
+  'CV-low-but-strong-signal:',
+];
+
 function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!data || data.wrongProduction !== true) return false;
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
   const note = data.wrongProductionNote || '';
+  // Date-only auto-flag prefixes that priorRuns is allowed to override:
+  //  - "Pre-opening guard" (rebuild-all-reviews.js inclusion + flag pass)
+  //  - "Date guard" (flag-wrong-production-by-date.js standalone)
+  //  - "Auto-flagged" (gather-reviews.js Broadway-only ingest guard)
+  //  - "Review published" (rebuild-all-reviews.js per-review skip-pre-opening writer)
   const isDateOnlyAutoFlag = note.startsWith('Pre-opening guard')
-    || note.startsWith('Date guard');
-  if (!isDateOnlyAutoFlag) return false;
+    || note.startsWith('Date guard')
+    || note.startsWith('Auto-flagged')
+    || note.startsWith('Review published');
+  // The anticipatory ingest gate + CV-promotion paths write ONLY
+  // wrongProductionReason (no Note). Recognize their auto-set values as
+  // override-eligible.
+  const reason = data.wrongProductionReason || '';
+  const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_PREFIXES.some(p => reason.startsWith(p));
+  if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   if (!data.publishDate) return false;
   if (!isWithinPriorRun(data.publishDate, show.priorRuns)) return false;
-  const hasManualReason = !!data.wrongProductionReason;
-  const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
-    && data.contentVerification?.confidence === 'high';
+  // Treat reason as "manual" only when it's not in the auto-set allowlist.
+  const hasManualReason = !!reason && !isAutoReason;
+  // CV-confirmed gate: still respect high-conf CV wrongArticle (entirely
+  // different show, not just different production). Phase 1 trusts priorRuns
+  // over CV's wrongProduction (venue/date match) but NOT over wrongArticle.
   const cvConfirmedWrongArticle = data.contentVerification?.wrongArticle === true
     && data.contentVerification?.confidence === 'high';
-  return !hasManualReason && !cvConfirmedWrong && !cvConfirmedWrongArticle;
+  return !hasManualReason && !cvConfirmedWrongArticle;
 }
 
 /**
