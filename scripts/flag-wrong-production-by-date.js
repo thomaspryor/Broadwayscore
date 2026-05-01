@@ -101,7 +101,9 @@ function run() {
 
       // Production-continuity exemption: pubDate falls inside a declared priorRuns
       // window — legitimate coverage of an earlier run of THIS production.
-      if (issue === 'before_preview' && isWithinPriorRun(pubDate, show.priorRuns)) {
+      // Applies to both before_preview and after_close (a priorRun's reviews can
+      // appear long after the current production's closing date too).
+      if (isWithinPriorRun(pubDate, show.priorRuns)) {
         priorRunSkipped++;
         continue;
       }

@@ -1066,12 +1066,30 @@ const crossShowFingerprints = new Map();
         // Production-continuity auto-clear: strip stale Pre-opening/Date guard
         // flags on files whose publishDate now falls inside a priorRuns window.
         // Respects manual reasons + high-confidence CV (mirrors URL-year auto-clear).
+        // Also strips the auto-set wrongProductionReason values written by date
+        // setters (e.g. collect-review-texts.js anticipatory gate's
+        // "anticipatory_pre_opening_post"); ALL operator-set reasons are protected.
         if (shouldAutoClearWrongProductionPriorRun(d, showRecord)) {
-          const wasNote = d.wrongProductionNote;
+          const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: priorRuns covers publishDate (was: ${wasNote})`;
           d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete d.wrongProductionNote;
+          // Strip auto-set wrongProductionReason values (anticipatory ingest gate
+          // exact match + CV-promoted prefixes). Operator-set reasons are
+          // protected — shouldAutoClearWrongProductionPriorRun would have already
+          // refused to clear if reason was operator-set.
+          const reason = d.wrongProductionReason || '';
+          if (reason === 'anticipatory_pre_opening_post') {
+            delete d.wrongProductionReason;
+            delete d.wrongProductionDetail;
+            delete d.wrongProductionDetectedAt;
+            delete d.wrongProductionDetectedBy;
+            delete d.anticipatoryGateOutletCategory;
+            delete d.anticipatoryGateDaysBeforeOpening;
+          } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
+            delete d.wrongProductionReason;
+          }
           safeWriteReview(fp, d, { force: true });
           priorRunAutoCleared++;
           // Fall through — don't skip, file may still need other guards
@@ -1325,9 +1343,13 @@ const crossShowFingerprints = new Map();
         // signal. Medium-conf CV vs confident ensemble = ensemble wins.
         const ppEnsembleSaysReview = hasHighConfidenceLlmScore(d);
         const ppCvWpAdvisory = ppEnsembleSaysReview && cv.confidence !== 'high' && !cvLowButStrong;
+        // Production-continuity gate (Phase 1): operator-declared priorRuns trumps
+        // CV's wrongProduction (CV identifies a different venue/run, which is
+        // exactly what priorRuns IS for). Skip promotion — operator-trust over CV.
+        const ppInPriorRun = isWithinPriorRun(d.publishDate, showById[sid]?.priorRuns);
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
-            && !ppCvWpAdvisory) {
+            && !ppCvWpAdvisory && !ppInPriorRun) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1336,6 +1358,8 @@ const crossShowFingerprints = new Map();
           if (cvLowButStrong) {
             stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
           }
+        } else if (cv.wrongProduction === true && ppInPriorRun) {
+          stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
         } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
           stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
         }
@@ -1393,11 +1417,19 @@ showDirs.forEach(showId => {
           // when CV is medium-confidence (high-conf CV still wins).
           const uEnsembleSaysReview = hasHighConfidenceLlmScore(ud);
           const uCvWpAdvisory = uEnsembleSaysReview && ucv.confidence !== 'high';
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory) {
+          // Production-continuity gate (Phase 1): when the operator has declared
+          // a priorRun window covering this review's publishDate, CV's wrongProduction
+          // is a known false positive (CV identifies an earlier production at a
+          // different venue, which is exactly what priorRuns IS for). Skip
+          // promotion — operator-trust over CV.
+          const uInPriorRun = isWithinPriorRun(ud.publishDate, showById[showId]?.priorRuns);
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory && !uInPriorRun) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             ud.wrongProductionReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
             promoted = true;
+          } else if (ucv.wrongProduction === true && uInPriorRun) {
+            stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
           } else if (ucv.wrongProduction === true && uCvWpAdvisory) {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }
@@ -1809,10 +1841,16 @@ showDirs.forEach(showId => {
           // promotes. cvLowButStrong still promotes for wrongProduction.
           const ensembleSaysReview = hasHighConfidenceLlmScore(data);
           const cvWpAdvisory = ensembleSaysReview && wpConfidence !== 'high' && !cvLowButStrong;
+          // Production-continuity gate (Phase 1): when the operator has declared
+          // a priorRun window covering this review's publishDate, CV's
+          // wrongProduction is a known false positive (CV identifies an earlier
+          // production at a different venue, which is exactly what priorRuns IS
+          // for). Skip promotion — operator-trust over CV.
+          const cvInPriorRun = isWithinPriorRun(data.publishDate, showById[showId]?.priorRuns);
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
               && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket
-              && !cvWpAdvisory) {
+              && !cvWpAdvisory && !cvInPriorRun) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             const promotionPath = cvLowButStrong ? 'CV-low-but-strong-signal' : 'CV-promoted';
@@ -1821,6 +1859,8 @@ showDirs.forEach(showId => {
             if (cvLowButStrong) {
               stats.cvLowStrongSignalPromoted = (stats.cvLowStrongSignalPromoted || 0) + 1;
             }
+          } else if (cv.wrongProduction === true && cvInPriorRun) {
+            stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
           } else if (cv.wrongProduction === true && cvWpAdvisory) {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }

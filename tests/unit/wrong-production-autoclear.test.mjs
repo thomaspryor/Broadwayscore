@@ -433,6 +433,116 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
     );
   });
 
+  it('returns true for "Auto-flagged" prefix (gather-reviews.js Broadway path)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Auto-flagged: published 365 days before show earliest date 2026-03-17',
+          publishDate: '2025-05-08',
+        },
+        { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+      ),
+      true
+    );
+  });
+
+  it('returns true for "Review published" prefix (rebuild per-review skip-pre-opening writer)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionNote: 'Review published 365 days before show opened — likely reviewing a different production',
+          publishDate: '2025-05-08',
+        },
+        { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+      ),
+      true
+    );
+  });
+
+  it('returns true for anticipatory_pre_opening_post reason (collect-review-texts ingest gate)', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionPriorRun(
+        {
+          wrongProduction: true,
+          wrongProductionReason: 'anticipatory_pre_opening_post',
+          publishDate: '2025-05-08',
+        },
+        { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+      ),
+      true
+    );
+  });
+
+  it('returns false for operator-set wrongProductionReason values (audit, manual:, human-verified)', () => {
+    const operatorReasons = [
+      'cross-market-audit-2026-04-15',
+      'manual:2026-04-11 systematic audit',
+      'human-verified prior staging',
+    ];
+    for (const reason of operatorReasons) {
+      assert.strictEqual(
+        shouldAutoClearWrongProductionPriorRun(
+          {
+            wrongProduction: true,
+            wrongProductionNote: 'Pre-opening guard: review dated 2025-05-08',
+            wrongProductionReason: reason,
+            publishDate: '2025-05-08',
+          },
+          { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+        ),
+        false,
+        `should NOT clear with operator reason: ${reason}`
+      );
+    }
+  });
+
+  it('returns true for CV-promoted: prefix (priorRuns trumps CV-promoted wrongProduction)', () => {
+    // Phase 1 design: operator-declared priorRuns trumps CV's wrongProduction
+    // (CV identifies a different venue/run, which is exactly what priorRuns IS for).
+    const cvReasons = [
+      'CV-promoted: This is a valid theater review of "X" but it reviews the production at Bushwick Starr',
+      'CV-low-but-strong-signal: Cast members are from a later revival',
+    ];
+    for (const reason of cvReasons) {
+      assert.strictEqual(
+        shouldAutoClearWrongProductionPriorRun(
+          {
+            wrongProduction: true,
+            wrongProductionReason: reason,
+            publishDate: '2025-05-08',
+          },
+          { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+        ),
+        true,
+        `should clear CV-auto reason: ${reason.substring(0, 50)}`
+      );
+    }
+  });
+
+  it('returns false for non-date-only prefixes (cross-market, URL contains year, transfer-superseded)', () => {
+    const examples = [
+      'Cross-market: London outlet "observer" reviewing off-broadway show',
+      'URL contains year 2019 but show opens in 2025 — likely review of different production',
+      'OB review superseded by Broadway transfer foo-2026 (shared URL)',
+    ];
+    for (const note of examples) {
+      assert.strictEqual(
+        shouldAutoClearWrongProductionPriorRun(
+          {
+            wrongProduction: true,
+            wrongProductionNote: note,
+            publishDate: '2025-05-08',
+          },
+          { priorRuns: [{ openingDate: '2025-05-01', closingDate: '2025-07-15' }] }
+        ),
+        false,
+        `should NOT clear for note: ${note}`
+      );
+    }
+  });
+
   it('returns false when priorRuns is missing on show', () => {
     assert.strictEqual(
       shouldAutoClearWrongProductionPriorRun(
@@ -476,7 +586,10 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
     );
   });
 
-  it('returns false when CV high-conf wrongProduction is set', () => {
+  it('returns true when CV high-conf wrongProduction is set (priorRuns trumps CV.wrongProduction)', () => {
+    // Phase 1 design: operator-declared priorRuns is authoritative over CV's
+    // wrongProduction. CV identifies a different venue/run, but priorRuns just
+    // declared that venue/run is the same artistic production.
     assert.strictEqual(
       shouldAutoClearWrongProductionPriorRun(
         {
@@ -487,7 +600,7 @@ describe('shouldAutoClearWrongProductionPriorRun', () => {
         },
         show
       ),
-      false
+      true
     );
   });
 
