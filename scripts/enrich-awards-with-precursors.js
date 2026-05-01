@@ -296,15 +296,19 @@ function ceremonyYearToTonySeason(y) {
   return `${y - 1}-${String(y).slice(2)}`;
 }
 
-/** Inclusive-start, exclusive-end window for ACTIVE_SEASON (e.g. "2025-26" → May 1 2025 to May 1 2026).
- *  Used to identify Broadway shows in shows.json that belong to the active Tony season
- *  before Tony nominations are published. */
-function isInActiveSeasonWindow(openingDate) {
-  if (!openingDate || typeof openingDate !== 'string') return false;
-  const startYear = ACTIVE_SEASON.split('-')[0];
-  const start = `${startYear}-05-01`;
-  const end = `${parseInt(startYear, 10) + 1}-05-01`;
-  return openingDate >= start && openingDate < end;
+/** Map a YYYY-MM-DD opening date to the Tony season it falls within ("2024-25"
+ *  for May 1 2024 through April 30 2025), or null if outside PREDICTIONS_ERA.
+ *  Used by pass 4 to attribute past-season DD/OCC/DL/Pulitzer noms to
+ *  non-Tony-nominated Broadway shows that aren't already in awards.json. */
+function seasonForOpeningDate(openingDate) {
+  if (!openingDate || typeof openingDate !== 'string' || openingDate.length < 7) return null;
+  const year = parseInt(openingDate.slice(0, 4), 10);
+  const month = parseInt(openingDate.slice(5, 7), 10);
+  if (Number.isNaN(year) || Number.isNaN(month)) return null;
+  // Tony season: May Y → April Y+1 = season "Y-(Y+1)%100"
+  const startYear = month >= 5 ? year : year - 1;
+  const season = `${startYear}-${String(startYear + 1).slice(2)}`;
+  return PREDICTIONS_ERA.includes(season) ? season : null;
 }
 
 /** Find a showId for a scraped title. Looks across the predictions-era pool of
@@ -348,34 +352,53 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     }
   }
 
-  // Passes 3 + 4 only run for active-season source entries (e.g. ceremony year 2026
-  // when ACTIVE_SEASON is '2025-26'). Without the year gate, prior-year nominations
-  // for OB shows that later transferred to Broadway as a different production
-  // (e.g. DL 2023 "Titanique" OB → titanique-2026 Broadway revival) would
-  // false-attribute. Caller passes opts.sourceYear from the DD/OCC/DL/Pulitzer year fields.
-  if (opts.sourceYear !== ACTIVE_CEREMONY_YEAR) return null;
-
-  // Pass 3: relaxed gate against awards.json for active-season shows
-  // (Tony nominatedFor may be empty before Tony noms are announced).
-  for (const [showId, sh] of Object.entries(awardsShows)) {
-    if (!sh.tony || sh.tony.season !== ACTIVE_SEASON) continue;
-    const t = titleById[showId];
-    if (!t) continue;
-    if (normalizeTitle(t) === norm) return showId;
+  // Pass 3 (active season only): relaxed gate against awards.json — Tony noms may
+  // not be published yet for the active season, so allow matching shows whose
+  // tony.season is set but nominatedFor is empty.
+  if (opts.sourceYear === ACTIVE_CEREMONY_YEAR) {
+    for (const [showId, sh] of Object.entries(awardsShows)) {
+      if (!sh.tony || sh.tony.season !== ACTIVE_SEASON) continue;
+      const t = titleById[showId];
+      if (!t) continue;
+      if (normalizeTitle(t) === norm) return showId;
+    }
   }
 
-  // Pass 4: shows.json fallback — lazy-create an awards.json stub for active-season
-  // Broadway shows that don't yet have an awards entry (e.g. Lost Boys 2026 before
-  // Tony noms drop). The Tony scraper will populate nominatedFor when noms are announced.
-  if (opts.activeSeasonBroadwayShows) {
-    for (const sh of opts.activeSeasonBroadwayShows) {
-      if (normalizeTitle(sh.title) !== norm) continue;
-      if (!awardsShows[sh.id]) {
-        awardsShows[sh.id] = { tony: { season: ACTIVE_SEASON, nominatedFor: [] } };
-        if (opts.onCreate) opts.onCreate(sh.id);
+  // Pass 4: shows.json fallback for any PREDICTIONS_ERA season — match the
+  // Broadway production whose opening date falls in the source year's Tony
+  // season window (May Y-1 → April Y for ceremony year Y). Lazy-creates an
+  // awards.json stub or backfills tony.season on existing entries that lack it.
+  //
+  // Year-gating is essential: prior-year nominations for OB shows that later
+  // transferred to Broadway as a DIFFERENT production (e.g. DL 2023 "Titanique"
+  // OB → titanique-2026 Broadway revival) would false-attribute without it.
+  // Pass 1+2 still search across ALL PREDICTIONS_ERA years for the Tony-nominee
+  // pool, which correctly handles the OB→Broadway transfer cases (Hamilton DD
+  // 2015 OB matches hamilton-2015 in 2015-16 Tony season via pass 1).
+  if (opts.broadwayShowsBySeason && opts.sourceYear) {
+    const targetSeason = ceremonyYearToTonySeason(opts.sourceYear);
+    if (PREDICTIONS_ERA.includes(targetSeason)) {
+      const candidates = opts.broadwayShowsBySeason.get(targetSeason) || [];
+      for (const sh of candidates) {
+        if (normalizeTitle(sh.title) !== norm) continue;
+        if (!awardsShows[sh.id]) {
+          awardsShows[sh.id] = { tony: { season: targetSeason, nominatedFor: [] } };
+          if (opts.onCreate) opts.onCreate(sh.id);
+        } else {
+          // Backfill tony.season on existing entries (e.g. giant-2026 had only
+          // an Olivier block; without tony.season, downstream consumers like
+          // data-tony-predictions.ts:384 filter the show out).
+          if (!awardsShows[sh.id].tony) {
+            awardsShows[sh.id].tony = { season: targetSeason, nominatedFor: [] };
+            if (opts.onBackfillTony) opts.onBackfillTony(sh.id);
+          } else if (!awardsShows[sh.id].tony.season) {
+            awardsShows[sh.id].tony.season = targetSeason;
+            if (opts.onBackfillTony) opts.onBackfillTony(sh.id);
+          }
+        }
+        titleById[sh.id] = sh.title;
+        return sh.id;
       }
-      titleById[sh.id] = sh.title;
-      return sh.id;
     }
   }
 
@@ -537,16 +560,24 @@ function main() {
   }
   const awardsShows = awards.shows || awards;
 
-  // Active-season Broadway shows from shows.json — used by the matcher's pass 4
-  // to attach DD/OCC noms before Tony nominations are announced.
-  const activeSeasonBroadwayShows = showsArr.filter(s =>
-    s && s.id && s.title && s.category === 'broadway' &&
-    isInActiveSeasonWindow(s.openingDate || s.previewsStartDate)
-  );
+  // Broadway shows from shows.json bucketed by Tony season (PREDICTIONS_ERA only).
+  // Used by matcher pass 4 to attribute DD/OCC/DL/Pulitzer noms to non-Tony-nominated
+  // Broadway shows that aren't currently in awards.json. Year-gated by source year
+  // so a DD 2015 entry only matches Broadway shows opened in 2014-15 season.
+  const broadwayShowsBySeason = new Map();
+  for (const s of showsArr) {
+    if (!s || !s.id || !s.title || s.category !== 'broadway') continue;
+    const season = seasonForOpeningDate(s.openingDate || s.previewsStartDate);
+    if (!season) continue;
+    if (!broadwayShowsBySeason.has(season)) broadwayShowsBySeason.set(season, []);
+    broadwayShowsBySeason.get(season).push(s);
+  }
   const createdEntries = [];
+  const backfilledTony = [];
   const matcherOpts = {
-    activeSeasonBroadwayShows,
+    broadwayShowsBySeason,
     onCreate: (id) => createdEntries.push(id),
+    onBackfillTony: (id) => backfilledTony.push(id),
   };
 
   // 1) Migrate Pulitzer schema for ALL shows (idempotent)
@@ -573,8 +604,12 @@ function main() {
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
   if (createdEntries.length > 0) {
-    console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for active-season (${ACTIVE_SEASON}) Broadway shows:`);
+    console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for Broadway shows missing entries:`);
     for (const id of createdEntries) console.log(`  + ${id}`);
+  }
+  if (backfilledTony.length > 0) {
+    console.log(`\nBackfilled tony.season on ${backfilledTony.length} existing entries (had non-Tony awards data only):`);
+    for (const id of backfilledTony) console.log(`  ~ ${id}`);
   }
 
   // 3) Update _meta
