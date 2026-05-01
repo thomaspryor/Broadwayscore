@@ -25,6 +25,14 @@ permissions:
   issues: write
   actions: write
 
+# Share the `shows-json-writer` concurrency group with enrich-off-broadway-dates
+# so the two writers don't race on shows.json + data/playbill-urls.json. Without
+# this, an overlapping daily run can lost-update either file via the read-mutate-
+# write pattern. Caught in /ship-check 2026-04-30 (QA agent P0 finding).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   update-shows:
     runs-on: ubuntu-latest

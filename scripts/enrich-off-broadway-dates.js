@@ -62,7 +62,7 @@ const path = require('path');
 const cheerio = require('cheerio');
 
 const { fetchPage } = require('./lib/scraper');
-const { matchTitleToShow } = require('./lib/show-matching');
+const { matchTitleToShow, titleWordsMatch } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
@@ -307,6 +307,14 @@ function decodeBasicEntities(s) {
     .replace(/&#8216;/g, "'");
 }
 
+// Small generic-word set used by the short-title length guard. Mirrors the
+// meaningful-word filter in scripts/lib/show-matching.js TITLE_GENERIC_WORDS
+// but kept local + minimal so we can extend without touching the shared lib.
+const COMMON_GENERIC_WORDS = new Set([
+  'the', 'a', 'an', 'and', 'or', 'of', 'in', 'on', 'at', 'for', 'to', 'with',
+  'new', 'musical', 'play', 'show', 'revival',
+]);
+
 function normalizeForCompare(s) {
   return decodeBasicEntities(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 }
@@ -364,20 +372,42 @@ function validateOBProductionPageTitle(html, show) {
   const showTitle = typeof show === 'string' ? show : show.title;
   const m = html.match(/<title[^>]*>([^<]+)<\/title>/i);
   if (!m) return false;
+  const rawTitle = decodeBasicEntities(m[1]);
   const pageTitleNorm = normalizeForCompare(m[1]);
-  const showTitleNorm = normalizeForCompare(showTitle);
+  // Market check: raw title must contain Off-Broadway in some form.
   if (!pageTitleNorm.includes('off-broadway') && !pageTitleNorm.includes('off broadway')) return false;
-  // Strip parenthetical metadata (Playbill format: "Title (Off-Broadway, Venue, Year) | Playbill")
-  const showHead = pageTitleNorm.split(/[(|]/)[0].trim();
+  // Strip Playbill's structured metadata before token-matching. Page title
+  // format: "Show Name (Off-Broadway, Venue, Year) | Playbill". The venue
+  // tokens count as "extra distinctive words" to titleWordsMatch's short-title
+  // guard and cause valid pages to reject. Cropping to the head keeps the
+  // year-window check separate (which reads the full title, parens included).
+  const showHead = rawTitle.replace(/\s*\(.*$/, '').replace(/\s*\|\s*Playbill\s*$/i, '').trim();
   if (!showHead) return false;
-  // Loose match: full title OR substring after punctuation collapse.
-  // Handles "Heathers: The Musical" page-title vs "Heathers The Musical"
-  // show-title and similar punctuation drift.
-  const stripPunct = (s) => s.replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
-  const a = stripPunct(showHead);
-  const b = stripPunct(showTitleNorm);
-  const titleMatches = showHead.includes(showTitleNorm) || a.includes(b) || b.includes(a);
-  if (!titleMatches) return false;
+  // Title-word match (token-overlap with extra-distinctive-word rejection) is
+  // stricter than substring containment. The previous bidirectional substring
+  // rule could pass a longer sibling production within the same year window
+  // (e.g. base title matching extended title, or vice versa). titleWordsMatch
+  // applies the same cross-show defense the rest of the codebase uses for
+  // page validation. Tightened 2026-04-30 ship-check (Codex P0 finding).
+  //
+  // Pre-normalize slashes to spaces — show-matching's normalizer treats `/` as
+  // word-internal (so "Blood/Love" collapses to "bloodlove" and never matches
+  // "Blood/Love" on a Playbill page where the slash is a token separator).
+  const slashSplit = (s) => s.replace(/\//g, ' ');
+  if (!titleWordsMatch(slashSplit(showTitle), slashSplit(showHead))) return false;
+  // Short-title length guard: titleWordsMatch's single-word path accepts any
+  // page-head that contains the show word as a token, so "Hamlet" passes
+  // "Hamlet 2.0: An Improvised Sequel" and "The Maids" passes "The Maids of
+  // Honor". For show titles with ≤3 meaningful words, require page-head's
+  // meaningful word count to equal the show title's. Longer titles are
+  // sufficiently distinctive on their own. (Codex P0 ship-check finding.)
+  const meaningfulWords = (s) => normalizeForCompare(s)
+    .split(/[\s,:()&\-_/.]+/)
+    .map((w) => w.replace(/[^a-z0-9]/g, ''))
+    .filter((w) => w.length > 2 && !COMMON_GENERIC_WORDS.has(w));
+  const showWc = meaningfulWords(showTitle).length;
+  const headWc = meaningfulWords(showHead).length;
+  if (showWc <= 3 && headWc > showWc) return false;
   // Year window check — only enforced when both expected and page year exist.
   if (typeof show === 'object') {
     const expectedYear = getShowYear(show);
@@ -488,6 +518,29 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
   console.log(`Queue: ${queue.length} candidate shows not covered by schedule article` +
     (broad ? ' [broad]' : ' [same-date-only — pass --phase3-broad to widen]'));
 
+  // Fetch + validate + extract for one URL. Returns
+  //   { ok: true, dates }              on success
+  //   { ok: false, reason, detail? }   on failure (caller decides what to do)
+  // Encapsulated so the cache-rot retry path can reuse it.
+  const tryOneUrl = async (url, showCtx) => {
+    let html;
+    try {
+      const r = await fetchPage(url, { tier: 1 });
+      html = r?.content || '';
+    } catch (e) {
+      return { ok: false, reason: 'fetch-error', detail: e.message };
+    }
+    if (!html) return { ok: false, reason: 'fetch-error', detail: 'empty body' };
+    if (!validateOBProductionPageTitle(html, showCtx)) {
+      return { ok: false, reason: 'page-title-or-year-mismatch' };
+    }
+    const dates = extractDatesFromProductionPage(html);
+    if (!dates || !dates.opening) {
+      return { ok: false, reason: 'no-opening-date-on-page' };
+    }
+    return { ok: true, dates };
+  };
+
   for (const show of queue) {
     let url = urlCache.shows?.[show.id];
     let usedCache = !!url;
@@ -506,29 +559,42 @@ async function scrapePlaybillProductionPages(candidateShows, alreadyMatchedShowI
       }
     }
 
-    let html;
-    try {
-      const r = await fetchPage(url, { tier: 1 });
-      html = r?.content || '';
-    } catch (e) {
-      console.warn(`  ${show.id}: fetch error for ${url}: ${e.message}`);
-      misses.push({ showId: show.id, reason: 'fetch-error', detail: e.message, url });
+    let result = await tryOneUrl(url, show);
+
+    // Cache rot handling: a previously-discovered URL may have gone stale
+    // (Playbill slug rename, page deletion, content drift). When a cache hit
+    // fails fetch/validation/extract, evict the entry and retry SERP once.
+    // Without this, a stale cache becomes a permanent miss loop — the show
+    // stays audit-only forever even though a fresh SERP would find the new
+    // URL. Codex ship-check finding 2026-04-30.
+    if (!result.ok && usedCache) {
+      console.warn(`  ${show.id}: cached URL failed (${result.reason}) — evicting + retry SERP`);
+      delete urlCache.shows[show.id];
+      cacheChanged = true;
+      let freshUrl = null;
+      try {
+        freshUrl = await discoverOBPlaybillUrl(show);
+      } catch (e) {
+        misses.push({ showId: show.id, reason: 'serp-error-after-rot', detail: e.message, staleUrl: url });
+        continue;
+      }
+      if (!freshUrl || freshUrl === url) {
+        // No alternative URL — the slug really is dead.
+        misses.push({ showId: show.id, reason: `${result.reason}-after-rot-evict`, url });
+        continue;
+      }
+      url = freshUrl;
+      usedCache = false;
+      result = await tryOneUrl(url, show);
+    }
+
+    if (!result.ok) {
+      console.warn(`  ${show.id}: ${result.reason} (${url})`);
+      misses.push({ showId: show.id, reason: result.reason, detail: result.detail, url });
       continue;
     }
 
-    if (!validateOBProductionPageTitle(html, show)) {
-      console.warn(`  ${show.id}: page title or year rejected (${url})`);
-      misses.push({ showId: show.id, reason: 'page-title-or-year-mismatch', url });
-      continue;
-    }
-
-    const dates = extractDatesFromProductionPage(html);
-    if (!dates || !dates.opening) {
-      console.warn(`  ${show.id}: no opening date extracted (${url})`);
-      misses.push({ showId: show.id, reason: 'no-opening-date-on-page', url });
-      continue;
-    }
-
+    const { dates } = result;
     // Page validated — cache the URL for future runs.
     if (!usedCache) {
       urlCache.shows[show.id] = url;
@@ -842,7 +908,14 @@ async function main() {
       const ms = Math.abs(new Date(a).getTime() - new Date(b).getTime());
       return Math.round(ms / 86400000);
     };
-    const shiftDays = dayShift(entry.opening, show.openingDate);
+    // Apply the magnitude cap to BOTH opening and preview shifts. A wrong-
+    // production match could yield an opening that happens to match IBDB's
+    // value (so the preview-only branch would proceed) while previewsStartDate
+    // shifts wildly. Pre-2026-04-30, only opening shift was checked; preview-
+    // only fixes had no magnitude guard. (QA agent ship-check finding.)
+    const openingShiftDays = dayShift(entry.opening, show.openingDate);
+    const previewShiftDays = dayShift(entry.firstPreview, show.previewsStartDate);
+    const shiftDays = Math.max(openingShiftDays, previewShiftDays);
     const shiftTooLarge = shiftDays > SAME_DATE_FIX_MAX_SHIFT_DAYS;
     const openingChanges = entry.opening !== show.openingDate;
     const previewChanges = entry.firstPreview && entry.firstPreview !== show.previewsStartDate;
