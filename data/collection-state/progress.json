@@ -6,7 +6,13 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "magic-mike-live-west-end-2021/i-paper--unknown.json",
     "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
-    "death-of-a-salesman-2022/vulture--greg-evans.json"
+    "death-of-a-salesman-2022/vulture--greg-evans.json",
+    "death-of-a-salesman-2022/ew--steven-suskin.json",
+    "death-of-a-salesman-2022/wsj--chris-jones.json",
+    "death-of-a-salesman-2022/theatrely--andrew-martini.json",
+    "death-of-a-salesman-2022/theatrely--juan-a-ramirez.json",
+    "death-of-a-salesman-2022/exeunt-magazine--juliet-hindell.json",
+    "death-of-a-salesman-2022/front-row-center--sarah-downs.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -45,7 +51,11 @@
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
-    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json"
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "west-side-story-2020/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -55,27 +65,34 @@
       "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "magic-mike-live-west-end-2021/i-paper--unknown.json",
-      "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json"
+      "death-of-a-salesman-2022/nyt-theater--jonathan-mandell.json",
+      "death-of-a-salesman-2022/exeunt-magazine--juliet-hindell.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+      "data/review-texts/death-of-a-salesman-2022/wsj--chris-jones.json",
+      "death-of-a-salesman-2022/wsj--chris-jones.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "death-of-a-salesman-2022/theatrely--andrew-martini.json",
+      "death-of-a-salesman-2022/theatrely--juan-a-ramirez.json",
+      "death-of-a-salesman-2022/front-row-center--sarah-downs.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/mass-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "death-of-a-salesman-2022/vulture--greg-evans.json"
+      "death-of-a-salesman-2022/vulture--greg-evans.json",
+      "death-of-a-salesman-2022/ew--steven-suskin.json"
     ]
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "death-of-a-salesman-2022/vulture--greg-evans.json",
+  "lastProcessed": "west-side-story-2020/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -98,6 +115,17 @@
       "t": "2026-05-01T10:37:34.230Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-01T10:40:58.088Z",
+      "event": "bb-session",
+      "session": "dc5fac4d",
+      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi"
+    },
+    {
+      "t": "2026-05-01T10:40:58.974Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
