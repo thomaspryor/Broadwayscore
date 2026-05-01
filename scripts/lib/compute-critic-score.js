@@ -74,9 +74,14 @@ const TOP_CRITICS = new Set([
  * @param {string} [showCategory] - Show market category for region-aware tier lookup
  *   (broadway / off-broadway / west-end / off-west-end). When omitted, uses default
  *   (NYC) tier — backwards-compatible with pre-v5 callers.
+ * @param {string} [showType] - Show type override. When 'opera', all reviews count
+ *   equally (forced T1, no off-market multiplier) since Met opera coverage doesn't
+ *   follow theater's NYT-dominant tier hierarchy — Operawire, Parterre, NYCR are
+ *   first-class voices.
  * @returns {{ s: number, rc: number, t1: number } | null}
  */
-function computeCriticScore(showReviews, outletRegistry = {}, showCategory) {
+function computeCriticScore(showReviews, outletRegistry = {}, showCategory, showType) {
+  const isOpera = showType === 'opera';
   if (!showReviews || showReviews.length === 0) return null;
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
@@ -134,11 +139,15 @@ function computeCriticScore(showReviews, outletRegistry = {}, showCategory) {
         registryTier = regEntry.tier;
       }
     }
-    const tier = isTopCritic ? 1 : (overrideTier || registryTier || DEFAULT_TIER);
+    // Opera flat-weighting (2026-05-01): Met opera coverage doesn't follow
+    // theater's tier hierarchy — Operawire, Parterre Box, NYCR, Bachtrack, CVA
+    // are the equivalent of T1/T2 for opera. Force tier=1 for all opera reviews
+    // and skip the off-market multiplier (opera shows are categorized as
+    // off-broadway for routing but aren't off-market in any meaningful sense).
+    const resolvedTier = isTopCritic ? 1 : (overrideTier || registryTier || DEFAULT_TIER);
+    const tier = isOpera ? 1 : resolvedTier;
     const baseTierWeight = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
-    // Off-market multiplier — Off-Broadway and Off-West-End reviews carry 80%
-    // of base tier weight. (v5 — 2026-04-29)
-    const isOffMarket = showCategory === 'off-broadway' || showCategory === 'off-west-end';
+    const isOffMarket = !isOpera && (showCategory === 'off-broadway' || showCategory === 'off-west-end');
     const tierWeight = isOffMarket ? baseTierWeight * OFF_MARKET_MULTIPLIER : baseTierWeight;
 
     // Determine score. assignedScore is the canonical scoring output written by
