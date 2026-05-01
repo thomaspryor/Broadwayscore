@@ -1,43 +1,5 @@
 [
   {
-    "recordedAt": "2026-04-29T02:19:13.456Z",
-    "showId": "kenrex-off-broadway-2026",
-    "newFile": "variety--unknown.json",
-    "ok": false,
-    "file": "variety--brent-lang.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": null,
-      "existingFlags": {
-        "wrongProduction": false,
-        "wrongShow": true,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2026-04-13",
-      "incomingUrl": "https://variety.com/2026/legit/reviews/lost-boys-broadway-review-musical-teen-vampire-movie-spectacular-effects-1236730779/",
-      "incomingPublishDate": "2026-04-27"
-    }
-  },
-  {
-    "recordedAt": "2026-04-29T02:19:13.457Z",
-    "showId": "kenrex-off-broadway-2026",
-    "newFile": "guardian--unknown.json",
-    "ok": false,
-    "file": "guardian--mark-fisher.json",
-    "reason": "stale-flag-on-existing-file",
-    "detail": {
-      "existingUrl": "https://www.theguardian.com/stage/2024/nov/01/kenrex-review-jack-holden-ed-stambollouian-playhouse-sheffield",
-      "existingFlags": {
-        "wrongProduction": true,
-        "wrongShow": false,
-        "wrongProductionAutoCleared": false
-      },
-      "existingPublishDate": "2024-11-01",
-      "incomingUrl": "https://www.theguardian.com/stage/2024/nov/10/kenrex-review-tanya-moiseiwitsch-playhouse-sheffield-review-jack-holden-ed-stambollouian",
-      "incomingPublishDate": null
-    }
-  },
-  {
     "recordedAt": "2026-04-29T02:32:50.081Z",
     "showId": "hamlet-off-broadway-2026",
     "newFile": "observer--unknown.json",
@@ -9497,6 +9459,44 @@
       "existingPublishDate": "August 8th, 2025",
       "incomingUrl": "https://www.nytimes.com/2026/04/27/theater/megan-thee-stallion-broadway-moulin-rouge.html",
       "incomingPublishDate": "2026-04-29"
+    }
+  },
+  {
+    "recordedAt": "2026-05-01T09:25:59.470Z",
+    "showId": "grace-pervades-west-end-2026",
+    "newFile": "whatsonstage--unknown.json",
+    "ok": false,
+    "file": "whatsonstage--kris-hallett.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-at-theatre-royal-bath-review_1685670/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2025-07-04",
+      "incomingUrl": "https://www.whatsonstage.com/news/grace-pervades-with-ralph-fiennes-and-miranda-raison-west-end-review_1720019/",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-05-01T09:27:35.696Z",
+    "showId": "mass-west-end-2026",
+    "newFile": "guardian--unknown.json",
+    "ok": false,
+    "file": "guardian--fran-kranz.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://www.theguardian.com/stage/2026/apr/24/mass-fran-kranz-play-forgiveness",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": true,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": "2026-04-24",
+      "incomingUrl": "https://www.theguardian.com/stage/2023/aug/20/mass-effect-review-summerhall-edinburgh",
+      "incomingPublishDate": null
     }
   }
 ]
