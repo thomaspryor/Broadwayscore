@@ -1101,6 +1101,15 @@ async function main(): Promise<void> {
   let errors = 0;
   let garbageSkipped = 0;
   let suspiciousWarnings = 0;
+  // Lazy single-model Haiku scorer used when ensemble rejects a manually-cleared
+  // file (otherwise the file lands in 'manually-cleared but unscored' limbo —
+  // SKIP-REJECT correctly suppresses the rejection write but used to also skip
+  // scoring entirely. Discovered 2026-05-01 with Operawire/Eugene-Onegin and
+  // NYCR/La-Traviata, where the ensemble repeatedly rejected as wrong_show
+  // despite human verification — files needed manual Haiku scoring to land.
+  // Instantiated once per run only when first triggered, to avoid wasting a
+  // client object on runs where the path is never hit.
+  let manualClearFallbackScorer: ReviewScorer | null = null;
 
   // Write initial progress
   writeProgress(0, finalFiles.length, 0, 0, startTime);
@@ -1262,6 +1271,38 @@ async function main(): Promise<void> {
             fileData.humanReviewedWrongProduction === false;
           if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
             console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
+            // Fallback: a human has verified this file matches the show, but the
+            // ensemble still rejected it — score the text directly with a single
+            // Haiku call so the file lands in reviews.json instead of staying in
+            // 'manually-cleared but unscored' limbo. (2026-05-01 Eugene Onegin /
+            // La Traviata opera incident — required manual rescue with Haiku.)
+            if (!manualClearFallbackScorer) {
+              manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
+                model: 'claude-3-5-haiku-20241022',
+                verbose: false,
+              });
+            }
+            try {
+              const fbResult = await manualClearFallbackScorer.scoreReviewFile(reviewFile);
+              if (fbResult.success && fbResult.scoredFile) {
+                const scoredAny = fbResult.scoredFile as any;
+                if (scoredAny.llmScore) {
+                  scoredAny.llmScore.reasoning =
+                    '[manual-cleared Haiku fallback] ' + (scoredAny.llmScore.reasoning || '');
+                }
+                scoredAny.scoreSource = 'manual-cleared-haiku-fallback';
+                scoredAny.scoreSourceReason =
+                  `ensemble rejected as ${rejection} but file is human-cleared via wrongProductionManualClear/wrongShowManualClear; Haiku single-model scored the text directly`;
+                scoredAny.scoredAt = new Date().toISOString();
+                if (!options.dryRun) saveReviewFile(filePath, scoredAny);
+                console.log(`  ✓ FALLBACK SCORED (Haiku): ${scoredAny.assignedScore} (${scoredAny.llmScore?.bucket})`);
+                processed++;
+                continue;
+              }
+              console.log(`  ⚠ Haiku fallback did not produce a score: ${fbResult.error || 'unknown'}; leaving file unscored`);
+            } catch (e: any) {
+              console.log(`  ⚠ Haiku fallback exception: ${e.message}; leaving file unscored`);
+            }
             skipped++;
             continue;
           }
