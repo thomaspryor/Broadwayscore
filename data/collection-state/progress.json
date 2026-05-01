@@ -946,7 +946,8 @@
       "data/review-texts/death-of-a-salesman-2022/wsj--chris-jones.json",
       "death-of-a-salesman-2022/wsj--chris-jones.json",
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
-      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -968,7 +969,8 @@
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
-      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json"
+      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "death-of-a-salesman-2022/vulture--greg-evans.json",
@@ -1037,6 +1039,17 @@
       "t": "2026-05-01T18:42:37.389Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-01T19:12:35.839Z",
+      "event": "bb-session",
+      "session": "b04d9ceb",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-01T19:12:36.650Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
