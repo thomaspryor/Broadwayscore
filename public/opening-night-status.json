@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T17:18:30.149Z",
+  "generatedAt": "2026-05-01T03:27:49.140Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -896,24 +896,24 @@
       "status": "open",
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "siteScore": 86.67,
-      "liveScore": 87,
-      "scoreDrift": 0.3299999999999983,
+      "siteScore": 84.84,
+      "liveScore": 85,
+      "scoreDrift": 0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 2,
+      "total": 4,
+      "t1": 3,
       "t2": 1,
       "t3": 0,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:1/3",
+          "4/8 total",
+          "T1:2/3",
           "T2:1/2",
           "hi-conf:0/6"
         ],
@@ -950,10 +950,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -1006,6 +1002,18 @@
           "t2": 1,
           "t3": 0,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-01T03:27:49.140Z",
+          "rc": 4,
+          "s": 84.84,
+          "t1": 3,
+          "t2": 1,
+          "t3": 0,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1124,7 +1132,7 @@
       "status": "upcoming",
       "slug": "messy-millie-off-broadway",
       "thumbnail": "/images/shows/messy-millie-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1163,7 +1171,7 @@
       "status": "previews",
       "slug": "hamlet-off-broadway",
       "thumbnail": "/images/shows/hamlet-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1202,7 +1210,7 @@
       "status": "previews",
       "slug": "the-boy-who-harnessed-the-wind-west-end",
       "thumbnail": "/images/shows/the-boy-who-harnessed-the-wind-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1227,7 +1235,7 @@
       "status": "previews",
       "slug": "the-peculiar-patriot-off-broadway",
       "thumbnail": "/images/shows/the-peculiar-patriot-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1266,7 +1274,7 @@
       "status": "previews",
       "slug": "the-receptionist-off-broadway",
       "thumbnail": "/images/shows/the-receptionist-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1305,7 +1313,7 @@
       "status": "upcoming",
       "slug": "im-not-being-funny-west-end",
       "thumbnail": "/images/shows/im-not-being-funny-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1330,7 +1338,7 @@
       "status": "upcoming",
       "slug": "an-ideal-husband-west-end",
       "thumbnail": "/images/shows/an-ideal-husband-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1355,7 +1363,7 @@
       "status": "upcoming",
       "slug": "mother-courage-and-her-children-globe-west-end",
       "thumbnail": "/images/shows/mother-courage-and-her-children-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1380,7 +1388,7 @@
       "status": "previews",
       "slug": "the-people-versus-lenny-bruce-off-broadway",
       "thumbnail": "/images/shows/the-people-versus-lenny-bruce-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1398,6 +1406,84 @@
         "talkingBroadway": {
           "pass": null,
           "detail": "Verify manually: https://www.talkinbroadway.com/page/world/ThePeopleVersusLennyBruce2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-music-man-off-broadway-2026",
+      "title": "The Music Man",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "musical",
+      "openingDate": "2026-05-08",
+      "status": "upcoming",
+      "slug": "the-music-man-off-broadway",
+      "thumbnail": "/images/shows/the-music-man-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Music-Man-Opens-on-Broadway-20260508",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheMusicMan2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "new-born-off-broadway-2026",
+      "title": "New Born",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-05-08",
+      "status": "upcoming",
+      "slug": "new-born-off-broadway",
+      "thumbnail": "/images/shows/new-born-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-New-Born-Opens-on-Broadway-20260508",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/NewBorn2026.html",
           "warn": true
         }
       },

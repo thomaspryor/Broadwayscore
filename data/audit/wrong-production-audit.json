@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-04-30T17:18:26.175Z",
+  "timestamp": "2026-05-01T03:27:45.143Z",
   "stats": {
-    "totalReviews": 36266,
-    "alreadyFlagged": 15811,
-    "dateGuardCatches": 98,
-    "directorMismatch": 838,
+    "totalReviews": 36282,
+    "alreadyFlagged": 15791,
+    "dateGuardCatches": 102,
+    "directorMismatch": 836,
     "tvFilmSignals": 1004,
-    "londonSignals": 556,
+    "londonSignals": 559,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3734
+    "noPublishDate": 3726
   },
   "findings": [
     {
@@ -12807,6 +12807,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "independent--alice-saville.json",
+      "score": 81,
       "publishDate": "2026-04-30",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/mass-donmar-warehouse-play-b2967922.html",
       "findings": [
@@ -20073,20 +20074,6 @@
       ]
     },
     {
-      "showId": "that-championship-season-1972",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "http://www.hollywoodreporter.com/review/championship-season-theater-review-164815",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"gregory mosher\" from that-championship-season-2011"
-        }
-      ]
-    },
-    {
       "showId": "that-championship-season-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 38,
@@ -23059,20 +23046,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-real-thing-1984",
-      "file": "telegraph--matt-wolf.json",
-      "score": 49,
-      "publishDate": null,
-      "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/11198222/Tom-Stoppard-The-Real-Thing-Ewan-McGregor-Maggie-Gyllenhaal-broadway-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-real-thing-2014"
         }
       ]
     },
@@ -28797,6 +28770,20 @@
     },
     {
       "showId": "evita-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 90,
+      "publishDate": "2025-07-02",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14866497/review-Evita-Rachel-Zegler-knockout.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 96,
       "publishDate": "2025-07-01",
@@ -31278,20 +31265,6 @@
       ]
     },
     {
-      "showId": "kenrex-off-broadway-2026",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
       "showId": "king-charles-iii-2015",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 68,
@@ -32324,6 +32297,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -33396,6 +33383,20 @@
       ]
     },
     {
+      "showId": "oliver-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 86,
+      "publishDate": "2025-01-14",
+      "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "once-2012",
       "file": "newsday--linda-winer.json",
       "score": 88,
@@ -34088,6 +34089,19 @@
       ]
     },
     {
+      "showId": "rheology-off-broadway-2026",
+      "file": "vulture--jackson-mchenry.json",
+      "publishDate": "2026-04-26",
+      "url": "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "rock-n-roll-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 77,
@@ -34448,6 +34462,61 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 78,
+      "publishDate": "2025-05-08",
+      "url": "https://cititour.com/NYC_News/Review-Hugh-Jackman-Seduces-Us-Into-Sexual-Misconduct-of-the-Middle-Classes/9466",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nysr--frank-scheck.json",
+      "score": 78,
+      "publishDate": "2025-05-08",
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-star-power-up-close/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2025-05-08",
+      "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 313d before show (2025-05-08 vs 2026-03-17)"
+        }
+      ]
+    },
+    {
+      "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "file": "nytg--gillian-russo.json",
+      "score": 62,
+      "publishDate": "2025-05-09",
+      "url": "https://www.newyorktheatreguide.com/reviews/sexual-misconduct-of-the-middle-classes-off-broadway-review-hugh-jackman-ella-beatty",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 312d before show (2025-05-09 vs 2026-03-17)"
         }
       ]
     },
