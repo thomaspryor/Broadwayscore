@@ -244,10 +244,13 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       {showMarketFilter && (
         <ToggleBar
           label="MARKET:"
-          options={availableMarkets.map(m => ({
-            value: m as MarketFilter,
-            label: `${MARKET_LABELS[m].toUpperCase()} (${marketCounts[m]})`,
-          }))}
+          options={[
+            { value: 'all' as MarketFilter, label: `ALL (${critic.reviewCount})` },
+            ...availableMarkets.map(m => ({
+              value: m as MarketFilter,
+              label: `${MARKET_LABELS[m].toUpperCase()} (${marketCounts[m]})`,
+            })),
+          ]}
           value={marketFilter}
           onChange={(m) => { setMarketFilter(m); setShowCount(INITIAL_REVIEWS); }}
           ariaLabel="Filter by market"
