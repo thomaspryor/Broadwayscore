@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-01T16:27:08.515Z",
+  "generatedAt": "2026-05-01T18:43:57.156Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "grace-pervades-west-end",
       "thumbnail": "/images/shows/grace-pervades-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 76,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "positive": 1,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -63,6 +63,10 @@
           "isDualMarket": true
         },
         {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
           "name": "Daily Mail",
           "isDualMarket": true
         }
@@ -79,6 +83,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -90,6 +98,18 @@
           "t2": 1,
           "t3": 0,
           "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-01T18:43:57.156Z",
+          "rc": 2,
+          "s": 76,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 1,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1119,6 +1139,10 @@
         },
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ]
