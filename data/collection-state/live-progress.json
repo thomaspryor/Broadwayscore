@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-01T11:14:38.534Z",
+  "updatedAt": "2026-05-01T11:26:07.387Z",
   "processed": 22,
-  "failed": 216,
-  "successRate": "9.2%",
+  "failed": 226,
+  "successRate": "8.9%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 1,
     "archiveToday": 1,
     "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -47,6 +47,17 @@
       "t": "2026-05-01T10:40:58.974Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-01T11:25:20.308Z",
+      "event": "bb-session",
+      "session": "6576b741",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-05-01T11:25:21.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

@@ -239,7 +239,17 @@
     "hairspray-2002/chicagotribune--chris-jones.json",
     "falsettos-1992/nytg--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -260,7 +270,8 @@
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "data/review-texts/death-of-a-salesman-2022/wsj--chris-jones.json",
-      "death-of-a-salesman-2022/wsj--chris-jones.json"
+      "death-of-a-salesman-2022/wsj--chris-jones.json",
+      "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -270,7 +281,8 @@
       "death-of-a-salesman-2022/front-row-center--sarah-downs.json",
       "death-of-a-salesman-2012/theatrely--andrew-martini.json",
       "hairspray-2002/timeout--adam-feldman.json",
-      "hairspray-2002/chicagotribune--chris-jones.json"
+      "hairspray-2002/chicagotribune--chris-jones.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [
       "the-price-2017/cititour--brian-scott-lipton.json"
@@ -287,7 +299,7 @@
     ]
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -321,6 +333,17 @@
       "t": "2026-05-01T10:40:58.974Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-01T11:25:20.308Z",
+      "event": "bb-session",
+      "session": "6576b741",
+      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
+    },
+    {
+      "t": "2026-05-01T11:25:21.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
