@@ -399,17 +399,23 @@ jobs:
 
           npx tsx --test tests/unit/engine.test.ts tests/unit/scoring-parity.test.ts tests/unit/llm-scoring-stale-roundup-flag.test.mjs
 
-      - name: Run scraper-cookie-wiring tests (isolated)
+      - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
         # to capture outbound calls without making real requests. When run
-        # alongside other tests in the same `node --test` invocation, the
-        # deferred `setImmediate` callbacks have intermittently tripped a
-        # worker-IPC `Unable to deserialize cloned data` error in CI on
-        # Node 20 (Item 5 of the systematic CI plan, 2026-04-28). Running
-        # it in its own invocation isolates the global-state mutation to
-        # a single worker so cross-test IPC marshaling can't race with it.
-        # Cost: ~200ms; predictability gain: large.
-        run: node --test tests/unit/scraper-cookie-wiring.test.mjs
+        # via `node --test`, the deferred `setImmediate` callbacks have
+        # intermittently tripped a worker-IPC `Unable to deserialize cloned
+        # data` error in CI on Node 20 — even when the file is the sole
+        # invocation (Item 5 of the systematic CI plan, 2026-04-28).
+        #
+        # Running the file DIRECTLY (no --test wrapper) bypasses Node's
+        # subprocess test runner entirely. The `node:test` module's
+        # describe/test calls auto-register and auto-execute when the file
+        # is loaded; assertion failures throw and set process.exitCode.
+        # No V8 IPC serialization → no deserialize bug. 8/8 subtests still
+        # run, just reported in-process via TAP to stdout.
+        # Regression: 2026-04-30 — `node --test` started emitting the
+        # deserialize error every run (previous isolation insufficient).
+        run: node tests/unit/scraper-cookie-wiring.test.mjs
 
       - name: Run review-guards regression tests
         # Tests opening-night fix #12-#14 + Times UK heuristic guard + rebuild auto-clear keyword check.
