@@ -15,6 +15,12 @@
     "mass-west-end-2026/financialtimes--unknown.json",
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
     "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
@@ -26,10 +32,12 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [],
@@ -49,6 +57,17 @@
     },
     {
       "t": "2026-05-01T10:19:45.045Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-01T11:07:34.701Z",
+      "event": "bb-session",
+      "session": "a9f57571",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-01T11:07:35.337Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
