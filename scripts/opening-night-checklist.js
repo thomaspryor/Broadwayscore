@@ -77,8 +77,8 @@ function loadDriftState() {
 const _ocOutletRegistry = (() => {
   try { return require('../data/outlet-registry.json').outlets || {}; } catch { return {}; }
 })();
-function computeCompositeForShow(showReviews, showCategory) {
-  const result = computeCriticScore(showReviews, _ocOutletRegistry, showCategory);
+function computeCompositeForShow(showReviews, showCategory, showType) {
+  const result = computeCriticScore(showReviews, _ocOutletRegistry, showCategory, showType);
   return result ? Math.round(result.s) : null;
 }
 
@@ -95,7 +95,7 @@ function resolveTargetShows(shows, reviewsDoc, now) {
   if (showIdArg) {
     const show = shows.find(s => s.id === showIdArg);
     if (!show) return [];
-    const compositeScore = computeCompositeForShow(reviewsDoc[show.id] || [], show.category);
+    const compositeScore = computeCompositeForShow(reviewsDoc[show.id] || [], show.category, show.type);
     const reviewCount = (reviewsDoc[show.id] || []).length;
     return [{ ...show, compositeScore, reviewCount }];
   }
