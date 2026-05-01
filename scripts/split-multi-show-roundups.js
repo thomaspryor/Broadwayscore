@@ -239,12 +239,30 @@ function rewriteParent(data, ownSection, childShowIds) {
     out.wrongShowClearedAt = new Date().toISOString();
   }
 
-  // Re-run scoring next pass — clear any stale ensemble/llm scores derived
-  // from the un-trimmed text.
-  if (out.ensembleData || out.llmScore) {
-    out.needsRescore = true;
-    out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
+  // The file is now SINGLE-show after trimming — clear isMultiShowReview so
+  // the LLM-scoring trim/skip path doesn't re-trim already-trimmed text.
+  if (out.isMultiShowReview === true) {
+    delete out.isMultiShowReview;
+    delete out.multiShowReason;
+    out.multiShowReviewClearedBy = 'multi-show-splitter';
   }
+
+  // contentTier was likely 'invalid' from a wrongShow rejection — the trimmed
+  // text is a valid single-show section now. Reset to 'complete' so rebuild
+  // includes it. Only override invalid-with-wrong-show-reason — preserve
+  // genuine 'truncated'/'stub'/manual-quality verdicts.
+  if (out.contentTier === 'invalid' && /wrong\s*show|multi[\s-]?show/i.test(out.contentTierReason || '')) {
+    out.contentTier = 'complete';
+    out.contentTierReason = 'multi-show-split: trimmed to own show section';
+  }
+
+  // Always re-score after a split — the trimmed text is materially different
+  // from whatever was scored before (or unscored).
+  out.needsRescore = true;
+  out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
+  // Clear any stale ensemble/llm scores derived from the un-trimmed text.
+  delete out.ensembleData;
+  delete out.llmScore;
 
   return out;
 }
