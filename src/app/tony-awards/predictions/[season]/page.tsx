@@ -163,7 +163,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 42 of 43 contests.',
+          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 41 of 43 contests.',
         },
       },
       {
@@ -373,7 +373,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
                 Each Tony category gets its own recipe, tuned against 11 years of Tony history. The model
-                correctly picked the winner in 42 of 43 contests across that backtest, vs 32 of 43 for
+                correctly picked the winner in 41 of 43 contests across that backtest, vs 32 of 43 for
                 critic-only:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">

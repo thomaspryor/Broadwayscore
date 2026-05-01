@@ -66,6 +66,7 @@ const DRAMA_DESK = {
     { year: 2023, winner: "Some Like It Hot", nominees: ["Some Like It Hot","& Juliet","Between the Lines","F*ck7thGrade","Shucked","White Girl in Danger"] },
     { year: 2024, winner: "Dead Outlaw", nominees: ["Dead Outlaw","Illinoise","Lizard Boy","Teeth","The Connector","The Outsiders"] },
     { year: 2025, winner: "Maybe Happy Ending", nominees: ["Maybe Happy Ending","Boop! The Musical","Death Becomes Her","Just in Time","Music City"] },
+    { year: 2026, winner: null, nominees: ["Beau the Musical","Mexodus","Schmigadoon!","The Seat of Our Pants","Two Strangers (Carry a Cake Across New York)"] },
   ],
   'Outstanding Play': [
     { year: 2014, winner: "All the Way", nominees: ["All the Way","Core Values","Domesticated","The Explorers Club","The Night Alive","Outside Mullingar","Regular Singing"] },
@@ -79,6 +80,7 @@ const DRAMA_DESK = {
     { year: 2023, winner: "Leopoldstadt", nominees: ["Leopoldstadt","A Case for the Existence of God","Fat Ham","Love","Prima Facie","Wish You Were Here"] },
     { year: 2024, winner: "Stereophonic", nominees: ["Stereophonic","Infinite Life","Jaja's African Hair Braiding","Mother Play","Swing State","The Ally"] },
     { year: 2025, winner: "Purpose", nominees: ["Purpose","Blood of the Lamb","Deep Blue Sound","Grangeville","John Proctor Is the Villain","Liberation"] },
+    { year: 2026, winner: null, nominees: ["Caroline","Cold War Choir Practice","Meet the Cartozians","Prince Faggot","The Balusters","The Porch on Windy Hill","Well, I'll Let You Go"] },
   ],
   'Outstanding Revival of a Musical': [
     { year: 2014, winner: "Hedwig and the Angry Inch", nominees: ["Hedwig and the Angry Inch","Les Misérables","Violet"] },
@@ -92,6 +94,7 @@ const DRAMA_DESK = {
     { year: 2023, winner: "Parade", nominees: ["Parade","A Man of No Importance","Into the Woods","Merrily We Roll Along","Sweeney Todd"] },
     { year: 2024, winner: "I Can Get It for You Wholesale", nominees: ["I Can Get It for You Wholesale","Cabaret at the Kit Kat Club","Gutenberg! The Musical!"] },
     { year: 2025, winner: "Gypsy", nominees: ["Gypsy","Cats: The Jellicle Ball","Floyd Collins","Once Upon a Mattress","See What I Wanna See","Sunset Blvd."] },
+    { year: 2026, winner: null, nominees: ["Amahl and the Night Visitors","Chess","Ragtime","The 25th Annual Putnam County Spelling Bee","The Baker's Wife","The Rocky Horror Show"] },
   ],
   'Outstanding Revival of a Play': [
     { year: 2014, winner: "Twelfth Night", nominees: ["Twelfth Night","The Cripple of Inishmaan","I Remember Mama","London Wall","The Model Apartment","No Man's Land","Of Mice and Men"] },
@@ -105,6 +108,7 @@ const DRAMA_DESK = {
     { year: 2023, winner: "The Piano Lesson", nominees: ["The Piano Lesson","A Raisin in the Sun","Death of a Salesman","Endgame","Ohio State Murders","Wedding Band"] },
     { year: 2024, winner: "Appropriate", nominees: ["Appropriate","Doubt","Philadelphia, Here I Come!","Purlie Victorious","Uncle Vanya"] },
     { year: 2025, winner: "Eureka Day", nominees: ["Eureka Day","Garside's Career","Home","Wine in the Wilderness","Yellow Face"] },
+    { year: 2026, winner: null, nominees: ["Becky Shaw","Ceremonies in Dark Old Men","Death of a Salesman","Los Soles Truncos","Titus Andronicus","You Got Older"] },
   ],
 };
 
@@ -120,6 +124,7 @@ const OUTER_CRITICS = {
     { year: 2023, winner: "Some Like It Hot", nominees: ["Some Like It Hot","& Juliet","A Beautiful Noise","New York, New York","Shucked"] },
     { year: 2024, winner: "Suffs", nominees: ["Suffs","Water for Elephants","The Outsiders","The Great Gatsby","Days of Wine and Roses"] },
     { year: 2025, winner: "Maybe Happy Ending", nominees: ["Maybe Happy Ending","Real Women Have Curves","Operation Mincemeat","Death Becomes Her","Boop! The Musical"] },
+    { year: 2026, winner: null, nominees: ["The Lost Boys","Schmigadoon!","Two Strangers (Carry a Cake Across New York)"] },
   ],
   'Outstanding New Broadway Play': [
     { year: 2014, winner: "All the Way", nominees: ["All the Way","Act One","Casa Valentina","Outside Mullingar","The Realistic Joneses"] },
@@ -133,6 +138,7 @@ const OUTER_CRITICS = {
     { year: 2023, winner: "Leopoldstadt", nominees: ["Leopoldstadt","Life of Pi","Peter Pan Goes Wrong","Summer, 1976","Good Night, Oscar"] },
     { year: 2024, winner: "Stereophonic", nominees: ["Stereophonic","Mother Play","Jaja's African Hair Braiding","Patriots","The Shark Is Broken"] },
     { year: 2025, winner: "John Proctor is the Villain", nominees: ["John Proctor is the Villain","Cult of Love","The Hills of California","Purpose","Stranger Things: The First Shadow"] },
+    { year: 2026, winner: null, nominees: ["The Balusters","Giant","Little Bear Ridge Road","Oedipus","Punch"] },
   ],
   'Outstanding Revival of a Musical': [
     { year: 2014, winner: "Hedwig and the Angry Inch", nominees: ["Hedwig and the Angry Inch","Cabaret","Lady Day at Emerson's Bar and Grill","Violet","Les Misérables"] },
@@ -146,6 +152,7 @@ const OUTER_CRITICS = {
     { year: 2023, winner: "Parade", nominees: ["Parade","Into the Woods","Merrily We Roll Along","Sweeney Todd","A Man of No Importance"] },
     { year: 2024, winner: "I Can Get It for You Wholesale", nominees: ["I Can Get It for You Wholesale","Spamalot","Here Lies Love","Cabaret"] },
     { year: 2025, winner: "Cats: The Jellicle Ball", nominees: ["Cats: The Jellicle Ball","Sunset Blvd.","Once Upon a Mattress","Gypsy","Floyd Collins"] },
+    { year: 2026, winner: null, nominees: ["The 25th Annual Putnam County Spelling Bee","The Baker's Wife","Chess","Masquerade","Ragtime"] },
   ],
   'Outstanding Revival of a Play': [
     { year: 2014, winner: "The Glass Menagerie", nominees: ["The Glass Menagerie","The Cripple of Inishmaan","Machinal","Twelfth Night","The Winslow Boy"] },
@@ -159,6 +166,7 @@ const OUTER_CRITICS = {
     { year: 2023, winner: "Topdog/Underdog", nominees: ["Topdog/Underdog","Ohio State Murders","Death of a Salesman","Endgame","Wedding Band"] },
     { year: 2024, winner: "Appropriate", nominees: ["Appropriate","An Enemy of the People","Philadelphia, Here I Come!","Mary Jane","Purlie Victorious","Doubt, A Parable"] },
     { year: 2025, winner: "Vanya", nominees: ["Vanya","Yellow Face","Beckett Briefs","Romeo + Juliet","Glengarry Glen Ross"] },
+    { year: 2026, winner: null, nominees: ["Becky Shaw","The Brothers Size","Death of a Salesman","Joe Turner's Come and Gone","Marjorie Prime"] },
   ],
 };
 
@@ -275,20 +283,47 @@ const PULITZER = [
 
 const TONY_CATS = ['Best Musical','Best Play','Best Revival of a Musical','Best Revival of a Play'];
 const CAT_SET = new Set(TONY_CATS);
-const PREDICTIONS_ERA = ['2013-14','2014-15','2015-16','2016-17','2017-18','2018-19','2019-20','2021-22','2022-23','2023-24','2024-25'];
+const PREDICTIONS_ERA = ['2013-14','2014-15','2015-16','2016-17','2017-18','2018-19','2019-20','2021-22','2022-23','2023-24','2024-25','2025-26'];
+// Latest entry — used by the matcher to relax the "must have Tony noms"
+// gate while Tony nominations for the active season haven't been announced yet.
+const ACTIVE_SEASON = PREDICTIONS_ERA[PREDICTIONS_ERA.length - 1];
+// "2025-26" → 2026 (the ceremony year that maps to ACTIVE_SEASON's Tony season).
+// Source entries from prior years must NOT match active-season shows via pass 3/4
+// (e.g. Drama League 2023 "Titanique" must not attribute to titanique-2026).
+const ACTIVE_CEREMONY_YEAR = parseInt(ACTIVE_SEASON.split('-')[0], 10) + 1;
 
 function ceremonyYearToTonySeason(y) {
   return `${y - 1}-${String(y).slice(2)}`;
 }
 
+/** Inclusive-start, exclusive-end window for ACTIVE_SEASON (e.g. "2025-26" → May 1 2025 to May 1 2026).
+ *  Used to identify Broadway shows in shows.json that belong to the active Tony season
+ *  before Tony nominations are published. */
+function isInActiveSeasonWindow(openingDate) {
+  if (!openingDate || typeof openingDate !== 'string') return false;
+  const startYear = ACTIVE_SEASON.split('-')[0];
+  const start = `${startYear}-05-01`;
+  const end = `${parseInt(startYear, 10) + 1}-05-01`;
+  return openingDate >= start && openingDate < end;
+}
+
 /** Find a showId for a scraped title. Looks across the predictions-era pool of
  *  Tony nominees by title — handles OB→Broadway transfers (e.g. Hamilton's Tony
- *  is 2015-16 but DD 2015 OB win still matters). Returns null if no match. */
-function findShowIdByTitle(scrapedTitle, awardsShows, titleById) {
+ *  is 2015-16 but DD 2015 OB win still matters).
+ *
+ *  For the ACTIVE_SEASON only, the strict "must have Tony noms" gate is loosened:
+ *  Tony nominations for the current season may not be announced yet, but DD/OCC
+ *  precursor noms drop earlier and need a place to land. Pass 3 matches active-season
+ *  shows already in awards.json (regardless of nominatedFor); pass 4 falls back to
+ *  shows.json for active-season Broadway shows missing from awards.json and
+ *  lazy-creates a stub entry so the precursor field has somewhere to attach.
+ *
+ *  Returns null if no match. */
+function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   const norm = normalizeTitle(scrapedTitle);
   if (!norm) return null;
 
-  // Exact match against any Tony nominee (4-main-categories) in predictions era
+  // Pass 1: exact match against Tony-nominated shows in predictions era (strict gate)
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
     const noms = (sh.tony.nominatedFor || []).filter(c => CAT_SET.has(c));
@@ -298,7 +333,7 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById) {
     if (normalizeTitle(t) === norm) return showId;
   }
 
-  // Prefix containment — for cases like "Shuffle Along" matching the long form
+  // Pass 2: prefix containment — for cases like "Shuffle Along" matching the long form
   // "Shuffle Along, or, the Making of the Musical Sensation of 1921 ..."
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
@@ -312,6 +347,38 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById) {
       if (Math.abs(nT.length - norm.length) <= 35) return showId;
     }
   }
+
+  // Passes 3 + 4 only run for active-season source entries (e.g. ceremony year 2026
+  // when ACTIVE_SEASON is '2025-26'). Without the year gate, prior-year nominations
+  // for OB shows that later transferred to Broadway as a different production
+  // (e.g. DL 2023 "Titanique" OB → titanique-2026 Broadway revival) would
+  // false-attribute. Caller passes opts.sourceYear from the DD/OCC/DL/Pulitzer year fields.
+  if (opts.sourceYear !== ACTIVE_CEREMONY_YEAR) return null;
+
+  // Pass 3: relaxed gate against awards.json for active-season shows
+  // (Tony nominatedFor may be empty before Tony noms are announced).
+  for (const [showId, sh] of Object.entries(awardsShows)) {
+    if (!sh.tony || sh.tony.season !== ACTIVE_SEASON) continue;
+    const t = titleById[showId];
+    if (!t) continue;
+    if (normalizeTitle(t) === norm) return showId;
+  }
+
+  // Pass 4: shows.json fallback — lazy-create an awards.json stub for active-season
+  // Broadway shows that don't yet have an awards entry (e.g. Lost Boys 2026 before
+  // Tony noms drop). The Tony scraper will populate nominatedFor when noms are announced.
+  if (opts.activeSeasonBroadwayShows) {
+    for (const sh of opts.activeSeasonBroadwayShows) {
+      if (normalizeTitle(sh.title) !== norm) continue;
+      if (!awardsShows[sh.id]) {
+        awardsShows[sh.id] = { tony: { season: ACTIVE_SEASON, nominatedFor: [] } };
+        if (opts.onCreate) opts.onCreate(sh.id);
+      }
+      titleById[sh.id] = sh.title;
+      return sh.id;
+    }
+  }
+
   return null;
 }
 
@@ -357,13 +424,14 @@ function migratePulitzer(sh) {
 
 /** Apply DD/OCC/DL source data to awards.json. Adds nominatedFor (and `wins`
  *  for the matching Tony category, when scraped winner matches). */
-function applyDDOCCDL(source, fieldKey, awardsShows, titleById) {
+function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [scrapedCategory, years] of Object.entries(source)) {
     for (const yearEntry of years) {
+      const callOpts = { ...opts, sourceYear: yearEntry.year };
       for (const nomineeName of yearEntry.nominees) {
-        const showId = findShowIdByTitle(nomineeName, awardsShows, titleById);
+        const showId = findShowIdByTitle(nomineeName, awardsShows, titleById, callOpts);
         if (!showId) {
           unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: ${nomineeName}`);
           continue;
@@ -388,13 +456,14 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById) {
 }
 
 /** Apply NYDCCC source. Winners only — `wins` populated; no nominatedFor. */
-function applyNYDCCC(source, awardsShows, titleById) {
+function applyNYDCCC(source, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [category, years] of Object.entries(source)) {
     for (const yearEntry of years) {
       if (!yearEntry.winner) continue;
-      const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById);
+      const callOpts = { ...opts, sourceYear: yearEntry.year };
+      const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById, callOpts);
       if (!showId) {
         unmatched.push(`NYDCCC/${category}/${yearEntry.year}: ${yearEntry.winner}`);
         continue;
@@ -412,12 +481,13 @@ function applyNYDCCC(source, awardsShows, titleById) {
 }
 
 /** Apply Pulitzer source. Sets wins (winner) or finalist per show, records year. */
-function applyPulitzer(source, awardsShows, titleById) {
+function applyPulitzer(source, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const e of source) {
+    const callOpts = { ...opts, sourceYear: e.year };
     // Winner
-    const wId = findShowIdByTitle(e.winner, awardsShows, titleById);
+    const wId = findShowIdByTitle(e.winner, awardsShows, titleById, callOpts);
     if (!wId) unmatched.push(`Pulitzer/${e.year} winner: ${e.winner}`);
     else {
       const sh = awardsShows[wId];
@@ -431,7 +501,7 @@ function applyPulitzer(source, awardsShows, titleById) {
     }
     // Finalists
     for (const f of e.finalists) {
-      const fId = findShowIdByTitle(f, awardsShows, titleById);
+      const fId = findShowIdByTitle(f, awardsShows, titleById, callOpts);
       if (!fId) { unmatched.push(`Pulitzer/${e.year} finalist: ${f}`); continue; }
       const sh = awardsShows[fId];
       if (!sh.pulitzer) sh.pulitzer = { wins: [], finalist: [] };
@@ -467,6 +537,18 @@ function main() {
   }
   const awardsShows = awards.shows || awards;
 
+  // Active-season Broadway shows from shows.json — used by the matcher's pass 4
+  // to attach DD/OCC noms before Tony nominations are announced.
+  const activeSeasonBroadwayShows = showsArr.filter(s =>
+    s && s.id && s.title && s.category === 'broadway' &&
+    isInActiveSeasonWindow(s.openingDate || s.previewsStartDate)
+  );
+  const createdEntries = [];
+  const matcherOpts = {
+    activeSeasonBroadwayShows,
+    onCreate: (id) => createdEntries.push(id),
+  };
+
   // 1) Migrate Pulitzer schema for ALL shows (idempotent)
   let migrated = 0;
   for (const [showId, sh] of Object.entries(awardsShows)) {
@@ -478,11 +560,11 @@ function main() {
   console.log(`Pulitzer schema migrated for ${migrated} shows (legacy → canonical)`);
 
   // 2) Apply each precursor source
-  const ddRes = applyDDOCCDL(DRAMA_DESK, 'dramadesk', awardsShows, titleById);
-  const occRes = applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', awardsShows, titleById);
-  const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById);
-  const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById);
-  const pulRes = applyPulitzer(PULITZER, awardsShows, titleById);
+  const ddRes = applyDDOCCDL(DRAMA_DESK, 'dramadesk', awardsShows, titleById, matcherOpts);
+  const occRes = applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', awardsShows, titleById, matcherOpts);
+  const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
+  const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
+  const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
 
   console.log('\nMatch stats:');
   console.log(`  Drama Desk:           ${ddRes.matched} matched, ${ddRes.unmatched.length} unmatched (mostly OB shows not in awards.json)`);
@@ -490,6 +572,10 @@ function main() {
   console.log(`  Drama League:         ${dlRes.matched} matched, ${dlRes.unmatched.length} unmatched`);
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
+  if (createdEntries.length > 0) {
+    console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for active-season (${ACTIVE_SEASON}) Broadway shows:`);
+    for (const id of createdEntries) console.log(`  + ${id}`);
+  }
 
   // 3) Update _meta
   if (!awards._meta) awards._meta = {};
@@ -517,11 +603,12 @@ function main() {
     migratePulitzer(sh);
     if (JSON.stringify(sh.pulitzer) !== before) migrated2++;
   }
-  applyDDOCCDL(DRAMA_DESK, 'dramadesk', secondShows, titleById);
-  applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', secondShows, titleById);
-  applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById);
-  applyNYDCCC(NYDCCC, secondShows, titleById);
-  applyPulitzer(PULITZER, secondShows, titleById);
+  // Idempotency check uses the same matcher opts so pass 4 lookups behave consistently.
+  applyDDOCCDL(DRAMA_DESK, 'dramadesk', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
+  applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
+  applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
   const firstNoMeta = JSON.parse(serialized);
   delete firstNoMeta._meta;
