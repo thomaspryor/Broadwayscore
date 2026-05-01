@@ -112,10 +112,24 @@ function getShowInfo(showId) {
     }
   } catch (e) { /* fall through */ }
 
-  // Fallback to slug-derived
+  // Fallback to slug-derived. Populate enough fields that downstream
+  // consumers (notably validateSerpCandidate) can reason about market /
+  // venue without crashing on missing keys. Default category to broadway
+  // because slug-only paths are almost always Broadway/OB rediscovery.
   const title = (showId || '').replace(/-\d{4}$/, '').replace(/-/g, ' ');
   const yearMatch = (showId || '').match(/-(\d{4})$/);
-  return { title: title || null, year: yearMatch ? yearMatch[1] : '' };
+  return {
+    id: showId || null,
+    title: title || null,
+    year: yearMatch ? yearMatch[1] : '',
+    category: 'broadway',
+    openingDate: null,
+    closingDate: null,
+    previewsStartDate: null,
+    venue: null,
+    cast: [],
+    leadActor: null,
+  };
 }
 
 // ============================================================================
