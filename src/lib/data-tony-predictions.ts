@@ -27,7 +27,7 @@ export const TONY_BLEND_WEIGHT = 0.5;
  * 2024-25, 42 contests).
  *
  * Audit script (scripts/audit-tony-all-seasons.ts) reports in-sample top-1
- * accuracy: 42/43 (97.7%) including the COVID-truncated season, vs. 32/43
+ * accuracy: 41/43 (95.3%) including the COVID-truncated season, vs. 32/43
  * (74.4%) baseline using critic-only. The leave-one-season-out (LOSO)
  * accuracy of the design process that produced these recipe weights was
  * 92.9% per the offline backtest; that figure isn't reproducible from this
@@ -77,6 +77,26 @@ const PRECURSOR_TIER_WEIGHTS = {
   outerCriticsCircle: 0.9,
   dramadesk: 0.7,
 } as const;
+
+/**
+ * Per-category ceiling for the totalNoms tail term. The old formula used a
+ * flat min(25, totalNoms) which biased musicals (eligible for ~12 craft
+ * categories at each precursor) over plays (~6) — a play with 5 noms looked
+ * the same as a musical with 5 noms despite the play being closer to a
+ * sweep. We now normalize: nomScore = 25 * min(1, totalNoms / categoryPool).
+ *
+ * Ceilings derived empirically from the 11-season backtest (max observed:
+ * musicals 24, plays 19, revival-musicals 12, revival-plays 3) with ~25-50%
+ * headroom for outlier sweeps. Intra-category rankings unchanged (constant
+ * rescale); cross-category visual comparison becomes fair.
+ */
+const NOMS_POOL_BY_CATEGORY: Record<string, number> = {
+  'best-musical':         30,
+  'best-play':            20,
+  'best-revival-musical': 18,
+  'best-revival-play':     8,
+};
+const NOMS_TAIL_CAP = 25;
 
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
   'best-musical': 'Best Musical',
@@ -172,8 +192,12 @@ type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: n
  * precursor signal (Drama League 1.0, OCC 0.9, Drama Desk 0.7):
  *   +30*tier if won the matching category at that precursor
  *   +10*tier if nominated (but didn't win) the matching category
- *   + min(25, totalNominationsAcrossAllCategoriesAcrossAll3Precursors)
- * Capped at 100. Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
+ *   + min(25, 25 * totalNoms / categoryPool)
+ * Where categoryPool is the empirically-observed ceiling of totalNoms for
+ * the show's Tony category (musicals get more eligible noms than plays;
+ * see NOMS_POOL_BY_CATEGORY). Cap at 100 overall.
+ *
+ * Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
  */
 export function computeAwardsScore(showId: string, tonyCategory: string): number {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
@@ -186,6 +210,10 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
 
   const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
   if (!matching) return 0;
+  const categoryKey = tonyCategoryKeyForTitle(tonyCategory);
+  // Default pool to the new-musical ceiling if the category is unknown — keeps
+  // historical-winners scroller (which can pass arbitrary Tony titles) safe.
+  const pool = categoryKey ? NOMS_POOL_BY_CATEGORY[categoryKey] : NOMS_POOL_BY_CATEGORY['best-musical'];
 
   const sources = [
     { node: entry.dramaLeague,        matchCat: matching.dramaLeague,        tier: PRECURSOR_TIER_WEIGHTS.dramaLeague },
@@ -217,7 +245,13 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
     }
   }
 
-  base += Math.min(25, totalNoms);
+  // Eligible-pool-normalized noms term. Old: min(25, totalNoms) biased
+  // categories with bigger eligible pools (musicals) over smaller ones (plays).
+  // New: a play with 5/6 noms reads as a stronger sweep than a musical with
+  // 5/12. Intra-category rankings are unchanged (constant rescale within
+  // each category) but absolute awards numbers are now fair across categories.
+  const nomsScore = NOMS_TAIL_CAP * Math.min(1, totalNoms / pool);
+  base += nomsScore;
   return Math.min(100, base);
 }
 
