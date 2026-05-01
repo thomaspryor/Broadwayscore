@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -72,6 +73,10 @@ for (const showId of dirs) {
     const daysBefore = Math.round((windowStart - urlDate) / 86400000);
     const daysAfter = Math.round((urlDate - closing) / 86400000);
     if (daysBefore <= 30 && daysAfter <= 30) continue;
+
+    // Production-continuity exemption: URL date falls inside a declared priorRuns
+    // window — legitimate coverage of an earlier run of THIS production.
+    if (isWithinPriorRun(urlDate, show.priorRuns)) continue;
 
     const reason = daysBefore > 30
       ? `URL date ${urlDate.toISOString().slice(0,10)} is ${daysBefore} days before show window starts (${windowStart.toISOString().slice(0,10)}). Likely review of an earlier production.`

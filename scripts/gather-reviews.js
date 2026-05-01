@@ -60,6 +60,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
@@ -3438,10 +3439,12 @@ function createReviewFile(showId, reviewData, options = {}) {
   // the show's earliest date (previews/opening). Likely from a prior production.
   // Off-Broadway shows are exempt: they commonly transfer from regional theaters,
   // so date mismatches are expected and wrongProduction flags are almost always false positives.
+  // Production-continuity exemption (Phase 1): also skip when publishDate falls
+  // inside a declared priorRuns window — legitimate coverage of an earlier run.
   if (review.publishDate && _showMeta) {
     try {
       const show = _showMeta;
-      if (show.category !== 'off-broadway') {
+      if (show.category !== 'off-broadway' && !isWithinPriorRun(review.publishDate, show.priorRuns)) {
         const earliest = show.previewsStartDate || show.openingDate;
         if (earliest) {
           const pubDate = new Date(review.publishDate);
