@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-01T07:23:32.194Z",
+  "generatedAt": "2026-05-01T16:27:08.515Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -63,15 +63,7 @@
           "isDualMarket": true
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -86,10 +78,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -892,9 +880,9 @@
       "status": "open",
       "slug": "mass-west-end",
       "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.77,
-      "liveScore": 79,
-      "scoreDrift": 0.23000000000000398,
+      "siteScore": 78.29,
+      "liveScore": 78,
+      "scoreDrift": -0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -910,9 +898,9 @@
         "reasons": [
           "7/8 total",
           "T1:2/3",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1024,6 +1012,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-05-01T16:27:08.515Z",
+          "rc": 7,
+          "s": 78.29,
+          "t1": 5,
+          "t2": 2,
+          "t3": 0,
+          "p": 5,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1119,10 +1119,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ]

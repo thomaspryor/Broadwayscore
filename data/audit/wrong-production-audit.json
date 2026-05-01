@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-01T07:23:28.257Z",
+  "timestamp": "2026-05-01T16:27:04.555Z",
   "stats": {
-    "totalReviews": 36282,
-    "alreadyFlagged": 15791,
+    "totalReviews": 36312,
+    "alreadyFlagged": 15809,
     "dateGuardCatches": 102,
     "directorMismatch": 836,
     "tvFilmSignals": 1004,
-    "londonSignals": 559,
+    "londonSignals": 560,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3723
+    "noPublishDate": 3729
   },
   "findings": [
     {
@@ -28322,7 +28322,7 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "frontmezzjunkies--unknown.json",
+      "file": "frontmezzjunkies--ross.json",
       "score": 89,
       "publishDate": "2022-10-30",
       "url": "https://frontmezzjunkies.com/2022/10/30/arthur-millers-death-of-a-salesman-revival-on-broadway/",
@@ -32311,6 +32311,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "file": "telegraph--claire-allfree.json",
+      "score": 44,
+      "publishDate": "2026-04-30",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/mass-donmar-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
