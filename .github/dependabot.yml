@@ -28,6 +28,12 @@ updates:
     labels:
       - "dependencies"
       - "ci"
+    ignore:
+      # Mirror the npm block: avoid major-version bumps. v4→v5+ on
+      # upload-artifact/download-artifact/checkout/setup-node have shipped
+      # breaking changes that need manual review per-action, not in a batch.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       actions-updates:
         patterns: ["*"]

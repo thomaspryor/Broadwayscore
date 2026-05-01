@@ -372,6 +372,11 @@ jobs:
 
   unit-tests:
     name: Unit Tests
+    # Skip on Dependabot PRs — they don't have access to REVIEW_TEXTS_TOKEN
+    # (separate secret namespace) so checkout-core-data fails. Dependabot updates
+    # touch lockfiles + workflow YAML, not test logic; lint-workflows + dependency-audit +
+    # design-tokens-lint cover the relevant bumps.
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -452,6 +457,8 @@ jobs:
 
   data-validation:
     name: Data Validation
+    # See unit-tests above — Dependabot can't auth to private data repo.
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -709,7 +716,8 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
-    if: github.event.inputs.test_type != 'data-only' && github.event.inputs.test_type != 'visual-only'
+    # Skip on Dependabot PRs — see unit-tests above.
+    if: github.actor != 'dependabot[bot]' && github.event.inputs.test_type != 'data-only' && github.event.inputs.test_type != 'visual-only'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
