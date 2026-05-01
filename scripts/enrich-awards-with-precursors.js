@@ -144,7 +144,7 @@ const OUTER_CRITICS = {
     { year: 2014, winner: "Hedwig and the Angry Inch", nominees: ["Hedwig and the Angry Inch","Cabaret","Lady Day at Emerson's Bar and Grill","Violet","Les Misérables"] },
     { year: 2015, winner: "The King and I", nominees: ["The King and I","Side Show","Into the Woods","On the Town","On the Twentieth Century"] },
     { year: 2016, winner: "She Loves Me", nominees: ["She Loves Me","Spring Awakening","Fiddler on the Roof","Dames at Sea","The Color Purple"] },
-    { year: 2017, winner: "Hello, Dolly", nominees: ["Hello, Dolly","Miss Saigon","Sunset Boulevard","Sweeney Todd","Finian's Rainbow"] },
+    { year: 2017, winner: "Hello, Dolly!", nominees: ["Hello, Dolly!","Miss Saigon","Sunset Boulevard","Sweeney Todd","Finian's Rainbow"] },
     { year: 2018, winner: "My Fair Lady", nominees: ["My Fair Lady","Carousel","Pacific Overtures","Once on This Island"] },
     { year: 2019, winner: "Fiddler on the Roof in Yiddish", nominees: ["Fiddler on the Roof in Yiddish","Oklahoma!","Smokey Joe's Cafe","Carmen Jones","Kiss Me, Kate"] },
     { year: 2020, winner: null, nominees: ["Little Shop of Horrors","The Unsinkable Molly Brown","West Side Story"] },
