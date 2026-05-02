@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-02T20:30:48.858Z",
+  "generatedAt": "2026-05-02T21:30:39.048Z",
   "date": "2026-05-02",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 34680,
+  "entryCount": 35745,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -291,7 +291,7 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -306,7 +306,7 @@
     },
     {
       "showId": "mass-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -381,7 +381,7 @@
     },
     {
       "showId": "the-price-2017",
-      "reviewCount": 42,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -711,22 +711,7 @@
     },
     {
       "showId": "a-delicate-balance-1996",
-      "reviewCount": 3,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "head-over-heels-2018",
-      "reviewCount": 46,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
