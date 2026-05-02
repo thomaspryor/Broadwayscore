@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-02T10:35:39.743Z",
-  "processed": 13,
-  "failed": 74,
-  "successRate": "14.9%",
+  "updatedAt": "2026-05-02T10:37:46.244Z",
+  "processed": 17,
+  "failed": 80,
+  "successRate": "17.5%",
   "tierBreakdown": {
     "playwright": 9,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
     "scrapingbee": 3,
-    "brightdata": 2,
+    "brightdata": 4,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -36,6 +36,28 @@
       "t": "2026-05-02T09:01:42.916Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-02T10:36:18.060Z",
+      "event": "bb-session",
+      "session": "255ca44e",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-05-02T10:36:18.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-02T10:37:26.127Z",
+      "event": "bb-session",
+      "session": "c985fd05",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-grey-house-july-30-clo"
+    },
+    {
+      "t": "2026-05-02T10:37:26.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

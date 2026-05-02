@@ -12,7 +12,11 @@
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "art-2025/artsfuse--unknown.json",
-    "dead-outlaw-2025/amny--matt-windman.json"
+    "dead-outlaw-2025/amny--matt-windman.json",
+    "gypsy-2024/billboard--paul-grein.json",
+    "job-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+    "grey-house-2023/hollywood-reporter--caitlin-huston.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -88,7 +92,13 @@
     "art-2025/nytimes--jesse-green.json",
     "art-2025/indiewire--kate-erbland.json",
     "art-2025/forward--pj-grisar.json",
-    "art-2025/broadwaynews--michael-abourizk.json"
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "gutenberg-2023/nydailynews--muri-assunu00e7u00e3o.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -106,7 +116,11 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/job-2024/deadline--greg-evans.json",
+      "job-2024/deadline--greg-evans.json",
+      "data/review-texts/grey-house-2023/hollywood-reporter--caitlin-huston.json",
+      "grey-house-2023/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -116,7 +130,9 @@
     ],
     "brightdata": [
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
-      "dead-outlaw-2025/amny--matt-windman.json"
+      "dead-outlaw-2025/amny--matt-windman.json",
+      "gypsy-2024/billboard--paul-grein.json",
+      "the-whos-tommy-2024/rollingstone--emily-zemler.json"
     ],
     "archiveToday": [
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
@@ -126,7 +142,7 @@
     "archive": []
   },
   "startTime": "2026-05-02T06:43:53.474Z",
-  "lastProcessed": "dead-outlaw-2025/amny--matt-windman.json",
+  "lastProcessed": "grey-house-2023/hollywood-reporter--caitlin-huston.json",
   "log": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -149,6 +165,28 @@
       "t": "2026-05-02T09:01:42.916Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-02T10:36:18.060Z",
+      "event": "bb-session",
+      "session": "255ca44e",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-05-02T10:36:18.657Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-02T10:37:26.127Z",
+      "event": "bb-session",
+      "session": "c985fd05",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-grey-house-july-30-clo"
+    },
+    {
+      "t": "2026-05-02T10:37:26.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
