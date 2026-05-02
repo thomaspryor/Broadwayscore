@@ -31,7 +31,9 @@
     "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
     "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-    "mass-west-end-2026/timeout-london--unknown.json"
+    "mass-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/independent--unknown.json",
+    "mass-west-end-2026/artsdesk--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -1077,7 +1079,15 @@
     "mass-west-end-2026/financialtimes--unknown.json",
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1092,7 +1102,9 @@
       "the-price-2017/nytg--unknown.json",
       "hairspray-2002/nytg--unknown.json",
       "falsettos-1992/theatermania--unknown.json",
-      "mass-west-end-2026/timeout-london--unknown.json"
+      "mass-west-end-2026/timeout-london--unknown.json",
+      "grace-pervades-west-end-2026/independent--unknown.json",
+      "mass-west-end-2026/artsdesk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1113,6 +1125,7 @@
       "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
       "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -1141,7 +1154,8 @@
       "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
-      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json"
+      "data/review-texts/grace-pervades-west-end-2026/thestage--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": [
       "death-of-a-salesman-2022/vulture--greg-evans.json",
@@ -1154,7 +1168,7 @@
     ]
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "mass-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -1296,6 +1310,17 @@
     },
     {
       "t": "2026-05-02T06:02:09.860Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-02T06:48:04.671Z",
+      "event": "bb-session",
+      "session": "3ab5841f",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-02T06:48:05.570Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
