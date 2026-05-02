@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-02T21:30:39.048Z",
+  "generatedAt": "2026-05-02T22:30:27.655Z",
   "date": "2026-05-02",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 35745,
+  "entryCount": 37866,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -666,12 +666,12 @@
     },
     {
       "showId": "clydes-2021",
-      "reviewCount": 24,
+      "reviewCount": 26,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 39607708,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
