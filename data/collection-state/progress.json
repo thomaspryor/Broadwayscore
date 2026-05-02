@@ -26,7 +26,9 @@
     "clydes-2021/talkinbroadway--unknown.json",
     "linda-vista-2019/latimes--charles-mcnulty.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "death-of-a-salesman-2012/theatrely--andrew-martini.json"
+    "death-of-a-salesman-2012/theatrely--andrew-martini.json",
+    "a-little-night-music-2009/nytg--unknown.json",
+    "a-little-night-music-2009/guardian--alexis-soloski.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -258,7 +260,15 @@
     "red-2010/backstage--erik-haagensen.json",
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/nytheatre--martin-denton.json",
-    "come-fly-away-2010/backstage--david-sheward.json"
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-little-night-music-2009/talkinbroadway--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -273,7 +283,9 @@
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
       "art-2025/artsfuse--unknown.json",
       "company-2021/stageandcinema--gregory-bernard.json",
-      "clydes-2021/artsfuse--unknown.json"
+      "clydes-2021/artsfuse--unknown.json",
+      "a-little-night-music-2009/nytg--unknown.json",
+      "a-little-night-music-2009/guardian--alexis-soloski.json"
     ],
     "amp": [],
     "browserbase": [
@@ -308,14 +320,15 @@
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
-      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json"
+      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json",
+      "data/review-texts/a-little-night-music-2009/talkinbroadway--unknown.json"
     ],
     "archive": [
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
   "startTime": "2026-05-02T06:43:53.474Z",
-  "lastProcessed": "come-fly-away-2010/backstage--david-sheward.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -371,6 +384,17 @@
       "t": "2026-05-02T10:37:51.682Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T11:09:19.364Z",
+      "event": "bb-session",
+      "session": "045d6eaa",
+      "url": "https://www.talkinbroadway.com/world/LittleNightMusic.html"
+    },
+    {
+      "t": "2026-05-02T11:09:20.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

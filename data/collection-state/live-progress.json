@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-02T11:07:26.865Z",
-  "processed": 27,
-  "failed": 230,
-  "successRate": "10.5%",
+  "updatedAt": "2026-05-02T11:11:01.202Z",
+  "processed": 29,
+  "failed": 238,
+  "successRate": "10.9%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 13,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 7,
-    "archiveToday": 4,
+    "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -69,6 +69,17 @@
       "t": "2026-05-02T10:37:51.682Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T11:09:19.364Z",
+      "event": "bb-session",
+      "session": "045d6eaa",
+      "url": "https://www.talkinbroadway.com/world/LittleNightMusic.html"
+    },
+    {
+      "t": "2026-05-02T11:09:20.023Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
