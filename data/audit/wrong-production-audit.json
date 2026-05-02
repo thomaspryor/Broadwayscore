@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-02T08:57:10.124Z",
+  "timestamp": "2026-05-02T21:45:53.367Z",
   "stats": {
-    "totalReviews": 36330,
-    "alreadyFlagged": 15810,
+    "totalReviews": 36328,
+    "alreadyFlagged": 15815,
     "dateGuardCatches": 102,
-    "directorMismatch": 836,
+    "directorMismatch": 837,
     "tvFilmSignals": 1004,
     "londonSignals": 561,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3740
+    "noPublishDate": 3729
   },
   "findings": [
     {
@@ -4687,6 +4687,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "theatrely--andrew-martini.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/death-of-a-salesman-wendell-pierce-sharon-d-clarke-coming-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
         }
       ]
     },
