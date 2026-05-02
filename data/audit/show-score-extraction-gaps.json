@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-01T05:00:29.881Z",
+    "generatedAt": "2026-05-02T04:49:23.589Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 485,
+  "totalGaps": 484,
   "errorSeverity": 389,
-  "warningSeverity": 96,
+  "warningSeverity": 95,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1467,15 +1467,6 @@
     },
     {
       "showId": "hamlet-2026",
-      "category": "off-broadway",
-      "expected": 9,
-      "extracted": 8,
-      "gap": 1,
-      "ratio": 0.89,
-      "severity": "warning"
-    },
-    {
-      "showId": "hamlet-off-broadway-2026",
       "category": "off-broadway",
       "expected": 9,
       "extracted": 8,
