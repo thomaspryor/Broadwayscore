@@ -25,7 +25,12 @@
     "death-of-a-salesman-2012/telegraph--dominic-cavendish.json",
     "hairspray-2002/billboard--joe-lynch.json",
     "hairspray-2002/chicagotribune--chris-jones.json",
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+    "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -1052,7 +1057,9 @@
     "mass-west-end-2026/thestage--unknown.json",
     "mass-west-end-2026/whatsonstage--unknown.json",
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "starlight-express-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
+    "hadestown-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1078,7 +1085,15 @@
       "data/review-texts/the-pushover-by-john-patrick-shanley-off-broadway-2026/variety--marc-malkin.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "stranger-things-2024/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json",
+      "my-neighbour-totoro-west-end-2025/variety--naman-ramachandran.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1091,7 +1106,8 @@
       "hairspray-2002/chicagotribune--chris-jones.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "death-of-a-salesman-2012/telegraph--dominic-cavendish.json",
-      "hairspray-2002/chicagotribune--chris-jones.json"
+      "hairspray-2002/chicagotribune--chris-jones.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
     ],
     "brightdata": [
       "the-price-2017/cititour--brian-scott-lipton.json"
@@ -1116,7 +1132,7 @@
     ]
   },
   "startTime": "2026-05-01T08:50:37.691Z",
-  "lastProcessed": "mercury-off-broadway-2026/thestage--unknown.json",
+  "lastProcessed": "hadestown-west-end-2024/the-upcoming-uk--daisy-grace-greetham.json",
   "log": [
     {
       "t": "2026-05-01T10:19:44.148Z",
@@ -1205,6 +1221,50 @@
       "t": "2026-05-01T23:44:16.350Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-02T03:11:06.481Z",
+      "event": "bb-session",
+      "session": "1cc797ee",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-05-02T03:11:07.304Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-02T03:11:30.355Z",
+      "event": "bb-session",
+      "session": "eb1c01a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-05-02T03:11:31.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T03:12:43.226Z",
+      "event": "bb-session",
+      "session": "06450f1b",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-05-02T03:12:43.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T03:13:04.454Z",
+      "event": "bb-session",
+      "session": "ed307e82",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-05-02T03:13:05.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

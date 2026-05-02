@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-05-02T00:53:25.292Z",
-  "processed": 26,
-  "failed": 1025,
-  "successRate": "2.5%",
+  "updatedAt": "2026-05-02T03:14:03.020Z",
+  "processed": 31,
+  "failed": 1027,
+  "successRate": "2.9%",
   "tierBreakdown": {
     "playwright": 10,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 17,
     "directCookies": 0,
-    "scrapingbee": 10,
+    "scrapingbee": 11,
     "brightdata": 1,
     "archiveToday": 7,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-05-01T10:19:44.148Z",
-      "event": "bb-session",
-      "session": "78d97a37",
-      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
-    },
-    {
-      "t": "2026-05-01T10:19:45.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-05-01T10:37:33.059Z",
-      "event": "bb-session",
-      "session": "c75f79f3",
-      "url": "https://variety.com/2026/film/columns/lin-manuel-miranda-direct-film-adaptation-"
-    },
-    {
-      "t": "2026-05-01T10:37:34.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-05-01T10:40:58.088Z",
       "event": "bb-session",
@@ -102,6 +80,50 @@
       "t": "2026-05-01T23:44:16.350Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-02T03:11:06.481Z",
+      "event": "bb-session",
+      "session": "1cc797ee",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-05-02T03:11:07.304Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-02T03:11:30.355Z",
+      "event": "bb-session",
+      "session": "eb1c01a7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-05-02T03:11:31.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T03:12:43.226Z",
+      "event": "bb-session",
+      "session": "06450f1b",
+      "url": "https://www.hollywoodreporter.com/tv/tv-news/netflix-stranger-things-the-first-s"
+    },
+    {
+      "t": "2026-05-02T03:12:43.977Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T03:13:04.454Z",
+      "event": "bb-session",
+      "session": "ed307e82",
+      "url": "https://variety.com/2025/theater/news/my-neighbour-totoro-puppet-artwork-stage-p"
+    },
+    {
+      "t": "2026-05-02T03:13:05.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
