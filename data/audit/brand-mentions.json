@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-02T18:36:24.599Z",
+  "lastRunAt": "2026-05-02T20:30:52.415Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -43,7 +43,8 @@
     "google:c3d31a9614e2dfd3": true,
     "google:a230d0cfcbcc1d86": true,
     "news:908494ada0683d6d": true,
-    "google:b17bf9614d78378b": true
+    "google:b17bf9614d78378b": true,
+    "google:b261d59c7eb034fc": true
   },
   "mentions": [
     {
@@ -888,10 +889,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-04-30T07:12:50.726Z"
+    },
+    {
+      "id": "google:b261d59c7eb034fc",
+      "source": "google",
+      "url": "https://showscorecard.com/",
+      "title": "Broadway Scorecard — Best Broadway Shows 2026 ...",
+      "excerpt": "BroadwayScorecard™. Every show. Every review. One score. 723 shows. 15,397 critic reviews. And counting. Best Recent Shows.Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-05-02T20:30:36.741Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-05-02T20:30:52.415Z"
     }
   ],
   "stats": {
-    "totalSeen": 43,
+    "totalSeen": 44,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -937,6 +958,7 @@
     "https://forum.broadwayworld.com/latest-posts.php": true,
     "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true,
     "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true,
-    "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true
+    "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true,
+    "https://showscorecard.com/": true
   }
 }
