@@ -2,7 +2,8 @@
   "processed": [
     "grace-pervades-west-end-2026/independent--unknown.json",
     "grace-pervades-west-end-2026/standard--unknown.json",
-    "grace-pervades-west-end-2026/thestage--unknown.json"
+    "grace-pervades-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/artsdesk--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -11,14 +12,19 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
     "mercury-off-broadway-2026/thestage--unknown.json",
-    "mass-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "grace-pervades-west-end-2026/independent--unknown.json",
       "grace-pervades-west-end-2026/standard--unknown.json",
-      "grace-pervades-west-end-2026/thestage--unknown.json"
+      "grace-pervades-west-end-2026/thestage--unknown.json",
+      "mass-west-end-2026/artsdesk--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -27,10 +33,12 @@
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "startTime": "2026-05-02T06:43:53.474Z",
-  "lastProcessed": "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": []
 }
