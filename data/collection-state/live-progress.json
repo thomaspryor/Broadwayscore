@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-02T15:30:02.198Z",
+  "updatedAt": "2026-05-02T15:32:50.334Z",
   "processed": 33,
-  "failed": 284,
-  "successRate": "10.4%",
+  "failed": 294,
+  "successRate": "10.1%",
   "tierBreakdown": {
     "playwright": 14,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 8,
     "brightdata": 7,
     "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -113,6 +113,17 @@
       "t": "2026-05-02T11:15:52.365Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-02T15:31:03.579Z",
+      "event": "bb-session",
+      "session": "86c11100",
+      "url": "https://www.nytimes.com/2025/12/13/arts/movies-tv-art-music-2025.html"
+    },
+    {
+      "t": "2026-05-02T15:31:04.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
