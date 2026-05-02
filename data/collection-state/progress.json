@@ -558,7 +558,8 @@
       "data/review-texts/a-delicate-balance-1996/wsj--charles-isherwood.json",
       "a-delicate-balance-1996/wsj--charles-isherwood.json",
       "data/review-texts/a-delicate-balance-1996/wsj--unknown.json",
-      "data/review-texts/art-2025/nytimes--jesse-green.json"
+      "data/review-texts/art-2025/nytimes--jesse-green.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -588,7 +589,8 @@
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/sister-act-2011/backstage--erik-haagensen.json",
       "data/review-texts/a-little-night-music-2009/talkinbroadway--unknown.json",
-      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json"
+      "data/review-texts/sister-act-2011/backstage--erik-haagensen.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": [
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
@@ -706,6 +708,17 @@
       "t": "2026-05-02T15:31:04.732Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-02T18:38:28.579Z",
+      "event": "bb-session",
+      "session": "b672829f",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-02T18:38:29.199Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
