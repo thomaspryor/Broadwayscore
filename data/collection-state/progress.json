@@ -3,7 +3,8 @@
     "grace-pervades-west-end-2026/independent--unknown.json",
     "grace-pervades-west-end-2026/standard--unknown.json",
     "grace-pervades-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/artsdesk--unknown.json"
+    "mass-west-end-2026/artsdesk--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -12,6 +13,15 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
     "mercury-off-broadway-2026/thestage--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
     "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
     "mass-west-end-2026/financialtimes--unknown.json",
     "mass-west-end-2026/standard--nick-curtis.json",
@@ -36,18 +46,34 @@
       "mass-west-end-2026/artsdesk--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json"
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-02T06:43:53.474Z",
   "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
-  "log": []
+  "log": [
+    {
+      "t": "2026-05-02T07:44:19.710Z",
+      "event": "bb-session",
+      "session": "d6fa59af",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-02T07:44:20.683Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
