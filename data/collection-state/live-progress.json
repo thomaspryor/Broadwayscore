@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-02T11:13:58.008Z",
-  "processed": 29,
-  "failed": 258,
-  "successRate": "10.1%",
+  "updatedAt": "2026-05-02T11:16:31.920Z",
+  "processed": 33,
+  "failed": 264,
+  "successRate": "11.1%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 12,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 8,
     "brightdata": 7,
     "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -80,6 +80,39 @@
       "t": "2026-05-02T11:09:20.023Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-05-02T11:15:09.276Z",
+      "event": "bb-session",
+      "session": "53b57a6a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-delicate-balance-theater-r"
+    },
+    {
+      "t": "2026-05-02T11:15:09.953Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T11:15:28.381Z",
+      "event": "bb-session",
+      "session": "236f47b2",
+      "url": "https://www.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balance-"
+    },
+    {
+      "t": "2026-05-02T11:15:28.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-02T11:15:51.871Z",
+      "event": "bb-session",
+      "session": "94fa6fc2",
+      "url": "https://www.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balance-"
+    },
+    {
+      "t": "2026-05-02T11:15:52.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

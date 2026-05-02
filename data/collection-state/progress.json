@@ -28,7 +28,11 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "death-of-a-salesman-2012/theatrely--andrew-martini.json",
     "a-little-night-music-2009/nytg--unknown.json",
-    "a-little-night-music-2009/guardian--alexis-soloski.json"
+    "a-little-night-music-2009/guardian--alexis-soloski.json",
+    "hairspray-2002/nytg--unknown.json",
+    "hairspray-2002/timeout--adam-feldman.json",
+    "hairspray-2002/chicagotribune--chris-jones.json",
+    "a-delicate-balance-1996/wsj--charles-isherwood.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -288,7 +292,13 @@
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
-    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "a-delicate-balance-1996/hollywood-reporter--unknown.json",
+    "a-delicate-balance-1996/theatermania--unknown.json",
+    "a-delicate-balance-1996/wsj--unknown.json",
+    "a-delicate-balance-1996/artsfuse--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -305,7 +315,8 @@
       "company-2021/stageandcinema--gregory-bernard.json",
       "clydes-2021/artsfuse--unknown.json",
       "a-little-night-music-2009/nytg--unknown.json",
-      "a-little-night-music-2009/guardian--alexis-soloski.json"
+      "a-little-night-music-2009/guardian--alexis-soloski.json",
+      "hairspray-2002/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -316,7 +327,11 @@
       "data/review-texts/grey-house-2023/hollywood-reporter--caitlin-huston.json",
       "grey-house-2023/hollywood-reporter--caitlin-huston.json",
       "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
-      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json"
+      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+      "data/review-texts/a-delicate-balance-1996/hollywood-reporter--unknown.json",
+      "data/review-texts/a-delicate-balance-1996/wsj--charles-isherwood.json",
+      "a-delicate-balance-1996/wsj--charles-isherwood.json",
+      "data/review-texts/a-delicate-balance-1996/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -325,7 +340,9 @@
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "death-of-a-salesman-2022/theatrely--andrew-martini.json",
       "clydes-2021/nydailynews--unknown.json",
-      "death-of-a-salesman-2012/theatrely--andrew-martini.json"
+      "death-of-a-salesman-2012/theatrely--andrew-martini.json",
+      "hairspray-2002/timeout--adam-feldman.json",
+      "hairspray-2002/chicagotribune--chris-jones.json"
     ],
     "brightdata": [
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
@@ -348,7 +365,7 @@
     ]
   },
   "startTime": "2026-05-02T06:43:53.474Z",
-  "lastProcessed": "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -415,6 +432,39 @@
       "t": "2026-05-02T11:09:20.023Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-05-02T11:15:09.276Z",
+      "event": "bb-session",
+      "session": "53b57a6a",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-delicate-balance-theater-r"
+    },
+    {
+      "t": "2026-05-02T11:15:09.953Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T11:15:28.381Z",
+      "event": "bb-session",
+      "session": "236f47b2",
+      "url": "https://www.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balance-"
+    },
+    {
+      "t": "2026-05-02T11:15:28.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-02T11:15:51.871Z",
+      "event": "bb-session",
+      "session": "94fa6fc2",
+      "url": "https://www.wsj.com/articles/an-albee-revival-tries-again-on-a-delicate-balance-"
+    },
+    {
+      "t": "2026-05-02T11:15:52.365Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
