@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-02T10:37:46.244Z",
-  "processed": 17,
-  "failed": 80,
-  "successRate": "17.5%",
+  "updatedAt": "2026-05-02T10:40:35.392Z",
+  "processed": 24,
+  "failed": 83,
+  "successRate": "22.4%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 4,
+    "scrapingbee": 5,
+    "brightdata": 6,
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -56,6 +56,17 @@
     },
     {
       "t": "2026-05-02T10:37:26.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T10:37:51.162Z",
+      "event": "bb-session",
+      "session": "60ee3c64",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-05-02T10:37:51.682Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }

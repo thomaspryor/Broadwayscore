@@ -16,7 +16,14 @@
     "gypsy-2024/billboard--paul-grein.json",
     "job-2024/deadline--greg-evans.json",
     "the-whos-tommy-2024/rollingstone--emily-zemler.json",
-    "grey-house-2023/hollywood-reporter--caitlin-huston.json"
+    "grey-house-2023/hollywood-reporter--caitlin-huston.json",
+    "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+    "death-of-a-salesman-2022/theatrely--andrew-martini.json",
+    "company-2021/stageandcinema--gregory-bernard.json",
+    "clydes-2021/nydailynews--unknown.json",
+    "clydes-2021/cititour--brian-scott-lipton.json",
+    "clydes-2021/artsfuse--unknown.json",
+    "clydes-2021/talkinbroadway--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
@@ -98,7 +105,10 @@
     "stereophonic-2024/usatoday--charles-isherwood.json",
     "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
     "gutenberg-2023/nydailynews--muri-assunu00e7u00e3o.json",
-    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json"
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "death-of-a-salesman-2022/forward--pj-grisar.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -111,7 +121,9 @@
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
-      "art-2025/artsfuse--unknown.json"
+      "art-2025/artsfuse--unknown.json",
+      "company-2021/stageandcinema--gregory-bernard.json",
+      "clydes-2021/artsfuse--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -120,19 +132,25 @@
       "data/review-texts/job-2024/deadline--greg-evans.json",
       "job-2024/deadline--greg-evans.json",
       "data/review-texts/grey-house-2023/hollywood-reporter--caitlin-huston.json",
-      "grey-house-2023/hollywood-reporter--caitlin-huston.json"
+      "grey-house-2023/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "death-of-a-salesman-2022/theatrely--andrew-martini.json",
+      "clydes-2021/nydailynews--unknown.json"
     ],
     "brightdata": [
       "every-brilliant-thing-2026/usatoday--patrick-ryan.json",
       "dead-outlaw-2025/amny--matt-windman.json",
       "gypsy-2024/billboard--paul-grein.json",
-      "the-whos-tommy-2024/rollingstone--emily-zemler.json"
+      "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+      "clydes-2021/cititour--brian-scott-lipton.json",
+      "clydes-2021/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
@@ -142,7 +160,7 @@
     "archive": []
   },
   "startTime": "2026-05-02T06:43:53.474Z",
-  "lastProcessed": "grey-house-2023/hollywood-reporter--caitlin-huston.json",
+  "lastProcessed": "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
   "log": [
     {
       "t": "2026-05-02T07:44:19.710Z",
@@ -185,6 +203,17 @@
     },
     {
       "t": "2026-05-02T10:37:26.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-02T10:37:51.162Z",
+      "event": "bb-session",
+      "session": "60ee3c64",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-05-02T10:37:51.682Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
     }
