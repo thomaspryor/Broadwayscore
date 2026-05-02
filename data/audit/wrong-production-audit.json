@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-05-02T06:04:56.696Z",
+  "timestamp": "2026-05-02T06:58:06.002Z",
   "stats": {
-    "totalReviews": 36312,
+    "totalReviews": 36316,
     "alreadyFlagged": 15811,
     "dateGuardCatches": 102,
     "directorMismatch": 836,
     "tvFilmSignals": 1004,
-    "londonSignals": 560,
+    "londonSignals": 561,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
     "noPublishDate": 3725
@@ -32297,6 +32297,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
