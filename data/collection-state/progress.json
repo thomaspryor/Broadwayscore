@@ -1,31 +1,49 @@
 {
-  "processed": [],
+  "processed": [
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+  ],
   "failed": [
-    "well-ill-let-you-go-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-    "well-ill-let-you-go-off-broadway-2026/nytg--unknown.json",
-    "grace-pervades-west-end-2026/timeout-london--unknown.json",
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "grace-pervades-west-end-2026/standard--nick-curtis.json",
-    "grace-pervades-west-end-2026/telegraph--unknown.json",
-    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "the-play-that-goes-wrong-off-broadway-2019/woman-around-town--alix-cohen.json",
+    "in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
-    "amp": [],
+    "playwright": [
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    ],
+    "amp": [
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
+    ],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json"
     ],
     "archive": []
   },
-  "startTime": "2026-05-03T07:01:04.772Z",
-  "lastProcessed": "mercury-off-broadway-2026/thestage--unknown.json",
-  "log": []
+  "startTime": "2026-05-03T08:37:47.228Z",
+  "lastProcessed": "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+  "log": [
+    {
+      "t": "2026-05-03T08:41:21.238Z",
+      "event": "bb-session",
+      "session": "f63efcd5",
+      "url": "https://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-05-03T08:41:22.248Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

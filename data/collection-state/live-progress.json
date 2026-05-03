@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-05-03T07:06:22.431Z",
-  "processed": 0,
-  "failed": 8,
-  "successRate": "0%",
+  "updatedAt": "2026-05-03T08:43:54.248Z",
+  "processed": 1,
+  "failed": 9,
+  "successRate": "10.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
+    "playwright": 1,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-03T08:41:21.238Z",
+      "event": "bb-session",
+      "session": "f63efcd5",
+      "url": "https://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-05-03T08:41:22.248Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
