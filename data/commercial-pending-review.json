@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-30T08:59:30.847Z",
+  "generatedAt": "2026-05-03T20:04:15.525Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -16707,6 +16707,196 @@
       "researchedAt": "2026-04-30T08:59:30.847Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "meow-meow-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public financial data found.  Meow Meow was a cabaret at the nonprofit Public Theater’s Joe’s Pub ([publictheater.org](https://publictheater.org/content-pages/about/#:~:text=About%20Joe%27s%20Pub)), not a commercial Broadway show.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://publictheater.org/content-pages/about/",
+          "date": null
+        }
+      ],
+      "title": "Meow Meow",
+      "slug": "meow-meow-off-broadway",
+      "openingDate": null,
+      "status": "closed",
+      "researchedAt": "2026-05-03T18:47:51.192Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "fish-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Off-Broadway premiere by nonprofit Keen Company and Working Theater; no public budget or recoupment data  ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/Keen-Company-and-Working-Theater-Bring-FISH-to-the-Stage-in-March-20240130#:~:text=Keen%20Company%C2%A0and%C2%A0Working%20Theater%C2%A0will%20present%20the,for%C2%A0Tuesday%2C%20April%202%2C%20at%C2%A0Theatre%20Row%C2%A0in)) ([www.crunchbase.com](https://www.crunchbase.com/organization/keen-company#:~:text=Keen%20Company%20is%20an%20award,provoking%20theater)).",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/Keen-Company-and-Working-Theater-Bring-FISH-to-the-Stage-in-March-20240130",
+          "date": "2024-01-30"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.crunchbase.com/organization/keen-company",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.causeiq.com/organizations/the-working-theatre,131394732/",
+          "date": null
+        }
+      ],
+      "title": "Fish",
+      "slug": "fish-off-broadway",
+      "openingDate": null,
+      "status": "announced",
+      "researchedAt": "2026-05-03T18:51:14.535Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "betty-buckley-random-notes-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Six-show limited engagement at nonprofit Joe’s Pub ([www.causeiq.com](https://www.causeiq.com/organizations/joes-pub%2C131844852/#:~:text=Joe%27s%20Pub%2C%20one%20of%20the,modern%20dance%20to%20world%20music)). No public budget/cost data or filings found; likely a nonprofit concert series with no commercial recoupment.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/Review-Betty-Buckleys-RANDOM-NOTES-Cast-a-Spell-at-Joes-Pub-20260428",
+          "date": "2026-04-28"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.causeiq.com/organizations/joes-pub,131844852/",
+          "date": "2024-08-01"
+        }
+      ],
+      "title": "Betty Buckley: Random Notes",
+      "slug": "betty-buckley-random-notes-off-broadway",
+      "openingDate": "2026-04-24",
+      "status": "closed",
+      "researchedAt": "2026-05-03T18:54:07.167Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "no-singing-in-the-navy-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": [
+        0,
+        0
+      ],
+      "designation": "Nonprofit",
+      "notes": "No budget or weekly-cost data is public.  The Off-Broadway run (Playwrights Horizons) was brief (Mar 18–Apr 26, 2026 ([broadwayscorecard.com](https://broadwayscorecard.com/show/no-singing-in-the-navy#:~:text=No%20Singing%20in%20the%20Navy))) and it did not receive NYC’s theatre tax credit ([www.investmentbroadway.com](https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit#:~:text=The%20program%E2%80%99s%20first%20payouts%20were,season%20have%20yet%20received%20payment)).  It apparently did not recoup its capital.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwayscorecard.com/show/no-singing-in-the-navy",
+          "date": "2026-03-18"
+        }
+      ],
+      "title": "No Singing in the Navy",
+      "slug": "no-singing-in-the-navy-off-broadway",
+      "openingDate": "2026-03-18",
+      "status": "closed",
+      "researchedAt": "2026-05-03T18:57:32.440Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "and-then-the-rodeo-burned-down-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Limited Off-Broadway run at Ars Nova (May 19–June 18, 2026) ([www.tdf.org](https://www.tdf.org/shows/23203/and-then-the-rodeo-burned-down/#:~:text=First%20Preview%3A%20May%2019%2C%202026)).  No published budget or recoupment data.  Likely did not recoup.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.tdf.org/shows/23203/and-then-the-rodeo-burned-down/",
+          "date": null
+        }
+      ],
+      "title": "And Then The Rodeo Burned Down",
+      "slug": "and-then-the-rodeo-burned-down-off-broadway",
+      "openingDate": null,
+      "status": "upcoming",
+      "researchedAt": "2026-05-03T20:00:22.176Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
+    },
+    "well-ill-let-you-go-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": false,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Flop",
+      "notes": "No public data on the Studio Seaview production’s budget or weekly cost; prior 2025 Brooklyn run did recoup ([playbill.com](https://playbill.com/article/bubba-weilers-well-ill-let-you-go-recoups-initial-investment#:~:text=Bubba%20Weiler%E2%80%99s%20Well%2C%20I%E2%80%99ll%20Let,a%20total%20of%2044%20performances)) ([www.broadwayworld.com](https://www.broadwayworld.com/off-broadway/article/WELL-ILL-LET-YOU-GO-Recoups-Investment-20250912#:~:text=Producer%20Jacob%20Stuckelman%20%20and,have%20ticket%E2%80%9D%20%28Theatermania)), but the 2026 Manhattan engagement closed without recouping.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/bubba-weilers-well-ill-let-you-go-recoups-initial-investment",
+          "date": "2025-09-12"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/WELL-ILL-LET-YOU-GO-Recoups-Investment-20250912",
+          "date": "2025-09-12"
+        }
+      ],
+      "title": "Well, I'll Let You Go",
+      "slug": "well-ill-let-you-go-off-broadway",
+      "openingDate": "2026-04-30",
+      "status": "open",
+      "researchedAt": "2026-05-03T20:04:15.525Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
     }
   }
 }
