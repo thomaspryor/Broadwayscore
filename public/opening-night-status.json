@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-02T21:45:57.424Z",
+  "generatedAt": "2026-05-03T05:12:06.159Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1277,198 +1277,6 @@
           "isDualMarket": false
         }
       ]
-    },
-    {
-      "id": "mass-west-end-2026",
-      "title": "Mass",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-04-29",
-      "status": "open",
-      "slug": "mass-west-end",
-      "thumbnail": "/images/shows/mass-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.91,
-      "liveScore": 79,
-      "scoreDrift": 0.09000000000000341,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 9,
-      "t1": 5,
-      "t2": 4,
-      "t3": 0,
-      "positive": 7,
-      "mixed": 2,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3",
-          "hi-conf:2/6"
-        ],
-        "highConfidence": 2,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-04-29T06:25:33.458Z",
-          "rc": 1,
-          "s": 77,
-          "t1": 1,
-          "t2": 0,
-          "t3": 0,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-30T02:25:43.471Z",
-          "rc": 1,
-          "s": 80,
-          "t1": 1,
-          "t2": 0,
-          "t3": 0,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-30T11:56:14.465Z",
-          "rc": 2,
-          "s": 92,
-          "t1": 1,
-          "t2": 1,
-          "t3": 0,
-          "p": 2,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-04-30T17:18:30.149Z",
-          "rc": 3,
-          "s": 86.67,
-          "t1": 2,
-          "t2": 1,
-          "t3": 0,
-          "p": 3,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-01T03:27:49.140Z",
-          "rc": 4,
-          "s": 84.84,
-          "t1": 3,
-          "t2": 1,
-          "t3": 0,
-          "p": 4,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-01T07:23:32.194Z",
-          "rc": 7,
-          "s": 78.77,
-          "t1": 5,
-          "t2": 2,
-          "t3": 0,
-          "p": 5,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-01T16:27:08.515Z",
-          "rc": 7,
-          "s": 78.29,
-          "t1": 5,
-          "t2": 2,
-          "t3": 0,
-          "p": 5,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-02T06:05:00.383Z",
-          "rc": 7,
-          "s": 78.63,
-          "t1": 5,
-          "t2": 2,
-          "t3": 0,
-          "p": 5,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-02T06:58:10.061Z",
-          "rc": 8,
-          "s": 78.79,
-          "t1": 5,
-          "t2": 3,
-          "t3": 0,
-          "p": 6,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-02T21:45:57.424Z",
-          "rc": 9,
-          "s": 78.91,
-          "t1": 5,
-          "t2": 4,
-          "t3": 0,
-          "p": 7,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
@@ -1482,7 +1290,7 @@
       "status": "previews",
       "slug": "hamlet-off-broadway",
       "thumbnail": "/images/shows/hamlet-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1521,7 +1329,7 @@
       "status": "previews",
       "slug": "the-boy-who-harnessed-the-wind-west-end",
       "thumbnail": "/images/shows/the-boy-who-harnessed-the-wind-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1546,7 +1354,7 @@
       "status": "previews",
       "slug": "the-peculiar-patriot-off-broadway",
       "thumbnail": "/images/shows/the-peculiar-patriot-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1585,7 +1393,7 @@
       "status": "previews",
       "slug": "the-receptionist-off-broadway",
       "thumbnail": "/images/shows/the-receptionist-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1624,7 +1432,7 @@
       "status": "upcoming",
       "slug": "im-not-being-funny-west-end",
       "thumbnail": "/images/shows/im-not-being-funny-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1649,7 +1457,7 @@
       "status": "upcoming",
       "slug": "an-ideal-husband-west-end",
       "thumbnail": "/images/shows/an-ideal-husband-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1674,7 +1482,7 @@
       "status": "upcoming",
       "slug": "mother-courage-and-her-children-globe-west-end",
       "thumbnail": "/images/shows/mother-courage-and-her-children-globe-west-end-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1699,7 +1507,7 @@
       "status": "previews",
       "slug": "the-people-versus-lenny-bruce-off-broadway",
       "thumbnail": "/images/shows/the-people-versus-lenny-bruce-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1738,7 +1546,7 @@
       "status": "upcoming",
       "slug": "the-music-man-off-broadway",
       "thumbnail": "/images/shows/the-music-man-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1777,7 +1585,7 @@
       "status": "upcoming",
       "slug": "new-born-off-broadway",
       "thumbnail": "/images/shows/new-born-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
