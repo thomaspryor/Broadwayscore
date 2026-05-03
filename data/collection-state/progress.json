@@ -11,7 +11,17 @@
     "in-the-heights-off-broadway-2026/variety--david-rooney.json",
     "in-the-heights-off-broadway-2026/ew--melissa-rose-bernardo.json",
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
+    "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/ew--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -19,20 +29,24 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [
-      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-      "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json"
+      "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+  "lastProcessed": "yoah-off-broadway-2026/variety--pat-saperstein.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -42,6 +56,28 @@
     },
     {
       "t": "2026-05-03T08:41:22.248Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-03T08:44:19.145Z",
+      "event": "bb-session",
+      "session": "b2f0b5aa",
+      "url": "https://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-05-03T08:44:19.710Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-03T08:44:32.193Z",
+      "event": "bb-session",
+      "session": "33ceabef",
+      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2F"
+    },
+    {
+      "t": "2026-05-03T08:44:32.751Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
