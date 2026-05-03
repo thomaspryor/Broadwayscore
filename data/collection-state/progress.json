@@ -619,7 +619,16 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -654,6 +663,7 @@
     ],
     "browserbase": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -676,12 +686,13 @@
       "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
-      "data/review-texts/my-sons-a-queer-but-what-can-you-do-west-end-2026/gay-times--chris-selman.json"
+      "data/review-texts/my-sons-a-queer-but-what-can-you-do-west-end-2026/gay-times--chris-selman.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -724,6 +735,17 @@
     },
     {
       "t": "2026-05-03T09:07:21.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-03T18:36:09.868Z",
+      "event": "bb-session",
+      "session": "e1e2e7df",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-03T18:36:10.913Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
