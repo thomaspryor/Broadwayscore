@@ -43,6 +43,7 @@ const NOISE_MESSAGE_PATTERNS = [
   /Non-Error promise rejection captured/i,
   /Unexpected token/i,
   /Object Not Found Matching Id/i,
+  /a\[e\] is not a function/i,
   /instantSearchSDKJSBridgeClearHighlight/i,
   /fb_xd_fragment/i,
   /googletag/i,
