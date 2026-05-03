@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-03T08:49:23.180Z",
-  "processed": 1,
-  "failed": 20,
-  "successRate": "4.8%",
+  "updatedAt": "2026-05-03T09:07:45.663Z",
+  "processed": 4,
+  "failed": 27,
+  "successRate": "12.9%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 2,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 4,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -47,6 +47,17 @@
       "t": "2026-05-03T08:44:32.751Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-03T09:07:20.818Z",
+      "event": "bb-session",
+      "session": "2332811e",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-03T09:07:21.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
