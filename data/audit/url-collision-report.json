@@ -1,12 +1,66 @@
 {
-  "generatedAt": "2026-05-03T04:50:28.186Z",
+  "generatedAt": "2026-05-03T05:07:47.555Z",
   "summary": {
-    "total": 16,
-    "high": 8,
+    "total": 20,
+    "high": 11,
     "medium": 7,
-    "low": 1
+    "low": 2
   },
   "collisions": [
+    {
+      "url": "https://theaterlife.com/jamie-allans-amaze/",
+      "normalizedUrl": "https://theaterlife.com/jamie-allans-amaze",
+      "candidates": [
+        {
+          "showId": "amaze-magic-2025",
+          "file": "theater-life--alix-cohen.json",
+          "publishDate": "August 14th, 2025",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theater-life"
+        },
+        {
+          "showId": "amaze-magic-off-broadway-2025",
+          "file": "theater-life--alix-cohen.json",
+          "publishDate": "2025-08-14",
+          "openingDate": "2025-07-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theater-life"
+        }
+      ],
+      "suggestedWinner": "amaze-magic-off-broadway-2025",
+      "reason": "publishDate 2025-08-14 is 25 days from amaze-magic-off-broadway-2025 opening (2025-07-20)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://culturesauce.com/2026/01/21/an-ark-mixed-reality-ian-mckellen-off-broadway-review/",
+      "normalizedUrl": "https://culturesauce.com/2026/01/21/an-ark-mixed-reality-ian-mckellen-off-broadway-review",
+      "candidates": [
+        {
+          "showId": "an-ark-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "January 21st, 2026",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "culturesauce"
+        },
+        {
+          "showId": "an-ark-off-broadway-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "January 21st, 2026",
+          "openingDate": "2026-01-09",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        }
+      ],
+      "suggestedWinner": "an-ark-off-broadway-2026",
+      "reason": "publishDate January 21st, 2026 is 12 days from an-ark-off-broadway-2026 opening (2026-01-09)",
+      "confidence": "high"
+    },
     {
       "url": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2025/04/the-martin-musicals-smash-boop.html",
@@ -305,6 +359,33 @@
       "confidence": "medium"
     },
     {
+      "url": "http://royberkinfo.blogspot.com/search?q=kinky",
+      "normalizedUrl": "https://royberkinfo.blogspot.com/search",
+      "candidates": [
+        {
+          "showId": "kinky-boots-2026",
+          "file": "royberkinfo--roy-berko.json",
+          "publishDate": "September 15th, 2015",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "royberkinfo"
+        },
+        {
+          "showId": "kinky-boots-off-broadway-2026",
+          "file": "royberkinfo--roy-berko.json",
+          "publishDate": "September 15th, 2015",
+          "openingDate": "2022-08-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "royberkinfo"
+        }
+      ],
+      "suggestedWinner": "kinky-boots-off-broadway-2026",
+      "reason": "publishDate September 15th, 2015 is 2536+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
       "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "candidates": [
@@ -357,6 +438,33 @@
       "suggestedWinner": "moulin-rouge-the-musical-west-end-2021",
       "reason": "publishDate 2022-01-21 is 2 days from moulin-rouge-the-musical-west-end-2021 but also 2 days from paddington-the-musical-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://culturesauce.com/2026/01/15/the-disappear-off-broadway-review/",
+      "normalizedUrl": "https://culturesauce.com/2026/01/15/the-disappear-off-broadway-review",
+      "candidates": [
+        {
+          "showId": "the-disappear-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "January 15th, 2026",
+          "openingDate": null,
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "culturesauce"
+        },
+        {
+          "showId": "the-disappear-off-broadway-2026",
+          "file": "culturesauce--thom-geier.json",
+          "publishDate": "January 15, 2026",
+          "openingDate": "2026-01-08",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "culturesauce"
+        }
+      ],
+      "suggestedWinner": "the-disappear-off-broadway-2026",
+      "reason": "publishDate January 15, 2026 is 7 days from the-disappear-off-broadway-2026 opening (2026-01-08)",
+      "confidence": "high"
     },
     {
       "url": "https://broadwayandme.blogspot.com/2024/03/old-storiesand-old-guysget-spotlight-in.html",
