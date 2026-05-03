@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-03T12:22:08.757Z",
+    "lastUpdated": "2026-05-03T12:30:39.723Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37056,
+    "totalFilesScanned": 37063,
     "skippedFiles": 16689,
-    "totalCritics": 1357,
+    "totalCritics": 1358,
     "registryCritics": 496,
-    "flaggedReviews": 21
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -119,17 +119,6 @@
       "primaryOutlet": "observer",
       "primaryShare": 91,
       "totalReviews": 22
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 3,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 98,
-      "totalReviews": 40
     },
     {
       "critic": "Andrzej Lukowski",
@@ -483,17 +472,18 @@
         "west-end-wilma",
         "artsdesk",
         "cititour",
+        "independent",
         "british-theatre",
+        "times-uk",
         "broadwayworld",
         "stagebuddy",
         "theupcoming",
         "plays-international",
-        "times-uk",
+        "timeout-london",
         "ew",
         "hollywood-reporter",
         "financialtimes",
         "stageandcinema",
-        "independent",
         "all-that-dazzles-uk",
         "huffpost",
         "standard",
@@ -501,7 +491,6 @@
         "culturesauce",
         "bloomberg",
         "theatreandtonic",
-        "timeout-london",
         "amny",
         "vulture",
         "buy-tickets",
@@ -572,7 +561,7 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 559
+      "totalReviews": 563
     },
     {
       "critic": "Jesse Green",
@@ -1270,6 +1259,17 @@
         "plays-international"
       ],
       "totalReviews": 11
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "slug": "dominic-cavendish",
+      "outlets": [
+        "telegraph",
+        "sunday-telegraph",
+        "timeout-london",
+        "times-uk"
+      ],
+      "totalReviews": 41
     },
     {
       "critic": "Sam Marlowe",
