@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-03T04:56:10.199Z",
+    "generatedAt": "2026-05-03T15:26:01.845Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 484,
-  "errorSeverity": 389,
-  "warningSeverity": 95,
+  "totalGaps": 486,
+  "errorSeverity": 390,
+  "warningSeverity": 96,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -581,6 +581,15 @@
       "extracted": 8,
       "gap": 11,
       "ratio": 0.42,
+      "severity": "error"
+    },
+    {
+      "showId": "building-the-wall-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 31,
+      "extracted": 8,
+      "gap": 23,
+      "ratio": 0.26,
       "severity": "error"
     },
     {
@@ -1455,6 +1464,15 @@
       "gap": 43,
       "ratio": 0.16,
       "severity": "error"
+    },
+    {
+      "showId": "hallelujah-baby-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "hamilton-2015",
