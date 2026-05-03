@@ -105,7 +105,16 @@ function slugify(title) {
 
 /**
  * Normalize a title for comparison - strips subtitles, articles, punctuation
- * to catch variations like "All Out: Comedy About Ambition" vs "All Out"
+ * to catch variations like "All Out: Comedy About Ambition" vs "All Out".
+ *
+ * Also strips a leading author/brand possessive prefix so titles like
+ * "Thornton Wilder's The Emporium" → "emporium", letting the upstream pair
+ * collapse onto an existing "The Emporium" record. The prefix-stripping is
+ * tolerated because cross-production false-positives are caught by the
+ * `isMultiProduction` check in the duplicate scan (year gap, venue mismatch).
+ *
+ * The Emporium 2026-05-03 dup landed because the prefix allowlist only
+ * covered "Disney's" / "Roald Dahl's" — see memory/feedback_possessive_prefix_dedup.md.
  */
 function normalizeTitle(title) {
   return title
@@ -120,8 +129,13 @@ function normalizeTitle(title) {
     .replace(/\s+a\s+musical$/i, '')  // Remove "A Musical"
     // Remove articles at start
     .replace(/^(the|a|an)\s+/i, '')
-    // Remove possessive prefixes like "Disney's"
-    .replace(/^(disney'?s?|roald dahl'?s?)\s+/i, '')
+    // Remove a leading author/brand possessive prefix (1-3 words ending in 's),
+    // e.g. "Disney's", "Thornton Wilder's", "Andrew Lloyd Webber's", "Bob Fosse's".
+    // Curly + ASCII apostrophe both accepted. The trailing article (the/a/an)
+    // is also stripped so "Thornton Wilder's The Emporium" → "emporium".
+    .replace(/^(?:[a-z][a-z0-9.\-]*\s+){0,2}[a-z][a-z0-9.\-]*['’]s\s+(?:the\s+|a\s+|an\s+)?/i, '')
+    // Re-strip leading article (in case the possessive removal exposed one)
+    .replace(/^(the|a|an)\s+/i, '')
     // Clean up punctuation and extra spaces
     .replace(/[!?'":\-–—,\.+\/]/g, '')
     .replace(/\s+/g, ' ')
@@ -240,18 +254,33 @@ function isMultiProduction(newShow, existing) {
   // was miscategorized as both west-end and off-west-end at His Majesty's).
   const newCat = newShow.category || 'broadway';
   const existingCat = existing.category || 'broadway';
+  // normalizeVenueName handles apostrophes, parentheticals, trailing Theatre/Theater.
+  // Also strip dash-suffixes (e.g., "The Other Palace - Main Theatre" → "the other palace").
+  const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
+  const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
+  const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
+  const isUnknown = v => !v || v === 'tba' || v === 'tbd';
+  const venuesKnownDifferent =
+    !isUnknown(newVenueNorm) &&
+    !isUnknown(existVenueNorm) &&
+    newVenueNorm !== existVenueNorm;
   if (newCat !== existingCat && getMarketPool(newCat) === getMarketPool(existingCat)) {
-    // normalizeVenueName handles apostrophes, parentheticals, trailing Theatre/Theater.
-    // Also strip dash-suffixes for dedup (e.g., "The Other Palace - Main Theatre" → "the other palace").
-    const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
-    const newVenue = stripDash(normalizeVenueName(newShow.venue));
-    const existVenue = stripDash(normalizeVenueName(existing.venue));
-    // Treat "TBA" as unknown — a show with no venue yet is not a confirmed transfer
-    const isUnknown = v => !v || v === 'tba' || v === 'tbd';
-    if (!isUnknown(newVenue) && !isUnknown(existVenue) && newVenue !== existVenue) {
+    if (venuesKnownDifferent) {
       return true; // Different confirmed venues = legitimate transfer
     }
     // Same venue = likely duplicate, not a transfer — fall through to other checks
+  }
+  // Same category + different confirmed venues = separate productions.
+  // Without this, the looser possessive-prefix normalizeTitle (Thornton Wilder's
+  // The Emporium → Emporium) would false-positive on cases like
+  // "The Band's Visit" (Ethel Barrymore) vs "The Visit" (Lyceum).
+  // We do NOT apply this when one side is open/previews — the open-show branch
+  // below handles transfer/re-listing semantics for active runs explicitly.
+  if (newCat === existingCat && venuesKnownDifferent) {
+    const isActive = (s) => s === 'open' || s === 'previews';
+    if (!isActive(newShow.status) && !isActive(existing.status)) {
+      return true;
+    }
   }
 
   const newYear = getYear(newShow);
@@ -271,9 +300,6 @@ function isMultiProduction(newShow, existing) {
     const newIsClosed = newShow.status === 'closed' ||
       (newShow.closingDate && new Date(newShow.closingDate) < new Date());
     if (!newIsClosed) {
-      const stripDash = v => v.replace(/\s*[-–—]\s*.+$/, '');
-      const newVenueNorm = newShow.venue ? stripDash(normalizeVenueName(newShow.venue)) : '';
-      const existVenueNorm = existing.venue ? stripDash(normalizeVenueName(existing.venue)) : '';
       if (newVenueNorm && existVenueNorm && newVenueNorm === existVenueNorm) {
         return false; // Same venue + still running + new show not closed = same production
       }
