@@ -66,6 +66,25 @@ for (const show of shows) {
   }
 }
 
+// ALSO emit redirects for any explicit `aliases` array on a show.
+// This is how merged duplicate entries keep their old IDs and slugs
+// reachable — the bookmark / share / SERP cache for the dropped record
+// stays valid, just rewires to the canonical slug.
+// Added 2026-05-03 after the Emporium merge dropped two URLs that
+// previously rendered an Off-Broadway show page.
+for (const show of shows) {
+  const aliases = Array.isArray(show.aliases) ? show.aliases : [];
+  for (const alias of aliases) {
+    if (!alias || alias === show.id || alias === show.slug) continue;
+    if (existingSlugs.has(alias)) continue; // alias collides with another show
+    if (redirects[alias]) continue; // already covered by another path
+    redirects[alias] = {
+      target: show.slug,
+      permanent: true,
+    };
+  }
+}
+
 // Full version (for debugging / inspection)
 const output = {
   _meta: {
