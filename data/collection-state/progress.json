@@ -11,7 +11,8 @@
     "clybourne-park-2012/timeout--adam-feldman.json",
     "clybourne-park-2012/artsfuse--unknown.json",
     "clybourne-park-2012/latimes--unknown.json",
-    "clybourne-park-2012/talkinbroadway--unknown.json"
+    "clybourne-park-2012/talkinbroadway--unknown.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -250,7 +251,15 @@
     "eclipsed-2016/observer--rex-reed.json",
     "our-mothers-brief-affair-2016/observer--rex-reed.json",
     "old-times-2015/observer--rex-reed.json",
-    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -268,6 +277,7 @@
     ],
     "browserbase": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -279,19 +289,21 @@
     ],
     "brightdata": [
       "clybourne-park-2012/latimes--unknown.json",
-      "clybourne-park-2012/talkinbroadway--unknown.json"
+      "clybourne-park-2012/talkinbroadway--unknown.json",
+      "grace-pervades-west-end-2026/telegraph--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/in-the-heights-off-broadway-2026/nytheatre--martin-denton.json",
       "data/review-texts/in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
-      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -334,6 +346,17 @@
     },
     {
       "t": "2026-05-03T09:07:21.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-03T11:18:25.054Z",
+      "event": "bb-session",
+      "session": "3f0d09f4",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-03T11:18:25.441Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
