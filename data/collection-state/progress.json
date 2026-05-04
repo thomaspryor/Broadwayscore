@@ -183,7 +183,17 @@
     "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json",
     "women-on-the-verge-of-a-nervous-breakdown-2010/backstage--erik-haagensen.json",
     "the-scottsboro-boys-2010/backstage--erik-haagensen.json",
-    "driving-miss-daisy-2010/nytheatre--martin-denton.json"
+    "driving-miss-daisy-2010/nytheatre--martin-denton.json",
+    "la-bete-2010/chicagotribune--ben-brantley.json",
+    "bloody-bloody-andrew-jackson-2010/variety--marilyn-stasio.json",
+    "bloody-bloody-andrew-jackson-2010/bloomberg--john-simon.json",
+    "a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+    "a-life-in-the-theatre-2010/nytheatre--martin-denton.json",
+    "a-life-in-the-theatre-2010/bloomberg--john-simon.json",
+    "the-pitmen-painters-2010/backstage--erik-haagensen.json",
+    "the-pitmen-painters-2010/bloomberg--john-simon.json",
+    "brief-encounter-2010/newyorker--uncredited.json",
+    "brief-encounter-2010/nytheatre--martin-denton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -198,7 +208,9 @@
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -218,6 +230,18 @@
     "archive": []
   },
   "startTime": "2026-05-04T09:36:53.336Z",
-  "lastProcessed": "driving-miss-daisy-2010/nytheatre--martin-denton.json",
-  "log": []
+  "lastProcessed": "brief-encounter-2010/nytheatre--martin-denton.json",
+  "log": [
+    {
+      "t": "2026-05-04T11:20:00.013Z",
+      "event": "bb-session",
+      "session": "90dc882d",
+      "url": "https://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T11:20:00.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
