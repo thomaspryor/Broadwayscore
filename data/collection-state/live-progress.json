@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-04T00:19:24.664Z",
-  "processed": 37,
-  "failed": 683,
-  "successRate": "5.1%",
+  "updatedAt": "2026-05-04T03:13:44.808Z",
+  "processed": 42,
+  "failed": 688,
+  "successRate": "5.8%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 29,
     "amp": 2,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 2,
     "archiveToday": 11,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -69,6 +69,17 @@
       "t": "2026-05-03T18:36:10.913Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-04T03:12:54.159Z",
+      "event": "bb-session",
+      "session": "0255d2a1",
+      "url": "https://www.wsj.com/articles/la-traviata-at-the-met-review-marvelous-musicality-"
+    },
+    {
+      "t": "2026-05-04T03:12:55.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

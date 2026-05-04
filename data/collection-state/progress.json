@@ -36,7 +36,12 @@
     "dear-evan-hansen-2016/guardian--michael-billington.json",
     "dear-evan-hansen-2016/independent--paul-taylor.json",
     "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json",
-    "hallelujah-baby-off-broadway-2026/zeal-nyc--chris-caggiano.json"
+    "hallelujah-baby-off-broadway-2026/zeal-nyc--chris-caggiano.json",
+    "the-lost-boys-2026/newyorker--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json",
+    "la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -721,7 +726,12 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/thestage--tim-bano.json",
-    "hamlet-off-broadway-2026/here--unknown.json"
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -752,7 +762,9 @@
       "the-phantom-of-the-opera-west-end-1986/sunday-express--stefan-kyriazis.json",
       "dear-evan-hansen-2016/guardian--michael-billington.json",
       "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json",
-      "hallelujah-baby-off-broadway-2026/zeal-nyc--chris-caggiano.json"
+      "hallelujah-baby-off-broadway-2026/zeal-nyc--chris-caggiano.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
@@ -761,7 +773,9 @@
     "browserbase": [
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
+      "la-traviata-off-broadway-2026/wsj--heidi-waleson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -773,7 +787,9 @@
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "the-great-gatsby-2024/nytimes--unknown.json",
       "come-from-away-2017/daily-mail--patrick-marmion.json",
-      "dear-evan-hansen-2016/independent--paul-taylor.json"
+      "dear-evan-hansen-2016/independent--paul-taylor.json",
+      "the-lost-boys-2026/newyorker--unknown.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
     ],
     "brightdata": [
       "clybourne-park-2012/latimes--unknown.json",
@@ -795,7 +811,7 @@
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -851,6 +867,17 @@
       "t": "2026-05-03T18:36:10.913Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-04T03:12:54.159Z",
+      "event": "bb-session",
+      "session": "0255d2a1",
+      "url": "https://www.wsj.com/articles/la-traviata-at-the-met-review-marvelous-musicality-"
+    },
+    {
+      "t": "2026-05-04T03:12:55.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
