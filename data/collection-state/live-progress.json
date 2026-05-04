@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-05-04T05:07:44.906Z",
+  "updatedAt": "2026-05-04T05:44:27.388Z",
   "processed": 65,
-  "failed": 1147,
+  "failed": 1148,
   "successRate": "5.4%",
   "tierBreakdown": {
     "playwright": 41,
@@ -13,14 +13,8 @@
     "archiveToday": 15,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-04T03:22:55.228Z",
-      "event": "bb-session",
-      "session": "6b1d0705",
-      "url": "https://www.wsj.com/articles/company-stephen-sondheim-george-furth-katrina-lenk-"
-    },
     {
       "t": "2026-05-04T03:22:55.963Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-05-04T04:47:04.832Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T05:43:42.488Z",
+      "event": "bb-session",
+      "session": "3b8080d7",
+      "url": "https://theatertickets.my.salesforce-sites.com/ticket/#/events/a0SS6000000KF9NMA"
     }
   ]
 }
