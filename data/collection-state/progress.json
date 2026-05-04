@@ -1,6 +1,10 @@
 {
   "processed": [
-    "hamlet-off-broadway-2026/nytg--unknown.json"
+    "hamlet-off-broadway-2026/nytg--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "beaches-2026/billboard--rebecca-milzoff.json",
+    "mexodus-off-broadway-2026/latimes--andrea-flores.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -8,26 +12,52 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "grace-pervades-west-end-2026/standard--nick-curtis.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
-    "grace-pervades-west-end-2026/thestage--tom-wicker.json"
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "dog-day-afternoon-2026/deadline--greg-evans.json",
+    "mexodus-off-broadway-2026/nyt-theater--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "hamlet-off-broadway-2026/nytg--unknown.json"
+      "hamlet-off-broadway-2026/nytg--unknown.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "beaches-2026/billboard--rebecca-milzoff.json",
+      "mexodus-off-broadway-2026/latimes--andrea-flores.json"
+    ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-04T16:14:20.092Z",
-  "lastProcessed": "grace-pervades-west-end-2026/thestage--tom-wicker.json",
-  "log": []
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+  "log": [
+    {
+      "t": "2026-05-04T19:28:31.441Z",
+      "event": "bb-session",
+      "session": "8dc5d05c",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-05-04T19:28:32.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
