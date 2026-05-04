@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-05-04T18:57:41.385Z",
-  "processed": 1,
-  "failed": 6,
-  "successRate": "14.3%",
+  "updatedAt": "2026-05-04T19:58:45.384Z",
+  "processed": 12,
+  "failed": 221,
+  "successRate": "5.2%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 5,
+    "amp": 1,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingbee": 7,
+    "brightdata": 2,
     "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-04T19:28:31.441Z",
+      "event": "bb-session",
+      "session": "8dc5d05c",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-05-04T19:28:32.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-04T19:53:59.282Z",
+      "event": "bb-session",
+      "session": "c7a6ef54",
+      "url": "http://www.variety.com/review/VE1117940132.html?categoryid=3276&amp;cs=1&amp;nid"
+    },
+    {
+      "t": "2026-05-04T19:54:00.494Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }

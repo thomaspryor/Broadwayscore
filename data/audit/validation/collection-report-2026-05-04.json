@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-04T19:15:33.443Z",
+  "runDate": "2026-05-04T19:58:48.845Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 14,
-    "failed": 215,
+    "processed": 12,
+    "failed": 221,
     "skipped": 0,
-    "successRate": "6.1%"
+    "successRate": "5.2%"
   },
   "tierBreakdown": {
     "playwright": 5,
@@ -22,52 +22,55 @@
     "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 7,
-    "brightdata": 3,
+    "brightdata": 2,
     "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 7,
+    "tier1Attempts": 10,
+    "tier1Success": 8,
     "ampAttempts": 1,
     "ampSuccess": 1,
     "tier1_5Attempts": 2,
     "tier1_5Success": 1,
-    "tier2Attempts": 8,
-    "tier2Success": 8,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
+    "tier2Attempts": 7,
+    "tier2Success": 7,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 6,
+    "tier4Attempts": 5,
     "tier4Success": 0,
-    "totalFailed": 213,
-    "scrapingBeePageCredits": 26,
+    "totalFailed": 214,
+    "scrapingBeePageCredits": 16,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
     "browserbaseMinutesUsed": 0.8,
-    "urlDiscoveryAttempts": 216,
+    "urlDiscoveryAttempts": 218,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "hamlet-off-broadway-2026/nytg--unknown.json",
-    "the-lost-boys-2026/nyt-theater--unknown.json",
-    "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-    "beaches-2026/billboard--unknown.json",
-    "mexodus-off-broadway-2026/latimes--unknown.json",
+    "beaches-2026/billboard--rebecca-milzoff.json",
+    "mexodus-off-broadway-2026/latimes--andrea-flores.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
     "company-2021/theatrely--andrew-martini.json",
-    "head-over-heels-2018/vulture--jackson-mchenry.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "a-little-night-music-2009/nydailynews--unknown.json"
+    "the-ritz-2007/theatermania--unknown.json",
+    "les-miserables-1987/broadwayworld--stage-tube.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "dog-day-afternoon-2026/deadline--greg-evans.json",
     "mexodus-off-broadway-2026/nyt-theater--unknown.json",
@@ -281,15 +284,16 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "les-miserables-1987/whatsonstage--tanyel-gumushan.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
     "playwright": [
       "hamlet-off-broadway-2026/nytg--unknown.json",
-      "the-lost-boys-2026/nyt-theater--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "the-ritz-2007/theatermania--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-philanthropist-2009/variety--david-rooney.json"
@@ -300,17 +304,16 @@
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-      "a-little-night-music-2009/nydailynews--unknown.json"
+      "les-miserables-1987/broadwayworld--stage-tube.json"
     ],
     "brightdata": [
-      "beaches-2026/billboard--unknown.json",
-      "mexodus-off-broadway-2026/latimes--unknown.json",
-      "head-over-heels-2018/vulture--jackson-mchenry.json"
+      "beaches-2026/billboard--rebecca-milzoff.json",
+      "mexodus-off-broadway-2026/latimes--andrea-flores.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
