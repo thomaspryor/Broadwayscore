@@ -53,7 +53,8 @@
     "company-2021/wsj--charles-isherwood.json",
     "come-from-away-2017/times-uk--dominic-maxwell.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "clybourne-park-2012/latimes--david-ng.json"
+    "clybourne-park-2012/latimes--david-ng.json",
+    "a-little-night-music-2009/nytg--unknown.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -921,7 +922,16 @@
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
     "the-addams-family-2010/backstage--erik-haagensen.json",
-    "red-2010/backstage--erik-haagensen.json"
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "race-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -961,7 +971,8 @@
       "cats-west-end-2026/new-york-city-theatre--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "a-little-night-music-2009/nytg--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
@@ -976,7 +987,8 @@
       "data/review-texts/art-2025/nytimes--jesse-green.json",
       "data/review-texts/company-2021/wsj--charles-isherwood.json",
       "company-2021/wsj--charles-isherwood.json",
-      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json"
+      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+      "data/review-texts/race-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1018,7 +1030,7 @@
     ]
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "red-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "burn-the-floor-2009/backstage--jo-sagolla.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -1116,6 +1128,17 @@
     },
     {
       "t": "2026-05-04T03:43:58.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T03:47:58.293Z",
+      "event": "bb-session",
+      "session": "eda1bb76",
+      "url": "http://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T03:47:59.146Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

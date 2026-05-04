@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-04T03:46:48.064Z",
-  "processed": 54,
-  "failed": 866,
+  "updatedAt": "2026-05-04T03:48:25.397Z",
+  "processed": 55,
+  "failed": 875,
   "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 37,
     "amp": 2,
-    "browserbase": 9,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 3,
     "archiveToday": 11,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -111,6 +111,17 @@
     },
     {
       "t": "2026-05-04T03:43:58.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T03:47:58.293Z",
+      "event": "bb-session",
+      "session": "eda1bb76",
+      "url": "http://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T03:47:59.146Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
