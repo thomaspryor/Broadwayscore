@@ -45,7 +45,11 @@
     "operation-mincemeat-west-end-2024/musical-theatre-review--unknown.json",
     "harry-potter-2021/whatsonstage--unknown.json",
     "witness-for-the-prosecution-west-end-2022/guardian--unknown.json",
-    "billy-elliot-the-musical-west-end-2027/timeout--unknown.json"
+    "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
+    "cats-west-end-2026/new-york-city-theatre--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
+    "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -751,7 +755,13 @@
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "the-lion-king-1997/familyvacationcritic--unknown.json"
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "high-noon-west-end-2025/times-uk--unknown.json",
+    "art-2025/nytimes--jesse-green.json",
+    "art-2025/indiewire--kate-erbland.json",
+    "art-2025/forward--pj-grisar.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -787,7 +797,10 @@
       "the-adding-machine-off-broadway-2026/dc-theater-arts--deb-miller.json",
       "operation-mincemeat-west-end-2024/musical-theatre-review--unknown.json",
       "harry-potter-2021/whatsonstage--unknown.json",
-      "witness-for-the-prosecution-west-end-2022/guardian--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/guardian--unknown.json",
+      "cats-west-end-2026/new-york-city-theatre--unknown.json",
+      "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
+      "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
@@ -798,7 +811,8 @@
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
-      "la-traviata-off-broadway-2026/wsj--heidi-waleson.json"
+      "la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/art-2025/nytimes--jesse-green.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -814,7 +828,8 @@
       "the-lost-boys-2026/newyorker--unknown.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
-      "billy-elliot-the-musical-west-end-2027/timeout--unknown.json"
+      "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
+      "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json"
     ],
     "brightdata": [
       "clybourne-park-2012/latimes--unknown.json",
@@ -836,7 +851,7 @@
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
+  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -903,6 +918,17 @@
       "t": "2026-05-04T03:12:55.069Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-04T03:19:39.749Z",
+      "event": "bb-session",
+      "session": "e6a0d6db",
+      "url": "https://www.nytimes.com/2025/12/13/arts/movies-tv-art-music-2025.html"
+    },
+    {
+      "t": "2026-05-04T03:19:40.546Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
