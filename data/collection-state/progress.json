@@ -58,7 +58,8 @@
     "animal-wisdom-2022/nytimes--ben-brantley.json",
     "hallelujah-baby-off-broadway-2026/broadway-blog--matthew-wexler.json",
     "hallelujah-baby-off-broadway-2026/theater-pizzazz--linda-amiel-burns.json",
-    "the-car-man-west-end-2026/whatsonstage--unknown.json"
+    "the-car-man-west-end-2026/whatsonstage--unknown.json",
+    "the-producers-west-end-2025/variety--ellise-shafer.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -963,7 +964,16 @@
     "les-miserables-1987/whatsonstage--unknown.json",
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/times-uk--quentin-letts.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "avenue-q-west-end-2026/theupcoming--michael-higgs.json",
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "dracula-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+    "into-the-woods-west-end-2025/the-upcoming-uk--daisy-grace-greetham.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oh-mary-2024/theatermania--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1022,7 +1032,9 @@
       "data/review-texts/company-2021/wsj--charles-isherwood.json",
       "company-2021/wsj--charles-isherwood.json",
       "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
-      "data/review-texts/race-2009/about-entertainment--unknown.json"
+      "data/review-texts/race-2009/about-entertainment--unknown.json",
+      "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
+      "the-producers-west-end-2025/variety--ellise-shafer.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1066,7 +1078,7 @@
     ]
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "oh-mary-2024/theatermania--unknown.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -1177,6 +1189,17 @@
       "t": "2026-05-04T03:47:59.146Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T04:06:50.029Z",
+      "event": "bb-session",
+      "session": "33bc3dca",
+      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
+    },
+    {
+      "t": "2026-05-04T04:06:50.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
