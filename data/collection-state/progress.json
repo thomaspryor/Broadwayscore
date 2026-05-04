@@ -203,7 +203,17 @@
     "american-idiot-2010/variety--david-rooney.json",
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
-    "the-addams-family-2010/backstage--erik-haagensen.json"
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "race-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -219,7 +229,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json"
+      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+      "data/review-texts/race-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -240,7 +251,7 @@
     "archive": []
   },
   "startTime": "2026-05-04T09:36:53.336Z",
-  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "burn-the-floor-2009/backstage--jo-sagolla.json",
   "log": [
     {
       "t": "2026-05-04T11:20:00.013Z",
@@ -250,6 +261,17 @@
     },
     {
       "t": "2026-05-04T11:20:00.910Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T11:24:03.161Z",
+      "event": "bb-session",
+      "session": "812690ad",
+      "url": "http://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T11:24:03.903Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
