@@ -208,7 +208,17 @@
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
     "burn-the-floor-2009/backstage--jo-sagolla.json",
     "waiting-for-godot-2009/newsday--linda-winer.json",
-    "waiting-for-godot-2009/backstage--david-sheward.json"
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/variety--david-rooney.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "next-to-normal-2009/neontommy--jason-kehe.json",
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/newsday--linda-winer.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -218,7 +228,9 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/the-philanthropist-2009/variety--david-rooney.json"
+    ],
     "browserbase": [
       "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json"
     ],
@@ -241,7 +253,7 @@
     "archive": []
   },
   "startTime": "2026-05-04T16:14:20.092Z",
-  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
+  "lastProcessed": "impressionism-2009/newsday--linda-winer.json",
   "log": [
     {
       "t": "2026-05-04T19:28:31.441Z",
@@ -253,6 +265,17 @@
       "t": "2026-05-04T19:28:32.631Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-04T19:53:59.282Z",
+      "event": "bb-session",
+      "session": "c7a6ef54",
+      "url": "http://www.variety.com/review/VE1117940132.html?categoryid=3276&amp;cs=1&amp;nid"
+    },
+    {
+      "t": "2026-05-04T19:54:00.494Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
