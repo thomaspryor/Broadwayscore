@@ -1173,7 +1173,17 @@
     "american-idiot-2010/variety--david-rooney.json",
     "la-cage-aux-folles-2010/backstage--david-sheward.json",
     "million-dollar-quartet-2010/backstage--david-sheward.json",
-    "the-addams-family-2010/backstage--erik-haagensen.json"
+    "the-addams-family-2010/backstage--erik-haagensen.json",
+    "red-2010/backstage--erik-haagensen.json",
+    "red-2010/washpost--peter-marks.json",
+    "come-fly-away-2010/nytheatre--martin-denton.json",
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "race-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1242,7 +1252,8 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
-      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json"
+      "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
+      "data/review-texts/race-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1292,7 +1303,7 @@
     ]
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "the-addams-family-2010/backstage--erik-haagensen.json",
+  "lastProcessed": "burn-the-floor-2009/backstage--jo-sagolla.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -1467,6 +1478,17 @@
     },
     {
       "t": "2026-05-04T04:43:21.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T04:47:04.218Z",
+      "event": "bb-session",
+      "session": "69eb2196",
+      "url": "http://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T04:47:04.832Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

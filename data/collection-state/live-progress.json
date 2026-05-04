@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-04T04:45:53.911Z",
+  "updatedAt": "2026-05-04T04:47:39.648Z",
   "processed": 65,
-  "failed": 1107,
+  "failed": 1117,
   "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 41,
     "amp": 4,
-    "browserbase": 16,
+    "browserbase": 17,
     "directCookies": 0,
     "scrapingbee": 17,
     "brightdata": 3,
     "archiveToday": 14,
     "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
-    {
-      "t": "2026-05-04T03:19:39.749Z",
-      "event": "bb-session",
-      "session": "e6a0d6db",
-      "url": "https://www.nytimes.com/2025/12/13/arts/movies-tv-art-music-2025.html"
-    },
-    {
-      "t": "2026-05-04T03:19:40.546Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-05-04T03:22:55.228Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-05-04T04:43:21.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T04:47:04.218Z",
+      "event": "bb-session",
+      "session": "69eb2196",
+      "url": "http://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T04:47:04.832Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
