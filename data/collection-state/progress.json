@@ -3,7 +3,12 @@
     "hamlet-off-broadway-2026/nytg--unknown.json"
   ],
   "failed": [
-    "hamlet-off-broadway-2026/here--unknown.json"
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -13,7 +18,9 @@
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
@@ -21,6 +28,6 @@
     "archive": []
   },
   "startTime": "2026-05-04T16:14:20.092Z",
-  "lastProcessed": "hamlet-off-broadway-2026/here--unknown.json",
+  "lastProcessed": "grace-pervades-west-end-2026/thestage--tom-wicker.json",
   "log": []
 }
