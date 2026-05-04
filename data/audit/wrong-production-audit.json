@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-04T09:13:41.345Z",
+  "timestamp": "2026-05-04T09:36:15.253Z",
   "stats": {
-    "totalReviews": 36502,
-    "alreadyFlagged": 15991,
+    "totalReviews": 36503,
+    "alreadyFlagged": 15992,
     "dateGuardCatches": 102,
-    "directorMismatch": 839,
+    "directorMismatch": 837,
     "tvFilmSignals": 1004,
     "londonSignals": 563,
     "offBroadwaySignals": 439,
@@ -3513,24 +3513,6 @@
       "score": 92,
       "publishDate": "2024-06-21",
       "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "new-york-city-theatre--unknown.json",
-      "publishDate": null,
-      "url": "https://www.newyorkcitytheatre.com/shows/perelman-performing-arts-center/cats",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32377,6 +32359,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
+      "score": 76,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
