@@ -17,7 +17,9 @@
     "dear-evan-hansen-2016/guardian--michael-billington.json",
     "dear-evan-hansen-2016/independent--paul-taylor.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json"
+    "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/timeout--unknown.json",
+    "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -242,7 +244,15 @@
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "now-you-see-me-live-west-end-2026/london-box-office--stuart-king.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/times-uk--quentin-letts.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "dog-day-afternoon-2026/deadline--greg-evans.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "oh-mary-2024/theatermania--unknown.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -255,12 +265,15 @@
       "is-this-a-room-2021/nytg--unknown.json",
       "is-this-a-room-2021/stageandcinema--unknown.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json"
+      "hallelujah-baby-off-broadway-2026/theater-scene--victor-gluck.json",
+      "a-midsummer-nights-dream-globe-west-end-2026/timeout--unknown.json",
+      "heathers-the-musical-off-broadway-2025/the-interested-bystander--cary-wong.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
-      "data/review-texts/race-2009/about-entertainment--unknown.json"
+      "data/review-texts/race-2009/about-entertainment--unknown.json",
+      "data/review-texts/dog-day-afternoon-2026/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -271,7 +284,8 @@
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "come-from-away-2017/daily-mail--patrick-marmion.json",
-      "dear-evan-hansen-2016/independent--paul-taylor.json"
+      "dear-evan-hansen-2016/independent--paul-taylor.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [
       "head-over-heels-2018/vulture--jackson-mchenry.json",
@@ -281,7 +295,7 @@
     "archive": []
   },
   "startTime": "2026-05-04T09:36:53.336Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-05-04T11:20:00.013Z",
@@ -304,6 +318,17 @@
       "t": "2026-05-04T11:24:03.903Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T11:40:56.492Z",
+      "event": "bb-session",
+      "session": "c11c53dd",
+      "url": "https://deadline.com/2026/03/broadway-box-office-cats-jellicle-ball-dog-day-afte"
+    },
+    {
+      "t": "2026-05-04T11:40:56.896Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
