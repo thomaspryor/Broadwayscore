@@ -49,7 +49,8 @@
     "cats-west-end-2026/new-york-city-theatre--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
+    "company-2021/wsj--charles-isherwood.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -761,7 +762,16 @@
     "art-2025/indiewire--kate-erbland.json",
     "art-2025/forward--pj-grisar.json",
     "art-2025/broadwaynews--michael-abourizk.json",
-    "redwood-2025/gmanetwork--stuart-santiago.json"
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "gutenberg-2023/billboard--ashley-iasimone.json",
+    "gutenberg-2023/nydailynews--muri-assunu00e7u00e3o.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "death-of-a-salesman-2022/ew--fabian-brathwiate.json",
+    "death-of-a-salesman-2022/forward--pj-grisar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -812,7 +822,9 @@
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
       "la-traviata-off-broadway-2026/wsj--heidi-waleson.json",
-      "data/review-texts/art-2025/nytimes--jesse-green.json"
+      "data/review-texts/art-2025/nytimes--jesse-green.json",
+      "data/review-texts/company-2021/wsj--charles-isherwood.json",
+      "company-2021/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -851,7 +863,7 @@
     "archive": []
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "redwood-2025/gmanetwork--stuart-santiago.json",
+  "lastProcessed": "company-2021/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -929,6 +941,17 @@
       "t": "2026-05-04T03:19:40.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T03:22:55.228Z",
+      "event": "bb-session",
+      "session": "6b1d0705",
+      "url": "https://www.wsj.com/articles/company-stephen-sondheim-george-furth-katrina-lenk-"
+    },
+    {
+      "t": "2026-05-04T03:22:55.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

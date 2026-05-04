@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-04T03:20:38.946Z",
-  "processed": 50,
-  "failed": 710,
+  "updatedAt": "2026-05-04T03:23:17.008Z",
+  "processed": 51,
+  "failed": 719,
   "successRate": "6.6%",
   "tierBreakdown": {
     "playwright": 35,
     "amp": 2,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 2,
     "archiveToday": 11,
     "archive": 0
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -91,6 +91,17 @@
       "t": "2026-05-04T03:19:40.546Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-04T03:22:55.228Z",
+      "event": "bb-session",
+      "session": "6b1d0705",
+      "url": "https://www.wsj.com/articles/company-stephen-sondheim-george-furth-katrina-lenk-"
+    },
+    {
+      "t": "2026-05-04T03:22:55.963Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
