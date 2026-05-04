@@ -59,7 +59,8 @@
     "hallelujah-baby-off-broadway-2026/broadway-blog--matthew-wexler.json",
     "hallelujah-baby-off-broadway-2026/theater-pizzazz--linda-amiel-burns.json",
     "the-car-man-west-end-2026/whatsonstage--unknown.json",
-    "the-producers-west-end-2025/variety--ellise-shafer.json"
+    "the-producers-west-end-2025/variety--ellise-shafer.json",
+    "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json"
   ],
   "failed": [
     "hamlet-off-broadway-2026/here--unknown.json",
@@ -993,7 +994,16 @@
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
-    "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json"
+    "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "the-phantom-of-the-opera-west-end-1986/thestage--tim-bano.json",
+    "in-the-heights-off-broadway-2026/variety--david-rooney.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+    "betty-buckley-random-notes-off-broadway-2026/huffpost--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1040,6 +1050,8 @@
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json",
       "data/review-texts/betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
     ],
     "browserbase": [
@@ -1054,7 +1066,10 @@
       "data/review-texts/a-life-in-the-theatre-2010/about-entertainment--ben-brantley.json",
       "data/review-texts/race-2009/about-entertainment--unknown.json",
       "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
-      "the-producers-west-end-2025/variety--ellise-shafer.json"
+      "the-producers-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "data/review-texts/betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1072,7 +1087,8 @@
       "magic-mike-live-west-end-2021/broadwayworld--stephi-wild.json",
       "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json"
     ],
     "brightdata": [
       "clybourne-park-2012/latimes--unknown.json",
@@ -1090,7 +1106,8 @@
       "data/review-texts/the-phantom-of-the-opera-west-end-1986/thestage--tim-bano.json",
       "data/review-texts/the-music-man-2022/thestage--nicole-serratore.json",
       "data/review-texts/true-west-2019/thestage--fergus-morgan.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/the-phantom-of-the-opera-west-end-1986/thestage--tim-bano.json"
     ],
     "archive": [
       "come-from-away-2017/times-uk--dominic-maxwell.json",
@@ -1098,7 +1115,7 @@
     ]
   },
   "startTime": "2026-05-03T08:37:47.228Z",
-  "lastProcessed": "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json",
+  "lastProcessed": "yoah-off-broadway-2026/variety--pat-saperstein.json",
   "log": [
     {
       "t": "2026-05-03T08:41:21.238Z",
@@ -1218,6 +1235,50 @@
     },
     {
       "t": "2026-05-04T04:06:50.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:12:48.791Z",
+      "event": "bb-session",
+      "session": "c5ff524f",
+      "url": "https://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-05-04T04:12:49.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:13:27.958Z",
+      "event": "bb-session",
+      "session": "06a68167",
+      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
+    },
+    {
+      "t": "2026-05-04T04:13:29.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:13:46.789Z",
+      "event": "bb-session",
+      "session": "a25e28ec",
+      "url": "https://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-05-04T04:13:47.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-04T04:14:00.580Z",
+      "event": "bb-session",
+      "session": "a36fbea6",
+      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2F"
+    },
+    {
+      "t": "2026-05-04T04:14:01.093Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }

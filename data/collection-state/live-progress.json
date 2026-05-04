@@ -1,64 +1,20 @@
 {
-  "updatedAt": "2026-05-04T04:11:12.126Z",
-  "processed": 60,
-  "failed": 932,
-  "successRate": "6.0%",
+  "updatedAt": "2026-05-04T04:14:50.703Z",
+  "processed": 61,
+  "failed": 941,
+  "successRate": "6.1%",
   "tierBreakdown": {
     "playwright": 39,
-    "amp": 2,
-    "browserbase": 12,
+    "amp": 4,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingbee": 15,
+    "scrapingbee": 16,
     "brightdata": 3,
-    "archiveToday": 11,
+    "archiveToday": 12,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-05-03T08:44:19.145Z",
-      "event": "bb-session",
-      "session": "b2f0b5aa",
-      "url": "https://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
-    },
-    {
-      "t": "2026-05-03T08:44:19.710Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-05-03T08:44:32.193Z",
-      "event": "bb-session",
-      "session": "33ceabef",
-      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2F"
-    },
-    {
-      "t": "2026-05-03T08:44:32.751Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-05-03T09:07:20.818Z",
-      "event": "bb-session",
-      "session": "2332811e",
-      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
-    },
-    {
-      "t": "2026-05-03T09:07:21.672Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
-    {
-      "t": "2026-05-03T18:36:09.868Z",
-      "event": "bb-session",
-      "session": "e1e2e7df",
-      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
-    },
-    {
-      "t": "2026-05-03T18:36:10.913Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    },
     {
       "t": "2026-05-04T03:12:54.159Z",
       "event": "bb-session",
@@ -122,6 +78,50 @@
     },
     {
       "t": "2026-05-04T04:06:50.651Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:12:48.791Z",
+      "event": "bb-session",
+      "session": "c5ff524f",
+      "url": "https://www.variety.com/review/VE1117936446.html?categoryid=33&cs=1"
+    },
+    {
+      "t": "2026-05-04T04:12:49.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:13:27.958Z",
+      "event": "bb-session",
+      "session": "06a68167",
+      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
+    },
+    {
+      "t": "2026-05-04T04:13:29.190Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:13:46.789Z",
+      "event": "bb-session",
+      "session": "a25e28ec",
+      "url": "https://www.hollywoodreporter.com/review/old-friends-theater-review-628283"
+    },
+    {
+      "t": "2026-05-04T04:13:47.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-04T04:14:00.580Z",
+      "event": "bb-session",
+      "session": "a36fbea6",
+      "url": "https://variety.com/interstitial/?ref=http%3A%2F%2Fvariety.com%2F2013%2Flegit%2F"
+    },
+    {
+      "t": "2026-05-04T04:14:01.093Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
