@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-04T04:42:48.711Z",
+  "updatedAt": "2026-05-04T04:44:28.174Z",
   "processed": 65,
-  "failed": 1087,
+  "failed": 1097,
   "successRate": "5.6%",
   "tierBreakdown": {
     "playwright": 41,
     "amp": 4,
-    "browserbase": 15,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 17,
     "brightdata": 3,
     "archiveToday": 14,
     "archive": 3
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
-    {
-      "t": "2026-05-04T03:12:54.159Z",
-      "event": "bb-session",
-      "session": "0255d2a1",
-      "url": "https://www.wsj.com/articles/la-traviata-at-the-met-review-marvelous-musicality-"
-    },
-    {
-      "t": "2026-05-04T03:12:55.069Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-05-04T03:19:39.749Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-05-04T04:14:01.093Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-04T04:43:21.124Z",
+      "event": "bb-session",
+      "session": "62dd050e",
+      "url": "https://theater.nytimes.com/2010/10/13/theater/reviews/13life.html?ref=theater"
+    },
+    {
+      "t": "2026-05-04T04:43:21.732Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
