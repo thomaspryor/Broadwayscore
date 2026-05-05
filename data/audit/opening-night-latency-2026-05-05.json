@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-05T11:45:58.943Z",
+  "generatedAt": "2026-05-05T12:45:07.615Z",
   "date": "2026-05-05",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 63154,
+  "entryCount": 63156,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -71,7 +71,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 2796764,
+        "collected-to-scored": 3243455,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -296,7 +296,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 3733876,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
