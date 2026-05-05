@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-04T22:38:59.038Z",
+  "lastRunAt": "2026-05-05T01:08:02.553Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -44,7 +44,8 @@
     "google:a230d0cfcbcc1d86": true,
     "news:908494ada0683d6d": true,
     "google:b17bf9614d78378b": true,
-    "google:b261d59c7eb034fc": true
+    "google:b261d59c7eb034fc": true,
+    "google:64c53c456befa176": true
   },
   "mentions": [
     {
@@ -909,10 +910,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-05-02T20:30:52.415Z"
+    },
+    {
+      "id": "google:64c53c456befa176",
+      "source": "google",
+      "url": "https://showscorecard.com/critics/outlets/new-york-theatre-guide",
+      "title": "New York Theatre Guide",
+      "excerpt": "No spam, no schedule — just opening night scores. Unsubscribe anytime. Email address. Subscribe. BroadwayScorecard™.",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-05-05T01:07:48.500Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-05-05T01:08:02.553Z"
     }
   ],
   "stats": {
-    "totalSeen": 44,
+    "totalSeen": 45,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -959,6 +980,7 @@
     "https://forum.broadwayworld.com/thread/JOE-TURNERS-COME-AND-GONE-reviews": true,
     "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true,
     "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true,
-    "https://showscorecard.com/": true
+    "https://showscorecard.com/": true,
+    "https://showscorecard.com/critics/outlets/new-york-theatre-guide": true
   }
 }
