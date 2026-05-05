@@ -59,7 +59,8 @@
     "fences-2010/indiewire--naveen-kumar.json",
     "fences-2010/thewrap--robert-hofler.json",
     "fences-2010/artsfuse--unknown.json",
-    "fences-2010/talkinbroadway--unknown.json"
+    "fences-2010/talkinbroadway--unknown.json",
+    "carrie-1988/hollywood-reporter--unknown.json"
   ],
   "failed": [
     "the-peculiar-patriot-off-broadway-2026/politeonsociety--marc-w-polite.json",
@@ -272,7 +273,16 @@
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -325,7 +335,10 @@
       "fences-2010/artsfuse--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/carrie-1988/hollywood-reporter--unknown.json",
+      "carrie-1988/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -351,6 +364,18 @@
     ]
   },
   "startTime": "2026-05-05T09:45:51.471Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
-  "log": []
+  "lastProcessed": "carrie-1988/hollywood-reporter--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-05T11:29:50.816Z",
+      "event": "bb-session",
+      "session": "cc9e6a91",
+      "url": "https://www.hollywoodreporter.com/news/general-news/carrie-theater-review-296385"
+    },
+    {
+      "t": "2026-05-05T11:29:51.388Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
