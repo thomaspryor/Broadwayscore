@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-05-05T03:44:51.546Z",
+  "updatedAt": "2026-05-05T03:46:29.952Z",
   "processed": 14,
-  "failed": 616,
+  "failed": 626,
   "successRate": "2.2%",
   "tierBreakdown": {
     "playwright": 5,
-    "amp": 2,
+    "amp": 3,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 10,
@@ -13,7 +13,7 @@
     "archiveToday": 3,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-04T19:28:31.441Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-05-04T19:54:00.494Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-05T03:45:41.781Z",
+      "event": "bb-session",
+      "session": "eabe1996",
+      "url": "http://www.variety.com/review/VE1117940132.html?categoryid=3276&amp;cs=1&amp;nid"
+    },
+    {
+      "t": "2026-05-05T03:45:42.597Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
