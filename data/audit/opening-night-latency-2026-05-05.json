@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-05T05:23:19.289Z",
+  "generatedAt": "2026-05-05T07:06:10.825Z",
   "date": "2026-05-05",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 58959,
+  "entryCount": 59993,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -816,7 +816,7 @@
     },
     {
       "showId": "paranormal-activity-west-end-2025",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1161,7 +1161,7 @@
     },
     {
       "showId": "harry-potter-2021",
-      "reviewCount": 65,
+      "reviewCount": 64,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1476,7 +1476,7 @@
     },
     {
       "showId": "head-over-heels-2018",
-      "reviewCount": 46,
+      "reviewCount": 45,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1612,6 +1612,21 @@
     {
       "showId": "the-ritz-2007",
       "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hamlet-off-broadway-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
