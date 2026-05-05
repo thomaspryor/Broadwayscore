@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-04T20:27:29.736Z",
+  "timestamp": "2026-05-05T08:58:15.547Z",
   "stats": {
-    "totalReviews": 36506,
+    "totalReviews": 36532,
     "alreadyFlagged": 15999,
     "dateGuardCatches": 102,
     "directorMismatch": 837,
-    "tvFilmSignals": 1005,
-    "londonSignals": 563,
+    "tvFilmSignals": 1006,
+    "londonSignals": 564,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3745
+    "noPublishDate": 3769
   },
   "findings": [
     {
@@ -7275,6 +7275,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2025 (0x). 2005 matches production: glengarry-glen-ross-2005"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-2025",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "score": 78,
+      "publishDate": "2025-04-13",
+      "url": "https://1minutecritic.com/glengarry-glen-ross-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -29926,6 +29940,20 @@
       "score": 89,
       "publishDate": "2017-12-28",
       "url": "https://www.nytimes.com/2017/12/28/theater/london-hamilton-pinocchio.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-off-broadway-2026",
+      "file": "thewrap--robert-hofler.json",
+      "score": 63,
+      "publishDate": "2026-05-05",
+      "url": "https://www.thewrap.com/creative-content/theater/hamlet-off-broadway-review-hiran-abeysekera/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
