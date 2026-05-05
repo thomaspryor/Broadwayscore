@@ -1,53 +1,53 @@
 {
-  "runDate": "2026-05-05T12:34:03.830Z",
+  "runDate": "2026-05-05T17:27:52.928Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
     "priority": "all",
-    "showFilter": "the-boy-who-harnessed-the-wind-west-end-2026,the-peculiar-patriot-off-broadway-2026",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 80,
-    "failed": 449,
+    "processed": 75,
+    "failed": 448,
     "skipped": 0,
-    "successRate": "15.1%"
+    "successRate": "14.3%"
   },
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 55,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 11,
     "brightdata": 2,
-    "archiveToday": 2,
-    "archive": 6
+    "archiveToday": 6,
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 24,
-    "tier1Success": 9,
+    "tier1Attempts": 16,
+    "tier1Success": 14,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 10,
-    "tier2Attempts": 9,
-    "tier2Success": 6,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 6,
+    "tier2Success": 3,
     "tier3Attempts": 3,
     "tier3Success": 1,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 6,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 4,
     "tier4Success": 0,
-    "totalFailed": 220,
-    "scrapingBeePageCredits": 43,
+    "totalFailed": 219,
+    "scrapingBeePageCredits": 32,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 1.8,
-    "urlDiscoveryAttempts": 220,
-    "urlDiscoverySuccess": 6,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 214,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -118,19 +118,14 @@
     "carrie-1988/theatermania--unknown.json",
     "carrie-1988/huffpost--unknown.json",
     "carrie-1988/independent--unknown.json",
-    "the-peculiar-patriot-off-broadway-2026/politeonsociety--marc-w-polite.json",
-    "grace-pervades-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
+    "hamlet-off-broadway-2026/nytg--unknown.json",
+    "hamlet-off-broadway-2026/theatermania--unknown.json",
+    "hamlet-off-broadway-2026/culturesauce--thom-geier.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "grace-pervades-west-end-2026/independent--ghenet-pinderhughes-randall.json",
-    "avenue-q-west-end-2026/whatsonstage--paul-raven.json",
-    "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json",
-    "dracula-west-end-2025/timeout--paul-raven.json",
-    "dracula-west-end-2025/financialtimes--paul-raven.json",
-    "shadowlands-west-end-2026/timeout--paul-raven.json",
-    "shadowlands-west-end-2026/daily-mail--paul-raven.json",
-    "oh-mary-west-end-2025/timeout--paul-raven.json",
+    "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "much-ado-about-nothing-globe-west-end-2026/independent--alice-saville.json",
     "carrie-1988/indiewire--hanh-nguyen.json",
-    "carrie-1988/telegraph--unknown.json"
+    "carrie-1988/independent--jessie-thompson.json"
   ],
   "failed": [
     "the-peculiar-patriot-off-broadway-2026/politeonsociety--marc-w-polite.json",
@@ -359,17 +354,17 @@
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "les-miserables-1987/whatsonstage--tanyel-gumushan.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
     "les-liaisons-dangereuses-west-end-2026/guardian--paul-raven.json",
-    "mexodus-off-broadway-2026/nytimes--rachel-sherman.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
     "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
-    "operation-mincemeat-west-end-2024/whatsonstage--unknown.json",
     "mj-2022/broadwaynews--charles-isherwood.json",
     "mj-2022/nydailynews--karu-f-daniels.json",
-    "moulin-rouge-the-musical-west-end-2021/standard--unknown.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "six-the-musical-west-end-2021/daily-mail--unknown.json",
@@ -378,15 +373,15 @@
     "harry-potter-2021/woman-around-town--alix-cohen.json",
     "witness-for-the-prosecution-west-end-2022/guardian--unknown.json",
     "aladdin-2014/ap--mark-kennedy.json",
-    "the-book-of-mormon-west-end-2024/guardian--unknown.json",
+    "the-book-of-mormon-west-end-2024/guardian--rachel-agyekum.json",
     "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
     "book-of-mormon-2011/variety--david-rooney.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-west-end-2021/daily-mail--unknown.json",
-    "the-lion-king-west-end-2021/independent--unknown.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "blood-of-my-blood-west-end-2026/times-uk--clive-davis.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
@@ -579,7 +574,6 @@
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "carrie-1988/backstage--unknown.json",
     "carrie-1988/curtainup--unknown.json",
-    "carrie-1988/independent--jessie-thompson.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
@@ -635,31 +629,16 @@
       "carrie-1988/indiewire--naveen-kumar.json",
       "carrie-1988/theatermania--unknown.json",
       "carrie-1988/huffpost--unknown.json",
-      "the-peculiar-patriot-off-broadway-2026/politeonsociety--marc-w-polite.json",
-      "avenue-q-west-end-2026/whatsonstage--paul-raven.json",
-      "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json",
-      "shadowlands-west-end-2026/timeout--paul-raven.json",
-      "oh-mary-west-end-2025/timeout--paul-raven.json",
-      "carrie-1988/indiewire--hanh-nguyen.json"
+      "hamlet-off-broadway-2026/nytg--unknown.json",
+      "hamlet-off-broadway-2026/theatermania--unknown.json",
+      "hamlet-off-broadway-2026/culturesauce--thom-geier.json",
+      "shadowlands-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "much-ado-about-nothing-globe-west-end-2026/independent--alice-saville.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/carrie-1988/hollywood-reporter--unknown.json",
-      "carrie-1988/hollywood-reporter--unknown.json",
-      "data/review-texts/grace-pervades-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-      "grace-pervades-west-end-2026/timeout--ghenet-pinderhughes-randall.json",
-      "data/review-texts/grace-pervades-west-end-2026/independent--ghenet-pinderhughes-randall.json",
-      "grace-pervades-west-end-2026/independent--ghenet-pinderhughes-randall.json",
-      "data/review-texts/dracula-west-end-2025/financialtimes--paul-raven.json",
-      "dracula-west-end-2025/financialtimes--paul-raven.json",
-      "data/review-texts/shadowlands-west-end-2026/daily-mail--paul-raven.json",
-      "shadowlands-west-end-2026/daily-mail--paul-raven.json",
-      "data/review-texts/operation-mincemeat-west-end-2024/whatsonstage--unknown.json",
-      "data/review-texts/moulin-rouge-the-musical-west-end-2021/standard--unknown.json",
-      "data/review-texts/six-the-musical-west-end-2021/daily-mail--unknown.json",
-      "data/review-texts/witness-for-the-prosecution-west-end-2022/guardian--unknown.json",
-      "data/review-texts/the-book-of-mormon-west-end-2024/guardian--unknown.json",
-      "data/review-texts/the-lion-king-west-end-2021/daily-mail--unknown.json"
+      "carrie-1988/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -673,14 +652,17 @@
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "carrie-1988/newyorker--unknown.json",
       "carrie-1988/independent--unknown.json",
-      "dracula-west-end-2025/timeout--paul-raven.json",
-      "carrie-1988/telegraph--unknown.json"
+      "carrie-1988/independent--jessie-thompson.json"
     ],
     "brightdata": [
       "fences-2010/thewrap--robert-hofler.json",
       "fences-2010/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
+      "data/review-texts/carrie-1988/backstage--unknown.json",
+      "data/review-texts/carrie-1988/curtainup--unknown.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/carrie-1988/backstage--unknown.json",
       "data/review-texts/carrie-1988/curtainup--unknown.json"
     ],
@@ -690,40 +672,10 @@
       "matilda-the-musical-west-end-2021/telegraph--unknown.json",
       "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "carrie-1988/indiewire--hanh-nguyen.json"
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": [
-    {
-      "reviewId": "avenue-q-west-end-2026/whatsonstage--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
-      "newUrl": "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/"
-    },
-    {
-      "reviewId": "les-liaisons-dangereuses-west-end-2026/guardian--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/347951/news/reviews/les-liaisons-dangereuses-reviews-national-theatre/",
-      "newUrl": "https://www.theguardian.com/stage/2026/apr/02/les-liaisons-dangereuses-review-love-is-a-fight-for-power-in-this-bold-staging"
-    },
-    {
-      "reviewId": "les-liaisons-dangereuses-west-end-2026/timeout--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/347951/news/reviews/les-liaisons-dangereuses-reviews-national-theatre/",
-      "newUrl": "https://www.timeout.com/london/theatre/les-liaisons-dangereuses-20-review"
-    },
-    {
-      "reviewId": "dracula-west-end-2025/timeout--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/340316/news/reviews/reviews-of-dracula-starring-cynthia-erivo/",
-      "newUrl": "https://www.timeout.com/london/news/review-dracula-starring-cynthia-erivo-at-the-noel-coward-theatre-021726"
-    },
-    {
-      "reviewId": "shadowlands-west-end-2026/timeout--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/339763/news/reviews/shadowlands-reviews-hugh-bonneville/",
-      "newUrl": "https://www.timeout.com/london/theatre/shadowlands-1-review"
-    },
-    {
-      "reviewId": "oh-mary-west-end-2025/timeout--paul-raven.json",
-      "oldUrl": "https://www.westendtheatre.com/328554/news/reviews/reviews-of-oh-mary-starring-mason-alexander-park-at-the-trafalgar-theatre-london/",
-      "newUrl": "https://www.timeout.com/london/theatre/oh-mary-2-review"
-    }
-  ]
+  "urlDiscoveries": []
 }
