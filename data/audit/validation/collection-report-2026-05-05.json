@@ -2,7 +2,7 @@
   "runDate": "2026-05-05T09:47:25.610Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "the-boy-who-harnessed-the-wind-west-end-2026,the-peculiar-patriot-off-broadway-2026",
     "aggressive": false,
@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
@@ -44,10 +44,10 @@
     "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
+    "urlDiscoveryAttempts": 218,
+    "urlDiscoverySuccess": 2,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
@@ -57,13 +57,35 @@
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/carrie-1988/hollywood-reporter--unknown.json",
+      "carrie-1988/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "the-balusters-2026/theatrely--andrew-martini.json",
+      "oldUrl": "https://www.theatrely.com/post/david-lindsay-abaire-is-back-on-broadway-with-the-balusters-review",
+      "newUrl": "https://www.theatrely.com/post/carl-clemons-hopkins-returns-home-to-the-theatre-in-the-balusters"
+    },
+    {
+      "reviewId": "avenue-q-west-end-2026/timeout--paul-raven.json",
+      "oldUrl": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
+      "newUrl": "https://www.timeout.com/london/theatre/avenue-q-review"
+    }
+  ]
 }

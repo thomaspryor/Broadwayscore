@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "grace-pervades-west-end-2026",
   "openingDate": "2026-04-30",
-  "detectedAt": "2026-05-05T09:20:47.808Z",
+  "detectedAt": "2026-05-05T11:45:06.329Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -18,10 +18,24 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "london-theatre--julia-rank.json",
+      "outletId": "london-theatre",
+      "criticName": "Julia Rank",
+      "url": "https://www.londontheatre.co.uk/reviews/grace-pervades-review-theatre-royal-haymarket",
+      "fullTextLen": 4739,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
+  "orphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-05-05T11:45:06.329Z"
 }

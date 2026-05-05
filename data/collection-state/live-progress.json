@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-05-05T09:47:22.970Z",
-  "processed": 0,
-  "failed": 1,
-  "successRate": "0%",
+  "updatedAt": "2026-05-05T14:25:11.556Z",
+  "processed": 67,
+  "failed": 228,
+  "successRate": "22.7%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "scrapingbee": 10,
+    "brightdata": 2,
+    "archiveToday": 4,
+    "archive": 5
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-05-05T11:29:50.816Z",
+      "event": "bb-session",
+      "session": "cc9e6a91",
+      "url": "https://www.hollywoodreporter.com/news/general-news/carrie-theater-review-296385"
+    },
+    {
+      "t": "2026-05-05T11:29:51.388Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
