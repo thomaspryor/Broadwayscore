@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-05-05T19:30:53.993Z",
+  "timestamp": "2026-05-06T05:14:19.847Z",
   "stats": {
-    "totalReviews": 36505,
-    "alreadyFlagged": 16011,
+    "totalReviews": 36508,
+    "alreadyFlagged": 16009,
     "dateGuardCatches": 102,
     "directorMismatch": 837,
     "tvFilmSignals": 1006,
-    "londonSignals": 564,
+    "londonSignals": 565,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
     "noPublishDate": 3729
@@ -29945,6 +29945,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-off-broadway-2026",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 79,
+      "publishDate": "2026-05-05",
+      "url": "https://www.nysun.com/article/this-hamlet-strives-to-be-the-soul-of-wit",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
