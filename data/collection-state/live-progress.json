@@ -1,25 +1,36 @@
 {
-  "updatedAt": "2026-05-06T11:33:41.861Z",
-  "processed": 17,
-  "failed": 233,
-  "successRate": "6.8%",
+  "updatedAt": "2026-05-06T11:35:44.756Z",
+  "processed": 21,
+  "failed": 235,
+  "successRate": "8.2%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 5,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 1,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-06T10:50:22.122Z",
       "event": "bb-session",
       "session": "81382456",
       "url": "https://www.westendtheatre.com/337854/news/reviews/harold-fry-west-end-reviews/"
+    },
+    {
+      "t": "2026-05-06T11:34:49.080Z",
+      "event": "bb-session",
+      "session": "ecb0aaf8",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-05-06T11:34:49.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

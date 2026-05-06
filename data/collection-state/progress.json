@@ -16,7 +16,11 @@
     "whos-afraid-of-virginia-woolf-2012/observer--david-cote.json",
     "wonderland-2011/nyt-theater--jonathan-mandell.json",
     "wonderland-2011/nytg--unknown.json",
-    "fences-2010/nytg--unknown.json"
+    "fences-2010/nytg--unknown.json",
+    "true-west-2000/amny--matt-windman.json",
+    "carrie-1988/nytg--unknown.json",
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+    "whos-afraid-of-virginia-woolf-2020/talkinbroadway--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -251,7 +255,9 @@
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
-    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -265,11 +271,14 @@
       "whos-afraid-of-virginia-woolf-2012/observer--david-cote.json",
       "wonderland-2011/nyt-theater--jonathan-mandell.json",
       "wonderland-2011/nytg--unknown.json",
-      "fences-2010/nytg--unknown.json"
+      "fences-2010/nytg--unknown.json",
+      "carrie-1988/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/hadestown-west-end-2024/independent--paul-raven.json"
+      "data/review-texts/hadestown-west-end-2024/independent--paul-raven.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -280,23 +289,36 @@
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "whos-afraid-of-virginia-woolf-2020/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/13-2008/broadway-space--ben-brantley.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "true-west-2000/amny--matt-windman.json"
     ]
   },
   "startTime": "2026-05-06T10:47:21.731Z",
-  "lastProcessed": "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-05-06T10:50:22.122Z",
       "event": "bb-session",
       "session": "81382456",
       "url": "https://www.westendtheatre.com/337854/news/reviews/harold-fry-west-end-reviews/"
+    },
+    {
+      "t": "2026-05-06T11:34:49.080Z",
+      "event": "bb-session",
+      "session": "ecb0aaf8",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-05-06T11:34:49.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
