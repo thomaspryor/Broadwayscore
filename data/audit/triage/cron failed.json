@@ -1,7 +1,7 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-05-05T07:40:46.810Z",
+  "lastChecked": "2026-05-06T07:50:55.650Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -12,9 +12,14 @@
       "message": "Last run failed (1h ago)"
     },
     {
-      "name": "Cron failed: Update Social Pulse",
+      "name": "Cron failed: Update Cast Changes",
       "status": "warn",
       "message": "Last run failed (1d ago)"
+    },
+    {
+      "name": "Cron failed: Update Social Pulse",
+      "status": "warn",
+      "message": "Last run failed (2d ago)"
     }
   ]
 }
