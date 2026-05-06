@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-06T03:28:26.087Z",
+  "generatedAt": "2026-05-06T05:29:32.744Z",
   "date": "2026-05-06",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 65266,
+  "entryCount": 66299,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -1626,7 +1626,7 @@
     },
     {
       "showId": "hamlet-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1822,6 +1822,21 @@
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "reviewCount": 22,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-miracle-worker-2010",
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
