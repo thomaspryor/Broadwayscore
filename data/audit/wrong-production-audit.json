@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-06T09:25:39.057Z",
+  "timestamp": "2026-05-06T16:38:47.155Z",
   "stats": {
-    "totalReviews": 36527,
-    "alreadyFlagged": 16014,
+    "totalReviews": 36529,
+    "alreadyFlagged": 16021,
     "dateGuardCatches": 102,
-    "directorMismatch": 837,
-    "tvFilmSignals": 1006,
+    "directorMismatch": 838,
+    "tvFilmSignals": 1007,
     "londonSignals": 565,
     "offBroadwaySignals": 439,
     "yearMismatch": 76,
-    "noPublishDate": 3742
+    "noPublishDate": 3737
   },
   "findings": [
     {
@@ -25361,6 +25361,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "observer--david-cote.json",
+      "score": null,
+      "publishDate": "2012-10-16",
+      "url": "https://observer.com/2012/10/be-afraid-be-very-afraid-at-the-booth-theatre-whos-afraid-of-virginia-woolf-is-still-crazy-after-all-these-years/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
