@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T16:38:51.117Z",
+  "generatedAt": "2026-05-06T18:50:21.259Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -496,27 +496,27 @@
       "status": "open",
       "slug": "hamlet-off-broadway",
       "thumbnail": "/images/shows/hamlet-off-broadway-2026/thumbnail.webp",
-      "siteScore": 73.55,
-      "liveScore": 74,
-      "scoreDrift": 0.45000000000000284,
+      "siteScore": 74.91,
+      "liveScore": 75,
+      "scoreDrift": 0.09000000000000341,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 0,
       "t2": 5,
-      "t3": 1,
-      "positive": 3,
+      "t3": 2,
+      "positive": 4,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
+          "7/12 total",
           "T1:0/3",
-          "hi-conf:6/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 6,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -921,6 +921,18 @@
           "t2": 5,
           "t3": 1,
           "p": 3,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-06T18:50:21.259Z",
+          "rc": 7,
+          "s": 74.91,
+          "t1": 0,
+          "t2": 5,
+          "t3": 2,
+          "p": 4,
           "m": 3,
           "n": 0,
           "bc": "waiting"
