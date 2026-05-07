@@ -14,7 +14,11 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "jerusalem-2011/guardian--alexis-soloski.json",
     "jerusalem-2011/nydailynews--unknown.json",
-    "jerusalem-2011/talkinbroadway--unknown.json"
+    "jerusalem-2011/talkinbroadway--unknown.json",
+    "little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
+    "little-shop-of-horrors-2003/nytg--unknown.json",
+    "little-shop-of-horrors-2003/ew--unknown.json",
+    "little-shop-of-horrors-2003/artsfuse--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -219,7 +223,13 @@
     "the-story-of-my-life-2009/newsday--linda-winer.json",
     "hedda-gabler-2009/newsday--linda-winer.json",
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -229,10 +239,16 @@
       "a-midsummer-nights-dream-globe-west-end-2026/standard--unknown.json",
       "a-midsummer-nights-dream-globe-west-end-2026/whatsonstage--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "jerusalem-2011/guardian--alexis-soloski.json"
+      "jerusalem-2011/guardian--alexis-soloski.json",
+      "little-shop-of-horrors-2003/nytg--unknown.json",
+      "little-shop-of-horrors-2003/ew--unknown.json",
+      "little-shop-of-horrors-2003/artsfuse--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
+      "little-shop-of-horrors-2003/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "an-ideal-husband-west-end-2026/broadwayworld--unknown.json",
@@ -254,6 +270,18 @@
     ]
   },
   "startTime": "2026-05-07T08:57:53.979Z",
-  "lastProcessed": "south-pacific-2008/newyorker--john-lahr.json",
-  "log": []
+  "lastProcessed": "little-shop-of-horrors-2003/artsfuse--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-07T11:29:35.812Z",
+      "event": "bb-session",
+      "session": "a6838829",
+      "url": "https://www.hollywoodreporter.com/news/general-news/little-shop-horrors-theater-"
+    },
+    {
+      "t": "2026-05-07T11:29:36.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
