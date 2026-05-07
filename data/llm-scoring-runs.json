@@ -1,25 +1,5 @@
 [
   {
-    "startedAt": "2026-05-04T06:42:35.086Z",
-    "completedAt": "2026-05-04T06:42:35.203Z",
-    "totalReviews": 17,
-    "processed": 0,
-    "skipped": 16,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "errorDetails": [
-      {
-        "showId": "grace-pervades-west-end-2026",
-        "outletId": "broadwayworld",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-05-04T06:53:41.511Z",
     "completedAt": "2026-05-04T07:24:51.839Z",
     "totalReviews": 37130,
@@ -644065,6 +644045,91 @@
       "input": 28892,
       "output": 536,
       "total": 44054
+    },
+    "errorDetails": [
+      {
+        "showId": "grace-pervades-west-end-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-fear-of-13-2026",
+        "outletId": "washpost",
+        "error": "input_validation_failed:nav_chrome_majority"
+      },
+      {
+        "showId": "giant-2026",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "evita-west-end-2025",
+        "outletId": "variety",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "company-2021",
+        "outletId": "theatrely",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "nypost",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "village-voice",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "chronicle-of-higher-education",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "commonweal",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "science-magazine",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "the-nation",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "copenhagen-2000",
+        "outletId": "time",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "proof-2000",
+        "outletId": "nydailynews",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-05-07T06:23:06.592Z",
+    "completedAt": "2026-05-07T06:54:16.899Z",
+    "totalReviews": 37206,
+    "processed": 0,
+    "skipped": 37190,
+    "errors": 14,
+    "tokensUsed": {
+      "input": 21466,
+      "output": 294,
+      "total": 32531
     },
     "errorDetails": [
       {
