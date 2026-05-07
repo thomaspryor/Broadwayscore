@@ -28,7 +28,8 @@
     "kiss-of-the-spider-woman-1993/artsfuse--unknown.json",
     "lend-me-a-tenor-1989/nytg--unknown.json",
     "lend-me-a-tenor-1989/theatermania--unknown.json",
-    "lend-me-a-tenor-1989/talkinbroadway--unknown.json"
+    "lend-me-a-tenor-1989/talkinbroadway--unknown.json",
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -239,7 +240,9 @@
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
-    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -264,7 +267,9 @@
       "data/review-texts/little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
       "little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
       "data/review-texts/kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json",
-      "kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json"
+      "kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json",
+      "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -291,7 +296,7 @@
     ]
   },
   "startTime": "2026-05-07T08:57:53.979Z",
-  "lastProcessed": "lend-me-a-tenor-1989/talkinbroadway--unknown.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-05-07T11:29:35.812Z",
@@ -312,6 +317,17 @@
     },
     {
       "t": "2026-05-07T11:32:14.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-07T11:34:34.529Z",
+      "event": "bb-session",
+      "session": "392f38a9",
+      "url": "https://www.wsj.com/articles/whos-afraid-of-virginia-woolf-a-classic-play-throug"
+    },
+    {
+      "t": "2026-05-07T11:34:35.369Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
