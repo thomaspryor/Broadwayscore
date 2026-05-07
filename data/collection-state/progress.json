@@ -18,7 +18,17 @@
     "little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
     "little-shop-of-horrors-2003/nytg--unknown.json",
     "little-shop-of-horrors-2003/ew--unknown.json",
-    "little-shop-of-horrors-2003/artsfuse--unknown.json"
+    "little-shop-of-horrors-2003/artsfuse--unknown.json",
+    "little-shop-of-horrors-2003/billboard--unknown.json",
+    "kiss-of-the-spider-woman-1993/vulture--unknown.json",
+    "kiss-of-the-spider-woman-1993/ew--unknown.json",
+    "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
+    "kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json",
+    "kiss-of-the-spider-woman-1993/theatrely--unknown.json",
+    "kiss-of-the-spider-woman-1993/artsfuse--unknown.json",
+    "lend-me-a-tenor-1989/nytg--unknown.json",
+    "lend-me-a-tenor-1989/theatermania--unknown.json",
+    "lend-me-a-tenor-1989/talkinbroadway--unknown.json"
   ],
   "failed": [
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
@@ -242,12 +252,19 @@
       "jerusalem-2011/guardian--alexis-soloski.json",
       "little-shop-of-horrors-2003/nytg--unknown.json",
       "little-shop-of-horrors-2003/ew--unknown.json",
-      "little-shop-of-horrors-2003/artsfuse--unknown.json"
+      "little-shop-of-horrors-2003/artsfuse--unknown.json",
+      "kiss-of-the-spider-woman-1993/ew--unknown.json",
+      "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
+      "kiss-of-the-spider-woman-1993/artsfuse--unknown.json",
+      "lend-me-a-tenor-1989/nytg--unknown.json",
+      "lend-me-a-tenor-1989/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
-      "little-shop-of-horrors-2003/hollywood-reporter--unknown.json"
+      "little-shop-of-horrors-2003/hollywood-reporter--unknown.json",
+      "data/review-texts/kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json",
+      "kiss-of-the-spider-woman-1993/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -257,10 +274,14 @@
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-      "jerusalem-2011/nydailynews--unknown.json"
+      "jerusalem-2011/nydailynews--unknown.json",
+      "kiss-of-the-spider-woman-1993/theatrely--unknown.json"
     ],
     "brightdata": [
-      "jerusalem-2011/talkinbroadway--unknown.json"
+      "jerusalem-2011/talkinbroadway--unknown.json",
+      "little-shop-of-horrors-2003/billboard--unknown.json",
+      "kiss-of-the-spider-woman-1993/vulture--unknown.json",
+      "lend-me-a-tenor-1989/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/a-midsummer-nights-dream-globe-west-end-2026/thestage--unknown.json"
@@ -270,7 +291,7 @@
     ]
   },
   "startTime": "2026-05-07T08:57:53.979Z",
-  "lastProcessed": "little-shop-of-horrors-2003/artsfuse--unknown.json",
+  "lastProcessed": "lend-me-a-tenor-1989/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-05-07T11:29:35.812Z",
@@ -282,6 +303,17 @@
       "t": "2026-05-07T11:29:36.574Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-07T11:32:14.162Z",
+      "event": "bb-session",
+      "session": "b73639a6",
+      "url": "https://www.wsj.com/arts-culture/film/kiss-of-the-spider-woman-review-jennifer-l"
+    },
+    {
+      "t": "2026-05-07T11:32:14.866Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
