@@ -682,7 +682,8 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -703,7 +704,8 @@
     "browserbase": [
       "data/review-texts/hadestown-west-end-2024/independent--paul-raven.json",
       "data/review-texts/whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
-      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
+      "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -727,7 +729,7 @@
     ]
   },
   "startTime": "2026-05-06T10:47:21.731Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
   "log": [
     {
       "t": "2026-05-06T10:50:22.122Z",
@@ -745,6 +747,17 @@
       "t": "2026-05-06T11:34:49.823Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-07T00:16:58.864Z",
+      "event": "bb-session",
+      "session": "b100cbda",
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
+    },
+    {
+      "t": "2026-05-07T00:16:59.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

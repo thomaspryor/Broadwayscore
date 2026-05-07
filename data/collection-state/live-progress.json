@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-06T20:05:31.344Z",
+  "updatedAt": "2026-05-07T00:17:14.829Z",
   "processed": 22,
-  "failed": 659,
+  "failed": 660,
   "successRate": "3.2%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 2,
     "archiveToday": 1,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-06T10:50:22.122Z",
@@ -31,6 +31,17 @@
       "t": "2026-05-06T11:34:49.823Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-07T00:16:58.864Z",
+      "event": "bb-session",
+      "session": "b100cbda",
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
+    },
+    {
+      "t": "2026-05-07T00:16:59.762Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
