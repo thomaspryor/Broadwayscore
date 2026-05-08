@@ -2,8 +2,11 @@ name: Brand Mention Monitor
 
 on:
   schedule:
-    # Every 2 hours at minute 17 (avoids 0/30 hotspot)
-    - cron: '17 */2 * * *'
+    # Once daily at 13:17 UTC (~9:17 AM ET) — avoids 0/30 hotspot.
+    # Cut from every-2h to daily 2026-05-08 to reduce Bright Data SERP spend.
+    # Free sources (Reddit, HN, Bluesky) have their own faster cadence; daily
+    # is sufficient for the paid SERP layer.
+    - cron: '17 13 * * *'
 
   workflow_dispatch:
     inputs:

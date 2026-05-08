@@ -12,10 +12,11 @@ name: Enrich Off-Broadway Dates
 
 on:
   schedule:
-    # Daily 7:15 UTC — fix shows with unconfirmed press-night sources before
-    # the opening-night-orchestrator's Broadway window (BW orchestrator runs
-    # 03:00, 23:00 UTC; this lands well before either).
-    - cron: '15 7 * * *'
+    # Weekly Monday 7:15 UTC — fix shows with unconfirmed press-night sources
+    # ahead of the week's opening-night orchestrator runs. Cut from daily
+    # 2026-05-08 to reduce Bright Data SERP spend; manually trigger via
+    # workflow_dispatch if a specific show needs fast date correction.
+    - cron: '15 7 * * 1'
     # Weekly Thursday 8:15 UTC — full enrichment for newly announced OB shows.
     - cron: '15 8 * * 4'
   workflow_dispatch:

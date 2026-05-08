@@ -334,16 +334,18 @@ async function fetchPaidSources(keywords = DEFAULT_KEYWORDS, opts = {}) {
   // No SERP keys at all? Skip everything gracefully.
   if (!process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
     console.warn('[serp] neither SCRAPINGBEE_API_KEY nor BRIGHTDATA_TOKEN set — skipping paid SERP sources');
-    return { mentions: [], counts: { x: 0, google: 0, news: 0 } };
+    return { mentions: [], counts: { x: 0, google: 0 } };
   }
 
+  // Google News dropped 2026-05-08 — redundant with theater outlets we already
+  // scrape directly (NYT/Variety/Playbill/etc.). Lowest-signal SERP source per
+  // April 2026 Bright Data cost review.
   const results = await Promise.allSettled([
     fetchXMentions(keywords, opts),
     fetchGoogleWebMentions(keywords, opts),
-    fetchGoogleNewsMentions(keywords, opts),
   ]);
 
-  const labels = ['x', 'google', 'news'];
+  const labels = ['x', 'google'];
   const out = [];
   const counts = {};
 
