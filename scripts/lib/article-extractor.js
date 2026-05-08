@@ -114,6 +114,12 @@ const PATTERNS = [
   // newcriterion.com — uses div.dispatch-body or entry-content depending on template
   ['newcriterion.com', /<div[^>]+class="[^"]*(?:dispatch-body|entry-content|article-body)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<(?:footer|aside)/, 300],
 
+  // Front Mezz Junkies — WordPress.com hosted, entry-content with Jetpack chrome.
+  // Same pattern as newyorktheater.me: stop at sharedaddy / jp-relatedposts to
+  // avoid pulling related-post titles into the article body.
+  ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<div[^>]+(?:id="jp-post-flair"|class="[^"]*(?:sharedaddy|jp-relatedposts|wpcnt|sd-sharing|sd-like)[^"]*")/, 300],
+  ['frontmezzjunkies.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
+
   // Generic fallbacks (any host) — see extractGeneric below for largest-match logic.
   [null, /<article[^>]*>([\s\S]*?)<\/article>/, 300],
   [null, /<main[^>]*>([\s\S]*?)<\/main>/, 500],

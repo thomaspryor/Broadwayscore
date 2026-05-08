@@ -134,11 +134,17 @@ jobs:
             exit 0
           fi
 
-          # WE reviews publish 12-48h after press night; use longer lookback
-          LOOKBACK=2
-          if [ "$MARKET" = "west-end" ]; then
-            LOOKBACK=4
-          fi
+          # Lookback window for shows the orchestrator queues. Tier-3 outlets
+          # (Front Mezz Junkies, StageZine, Newsnotes, etc.) routinely publish
+          # 7-14 days after opening, so a 2-day window misses them entirely
+          # (FMJ/Schmigadoon review at +11d, issue #309 on 2026-05-03 traced
+          # the discovery gap to this constant). Cadence within the window
+          # is gated by pollMode in opening-night-poller.js:
+          #   - days 0-2: 'aggressive' (every cron fire)
+          #   - days 3-13: 'daily' (only morning-cron slot — once/day per show)
+          #   - days 14-59: 'every-3d' (~once every 3 mornings)
+          # The 30-shows/cycle SERP_BUDGET cap limits total cost.
+          LOOKBACK=14
           echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT
 
           SHOWS=$(node -e "
@@ -148,9 +154,9 @@ jobs:
             // midnight) still discovers shows opening the next calendar day.
             const lookAhead = new Date(now.getTime() + 6 * 60 * 60 * 1000);
             const cutoff = new Date(now);
-            // WE reviews publish 12-48h after press night; Broadway same evening
-            const isWE = '$MARKET' === 'west-end';
-            cutoff.setDate(cutoff.getDate() - (isWE ? 4 : 2));
+            // 14-day lookback for both markets — pollMode in the poller gates
+            // SERP cadence per show (aggressive → daily → every-3d → weekly).
+            cutoff.setDate(cutoff.getDate() - 14);
             cutoff.setHours(0,0,0,0);
             const market = '$MARKET';
             // Trusted sources for WE press night dates — only fire orchestrator

@@ -221,8 +221,14 @@ jobs:
             exit 1
           fi
 
-          # Run review collection for this specific URL
-          node scripts/collect-review-texts-v2.js --show "$SHOW_ID" --url "$REVIEW_URL"
+          # Single-URL ingest. Replaces the previous
+          # `collect-review-texts-v2.js --show=X --url=Y` which silently ignored
+          # both flags and scanned the full backlog (cancelled at 15-min timeout
+          # for issue #309 on 2026-05-03). The new script fetches just the
+          # submitted URL, extracts text + byline, resolves the outlet from
+          # the URL domain, and runs the same write path as
+          # scripts/ingest-manual-review.js.
+          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL"
 
       - name: Rebuild reviews.json
         if: success()
