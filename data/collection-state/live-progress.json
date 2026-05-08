@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-05-08T08:57:02.247Z",
-  "processed": 2,
-  "failed": 9,
-  "successRate": "18.2%",
+  "updatedAt": "2026-05-08T11:13:37.620Z",
+  "processed": 14,
+  "failed": 208,
+  "successRate": "6.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 7,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
+    "scrapingbee": 6,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-08T11:13:07.152Z",
+      "event": "bb-session",
+      "session": "66336327",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/runaways-theater-revi"
+    },
+    {
+      "t": "2026-05-08T11:13:08.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
