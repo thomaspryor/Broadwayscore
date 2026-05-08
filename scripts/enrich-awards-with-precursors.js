@@ -183,6 +183,7 @@ const DRAMA_LEAGUE = {
     { year: 2023, winner: "Some Like It Hot", nominees: ["Some Like It Hot","& Juliet","Titanique","White Girl in Danger","Dreaming Zenzile","Shucked","A Beautiful Noise","Wuthering Heights","New York, New York"] },
     { year: 2024, winner: "Hell's Kitchen", nominees: ["Hell's Kitchen","Lempicka","The Heart of Rock and Roll","Harmony","Dead Outlaw","Buena Vista Social Club","Teeth","Suffs","The Outsiders","The Notebook","Illinoise","Water for Elephants"] },
     { year: 2025, winner: "Maybe Happy Ending", nominees: ["Maybe Happy Ending","Operation Mincemeat","Macbeth in Stride","Just in Time","Drag: The Musical","Death Becomes Her","Dead Outlaw","Buena Vista Social Club","Boop! The Musical","Stephen Sondheim's Old Friends","Real Women Have Curves","Smash"] },
+    { year: 2026, winner: null, nominees: ["Beaches","Beau the Musical","Bigfoot!","The Lost Boys","Mexodus","My Joy is Heavy","Night Side Songs","Saturday Church","Schmigadoon!","The Seat of Our Pants","Titanique","Two Strangers (Carry a Cake Across New York)"] },
   ],
   'Outstanding Production of a Play': [
     { year: 2014, winner: "All the Way", nominees: ["All the Way","Casa Valentina","All That Fall","Domesticated","Mothers and Sons","The Realistic Joneses","Mr. Burns, a Post-Electric Play"] },
@@ -196,6 +197,7 @@ const DRAMA_LEAGUE = {
     { year: 2023, winner: "Leopoldstadt", nominees: ["Leopoldstadt","Cost of Living","Downstate","Fat Ham","Prima Facie"] },
     { year: 2024, winner: "Stereophonic", nominees: ["Stereophonic","The Comeuppance","Jaja's African Hair Braiding","Oh, Mary!","Prayer for the French Republic"] },
     { year: 2025, winner: "Oh, Mary!", nominees: ["Oh, Mary!","The Picture of Dorian Gray","English","Stranger Things: The First Shadow","Purpose"] },
+    { year: 2026, winner: null, nominees: ["The Balusters","Caroline","Cold War Choir Practice","Dog Day Afternoon","Giant","Kyoto","Liberation","Marcel on the Train","The Monsters","Prince Faggot","Rheology","Spread"] },
   ],
   'Outstanding Revival of a Musical': [
     { year: 2014, winner: "Hedwig and the Angry Inch", nominees: ["Hedwig and the Angry Inch","Violet","Les Misérables","Lady Day at Emerson's Bar and Grill"] },
@@ -209,6 +211,7 @@ const DRAMA_LEAGUE = {
     { year: 2023, winner: "Into the Woods", nominees: ["Into the Woods","Camelot","Sweeney Todd","Bob Fosse's Dancin'","1776","A Man of No Importance","Parade"] },
     { year: 2024, winner: "Merrily We Roll Along", nominees: ["Merrily We Roll Along","The Who's Tommy","Cabaret","Gutenberg!","Here Lies Love","I Can Get It for You Wholesale","Spamalot","The Wiz"] },
     { year: 2025, winner: "Sunset Boulevard", nominees: ["Sunset Boulevard","The Marriage of Figaro","Once Upon a Mattress","The Last Five Years","Gypsy","Floyd Collins","Cats: The Jellicle Ball","Pirates! The Penzance Musical","Urinetown"] },
+    { year: 2026, winner: null, nominees: ["The 25th Annual Putnam County Spelling Bee","Bat Boy: The Musical","Cats: The Jellicle Ball","Chess","The Gospel at Colonus","Heathers: The Musical","Masquerade","Oratorio for Living Things","Ragtime","The Rocky Horror Show","The Wild Party"] },
   ],
   'Outstanding Revival of a Play': [
     { year: 2014, winner: "The Glass Menagerie", nominees: ["The Glass Menagerie","The Cripple of Inishmaan","A Raisin in the Sun","Good Person of Szechwan","The Mutilated","Of Mice and Men","Twelfth Night","Waiting for Godot"] },
@@ -222,6 +225,7 @@ const DRAMA_LEAGUE = {
     { year: 2023, winner: "A Doll's House", nominees: ["A Doll's House","Wedding Band","A Raisin in the Sun","Ohio State Murders","The Piano Lesson","The Sign in Sidney Brustein's Window","The Thanksgiving Play","Wolf Play","Hamlet","Oresteia","Topdog/Underdog"] },
     { year: 2024, winner: "Appropriate", nominees: ["Appropriate","The White Chip","Uncle Vanya","Purlie Victorious","An Enemy of the People","Mary Jane","The Effect","Doubt, A Parable","Danny and the Deep Blue Sea","Our Class"] },
     { year: 2025, winner: "Eureka Day", nominees: ["Eureka Day","Vanya","Othello","Glengarry Glen Ross","Ghosts","Yellow Face","The Cherry Orchard","Wine in the Wilderness","Home","A Streetcar Named Desire","Romeo + Juliet"] },
+    { year: 2026, winner: null, nominees: ["Anna Christie","Becky Shaw","The Brothers Size","Bug","Death of a Salesman","Every Brilliant Thing","Fallen Angels","Gruesome Playground Injuries","Joe Turner's Come and Gone","Proof","Twelfth Night","You Got Older"] },
   ],
 };
 
@@ -239,6 +243,7 @@ const NYDCCC = {
     { year: 2023, winner: "Downstate" },
     { year: 2024, winner: "Stereophonic" },
     { year: 2025, winner: "Purpose" },
+    { year: 2026, winner: "Little Bear Ridge Road" },
   ],
   'Best Foreign Play': [
     { year: 2018, winner: "Hangmen" },
@@ -257,6 +262,7 @@ const NYDCCC = {
     // 2023 not awarded
     { year: 2024, winner: "Dead Outlaw" },
     { year: 2025, winner: "Maybe Happy Ending" },
+    // 2026 not awarded
   ],
 };
 
@@ -275,6 +281,7 @@ const PULITZER = [
   { year: 2023, winner: "English", finalists: ["The Far Country","On Sugarland"] },
   { year: 2024, winner: "Primary Trust", finalists: ["Here There Are Blueberries","Public Obscenities"] },
   { year: 2025, winner: "Purpose", finalists: ["The Ally","Oh, Mary!"] },
+  { year: 2026, winner: "Liberation", finalists: ["Bowl EP","Meet the Cartozians"] },
 ];
 
 // ============================================================
