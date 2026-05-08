@@ -348,6 +348,37 @@ describe('hasStrongDifferentShowSignal', () => {
     ];
     assert.strictEqual(hasStrongDifferentShowSignal(issues, ''), true);
   });
+
+  test('film-review leak: "This is a film review of …" in reasoning → true (Hamlet 2026-05-08)', () => {
+    // Exact phrasing from hamlet-off-broadway-2026/vulture--bilge-eberi.json CV.
+    const reasoning = "[OVERRIDE: review within 0d of opening, likely correct production] This is a film review of Aneil Karia's Hamlet adaptation starring Riz Ahmed, not a review of an Off-Broadway theater production.";
+    assert.strictEqual(hasStrongDifferentShowSignal([], reasoning), true);
+  });
+
+  test('film-review leak: "scraped content is a film review of …" → true (Dracula West End)', () => {
+    const reasoning = "The scraped content is a film review of Luc Besson's cinematic 'Dracula' adaptation, not a review of the West End stage production.";
+    assert.strictEqual(hasStrongDifferentShowSignal([], reasoning), true);
+  });
+
+  test('film-review leak: "is a review of a film adaptation" → true (Wicked, Kiss of the Spider Woman)', () => {
+    const reasoning = "This is a review of a film adaptation of Wicked starring Cynthia Erivo, not the West End stage production.";
+    assert.strictEqual(hasStrongDifferentShowSignal([], reasoning), true);
+  });
+
+  test('film-review FP guard: "compares to the film adaptation" stays as override (Good Night & Good Luck)', () => {
+    // Real-world CV reasoning that should NOT bypass — the review IS a Broadway review,
+    // just heavily compares to the 2005 film. Pattern requires "is a film review", not just
+    // "film adaptation" mentions.
+    const reasoning = "This review is fundamentally about comparing a Broadway adaptation of the 2005 George Clooney film to the original film itself. The critic's primary critical lens is how the film translated to stage, not an independent assessment of the Broadway production.";
+    assert.strictEqual(hasStrongDifferentShowSignal([], reasoning), false);
+  });
+
+  test('film-review FP guard: "live-action version" alone does NOT trigger (Aladdin)', () => {
+    // Aladdin 2014 / theatermania--charles-isherwood: legit Broadway review using "live-action version"
+    // unusually. CV got confused. Bypass should NOT fire.
+    const reasoning = "Review describes the live-action film version of Aladdin, not the Broadway musical stage production. Text explicitly states 'This live-action version of the Disney animated classic'.";
+    assert.strictEqual(hasStrongDifferentShowSignal([], reasoning), false);
+  });
 });
 
 describe('applyTemporalOverrides — strong-signal bypass (Schmigadoon 2026-04-21 EBT class)', () => {
