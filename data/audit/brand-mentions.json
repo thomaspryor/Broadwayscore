@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-08T06:58:24.730Z",
+  "lastRunAt": "2026-05-08T08:51:37.694Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -45,7 +45,8 @@
     "news:908494ada0683d6d": true,
     "google:b17bf9614d78378b": true,
     "google:b261d59c7eb034fc": true,
-    "google:64c53c456befa176": true
+    "google:64c53c456befa176": true,
+    "google:d93e06652368c5cd": true
   },
   "mentions": [
     {
@@ -930,10 +931,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-05-05T01:08:02.553Z"
+    },
+    {
+      "id": "google:d93e06652368c5cd",
+      "source": "google",
+      "url": "https://www.threads.com/@bwayscorecard",
+      "title": "@bwayscorecard • Threads, Say more",
+      "excerpt": "... across 700+ shows Data, rankings, analysis CriticScores + AudienceGrades broadwayscorecard.com. broadwayscorecard.com · 3 followers. Follow. Mention. Threads.Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-05-08T08:51:25.616Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-05-08T08:51:37.693Z"
     }
   ],
   "stats": {
-    "totalSeen": 45,
+    "totalSeen": 46,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -981,6 +1002,7 @@
     "https://forum.broadwayworld.com/thread/THE-LOST-BOYS-Reviews/5": true,
     "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true,
     "https://showscorecard.com/": true,
-    "https://showscorecard.com/critics/outlets/new-york-theatre-guide": true
+    "https://showscorecard.com/critics/outlets/new-york-theatre-guide": true,
+    "https://www.threads.com/@bwayscorecard": true
   }
 }
