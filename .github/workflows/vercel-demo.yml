@@ -74,6 +74,34 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
 
+      - name: Backfill Sanity public env vars (preview env is missing them)
+        # Production Vercel env has NEXT_PUBLIC_SANITY_PROJECT_ID / _DATASET
+        # but preview does not, so /blog (which calls @sanity/client.createClient
+        # at build time via src/sanity/env.ts assertValue) fails with
+        # "Configuration must contain `projectId`" and aborts the whole build.
+        # These are public NEXT_PUBLIC_ values (the dataset is publicly readable
+        # — verified via fp1ft8k8.api.sanity.io). Demo points at the same Sanity
+        # content as production by design. Idempotent: skips if already present.
+        run: |
+          ENV_FILE=".vercel/.env.preview.local"
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "::error::$ENV_FILE not found — vercel pull may have failed"
+            exit 1
+          fi
+          add_var() {
+            local key="$1"
+            local val="$2"
+            if grep -q "^${key}=" "$ENV_FILE"; then
+              echo "$key already present in $ENV_FILE"
+            else
+              echo "${key}=\"${val}\"" >> "$ENV_FILE"
+              echo "Added $key to $ENV_FILE"
+            fi
+          }
+          add_var NEXT_PUBLIC_SANITY_PROJECT_ID fp1ft8k8
+          add_var NEXT_PUBLIC_SANITY_DATASET production
+          add_var NEXT_PUBLIC_SANITY_API_VERSION 2024-10-01
+
       - name: Override feature flags for demo (all enabled)
         run: |
           # vercel build ignores ALL env overrides (.env.local, shell env,
@@ -102,6 +130,11 @@ jobs:
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # Sanity public config — preview Vercel env doesn't have these,
+          # /blog needs them at build time. See "Backfill Sanity" step above.
+          NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
+          NEXT_PUBLIC_SANITY_DATASET: production
+          NEXT_PUBLIC_SANITY_API_VERSION: '2024-10-01'
         run: npx vercel build --token=$VERCEL_TOKEN
 
       - name: Deploy
