@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-08T09:05:32.786Z",
+  "timestamp": "2026-05-08T16:37:47.545Z",
   "stats": {
-    "totalReviews": 36558,
+    "totalReviews": 36564,
     "alreadyFlagged": 16040,
     "dateGuardCatches": 102,
     "directorMismatch": 838,
-    "tvFilmSignals": 1007,
+    "tvFilmSignals": 1008,
     "londonSignals": 566,
     "offBroadwaySignals": 441,
     "yearMismatch": 76,
-    "noPublishDate": 3739
+    "noPublishDate": 3738
   },
   "findings": [
     {
@@ -23215,6 +23215,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-receptionist-off-broadway-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": 64,
+      "publishDate": "2026-05-08",
+      "url": "https://culturesauce.com/the-receptionist-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-08T09:05:36.754Z",
+  "generatedAt": "2026-05-08T16:37:51.562Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -776,28 +776,27 @@
       "status": "open",
       "slug": "the-receptionist-off-broadway",
       "thumbnail": "/images/shows/the-receptionist-off-broadway-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 67.33,
+      "liveScore": 67,
+      "scoreDrift": -0.3299999999999983,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
+      "total": 6,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "t2": 5,
+      "t3": 1,
+      "positive": 2,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "6/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:3/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -881,19 +880,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -909,10 +900,6 @@
           "isDualMarket": false
         },
         {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -925,19 +912,11 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
           "isDualMarket": false
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -950,10 +929,6 @@
         },
         {
           "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1147,6 +1122,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-08T16:37:51.562Z",
+          "rc": 6,
+          "s": 67.33,
+          "t1": 0,
+          "t2": 5,
+          "t3": 1,
+          "p": 2,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
