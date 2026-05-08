@@ -95,6 +95,13 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
   /unrelated to the expected/i,
   /not mentioned in/i,
   /expected show[^.]*(?:does not|doesn'?t|not)[^.]*appear/i,
+  // Film-review leak class (Hamlet 2026-05-08 vulture--bilge-eberi):
+  // when CV explicitly says "this is a film review of …" or "scraped content is a film review of …"
+  // the override should NOT downgrade — these are unambiguous wrong-medium reviews, not LLM jitter
+  // about a legit theater review near opening. Patterns require the explicit "is a film/movie review of"
+  // construction, NOT just "film adaptation" mentions (which legit theater reviews compare to).
+  /\b(?:this|the scraped content) is a (?:film|movie) review of\b/i,
+  /\b(?:scraped content|this) is a review of (?:a|an|the) (?:film|movie) (?:adaptation|version)\b/i,
 ];
 
 function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
