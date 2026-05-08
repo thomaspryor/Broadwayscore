@@ -14634,6 +14634,756 @@
           }
         }
       ]
+    },
+    {
+      "runAt": "2026-05-08T07:55:54.807Z",
+      "script": "enrich-off-broadway-dates",
+      "mode": {
+        "dryRun": false,
+        "verify": false,
+        "force": false,
+        "fixUnconfirmed": true,
+        "initialBackfill": false,
+        "showFilter": null
+      },
+      "entries": [
+        {
+          "kind": "audit-only",
+          "showId": "im-almost-there-off-broadway-2026",
+          "title": "I'm Almost There",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-06-09",
+          "currentPreviews": "2026-06-09",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "im-almost-there-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "los-soles-truncos-off-broadway-2025",
+          "title": "LOS SOLES TRUNCOS",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-02-20",
+          "currentPreviews": "2025-02-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "los-soles-truncos-off-broadway-2025",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "silver-manhattan-off-broadway-2026",
+          "title": "Silver Manhattan",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-02-18",
+          "currentPreviews": "2026-02-18",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "silver-manhattan-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-llamada-off-broadway-2024",
+          "title": "La Llamada",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2024-05-01",
+          "currentPreviews": "2024-05-01",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-llamada-off-broadway-2024",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "drunk-romeo-and-juliet-off-broadway-2025",
+          "title": "Drunk Romeo & Juliet",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-05-29",
+          "currentPreviews": "2025-05-29",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "drunk-romeo-and-juliet-off-broadway-2025",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+          "title": "La Breve y Maravillosa Vida de Oscar Wao",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2024-02-17",
+          "currentPreviews": "2024-02-17",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-ternura-off-broadway-2025",
+          "title": "LA TERNURA",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-05-29",
+          "currentPreviews": "2025-05-29",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-ternura-off-broadway-2025",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
+          "title": "El Último Sueño de Frida y Diego",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-05-14",
+          "currentPreviews": "2026-05-14",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-saviors-off-broadway-2026",
+          "title": "The Saviors",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-06-11",
+          "currentPreviews": "2026-06-11",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "the-saviors-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "birthright-off-broadway-2026",
+          "title": "Birthright",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-06-04",
+          "currentPreviews": "2026-06-04",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "birthright-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-whoopi-monologues-off-broadway-2026",
+          "title": "The Whoopi Monologues",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-07-07",
+          "currentPreviews": "2026-07-07",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "the-whoopi-monologues-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
+          "title": "Giulia: The Poison Queen of Palermo",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-06-28",
+          "currentPreviews": "2026-06-28",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "la-traviata-off-broadway-2026",
+          "title": "La Traviata",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-03-20",
+          "currentPreviews": "2026-03-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "la-traviata-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
+          "title": "Hugo Marchand | Artists at the Center",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-07-23",
+          "currentPreviews": "2026-07-23",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "eugene-onegin-off-broadway-2026",
+          "title": "Eugene Onegin",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-04-20",
+          "currentPreviews": "2026-04-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "eugene-onegin-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "amaze-magic-off-broadway-2025",
+          "title": "AMAZE Magic",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2025-07-20",
+          "currentPreviews": "2025-07-20",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "page-title-or-year-mismatch",
+          "raw": {
+            "miss": {
+              "showId": "amaze-magic-off-broadway-2025",
+              "reason": "page-title-or-year-mismatch",
+              "url": "https://playbill.com/production/jamie-allans-amaze-off-broadway-new-world-stages-stage-5-2025"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "magic-mike-live-new-york-off-broadway-2026",
+          "title": "MAGIC MIKE LIVE New York",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-10-08",
+          "currentPreviews": "2026-10-08",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "magic-mike-live-new-york-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-music-man-off-broadway-2026",
+          "title": "The Music Man",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-05-08",
+          "currentPreviews": "2026-05-08",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "the-music-man-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "spamalot-off-broadway-2026",
+          "title": "Spamalot",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-06-27",
+          "currentPreviews": "2026-06-27",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "spamalot-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "silverback-mountain-off-broadway-2026",
+          "title": "Silverback Mountain",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-05-30",
+          "currentPreviews": "2026-05-30",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "silverback-mountain-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "nicole-travolta-is-doing-alright-off-broadway-2026",
+          "title": "Nicole Travolta is Doing Alright",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-04-01",
+          "currentPreviews": "2026-04-01",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "nicole-travolta-is-doing-alright-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
+          "title": "Olga Pericet: Baile Sonoro",
+          "confidence": "phase3-miss",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-05-22",
+          "currentPreviews": "2026-05-22",
+          "currentSource": "ibdb",
+          "proposedOpening": null,
+          "proposedPreviews": null,
+          "reason": "no-playbill-production-url",
+          "raw": {
+            "miss": {
+              "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
+              "reason": "no-playbill-production-url"
+            }
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-receptionist-off-broadway-2026",
+          "title": "The Receptionist",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-07",
+          "currentPreviews": "2026-04-15",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-05-07",
+          "proposedPreviews": "2026-04-15",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE RECEPTIONIST",
+              "firstPreview": "2026-04-15",
+              "opening": "2026-05-07",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "new-born-off-broadway-2026",
+          "title": "New Born",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-08",
+          "currentPreviews": null,
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-08",
+          "proposedPreviews": null,
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "NEW BORN",
+              "firstPreview": null,
+              "opening": "2026-05-08",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "animal-wisdom-off-broadway-2022",
+          "title": "Animal Wisdom",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-16",
+          "proposedPreviews": "2026-05-05",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "ANIMAL WISDOM",
+              "firstPreview": "2026-05-05",
+              "opening": "2026-05-16",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "the-maids-off-broadway-2026",
+          "title": "The Maids",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-05-17",
+          "currentPreviews": "2026-05-17",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-17",
+          "proposedPreviews": null,
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "THE MAIDS",
+              "firstPreview": null,
+              "opening": "2026-05-17",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "indian-princesses-off-broadway-2025",
+          "title": "Indian Princesses",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-19",
+          "proposedPreviews": "2026-04-30",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "INDIAN PRINCESSES",
+              "firstPreview": "2026-04-30",
+              "opening": "2026-05-19",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "well-ill-let-you-go-off-broadway-2026",
+          "title": "Well, I'll Let You Go",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-04-30",
+          "currentPreviews": null,
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-05-19",
+          "proposedPreviews": "2026-04-30",
+          "shiftDays": 19,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "WELL, I'LL LET YOU GO",
+              "firstPreview": "2026-04-30",
+              "opening": "2026-05-19",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "girls-chance-music-off-broadway-2024",
+          "title": "||: Girls :||: Chance :||: Music :||",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": null,
+          "currentPreviews": null,
+          "proposedOpening": "2026-05-28",
+          "proposedPreviews": "2026-05-12",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "||: GIRLS :||: CHANCE :||: MUSIC :||",
+              "firstPreview": "2026-05-12",
+              "opening": "2026-05-28",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "jerome-off-broadway-2025",
+          "title": "Jerome",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-01",
+          "currentPreviews": "2026-05-14",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-06-02",
+          "proposedPreviews": "2026-05-14",
+          "shiftDays": 1,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "JEROME",
+              "firstPreview": "2026-05-14",
+              "opening": "2026-06-02",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "girl-interrupted-off-broadway-2026",
+          "title": "Girl, Interrupted",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-04",
+          "currentPreviews": "2026-05-13",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-06-04",
+          "proposedPreviews": "2026-05-13",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "GIRL, INTERRUPTED",
+              "firstPreview": "2026-05-13",
+              "opening": "2026-06-04",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "a-woman-among-women-off-broadway-2026",
+          "title": "A Woman Among Women",
+          "confidence": "single-source",
+          "sources": [
+            "playbill"
+          ],
+          "currentOpening": "2026-06-04",
+          "currentPreviews": "2026-05-16",
+          "currentSource": "playbill",
+          "proposedOpening": "2026-06-04",
+          "proposedPreviews": "2026-05-16",
+          "shiftDays": 0,
+          "reason": "single-source-and-not-same-date-fix",
+          "raw": {
+            "playbill": {
+              "title": "A WOMAN AMONG WOMEN",
+              "firstPreview": "2026-05-16",
+              "opening": "2026-06-04",
+              "source": "playbill"
+            },
+            "lortel": null
+          }
+        },
+        {
+          "kind": "audit-only",
+          "showId": "music-city-off-broadway-2026",
+          "title": "Music City",
+          "confidence": "single-source",
+          "sources": [
+            "playbill-production-page"
+          ],
+          "currentOpening": "2026-03-23",
+          "currentPreviews": "2026-03-23",
+          "currentSource": "ibdb",
+          "proposedOpening": "2026-06-24",
+          "proposedPreviews": "2026-06-15",
+          "shiftDays": 93,
+          "reason": "shift-too-large (93d > 60d cap) — likely cross-production",
+          "raw": {
+            "playbill-production-page": {
+              "title": "Music City",
+              "showId": "music-city-off-broadway-2026",
+              "firstPreview": "2026-06-15",
+              "opening": "2026-06-24",
+              "source": "playbill-production-page",
+              "url": "https://playbill.com/production/music-city-off-broadway-st-lukes-theatre-2026"
+            }
+          }
+        }
+      ]
     }
   ]
 }
