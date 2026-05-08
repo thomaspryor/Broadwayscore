@@ -44,10 +44,10 @@ on:
           - west-end
         default: auto
       max_iterations:
-        description: 'Max poll iterations (default 24 = ~6 hours at 15 min — covers DTLI/BWW late-population window)'
+        description: 'Max poll iterations (default 16 = ~4 hours at 15 min — iterations 17-24 yielded near-zero new URLs and burned SERP)'
         required: false
         type: number
-        default: 24
+        default: 16
       poll_interval_minutes:
         description: 'Minutes between poll cycles (default 15 — rate-limit safe; use 10 only for short windows)'
         required: false
@@ -306,7 +306,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
         run: |
-          MAX_ITERATIONS=${{ inputs.max_iterations || 24 }}
+          MAX_ITERATIONS=${{ inputs.max_iterations || 16 }}
           POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"

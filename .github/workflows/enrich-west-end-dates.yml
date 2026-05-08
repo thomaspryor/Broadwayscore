@@ -2,10 +2,11 @@ name: Enrich West End Dates
 
 on:
   schedule:
-    # Daily at 7 AM UTC — fix shows with unconfirmed press night sources
-    # (todaytix, showscore, unknown) so the orchestrator can fire correctly.
-    # Critical for 12-24hr WE opening night response time.
-    - cron: '0 7 * * *'
+    # Weekly Monday 7 AM UTC — fix shows with unconfirmed press night sources
+    # (todaytix, showscore, unknown). Cut from daily 2026-05-08 to reduce
+    # Bright Data SERP spend; manually trigger via workflow_dispatch if a
+    # specific WE show needs fast date correction ahead of opening night.
+    - cron: '0 7 * * 1'
     # Weekly on Thursdays at 8 AM UTC — full enrichment for newly announced WE shows
     - cron: '0 8 * * 4'
   workflow_dispatch:
