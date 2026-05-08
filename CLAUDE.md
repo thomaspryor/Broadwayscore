@@ -8,10 +8,9 @@
 
 ### 1. Git Workflow
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
-- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree.** Memory files and data files can skip (data has its own rule, see §1 last bullet). **Rationale:** local git hooks (pull --rebase, checkout main) and parallel CI commits silently revert uncommitted tracked-file edits. Documented in `memory/feedback_worktree_code_changes.md` after a parallel session lost page.tsx/index.ts work on 2026-04-11, AND after THIS session lost a CLAUDE.md edit to a linter revert on the same day. If your session will touch any of the above, call EnterWorktree FIRST, before the first edit. Advisory warnings are in place (session-start.sh, script-edit-check.sh) but they're advisory only — act on them.
-- **Push** every ~30 min or after milestones.
-- **15+ min without committing** → stop and commit NOW.
-- **`git pull` before every shows.json edit.** CI commits to shows.json every ~30 min. In long sessions, your local copy goes stale and `git rebase` silently re-introduces deleted entries. Always pull immediately before reading shows.json for edits, and verify fixes survived after rebase.
+- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit.** Local git hooks and parallel CI commits silently revert uncommitted edits. Memory and data files can skip. See `memory/feedback_worktree_code_changes.md`. Advisory warnings (session-start.sh, script-edit-check.sh) are advisory only — act on them.
+- **Push** every ~30 min or after milestones. **15+ min without committing** → stop and commit NOW.
+- **`git pull` before every shows.json edit.** CI commits to it every ~30 min; stale local copy + rebase silently re-introduces deleted entries. Pull immediately before edits and verify fixes survived after any rebase.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
@@ -72,29 +71,27 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
 7. **Scoring-logic edits** — two watchlists, both trigger `scripts/scoring-delta.js`:
-   - Inclusion (Phase A): `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
-   - Score-source (Phase B, added 2026-04-22): `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
-   Unit tests are NOT sufficient. Giant 2026-04-14 shipped with 276 unit tests green and would have excluded 183 T1 reviews. **MUST run** `node scripts/scoring-delta.js` (lists T1 inclusion flips + score-source flips) AND `node scripts/test-temporal-override-regression.js` (fixture). Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that synthetic unit tests miss (e.g. `/cook/` matching "cookie", `/horror film/` in theater metaphors). Added 2026-04-24 after finding 8 pattern-level FPs. CI gate in `test.yml` enforces on merge. See `memory/feedback_content_quality_regex_fps.md`.
+   - Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/scoring.ts`, `src/lib/engine.ts`, `src/lib/data-core.ts`.
+   - Score-source: `scripts/lib/rebuild-helpers.js`, `scripts/lib/score-extractors.js`, `scripts/lib/score-parsers.js`, `scripts/lib/review-normalization.js`, `scripts/lib/score-routing.js`.
+   Unit tests are NOT sufficient. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`. Paste summary to user before pushing. Stop hook enforces. See `memory/feedback_scoring_delta_required.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — MUST run `node scripts/audit-regex-patterns.js --full` before pushing. Catches bare-keyword FPs that unit tests miss. CI gate in `test.yml` enforces. See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.** Never push broken code.
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE — read before anything else:** Most aggregator/outlet review pages (BWW Review Roundup, DTLI, Playbill Verdict, Show Score, NYC Theatre Roundups, WET, theatre.reviews, Stagedoor, The Stage roundups) **do not exist until after opening night reviews start dropping.** They are built AS the reviews post, not before. A 404 today is normal — the page will exist tomorrow after embargo. **Do not offer to "pre-stage" these URLs. Do not treat their absence pre-opening as a gap.** The automation discovers URLs at poll time, after publication. Only revisit items 6/8/9 below AFTER first reviews land in `reviews.json`. **Exception: Talkin' Broadway can publish early** — Lost Boys 2026 landed 24h pre-opening; the TB direct-URL discovery handles this correctly, don't reject as "too early."
+**TIMING RULE — read first:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre Roundups, WET, theatre.reviews, Stagedoor, The Stage roundups) **don't exist until reviews start dropping.** A 404 pre-opening is normal — automation discovers URLs at poll time. **Don't pre-stage these URLs. Don't treat their absence pre-opening as a gap.** Only revisit items 6/8/9 AFTER first reviews land in `reviews.json`. **Exception: Talkin' Broadway can publish early** (24h pre-opening seen) — TB direct-URL discovery handles this; don't reject as "too early."
 
 When asked "is everything ready for opening night?", check the AUTOMATION CHAIN, not just the data:
 1. `gh run list --limit 50 --json name,createdAt --jq '.[] | select(.name == "Opening Night Orchestrator") | .createdAt'` — confirm the 3 AM UTC Broadway cron has actually fired before for this market (not just the 10 PM UTC West End cron)
 2. Verify `opening-night-orchestrator.yml` is in `check-cron-health.yml`'s CRITICAL_CRONS list
 3. `gh workflow run opening-night-orchestrator.yml -f show_id=SHOW_ID -f market=broadway` to manually trigger if the cron is late (GitHub crons can lag 15-30 min or miss entirely on new workflows)
 4. **ScrapingBee credits:** `gh workflow run check-secrets-health.yml` and check output — needs >25% remaining. Check-secrets-health warns at 50% (monitor) and 75% (opening nights at risk).
-5. **`category` + `status` check (new — observed failure 2026-04-19):** `node -e "const s=require('./data/shows.json');const f=(s.shows||s).find(x=>x.id==='{show-id}');console.log('category:',f.category,'status:',f.status)"` — category must be `'broadway'`/`'west-end'`, NOT `null`. Null causes orchestrator to warn + "default to broadway" — fragile. Fix in `broadway-scorecard-data/shows.json` and push. Also verify `status='open'` — update-show-status.yml logs the change but has been seen to NOT push it to the private repo; verify directly.
-5b. **Wrong-production pre-scores:** `ls data/llm-scores/{show-id}/` — verify every pre-existing score file is from the correct production (not a prior West End/OB/regional run). If any are wrong, add `wrongProduction: true` to those source files.
+5. **`category` + `status` + pre-scores check:** `category` must be `'broadway'`/`'west-end'` not `null` (orchestrator defaults fragile); verify `status='open'` is actually pushed to private repo (update-show-status.yml has logged-but-not-pushed); `ls data/llm-scores/{show-id}/` and add `wrongProduction:true` to any prior-production scores.
 6. **DTLI auto-discovery (Broadway only):** Chain is slug-map → homepage scan → sitemap → URL guessing. Missing slug-map entry pre-opening is expected — homepage scan catches it within seconds of DTLI publishing. Full detail in `memory/opening-night-discovery-chains.md`.
-7. **Bright Data zone:** `gh workflow run check-secrets-health.yml` covers this — it now checks zone status directly. Or manually: `curl "https://api.brightdata.com/zone?zone=${BRIGHTDATA_ZONE:-web_unlocker2}" -H "Authorization: Bearer $BRIGHTDATA_TOKEN"` — `disable` field must be absent. **If you see `disable: "trial limit reached"` on `mcp_unlocker`, that is the obsolete trial zone — ignore it.** Active zone is `$BRIGHTDATA_ZONE` (currently `web_unlocker2`). Alternates: `web_unlocker_mnewmsyo`, `web_unlocker_mngwkvlo`, `web_unlocker_mnn80138`. To swap: `printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE`. If zone is disabled: UI recovery only (Recover + enable toggle in Configuration tab). See `memory/feedback_brightdata_zone_migration.md`.
-8. **BWW RR URL (Broadway primarily):** Discovery is `reviews.php` Browserbase scrape → homepage scan → SERP → fast-fail. URL pattern guessing was DELETED 2026-04-26 (commit `eccdb3280f`) — never caught what reviews.php missed, wasted 17 min/cycle pre-publication. Manual `--bww-roundup-url=` only when reviews.php fails. Full detail in `memory/opening-night-discovery-chains.md`.
-9. **Talkin' Broadway URL (Broadway only):** `tryTbDirectUrl` constructs candidate URLs (year-suffixed AND bare-slug — TB pattern varies: Lost Boys used `TheLostBoys.html`, Giant used `giant2026.html`). Verifies page-title + byline + publish-date window. **TB can publish early** (Lost Boys' Howard Miller landed 24h pre-opening). Full detail in `memory/opening-night-discovery-chains.md`.
+7. **Bright Data zone:** `gh workflow run check-secrets-health.yml` checks zone status. Active zone is `$BRIGHTDATA_ZONE` (`web_unlocker2`); ignore `mcp_unlocker` trial alarms. Disabled zone needs UI recovery. Swap: `printf 'NEW_ZONE' | gh secret set BRIGHTDATA_ZONE`. See `memory/feedback_brightdata_zone_migration.md`.
+8. **BWW RR + Talkin' Broadway URLs:** Discovery details and gotchas in `memory/opening-night-discovery-chains.md`. BWW: reviews.php → homepage → SERP, manual `--bww-roundup-url=` if all fail. TB: `tryTbDirectUrl` (year-suffixed + bare-slug), validates title/byline/publish-date; can publish 24h pre-opening.
 
 ---
 
@@ -134,19 +131,13 @@ Fallback chain: Bright Data → ScrapingBee → Playwright (`scripts/lib/scraper
 For full details on any subsystem: `memory/CLAUDE-reference.md`
 
 ### 15. Test Extraction Pattern (MANDATORY for new logic tests)
-**Never copy logic into test files — always `require()` the real function.**
-- Extract pure decision functions to `scripts/lib/review-guards.js` (or a new lib file)
-- `module.exports` the function; `require()` it in the test
-- If production code changes, updating the function will make the test fail — that's the point
-- See `scripts/lib/review-guards.js` for the established pattern (Fix #12/13/14)
-- **When you fix inline logic in a pipeline script:** extract it → export → wire back → test
+**Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
-See `memory/email-broadcast-rules.md` for full incident history and rules.
+See `memory/email-broadcast-rules.md` for full incident history.
 - **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
 - **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
 - **NEVER send to any Resend audience with >5 real contacts for any test purpose**
-- The Giant broadcast sent correctly to ~161 unique subscribers (158 delivered, 98.14%). The "3x duplicate" claim from the previous session was wrong.
 
 ---
 

@@ -11,9 +11,15 @@
  * gets stale or someone adds a file without updating the index.
  *
  * Usage:
- *   node scripts/rebuild-memory-index.js                 # print to stdout
- *   node scripts/rebuild-memory-index.js > /tmp/index.md # save to file
- *   node scripts/rebuild-memory-index.js --diff          # diff against current
+ *   node scripts/rebuild-memory-index.js                       # print to stdout
+ *   node scripts/rebuild-memory-index.js > /tmp/index.md       # save to file
+ *   node scripts/rebuild-memory-index.js --diff                # diff against current
+ *   node scripts/rebuild-memory-index.js --enforce-limit=180   # warn to stderr if output exceeds N lines
+ *
+ * Files with `archived: true` in frontmatter are excluded from the index.
+ * Set this when a memory entry is no longer hot — keeps the index lean
+ * without deleting the underlying note. See feedback_terse_output_default.md
+ * for why MEMORY.md size matters (token cost).
  */
 
 const fs = require('fs');
@@ -266,12 +272,17 @@ function main() {
   for (const [, title] of SECTIONS) grouped.set(title, []);
   grouped.set('Uncategorized', []);
 
+  let archivedCount = 0;
   for (const file of files) {
     const full = path.join(MEMORY_DIR, file);
     const stat = fs.statSync(full);
     if (!stat.isFile()) continue;
     const raw = fs.readFileSync(full, 'utf8');
     const { data } = parseFrontmatter(raw);
+    if (data.archived === 'true' || data.archived === true) {
+      archivedCount++;
+      continue;
+    }
     const description = data.description || '';
     const title = humanTitle(file, description);
     const section = pickSection(file);
@@ -303,6 +314,22 @@ function main() {
   }
 
   const out = lines.join('\n');
+
+  // --enforce-limit=N: warn (non-fatal) if rebuilt index would exceed N lines.
+  // Prints to stderr so callers can `> MEMORY.md` without contaminating output.
+  // Exit code 0 — informational only; future tightening could exit non-zero.
+  const limitArg = process.argv.find((a) => a.startsWith('--enforce-limit='));
+  if (limitArg) {
+    const limit = parseInt(limitArg.split('=')[1], 10);
+    const lineCount = out.split('\n').length;
+    if (Number.isFinite(limit) && lineCount > limit) {
+      process.stderr.write(
+        `[rebuild-memory-index] WARNING: index is ${lineCount} lines (limit ${limit}).\n` +
+          `  ${archivedCount} file(s) already archived. To shrink further, add\n` +
+          `  'archived: true' to frontmatter of older/redundant entries.\n`
+      );
+    }
+  }
 
   if (process.argv.includes('--diff')) {
     const currentPath = path.join(MEMORY_DIR, 'MEMORY.md');
