@@ -7,7 +7,12 @@
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "jerusalem-2011/guardian--alexis-soloski.json"
+    "jerusalem-2011/guardian--alexis-soloski.json",
+    "little-shop-of-horrors-2003/nytg--unknown.json",
+    "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
+    "kiss-of-the-spider-woman-1993/theatrely--alex-mecklosky.json",
+    "lend-me-a-tenor-1989/nytg--unknown.json",
+    "runaways-1978/hollywood-reporter--unknown.json"
   ],
   "failed": [
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -212,24 +217,36 @@
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
     "south-pacific-2008/newyorker--john-lahr.json",
     "the-farnsworth-invention-2007/variety--charles-isherwood.json",
-    "pygmalion-2007/variety--david-rooney.json"
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "jerusalem-2011/guardian--alexis-soloski.json"
+      "jerusalem-2011/guardian--alexis-soloski.json",
+      "little-shop-of-horrors-2003/nytg--unknown.json",
+      "kiss-of-the-spider-woman-1993/theatermania--unknown.json",
+      "lend-me-a-tenor-1989/nytg--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/runaways-1978/hollywood-reporter--unknown.json",
+      "runaways-1978/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json",
-      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+      "kiss-of-the-spider-woman-1993/theatrely--alex-mecklosky.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -240,6 +257,18 @@
     ]
   },
   "startTime": "2026-05-08T08:54:20.576Z",
-  "lastProcessed": "pygmalion-2007/variety--david-rooney.json",
-  "log": []
+  "lastProcessed": "runaways-1978/hollywood-reporter--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-08T11:13:07.152Z",
+      "event": "bb-session",
+      "session": "66336327",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/runaways-theater-revi"
+    },
+    {
+      "t": "2026-05-08T11:13:08.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
