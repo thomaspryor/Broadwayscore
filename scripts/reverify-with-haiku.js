@@ -99,6 +99,10 @@ function buildVerifyInput(showId, r) {
     publishDate: r.publishDate || '',
     venue: show?.venue || '',
     market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+    // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
+    // (Hamlet 2026-05-08 FRC class). Critical for backfill flows: without `show`,
+    // historical FPs of the FRC class won't get re-classified during reverify.
+    show: show || null,
   };
 }
 

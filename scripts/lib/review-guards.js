@@ -149,9 +149,21 @@ function _normLastName(s) {
   return cleaned.split(/\s+/).pop();
 }
 
+// Match stage director credits only — excludes Music Director, Casting Director,
+// Associate Director, Movement Director, Musical Director, Sound Director, etc.
+// shows.json (2026-05-09 audit): 2099 "Director" + 61 "Director & Choreographer"
+// + 1 "Co-Director" + 1 "Book, Director" qualify; the rest do not. Without this
+// filter, a CV-named stage director sharing a last name with the show's Music
+// Director or Casting Director would silently match expected and kill the bypass.
+const STAGE_DIRECTOR_ROLE_RE = /^(?:director(?:\s*&\s*choreographer)?|co-director|book,\s*director)$/i;
+
+function _isStageDirectorRole(role) {
+  return STAGE_DIRECTOR_ROLE_RE.test(String(role || '').trim());
+}
+
 function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) {
   if (!show || !fullText) return false;
-  const directors = (show.creativeTeam || []).filter(c => /director/i.test(c.role || ''));
+  const directors = (show.creativeTeam || []).filter(c => _isStageDirectorRole(c.role));
   const expectedLastNames = new Set(directors.map(c => _normLastName(c.name)).filter(Boolean));
   if (expectedLastNames.size === 0) return false;
 

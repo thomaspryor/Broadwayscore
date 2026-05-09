@@ -557,6 +557,53 @@ describe('hasNamedDifferentDirectorSignal — Hamlet 2026-05-08 FRC class', () =
     assert.strictEqual(r.wpConfidence, 'low', 'legit Goold review with Lumet film comparison must downgrade as before');
     assert.strictEqual(r.bypassedForStrongSignal, false);
   });
+
+  test('role filter — only stage Director counts; Music/Casting/Associate Director do NOT', () => {
+    // Ship-check 2026-05-09 P0-2: a CV-named director sharing last name with the show's
+    // Music or Casting Director must NOT silently kill the bypass. Only stage director
+    // roles count (Director, Director & Choreographer, Co-Director, Book Director).
+    const show = {
+      creativeTeam: [
+        { name: 'Robert Hastie', role: 'Director' },
+        { name: 'Chela De Ferrari', role: 'Music Director' }, // shares last name w/ "wrong" CV-named
+      ],
+    };
+    const cv = "directed by Chela De Ferrari (Teatro La Plaza's production at TFANA)";
+    const fullText = "Teatro La Plaza's Hamlet at TFANA...";
+    // Despite show.creativeTeam having a "Chela De Ferrari" entry, that's a Music Director role
+    // and shouldn't count as expected. Bypass should still fire because no STAGE director is matched.
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, show, fullText),
+      true,
+      'Music/Casting Director shares-last-name must NOT block the bypass'
+    );
+  });
+
+  test('role filter — Director & Choreographer counts as stage director', () => {
+    // Common in musicals: Susan Stroman, Christopher Wheeldon, Matthew Bourne all hold this role.
+    const show = {
+      creativeTeam: [{ name: 'Matthew Bourne', role: 'Director & Choreographer' }],
+    };
+    const cv = "directed by Matthew Bourne — the legit production";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, show, "..."),
+      false,
+      'Director & Choreographer should match expected when CV names same person'
+    );
+  });
+
+  test('role filter — Casting Director only → no expected directors → false', () => {
+    // shows.json had "Tara Rubin" with role "Casting Director" for hunger-games-on-stage
+    // before Phase 0 audit fixed it. Even if a future show only has a Casting Director,
+    // the bypass must early-exit (no expected directors) rather than treating Casting as stage.
+    const show = { creativeTeam: [{ name: 'Tara Rubin', role: 'Casting Director' }] };
+    const cv = "directed by Matthew Dunster";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, show, "..."),
+      false,
+      'No stage director in creativeTeam → bypass cannot fire safely'
+    );
+  });
 });
 
 describe('hasHighConfidenceLlmScore — Balusters CLASS 1 contradiction guard', () => {

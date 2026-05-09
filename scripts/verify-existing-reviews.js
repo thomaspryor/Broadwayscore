@@ -159,6 +159,9 @@ async function processVerify(items) {
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
         market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
+        // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
+        show: show || null,
       });
 
       const provider = result.verifiedBy || 'unknown';
@@ -250,6 +253,9 @@ async function processRecover(items) {
         publishDate: r.publishDate || '',
         venue: show?.venue || '',
         market: show?.type === 'opera' ? 'opera' : (show?.category || 'broadway'),
+        // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
+        // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
+        show: show || null,
       });
 
       const provider = result.verifiedBy || 'unknown';
