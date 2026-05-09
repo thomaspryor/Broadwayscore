@@ -364,9 +364,27 @@ jobs:
         # MUST run before scoring. The ensemble's scoreability check rejects
         # joint reviews as wrong_show on the half of the article that's about
         # the OTHER show in the pairing. Marking the file isCombinedReview:true
-        # lets wrongShowCleared() include it in rebuild even if the LLM still
-        # rejects it. Issue #316 (NYer Schmigadoon!/Lost Boys joint review).
+        # routes them to the Haiku fallback in llm-scoring/index.ts and skips
+        # the wrongShow flag write. Issue #316 (NYer Schmigadoon!/Lost Boys
+        # joint review).
         run: node scripts/flag-combined-reviews.js
+        continue-on-error: true
+
+      - name: Commit combined-review flags
+        # Independent commit before scoring so flag-combined writes survive
+        # even when no scoring runs (any_action == 'false'). Without this, the
+        # bundled "Commit scores" step at line 388 would skip the push and the
+        # flag changes would only exist on this runner. Issue #316 ship-check
+        # (P1/D).
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        run: |
+          cd data/review-texts
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "data: Opening night poller — flagged combined reviews"
+          bash ../../scripts/lib/push-with-retry.sh 5 main
         continue-on-error: true
 
       - name: Score reviews inline

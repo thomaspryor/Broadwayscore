@@ -1263,12 +1263,18 @@ async function main(): Promise<void> {
           // despite wrong_production being manually cleared. Treating both rejection
           // types symmetrically matches the isIncludableForRebuild guard at
           // scripts/lib/review-guards.js.
+          // Combined reviews (joint NYer/Variety pieces covering 2+ shows) are
+          // expected to fail wrong_show on the half of the article about the
+          // OTHER show. Treat them like manually-cleared so the Haiku fallback
+          // scores the trimmed section instead of leaving the file in
+          // "rejected but no score" limbo. Issue #316 ship-check (P0/B).
           const manuallyCleared =
             fileData.wrongProductionManualClear === true ||
             fileData.wrongProductionOverride === true ||
             fileData.wrongShowManualClear === true ||
             fileData.wrongShowOverride === true ||
-            fileData.humanReviewedWrongProduction === false;
+            fileData.humanReviewedWrongProduction === false ||
+            fileData.isCombinedReview === true;
           if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
             console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
             // Fallback: a human has verified this file matches the show, but the
@@ -1316,7 +1322,19 @@ async function main(): Promise<void> {
           const showInfo = showPriority.get(reviewFile.showId || '');
           const isOffBroadway = showInfo?.category === 'off-broadway';
           if (rejection === 'wrong_show') {
-            fileData.wrongShow = true;
+            // Combined reviews are excluded from manuallyCleared above and
+            // would normally hit this branch — but a joint review should NOT
+            // get wrongShow:true on the half about the other show. The
+            // manuallyCleared carve-out routes them to the Haiku fallback.
+            // This guard is belt-and-suspenders: if execution somehow lands
+            // here for a combined review (e.g. config drift), don't churn
+            // wrongShow:true on every poller pass. Issue #316 ship-check
+            // (P0/A).
+            if (fileData.isCombinedReview === true) {
+              console.log(` (combined review — skipping wrongShow flag write)`);
+            } else {
+              fileData.wrongShow = true;
+            }
           } else if (rejection === 'wrong_production' && !isOffBroadway) {
             fileData.wrongProduction = true;
           } else if (rejection === 'wrong_production' && isOffBroadway) {
