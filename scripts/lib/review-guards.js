@@ -112,11 +112,86 @@ function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
   return texts.some(t => STRONG_DIFFERENT_SHOW_MARKERS.some(re => re.test(t)));
 }
 
+/**
+ * Named-different-director bypass (Hamlet 2026-05-08 FRC class).
+ *
+ * Hamlet OB 2026 FRC review (Vahni Kurra) was actually for Teatro La Plaza's
+ * Hamlet directed by Chela De Ferrari — a completely different production at a
+ * different venue. CV flagged wrongProduction:true with reasoning explicitly
+ * naming "Chela De Ferrari", but the temporal override fired (within 30d of
+ * opening) and downgraded confidence to 'low', allowing the review through with
+ * score 91.
+ *
+ * Bypass logic: if the CV reasoning/issues name a director via "directed by X"
+ * AND that director's last name is NOT in the show's creativeTeam directors,
+ * AND the show's actual director's last name is NOT mentioned ≥2 times in the
+ * scraped fullText (which would indicate the review IS legit and just compares
+ * to a film/historical production), keep the wrongProduction flag at full
+ * confidence rather than downgrading.
+ *
+ * The fullText guardrail is critical: corpus probe (2026-05-08) showed that
+ * 9 of 10 candidates flagged by name-mismatch alone were CV false positives
+ * where the review was legit but mentioned a film director or historical
+ * director in passing (e.g. dog-day-afternoon-2026 mentions Sidney Lumet 2x
+ * but is actually a real Rupert Goold stage review). Requiring the show's
+ * actual director NOT be mentioned ≥2x correctly keeps the override on those.
+ *
+ * Prerequisite: shows.json creativeTeam must have accurate Director entries.
+ * Phase 0 audit shipped 14 director corrections on 2026-05-08 (commits
+ * 93eaabcf, 30d81ad2, abfa15fd in broadway-scorecard-data) using critic-
+ * mention consensus to identify and fix misattributions.
+ */
+const DIRECTED_BY_RE = /\bdirected by ([A-Z][a-zA-ZÀ-ÿ'-]+(?: [A-Z][a-zA-ZÀ-ÿ'-]+){1,3})/g;
+
+function _normLastName(s) {
+  const cleaned = String(s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').trim();
+  if (!cleaned) return '';
+  return cleaned.split(/\s+/).pop();
+}
+
+function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) {
+  if (!show || !fullText) return false;
+  const directors = (show.creativeTeam || []).filter(c => /director/i.test(c.role || ''));
+  const expectedLastNames = new Set(directors.map(c => _normLastName(c.name)).filter(Boolean));
+  if (expectedLastNames.size === 0) return false;
+
+  const cvText = [
+    ...(Array.isArray(cvIssues) ? cvIssues.map(String) : []),
+    String(cvReasoning || ''),
+  ].join(' | ');
+  if (!cvText) return false;
+
+  const cvNamedLastNames = new Set();
+  for (const m of cvText.matchAll(DIRECTED_BY_RE)) {
+    const ln = _normLastName(m[1]);
+    if (ln) cvNamedLastNames.add(ln);
+  }
+  if (cvNamedLastNames.size === 0) return false;
+
+  // Require: at least one CV-named director NOT in expected, AND no CV-named director matches expected
+  const anyMatched = [...cvNamedLastNames].some(n => expectedLastNames.has(n));
+  if (anyMatched) return false;
+
+  // Guardrail: if the SHOW's actual director's last name appears ≥2 times in the
+  // scraped fullText, the review is almost certainly legitimate and the CV-named
+  // director is a passing reference (e.g. comparing to a film or historical revival).
+  for (const expected of expectedLastNames) {
+    if (expected.length < 4) continue; // skip 3-letter names (too noisy: "gold", "ash")
+    const re = new RegExp('\\b' + expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+    const mentions = (fullText.match(re) || []).length;
+    if (mentions >= 2) return false;
+  }
+
+  return true;
+}
+
 function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
   let resultWpConfidence = wpConfidence;
   let resultFilmTvFlag = filmTvFlag;
 
-  const strongDifferent = !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning));
+  const strongDifferent =
+    !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
+    !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
 
   if (!strongDifferent && openingDate && publishDate) {
     const opening = new Date(openingDate);
@@ -2153,6 +2228,7 @@ module.exports = {
   pickBestDtliSlug,
   applyTemporalOverrides,
   hasStrongDifferentShowSignal,
+  hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
