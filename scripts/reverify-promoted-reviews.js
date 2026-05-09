@@ -23,10 +23,12 @@ const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", 
 const showTitleMap = {};
 const showTypeMap = {};
 const showCategoryMap = {};
+const showById = {}; // Full show entries — needed by verifyContent for named-entity bypass
 for (const s of showsData.shows) {
   showTitleMap[s.id] = s.title;
   showTypeMap[s.id] = s.type;
   showCategoryMap[s.id] = s.category;
+  showById[s.id] = s;
 }
 
 async function main() {
@@ -86,7 +88,10 @@ async function main() {
         outletName,
         criticName,
         openingDate: c.data.publishDate,
-        market
+        market,
+        // Pass show metadata so applyTemporalOverrides can fire the named-entity bypass
+        // (Hamlet 2026-05-08 FRC class). See review-guards.js:hasNamedDifferentDirectorSignal.
+        show: showById[c.showId] || null,
       });
 
       console.log(`  New result: isValid=${result.isValid}, wrongArticle=${result.wrongArticle}, wrongProduction=${result.wrongProduction}`);
