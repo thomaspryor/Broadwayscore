@@ -359,6 +359,16 @@ jobs:
           bash ../../scripts/lib/push-with-retry.sh 5 main
         continue-on-error: true
 
+      - name: Flag combined (joint) reviews
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_new == 'true'
+        # MUST run before scoring. The ensemble's scoreability check rejects
+        # joint reviews as wrong_show on the half of the article that's about
+        # the OTHER show in the pairing. Marking the file isCombinedReview:true
+        # lets wrongShowCleared() include it in rebuild even if the LLM still
+        # rejects it. Issue #316 (NYer Schmigadoon!/Lost Boys joint review).
+        run: node scripts/flag-combined-reviews.js
+        continue-on-error: true
+
       - name: Score reviews inline
         if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
         env:

@@ -501,7 +501,12 @@ function wrongShowCleared(data) {
     data.wrongShowOverride === true ||
     data.wrongProductionManualClear === true ||
     data.wrongProductionOverride === true ||
-    data.humanReviewedWrongProduction === false
+    data.humanReviewedWrongProduction === false ||
+    // Combined-review URLs (same review URL assigned to 2+ shows by the poller)
+    // are intentionally multi-show; a wrong_show flag from the LLM scoreability
+    // check is a known false positive on the half of the article about another
+    // show. Issue #316: NYer joint Schmigadoon!/Lost Boys review.
+    data.isCombinedReview === true
   );
 }
 
