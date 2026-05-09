@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-09T18:58:38.028Z",
+  "runDate": "2026-05-09T19:40:24.613Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
+    "processed": 8,
     "failed": 212,
     "skipped": 0,
-    "successRate": "5.4%"
+    "successRate": "3.6%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 1,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 10,
+    "tier1Attempts": 8,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 5,
+    "tier2Attempts": 6,
     "tier2Success": 5,
     "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 4,
     "tier4Success": 0,
     "totalFailed": 210,
-    "scrapingBeePageCredits": 5,
+    "scrapingBeePageCredits": 15,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -58,16 +58,11 @@
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "jerusalem-2011/guardian--alexis-soloski.json",
-    "deuce-2007/nytg--unknown.json",
-    "deuce-2007/theatermania--unknown.json",
-    "dracula-1977/theatermania--unknown.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "grace-pervades-west-end-2026/theupcoming--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -206,6 +201,7 @@
     "baby-its-you-2011/backstage--david-sheward.json",
     "the-normal-heart-2011/backstage--unknown.json",
     "the-normal-heart-2011/bloomberg--jeremy-gerard.json",
+    "jerusalem-2011/guardian--alexis-soloski.json",
     "jerusalem-2011/backstage--erik-haagensen.json",
     "wonderland-2011/nytheatre--jo-ann-rosen.json",
     "war-horse-2011/backstage--erik-haagensen.json",
@@ -282,11 +278,7 @@
     "playwright": [
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "jerusalem-2011/guardian--alexis-soloski.json",
-      "deuce-2007/nytg--unknown.json",
-      "deuce-2007/theatermania--unknown.json",
-      "dracula-1977/theatermania--unknown.json"
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -301,7 +293,9 @@
     "brightdata": [
       "hamlet-off-broadway-2026/ap--mark-kennedy.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/a-little-night-music-2009/backstage--luke-crowe.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
