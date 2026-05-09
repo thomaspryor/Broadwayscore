@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-09T04:32:09.677Z",
+  "timestamp": "2026-05-09T08:42:20.937Z",
   "stats": {
-    "totalReviews": 36571,
-    "alreadyFlagged": 16043,
+    "totalReviews": 36582,
+    "alreadyFlagged": 16040,
     "dateGuardCatches": 102,
     "directorMismatch": 814,
-    "tvFilmSignals": 1010,
+    "tvFilmSignals": 1011,
     "londonSignals": 566,
-    "offBroadwaySignals": 441,
+    "offBroadwaySignals": 443,
     "yearMismatch": 76,
-    "noPublishDate": 3736
+    "noPublishDate": 3744
   },
   "findings": [
     {
@@ -11151,6 +11151,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "kenrex-off-broadway-2026",
+      "file": "wsj--charles-isherwood.json",
+      "score": 81,
+      "publishDate": "2026-05-07",
+      "url": "https://www.wsj.com/articles/kenrex-review-jack-holdens-wild-midwest-solo-283bea74?eafs_enabled=false",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
@@ -29819,6 +29833,20 @@
       ]
     },
     {
+      "showId": "harmony-2023",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2024-01-27",
+      "url": "https://broadwayandme.blogspot.com/2024/01/good-and-bad-reminders-of-holocaust-are.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
       "showId": "harry-potter-2021",
       "file": "ny1--roma-torre.json",
       "score": 80,
@@ -32111,7 +32139,7 @@
     },
     {
       "showId": "mass-west-end-2026",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--demetrios-matheou.json",
       "score": 78,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
@@ -33681,6 +33709,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2024-01-27",
+      "url": "https://broadwayandme.blogspot.com/2024/01/good-and-bad-reminders-of-holocaust-are.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
