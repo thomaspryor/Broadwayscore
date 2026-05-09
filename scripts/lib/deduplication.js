@@ -496,6 +496,32 @@ function filterDuplicates(candidateShows, existingShows) {
   return { duplicates, newShows };
 }
 
+/**
+ * Globe-incident guard (2026-05-09).
+ *
+ * Returns the existing show if `candidate` has no openingDate AND there is
+ * already a show with an exact title match in the same market pool — in
+ * which case the candidate is most likely a poorly-tagged duplicate, not a
+ * genuine separate production. checkForDuplicate's venue check otherwise
+ * lets it through when the discovery source labels the venue differently
+ * from the catalog (TodayTix "Globe Theatre" vs catalog "Shakespeare's
+ * Globe"). Without an openingDate we have no positive evidence of a separate
+ * production, so refuse to create a new entry.
+ *
+ * Returns null if no twin found or if the candidate has an openingDate
+ * (then we trust the venue evidence and let the standard dedup decide).
+ */
+function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
+  if (candidate.openingDate) return null;
+  const candTitleLower = (candidate.title || '').toLowerCase().trim();
+  if (!candTitleLower) return null;
+  const candPool = getMarketPool(candidate.category);
+  return existingShows.find(s =>
+    (s.title || '').toLowerCase().trim() === candTitleLower &&
+    getMarketPool(s.category) === candPool
+  ) || null;
+}
+
 module.exports = {
   slugify,
   normalizeTitle,
@@ -506,5 +532,6 @@ module.exports = {
   checkKnownDuplicates,
   isCrossMarket,
   getMarketPool,
+  findSameTitleTwinIfNoOpeningDate,
   KNOWN_DUPLICATES
 };
