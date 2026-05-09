@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-09T04:25:48.645Z",
+  "runDate": "2026-05-09T10:31:50.768Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,42 +11,42 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 1072,
+    "processed": 28,
+    "failed": 1110,
     "skipped": 0,
-    "successRate": "1.8%"
+    "successRate": "2.5%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 2,
-    "archiveToday": 15,
-    "archive": 1
+    "scrapingbee": 7,
+    "brightdata": 3,
+    "archiveToday": 23,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 9,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 208,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 211,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -70,7 +70,15 @@
     "kenrex-off-broadway-2026/off-off-online--marc-miller.json",
     "the-lost-boys-2026/theater-scene--samuel-l-leiter.json",
     "joe-turners-come-and-gone-2026/front-row-center--britany-crowell.json",
-    "julius-caesar-2005/nytimes--paul-griffiths.json"
+    "julius-caesar-2005/nytimes--paul-griffiths.json",
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "hamlet-off-broadway-2026/ap--mark-kennedy.json",
+    "deuce-2007/nytg--unknown.json",
+    "deuce-2007/theatermania--unknown.json",
+    "deuce-2007/talkinbroadway--unknown.json",
+    "deathtrap-1978/theatermania--unknown.json",
+    "dracula-1977/theatermania--unknown.json",
+    "dracula-1977/wsj--charles-isherwood.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1144,7 +1152,45 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "kenrex-off-broadway-2026/front-row-center--david-walters.json",
+    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "kenrex-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/reddit--unknown.json",
+    "kenrex-off-broadway-2026/thestage--unknown.json",
+    "joe-turners-come-and-gone-2026/pages-on-stages--mason-pilevsky.json",
+    "joe-turners-come-and-gone-2026/reddit--unknown.json",
+    "the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mamma-mia-west-end-2021/financialtimes--sarah-hemming.json",
+    "starlight-express-west-end-2024/financialtimes--sarah-hemming.json",
+    "prayer-for-the-french-republic-2024/broadway-and-me--janice-c-simpson.json",
+    "harmony-2023/broadway-and-me--janice-c-simpson.json",
+    "a-little-night-music-2009/backstage--luke-crowe.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1157,13 +1203,23 @@
       "well-ill-let-you-go-off-broadway-2026/nytg--unknown.json",
       "kenrex-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
       "kenrex-off-broadway-2026/off-off-online--marc-miller.json",
-      "the-lost-boys-2026/theater-scene--samuel-l-leiter.json"
+      "the-lost-boys-2026/theater-scene--samuel-l-leiter.json",
+      "grace-pervades-west-end-2026/artsdesk--unknown.json",
+      "deuce-2007/nytg--unknown.json",
+      "deuce-2007/theatermania--unknown.json",
+      "deathtrap-1978/theatermania--unknown.json",
+      "dracula-1977/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
       "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+      "data/review-texts/dracula-1977/wsj--charles-isherwood.json",
+      "dracula-1977/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1172,11 +1228,13 @@
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "hamlet-off-broadway-2026/front-row-center--holli-harms.json",
-      "joe-turners-come-and-gone-2026/front-row-center--britany-crowell.json"
+      "joe-turners-come-and-gone-2026/front-row-center--britany-crowell.json",
+      "grace-pervades-west-end-2026/timeout-london--unknown.json"
     ],
     "brightdata": [
       "the-receptionist-off-broadway-2026/talkinbroadway--unknown.json",
-      "julius-caesar-2005/nytimes--paul-griffiths.json"
+      "julius-caesar-2005/nytimes--paul-griffiths.json",
+      "deuce-2007/talkinbroadway--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
@@ -1193,10 +1251,19 @@
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
       "data/review-texts/kenrex-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
+      "data/review-texts/kenrex-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/the-music-man-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "hamlet-off-broadway-2026/ap--mark-kennedy.json"
     ]
   },
   "failuresByOutlet": {},
