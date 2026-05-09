@@ -20,7 +20,8 @@
     "the-lost-boys-2026/theater-scene--samuel-l-leiter.json",
     "joe-turners-come-and-gone-2026/front-row-center--britany-crowell.json",
     "julius-caesar-2005/nytimes--paul-griffiths.json",
-    "grace-pervades-west-end-2026/timeout-london--unknown.json"
+    "grace-pervades-west-end-2026/timeout-london--unknown.json",
+    "hamlet-off-broadway-2026/ap--mark-kennedy.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1114,7 +1115,16 @@
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
     "mass-west-end-2026/times-uk--clive-davis.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "kenrex-off-broadway-2026/front-row-center--david-walters.json",
+    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "kenrex-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/reddit--unknown.json",
+    "kenrex-off-broadway-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1136,7 +1146,8 @@
       "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
       "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1170,14 +1181,18 @@
       "data/review-texts/the-music-man-off-broadway-2026/broadwayworld--unknown.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
-      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/the-lost-boys-2026/reddit--unknown.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "hamlet-off-broadway-2026/ap--mark-kennedy.json"
     ]
   },
   "startTime": "2026-05-08T16:31:31.705Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "kenrex-off-broadway-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-05-08T18:38:42.055Z",
@@ -1222,6 +1237,17 @@
       "t": "2026-05-09T07:09:17.164Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-09T09:52:38.624Z",
+      "event": "bb-session",
+      "session": "a0fb0545",
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
+    },
+    {
+      "t": "2026-05-09T09:52:39.804Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
