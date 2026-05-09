@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-05-09T03:46:04.917Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 19,
+    "failed": 864,
+    "skipped": 0,
+    "successRate": "2.2%"
+  },
+  "tierBreakdown": {
+    "playwright": 10,
+    "amp": 0,
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 6,
+    "brightdata": 1,
+    "archiveToday": 15,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 208,
+    "scrapingBeePageCredits": 1,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 211,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
@@ -886,8 +937,7 @@
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
@@ -939,30 +989,6 @@
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
-  "startTime": "2026-05-08T16:31:31.705Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": [
-    {
-      "t": "2026-05-08T18:38:42.055Z",
-      "event": "bb-session",
-      "session": "0747f657",
-      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
-    },
-    {
-      "t": "2026-05-08T18:38:42.420Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-05-09T00:52:12.537Z",
-      "event": "bb-session",
-      "session": "8bb39642",
-      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
-    },
-    {
-      "t": "2026-05-09T00:52:13.375Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
