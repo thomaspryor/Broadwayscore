@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-08T20:27:40.723Z",
+  "timestamp": "2026-05-09T00:27:03.774Z",
   "stats": {
-    "totalReviews": 36563,
+    "totalReviews": 36571,
     "alreadyFlagged": 16041,
     "dateGuardCatches": 102,
     "directorMismatch": 838,
-    "tvFilmSignals": 1008,
+    "tvFilmSignals": 1010,
     "londonSignals": 566,
     "offBroadwaySignals": 441,
     "yearMismatch": 76,
-    "noPublishDate": 3736
+    "noPublishDate": 3737
   },
   "findings": [
     {
@@ -22046,6 +22046,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"austin pendleton\" from the-little-foxes-1981"
+        }
+      ]
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "file": "newyorker--emily-nussbaum.json",
+      "score": 85,
+      "publishDate": "2026-04-30",
+      "url": "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lost-boys-2026",
+      "file": "theater-scene--samuel-l-leiter.json",
+      "score": 38,
+      "publishDate": "2026-05-02",
+      "url": "https://www.theaterscene.net/musicals/broadway/the-lost-boys/samuel-l-leiter/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
