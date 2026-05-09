@@ -49,6 +49,8 @@ jobs:
             "update-social-pulse.yml|192|Update Social Pulse"
             "update-show-score.yml|192|Update Show Score"
             "update-mezzanine.yml|192|Update Mezzanine"
+            # Weekly Sunday cron — director-attribution audit. 200h gap = 1 missed week = alert
+            "check-show-metadata-consensus.yml|200|Check Show Metadata Consensus"
             # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
