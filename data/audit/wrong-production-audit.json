@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-09T00:27:03.774Z",
+  "timestamp": "2026-05-09T04:32:09.677Z",
   "stats": {
     "totalReviews": 36571,
-    "alreadyFlagged": 16041,
+    "alreadyFlagged": 16043,
     "dateGuardCatches": 102,
-    "directorMismatch": 838,
+    "directorMismatch": 814,
     "tvFilmSignals": 1010,
     "londonSignals": 566,
     "offBroadwaySignals": 441,
     "yearMismatch": 76,
-    "noPublishDate": 3737
+    "noPublishDate": 3736
   },
   "findings": [
     {
@@ -10597,7 +10597,7 @@
       "file": "culturesauce--thom-geier.json",
       "score": 78,
       "publishDate": null,
-      "url": "https://culturesauce.com/2026/04/25/joe-turners-come-and-gone-broadway-review/",
+      "url": "https://culturesauce.com/2026/04/25/joe-turners-come-and-gone-broadway-review/#google_vignette",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18676,361 +18676,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 95,
-      "publishDate": "2023-12-16",
-      "url": "https://www.allthatdazzles.co.uk/post/review-stranger-things-the-first-shadow-phoenix-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "artsdesk--mert-dilek.json",
-      "score": 88,
-      "publishDate": "2023-12-15",
-      "url": "https://theartsdesk.com/theatre/stranger-things-first-shadow-phoenix-theatre-review-formidable-stagecraft-unlocks-new-depths",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "bbc-news--neil-armstrong.json",
-      "score": 79,
-      "publishDate": "2023-12-14",
-      "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"streaming service\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "city-am--adam-bloodworth.json",
-      "score": 86,
-      "publishDate": "2023-12-15",
-      "url": "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "daily-mail--luke-jones.json",
-      "score": 93,
-      "publishDate": "December 14, 2023",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12865895/stranger-things-shadow-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "daily-mail--robert-gore-langton.json",
-      "score": 90,
-      "publishDate": "2023-12-24",
-      "url": "https://www.dailymail.co.uk/mailonsunday/index.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "everything-theatre--xi-ye.json",
-      "score": 78,
-      "publishDate": "2023-12-16",
-      "url": "https://everything-theatre.co.uk/2023/12/review-stranger-things-the-first-shadow-phoenix-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "express-uk--neil-norman.json",
-      "score": 85,
-      "publishDate": "2023-12-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "guardian--arifa-akbar.json",
-      "score": 91,
-      "publishDate": "2023-12-14",
-      "url": "https://www.theguardian.com/stage/2023/dec/14/stranger-things-the-first-shadow-review-phoenix-theatre-duffer-brothers",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "hampstead-highgate-express--bridget-galton.json",
-      "score": 84,
-      "publishDate": "2023-12-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "independent--alice-saville.json",
-      "score": 80,
-      "publishDate": "2023-12-15",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 92,
-      "publishDate": "2023-12-15",
-      "url": "https://www.londontheatre.co.uk/reviews/stranger-things-the-first-shadow-review-phoenix-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "nytimes--houman-barekat.json",
-      "score": 62,
-      "publishDate": "December 14, 2023",
-      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "plays-international--maryam-philpott.json",
-      "score": 68,
-      "publishDate": "2023-12-19",
-      "url": "https://playsinternational.org.uk/stranger-things-the-first-shadow-phoenix-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "plays-international--unknown.json",
-      "score": 68,
-      "publishDate": "2023-12-19",
-      "url": "https://playsinternational.org.uk/stranger-things-the-first-shadow-phoenix-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "sunday-express--neil-norman.json",
-      "score": 78,
-      "publishDate": "2023-12-15",
-      "url": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "thereviewshub--john-cutler.json",
-      "score": 75,
-      "publishDate": "2023-12-16",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "thestage--dave-fargnoli.json",
-      "score": 81,
-      "publishDate": "2023-12-15",
-      "url": "https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london-duffer-brothers-jack-thorne-stephen-daldry-sonia-friedman",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "thestage--tom-wicker.json",
-      "score": 81,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 78,
-      "publishDate": "2025-12-01",
-      "url": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "publishDate": "2023-12-15",
-      "url": "https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "variety--david-benedict.json",
-      "score": 86,
-      "publishDate": "2023-12-15",
-      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "whatsonstage--alex-wood.json",
-      "score": 90,
-      "publishDate": "2023-12-15",
-      "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 77,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"stephen daldry\" from stranger-things-2024"
         }
       ]
     },
@@ -35657,6 +35302,20 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "bbc-news--neil-armstrong.json",
+      "score": 79,
+      "publishDate": "2023-12-14",
+      "url": "https://www.bbc.com/culture/article/20231214-stranger-things-the-first-shadow-review-the-theatrical-spin-off-from-the-netflix-mega-hit-is-funny-and-thrilling",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "broadwayworld--alexander-cohen.json",
       "score": 89,
       "publishDate": "2023-12-15",
@@ -35666,6 +35325,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 86,
+      "publishDate": "2023-12-15",
+      "url": "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -35694,6 +35367,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "nytimes--houman-barekat.json",
+      "score": 62,
+      "publishDate": "December 14, 2023",
+      "url": "https://www.nytimes.com/2023/12/14/theater/stranger-things-the-first-shadow-london.html?smid=nytcore-ios-share&referringSource=articleShare",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "variety--david-benedict.json",
+      "score": 86,
+      "publishDate": "2023-12-15",
+      "url": "https://variety.com/2023/legit/reviews/stranger-things-play-the-first-shadow-review-west-end-1235838159/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
