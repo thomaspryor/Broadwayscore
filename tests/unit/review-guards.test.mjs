@@ -17,6 +17,7 @@ const {
   shouldSkipWrongProductionAudit,
   applyTemporalOverrides,
   hasStrongDifferentShowSignal,
+  hasNamedDifferentDirectorSignal,
   hasHighConfidenceLlmScore,
 } = require('../../scripts/lib/review-guards.js');
 
@@ -427,6 +428,134 @@ describe('applyTemporalOverrides — strong-signal bypass (Schmigadoon 2026-04-2
   test('outside-30d window: no downgrade regardless of signal', () => {
     const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-02-01');
     assert.strictEqual(r.wpConfidence, 'high');
+  });
+});
+
+describe('hasNamedDifferentDirectorSignal — Hamlet 2026-05-08 FRC class', () => {
+  // Hamlet OB 2026 (BAM Harvey) was opening 2026-05-04 with director Robert Hastie.
+  // FRC review (Vahni Kurra) was actually for Teatro La Plaza's Hamlet at TFANA,
+  // directed by Chela De Ferrari. CV correctly flagged wrongProduction:true with
+  // reasoning explicitly naming Chela De Ferrari, but temporal override fired and
+  // downgraded confidence — so the review scored 91 and was the only "review"
+  // before manual flag.
+  const hamletShow = {
+    creativeTeam: [{ name: 'Robert Hastie', role: 'Director' }],
+  };
+  const frcReasoningCv = "The scraped review explicitly states 'the current production at Theatre For A New Audience' and describes Teatro La Plaza's specific Hamlet production directed by Chela De Ferrari.";
+  const frcFullText = "Teatro La Plaza's Hamlet at Theatre For A New Audience is a striking re-imagining of the Danish prince's tale...";
+
+  test('CV-named director not in show + show director not in fullText → bypass', () => {
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], frcReasoningCv, hamletShow, frcFullText),
+      true,
+      'FRC Hamlet TFANA case must bypass'
+    );
+  });
+
+  test('CV-named director not in show BUT show director mentioned in fullText ≥2x → no bypass (FP guard)', () => {
+    // dog-day-afternoon-2026: NYT Paulson review names "Sidney Lumet" (the FILM director),
+    // but the actual stage review mentions Rupert Goold (the legit stage director) 3 times.
+    const dogDayShow = { creativeTeam: [{ name: 'Rupert Goold', role: 'Director' }] };
+    const dogDayCv = "[OVERRIDE: review within 5d] Review heavily emphasizes comparing the stage adaptation to the 1975 film directed by Sidney Lumet.";
+    const dogDayFullText = "Rupert Goold's stage adaptation of Dog Day Afternoon at the Booth Theatre brings new urgency... Goold uses sparse staging... In Goold's hands, the bank robbery becomes...";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], dogDayCv, dogDayShow, dogDayFullText),
+      false,
+      'legit stage review that compares to film must NOT bypass'
+    );
+  });
+
+  test('CV names show director (matches expected) → no bypass (legit review)', () => {
+    const cv = "directed by Robert Hastie";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, hamletShow, "..."),
+      false
+    );
+  });
+
+  test('CV names BOTH expected and other directors → no bypass (mixed reference)', () => {
+    const cv = "directed by Robert Hastie at BAM, in contrast to the earlier Michael Grandage 2009 production";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, hamletShow, "..."),
+      false
+    );
+  });
+
+  test('show has no director → false (cannot make claim)', () => {
+    const show = { creativeTeam: [] };
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], frcReasoningCv, show, frcFullText),
+      false
+    );
+  });
+
+  test('no fullText → false (cannot run guardrail check)', () => {
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], frcReasoningCv, hamletShow, ''),
+      false
+    );
+  });
+
+  test('CV has no "directed by" pattern → false', () => {
+    const cv = "The scraped content seems unusual but I cannot identify a specific director.";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, hamletShow, frcFullText),
+      false
+    );
+  });
+
+  test('3-letter expected last name "ash" is skipped to avoid noise', () => {
+    // Hypothetical director with last name shorter than 4 chars — guardrail skips them
+    // because too many false positives (e.g. "ash" is a common word in theater reviews).
+    const show = { creativeTeam: [{ name: 'Tim Ash', role: 'Director' }] };
+    const cv = "directed by Kenny Leon — completely wrong production";
+    const text = "Ash and ash everywhere on the stage. The ash falls.";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, show, text),
+      true,
+      '3-char last names skip guardrail, bypass fires on the named-different-director signal'
+    );
+  });
+
+  test('4-letter expected name "gold" still uses guardrail (correct for Sam Gold Macbeth)', () => {
+    // macbeth-2022: actual director Sam Gold, fullText mentions "gold" repeatedly.
+    // Even though "gold" is also a common word, treating any 4+ char name uniformly
+    // is safer than per-name carve-outs. For the macbeth case this means the bypass
+    // does NOT fire on Sam Gold reviews — keeping the override on (correct outcome,
+    // since the dtli-ran-xia review IS the legit Sam Gold production review).
+    const show = { creativeTeam: [{ name: 'Sam Gold', role: 'Director' }] };
+    const cv = "directed by Kenny Leon (a different production)";
+    const text = "Sam Gold's stark Macbeth uses a single gold spotlight. Gold's vision is austere.";
+    assert.strictEqual(
+      hasNamedDifferentDirectorSignal([], cv, show, text),
+      false,
+      'guardrail correctly keeps override on legit Sam Gold review'
+    );
+  });
+
+  test('integration: applyTemporalOverrides with show + fullText cvContext → bypass for FRC class', () => {
+    const r = applyTemporalOverrides(true, false, 'high', '2026-05-04', '2026-05-04', {
+      issues: [],
+      reasoning: frcReasoningCv,
+      show: hamletShow,
+      fullText: frcFullText,
+    });
+    assert.strictEqual(r.wpConfidence, 'high', 'FRC Hamlet TFANA must keep high confidence (bypass override)');
+    assert.strictEqual(r.bypassedForStrongSignal, true);
+  });
+
+  test('integration: applyTemporalOverrides with show + fullText, dog-day FP → keep override', () => {
+    const dogDayShow = { creativeTeam: [{ name: 'Rupert Goold', role: 'Director' }] };
+    const dogDayCv = "[OVERRIDE: review within 5d] Review heavily emphasizes comparing the stage adaptation to the 1975 film directed by Sidney Lumet.";
+    const dogDayFullText = "Rupert Goold's stage adaptation of Dog Day Afternoon at the Booth Theatre brings new urgency. Goold uses sparse staging and Goold's hands shape the bank robbery into a meditation on identity.";
+    const r = applyTemporalOverrides(true, false, 'high', '2026-03-30', '2026-04-01', {
+      issues: [],
+      reasoning: dogDayCv,
+      show: dogDayShow,
+      fullText: dogDayFullText,
+    });
+    assert.strictEqual(r.wpConfidence, 'low', 'legit Goold review with Lumet film comparison must downgrade as before');
+    assert.strictEqual(r.bypassedForStrongSignal, false);
   });
 });
 
