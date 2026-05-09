@@ -6149,6 +6149,11 @@ async function processReview(review) {
           // conflicts to the LLM (issue #4, Mamma Mia WE 2021 case). Not used to
           // override — the LLM decides with both dates in hand. See CLAUDE.md rule 3.
           url: reviewData.url || null,
+          // Show metadata passed in so applyTemporalOverrides can run the named-entity
+          // bypass (Hamlet 2026-05-08 FRC class): if CV reasoning names a "directed by X"
+          // that doesn't match show.creativeTeam directors AND the actual director
+          // isn't mentioned ≥2x in scrapedText, keep wrongProduction at full confidence.
+          show: showMeta || null,
         });
 
         const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';

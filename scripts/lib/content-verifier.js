@@ -274,7 +274,7 @@ async function callWithFallback(prompt) {
  *   useful signal when publishDate disagrees by multiple years.
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, show }) {
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -512,6 +512,8 @@ Set isValid=true only if the content is a review of the ${mc.label} production a
       const temporalOverrides = applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, {
         issues: parsed.issues,
         reasoning: parsed.reasoning,
+        show,
+        fullText: scrapedText,
       });
       if (temporalOverrides.bypassedForStrongSignal && wpFlag) {
         console.log(`    ✓ LLM wrongProduction NOT overridden: CV issues contain explicit "different show" markers — keeping ${wpConfidence} confidence`);
