@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-05-09T15:57:17.525Z",
+  "timestamp": "2026-05-09T18:00:14.915Z",
   "stats": {
     "totalReviews": 36584,
-    "alreadyFlagged": 16046,
+    "alreadyFlagged": 16052,
     "dateGuardCatches": 102,
-    "directorMismatch": 814,
+    "directorMismatch": 815,
     "tvFilmSignals": 1011,
-    "londonSignals": 567,
+    "londonSignals": 566,
     "offBroadwaySignals": 443,
     "yearMismatch": 76,
     "noPublishDate": 3739
@@ -680,6 +680,11 @@
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
         },
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from all-my-sons-west-end-2025"
+        },
+        {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
@@ -753,20 +758,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"simon mcburney\" from all-my-sons-2008"
-        }
-      ]
-    },
-    {
-      "showId": "all-my-sons-2019",
-      "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "score": 65,
-      "publishDate": "April 25th, 2019",
-      "url": "https://slleiter.blogspot.com/2019/04/220-2018-2019-review-all-my-sons.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"elia kazan\" from all-my-sons-west-end-2025"
         }
       ]
     },
@@ -22681,6 +22672,20 @@
       ]
     },
     {
+      "showId": "the-producers-west-end-2025",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 81,
+      "publishDate": "2025-09-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-producers-2001"
+        }
+      ]
+    },
+    {
       "showId": "the-prom-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 64,
@@ -28373,20 +28378,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "evening-all-afternoon-west-end-2026",
-      "file": "broadwayworld--cindy-marcolina.json",
-      "score": 63,
-      "publishDate": "2026-02-25",
-      "url": "https://www.broadwayworld.com/westend/article/Review-EVENING-ALL-AFTERNOON-Donmar-Warehouse-20260225",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
