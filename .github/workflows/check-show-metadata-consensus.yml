@@ -1,0 +1,141 @@
+name: Check Show Metadata Consensus
+
+# Periodic detector for shows.json director attribution errors.
+# Runs scripts/audit-show-director-consensus.js and opens/updates a tracking
+# issue when STRICT findings appear (recorded director not mentioned in any
+# review while a different director is named extensively).
+#
+# Origin: 2026-05-09 session. Phase 0 audit found 23 director misattributions
+# in shows.json (e.g. hamlet-off-broadway-2026 said Michael Grandage, actual
+# is Robert Hastie). The named-entity bypass in scripts/lib/review-guards.js
+# hard-depends on shows.json director accuracy. New misattributions will land
+# continuously as shows are scheduled — this workflow catches them weekly.
+
+on:
+  schedule:
+    # Sunday 11am UTC (6am ET) — quiet day, post-weekend openings settled
+    - cron: '0 11 * * 0'
+  workflow_dispatch:
+    inputs:
+      severity:
+        description: 'Minimum severity to surface (strict | soft | review-mode)'
+        required: false
+        default: 'strict'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Checkout core data (shows.json)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: actions/checkout@v5
+        with:
+          repository: thomaspryor/broadway-review-texts
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          path: data/review-texts
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Run director-consensus audit
+        id: audit
+        run: |
+          SEVERITY="${{ github.event.inputs.severity || 'strict' }}"
+          FLAGS=""
+          case "$SEVERITY" in
+            soft) FLAGS="--soft" ;;
+            review-mode) FLAGS="--review-mode" ;;
+            strict|*) FLAGS="" ;;
+          esac
+
+          echo "Running: node scripts/audit-show-director-consensus.js $FLAGS"
+
+          # Run audit, capture output. Audit exits non-zero on STRICT findings.
+          set +e
+          node scripts/audit-show-director-consensus.js $FLAGS > /tmp/audit-output.json 2> /tmp/audit-stderr.log
+          AUDIT_EXIT=$?
+          set -e
+
+          # Show output for log inspection
+          cat /tmp/audit-output.json
+
+          # Parse summary
+          SCANNED=$(jq -r '.scannedShows // 0' /tmp/audit-output.json)
+          STRICT=$(jq -r '.strictCount // 0' /tmp/audit-output.json)
+          ZERO=$(jq -r '.zeroCount // 0' /tmp/audit-output.json)
+          SOFT=$(jq -r '.softCount // 0' /tmp/audit-output.json)
+          REVIEW=$(jq -r '.reviewCount // 0' /tmp/audit-output.json)
+
+          echo "scanned=$SCANNED" >> $GITHUB_OUTPUT
+          echo "strict=$STRICT" >> $GITHUB_OUTPUT
+          echo "zero=$ZERO" >> $GITHUB_OUTPUT
+          echo "soft=$SOFT" >> $GITHUB_OUTPUT
+          echo "review=$REVIEW" >> $GITHUB_OUTPUT
+
+          {
+            echo "## Show Metadata Consensus Audit"
+            echo ""
+            echo "**Date:** $(date -u +'%Y-%m-%d %H:%M UTC')"
+            echo "**Mode:** $SEVERITY"
+            echo "**Scanned:** $SCANNED shows"
+            echo ""
+            echo "| Severity | Count |"
+            echo "|----------|-------|"
+            echo "| STRICT (high confidence) | $STRICT |"
+            echo "| ZERO (sample ≥10, recorded never mentioned) | $ZERO |"
+            echo "| SOFT (--soft only) | $SOFT |"
+            echo "| REVIEW (--review-mode only) | $REVIEW |"
+            echo ""
+            if [ "$STRICT" -gt 0 ] || [ "$ZERO" -gt 0 ]; then
+              echo "### Findings"
+              echo ""
+              echo '```json'
+              jq '.findings' /tmp/audit-output.json
+              echo '```'
+              echo ""
+              echo "**Action:** verify each via direct review-text inspection. Apply confirmed corrections to shows.json in the broadway-scorecard-data private repo. Mass-flag wrong-content reviews if the issue is scraping (not metadata)."
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+          # Surface STRICT findings as workflow annotations
+          if [ "$STRICT" -gt 0 ]; then
+            jq -r '.findings[] | select(.severity=="STRICT") | "::warning title=Director misattribution::\(.showId) — recorded \(.recorded) (\(.recordedMentions)/\(.totalReviews)) | proposed \(.proposedDirector) (bare \(.proposedDirectorBareMentions))"' /tmp/audit-output.json
+          fi
+
+          exit $AUDIT_EXIT
+
+      - name: Upload audit output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: director-consensus-audit
+          path: /tmp/audit-output.json
+          retention-days: 30
+
+      - name: Notify on STRICT findings
+        if: failure() && steps.audit.outputs.strict != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          STRICT="${{ steps.audit.outputs.strict }}"
+          ZERO="${{ steps.audit.outputs.zero }}"
+          SCANNED="${{ steps.audit.outputs.scanned }}"
+          MSG="Director-consensus audit found $STRICT STRICT + $ZERO ZERO findings out of $SCANNED scanned shows. See workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "::notice title=Director audit findings::$MSG"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Show Metadata Consensus Audit Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
