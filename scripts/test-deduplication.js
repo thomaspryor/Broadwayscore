@@ -309,6 +309,50 @@ test('Globe guard: cross-pool same title → no twin (Hamilton WE vs Hamilton BW
   assertEqual(twin, null, 'cross-pool: BW vs WE never twins');
 });
 
+test('Globe guard: candidate with null category → guard skipped (no decision without category)', () => {
+  // getMarketPool defaults missing category to 'broadway'/'nyc'. A London
+  // candidate that arrived without a category set (early-stage discovery)
+  // should NOT be force-bridged to NYC twins. The guard refuses to decide.
+  const wickedBw = {
+    id: 'wicked-2003',
+    title: 'Wicked',
+    venue: 'Gershwin Theatre',
+    category: 'broadway',
+    status: 'open',
+    openingDate: '2003-10-30',
+  };
+  const candidateNoCategory = {
+    title: 'Wicked',
+    venue: 'Apollo Victoria',
+    category: null,
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidateNoCategory, [wickedBw]);
+  assertEqual(twin, null, 'null category → no decision, guard skipped');
+});
+
+test('Globe guard: existing entry with null category not matched (avoids spurious twin)', () => {
+  // Mirror image of above: an existing show with missing category should
+  // not act as a twin for a London candidate. Otherwise legacy NYC entries
+  // with missing categories would silently swallow new West End shows.
+  const legacyExisting = {
+    id: 'wicked-legacy',
+    title: 'Wicked',
+    venue: '',
+    category: null,
+    status: 'closed',
+    openingDate: null,
+  };
+  const candidateWE = {
+    title: 'Wicked',
+    venue: 'Apollo Victoria',
+    category: 'west-end',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidateWE, [legacyExisting]);
+  assertEqual(twin, null, 'existing with null category not matched');
+});
+
 // ---------- run ----------
 
 console.log('Running deduplication tests...\n');
