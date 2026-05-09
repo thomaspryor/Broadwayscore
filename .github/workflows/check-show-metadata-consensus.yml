@@ -57,11 +57,16 @@ jobs:
             strict|*) FLAGS="" ;;
           esac
 
-          echo "Running: node scripts/audit-show-director-consensus.js $FLAGS"
+          # Pin --min-reviews=8 so the workflow contract is explicit and doesn't
+          # silently inherit future script default changes. 8 was chosen because
+          # mostly-flagged shows (e.g. beetlejuice-2022 with 90/96 flagged) leave
+          # a tiny unflagged sample that produces unreliable signals.
+          ARGS="--min-reviews=8 $FLAGS"
+          echo "Running: node scripts/audit-show-director-consensus.js $ARGS"
 
           # Run audit, capture output. Audit exits non-zero on STRICT findings.
           set +e
-          node scripts/audit-show-director-consensus.js $FLAGS > /tmp/audit-output.json 2> /tmp/audit-stderr.log
+          node scripts/audit-show-director-consensus.js $ARGS > /tmp/audit-output.json 2> /tmp/audit-stderr.log
           AUDIT_EXIT=$?
           set -e
 
@@ -121,7 +126,7 @@ jobs:
           path: /tmp/audit-output.json
           retention-days: 30
 
-      - name: Notify on STRICT findings
+      - name: Surface STRICT findings as workflow notice
         if: failure() && steps.audit.outputs.strict != '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -132,6 +137,14 @@ jobs:
           MSG="Director-consensus audit found $STRICT STRICT + $ZERO ZERO findings out of $SCANNED scanned shows. See workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "::notice title=Director audit findings::$MSG"
 
+      # Notification semantics: severity 'warning' is a no-op for real-time Discord
+      # (per .github/workflows/CLAUDE.md §Notification Severity — only 'critical'
+      # fires Discord). This audit's failures (STRICT findings + infra errors alike)
+      # surface via the daily email digest sent by health-check.js
+      # (getWorkflowRunSummary in scripts/health-check.js). Per-cadence staleness
+      # alerting is handled by check-cron-health.yml CRITICAL_CRONS.
+      # The notify-failure step is kept for the project's "100/100 workflows have
+      # notifications" hygiene rule, but does not page in real time.
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
