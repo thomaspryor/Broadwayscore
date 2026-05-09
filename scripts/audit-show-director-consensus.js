@@ -20,9 +20,12 @@
  * Usage:
  *   node scripts/audit-show-director-consensus.js [--soft] [--limit=N] [--min-reviews=N]
  *
- * --soft         include SOFT findings (default: STRICT only — high precision)
- * --limit=N      cap output to top N findings by suspiciousness (default: no cap)
- * --min-reviews=N  only audit shows with at least N reviews (default: 5)
+ * --soft           include SOFT findings (default: STRICT only — high precision)
+ * --review-mode    include REVIEW findings (even more relaxed — for periodic manual review)
+ * --limit=N        cap output to top N findings by suspiciousness (default: no cap)
+ * --min-reviews=N  only audit shows with at least N reviews (default: 8). 8 was chosen
+ *                  after observing that mostly-flagged shows like beetlejuice-2022 (90/96
+ *                  flagged) leave a tiny unflagged sample that produces unreliable signals.
  */
 
 const fs = require('fs');
