@@ -254,6 +254,61 @@ test('Existing: cross-market same title NOT flagged (Hamilton BW vs WE)', () => 
   assertEqual(r.isDuplicate, false, 'cross-market: not a duplicate');
 });
 
+// ---------- regression: Globe duplicate guard (2026-05-09 incident) ----------
+
+const { findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
+
+const motherCourageGlobe = {
+  id: 'mother-courage-and-her-children-globe-west-end-2026',
+  title: 'Mother Courage and Her Children - Globe',
+  slug: 'mother-courage-and-her-children-globe-west-end',
+  venue: "Shakespeare's Globe",
+  category: 'off-west-end',
+  status: 'upcoming',
+  openingDate: '2026-05-07',
+};
+
+test('Globe guard: candidate with null openingDate + same title in same pool → twin found', () => {
+  const candidate = {
+    title: 'Mother Courage and Her Children - Globe',
+    venue: 'Globe Theatre',
+    category: 'off-west-end',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [motherCourageGlobe]);
+  assertEqual(twin?.id, motherCourageGlobe.id, 'twin returned for Globe-incident scenario');
+});
+
+test('Globe guard: candidate WITH openingDate → guard skipped (returns null)', () => {
+  const candidate = {
+    title: 'Mother Courage and Her Children - Globe',
+    venue: 'Globe Theatre',
+    category: 'off-west-end',
+    openingDate: '2026-05-07',
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [motherCourageGlobe]);
+  assertEqual(twin, null, 'openingDate present → guard does not fire');
+});
+
+test('Globe guard: cross-pool same title → no twin (Hamilton WE vs Hamilton BW)', () => {
+  const hamiltonBw = {
+    id: 'hamilton-2015',
+    title: 'Hamilton',
+    venue: 'Richard Rodgers Theatre',
+    category: 'broadway',
+    status: 'open',
+    openingDate: '2015-08-06',
+  };
+  const candidate = {
+    title: 'Hamilton',
+    venue: 'Victoria Palace Theatre',
+    category: 'west-end',
+    openingDate: null,
+  };
+  const twin = findSameTitleTwinIfNoOpeningDate(candidate, [hamiltonBw]);
+  assertEqual(twin, null, 'cross-pool: BW vs WE never twins');
+});
+
 // ---------- run ----------
 
 console.log('Running deduplication tests...\n');

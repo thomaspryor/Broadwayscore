@@ -23,7 +23,7 @@ const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
-const { slugify, checkForDuplicate } = require('./lib/deduplication');
+const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -1502,6 +1502,17 @@ async function discoverShows() {
         title: show.title,
         reason: duplicateCheck.reason,
         existingId: duplicateCheck.existingShow?.id
+      });
+      continue;
+    }
+
+    // Globe-incident guard (2026-05-09) — see findSameTitleTwinIfNoOpeningDate.
+    const titleTwin = findSameTitleTwinIfNoOpeningDate(show, data.shows);
+    if (titleTwin) {
+      skippedDuplicates.push({
+        title: show.title,
+        reason: `Same-title twin in same market pool with no openingDate to confirm separate production: ${titleTwin.id}`,
+        existingId: titleTwin.id,
       });
       continue;
     }
