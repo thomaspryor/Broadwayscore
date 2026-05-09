@@ -571,17 +571,24 @@ function isLikelyStaleRoundupFlag(data) {
  */
 function wrongShowCleared(data) {
   if (!data) return false;
+  // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
+  // appears in 2+ show dirs, which can happen for roundups / year-end pieces
+  // where a wrong_show flag is legitimate (article only nominally covers
+  // this show). The script flag-combined-reviews.js's recovery branch sets
+  // BOTH isCombinedReview:true AND wrongShowOverride:true after verifying
+  // the URL co-occurrence pattern matches a true joint review (≥2 different
+  // base shows + rejectionReason='wrong_show'). Requiring wrongShowOverride
+  // ensures inclusion is gated on that explicit verification, not on
+  // URL-shape alone. Issue #316 ship-check (P0/C+F): without this gate, a
+  // future contentTier='invalid' upgrade on one of the 12 historical
+  // isCombinedReview+wrongShow files could silently drop a feature/preview
+  // into reviews.json.
   return (
     data.wrongShowManualClear === true ||
     data.wrongShowOverride === true ||
     data.wrongProductionManualClear === true ||
     data.wrongProductionOverride === true ||
-    data.humanReviewedWrongProduction === false ||
-    // Combined-review URLs (same review URL assigned to 2+ shows by the poller)
-    // are intentionally multi-show; a wrong_show flag from the LLM scoreability
-    // check is a known false positive on the half of the article about another
-    // show. Issue #316: NYer joint Schmigadoon!/Lost Boys review.
-    data.isCombinedReview === true
+    data.humanReviewedWrongProduction === false
   );
 }
 
