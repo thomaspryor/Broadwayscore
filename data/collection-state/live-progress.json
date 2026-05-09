@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-09T10:31:14.676Z",
-  "processed": 26,
+  "updatedAt": "2026-05-09T10:31:47.517Z",
+  "processed": 28,
   "failed": 1110,
-  "successRate": "2.3%",
+  "successRate": "2.5%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 3,
     "archiveToday": 23,
     "archive": 2
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-08T18:38:42.055Z",
@@ -69,6 +69,17 @@
       "t": "2026-05-09T09:52:39.804Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-09T10:31:25.970Z",
+      "event": "bb-session",
+      "session": "478f9ac9",
+      "url": "https://www.wsj.com/articles/dracula-review-sharp-in-tooth-and-wit-11577999017"
+    },
+    {
+      "t": "2026-05-09T10:31:27.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -25,7 +25,9 @@
     "deuce-2007/nytg--unknown.json",
     "deuce-2007/theatermania--unknown.json",
     "deuce-2007/talkinbroadway--unknown.json",
-    "deathtrap-1978/theatermania--unknown.json"
+    "deathtrap-1978/theatermania--unknown.json",
+    "dracula-1977/theatermania--unknown.json",
+    "dracula-1977/wsj--charles-isherwood.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/talkinbroadway--unknown.json",
@@ -1155,7 +1157,8 @@
       "grace-pervades-west-end-2026/artsdesk--unknown.json",
       "deuce-2007/nytg--unknown.json",
       "deuce-2007/theatermania--unknown.json",
-      "deathtrap-1978/theatermania--unknown.json"
+      "deathtrap-1978/theatermania--unknown.json",
+      "dracula-1977/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1164,7 +1167,9 @@
       "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+      "data/review-texts/dracula-1977/wsj--charles-isherwood.json",
+      "dracula-1977/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1212,7 +1217,7 @@
     ]
   },
   "startTime": "2026-05-08T16:31:31.705Z",
-  "lastProcessed": "deathtrap-1978/theatermania--unknown.json",
+  "lastProcessed": "dracula-1977/wsj--charles-isherwood.json",
   "log": [
     {
       "t": "2026-05-08T18:38:42.055Z",
@@ -1268,6 +1273,17 @@
       "t": "2026-05-09T09:52:39.804Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-09T10:31:25.970Z",
+      "event": "bb-session",
+      "session": "478f9ac9",
+      "url": "https://www.wsj.com/articles/dracula-review-sharp-in-tooth-and-wit-11577999017"
+    },
+    {
+      "t": "2026-05-09T10:31:27.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
