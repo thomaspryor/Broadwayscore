@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { baseSlug } = require('./lib/combined-review-utils');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -49,16 +50,10 @@ function main() {
     }
   }
 
-  // Strip the trailing year/suffix so revival/historical/current variants of the
-  // SAME show (e.g. `the-lost-boys` vs `the-lost-boys-2026`) collapse to one
-  // base slug. Joint review = URL that genuinely spans 2+ DIFFERENT base shows.
-  // Without this, the script flags hundreds of intra-show duplicates (same
-  // critic, same URL, two ID variants of the same production).
-  function baseSlug(showId) {
-    return String(showId)
-      .replace(/-\d{4}$/, '')
-      .replace(/-(?:off-broadway|west-end|off-west-end|tour|first-national-tour)$/, '');
-  }
+  // baseSlug() lives in scripts/lib/combined-review-utils.js so unit tests
+  // can require() the real function. Joint review = URL that genuinely spans
+  // 2+ DIFFERENT base shows (e.g. lost-boys + schmigadoon, NOT
+  // the-lost-boys + the-lost-boys-2026).
 
   let flagged = 0, urlCount = 0;
   for (const [url, entries] of urlMap) {
