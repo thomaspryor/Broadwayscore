@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-05-08T20:22:28.759Z",
+  "generatedAt": "2026-05-09T03:12:48.528Z",
   "summary": {
-    "total": 17,
-    "high": 9,
-    "medium": 7,
+    "total": 19,
+    "high": 10,
+    "medium": 8,
     "low": 1
   },
   "collisions": [
@@ -332,6 +332,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2645871",
+      "normalizedUrl": "https://talkinbroadway.com/allthatchat_new/d.php",
+      "candidates": [
+        {
+          "showId": "fallen-angels-2026",
+          "file": "talkinbroadway--unknown.json",
+          "publishDate": "2026-04-19",
+          "openingDate": "2026-04-19",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "talkinbroadway"
+        },
+        {
+          "showId": "the-receptionist-off-broadway-2026",
+          "file": "talkinbroadway--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-05-07",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "talkinbroadway"
+        }
+      ],
+      "suggestedWinner": "fallen-angels-2026",
+      "reason": "publishDate 2026-04-19 is 0 days from fallen-angels-2026 opening (2026-04-19)",
+      "confidence": "high"
+    },
+    {
       "url": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "normalizedUrl": "https://broadwayandme.blogspot.com/2024/04/their-wobbly-books-cause-lempicka-and.html",
       "candidates": [
@@ -383,6 +410,33 @@
       ],
       "suggestedWinner": "moulin-rouge-the-musical-west-end-2021",
       "reason": "publishDate 2022-01-21 is 2 days from moulin-rouge-the-musical-west-end-2021 but also 2 days from paddington-the-musical-west-end-2025",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
+      "normalizedUrl": "https://newyorker.com/magazine/2026/05/11/the-lost-boys-theatre-review-schmigadoon",
+      "candidates": [
+        {
+          "showId": "schmigadoon-2026",
+          "file": "newyorker--emily-nussbaum.json",
+          "publishDate": "2026-04-30",
+          "openingDate": "2026-04-20",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "newyorker"
+        },
+        {
+          "showId": "the-lost-boys-2026",
+          "file": "newyorker--emily-nussbaum.json",
+          "publishDate": "2026-04-30",
+          "openingDate": "2026-04-26",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "newyorker"
+        }
+      ],
+      "suggestedWinner": "the-lost-boys-2026",
+      "reason": "publishDate 2026-04-30 is 4 days from the-lost-boys-2026 but also 10 days from schmigadoon-2026",
       "confidence": "medium"
     },
     {
