@@ -383,11 +383,32 @@ async function main() {
   console.log(`Total Apify cost this run: $${totalCost.toFixed(4)}`);
   console.log('Tier breakdown:', byTier);
 
+  // Detect Apify account-level budget exhaustion. When the monthly hard
+  // limit is hit, every Apify actor returns 403 with this message — the
+  // health check below would otherwise call it "an actor is broken,"
+  // which sends you chasing a code bug instead of the real fix
+  // (raise the cap at https://console.apify.com/billing).
+  const APIFY_BUDGET_RE = /Monthly usage hard limit exceeded/i;
+  const APIFY_PLATFORMS = new Set(['x', 'tiktok', 'instagram']);
+  const showsWithApifyBudgetError = results.filter((r) =>
+    (r.errors || []).some(
+      (e) => APIFY_PLATFORMS.has(e.platform) && APIFY_BUDGET_RE.test(e.error || ''),
+    ),
+  ).length;
+  const apifyBudgetExhausted =
+    results.length > 0 && showsWithApifyBudgetError / results.length > 0.5;
+
   // Health check: if >30% of shows hit zero relevant mentions, surface as
   // exit code 4 for the workflow to catch.
   const zeroShows = results.filter((r) => !r.error && r.volume === 0).length;
   const zeroPct = results.length > 0 ? zeroShows / results.length : 0;
   if (zeroPct > 0.3) {
+    if (apifyBudgetExhausted) {
+      console.error(
+        `APIFY BUDGET EXHAUSTED: ${showsWithApifyBudgetError}/${results.length} shows hit "Monthly usage hard limit exceeded" on Apify (X/TikTok/Instagram). Reddit + X-volume still ran. ACTION: raise the monthly hard limit or upgrade plan at https://console.apify.com/billing.`,
+      );
+      process.exit(5);
+    }
     console.error(
       `HEALTH CHECK FAILED: ${zeroShows}/${results.length} shows returned 0 relevant mentions (${Math.round(zeroPct * 100)}%). This likely means an actor is broken.`,
     );
