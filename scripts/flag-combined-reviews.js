@@ -31,7 +31,14 @@ function main() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
+        // NOTE: wrongShow:true is INTENTIONALLY not skipped here. The
+        // ensemble-scoreability-check rejects joint reviews as wrong_show
+        // when the article spends most of its words on the OTHER show in the
+        // pairing (issue #316: NYer Schmigadoon!/Lost Boys). If the same URL
+        // appears in another show's directory, that's the strongest possible
+        // signal it's a legitimate joint review — flag it so wrongShowCleared()
+        // includes it in rebuild.
+        if (data.wrongProduction || data.isRoundupArticle ||
             data.duplicateOf || data.fabricatedEntry) continue;
         if (!data.url) continue;
         const normUrl = normalizeUrl(data.url);
@@ -42,10 +49,25 @@ function main() {
     }
   }
 
+  // Strip the trailing year/suffix so revival/historical/current variants of the
+  // SAME show (e.g. `the-lost-boys` vs `the-lost-boys-2026`) collapse to one
+  // base slug. Joint review = URL that genuinely spans 2+ DIFFERENT base shows.
+  // Without this, the script flags hundreds of intra-show duplicates (same
+  // critic, same URL, two ID variants of the same production).
+  function baseSlug(showId) {
+    return String(showId)
+      .replace(/-\d{4}$/, '')
+      .replace(/-(?:off-broadway|west-end|off-west-end|tour|first-national-tour)$/, '');
+  }
+
   let flagged = 0, urlCount = 0;
   for (const [url, entries] of urlMap) {
     const uniqueShows = new Set(entries.map(e => e.showId));
     if (uniqueShows.size < 2) continue;
+    // Require 2+ DIFFERENT base shows. Filters out same-production-different-id
+    // cases that aren't joint reviews.
+    const uniqueBaseShows = new Set([...uniqueShows].map(baseSlug));
+    if (uniqueBaseShows.size < 2) continue;
     urlCount++;
     const showList = Array.from(uniqueShows);
     if (DRY_RUN) {
@@ -56,14 +78,29 @@ function main() {
     for (const entry of entries) {
       if (!DRY_RUN) {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
-        // Re-check flags on fresh read (handles concurrent modifications)
-        if (data.wrongProduction || data.wrongShow || data.duplicateOf || data.fabricatedEntry) continue;
+        // Re-check flags on fresh read (handles concurrent modifications).
+        // wrongShow stays in the recovery path — see top-of-loop comment.
+        if (data.wrongProduction || data.duplicateOf || data.fabricatedEntry) continue;
         const newCombinedWith = showList.filter(s => s !== entry.showId).sort();
         const existingCombinedWith = (data.combinedWith || []).slice().sort();
         // Only write if flag is new or combinedWith list changed
-        if (data.isCombinedReview && JSON.stringify(newCombinedWith) === JSON.stringify(existingCombinedWith)) continue;
-        data.isCombinedReview = true;
-        data.combinedWith = showList.filter(s => s !== entry.showId);
+        if (data.isCombinedReview && JSON.stringify(newCombinedWith) === JSON.stringify(existingCombinedWith)) {
+          // Even when combinedWith is unchanged, still recover stale wrongShow
+          // flags below — those clear the rebuild gate.
+        } else {
+          data.isCombinedReview = true;
+          data.combinedWith = showList.filter(s => s !== entry.showId);
+        }
+        // Recover from a stale wrongShow rejection: a URL that exists in 2+
+        // show dirs is intentional joint coverage, not a wrong-show false
+        // positive. Clear the flag so this file lands in reviews.json.
+        if (data.wrongShow === true && data.rejectionReason === 'wrong_show') {
+          data.wrongShow = false;
+          data.wrongShowOverride = true;
+          data.wrongShowOverrideReason =
+            'URL co-occurs across ' + uniqueShows.size + ' show dirs — joint review';
+          data.wrongShowOverrideAt = new Date().toISOString();
+        }
         safeWriteReview(entry.filePath, data);
       }
       flagged++;
