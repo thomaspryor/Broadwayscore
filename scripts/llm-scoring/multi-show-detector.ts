@@ -88,7 +88,16 @@ const SKIP_TITLES = new Set([
 ]);
 
 /**
- * Count word-boundary mentions of a title in text
+ * Count word-boundary mentions of a title in text.
+ *
+ * Uses alphanumeric-character lookbehind/lookahead instead of `\b` so titles
+ * ending in punctuation (`Schmigadoon!`, `Hello, Dolly!`, `Oklahoma!`,
+ * `Oh, Mary!`) are matched correctly. The `\b` token requires a word ↔ non-word
+ * transition; for `Schmigadoon!` followed by space, the trailing `\b` looks for
+ * a word character after `!` (a non-word char), finds whitespace (also non-word),
+ * and fails — silently returning 0 mentions for ~90 shows in the catalogue
+ * (issue #316: New Yorker joint Schmigadoon!/Lost Boys review missed detection
+ * with 7 Schmigadoon! mentions because of this bug).
  */
 function countMentions(text: string, title: string): number {
   // Skip very short titles (3 chars or less) — too many false positives
@@ -100,8 +109,10 @@ function countMentions(text: string, title: string): number {
   // Escape regex special chars in title
   const escaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  // Word boundary match (case insensitive)
-  const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+  // Punctuation-tolerant boundary: require non-alphanumeric (or string edge)
+  // immediately before/after the title. Works whether the title ends in a
+  // letter (`The Lost Boys`), digit (`9 to 5`), or punctuation (`Schmigadoon!`).
+  const regex = new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, 'gi');
   const matches = text.match(regex);
   return matches ? matches.length : 0;
 }
