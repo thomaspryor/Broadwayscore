@@ -508,16 +508,23 @@ function filterDuplicates(candidateShows, existingShows) {
  * Globe"). Without an openingDate we have no positive evidence of a separate
  * production, so refuse to create a new entry.
  *
- * Returns null if no twin found or if the candidate has an openingDate
- * (then we trust the venue evidence and let the standard dedup decide).
+ * Skipped (returns null) when:
+ * - candidate has an openingDate (trust venue evidence; standard dedup decides)
+ * - candidate has no title
+ * - candidate.category is null/undefined (getMarketPool defaults missing
+ *   category to 'broadway'/'nyc' which would falsely bridge a London
+ *   candidate with missing category to NYC twins — refuse to decide
+ *   without category evidence)
  */
 function findSameTitleTwinIfNoOpeningDate(candidate, existingShows) {
   if (candidate.openingDate) return null;
   const candTitleLower = (candidate.title || '').toLowerCase().trim();
   if (!candTitleLower) return null;
+  if (!candidate.category) return null;
   const candPool = getMarketPool(candidate.category);
   return existingShows.find(s =>
     (s.title || '').toLowerCase().trim() === candTitleLower &&
+    s.category &&
     getMarketPool(s.category) === candPool
   ) || null;
 }

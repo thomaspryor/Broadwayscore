@@ -1529,6 +1529,19 @@ async function discoverShows() {
       continue;
     }
 
+    // Apply the Globe-incident guard intra-batch too — two same-title/no-date
+    // candidates in one run could otherwise both land via the venue escape
+    // hatch in checkForDuplicate.
+    const batchTitleTwin = findSameTitleTwinIfNoOpeningDate(show, newShows);
+    if (batchTitleTwin) {
+      skippedDuplicates.push({
+        title: show.title,
+        reason: `Same-title twin within discovery batch with no openingDate: ${batchTitleTwin.id || batchTitleTwin.title}`,
+        existingId: batchTitleTwin.id || batchTitleTwin.title,
+      });
+      continue;
+    }
+
     // Convert date strings to ISO format
     let openingDate = null;
     if (show.openingDate) {
