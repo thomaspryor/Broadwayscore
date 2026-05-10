@@ -31,7 +31,9 @@
     "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/nytg--frank-scheck.json",
     "company-2021/theatrely--andrew-martini.json",
-    "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
+    "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+    "a-view-from-the-bridge-2015/abc-news--jennifer-farrar.json",
+    "therese-raquin-2015/abc-news--mark-kennedy.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -826,7 +828,15 @@
     "amelie-a-new-musical-2017/theatermania--adam-feldman.json",
     "the-price-2017/theater-in-the-now--michael-block.json",
     "come-from-away-2017/newyorker--hilton-als.json",
-    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json"
+    "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+    "come-from-away-2017/st-louis-post-dispatch--bruce-r-miller.json",
+    "the-present-2017/thestage--unknown.json",
+    "in-transit-2016/nydailynews--joe-dziemianowicz.json",
+    "natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
+    "heisenberg-2016/abc-news--mark-kennedy.json",
+    "american-psycho-2016/ap--mark-kennedy.json",
+    "bright-star-2016/drama-queen-nyc--jonathan-warman.json",
+    "king-charles-iii-2015/abc-news--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -875,13 +885,18 @@
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
       "two-strangers-bway-2025/nypost--unknown.json"
     ],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/natasha-pierre-and-the-great-comet-of-1812-2016/washpost--mark-kennedy.json",
+      "data/review-texts/king-charles-iii-2015/abc-news--mark-kennedy.json"
+    ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "a-view-from-the-bridge-2015/abc-news--jennifer-farrar.json",
+      "therese-raquin-2015/abc-news--mark-kennedy.json"
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "come-from-away-2017/off-script-with-dan-dwyer--dan-dwyer.json",
+  "lastProcessed": "therese-raquin-2015/abc-news--mark-kennedy.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -926,6 +941,17 @@
       "t": "2026-05-10T15:47:04.023Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T15:56:14.401Z",
+      "event": "bb-session",
+      "session": "12c5120e",
+      "url": "https://www.washingtonpost.com/entertainment/music/review-josh-groban-cant-save-"
+    },
+    {
+      "t": "2026-05-10T15:56:15.415Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
