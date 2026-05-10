@@ -134,7 +134,9 @@ const WIRE_OUTLETS = new Set(['ap', 'reuters', 'upi']);
 // jasonraize.net: memorial site for Jason Raize (original Lion King Simba)
 // that archives regional-critic reviews of the 1997–2000 touring and
 // original Broadway productions.
-const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net']);
+// theatrevibe.co.uk: hosts archived UK newspaper reviews ingested via
+// Theatre Record (source='theatre-record'), e.g. Metro London reviews.
+const ARCHIVE_MIRROR_DOMAINS = new Set(['jasonraize.net', 'theatrevibe.co.uk']);
 
 // ─────────────────────────────────────────────────
 // Detectors
@@ -297,10 +299,34 @@ for (const showId of showDirs) {
     // Catches reviews where wrongProduction=true but LLM content verification
     // says the review IS correct, AND publishDate is within 30 days of opening.
     // These are reviews incorrectly excluded by automated guards (date guard,
-    // cross-market guard, venue guard). The wrongProductionManualClear flag
-    // prevents this detector from firing on already-cleared files.
+    // cross-market guard, venue guard).
+    //
+    // Skip signals:
+    // - wrongProductionManualClear / wrongProductionReason: canonical fields
+    //   for "this is a deliberate suppression, not a guard regression."
+    //   Manual flags MUST set wrongProductionManualClear=true. Deliberate
+    //   guards (e.g. OB→Broadway transfer in rebuild-all-reviews.js) MUST
+    //   set wrongProductionReason. The audit treats their absence as a
+    //   guard regression worth surfacing.
+    // - rejectedForOtherReason: when the file is excluded on grounds
+    //   *unrelated* to wrongProduction (wrongShow, isNonReview, roundup,
+    //   duplicate, etc), B is irrelevant — that's a different rejection
+    //   path. NOTE: this is `alreadyFlagged` MINUS `wrongProduction`
+    //   itself (B requires wrongProduction=true, so we can't gate on it).
+    //
+    // Note: `wrongProductionAutoCleared` is intentionally NOT used as a skip
+    // signal. It's historical metadata (~448 files have it set AND were later
+    // re-flagged); using it would silence real cross-market and date-guard
+    // regressions. Same for non-empty `wrongProductionNote` — date guard,
+    // cross-market guard, etc. all write Note text, and B is meant to police
+    // those guards.
+    const rejectedForOtherReason = d.wrongShow || d.isRoundupArticle
+      || d.wrongAttribution || d.contentVerification?.wrongArticle
+      || d.isNonReview || d.nonReviewFlag || d.nonReviewContent
+      || d.duplicateOf;
     if (shouldRunClass('B') && d.wrongProduction === true
         && d.contentVerification?.wrongProduction === false
+        && !rejectedForOtherReason
         && !d.wrongProductionManualClear && !d.wrongProductionReason) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening) {
