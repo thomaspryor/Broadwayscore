@@ -23,7 +23,8 @@
     "operation-mincemeat-2025/timeout--unknown.json",
     "maybe-happy-ending-2024/variety--unknown.json",
     "maybe-happy-ending-2024/washpost--unknown.json",
-    "oh-mary-2024/culturesauce--thom-geier.json"
+    "oh-mary-2024/culturesauce--thom-geier.json",
+    "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -756,7 +757,16 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json"
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -775,14 +785,16 @@
       "just-in-time-2025/timeout--unknown.json",
       "operation-mincemeat-2025/timeout--unknown.json",
       "maybe-happy-ending-2024/washpost--unknown.json",
-      "oh-mary-2024/culturesauce--thom-geier.json"
+      "oh-mary-2024/culturesauce--thom-geier.json",
+      "showstopper-the-improvised-musical-west-end-2023/timeout-london--andrzej-lukowski.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/sticks-and-bones-1972/hollywood-reporter--unknown.json",
       "sticks-and-bones-1972/hollywood-reporter--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -801,7 +813,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "harry-potter-2021/front-row-center--tulis-mccall.json",
+  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -824,6 +836,17 @@
       "t": "2026-05-10T15:42:34.927Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-10T15:44:42.944Z",
+      "event": "bb-session",
+      "session": "1da4d236",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
+    },
+    {
+      "t": "2026-05-10T15:44:43.944Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
