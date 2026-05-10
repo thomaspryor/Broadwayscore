@@ -3,56 +3,49 @@
   "showId": "matilda-the-musical-west-end-2021",
   "showTitle": "Matilda The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:58.539Z",
-  "tier": "Hidden",
-  "volume": 1,
-  "positivePct": 100,
-  "weekOverWeekPct": -99,
-  "baselineMultiple": 0.01,
+  "fetchedAt": "2026-05-10T00:09:45.804Z",
+  "tier": "Steady",
+  "volume": 170,
+  "positivePct": 77,
+  "weekOverWeekPct": 16900,
+  "baselineMultiple": 1.28,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 1
+    "x": 142,
+    "tiktok": 19,
+    "instagram": 9,
+    "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "Matilda the Musical deserves a Broadway revival. Matilda the Musical should return to Broadway. It was such a huge…",
-      "platform": "reddit",
-      "author": "u/britneyp2004",
-      "url": "https://www.reddit.com/r/Broadway/comments/1ss3s58/matilda_the_musical_deserves_a_broadway_revival/"
-    }
-  ],
-  "xTrueVolume": 2,
-  "baseline": {
-    "mean": 133.16666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 3,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "What an exciting “Matilda” show ❤️ Claire was so happy to play the role of “Ms. Honey,” and we could not be more proud…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@honghinshaw",
+      "url": "https://www.instagram.com/p/DYGjWNyD1AIecai4RVcfcSnYquB26hD1gMAsNs0/"
+    },
+    {
+      "text": "Emilia looks so proud of herself, as she should be 🥹 The new cast had their first performance today, including the…",
+      "platform": "tiktok",
+      "author": "@littlebitnaughty_",
+      "url": "https://www.tiktok.com/@littlebitnaughty_/video/7548231483912146198"
     }
   ],
-  "rank": {
-    "position": 37,
-    "total": 54,
-    "text": "37/54 West End"
+  "xTrueVolume": 1,
+  "baseline": {
+    "mean": 138.42857142857142,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 1
+  "costUsd": 0.1255,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 28,
+    "total": 57,
+    "text": "28/57 West End"
+  },
+  "compositeScore": 130.9
 }

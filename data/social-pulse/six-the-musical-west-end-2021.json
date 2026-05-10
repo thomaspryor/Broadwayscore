@@ -3,24 +3,24 @@
   "showId": "six-the-musical-west-end-2021",
   "showTitle": "SIX the Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-22T10:03:29.099Z",
-  "tier": "Rising",
-  "volume": 173,
-  "positivePct": 92,
-  "weekOverWeekPct": -2,
-  "baselineMultiple": 1.1,
+  "fetchedAt": "2026-05-10T00:37:33.236Z",
+  "tier": "Steady",
+  "volume": 36,
+  "positivePct": 83,
+  "weekOverWeekPct": -79,
+  "baselineMultiple": 0.22,
   "platformBreakdown": {
-    "x": 144,
+    "x": 0,
     "tiktok": 20,
-    "instagram": 9,
-    "reddit": 0
+    "instagram": 15,
+    "reddit": 1
   },
   "topQuotes": [
     {
-      "text": "It was a joy and an honour to welcome @maiyaquansahbreed to CAST Studio on Monday, where she led our Legends & Icons…",
+      "text": "@SixBroadway Debut Alert! Khaila Wilcoxon (@thekhailawilcoxon) officially returns to SIX on Broadway as Catherine of…",
       "platform": "instagram",
-      "author": "@cast_hq",
-      "url": "https://www.instagram.com/p/DXZw1A_DLun/"
+      "author": "@broadwayworks",
+      "url": "https://www.instagram.com/p/DYIPF5lDvo7/"
     },
     {
       "text": "We’re obsessed 🤩 with Japan’s Queens serving Ex-Wives/SIX in the studio! 👑 Catch them live at the Vaudeville, Nov…",
@@ -29,23 +29,28 @@
       "url": "https://www.tiktok.com/@sixthemusical/video/7552872287440096534"
     }
   ],
-  "xTrueVolume": 0,
+  "xTrueVolume": 1,
   "baseline": {
-    "mean": 160.6,
-    "weeksOfHistory": 5
+    "mean": 139.83333333333334,
+    "weeksOfHistory": 6
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.1355,
   "rawCounts": {
-    "reddit": 0,
-    "twitter": 160,
+    "reddit": 2,
+    "twitter": 0,
     "tiktok": 20,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "fetch failed"
+    }
+  ],
   "rank": {
-    "position": 12,
-    "total": 54,
-    "text": "12/54 West End"
+    "position": 52,
+    "total": 57,
+    "text": "52/57 West End"
   },
-  "compositeScore": 159.16
+  "compositeScore": 29.88
 }

@@ -3,62 +3,49 @@
   "showId": "wicked-2003",
   "showTitle": "Wicked",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:59:25.985Z",
-  "tier": "Hidden",
-  "volume": 19,
-  "positivePct": 100,
-  "weekOverWeekPct": -90,
-  "baselineMultiple": 0.11,
+  "fetchedAt": "2026-05-09T23:37:42.092Z",
+  "tier": "Buzzing",
+  "volume": 187,
+  "positivePct": 88,
+  "weekOverWeekPct": 884,
+  "baselineMultiple": 1.22,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 19
+    "x": 143,
+    "tiktok": 18,
+    "instagram": 11,
+    "reddit": 15
   },
   "topQuotes": [
     {
-      "text": "sixteen show trip over :/ hi all, sitting at the airport on the way home back to louisiana after what i think i’ll…",
-      "platform": "reddit",
-      "author": "u/kendrellgarcia",
-      "url": "https://www.reddit.com/r/Broadway/comments/1sqr9vu/sixteen_show_trip_over/"
-    },
-    {
-      "text": "Congratulations to all the Pelotoners that ran the London Marathon today 🎉🇬🇧🎽👟 2 Pros broke the official 2hr…",
-      "platform": "reddit",
-      "author": "u/NYCUberChick",
-      "url": "https://www.reddit.com/r/OnePelotonRealSub/comments/1swhijs/congratulations_to_all_the_pelotoners_that_ran/"
-    }
-  ],
-  "xTrueVolume": 128,
-  "baseline": {
-    "mean": 152.66666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 26,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Happy Mother’s Day to our dearest, darlingest momsies and to all those who’ve always been by our side 🩷💚 #Wicked…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@wickedinoz",
+      "url": "https://www.instagram.com/p/DYIkb_kn-cK/"
+    },
+    {
+      "text": "broadway glinda styling I made a while ago 🫧✨ I adore the original blue bubble gown design from the stage show 🩵 . .…",
+      "platform": "x",
+      "author": "@warmnikki",
+      "url": "https://x.com/warmnikki/status/2052331107899801943"
     }
   ],
-  "rank": {
-    "position": 35,
-    "total": 42,
-    "text": "35/42 Broadway"
+  "xTrueVolume": 183,
+  "baseline": {
+    "mean": 157.57142857142858,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 19
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 25,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 9,
+    "total": 42,
+    "text": "9/42 Broadway"
+  },
+  "compositeScore": 164.56
 }

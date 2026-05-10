@@ -3,49 +3,49 @@
   "showId": "moulin-rouge-the-musical-west-end-2021",
   "showTitle": "Moulin Rouge! The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:03:01.807Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-10T00:12:04.238Z",
+  "tier": "Rising",
+  "volume": 180,
+  "positivePct": 84,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.35,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 149,
+    "tiktok": 20,
+    "instagram": 11,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 1,
-  "baseline": {
-    "mean": 133.66666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Heute ein ganz toller Christian @theteddycalvin aus „Moulin Rouge“ Seht ihr die ganzen Glitzersteinchen? War eine…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@kallis_kleine_haekelbuehne",
+      "url": "https://www.instagram.com/p/DYAT4XiCmxA/"
+    },
+    {
+      "text": "All you need to know ↓♥️ 🎭 Book your tickets through @London Theatre Direct to see @Moulin Rouge! The Musical UK in…",
+      "platform": "tiktok",
+      "author": "@storyofsavannah",
+      "url": "https://www.tiktok.com/@storyofsavannah/video/7527703562730605846"
     }
   ],
-  "rank": {
-    "position": 54,
-    "total": 54,
-    "text": "54/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 140.28571428571428,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 17,
+    "total": 57,
+    "text": "17/57 West End"
+  },
+  "compositeScore": 151.2
 }

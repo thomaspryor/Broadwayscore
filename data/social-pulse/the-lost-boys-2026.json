@@ -3,62 +3,49 @@
   "showId": "the-lost-boys-2026",
   "showTitle": "The Lost Boys",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:58:18.041Z",
-  "tier": "Steady",
-  "volume": 41,
-  "positivePct": 60,
-  "weekOverWeekPct": -81,
-  "baselineMultiple": 0.23,
+  "fetchedAt": "2026-05-09T23:29:00.811Z",
+  "tier": "Buzzing",
+  "volume": 216,
+  "positivePct": 81,
+  "weekOverWeekPct": 427,
+  "baselineMultiple": 1.37,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 41
+    "x": 150,
+    "tiktok": 18,
+    "instagram": 8,
+    "reddit": 40
   },
   "topQuotes": [
     {
-      "text": "The Reviews are in for Schmigadoon! Two Strangers 🎂 and The Lost Boys 🧛 might have a run for their money for Best…",
-      "platform": "reddit",
-      "author": "u/omurchus",
-      "url": "https://www.reddit.com/r/Broadway/comments/1srmd8e/the_reviews_are_in_for_schmigadoon/"
-    },
-    {
-      "text": "THE LOST BOYS, MEXODUS, SCHMIGADOON!, and More Nominated For Outer Critics Circle Awards; Full List",
-      "platform": "reddit",
-      "author": "u/alteragi",
-      "url": "https://www.reddit.com/r/Broadway/comments/1sroz9h/the_lost_boys_mexodus_schmigadoon_and_more/"
-    }
-  ],
-  "xTrueVolume": 288,
-  "baseline": {
-    "mean": 157.16666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 53,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "We're sinking our teeth into this electric performance from the cast of \"The Lost Boys\"! #thelostboys #broadway…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@gma",
+      "url": "https://www.tiktok.com/@gma/video/7637147386418138381"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "The Lost Boys Curious if anyone has revisited The Lost Boys recently, and how well it's held up. Chiefly because the…",
+      "platform": "reddit",
+      "author": "u/mrmadchef",
+      "url": "https://www.reddit.com/r/Xennials/comments/1t4yz8f/the_lost_boys/"
     }
   ],
-  "rank": {
-    "position": 34,
-    "total": 42,
-    "text": "34/42 Broadway"
+  "xTrueVolume": 189,
+  "baseline": {
+    "mean": 165.57142857142858,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 24.6
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 52,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 2,
+    "total": 42,
+    "text": "2/42 Broadway"
+  },
+  "compositeScore": 174.96
 }

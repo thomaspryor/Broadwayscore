@@ -3,56 +3,49 @@
   "showId": "hamilton-west-end-2021",
   "showTitle": "Hamilton",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:01:43.820Z",
-  "tier": "Hidden",
-  "volume": 2,
-  "positivePct": 0,
-  "weekOverWeekPct": -98,
-  "baselineMultiple": 0.02,
+  "fetchedAt": "2026-05-09T23:55:21.684Z",
+  "tier": "Steady",
+  "volume": 120,
+  "positivePct": 82,
+  "weekOverWeekPct": 5900,
+  "baselineMultiple": 1.16,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 2
+    "x": 92,
+    "tiktok": 19,
+    "instagram": 4,
+    "reddit": 5
   },
   "topQuotes": [
     {
-      "text": "Seeing a musical with my mom and aunt this July, can only choose one Hello! We'll be in London for a concert and have…",
-      "platform": "reddit",
-      "author": "u/mookkzs",
-      "url": "https://www.reddit.com/r/TheWestEnd/comments/1sub48t/seeing_a_musical_with_my_mom_and_aunt_this_july/"
-    }
-  ],
-  "xTrueVolume": 12,
-  "baseline": {
-    "mean": 103.66666666666667,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 41,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "something from last year 🤓 #hamiltonmusical #elizaschuyler #elizahamilton #hamilton #hamiltonmusicalfanart",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@elizalain16",
+      "url": "https://www.instagram.com/p/DYIgi_bjGvz/"
+    },
+    {
+      "text": "Solo trip to London in August - one West End slot left, what should I see? I’ll be in London alone for a few days in…",
+      "platform": "reddit",
+      "author": "u/ImmediatePain1240",
+      "url": "https://www.reddit.com/r/TheWestEnd/comments/1t66qdk/solo_trip_to_london_in_august_one_west_end_slot/"
     }
   ],
-  "rank": {
-    "position": 45,
-    "total": 54,
-    "text": "45/54 West End"
+  "xTrueVolume": 18,
+  "baseline": {
+    "mean": 106,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1355,
+  "rawCounts": {
+    "reddit": 45,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 43,
+    "total": 57,
+    "text": "43/57 West End"
+  },
+  "compositeScore": 98.4
 }

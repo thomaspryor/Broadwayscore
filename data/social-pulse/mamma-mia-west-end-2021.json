@@ -3,49 +3,49 @@
   "showId": "mamma-mia-west-end-2021",
   "showTitle": "Mamma Mia!",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:49.553Z",
-  "tier": "Hidden",
-  "volume": 1,
-  "positivePct": 0,
-  "weekOverWeekPct": -99,
-  "baselineMultiple": 0.01,
+  "fetchedAt": "2026-05-10T00:08:01.712Z",
+  "tier": "Steady",
+  "volume": 156,
+  "positivePct": 80,
+  "weekOverWeekPct": 15500,
+  "baselineMultiple": 1.27,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 1
+    "x": 132,
+    "tiktok": 20,
+    "instagram": 4,
+    "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 8,
-  "baseline": {
-    "mean": 123.16666666666667,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 6,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Forte, intensa e inesquecível! Donna é o coração de ✨ MAMMA MIA ✨ Independente, divertida e cheia de personalidade,…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@musicabasileufranca",
+      "url": "https://www.instagram.com/p/DYIui6OCK4Q/"
+    },
+    {
+      "text": "On this day in 1999, MAMMA MIA! had its world premiere at the Prince Edward Theatre in London’s West End. 🩵 Happy…",
+      "platform": "x",
+      "author": "@MammaMiaMusical",
+      "url": "https://x.com/MammaMiaMusical/status/2041078596261867926"
     }
   ],
-  "rank": {
-    "position": 53,
-    "total": 54,
-    "text": "53/54 West End"
+  "xTrueVolume": 3,
+  "baseline": {
+    "mean": 127.85714285714286,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 4,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 33,
+    "total": 57,
+    "text": "33/57 West End"
+  },
+  "compositeScore": 124.8
 }

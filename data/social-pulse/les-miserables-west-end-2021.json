@@ -3,49 +3,49 @@
   "showId": "les-miserables-west-end-2021",
   "showTitle": "Les Misérables",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:38.425Z",
-  "tier": "Hidden",
-  "volume": 2,
-  "positivePct": 0,
-  "weekOverWeekPct": -99,
-  "baselineMultiple": 0.01,
+  "fetchedAt": "2026-05-10T00:05:49.845Z",
+  "tier": "Steady",
+  "volume": 153,
+  "positivePct": 91,
+  "weekOverWeekPct": 7550,
+  "baselineMultiple": 1.24,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 2
+    "x": 129,
+    "tiktok": 19,
+    "instagram": 5,
+    "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 66,
-  "baseline": {
-    "mean": 123,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 4,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Five Jean Valjeans uniting on a heavenly 'Bring Him Home' at tonight's #lesmiserables gala.#theatretiktok #curtaincall…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@atdazzles",
+      "url": "https://www.tiktok.com/@atdazzles/video/7558994442397453590"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "‘The dream lives on — &amp; the people still sing’ Happy 40th West End anniversary to Les Misérables! @lesmisofficial…",
+      "platform": "x",
+      "author": "@MusicalTheatreR",
+      "url": "https://x.com/MusicalTheatreR/status/1975877995689824308"
     }
   ],
-  "rank": {
-    "position": 52,
-    "total": 54,
-    "text": "52/54 West End"
+  "xTrueVolume": 3,
+  "baseline": {
+    "mean": 127.28571428571429,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 5,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 24,
+    "total": 57,
+    "text": "24/57 West End"
+  },
+  "compositeScore": 139.23
 }

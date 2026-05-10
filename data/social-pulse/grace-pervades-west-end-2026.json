@@ -3,49 +3,49 @@
   "showId": "grace-pervades-west-end-2026",
   "showTitle": "Grace Pervades",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:01:04.309Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
+  "fetchedAt": "2026-05-09T23:51:55.847Z",
+  "tier": "Steady",
+  "volume": 170,
+  "positivePct": 64,
   "weekOverWeekPct": null,
   "baselineMultiple": null,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 147,
+    "tiktok": 8,
+    "instagram": 15,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 26,
-  "baseline": {
-    "mean": 0,
-    "weeksOfHistory": 1
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 1,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "turns out London theatre is just where celebrities go to work… I am not immune to celebrities, I turn into a complete…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@dasha.wanderlust",
+      "url": "https://www.tiktok.com/@dasha.wanderlust/video/7637988044762549525"
     },
     {
+      "text": "=>These are some pictures i've captured from this great interview of Ralph at @lorraine this morning on @itv =>Aren't…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@ralphfiennes.felicityjones.fan",
+      "url": "https://www.instagram.com/p/DX-C4XADCW7/"
     }
   ],
-  "rank": {
-    "position": 44,
-    "total": 54,
-    "text": "44/54 West End"
+  "xTrueVolume": 5,
+  "baseline": {
+    "mean": 85,
+    "weeksOfHistory": 2
   },
-  "compositeScore": 0
+  "costUsd": 0.12875,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 152,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 39,
+    "total": 57,
+    "text": "39/57 West End"
+  },
+  "compositeScore": 108.8
 }

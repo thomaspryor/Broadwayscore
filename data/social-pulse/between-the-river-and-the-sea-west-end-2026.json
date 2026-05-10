@@ -3,49 +3,49 @@
   "showId": "between-the-river-and-the-sea-west-end-2026",
   "showTitle": "Between The River and The Sea",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:00:30.422Z",
+  "fetchedAt": "2026-05-09T23:44:23.460Z",
   "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "volume": 11,
+  "positivePct": 83,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 4.4,
   "platformBreakdown": {
     "x": 0,
     "tiktok": 0,
-    "instagram": 0,
+    "instagram": 11,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 2.5,
-    "weeksOfHistory": 2
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "boo yeah we’re big girls now 🤯🥲 special shoutout to all of our fans, the mamma mia movies, and most importantly…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@dynamos.dinosaurs",
+      "url": "https://www.instagram.com/p/DBX1zxDPwzL/"
+    },
+    {
+      "text": "#betweentheriverandthesea How to talk about Israel & Palestine in a different way! Really well done!",
+      "platform": "instagram",
+      "author": "@mademoiselle_nath",
+      "url": "https://www.instagram.com/p/DXcqK4njF5v/"
     }
   ],
-  "rank": {
-    "position": 40,
-    "total": 54,
-    "text": "40/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 5.333333333333333,
+    "weeksOfHistory": 3
   },
-  "compositeScore": 0
+  "costUsd": 0.13325,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 151,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 56,
+    "total": 57,
+    "text": "56/57 West End"
+  },
+  "compositeScore": 9.13
 }

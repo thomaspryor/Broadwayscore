@@ -3,62 +3,49 @@
   "showId": "the-lion-king-1997",
   "showTitle": "The Lion King",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:57:56.014Z",
-  "tier": "Hidden",
-  "volume": 8,
-  "positivePct": 20,
-  "weekOverWeekPct": -95,
-  "baselineMultiple": 0.05,
+  "fetchedAt": "2026-05-09T23:26:49.001Z",
+  "tier": "Steady",
+  "volume": 168,
+  "positivePct": 76,
+  "weekOverWeekPct": 2000,
+  "baselineMultiple": 1.29,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 8
+    "x": 136,
+    "tiktok": 20,
+    "instagram": 10,
+    "reddit": 2
   },
   "topQuotes": [
     {
-      "text": "The Lion King review – Disney’s Broadway juggernaut roars to life in Sydney",
-      "platform": "reddit",
-      "author": "u/TheGuardianPostBot",
-      "url": "https://www.reddit.com/r/theguardian/comments/1su2hb1/the_lion_king_review_disneys_broadway_juggernaut/"
-    },
-    {
-      "text": "What’s my next Broadway show? Hi everyone, Last night we saw Wicked on Broadway and it was absolutely incredible. We…",
-      "platform": "reddit",
-      "author": "u/Captain_Cornell",
-      "url": "https://www.reddit.com/r/musicals/comments/1sva2g9/whats_my_next_broadway_show/"
-    }
-  ],
-  "xTrueVolume": 40,
-  "baseline": {
-    "mean": 130.16666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 8,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Hakuna Matata in London 🦁✨ An unforgettable evening at the Lyceum Theatre watching The Lion King. The music,…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@jagumepani",
+      "url": "https://www.instagram.com/p/DYHyiSfCAUD/"
+    },
+    {
+      "text": "momsy and amory enjoyed the lion king on broadway ☺️☺️ https://t.co/h4nbV6gOMh",
+      "platform": "x",
+      "author": "@minwonaissance",
+      "url": "https://x.com/minwonaissance/status/2052006205988692208"
     }
   ],
-  "rank": {
-    "position": 42,
-    "total": 42,
-    "text": "42/42 Broadway"
+  "xTrueVolume": 93,
+  "baseline": {
+    "mean": 135.57142857142858,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 1.6
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 5,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 28,
+    "total": 42,
+    "text": "28/42 Broadway"
+  },
+  "compositeScore": 127.68
 }

@@ -3,62 +3,49 @@
   "showId": "the-rocky-horror-show-2026",
   "showTitle": "The Rocky Horror Show",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:58:45.290Z",
+  "fetchedAt": "2026-05-09T23:32:00.372Z",
   "tier": "Steady",
-  "volume": 24,
-  "positivePct": 13,
-  "weekOverWeekPct": -87,
-  "baselineMultiple": 0.14,
+  "volume": 176,
+  "positivePct": 75,
+  "weekOverWeekPct": 633,
+  "baselineMultiple": 1.22,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 24
+    "x": 144,
+    "tiktok": 17,
+    "instagram": 9,
+    "reddit": 6
   },
   "topQuotes": [
     {
-      "text": "Rocky Horror stream of consciousness review As a high school theater nerd and fan of the 2000 revival album, I feel…",
-      "platform": "reddit",
-      "author": "u/RunAccomplished5554",
-      "url": "https://www.reddit.com/r/Broadway/comments/1swiykp/rocky_horror_stream_of_consciousness_review/"
-    },
-    {
-      "text": "Rocky Horror gets a 69. Not as high as they would have liked, but a number they'd appreciate 5 raves, 7 positives, 10…",
-      "platform": "reddit",
-      "author": "u/thomaspryor",
-      "url": "https://www.reddit.com/r/Broadway/comments/1sukzca/rocky_horror_gets_a_69_not_as_high_as_they_would/"
-    }
-  ],
-  "xTrueVolume": 185,
-  "baseline": {
-    "mean": 144.83333333333334,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 27,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "𝐒𝐂𝐈𝐄𝐍𝐂𝐄 𝐅𝐈𝐂𝐓𝐈𝐎𝐍, 𝐃𝐎𝐔𝐁𝐋𝐄 𝐅𝐄𝐀𝐓𝐔𝐑𝐄...𝐅𝐄𝐀𝐓𝐔𝐑𝐈𝐍𝐆 𝐋𝐈𝐒𝐀 𝐑𝐈𝐍𝐍𝐀! 💋 One of my…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@iambrendanmac",
+      "url": "https://www.instagram.com/p/DYBUTWNl09H/"
+    },
+    {
+      "text": "LUKE EVANS IS SO GOOD 👏👏👏❤️ } #rockyhorrowshow #lukeevans #musical #broadway #fyp",
+      "platform": "tiktok",
+      "author": "@thesunflowerswriter",
+      "url": "https://www.tiktok.com/@thesunflowerswriter/video/7636803349181975821"
     }
   ],
-  "rank": {
-    "position": 39,
-    "total": 42,
-    "text": "39/42 Broadway"
+  "xTrueVolume": 92,
+  "baseline": {
+    "mean": 149.28571428571428,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 3.12
+  "costUsd": 0.1355,
+  "rawCounts": {
+    "reddit": 13,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 27,
+    "total": 42,
+    "text": "27/42 Broadway"
+  },
+  "compositeScore": 132
 }

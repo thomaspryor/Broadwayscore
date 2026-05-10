@@ -3,49 +3,49 @@
   "showId": "black-is-the-color-of-my-voice-west-end-2026",
   "showTitle": "Black Is The Color Of My Voice",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:00:39.430Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-09T23:46:03.890Z",
+  "tier": "Buzzing",
+  "volume": 175,
+  "positivePct": 94,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.44,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 150,
+    "tiktok": 10,
+    "instagram": 15,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 121.83333333333333,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 1,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "From fragments of the Thames this morning to Nina’s voice tonight… Black Is The Color of My Voice — a one-woman play…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@benbekkepiette",
+      "url": "https://www.instagram.com/p/DVHYZyBjU22/"
+    },
+    {
+      "text": "#TBT: Happy Birthday, #NinaSimone she would have been 91 this year. Such a pleasure to be performing…",
+      "platform": "tiktok",
+      "author": "@apphiacampbell",
+      "url": "https://www.tiktok.com/@apphiacampbell/video/7342118027736943905"
     }
   ],
-  "rank": {
-    "position": 41,
-    "total": 54,
-    "text": "41/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 129.42857142857142,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 157,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 10,
+    "total": 57,
+    "text": "10/57 West End"
+  },
+  "compositeScore": 164.5
 }
