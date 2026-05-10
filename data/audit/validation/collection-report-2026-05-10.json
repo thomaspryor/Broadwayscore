@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-10T17:11:26.061Z",
+  "runDate": "2026-05-10T18:26:10.190Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,14 +12,14 @@
   },
   "summary": {
     "processed": 54,
-    "failed": 981,
+    "failed": 982,
     "skipped": 0,
     "successRate": "5.2%"
   },
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 17,
     "brightdata": 4,
@@ -27,26 +27,26 @@
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 14,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 20,
-    "tier1_5Success": 3,
-    "tier2Attempts": 75,
-    "tier2Success": 40,
-    "tier3Attempts": 33,
-    "tier3Success": 15,
-    "tier3_6Attempts": 21,
-    "tier3_6Success": 21,
-    "tier4Attempts": 15,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 261,
-    "scrapingBeePageCredits": 40,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 20,
-    "browserbaseMinutesUsed": 8.3,
-    "urlDiscoveryAttempts": 204,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -1087,7 +1087,8 @@
     "impressionism-2009/newsday--linda-winer.json",
     "god-of-carnage-2009/about-entertainment--unknown.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1121,7 +1122,8 @@
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
       "data/review-texts/all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
-      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1184,21 +1186,6 @@
       "next-to-normal-2009/about-entertainment--ben-brantley.json"
     ]
   },
-  "failuresByOutlet": {
-    "HuffPost": {
-      "count": 3,
-      "domain": "huffingtonpost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "On Off Broadway": {
-      "count": 1,
-      "domain": "onoffbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
