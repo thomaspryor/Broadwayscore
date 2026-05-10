@@ -35,7 +35,8 @@
     "a-view-from-the-bridge-2015/abc-news--jennifer-farrar.json",
     "therese-raquin-2015/abc-news--mark-kennedy.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json"
+    "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
+    "scandalous-2012/about-entertainment--charles-isherwood.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -866,7 +867,16 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
-    "orphans-2013/bloomberg--jeremy-gerard.json"
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json",
+    "dead-accounts-2012/washpost--mark-kennedy.json",
+    "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -911,7 +921,8 @@
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-      "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json"
+      "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
+      "scandalous-2012/about-entertainment--charles-isherwood.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -925,7 +936,9 @@
       "data/review-texts/the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
       "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json",
       "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json",
-      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json"
+      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
+      "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
+      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -934,7 +947,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "orphans-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1012,6 +1025,39 @@
       "t": "2026-05-10T16:16:34.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:20:05.313Z",
+      "event": "bb-session",
+      "session": "1e970d95",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebecks"
+    },
+    {
+      "t": "2026-05-10T16:20:06.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:20:17.010Z",
+      "event": "bb-session",
+      "session": "10f418c3",
+      "url": "http://theater.nytimes.com/2012/11/16/theater/reviews/scandalous-the-life-and-tr"
+    },
+    {
+      "t": "2026-05-10T16:20:18.004Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:21:22.630Z",
+      "event": "bb-session",
+      "session": "2d45b901",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviva"
+    },
+    {
+      "t": "2026-05-10T16:21:23.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }

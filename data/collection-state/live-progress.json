@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-10T16:17:18.879Z",
-  "processed": 36,
-  "failed": 829,
+  "updatedAt": "2026-05-10T16:21:32.375Z",
+  "processed": 37,
+  "failed": 838,
   "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
     "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 2,
-    "archiveToday": 8,
+    "archiveToday": 10,
     "archive": 3
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -91,6 +91,39 @@
       "t": "2026-05-10T16:16:34.135Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:20:05.313Z",
+      "event": "bb-session",
+      "session": "1e970d95",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-theresa-rebecks"
+    },
+    {
+      "t": "2026-05-10T16:20:06.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:20:17.010Z",
+      "event": "bb-session",
+      "session": "10f418c3",
+      "url": "http://theater.nytimes.com/2012/11/16/theater/reviews/scandalous-the-life-and-tr"
+    },
+    {
+      "t": "2026-05-10T16:20:18.004Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:21:22.630Z",
+      "event": "bb-session",
+      "session": "2d45b901",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-broadway-reviva"
+    },
+    {
+      "t": "2026-05-10T16:21:23.616Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
