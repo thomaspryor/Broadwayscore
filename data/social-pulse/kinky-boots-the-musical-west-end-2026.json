@@ -3,49 +3,49 @@
   "showId": "kinky-boots-the-musical-west-end-2026",
   "showTitle": "Kinky Boots The Musical",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:17.406Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-10T00:01:50.453Z",
+  "tier": "Buzzing",
+  "volume": 173,
+  "positivePct": 98,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.78,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 150,
+    "tiktok": 11,
+    "instagram": 12,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 97.16666666666667,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "A lovley night out with @tallullah_alberts and @jennai_cox seeing #kinkybootsthemusical",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@diggs_the_dancer",
+      "url": "https://www.instagram.com/p/DWzinPjCGN1/"
+    },
+    {
+      "text": "it’s a great day for theatre kids and strictly fans🪩❤️ #kinkybootsmusical #kinkybootsthemusical #johannesradebe…",
+      "platform": "tiktok",
+      "author": "@miagoddardx",
+      "url": "https://www.tiktok.com/@miagoddardx/video/7524290545892478230"
     }
   ],
-  "rank": {
-    "position": 50,
-    "total": 54,
-    "text": "50/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 108,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1255,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 155,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 6,
+    "total": 57,
+    "text": "6/57 West End"
+  },
+  "compositeScore": 169.54
 }

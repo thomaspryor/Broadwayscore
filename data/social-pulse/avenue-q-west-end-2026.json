@@ -3,49 +3,49 @@
   "showId": "avenue-q-west-end-2026",
   "showTitle": "Avenue Q",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:00:25.446Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-09T23:42:32.681Z",
+  "tier": "Buzzing",
+  "volume": 181,
+  "positivePct": 91,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.31,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 146,
+    "tiktok": 20,
+    "instagram": 15,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 3,
-  "baseline": {
-    "mean": 138,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 1,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Avenue Q POST 1: ✨️Rehearsal and Backstage✨️ It's been a month since opening night! Perfect time to post, right??…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@musicalfan35",
+      "url": "https://www.instagram.com/p/DYIRgvID9MW/"
+    },
+    {
+      "text": "Because WHY was I almost crying at PUPPETS onstage?! This musical found me at the right time in my life 🥲 This show…",
+      "platform": "tiktok",
+      "author": "@emjaytheatre",
+      "url": "https://www.tiktok.com/@emjaytheatre/video/7629108374176664854"
     }
   ],
-  "rank": {
-    "position": 39,
-    "total": 54,
-    "text": "39/54 West End"
+  "xTrueVolume": 8,
+  "baseline": {
+    "mean": 144.14285714285714,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 9,
+    "total": 57,
+    "text": "9/57 West End"
+  },
+  "compositeScore": 164.71
 }

@@ -3,49 +3,49 @@
   "showId": "les-liaisons-dangereuses-west-end-2026",
   "showTitle": "Les Liaisons Dangereuses",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:24.903Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-10T00:04:04.750Z",
+  "tier": "Steady",
+  "volume": 158,
+  "positivePct": 59,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.39,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 132,
+    "tiktok": 12,
+    "instagram": 14,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 114,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Les Liaisons Dangereuses 🎭 Lyttelton Theatre | National Theatre 🎭 30th April 2026 🎭 ⭐️⭐️⭐️⭐️⭐️ (no photos were…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@the_lexicon_of_west_end",
+      "url": "https://www.instagram.com/p/DX-CqcwDWvu/"
+    },
+    {
+      "text": "The play is called Les Liaisons Dangereuses, you can watch it in National Theatre till 6 June. I honestly am so in…",
+      "platform": "tiktok",
+      "author": "@ananasssme",
+      "url": "https://www.tiktok.com/@ananasssme/video/7620906520439442710"
     }
   ],
-  "rank": {
-    "position": 51,
-    "total": 54,
-    "text": "51/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 120.28571428571429,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.13,
+  "rawCounts": {
+    "reddit": 1,
+    "twitter": 154,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 48,
+    "total": 57,
+    "text": "48/57 West End"
+  },
+  "compositeScore": 93.22
 }

@@ -3,49 +3,49 @@
   "showId": "dracula-west-end-2025",
   "showTitle": "Dracula",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:00:58.013Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-09T23:49:33.099Z",
+  "tier": "Steady",
+  "volume": 164,
+  "positivePct": 66,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.62,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 0
+    "x": 140,
+    "tiktok": 20,
+    "instagram": 1,
+    "reddit": 3
   },
-  "topQuotes": [],
-  "xTrueVolume": 5,
-  "baseline": {
-    "mean": 101.33333333333333,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 14,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Cynthia Erivo and the technical team of Dracula take their bows in the West End! ❤️🩸 {invite} Big love to our friend…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@aeronjamesuk",
+      "url": "https://www.tiktok.com/@aeronjamesuk/video/7607990470400085250"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "Cynthia Erivo greets a fan and compliments her braids at the stage door of ‘Dracula’ in the West End…",
+      "platform": "x",
+      "author": "@wicked_updates",
+      "url": "https://x.com/wicked_updates/status/2020314101126426996"
     }
   ],
-  "rank": {
-    "position": 43,
-    "total": 54,
-    "text": "43/54 West End"
+  "xTrueVolume": 3,
+  "baseline": {
+    "mean": 110.28571428571429,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 12,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 40,
+    "total": 57,
+    "text": "40/57 West End"
+  },
+  "compositeScore": 108.24
 }

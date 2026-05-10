@@ -3,49 +3,49 @@
   "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
   "showTitle": "Cabaret at the Kit Kat Club",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:00:43.275Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-09T23:47:37.374Z",
+  "tier": "Rising",
+  "volume": 180,
+  "positivePct": 82,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.26,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 149,
+    "tiktok": 16,
+    "instagram": 15,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 142.5,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Tonight's viewing - I'm back at the @kitkatclubldn to willkommen the latest cast. Always love a trip to Cabaret!…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@atdazzles",
+      "url": "https://www.instagram.com/p/DUq0yATDlu5/"
+    },
+    {
+      "text": "very grateful to have seen you @Eva Noblezada 🥰 this show is breathtaking. @Cabaret at the KitKatClub #sallybowles…",
+      "platform": "tiktok",
+      "author": "@loisgilder",
+      "url": "https://www.tiktok.com/@loisgilder/video/7598157927173590294"
     }
   ],
-  "rank": {
-    "position": 42,
-    "total": 54,
-    "text": "42/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 147.85714285714286,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.12525,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 157,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 18,
+    "total": 57,
+    "text": "18/57 West End"
+  },
+  "compositeScore": 147.6
 }

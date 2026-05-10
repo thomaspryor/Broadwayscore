@@ -3,56 +3,49 @@
   "showId": "hercules-west-end-2025",
   "showTitle": "Hercules",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:03.454Z",
-  "tier": "Hidden",
-  "volume": 2,
-  "positivePct": 0,
-  "weekOverWeekPct": -99,
-  "baselineMultiple": 0.01,
+  "fetchedAt": "2026-05-09T23:57:22.233Z",
+  "tier": "Steady",
+  "volume": 125,
+  "positivePct": 68,
+  "weekOverWeekPct": 6150,
+  "baselineMultiple": 1.02,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 2
+    "x": 106,
+    "tiktok": 16,
+    "instagram": 2,
+    "reddit": 1
   },
   "topQuotes": [
     {
-      "text": "Hercules West End worth the stop? Hello! I'm in the midst of planning a trip. I was planning to stop in London for one…",
-      "platform": "reddit",
-      "author": "u/BoysenberryPrudent49",
-      "url": "https://www.reddit.com/r/Broadway/comments/1su3b11/hercules_west_end_worth_the_stop/"
-    }
-  ],
-  "xTrueVolume": 20,
-  "baseline": {
-    "mean": 122.83333333333333,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 13,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
+      "text": "Going to watch the Hercules west end show this evening ♥️✨ Excited for my inner child that had the VCR tape growing up…",
       "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@marlene_zw",
+      "url": "https://x.com/marlene_zw/status/2037931829882155438"
     },
     {
+      "text": "You will say you’re in love after this one! See more of Disney’s Hercules with Mae Ann Jorolan and the the Muses…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@whatsonstage",
+      "url": "https://www.tiktok.com/@whatsonstage/video/7521333762093878550"
     }
   ],
-  "rank": {
-    "position": 47,
-    "total": 54,
-    "text": "47/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 123.14285714285714,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1355,
+  "rawCounts": {
+    "reddit": 9,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 50,
+    "total": 57,
+    "text": "50/57 West End"
+  },
+  "compositeScore": 85
 }

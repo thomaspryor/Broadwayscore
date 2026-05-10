@@ -3,24 +3,24 @@
   "showId": "six-2021",
   "showTitle": "SIX",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:52:33.673Z",
+  "fetchedAt": "2026-05-09T23:19:07.418Z",
   "tier": "Steady",
   "volume": 88,
-  "positivePct": 78,
-  "weekOverWeekPct": -21,
-  "baselineMultiple": 0.9,
+  "positivePct": 85,
+  "weekOverWeekPct": 0,
+  "baselineMultiple": 0.92,
   "platformBreakdown": {
-    "x": 74,
-    "tiktok": 0,
-    "instagram": 6,
-    "reddit": 8
+    "x": 53,
+    "tiktok": 19,
+    "instagram": 7,
+    "reddit": 9
   },
   "topQuotes": [
     {
-      "text": "Disenchanted! Life in London? I just caught the UK premiere of this show in Lichfield, before it heads to the…",
-      "platform": "reddit",
-      "author": "u/Temporary_Eye_9758",
-      "url": "https://www.reddit.com/r/TheWestEnd/comments/1svp0cn/disenchanted_life_in_london/"
+      "text": "A Kedvenc Musical-em 🤷🏼‍♀️ 💜👑💜👑💜👑 #Six #madachszinhaz #popsensation #rockingchicks @madachszinhaz",
+      "platform": "instagram",
+      "author": "@dorottyapauska",
+      "url": "https://www.instagram.com/p/DYIYSMOgBWo/"
     },
     {
       "text": "What a great way to start my birthday! I’m a huge theater nerd and this was my first time seeing six which is crazy…",
@@ -29,28 +29,23 @@
       "url": "https://x.com/MakoMommyVT/status/2043425902516646364"
     }
   ],
-  "xTrueVolume": 59,
+  "xTrueVolume": 56,
   "baseline": {
-    "mean": 96.16666666666667,
-    "weeksOfHistory": 6
+    "mean": 95,
+    "weeksOfHistory": 7
   },
   "costUsd": 0.1355,
   "rawCounts": {
-    "reddit": 35,
+    "reddit": 43,
     "twitter": 160,
-    "tiktok": 0,
+    "tiktok": 20,
     "instagram": 15
   },
-  "errors": [
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.29348.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 33,
+    "position": 41,
     "total": 42,
-    "text": "33/42 Broadway"
+    "text": "41/42 Broadway"
   },
-  "compositeScore": 68.64
+  "compositeScore": 74.8
 }

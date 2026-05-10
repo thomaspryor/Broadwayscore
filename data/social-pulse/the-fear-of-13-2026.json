@@ -3,58 +3,49 @@
   "showId": "the-fear-of-13-2026",
   "showTitle": "The Fear of 13",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:57:35.535Z",
-  "tier": "Hidden",
-  "volume": 17,
-  "positivePct": 100,
-  "weekOverWeekPct": -91,
-  "baselineMultiple": 0.1,
+  "fetchedAt": "2026-05-09T23:23:44.142Z",
+  "tier": "Steady",
+  "volume": 189,
+  "positivePct": 74,
+  "weekOverWeekPct": 1012,
+  "baselineMultiple": 1.33,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
+    "x": 149,
+    "tiktok": 20,
     "instagram": 15,
-    "reddit": 2
+    "reddit": 5
   },
   "topQuotes": [
     {
-      "text": "Can’t wait to see @ephsykes in @fearof13broadway tonight!! #TheFearOf13 #Broadway #AdrienBrody #TessaThompson #Theatre",
+      "text": "What a joy and honor to spend time with @nickyarris and then see @fearof13broadway the show based on his life. This…",
       "platform": "instagram",
-      "author": "@emmaloucbway",
-      "url": "https://www.instagram.com/p/DXSsIoIiRL6/"
+      "author": "@eilamell",
+      "url": "https://www.instagram.com/p/DYCyvlkju2D/"
     },
     {
-      "text": "I don’t know. Maybe we met Adrian Brody, maybe we didn’t. We def sang Happy Birthday to him, and he was happy ✨ And he…",
-      "platform": "instagram",
-      "author": "@perfumistress",
-      "url": "https://www.instagram.com/p/DXS2SHVAlRX/"
+      "text": "#KimKardashian closed out the Sunday matinee of 'The Fear of 13', a show she helped produce, with an touching speech…",
+      "platform": "tiktok",
+      "author": "@people",
+      "url": "https://www.tiktok.com/@people/video/7636434142728670494"
     }
   ],
-  "xTrueVolume": 67,
+  "xTrueVolume": 387,
   "baseline": {
-    "mean": 142,
-    "weeksOfHistory": 6
+    "mean": 148.71428571428572,
+    "weeksOfHistory": 7
   },
-  "costUsd": 0.1305,
+  "costUsd": 0.1355,
   "rawCounts": {
-    "reddit": 8,
-    "twitter": 0,
-    "tiktok": 0,
+    "reddit": 10,
+    "twitter": 160,
+    "tiktok": 20,
     "instagram": 15
   },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 400 {\n  \"error\": {\n    \"type\": \"run-failed\",\n    \"message\": \"Actor run did not succeed (run ID: NtxRDrLqLWd8SD77Q, status: ABORTED).\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 402 {\n  \"error\": {\n    \"type\": \"not-enough-usage-to-run-paid-actor\",\n    \"message\": \"By launching this job you will exceed your remaining usage of $0.069666.  Please consider upgrading at https://console.apify.com/billing/subscription to increase your limit.\"\n  }\n}"
-    }
-  ],
+  "errors": [],
   "rank": {
-    "position": 36,
+    "position": 24,
     "total": 42,
-    "text": "36/42 Broadway"
+    "text": "24/42 Broadway"
   },
-  "compositeScore": 17
+  "compositeScore": 139.86
 }
