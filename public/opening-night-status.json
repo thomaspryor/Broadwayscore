@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-09T19:06:13.720Z",
+  "generatedAt": "2026-05-10T00:53:36.786Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1851,7 +1851,7 @@
       "status": "previews",
       "slug": "krapps-last-tape-godots-todo-list-west-end",
       "thumbnail": "/images/shows/krapps-last-tape-godots-todo-list-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1876,7 +1876,7 @@
       "status": "previews",
       "slug": "godots-to-do-list-west-end",
       "thumbnail": "/images/shows/godots-to-do-list-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1901,7 +1901,7 @@
       "status": "previews",
       "slug": "1536-west-end",
       "thumbnail": "/images/shows/1536-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1926,7 +1926,7 @@
       "status": "upcoming",
       "slug": "heated-rivalry-the-unauthorized-musical-parody-off-broadway",
       "thumbnail": "/images/shows/heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1965,7 +1965,7 @@
       "status": "announced",
       "slug": "sherlock-holmes-west-end",
       "thumbnail": "/images/shows/sherlock-holmes-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1990,7 +1990,7 @@
       "status": "previews",
       "slug": "this-is-not-about-me-59e59-theaters-off-broadway",
       "thumbnail": "/images/shows/this-is-not-about-me-59e59-theaters-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2029,7 +2029,7 @@
       "status": "upcoming",
       "slug": "el-ultimo-sueno-de-frida-y-diego-off-broadway",
       "thumbnail": "/images/shows/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2068,7 +2068,7 @@
       "status": "upcoming",
       "slug": "the-guy-who-didnt-like-musicals-west-end",
       "thumbnail": "/images/shows/the-guy-who-didnt-like-musicals-west-end-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2093,7 +2093,7 @@
       "status": "previews",
       "slug": "lauder-scotlands-kilted-king-of-broadway-off-broadway",
       "thumbnail": "/images/shows/lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2132,7 +2132,7 @@
       "status": "upcoming",
       "slug": "end-of-the-rainbow-west-end",
       "thumbnail": "/images/shows/end-of-the-rainbow-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2157,7 +2157,7 @@
       "status": "upcoming",
       "slug": "senior-dance-production-off-broadway",
       "thumbnail": "/images/shows/senior-dance-production-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -2180,6 +2180,45 @@
       },
       "readinessSummary": {
         "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-maids-off-broadway-2026",
+      "title": "The Maids",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-05-17",
+      "status": "upcoming",
+      "slug": "the-maids-off-broadway",
+      "thumbnail": "/images/shows/the-maids-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": true,
+          "detail": "DTLI slug: the-maids"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Maids-Opens-on-Broadway-20260517",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheMaids2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
         "warnings": 2,
         "unknowns": 4,
         "total": 7
