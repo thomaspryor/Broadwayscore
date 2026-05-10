@@ -14,7 +14,14 @@
     "masquerade-off-broadway-2025/nytimes--unknown.json",
     "masquerade-off-broadway-2025/nysr--unknown.json",
     "masquerade-off-broadway-2025/slantmagazine--unknown.json",
-    "oliver-west-end-2024/london-box-office--shehrazade-zafar-arif.json"
+    "oliver-west-end-2024/london-box-office--shehrazade-zafar-arif.json",
+    "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "becky-shaw-2026/new-york-city-theatre--unknown.json",
+    "two-strangers-bway-2025/nypost--unknown.json",
+    "just-in-time-2025/timeout--unknown.json",
+    "operation-mincemeat-2025/timeout--unknown.json",
+    "maybe-happy-ending-2024/variety--unknown.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -736,7 +743,10 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -748,12 +758,19 @@
       "the-hunger-games-on-stage-west-end-2025/timeout-london--unknown.json",
       "masquerade-off-broadway-2025/nysr--unknown.json",
       "masquerade-off-broadway-2025/slantmagazine--unknown.json",
-      "oliver-west-end-2024/london-box-office--shehrazade-zafar-arif.json"
+      "oliver-west-end-2024/london-box-office--shehrazade-zafar-arif.json",
+      "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "becky-shaw-2026/new-york-city-theatre--unknown.json",
+      "just-in-time-2025/timeout--unknown.json",
+      "operation-mincemeat-2025/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/sticks-and-bones-1972/hollywood-reporter--unknown.json",
-      "sticks-and-bones-1972/hollywood-reporter--unknown.json"
+      "sticks-and-bones-1972/hollywood-reporter--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -763,7 +780,8 @@
       "masquerade-off-broadway-2025/nytimes--unknown.json"
     ],
     "brightdata": [
-      "stones-in-his-pockets-2001/talkinbroadway--unknown.json"
+      "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
+      "two-strangers-bway-2025/nypost--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -771,7 +789,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "maybe-happy-ending-2024/variety--unknown.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -783,6 +801,17 @@
       "t": "2026-05-10T10:42:38.147Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-10T15:42:33.823Z",
+      "event": "bb-session",
+      "session": "7a1d6f79",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-05-10T15:42:34.927Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
