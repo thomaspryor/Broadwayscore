@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-05-10T10:38:41.034Z",
-  "processed": 3,
-  "failed": 58,
-  "successRate": "4.9%",
+  "updatedAt": "2026-05-10T10:56:08.457Z",
+  "processed": 8,
+  "failed": 138,
+  "successRate": "5.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 2,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-05-10T10:42:37.541Z",
+      "event": "bb-session",
+      "session": "3cfbc7a5",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/sticks-bones-theater-"
+    },
+    {
+      "t": "2026-05-10T10:42:38.147Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
