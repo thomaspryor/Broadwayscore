@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-10T17:11:24.810Z",
+  "updatedAt": "2026-05-10T18:26:06.509Z",
   "processed": 54,
-  "failed": 981,
+  "failed": 982,
   "successRate": "5.2%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 17,
     "brightdata": 4,
     "archiveToday": 21,
     "archive": 9
   },
-  "browserbaseSessions": 20,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-10T16:23:48.401Z",
-      "event": "bb-session",
-      "session": "c9b7f957",
-      "url": "http://theater.nytimes.com/2012/07/13/theater/reviews/fela-on-broadway-at-al-hir"
-    },
-    {
-      "t": "2026-05-10T16:23:49.356Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-05-10T16:26:40.979Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-05-10T16:35:23.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T18:25:50.209Z",
+      "event": "bb-session",
+      "session": "b98d5f2c",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-10T18:25:51.267Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

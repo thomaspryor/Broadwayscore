@@ -1036,7 +1036,8 @@
     "impressionism-2009/newsday--linda-winer.json",
     "god-of-carnage-2009/about-entertainment--unknown.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1071,7 +1072,8 @@
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
       "data/review-texts/all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
-      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json"
+      "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1135,7 +1137,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "13-2008/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1365,6 +1367,17 @@
     },
     {
       "t": "2026-05-10T16:35:23.842Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T18:25:50.209Z",
+      "event": "bb-session",
+      "session": "b98d5f2c",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-10T18:25:51.267Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
