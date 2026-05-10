@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-06T07:19:00.836Z",
+  "generatedAt": "2026-05-10T18:50:51.786Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -17055,6 +17055,38 @@
       "researchedAt": "2026-05-06T07:19:00.836Z",
       "model": "o4-mini",
       "researchTrigger": "manual"
+    },
+    "titus-andronicus-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Red Bull Theater (a 501(c)(3) nonprofit ([www.causeiq.com](https://www.causeiq.com/organizations/red-bull-theater%2C550821968/#:~:text=IRS%20501))) produced this Off-Broadway Titus Andronicus; no budget or weekly cost was reported, and it closed May 2026 ([broadwayscorecard.com](https://broadwayscorecard.com/show/titus-andronicus-off-broadway#:~:text=Titus%20Andronicus)).  As a nonprofit production, no recoupment to investors applies.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.causeiq.com/organizations/red-bull-theater,550821968/",
+          "date": "2025-06-01"
+        },
+        {
+          "type": "manual",
+          "url": "https://broadwayscorecard.com/show/titus-andronicus-off-broadway",
+          "date": "2026-03-29"
+        }
+      ],
+      "title": "Titus Andronicus",
+      "slug": "titus-andronicus-off-broadway",
+      "openingDate": "2026-03-29",
+      "status": "closed",
+      "researchedAt": "2026-05-10T18:50:51.786Z",
+      "model": "o4-mini-deep-research",
+      "researchTrigger": "queued"
     }
   }
 }
