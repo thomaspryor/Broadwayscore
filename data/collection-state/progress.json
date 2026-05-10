@@ -1157,7 +1157,17 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "kenrex-off-broadway-2026/front-row-center--david-walters.json",
+    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "kenrex-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/pages-on-stages--mason-pilevsky.json",
+    "the-lost-boys-2026/reddit--unknown.json",
+    "kenrex-off-broadway-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1168,7 +1178,9 @@
       "jerusalem-2011/guardian--alexis-soloski.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1187,13 +1199,30 @@
       "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
       "data/review-texts/kenrex-off-broadway-2026/thestage--unknown.json",
-      "data/review-texts/carrie-1988/curtainup--unknown.json"
+      "data/review-texts/carrie-1988/curtainup--unknown.json",
+      "data/review-texts/the-music-man-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/mercury-off-broadway-2026/thestage--unknown.json",
+      "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
+      "data/review-texts/kenrex-off-broadway-2026/thestage--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-05-09T15:50:39.731Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "kenrex-off-broadway-2026/thestage--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-10T05:28:53.065Z",
+      "event": "bb-session",
+      "session": "e4bf87fb",
+      "url": "https://www.nytimes.com/2026/04/12/theater/olivier-awards-winners.html"
+    },
+    {
+      "t": "2026-05-10T05:28:54.232Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
