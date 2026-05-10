@@ -3,49 +3,49 @@
   "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
   "showTitle": "Austentatious: An Improvised Jane Austen Novel",
   "market": "West End",
-  "fetchedAt": "2026-04-27T07:59:29.492Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-09T23:41:00.867Z",
+  "tier": "Steady",
+  "volume": 167,
+  "positivePct": 71,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.28,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
+    "x": 147,
+    "tiktok": 20,
     "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 130.5,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "MORE AUSTENTATIOUS TOUR DATES JUST ADDED 🎉📚 @austenimpro will be returning to York, Birmingham and Brighton, as well…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@showandtellcomedy",
+      "url": "https://www.tiktok.com/@showandtellcomedy/video/7483896515874786582"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "Who knew Jane Austen invented third wheeling? 🛞😂 In case you missed it, Austentatious have a new West End home ❤️…",
+      "platform": "tiktok",
+      "author": "@showandtellcomedy",
+      "url": "https://www.tiktok.com/@showandtellcomedy/video/7477545872398503190"
     }
   ],
-  "rank": {
-    "position": 38,
-    "total": 54,
-    "text": "38/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 135.71428571428572,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.0983,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 1
+  },
+  "errors": [],
+  "rank": {
+    "position": 36,
+    "total": 57,
+    "text": "36/57 West End"
+  },
+  "compositeScore": 118.57
 }

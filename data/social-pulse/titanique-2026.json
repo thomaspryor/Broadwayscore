@@ -3,62 +3,49 @@
   "showId": "titanique-2026",
   "showTitle": "Titanique",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:59:00.030Z",
-  "tier": "Hidden",
-  "volume": 9,
-  "positivePct": 40,
-  "weekOverWeekPct": -95,
-  "baselineMultiple": 0.05,
+  "fetchedAt": "2026-05-09T23:34:10.014Z",
+  "tier": "Buzzing",
+  "volume": 206,
+  "positivePct": 83,
+  "weekOverWeekPct": 2189,
+  "baselineMultiple": 1.36,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 9
+    "x": 150,
+    "tiktok": 19,
+    "instagram": 15,
+    "reddit": 22
   },
   "topQuotes": [
     {
-      "text": "20 shows in 11 days. Here I go...Just got back to Ohio after 11 beautiful days in NYC. I'm not rating every show I…",
-      "platform": "reddit",
-      "author": "u/Available-Face5653",
-      "url": "https://www.reddit.com/r/Broadway/comments/1sr7rbl/20_shows_in_11_days/"
-    },
-    {
-      "text": "Who from this ensemble is getting a Tony Nomination besides Marla? Titanique is one of the best new reviewed shows…",
-      "platform": "reddit",
-      "author": "u/Persongettingby",
-      "url": "https://www.reddit.com/r/Broadway/comments/1suzrw4/who_from_this_ensemble_is_getting_a_tony/"
-    }
-  ],
-  "xTrueVolume": 44,
-  "baseline": {
-    "mean": 151.5,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 21,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Congratulations @titaniquemusical on all the Tony nominations!! You deserve it and I’m grateful to have celebrated…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@britanibateman",
+      "url": "https://www.instagram.com/p/DYGQ8GdESqd/"
+    },
+    {
+      "text": "Lost Boys- yay or nay? OK so for reference... things I have LOVED this season (and recently) are... Ragtime, Chess,…",
+      "platform": "reddit",
+      "author": "u/MattTheKing23",
+      "url": "https://www.reddit.com/r/Broadway/comments/1t3o9b6/lost_boys_yay_or_nay/"
     }
   ],
-  "rank": {
-    "position": 38,
-    "total": 42,
-    "text": "38/42 Broadway"
+  "xTrueVolume": 280,
+  "baseline": {
+    "mean": 159.28571428571428,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 3.6
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 28,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 4,
+    "total": 42,
+    "text": "4/42 Broadway"
+  },
+  "compositeScore": 170.98
 }

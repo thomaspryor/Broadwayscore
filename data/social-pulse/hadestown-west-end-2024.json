@@ -3,62 +3,49 @@
   "showId": "hadestown-west-end-2024",
   "showTitle": "Hadestown",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:01:18.127Z",
-  "tier": "Hidden",
-  "volume": 7,
-  "positivePct": 100,
-  "weekOverWeekPct": -96,
-  "baselineMultiple": 0.04,
+  "fetchedAt": "2026-05-09T23:53:18.944Z",
+  "tier": "Steady",
+  "volume": 182,
+  "positivePct": 70,
+  "weekOverWeekPct": 2500,
+  "baselineMultiple": 1.29,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 7
+    "x": 148,
+    "tiktok": 20,
+    "instagram": 8,
+    "reddit": 6
   },
   "topQuotes": [
     {
-      "text": "Rewatch New Found Bangers Does anyone see Hadestown again (or give the full album a full listen) and have a “woah I…",
-      "platform": "reddit",
-      "author": "u/Kay_bucks",
-      "url": "https://www.reddit.com/r/hadestown/comments/1stpnwv/rewatch_new_found_bangers/"
-    },
-    {
-      "text": "Hadestown, Proof, Maybe Happy Ending. Three shows, two days. https://preview.redd.it/61tw07z7oywg1.jpg?width=4030&forma…",
-      "platform": "reddit",
-      "author": "u/Frondelet",
-      "url": "https://www.reddit.com/r/Broadway/comments/1stmpbv/hadestown_proof_maybe_happy_ending_three_shows/"
-    }
-  ],
-  "xTrueVolume": 57,
-  "baseline": {
-    "mean": 140.66666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 8,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "I can’t wait for them to come to the show tomorrow to watch mommy do her thing!!! Thanks for the 📸 💖 @brandoning_…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@kaytrinidadkarns",
+      "url": "https://www.instagram.com/p/DYIDkl-E4eA/"
+    },
+    {
+      "text": "Moment of appreciation for the current West End cast (and my red flower fit for the occasion 🌹) I saw Hadestown on…",
+      "platform": "reddit",
+      "author": "u/Penguinflower3",
+      "url": "https://www.reddit.com/r/hadestown/comments/1t68t8u/moment_of_appreciation_for_the_current_west_end/"
     }
   ],
-  "rank": {
-    "position": 35,
-    "total": 54,
-    "text": "35/54 West End"
+  "xTrueVolume": 193,
+  "baseline": {
+    "mean": 146.57142857142858,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 7
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 6,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 31,
+    "total": 57,
+    "text": "31/57 West End"
+  },
+  "compositeScore": 127.4
 }

@@ -3,49 +3,49 @@
   "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
   "showTitle": "Harry Potter And The Cursed Child: Both Parts",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:01:47.607Z",
+  "fetchedAt": "2026-05-09T23:55:53.410Z",
   "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "volume": 17,
+  "positivePct": 100,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.15,
   "platformBreakdown": {
     "x": 0,
-    "tiktok": 0,
+    "tiktok": 17,
     "instagram": 0,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 14.833333333333334,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "harry potter and the cursed child in london tips! if you're heading to (or hoping to) see harry potter and the cursed…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@julietandbeyond",
+      "url": "https://www.tiktok.com/@julietandbeyond/video/7527484563585584398"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "AD/Invite | I went to see @Cursed Child ⚡️ with @London Theatre Direct and it was the most MAGICAL experience ever! 🤩…",
+      "platform": "tiktok",
+      "author": "@eve_edmunds",
+      "url": "https://www.tiktok.com/@eve_edmunds/video/7550724244607421718"
     }
   ],
-  "rank": {
-    "position": 46,
-    "total": 54,
-    "text": "46/54 West End"
+  "xTrueVolume": 0,
+  "baseline": {
+    "mean": 15.142857142857142,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.0633,
+  "rawCounts": {
+    "reddit": 0,
+    "twitter": 15,
+    "tiktok": 20,
+    "instagram": 1
+  },
+  "errors": [],
+  "rank": {
+    "position": 53,
+    "total": 57,
+    "text": "53/57 West End"
+  },
+  "compositeScore": 17
 }

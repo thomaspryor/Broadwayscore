@@ -3,62 +3,49 @@
   "showId": "the-great-gatsby-2024",
   "showTitle": "The Great Gatsby",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:57:43.740Z",
-  "tier": "Hidden",
-  "volume": 5,
-  "positivePct": 100,
-  "weekOverWeekPct": -97,
-  "baselineMultiple": 0.03,
+  "fetchedAt": "2026-05-09T23:24:55.764Z",
+  "tier": "Steady",
+  "volume": 128,
+  "positivePct": 87,
+  "weekOverWeekPct": 2460,
+  "baselineMultiple": 0.99,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 5
+    "x": 93,
+    "tiktok": 16,
+    "instagram": 8,
+    "reddit": 11
   },
   "topQuotes": [
     {
-      "text": "Wonderful Woman at The Great Gatsby I saw The Great Gatsby last Friday (we listen and we don’t judge) and I wanted to…",
-      "platform": "reddit",
-      "author": "u/Expert-Pass2309",
-      "url": "https://www.reddit.com/r/Broadway/comments/1swpxjj/wonderful_woman_at_the_great_gatsby/"
-    },
-    {
-      "text": "11 shows, 8 days I’ll rate on the Cold Stone scale The Lost Boys - 4/14 - Like It Dog Day Afternoon - 4/15 - Like It…",
-      "platform": "reddit",
-      "author": "u/mestapho",
-      "url": "https://www.reddit.com/r/Broadway/comments/1ss2lkh/11_shows_8_days/"
-    }
-  ],
-  "xTrueVolume": 10,
-  "baseline": {
-    "mean": 129.66666666666666,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 7,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Our juniors brought The Great Gatsby to life with an immersive themed lunch! Even with a quick pivot to the athletic…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@theharveyschool",
+      "url": "https://www.instagram.com/p/DYHqCW3jeZE/"
+    },
+    {
+      "text": "Corbin Bleu Says Broadway's 'The Great Gatsby' And His Olivier Nomination Feel Like A Turning Point In His Career:…",
+      "platform": "reddit",
+      "author": "u/Miserable_Fact_4140",
+      "url": "https://www.reddit.com/r/Broadway/comments/1t6ir3q/corbin_bleu_says_broadways_the_great_gatsby_and/"
     }
   ],
-  "rank": {
-    "position": 37,
-    "total": 42,
-    "text": "37/42 Broadway"
+  "xTrueVolume": 28,
+  "baseline": {
+    "mean": 129.42857142857142,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 5
+  "costUsd": 0.1155,
+  "rawCounts": {
+    "reddit": 15,
+    "twitter": 100,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 34,
+    "total": 42,
+    "text": "34/42 Broadway"
+  },
+  "compositeScore": 111.36
 }

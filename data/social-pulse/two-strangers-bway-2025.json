@@ -3,62 +3,49 @@
   "showId": "two-strangers-bway-2025",
   "showTitle": "Two Strangers (Carry a Cake Across New York)",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:59:08.984Z",
-  "tier": "Hidden",
-  "volume": 3,
-  "positivePct": 100,
-  "weekOverWeekPct": -98,
-  "baselineMultiple": 0.02,
+  "fetchedAt": "2026-05-09T23:36:14.883Z",
+  "tier": "Buzzing",
+  "volume": 184,
+  "positivePct": 91,
+  "weekOverWeekPct": 6033,
+  "baselineMultiple": 1.34,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 3
+    "x": 144,
+    "tiktok": 20,
+    "instagram": 14,
+    "reddit": 6
   },
   "topQuotes": [
     {
-      "text": "Saw 10 Shows for My Birthday Trip This Past Week! We flew in Wednesday afternoon and saw *Ragtime* while my wife saw…",
-      "platform": "reddit",
-      "author": "u/sickstring",
-      "url": "https://www.reddit.com/r/Broadway/comments/1st0ugl/saw_10_shows_for_my_birthday_trip_this_past_week/"
-    },
-    {
-      "text": "11 shows, 8 days I’ll rate on the Cold Stone scale The Lost Boys - 4/14 - Like It Dog Day Afternoon - 4/15 - Like It…",
-      "platform": "reddit",
-      "author": "u/mestapho",
-      "url": "https://www.reddit.com/r/Broadway/comments/1ss2lkh/11_shows_8_days/"
-    }
-  ],
-  "xTrueVolume": 9,
-  "baseline": {
-    "mean": 137,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 9,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "For the first time ever I’ve been lucky enough to see all the nominated shows for this years @thetonyawards ! All…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@eddyfromwales",
+      "url": "https://www.instagram.com/p/DX-_mB4AEgJ/"
+    },
+    {
+      "text": "I may or not be going again tomorrow… Also there’s a lot more I would recommend but WE NEED MORE BEW MUSICALS PLEASE…",
+      "platform": "tiktok",
+      "author": "@sham0us",
+      "url": "https://www.tiktok.com/@sham0us/video/7605700437165034782"
     }
   ],
-  "rank": {
-    "position": 41,
-    "total": 42,
-    "text": "41/42 Broadway"
+  "xTrueVolume": 14,
+  "baseline": {
+    "mean": 143.71428571428572,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 3
+  "costUsd": 0.13025,
+  "rawCounts": {
+    "reddit": 8,
+    "twitter": 159,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 8,
+    "total": 42,
+    "text": "8/42 Broadway"
+  },
+  "compositeScore": 167.44
 }

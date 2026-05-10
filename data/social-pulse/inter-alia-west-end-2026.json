@@ -3,49 +3,49 @@
   "showId": "inter-alia-west-end-2026",
   "showTitle": "Inter Alia",
   "market": "West End",
-  "fetchedAt": "2026-04-27T08:02:13.553Z",
-  "tier": "Hidden",
-  "volume": 0,
-  "positivePct": 0,
-  "weekOverWeekPct": -100,
-  "baselineMultiple": 0,
+  "fetchedAt": "2026-05-10T00:00:21.078Z",
+  "tier": "Steady",
+  "volume": 132,
+  "positivePct": 82,
+  "weekOverWeekPct": null,
+  "baselineMultiple": 1.24,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
+    "x": 103,
+    "tiktok": 19,
+    "instagram": 10,
     "reddit": 0
   },
-  "topQuotes": [],
-  "xTrueVolume": 0,
-  "baseline": {
-    "mean": 106.5,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 0,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
+  "topQuotes": [
     {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "if u see a little show called inter alia on london’s west end … listen out for a familiar voice :’D the music is…",
       "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@erinlecount",
+      "url": "https://www.tiktok.com/@erinlecount/video/7626149917706259714"
     },
     {
-      "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "text": "erin is officially the composer of a west end play! 🎭🧡 book your tickets to see ‘inter alia’:…",
+      "platform": "x",
+      "author": "@erinlecounthq",
+      "url": "https://x.com/erinlecounthq/status/2041838826461786589"
     }
   ],
-  "rank": {
-    "position": 49,
-    "total": 54,
-    "text": "49/54 West End"
+  "xTrueVolume": 1,
+  "baseline": {
+    "mean": 110.14285714285714,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 0
+  "costUsd": 0.1305,
+  "rawCounts": {
+    "reddit": 1,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 41,
+    "total": 57,
+    "text": "41/57 West End"
+  },
+  "compositeScore": 108.24
 }

@@ -3,56 +3,49 @@
   "showId": "the-outsiders-2024",
   "showTitle": "The Outsiders",
   "market": "Broadway",
-  "fetchedAt": "2026-04-27T07:58:29.909Z",
-  "tier": "Hidden",
-  "volume": 6,
-  "positivePct": 50,
-  "weekOverWeekPct": -97,
-  "baselineMultiple": 0.04,
+  "fetchedAt": "2026-05-09T23:30:28.010Z",
+  "tier": "Rising",
+  "volume": 189,
+  "positivePct": 83,
+  "weekOverWeekPct": 3050,
+  "baselineMultiple": 1.34,
   "platformBreakdown": {
-    "x": 0,
-    "tiktok": 0,
-    "instagram": 0,
-    "reddit": 6
+    "x": 148,
+    "tiktok": 20,
+    "instagram": 10,
+    "reddit": 11
   },
   "topQuotes": [
     {
-      "text": "Saw 10 Shows for My Birthday Trip This Past Week! We flew in Wednesday afternoon and saw *Ragtime* while my wife saw…",
-      "platform": "reddit",
-      "author": "u/sickstring",
-      "url": "https://www.reddit.com/r/Broadway/comments/1st0ugl/saw_10_shows_for_my_birthday_trip_this_past_week/"
-    }
-  ],
-  "xTrueVolume": 8,
-  "baseline": {
-    "mean": 140.83333333333334,
-    "weeksOfHistory": 6
-  },
-  "costUsd": 0.13525,
-  "rawCounts": {
-    "reddit": 10,
-    "twitter": 0,
-    "tiktok": 0,
-    "instagram": 0
-  },
-  "errors": [
-    {
-      "platform": "x",
-      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
-      "platform": "tiktok",
-      "error": "Apify run failed (clockworks~tiktok-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
-    },
-    {
+      "text": "Having seen The Outsiders multiple times and spoken with members of the cast, I’ve become deeply invested in the story…",
       "platform": "instagram",
-      "error": "Apify run failed (apify~instagram-scraper): 403 {\n  \"error\": {\n    \"type\": \"platform-feature-disabled\",\n    \"message\": \"Monthly usage hard limit exceeded\"\n  }\n}"
+      "author": "@duygubalan",
+      "url": "https://www.instagram.com/p/DYIE66RlGYr/"
+    },
+    {
+      "text": "Lost Boys- yay or nay? OK so for reference... things I have LOVED this season (and recently) are... Ragtime, Chess,…",
+      "platform": "reddit",
+      "author": "u/MattTheKing23",
+      "url": "https://www.reddit.com/r/Broadway/comments/1t3o9b6/lost_boys_yay_or_nay/"
     }
   ],
-  "rank": {
-    "position": 40,
-    "total": 42,
-    "text": "40/42 Broadway"
+  "xTrueVolume": 7,
+  "baseline": {
+    "mean": 147.71428571428572,
+    "weeksOfHistory": 7
   },
-  "compositeScore": 3
+  "costUsd": 0.1355,
+  "rawCounts": {
+    "reddit": 12,
+    "twitter": 160,
+    "tiktok": 20,
+    "instagram": 15
+  },
+  "errors": [],
+  "rank": {
+    "position": 13,
+    "total": 42,
+    "text": "13/42 Broadway"
+  },
+  "compositeScore": 156.87
 }
