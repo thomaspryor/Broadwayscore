@@ -1023,6 +1023,7 @@ const crossShowFingerprints = new Map();
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
               d.wrongProduction = true;
+              d.wrongProductionReason = 'ob-broadway-transfer';
               d.wrongProductionNote = `OB review superseded by Broadway transfer ${bw.id} (shared URL)`;
               safeWriteReview(fp, d);
               transferFlagged++;
