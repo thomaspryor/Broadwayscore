@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-10T13:08:25.104Z",
+  "timestamp": "2026-05-10T17:18:46.216Z",
   "stats": {
-    "totalReviews": 36616,
-    "alreadyFlagged": 16066,
+    "totalReviews": 36701,
+    "alreadyFlagged": 16085,
     "dateGuardCatches": 102,
-    "directorMismatch": 803,
+    "directorMismatch": 804,
     "tvFilmSignals": 1012,
-    "londonSignals": 566,
+    "londonSignals": 565,
     "offBroadwaySignals": 444,
     "yearMismatch": 76,
-    "noPublishDate": 3755
+    "noPublishDate": 3748
   },
   "findings": [
     {
@@ -12800,6 +12800,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "master-haroldand-the-boys-2003",
+      "file": "about-entertainment--ben-brantley.json",
+      "score": null,
+      "publishDate": "June 2, 2003",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
         }
       ]
     },
@@ -30854,20 +30868,6 @@
       "score": 94,
       "publishDate": "April 21, 2011",
       "url": "https://www.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylance-review.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "jerusalem-2011",
-      "file": "nytimes--unknown.json",
-      "score": 86,
-      "publishDate": "April 21, 2011",
-      "url": "http://theater.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylance-review.html?ref=theater",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
