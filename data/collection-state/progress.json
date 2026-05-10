@@ -34,7 +34,8 @@
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
     "a-view-from-the-bridge-2015/abc-news--jennifer-farrar.json",
     "therese-raquin-2015/abc-news--mark-kennedy.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -856,7 +857,16 @@
     "act-one-2014/abc-news--mark-kennedy.json",
     "of-mice-and-men-2014/abc-news--mark-kennedy.json",
     "of-mice-and-men-2014/ap--mark-kennedy.json",
-    "mothers-and-sons-2014/washpost--mark-kennedy.json"
+    "mothers-and-sons-2014/washpost--mark-kennedy.json",
+    "all-the-way-2014/ap--mark-kennedy.json",
+    "all-the-way-2014/ap--unknown.json",
+    "no-mans-land-2013/abc-news--mark-kennedy.json",
+    "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
+    "the-winslow-boy-2013/bloomberg--unknown.json",
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -900,7 +910,8 @@
       "the-great-gatsby-2024/nytimes--unknown.json",
       "masquerade-off-broadway-2025/nytimes--unknown.json",
       "company-2021/theatrely--andrew-martini.json",
-      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+      "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -913,7 +924,8 @@
       "data/review-texts/the-last-ship-2014/abc-news--mark-kennedy.json",
       "data/review-texts/the-velocity-of-autumn-2014/abc-news--jennifer-farrar.json",
       "data/review-texts/of-mice-and-men-2014/abc-news--mark-kennedy.json",
-      "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json"
+      "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json",
+      "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -922,7 +934,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "mothers-and-sons-2014/washpost--mark-kennedy.json",
+  "lastProcessed": "orphans-2013/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -989,6 +1001,17 @@
       "t": "2026-05-10T16:14:10.978Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:16:33.144Z",
+      "event": "bb-session",
+      "session": "5bebbcc2",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyd"
+    },
+    {
+      "t": "2026-05-10T16:16:34.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

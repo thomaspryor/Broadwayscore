@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-10T16:14:19.219Z",
-  "processed": 35,
-  "failed": 820,
-  "successRate": "4.1%",
+  "updatedAt": "2026-05-10T16:17:18.879Z",
+  "processed": 36,
+  "failed": 829,
+  "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 21,
     "amp": 0,
     "browserbase": 7,
     "directCookies": 0,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 2,
-    "archiveToday": 7,
+    "archiveToday": 8,
     "archive": 3
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -80,6 +80,17 @@
       "t": "2026-05-10T16:14:10.978Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:16:33.144Z",
+      "event": "bb-session",
+      "session": "5bebbcc2",
+      "url": "http://theater.nytimes.com/2013/04/19/theater/reviews/frank-wildhorns-jekyll-hyd"
+    },
+    {
+      "t": "2026-05-10T16:16:34.135Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
