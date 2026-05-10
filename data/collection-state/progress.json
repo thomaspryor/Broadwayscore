@@ -37,7 +37,8 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
     "scandalous-2012/about-entertainment--charles-isherwood.json",
-    "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json"
+    "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json",
+    "clybourne-park-2012/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -886,7 +887,16 @@
     "harvey-2012/huffpost--mark-kennedy.json",
     "leap-of-faith-2012/variety--marilyn-stasio.json",
     "dont-dress-for-dinner-2012/backstage--david-sheward.json",
-    "leap-of-faith-2012/backstage--erik-haagensen.json"
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
+    "ghost-the-musical-2012/washpost--mark-kennedy.json",
+    "the-lyons-2012/washpost--mark-kennedy.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json",
+    "one-man-two-guvnors-2012/washpost--jennifer-farrar.json",
+    "magicbird-2012/backstage--suzy-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -933,7 +943,8 @@
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
       "scandalous-2012/about-entertainment--charles-isherwood.json",
-      "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json"
+      "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json",
+      "clybourne-park-2012/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -949,7 +960,11 @@
       "data/review-texts/mothers-and-sons-2014/washpost--mark-kennedy.json",
       "data/review-texts/no-mans-land-2013/abc-news--mark-kennedy.json",
       "data/review-texts/dead-accounts-2012/washpost--mark-kennedy.json",
-      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
+      "data/review-texts/the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
+      "data/review-texts/nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
+      "data/review-texts/ghost-the-musical-2012/washpost--mark-kennedy.json",
+      "data/review-texts/the-lyons-2012/washpost--mark-kennedy.json",
+      "data/review-texts/one-man-two-guvnors-2012/washpost--jennifer-farrar.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -958,7 +973,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "leap-of-faith-2012/backstage--erik-haagensen.json",
+  "lastProcessed": "magicbird-2012/backstage--suzy-evans.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1091,6 +1106,61 @@
       "t": "2026-05-10T16:23:49.356Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:26:40.979Z",
+      "event": "bb-session",
+      "session": "83ecc65e",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-matthew-brodericks-show"
+    },
+    {
+      "t": "2026-05-10T16:26:41.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:27:27.922Z",
+      "event": "bb-session",
+      "session": "9df10f01",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-broadway-musical-of-gho"
+    },
+    {
+      "t": "2026-05-10T16:27:28.862Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:28:02.191Z",
+      "event": "bb-session",
+      "session": "73837f8f",
+      "url": "http://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-ly"
+    },
+    {
+      "t": "2026-05-10T16:28:03.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:28:37.036Z",
+      "event": "bb-session",
+      "session": "f87c32b1",
+      "url": "http://theater.nytimes.com/2012/04/20/theater/reviews/clybourne-park-by-bruce-no"
+    },
+    {
+      "t": "2026-05-10T16:28:37.957Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:29:50.205Z",
+      "event": "bb-session",
+      "session": "e7b39eec",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-gleeful-comedy-"
+    },
+    {
+      "t": "2026-05-10T16:29:51.164Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
