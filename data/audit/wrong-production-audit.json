@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-10T03:16:39.661Z",
+  "timestamp": "2026-05-10T05:20:42.383Z",
   "stats": {
     "totalReviews": 36590,
-    "alreadyFlagged": 16052,
+    "alreadyFlagged": 16061,
     "dateGuardCatches": 102,
-    "directorMismatch": 815,
+    "directorMismatch": 803,
     "tvFilmSignals": 1011,
     "londonSignals": 566,
     "offBroadwaySignals": 444,
     "yearMismatch": 76,
-    "noPublishDate": 3739
+    "noPublishDate": 3738
   },
   "findings": [
     {
@@ -3214,44 +3214,6 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 86,
-      "publishDate": "2024-06-20",
-      "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "exeunt-magazine--lane-williamson.json",
-      "score": 87,
-      "publishDate": "2024-06-21",
-      "url": "https://exeuntnyc.com/reviews/review-cats-the-jellicle-ball-at-perelman-performing-arts-center/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "newyorker--helen-shaw.json",
       "score": 90,
       "publishDate": "June 27th, 2024",
@@ -3276,25 +3238,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "nydailynews--chris-jones.json",
-      "score": 83,
-      "publishDate": "June 20, 2024",
-      "url": "https://www.nydailynews.com/2024/06/20/theater-review-cats-the-jellicle-ball-is-an-inspired-reimagining-of-the-broadway-classic/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
         }
       ]
     },
@@ -3386,20 +3329,6 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "nytimes--jesse-green.json",
-      "score": 78,
-      "publishDate": "June 20th, 2024",
-      "url": "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "stageandcinema--alex-simmons.json",
       "score": 78,
       "publishDate": "2024-06-21",
@@ -3466,25 +3395,6 @@
       "score": 84,
       "publishDate": "June 20th, 2024",
       "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "vulture--sara-holdren.json",
-      "score": 79,
-      "publishDate": "June 20th, 2024",
-      "url": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -14210,20 +14120,6 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "file": "talkinbroadway--howard-miller.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://www.talkinbroadway.com/page/ob/02_08_24b.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
       "file": "theater-scene--joel-benjamin.json",
       "score": 76,
       "publishDate": "2024-04-10",
@@ -19767,20 +19663,6 @@
     },
     {
       "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
-      "file": "nysr--roma-torre.json",
-      "score": 86,
-      "publishDate": "November 17, 2025",
-      "url": "https://nystagereview.com/2025/11/17/the-25th-annual-putnam-county-spelling-bee-revival-spells-s-u-c-c-e-s-s/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from the-25th-annual-putnam-county-spelling-bee-2005"
-        }
-      ]
-    },
-    {
-      "showId": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 88,
       "publishDate": "November 18, 2025",
@@ -23500,20 +23382,6 @@
       "score": 81,
       "publishDate": "2022-09-29",
       "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "file": "the-queer-review--james-kleinmann.json",
-      "score": 88,
-      "publishDate": "January 17, 2023",
-      "url": "https://thequeerreview.com/2023/01/17/musical-theatre-review-titanique-daryl-roth-theatre-new-york-off-broadway/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28399,7 +28267,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
       "score": 66,
-      "publishDate": "2026-02-25",
+      "publishDate": "February 25th, 2026",
       "url": "https://www.londontheatre.co.uk/reviews/evening-all-afternoon-review-donmar-warehouse",
       "findings": [
         {
@@ -28441,7 +28309,7 @@
       "showId": "evening-all-afternoon-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
-      "publishDate": "2026-02-24",
+      "publishDate": "February 24th, 2026",
       "url": "https://theatreweekly.com/review-evening-all-afternoon-at-donmar-warehouse/",
       "findings": [
         {
