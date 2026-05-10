@@ -36,7 +36,8 @@
     "therese-raquin-2015/abc-news--mark-kennedy.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
-    "scandalous-2012/about-entertainment--charles-isherwood.json"
+    "scandalous-2012/about-entertainment--charles-isherwood.json",
+    "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -876,7 +877,16 @@
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
     "cat-on-a-hot-tin-roof-2013/seattle-times--mark-kennedy.json",
     "dead-accounts-2012/washpost--mark-kennedy.json",
-    "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json"
+    "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "whos-afraid-of-virginia-woolf-2012/huffpost--mark-kennedy.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "fela-2012/about-entertainment--ben-brantley.json",
+    "fela-2012/backstage--david-sheward.json",
+    "harvey-2012/huffpost--mark-kennedy.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json",
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -922,7 +932,8 @@
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
-      "scandalous-2012/about-entertainment--charles-isherwood.json"
+      "scandalous-2012/about-entertainment--charles-isherwood.json",
+      "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -947,7 +958,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "the-mystery-of-edwin-drood-2012/washpost--mark-kennedy.json",
+  "lastProcessed": "leap-of-faith-2012/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1058,6 +1069,28 @@
       "t": "2026-05-10T16:21:23.616Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:21:45.403Z",
+      "event": "bb-session",
+      "session": "b33279f7",
+      "url": "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid"
+    },
+    {
+      "t": "2026-05-10T16:21:46.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:23:48.401Z",
+      "event": "bb-session",
+      "session": "c9b7f957",
+      "url": "http://theater.nytimes.com/2012/07/13/theater/reviews/fela-on-broadway-at-al-hir"
+    },
+    {
+      "t": "2026-05-10T16:23:49.356Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
