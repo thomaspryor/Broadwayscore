@@ -38,7 +38,9 @@
     "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
     "scandalous-2012/about-entertainment--charles-isherwood.json",
     "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json",
-    "clybourne-park-2012/about-entertainment--ben-brantley.json"
+    "clybourne-park-2012/about-entertainment--ben-brantley.json",
+    "once-2012/about-entertainment--ben-brantley.json",
+    "death-of-a-salesman-2012/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -896,7 +898,15 @@
     "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
     "the-lyons-2012/backstage--david-sheward.json",
     "one-man-two-guvnors-2012/washpost--jennifer-farrar.json",
-    "magicbird-2012/backstage--suzy-evans.json"
+    "magicbird-2012/backstage--suzy-evans.json",
+    "jesus-christ-superstar-2012/backstage--david-sheward.json",
+    "once-2012/huffpost--mark-kennedy.json",
+    "once-2012/backstage--david-sheward.json",
+    "death-of-a-salesman-2012/northjerseycom--robert-feldberg.json",
+    "wit-2012/edge-new-york--david-cote.json",
+    "wit-2012/ap--mark-kennedy.json",
+    "wit-2012/backstage--david-sheward.json",
+    "wit-2012/bloomberg--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -969,11 +979,13 @@
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "a-view-from-the-bridge-2015/abc-news--jennifer-farrar.json",
-      "therese-raquin-2015/abc-news--mark-kennedy.json"
+      "therese-raquin-2015/abc-news--mark-kennedy.json",
+      "once-2012/about-entertainment--ben-brantley.json",
+      "death-of-a-salesman-2012/about-entertainment--ben-brantley.json"
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "magicbird-2012/backstage--suzy-evans.json",
+  "lastProcessed": "wit-2012/bloomberg--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1161,6 +1173,28 @@
       "t": "2026-05-10T16:29:51.164Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-10T16:30:17.780Z",
+      "event": "bb-session",
+      "session": "b92d96ac",
+      "url": "http://theater.nytimes.com/2012/03/19/theater/reviews/once-with-steve-kazee-and-"
+    },
+    {
+      "t": "2026-05-10T16:30:18.725Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:31:46.414Z",
+      "event": "bb-session",
+      "session": "f6e54013",
+      "url": "http://theater.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-p"
+    },
+    {
+      "t": "2026-05-10T16:31:47.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
