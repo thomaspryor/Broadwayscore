@@ -40,7 +40,9 @@
     "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json",
     "clybourne-park-2012/about-entertainment--ben-brantley.json",
     "once-2012/about-entertainment--ben-brantley.json",
-    "death-of-a-salesman-2012/about-entertainment--ben-brantley.json"
+    "death-of-a-salesman-2012/about-entertainment--ben-brantley.json",
+    "the-road-to-mecca-2012/about-entertainment--ben-brantley.json",
+    "lysistrata-jones-2011/about-entertainment--ben-brantley.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -906,7 +908,15 @@
     "wit-2012/edge-new-york--david-cote.json",
     "wit-2012/ap--mark-kennedy.json",
     "wit-2012/backstage--david-sheward.json",
-    "wit-2012/bloomberg--jeremy-gerard.json"
+    "wit-2012/bloomberg--jeremy-gerard.json",
+    "wit-2012/usatoday--elysa-gardner.json",
+    "the-road-to-mecca-2012/sfgate--mark-kennedy.json",
+    "the-road-to-mecca-2012/backstage--erik-haagensen.json",
+    "lysistrata-jones-2011/backstage--david-sheward.json",
+    "on-a-clear-day-you-can-see-forever-2011/backstage--erik-haagensen.json",
+    "stick-fly-2011/backstage--erik-haagensen.json",
+    "seminar-2011/backstage--david-sheward.json",
+    "private-lives-2011/backstage--erik-haagensen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -954,7 +964,9 @@
       "jekyll-and-hyde-2013/about-entertainment--charles-isherwood.json",
       "scandalous-2012/about-entertainment--charles-isherwood.json",
       "whos-afraid-of-virginia-woolf-2012/about-entertainment--charles-isherwood.json",
-      "clybourne-park-2012/about-entertainment--ben-brantley.json"
+      "clybourne-park-2012/about-entertainment--ben-brantley.json",
+      "the-road-to-mecca-2012/about-entertainment--ben-brantley.json",
+      "lysistrata-jones-2011/about-entertainment--ben-brantley.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -974,7 +986,8 @@
       "data/review-texts/nice-work-if-you-can-get-it-2012/washpost--mark-kennedy.json",
       "data/review-texts/ghost-the-musical-2012/washpost--mark-kennedy.json",
       "data/review-texts/the-lyons-2012/washpost--mark-kennedy.json",
-      "data/review-texts/one-man-two-guvnors-2012/washpost--jennifer-farrar.json"
+      "data/review-texts/one-man-two-guvnors-2012/washpost--jennifer-farrar.json",
+      "data/review-texts/the-road-to-mecca-2012/sfgate--mark-kennedy.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -985,7 +998,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "wit-2012/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "private-lives-2011/backstage--erik-haagensen.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -1193,6 +1206,28 @@
     },
     {
       "t": "2026-05-10T16:31:47.408Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:33:36.307Z",
+      "event": "bb-session",
+      "session": "1e3839fb",
+      "url": "http://theater.nytimes.com/2012/01/18/theater/reviews/road-to-mecca-at-american-"
+    },
+    {
+      "t": "2026-05-10T16:33:37.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-10T16:35:22.919Z",
+      "event": "bb-session",
+      "session": "5bee4b6c",
+      "url": "http://theater.nytimes.com/2011/12/15/theater/reviews/lysistrata-jones-at-walter"
+    },
+    {
+      "t": "2026-05-10T16:35:23.842Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
