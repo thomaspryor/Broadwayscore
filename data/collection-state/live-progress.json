@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-05-11T09:19:17.438Z",
-  "processed": 1,
-  "failed": 5,
-  "successRate": "16.7%",
+  "updatedAt": "2026-05-11T11:42:56.204Z",
+  "processed": 9,
+  "failed": 209,
+  "successRate": "4.1%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-11T11:37:35.234Z",
+      "event": "bb-session",
+      "session": "f9fb58a1",
+      "url": "https://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-11T11:37:35.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T11:41:32.555Z",
+      "event": "bb-session",
+      "session": "bdb489c5",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-11T11:41:33.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
