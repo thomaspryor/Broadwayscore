@@ -1,52 +1,32 @@
 {
   "processed": [
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "grace-pervades-west-end-2026/telegraph--unknown.json"
+    "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ],
   "failed": [
-    "the-music-man-off-broadway-2026/broadwayworld--unknown.json",
-    "grace-pervades-west-end-2026/standard--nick-curtis.json",
-    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
-    "grace-pervades-west-end-2026/theupcoming--unknown.json",
-    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "mass-west-end-2026/financialtimes--unknown.json",
-    "mass-west-end-2026/standard--nick-curtis.json",
-    "mass-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/times-uk--clive-davis.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "grace-pervades-west-end-2026/telegraph--unknown.json"
+    "scrapingbee": [
+      "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json"
     ],
-    "archiveToday": [
-      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
-    ],
-    "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
-    ]
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
   },
-  "startTime": "2026-05-11T06:57:14.395Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
-  "log": [
-    {
-      "t": "2026-05-11T08:37:52.899Z",
-      "event": "bb-session",
-      "session": "59987153",
-      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
-    },
-    {
-      "t": "2026-05-11T08:37:53.471Z",
-      "event": "bb-cookie-inject",
-      "domain": "ft.com"
-    }
-  ]
+  "startTime": "2026-05-11T09:07:24.667Z",
+  "lastProcessed": "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+  "log": []
 }
