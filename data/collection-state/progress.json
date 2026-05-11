@@ -409,7 +409,17 @@
     "next-to-normal-2009/newyorker--john-lahr.json",
     "next-to-normal-2009/ap--unknown.json",
     "next-to-normal-2009/neontommy--jason-kehe.json",
-    "rock-of-ages-2009/theater-news-online--unknown.json"
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -421,6 +431,7 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/race-2009/about-entertainment--unknown.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json",
       "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
@@ -438,7 +449,7 @@
     ]
   },
   "startTime": "2026-05-11T09:18:22.267Z",
-  "lastProcessed": "rock-of-ages-2009/theater-news-online--unknown.json",
+  "lastProcessed": "the-farnsworth-invention-2007/variety--charles-isherwood.json",
   "log": [
     {
       "t": "2026-05-11T11:37:35.234Z",
@@ -459,6 +470,17 @@
     },
     {
       "t": "2026-05-11T11:41:33.293Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T12:21:21.393Z",
+      "event": "bb-session",
+      "session": "e7b04f12",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-11T12:21:22.127Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
