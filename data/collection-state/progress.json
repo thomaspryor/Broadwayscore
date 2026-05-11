@@ -63,7 +63,11 @@
     "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
     "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
-    "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json"
+    "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
+    "sticks-and-bones-1972/wsj--charles-isherwood.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "noughts-and-crosses-off-west-end-2026/london-box-office--stuart-king.json",
+    "the-car-man-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1699,7 +1703,9 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
-    "carrie-1988/curtainup--unknown.json"
+    "carrie-1988/curtainup--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1731,7 +1737,9 @@
       "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
       "buena-vista-social-club-2025/new-york-city-theatre--unknown.json",
       "to-kill-a-mockingbird-west-end-2026/timeout--unknown.json",
-      "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json"
+      "to-kill-a-mockingbird-west-end-2026/whatsonstage--unknown.json",
+      "noughts-and-crosses-off-west-end-2026/london-box-office--stuart-king.json",
+      "the-car-man-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1742,7 +1750,9 @@
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
       "data/review-texts/all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
-      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json",
+      "data/review-texts/sticks-and-bones-1972/wsj--charles-isherwood.json",
+      "sticks-and-bones-1972/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1765,7 +1775,8 @@
       "the-scottsboro-boys-2010/about-entertainment--unknown.json",
       "the-receptionist-off-broadway-2026/nytimes--alex-marshall.json",
       "billy-elliot-the-musical-west-end-2027/timeout--unknown.json",
-      "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json"
+      "to-kill-a-mockingbird-west-end-2026/telegraph--unknown.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "stones-in-his-pockets-2001/talkinbroadway--unknown.json",
@@ -1814,7 +1825,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "carrie-1988/curtainup--unknown.json",
+  "lastProcessed": "the-car-man-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -2057,6 +2068,17 @@
       "t": "2026-05-10T18:25:51.267Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T03:18:22.030Z",
+      "event": "bb-session",
+      "session": "6f025e51",
+      "url": "https://www.wsj.com/articles/stuck-in-the-70s-theater-review-of-sticks-and-bones"
+    },
+    {
+      "t": "2026-05-11T03:18:22.463Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
