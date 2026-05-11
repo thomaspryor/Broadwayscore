@@ -3,49 +3,54 @@
   "showId": "my-neighbour-totoro-west-end-2025",
   "showTitle": "My Neighbour Totoro",
   "market": "West End",
-  "fetchedAt": "2026-05-10T00:15:19.418Z",
-  "tier": "Buzzing",
-  "volume": 171,
-  "positivePct": 96,
-  "weekOverWeekPct": -1,
-  "baselineMultiple": 1.06,
+  "fetchedAt": "2026-05-11T09:20:59.093Z",
+  "tier": "Steady",
+  "volume": 24,
+  "positivePct": 100,
+  "weekOverWeekPct": -86,
+  "baselineMultiple": 0.15,
   "platformBreakdown": {
-    "x": 149,
-    "tiktok": 19,
-    "instagram": 3,
+    "x": 0,
+    "tiktok": 20,
+    "instagram": 4,
     "reddit": 0
   },
   "topQuotes": [
-    {
-      "text": "Anyone else a fan of Totoro? 🍃 Alby bought us tickets to the stage show in London for my birthday, and it was the…",
-      "platform": "instagram",
-      "author": "@pixie_jesss",
-      "url": "https://www.instagram.com/p/DX4siDDjr5h/"
-    },
     {
       "text": "This is your sign to go see @My Neighbour Totoro 🤩 As a lifelong Studio Ghibli fan I had the best night, and it's…",
       "platform": "tiktok",
       "author": "@yinrun_hello",
       "url": "https://www.tiktok.com/@yinrun_hello/video/7520662478481739030"
+    },
+    {
+      "text": "AD ✨ My Neighbour Totoro has arrived in London’s West End, and it’s truly magical! 🎭🌿 This is easily one of the most…",
+      "platform": "tiktok",
+      "author": "@kiddoadventures",
+      "url": "https://www.tiktok.com/@kiddoadventures/video/7481581649982131479"
     }
   ],
-  "xTrueVolume": 1,
+  "xTrueVolume": 0,
   "baseline": {
-    "mean": 163.16666666666666,
-    "weeksOfHistory": 6
+    "mean": 143.28571428571428,
+    "weeksOfHistory": 7
   },
-  "costUsd": 0.1255,
+  "costUsd": 0.1195,
   "rawCounts": {
     "reddit": 0,
-    "twitter": 160,
+    "twitter": 0,
     "tiktok": 20,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "x",
+      "error": "Apify run failed (kaitoeasyapi~twitter-x-data-tweet-scraper-pay-per-result-cheapest): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 11,
+    "position": 52,
     "total": 57,
-    "text": "11/57 West End"
+    "text": "52/57 West End"
   },
-  "compositeScore": 164.16
+  "compositeScore": 24
 }
