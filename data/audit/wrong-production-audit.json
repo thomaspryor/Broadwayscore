@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-11T05:27:34.908Z",
+  "timestamp": "2026-05-11T06:34:00.556Z",
   "stats": {
     "totalReviews": 36701,
-    "alreadyFlagged": 16091,
+    "alreadyFlagged": 16092,
     "dateGuardCatches": 102,
     "directorMismatch": 804,
     "tvFilmSignals": 1012,
     "londonSignals": 565,
     "offBroadwaySignals": 444,
-    "yearMismatch": 76,
-    "noPublishDate": 3741
+    "yearMismatch": 75,
+    "noPublishDate": 3740
   },
   "findings": [
     {
@@ -1664,20 +1664,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "beetlejuice-2022",
-      "file": "hoodline--rohit-mehta.json",
-      "score": 73,
-      "publishDate": null,
-      "url": "https://hoodline.com/2024/03/atlanta-s-fox-theatre-transforms-into-death-s-doorway-with-beetlejuice-the-musical-spectacle/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2019 (3x) more than 2022 (0x). 2019 matches production: beetlejuice-2019"
         }
       ]
     },
