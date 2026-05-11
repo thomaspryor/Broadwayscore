@@ -1885,7 +1885,17 @@
     "come-fly-away-2010/nytheatre--martin-denton.json",
     "come-fly-away-2010/backstage--david-sheward.json",
     "looped-2010/ny1--roma-torre.json",
-    "next-fall-2010/backstage--david-sheward.json"
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-little-night-music-2009/backstage--luke-crowe.json",
+    "race-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1932,7 +1942,8 @@
       "all-in-comedy-about-love-2024/timeout--elisabeth-vincentelli.json",
       "data/review-texts/13-2008/about-entertainment--ben-brantley.json",
       "data/review-texts/sticks-and-bones-1972/wsj--charles-isherwood.json",
-      "sticks-and-bones-1972/wsj--charles-isherwood.json"
+      "sticks-and-bones-1972/wsj--charles-isherwood.json",
+      "data/review-texts/race-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2006,7 +2017,7 @@
     ]
   },
   "startTime": "2026-05-10T08:51:12.330Z",
-  "lastProcessed": "next-fall-2010/backstage--david-sheward.json",
+  "lastProcessed": "next-to-normal-2009/newyorker--john-lahr.json",
   "log": [
     {
       "t": "2026-05-10T10:42:37.541Z",
@@ -2260,6 +2271,17 @@
       "t": "2026-05-11T03:18:22.463Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-11T03:54:17.034Z",
+      "event": "bb-session",
+      "session": "2eecddfe",
+      "url": "https://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-11T03:54:17.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
