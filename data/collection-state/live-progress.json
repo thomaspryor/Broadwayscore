@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-05-11T03:42:35.585Z",
+  "updatedAt": "2026-05-11T03:58:07.781Z",
   "processed": 68,
-  "failed": 1736,
-  "successRate": "3.8%",
+  "failed": 1836,
+  "successRate": "3.6%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 21,
     "brightdata": 4,
     "archiveToday": 27,
     "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-05-10T16:27:27.922Z",
-      "event": "bb-session",
-      "session": "9df10f01",
-      "url": "http://www.washingtonpost.com/entertainment/music/review-broadway-musical-of-gho"
-    },
-    {
-      "t": "2026-05-10T16:27:28.862Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-05-10T16:28:02.191Z",
-      "event": "bb-session",
-      "session": "73837f8f",
-      "url": "http://www.washingtonpost.com/entertainment/review-nicky-silvers-terrific-the-ly"
-    },
-    {
-      "t": "2026-05-10T16:28:03.208Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
     {
       "t": "2026-05-10T16:28:37.036Z",
       "event": "bb-session",
@@ -124,6 +102,28 @@
       "t": "2026-05-11T03:18:22.463Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-11T03:54:17.034Z",
+      "event": "bb-session",
+      "session": "2eecddfe",
+      "url": "https://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-11T03:54:17.990Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T03:57:51.573Z",
+      "event": "bb-session",
+      "session": "22b2e218",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-11T03:57:52.655Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
