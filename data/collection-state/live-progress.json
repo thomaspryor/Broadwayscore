@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-11T11:41:21.972Z",
+  "updatedAt": "2026-05-11T11:42:49.811Z",
   "processed": 9,
-  "failed": 197,
-  "successRate": "4.4%",
+  "failed": 207,
+  "successRate": "4.2%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-11T11:37:35.234Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-05-11T11:37:35.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T11:41:32.555Z",
+      "event": "bb-session",
+      "session": "bdb489c5",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-11T11:41:33.293Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

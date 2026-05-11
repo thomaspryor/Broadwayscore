@@ -207,7 +207,17 @@
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -218,7 +228,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/race-2009/about-entertainment--unknown.json"
+      "data/review-texts/race-2009/about-entertainment--unknown.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -235,7 +246,7 @@
     ]
   },
   "startTime": "2026-05-11T09:18:22.267Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
   "log": [
     {
       "t": "2026-05-11T11:37:35.234Z",
@@ -245,6 +256,17 @@
     },
     {
       "t": "2026-05-11T11:37:35.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-11T11:41:32.555Z",
+      "event": "bb-session",
+      "session": "bdb489c5",
+      "url": "http://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-11T11:41:33.293Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
