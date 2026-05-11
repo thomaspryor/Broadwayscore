@@ -187,7 +187,17 @@
     "red-2010/backstage--erik-haagensen.json",
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/nytheatre--martin-denton.json",
-    "come-fly-away-2010/backstage--david-sheward.json"
+    "come-fly-away-2010/backstage--david-sheward.json",
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "a-little-night-music-2009/backstage--luke-crowe.json",
+    "race-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -197,7 +207,9 @@
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/race-2009/about-entertainment--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "becky-shaw-2026/cote-notices--david-cote.json",
@@ -213,6 +225,18 @@
     ]
   },
   "startTime": "2026-05-11T09:18:22.267Z",
-  "lastProcessed": "come-fly-away-2010/backstage--david-sheward.json",
-  "log": []
+  "lastProcessed": "the-philanthropist-2009/backstage--david-sheward.json",
+  "log": [
+    {
+      "t": "2026-05-11T11:37:35.234Z",
+      "event": "bb-session",
+      "session": "f9fb58a1",
+      "url": "https://theater.nytimes.com/2009/12/07/theater/reviews/07race.html?ref=theater"
+    },
+    {
+      "t": "2026-05-11T11:37:35.987Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
