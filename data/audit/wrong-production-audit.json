@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-12T09:43:33.623Z",
+  "timestamp": "2026-05-12T11:47:34.931Z",
   "stats": {
-    "totalReviews": 36738,
-    "alreadyFlagged": 16094,
+    "totalReviews": 36731,
+    "alreadyFlagged": 16096,
     "dateGuardCatches": 102,
     "directorMismatch": 804,
     "tvFilmSignals": 1012,
-    "londonSignals": 565,
+    "londonSignals": 566,
     "offBroadwaySignals": 444,
     "yearMismatch": 75,
-    "noPublishDate": 3780
+    "noPublishDate": 3765
   },
   "findings": [
     {
@@ -31195,6 +31195,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 63,
+      "publishDate": "2026-05-11",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/krapps-last-tape-review-gary-oldman-6tg9xcb2m?srsltid=AfmBOopeq15mgwraiNnA339kzSSFHahMbg-28RYQ3DnADq_uSK5X9-ib",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
