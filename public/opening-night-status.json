@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-12T08:28:39.715Z",
+  "generatedAt": "2026-05-12T08:49:41.471Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,27 +13,27 @@
       "slug": "1536-west-end",
       "thumbnail": "/images/shows/1536-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 80,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
+      "total": 1,
+      "t1": 1,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "T2:1/2",
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -65,10 +65,6 @@
         {
           "name": "Daily Mail",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -91,6 +87,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-12T08:49:41.471Z",
+          "rc": 1,
+          "s": 80,
+          "t1": 1,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
