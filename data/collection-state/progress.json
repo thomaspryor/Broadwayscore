@@ -259,6 +259,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -271,6 +272,7 @@
     ],
     "brightdata": [],
     "archiveToday": [
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": [
@@ -301,6 +303,17 @@
       "t": "2026-05-12T19:10:36.351Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-05-12T19:55:22.239Z",
+      "event": "bb-session",
+      "session": "b28e99a9",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T19:55:23.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
