@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-05T06:02:33.538Z",
+    "generatedAt": "2026-05-12T06:12:09.349Z",
     "threshold": 40,
-    "showsScanned": 1658,
-    "reviewsScanned": 31912,
-    "duplicatesFound": 82,
+    "showsScanned": 1695,
+    "reviewsScanned": 32067,
+    "duplicatesFound": 81,
     "byMethod": {
       "similarity": [
         {
@@ -638,6 +638,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "peter-pan-goes-wrong-2023",
+          "method": "similarity",
+          "similarity": 69,
+          "primaryFile": "nydailynews--new-york-daily-news.json",
+          "primaryOutlet": "New York Daily News",
+          "primaryCritic": "New York Daily News",
+          "secondaryFile": "chicagotribune--chris-jones.json",
+          "secondaryOutlet": "Chicago Tribune",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 83,
+          "secondaryScore": 84,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "present-laughter-2017",
           "method": "similarity",
           "similarity": 95,
@@ -1030,21 +1045,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "escape-to-margaritaville-2018",
-          "method": "similarity+llm",
-          "similarity": 56,
-          "primaryFile": "front-row-center--stanford-friedman.json",
-          "primaryOutlet": "Front Row Center",
-          "primaryCritic": "Stanford Friedman",
-          "secondaryFile": "wolf-entertainment-guide--william-wolf.json",
-          "secondaryOutlet": "Wolf Entertainment Guide",
-          "secondaryCritic": "William Wolf",
-          "primaryScore": 53,
-          "secondaryScore": 77,
-          "scoreDiff": 24,
-          "textSource": "fullText"
-        },
-        {
           "showId": "follies-2011",
           "method": "similarity+llm",
           "similarity": 69,
@@ -1086,21 +1086,6 @@
           "secondaryCritic": "Broadway News",
           "primaryScore": 63,
           "secondaryScore": 64,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "peter-pan-goes-wrong-2023",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "nydailynews--new-york-daily-news.json",
-          "primaryOutlet": "New York Daily News",
-          "primaryCritic": "New York Daily News",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 83,
-          "secondaryScore": 84,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -1483,21 +1468,6 @@
       "primaryScore": 70,
       "secondaryScore": 65,
       "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "escape-to-margaritaville-2018",
-      "method": "similarity+llm",
-      "similarity": 56,
-      "primaryFile": "front-row-center--stanford-friedman.json",
-      "primaryOutlet": "Front Row Center",
-      "primaryCritic": "Stanford Friedman",
-      "secondaryFile": "wolf-entertainment-guide--william-wolf.json",
-      "secondaryOutlet": "Wolf Entertainment Guide",
-      "secondaryCritic": "William Wolf",
-      "primaryScore": 53,
-      "secondaryScore": 77,
-      "scoreDiff": 24,
       "textSource": "fullText"
     },
     {
@@ -2057,7 +2027,7 @@
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
-      "method": "similarity+llm",
+      "method": "similarity",
       "similarity": 69,
       "primaryFile": "nydailynews--new-york-daily-news.json",
       "primaryOutlet": "New York Daily News",
