@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-12T12:37:41.320Z",
+  "timestamp": "2026-05-12T16:51:01.961Z",
   "stats": {
-    "totalReviews": 36729,
+    "totalReviews": 36732,
     "alreadyFlagged": 16095,
     "dateGuardCatches": 102,
     "directorMismatch": 804,
-    "tvFilmSignals": 1012,
+    "tvFilmSignals": 1013,
     "londonSignals": 566,
     "offBroadwaySignals": 444,
     "yearMismatch": 75,
-    "noPublishDate": 3764
+    "noPublishDate": 3765
   },
   "findings": [
     {
@@ -22817,6 +22817,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-receptionist-off-broadway-2026",
+      "file": "vulture--sara-holdren.json",
+      "score": 61,
+      "publishDate": "2026-05-08",
+      "url": "https://www.vulture.com/article/work-is-work-the-receptionist-and-the-fever-reviewed.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
