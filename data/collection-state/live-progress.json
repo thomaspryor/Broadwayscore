@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-05-12T16:41:34.072Z",
-  "processed": 0,
-  "failed": 10,
-  "successRate": "0%",
+  "updatedAt": "2026-05-12T19:10:39.554Z",
+  "processed": 1,
+  "failed": 30,
+  "successRate": "3.2%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-12T19:08:33.032Z",
+      "event": "bb-session",
+      "session": "4cdb735a",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T19:08:33.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-12T19:10:35.465Z",
+      "event": "bb-session",
+      "session": "53e88586",
+      "url": "https://www.thestage.co.uk/reviews/mass-review-donmar-warehouse-london-carrie-cr"
+    },
+    {
+      "t": "2026-05-12T19:10:36.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

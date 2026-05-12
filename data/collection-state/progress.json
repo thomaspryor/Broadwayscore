@@ -1,5 +1,7 @@
 {
-  "processed": [],
+  "processed": [
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+  ],
   "failed": [
     "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
     "1536-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -10,20 +12,69 @@
     "1536-west-end-2026/standard--nick-curtis.json",
     "1536-west-end-2026/theatre-weekly--greg-stewart.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
-    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json"
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/independent--ella-duggan.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--julia-rank.json",
+    "1536-west-end-2026/standard--nick-curtis.json",
+    "1536-west-end-2026/theatre-weekly--greg-stewart.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
+    ],
     "archive": []
   },
   "startTime": "2026-05-12T16:40:03.254Z",
-  "lastProcessed": "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-12T19:08:33.032Z",
+      "event": "bb-session",
+      "session": "4cdb735a",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T19:08:33.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-12T19:10:35.465Z",
+      "event": "bb-session",
+      "session": "53e88586",
+      "url": "https://www.thestage.co.uk/reviews/mass-review-donmar-warehouse-london-carrie-cr"
+    },
+    {
+      "t": "2026-05-12T19:10:36.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
