@@ -2,7 +2,9 @@
   "processed": [
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
-    "krapps-last-tape-godots-todo-list-west-end-2026/timeout-london--andrzej-lukowski.json"
+    "krapps-last-tape-godots-todo-list-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/times-uk--clive-davis.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -48,15 +50,25 @@
     "1536-west-end-2026/london-theatre--julia-rank.json",
     "1536-west-end-2026/standard--nick-curtis.json",
     "1536-west-end-2026/theatre-weekly--greg-stewart.json",
-    "1536-west-end-2026/times-uk--clive-davis.json"
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "krapps-last-tape-godots-todo-list-west-end-2026/timeout-london--andrzej-lukowski.json"
+      "krapps-last-tape-godots-todo-list-west-end-2026/timeout-london--andrzej-lukowski.json",
+      "krapps-last-tape-godots-todo-list-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -64,6 +76,8 @@
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "krapps-last-tape-godots-todo-list-west-end-2026/times-uk--clive-davis.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [],
@@ -71,12 +85,13 @@
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-12T09:15:35.736Z",
-  "lastProcessed": "krapps-last-tape-godots-todo-list-west-end-2026/timeout-london--andrzej-lukowski.json",
+  "lastProcessed": "mass-west-end-2026/financialtimes--unknown.json",
   "log": [
     {
       "t": "2026-05-12T09:47:13.671Z",
@@ -86,6 +101,17 @@
     },
     {
       "t": "2026-05-12T09:47:14.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-12T11:15:35.822Z",
+      "event": "bb-session",
+      "session": "c61a7526",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T11:15:36.516Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
