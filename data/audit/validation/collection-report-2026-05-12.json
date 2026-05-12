@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-12T19:16:55.324Z",
+  "runDate": "2026-05-12T19:58:25.827Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 219,
+    "processed": 9,
+    "failed": 238,
     "skipped": 0,
-    "successRate": "3.5%"
+    "successRate": "3.6%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 5,
+    "tier1Attempts": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 6,
-    "tier2Success": 6,
+    "tier2Attempts": 5,
+    "tier2Success": 5,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 2,
     "tier4Success": 0,
     "totalFailed": 208,
-    "scrapingBeePageCredits": 6,
+    "scrapingBeePageCredits": 5,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -51,9 +51,10 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "the-lost-boys-2026/theatre-reviews-limited--david-roberts.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-    "moulin-rouge-the-musical-west-end-2021/standard--katie-rosseinsky.json",
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
     "company-2021/theatrely--andrew-martini.json",
@@ -71,8 +72,27 @@
     "1536-west-end-2026/theatre-weekly--greg-stewart.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/independent--ella-duggan.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--julia-rank.json",
+    "1536-west-end-2026/standard--nick-curtis.json",
+    "1536-west-end-2026/theatre-weekly--greg-stewart.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json",
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "a-midsummer-nights-dream-globe-west-end-2026/standard--nick-curtissurprised.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -283,13 +303,14 @@
   ],
   "tierDetails": {
     "playwright": [
+      "the-lost-boys-2026/theatre-reviews-limited--david-roberts.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "moulin-rouge-the-musical-west-end-2021/standard--katie-rosseinsky.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -299,8 +320,12 @@
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
+    ],
+    "archive": [
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
