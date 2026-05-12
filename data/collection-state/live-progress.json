@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-12T19:53:21.034Z",
+  "updatedAt": "2026-05-12T19:57:24.285Z",
   "processed": 1,
-  "failed": 40,
-  "successRate": "2.4%",
+  "failed": 50,
+  "successRate": "2.0%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 2,
     "archive": 0
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-12T19:08:33.032Z",
@@ -36,6 +36,17 @@
       "t": "2026-05-12T19:10:36.351Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-05-12T19:55:22.239Z",
+      "event": "bb-session",
+      "session": "b28e99a9",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T19:55:23.251Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
