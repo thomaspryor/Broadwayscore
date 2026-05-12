@@ -1,6 +1,9 @@
 {
   "processed": [
-    "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "the-lost-boys-2026/theatre-reviews-limited--david-roberts.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
   ],
   "failed": [
     "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
@@ -32,18 +35,29 @@
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
     "mass-west-end-2026/times-uk--clive-davis.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "mass-west-end-2026/whatsonstage--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+    "a-midsummer-nights-dream-globe-west-end-2026/standard--nick-curtissurprised.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-lost-boys-2026/theatre-reviews-limited--david-roberts.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -52,7 +66,7 @@
     "archive": []
   },
   "startTime": "2026-05-12T16:40:03.254Z",
-  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "lastProcessed": "mj-2022/broadwaynews--charles-isherwood.json",
   "log": [
     {
       "t": "2026-05-12T19:08:33.032Z",
