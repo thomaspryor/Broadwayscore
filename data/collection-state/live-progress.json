@@ -6,7 +6,7 @@
   "tierBreakdown": {
     "playwright": 17,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 0,
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-05-12T09:47:14.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-12T11:15:35.822Z",
+      "event": "bb-session",
+      "session": "c61a7526",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T11:15:36.516Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
