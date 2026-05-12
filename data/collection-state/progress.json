@@ -15,26 +15,63 @@
     "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
     "hamlet-off-broadway-2026/here--unknown.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/independent--ella-duggan.json",
+    "1536-west-end-2026/london-box-office--unknown.json",
+    "1536-west-end-2026/london-theatre--julia-rank.json",
+    "1536-west-end-2026/standard--nick-curtis.json",
+    "1536-west-end-2026/theatre-weekly--greg-stewart.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-12T09:15:35.736Z",
-  "lastProcessed": "mercury-off-broadway-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-12T09:47:13.671Z",
+      "event": "bb-session",
+      "session": "45ac8e4b",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-12T09:47:14.218Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
