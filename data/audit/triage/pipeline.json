@@ -1,7 +1,7 @@
 {
   "system": "pipeline",
   "status": "warn",
-  "lastChecked": "2026-05-11T08:12:16.476Z",
+  "lastChecked": "2026-05-12T07:59:24.432Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,32 +9,32 @@
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 5h ago"
     },
     {
       "name": "Pipeline: update-show-status",
-      "status": "pass",
-      "message": "Last success 1d ago"
+      "status": "warn",
+      "message": "Last success 2d ago (threshold: 2d)"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 3h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 5d ago"
+      "message": "Last success 6d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 57d ago (threshold: 10d)"
+      "message": "Last success 58d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
       "status": "warn",
-      "message": "Last success 12d ago (threshold: 2d)"
+      "message": "Last success 13d ago (threshold: 2d)"
     }
   ]
 }

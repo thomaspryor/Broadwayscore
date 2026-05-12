@@ -1,7 +1,7 @@
 {
   "system": "freshness",
-  "status": "pass",
-  "lastChecked": "2026-05-11T08:12:16.475Z",
+  "status": "warn",
+  "lastChecked": "2026-05-12T07:59:24.432Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,13 +13,13 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "pass",
-      "message": "1h old"
+      "status": "warn",
+      "message": "1d old (warn threshold: 1d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "5d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -29,7 +29,7 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "12h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -39,27 +39,27 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "2d old"
+      "status": "warn",
+      "message": "3d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "3h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "22h old"
     }
   ]
 }
