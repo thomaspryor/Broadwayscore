@@ -31,7 +31,8 @@
     "mass-west-end-2026/financialtimes--unknown.json",
     "mass-west-end-2026/standard--nick-curtis.json",
     "mass-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/times-uk--clive-davis.json"
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,7 +52,7 @@
     "archive": []
   },
   "startTime": "2026-05-12T16:40:03.254Z",
-  "lastProcessed": "mass-west-end-2026/times-uk--clive-davis.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-12T19:08:33.032Z",
@@ -63,6 +64,17 @@
       "t": "2026-05-12T19:08:33.858Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-12T19:10:35.465Z",
+      "event": "bb-session",
+      "session": "53e88586",
+      "url": "https://www.thestage.co.uk/reviews/mass-review-donmar-warehouse-london-carrie-cr"
+    },
+    {
+      "t": "2026-05-12T19:10:36.351Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
