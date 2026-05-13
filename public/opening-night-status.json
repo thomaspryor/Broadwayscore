@@ -1,7 +1,491 @@
 {
-  "generatedAt": "2026-05-12T19:26:23.538Z",
+  "generatedAt": "2026-05-13T06:37:17.249Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "sherlock-holmes-west-end-2026",
+      "title": "Sherlock Holmes",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "play",
+      "openingDate": "2026-05-13",
+      "status": "announced",
+      "slug": "sherlock-holmes-west-end",
+      "thumbnail": "/images/shows/sherlock-holmes-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 7,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "this-is-not-about-me-59e59-theaters-off-broadway-2026",
+      "title": "THIS IS NOT ABOUT ME. (59E59 Theaters)",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-05-13",
+      "status": "previews",
+      "slug": "this-is-not-about-me-59e59-theaters-off-broadway",
+      "thumbnail": "/images/shows/this-is-not-about-me-59e59-theaters-off-broadway-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": null,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 5,
+      "siteFileExists": true,
+      "total": 0,
+      "t1": 0,
+      "t2": 0,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "0/12 total",
+          "T1:0/3",
+          "T2:0/3",
+          "hi-conf:0/8"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 12,
+          "minT1": 3,
+          "minT2": 3,
+          "minHiConf": 8
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Vulture",
+          "isDualMarket": false
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Hollywood Reporter",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New Yorker",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Wall Street Journal",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Washington Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Los Angeles Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Newsday",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Broadway News",
+          "isDualMarket": false
+        },
+        {
+          "name": "About Entertainment",
+          "isDualMarket": false
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "Entertainment Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
+          "isDualMarket": false
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "amNewYork",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Stage Review",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Tribune",
+          "isDualMarket": false
+        },
+        {
+          "name": "USA Today",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Daily News",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheWrap",
+          "isDualMarket": false
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Daily Beast",
+          "isDualMarket": false
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theater",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatrely",
+          "isDualMarket": false
+        },
+        {
+          "name": "Talkin' Broadway",
+          "isDualMarket": false
+        },
+        {
+          "name": "Cititour",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slant Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "Lighting & Sound America",
+          "isDualMarket": false
+        },
+        {
+          "name": "The New York Sun",
+          "isDualMarket": false
+        },
+        {
+          "name": "Billboard",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Scene",
+          "isDualMarket": false
+        },
+        {
+          "name": "Village Voice",
+          "isDualMarket": false
+        },
+        {
+          "name": "IndieWire",
+          "isDualMarket": false
+        },
+        {
+          "name": "NorthJersey.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Pizzazz",
+          "isDualMarket": false
+        },
+        {
+          "name": "CurtainUp",
+          "isDualMarket": false
+        },
+        {
+          "name": "DC Theatre Scene",
+          "isDualMarket": false
+        },
+        {
+          "name": "NY1",
+          "isDualMarket": false
+        },
+        {
+          "name": "Front Row Center",
+          "isDualMarket": false
+        },
+        {
+          "name": "NJ.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "HuffPost",
+          "isDualMarket": false
+        },
+        {
+          "name": "NBC New York",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time",
+          "isDualMarket": false
+        },
+        {
+          "name": "Backstage",
+          "isDualMarket": false
+        },
+        {
+          "name": "Bloomberg",
+          "isDualMarket": false
+        },
+        {
+          "name": "WNYC",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "DC Theater Arts",
+          "isDualMarket": false
+        },
+        {
+          "name": "Rolling Stone",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Philadelphia Inquirer",
+          "isDualMarket": false
+        },
+        {
+          "name": "Vox",
+          "isDualMarket": false
+        },
+        {
+          "name": "Broadway Blog",
+          "isDualMarket": false
+        },
+        {
+          "name": "Exeunt Magazine",
+          "isDualMarket": false
+        },
+        {
+          "name": "Parade",
+          "isDualMarket": false
+        },
+        {
+          "name": "People",
+          "isDualMarket": false
+        },
+        {
+          "name": "Slate",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theater Life",
+          "isDualMarket": false
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "CBS News",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "Chicago Sun-Times",
+          "isDualMarket": false
+        },
+        {
+          "name": "Theatre Weekly",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator  (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        },
+        {
+          "name": "Everything Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ]
+    },
     {
       "id": "1536-west-end-2026",
       "title": "1536",
@@ -12,25 +496,24 @@
       "status": "open",
       "slug": "1536-west-end",
       "thumbnail": "/images/shows/1536-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 80,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "siteScore": 73.7,
+      "liveScore": 74,
+      "scoreDrift": 0.29999999999999716,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
-      "t2": 0,
+      "total": 7,
+      "t1": 5,
+      "t2": 2,
       "t3": 0,
-      "positive": 1,
-      "mixed": 0,
-      "negative": 0,
+      "positive": 5,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:1/2",
+          "7/8 total",
+          "T1:2/3",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -100,6 +583,18 @@
           "p": 1,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-13T06:37:17.249Z",
+          "rc": 7,
+          "s": 73.7,
+          "t1": 5,
+          "t2": 2,
+          "t3": 0,
+          "p": 5,
+          "m": 1,
+          "n": 1,
           "bc": "waiting"
         }
       ]
@@ -499,22 +994,22 @@
       "slug": "krapps-last-tape-godots-todo-list-west-end",
       "thumbnail": "/images/shows/krapps-last-tape-godots-todo-list-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 74,
+      "liveScore": 75,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 2,
       "t2": 1,
-      "t3": 0,
-      "positive": 2,
+      "t3": 1,
+      "positive": 3,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:1/3",
           "hi-conf:3/6"
         ],
@@ -591,6 +1086,18 @@
           "t2": 1,
           "t3": 0,
           "p": 2,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-13T06:37:17.249Z",
+          "rc": 4,
+          "s": 75,
+          "t1": 2,
+          "t2": 1,
+          "t3": 1,
+          "p": 3,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -700,70 +1207,6 @@
   ],
   "upcoming": [
     {
-      "id": "sherlock-holmes-west-end-2026",
-      "title": "Sherlock Holmes",
-      "market": "west-end",
-      "category": "west-end",
-      "type": "play",
-      "openingDate": "2026-05-13",
-      "status": "announced",
-      "slug": "sherlock-holmes-west-end",
-      "thumbnail": "/images/shows/sherlock-holmes-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
-    {
-      "id": "this-is-not-about-me-59e59-theaters-off-broadway-2026",
-      "title": "THIS IS NOT ABOUT ME. (59E59 Theaters)",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "play",
-      "openingDate": "2026-05-13",
-      "status": "previews",
-      "slug": "this-is-not-about-me-59e59-theaters-off-broadway",
-      "thumbnail": "/images/shows/this-is-not-about-me-59e59-theaters-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-THIS-IS-NOT-ABOUT-ME-59E59-Theaters-Opens-on-Broadway-20260513",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/ThisIsNotAboutMe59e59Theaters2026.html",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
       "id": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
       "title": "El Último Sueño de Frida y Diego",
       "market": "broadway",
@@ -773,7 +1216,7 @@
       "status": "upcoming",
       "slug": "el-ultimo-sueno-de-frida-y-diego-off-broadway",
       "thumbnail": "/images/shows/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -812,7 +1255,7 @@
       "status": "upcoming",
       "slug": "the-guy-who-didnt-like-musicals-west-end",
       "thumbnail": "/images/shows/the-guy-who-didnt-like-musicals-west-end-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -837,7 +1280,7 @@
       "status": "previews",
       "slug": "lauder-scotlands-kilted-king-of-broadway-off-broadway",
       "thumbnail": "/images/shows/lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -876,7 +1319,7 @@
       "status": "upcoming",
       "slug": "end-of-the-rainbow-west-end",
       "thumbnail": "/images/shows/end-of-the-rainbow-west-end-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -901,7 +1344,7 @@
       "status": "upcoming",
       "slug": "senior-dance-production-off-broadway",
       "thumbnail": "/images/shows/senior-dance-production-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -940,7 +1383,7 @@
       "status": "upcoming",
       "slug": "the-maids-off-broadway",
       "thumbnail": "/images/shows/the-maids-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -979,7 +1422,7 @@
       "status": "previews",
       "slug": "the-emporium-off-broadway",
       "thumbnail": "/images/shows/the-emporium-off-broadway-2025/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1018,7 +1461,7 @@
       "status": "previews",
       "slug": "equus-west-end",
       "thumbnail": "/images/shows/equus-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1043,7 +1486,7 @@
       "status": "upcoming",
       "slug": "celebrity-autobiography",
       "thumbnail": "/images/shows/celebrity-autobiography-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1082,7 +1525,7 @@
       "status": "previews",
       "slug": "care-west-end",
       "thumbnail": "/images/shows/care-west-end-2026/thumbnail.webp",
-      "daysUntil": 7,
+      "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1094,6 +1537,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026",
+      "title": "Soledad Barrio & Noche Flamenca: Aqua Fresca",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "special",
+      "openingDate": "2026-05-20",
+      "status": "upcoming",
+      "slug": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway",
+      "thumbnail": "/images/shows/soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-Soledad-Barrio-Noche-Flamenca-Aqua-Fresca-Opens-on-Broadway-20260520",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/SoledadBarrioNocheFlamencaAquaFresca2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     }
