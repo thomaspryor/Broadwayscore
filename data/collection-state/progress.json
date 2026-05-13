@@ -165,6 +165,7 @@
     "browserbase": [
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json"
     ],
     "directCookies": [],
@@ -177,6 +178,7 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
@@ -207,6 +209,17 @@
     },
     {
       "t": "2026-05-13T10:27:08.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-13T11:08:02.825Z",
+      "event": "bb-session",
+      "session": "18de49f4",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-13T11:08:03.838Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
