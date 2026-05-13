@@ -1761,12 +1761,29 @@ async function resolveTodayTixUrls(existing) {
   console.log(`\n[TodayTix] Resolving ${toResolve.length} missing URLs...`);
   let resolved = 0;
 
+  // Revert an entry to platform='show website' when no TodayTix URL is available.
+  // validate-data.js iterates {lottery, digitalRush}; both error on
+  // known-platform-without-URL. Reverting downgrades to a warning and keeps
+  // the entry visible. Also scrubs TodayTix mentions from instructions so the
+  // UI doesn't show "Enter on show website" next to "via TodayTix app".
+  const revertToShowWebsite = (showId, field, reason) => {
+    if (field !== 'lottery' && field !== 'digitalRush') return; // rush keeps classification
+    const entry = existing.shows[showId][field];
+    entry.platform = 'show website';
+    if (typeof entry.instructions === 'string' && /todaytix/i.test(entry.instructions)) {
+      entry.instructions = entry.instructions.replace(/\s*(?:via |on |through )?todaytix(?:\s+app)?/gi, '').replace(/\s+/g, ' ').trim();
+      if (!entry.instructions) delete entry.instructions;
+    }
+    console.log(`  ✗ ${showId}.${field}: ${reason} — reverted platform to "show website"`);
+  };
+
   for (const { showId, field, title, location, region } of toResolve) {
     try {
       const url = `https://api.todaytix.com/api/v2/shows?query=${encodeURIComponent(cleanSearchTitle(title))}&location=${location}&limit=3`;
       const resp = await fetch(url);
       if (!resp.ok) {
         console.warn(`  [TodayTix] API error for "${title}": ${resp.status}`);
+        revertToShowWebsite(showId, field, `TodayTix API ${resp.status} for "${title}"`);
         continue;
       }
       const data = await resp.json();
@@ -1782,14 +1799,8 @@ async function resolveTodayTixUrls(existing) {
         existing.shows[showId][field].url = todaytixUrl;
         resolved++;
         console.log(`  ✓ ${showId}.${field}: ${todaytixUrl} (matched "${match.displayName}")`);
-      } else if (field === 'lottery') {
-        // No TodayTix match for a lottery — revert platform to 'show website'
-        // so validate-data.js emits a warning rather than an error on the
-        // 'TodayTix without URL' rule. LLM scrapers (twopenny) sometimes
-        // misclassify a venue-run lottery as TodayTix when no API listing
-        // exists (e.g. Operation Mincemeat WE post-Broadway transfer).
-        existing.shows[showId][field].platform = 'show website';
-        console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}" — reverted platform to "show website"`);
+      } else if (field === 'lottery' || field === 'digitalRush') {
+        revertToShowWebsite(showId, field, `no TodayTix match for "${title}"`);
       } else {
         console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}"`);
       }
@@ -1798,6 +1809,7 @@ async function resolveTodayTixUrls(existing) {
       await new Promise(r => setTimeout(r, 200));
     } catch (e) {
       console.warn(`  [TodayTix] Failed for "${title}": ${e.message}`);
+      revertToShowWebsite(showId, field, `TodayTix lookup threw for "${title}": ${e.message}`);
     }
   }
   return resolved;
