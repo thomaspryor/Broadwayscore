@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-13T06:37:17.249Z",
+  "generatedAt": "2026-05-13T07:39:44.766Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -109,7 +109,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-05-13",
-      "status": "previews",
+      "status": "open",
       "slug": "this-is-not-about-me-59e59-theaters-off-broadway",
       "thumbnail": "/images/shows/this-is-not-about-me-59e59-theaters-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1298,6 +1298,45 @@
         "talkingBroadway": {
           "pass": null,
           "detail": "Verify manually: https://www.talkinbroadway.com/page/world/LauderScotlandsKiltedKingOfBroadway2026.html",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "title": "The Mystery of Edwin Drood (AMT Theater)",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "musical",
+      "openingDate": "2026-05-14",
+      "status": "previews",
+      "slug": "the-mystery-of-edwin-drood-amt-theater-off-broadway",
+      "thumbnail": null,
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived. Expected: https://www.broadwayworld.com/article/Review-Roundup-The-Mystery-of-Edwin-Drood-AMT-Theater-Opens-on-Broadway-20260514",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Verify manually: https://www.talkinbroadway.com/page/world/TheMysteryOfEdwinDroodAmtTheater2026.html",
           "warn": true
         }
       },
