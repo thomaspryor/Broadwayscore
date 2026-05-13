@@ -1782,6 +1782,14 @@ async function resolveTodayTixUrls(existing) {
         existing.shows[showId][field].url = todaytixUrl;
         resolved++;
         console.log(`  ✓ ${showId}.${field}: ${todaytixUrl} (matched "${match.displayName}")`);
+      } else if (field === 'lottery') {
+        // No TodayTix match for a lottery — revert platform to 'show website'
+        // so validate-data.js emits a warning rather than an error on the
+        // 'TodayTix without URL' rule. LLM scrapers (twopenny) sometimes
+        // misclassify a venue-run lottery as TodayTix when no API listing
+        // exists (e.g. Operation Mincemeat WE post-Broadway transfer).
+        existing.shows[showId][field].platform = 'show website';
+        console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}" — reverted platform to "show website"`);
       } else {
         console.log(`  ✗ ${showId}.${field}: no TodayTix match for "${title}"`);
       }
