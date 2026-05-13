@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-05-12T07:59:24.432Z",
+  "lastChecked": "2026-05-13T08:02:22.081Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -23,13 +23,13 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "40 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "2 empty cast: Aladdin, Wicked"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 17685 vs baseline 17686"
+      "message": "Reviews dropped: 17683 vs baseline 17684"
     }
   ]
 }
