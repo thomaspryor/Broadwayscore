@@ -185,35 +185,73 @@ jobs:
         id: validate
         run: node scripts/validate-data.js
 
-      # Audit trail when validation blocks the commit. Without this, the
-      # discovery output (new shows, status transitions) was visible only
-      # in scrollback and lost if the run was retried. Writes a Markdown
-      # summary directly to the Actions run page so the operator can see
-      # what discovery found and whether the failure was pre-existing.
+      # Audit trail when validation blocks the commit. Two outputs:
+      #   1. $GITHUB_STEP_SUMMARY — at-a-glance diagnosis on the run page
+      #   2. data/audit/discovery-blocked/<runId>.json — persistent record that
+      #      survives run retention (90d default) and is greppable from
+      #      operator's local checkout. Pushed via push-core-data below
+      #      (audit/ files are in the private core-data repo).
+      # Defensive: variables piped through env to avoid YAML interpolation
+      # in shell heredocs breaking on exotic characters in show slugs.
       - name: Audit discovery on validation failure
+        id: audit
         if: always() && steps.validate.outcome == 'failure'
+        env:
+          PRE_VALIDATION: ${{ steps.pre-validate.outputs.status }}
+          NEW_SHOWS_COUNT: ${{ steps.discover.outputs.new_shows_count }}
+          NEW_SLUGS: ${{ steps.discover.outputs.new_slugs }}
+          OPENED_COUNT: ${{ steps.status-update.outputs.opened_count }}
+          OPENED_SLUGS: ${{ steps.status-update.outputs.opened_slugs }}
+          WE_NEW_COUNT: ${{ steps.discover.outputs.we_new_count }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
         run: |
+          DIAGNOSIS_KIND="discovery-introduced"
+          DIAGNOSIS_TEXT="Discovery introduced a **new** validation error. Inspect the discover step output and validate-data.js logs."
+          if [ "${PRE_VALIDATION}" = "broken" ]; then
+            DIAGNOSIS_KIND="pre-existing"
+            DIAGNOSIS_TEXT="Validation was **already broken before discovery**. Discovery itself succeeded; the commit was blocked by a pre-existing data error unrelated to show discovery. Fix the failing file (lottery-rush.json, commercial.json, shows.json, etc.) — the next scheduled run will commit naturally."
+          fi
+
           {
             echo "## Validation blocked commit"
             echo ""
-            echo "**Pre-discovery validation:** \`${{ steps.pre-validate.outputs.status }}\`"
+            echo "**Pre-discovery validation:** \`${PRE_VALIDATION}\`"
             echo ""
-            if [ "${{ steps.pre-validate.outputs.status }}" = "broken" ]; then
-              echo "Validation was **already broken before discovery**. Discovery itself succeeded; the commit was blocked by a pre-existing data error unrelated to show discovery. Fix the failing file (lottery-rush.json, commercial.json, shows.json, etc.) — the next scheduled run will commit naturally."
-            else
-              echo "Discovery introduced a **new** validation error. Inspect the discover step output and validate-data.js logs."
-            fi
+            echo "${DIAGNOSIS_TEXT}"
             echo ""
             echo "### Discovery output (would have been committed)"
             echo ""
             echo "| Field | Value |"
             echo "| --- | --- |"
-            echo "| new_shows_count | \`${{ steps.discover.outputs.new_shows_count }}\` |"
-            echo "| new_slugs | \`${{ steps.discover.outputs.new_slugs }}\` |"
-            echo "| opened_count | \`${{ steps.status-update.outputs.opened_count }}\` |"
-            echo "| opened_slugs | \`${{ steps.status-update.outputs.opened_slugs }}\` |"
-            echo "| we_new_count | \`${{ steps.discover.outputs.we_new_count }}\` |"
+            echo "| new_shows_count | \`${NEW_SHOWS_COUNT}\` |"
+            echo "| new_slugs | \`${NEW_SLUGS}\` |"
+            echo "| opened_count | \`${OPENED_COUNT}\` |"
+            echo "| opened_slugs | \`${OPENED_SLUGS}\` |"
+            echo "| we_new_count | \`${WE_NEW_COUNT}\` |"
           } >> "$GITHUB_STEP_SUMMARY"
+
+          # Persistent JSON for grep-ability after run retention expires.
+          mkdir -p data/audit/discovery-blocked
+          AUDIT_FILE="data/audit/discovery-blocked/${RUN_ID}.json"
+          DIAGNOSIS_KIND="${DIAGNOSIS_KIND}" AUDIT_FILE="${AUDIT_FILE}" node -e '
+            const fs = require("fs");
+            const out = {
+              runId: process.env.RUN_ID,
+              runUrl: "https://github.com/" + process.env.REPO + "/actions/runs/" + process.env.RUN_ID,
+              completedAt: new Date().toISOString(),
+              diagnosis: process.env.DIAGNOSIS_KIND,
+              preValidationStatus: process.env.PRE_VALIDATION,
+              newShowsCount: process.env.NEW_SHOWS_COUNT || "",
+              newSlugs: process.env.NEW_SLUGS || "",
+              openedCount: process.env.OPENED_COUNT || "",
+              openedSlugs: process.env.OPENED_SLUGS || "",
+              weNewCount: process.env.WE_NEW_COUNT || ""
+            };
+            fs.writeFileSync(process.env.AUDIT_FILE, JSON.stringify(out, null, 2) + "\n");
+            console.log("Wrote audit:", process.env.AUDIT_FILE);
+          '
+          echo "audit_file=${AUDIT_FILE}" >> "$GITHUB_OUTPUT"
 
       # Step 4: Check for any changes
       - name: Check for changes
@@ -380,6 +418,44 @@ jobs:
             git commit -m "data: Queue closing TBD shows for commercial research"
             bash scripts/lib/push-with-retry.sh
           fi
+
+      # Push the audit JSON to the private core-data repo when validate
+      # blocked the commit. push-core-data (below) only syncs top-level
+      # JSONs (shows.json, reviews.json, etc.) and won't carry audit/
+      # subdirectories. Using gh api for a targeted single-file commit
+      # avoids racing with concurrent core-data writers and dodges the
+      # "validate failed so nothing pushes" gate. Pattern from
+      # memory/feedback_gh_api_emergency_commit.md.
+      - name: Push discovery-blocked audit to private repo
+        if: always() && steps.validate.outcome == 'failure' && steps.audit.outputs.audit_file != ''
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+          AUDIT_FILE: ${{ steps.audit.outputs.audit_file }}
+        run: |
+          if [ ! -f "${AUDIT_FILE}" ]; then
+            echo "::warning::Audit file not found: ${AUDIT_FILE}"
+            exit 0
+          fi
+          REMOTE_PATH="audit/discovery-blocked/${RUN_ID}.json"
+          CONTENT_B64=$(base64 < "${AUDIT_FILE}" | tr -d '\n')
+          # Check if file already exists (re-run of same run_id), retrieve sha if so
+          EXISTING_SHA=$(gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" --jq '.sha // empty' 2>/dev/null || true)
+          if [ -n "${EXISTING_SHA}" ]; then
+            gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" \
+              --method PUT \
+              -f "message=audit: discovery blocked by validate-data (run ${RUN_ID})" \
+              -f "content=${CONTENT_B64}" \
+              -f "sha=${EXISTING_SHA}" \
+              --silent
+          else
+            gh api "repos/thomaspryor/broadway-scorecard-data/contents/${REMOTE_PATH}" \
+              --method PUT \
+              -f "message=audit: discovery blocked by validate-data (run ${RUN_ID})" \
+              -f "content=${CONTENT_B64}" \
+              --silent
+          fi
+          echo "Pushed audit: thomaspryor/broadway-scorecard-data:${REMOTE_PATH}"
 
       - name: Push aggregator-archive to private repo
         if: always()
@@ -1184,45 +1260,47 @@ jobs:
           title: 'Update Shows Failed'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
+      # Streak counted over the last 10 scheduled runs (not 5, not workflow_dispatch).
+      # Why filter to schedule: during 05-09 incident, 4 manual workflow_dispatch
+      # retries interleaved with scheduled failures and would have buried the
+      # failing run out of a 5-run window, suppressing the alert entirely. Why 10:
+      # gives 2x headroom while still being recent enough that a streak signals
+      # an ongoing condition, not historical noise.
       - name: Check consecutive failures
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Count recent consecutive failures
-          FAILURES=$(gh run list --workflow=update-show-status.yml --limit=5 --json conclusion -q '[.[] | select(.conclusion == "failure")] | length')
-          echo "Recent failures: $FAILURES out of last 5 runs"
-          echo "failure_count=$FAILURES" >> $GITHUB_OUTPUT
+          FAILURES=$(gh run list --workflow=update-show-status.yml --event=schedule --limit=10 \
+            --json conclusion -q '[.[] | select(.conclusion == "failure")] | length')
+          echo "Recent failures: $FAILURES out of last 10 scheduled runs"
+          echo "failure_count=$FAILURES" >> "$GITHUB_OUTPUT"
 
-      # Resolve the actual failing step from the most recent failed run.
-      # Previously the alert blamed "Show Discovery Pipeline" / "Broadway.org
-      # scraper" regardless of where the workflow died — 8 consecutive failures
-      # in early May 2026 were actually validate-data.js choking on unrelated
-      # lottery-rush.json + duplicate-show errors. The wrong-scent alert wasted
-      # operator time. Now the alert names the failing step and links to it.
+      # Resolve the actual failing step from THIS run. Previously this used
+      # `gh run list --status=failure --limit=5 --jq '.[0]'` which coincidentally
+      # returned the in-flight current run, but the design was misleading — and
+      # `[0]` could surface a prior failure if a future caller changed the
+      # surrounding context. github.run_id is deterministic and self-documenting.
+      # Note: the jobs API for the current in-flight run still surfaces the
+      # already-finished `update-shows` job (verified against real failed runs).
       - name: Resolve failing step + run URL
         id: step-info
-        if: steps.check.outputs.failure_count >= 3
+        if: fromJSON(steps.check.outputs.failure_count) >= 3
         env:
           GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
         run: |
-          LATEST=$(gh run list --workflow=update-show-status.yml --limit=5 --status=failure --json databaseId,url --jq '.[0]')
-          RUN_ID=$(echo "$LATEST" | jq -r '.databaseId // empty')
-          RUN_URL=$(echo "$LATEST" | jq -r '.url // empty')
-          if [ -z "$RUN_ID" ]; then
-            echo "failing_step=unknown" >> $GITHUB_OUTPUT
-            echo "run_url=https://github.com/${{ github.repository }}/actions/workflows/update-show-status.yml" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-          FAILING_STEP=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/jobs" \
-            --jq '[.jobs[] | select(.conclusion=="failure") | .steps[]? | select(.conclusion=="failure")][0].name // "unknown"')
-          echo "failing_step=$FAILING_STEP" >> $GITHUB_OUTPUT
-          echo "run_url=$RUN_URL" >> $GITHUB_OUTPUT
-          echo "Most recent failing step: $FAILING_STEP"
-          echo "Most recent failed run: $RUN_URL"
+          RUN_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          FAILING_STEP=$(gh api "repos/${REPO}/actions/runs/${RUN_ID}/jobs" \
+            --jq '[.jobs[] | select(.name=="update-shows") | .steps[]? | select(.conclusion=="failure")][0].name // "unknown"')
+          echo "failing_step=${FAILING_STEP}" >> "$GITHUB_OUTPUT"
+          echo "run_url=${RUN_URL}" >> "$GITHUB_OUTPUT"
+          echo "Failing step in update-shows job: ${FAILING_STEP}"
+          echo "Run URL: ${RUN_URL}"
 
       - name: Send alert on 3+ consecutive failures
-        if: steps.check.outputs.failure_count >= 3
+        if: fromJSON(steps.check.outputs.failure_count) >= 3
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -1236,29 +1314,32 @@ jobs:
             const { sendAlert } = require("./scripts/lib/discord-notify.js");
             const count = process.env.FAILURE_COUNT;
             const step = process.env.FAILING_STEP || "unknown";
-            const runUrl = process.env.RUN_URL || "";
+            const runUrl = process.env.RUN_URL || undefined;
             const preValidation = process.env.PRE_VALIDATION_STATUS || "";
 
+            // Match order matters: Pre-validate FIRST because /Validate data/i
+            // would also match "Pre-validate existing data". Both rules use
+            // anchored ^...$ to keep matching deterministic.
             let hint;
-            if (/Validate data/i.test(step)) {
+            if (/^Pre-validate /i.test(step)) {
+              hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (not just a non-zero exit). continue-on-error should swallow a clean exit-1, so a real failure here means an uncaught throw or process crash.";
+            } else if (/^Validate data$/i.test(step)) {
               if (preValidation === "broken") {
-                hint = "Pre-existing data error blocked the commit. Discovery itself succeeded — a peripheral file (lottery-rush.json, commercial.json, shows.json) has an error that predates this run. Open the run summary for the diagnosis.";
+                hint = "Pre-existing data error blocked the commit. Discovery itself succeeded — a peripheral file (lottery-rush.json, commercial.json, shows.json) has an error that predates this run. Open the run summary or data/audit/discovery-blocked/ for the diagnosis.";
               } else {
                 hint = "validate-data.js rejected the discovered shows. Discovery likely succeeded; commit blocked. Check the run logs for the specific error (often a duplicate show ID or a missing required field).";
               }
-            } else if (/Discover new shows/i.test(step)) {
+            } else if (/^Discover new shows$/i.test(step)) {
               hint = "discover-new-shows.js itself failed. Check Broadway.org availability and ScrapingBee/Bright Data credits.";
-            } else if (/Update show statuses/i.test(step)) {
+            } else if (/^Update show statuses$/i.test(step)) {
               hint = "update-show-status.js (status transitions) failed before discovery ran. Check ShowScore + aggregator availability.";
-            } else if (/Pre-validate/i.test(step)) {
-              hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (vs. clean exit code).";
             } else {
               hint = "Inspect the failing step in the linked run.";
             }
 
             sendAlert({
-              title: "Update Shows — " + count + " consecutive failures",
-              description: "Workflow failed " + count + " of the last 5 runs. Failing step: `" + step + "`. " + hint,
+              title: "Update Shows — " + count + " of last 10 scheduled runs failed",
+              description: "Failing step: `" + step + "`. " + hint,
               severity: "error",
               email: true,
               url: runUrl,
