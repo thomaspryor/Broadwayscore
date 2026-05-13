@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-13T05:35:13.681Z",
+  "generatedAt": "2026-05-13T07:23:51.464Z",
   "date": "2026-05-13",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 145300,
+  "entryCount": 146397,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -911,7 +911,7 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 823364443,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
@@ -2481,7 +2481,22 @@
     },
     {
       "showId": "krapps-last-tape-godots-todo-list-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
