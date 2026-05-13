@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-05-13T08:40:52.397Z",
+  "timestamp": "2026-05-13T09:13:48.805Z",
   "stats": {
     "totalReviews": 36732,
     "alreadyFlagged": 16095,
     "dateGuardCatches": 102,
-    "directorMismatch": 804,
+    "directorMismatch": 805,
     "tvFilmSignals": 1013,
-    "londonSignals": 566,
+    "londonSignals": 567,
     "offBroadwaySignals": 444,
     "yearMismatch": 77,
     "noPublishDate": 3765
@@ -252,6 +252,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
+      "file": "guardian--gloria-oladipo.json",
+      "publishDate": "2023-03-13",
+      "url": "https://www.theguardian.com/stage/2023/mar/09/a-dolls-house-review-jessica-chastain-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
         }
       ]
     },
@@ -38244,6 +38257,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-price-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/apr/24/the-price-review-marylebone-theatre-london-arthur-miller-henry-goodman",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
