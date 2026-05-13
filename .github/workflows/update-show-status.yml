@@ -44,6 +44,12 @@ jobs:
       opened_count: ${{ steps.status-update.outputs.opened_count }}
       opened_slugs: ${{ steps.status-update.outputs.opened_slugs }}
       we_new_count: ${{ steps.discover.outputs.we_new_count }}
+      # Pre-discovery validation status — distinguishes "data was already broken
+      # before this run" from "discovery introduced a new error". Consumed by
+      # alert-on-failure to write a contextual alert instead of pointing the
+      # operator at the Broadway.org scraper for a lottery-rush.json bug.
+      pre_validation_status: ${{ steps.pre-validate.outputs.status }}
+      validate_outcome: ${{ steps.validate.outcome }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -91,6 +97,24 @@ jobs:
             echo "ShowScore refresh enabled (manual toggle)"
           fi
           node scripts/update-show-status.js $SS_FLAG
+
+      # Pre-discovery validation snapshot. Runs the same validator that gates
+      # the commit below, but warn-only. If this fails, the data was already
+      # broken BEFORE discovery ran — a peripheral file (lottery-rush.json,
+      # commercial.json, etc.) has an unrelated error. The post-discovery
+      # validate step will fail identically; this step lets the alert
+      # attribute the failure correctly instead of blaming the scraper.
+      - name: Pre-validate existing data (warn-only)
+        id: pre-validate
+        continue-on-error: true
+        run: |
+          if node scripts/validate-data.js; then
+            echo "status=ok" >> $GITHUB_OUTPUT
+            echo "Pre-discovery validation: OK"
+          else
+            echo "status=broken" >> $GITHUB_OUTPUT
+            echo "::warning::Data validation already failing BEFORE discovery — peripheral data file has an unrelated error. Discovery will still run, but the post-discovery commit will be blocked until the underlying file is fixed."
+          fi
 
       # Step 2a: Discover ShowScore URLs and generate candidates for new show discovery
       - name: Discover ShowScore URLs and candidates
@@ -160,6 +184,36 @@ jobs:
       - name: Validate data
         id: validate
         run: node scripts/validate-data.js
+
+      # Audit trail when validation blocks the commit. Without this, the
+      # discovery output (new shows, status transitions) was visible only
+      # in scrollback and lost if the run was retried. Writes a Markdown
+      # summary directly to the Actions run page so the operator can see
+      # what discovery found and whether the failure was pre-existing.
+      - name: Audit discovery on validation failure
+        if: always() && steps.validate.outcome == 'failure'
+        run: |
+          {
+            echo "## Validation blocked commit"
+            echo ""
+            echo "**Pre-discovery validation:** \`${{ steps.pre-validate.outputs.status }}\`"
+            echo ""
+            if [ "${{ steps.pre-validate.outputs.status }}" = "broken" ]; then
+              echo "Validation was **already broken before discovery**. Discovery itself succeeded; the commit was blocked by a pre-existing data error unrelated to show discovery. Fix the failing file (lottery-rush.json, commercial.json, shows.json, etc.) — the next scheduled run will commit naturally."
+            else
+              echo "Discovery introduced a **new** validation error. Inspect the discover step output and validate-data.js logs."
+            fi
+            echo ""
+            echo "### Discovery output (would have been committed)"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| new_shows_count | \`${{ steps.discover.outputs.new_shows_count }}\` |"
+            echo "| new_slugs | \`${{ steps.discover.outputs.new_slugs }}\` |"
+            echo "| opened_count | \`${{ steps.status-update.outputs.opened_count }}\` |"
+            echo "| opened_slugs | \`${{ steps.status-update.outputs.opened_slugs }}\` |"
+            echo "| we_new_count | \`${{ steps.discover.outputs.we_new_count }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       # Step 4: Check for any changes
       - name: Check for changes
@@ -1140,20 +1194,78 @@ jobs:
           echo "Recent failures: $FAILURES out of last 5 runs"
           echo "failure_count=$FAILURES" >> $GITHUB_OUTPUT
 
+      # Resolve the actual failing step from the most recent failed run.
+      # Previously the alert blamed "Show Discovery Pipeline" / "Broadway.org
+      # scraper" regardless of where the workflow died — 8 consecutive failures
+      # in early May 2026 were actually validate-data.js choking on unrelated
+      # lottery-rush.json + duplicate-show errors. The wrong-scent alert wasted
+      # operator time. Now the alert names the failing step and links to it.
+      - name: Resolve failing step + run URL
+        id: step-info
+        if: steps.check.outputs.failure_count >= 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LATEST=$(gh run list --workflow=update-show-status.yml --limit=5 --status=failure --json databaseId,url --jq '.[0]')
+          RUN_ID=$(echo "$LATEST" | jq -r '.databaseId // empty')
+          RUN_URL=$(echo "$LATEST" | jq -r '.url // empty')
+          if [ -z "$RUN_ID" ]; then
+            echo "failing_step=unknown" >> $GITHUB_OUTPUT
+            echo "run_url=https://github.com/${{ github.repository }}/actions/workflows/update-show-status.yml" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          FAILING_STEP=$(gh api "repos/${{ github.repository }}/actions/runs/$RUN_ID/jobs" \
+            --jq '[.jobs[] | select(.conclusion=="failure") | .steps[]? | select(.conclusion=="failure")][0].name // "unknown"')
+          echo "failing_step=$FAILING_STEP" >> $GITHUB_OUTPUT
+          echo "run_url=$RUN_URL" >> $GITHUB_OUTPUT
+          echo "Most recent failing step: $FAILING_STEP"
+          echo "Most recent failed run: $RUN_URL"
+
       - name: Send alert on 3+ consecutive failures
         if: steps.check.outputs.failure_count >= 3
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          FAILURE_COUNT: ${{ steps.check.outputs.failure_count }}
+          FAILING_STEP: ${{ steps.step-info.outputs.failing_step }}
+          RUN_URL: ${{ steps.step-info.outputs.run_url }}
+          PRE_VALIDATION_STATUS: ${{ needs.update-shows.outputs.pre_validation_status }}
         run: |
-          node -e "
-            const { sendAlert } = require('./scripts/lib/discord-notify.js');
+          node -e '
+            const { sendAlert } = require("./scripts/lib/discord-notify.js");
+            const count = process.env.FAILURE_COUNT;
+            const step = process.env.FAILING_STEP || "unknown";
+            const runUrl = process.env.RUN_URL || "";
+            const preValidation = process.env.PRE_VALIDATION_STATUS || "";
+
+            let hint;
+            if (/Validate data/i.test(step)) {
+              if (preValidation === "broken") {
+                hint = "Pre-existing data error blocked the commit. Discovery itself succeeded — a peripheral file (lottery-rush.json, commercial.json, shows.json) has an error that predates this run. Open the run summary for the diagnosis.";
+              } else {
+                hint = "validate-data.js rejected the discovered shows. Discovery likely succeeded; commit blocked. Check the run logs for the specific error (often a duplicate show ID or a missing required field).";
+              }
+            } else if (/Discover new shows/i.test(step)) {
+              hint = "discover-new-shows.js itself failed. Check Broadway.org availability and ScrapingBee/Bright Data credits.";
+            } else if (/Update show statuses/i.test(step)) {
+              hint = "update-show-status.js (status transitions) failed before discovery ran. Check ShowScore + aggregator availability.";
+            } else if (/Pre-validate/i.test(step)) {
+              hint = "Pre-validation step itself errored — investigate validate-data.js for a thrown exception (vs. clean exit code).";
+            } else {
+              hint = "Inspect the failing step in the linked run.";
+            }
+
             sendAlert({
-              title: 'Show Discovery Pipeline — ${{ steps.check.outputs.failure_count }} consecutive failures',
-              description: 'The Update Shows workflow has failed ${{ steps.check.outputs.failure_count }} of the last 5 runs. New shows may not be getting discovered. Check Broadway.org scraper and API credits.',
-              severity: 'error',
+              title: "Update Shows — " + count + " consecutive failures",
+              description: "Workflow failed " + count + " of the last 5 runs. Failing step: `" + step + "`. " + hint,
+              severity: "error",
               email: true,
-              url: 'https://github.com/thomaspryor/Broadwayscore/actions/workflows/update-show-status.yml'
-            }).catch(e => console.error('Alert failed:', e.message));
-          "
+              url: runUrl,
+              fields: [
+                { name: "Failing step", value: "`" + step + "`" },
+                { name: "Most recent failed run", value: runUrl || "(unknown)" },
+                { name: "Pre-discovery validation", value: preValidation || "(not set)" }
+              ]
+            }).catch(e => console.error("Alert failed:", e.message));
+          '
