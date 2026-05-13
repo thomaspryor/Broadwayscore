@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-13T07:18:13.907Z",
+  "updatedAt": "2026-05-13T07:22:21.238Z",
   "processed": 9,
-  "failed": 841,
-  "successRate": "1.1%",
+  "failed": 851,
+  "successRate": "1.0%",
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 11,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 16,
+    "archiveToday": 17,
     "archive": 1
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-12T19:10:35.465Z",
-      "event": "bb-session",
-      "session": "53e88586",
-      "url": "https://www.thestage.co.uk/reviews/mass-review-donmar-warehouse-london-carrie-cr"
-    },
-    {
-      "t": "2026-05-12T19:10:36.351Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-05-12T19:55:22.239Z",
       "event": "bb-session",
@@ -122,6 +111,17 @@
     },
     {
       "t": "2026-05-13T06:36:06.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-13T07:20:16.406Z",
+      "event": "bb-session",
+      "session": "ac20866d",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-13T07:20:17.542Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
