@@ -831,7 +831,17 @@
     "1536-west-end-2026/standard--nick-curtis.json",
     "1536-west-end-2026/theatre-weekly--greg-stewart.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
-    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json"
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "grace-pervades-west-end-2026/standard--nick-curtis.json",
+    "grace-pervades-west-end-2026/thestage--tom-wicker.json",
+    "grace-pervades-west-end-2026/theupcoming--unknown.json",
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -842,6 +852,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
@@ -876,14 +887,15 @@
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
     ],
     "archive": [
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
   "startTime": "2026-05-12T16:40:03.254Z",
-  "lastProcessed": "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-12T19:08:33.032Z",
@@ -992,6 +1004,17 @@
     },
     {
       "t": "2026-05-13T00:29:44.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-13T06:36:05.868Z",
+      "event": "bb-session",
+      "session": "e4d5b59d",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-13T06:36:06.300Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
