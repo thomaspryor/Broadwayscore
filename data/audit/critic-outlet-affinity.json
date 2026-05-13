@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-13T16:56:23.299Z",
+    "lastUpdated": "2026-05-13T19:27:25.150Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37408,
+    "totalFilesScanned": 37411,
     "skippedFiles": 16957,
     "totalCritics": 1360,
-    "registryCritics": 495,
+    "registryCritics": 496,
     "flaggedReviews": 21
   },
   "flaggedReviews": [
@@ -31,6 +31,17 @@
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
       "totalReviews": 338
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "criticSlug": "dominic-cavendish",
+      "outlet": "timeout-london",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "timeout-london--dominic-cavendish.json",
+      "outletShare": 2,
+      "primaryOutlet": "telegraph",
+      "primaryShare": 98,
+      "totalReviews": 43
     },
     {
       "critic": "Andrzej Lukowski",
@@ -88,6 +99,17 @@
       "totalReviews": 53
     },
     {
+      "critic": "Dominic Maxwell",
+      "criticSlug": "dominic-maxwell",
+      "outlet": "the-sun",
+      "showId": "hercules-west-end-2025",
+      "file": "the-sun--dominic-maxwell.json",
+      "outletShare": 4,
+      "primaryOutlet": "times-uk",
+      "primaryShare": 96,
+      "totalReviews": 25
+    },
+    {
       "critic": "Michael Dale",
       "criticSlug": "michael-dale",
       "outlet": "talkinbroadway",
@@ -132,17 +154,6 @@
       "totalReviews": 155
     },
     {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 2,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 98,
-      "totalReviews": 42
-    },
-    {
       "critic": "Pete Hempstead",
       "criticSlug": "pete-hempstead",
       "outlet": "whatsonstage",
@@ -185,17 +196,6 @@
       "primaryOutlet": "observer",
       "primaryShare": 91,
       "totalReviews": 22
-    },
-    {
-      "critic": "Dominic Maxwell",
-      "criticSlug": "dominic-maxwell",
-      "outlet": "the-sun",
-      "showId": "hercules-west-end-2025",
-      "file": "the-sun--dominic-maxwell.json",
-      "outletShare": 4,
-      "primaryOutlet": "times-uk",
-      "primaryShare": 96,
-      "totalReviews": 24
     },
     {
       "critic": "David Kaufman",
@@ -355,21 +355,21 @@
         "ny1",
         "nydailynews",
         "backstage",
-        "whatsonstage",
         "variety",
         "nytg",
         "newsday",
         "london-theatre",
         "musical-theatre-review",
         "chicagotribune",
+        "whatsonstage",
         "washpost",
         "artsdesk",
         "theatre-weekly",
         "west-end-wilma",
-        "british-theatre",
         "broadwayworld",
         "theupcoming",
         "plays-international",
+        "british-theatre",
         "times-uk",
         "hollywood-reporter",
         "new-york-city-theatre",
@@ -381,7 +381,6 @@
         "stageandcinema",
         "independent",
         "all-that-dazzles-uk",
-        "telegraph",
         "huffpost",
         "standard",
         "theatrely",
@@ -403,6 +402,7 @@
         "usatoday",
         "city-am",
         "theater-pizzazz",
+        "telegraph",
         "dctheatrescene",
         "broadwaynews",
         "stannswarehouseorg",
@@ -452,7 +452,7 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 562
+      "totalReviews": 559
     },
     {
       "critic": "Sam Marlowe",
