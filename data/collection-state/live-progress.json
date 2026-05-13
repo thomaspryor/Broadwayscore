@@ -6,13 +6,25 @@
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-13T19:16:24.373Z",
+      "event": "bb-session",
+      "session": "14d15f12",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-13T19:16:25.292Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    }
+  ]
 }
