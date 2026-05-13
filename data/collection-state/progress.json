@@ -785,7 +785,13 @@
     "grace-pervades-west-end-2026/standard--nick-curtis.json",
     "grace-pervades-west-end-2026/thestage--tom-wicker.json",
     "grace-pervades-west-end-2026/theupcoming--unknown.json",
-    "mass-west-end-2026/timeout--unknown.json"
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/standard--nick-curtis.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -796,6 +802,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
       "data/review-texts/mass-west-end-2026/financialtimes--unknown.json",
@@ -823,7 +830,8 @@
       "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
       "data/review-texts/mass-west-end-2026/thestage--unknown.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json"
+      "data/review-texts/grace-pervades-west-end-2026/thestage--tom-wicker.json",
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -831,7 +839,7 @@
     ]
   },
   "startTime": "2026-05-13T16:51:33.841Z",
-  "lastProcessed": "mass-west-end-2026/timeout--unknown.json",
+  "lastProcessed": "mass-west-end-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-13T20:50:07.065Z",
@@ -874,6 +882,17 @@
     },
     {
       "t": "2026-05-13T22:49:34.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-13T23:27:09.785Z",
+      "event": "bb-session",
+      "session": "aa52beca",
+      "url": "https://www.ft.com/content/84f9336f-39c7-433b-b095-355eae869216"
+    },
+    {
+      "t": "2026-05-13T23:27:10.899Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
     }
