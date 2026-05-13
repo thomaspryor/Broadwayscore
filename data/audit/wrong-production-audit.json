@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-13T06:37:13.218Z",
+  "timestamp": "2026-05-13T07:39:40.804Z",
   "stats": {
     "totalReviews": 36732,
     "alreadyFlagged": 16095,
@@ -8,7 +8,7 @@
     "tvFilmSignals": 1013,
     "londonSignals": 566,
     "offBroadwaySignals": 444,
-    "yearMismatch": 75,
+    "yearMismatch": 77,
     "noPublishDate": 3765
   },
   "findings": [
@@ -21774,6 +21774,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2012 (0x). 2026 matches production: the-mystery-of-edwin-drood-amt-theater-off-broadway-2026"
         }
       ]
     },
@@ -21788,6 +21793,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2012 (1x). 2026 matches production: the-mystery-of-edwin-drood-amt-theater-off-broadway-2026"
         }
       ]
     },
