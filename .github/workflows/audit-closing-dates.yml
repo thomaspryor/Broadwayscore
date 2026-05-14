@@ -1,0 +1,106 @@
+name: Audit Closing Dates
+
+# Replaces the legacy `Check Closing Dates` Monday cron (Broadway.org "Through:"
+# scraper) with a daily bidirectional audit driven by broadway.com per-show
+# schedule pages. See memory/feedback_closing_date_audit_gaps.md for why the
+# old script silently missed 12 wrong dates discovered manually on 2026-05-14.
+
+on:
+  schedule:
+    - cron: '0 14 * * *'  # Daily 14:00 UTC — after update-show-status (8am) and one full enrich cycle (10:30)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no changes)'
+        required: false
+        default: 'false'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run closing-date audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/audit-closing-dates.js --dry-run
+          else
+            node scripts/audit-closing-dates.js
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from audit-closing-dates'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Create summary
+        if: always()
+        run: |
+          if [ -f data/audit/closing-date-discrepancies.json ]; then
+            echo "## Closing Date Audit" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const r = require('./data/audit/closing-date-discrepancies.json');
+              const s = r.summary;
+              const lines = [
+                '**Mode:** ' + r.mode,
+                '**Audited:** ' + s.audited,
+                '**Extensions auto-applied:** ' + s.extensions,
+                '**Matches:** ' + s.matches,
+                '**Ambiguous (need review):** ' + s.ambiguous,
+                '**New-closing candidates:** ' + s.newClosings,
+                '**Errors:** ' + s.errors,
+              ];
+              console.log(lines.join('\\n'));
+              if (r.extensions.length) {
+                console.log('\\n### Extensions applied');
+                r.extensions.forEach(e => console.log('- ' + e.id + ': ' + e.stored + ' → ' + e.latestScheduled));
+              }
+              if (r.ambiguous.length) {
+                console.log('\\n### Needs human review');
+                r.ambiguous.forEach(a => console.log('- ' + a.id + ': stored ' + a.stored + ', schedule cuts at ' + a.latestScheduled + ' (' + a.delta + 'd)'));
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Closing Dates Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
