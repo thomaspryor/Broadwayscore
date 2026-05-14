@@ -15,6 +15,15 @@ on:
         required: false
         default: 'false'
 
+# Share the `shows-json-writer` concurrency group with update-show-status.yml
+# and enrich-off-broadway-dates.yml. Without this, overlapping runs race on
+# shows.json and `push-core-data` rebases with `-X ours`, which can silently
+# overwrite an audit-applied closingDate correction. Caught in /ship-check
+# 2026-05-14 (Codex adversarial reviewer).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   audit:
     runs-on: ubuntu-latest
