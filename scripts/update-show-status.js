@@ -10,7 +10,7 @@
  * 4. Does NOT make assumptions from ticket availability
  *
  * This is intentionally conservative to avoid false positives.
- * Closing dates should be discovered via check-closing-dates.js
+ * Closing dates should be discovered via audit-closing-dates.js
  *
  * Usage: node scripts/update-show-status.js [--dry-run]
  */
@@ -27,7 +27,7 @@ const dryRun = process.argv.includes('--dry-run');
 const includeShowScore = process.argv.includes('--include-showscore');
 
 // Grace period in days - don't auto-close until this many days after closing date
-// This gives time for the check-closing-dates script to catch extensions
+// This gives time for the audit-closing-dates script to catch extensions
 // Override with --grace-period=N for launch prep (e.g., --grace-period=0)
 const gracePeriodArg = process.argv.find(a => a.startsWith('--grace-period='));
 const CLOSING_GRACE_PERIOD_DAYS = gracePeriodArg ? parseInt(gracePeriodArg.split('=')[1], 10) : 7;
@@ -578,7 +578,7 @@ async function updateShowStatuses() {
     // Check 1: Close shows whose closing date has passed (with grace period)
     // Skip shows just reopened by TodayTix — they were wrongly closed and TodayTix
     // confirms they're still running (even if the endDate is technically past)
-    // Grace period gives check-closing-dates.js time to catch extensions
+    // Grace period gives audit-closing-dates.js time to catch extensions
     // Exception: if TodayTix also confirms the show is gone, skip the grace period
     const ttConfirmsClosed = show._staleMissingSince && !reopenedIds.has(show.id);
     const graceDays = ttConfirmsClosed ? 1 : CLOSING_GRACE_PERIOD_DAYS;
