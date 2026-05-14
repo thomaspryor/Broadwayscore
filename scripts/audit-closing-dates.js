@@ -56,6 +56,12 @@ const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
+// Cap auto-applied extensions per run. Broadway.com calendar windows
+// expand in ~3-month chunks, so any single observed jump > 180d is more
+// likely a parseScheduleDates() false-positive (e.g. promo banner showing
+// the 2027 Tony Awards date) than a real extension. Fall through to
+// ambiguous review instead of writing a fabricated date.
+const MAX_AUTO_EXTENSION_DAYS = 180;
 
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const SLUG_OVERRIDES = CONFIG.slugOverrides;
@@ -186,7 +192,11 @@ async function main() {
       }
 
       const delta = Math.round((new Date(r.latest) - new Date(stored)) / 86400000);
-      if (delta > 0) {
+      if (delta > 0 && delta > MAX_AUTO_EXTENSION_DAYS) {
+        // Suspiciously large jump — likely a parseScheduleDates() false-positive
+        // (unrelated date on the page). Surface to human instead of auto-applying.
+        ambiguous.push({ ...verdict, delta, action: 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' });
+      } else if (delta > 0) {
         extensions.push({ ...verdict, delta, action: 'EXTENSION' });
         if (!DRY_RUN) {
           show.closingDate = r.latest;
