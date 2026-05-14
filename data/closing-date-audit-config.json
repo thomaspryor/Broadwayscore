@@ -1,0 +1,28 @@
+{
+  "_comment": "Config for scripts/audit-closing-dates.js. Edited by hand; not auto-generated. Established pattern (cf. data/dtli-slug-map.json).",
+  "_lastUpdated": "2026-05-14",
+  "slugOverrides": {
+    "_comment": "show.id → broadway.com slug, when stripping the year suffix from id doesn't produce the URL broadway.com actually uses. Probe via curl https://www.broadway.com/shows/{slug}/schedule/. Verified 2026-05-14.",
+    "and-juliet-2022": "juliet",
+    "two-strangers-bway-2025": "two-strangers-carry-a-cake-across-new-york",
+    "stranger-things-2024": "stranger-things-the-first-shadow"
+  },
+  "openRunSkip": {
+    "_comment": "Open-run long-runners that broadway.com doesn't sell directly (Telecharge / own-site only). Audit can't observe their schedule, so skip silently. Remove an entry when the show announces a close — the audit will then surface a NEW_CLOSING candidate.",
+    "ids": [
+      "hamilton-2015",
+      "the-lion-king-1997",
+      "aladdin-2014",
+      "book-of-mormon-2011",
+      "wicked-2003",
+      "chicago-1996",
+      "harry-potter-2021",
+      "mj-2022",
+      "six-2021",
+      "hadestown-2019",
+      "moulin-rouge-2019",
+      "maybe-happy-ending-2024",
+      "the-lost-boys-2026"
+    ]
+  }
+}
