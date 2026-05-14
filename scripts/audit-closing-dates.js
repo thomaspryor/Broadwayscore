@@ -48,40 +48,18 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
+const CONFIG_FILE = path.join(__dirname, '..', 'data', 'closing-date-audit-config.json');
 const TODAY = new Date().toISOString().slice(0, 10);
+const TODAY_YEAR = new Date().getFullYear();
 
 const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
 
-// Manual overrides for shows whose broadway.com URL slug doesn't match our id.
-// Confirmed via curl 2026-05-14. Update when broadway.com changes URLs or
-// when we add shows whose slug needs aliasing.
-const SLUG_OVERRIDES = {
-  'and-juliet-2022': 'juliet',
-  'two-strangers-bway-2025': 'two-strangers-carry-a-cake-across-new-york',
-  'stranger-things-2024': 'stranger-things-the-first-shadow',
-};
-
-// Long-running open-run shows that broadway.com doesn't sell directly
-// (Hamilton, Wicked, etc go through Telecharge or their own sites). Skip
-// silently — they have no closingDate to audit anyway.
-const OPEN_RUN_SKIP = new Set([
-  'hamilton-2015',
-  'the-lion-king-1997',
-  'aladdin-2014',
-  'book-of-mormon-2011',
-  'wicked-2003',
-  'chicago-1996',
-  'harry-potter-2021',
-  'mj-2022',
-  'six-2021',
-  'hadestown-2019',
-  'moulin-rouge-2019',
-  'maybe-happy-ending-2024',
-  'the-lost-boys-2026',
-]);
+const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+const SLUG_OVERRIDES = CONFIG.slugOverrides;
+const OPEN_RUN_SKIP = new Set(CONFIG.openRunSkip.ids);
 
 function slugFor(s) {
   if (SLUG_OVERRIDES[s.id]) return SLUG_OVERRIDES[s.id];
@@ -91,13 +69,20 @@ function slugFor(s) {
     .replace(/^-|-$/g, '');
 }
 
+// Years we'll accept in the schedule. Window relative to TODAY_YEAR so this
+// doesn't silently break in 2030.
+function buildYearPattern() {
+  const years = [TODAY_YEAR, TODAY_YEAR + 1, TODAY_YEAR + 2, TODAY_YEAR + 3];
+  return `(${years.join('|')})`;
+}
+
 function parseScheduleDates(html) {
   const text = html
     .replace(/<script[^]*?<\/script>/g, ' ')
     .replace(/<style[^]*?<\/style>/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/\s+/g, ' ');
-  const re = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d{1,2},?\s*(202[6-9])/g;
+  const re = new RegExp(`\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\\.?\\s+\\d{1,2},?\\s*${buildYearPattern()}`, 'g');
   const dates = new Set();
   let m;
   while ((m = re.exec(text)) !== null) {
@@ -107,10 +92,33 @@ function parseScheduleDates(html) {
   return [...dates].sort();
 }
 
-async function fetchLatestSchedule(slug) {
+// Title-confirmation guard against broadway.com slug collisions across
+// revivals. `cabaret-2014` (id) → `cabaret` (slug) → could resolve to a
+// later revival's schedule. Require the page to mention a recognisable
+// keyword from the stored title before we trust its dates.
+function pageMatchesShow(html, showName) {
+  if (!html || !showName) return false;
+  // Strip HTML, lowercase, normalize whitespace
+  const haystack = html
+    .replace(/<[^>]+>/g, ' ')
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+  // Use the longest word from the title as the keyword (skips articles).
+  // For multi-word titles, also try the first 2 words concatenated.
+  const words = showName.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+  if (words.length === 0) return true; // single-syllable title: skip guard
+  // Require at least one of the meaningful words
+  return words.some(w => haystack.includes(w));
+}
+
+async function fetchLatestSchedule(show, slug) {
   const url = `https://www.broadway.com/shows/${slug}/schedule/`;
   const r = await fetchPage(url, { source: 'audit-closing-dates' });
-  const dates = parseScheduleDates(r.content || '').filter(d => d >= TODAY);
+  const content = r.content || '';
+  if (!pageMatchesShow(content, show.name || show.title || '')) {
+    return { url, latest: null, count: 0, source: r.source, error: 'title_mismatch' };
+  }
+  const dates = parseScheduleDates(content).filter(d => d >= TODAY);
   return { url, latest: dates.length ? dates[dates.length - 1] : null, count: dates.length, source: r.source };
 }
 
@@ -155,7 +163,11 @@ async function main() {
   for (const show of candidates) {
     const slug = slugFor(show);
     try {
-      const r = await fetchLatestSchedule(slug);
+      const r = await fetchLatestSchedule(show, slug);
+      if (r.error === 'title_mismatch') {
+        errors.push({ id: show.id, reason: 'broadway_com_title_mismatch', url: r.url, hint: 'Slug may resolve to a different production — add a SLUG_OVERRIDE in data/closing-date-audit-config.json or add to openRunSkip.' });
+        continue;
+      }
       if (!r.latest) {
         errors.push({ id: show.id, reason: 'no_future_dates_on_schedule', url: r.url });
         continue;
