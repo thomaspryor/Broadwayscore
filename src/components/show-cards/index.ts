@@ -17,3 +17,4 @@ export { default as Modal, ModalCloseButton } from './Modal';
 export { default as ShowSearchDropdown } from './ShowSearchDropdown';
 export { BlendedTrioDisplay } from './BlendedTrioDisplay';
 export type { BlendedTrioDisplayProps } from './BlendedTrioDisplay';
+export { AwardScoreBadge } from './AwardScoreBadge';

@@ -11,6 +11,7 @@
  */
 
 import awardsData from '../../data/awards.json';
+import { currentTonySeason } from './tony-cutoffs';
 
 export type CategoryTier = 'S' | 'A+' | 'A' | 'B' | 'C';
 
@@ -257,8 +258,13 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   else if (displayScore <= 84) badge = 'decorated';
   else badge = 'sweeper';
 
-  // TODO: inProgress derivation from season + Tony ceremony date. v1 stub.
-  const inProgress = false;
+  // In progress = show's Tony season is the current season AND the Tony
+  // ceremony hasn't happened yet (no wins recorded). Once ceremony passes,
+  // currentTonySeason() advances and this flips false naturally.
+  const currentSeason = currentTonySeason();
+  const showSeason = entry.tony?.season;
+  const tonyDone = (entry.tony?.wins?.length ?? 0) > 0;
+  const inProgress = !!showSeason && showSeason === currentSeason.label && !tonyDone;
 
   return { rawPoints, displayScore, badge, inProgress, breakdown };
 }
