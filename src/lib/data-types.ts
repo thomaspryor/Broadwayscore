@@ -274,6 +274,9 @@ export interface ShowAwards {
   dramaLeague?: DramaLeagueAwards;
   nyDramaCritics?: NyDramaCriticsAwards;
   pulitzer?: PulitzerPrize;
+  /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
+   *  pre-migration entries (e.g. Stereophonic 2024) still use this. */
+  pulitzerFinalist?: { year?: number; note?: string };
   note?: string;
 }
 
