@@ -268,6 +268,11 @@ const NYDCCC = {
 
 // Pulitzer Prize for Drama: winner + 2 finalists per year. "Drama" is the
 // only category. Awards Score formula treats winner as +30, finalist as +15.
+//
+// PULITZER covers ceremony years 2014-2026 (predictions-era window). Matching
+// uses fuzzy title lookup through the Tony-nominees pool. For pre-2014 Pulitzer
+// data, see HISTORIC_PULITZER below — that table uses explicit show IDs since
+// fuzzy matching across 1970s-2010s revival history is unreliable.
 const PULITZER = [
   { year: 2014, winner: "The Flick", finalists: ["The Watson Intelligence","Fun Home"] },
   { year: 2015, winner: "Between Riverside and Crazy", finalists: ["Marjorie Prime","Father Comes Home From the Wars"] },
@@ -282,6 +287,44 @@ const PULITZER = [
   { year: 2024, winner: "Primary Trust", finalists: ["Here There Are Blueberries","Public Obscenities"] },
   { year: 2025, winner: "Purpose", finalists: ["The Ally","Oh, Mary!"] },
   { year: 2026, winner: "Liberation", finalists: ["Bowl EP","Meet the Cartozians"] },
+];
+
+// Historic Pulitzer Prize for Drama winners 1970-2013, with explicit awards.json
+// showIds. Fuzzy title matching is unreliable here — most titles have multiple
+// Broadway revivals across decades (e.g. "Death of a Salesman" has 5 entries in
+// awards.json), so the matcher needs hand-curated showId pointers. Each entry
+// points to the Broadway production that the Pulitzer was awarded for, OR (when
+// the Pulitzer was for an Off-Broadway premiere) the Broadway transfer in the
+// closest matching year. Finalists omitted from this pass — the public Pulitzer
+// finalists record (1980+) is dominated by OB plays that never reached Broadway.
+const HISTORIC_PULITZER = [
+  { year: 1973, winnerId: 'that-championship-season-1972' },
+  { year: 1975, winnerId: 'seascape-1975' },
+  { year: 1976, winnerId: 'a-chorus-line-1975' },
+  { year: 1977, winnerId: 'the-shadow-box-1977' },
+  { year: 1978, winnerId: 'the-gin-game-1977' },
+  { year: 1980, winnerId: 'talleys-folly-1980' },
+  { year: 1981, winnerId: 'crimes-of-the-heart-1981' },
+  { year: 1983, winnerId: 'night-mother-1983' },
+  { year: 1984, winnerId: 'glengarry-glen-ross-1984' },
+  { year: 1985, winnerId: 'sunday-in-the-park-with-george-1984' },
+  { year: 1987, winnerId: 'fences-1987' },
+  { year: 1989, winnerId: 'the-heidi-chronicles-1989' },
+  { year: 1990, winnerId: 'the-piano-lesson-1990' },
+  { year: 1991, winnerId: 'lost-in-yonkers-1991' },
+  { year: 1992, winnerId: 'the-kentucky-cycle-1993' },
+  { year: 1993, winnerId: 'angels-in-america-perestroika-1993' },
+  { year: 1995, winnerId: 'the-young-man-from-atlanta-1997' },
+  { year: 1996, winnerId: 'rent-1996' },
+  { year: 2001, winnerId: 'proof-2000' },
+  { year: 2002, winnerId: 'topdog-underdog-2002' },
+  { year: 2003, winnerId: 'anna-in-the-tropics-2003' },
+  { year: 2004, winnerId: 'i-am-my-own-wife-2003' },
+  { year: 2005, winnerId: 'doubt-2005' },
+  { year: 2007, winnerId: 'rabbit-hole-2006' },
+  { year: 2008, winnerId: 'august-osage-county-2007' },
+  { year: 2010, winnerId: 'next-to-normal-2009' },
+  { year: 2011, winnerId: 'clybourne-park-2012' },
 ];
 
 // ============================================================
@@ -550,6 +593,30 @@ function applyPulitzer(source, awardsShows, titleById, opts) {
   return { matched, unmatched };
 }
 
+/** Apply HISTORIC_PULITZER (pre-2014 winners) by explicit showId. Direct lookup,
+ *  no fuzzy matching — historic titles + revivals are too ambiguous for the
+ *  predictions-era matcher. Skips entries whose showId is missing from awards.json
+ *  (e.g. Off-Broadway-only winners that never transferred to Broadway). */
+function applyHistoricPulitzerById(source, awardsShows) {
+  let matched = 0;
+  const missing = [];
+  for (const e of source) {
+    const sh = awardsShows[e.winnerId];
+    if (!sh) {
+      missing.push(`Pulitzer/${e.year} winner: ${e.winnerId} (not in awards.json)`);
+      continue;
+    }
+    if (!sh.pulitzer) sh.pulitzer = { wins: [], finalist: [] };
+    if (!Array.isArray(sh.pulitzer.wins)) sh.pulitzer.wins = [];
+    if (!Array.isArray(sh.pulitzer.finalist)) sh.pulitzer.finalist = [];
+    if (!sh.pulitzer.wins.includes('Drama')) sh.pulitzer.wins.push('Drama');
+    sh.pulitzer.wins = uniqSorted(sh.pulitzer.wins);
+    sh.pulitzer.year = e.year;
+    matched++;
+  }
+  return { matched, missing };
+}
+
 // ============================================================
 // MAIN
 // ============================================================
@@ -603,6 +670,7 @@ function main() {
   const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
+  const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
   console.log('\nMatch stats:');
   console.log(`  Drama Desk:           ${ddRes.matched} matched, ${ddRes.unmatched.length} unmatched (mostly OB shows not in awards.json)`);
@@ -610,6 +678,10 @@ function main() {
   console.log(`  Drama League:         ${dlRes.matched} matched, ${dlRes.unmatched.length} unmatched`);
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
+  console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
+  if (histPulRes.missing.length > 0) {
+    for (const m of histPulRes.missing) console.log(`    ! ${m}`);
+  }
   if (createdEntries.length > 0) {
     console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for Broadway shows missing entries:`);
     for (const id of createdEntries) console.log(`  + ${id}`);
@@ -651,6 +723,7 @@ function main() {
   applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
+  applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
   const firstNoMeta = JSON.parse(serialized);
   delete firstNoMeta._meta;

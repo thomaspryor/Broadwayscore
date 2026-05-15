@@ -12,7 +12,10 @@ const SHOWS: Array<{ id: string; label: string; expect?: string }> = [
   { id: 'spring-awakening-2006',      label: 'Spring Awakening',      expect: 'decorated — 8 Tonys, no Pulitzer' },
   { id: 'maybe-happy-ending-2024',    label: 'Maybe Happy Ending',    expect: '~sweeper — 2025 Best Musical' },
   { id: 'purpose-2025',               label: 'Purpose',               expect: 'decorated — Pulitzer + Tony Best Play 2025' },
-  { id: 'sunday-in-the-park-1984',    label: 'Sunday in the Park...', expect: 'honored — Pulitzer, lost Best Musical' },
+  { id: 'sunday-in-the-park-with-george-1984', label: 'Sunday in the Park...', expect: 'honored — Pulitzer, lost Best Musical' },
+  { id: 'angels-in-america-perestroika-1993',  label: 'Angels in America',     expect: 'decorated — Pulitzer 1993 + Tonys' },
+  { id: 'rent-1996',                           label: 'Rent',                  expect: 'decorated/sweeper — Pulitzer 1996 + Best Musical' },
+  { id: 'a-chorus-line-1975',                  label: 'A Chorus Line',         expect: 'decorated — Pulitzer 1976 + 9 Tonys' },
   { id: 'wicked-2003',                label: 'Wicked',                expect: 'in-the-hunt — lots of noms, lost Best Musical to Avenue Q' },
   { id: 'come-from-away-2017',        label: 'Come From Away',        expect: 'nominated/honored — Best Musical nom, Direction win' },
 ];
