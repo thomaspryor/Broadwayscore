@@ -5,9 +5,6 @@
  * weights tuned for forecasting a Tony winner. This module uses *prestige*
  * weights — what a theater fan thinks a show's award legacy is worth.
  * Both modules can read the same awards.json; only the weights differ.
- *
- * See memory/award-score-design.md for the full spec, including category-tier
- * mapping, ceremony prestige ordering, and the log-display rationale.
  */
 
 import awardsData from '../../data/awards.json';
@@ -50,43 +47,28 @@ const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
 
 const A_PLUS_MULTIPLIER = 1.2;
 const REVIVAL_DISCOUNT = 0.85;
-
-// Diminishing returns on C-tier (design) wins within a single ceremony.
-// Five design Tonys total ~67 pts, less than half of one Best Musical (150).
 const C_STACKING = [1.0, 0.7, 0.5, 0.4, 0.4, 0.4];
 
-/** Tier classification — returns null for unmappable categories. */
 function classifyCategory(category: string): { tier: CategoryTier; revival: boolean } | null {
   const c = category.toLowerCase();
-
-  // S — top production awards
   if (/revival of a musical|musical revival/.test(c)) return { tier: 'S', revival: true };
   if (/revival of a play|play revival/.test(c)) return { tier: 'S', revival: true };
   if (/best musical$|outstanding musical$|outstanding new (broadway|off-broadway) musical|outstanding production of a (broadway or off-broadway )?musical/.test(c)) return { tier: 'S', revival: false };
   if (/best play$|outstanding play$|outstanding new broadway play|outstanding production of a play/.test(c)) return { tier: 'S', revival: false };
-  if (/^drama$/.test(c)) return { tier: 'S', revival: false }; // Pulitzer
-
-  // A+ — creative authorship
+  if (/^drama$/.test(c)) return { tier: 'S', revival: false };
   if (/best (original )?score|outstanding (new )?score|outstanding music\b|outstanding lyrics|outstanding music in a play/.test(c)) return { tier: 'A+', revival: false };
   if (/best book|outstanding book/.test(c)) return { tier: 'A+', revival: false };
-
-  // A — direction, choreography, lead performances, DL Distinguished Performance
   if (/direction|director/.test(c)) return { tier: 'A', revival: false };
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
-
-  // B — featured performances, orchestrations, ensemble
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
-
-  // C — design
   if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
-
   return null;
 }
 
@@ -133,17 +115,11 @@ function scoreCeremony(
 ): CeremonyContribution {
   const table = POINTS[key];
   const items: ContributionItem[] = [];
-
-  // Count duplicates — performance noms can appear N times when N people from
-  // the same show are nominated for the same award (e.g. Hamilton's 3 Featured
-  // Actor nominees). Each instance counts.
   const winCount: Record<string, number> = {};
   const nomCount: Record<string, number> = {};
   for (const w of wins) winCount[w] = (winCount[w] || 0) + 1;
   for (const n of noms) nomCount[n] = (nomCount[n] || 0) + 1;
-
   let cWinsSeen = 0;
-
   for (const [cat, count] of Object.entries(winCount)) {
     const cls = classifyCategory(cat);
     if (!cls) continue;
@@ -158,37 +134,27 @@ function scoreCeremony(
       items.push({ category: cat, tier: cls.tier, revival: cls.revival, result: 'win', points: applyMultipliers(raw, cls.tier, cls.revival) });
     }
   }
-
   for (const [cat, count] of Object.entries(nomCount)) {
     const cls = classifyCategory(cat);
     if (!cls) continue;
     const pts = pointsForTier(table, cls.tier);
     if (!pts || pts.nom <= 0) continue;
-    // Subtract win instances: a category in both wins and noms with the same
-    // count was fully won. We only count the *losing* noms here.
     const losing = Math.max(0, count - (winCount[cat] || 0));
     for (let i = 0; i < losing; i++) {
       items.push({ category: cat, tier: cls.tier, revival: cls.revival, result: 'nom', points: applyMultipliers(pts.nom, cls.tier, cls.revival) });
     }
   }
-
-  // Uncategorized noms — when the ceremony reports e.g. 13 total nominations
-  // but only enumerates a few. Credit at C-tier nom rate so breadth is captured
-  // without inventing categories. Mostly affects Drama Desk historical entries.
   if (unknownNomCount > 0 && table.C && table.C.nom > 0) {
     for (let i = 0; i < unknownNomCount; i++) {
       items.push({ category: '(uncategorized)', tier: 'C', revival: false, result: 'nom', points: table.C.nom });
     }
   }
-
   const subtotal = items.reduce((s, x) => s + x.points, 0);
   return { ceremony: display, items, subtotal };
 }
 
 function unknownNoms(totalCount: number | undefined, enumeratedWins: string[], enumeratedNoms: string[]): number {
   if (!totalCount) return 0;
-  // Tally is # of distinct nominations across the ceremony. wins ∪ noms is
-  // what we know about. The gap is uncategorized noms.
   const enumerated = new Set([...enumeratedWins, ...enumeratedNoms]).size;
   return Math.max(0, totalCount - enumerated);
 }
@@ -196,76 +162,58 @@ function unknownNoms(totalCount: number | undefined, enumeratedWins: string[], e
 export function computeSiteAwardScore(showId: string, market: Market = 'broadway'): ScoreResult {
   const shows = (awardsData as { shows: Record<string, AwardsShowEntry> }).shows;
   const entry = shows[showId];
-
   if (!entry) {
     return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [] };
   }
-
   const breakdown: CeremonyContribution[] = [];
-
   if (entry.tony) {
     const wins = entry.tony.wins ?? [];
     const noms = entry.tony.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Tony Awards', 'tony', wins, noms, unknownNoms(entry.tony.nominations, wins, noms)));
   }
-
   if (entry.pulitzer || entry.pulitzerFinalist) {
     const wins = entry.pulitzer?.wins ?? [];
     const finalists = entry.pulitzer?.finalist ? [...entry.pulitzer.finalist] : [];
     if (entry.pulitzerFinalist) finalists.push('Drama');
     breakdown.push(scoreCeremony('Pulitzer Prize', 'pulitzer', wins, finalists));
   }
-
   if (entry.olivier) {
     const key: CeremonyKey = market === 'broadway' ? 'olivier_bway' : 'olivier_we';
     const wins = entry.olivier.wins ?? [];
     const noms = entry.olivier.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Olivier Awards', key, wins, noms, unknownNoms(entry.olivier.nominations, wins, noms)));
   }
-
   if (entry.nyDramaCritics) {
     breakdown.push(scoreCeremony("NY Drama Critics' Circle", 'nydcc', entry.nyDramaCritics.wins ?? [], []));
   }
-
   if (entry.outerCriticsCircle) {
     const wins = entry.outerCriticsCircle.wins ?? [];
     const noms = entry.outerCriticsCircle.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Outer Critics Circle', 'occ', wins, noms, unknownNoms(entry.outerCriticsCircle.nominations, wins, noms)));
   }
-
   if (entry.dramaLeague) {
     const wins = entry.dramaLeague.wins ?? [];
     const noms = entry.dramaLeague.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Drama League', 'dramaLeague', wins, noms));
   }
-
   if (entry.dramadesk) {
     const wins = entry.dramadesk.wins ?? [];
     const noms = entry.dramadesk.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Drama Desk', 'dramaDesk', wins, noms, unknownNoms(entry.dramadesk.nominations, wins, noms)));
   }
-
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
-  const displayScore = Math.max(0, Math.round(40 * Math.log10(1 + rawPoints / 4)));
-
-  // Thresholds tuned against test cases + full-corpus audit (see
-  // scripts/audit-award-scores.ts). Sweeper at 85+ keeps the tier earned
-  // but not impossibly rare; decorated 70-84 captures the strong-winner band.
+  // Hard-cap display at 100 — UX call: scores >100 read as bugs.
+  const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
   let badge: TierBadge;
   if (displayScore === 0) badge = 'eligible';
   else if (displayScore <= 40) badge = 'nominated';
   else if (displayScore <= 69) badge = 'honored';
   else if (displayScore <= 84) badge = 'decorated';
   else badge = 'sweeper';
-
-  // In progress = show's Tony season is the current season AND the Tony
-  // ceremony hasn't happened yet (no wins recorded). Once ceremony passes,
-  // currentTonySeason() advances and this flips false naturally.
   const currentSeason = currentTonySeason();
   const showSeason = entry.tony?.season;
   const tonyDone = (entry.tony?.wins?.length ?? 0) > 0;
   const inProgress = !!showSeason && showSeason === currentSeason.label && !tonyDone;
-
   return { rawPoints, displayScore, badge, inProgress, breakdown };
 }
 
