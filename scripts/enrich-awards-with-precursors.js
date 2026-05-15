@@ -389,6 +389,13 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
 
   // Pass 2: prefix containment — for cases like "Shuffle Along" matching the long form
   // "Shuffle Along, or, the Making of the Musical Sensation of 1921 ..."
+  //
+  // Require the SHORTER side to be ≥2 tokens. Single-token shorter sides
+  // false-match: "Father Comes Home From the Wars" (Pulitzer 2015 finalist)
+  // normalized to "father comes home from the wars" caught "The Father" (norm
+  // "father", 1 token) and credited the-father-2016 with a Pulitzer it didn't
+  // earn. ≥2 tokens preserves the Shuffle Along case (norm "shuffle along")
+  // while killing the false-positive class.
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
     const noms = (sh.tony.nominatedFor || []).filter(c => CAT_SET.has(c));
@@ -397,6 +404,8 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     if (!t) continue;
     const nT = normalizeTitle(t);
     if (norm.length < 6 || nT.length < 6) continue;
+    const shorter = nT.length < norm.length ? nT : norm;
+    if (shorter.split(' ').filter(Boolean).length < 2) continue;
     if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
       if (Math.abs(nT.length - norm.length) <= 35) return showId;
     }
