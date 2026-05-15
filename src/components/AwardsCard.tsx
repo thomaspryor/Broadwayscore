@@ -11,6 +11,7 @@ import type { ShowAwards, AwardsDesignation } from '@/lib/data-types';
 import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { featureFlags } from '@/config/feature-flags';
+import AwardScoreCard from '@/components/AwardScoreCard';
 
 /** Convert short season "2025-26" to full label "2025-2026" for prediction URLs */
 function toFullSeasonLabel(season: string): string {
@@ -309,6 +310,12 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
 }
 
 export default function AwardsCard({ showId, awards, openingDate }: AwardsCardProps) {
+  // v2 card behind feature flag — same props, completely different rendering.
+  // See src/components/AwardScoreCard.tsx and src/lib/awards-scoring.ts.
+  if (featureFlags.awardScoreV2) {
+    return <AwardScoreCard showId={showId} awards={awards} openingDate={openingDate} />;
+  }
+
   const designation = getAwardsDesignation(showId);
   const tonyWins = getTonyWinCount(showId);
   const tonyNoms = getTonyNominationCount(showId);
