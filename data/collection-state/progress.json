@@ -272,7 +272,17 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "new-born-off-broadway-2026/wsj--unknown.json",
+    "new-born-off-broadway-2026/nysr--unknown.json",
+    "proof-2026/ap--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -282,6 +292,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/new-born-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/new-born-off-broadway-2026/wsj--unknown.json"
     ],
     "directCookies": [],
@@ -306,7 +317,7 @@
     ]
   },
   "startTime": "2026-05-15T09:27:02.936Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
   "log": [
     {
       "t": "2026-05-15T09:27:05.755Z",
@@ -316,6 +327,17 @@
     },
     {
       "t": "2026-05-15T09:27:06.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-15T11:39:03.453Z",
+      "event": "bb-session",
+      "session": "ec52db75",
+      "url": "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-"
+    },
+    {
+      "t": "2026-05-15T11:39:04.368Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
