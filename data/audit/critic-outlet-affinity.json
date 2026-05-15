@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-15T19:15:30.207Z",
+    "lastUpdated": "2026-05-15T19:29:20.201Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37426,
+    "totalFilesScanned": 37425,
     "skippedFiles": 16959,
     "totalCritics": 1363,
     "registryCritics": 496,
-    "flaggedReviews": 20
+    "flaggedReviews": 21
   },
   "flaggedReviews": [
     {
@@ -31,6 +31,17 @@
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
       "totalReviews": 338
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "criticSlug": "dominic-cavendish",
+      "outlet": "timeout-london",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "file": "timeout-london--dominic-cavendish.json",
+      "outletShare": 2,
+      "primaryOutlet": "telegraph",
+      "primaryShare": 98,
+      "totalReviews": 43
     },
     {
       "critic": "Andrzej Lukowski",
@@ -442,17 +453,6 @@
         "everything-theatre"
       ],
       "totalReviews": 561
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "slug": "dominic-cavendish",
-      "outlets": [
-        "telegraph",
-        "sunday-telegraph",
-        "timeout-london",
-        "times-uk"
-      ],
-      "totalReviews": 44
     },
     {
       "critic": "Sam Marlowe",
