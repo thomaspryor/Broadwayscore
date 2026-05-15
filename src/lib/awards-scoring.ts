@@ -246,7 +246,9 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   }
 
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
-  const displayScore = Math.max(0, Math.round(40 * Math.log10(1 + rawPoints / 4)));
+  // Hard-cap display at 100 — UX call: scores >100 read as bugs even though
+  // raw points are unbounded. Hamilton lands exactly at 100.
+  const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
 
   // Thresholds tuned against test cases + full-corpus audit (see
   // scripts/audit-award-scores.ts). Sweeper at 85+ keeps the tier earned
