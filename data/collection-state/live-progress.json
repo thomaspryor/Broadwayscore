@@ -1,18 +1,30 @@
 {
-  "updatedAt": "2026-05-15T08:48:07.329Z",
-  "processed": 0,
-  "failed": 52,
-  "successRate": "0%",
+  "updatedAt": "2026-05-15T09:17:14.295Z",
+  "processed": 1,
+  "failed": 7,
+  "successRate": "12.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-15T09:16:09.993Z",
+      "event": "bb-session",
+      "session": "3c5ef0a4",
+      "url": "https://www.wsj.com/articles/new-born-and-what-happened-was-reviews-complicated-"
+    },
+    {
+      "t": "2026-05-15T09:16:10.771Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
