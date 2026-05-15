@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-15T17:20:22.824Z",
+    "lastUpdated": "2026-05-15T19:15:30.207Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37424,
-    "skippedFiles": 16960,
-    "totalCritics": 1362,
+    "totalFilesScanned": 37426,
+    "skippedFiles": 16959,
+    "totalCritics": 1363,
     "registryCritics": 496,
-    "flaggedReviews": 21
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -31,17 +31,6 @@
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
       "totalReviews": 338
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 2,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 98,
-      "totalReviews": 43
     },
     {
       "critic": "Andrzej Lukowski",
@@ -387,7 +376,6 @@
         "culturesauce",
         "bloomberg",
         "daily-mail",
-        "the-recs",
         "amny",
         "vulture",
         "buy-tickets",
@@ -410,6 +398,7 @@
         "american-theater-web",
         "americanpsychothemusicalcomlottery",
         "curtain-call-reviews",
+        "the-recs",
         "theater-life",
         "ct-now",
         "nycitycenterorg",
@@ -452,7 +441,18 @@
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 562
+      "totalReviews": 561
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "slug": "dominic-cavendish",
+      "outlets": [
+        "telegraph",
+        "sunday-telegraph",
+        "timeout-london",
+        "times-uk"
+      ],
+      "totalReviews": 44
     },
     {
       "critic": "Sam Marlowe",
@@ -1848,9 +1848,10 @@
       "slug": "lisa-martland",
       "outlets": [
         "musical-theatre-review",
-        "thestage"
+        "thestage",
+        "london-theatre"
       ],
-      "totalReviews": 3
+      "totalReviews": 4
     },
     {
       "critic": "Oscar E Moore",
