@@ -1,8 +1,17 @@
 name: Update Tony Awards Data
 
 on:
-  # No cron — Tony Awards are an annual event (noms ~April, ceremony ~June).
-  # Trigger manually when nominations are announced or ceremony concludes.
+  # Tony Awards season: nominations announced ~early May, ceremony ~early June.
+  # Cron runs daily during April-June at 16:00 UTC (12 PM ET) to catch noms +
+  # winners as Wikipedia is updated. Wikipedia scraping is idempotent: when
+  # there's no new data the workflow exits without committing. Outside of
+  # awards season the cron doesn't fire, so no wasted runs.
+  #
+  # Previously workflow_dispatch only — the 2026 nominations announced May 5
+  # never made it into awards.json because nobody manually triggered it,
+  # leaving every 2025-26 show showing 0 Tony noms on the site.
+  schedule:
+    - cron: '0 16 * 4-6 *'  # 16:00 UTC daily, April-June
   workflow_dispatch:
     inputs:
       year:
@@ -76,7 +85,7 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 
       - name: Create IBDB scraper reminder issue
-        if: steps.changes.outputs.has_changes == 'true'
+        if: steps.changes.outputs.has_changes == 'true' && github.event_name == 'workflow_dispatch'
         run: |
           YEAR="${{ inputs.year }}"
           if [ -z "$YEAR" ]; then
