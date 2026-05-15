@@ -247,14 +247,14 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   const displayScore = Math.max(0, Math.round(40 * Math.log10(1 + rawPoints / 4)));
 
-  // Thresholds tuned against test cases: Hamilton (raw 1322 → 101) is the
-  // only sweeper. Maybe Happy Ending (944 → 95) is right at the edge. Most
-  // decorated shows land 76-94. See scripts/sanity-check-awards-scoring.ts.
+  // Thresholds tuned against test cases + full-corpus audit (see
+  // scripts/audit-award-scores.ts). Sweeper at 85+ keeps the tier earned
+  // but not impossibly rare; decorated 70-84 captures the strong-winner band.
   let badge: TierBadge;
   if (displayScore === 0) badge = 'eligible';
   else if (displayScore <= 40) badge = 'nominated';
-  else if (displayScore <= 75) badge = 'honored';
-  else if (displayScore <= 94) badge = 'decorated';
+  else if (displayScore <= 69) badge = 'honored';
+  else if (displayScore <= 84) badge = 'decorated';
   else badge = 'sweeper';
 
   // TODO: inProgress derivation from season + Tony ceremony date. v1 stub.
