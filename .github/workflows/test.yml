@@ -351,6 +351,52 @@ jobs:
       - name: npm audit (critical only)
         run: npm audit --audit-level=critical
 
+  awards-data-freshness:
+    name: Awards Data Freshness
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    # Schedule + manual only — never block unrelated PRs.
+    # Surfaces in daily digest via getWorkflowRunSummary; promotes from
+    # "operator forgot annual update" silent rot to a loud weekly failure.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Need full history so `git log -- data/awards.json` finds the last
+          # touch even if it's older than the default shallow-fetch depth.
+          fetch-depth: 0
+      - name: Check awards.json was updated within 14 months
+        run: |
+          # Annual awards cadence (Tony, Pulitzer, DD, OCC, DL, NYDCC, Olivier)
+          # means data/awards.json should change at least once per ceremony year.
+          # 14 months = 12-month annual cycle + 2 months grace for late ceremonies
+          # (Tonys were September 2021 due to COVID).
+          #
+          # If this fires, run the annual update — see memory/awards-annual-update.md.
+          MAX_DAYS=425  # ~14 months
+          LAST_TS=$(git log -1 --format=%ct -- data/awards.json)
+          if [ -z "$LAST_TS" ]; then
+            echo "::error::No git history found for data/awards.json"
+            exit 1
+          fi
+          NOW=$(date +%s)
+          AGE_DAYS=$(( (NOW - LAST_TS) / 86400 ))
+          LAST_DATE=$(date -u -d "@$LAST_TS" +%Y-%m-%d 2>/dev/null || date -u -r "$LAST_TS" +%Y-%m-%d)
+          echo "data/awards.json last touched ${AGE_DAYS} days ago (${LAST_DATE})"
+          if [ "$AGE_DAYS" -gt "$MAX_DAYS" ]; then
+            echo "::error::data/awards.json is ${AGE_DAYS} days stale (max ${MAX_DAYS}). Run the annual awards update — see memory/awards-annual-update.md"
+            exit 1
+          fi
+          echo "Awards data freshness OK (within ${MAX_DAYS}-day window)"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Awards Data Stale (>14 months)'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
   design-tokens-lint:
     name: Design Token Drift Guard
     runs-on: ubuntu-latest

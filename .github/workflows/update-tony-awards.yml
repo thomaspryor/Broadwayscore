@@ -1,8 +1,13 @@
 name: Update Tony Awards Data
 
 on:
-  # No cron — Tony Awards are an annual event (noms ~April, ceremony ~June).
-  # Trigger manually when nominations are announced or ceremony concludes.
+  # Weekly Mondays at noon UTC year-round. Tony noms drop late April / early
+  # May; ceremony is mid-June. Each run is idempotent — Wikipedia query +
+  # commit-only-if-changed — so off-season runs are no-ops in ~30s. Weekly
+  # cadence keeps the cron from getting auto-disabled by GitHub (60-day rule)
+  # and bounds detection lag at 7 days during ceremony season.
+  schedule:
+    - cron: '0 12 * * 1'
   workflow_dispatch:
     inputs:
       year:

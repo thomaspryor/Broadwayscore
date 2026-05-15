@@ -34,7 +34,11 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
-const PRIVATE_AWARDS = '/Users/tompryor/broadway-scorecard-data/awards.json';
+// Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
+// script works for any developer (env override available for non-standard layouts).
+// Skipped at write time if the path doesn't exist — no failure mode for CI / contributors.
+const PRIVATE_AWARDS = process.env.PRIVATE_AWARDS_PATH
+  || path.join(process.env.HOME || '', 'broadway-scorecard-data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
