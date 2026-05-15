@@ -23,16 +23,26 @@ function toFullSeasonLabel(season: string): string {
   return `${parts[0]}-${fullEnd}`;
 }
 
+// Shorten Tony category names for the sublabel to avoid awkward wraps on
+// mobile. "Best Direction of a Musical" → "Best Direction (Musical)" etc.
+function shortCategory(c: string): string {
+  return c
+    .replace(/ in a Musical$/, ' (Musical)')
+    .replace(/ in a Play$/, ' (Play)')
+    .replace(/ of a Musical$/, ' (Musical)')
+    .replace(/ of a Play$/, ' (Play)');
+}
+
 function buildSublabel(awards: ShowAwards | undefined, badge: string, inProgress: boolean): string {
   const tonyWins = awards?.tony?.wins?.length ?? 0;
   const tonyNoms = awards?.tony?.nominations ?? 0;
   if (badge === 'sweeper' && tonyWins > 0) {
-    const top = sortByImportance(awards?.tony?.wins ?? [])[0];
+    const top = shortCategory(sortByImportance(awards?.tony?.wins ?? [])[0]);
     return tonyWins > 1 ? `Won ${top} + ${tonyWins - 1} more` : `Won ${top}`;
   }
   if (badge === 'decorated' && tonyWins > 0) return `${tonyWins} Tony win${tonyWins === 1 ? '' : 's'}`;
   if (badge === 'honored' && tonyWins > 0) {
-    const top = sortByImportance(awards?.tony?.wins ?? [])[0];
+    const top = shortCategory(sortByImportance(awards?.tony?.wins ?? [])[0]);
     return `Won ${top}`;
   }
   if (inProgress) return 'Awards season in progress';
@@ -100,30 +110,24 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
 
       <div className="flex items-center gap-4 mb-4">
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="text-lg font-bold text-white">{tierLabel}</div>
-          <div className="text-sm text-gray-400">{sublabel}</div>
+          <div className="text-sm text-gray-400 line-clamp-2">{sublabel}</div>
           {result.inProgress && result.displayScore > 0 && (
             <div className="text-xs text-gray-500 mt-1">*Score so far — season in progress</div>
           )}
         </div>
       </div>
 
+      {/* Pulitzer callout — single-line inline treatment so it doesn't compete
+          with the breakdown panel for "second-most-important element". */}
       {hasPulitzer && (
-        <div
-          className={
-            isPulitzerWinner
-              ? 'bg-gradient-to-r from-amber-500/10 to-yellow-500/10 rounded-lg p-3 border border-amber-500/20 mb-4'
-              : 'bg-amber-500/5 rounded-lg p-3 border border-amber-500/15 mb-4'
-          }
-        >
-          <div className="flex items-center gap-2">
-            <PulitzerIcon className={isPulitzerWinner ? 'text-amber-400' : 'text-amber-400/70'} />
-            <span className={isPulitzerWinner ? 'text-amber-300 font-medium' : 'text-amber-200/80'}>
-              Pulitzer Prize for Drama{isPulitzerWinner ? ' Winner' : ' Finalist'}
-              {typeof pulitzerYear === 'number' ? ` (${pulitzerYear})` : ''}
-            </span>
-          </div>
+        <div className="flex items-center gap-2 text-sm mb-4">
+          <PulitzerIcon className={`flex-shrink-0 ${isPulitzerWinner ? 'text-amber-400' : 'text-amber-400/70'}`} />
+          <span className={isPulitzerWinner ? 'text-amber-300 font-medium' : 'text-amber-200/80'}>
+            Pulitzer Prize for Drama{isPulitzerWinner ? ' Winner' : ' Finalist'}
+            {typeof pulitzerYear === 'number' ? ` (${pulitzerYear})` : ''}
+          </span>
         </div>
       )}
 
@@ -157,7 +161,10 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
         </p>
       )}
 
-      {featureFlags.tonyPredictions && tonySeason && (
+      {/* Predictions cross-link — only shown while the season is in progress.
+          Once the Tony ceremony has happened, the predictions page is a
+          retrospective and pulls users off the show page for less value. */}
+      {featureFlags.tonyPredictions && tonySeason && result.inProgress && (
         <div className="border-t border-white/5 pt-3 mt-4">
           <Link
             href={`/tony-awards/predictions/${toFullSeasonLabel(tonySeason)}`}
