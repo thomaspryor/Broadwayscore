@@ -1,5 +1,11 @@
 {
-  "processed": [],
+  "processed": [
+    "new-born-off-broadway-2026/theatermania--david-gordon.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
+    "grace-pervades-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+  ],
   "failed": [
     "1536-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
@@ -18,22 +24,35 @@
     "1536-west-end-2026/thestage--holly-o.json",
     "1536-west-end-2026/times-uk--clive-davis.json",
     "1536-west-end-2026/times-uk--dominic-maxwell.json",
-    "1536-west-end-2026/whatsonstage--alex-wood.json"
+    "1536-west-end-2026/whatsonstage--alex-wood.json",
+    "1536-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "new-born-off-broadway-2026/nytimes--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "new-born-off-broadway-2026/theatermania--david-gordon.json",
+      "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
+      "grace-pervades-west-end-2026/whatsonstage--sarah-crompton.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json"
     ],
-    "archive": []
+    "archive": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ]
   },
   "startTime": "2026-05-15T16:43:09.137Z",
-  "lastProcessed": "1536-west-end-2026/whatsonstage--alex-wood.json",
+  "lastProcessed": "titanique-west-end-2024/times-uk--clive-davis.json",
   "log": []
 }
