@@ -29,6 +29,11 @@ const path = require('path');
 const https = require('https');
 const { matchTitleToShow } = require('./lib/show-matching');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { discoverCorrectUrl } = require('./lib/url-discovery');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+
+const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
+const BD_KEY = process.env.BRIGHTDATA_TOKEN || '';
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'stagedoor');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -350,6 +355,52 @@ async function main() {
     const searchResults = await fetchKnownMissingShows(page, matched, ourShows);
     for (const sr of searchResults) {
       matched.push(sr);
+    }
+
+    // Phase A.6: SERP-based discovery for WE shows still unmatched (S3-T3).
+    // Pure addition: only fires for shows the listing-scan + SD_KNOWN_SHOWS
+    // map both missed. Verifier rejects wrong-show URLs before we add them
+    // to the matched set.
+    if (SB_KEY || BD_KEY) {
+      const matchedIds = new Set(matched.map(m => m.ourShowId));
+      const candidateShows = ourShows.filter(s =>
+        isLondonMarket(s.category) && s.status === 'open' && !matchedIds.has(s.id)
+      );
+      const cap = parseInt(process.env.SD_SERP_DISCOVERY_CAP || '20', 10);
+      const toDiscover = candidateShows.slice(0, cap);
+      if (toDiscover.length > 0) {
+        console.log(`\n  [SD-SERP] Trying SERP discovery for ${toDiscover.length} unmatched shows...`);
+      }
+      let added = 0;
+      for (const s of toDiscover) {
+        let url;
+        try {
+          url = await discoverCorrectUrl(
+            { showId: s.id, outlet: 'stagedoor', outletId: null, criticName: null, source: 'aggregator-discovery' },
+            SB_KEY,
+            { brightDataKey: BD_KEY, domainOverride: 'stagedoor.com', log: () => {} }
+          );
+        } catch (e) { continue; }
+        if (!url || url === '__SERP_UNAVAILABLE__') continue;
+        // Stagedoor URLs follow /(musicals|plays|comedy|...)/{id-slug or slug}
+        const m = url.match(/stagedoor\.com\/([^/]+)\/(?:(\d+)-)?([^/?#]+)/i);
+        if (!m) continue;
+        const category = m[1];
+        const sdId = m[2] ? parseInt(m[2], 10) : 0;
+        const slug = m[3];
+        // Verifier gate: reject if the URL slug doesn't match the show title.
+        // No html available yet (SERP result only); URL-stage match suffices.
+        const result = verifyAggregatorUrl({ url, html: null, show: { id: s.id, title: s.title, venue: s.venue, openingDate: s.openingDate } });
+        if (!result.isValid) {
+          console.log(`    [SD-SERP] ✗ ${s.title} — ${result.rejectReason} (${url})`);
+          continue;
+        }
+        matched.push({ category, id: sdId, slug, title: s.title, ourShowId: s.id, ourTitle: s.title, confidence: 'serp-verifier' });
+        added++;
+        console.log(`    [SD-SERP] ✓ ${s.title} → ${url} (${result.confidence})`);
+        await sleep(1000);
+      }
+      if (toDiscover.length > 0) console.log(`  [SD-SERP] Added ${added} shows via SERP\n`);
     }
 
     // Log matches for human review

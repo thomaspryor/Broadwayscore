@@ -628,6 +628,13 @@ jobs:
         run: node scripts/audit-critic-outlets.js --report-only
         continue-on-error: true  # Informational only
 
+      - name: Audit WE sweep verifier wiring
+        # S3-T5 — asserts every extractor call in sweep-we-aggregators.js is
+        # preceded by a verifyPage/verifyAggregatorUrl call in the same fn
+        # body. Stops the Stage Cuckoo-trap from re-entering after a
+        # well-meaning refactor accidentally removes a gate.
+        run: node scripts/audit-verifier-wiring.js
+
       - name: Audit outlet-registry gaps
         run: node scripts/audit-outlet-registry.js --report-only
         continue-on-error: true  # Informational only — exit 0 even with missing outlets.

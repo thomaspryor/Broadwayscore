@@ -36,6 +36,7 @@ const { extractReviews: extractStageReviews } = require('./scrape-thestage-round
 // SERP for per-show aggregator discovery
 const { discoverCorrectUrl } = require('./lib/url-discovery');
 const { preflightCredits } = require('./lib/credit-preflight');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
@@ -260,6 +261,116 @@ async function scrapingBeeRender(url) {
 
 // ─── Review File Writer ──────────────────────────────────────────────────────
 
+// S3-T1 instrumentation: track which tier produced the winning URL per sweep.
+// Tier 1 = cached/index URL, Tier 2 = SERP via discoverCorrectUrl,
+// Tier 3 = slug-pattern guess (the legacy path we want to delete once hit rate <5%).
+const URL_GUESS_HITS_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-guess-hits.json');
+function bumpUrlGuessTier(aggregator, tier, showId) {
+  try {
+    if (!fs.existsSync(path.dirname(URL_GUESS_HITS_PATH))) {
+      fs.mkdirSync(path.dirname(URL_GUESS_HITS_PATH), { recursive: true });
+    }
+    let stats;
+    try {
+      stats = JSON.parse(fs.readFileSync(URL_GUESS_HITS_PATH, 'utf8'));
+    } catch {
+      stats = { _meta: { startedAt: new Date().toISOString() }, byAggregator: {} };
+    }
+    const a = (stats.byAggregator[aggregator] = stats.byAggregator[aggregator] || {
+      tier1: 0, tier2: 0, tier3: 0, rejectedByVerifier: 0, recentTier3Shows: [],
+    });
+    if (tier === 'tier3') {
+      a.recentTier3Shows = [...(a.recentTier3Shows || []), showId].slice(-20);
+    }
+    a[tier] = (a[tier] || 0) + 1;
+    stats._meta.lastUpdated = new Date().toISOString();
+    fs.writeFileSync(URL_GUESS_HITS_PATH, JSON.stringify(stats, null, 2));
+  } catch (e) {
+    console.error(`  [url-guess-hits] write failed: ${e.message}`);
+  }
+}
+
+// Run verifyAggregatorUrl against a fetched aggregator URL + html. Reject
+// rows that don't match the show — Stage Cuckoo's-Nest trap is the canary.
+// Returns true if the page is accepted, false otherwise (and logs the
+// rejection reason + bumps the rejectedByVerifier counter).
+function verifyPage(aggregator, url, html, show) {
+  // S3-T5 mock-via-env: set FORCE_VERIFIER_REJECT=1 to assert no save path
+  // bypasses the gate. Used by the audit acceptance test.
+  if (process.env.FORCE_VERIFIER_REJECT === '1') {
+    console.log(`  [${aggregator}] verifier FORCED REJECT (env) for ${url}`);
+    bumpUrlGuessTier(aggregator, 'rejectedByVerifier', show.id);
+    return false;
+  }
+  const result = verifyAggregatorUrl({
+    url,
+    html,
+    show: {
+      id: show.id,
+      title: show.title,
+      venue: show.venue,
+      openingDate: show.openingDate,
+      category: show.category,
+    },
+  });
+  if (!result.isValid) {
+    console.log(`  [${aggregator}] verifier rejected ${url} — ${result.rejectReason}`);
+    bumpUrlGuessTier(aggregator, 'rejectedByVerifier', show.id);
+    appendNeedsHumanReview({
+      aggregator, showId: show.id, url, rejectReason: result.rejectReason, signals: result.signals,
+    });
+    return false;
+  }
+  return true;
+}
+
+const NEEDS_HUMAN_REVIEW_PATH = path.join(__dirname, '..', 'data', 'audit', 'needs-human-review.json');
+function appendNeedsHumanReview(entry) {
+  try {
+    if (!fs.existsSync(path.dirname(NEEDS_HUMAN_REVIEW_PATH))) {
+      fs.mkdirSync(path.dirname(NEEDS_HUMAN_REVIEW_PATH), { recursive: true });
+    }
+    let arr;
+    try {
+      const existing = JSON.parse(fs.readFileSync(NEEDS_HUMAN_REVIEW_PATH, 'utf8'));
+      arr = Array.isArray(existing) ? existing : (existing.entries || []);
+    } catch {
+      arr = [];
+    }
+    arr.push({ ...entry, recordedAt: new Date().toISOString(), source: 'sweep-we-aggregators-verifier' });
+    fs.writeFileSync(NEEDS_HUMAN_REVIEW_PATH, JSON.stringify(arr, null, 2));
+  } catch (e) {
+    console.error(`  [needs-human-review] write failed: ${e.message}`);
+  }
+}
+
+// SERP-first aggregator-URL discovery via existing lib/url-discovery.
+// Returns the discovered URL (string) or null. `__SERP_UNAVAILABLE__` is
+// surfaced through as null so callers fall back to slug guessing.
+async function serpDiscoverAggregator(show, domain, options = {}) {
+  if (!SB_KEY && !BD_KEY) return null;
+  const pseudoReview = {
+    showId: show.id,
+    outlet: options.outletName || domain,
+    outletId: options.outletId || null,
+    criticName: null,
+    source: 'aggregator-discovery',
+  };
+  try {
+    const url = await discoverCorrectUrl(pseudoReview, SB_KEY, {
+      brightDataKey: BD_KEY,
+      domainOverride: domain,
+      preferSpeed: false,
+      log: () => {},
+    });
+    if (!url || url === '__SERP_UNAVAILABLE__') return null;
+    return url;
+  } catch (e) {
+    console.log(`  [SERP] discoverCorrectUrl error: ${e.message}`);
+    return null;
+  }
+}
+
 function writeReview(review, showId) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
@@ -317,13 +428,18 @@ async function sweepWET(show) {
   if (!FORCE && fs.existsSync(wetArchivePath)) {
     try {
       const html = fs.readFileSync(wetArchivePath, 'utf8');
-      const reviews = extractSectionReviews(html).map(r => ({
-        outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
-        critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
-        excerpt: r.excerpt || '', url: r.reviewUrl || '',
-        source: 'westendtheatre',
-      }));
-      if (reviews.length > 0) return reviews;
+      if (verifyPage('westendtheatre', wetArchivePath, html, show)) {
+        const reviews = extractSectionReviews(html).map(r => ({
+          outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+          critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
+          excerpt: r.excerpt || '', url: r.reviewUrl || '',
+          source: 'westendtheatre',
+        }));
+        if (reviews.length > 0) {
+          bumpUrlGuessTier('westendtheatre', 'tier1', show.id);
+          return reviews;
+        }
+      }
     } catch {}
   }
 
@@ -423,12 +539,45 @@ async function sweepWET(show) {
     }
 
     if (reviews.length > 0) {
+      // Verify the matched post URL belongs to this show before persisting.
+      // post.link is the WET aggregator URL the reviews were extracted from.
+      const aggregatorUrl = post.link || '';
+      const pageTitleStub = `<html><head><title>${wpTitle}</title></head></html>`;
+      if (!verifyPage('westendtheatre', aggregatorUrl, pageTitleStub, show)) {
+        continue;
+      }
       // Cache extracted reviews so future runs skip the API call
       if (!DRY_RUN) {
         if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
         fs.writeFileSync(wetApiCache, JSON.stringify({ reviews, fetchedAt: new Date().toISOString().slice(0, 10) }, null, 2) + '\n');
       }
+      bumpUrlGuessTier('westendtheatre', 'tier2', show.id);
       return reviews;
+    }
+  }
+
+  // Tier 3 fallback: SERP-discovered URL via discoverCorrectUrl when native
+  // WP search returns nothing for this title. Fetch + extract + verify.
+  const serpUrl = await serpDiscoverAggregator(show, 'westendtheatre.com', {
+    outletName: 'westendtheatre',
+  });
+  if (serpUrl) {
+    const html = await nodeFetch(serpUrl);
+    if (html && html.length > 1000 && verifyPage('westendtheatre', serpUrl, html, show)) {
+      const reviews = extractSectionReviews(html).map(r => ({
+        outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
+        critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
+        excerpt: r.excerpt || '', url: r.reviewUrl || serpUrl,
+        source: 'westendtheatre',
+      }));
+      if (reviews.length > 0) {
+        if (!DRY_RUN) {
+          if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
+          fs.writeFileSync(wetArchivePath, html);
+        }
+        bumpUrlGuessTier('westendtheatre', 'tier3', show.id);
+        return reviews;
+      }
     }
   }
   return [];
@@ -541,58 +690,69 @@ async function sweepTheatreReviews(show) {
   const archDir = path.join(ARCHIVE_BASE, 'theatre-reviews');
   const archivePath = path.join(archDir, `${show.id}.html`);
 
-  // Use archive if exists (skip expensive network calls)
+  // Use archive if exists (skip expensive network calls). Verifier still
+  // runs against the cached html — catches a previously-cached wrong-show
+  // page from before the gate was wired in.
   if (!FORCE && fs.existsSync(archivePath)) {
     const html = fs.readFileSync(archivePath, 'utf8');
-    const reviews = extractTheatreReviews(html, show.id);
-    if (reviews.length > 0) return reviews;
-  }
-
-  // Check the full index for a known URL
-  const indexUrl = _trIndex ? _trIndex.get(show.id) : null;
-
-  // Build URL candidates: index URL + constructed URLs
-  const urls = [];
-  if (indexUrl) urls.push(indexUrl);
-
-  // Clean title for slug: strip articles, punctuation, special chars
-  const titleSlug = show.title.toLowerCase()
-    .replace(/['']/g, '').replace(/[&]/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
-    .replace(/^-|-$/g, '');
-  // Also try without leading "the-"
-  const titleSlugNoThe = titleSlug.replace(/^the-/, '');
-
-  urls.push(`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`);
-  if (titleSlugNoThe !== titleSlug) {
-    urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-reviews/`);
-  }
-
-  if (show.venue) {
-    // Generate multiple venue slug variants
-    const venueClean = show.venue.toLowerCase()
-      .replace(/\s*(theatre|theater|playhouse|warehouse|studio|hall)\s*/gi, '')
-      .replace(/\s*'s\s*/g, 's ').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
-    // Short venue: first word only (e.g., "donmar", "menier", "gielgud")
-    const venueShort = venueClean.split('-')[0];
-    const venueSlugs = [...new Set([venueClean, venueShort].filter(Boolean))];
-
-    for (const vs of venueSlugs) {
-      urls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${vs}-reviews/`);
-      if (titleSlugNoThe !== titleSlug) {
-        urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-${vs}-reviews/`);
+    if (verifyPage('theatre-reviews', archivePath, html, show)) {
+      const reviews = extractTheatreReviews(html, show.id);
+      if (reviews.length > 0) {
+        bumpUrlGuessTier('theatre-reviews', 'tier1', show.id);
+        return reviews;
       }
     }
   }
 
-  // Deduplicate
-  const uniqueUrls = [...new Set(urls)];
+  // Tier 1 candidate: known/cached aggregator URL from the prebuilt index.
+  const indexUrl = _trIndex ? _trIndex.get(show.id) : null;
 
-  // Try each URL via nodeFetch first (free), only use SB for the index URL (saves credits)
-  for (const url of uniqueUrls) {
+  // Tier 2: SERP-discovered URL via existing discoverCorrectUrl (BD→SB chain).
+  const serpUrl = await serpDiscoverAggregator(show, 'theatre.reviews', {
+    outletName: 'theatre.reviews',
+  });
+
+  // Tier 3: slug-pattern guess (legacy). Kept as a Tier-3 fallback until
+  // the url-guess-hit-rate audit shows we can delete it (CLAUDE.md §14
+  // item 8 — same deletion pattern DTLI URL guessing followed).
+  const titleSlug = show.title.toLowerCase()
+    .replace(/['']/g, '').replace(/[&]/g, 'and')
+    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
+    .replace(/^-|-$/g, '');
+  const titleSlugNoThe = titleSlug.replace(/^the-/, '');
+  const tier3Urls = [];
+  tier3Urls.push(`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`);
+  if (titleSlugNoThe !== titleSlug) {
+    tier3Urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-reviews/`);
+  }
+  if (show.venue) {
+    const venueClean = show.venue.toLowerCase()
+      .replace(/\s*(theatre|theater|playhouse|warehouse|studio|hall)\s*/gi, '')
+      .replace(/\s*'s\s*/g, 's ').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+    const venueShort = venueClean.split('-')[0];
+    const venueSlugs = [...new Set([venueClean, venueShort].filter(Boolean))];
+    for (const vs of venueSlugs) {
+      tier3Urls.unshift(`https://theatre.reviews/reviews-roundup/${titleSlug}-${vs}-reviews/`);
+      if (titleSlugNoThe !== titleSlug) {
+        tier3Urls.push(`https://theatre.reviews/reviews-roundup/${titleSlugNoThe}-${vs}-reviews/`);
+      }
+    }
+  }
+
+  // Ordered candidate set with tier provenance:
+  //   tier1 (index) → tier2 (SERP) → tier3 (guess, deduped against above)
+  const tiered = [];
+  if (indexUrl) tiered.push({ tier: 'tier1', url: indexUrl });
+  if (serpUrl && serpUrl !== indexUrl) tiered.push({ tier: 'tier2', url: serpUrl });
+  for (const u of [...new Set(tier3Urls)]) {
+    if (u !== indexUrl && u !== serpUrl) tiered.push({ tier: 'tier3', url: u });
+  }
+
+  for (const { tier, url } of tiered) {
     const html = await nodeFetch(url);
     if (!html || html.length < 1000) continue;
     if (html.includes('<title>Page not found') || html.includes('404')) continue;
+    if (!verifyPage('theatre-reviews', url, html, show)) continue;
 
     const reviews = extractTheatreReviews(html, show.id);
     if (reviews.length > 0) {
@@ -600,6 +760,7 @@ async function sweepTheatreReviews(show) {
         if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
         fs.writeFileSync(archivePath, html);
       }
+      bumpUrlGuessTier('theatre-reviews', tier, show.id);
       return reviews;
     }
   }
@@ -631,13 +792,16 @@ async function sweepTheatreReviews(show) {
       await browser.close();
 
       if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
-        const reviews = extractTheatreReviews(html, show.id);
-        if (reviews.length > 0) {
-          if (!DRY_RUN) {
-            if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-            fs.writeFileSync(archivePath, html);
+        if (verifyPage('theatre-reviews', indexUrl, html, show)) {
+          const reviews = extractTheatreReviews(html, show.id);
+          if (reviews.length > 0) {
+            if (!DRY_RUN) {
+              if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
+              fs.writeFileSync(archivePath, html);
+            }
+            bumpUrlGuessTier('theatre-reviews', 'tier1', show.id);
+            return reviews;
           }
-          return reviews;
         }
       }
     } catch (err) {
@@ -651,37 +815,14 @@ async function sweepTheatreReviews(show) {
     console.log(`    [TR] Trying ScrapingBee for ${indexUrl.split('/reviews-roundup/')[1] || indexUrl}`);
     const html = await scrapingBeeRender(indexUrl);
     if (html && html.length > 1000 && !html.includes('<title>Page not found') && !html.includes('404')) {
-      const reviews = extractTheatreReviews(html, show.id);
-      if (reviews.length > 0) {
-        if (!DRY_RUN) {
-          if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
-          fs.writeFileSync(archivePath, html);
-        }
-        return reviews;
-      }
-    }
-  }
-
-  // Fallback to archive
-  if (fs.existsSync(archivePath)) {
-    const html = fs.readFileSync(archivePath, 'utf8');
-    const reviews = extractTheatreReviews(html, show.id);
-    if (reviews.length > 0) return reviews;
-  }
-
-  // Last resort: SERP discovery + ScrapingBee render
-  if (SB_KEY || BD_KEY) {
-    const serpUrl = await serpSearch('theatre.reviews', show.title);
-    if (serpUrl && serpUrl.includes('reviews-roundup')) {
-      let html = await nodeFetch(serpUrl);
-      if (!html && SB_KEY) html = await scrapingBeeRender(serpUrl);
-      if (html && html.length > 1000 && !html.includes('Page not found')) {
+      if (verifyPage('theatre-reviews', indexUrl, html, show)) {
         const reviews = extractTheatreReviews(html, show.id);
         if (reviews.length > 0) {
           if (!DRY_RUN) {
             if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
             fs.writeFileSync(archivePath, html);
           }
+          bumpUrlGuessTier('theatre-reviews', 'tier1', show.id);
           return reviews;
         }
       }
@@ -912,55 +1053,60 @@ async function sweepTheStage(show) {
   const archDir = path.join(ARCHIVE_BASE, 'thestage-roundups');
   const archivePath = path.join(archDir, `${show.id}.html`);
 
-  // Use archive if exists (skip expensive BB/SB calls)
+  // Use archive if exists (skip expensive BB/SB calls).
+  // Verifier still gates the cached html — catches a cached Cuckoo trap
+  // that landed before the gate was wired in (S1-T4 / S3-T4).
   if (!FORCE && fs.existsSync(archivePath)) {
     const html = fs.readFileSync(archivePath, 'utf8');
-    const reviews = extractStageReviews(html, show.id);
-    if (reviews.length > 0) return reviews;
+    if (verifyPage('thestage', archivePath, html, show)) {
+      const reviews = extractStageReviews(html, show.id);
+      if (reviews.length > 0) {
+        bumpUrlGuessTier('thestage', 'tier1', show.id);
+        return reviews;
+      }
+    }
   }
 
-  // Build URL candidates — index URL first (most reliable), then constructed, then SERP
-  const urls = [];
-
-  // Check the TS index for a discovered URL (from listing page)
+  // Tier 1: index URL from the prebuilt _tsIndex (listing-page discovery).
   const indexUrl = _tsIndex ? _tsIndex.get(show.id) : null;
-  if (indexUrl) urls.push(indexUrl);
 
-  // Constructed URL candidates
+  // Tier 2: SERP via discoverCorrectUrl. The Stage native search returns
+  // the Cuckoo's Nest roundup for every query (canary case for the
+  // verifier). Primary discovery is now SERP, NOT native search.
+  const serpUrl = await serpDiscoverAggregator(show, 'thestage.co.uk', {
+    outletName: 'thestage',
+  });
+
+  // Tier 3: slug guess — kept until url-guess hit-rate audit clears it.
   const titleSlug = show.title.toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/^-|-$/g, '');
-  urls.push(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`);
+  const tier3Urls = [
+    `https://www.thestage.co.uk/review-round-ups/${titleSlug}-review-round-up`,
+  ];
   if (show.venue) {
     const venueSlug = show.venue.toLowerCase()
       .replace(/\s*theatre\s*/gi, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
     if (venueSlug) {
-      urls.push(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
+      tier3Urls.push(`https://www.thestage.co.uk/review-round-ups/${titleSlug}-at-the-${venueSlug}-review-round-up`);
     }
   }
 
-  // SERP discovery: find the actual URL if index + construction missed
-  if (!indexUrl) {
-    const serpUrl = await serpSearch('thestage.co.uk/review-round-ups', show.title);
-    if (serpUrl && serpUrl.includes('review-round-up') && !urls.includes(serpUrl)) {
-      urls.push(serpUrl);
-    }
+  const tiered = [];
+  if (indexUrl) tiered.push({ tier: 'tier1', url: indexUrl });
+  if (serpUrl && serpUrl !== indexUrl) tiered.push({ tier: 'tier2', url: serpUrl });
+  for (const u of [...new Set(tier3Urls)]) {
+    if (u !== indexUrl && u !== serpUrl) tiered.push({ tier: 'tier3', url: u });
   }
 
-  // Deduplicate
-  const uniqueUrls = [...new Set(urls)];
-  // Replace urls reference for the rest of the function
-  const urlsToTry = uniqueUrls;
-
-  // Try BrowserBase — ONLY for index-discovered URLs (saves BB sessions)
-  // TS is paywalled so SB render can't help; BB with login is the only live path.
-  // Constructed/SERP URLs waste BB page loads (they usually 404).
+  // BB path for paywalled tier1 URLs (BrowserBase is the only live access
+  // for paywalled Stage pages; SB render gets the public teaser).
   if (process.env.BROWSERBASE_API_KEY && indexUrl) {
-    // Only try the index URL via BB (known-good from listing page)
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const html = await getStagePageViaBrowserBase(indexUrl);
         if (!html || html.length < 2000) { console.log(`    [BB] Page too small (${html ? html.length : 0} bytes)`); break; }
         if (html.includes('Page not found') || html.includes('404 -')) { console.log('    [BB] Page not found'); break; }
+        if (!verifyPage('thestage', indexUrl, html, show)) break;
 
         const reviews = extractStageReviews(html, show.id);
         if (reviews.length > 0) {
@@ -968,6 +1114,7 @@ async function sweepTheStage(show) {
             if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
             fs.writeFileSync(archivePath, html);
           }
+          bumpUrlGuessTier('thestage', 'tier1', show.id);
           return reviews;
         }
         break;
@@ -982,14 +1129,14 @@ async function sweepTheStage(show) {
     }
   }
 
-  // Fallback: ScrapingBee render for ALL URL candidates
-  // Works for non-paywalled roundup pages (some TS roundups are free)
+  // Fallback: ScrapingBee render for ALL tiered URLs (verifier-gated).
   if (SB_KEY) {
-    for (const url of urlsToTry) {
+    for (const { tier, url } of tiered) {
       console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
       const html = await scrapingBeeRender(url);
       if (!html || html.length < 2000) continue;
       if (html.includes('Page not found') || html.includes('404 -')) continue;
+      if (!verifyPage('thestage', url, html, show)) continue;
 
       const reviews = extractStageReviews(html, show.id);
       if (reviews.length > 0) {
@@ -997,6 +1144,7 @@ async function sweepTheStage(show) {
           if (!fs.existsSync(archDir)) fs.mkdirSync(archDir, { recursive: true });
           fs.writeFileSync(archivePath, html);
         }
+        bumpUrlGuessTier('thestage', tier, show.id);
         return reviews;
       }
     }
