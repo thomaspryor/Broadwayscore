@@ -77,9 +77,13 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
         case 'audience':
           return '/audience-buzz';
         case 'awards':
-          return market === 'broadway' ? '/tony-awards/predictions'
-               : market === 'west-end' ? '/olivier-awards'
-               : null;
+          if (market === 'broadway') return '/tony-awards/predictions';
+          if (market === 'west-end') return '/olivier-awards';
+          // Off-Broadway and off-west-end shows have no dedicated awards
+          // page (they're not Tony/Olivier-eligible). Explicit handling
+          // required by the west-end/off-west-end co-occurrence lint —
+          // see tests/unit/regression-guards.test.mjs.
+          return null;
         case 'boxOffice':
           return '/box-office';
         case 'overall':
