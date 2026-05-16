@@ -49,7 +49,13 @@ const A_PLUS_MULTIPLIER = 1.2;
 const REVIVAL_DISCOUNT = 0.85;
 const C_STACKING = [1.0, 0.7, 0.5, 0.4, 0.4, 0.4];
 
-function classifyCategory(category: string): { tier: CategoryTier; revival: boolean } | null {
+/**
+ * Map a precursor category name (e.g. "Outstanding Director of a Musical") to
+ * a tier (S/A+/A/B/C) and revival flag. Returns null for unrecognized
+ * categories. Exported for reuse by Tony predictions (data-tony-predictions.ts)
+ * which applies different WEIGHTS to the same classification.
+ */
+export function classifyCategory(category: string): { tier: CategoryTier; revival: boolean } | null {
   const c = category.toLowerCase();
   if (/revival of a musical|musical revival/.test(c)) return { tier: 'S', revival: true };
   if (/revival of a play|play revival/.test(c)) return { tier: 'S', revival: true };
