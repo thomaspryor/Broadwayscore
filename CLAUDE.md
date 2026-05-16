@@ -14,9 +14,9 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- Pushes touching `src/`, `public/`, config, key `data/*.json` → auto-deploy (~5 min, up to ~10 min if queued behind another deploy).
-- Manual deploy: `gh workflow run "Deploy to Vercel"`.
-- **"Pushed" ≠ "Deployed"** — confirm workflow triggered. If failed → fix. If in-progress → tell user the run ID.
+- **Cron deploys main HEAD every 5 min** (auto-skips ticks where HEAD hasn't moved). After a push to main, the deploy lands within ~5-10 min — DO NOT run `gh workflow run "Deploy to Vercel"` after a normal push; it races with the cron and re-triggers the cascade we just fixed.
+- **Manual deploy** is for "ship NOW" only (opening night, broken page, post-rebuild data ship that can't wait): `gh workflow run "Deploy to Vercel"`. Auto-triggered post-rebuild via `workflow_run` already exists — manual dispatch is rarely needed.
+- **"Pushed" ≠ "Deployed"** — confirm via `gh run list --workflow="Deploy to Vercel" --limit 1`. If failed → fix.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.

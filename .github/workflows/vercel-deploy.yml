@@ -1,54 +1,86 @@
 name: Deploy to Vercel
 
 on:
-  push:
-    branches: [main]
-    paths:
-      # Serverless functions
-      - 'api/**'
-      # Application code
-      - 'src/**'
-      - 'public/**'
-      - 'content/**'
-      # Config files
-      - 'next.config.*'
-      - 'vercel.json'
-      - 'tailwind.config.*'
-      - 'tsconfig.*'
-      - 'package.json'
-      - 'package-lock.json'
-      # Build-relevant data files (imported at build time)
-      # NOTE: Core data files (shows.json, reviews.json, etc.) are in private repo
-      # and won't trigger deploys via path match. Terminal workflows dispatch deploys directly.
-      - 'data/lottery-rush.json'
-      - 'data/awards.json'
-      - 'data/gold-lists-computed.json'
-      # NOTE: data/audit/seo-* is NOT listed here, so SEO health check pushes won't trigger deploys
+  # 5-min cron coordinator (replaced per-push trigger on 2026-05-16). With 10+
+  # parallel sessions pushing to main, the per-push trigger produced cascading
+  # deploy cancellations — Vercel server-side dedup killed older builds
+  # mid-prerender before any could complete, and even the "latest" deploy
+  # could be cancelled mid-build by the next push. The cron batches pushes:
+  # at most one deploy per 5-min window, and the should-deploy preflight job
+  # below skips ticks where main HEAD hasn't moved. See
+  # memory/feedback_workflow_cascade_prevention.md. The demo workflow solved
+  # the same cascade with the same fix in 2026-04 (see vercel-demo.yml L17-19).
+  schedule:
+    - cron: '*/5 * * * *'
   # Deploy-before-rebuild race fix (Beaches 2026-04-22 postmortem #9):
   # When a rebuild finishes successfully, refresh production so the newly-rebuilt
-  # reviews.json actually ships. Without this, a deploy triggered by a public-repo
-  # push (e.g., src/ change) that races ahead of the rebuild clones stale core-data
-  # and serves yesterday's counts until the next deploy.
-  # Rebuild Reviews (Fast) is the path used for opening-night corrections, which
-  # is exactly when the stale-deploy race is most painful — include it here so Fast
-  # rebuilds also gate production deploys. Part of P1 redesign card 34b637c5-416f-8126-bb13-e12fb737bed2.
-  # Job-level guard (see deploy.if) skips failures.
+  # reviews.json actually ships. Without this, the next cron tick may run
+  # before main HEAD changes (private-repo push), and production serves stale
+  # counts. Rebuild Reviews (Fast) is the path used for opening-night corrections.
+  # Job-level guard (see should-deploy.if) skips failures. Part of P1 redesign
+  # card 34b637c5-416f-8126-bb13-e12fb737bed2.
   workflow_run:
     workflows: ["Rebuild Reviews Data", "Rebuild Reviews (Fast)"]
     types: [completed]
-  workflow_dispatch: # Manual trigger
+  workflow_dispatch: # Manual trigger — "ship NOW" path (opening night, broken page)
 
 permissions:
   contents: write
   actions: write   # needed for gh workflow run (watermark dispatch)
 
 jobs:
-  deploy:
+  # Preflight: decide whether to actually deploy. Runs on every trigger
+  # (~10s). Skips scheduled ticks where main HEAD hasn't moved since the last
+  # successful deploy. Manual dispatch and workflow_run (post-rebuild) always
+  # proceed — they're explicit "I need this NOW" signals. Carries the
+  # Beaches #9 race guard (workflow_run conclusion check) that previously
+  # sat on the deploy job.
+  should-deploy:
     runs-on: ubuntu-latest
-    # Skip workflow_run triggers whose upstream run did not succeed. For all
-    # other events (push, workflow_dispatch), event.workflow_run is undefined
-    # which short-circuits to true. This is the Beaches #9 race guard.
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 2
+    outputs:
+      proceed: ${{ steps.check.outputs.proceed }}
+    steps:
+      - name: Checkout (shallow, for git rev-parse origin/main)
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Decide whether to deploy
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # workflow_dispatch and workflow_run: explicit signals — always deploy.
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Event ${{ github.event_name }} — always proceeding"
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Cron path: skip if main HEAD hasn't moved since the most recent
+          # successful deploy. Looks back 30 runs to find the last success;
+          # ignores cancelled / failed runs (they didn't actually ship).
+          MAIN_HEAD=$(git rev-parse origin/main)
+          LAST_DEPLOYED=$(gh run list \
+            --workflow="Deploy to Vercel" \
+            --limit=30 \
+            --json headSha,conclusion \
+            --jq '[.[] | select(.conclusion == "success")][0].headSha // ""')
+          echo "Main HEAD:     $MAIN_HEAD"
+          echo "Last deployed: $LAST_DEPLOYED"
+          if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
+            echo "::notice::No new commits since last deploy ($MAIN_HEAD) — skipping scheduled deploy"
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::New commits since last deploy — proceeding"
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy:
+    needs: should-deploy
+    if: needs.should-deploy.outputs.proceed == 'true'
+    runs-on: ubuntu-latest
     # 15-minute job timeout. Typical deploy completes in 2-5 min. On 2026-04-22, deploy
     # 24760225201 hung in_progress for 13+ min, blocking 3 subsequent deploys (Balusters
     # postmortem CLASS 9). GitHub Actions default is 6 hours. 15 min is generous enough to
@@ -59,7 +91,9 @@ jobs:
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
       # and Rocky Horror opening nights. Vercel itself queues deploys server-side
       # (latest wins), so letting multiple runs proceed in parallel is safe.
-      # See memory/feedback_gha_concurrency_queue_limit.md.
+      # See memory/feedback_gha_concurrency_queue_limit.md. With the cron change
+      # (2026-05-16, see on: schedule above), simultaneous deploys are now rare —
+      # most cron ticks self-skip in the should-deploy preflight.
       group: vercel-production-deploy-${{ github.run_id }}
       cancel-in-progress: false
     steps:
