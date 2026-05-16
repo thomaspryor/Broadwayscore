@@ -1274,7 +1274,15 @@ async function main(): Promise<void> {
             fileData.wrongShowManualClear === true ||
             fileData.wrongShowOverride === true ||
             fileData.humanReviewedWrongProduction === false ||
-            fileData.isCombinedReview === true;
+            fileData.isCombinedReview === true ||
+            // Aliases for sweep scripts that historically wrote the `Cleared`
+            // suffix instead of `ManualClear` — discovered 2026-05-01 when 4
+            // opera sweeps used the wrong field name and the gate silently
+            // re-flagged every cycle. Treating both suffixes as equivalent
+            // closes the gap without requiring every sweep to be migrated.
+            // Notion 362637c5-416f-8142-a088-f44f0cdaa98b.
+            fileData.wrongProductionCleared === true ||
+            fileData.wrongShowCleared === true;
           if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
             console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
             // Fallback: a human has verified this file matches the show, but the

@@ -674,10 +674,24 @@ export function computeShowData(
   // Announced shows: never surface a composite score — any reviews present belong
   // to a prior production and would mislead ("upcoming show with 82 score").
   const hideReviews = shouldHideReviews(show) || show.status === 'announced';
-  // Exclude single-model emergency reviews: only 1 of N ensemble models succeeded,
-  // so the score is unreliable until a human review clears the flag.
-  const eligibleReviews = showReviews.filter(r => !r.singleModelEmergency);
-  let criticScore = hideReviews ? null : computeCriticScore(eligibleReviews, show.category, (show as { type?: string }).type);
+  // Include singleModelEmergency reviews in the composite (2026-05-16).
+  //
+  // Background: when ensemble scoring runs and 2 of 3 models fail (commonly
+  // Gemini outage), the surviving model's score is still saved with
+  // ensembleData.singleModelEmergency=true. Previously this flag excluded the
+  // review from /opera, /off-broadway, /broadway, /west-end list pages — but
+  // generate-mobile-show-details.js (which writes /data/shows/*.json) does
+  // NOT exclude them. The asymmetry caused stale-looking market pages (e.g.
+  // /opera showed Eugene Onegin at 51/2 reviews while the per-show JSON had
+  // 60/3 — the missing review was a singleModelEmergency Parterre score).
+  //
+  // The Phase 4 daily cron in llm-ensemble-score.yml already retries these
+  // automatically (singleModelEmergencyRetryCount<1 → re-score; if 2+ models
+  // succeed the flag clears; if not, retryCount=1 prevents further retries).
+  // So including these in the composite means: low-confidence scores show up
+  // briefly until the cron picks them up, instead of disappearing entirely.
+  // Notion 362637c5-416f-81ff-ad1f-c5b4b85e62ef tracks the parity question.
+  let criticScore = hideReviews ? null : computeCriticScore(showReviews, show.category, (show as { type?: string }).type);
 
   // V1: composite score = critic score (audience/buzz coming later)
   // Keep 2 decimal places for tiebreaking in sort order (e.g., 87.96 vs 87.12)
