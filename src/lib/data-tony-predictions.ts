@@ -11,6 +11,10 @@ import {
   currentTonySeason,
   FIRST_TRACKED_CEREMONY_YEAR,
 } from '@/lib/tony-cutoffs';
+// classifyCategory maps precursor category names → tier (S/A+/A/B/C). Shared
+// with awards-scoring.ts (Site Award Score uses different prestige weights;
+// we use predictive weights below).
+import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
@@ -97,6 +101,22 @@ const NOMS_POOL_BY_CATEGORY: Record<string, number> = {
   'best-revival-play':     8,
 };
 const NOMS_TAIL_CAP = 25;
+
+/**
+ * Predictive weights per category tier (NOT the prestige weights in
+ * awards-scoring.ts — same tier system, different point allocation tuned
+ * for forecasting Tony winners). Tier S (matching top cat) is already
+ * counted via the +30 win / +10 nom bonus, so weight 0 here. Higher tiers
+ * (A+ = score/book, A = director/lead acting) carry more predictive signal
+ * than craft (C = design). Applied to the totalNoms tail term.
+ */
+const PRECURSOR_TIER_NOM_WEIGHTS: Record<CategoryTier, number> = {
+  S:    0,    // already counted via +30/+10
+  'A+': 2.0,
+  A:    1.5,
+  B:    1.0,
+  C:    0.5,
+};
 
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
   'best-musical': 'Best Musical',
@@ -192,10 +212,21 @@ type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: n
  * precursor signal (Drama League 1.0, OCC 0.9, Drama Desk 0.7):
  *   +30*tier if won the matching category at that precursor
  *   +10*tier if nominated (but didn't win) the matching category
- *   + min(25, 25 * totalNoms / categoryPool)
- * Where categoryPool is the empirically-observed ceiling of totalNoms for
- * the show's Tony category (musicals get more eligible noms than plays;
- * see NOMS_POOL_BY_CATEGORY). Cap at 100 overall.
+ *   + min(25, 25 * weightedNoms / categoryPool)
+ *
+ * weightedNoms sums each NON-matching-top-cat nom × its tier weight via
+ * classifyCategory (shared with awards-scoring.ts). A nom for Director
+ * (tier A, weight 1.5) counts more than a nom for Lighting Design (tier C,
+ * weight 0.5). Categories that don't match any tier rule are ignored.
+ *
+ * Pre-tier-weighting (2026-05-16) we used a flat per-nom count via the
+ * `nominations` integer fallback. Under current data shape (precursor
+ * nominatedFor arrays often contain only the matching top cat), weightedNoms
+ * is typically 0 for non-winners — until per-category backfill (Sprint 2)
+ * populates DD/OCC/DL nominatedFor with director/acting/etc. Safe
+ * degradation: scores stay correct for shows with rich Tony nominatedFor
+ * but drop noms-tail credit for shows that previously got it from the
+ * `nominations` integer.
  *
  * Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
  */
@@ -222,7 +253,7 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   ];
 
   let base = 0;
-  let totalNoms = 0;
+  let weightedNoms = 0;
 
   for (const { node, matchCat, tier } of sources) {
     if (!node) continue;
@@ -235,22 +266,20 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
       base += 10 * tier;
     }
 
-    // Total nominations at this precursor across all categories.
-    if (typeof node.nominations === 'number' && node.nominations > 0) {
-      totalNoms += node.nominations;
-    } else {
-      // Fallback: union of wins + nominatedFor (Drama League rarely sets nominations).
-      const set = new Set([...wins, ...noms]);
-      totalNoms += set.size;
+    // Tier-weighted noms tail. Skip the matching top cat (already counted).
+    // classifyCategory returns null for unrecognized strings — ignored.
+    for (const nomCat of noms) {
+      if (nomCat === matchCat) continue;
+      const cls = classifyCategory(nomCat);
+      if (!cls) continue;
+      weightedNoms += PRECURSOR_TIER_NOM_WEIGHTS[cls.tier];
     }
   }
 
-  // Eligible-pool-normalized noms term. Old: min(25, totalNoms) biased
-  // categories with bigger eligible pools (musicals) over smaller ones (plays).
-  // New: a play with 5/6 noms reads as a stronger sweep than a musical with
-  // 5/12. Intra-category rankings are unchanged (constant rescale within
-  // each category) but absolute awards numbers are now fair across categories.
-  const nomsScore = NOMS_TAIL_CAP * Math.min(1, totalNoms / pool);
+  // Eligible-pool-normalized noms term. Categories with bigger eligible
+  // pools (musicals) cap at the same value as smaller pools (plays), so
+  // cross-category awards numbers are visually fair.
+  const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
   return Math.min(100, base);
 }
