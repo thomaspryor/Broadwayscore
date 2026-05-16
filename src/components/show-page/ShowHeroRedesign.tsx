@@ -62,6 +62,7 @@ import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { UserReview } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
+import HeroRankLine from '@/components/show-page/HeroRankLine';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -664,68 +665,6 @@ function DateLine({ show }: { show: ComputedShow }) {
     <p>
       {show.openingDate && <>Opened {formatDate(show.openingDate)}</>}
       {show.closingDate && <> · Closes {formatDate(show.closingDate)}</>}
-    </p>
-  );
-}
-
-function marketLabel(category: ComputedShow['category']): string {
-  switch (category) {
-    case 'broadway': return 'Broadway';
-    case 'west-end': return 'West End';
-    case 'off-broadway': return 'Off-Broadway';
-    case 'off-west-end': return 'Off-West End';
-    default: return 'Broadway';
-  }
-}
-
-/** Hero "Variant B" rank line. Renders only the non-null fragments so a show
- *  with a valid market rank but a too-small season pool still gets a useful
- *  line, instead of being hidden entirely. */
-function HeroRankLine({
-  ranks,
-  market,
-  className = '',
-}: {
-  ranks: ShowRanks | null;
-  market: ComputedShow['category'];
-  className?: string;
-}) {
-  if (!ranks) return null;
-  const c = ranks.critic;
-  if (!c.openMarket && !c.season && !c.allTime) return null;
-
-  const label = marketLabel(market);
-  const fragments: React.ReactNode[] = [];
-  if (c.openMarket) {
-    fragments.push(
-      <span key="om">
-        <span className="font-semibold text-gray-200">#{c.openMarket.rank}</span> of {c.openMarket.total} open {label}
-      </span>,
-    );
-  }
-  if (c.season) {
-    fragments.push(
-      <span key="se">
-        <span className="font-semibold text-gray-200">#{c.season.rank}</span> this season
-      </span>,
-    );
-  }
-  if (c.allTime) {
-    fragments.push(
-      <span key="at" className="text-gray-500">
-        #{c.allTime.rank} all-time*
-      </span>,
-    );
-  }
-
-  return (
-    <p className={`text-[11px] sm:text-[12px] text-gray-400 mt-1 leading-snug ${className}`}>
-      Ranks {fragments.map((f, i) => (
-        <React.Fragment key={i}>
-          {i > 0 ? <span className="text-gray-600"> · </span> : null}
-          {f}
-        </React.Fragment>
-      ))}
     </p>
   );
 }

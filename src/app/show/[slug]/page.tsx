@@ -64,6 +64,7 @@ import { getSocialPulse } from '@/lib/data-social-pulse';
 import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
+import HeroRankLine from '@/components/show-page/HeroRankLine';
 
 export const revalidate = 86400;
 
@@ -561,6 +562,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                             </a>
                           )}
                         </div>
+                        {/* Hero rank line — Variant B. Same component as the redesigned hero
+                            so flipping the redesign flag doesn't change the rank line's look. */}
+                        {!showTBD && (
+                          <HeroRankLine ranks={ranks} market={show.category} />
+                        )}
                         {/* Review age note for long-running shows */}
                         {(() => {
                           if (!show.openingDate || show.status === 'closed') return null;
