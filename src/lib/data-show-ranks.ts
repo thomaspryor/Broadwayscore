@@ -1,0 +1,389 @@
+/**
+ * Show ranks across multiple metrics × pools, precomputed once at module load.
+ *
+ * Each show gets ranks for 5 metrics:
+ *   - critic       (CriticScore — rounded for display-aligned ranking)
+ *   - audience     (AudienceGrade — rounded combined score)
+ *   - awards       (computeSiteAwardScore — Broadway only)
+ *   - boxOffice    (thisWeek.gross raw $ — Broadway + West End only)
+ *   - overall      (compositeScore — all markets)
+ *
+ * Three pools per metric:
+ *   - openMarket: shows in the same market (broadway / west-end / off-broadway
+ *                 / off-west-end) with status 'open' OR 'previews' (matches the
+ *                 existing market-stats predicate at data-core.ts:128-131).
+ *   - season:     same market, opened during the current award season.
+ *                 BW/OB use getSeason() (Jul-Jun, matches /browse/{season}-broadway-season).
+ *                 WE/OWE use the current Olivier eligibility window.
+ *   - allTime:    same market, scored shows only (hasEnoughReviews true). 2005+.
+ *
+ * Two format slices: 'all' (no format filter) and per-show-type
+ * ('musical' | 'play'). Special / Limited Engagement shows are 'all' only.
+ *
+ * Tie-break: dense rank on the rounded display value (1, 1, 2 — not 1, 1, 3).
+ * Per memory/feedback_round_once_share_everywhere.md — the rank must match
+ * what users see.
+ *
+ * Null semantics:
+ *   - Pool < 3 shows: returns null (rank in a pool of 2 isn't meaningful UX).
+ *   - Target show not in its own pool (e.g. closed show on openMarket): null.
+ *   - Show has no value for that metric: null.
+ *
+ * Performance:
+ *   - Module-scope precomputed index. ensureBuilt() runs once on first call.
+ *   - 5 metrics × 3 pools × 2 format slices = 30 sorted pools per build.
+ *   - Each sort is O(n log n) on ~727 shows. Total build ~30 × 727 × 10 ops
+ *     ≈ 220K ops, target <5s wall time on real data.
+ *   - Per-page lookup is O(1) Map.get().
+ *
+ * Used by:
+ *   - src/components/show-page/ShowHeroRedesign.tsx (hero rank line)
+ *   - src/components/show-page/WhereItRanks.tsx (bottom rank card)
+ *   - both consume via src/app/show/[slug]/page.tsx which calls getShowRanks().
+ */
+
+import type { ComputedShow } from '@/lib/data-types';
+import { getAllShows } from '@/lib/data-core';
+import { hasEnoughReviews } from '@/config/score-buckets';
+import { getSeason } from '@/lib/data-commercial';
+import { getAudienceBuzz, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { computeSiteAwardScore, type Market } from '@/lib/awards-scoring';
+import { getShowGrosses } from '@/lib/data-grosses';
+import { isInCurrentOlivierSeason } from '@/lib/olivier-seasons';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type RankMetric = 'critic' | 'audience' | 'awards' | 'boxOffice' | 'overall';
+export type RankPool = 'openMarket' | 'season' | 'allTime';
+export type RankFormat = 'all' | 'musical' | 'play';
+
+export interface RankCell {
+  rank: number;
+  total: number;
+}
+
+export interface RankSet {
+  openMarket: RankCell | null;
+  season: RankCell | null;
+  allTime: RankCell | null;
+}
+
+export interface ShowRanks {
+  critic: RankSet;
+  audience: RankSet;
+  awards: RankSet;
+  boxOffice: RankSet;
+  overall: RankSet;
+}
+
+const EMPTY_RANK_SET: RankSet = { openMarket: null, season: null, allTime: null };
+const EMPTY_SHOW_RANKS: ShowRanks = {
+  critic: EMPTY_RANK_SET,
+  audience: EMPTY_RANK_SET,
+  awards: EMPTY_RANK_SET,
+  boxOffice: EMPTY_RANK_SET,
+  overall: EMPTY_RANK_SET,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Pool predicates
+// ─────────────────────────────────────────────────────────────────────────────
+
+type Category = ComputedShow['category'];
+
+function sameMarket(show: ComputedShow, target: ComputedShow): boolean {
+  return show.category === target.category;
+}
+
+function isInOpenPool(show: ComputedShow): boolean {
+  return show.status === 'open' || show.status === 'previews';
+}
+
+function isInSeasonPool(show: ComputedShow, _market: Category): boolean {
+  if (!show.openingDate) return false;
+  // Broadway + Off-Broadway: use Jul-Jun "Broadway season" (matches /browse/{yyyy-yyyy}-broadway-season).
+  // Off-Broadway has no official award eligibility window for v1 — re-use Tony-style season for consistency.
+  // West End + Off-West End: use the current Olivier eligibility window.
+  if (show.category === 'west-end' || show.category === 'off-west-end') {
+    return isInCurrentOlivierSeason(show.openingDate);
+  }
+  const showSeason = getSeason(show.openingDate);
+  const currentSeason = getSeason(new Date().toISOString().slice(0, 10));
+  return showSeason !== null && showSeason === currentSeason;
+}
+
+function isInAllTimePool(show: ComputedShow): boolean {
+  // "Scored shows only (2005+)" — `hasEnoughReviews` is the canonical gate
+  // used by the score-display threshold, so this matches what users see.
+  const reviewCount = show.criticScore?.reviewCount ?? 0;
+  const tier1And2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
+  return hasEnoughReviews(reviewCount, show.category, tier1And2, false);
+}
+
+function matchesFormat(show: ComputedShow, format: RankFormat): boolean {
+  if (format === 'all') return true;
+  return show.type === format;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Per-metric value extractors
+// Round critic + audience scores so rank matches the user-visible value
+// (per memory/feedback_round_once_share_everywhere.md).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function valCritic(show: ComputedShow): number | null {
+  const s = show.criticScore?.score;
+  if (s == null) return null;
+  // Rank only shows that pass the display threshold — sub-threshold shows show
+  // TBD and shouldn't appear in the leaderboard.
+  if (!isInAllTimePool(show)) return null;
+  return Math.round(s);
+}
+
+function valAudience(show: ComputedShow): number | null {
+  const buzz = getAudienceBuzz(show.id);
+  if (!buzz || buzz.combinedScore == null) return null;
+  if (!hasEnoughAudienceReviews(buzz)) return null;
+  return Math.round(buzz.combinedScore);
+}
+
+function marketToAwardsKey(category: Category): Market | null {
+  if (category === 'broadway') return 'broadway';
+  if (category === 'west-end') return 'west-end';
+  return null; // OB / OWE — no precursor-based site award score for v1
+}
+
+function valAwards(show: ComputedShow): number | null {
+  const key = marketToAwardsKey(show.category);
+  if (!key) return null;
+  // Broadway only for v1 — West End Olivier predictions aren't wired.
+  if (key !== 'broadway') return null;
+  try {
+    const result = computeSiteAwardScore(show.id, key);
+    if (!result || typeof result.displayScore !== 'number') return null;
+    // Treat 0 as "no awards data" — score is 0-100 and a real award would lift it.
+    if (result.displayScore === 0) return null;
+    return result.displayScore;
+  } catch {
+    return null;
+  }
+}
+
+function valBoxOffice(show: ComputedShow): number | null {
+  // Only Broadway + West End report weekly grosses for v1.
+  if (show.category !== 'broadway' && show.category !== 'west-end') return null;
+  const g = getShowGrosses(show.slug);
+  const gross = g?.thisWeek?.gross;
+  if (gross == null) return null;
+  return gross;
+}
+
+function valOverall(show: ComputedShow): number | null {
+  const s = show.compositeScore;
+  if (s == null) return null;
+  // Same display-threshold gate as critic.
+  if (!isInAllTimePool(show)) return null;
+  return s;
+}
+
+const METRIC_VALUE: Record<RankMetric, (show: ComputedShow) => number | null> = {
+  critic: valCritic,
+  audience: valAudience,
+  awards: valAwards,
+  boxOffice: valBoxOffice,
+  overall: valOverall,
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Module-scope precomputed index
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface BuildKey {
+  market: Category;
+  metric: RankMetric;
+  pool: RankPool;
+  format: RankFormat;
+}
+
+function buildKey(k: BuildKey): string {
+  return `${k.market}|${k.metric}|${k.pool}|${k.format}`;
+}
+
+interface PoolResult {
+  /** showId → {rank, total}. Missing show = not in pool. */
+  ranks: Map<string, RankCell>;
+  total: number;
+}
+
+let INDEX: Map<string, PoolResult> | null = null;
+let RANKS_BY_SHOW: Map<string, { all: ShowRanks; musical: ShowRanks | null; play: ShowRanks | null }> | null = null;
+
+const MIN_POOL_SIZE = 3;
+
+const METRICS: RankMetric[] = ['critic', 'audience', 'awards', 'boxOffice', 'overall'];
+const POOLS: RankPool[] = ['openMarket', 'season', 'allTime'];
+const FORMATS: RankFormat[] = ['all', 'musical', 'play'];
+const MARKETS: Category[] = ['broadway', 'west-end', 'off-broadway', 'off-west-end'];
+
+function poolPredicate(pool: RankPool): (show: ComputedShow) => boolean {
+  if (pool === 'openMarket') return isInOpenPool;
+  if (pool === 'season') return (s) => isInSeasonPool(s, s.category);
+  return isInAllTimePool;
+}
+
+function computePool(
+  allShows: ComputedShow[],
+  market: Category,
+  metric: RankMetric,
+  pool: RankPool,
+  format: RankFormat,
+): PoolResult {
+  const predicate = poolPredicate(pool);
+  const valFn = METRIC_VALUE[metric];
+
+  // Filter pool: same market + pool predicate + format + has metric value.
+  const entries: { id: string; v: number }[] = [];
+  for (const s of allShows) {
+    if (s.category !== market) continue;
+    if (!matchesFormat(s, format)) continue;
+    if (!predicate(s)) continue;
+    const v = valFn(s);
+    if (v == null) continue;
+    entries.push({ id: s.id, v });
+  }
+
+  const ranks = new Map<string, RankCell>();
+  if (entries.length < MIN_POOL_SIZE) {
+    return { ranks, total: entries.length };
+  }
+
+  // Sort desc by value; assign dense rank.
+  entries.sort((a, b) => b.v - a.v);
+  let lastVal: number | null = null;
+  let denseRank = 0;
+  for (const e of entries) {
+    if (e.v !== lastVal) {
+      denseRank += 1;
+      lastVal = e.v;
+    }
+    ranks.set(e.id, { rank: denseRank, total: entries.length });
+  }
+
+  return { ranks, total: entries.length };
+}
+
+function ensureBuilt(allShowsOverride?: ComputedShow[]): void {
+  if (INDEX && RANKS_BY_SHOW) return;
+
+  const allShows = allShowsOverride ?? getAllShows();
+  INDEX = new Map();
+  RANKS_BY_SHOW = new Map();
+
+  for (const market of MARKETS) {
+    for (const metric of METRICS) {
+      for (const pool of POOLS) {
+        for (const format of FORMATS) {
+          const key = buildKey({ market, metric, pool, format });
+          INDEX.set(key, computePool(allShows, market, metric, pool, format));
+        }
+      }
+    }
+  }
+
+  // Now flip the index inside-out: per show, build ShowRanks for each
+  // applicable format slice. Storing the same RankCell object reference is
+  // fine — RankCell is immutable by convention.
+  for (const show of allShows) {
+    const all = assembleShowRanks(show, 'all');
+    const ownFormat: RankFormat | null = show.type === 'musical' || show.type === 'play' ? show.type : null;
+    const formatSpecific = ownFormat ? assembleShowRanks(show, ownFormat) : null;
+    RANKS_BY_SHOW.set(show.id, {
+      all,
+      musical: ownFormat === 'musical' ? formatSpecific : null,
+      play: ownFormat === 'play' ? formatSpecific : null,
+    });
+  }
+}
+
+function assembleShowRanks(show: ComputedShow, format: RankFormat): ShowRanks {
+  if (!INDEX) return EMPTY_SHOW_RANKS;
+  const market = show.category as Category;
+  const out: ShowRanks = {
+    critic: { ...EMPTY_RANK_SET },
+    audience: { ...EMPTY_RANK_SET },
+    awards: { ...EMPTY_RANK_SET },
+    boxOffice: { ...EMPTY_RANK_SET },
+    overall: { ...EMPTY_RANK_SET },
+  };
+  for (const metric of METRICS) {
+    for (const pool of POOLS) {
+      const key = buildKey({ market, metric, pool, format });
+      const result = INDEX.get(key);
+      if (!result) continue;
+      const cell = result.ranks.get(show.id);
+      if (!cell) continue;
+      out[metric][pool] = cell;
+    }
+  }
+  return out;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Public API
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface GetShowRanksOpts {
+  /**
+   * 'all' — ranks across All shows in the market (every show counted).
+   * 'musical' / 'play' — narrowed to the show's own format. Returns null for
+   * shows that aren't a musical or play (Special, Limited Engagement, etc.).
+   */
+  format?: RankFormat;
+}
+
+/**
+ * Returns precomputed ranks for the given show across all metrics × pools.
+ * O(1) lookup after first call (index is built lazily on first invocation).
+ *
+ * Returns null if the show ID is unknown OR if the requested format slice
+ * doesn't apply (e.g. format='play' on a musical).
+ */
+export function getShowRanks(showId: string, opts: GetShowRanksOpts = {}): ShowRanks | null {
+  ensureBuilt();
+  if (!RANKS_BY_SHOW) return null;
+  const entry = RANKS_BY_SHOW.get(showId);
+  if (!entry) return null;
+  const format = opts.format ?? 'all';
+  if (format === 'all') return entry.all;
+  if (format === 'musical') return entry.musical;
+  return entry.play;
+}
+
+/**
+ * Test-only: re-build the index against a specific show set. Useful for unit
+ * tests that pass synthetic fixtures rather than loading the real catalogue.
+ *
+ * Resets the cached index and rebuilds from `allShows`. NOT intended for
+ * production callers — production callers should rely on getAllShows().
+ */
+export function __rebuildIndexForTests(allShows: ComputedShow[]): void {
+  INDEX = null;
+  RANKS_BY_SHOW = null;
+  ensureBuilt(allShows);
+}
+
+/**
+ * Returns module-internal pool totals for a single (market, metric, pool, format).
+ * Test/debug helper — production code should use getShowRanks().
+ */
+export function __getPoolTotalForTests(
+  market: Category,
+  metric: RankMetric,
+  pool: RankPool,
+  format: RankFormat,
+): number {
+  ensureBuilt();
+  return INDEX?.get(buildKey({ market, metric, pool, format }))?.total ?? 0;
+}
