@@ -65,7 +65,32 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/audit/critic-coverage-audit.json data/audit/critic-coverage-buckets.json data/audit/critic-coverage-buckets.md data/audit/critic-coverage-history/*.json data/audit/critic-coverage-cooldown.json 2>/dev/null || true
+          # Stage paths individually so a missing/gitignored file (buckets.md) doesn't
+          # abort staging of the others. Drop buckets.md entirely — gitignored
+          # (`/data/audit/**/*.md`), never tracked, harmless to skip.
+          for f in data/audit/critic-coverage-audit.json \
+                   data/audit/critic-coverage-buckets.json \
+                   data/audit/critic-coverage-cooldown.json; do
+            if [ -f "$f" ]; then
+              git add "$f"
+            else
+              echo "skip (missing): $f"
+            fi
+          done
+          if [ -d data/audit/critic-coverage-history ]; then
+            shopt -s nullglob
+            snapshots=( data/audit/critic-coverage-history/*.json )
+            shopt -u nullglob
+            if [ ${#snapshots[@]} -gt 0 ]; then
+              git add "${snapshots[@]}"
+            else
+              echo "skip (empty dir): data/audit/critic-coverage-history"
+            fi
+          else
+            echo "skip (missing dir): data/audit/critic-coverage-history"
+          fi
+          echo "--- Staged files ---"
+          git diff --cached --stat
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
