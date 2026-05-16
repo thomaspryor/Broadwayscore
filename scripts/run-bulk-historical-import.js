@@ -46,6 +46,7 @@ const path = require('path');
 const { spawnSync } = require('child_process');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { summarizeBulkImport, renderReport } = require('./lib/bulk-import-summary');
+const { checkShowsJsonMetadata } = require('./lib/bulk-import-preflight');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -205,6 +206,36 @@ function runPreflight() {
   return result.status === 0;
 }
 
+// Notion 362637c5-416f-81ee — null category/market on bulk-inserted shows breaks
+// opening-night-orchestrator routing (Schmigadoon postmortem). Reject the whole
+// batch up front so the operator fixes discover-historical-shows output, not the
+// downstream symptom. Pure check lives in lib/bulk-import-preflight.js.
+function runShowsJsonPreflight(ids) {
+  if (!fs.existsSync(SHOWS_JSON)) {
+    console.log('[preflight] shows.json absent — skipping category/market check (CI mode).');
+    return true;
+  }
+  let shows;
+  try {
+    shows = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+  } catch (e) {
+    console.error(`[preflight] FAILED — shows.json unreadable: ${e.message}`);
+    return false;
+  }
+  const result = checkShowsJsonMetadata(shows, ids);
+  if (result.ok) {
+    console.log(`[preflight] shows.json check OK — all ${ids.length} ids present with category+market.`);
+    return true;
+  }
+  console.error('[preflight] FAILED — shows.json metadata gaps:');
+  const fmt = arr => `${arr.slice(0, 10).join(', ')}${arr.length > 10 ? '…' : ''}`;
+  if (result.missing.length)      console.error(`  not in shows.json (${result.missing.length}): ${fmt(result.missing)}`);
+  if (result.nullCategory.length) console.error(`  null/empty category (${result.nullCategory.length}): ${fmt(result.nullCategory)}`);
+  if (result.nullMarket.length)   console.error(`  null/empty market (${result.nullMarket.length}): ${fmt(result.nullMarket)}`);
+  console.error('  Fix discover-historical-shows output before retry. opening-night-orchestrator misroutes without these fields.');
+  return false;
+}
+
 function runGatherForShow(showId, timeoutSec) {
   const result = spawnSync('node', [
     path.join(__dirname, 'gather-reviews.js'),
@@ -269,6 +300,10 @@ function main() {
       console.error('[preflight] FAILED — refusing to proceed. Use --skip-preflight to override (NEVER in CI).');
       process.exit(2);
     }
+  }
+
+  if (!runShowsJsonPreflight(ids)) {
+    process.exit(2);
   }
 
   // Ensure a graceful shutdown writes a partial report on SIGINT.
