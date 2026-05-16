@@ -24,20 +24,27 @@ function isDemo(): boolean {
 }
 
 /**
- * Detect whether the page is being served under the operascorecard.com domain.
- * Runtime-only (window-dependent) — returns false during SSR / static generation
- * so any server-rendered HTML defaults to the Broadway brand. Components that
- * want to swap branding for opera-domain users must call this in a `useEffect`
- * + `useState` pattern to avoid hydration mismatch.
+ * Detect whether the user is in an "opera context" — either visiting the
+ * operascorecard.com domain OR currently on the /opera path (which is where
+ * operascorecard.com lands after its 308 redirect).
  *
- * Why no SSR detection: static export builds one HTML payload for all domains;
- * the same /opera page is served to broadwayscorecard.com/opera AND
- * operascorecard.com/opera. Per-domain UI swaps happen client-side after hydration.
+ * Why we check BOTH hostname AND pathname:
+ *   - operascorecard.com → 308 → broadwayscorecard.com/opera. After the redirect
+ *     the browser's hostname is broadwayscorecard.com, so a hostname-only check
+ *     would never fire for users who entered via the opera domain.
+ *   - Direct visitors to broadwayscorecard.com/opera also belong in the opera
+ *     context — same page, same intent.
+ *
+ * Runtime-only (window-dependent). Returns false during SSR / static export so
+ * server-rendered HTML defaults to the Broadway brand; components must call
+ * this in a `useEffect` + `useState` pattern to avoid hydration mismatch.
  */
 export function isOperaDomain(): boolean {
   if (typeof window === 'undefined') return false;
   const host = window.location.hostname;
-  return host === 'operascorecard.com' || host === 'www.operascorecard.com';
+  if (host === 'operascorecard.com' || host === 'www.operascorecard.com') return true;
+  const path = window.location.pathname;
+  return path === '/opera' || path.startsWith('/opera/');
 }
 
 function has(name: string): boolean {
