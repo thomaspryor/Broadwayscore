@@ -776,6 +776,12 @@ async function runAggregators(show) {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
+      // REVIEWED 2026-05-16 (Notion 362637c5-416f-8109): 1-2 bounded
+      // theatre.reviews URL candidates. TR has no listing-page
+      // equivalent of BWW's /reviews.php — construction is the best
+      // available primitive. Each candidate fetched then validated
+      // against ⭑ star ratings + title-word presence (see ~795).
+      // NOT the BWW antipattern. Leave in place.
       const trUrls = [
         `https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`,
       ];
