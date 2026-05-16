@@ -67,7 +67,16 @@ function playbillSlug(str) {
 }
 
 /**
- * Generate URL variants to try for a show
+ * Generate URL variants to try for a show.
+ *
+ * REVIEWED 2026-05-16 (Notion 362637c5-416f-8109): bounded 4-variant
+ * convention-based construction with SERP fallback. NOT the BWW
+ * antipattern (which built 36 variants × 4 title variations of marketing
+ * copy with no fallback). Playbill production URLs follow a deterministic
+ * `${title}-broadway-${venue}-${year}` convention; variants 2-4 handle
+ * known edge cases (no-theatre suffix, no venue, ID-year vs opening-year).
+ * If construction fails, serpFallback() takes over. Each variant is
+ * validated with checkUrl() before persisting. Leave in place.
  */
 function generateUrlVariants(show) {
   const title = playbillSlug(show.title);

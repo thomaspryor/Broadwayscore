@@ -726,6 +726,14 @@ async function sweepTheatreReviews(show) {
     .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')
     .replace(/^-|-$/g, '');
   const titleSlugNoThe = titleSlug.replace(/^the-/, '');
+  // REVIEWED 2026-05-16 (Notion 362637c5-416f-8109): bounded variants
+  // (≤4 per show) of theatre.reviews convention URLs. Used only as
+  // tier 3 after TR_KNOWN_URLS manual override (tier 1) and
+  // discoverCorrectUrl SERP (tier 2) both miss. theatre.reviews has no
+  // listing-page equivalent of BWW's /reviews.php, so URL construction
+  // is the best available primitive. Each candidate gets content
+  // validation. NOT the BWW antipattern (36-variant unbounded marketing-
+  // copy construction with no fallback). Leave in place.
   const tier3Urls = [];
   tier3Urls.push(`https://theatre.reviews/reviews-roundup/${titleSlug}-reviews/`);
   if (titleSlugNoThe !== titleSlug) {
