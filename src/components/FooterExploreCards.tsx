@@ -36,11 +36,19 @@ export default function FooterExploreCards() {
     </Link>
   );
 
+  const operaCard = (
+    <Link key="opera" href="/opera" className="flex-1 p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-amber-400/[0.03] transition-colors text-center group">
+      <div className="text-xl mb-1">&#127914;</div>
+      <div className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">Opera</div>
+      <div className="text-[10px] text-gray-500">Met Opera</div>
+    </Link>
+  );
+
   return (
     <div className="mb-8 pb-8 border-b border-white/5">
       <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Explore More Theatre</h4>
-      <div className="flex gap-3">
-        {isLondon ? <>{weCard}{oweCard}{obCard}</> : <>{obCard}{weCard}{oweCard}</>}
+      <div className="flex gap-3 flex-wrap">
+        {isLondon ? <>{weCard}{oweCard}{obCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{operaCard}</>}
       </div>
     </div>
   );
