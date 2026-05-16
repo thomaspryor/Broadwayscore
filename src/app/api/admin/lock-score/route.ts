@@ -390,8 +390,30 @@ export async function POST(request: NextRequest): Promise<NextResponse<LockRespo
     }
 
     if (action === 'lock' && pullquoteCleared) {
-      merged.pullQuote = '';
-      merged.pullQuoteSource = null;
+      // Only clear pullQuote if it wasn't manually set by an operator.
+      // Lost Boys postmortem Issue #12: prior fix cleared pullQuote
+      // unconditionally when lockedAcrossTier deleted llmScore.keyPhrases —
+      // wiping operator-curated pullQuotes set minutes earlier (Helen Shaw
+      // 2026-04-27 incident). Respect protectedFields: if pullQuote is
+      // explicitly protected, preserve it. Both prior on-disk protectedFields
+      // and the caller-supplied protectedFields[] are checked.
+      const priorPF = Array.isArray(existingData.protectedFields)
+        ? (existingData.protectedFields as string[])
+        : [];
+      const callerPullQuoteProtected =
+        Array.isArray(body.protectedFields) &&
+        body.protectedFields.includes('pullQuote');
+      const pullQuoteIsProtected =
+        priorPF.includes('pullQuote') || callerPullQuoteProtected;
+      if (!pullQuoteIsProtected) {
+        merged.pullQuote = '';
+        merged.pullQuoteSource = null;
+      } else {
+        console.log(
+          `[lock-score] pullQuote preserved (in protectedFields) despite lockedAcrossTier`,
+        );
+        pullquoteCleared = false;
+      }
     }
 
     // Merge protectedFields: prior + default lock list + caller extras.
