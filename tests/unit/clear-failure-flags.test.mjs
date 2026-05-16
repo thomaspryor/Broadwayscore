@@ -188,3 +188,63 @@ describe('clearFailureFlags — never clears wrongShow / wrongProduction', () =>
     assert.strictEqual(data.wrongProduction, true);
   });
 });
+
+// Notion 351637c5-416f-81f2 — Stuart King email 2026-04-27 surfaced this on Flyby.
+// scoreStatus='TO_BE_CALCULATED' is set by score-all-unscored.js / mark-uncalculated-reviews.js
+// when a review is unscoreable at write-time. When the LLM ensemble subsequently scores it,
+// the placeholder must clear or rebuild-helpers.getBestScore() returns null at line 336 and
+// silently excludes the review.
+describe('clearFailureFlags — scoreStatus stale placeholder (Notion 351637c5-416f-81f2)', () => {
+  it('clears scoreStatus=TO_BE_CALCULATED when llmScore is present', () => {
+    const data = {
+      scoreStatus: 'TO_BE_CALCULATED',
+      llmScore: { score: 64, ensemble: { source: 'two-model-fallback' } }
+    };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, null);
+    assert.ok(cleared.includes('scoreStatus'));
+  });
+
+  it('clears scoreStatus when llmScore.score is set without explicit ensemble field', () => {
+    const data = { scoreStatus: 'TO_BE_CALCULATED', llmScore: { score: 75, confidence: 'high' } };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, null);
+    assert.ok(cleared.includes('scoreStatus'));
+  });
+
+  it('does NOT clear scoreStatus when llmScore is absent (legitimate placeholder)', () => {
+    const data = { scoreStatus: 'TO_BE_CALCULATED' };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, 'TO_BE_CALCULATED');
+    assert.ok(!cleared.includes('scoreStatus'));
+  });
+
+  it('does NOT clear scoreStatus when llmScore exists but score is null', () => {
+    const data = { scoreStatus: 'TO_BE_CALCULATED', llmScore: { score: null } };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, 'TO_BE_CALCULATED');
+    assert.ok(!cleared.includes('scoreStatus'));
+  });
+
+  it('does NOT clear scoreStatus values other than TO_BE_CALCULATED', () => {
+    // SCORED, GARBAGE_TEXT etc are valid terminal states — never auto-clear.
+    const data = { scoreStatus: 'GARBAGE_TEXT', llmScore: { score: 50 } };
+    clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, 'GARBAGE_TEXT');
+  });
+
+  it('clears scoreStatus alongside other failure flags in one call', () => {
+    const data = {
+      scoreStatus: 'TO_BE_CALCULATED',
+      incompleteReason: 'no_text',
+      url: 'https://example.com/review',
+      fullText: LONG_TEXT,
+      llmScore: { score: 80, confidence: 'high' }
+    };
+    const cleared = clearFailureFlags(data);
+    assert.strictEqual(data.scoreStatus, null);
+    assert.ok(cleared.includes('scoreStatus'));
+    assert.strictEqual(data.incompleteReason, null);
+    assert.ok(cleared.includes('incompleteReason'));
+  });
+});
