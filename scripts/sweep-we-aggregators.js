@@ -8,7 +8,14 @@
  *
  * Usage:
  *   node scripts/sweep-we-aggregators.js [--shows=X,Y,Z] [--dry-run] [--force]
- *     [--aggregator=wet,tr,sd,ts] [--limit=N]
+ *     [--aggregator=wet,theatre-reviews,sd,ts] [--limit=N]
+ *
+ * Aggregator keys:
+ *   wet            — westendtheatre.com aggregator
+ *   theatre-reviews — theatre.reviews aggregator (formerly 'tr'; alias still
+ *                    accepted with a deprecation warning until Sprint 5)
+ *   sd             — Stagedoor
+ *   ts             — The Stage review round-ups
  */
 
 const fs = require('fs');
@@ -70,16 +77,70 @@ const SB_KEY = process.env.SCRAPINGBEE_API_KEY || '';
 const BD_KEY = process.env.BRIGHTDATA_TOKEN || '';
 
 // CLI args
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  process.stdout.write([
+    'Usage:',
+    '  node scripts/sweep-we-aggregators.js [--shows=X,Y,Z] [--dry-run] [--force]',
+    '    [--aggregator=wet,theatre-reviews,sd,ts] [--mode=open|closed|all-we]',
+    '    [--limit=N]',
+    '',
+    'Aggregator keys:',
+    '  wet              westendtheatre.com aggregator',
+    '  theatre-reviews  theatre.reviews aggregator (legacy alias: tr)',
+    '  sd               Stagedoor',
+    '  ts               The Stage review round-ups',
+    '',
+    '--mode controls show status filter (default: open).',
+    '--mode=all-we is local-only; CI rejects it.',
+    '',
+  ].join('\n'));
+  process.exit(0);
+}
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE = process.argv.includes('--force');
 const showsArg = process.argv.find(a => a.startsWith('--shows='));
 const TARGET_SHOWS = showsArg ? showsArg.split('=')[1].split(',') : null;
 const aggArg = process.argv.find(a => a.startsWith('--aggregator='));
-const AGGREGATORS = aggArg ? aggArg.split('=')[1].split(',') : ['wet', 'tr', 'sd', 'ts'];
+const rawAggregators = aggArg ? aggArg.split('=')[1].split(',') : ['wet', 'theatre-reviews', 'sd', 'ts'];
+// S2-T1 deprecation alias: 'tr' → 'theatre-reviews'. After Sprint 5 the
+// 'tr' key is REUSED for Theatre Record. Until then, 'tr' MUST keep routing
+// to theatre.reviews; warn so any caller is migrated before the reuse.
+const AGGREGATORS = rawAggregators.map(k => {
+  if (k === 'tr') {
+    process.stderr.write(
+      "[DEPRECATED] Use 'theatre-reviews' instead of 'tr' (legacy alias — will be reused for Theatre Record in Sprint 5)\n"
+    );
+    return 'theatre-reviews';
+  }
+  return k;
+});
 const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 
-const stats = { shows: 0, wet: { found: 0, reviews: 0 }, tr: { found: 0, reviews: 0 }, sd: { found: 0, reviews: 0 }, ts: { found: 0, reviews: 0 }, errors: 0 };
+// S2-T2: --mode filter. Default `open` matches legacy cron behaviour.
+// `all-we` is local-only — workflow YAML excludes it from the choice input
+// (Layer 1) AND the GITHUB_ACTIONS env-detect block below rejects it at
+// runtime (Layer 2) so a manual `node -e`-driven invocation inside CI also
+// fails fast.
+const modeArg = process.argv.find(a => a.startsWith('--mode='));
+const MODE = modeArg ? modeArg.split('=')[1] : 'open';
+if (!['open', 'closed', 'all-we'].includes(MODE)) {
+  console.error(`[ERROR] --mode=${MODE} is not valid. Use one of: open, closed, all-we`);
+  process.exit(1);
+}
+if (MODE === 'all-we' && process.env.GITHUB_ACTIONS === 'true') {
+  console.error('[ERROR] --mode=all-we is local-only and blocked in CI (quota + concurrency-lock reasons). Use --mode=open or --mode=closed in workflow_dispatch.');
+  process.exit(1);
+}
+
+const stats = {
+  shows: 0,
+  wet: { found: 0, reviews: 0 },
+  'theatre-reviews': { found: 0, reviews: 0 },
+  sd: { found: 0, reviews: 0 },
+  ts: { found: 0, reviews: 0 },
+  errors: 0,
+};
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
@@ -979,7 +1040,13 @@ async function main() {
   try { fs.unlinkSync(COOKIE_JAR); } catch {}
 
   const shows = loadShows();
-  let weShows = shows.filter(s => isLondonMarket(s.category) && s.status === 'open');
+  let weShows = shows.filter(s => isLondonMarket(s.category));
+  if (MODE === 'open') {
+    weShows = weShows.filter(s => s.status === 'open');
+  } else if (MODE === 'closed') {
+    weShows = weShows.filter(s => s.status === 'closed');
+  }
+  // MODE === 'all-we' → no status filter (already blocked above when in CI)
 
   if (TARGET_SHOWS) {
     weShows = weShows.filter(s => TARGET_SHOWS.includes(s.id));
@@ -988,10 +1055,10 @@ async function main() {
     weShows = weShows.slice(0, LIMIT);
   }
 
-  console.log(`Processing ${weShows.length} open WE/OWE shows\n`);
+  console.log(`Processing ${weShows.length} WE/OWE shows (mode=${MODE})\n`);
 
   // Pre-build full indexes for aggregators that have category/listing pages
-  if (AGGREGATORS.includes('tr')) {
+  if (AGGREGATORS.includes('theatre-reviews')) {
     await _buildTRIndex(weShows);
   }
   if (AGGREGATORS.includes('ts')) {
@@ -1003,7 +1070,7 @@ async function main() {
     stats.shows++;
     console.log(`[${i + 1}/${weShows.length}] ${show.title} (${show.id})`);
 
-    const results = { wet: [], tr: [], sd: [], ts: [] };
+    const results = { wet: [], 'theatre-reviews': [], sd: [], ts: [] };
 
     try {
       if (AGGREGATORS.includes('wet')) {
@@ -1019,13 +1086,13 @@ async function main() {
         await sleep(1500);
       }
 
-      if (AGGREGATORS.includes('tr')) {
-        results.tr = await sweepTheatreReviews(show);
-        if (results.tr.length > 0) {
-          stats.tr.found++;
-          stats.tr.reviews += results.tr.length;
-          console.log(`  TR:  ${results.tr.length} reviews`);
-          for (const r of results.tr) writeReview(r, show.id);
+      if (AGGREGATORS.includes('theatre-reviews')) {
+        results['theatre-reviews'] = await sweepTheatreReviews(show);
+        if (results['theatre-reviews'].length > 0) {
+          stats['theatre-reviews'].found++;
+          stats['theatre-reviews'].reviews += results['theatre-reviews'].length;
+          console.log(`  TR:  ${results['theatre-reviews'].length} reviews`);
+          for (const r of results['theatre-reviews']) writeReview(r, show.id);
         } else {
           console.log('  TR:  not found');
         }
@@ -1064,7 +1131,7 @@ async function main() {
   console.log('\n=== Summary ===');
   console.log(`  Shows processed: ${stats.shows}`);
   console.log(`  WET: ${stats.wet.found} shows, ${stats.wet.reviews} reviews`);
-  console.log(`  TR:  ${stats.tr.found} shows, ${stats.tr.reviews} reviews`);
+  console.log(`  TR:  ${stats['theatre-reviews'].found} shows, ${stats['theatre-reviews'].reviews} reviews`);
   console.log(`  SD:  ${stats.sd.found} shows, ${stats.sd.reviews} reviews`);
   console.log(`  TS:  ${stats.ts.found} shows, ${stats.ts.reviews} reviews`);
   console.log(`  Errors: ${stats.errors}`);

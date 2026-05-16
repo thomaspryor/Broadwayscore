@@ -21,10 +21,18 @@ on:
         type: boolean
         default: false
       aggregator:
-        description: 'Aggregators to sweep (comma-separated: wet,tr,sd,ts)'
+        description: 'Aggregators to sweep (comma-separated: wet,theatre-reviews,sd,ts)'
         required: false
         type: string
-        default: 'wet,tr,sd,ts'
+        default: 'wet,theatre-reviews,sd,ts'
+      mode:
+        description: 'Show status filter (open is the default cron behaviour)'
+        required: false
+        type: choice
+        options:
+          - open
+          - closed
+        default: open
 
 concurrency:
   group: sweep-we-aggregators
@@ -70,7 +78,7 @@ jobs:
         uses: ./.github/actions/setup-playwright
 
       - name: Refresh Stagedoor archives (BrowserBase)
-        if: contains(inputs.aggregator || 'wet,tr,sd,ts', 'sd') && inputs.shows == ''
+        if: contains(inputs.aggregator || 'wet,theatre-reviews,sd,ts', 'sd') && inputs.shows == ''
         continue-on-error: true
         timeout-minutes: 30
         env:
@@ -114,6 +122,9 @@ jobs:
           fi
           if [ -n "${{ inputs.aggregator }}" ]; then
             ARGS="$ARGS --aggregator=${{ inputs.aggregator }}"
+          fi
+          if [ -n "${{ inputs.mode }}" ]; then
+            ARGS="$ARGS --mode=${{ inputs.mode }}"
           fi
           # shellcheck disable=SC2086
           node scripts/sweep-we-aggregators.js $ARGS
