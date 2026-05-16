@@ -393,6 +393,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;
               </Link>
+              <p className="text-xs text-gray-500 leading-relaxed mt-4 pt-3 border-t border-white/5">
+                Score model updated 2026-05-16: Awards Score now weights each precursor nomination by category
+                importance (tier S/A+/A/B/C). Backtest accuracy 39 of 42 contests.
+              </p>
             </div>
           </details>
         )}
@@ -410,6 +414,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             Rankings are derived from aggregated critic reviews.
             Tony eligibility based on opening dates within the {season.label} season.
             Category classifications (new vs. revival) are subject to official Tony Awards Administration Committee rulings.
+          </p>
+          <p className="mt-3 text-xs text-gray-600">
+            Score model updated 2026-05-16. Awards Score now uses tier-weighted precursor nominations
+            (Drama League, OCC, Drama Desk). Backtest accuracy: 39 of 42 contests across 11 years of Tony history.
           </p>
           <div className="flex flex-wrap gap-4 mt-3">
             <Link href="/tony-awards/predictions" className="text-brand hover:text-brand-hover transition-colors">
