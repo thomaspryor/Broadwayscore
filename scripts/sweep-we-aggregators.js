@@ -28,6 +28,7 @@ const { extractReviews: extractStageReviews } = require('./scrape-thestage-round
 
 // SERP for per-show aggregator discovery
 const { discoverCorrectUrl } = require('./lib/url-discovery');
+const { preflightCredits } = require('./lib/credit-preflight');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const ARCHIVE_BASE = path.join(__dirname, '..', 'data', 'aggregator-archive');
@@ -956,6 +957,23 @@ async function main() {
   console.log('=== WE Aggregator Sweep ===\n');
   console.log(`Aggregators: ${AGGREGATORS.join(', ')}`);
   console.log(`Dry run: ${DRY_RUN}\n`);
+
+  // Pre-flight: abort if BD zone disabled/unreachable or SB credits below 25% (S1-T3).
+  // SKIP_PREFLIGHT escape hatch is intentional — used by tests/CI smoke runs that
+  // mock the providers and still want the rest of the sweep to execute.
+  if (!process.env.SKIP_PREFLIGHT) {
+    const pre = await preflightCredits();
+    for (const r of pre.results) {
+      console.log(`  preflight ${r.provider}: ${r.ok ? 'OK' : 'FAIL'} — ${r.reason}`);
+    }
+    if (!pre.ok) {
+      for (const f of pre.failures) {
+        console.error(`[preflight] ${f.reason}`);
+      }
+      process.exit(1);
+    }
+    console.log('');
+  }
 
   // Clean cookie jar
   try { fs.unlinkSync(COOKIE_JAR); } catch {}
