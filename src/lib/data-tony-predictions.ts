@@ -94,11 +94,18 @@ const PRECURSOR_TIER_WEIGHTS = {
  * headroom for outlier sweeps. Intra-category rankings unchanged (constant
  * rescale); cross-category visual comparison becomes fair.
  */
+// Ceilings re-derived 2026-05-16 post-/ship-check against the weighted-noms
+// scale (which is much smaller than the old `nominations` integer scale).
+// 95th-percentile observed weighted-noms per category: musical 14.5, play 3.0,
+// revival-musical 2.5, revival-play 1.5. Ceilings give modest headroom for
+// future precursor backfill expansion without making the noms tail saturate
+// immediately. Run scripts/derive-noms-pool-ceilings.js after backfill to
+// re-check.
 const NOMS_POOL_BY_CATEGORY: Record<string, number> = {
-  'best-musical':         30,
-  'best-play':            20,
-  'best-revival-musical': 18,
-  'best-revival-play':     8,
+  'best-musical':         15,
+  'best-play':             6,
+  'best-revival-musical':  6,
+  'best-revival-play':     3,
 };
 const NOMS_TAIL_CAP = 25;
 
@@ -266,10 +273,22 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
       base += 10 * tier;
     }
 
-    // Tier-weighted noms tail. Skip the matching top cat (already counted).
+    // Tier-weighted noms tail. Skip the matching top cat (already counted
+    // via the +30/+10 bonus above). Iterate the UNION of wins + nominatedFor
+    // because the two precursor data conventions differ:
+    //   - Tony: wins ⊂ nominatedFor (wins are always also in noms; iterating
+    //     noms is sufficient).
+    //   - DD/OCC/DL: wins and nominatedFor are largely DISJOINT (nominatedFor
+    //     typically holds only the matching top cat; non-top-cat wins live
+    //     in wins[] only). Iterating only noms would silently miss most
+    //     precursor wins and dramatically under-credit sweepers like Hamilton.
     // classifyCategory returns null for unrecognized strings — ignored.
-    for (const nomCat of noms) {
+    const seenCategories = new Set<string>();
+    const allCategories = [...wins, ...noms];
+    for (const nomCat of allCategories) {
       if (nomCat === matchCat) continue;
+      if (seenCategories.has(nomCat)) continue;
+      seenCategories.add(nomCat);
       const cls = classifyCategory(nomCat);
       if (!cls) continue;
       weightedNoms += PRECURSOR_TIER_NOM_WEIGHTS[cls.tier];
