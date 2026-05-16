@@ -8,7 +8,8 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { fetchPage } = require(path.join(__dirname, 'lib/scraper.js'));
+const muckrack = require(path.join(__dirname, 'lib/author-pages/muckrack.js'));
+const { looksLikeReview } = require(path.join(__dirname, 'lib/author-pages/headline-classifier.js'));
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const reg = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'data/critic-registry.json')));
@@ -48,47 +49,13 @@ function ourUrlsFor(name) {
   return set;
 }
 
-function looksLikeReview(title, url) {
-  const t = (title||'').toLowerCase();
-  const u = (url||'').toLowerCase();
-  const excludes = ['remembering ', 'obituary', 'in memoriam', 'best theater of', 'best plays of', 'best broadway shows', 'best of 20', 'preview ', 'what to see', '5 things', 'q&a', 'interview with', 'behind the scenes', 'what we', 'how to', 'most anticipated', 'tony nominat', 'tony predict', 'tony win', 'list:', 'shows we', 'plays we', "we can't wait", 'ate the lea', "valerie cherish"];
-  if (excludes.some(e => t.includes(e))) return false;
-  if (t.includes('review')) return true;
-  if (t.match(/[★]/)) return true;
-  if (u.includes('review')) return true;
-  if (u.includes('theater-review')) return true;
-  return false;
-}
-
-async function fetchMuckrack(slug, maxPages = 2) {
-  const all = [];
-  for (let p = 1; p <= maxPages; p++) {
-    const url = p === 1
-      ? `https://muckrack.com/${slug}/articles`
-      : `https://muckrack.com/${slug}/articles?page=${p}`;
-    let html;
-    try { const r = await fetchPage(url, { timeout: 30000 }); html = r && r.content; } catch { html = null; }
-    if (!html || html.length < 5000) break;
-    const matches = [...html.matchAll(/<h\d[^>]*>\s*<a[^>]+href="(https?:[^"]+)"[^>]*>([^<]{6,200})<\/a>/g)];
-    let foundOnPage = 0;
-    for (const m of matches) {
-      const u = m[1];
-      const title = m[2].replace(/\s+/g,' ').trim();
-      if (/msn\.com|gossipbucket|flipboard|google\.com|aol\.com|yahoo\.com|inkl\.com|ourcommunitynow|thepoke/.test(u)) continue;
-      all.push({ url: u, title });
-      foundOnPage++;
-    }
-    if (foundOnPage < 10) break;
-  }
-  return all;
-}
 
 const CONC = 4;
 const REPORT = [];
 let processed = 0;
 
 async function processCritic(c) {
-  const externalArts = await fetchMuckrack(c.slug);
+  const externalArts = await muckrack.fetch(c.slug);
   if (externalArts.length === 0) { REPORT.push({ ...c, error: 'no-articles-found' }); return; }
   const ours = ourUrlsFor(c.name);
   const extMap = new Map();
