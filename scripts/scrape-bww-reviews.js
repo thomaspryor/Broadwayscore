@@ -38,7 +38,7 @@ const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
-const { isBWWRoundupContent } = require('./lib/bww-roundup-validator');
+const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -467,11 +467,23 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     try {
       stats.roundupsFetched++;
       const html = await fetchHtml(url);
-      if (html && isBWWRoundupContent(html)) {
+      // BWW Opera articles use the /bwwopera/article/Review- URL pattern and
+      // don't contain the "Review Roundup" markers that isBWWRoundupContent
+      // requires (they're single-critic articles, not multi-critic roundups).
+      // Use a lighter validity check for opera URLs: real article HTML, not
+      // a Cloudflare challenge or the BWW homepage redirect.
+      const isOperaUrl = isOpera && url.includes('/bwwopera/article/Review-');
+      const looksValid = html && (
+        isOperaUrl
+          ? isBWWOperaArticleContent(html)
+          : isBWWRoundupContent(html)
+      );
+      if (looksValid) {
         // Validate page actually matches show (LLM tiebreaker for edge cases)
         const validation = await validatePageMatchesShow(html, searchTitle, {
           openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
           pageUrl: url,
+          productionType: show.type,
         });
         if (!validation.valid) {
           console.log(`  [SKIP] roundup page doesn't match "${searchTitle}": ${validation.reason}`);
@@ -483,7 +495,8 @@ async function discoverBwwRoundup(show, showId, options = {}) {
           fs.writeFileSync(archivePath, html);
         }
         stats.roundupsHit++;
-        console.log(`  [HIT] roundup: ${url.split('/article/')[1]?.slice(0, 60)}`);
+        const label = isOperaUrl ? 'opera article' : 'roundup';
+        console.log(`  [HIT] ${label}: ${url.split('/article/')[1]?.slice(0, 60)}`);
         return html;
       }
     } catch (err) {

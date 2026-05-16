@@ -254,4 +254,40 @@ function isCloudflareChallenge(html) {
   return false;
 }
 
-module.exports = { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge };
+/**
+ * Lightweight validity check for a fetched BWW Opera article page
+ * (/bwwopera/article/Review-{slug}-{YYYYMMDD}).
+ *
+ * Opera articles never carry "Review Roundup" markers (they're single-critic
+ * articles, not multi-critic roundups), so they fail isBWWRoundupContent.
+ * This separate check confirms the response is a real BWW article body and
+ * not the BWW homepage, a Cloudflare interstitial, or a 404 redirect.
+ *
+ * Accept when:
+ *   - HTML looks substantive (>5KB)
+ *   - Not a Cloudflare challenge
+ *   - <title> doesn't start with "BroadwayWorld:" (BWW homepage redirect)
+ *   - Contains either the .author-area byline anchor OR a .disnep-area body
+ *     wrapper that the opera extractor reads from (verified 2026-04-29 against
+ *     Innocence Sasanow review).
+ */
+function isBWWOperaArticleContent(html) {
+  if (typeof html !== 'string' || html.length < 5000) return false;
+  if (isCloudflareChallenge(html)) return false;
+
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleMatch && titleMatch[1].includes('BroadwayWorld:')) return false;
+
+  // Either the author byline or the body wrapper must be present.
+  // class= matching is loose (single quotes, attribute order) to survive
+  // proxy-rendered HTML variants.
+  if (/class=["'][^"']*author-area/i.test(html)) return true;
+  if (/class=["'][^"']*disnep-area/i.test(html)) return true;
+  // Fall back to the og:url marker so a reshuffled DOM still passes if it
+  // declares itself as a /bwwopera/article/Review- canonical.
+  if (/property=["']og:url["'][^>]*content=["'][^"']*\/bwwopera\/article\/Review-/i.test(html)) return true;
+
+  return false;
+}
+
+module.exports = { isBWWRoundupContent, isBWWOperaArticleContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge };
