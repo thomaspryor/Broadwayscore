@@ -61,19 +61,16 @@ import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
+import { getShowRanks } from '@/lib/data-show-ranks';
+import { getBrowseSlug } from '@/lib/browse-slugs';
+import WhereItRanks from '@/components/show-page/WhereItRanks';
+import HeroRankLine from '@/components/show-page/HeroRankLine';
 
 export const revalidate = 86400;
 
-/** Map category + show type to the correct browse page slug */
-function getBrowseSlug(category: string | undefined, type: string): string {
-  const isMusical = type === 'musical';
-  switch (category) {
-    case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';
-    case 'off-west-end': return isMusical ? 'best-off-west-end-musicals' : 'best-off-west-end-plays';
-    case 'off-broadway': return isMusical ? 'best-off-broadway-musicals' : 'best-off-broadway-plays';
-    default: return isMusical ? 'best-broadway-musicals' : 'best-broadway-dramas';
-  }
-}
+// getBrowseSlug moved to src/lib/browse-slugs.ts so WhereItRanks + breadcrumb
+// share the same mapping (plays land on best-broadway-dramas, etc.). See that
+// file for documentation on the dramas-vs-plays slug convention.
 
 export function generateStaticParams() {
   // Pre-render open + previews + recently closed shows (high traffic).
@@ -311,6 +308,15 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
   const socialPulse = getSocialPulse(show.id);
+  // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
+  // (NEXT_PUBLIC_FEATURES=showRanks). O(1) lookup after the module-scope
+  // index is built on first call. 'all' format slice powers the hero rank
+  // line; the bottom WhereItRanks card additionally requests the show's-own-
+  // format slice.
+  const ranks = featureFlags.showRanks ? getShowRanks(show.id, { format: 'all' }) : null;
+  const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
+    ? getShowRanks(show.id, { format: show.type })
+    : null;
   const commercial = getShowCommercial(show.slug);
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
@@ -389,6 +395,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               lotteryRush={lotteryRush ?? null}
               isWestEnd={isWestEnd}
               isOffBroadway={isOffBroadway}
+              ranks={ranks}
             />
           </div>
         </RedesignOn>
@@ -555,6 +562,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                             </a>
                           )}
                         </div>
+                        {/* Hero rank line — Variant B. Same component as the redesigned hero
+                            so flipping the redesign flag doesn't change the rank line's look. */}
+                        {!showTBD && (
+                          <HeroRankLine ranks={ranks} market={show.category} />
+                        )}
                         {/* Review age note for long-running shows */}
                         {(() => {
                           if (!show.openingDate || show.status === 'closed') return null;
@@ -1138,6 +1150,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </span>
             ))}
           </div>
+        )}
+
+        {/* Where it ranks — bottom-of-page rank card. Flag-gated; the ranks
+            value is null when featureFlags.showRanks is off, so the component
+            renders nothing. */}
+        {featureFlags.showRanks && (ranks || ranksByFormat) && (
+          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
         )}
 
         {/* How Scores Work */}

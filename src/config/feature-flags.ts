@@ -76,4 +76,8 @@ export const featureFlags = {
   get videoReviews() { return has('videoReviews'); },
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
   get awardScoreV2() { return has('awardScoreV2'); },
+  /** Show-page rank surfaces: hero rank line ("Ranks #3 of 28 open Broadway · ...")
+   *  and bottom "Where it ranks" card. Off by default — flip on per-market after
+   *  smoke test. Enable via NEXT_PUBLIC_FEATURES=showRanks. */
+  get showRanks() { return has('showRanks'); },
 };

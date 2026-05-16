@@ -24,7 +24,7 @@
  * showSignIn(); resumed when user lands back on this page authenticated.
  */
 
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -61,6 +61,8 @@ function slugify(str: string): string {
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { UserReview } from '@/types/user';
+import type { ShowRanks } from '@/lib/data-show-ranks';
+import HeroRankLine from '@/components/show-page/HeroRankLine';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -75,6 +77,9 @@ interface ShowHeroRedesignProps {
   lotteryRush: { lottery?: { price?: number | null } | null; rush?: { price?: number | null } | null } | null;
   isWestEnd: boolean;
   isOffBroadway: boolean;
+  /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
+   *  OR no rankable data. */
+  ranks: ShowRanks | null;
 }
 
 // ─── Suspense wrapper (useSearchParams requires it for static prerender) ──
@@ -100,6 +105,7 @@ function Inner({
   lotteryRush,
   isWestEnd,
   isOffBroadway,
+  ranks,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
@@ -410,6 +416,7 @@ function Inner({
                   <p className="text-sm text-gray-500 mt-1">
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
+                  <HeroRankLine ranks={ranks} market={show.category} />
                 </div>
               </a>
               {hasAudience && audienceGrade && (
@@ -468,6 +475,13 @@ function Inner({
             </a>
           )}
         </div>
+      )}
+
+      {/* Mobile-only rank line — sits below the dual score cards and above the
+          distribution bar. Desktop's rank line lives inline under "Based on N
+          Critic Reviews" in the score block above. */}
+      {hasEnoughCriticReviews && (
+        <HeroRankLine ranks={ranks} market={show.category} className="lg:hidden -mt-1" />
       )}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
