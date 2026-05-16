@@ -577,23 +577,71 @@ export const FEW_SHOT_EXAMPLES_V6: FewShotExample[] = [
 // Anchored-mode block: emitted when the caller passes a band. Replaces
 // the V5 "Star Rating Calibration" + "Score Distribution" sections with
 // a hard-constrained band instruction.
+//
+// v6.1 (2026-05-16): empirical finding — V6.0 anchored mode never used the
+// floor (e.g. 5★ band [91,100] always landed 95-100, even for measured prose
+// like Stuart King's Harold Fry review). The LLM defaulted high. v6.1 adds
+// (a) explicit prose-marker calibration table, (b) a low-band few-shot for
+// 5★ specifically, (c) stronger instruction to NOT default high.
 function buildAnchoredBandBlock(band: ScoreBand, starsRaw?: string): string {
   const pctText = `${Math.round(band.fraction * 100)}%`;
+  const bandWidth = band.ceiling - band.floor;
   const ratingLine = starsRaw
     ? `## Original Rating\nThe critic awarded **${starsRaw}** (${pctText} of max).`
     : `## Original Rating\nThe critic's rating maps to ${pctText} of max.`;
+
+  // Compute calibration anchor points within the band so the table is
+  // mathematically consistent (top quartile, upper-mid, lower-mid, floor).
+  const q4 = band.ceiling;                                  // top
+  const q3 = Math.round(band.floor + bandWidth * 0.66);     // upper-mid
+  const q2 = Math.round(band.floor + bandWidth * 0.33);     // lower-mid
+  const q1 = band.floor;                                    // floor
+
+  // Floor-of-band few-shot anchored to the SPECIFIC band the LLM is in.
+  // For wider bands (e.g. 4★ at [71,90]) we still want a "barely qualifying"
+  // example at the floor. The example below is generic enough to apply.
+  const floorFewShot = `### Within-Band Calibration Example
+A critic awards their top rating and writes prose like:
+"It's a strong, intelligent production with a fine cast. The book is sharp,
+the songs land, and there are no sustained low patches. I left smiling and
+would happily go again — though I won't pretend it cracked the top tier of
+the season."
+
+This is a FLOOR-OF-BAND review. The critic awarded the rating, so it stays
+in band — but the prose is measured, the closing line explicitly qualifies,
+and no superlatives appear. Score: **${q1}** (floor of band).
+
+Now consider the same critic's same top rating with prose like:
+"There are nights in the theater you can feel are happening. Every choice
+on stage lands; every performance has been rehearsed into a kind of
+inevitability. See it now, see it twice, and tell everyone you know."
+
+This is a CEILING-OF-BAND review. Career-best framing, "see it twice",
+unqualified superlatives. Score: **${q4}** (ceiling of band).
+`;
+
   return `${ratingLine}
 
 ## Anchored Score Band (HARD CONSTRAINT)
 
-Your score MUST be an integer in **[${band.floor}, ${band.ceiling}]**. Do not output a score outside this range. The critic's rating sets the floor and ceiling — your job is to pick the position WITHIN this band that best matches the prose.
+Your score MUST be an integer in **[${band.floor}, ${band.ceiling}]**. Do not output a score outside this range. The critic's rating sets the band — your job is to pick the position WITHIN it that best matches the prose.
 
-**Use the FULL range, not just the middle:**
-- Top of band (${band.ceiling}): the most rapturous version of this rating — career-best praise, sustained superlatives, "must-see" energy.
-- Floor of band (${band.floor}): the most measured/qualified version — clear rating but with reservations the critic chose not to demote.
-- Middle of band: standard expression of this rating.
+**The default is NOT the top of the band.** A common failure mode is to read the star rating and reach for the ceiling. The critic already encoded their verdict in the star — your job is to extract the PROSE WARMTH and translate it to a within-band position. If the prose is measured, the score should be measured. If the prose is rapturous, the score should be rapturous.
 
-A 5-star review with rapturous prose should land at ${band.ceiling}. A 5-star review the critic seemed to give grudgingly should land at ${band.floor}. Both are valid. Spread your scores across the full band based on prose warmth.
+## Prose-to-band calibration
+
+| Score in band | Prose signature |
+|---------------|----------------|
+| **${q4}** (ceiling) | Career-best language. Sustained superlatives. Explicit "must-see" / "see it twice" / "tell everyone". No qualifications. |
+| **${q3}** (upper-mid) | Strong consistent praise. Standard rave language ("superb", "first-rate"). One or two minor qualifications at most. |
+| **${q2}** (lower-mid) | Clear positive verdict but tonally measured. Reads like a respected critic in a workmanlike mode. No reach for superlatives. |
+| **${q1}** (floor) | Critic awarded the rating, but the prose is qualified, biographical-context-heavy, or contains explicit reservations the critic chose not to demote. Pleasant but not effusive. "Worth seeing" energy rather than "must-see". |
+
+If the prose contains words like "unassuming," "ordinary," "easy," "gentle," "humdrum," "modest," "pleasant," or extensive biographical/source-material context with limited evaluative praise of the production itself — that points to the **lower half of the band** even if the star rating is the critic's maximum.
+
+If the prose is dominated by superlatives, unqualified recommendation, explicit "must-see" framing, or comparison to career-best work — that points to the **upper half of the band**.
+
+${floorFewShot}
 
 `;
 }
