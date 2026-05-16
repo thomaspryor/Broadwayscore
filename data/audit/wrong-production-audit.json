@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-15T19:52:29.667Z",
+  "timestamp": "2026-05-16T03:28:25.425Z",
   "stats": {
-    "totalReviews": 36752,
+    "totalReviews": 36754,
     "alreadyFlagged": 16097,
     "dateGuardCatches": 102,
     "directorMismatch": 805,
-    "tvFilmSignals": 1013,
+    "tvFilmSignals": 1014,
     "londonSignals": 567,
     "offBroadwaySignals": 444,
     "yearMismatch": 77,
-    "noPublishDate": 3772
+    "noPublishDate": 3770
   },
   "findings": [
     {
@@ -13814,6 +13814,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "new-born-off-broadway-2026",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 81,
+      "publishDate": "2026-05-15",
+      "url": "https://www.nytimes.com/2026/05/15/theater/new-born-review-hugh-jackman.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
