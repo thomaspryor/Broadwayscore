@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-05-16T03:13:07.606Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 19,
+    "failed": 778,
+    "skipped": 0,
+    "successRate": "2.4%"
+  },
+  "tierBreakdown": {
+    "playwright": 7,
+    "amp": 0,
+    "browserbase": 4,
+    "directCookies": 0,
+    "scrapingbee": 7,
+    "brightdata": 0,
+    "archiveToday": 11,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.5,
+    "urlDiscoveryAttempts": 2,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "new-born-off-broadway-2026/theatermania--david-gordon.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -800,8 +851,7 @@
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
     "an-ideal-husband-west-end-2026/thestage--unknown.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "new-born-off-broadway-2026/theatermania--david-gordon.json",
       "grace-pervades-west-end-2026/theatre-weekly--unknown.json",
@@ -848,30 +898,6 @@
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
-  "startTime": "2026-05-15T16:43:09.137Z",
-  "lastProcessed": "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
-  "log": [
-    {
-      "t": "2026-05-16T03:12:08.495Z",
-      "event": "bb-session",
-      "session": "bbd9e896",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
-    },
-    {
-      "t": "2026-05-16T03:12:09.384Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-05-16T03:12:36.339Z",
-      "event": "bb-session",
-      "session": "b91aa0bf",
-      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
-    },
-    {
-      "t": "2026-05-16T03:12:37.127Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
