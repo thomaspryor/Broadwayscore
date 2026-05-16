@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-16T10:50:33.421Z",
-  "processed": 13,
-  "failed": 1306,
-  "successRate": "1.0%",
+  "updatedAt": "2026-05-16T10:51:54.623Z",
+  "processed": 16,
+  "failed": 1313,
+  "successRate": "1.2%",
   "tierBreakdown": {
     "playwright": 4,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 4,
+    "scrapingbee": 5,
     "brightdata": 1,
     "archiveToday": 22,
     "archive": 2
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-16T09:29:38.496Z",
@@ -36,6 +36,28 @@
       "t": "2026-05-16T10:50:06.518Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-16T10:50:43.534Z",
+      "event": "bb-session",
+      "session": "6682ca1d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-grey-house-july-30-clo"
+    },
+    {
+      "t": "2026-05-16T10:50:44.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-16T10:51:02.266Z",
+      "event": "bb-session",
+      "session": "abb3ffed",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-05-16T10:51:03.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

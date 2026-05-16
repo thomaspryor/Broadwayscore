@@ -12,7 +12,10 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "gypsy-2024/billboard--paul-grein.json",
     "job-2024/deadline--greg-evans.json",
-    "the-whos-tommy-2024/rollingstone--emily-zemler.json"
+    "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+    "grey-house-2023/hollywood-reporter--caitlin-huston.json",
+    "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+    "death-of-a-salesman-2022/theatrely--andrew-martini.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1320,7 +1323,14 @@
     "art-2025/broadwaynews--michael-abourizk.json",
     "redwood-2025/gmanetwork--stuart-santiago.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
-    "stereophonic-2024/usatoday--charles-isherwood.json"
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
+    "sweeney-todd-2023/nbcnews--variety-referenced-by-nbc.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/washpost--peter-marks.json",
+    "west-side-story-2020/theater-news-online--jeremy-gerard.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1335,14 +1345,19 @@
       "data/review-texts/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
       "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
       "data/review-texts/job-2024/deadline--greg-evans.json",
-      "job-2024/deadline--greg-evans.json"
+      "job-2024/deadline--greg-evans.json",
+      "data/review-texts/grey-house-2023/hollywood-reporter--caitlin-huston.json",
+      "grey-house-2023/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
+      "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json",
-      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+      "death-of-a-salesman-2022/theatrely--andrew-martini.json"
     ],
     "brightdata": [
       "gypsy-2024/billboard--paul-grein.json"
@@ -1377,7 +1392,7 @@
     ]
   },
   "startTime": "2026-05-16T08:55:18.664Z",
-  "lastProcessed": "the-whos-tommy-2024/rollingstone--emily-zemler.json",
+  "lastProcessed": "west-side-story-2020/theater-news-online--jeremy-gerard.json",
   "log": [
     {
       "t": "2026-05-16T09:29:38.496Z",
@@ -1400,6 +1415,28 @@
       "t": "2026-05-16T10:50:06.518Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-16T10:50:43.534Z",
+      "event": "bb-session",
+      "session": "6682ca1d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-grey-house-july-30-clo"
+    },
+    {
+      "t": "2026-05-16T10:50:44.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-16T10:51:02.266Z",
+      "event": "bb-session",
+      "session": "abb3ffed",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/fat-ham-broadway-theater-review"
+    },
+    {
+      "t": "2026-05-16T10:51:03.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
