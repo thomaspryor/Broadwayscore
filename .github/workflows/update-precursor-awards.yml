@@ -1,0 +1,137 @@
+name: Update Precursor Awards Data
+
+# Drama Desk / OCC / Drama League / NYDCC nominations are announced late April;
+# the Pulitzer Prize for Drama is announced mid-April. Run daily mid-April
+# through May to catch nominees + winners as Wikipedia is updated, plus a
+# weekly catch-up the rest of the year.
+#
+# Each scraper is idempotent — when there's no new data the workflow exits
+# without committing.
+
+on:
+  schedule:
+    - cron: '0 17 * 4-5 *'    # 17:00 UTC daily, April-May (precursor season)
+    - cron: '0 17 * * 1'      # 17:00 UTC every Monday (year-round catch-up)
+  workflow_dispatch:
+    inputs:
+      ceremony:
+        description: 'Which ceremony to scrape (default: all)'
+        required: false
+        type: choice
+        default: all
+        options:
+          - all
+          - drama-desk
+          - outer-critics
+          - drama-league
+          - nydcc
+          - pulitzer
+      min_year:
+        description: 'Earliest ceremony year to scrape (default: 2014)'
+        required: false
+        default: '2014'
+      force:
+        description: 'Allow writes even if entry count shrunk >5%'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  update-precursors:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape precursor data
+        env:
+          CEREMONY: ${{ inputs.ceremony || 'all' }}
+          MIN_YEAR: ${{ inputs.min_year || '2014' }}
+          FORCE_FLAG: ${{ inputs.force == true && '--force' || '' }}
+        run: |
+          set -e
+          run_scraper() {
+            local script="$1"
+            echo "::group::$script"
+            node "$script" --write --min-year="$MIN_YEAR" $FORCE_FLAG
+            echo "::endgroup::"
+          }
+          case "$CEREMONY" in
+            drama-desk)    run_scraper scripts/scrape-drama-desk.js ;;
+            outer-critics) run_scraper scripts/scrape-outer-critics.js ;;
+            drama-league)  run_scraper scripts/scrape-drama-league.js ;;
+            nydcc)         run_scraper scripts/scrape-nydcc.js ;;
+            pulitzer)      run_scraper scripts/scrape-pulitzer.js ;;
+            all|*)
+              run_scraper scripts/scrape-drama-desk.js
+              run_scraper scripts/scrape-outer-critics.js
+              run_scraper scripts/scrape-drama-league.js
+              run_scraper scripts/scrape-nydcc.js
+              run_scraper scripts/scrape-pulitzer.js
+              ;;
+          esac
+
+      - name: Check for precursor source changes
+        id: changes
+        run: |
+          if git diff --quiet data/precursors/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to precursor data"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff --stat data/precursors/ >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Re-enrich awards.json with refreshed precursor data
+        if: steps.changes.outputs.has_changes == 'true'
+        run: node scripts/enrich-awards-with-precursors.js
+
+      - name: Commit and push
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/precursors/ data/awards.json
+          CEREMONY="${{ inputs.ceremony || 'all' }}"
+          git commit -m "chore: Update precursor awards data (${CEREMONY})
+
+          Refreshed from Wikipedia via scrape-{drama-desk,outer-critics,drama-league,nydcc,pulitzer}.js;
+          awards.json re-enriched via enrich-awards-with-precursors.js."
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Precursor Awards Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Precursor Awards Update" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
+            echo "✅ Precursor data updated" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No changes to precursor data" >> $GITHUB_STEP_SUMMARY
+          fi
