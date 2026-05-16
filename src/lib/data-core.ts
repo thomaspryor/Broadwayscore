@@ -101,6 +101,14 @@ export function getOffBroadwayShows(): ComputedShow[] {
 }
 
 /**
+ * Get all Opera shows (Met Opera productions, categorized as off-broadway for
+ * routing but tagged type='opera'). Powers the /opera route + operascorecard.com.
+ */
+export function getOperaShows(): ComputedShow[] {
+  return getAllShows().filter(show => (show as { type?: string }).type === 'opera');
+}
+
+/**
  * Get Off-West End shows only (excludes West End proper)
  */
 export function getOffWestEndShows(): ComputedShow[] {
