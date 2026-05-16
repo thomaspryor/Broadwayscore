@@ -13,9 +13,20 @@ const { JSDOM } = require('jsdom');
 
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
 
+// Highlight colors Wikipedia uses to mark winner rows on award category
+// tables. Extended 2026-05-16 after audit found 2022+ Drama Desk Musical
+// rows using #DCEEFF (light cyan) which wasn't in the original list. The
+// safer move would be "any non-white background" but that risks tagging
+// non-winner highlights (year-rowspan banners, in-memoriam shading, etc.)
+// as winners. Explicit allowlist is the conservative choice.
 const HIGHLIGHT_COLORS = [
+  // Original list (Tony-style highlights)
   '#b0c4de', '#faeb86', '#fae7b5', '#eedd82', '#f5f5dc',
   '#fffacd', '#fff8dc', '#ffffcc', '#ffe4b5',
+  // Drama Desk / Outer Critics / Drama League winner-row backgrounds (2020s)
+  '#dceeff', '#cce5ff', '#d1e7dd', '#e7f3ff', '#cfe2ff',
+  // Pulitzer / older pages
+  '#ffd', '#ffdead', '#ffefd5',
 ];
 
 async function fetchHtml(url) {
@@ -30,39 +41,71 @@ function bgIsHighlight(styleAttr) {
   if (!m) return false;
   const val = m[1].trim().toLowerCase();
   return HIGHLIGHT_COLORS.some((c) => val.includes(c)) ||
-    /lightsteelblue|gold|khaki|cornsilk/.test(val);
+    /lightsteelblue|gold|khaki|cornsilk|honeydew|lavender/.test(val);
 }
 
 function isWinnerCell(cell, rowBgHighlight) {
   // Winner detection precedence:
-  //   1. row-level highlight background (some pages mark the entire winner row)
-  //   2. <b> wrapping the <i> (Tony-style bold winner)
+  //   1. row-level highlight background (most pages mark the winner row this way)
+  //   2. bold + italic markup on the title (both <b><i> AND <i><b> orderings —
+  //      Wikipedia's source-editor and visual-editor produce different orderings)
   //   3. dagger ‡ glyph immediately after the title
   if (rowBgHighlight) return true;
+  // Both nesting orderings of bold+italic count. Real-world examples:
+  //   <b><i><a>Title</a></i></b>  (Tony-style, older pages)
+  //   <i><b><a>Title</a></b></i>  (Drama Desk 2020s)
   if (cell.querySelector('b > i, b a > i, b > a > i')) return true;
+  if (cell.querySelector('i > b, i a > b, i > a > b')) return true;
+  // Additional fallback: a single <i> whose <b> ancestor is below the cell
+  // (handles cases where the bolding is on a wrapper inside the <i>).
+  const italics = cell.querySelectorAll('i');
+  for (const i of italics) {
+    if (i.querySelector('b')) return true;
+  }
   const text = cell.textContent || '';
-  if (/[‡†]/.test(text) && cell.querySelectorAll('i').length === 1) return true;
+  if (/[‡†]/.test(text) && italics.length === 1) return true;
   return false;
 }
 
 function cellShowTitles(cell) {
   const titles = [];
-  for (const i of cell.querySelectorAll('i')) {
-    const raw = (i.textContent || '').trim();
-    if (!raw || raw.length < 2) continue;
+  const cleanOne = (raw) => {
+    if (!raw || raw.length < 2) return null;
     const cleaned = raw
       .replace(/\s*\((?:musical|play|opera|ballet|revival)\)\s*$/i, '')
       .replace(/\s*[‡†*]+\s*$/, '')
+      .replace(/\s*\[\d+\]\s*$/, '')  // strip trailing Wikipedia citation
       .trim();
-    if (!cleaned) continue;
-    if (/^(?:year|production|musical|play|nominee|winner)s?$/i.test(cleaned)) continue;
-    titles.push(cleaned);
+    if (!cleaned) return null;
+    if (/^(?:year|production|musical|play|nominee|winner)s?$/i.test(cleaned)) return null;
+    return cleaned;
+  };
+  for (const i of cell.querySelectorAll('i')) {
+    const c = cleanOne((i.textContent || '').trim());
+    if (c) titles.push(c);
+  }
+  // Bold-only title fallback: some Wikipedia revival rows mark the winner as
+  // <b><a>Title</a></b> (no <i>). Catch these by looking at <b> elements that
+  // don't have an <i> ancestor (to avoid double-counting italicized bold).
+  if (titles.length === 0) {
+    for (const b of cell.querySelectorAll('b')) {
+      // skip if inside an <i> (already handled) or if it wraps an <i> (also handled)
+      if (b.closest('i')) continue;
+      if (b.querySelector('i')) continue;
+      const c = cleanOne((b.textContent || '').trim());
+      if (c) titles.push(c);
+    }
   }
   return titles;
 }
 
 function parseFourDigitYear(text) {
-  const m = (text || '').match(/(?:^|\s|\[)([12]\d{3})(?:\s|\]|–|-|:|$)/);
+  // Match a 4-digit year at a word boundary. Wikipedia year cells often have
+  // post-year markup like <sup>[94]</sup> for citations — the textContent ends
+  // up as "2024[94][95]\n" so we need to allow `[` after the year too. Earlier
+  // versions of this regex required a specific terminator and silently dropped
+  // years 2024 + 2025 on the 2020s Drama Desk Musical table.
+  const m = (text || '').match(/(?:^|\s|\[)([12]\d{3})(?:[^\d]|$)/);
   return m ? parseInt(m[1], 10) : null;
 }
 

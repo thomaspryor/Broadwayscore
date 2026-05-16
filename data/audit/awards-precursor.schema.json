@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://broadwayscorecard.com/schemas/awards-precursor.json",
+  "title": "Awards.json precursor entry",
+  "description": "Schema for the dramaLeague / outerCriticsCircle / dramadesk fields on each show in data/awards.json. Used by scripts/lib/awards-schema-validator.js to fail-loud on transcription typos. nominations integer is deprecated as of 2026-05-16 (Sprint 1 tier-weighted Awards Score) — nominatedFor.length is canonical.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "season": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}$",
+      "description": "Tony-season label in YYYY-YY format, e.g. '2024-25'"
+    },
+    "ceremony": {
+      "type": "string",
+      "description": "Optional ceremony identifier, e.g. '78th' or '2025'"
+    },
+    "wins": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Category names this show won at this precursor (any tier)"
+    },
+    "nominatedFor": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "ALL category names this show was nominated in at this precursor (any tier). Canonical — replaces deprecated `nominations` integer."
+    },
+    "nominations": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "DEPRECATED (Sprint 1 2026-05-16). Use nominatedFor.length instead. Kept for back-compat on legacy entries."
+    },
+    "note": {
+      "type": "string",
+      "description": "Optional human note (e.g. OB→Broadway transfer context)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional Wikipedia URL of the source page for this entry"
+    }
+  },
+  "required": ["season"]
+}

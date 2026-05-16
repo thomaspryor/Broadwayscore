@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
+import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -14,6 +15,7 @@ interface MarketStats {
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
   const marketId = useCurrentMarket();
+  const isOpera = useIsOperaDomain();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,9 +35,14 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
 
   return (
     <div className="flex items-center gap-3 sm:gap-3" ref={dropdownRef}>
-      {/* Logo — changes per market */}
-      <Link href={isWestEnd || isOffWestEnd ? '/west-end' : '/'} className="flex items-center group">
-        {isWestEnd || isOffWestEnd ? (
+      {/* Logo — changes per market AND per domain (operascorecard.com → Opera).
+          Opera-domain swap happens client-side after hydration; SSR renders the
+          Broadway default so search engines + first-paint stay consistent across
+          the shared static export. */}
+      <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center group">
+        {isOpera ? (
+          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
+        ) : isWestEnd || isOffWestEnd ? (
           <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
           <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Broadway<span className="text-gradient">Scorecard</span></span>

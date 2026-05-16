@@ -35,6 +35,8 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
+const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
+const { validateAwardsObject } = require('./lib/awards-schema-validator');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
 // Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
@@ -518,14 +520,27 @@ function main() {
   }
   console.log(`✓ Idempotency assertion passed (Pulitzer migrate-stable: ${migrated2 === 0})`);
 
-  // 6) Write
+  // 6) Schema validation — throws if any precursor entry violates the shape
+  //    (Pre-mortem PRIMARY mitigation from 6-reviewer plan-review 2026-05-01).
+  try {
+    validateAwardsObject(awards);
+    console.log('✓ JSON Schema validation passed (all precursor entries well-formed)');
+  } catch (e) {
+    console.error('\n✗ JSON Schema validation FAILED:');
+    console.error(e.message);
+    process.exit(1);
+  }
+
+  // 7) Atomic dual-repo write — public + private succeed together or both
+  //    roll back. Prevents silent drift on partial failure (Codex P1).
   if (!DRY_RUN) {
-    fs.writeFileSync(PUBLIC_AWARDS, serialized);
-    console.log(`Wrote ${PUBLIC_AWARDS}`);
     if (fs.existsSync(PRIVATE_AWARDS)) {
-      fs.writeFileSync(PRIVATE_AWARDS, serialized);
-      console.log(`Wrote ${PRIVATE_AWARDS}`);
+      const r = writeAwardsJsonAtomic(awards, { publicPath: PUBLIC_AWARDS, privatePath: PRIVATE_AWARDS });
+      console.log(`Wrote ${PUBLIC_AWARDS} (${r.publicBytes} bytes)`);
+      console.log(`Wrote ${PRIVATE_AWARDS} (${r.privateBytes} bytes, byte-identical)`);
     } else {
+      fs.writeFileSync(PUBLIC_AWARDS, serialized);
+      console.log(`Wrote ${PUBLIC_AWARDS}`);
       console.log(`(skipped private repo write — ${PRIVATE_AWARDS} not found)`);
     }
   }

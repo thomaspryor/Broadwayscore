@@ -68,7 +68,10 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // Drama Desk 70th+ replaced "Actor/Actress" with "Lead Performance" terminology
+  if (/outstanding lead performance in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
+  if (/outstanding featured performance in a (play|musical)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
   if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };

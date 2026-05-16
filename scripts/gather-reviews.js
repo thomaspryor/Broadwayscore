@@ -393,7 +393,89 @@ function loadShowData(showId) {
 /**
  * Load outlet configuration
  */
-function loadOutlets() {
+/**
+ * Load the per-category SERP-iteration outlet list (Sprint 4).
+ *
+ * Default (no opts) returns the historical critic-outlets.json list so
+ * existing callers stay byte-identical until S4-T2 broadens the swap to
+ * Broadway. The WE branch (S4-T1) reads outlet-registry.json filtered to
+ * outlets with region==='london' or isDualMarket===true, giving 80+ UK
+ * outlets vs the prior 1 UK outlet in critic-outlets.json.
+ *
+ * `category` overrides:
+ *   'west-end' / 'off-west-end' → registry, region==='london' || isDualMarket
+ *   any other category          → critic-outlets.json (legacy path)
+ *
+ * The legacy critic-outlets.json path also runs the OUTLET_DOMAINS sanity
+ * guard. The registry path doesn't need it (registry is the source of
+ * truth for OUTLET_DOMAINS).
+ */
+function loadOutlets(opts = {}) {
+  const category = opts.category || null;
+
+  // Registry-backed paths (S4-T1 WE, S4-T2 BW + off-BW). Filter rules:
+  //   west-end / off-west-end → region in {london, uk, dual} || isDualMarket
+  //   broadway / off-broadway → all tier 1+2 outlets (high-signal, low cost),
+  //     plus tier 3 with explicit US-flavoured region or isDualMarket.
+  //
+  // Why the tier-cap: only 1 outlet in the registry has `region: 'us'`. The
+  // remaining ~860 unset-region outlets include both US national publications
+  // (Variety, AP, etc — most are also `isDualMarket: true`) AND a long tail
+  // of niche/blog outlets where SERP enumeration is wasted credit. Capping
+  // tier 3 to US-marked outlets keeps the per-show SERP count from 20× to
+  // ~50% larger than the legacy critic-outlets.json list (42 → 63) while
+  // gaining the registry's broader US tier-1/2 coverage.
+  const UK_REGIONS = new Set(['london', 'uk']);
+  const US_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
+  const registryCategories = new Set(['west-end', 'off-west-end', 'broadway', 'off-broadway']);
+  if (registryCategories.has(category)) {
+    try {
+      const registry = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+      const outletsIn = registry.outlets || {};
+      const out = [];
+      const isWE = category === 'west-end' || category === 'off-west-end';
+      for (const [id, info] of Object.entries(outletsIn)) {
+        const isLondonRegion = UK_REGIONS.has(info.region);
+        const isUSRegion = US_REGIONS.has(info.region);
+        const isDual = !!info.isDualMarket;
+        const tier = info.tier || 3;
+        let include;
+        if (isWE) {
+          include = isLondonRegion || isDual;
+        } else {
+          // Broadway / off-broadway: tier 1+2 always; tier 3 only with
+          // explicit US-flavoured region or dual-market flag.
+          include = tier <= 2 || isUSRegion || isDual;
+          // Exclude London-only outlets even at tier 1+2 (e.g. Standard).
+          if (include && isLondonRegion && !isDual) include = false;
+        }
+        if (!include) continue;
+        out.push({
+          id,
+          name: info.displayName || id,
+          domain: info.domain || null,
+          critics: info.defaultCritics || (info.defaultCritic ? [info.defaultCritic] : []),
+          tier,
+          region: info.region || null,
+          isDualMarket: isDual,
+        });
+      }
+      // Sort: tier ascending (T1 first), name ascending — stable SERP order
+      out.sort((a, b) => (a.tier - b.tier) || a.name.localeCompare(b.name));
+      return out;
+    } catch (e) {
+      console.warn(`⚠ loadOutlets({category:'${category}'}): registry read failed (${e.message}); [FALLBACK_HIT] critic-outlets.json fallback was used for category=${category} — investigate before Sprint 7 deletion`);
+    }
+  }
+
+  // Legacy path: critic-outlets.json (caller without category override + fallback).
+  // Warn so we can see whether any caller is still bypassing the per-category
+  // registry split before Sprint 7 deletes the file outright.
+  if (category) {
+    console.warn(`[FALLBACK_HIT] critic-outlets.json fallback was used for category=${category} — investigate before Sprint 7 deletion`);
+  } else {
+    console.warn('[FALLBACK_HIT_NOCATEGORY] loadOutlets() called without a category — likely a caller that still needs the category-aware swap');
+  }
   const config = JSON.parse(fs.readFileSync(OUTLETS_PATH, 'utf8'));
   const outlets = [
     ...config.tier1.map(o => ({ ...o, tier: 1 })),
@@ -409,6 +491,7 @@ function loadOutlets() {
   }
   return outlets;
 }
+
 
 /**
  * Build domain→market map from outlet-registry.json for SERP market filtering.
@@ -3633,7 +3716,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   console.log(`Status: ${show.status}`);
 
   const foundReviews = [];
-  const outlets = loadOutlets();
+  const outlets = loadOutlets({ category: show.category });
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);
 
@@ -5148,4 +5231,5 @@ module.exports = {
   getGlobalUrlIndex,
   shouldValidateUrl,
   ROUNDUP_URL_SOURCES,
+  __test__loadOutlets: loadOutlets,
 };

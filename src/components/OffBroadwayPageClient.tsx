@@ -50,7 +50,7 @@ interface OffBroadwayPageClientProps {
 // URL parameter values
 type StatusParam = 'now_playing' | 'previews' | 'closed' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'alpha' | 'audience_buzz';
-type TypeParam = 'all' | 'musical' | 'play';
+type TypeParam = 'all' | 'musical' | 'play' | 'opera';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
@@ -120,7 +120,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
     sort: (['recent', 'score_desc', 'alpha', 'audience_buzz'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-    type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
+    type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
@@ -282,7 +282,7 @@ function OffBroadwayPageInner({ shows, totalShows, totalReviews, marketOpenCount
 
     // Type filter
     if (type !== 'all') {
-      result = result.filter(show => type === 'musical' ? show.type === 'musical' : show.type !== 'musical');
+      result = result.filter(show => show.type === type);
     }
 
     // Sort

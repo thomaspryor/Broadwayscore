@@ -47,6 +47,14 @@ jobs:
       - name: Bucketize coverage gaps
         run: node scripts/audit-critic-coverage-bucket.js
 
+      - name: Write weekly history snapshot
+        run: node -e "require('./scripts/lib/critic-coverage-history-snapshot').writeWeeklySnapshot()"
+
+      - name: Check coverage drift
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/lib/critic-coverage-checks/coverage-drift.check.js
+
       - name: Print summary
         run: |
           if [ -f data/audit/critic-coverage-buckets.md ]; then
@@ -57,7 +65,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add data/audit/critic-coverage-audit.json data/audit/critic-coverage-buckets.json data/audit/critic-coverage-buckets.md 2>/dev/null || true
+          git add data/audit/critic-coverage-audit.json data/audit/critic-coverage-buckets.json data/audit/critic-coverage-buckets.md data/audit/critic-coverage-history/*.json data/audit/critic-coverage-cooldown.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
