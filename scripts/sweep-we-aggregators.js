@@ -507,13 +507,26 @@ async function sweepWET(show) {
     if (!matched) continue;
 
     const htmlContent = post.content?.rendered || '';
+    const aggregatorUrl = post.link || '';
+
+    // Verify BEFORE extract (ship-check P0-2 fix). Pass the actual WP post
+    // body + a synthesised <title> from wpTitle so verifyAggregatorUrl gets
+    // both signals (page-title token match + venue body match). Previously
+    // we only passed a synthetic <title> stub AFTER extracting, which let
+    // multi-show roundup posts (e.g. "Last week in West End: Hamilton,
+    // Six…") leak ratings into the wrong show.
+    const wetVerifyHtml = `<html><head><title>${wpTitle}</title></head><body>${htmlContent}</body></html>`;
+    if (!verifyPage('westendtheatre', aggregatorUrl, wetVerifyHtml, show)) {
+      continue;
+    }
+
     let reviews = [];
 
     // Try table format first
     reviews = extractStarRatings(htmlContent).map(r => ({
       outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
       critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
-      excerpt: r.excerpt || '', url: post.link || '',
+      excerpt: r.excerpt || '', url: aggregatorUrl,
       source: 'westendtheatre', scoreSource: 'westendtheatre-star-rating',
     }));
 
@@ -524,7 +537,7 @@ async function sweepWET(show) {
         reviews = extractSectionReviews(pageHtml).map(r => ({
           outlet: r.outlet, outletId: normalizeOutlet(r.outlet),
           critic: r.critic || 'Unknown', stars: r.stars, starsOutOf: 5,
-          excerpt: r.excerpt || '', url: r.reviewUrl || post.link || '',
+          excerpt: r.excerpt || '', url: r.reviewUrl || aggregatorUrl,
           source: 'westendtheatre',
         }));
 
@@ -539,13 +552,6 @@ async function sweepWET(show) {
     }
 
     if (reviews.length > 0) {
-      // Verify the matched post URL belongs to this show before persisting.
-      // post.link is the WET aggregator URL the reviews were extracted from.
-      const aggregatorUrl = post.link || '';
-      const pageTitleStub = `<html><head><title>${wpTitle}</title></head></html>`;
-      if (!verifyPage('westendtheatre', aggregatorUrl, pageTitleStub, show)) {
-        continue;
-      }
       // Cache extracted reviews so future runs skip the API call
       if (!DRY_RUN) {
         if (!fs.existsSync(wetArchDir)) fs.mkdirSync(wetArchDir, { recursive: true });
@@ -749,6 +755,12 @@ async function sweepTheatreReviews(show) {
   }
 
   for (const { tier, url } of tiered) {
+    // Bump tier3 attempt counter BEFORE fetch (P1-1 ship-check fix). The
+    // hit-rate metric the plan uses to retire tier3 (CLAUDE.md §14.8 DTLI
+    // precedent) needs both numerator (tier3 success) and denominator
+    // (tier3 attempted). Without the denominator we can't compute the
+    // success rate.
+    if (tier === 'tier3') bumpUrlGuessTier('theatre-reviews', 'tier3Attempted', show.id);
     const html = await nodeFetch(url);
     if (!html || html.length < 1000) continue;
     if (html.includes('<title>Page not found') || html.includes('404')) continue;
@@ -1132,6 +1144,7 @@ async function sweepTheStage(show) {
   // Fallback: ScrapingBee render for ALL tiered URLs (verifier-gated).
   if (SB_KEY) {
     for (const { tier, url } of tiered) {
+      if (tier === 'tier3') bumpUrlGuessTier('thestage', 'tier3Attempted', show.id);
       console.log(`    [TS] Trying ScrapingBee render: ${url.split('/review-round-ups/')[1] || url}`);
       const html = await scrapingBeeRender(url);
       if (!html || html.length < 2000) continue;
@@ -1150,13 +1163,13 @@ async function sweepTheStage(show) {
     }
   }
 
-  // Fallback: use existing archive
-  if (fs.existsSync(archivePath)) {
-    const html = fs.readFileSync(archivePath, 'utf8');
-    const reviews = extractStageReviews(html, show.id);
-    if (reviews.length > 0) return reviews;
-  }
-
+  // (Tail archive fallback removed during ship-check P0 fix. The
+  // top-of-function archive replay at the start of sweepTheStage already
+  // covers the same case AND runs through verifyPage. The duplicate
+  // ungated block here would re-serve a stale Cuckoo-trap roundup from
+  // any pre-S1-T4 cache. audit-verifier-wiring.js passed it because the
+  // positional gateHits-first ordering looked correct; control-flow
+  // reachability didn't.)
   return [];
 }
 
