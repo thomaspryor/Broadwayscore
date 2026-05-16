@@ -175,11 +175,22 @@ function valAwards(show: ComputedShow): number | null {
   }
 }
 
-function valBoxOffice(show: ComputedShow): number | null {
-  // Only Broadway + West End report weekly grosses for v1.
+function valBoxOfficeThisWeek(show: ComputedShow): number | null {
+  // Weekly gross — currently-running shows only. Used for the openMarket pool.
   if (show.category !== 'broadway' && show.category !== 'west-end') return null;
   const g = getShowGrosses(show.slug);
   const gross = g?.thisWeek?.gross;
+  if (gross == null) return null;
+  return gross;
+}
+
+function valBoxOfficeAllTime(show: ComputedShow): number | null {
+  // Cumulative all-time gross — every show that has ever reported grosses.
+  // Used for the all-time pool so a Skippable-but-historic show can rank
+  // against Phantom / Wicked / Lion King by lifetime revenue.
+  if (show.category !== 'broadway' && show.category !== 'west-end') return null;
+  const g = getShowGrosses(show.slug);
+  const gross = g?.allTime?.gross;
   if (gross == null) return null;
   return gross;
 }
@@ -192,13 +203,24 @@ function valOverall(show: ComputedShow): number | null {
   return s;
 }
 
-const METRIC_VALUE: Record<RankMetric, (show: ComputedShow) => number | null> = {
-  critic: valCritic,
-  audience: valAudience,
-  awards: valAwards,
-  boxOffice: valBoxOffice,
-  overall: valOverall,
-};
+/**
+ * Resolves the value for a (metric, pool) combo. Most metrics use the same
+ * extractor regardless of pool — boxOffice is the exception: weekly gross
+ * for openMarket, cumulative for allTime, N/A for season (no season-to-date
+ * cumulative is tracked).
+ */
+function getMetricValue(show: ComputedShow, metric: RankMetric, pool: RankPool): number | null {
+  if (metric === 'boxOffice') {
+    if (pool === 'openMarket') return valBoxOfficeThisWeek(show);
+    if (pool === 'allTime') return valBoxOfficeAllTime(show);
+    return null; // season — no season-to-date cumulative available
+  }
+  if (metric === 'critic') return valCritic(show);
+  if (metric === 'audience') return valAudience(show);
+  if (metric === 'awards') return valAwards(show);
+  if (metric === 'overall') return valOverall(show);
+  return null;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Module-scope precomputed index
@@ -245,15 +267,16 @@ function computePool(
   format: RankFormat,
 ): PoolResult {
   const predicate = poolPredicate(pool);
-  const valFn = METRIC_VALUE[metric];
 
   // Filter pool: same market + pool predicate + format + has metric value.
+  // Value resolver is per-(metric, pool) so box-office can return weekly
+  // gross for openMarket and cumulative gross for all-time.
   const entries: { id: string; v: number }[] = [];
   for (const s of allShows) {
     if (s.category !== market) continue;
     if (!matchesFormat(s, format)) continue;
     if (!predicate(s)) continue;
-    const v = valFn(s);
+    const v = getMetricValue(s, metric, pool);
     if (v == null) continue;
     entries.push({ id: s.id, v });
   }

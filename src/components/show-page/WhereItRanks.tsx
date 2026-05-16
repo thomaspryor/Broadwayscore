@@ -47,7 +47,7 @@ const ROWS: RowDef[] = [
   { metric: 'critic', label: 'CriticScore' },
   { metric: 'audience', label: 'AudienceGrade' },
   { metric: 'awards', label: 'Awards Score', notApplicableHint: 'Awards Score is Broadway-only for now' },
-  { metric: 'boxOffice', label: 'Weekly Gross', notApplicableHint: "Weekly grosses aren't tracked for this market" },
+  { metric: 'boxOffice', label: 'Box Office', notApplicableHint: "Box-office data isn't tracked for this market" },
   { metric: 'overall', label: 'Overall' },
 ];
 
