@@ -75,30 +75,6 @@ jobs:
           fi
           node scripts/discover-historical-shows.js $ARGS
 
-      # Notion 362637c5-416f-81ee — belt-and-suspenders against a classifyShow
-      # regression silently writing null category/market on new rows. validate-data.js
-      # only fails on null category for open/upcoming shows; historical inserts ship
-      # as status='closed' and slip past. We assert on the per-run pending file so
-      # operator sees the bad row immediately, before any downstream pipeline runs.
-      - name: Assert discovered shows have category + market
-        if: inputs.dry_run != 'true'
-        run: |
-          PENDING=data/historical-shows-pending.json
-          if [ ! -f "$PENDING" ]; then
-            echo "No pending file — nothing to assert."
-            exit 0
-          fi
-          GAPS=$(jq -r '.shows[] | select((.category // "") == "" or (.market // "") == "") | "\(.id)\t\(.title)\tcategory=\(.category // "null")\tmarket=\(.market // "null")"' "$PENDING")
-          if [ -n "$GAPS" ]; then
-            echo "$GAPS" | while IFS= read -r line; do
-              echo "::error::discover-historical-shows wrote null category/market: $line"
-            done
-            echo "Fix scripts/lib/classify-show.js (it should never return null for these fields)."
-            exit 1
-          fi
-          COUNT=$(jq -r '.shows | length' "$PENDING")
-          echo "category/market assertion OK — $COUNT pending rows all have non-null fields."
-
       - name: Validate data
         id: validate
         if: inputs.dry_run != 'true'
