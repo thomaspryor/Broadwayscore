@@ -24,6 +24,49 @@ const path = require('path');
 // Shared with scripts/check-review-count-drift.js so both stay in sync.
 const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./lib/review-text-scoreable');
 
+// Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
+// to refuse pushing when validation failed. The composite action used `if: always()`
+// across 64 workflows, which meant validate-data.js exit-1 didn't prevent corrupt rows
+// from reaching the private repo. The sentinel lets every caller opt-in to gated pushes
+// without per-workflow edits: any workflow that runs validate-data.js before push-core-data
+// is now automatically protected. Workflows that don't validate are unaffected.
+//
+// Path: prefer RUNNER_TEMP (GitHub Actions per-runner temp, isolated between jobs);
+// fall back to /tmp for local dev. Composite action mirrors this fallback logic.
+const PUSH_REFUSAL_SENTINEL = path.join(
+  process.env.RUNNER_TEMP || '/tmp',
+  '.skip-push-core-data'
+);
+function writePushRefusalSentinel(reason) {
+  try {
+    fs.writeFileSync(PUSH_REFUSAL_SENTINEL,
+      `validate-data.js refused push at ${new Date().toISOString()}\nreason: ${reason}\n`);
+  } catch (e) {
+    // Non-fatal: if temp dir isn't writable we can't gate, but the script still exits 1.
+    console.error(`Could not write push refusal sentinel at ${PUSH_REFUSAL_SENTINEL}: ${e.message}`);
+  }
+}
+function clearPushRefusalSentinel() {
+  try {
+    if (fs.existsSync(PUSH_REFUSAL_SENTINEL)) fs.unlinkSync(PUSH_REFUSAL_SENTINEL);
+  } catch (_) { /* non-fatal */ }
+}
+// Single exit-with-error path so every error site reaches the sentinel — not just the
+// late "summary errors" path. Codex found 2 early process.exit(1) sites that bypassed
+// the sentinel (missing shows.json + parse error). Route them through this.
+function exitWithError(reason) {
+  writePushRefusalSentinel(reason);
+  process.exit(1);
+}
+// Also catch unexpected crashes — uncaughtException doesn't fire on process.exit, but it
+// does fire on throws. Belt-and-suspenders against future code paths that throw without
+// reaching the summary block.
+process.on('uncaughtException', (err) => {
+  writePushRefusalSentinel(`uncaughtException: ${err.message}`);
+  console.error(err);
+  process.exit(1);
+});
+
 // Stuck-vs-fresh classification for pending-score gap records.
 // Extracted + unit-tested in tests/unit/pending-gap-classification.test.mjs.
 const { classifyPendingGapsByAge, DEFAULT_STUCK_PENDING_DAYS } = require('./lib/pending-gap-classification');
@@ -3809,7 +3852,7 @@ function runValidation() {
   // Check shows.json exists and is valid JSON
   if (!fs.existsSync(SHOWS_FILE)) {
     error('shows.json does not exist');
-    process.exit(1);
+    exitWithError('shows.json does not exist');
   }
 
   let shows;
@@ -3819,7 +3862,7 @@ function runValidation() {
     ok(`Loaded ${shows.length} shows from shows.json`);
   } catch (e) {
     error(`shows.json parse error: ${e.message}`);
-    process.exit(1);
+    exitWithError(`shows.json parse error: ${e.message}`);
   }
 
   console.log('');
@@ -3921,7 +3964,10 @@ function runValidation() {
   if (errors.length > 0) {
     console.log(`\n❌ FAILED: ${errors.length} error(s) found\n`);
     errors.forEach((e, i) => console.log(`   ${i + 1}. ${e}`));
-    process.exit(1);
+    // Notion 362637c5-416f-8174 — leave breadcrumb for push-core-data composite
+    // action so it refuses to push corrupt data even when its `if: always()` step
+    // fires. Composite reads ${RUNNER_TEMP}/.skip-push-core-data and gates push.
+    exitWithError(`${errors.length} validation error(s); first: ${errors[0]}`);
   }
 
   // Write baseline file on successful validation
@@ -3963,6 +4009,10 @@ function runValidation() {
   } else {
     console.log('\n✅ ALL VALIDATIONS PASSED\n');
   }
+
+  // Clear any stale sentinel from a prior failed run on this runner so
+  // push-core-data isn't blocked on data that's now valid.
+  clearPushRefusalSentinel();
 
   process.exit(0);
 }

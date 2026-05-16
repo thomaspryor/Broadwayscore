@@ -42,11 +42,18 @@ export const TONY_BLEND_WEIGHT = 0.5;
  * awards term renormalizes out of tonyComposite, so the formula reduces to
  * a true 50/50 critic+audience until precursor noms drop in early May.
  */
+// best-musical weights nudged from 0.40/0.60/0.00 to 0.45/0.55/0.00 on
+// 2026-05-16 (Notion 362637c5-416f-81bc-8a36-e354ec4051f1). The 11-season
+// backtest at step 0.05 picked 0.45/0.55/0.00 as the unique 11/11 in-sample
+// winner; leave-one-out CV confirms 10 of 11 folds independently selected
+// the same weights. Net effect: +1 correct season (was 10/11, now 11/11)
+// while staying inside the LOOCV-optimal plateau (no overfit). See
+// scripts/search-tony-best-play-weights.ts --cat=best-musical.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
-  'best-play':            { critic: 0.4, audience: 0.4, awards: 0.2 },
-  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
-  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
+  'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
+  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
+  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
+  'best-revival-play':    { critic: 0,    audience: 1.0,  awards: 0   },
 };
 
 /**
