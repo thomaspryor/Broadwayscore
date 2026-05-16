@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://broadwayscorecard.com/schemas/precursor-source.json",
+  "title": "data/precursors/*.json source files",
+  "description": "Schema for the per-ceremony source files consumed by scripts/enrich-awards-with-precursors.js. Catches transcription typos (mis-named category, missing required field) at script-start instead of silently lowering scores at merge time. Three top-level data shapes are supported:\n  (a) DD/OCC/DL: data is an object keyed by category name → array of {year, winner|null, nominees[]}\n  (b) NYDCCC: data is an object keyed by category name → array of {year, winner|null}  (no nominees)\n  (c) Pulitzer: data is an array of {year, winner, finalists[]}\n  (d) Pulitzer historic: data is an array of {year, winnerId?, finalistIds?[]}\nThe loader picks the appropriate inline schema via `oneOf`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["data"],
+  "properties": {
+    "_meta": {
+      "type": "object",
+      "description": "Free-form metadata (source URLs, scrapedAt timestamp, etc.)"
+    },
+    "data": {
+      "oneOf": [
+        {
+          "title": "DD/OCC/DL/NYDCCC shape — keyed by category",
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["year"],
+              "additionalProperties": false,
+              "properties": {
+                "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
+                "winner": { "type": ["string", "null"], "minLength": 1 },
+                "nominees": {
+                  "type": "array",
+                  "items": { "type": "string", "minLength": 1 }
+                }
+              }
+            }
+          }
+        },
+        {
+          "title": "Pulitzer shape — array of {year, winner, finalists[]} (title-keyed)",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["year", "winner"],
+            "additionalProperties": false,
+            "properties": {
+              "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
+              "winner": { "type": ["string", "null"], "minLength": 1 },
+              "finalists": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        },
+        {
+          "title": "Pulitzer historic shape — array of {year, winnerId?, finalistIds?[]} (showId-keyed; at least one of winnerId/finalistIds required)",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["year"],
+            "additionalProperties": false,
+            "anyOf": [
+              { "required": ["winnerId"] },
+              { "required": ["finalistIds"] }
+            ],
+            "properties": {
+              "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
+              "winnerId": { "type": "string", "minLength": 1 },
+              "finalistIds": {
+                "type": "array",
+                "items": { "type": "string", "minLength": 1 }
+              },
+              "_note": { "type": "string" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

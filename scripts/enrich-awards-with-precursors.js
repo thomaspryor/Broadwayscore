@@ -36,7 +36,8 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
-const { validateAwardsObject } = require('./lib/awards-schema-validator');
+const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
+const { classifyCategory } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
 // Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
@@ -65,9 +66,23 @@ const DRY_RUN = process.argv.includes('--dry-run');
 // OB→Broadway transfer cases (Hamilton OB 2015 → Broadway 2015-16) are handled
 // by the matcher: it searches all years for a title within the Tony-nominee pool.
 
+// Track unknown category names across all loaded precursor files so a single
+// summary line is emitted instead of one warning per file.
+const _unknownCategoryWarnings = [];
+
 function loadPrecursor(name) {
   const fp = path.join(PRECURSORS_DIR, `${name}.json`);
   const raw = JSON.parse(fs.readFileSync(fp, 'utf8'));
+  // Validate source-file shape + flag unknown category names. Schema
+  // violations throw; classifyCategory misses are collected and printed
+  // once at end-of-load (a typo like "Outstanding Direcetor" passes schema
+  // but silently misses the +30 win bonus downstream).
+  const { unknownCategories } = validatePrecursorSource(name, raw, {
+    isKnownCategory: (cat) => classifyCategory(cat) !== null,
+  });
+  for (const cat of unknownCategories) {
+    _unknownCategoryWarnings.push(`  ${name}.json: "${cat}"`);
+  }
   return raw.data;
 }
 
@@ -407,6 +422,11 @@ function applyHistoricPulitzerById(source, awardsShows) {
 
 function main() {
   console.log('=== ENRICH AWARDS WITH PRECURSORS ===');
+  if (_unknownCategoryWarnings.length > 0) {
+    console.warn(`⚠ ${_unknownCategoryWarnings.length} unknown precursor category name(s) — will not contribute to the awards-score noms tail:`);
+    for (const w of _unknownCategoryWarnings) console.warn(w);
+    console.warn('  Fix: add the category to scripts/lib/classify-category.js + mirror in src/lib/awards-scoring.ts');
+  }
   if (DRY_RUN) console.log('DRY RUN — no files will be written\n');
 
   const awards = JSON.parse(fs.readFileSync(PUBLIC_AWARDS, 'utf8'));

@@ -20,11 +20,13 @@ const path = require('path');
 const Ajv = require('ajv');
 
 const SCHEMA_PATH = path.join(__dirname, '..', '..', 'data/audit/awards-precursor.schema.json');
+const SOURCE_SCHEMA_PATH = path.join(__dirname, '..', '..', 'data/audit/precursor-source.schema.json');
 
 const PRECURSOR_FIELDS = ['dramaLeague', 'outerCriticsCircle', 'dramadesk'];
 
 let _ajv = null;
 let _validate = null;
+let _validateSource = null;
 
 function getValidator() {
   if (_validate) return _validate;
@@ -32,6 +34,14 @@ function getValidator() {
   const schema = JSON.parse(fs.readFileSync(SCHEMA_PATH, 'utf8'));
   _validate = _ajv.compile(schema);
   return _validate;
+}
+
+function getSourceValidator() {
+  if (_validateSource) return _validateSource;
+  if (!_ajv) _ajv = new Ajv({ allErrors: true, strict: false });
+  const schema = JSON.parse(fs.readFileSync(SOURCE_SCHEMA_PATH, 'utf8'));
+  _validateSource = _ajv.compile(schema);
+  return _validateSource;
 }
 
 function formatErrors(errors, context) {
@@ -76,4 +86,37 @@ function validateAwardsFile(filepath) {
   return validateAwardsObject(awards);
 }
 
-module.exports = { validateAwardsObject, validateAwardsFile };
+/**
+ * Validate a parsed data/precursors/{name}.json source file against
+ * precursor-source.schema.json. Throws on schema violations. Optionally
+ * checks every category name against an `isKnownCategory` predicate
+ * (returning false → warning collected, NOT thrown). The category check
+ * catches transcription typos like "Outstanding Direcetor" that wouldn't
+ * fail the schema but would silently miss the +30 win bonus downstream.
+ *
+ * Returns { ok, name, unknownCategories: string[] }.
+ */
+function validatePrecursorSource(name, parsed, opts = {}) {
+  const validate = getSourceValidator();
+  const ok = validate(parsed);
+  if (!ok) {
+    const errs = formatErrors(validate.errors || [], `data/precursors/${name}.json`);
+    throw new Error(`Precursor source ${name}.json failed schema validation:\n${errs}`);
+  }
+  const unknownCategories = [];
+  const { isKnownCategory } = opts;
+  if (typeof isKnownCategory === 'function') {
+    // For object-shape (DD/OCC/DL/NYDCCC): the OUTER keys are category names.
+    // Pulitzer's shape is an array with no category keys — skip there.
+    if (parsed && parsed.data && !Array.isArray(parsed.data)) {
+      for (const categoryName of Object.keys(parsed.data)) {
+        if (!isKnownCategory(categoryName)) {
+          unknownCategories.push(categoryName);
+        }
+      }
+    }
+  }
+  return { ok: true, name, unknownCategories };
+}
+
+module.exports = { validateAwardsObject, validateAwardsFile, validatePrecursorSource };
