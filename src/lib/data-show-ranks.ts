@@ -20,9 +20,13 @@
  * Two format slices: 'all' (no format filter) and per-show-type
  * ('musical' | 'play'). Special / Limited Engagement shows are 'all' only.
  *
- * Tie-break: dense rank on the rounded display value (1, 1, 2 — not 1, 1, 3).
- * Per memory/feedback_round_once_share_everywhere.md — the rank must match
- * what users see.
+ * Tie-break: competition rank on the rounded display value (1, 1, 3 — not
+ * 1, 1, 2). Reason: with dense rank, "#34 of 619" reads as "top 5%" but
+ * actually means "34th distinct score tier" — a 56-score (Skippable) show
+ * can land at #34 when most pool entries cluster in the 70-95 range, which
+ * is misleading. Competition rank keeps "#N of M" meaningful: N-1 shows
+ * scored strictly higher than this one. Per memory/feedback_round_once_share_everywhere.md
+ * the rounded display value is still what's compared.
  *
  * Null semantics:
  *   - Pool < 3 shows: returns null (rank in a pool of 2 isn't meaningful UX).
@@ -259,16 +263,18 @@ function computePool(
     return { ranks, total: entries.length };
   }
 
-  // Sort desc by value; assign dense rank.
+  // Sort desc by value; assign competition rank ("1, 1, 3, 4") so #N of M
+  // means "N-1 shows scored strictly higher than this one".
   entries.sort((a, b) => b.v - a.v);
   let lastVal: number | null = null;
-  let denseRank = 0;
-  for (const e of entries) {
+  let lastRank = 0;
+  for (let i = 0; i < entries.length; i++) {
+    const e = entries[i];
     if (e.v !== lastVal) {
-      denseRank += 1;
+      lastRank = i + 1;
       lastVal = e.v;
     }
-    ranks.set(e.id, { rank: denseRank, total: entries.length });
+    ranks.set(e.id, { rank: lastRank, total: entries.length });
   }
 
   return { ranks, total: entries.length };
