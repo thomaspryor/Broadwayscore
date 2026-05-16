@@ -595,14 +595,19 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">From raw points to 0&ndash;100</h3>
           <p className="text-gray-300 text-sm mb-3">
-            Raw points get log-scaled so the difference between an early-career honoree and a historic sweeper compresses into the same 0&ndash;100 scale used everywhere else on the site:
+            Raw points get log-scaled so a single Tony win and a 12-Tony sweep can sit on the same 0&ndash;100 scale used everywhere else on the site. Rough calibration:
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
-            <code className="text-brand text-sm font-mono">displayScore = round(40 &times; log<sub>10</sub>(1 + rawPoints / 4))</code>
-            <p className="text-gray-400 text-xs mt-2">
-              Capped at 100. A show with ~12 raw points scores ~25; ~100 points scores ~55; ~500 points scores ~85; ~1,000+ points scores 95&ndash;100.
-            </p>
+            <ul className="text-gray-300 text-sm space-y-1.5 tabular-nums">
+              <li><strong className="text-white">~12</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~25</strong> score &nbsp;<span className="text-gray-500">(one Featured win)</span></li>
+              <li><strong className="text-white">~100</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~55</strong> score &nbsp;<span className="text-gray-500">(Pulitzer finalist + a few Tony noms)</span></li>
+              <li><strong className="text-white">~500</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~85</strong> score &nbsp;<span className="text-gray-500">(several major Tony wins)</span></li>
+              <li><strong className="text-white">~1,000+</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">95&ndash;100</strong> score &nbsp;<span className="text-gray-500">(historic sweep)</span></li>
+            </ul>
           </div>
+          <p className="text-gray-400 text-xs mt-3">
+            Revivals get an 0.85&times; multiplier (a Tony win for a revival is still a real win, but slightly less weighted than for original work). When a show has 4&ndash;6 design-category wins on the same night, the stacked C-tier wins discount after the first to avoid overweighting any single ceremony&apos;s design haul.
+          </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Tier badges</h3>
           <div className="space-y-2 text-sm">
