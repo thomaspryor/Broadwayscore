@@ -77,9 +77,13 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
         case 'audience':
           return '/audience-buzz';
         case 'awards':
-          return market === 'broadway' ? '/tony-awards/predictions'
-               : market === 'west-end' ? '/olivier-awards'
-               : null;
+          if (market === 'broadway') return '/tony-awards/predictions';
+          if (market === 'west-end') return '/olivier-awards';
+          // Off-Broadway and off-west-end shows have no dedicated awards
+          // page (they're not Tony/Olivier-eligible). Explicit handling
+          // required by the west-end/off-west-end co-occurrence lint —
+          // see tests/unit/regression-guards.test.mjs.
+          return null;
         case 'boxOffice':
           return '/box-office';
         case 'overall':
@@ -178,30 +182,36 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           {ROWS.map((row, idx) => {
             const isLast = idx === ROWS.length - 1;
             const rs = activeRanks[row.metric];
+            // Show denominator only on the Overall row to keep per-row cells
+            // uncluttered. Per-row pool sizes can differ slightly (e.g. Box
+            // Office pool is shows that report grosses, not all open shows),
+            // so per-cell denominators would crowd the table for no real
+            // information gain.
+            const showDenom = isLast;
             return (
               <tr key={row.metric} className={isLast ? 'border-t border-white/10' : ''}>
-                <td className={`py-2 pr-2 text-gray-300 ${isLast ? 'pt-3 font-semibold text-gray-100' : ''}`}>
+                <td className={`py-2 pr-2 text-gray-300 align-top ${isLast ? 'pt-3 font-semibold text-gray-100' : ''}`}>
                   {row.label}
                 </td>
 
-                <td className={`py-2 pl-2 text-right ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis />
+                <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
                 </td>
 
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis />
+                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                  <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
                 </td>
 
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} />
+                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                  <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator={showDenom} />
                 </td>
 
                 {/* Mobile combined column — show season if present, fall back to all-time. */}
-                <td className={`sm:hidden py-2 pl-2 text-right ${isLast ? 'pt-3' : ''}`}>
+                <td className={`sm:hidden py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   {rs.season ? (
-                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis />
+                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
                   ) : (
-                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} />
+                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator={showDenom} />
                   )}
                 </td>
               </tr>
@@ -222,11 +232,16 @@ function Cell({
   href,
   naHint,
   emphasis,
+  showDenominator,
 }: {
   cell: RankCell | null;
   href: string | null;
   naHint?: string;
   emphasis?: boolean;
+  /** When true, renders "of M" muted on a second line under the rank.
+   *  Reserved for the Overall row so the denominator is visible without
+   *  cluttering every cell. */
+  showDenominator?: boolean;
 }) {
   if (!cell) {
     return (
@@ -238,29 +253,31 @@ function Cell({
       </span>
     );
   }
-  // Display as "N/M" so the denominator (pool size) is visible per-cell,
-  // matching the hero rank line. Rank styled bold; "/M" muted so the number
-  // remains the focal point.
-  const rankClass = emphasis
+  const numClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
-    : 'font-semibold text-gray-400 tabular-nums';
-  const denomClass = emphasis ? 'font-normal text-gray-500' : 'font-normal text-gray-600';
-  const content = (
-    <>
-      <span className={rankClass}>{cell.rank}</span>
-      <span className={denomClass}>/{cell.total}</span>
-    </>
-  );
+    : 'text-gray-500 tabular-nums';
+  const rankNode = <span className={numClass}>#{cell.rank}</span>;
+  const denomNode = showDenominator ? (
+    <span className="block text-[10px] font-normal text-gray-500 mt-0.5 tabular-nums">
+      of {cell.total}
+    </span>
+  ) : null;
   if (!href) {
     // Visually distinct from links: no underline, default cursor, no hover.
-    return <span className="tabular-nums">{content}</span>;
+    return (
+      <span className="tabular-nums">
+        {rankNode}
+        {denomNode}
+      </span>
+    );
   }
   return (
     <Link
       href={href}
       className="tabular-nums hover:text-white hover:underline underline-offset-[3px] decoration-white/20"
     >
-      {content}
+      {rankNode}
+      {denomNode}
     </Link>
   );
 }
