@@ -13,7 +13,32 @@ inputs:
 runs:
   using: composite
   steps:
+    # Notion 362637c5-416f-8174 — refuse to push if a prior step in this job
+    # signalled "data is bad." validate-data.js writes ${RUNNER_TEMP}/.skip-push-core-data
+    # when it exits 1. Without this gate, 64 workflows using push-core-data with
+    # `if: always()` would push corrupt rows even after validate failed (because
+    # the gate was on the public-repo commit step only). One-line cost; no
+    # per-workflow edits required.
+    #
+    # IMPORTANT: in GitHub Actions composite actions, `exit 0` in one step does NOT
+    # skip subsequent steps — only `exit 1` halts execution. So this step sets a
+    # step output, and the two real steps below gate on it via `if:`.
+    - name: Refuse if prior validation failed
+      id: refusal-check
+      shell: bash
+      run: |
+        SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+        if [ -f "$SENTINEL" ]; then
+          echo "::warning::push-core-data refused — prior step (likely validate-data.js) signalled bad data. See $SENTINEL for details."
+          # Bound the cat: sentinel files should be tiny (~200 bytes), but defend against runaway error blobs.
+          head -c 4096 "$SENTINEL" 2>/dev/null || true
+          echo "skip=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+        fi
+
     - name: Sync core data files to checkout
+      if: steps.refusal-check.outputs.skip != 'true'
       shell: bash
       run: |
         # Always copy all core data files from working dir to checkout.
@@ -34,6 +59,7 @@ runs:
         echo "Synced core data files:$COPIED"
 
     - name: Commit and push core data
+      if: steps.refusal-check.outputs.skip != 'true'
       shell: bash
       working-directory: /tmp/core-data-checkout
       env:
