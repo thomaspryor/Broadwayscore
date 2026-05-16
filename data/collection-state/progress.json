@@ -9,7 +9,10 @@
     "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "gypsy-2024/billboard--paul-grein.json",
+    "job-2024/deadline--greg-evans.json",
+    "the-whos-tommy-2024/rollingstone--emily-zemler.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1310,7 +1313,14 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
-    "yoah-off-broadway-2026/variety--pat-saperstein.json"
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-tempest-globe-west-end-2026/express-uk--neil-norman.json",
+    "art-2025/broadwaynews--michael-abourizk.json",
+    "redwood-2025/gmanetwork--stuart-santiago.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1323,7 +1333,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
-      "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json"
+      "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
+      "data/review-texts/job-2024/deadline--greg-evans.json",
+      "job-2024/deadline--greg-evans.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1332,7 +1344,9 @@
       "company-2021/theatrely--andrew-martini.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "gypsy-2024/billboard--paul-grein.json"
+    ],
     "archiveToday": [
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
@@ -1358,11 +1372,12 @@
       "data/review-texts/an-ideal-husband-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "the-whos-tommy-2024/rollingstone--emily-zemler.json"
     ]
   },
   "startTime": "2026-05-16T08:55:18.664Z",
-  "lastProcessed": "yoah-off-broadway-2026/variety--pat-saperstein.json",
+  "lastProcessed": "the-whos-tommy-2024/rollingstone--emily-zemler.json",
   "log": [
     {
       "t": "2026-05-16T09:29:38.496Z",
@@ -1374,6 +1389,17 @@
       "t": "2026-05-16T09:29:39.423Z",
       "event": "bb-cookie-inject",
       "domain": "ft.com"
+    },
+    {
+      "t": "2026-05-16T10:50:05.492Z",
+      "event": "bb-session",
+      "session": "44a293c3",
+      "url": "https://deadline.com/2024/09/broadway-job-ticket-initiative-1236097441/"
+    },
+    {
+      "t": "2026-05-16T10:50:06.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
     }
   ]
 }
