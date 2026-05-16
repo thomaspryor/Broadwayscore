@@ -312,10 +312,15 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
   const socialPulse = getSocialPulse(show.id);
-  // Cross-show ranks. O(1) lookup after the module-scope index is built on
-  // first call. 'all' format slice for the hero rank line (the bottom
-  // WhereItRanks card additionally fetches the show's-own-format slice).
-  const ranks = getShowRanks(show.id, { format: 'all' });
+  // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
+  // (NEXT_PUBLIC_FEATURES=showRanks). O(1) lookup after the module-scope
+  // index is built on first call. 'all' format slice powers the hero rank
+  // line; the bottom WhereItRanks card additionally requests the show's-own-
+  // format slice.
+  const ranks = featureFlags.showRanks ? getShowRanks(show.id, { format: 'all' }) : null;
+  const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
+    ? getShowRanks(show.id, { format: show.type })
+    : null;
   const commercial = getShowCommercial(show.slug);
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
