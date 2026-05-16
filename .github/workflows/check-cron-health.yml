@@ -60,6 +60,10 @@ jobs:
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging
             "opening-night-checklist.yml|3|Opening Night Checklist"
+            # Weekly Monday cron — Tony + Olivier cutoff freshness check. 200h = 1 missed week.
+            # Advisory v1 (warnings only), but staleness still pages so we re-verify dates before
+            # season cutoffs bias the show-page rank pool.
+            "check-cutoff-freshness.yml|200|Check Cutoff Freshness"
           )
 
           FAILURES=""

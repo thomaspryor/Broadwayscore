@@ -20,11 +20,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const { JSDOM } = require('jsdom');
+const { fetchHtml, parseCategoryPage } = require('./lib/precursor-category-parser');
 const { writePrecursorJson, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
 
 const PAGE = 'Pulitzer_Prize_for_Drama';
-const USER_AGENT = 'BroadwayScorecardBot/1.0 (broadway-scorecard project; precursor-awards-scraper)';
 
 const MIN_YEAR = parseInt(
   (process.argv.find((a) => a.startsWith('--min-year=')) || '--min-year=2014').split('=')[1],
@@ -33,104 +32,28 @@ const MIN_YEAR = parseInt(
 const WRITE = process.argv.includes('--write');
 const FORCE = process.argv.includes('--force');
 
-function cellTitles(cell) {
-  const out = [];
-  for (const i of cell.querySelectorAll('i')) {
-    const raw = (i.textContent || '').trim();
-    if (!raw || raw.length < 2) continue;
-    const cleaned = raw
-      .replace(/\s*\((?:musical|play|opera)\)\s*$/i, '')
-      .replace(/[‡†*]+$/, '')
-      .trim();
-    if (cleaned) out.push(cleaned);
-  }
-  return out;
-}
-
 async function main() {
   const url = `https://en.wikipedia.org/wiki/${PAGE}`;
   process.stdout.write(`Fetching ${PAGE}... `);
-  const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const html = await res.text();
+  const html = await fetchHtml(url);
   console.log(`${html.length} bytes`);
 
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
+  // Re-use the shared category parser (multi-table + bold-italic detection
+  // landed 2026-05-16). Pulitzer page splits drama history across ~10
+  // per-decade wikitables; the shared parser walks all of them. Result is
+  // [{ year, winner, nominees }, ...] which we transform into Pulitzer's
+  // { year, winner, finalists } shape (finalists = nominees minus winner).
+  const parsed = parseCategoryPage(html, { minYear: MIN_YEAR });
 
-  // The main table is the longest wikitable that has a year-like first column.
-  const tables = Array.from(doc.querySelectorAll('table.wikitable'));
-  const ranked = tables
-    .map((t) => {
-      const rows = Array.from(t.querySelectorAll('tr'));
-      const yearRows = rows.filter((r) => /\b(19|20)\d{2}\b/.test((r.querySelector('th,td')?.textContent) || ''));
-      return { t, score: yearRows.length };
+  const entries = parsed
+    .map(({ year, winner, nominees }) => {
+      const finalists = (nominees || []).filter(
+        (t) => !winner || t.toLowerCase() !== winner.toLowerCase(),
+      );
+      return { year, winner, finalists };
     })
-    .sort((a, b) => b.score - a.score);
-  if (ranked.length === 0 || ranked[0].score === 0) throw new Error('No year-prefixed wikitable found');
-  const mainTable = ranked[0].t;
+    .sort((a, b) => a.year - b.year);
 
-  const entries = [];
-  let currentYear = null;
-  let rowsLeftForYear = 0;
-  for (const row of mainTable.querySelectorAll('tr')) {
-    const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
-    if (cells.length === 0) continue;
-
-    const first = cells[0];
-    const yearMatch = (first.textContent || '').match(/^\s*([12]\d{3})/);
-    let workingCells = cells;
-    if (yearMatch) {
-      currentYear = parseInt(yearMatch[1], 10);
-      const rs = parseInt(first.getAttribute('rowspan') || '1', 10);
-      rowsLeftForYear = rs > 1 ? rs : 1;
-      workingCells = cells.slice(1);
-    } else if (rowsLeftForYear > 0 && currentYear) {
-      // continuation row
-    } else {
-      continue;
-    }
-
-    if (!currentYear || currentYear < MIN_YEAR) {
-      rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
-      continue;
-    }
-
-    // First italic in the row = winner, all subsequent = finalists (unless
-    // "No award" row).
-    const text = row.textContent || '';
-    if (/no award|not awarded/i.test(text) && !text.match(/finalist/i)) {
-      rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
-      continue;
-    }
-
-    const allTitles = [];
-    for (const c of workingCells) allTitles.push(...cellTitles(c));
-    if (allTitles.length === 0) {
-      rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
-      continue;
-    }
-
-    // Year already recorded? Append finalists.
-    let entry = entries.find((e) => e.year === currentYear);
-    if (!entry) {
-      entry = { year: currentYear, winner: allTitles[0], finalists: [] };
-      entries.push(entry);
-      for (const t of allTitles.slice(1)) {
-        if (t.toLowerCase() !== entry.winner.toLowerCase() && !entry.finalists.some((f) => f.toLowerCase() === t.toLowerCase())) {
-          entry.finalists.push(t);
-        }
-      }
-    } else {
-      for (const t of allTitles) {
-        if (t.toLowerCase() === entry.winner.toLowerCase()) continue;
-        if (!entry.finalists.some((f) => f.toLowerCase() === t.toLowerCase())) entry.finalists.push(t);
-      }
-    }
-    rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
-  }
-
-  entries.sort((a, b) => a.year - b.year);
   console.log(`  ${entries.length} year entries (${entries.filter((e) => e.finalists.length > 0).length} with finalists)`);
 
   const fp = path.join(PRECURSORS_DIR, 'pulitzer.json');
