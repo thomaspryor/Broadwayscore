@@ -186,6 +186,7 @@ async function main() {
   } catch (err) {
     // Alert failure is non-fatal for cooldown update — log and continue.
     console.error(`[drift-check] Discord alert error: ${err.message}`);
+    process.stdout.write(`::warning::Discord webhook failed (${err.message}) — cooldown still written, alert suppressed for 7 days\n`);
   }
 
   // 6. Update cooldown
