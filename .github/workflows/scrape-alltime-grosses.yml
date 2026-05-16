@@ -13,9 +13,9 @@ on:
         required: false
         type: string
       all_years:
-        description: 'Loop through all years 2005-2026'
+        description: 'Loop through main page + per-year pages 2005..currentYear (default: true). Set false to scrape only the lifetime top-100 main page.'
         required: false
-        default: 'false'
+        default: 'true'
         type: boolean
       dry_run:
         description: 'Preview matches without writing'
@@ -54,15 +54,23 @@ jobs:
 
       - name: Scrape all-time cumulative grosses
         run: |
-          ARGS=""
+          # Default (cron, no inputs): --all-years
+          # The main page only lists the top ~100 shows by lifetime gross, so
+          # newly-opened shows are absent for months/years. --all-years also
+          # scrapes per-year pages (2005..currentYear from new Date().getUTCFullYear())
+          # which list every show that played that season, regardless of cumulative rank.
+          # In-run merge uses Math.max per slug, so partial-year stats from the per-year
+          # pages cannot overwrite the main page's lifetime totals.
+          ARGS="--all-years"
           if [ -n "${{ inputs.year }}" ]; then
             ARGS="--year ${{ inputs.year }}"
-          elif [ "${{ inputs.all_years }}" = "true" ]; then
-            ARGS="--all-years"
+          elif [ "${{ inputs.all_years }}" = "false" ]; then
+            ARGS=""
           fi
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
+          echo "Invoking: npx tsx scripts/scrape-alltime.ts $ARGS"
           npx tsx scripts/scrape-alltime.ts $ARGS
         env:
           NODE_ENV: production
