@@ -163,7 +163,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor nominations from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 41 of 43 contests.',
+          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 39 of 42 contests.',
         },
       },
       {
@@ -171,7 +171,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'What is the Awards Score?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'A 0-100 score derived from a show’s nominations at the three precursor industry awards — Drama League (weighted 1.0), Outer Critics Circle (0.9), and Drama Desk (0.7). It rewards wins (+30 × tier weight) more than nominations (+10 × tier weight), plus a small bonus for total nominations across all categories (capped at 25). It only contributes to the Best Play prediction; for other categories it’s shown for transparency but not weighted.',
+          text: 'A 0-100 score derived from a show’s nominations at the three precursor industry awards — Drama League (weighted 1.0), Outer Critics Circle (0.9), and Drama Desk (0.7). The matching top category (Outstanding Musical / Play / Revival) earns +30 × tier weight for a win or +10 × tier weight for a nomination. Other nominations are then weighted by the importance of the category — Book / Music / Lyrics / Score (A+ tier, weight 2.0), Direction / Lead Acting / Choreography (A tier, 1.5), Featured Acting / Orchestrations (B tier, 1.0), Design (C tier, 0.5). The weighted-nominations total is normalized by an eligible-pool ceiling so plays and musicals are comparable. Awards Score only contributes to the Best Play prediction; for other categories it’s shown for transparency but not weighted.',
         },
       },
       {
@@ -373,18 +373,22 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
                 Each Tony category gets its own recipe, tuned against 11 years of Tony history. The model
-                correctly picked the winner in 41 of 43 contests across that backtest, vs 32 of 43 for
+                correctly picked the winner in 39 of 42 contests across that backtest, vs 32 of 43 for
                 critic-only:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
                 <li><span className="text-white font-medium">Best Musical:</span> 40% critic + 60% audience.</li>
-                <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor noms).</li>
+                <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor signal).</li>
                 <li><span className="text-white font-medium">Best Revival of a Musical / Play:</span> ranked purely on audience grade.</li>
               </ul>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">
-                Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal &mdash;
-                it&apos;s zero pre-precursor, which makes Best Play reduce to a true 50/50 critic+audience composite
-                until early May. Use the toggle above to view rankings by Combined, Critics-only, or Audience-only.
+                Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal,
+                with each nomination weighted by category importance &mdash; top categories like Best Musical
+                are credited via a +30 win / +10 nom bonus, then non-top nominations are tiered (Book/Music/Lyrics
+                A+ = 2.0, Direction/Lead Acting A = 1.5, Featured/Orchestrations B = 1.0, Design C = 0.5). The
+                Awards Score is zero pre-precursor, which makes Best Play reduce to a true 50/50 critic+audience
+                composite until early May. Use the toggle above to view rankings by Combined, Critics-only, or
+                Audience-only.
               </p>
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;

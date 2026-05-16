@@ -52,7 +52,11 @@ const TONY_TO_PRECURSOR_CATEGORY = {
   },
 };
 
-// Mirror src/lib/awards-scoring.ts:classifyCategory (TS → JS regex literal-for-literal)
+// Mirror src/lib/awards-scoring.ts:classifyCategory (TS → JS regex literal-for-literal).
+// MUST stay in lockstep with the TS source — if you add a pattern to
+// awards-scoring.ts:classifyCategory, mirror it here. Codex /ship-check caught
+// this drifting after the DD 70th "Lead/Featured Performance" patterns were
+// added to TS but not here (2026-05-16).
 function classifyCategory(category) {
   const c = category.toLowerCase();
   if (/revival of a musical|musical revival/.test(c)) return { tier: 'S', revival: true };
@@ -66,7 +70,9 @@ function classifyCategory(category) {
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
+  if (/outstanding lead performance in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
+  if (/outstanding featured performance in a (play|musical)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
   if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };
@@ -84,13 +90,21 @@ function computeWeightedNoms(entry, tonyCategory) {
   const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
   if (!matching) return 0;
   let weightedNoms = 0;
+  // Mirror data-tony-predictions.ts:computeAwardsScore — iterate union(wins,
+  // nominatedFor) deduplicated per precursor. Tony stores wins ⊂ noms;
+  // DD/OCC/DL store them DISJOINTLY (wins of non-top-cat live in wins[]
+  // only). Iterating just nominatedFor under-counts precursor wins by ~75%.
   for (const src of ['dramaLeague', 'outerCriticsCircle', 'dramadesk']) {
     const node = entry[src];
     if (!node) continue;
+    const wins = node.wins || [];
     const noms = node.nominatedFor || [];
     const matchCat = matching[src];
-    for (const nomCat of noms) {
+    const seen = new Set();
+    for (const nomCat of [...wins, ...noms]) {
       if (nomCat === matchCat) continue;
+      if (seen.has(nomCat)) continue;
+      seen.add(nomCat);
       const cls = classifyCategory(nomCat);
       if (!cls) continue;
       weightedNoms += TIER_WEIGHTS[cls.tier];
