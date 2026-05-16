@@ -139,7 +139,9 @@ async function scrapePageWithScrapingBee(url: string): Promise<ScrapedRow[]> {
 
           for (const row of (parsed.rows || [])) {
             const cells = row.cells || [];
-            if (cells.length < 6) continue;
+            // Columns: Show+Theater (0) | Gross (1) | Avg. Tix (2) | Seats Sold (3) | Total Perf. (4)
+            // Verified main + ?year=YYYY pages 2026-05-16; previously 7 cols (Previews+RegularShows split out).
+            if (cells.length < 5) continue;
 
             // Use the anchor tag text (clean show name without theater)
             const showTitle = (row.show || '').trim();
@@ -149,7 +151,7 @@ async function scrapePageWithScrapingBee(url: string): Promise<ScrapedRow[]> {
               showTitle,
               gross: (cells[1] || '').trim(),
               attendance: (cells[3] || '').trim(),
-              performances: (cells[6] || '').trim(),
+              performances: (cells[4] || '').trim(),
             });
           }
 
@@ -183,11 +185,12 @@ async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
   }
 
   // Extract cumulative data from table
-  // Columns: Show+Theater (0), Gross (1), Avg Tix (2), SeatsSold (3), Previews (4), RegularShows (5), TotalPerf (6)
+  // Columns: Show+Theater (0) | Gross (1) | Avg. Tix (2) | Seats Sold (3) | Total Perf. (4)
+  // Verified main + ?year=YYYY pages 2026-05-16; previously 7 cols (Previews+RegularShows split out).
   const tableData = await page.$$eval('table tr', rows => {
     return rows.map(row => {
       const cells = row.querySelectorAll('td');
-      if (cells.length < 6) return null;
+      if (cells.length < 5) return null;
 
       const showTheater = cells[0]?.textContent?.trim() || '';
       // The show name is the first line (before the theater name)
@@ -198,7 +201,7 @@ async function scrapePage(page: Page, url: string): Promise<ScrapedRow[]> {
         showTitle,
         gross: cells[1]?.textContent?.trim() || '',
         attendance: cells[3]?.textContent?.trim() || '', // SeatsSold column
-        performances: cells[6]?.textContent?.trim() || '' // TotalPerf column
+        performances: cells[4]?.textContent?.trim() || '' // TotalPerf column
       };
     }).filter((r): r is { showTitle: string; gross: string; attendance: string; performances: string } =>
       r !== null && r.showTitle !== '' && r.gross.includes('$')
@@ -253,10 +256,9 @@ async function scrapeAllTime(): Promise<void> {
     if (specificYear) {
       urls.push({ url: `${BASE_URL}?year=${specificYear}`, label: `Year ${specificYear}` });
     } else if (allYears) {
-      // Scrape main page first (has all shows), then individual years for any we missed
       urls.push({ url: BASE_URL, label: 'Main page (all shows)' });
-      // Broadway seasons we track: 2005-2026
-      for (let year = 2026; year >= 2005; year--) {
+      const currentYear = new Date().getUTCFullYear();
+      for (let year = currentYear; year >= 2005; year--) {
         urls.push({ url: `${BASE_URL}?year=${year}`, label: `Year ${year}` });
       }
     } else {
@@ -380,17 +382,29 @@ async function scrapeAllTime(): Promise<void> {
   console.log(`Unmatched: ${unmatchedShows.size}`);
 
   // Show matches
+  // Disk-merge with Math.max: protects against partial-year stats overwriting lifetime totals.
+  // A standalone `--year YYYY` invocation only sees that one season's stats. Without this
+  // guard, running `--year 2026` would overwrite Hamilton's $1.14B lifetime gross with its
+  // $40M 2026-season gross. The --all-years path already merges via `allMatches` Math.max
+  // (main page lands first, year pages can't overwrite), but defending the disk write makes
+  // the script safe regardless of how it's invoked.
   let newCount = 0;
   let updateCount = 0;
   for (const [slug, stats] of allMatches) {
-    const hadData = grossesData.shows[slug]?.allTime?.gross != null;
+    const existingAllTime = grossesData.shows[slug]?.allTime;
+    const hadData = existingAllTime?.gross != null;
+    const merged: AllTimeStats = {
+      gross: Math.max(stats.gross || 0, existingAllTime?.gross || 0) || null,
+      performances: Math.max(stats.performances || 0, existingAllTime?.performances || 0) || null,
+      attendance: Math.max(stats.attendance || 0, existingAllTime?.attendance || 0) || null,
+    };
 
     if (!grossesData.shows[slug]) {
       grossesData.shows[slug] = {
-        allTime: stats
+        allTime: merged
       };
     } else {
-      grossesData.shows[slug].allTime = stats;
+      grossesData.shows[slug].allTime = merged;
     }
 
     if (hadData) {
@@ -400,9 +414,13 @@ async function scrapeAllTime(): Promise<void> {
     }
 
     if (dryRun) {
-      const grossStr = stats.gross ? `$${(stats.gross / 1_000_000).toFixed(1)}M` : 'N/A';
-      const perfStr = stats.performances ?? 'N/A';
-      console.log(`  ${hadData ? 'UPDATE' : 'NEW'}: ${slug} → ${grossStr} gross, ${perfStr} perfs`);
+      const grossStr = merged.gross ? `$${(merged.gross / 1_000_000).toFixed(1)}M` : 'N/A';
+      const perfStr = merged.performances ?? 'N/A';
+      const scrapedStr = stats.gross ? `$${(stats.gross / 1_000_000).toFixed(1)}M` : 'N/A';
+      const note = hadData && (stats.gross || 0) < (existingAllTime?.gross || 0)
+        ? ` (kept existing; scraped ${scrapedStr} was lower)`
+        : '';
+      console.log(`  ${hadData ? 'UPDATE' : 'NEW'}: ${slug} → ${grossStr} gross, ${perfStr} perfs${note}`);
     }
   }
 
