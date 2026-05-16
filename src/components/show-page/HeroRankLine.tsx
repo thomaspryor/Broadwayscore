@@ -15,8 +15,6 @@
 import React from 'react';
 import type { ComputedShow } from '@/lib/data-types';
 import type { ShowRanks } from '@/lib/data-show-ranks';
-import { getMarketLabel } from '@/lib/browse-slugs';
-
 interface Props {
   ranks: ShowRanks | null;
   market: ComputedShow['category'];
@@ -28,26 +26,26 @@ export default function HeroRankLine({ ranks, market, className = '' }: Props) {
   const c = ranks.critic;
   if (!c.openMarket && !c.season && !c.allTime) return null;
 
-  const label = getMarketLabel(market);
+  const shortLabel = getShortMarketLabel(market);
   const fragments: React.ReactNode[] = [];
   if (c.openMarket) {
     fragments.push(
       <span key="om">
-        <span className="font-semibold text-gray-200">#{c.openMarket.rank}</span> of {c.openMarket.total} open {label}
+        <span className="font-semibold text-gray-200">{c.openMarket.rank}/{c.openMarket.total}</span> open {shortLabel}
       </span>,
     );
   }
   if (c.season) {
     fragments.push(
       <span key="se">
-        <span className="font-semibold text-gray-200">#{c.season.rank}</span> this season
+        <span className="font-semibold text-gray-200">{c.season.rank}/{c.season.total}</span> this season
       </span>,
     );
   }
   if (c.allTime) {
     fragments.push(
       <span key="at" className="text-gray-500">
-        #{c.allTime.rank} all-time<span className="text-gray-600">*</span>
+        {c.allTime.rank}/{c.allTime.total} all-time<span className="text-gray-600">*</span>
       </span>,
     );
   }
@@ -62,4 +60,15 @@ export default function HeroRankLine({ ranks, market, className = '' }: Props) {
       ))}
     </p>
   );
+}
+
+/** Short market label for the hero rank line ("BW", "WE", "OB", "OWE"). */
+function getShortMarketLabel(category: ComputedShow['category']): string {
+  switch (category) {
+    case 'broadway': return 'BW';
+    case 'west-end': return 'WE';
+    case 'off-broadway': return 'OB';
+    case 'off-west-end': return 'OWE';
+    default: return 'BW';
+  }
 }

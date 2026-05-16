@@ -121,7 +121,7 @@ describe('data-show-ranks — pool semantics', () => {
   });
 });
 
-describe('data-show-ranks — rank assignment + dense tie-break', () => {
+describe('data-show-ranks — rank assignment + competition tie-break', () => {
   test('shows ranked by rounded critic score', () => {
     __rebuildIndexForTests(FIXTURES);
     const high = getShowRanks(BW_MUS_HIGH.id, { format: 'all' });
@@ -132,18 +132,19 @@ describe('data-show-ranks — rank assignment + dense tie-break', () => {
     assert.equal(high.critic.openMarket?.total, 5);
   });
 
-  test('ties on rounded score share the same rank (dense rank)', () => {
+  test('ties share rank; next show jumps past tied positions (competition rank)', () => {
     __rebuildIndexForTests(FIXTURES);
     const a = getShowRanks(BW_MUS_TIE_A.id, { format: 'all' });
     const b = getShowRanks(BW_MUS_TIE_B.id, { format: 'all' });
     const play = getShowRanks(BW_PLAY.id, { format: 'all' });
     assert.ok(a && b && play);
-    assert.equal(a.critic.openMarket?.rank, b.critic.openMarket?.rank, 'ties share rank');
-    assert.equal(
-      play.critic.openMarket?.rank,
-      (a.critic.openMarket?.rank ?? 0) + 1,
-      'next-best is exactly one rank lower (dense rank)',
-    );
+    // TIE_A and TIE_B both round to 80 → share rank #3 (HIGH=92, MID=87, then tied 80s).
+    assert.equal(a.critic.openMarket?.rank, b.critic.openMarket?.rank, 'tied shows share rank');
+    assert.equal(a.critic.openMarket?.rank, 3);
+    // Next-best (BW_PLAY at 75) jumps past the tied slot → rank #5, not #4.
+    // This is the difference from dense rank: "#N of M" means "N-1 shows scored higher".
+    assert.equal(play.critic.openMarket?.rank, 5,
+      'next show after a tie jumps past tied positions (competition rank, not dense)');
   });
 });
 
