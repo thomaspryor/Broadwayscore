@@ -5,17 +5,7 @@
  * Parses per-category Wikipedia pages to extract winners and nominees.
  * Maps to our show IDs via title + year matching.
  *
- * Usage: node scripts/enrich-olivier-awards.js [--dry-run] [--force-partial]
- *
- * Failure modes addressed (Notion 362637c5-416f-8143-9a8d-fcba0473a3af):
- *   - Wikipedia API returns occasional partial/empty JSON responses → retry
- *     with exponential backoff (3 attempts: 1s, 3s, 9s).
- *   - If any category page still fails after retries, FAIL FAST: exit 1
- *     without writing awards.json. Pass --force-partial to override (annual
- *     routines should NOT pass this; only humans debugging should).
- *   - Existing olivier blocks are MERGED (union of nominatedFor + wins),
- *     not REPLACED. Prevents losing design-category data when a single
- *     Wikipedia page is unreachable.
+ * Usage: node scripts/enrich-olivier-awards.js [--dry-run]
  */
 
 const fs = require('fs');
@@ -26,7 +16,6 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const AWARDS_PATH = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
-const FORCE_PARTIAL = process.argv.includes('--force-partial');
 
 // Show-level Olivier categories (award goes to the show)
 const SHOW_CATEGORIES = [
@@ -54,27 +43,11 @@ const PERSON_CATEGORIES = [
   { page: 'Laurence Olivier Award for Best Sound Design', category: 'Best Sound Design' },
 ];
 
-// Wikipedia User-Agent policy: bots must include a contact URL/email
-// (https://meta.wikimedia.org/wiki/User-Agent_policy). Without it, traffic
-// gets flagged and the 429 rate limit kicks in much earlier.
-const USER_AGENT = 'BroadwayScorecardBot/1.0 (https://broadwayscorecard.com; contact@broadwayscorecard.com)';
-
-function fetchJsonOnce(url) {
+function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': USER_AGENT } }, (res) => {
+    https.get(url, { headers: { 'User-Agent': 'BroadwayScorecardBot/1.0 (broadway-scorecard project)' } }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
-        return fetchJsonOnce(res.headers.location).then(resolve).catch(reject);
-      }
-      if (res.statusCode === 429) {
-        // Drain so the socket can be released, then reject with rate-limit marker
-        res.resume();
-        const err = new Error('HTTP 429 (rate limited)');
-        err.rateLimited = true;
-        err.retryAfter = parseInt(res.headers['retry-after'] || '0', 10);
-        return reject(err);
-      }
-      if (res.statusCode && res.statusCode >= 500) {
-        return reject(new Error(`HTTP ${res.statusCode}`));
+        return fetchJson(res.headers.location).then(resolve).catch(reject);
       }
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -84,26 +57,6 @@ function fetchJsonOnce(url) {
       });
     }).on('error', reject);
   });
-}
-
-// Retry with backoff. 429 rate-limit responses get a much longer wait
-// (Retry-After header if present, else 15s) since Wikipedia's rate limit
-// recovers slowly. JSON parse / 5xx errors get exponential backoff.
-async function fetchJson(url, attempts = 5) {
-  let lastErr;
-  for (let i = 0; i < attempts; i++) {
-    try { return await fetchJsonOnce(url); }
-    catch (e) {
-      lastErr = e;
-      if (i < attempts - 1) {
-        const wait = e.rateLimited
-          ? Math.max((e.retryAfter || 0) * 1000, 15000) // 429 → at least 15s
-          : Math.pow(3, i) * 1000;                       // other → 1s, 3s, 9s, 27s
-        await new Promise(r => setTimeout(r, wait));
-      }
-    }
-  }
-  throw lastErr;
 }
 
 async function getPageContent(title) {
@@ -269,27 +222,18 @@ async function main() {
   console.log(`DRY_RUN: ${DRY_RUN}\n`);
 
   const allAwards = [];
-  const failedFetches = []; // {page, category, error}
-  const pageNotFound = [];  // category pages that returned -1 (Wikipedia article missing)
 
   // Parse show-level categories
   for (const cat of SHOW_CATEGORIES) {
     process.stdout.write(`Fetching ${cat.page}... `);
     try {
       const content = await getPageContent(cat.page);
-      if (!content) {
-        console.log('PAGE NOT FOUND');
-        pageNotFound.push(cat);
-        continue;
-      }
+      if (!content) { console.log('PAGE NOT FOUND'); continue; }
       const results = parseOlivierTable(content, cat.category);
       console.log(`${results.length} entries (${results.filter(r => r.isWinner).length} winners)`);
       allAwards.push(...results);
-    } catch (e) {
-      console.log(`ERROR: ${e.message}`);
-      failedFetches.push({ page: cat.page, category: cat.category, error: e.message });
-    }
-    await new Promise(r => setTimeout(r, 2000));
+    } catch (e) { console.log(`ERROR: ${e.message}`); }
+    await new Promise(r => setTimeout(r, 500));
   }
 
   // Parse person-level categories
@@ -297,36 +241,12 @@ async function main() {
     process.stdout.write(`Fetching ${cat.page}... `);
     try {
       const content = await getPageContent(cat.page);
-      if (!content) {
-        console.log('PAGE NOT FOUND');
-        pageNotFound.push(cat);
-        continue;
-      }
+      if (!content) { console.log('PAGE NOT FOUND'); continue; }
       const results = parsePersonCategoryPage(content, cat.category);
       console.log(`${results.length} entries (${results.filter(r => r.isWinner).length} winners)`);
       allAwards.push(...results);
-    } catch (e) {
-      console.log(`ERROR: ${e.message}`);
-      failedFetches.push({ page: cat.page, category: cat.category, error: e.message });
-    }
-    await new Promise(r => setTimeout(r, 2000));
-  }
-
-  // FAIL FAST if any fetch failed after retries. Writing partial data here
-  // would overwrite existing awards.json entries with incomplete category
-  // coverage (e.g. wipe design-category nominations when only those pages
-  // failed). Pass --force-partial to override for manual debugging only.
-  if (failedFetches.length > 0 && !FORCE_PARTIAL) {
-    console.error(`\n✗ ABORT: ${failedFetches.length} category fetch(es) failed after retries:`);
-    for (const f of failedFetches) {
-      console.error(`  - ${f.page} (${f.error})`);
-    }
-    console.error('\nNOT writing awards.json — partial data would destructively overwrite existing entries.');
-    console.error('Re-run later when Wikipedia is healthy, or pass --force-partial to ignore (NOT for scheduled routines).');
-    process.exit(1);
-  }
-  if (failedFetches.length > 0 && FORCE_PARTIAL) {
-    console.log(`\n⚠ --force-partial: continuing despite ${failedFetches.length} fetch failure(s). May destructively overwrite existing data.`);
+    } catch (e) { console.log(`ERROR: ${e.message}`); }
+    await new Promise(r => setTimeout(r, 500));
   }
 
   console.log(`\nTotal raw entries: ${allAwards.length}`);
@@ -366,11 +286,8 @@ async function main() {
     }
   }
 
-  // Merge into awards.json — UNION nominatedFor + wins with any existing
-  // olivier block. Never wholesale-replace: if a single Wikipedia category
-  // page returned empty content (not a fetch error, but no parseable rows
-  // for some show), we'd lose that category's prior data on overwrite.
-  let newEntries = 0, updatedEntries = 0, mergePreserved = 0;
+  // Merge into awards.json
+  let newEntries = 0, updatedEntries = 0;
   for (const [showId, data] of showMap) {
     if (!awardsData.shows[showId]) {
       awardsData.shows[showId] = {};
@@ -379,25 +296,12 @@ async function main() {
       updatedEntries++;
     }
     const olivierSeason = `${data.year - 1}-${String(data.year).slice(2)}`;
-    const existing = awardsData.shows[showId].olivier || {};
-    const existingNoms = new Set(existing.nominatedFor || []);
-    const existingWins = new Set(existing.wins || []);
-    const beforeSize = existingNoms.size + existingWins.size;
-    for (const n of data.nominations) existingNoms.add(n);
-    for (const w of data.wins) existingWins.add(w);
-    if (existingNoms.size + existingWins.size > beforeSize + data.nominations.size + data.wins.size - beforeSize) {
-      // Existing had entries the current fetch didn't surface — preserved them.
-      mergePreserved++;
-    }
     awardsData.shows[showId].olivier = {
-      season: existing.season && existing.season < olivierSeason ? existing.season : olivierSeason,
-      nominations: existingNoms.size,
-      nominatedFor: Array.from(existingNoms).sort(),
-      wins: Array.from(existingWins).sort()
+      season: olivierSeason,
+      nominations: data.nominations.size,
+      nominatedFor: Array.from(data.nominations).sort(),
+      wins: Array.from(data.wins).sort()
     };
-  }
-  if (mergePreserved > 0) {
-    console.log(`Preserved prior Olivier data via merge on ${mergePreserved} shows (current fetch didn't surface those categories).`);
   }
 
   console.log(`\n=== Summary ===`);
