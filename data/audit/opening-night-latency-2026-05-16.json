@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-16T15:38:38.377Z",
+  "generatedAt": "2026-05-16T16:36:42.720Z",
   "date": "2026-05-16",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 187876,
+  "entryCount": 190056,
   "shows": [
     {
       "showId": "eugene-onegin-off-broadway-2026",
@@ -2527,6 +2527,21 @@
     {
       "showId": "new-born-off-broadway-2026",
       "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
