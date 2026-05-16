@@ -9,20 +9,17 @@ name: Update Precursor Awards Data
 # without committing.
 
 on:
-  # DD / OCC / DL scrapers verified production-ready 2026-05-16. They use the
-  # per-category Wikipedia pages and now correctly handle multi-decade tables,
-  # citation-suffixed year cells (e.g. `2024[94][95]`), light-cyan winner-row
-  # highlights, both <b><i>/<i><b> markup orderings, and bold-only winners
-  # (some Wikipedia revival rows use <b><a> without italics). The shared
-  # writePrecursorJson now merges with existing categories so scrapers no
-  # longer wipe person / direction / choreography categories that the
-  # 4-main-page scrapers don't touch.
-  #
-  # Pulitzer + NYDCCC scrapers still need parser work (different page layout;
-  # see Notion P1 362637c5-...12efc). The workflow's "all" path tolerates
-  # their failures with `|| echo "::warning::..."` so they don't abort the
-  # DD/OCC/DL refresh. Manual workflow_dispatch with ceremony=pulitzer or
-  # ceremony=nydcc remains for debugging.
+  # All 5 precursor scrapers verified production-ready 2026-05-16:
+  #   - DD/OCC/DL use precursor-category-parser.js (multi-decade tables,
+  #     citation-suffixed year cells like `2024[94][95]`, light-cyan winner-
+  #     row highlights, both <b><i>/<i><b> orderings, bold-only winners).
+  #   - Pulitzer refactored to reuse the shared parser (replaces its own
+  #     bespoke logic that missed multi-table layouts).
+  #   - NYDCCC rewritten to walk H3 + UL lists for 2010+ winners (Wikipedia
+  #     switched from per-category tables to bulleted lists post-2009).
+  #     Pre-2010 still parsed from the combined wikitable as a fallback.
+  # writePrecursorJson merges with existing categories so scrapers no longer
+  # wipe person/direction/choreography baselines.
   schedule:
     - cron: '0 17 * 4-5 *'    # 17:00 UTC daily, April-May (precursor season)
     - cron: '0 17 * * 1'      # 17:00 UTC every Monday (year-round catch-up)
@@ -95,16 +92,11 @@ jobs:
             nydcc)         run_scraper scripts/scrape-nydcc.js ;;
             pulitzer)      run_scraper scripts/scrape-pulitzer.js ;;
             all|*)
-              # Required scrapers (verified production-ready 2026-05-16).
               run_scraper scripts/scrape-drama-desk.js
               run_scraper scripts/scrape-outer-critics.js
               run_scraper scripts/scrape-drama-league.js
-              # Tolerated-failure scrapers — parsers still need work. They
-              # fail-safe (refuse to write partial data) so they can't
-              # corrupt precursor JSON; just skip them on the all-path until
-              # Notion P1 362637c5-...12efc lands.
-              run_scraper scripts/scrape-nydcc.js || echo "::warning::scrape-nydcc.js failed (known: parser incomplete)"
-              run_scraper scripts/scrape-pulitzer.js || echo "::warning::scrape-pulitzer.js failed (known: parser incomplete)"
+              run_scraper scripts/scrape-nydcc.js
+              run_scraper scripts/scrape-pulitzer.js
               ;;
           esac
 
