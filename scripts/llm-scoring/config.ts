@@ -584,11 +584,17 @@ export const FEW_SHOT_EXAMPLES_V6: FewShotExample[] = [
 // (a) explicit prose-marker calibration table, (b) a low-band few-shot for
 // 5★ specifically, (c) stronger instruction to NOT default high.
 function buildAnchoredBandBlock(band: ScoreBand, starsRaw?: string): string {
-  const pctText = `${Math.round(band.fraction * 100)}%`;
+  // `fraction` can be a sentinel < 0 when the band comes from a non-stars
+  // source (letter grade), or NaN/Infinity if a caller fails validation.
+  // Only emit the percentage when it's a real fraction in [0, 1.5].
+  const hasUsablePct = Number.isFinite(band.fraction) && band.fraction >= 0 && band.fraction <= 1.5;
+  const pctText = hasUsablePct ? `${Math.round(band.fraction * 100)}%` : null;
   const bandWidth = band.ceiling - band.floor;
   const ratingLine = starsRaw
-    ? `## Original Rating\nThe critic awarded **${starsRaw}** (${pctText} of max).`
-    : `## Original Rating\nThe critic's rating maps to ${pctText} of max.`;
+    ? `## Original Rating\nThe critic awarded **${starsRaw}**${pctText ? ` (${pctText} of max)` : ''}.`
+    : pctText
+    ? `## Original Rating\nThe critic's rating maps to ${pctText} of max.`
+    : `## Original Rating\nThe critic's rating maps to band [${band.floor}, ${band.ceiling}].`;
 
   // Compute calibration anchor points within the band so the table is
   // mathematically consistent (top quartile, upper-mid, lower-mid, floor).
