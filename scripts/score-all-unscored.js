@@ -87,11 +87,15 @@ function hasValidScore(data) {
   const hasOriginalScore = data.originalScore;
   const hasBucket = data.bucket && ['Rave', 'Positive', 'Mixed', 'Negative', 'Pan'].includes(data.bucket);
 
-  // Check if assignedScore with valid source
+  // Check if assignedScore with valid source.
+  // 'anchored-v6' / 'llm-v6' added pre-emptively for Phase B Sprint 4 wiring
+  // (write-time anchored-band scoring). Without this, anchored-v6 reviews
+  // would be re-scored as "unscored" by maintenance runs.
   const validSources = ['llmScore', 'originalScore', 'bucket', 'thumb', 'extracted-grade',
                         'sentiment-strong-positive', 'sentiment-positive', 'sentiment-mixed-positive',
                         'sentiment-mixed', 'sentiment-mixed-negative', 'sentiment-negative',
-                        'sentiment-strong-negative', 'manual', 'dtli', 'bww'];
+                        'sentiment-strong-negative', 'manual', 'dtli', 'bww',
+                        'anchored-v6', 'llm-v6'];
   const hasValidAssignedScore = data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100 &&
     ((data.scoreSource && validSources.some(s => data.scoreSource.includes(s))) || hasThumb || hasOriginalScore || hasBucket);
 
