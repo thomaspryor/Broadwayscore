@@ -415,6 +415,12 @@ jobs:
         # gate, drift reappears in ~2 weeks. Exemption: `// design-lint-ok: <reason>`.
         # See memory/design-system.md for the canonical token list.
         run: node scripts/lint-design-tokens.js
+      - name: Check brand-tokens.json ↔ tailwind.config.ts sync
+        # public/brand-tokens.json feeds Claude Design, Figma, Canva, email
+        # templates, and the brand kit — tailwind.config.ts feeds the running
+        # site. They must agree pixel-for-pixel. This script verifies 16 tracked
+        # color values match between the two files.
+        run: node scripts/check-brand-tokens-sync.js
 
   unit-tests:
     name: Unit Tests
