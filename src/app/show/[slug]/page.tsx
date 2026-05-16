@@ -868,24 +868,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           />
         )}
 
-        {/* Seating Chart Scorecard — directly under Showtimes */}
-        {theater && (
-          <SeatingGuidanceCard
-            sections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-            variant="show"
-          />
-        )}
-
-        {/* Theater Scorecard — directly under Seating Scorecard */}
-        {theater?.venueScores && (
-          <TheaterScorecardCard
-            venueScores={theater.venueScores}
-            accessibility={theater.accessibility}
-            externalLinks={theater.externalLinks}
-            theaterName={theater.name}
-            theaterSlug={theater.slug}
-          />
+        {/* Where it ranks — directly under Showtimes per UX ordering 2026-05-16.
+            Flag-gated; ranks value is null when featureFlags.showRanks is off, so the
+            component renders nothing in flag-off mode. */}
+        {featureFlags.showRanks && (ranks || ranksByFormat) && (
+          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
         )}
 
         {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
@@ -904,6 +891,26 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
         <div id="social-buzz" className="scroll-mt-20" />
         <SocialPulseCard sp={socialPulse} />
+
+        {/* Theater Scorecard — moved below Social per UX ordering 2026-05-16 */}
+        {theater?.venueScores && (
+          <TheaterScorecardCard
+            venueScores={theater.venueScores}
+            accessibility={theater.accessibility}
+            externalLinks={theater.externalLinks}
+            theaterName={theater.name}
+            theaterSlug={theater.slug}
+          />
+        )}
+
+        {/* Seating Chart Scorecard — directly under Theater Scorecard */}
+        {theater && (
+          <SeatingGuidanceCard
+            sections={theater.structuredTips?.seating?.sections}
+            bestSeats={theater.structuredTips?.seating?.bestSeats}
+            variant="show"
+          />
+        )}
 
         {/* Lottery/Rush Tickets */}
         <div id="discount-tickets" className="scroll-mt-20" />
@@ -1150,13 +1157,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </span>
             ))}
           </div>
-        )}
-
-        {/* Where it ranks — bottom-of-page rank card. Flag-gated; the ranks
-            value is null when featureFlags.showRanks is off, so the component
-            renders nothing. */}
-        {featureFlags.showRanks && (ranks || ranksByFormat) && (
-          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
         )}
 
         {/* How Scores Work */}
