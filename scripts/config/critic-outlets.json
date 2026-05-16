@@ -1,7 +1,9 @@
 {
   "_meta": {
     "description": "Master list of Broadway critic outlets for comprehensive review collection",
-    "lastUpdated": "2026-03-24"
+    "lastUpdated": "2026-03-24",
+    "deprecatedAt": "2026-05-16",
+    "deprecationNote": "Sprint plan we-discovery v2, S4-T3 — superseded by data/outlet-registry.json for SERP enumeration. Slated for deletion in Sprint 7 (S7-T3) after one full sweep-we cron cycle with no [FALLBACK_HIT] log lines."
   },
   "tier1": [
     {
