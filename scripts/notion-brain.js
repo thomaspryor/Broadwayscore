@@ -106,6 +106,10 @@ function getDateValue(prop) {
 
 function formatCard(page) {
   const p = page.properties;
+  const lastEditedAt = page.last_edited_time || null;
+  const ageDays = lastEditedAt
+    ? Math.round((Date.now() - new Date(lastEditedAt).getTime()) / 86400000 * 10) / 10
+    : null;
   return {
     id: page.id,
     url: page.url,
@@ -119,6 +123,9 @@ function formatCard(page) {
     outcome: getRichTextValue(p.Outcome),
     keyFiles: getRichTextValue(p['Key Files']),
     completedDate: getDateValue(p['Completed Date']),
+    createdAt: page.created_time || null,
+    lastEditedAt,
+    ageDays,
   };
 }
 
@@ -713,14 +720,37 @@ async function listCards(args) {
       ? { and: filters }
       : undefined;
 
-  const response = await notion.dataSources.query({
-    data_source_id: DATABASE_ID,
-    filter,
-    sorts: [{ property: 'Priority', direction: 'ascending' }],
-  });
-
-  let results = response.results.map(formatCard);
   const limit = parseInt(args.limit) || 20;
+  const staleDays = args['stale-days'] !== undefined ? parseFloat(args['stale-days']) : null;
+  const freshDays = args['fresh-days'] !== undefined ? parseFloat(args['fresh-days']) : null;
+  // Notion caps page_size at 100. If --stale-days/--fresh-days is set we
+  // paginate so the age filter sees the full result set instead of silently
+  // hitting the page boundary.
+  const wantsAllPages = staleDays !== null || freshDays !== null;
+  const targetPageSize = Math.min(100, Math.max(limit, 50));
+
+  let allResults = [];
+  let cursor = undefined;
+  do {
+    const response = await notion.dataSources.query({
+      data_source_id: DATABASE_ID,
+      filter,
+      sorts: [{ property: 'Priority', direction: 'ascending' }],
+      page_size: targetPageSize,
+      start_cursor: cursor,
+    });
+    allResults = allResults.concat(response.results.map(formatCard));
+    cursor = response.has_more ? response.next_cursor : undefined;
+    if (!wantsAllPages && allResults.length >= limit) break;
+  } while (cursor);
+
+  let results = allResults;
+  if (staleDays !== null) {
+    results = results.filter(c => c.ageDays !== null && c.ageDays >= staleDays);
+  }
+  if (freshDays !== null) {
+    results = results.filter(c => c.ageDays !== null && c.ageDays <= freshDays);
+  }
   results = results.slice(0, limit);
 
   // Compact table output for quick scanning
@@ -728,6 +758,7 @@ async function listCards(args) {
     name: c.name,
     status: c.status,
     priority: c.priority,
+    ageDays: c.ageDays,
     tags: c.tags.join(', '),
     id: c.id,
   }));
@@ -800,11 +831,15 @@ Notes quality enforcement (2026-04-11):
   - Sparse cards are rejected with exit 2. See memory/feedback_notion_card_context.md
 
 Options (search/list):
-  --status "In progress"    Filter by status
+  --status "In progress"    Filter by status (also: --status="In progress")
   --priority "P0 Now"       Filter by priority (comma-separated for list)
   --text "keyword"          Text search in name/notes (search only).
                             Aliased as --query. Paginates when set.
-  --limit 10                Max results (default: 20)`);
+  --limit 10                Max results (default: 20)
+  --stale-days N            (list only) Only cards not edited in N+ days.
+                            Paginates through all results so the age filter
+                            sees the full DB, not just the first page.
+  --fresh-days N            (list only) Only cards edited within last N days.`);
     process.exit(1);
   }
 
