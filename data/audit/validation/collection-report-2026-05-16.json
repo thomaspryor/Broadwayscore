@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-16T19:32:34.714Z",
+  "runDate": "2026-05-16T20:08:37.666Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -17,18 +17,18 @@
     "successRate": "3.8%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 3,
     "brightdata": 0,
     "archiveToday": 2,
-    "archive": 2
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 5,
+    "tier1Attempts": 4,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -39,7 +39,7 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 2,
     "tier4Success": 2,
     "totalFailed": 208,
     "scrapingBeePageCredits": 3,
@@ -119,7 +119,7 @@
     "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
     "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
     "is-this-a-room-2021/washpost--peter-marks.json",
-    "west-side-story-2020/theater-news-online--jeremy-gerard.json",
+    "west-side-story-2020/theatre-news--jeremy-gerard.json",
     "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
     "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
     "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
@@ -297,8 +297,7 @@
     "playwright": [
       "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -315,7 +314,8 @@
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ]
   },
   "failuresByOutlet": {},
