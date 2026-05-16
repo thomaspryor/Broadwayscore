@@ -160,20 +160,19 @@ function checkBWWRoundupURL(show) {
     if (archive) return { pass: true, detail: 'BWW roundup archived' };
   }
 
-  // Construct expected URL pattern
-  const title = show.title.replace(/[^a-zA-Z0-9 ]/g, '').replace(/ +/g, '-');
-  const date = show.openingDate?.replace(/-/g, '');
-  const url = `https://www.broadwayworld.com/article/Review-Roundup-${title}-Opens-on-Broadway-${date}`;
-  return { pass: null, detail: `Not yet archived. Expected: ${url}`, warn: true };
+  // Pre-opening: BWW RR doesn't exist yet. Auto-discovery via
+  // scripts/lib/bww-rr-discover.js (scrapes /reviews.php) handles publication
+  // within minutes. No pre-staging needed — see memory/feedback_aggregator_pages_post_opening.md.
+  // Speculative URL construction was removed 2026-05-16 (P0 audit) because it
+  // produced misleading "Expected: ..." output that humans would chase.
+  return { pass: null, detail: 'Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication', warn: true };
 }
 
 function checkTBURL(show) {
-  const year = show.openingDate?.slice(0, 4);
-  const slug = show.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-  // TB uses CamelCase — construct best guess
-  const camelSlug = show.title.replace(/[^a-zA-Z0-9 ]/g, '').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join('');
-  const url = `https://www.talkinbroadway.com/page/world/${camelSlug}${year}.html`;
-  return { pass: null, detail: `Verify manually: ${url}`, warn: true };
+  // Pre-opening: Talkin' Broadway URL is discovered at poll time via
+  // scripts/lib/tb-direct-url.js (year-suffixed + bare-slug + validation).
+  // Speculative URL guessing was removed 2026-05-16 (P0 audit).
+  return { pass: null, detail: 'Not yet archived — tb-direct-url.js will discover at poll time', warn: true };
 }
 
 // ── Main ──

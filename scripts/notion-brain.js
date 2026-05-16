@@ -720,9 +720,34 @@ async function listCards(args) {
       ? { and: filters }
       : undefined;
 
-  const limit = parseInt(args.limit) || 20;
-  const staleDays = args['stale-days'] !== undefined ? parseFloat(args['stale-days']) : null;
-  const freshDays = args['fresh-days'] !== undefined ? parseFloat(args['fresh-days']) : null;
+  // Validate numeric flags: `parseInt("0") || 20` silently turned --limit=0
+  // into 20, and parseFloat("foo") returned NaN which then matched no cards
+  // (filter `c.ageDays >= NaN` is always false → empty result with no error).
+  // Fail loudly on bad input instead.
+  let limit;
+  if (args.limit === undefined) {
+    limit = 20;
+  } else {
+    const parsed = parseInt(args.limit, 10);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      console.error(`Error: --limit must be a non-negative integer, got ${JSON.stringify(args.limit)}`);
+      process.exit(1);
+    }
+    limit = parsed;
+  }
+
+  function parseAgeFlag(name) {
+    const raw = args[name];
+    if (raw === undefined) return null;
+    const parsed = parseFloat(raw);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      console.error(`Error: --${name} must be a non-negative number, got ${JSON.stringify(raw)}`);
+      process.exit(1);
+    }
+    return parsed;
+  }
+  const staleDays = parseAgeFlag('stale-days');
+  const freshDays = parseAgeFlag('fresh-days');
   // Notion caps page_size at 100. If --stale-days/--fresh-days is set we
   // paginate so the age filter sees the full result set instead of silently
   // hitting the page boundary.

@@ -101,3 +101,61 @@ describe('checkShowsJsonMetadata — rejects gaps', () => {
     assert.deepStrictEqual(result.nullMarket, ['c']);
   });
 });
+
+// Integration test against real shows.json shape — pins the contract the
+// orchestrator depends on. Original commit 073db6bab0 shipped with a bug here:
+// shows.json is wrapped `{_meta, shows: [...]}`, but the orchestrator passed
+// the wrapper directly to checkShowsJsonMetadata, which called `.map()` on it
+// and crashed. The original test suite missed it because it only exercised
+// bare-array literals.
+describe('integration — real shows.json shape', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const SHOWS_JSON = path.join(import.meta.dirname, '..', '..', 'data', 'shows.json');
+
+  it('shows.json on disk is the wrapped {_meta, shows: [...]} shape', () => {
+    if (!fs.existsSync(SHOWS_JSON)) {
+      console.log('  [skip] data/shows.json absent in this context');
+      return;
+    }
+    const raw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    assert.strictEqual(Array.isArray(raw), false,
+      'shows.json shape changed to a bare array. Update scripts/run-bulk-historical-import.js:runShowsJsonPreflight (the Array.isArray unwrap path still works, but rotate this assertion).');
+    assert.ok(Array.isArray(raw.shows),
+      'shows.json wrapper has no .shows array. Update the unwrap logic in runShowsJsonPreflight.');
+  });
+
+  it('unwrap pattern returns an array that checkShowsJsonMetadata can consume', () => {
+    if (!fs.existsSync(SHOWS_JSON)) {
+      console.log('  [skip] data/shows.json absent in this context');
+      return;
+    }
+    const raw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    // Mirror the production unwrap in scripts/run-bulk-historical-import.js:runShowsJsonPreflight
+    const shows = Array.isArray(raw) ? raw : raw.shows;
+    const sampleIds = shows.filter(s => s.status === 'open').slice(0, 3).map(s => s.id);
+    if (sampleIds.length < 3) {
+      console.log('  [skip] not enough open shows in this snapshot');
+      return;
+    }
+    const result = checkShowsJsonMetadata(shows, sampleIds);
+    assert.strictEqual(result.ok, true,
+      `Real shows.json sample failed preflight unexpectedly. Sample ids: ${sampleIds.join(', ')}. ` +
+      `missing=${result.missing.join(',')} nullCategory=${result.nullCategory.join(',')} nullMarket=${result.nullMarket.join(',')}`);
+  });
+
+  it('passing the wrapper directly to checkShowsJsonMetadata throws (locks the bug)', () => {
+    if (!fs.existsSync(SHOWS_JSON)) {
+      console.log('  [skip] data/shows.json absent in this context');
+      return;
+    }
+    const raw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    if (Array.isArray(raw)) {
+      console.log('  [skip] this run has the legacy bare-array shape');
+      return;
+    }
+    assert.throws(() => checkShowsJsonMetadata(raw, ['x']),
+      /map is not a function/,
+      'checkShowsJsonMetadata accepted the wrapper without throwing — the orchestrator unwrap is no longer load-bearing. Revisit the contract.');
+  });
+});
