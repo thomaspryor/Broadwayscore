@@ -190,16 +190,17 @@ interface OtherAwardConfig {
   short: string;
   display: string;
   ceremonyName: string;
-  chip: string;
-  text: string;
-  iconColor: string;
 }
 
+// Neutralized chips: legacy color-coded chips (purple/cyan/teal/rose) read as
+// decorative because the colors didn't map to any system. Single neutral
+// surface chip with amber trophy keeps ceremonies visually equal; the numbers
+// + ceremony name carry the meaning.
 const OTHER_CONFIGS: OtherAwardConfig[] = [
-  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk',                  chip: 'bg-purple-500/10 border-purple-500/20', text: 'text-purple-400', iconColor: 'text-purple-400' },
-  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle',        chip: 'bg-cyan-500/10 border-cyan-500/20',     text: 'text-cyan-400',   iconColor: 'text-cyan-400' },
-  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League',                chip: 'bg-teal-500/10 border-teal-500/20',     text: 'text-teal-400',   iconColor: 'text-teal-400' },
-  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle",    chip: 'bg-rose-500/10 border-rose-500/20',     text: 'text-rose-400',   iconColor: 'text-rose-400' },
+  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk' },
+  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle' },
+  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League' },
+  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle" },
 ];
 
 function nodeFor(awards: ShowAwards, key: OtherAwardConfig['key']) {
@@ -252,12 +253,15 @@ function OtherAwardsPanel({
 
       <div className="flex flex-wrap gap-2 mt-2">
         {rows.map(({ cfg, wins, nomsTotal }) => {
-          const winLabel = nomsTotal && nomsTotal > wins.length
-            ? `${nomsTotal} noms / ${wins.length} wins`
-            : `${wins.length} win${wins.length === 1 ? '' : 's'}`;
+          // Lead with the more impressive number (wins). Add noms suffix only
+          // when there are losing nominations to mention.
+          const losingNoms = nomsTotal && nomsTotal > wins.length ? nomsTotal - wins.length : 0;
+          const winLabel = wins.length > 0
+            ? `${wins.length} win${wins.length === 1 ? '' : 's'}${losingNoms > 0 ? ` · ${losingNoms} nom${losingNoms === 1 ? '' : 's'}` : ''}`
+            : `${nomsTotal ?? 0} nom${nomsTotal === 1 ? '' : 's'}`;
           return (
-            <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} ${cfg.text} text-xs font-medium`}>
-              <TrophyIcon className="w-3.5 h-3.5" />
+            <span key={cfg.key} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border bg-surface-overlay border-white/5 text-gray-300 text-xs font-medium">
+              <TrophyIcon className="w-3.5 h-3.5 text-amber-400" />
               <span>{winLabel} {cfg.short}</span>
             </span>
           );
@@ -270,7 +274,7 @@ function OtherAwardsPanel({
             const pointMap = pointsByCategory(contrib?.items);
             return (
               <div key={cfg.key}>
-                <div className={`text-xs font-medium mb-1.5 ${cfg.text}`}>
+                <div className="text-xs font-medium mb-1.5 text-gray-300">
                   {cfg.display}
                   {nomsTotal && nomsTotal > wins.length && (
                     <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
@@ -281,7 +285,7 @@ function OtherAwardsPanel({
                     const pts = Math.round(pointMap.get(`win:${win}`) ?? 0);
                     return (
                       <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
-                        <TrophyIcon className={`w-3 h-3 ${cfg.iconColor} flex-shrink-0`} />
+                        <TrophyIcon className="w-3 h-3 text-amber-400 flex-shrink-0" />
                         <span className="flex-1">{win}</span>
                         {pts > 0 && <span className="text-xs text-gray-500 tabular-nums">+{pts}</span>}
                       </li>
@@ -324,7 +328,7 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-lg font-bold ${getAwardTierLabelClass(result.badge, result.displayScore)}`}>{tierLabel}</span>
+            <span className={`text-base font-semibold ${getAwardTierLabelClass(result.badge, result.displayScore)}`}>{tierLabel}</span>
             {result.inProgress && result.displayScore > 0 && <ProvisionalPill />}
           </div>
           {sublabel && <div className="text-sm text-gray-400 line-clamp-2">{sublabel}</div>}
