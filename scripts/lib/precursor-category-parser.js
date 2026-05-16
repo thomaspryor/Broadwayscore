@@ -81,12 +81,15 @@ function parseCategoryPage(html, opts = {}) {
   const tables = Array.from(doc.querySelectorAll('table.wikitable'));
   if (tables.length === 0) return [];
 
-  // The main award table is usually the first wikitable that has a year-like
-  // first column. Pick the first whose body rows look year-prefixed.
-  const yearTable = tables.find((t) => {
+  // Wikipedia award category pages usually split history into per-decade
+  // tables (1970s, 1980s, 1990s, ...). Parse EVERY wikitable that has a
+  // year-prefixed first column — picking only the first table would lose
+  // 80%+ of years on modern pages.
+  const yearTables = tables.filter((t) => {
     const rows = Array.from(t.querySelectorAll('tr')).slice(1, 6);
     return rows.some((r) => parseFourDigitYear((r.querySelector('th,td')?.textContent) || ''));
-  }) || tables[0];
+  });
+  if (yearTables.length === 0) return [];
 
   const byYear = new Map();
   function ensureYear(y) {
@@ -94,9 +97,10 @@ function parseCategoryPage(html, opts = {}) {
     return byYear.get(y);
   }
 
-  let currentYear = null;
-  let rowsLeftForYear = 0;
-  let currentWinnerSeen = false;
+  for (const yearTable of yearTables) {
+    let currentYear = null;
+    let rowsLeftForYear = 0;
+    let currentWinnerSeen = false;
 
   const rows = Array.from(yearTable.querySelectorAll('tr'));
   for (const row of rows) {
@@ -151,6 +155,7 @@ function parseCategoryPage(html, opts = {}) {
 
     rowsLeftForYear = Math.max(0, rowsLeftForYear - 1);
   }
+  } // end for (const yearTable of yearTables)
 
   return Array.from(byYear.values())
     .map(({ year, winner, nomineeSet }) => {

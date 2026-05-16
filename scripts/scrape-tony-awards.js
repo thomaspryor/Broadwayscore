@@ -10,7 +10,11 @@
  *   node scripts/scrape-tony-awards.js --year=2024        # Single year
  *   node scripts/scrape-tony-awards.js --dry-run          # Preview without saving
  *
- * Runs automatically via GitHub Actions on June 20th each year.
+ * Runs daily April-June via .github/workflows/update-tony-awards.yml
+ * (16:00 UTC = 12 PM ET) plus on workflow_dispatch. Outside awards season the
+ * cron doesn't fire. Each run is a no-op if Wikipedia has no new data — the
+ * workflow only commits + dispatches the IBDB-reminder issue when awards.json
+ * actually changes.
  */
 
 const fs = require('fs');
