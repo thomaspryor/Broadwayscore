@@ -292,6 +292,38 @@ for (const [name, items] of Object.entries(byC).sort((a,b)=>b[1].length-a[1].len
   for (const e of items) lines.push(`- ${e.showTitle} (${e.showId}) → ${e.url}`);
 }
 
+// Source coverage section
+// Collect all missing entries across all critics, preserving sources[] field
+const SOURCES = ['muckrack', 'bww', 'nysr', 'nysun'];
+const sourceCounts = {};
+const sourceOnlyCounts = {};
+for (const s of SOURCES) { sourceCounts[s] = 0; sourceOnlyCounts[s] = 0; }
+let multiSourceCount = 0;
+
+for (const c of audit) {
+  for (const m of (c.missing || [])) {
+    const srcs = (m.sources && Array.isArray(m.sources)) ? m.sources : [];
+    const matchingSources = SOURCES.filter(s => srcs.includes(s));
+    for (const s of matchingSources) {
+      sourceCounts[s]++;
+    }
+    if (matchingSources.length >= 2) multiSourceCount++;
+    if (matchingSources.length === 1) sourceOnlyCounts[matchingSources[0]]++;
+  }
+}
+
+lines.push('');
+lines.push('## Source coverage');
+lines.push('');
+lines.push('Total gaps surfaced per source (a gap can appear in multiple sources):');
+lines.push('| Source | Gaps surfaced | Unique to this source |');
+lines.push('|--------|---------------|------------------------|');
+for (const s of SOURCES) {
+  lines.push(`| ${s} | ${sourceCounts[s]} | ${sourceOnlyCounts[s]} |`);
+}
+lines.push('');
+lines.push(`Multi-source overlap (gaps surfaced by ≥2 sources): ${multiSourceCount}`);
+
 const mdPath = path.join(AUDIT_DIR, 'critic-coverage-buckets.md');
 fs.writeFileSync(mdPath, lines.join('\n'));
 console.log('\nReport: ' + mdPath);

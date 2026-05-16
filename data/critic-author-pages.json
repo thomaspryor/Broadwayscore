@@ -1,0 +1,26 @@
+{
+  "_schema": {
+    "format": "object map: criticSlug -> { bww?, nysun?, nysr? } (all optional strings)",
+    "purpose": "Override author-page slugs for sources where the registry slug doesn't match the source's URL. Loaded by audit-critic-coverage.js (S1-T7).",
+    "case-sensitive": "BWW slugs MUST preserve case (e.g. Elysa-Gardner) — lowercase 404s",
+    "see-also": "Sprint S1-T2 in sprint-plan-critic-coverage.md",
+    "_comment": "Keys starting with _ are ignored when iterating critic entries"
+  },
+  "elysa-gardner": {
+    "bww": "Elysa-Gardner",
+    "nysun": "elysa-gardner",
+    "nysr": "elysa"
+  },
+  "jesse-green": {
+    "bww": "Jesse-Green"
+  },
+  "helen-shaw": {
+    "bww": "Helen-Shaw"
+  },
+  "chris-jones": {
+    "bww": "Chris-Jones"
+  },
+  "naveen-kumar": {
+    "bww": "Naveen-Kumar"
+  }
+}
