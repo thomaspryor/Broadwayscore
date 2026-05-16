@@ -246,9 +246,19 @@ function validateStatus(shows) {
       // 'open' check errors, the bug is already live. Catch at discovery.
       error(`Active show "${show.title}" (${show.id}) missing category — discover-new-shows.js must set category+market on create. Fix the creator, not the data.`);
       invalid++;
+    } else if (show.status === 'closed' && !show.category) {
+      // Extended to closed shows 2026-05-16 (Notion 362637c5-416f-81ee follow-up):
+      // historical bulk inserts ship as status='closed' and slipped past the open/
+      // previews/upcoming gate. Found only 1 offender (she-loves-me-1994, fixed in
+      // d2 separately) before tightening. Closed shows with null category still
+      // surface in UI filters (browse pages, search, market routing on archive
+      // pages), and they're a leading indicator of a discover-historical-shows.js
+      // regression.
+      error(`Closed show "${show.title}" (${show.id}) missing category — historical insert path regressed; check scripts/discover-historical-shows.js + lib/classify-show.js wiring.`);
+      invalid++;
     }
-    if (['open', 'previews', 'upcoming'].includes(show.status) && show.category && !show.market) {
-      error(`Active show "${show.title}" (${show.id}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category, but also fix the creator that dropped it.`);
+    if (['open', 'previews', 'upcoming', 'closed'].includes(show.status) && show.category && !show.market) {
+      error(`Show "${show.title}" (${show.id}, status=${show.status}) has category="${show.category}" but market=null — scripts/backfill-market.js can fill this from category, but also fix the creator that dropped it.`);
       invalid++;
     }
     if (show.category && !validCategories.includes(show.category)) {

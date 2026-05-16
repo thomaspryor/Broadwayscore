@@ -210,16 +210,35 @@ function runPreflight() {
 // opening-night-orchestrator routing (Schmigadoon postmortem). Reject the whole
 // batch up front so the operator fixes discover-historical-shows output, not the
 // downstream symptom. Pure check lives in lib/bulk-import-preflight.js.
+//
+// Hard-fail on missing shows.json — checkout-core-data materializes it in every
+// CI workflow that reaches this orchestrator, and the only legitimate skip path
+// is a local dev session with no symlink. Set BULK_IMPORT_ALLOW_MISSING_SHOWS_JSON=1
+// to opt into the legacy skip-with-log behavior.
 function runShowsJsonPreflight(ids) {
   if (!fs.existsSync(SHOWS_JSON)) {
-    console.log('[preflight] shows.json absent — skipping category/market check (CI mode).');
-    return true;
+    if (process.env.BULK_IMPORT_ALLOW_MISSING_SHOWS_JSON === '1') {
+      console.log('[preflight] shows.json absent — skipping (BULK_IMPORT_ALLOW_MISSING_SHOWS_JSON=1).');
+      return true;
+    }
+    console.error(`[preflight] FAILED — shows.json not found at ${SHOWS_JSON}. ` +
+      'CI workflows materialize it via checkout-core-data; local sessions need ./scripts/setup-local-data.sh. ' +
+      'Override with BULK_IMPORT_ALLOW_MISSING_SHOWS_JSON=1 only for the rare legitimate skip.');
+    return false;
   }
-  let shows;
+  let raw;
   try {
-    shows = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    raw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
   } catch (e) {
     console.error(`[preflight] FAILED — shows.json unreadable: ${e.message}`);
+    return false;
+  }
+  // shows.json on disk is `{_meta, shows: [...]}` (post-2025 wrapper); some
+  // historical dumps and test fixtures are still bare arrays. Tolerate both.
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  if (!Array.isArray(shows)) {
+    console.error(`[preflight] FAILED — shows.json shape unexpected: top-level keys=${Object.keys(raw || {}).join(',')}. ` +
+      'Expected an array or an object with a `shows` array.');
     return false;
   }
   const result = checkShowsJsonMetadata(shows, ids);
