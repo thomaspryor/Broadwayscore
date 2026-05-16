@@ -225,16 +225,32 @@ function OtherAwardsPanel({
     const node = nodeFor(awards, cfg.key);
     const wins = node?.wins ?? [];
     const rawNoms = node && 'nominations' in node ? node.nominations : undefined;
-    const nomsTotal = typeof rawNoms === 'number' ? rawNoms
+    const nominationsCount = typeof rawNoms === 'number' ? rawNoms
       : Array.isArray(rawNoms) ? rawNoms.length
       : null;
+    const nominatedFor = node && 'nominatedFor' in node && Array.isArray(node.nominatedFor)
+      ? node.nominatedFor : [];
+    // Prefer the larger source of nomination count. DD/OCC publish a `nominations`
+    // total separate from the per-category `nominatedFor` list (which may be
+    // incomplete for older shows). DL/NYDCCC only have `nominatedFor`.
+    const nomsTotal = Math.max(nominationsCount ?? 0, nominatedFor.length) || null;
     const contrib = byName.get(cfg.ceremonyName);
-    return { cfg, wins, nomsTotal, contrib };
-  }).filter(r => r.wins.length > 0 || (r.contrib?.subtotal ?? 0) > 0);
+    return { cfg, wins, nominatedFor, nomsTotal, contrib };
+  }).filter(r =>
+    // Render a row only when we can produce a real label: either wins exist,
+    // or some flavor of nom count > 0. Subtotal-only (uncategorized) rows are
+    // suppressed to avoid "0 noms" chips — their points still affect the
+    // overall Award Score badge upstream.
+    r.wins.length > 0 || (r.nomsTotal ?? 0) > 0
+  );
 
   if (rows.length === 0) return null;
 
   const totalWins = rows.reduce((s, r) => s + r.wins.length, 0);
+  const totalNoms = rows.reduce((s, r) => s + (r.nomsTotal ?? 0), 0);
+  const headerCount = totalWins > 0
+    ? `${totalWins} win${totalWins === 1 ? '' : 's'}`
+    : `${totalNoms} nom${totalNoms === 1 ? '' : 's'}`;
 
   return (
     <div className="mt-4 pt-4 border-t border-white/5">
@@ -246,7 +262,7 @@ function OtherAwardsPanel({
       >
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">Other Major Awards</span>
-          <span className="text-xs text-gray-500">({totalWins} win{totalWins === 1 ? '' : 's'})</span>
+          <span className="text-xs text-gray-500">({headerCount})</span>
         </div>
         <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
       </button>
@@ -261,7 +277,9 @@ function OtherAwardsPanel({
             : `${nomsTotal ?? 0} nom${nomsTotal === 1 ? '' : 's'}`;
           return (
             <span key={cfg.key} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border bg-surface-overlay border-white/5 text-gray-300 text-xs font-medium">
-              <TrophyIcon className="w-3.5 h-3.5 text-amber-400" />
+              {wins.length > 0
+                ? <TrophyIcon className="w-3.5 h-3.5 text-amber-400" />
+                : <StarIcon className="w-3.5 h-3.5 text-gray-400" />}
               <span>{winLabel} {cfg.short}</span>
             </span>
           );
@@ -270,8 +288,9 @@ function OtherAwardsPanel({
 
       {expanded && (
         <div className="mt-3 space-y-3">
-          {rows.map(({ cfg, wins, nomsTotal, contrib }) => {
+          {rows.map(({ cfg, wins, nominatedFor, nomsTotal, contrib }) => {
             const pointMap = pointsByCategory(contrib?.items);
+            const nomsOnly = nominatedFor.filter(n => !wins.includes(n));
             return (
               <div key={cfg.key}>
                 <div className="text-xs font-medium mb-1.5 text-gray-300">
@@ -280,18 +299,42 @@ function OtherAwardsPanel({
                     <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
                   )}
                 </div>
-                <ul className="space-y-1 pl-4">
-                  {wins.map((win, idx) => {
-                    const pts = Math.round(pointMap.get(`win:${win}`) ?? 0);
-                    return (
-                      <li key={idx} className="flex items-center gap-2 text-sm text-gray-400">
-                        <TrophyIcon className="w-3 h-3 text-amber-400 flex-shrink-0" />
-                        <span className="flex-1">{win}</span>
-                        {pts > 0 && <span className="text-xs text-gray-500 tabular-nums">+{pts}</span>}
-                      </li>
-                    );
-                  })}
-                </ul>
+                {wins.length > 0 && (
+                  <ul className="space-y-1 pl-4">
+                    {wins.map((win, idx) => {
+                      const pts = Math.round(pointMap.get(`win:${win}`) ?? 0);
+                      return (
+                        <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
+                          <TrophyIcon className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                          <span className="flex-1">{win}</span>
+                          {pts > 0 && <span className="text-xs text-gray-500 tabular-nums">+{pts}</span>}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                {nomsOnly.length > 0 && (
+                  <>
+                    <div className="text-[11px] text-gray-500 uppercase tracking-wide mt-1.5 mb-1 pl-4">
+                      Nominated for
+                    </div>
+                    <ul className="space-y-1 pl-4">
+                      {nomsOnly.map((nom, idx) => {
+                        const pts = Math.round(pointMap.get(`nom:${nom}`) ?? 0);
+                        return (
+                          <li
+                            key={`n-${idx}`}
+                            className="flex items-center gap-2 text-sm text-gray-500 italic"
+                          >
+                            <span className="w-3 h-3 flex-shrink-0 text-amber-400/40">·</span>
+                            <span className="flex-1">{nom}</span>
+                            {pts > 0 && <span className="text-xs text-gray-500 tabular-nums not-italic">+{pts}</span>}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </>
+                )}
               </div>
             );
           })}
