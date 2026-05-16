@@ -52,6 +52,35 @@ describe('safeWriteReview', () => {
     assert.equal(written.url, 'https://example.com');
   });
 
+  test('preserves manually-set pullQuote across writes that lack it (Lost Boys Issue #12)', () => {
+    // Helen Shaw 2026-04-27 incident: operator set pullQuote via gh api PUT,
+    // added pullQuote to protectedFields, but a downstream writer stripped it.
+    // safeWriteReview must preserve pullQuote because it's in PROTECTED_FIELDS.
+    const filePath = path.join(tmpDir, 'pullquote-preserve.json');
+    fs.writeFileSync(filePath, JSON.stringify({
+      showId: 'the-lost-boys-2026',
+      outletId: 'vulture',
+      criticName: 'Helen Shaw',
+      pullQuote: 'the finest spectacle I have seen this season outside of the Met Opera',
+      protectedFields: ['pullQuote'],
+    }, null, 2));
+
+    // Simulate a rebuild/collect cycle that writes new scrape data without pullQuote.
+    const newData = {
+      showId: 'the-lost-boys-2026',
+      outletId: 'vulture',
+      fullText: 'fresh scraped review text',
+      contentTier: 'complete',
+    };
+    const result = safeWriteReview(filePath, newData);
+
+    assert.ok(result.preserved.includes('pullQuote'),
+      `Expected pullQuote in preserved array, got: ${result.preserved.join(', ')}`);
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    assert.equal(written.pullQuote, 'the finest spectacle I have seen this season outside of the Met Opera');
+    assert.equal(written.fullText, 'fresh scraped review text');
+  });
+
   test('preserves wrongProduction flag', () => {
     const filePath = path.join(tmpDir, 'wrong-prod.json');
     fs.writeFileSync(filePath, JSON.stringify({
