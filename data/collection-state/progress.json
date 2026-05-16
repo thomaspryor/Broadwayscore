@@ -16,7 +16,9 @@
     "the-boy-who-harnessed-the-wind-west-end-2026/london-theatre--lisa-martland.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/nytimes--joshua-barone.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/operawire--francisco-salazar.json",
-    "new-born-off-broadway-2026/nytimes--unknown.json"
+    "new-born-off-broadway-2026/nytimes--unknown.json",
+    "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+    "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "1536-west-end-2026/thereviewshub--the-reviews-hub-london.json",
@@ -810,7 +812,12 @@
       "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/operawire--francisco-salazar.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "every-brilliant-thing-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+      "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
@@ -842,6 +849,29 @@
     ]
   },
   "startTime": "2026-05-15T16:43:09.137Z",
-  "lastProcessed": "an-ideal-husband-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "nicole-travolta-is-doing-alright-off-broadway-2026/variety--rebecca-rubin.json",
+  "log": [
+    {
+      "t": "2026-05-16T03:12:08.495Z",
+      "event": "bb-session",
+      "session": "bbd9e896",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mariska-hargitay-to-make-broadw"
+    },
+    {
+      "t": "2026-05-16T03:12:09.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-16T03:12:36.339Z",
+      "event": "bb-session",
+      "session": "b91aa0bf",
+      "url": "https://variety.com/2026/legit/news/heated-rivalry-broadway-musical-parody-12367"
+    },
+    {
+      "t": "2026-05-16T03:12:37.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
