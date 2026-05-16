@@ -4089,13 +4089,11 @@ try {
     // Derive current summary from audit entries
     const totalCritics = auditEntries.length;
     const totalGaps = auditEntries.reduce((s, e) => s + (e.missingCount || 0), 0);
-    const gapsByBucket = { A: 0, B: 0, C: 0, D: 0, E: 0 };
-    for (const e of auditEntries) {
-      const bucket = e.bucket || 'C'; // fallback if bucket field absent
-      if (bucket in gapsByBucket) gapsByBucket[bucket] += (e.missingCount || 0);
-    }
-    // gapsBySource: copy from most recent snapshot, or default
+    // gapsByBucket: audit entries have no `bucket` field — source from latest history snapshot
+    // (same pattern as gapsBySource below; bucket categorisation lives in audit-critic-coverage-bucket.js)
     const latestSnapshot = historySnapshots.length > 0 ? historySnapshots[historySnapshots.length - 1] : null;
+    const gapsByBucket = latestSnapshot?.gapsByBucket ?? { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    // gapsBySource: copy from most recent snapshot, or default
     const gapsBySource = latestSnapshot && latestSnapshot.gapsBySource
       ? latestSnapshot.gapsBySource
       : { muckrack: totalGaps };
