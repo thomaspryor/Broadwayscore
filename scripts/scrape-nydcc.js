@@ -46,29 +46,15 @@ function categoryForHeading(text) {
   return null;
 }
 
-function parseWinnersTable(table) {
-  // Each row is one ceremony: first cell year, later cell italic title.
-  const winners = [];
-  for (const row of table.querySelectorAll('tr')) {
-    const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
-    if (cells.length < 2) continue;
-    const yearMatch = (cells[0].textContent || '').match(/([12]\d{3})/);
-    if (!yearMatch) continue;
-    const year = parseInt(yearMatch[1], 10);
-    // Find the first italic title across remaining cells. NYDCC tables
-    // sometimes split title/author/etc. across multiple columns.
-    let title = null;
-    for (const c of cells.slice(1)) {
-      const i = c.querySelector('i');
-      if (i && i.textContent && i.textContent.trim().length > 1) {
-        title = i.textContent.trim().replace(/\s*\((?:musical|play|opera)\)\s*$/i, '').replace(/[‡†]+$/, '').trim();
-        break;
-      }
-    }
-    if (!title) continue;
-    winners.push({ year, winner: title });
-  }
-  return winners;
+function cleanTitle(raw) {
+  if (!raw) return null;
+  const cleaned = raw
+    .trim()
+    .replace(/\s*\((?:musical|play|opera|ballet)\)\s*$/i, '')
+    .replace(/\s*[‡†*≠]+\s*$/, '')
+    .replace(/\s*\[\d+\]\s*$/, '')
+    .trim();
+  return cleaned.length > 1 ? cleaned : null;
 }
 
 async function main() {
@@ -82,36 +68,79 @@ async function main() {
   const dom = new JSDOM(html);
   const doc = dom.window.document;
 
-  // Walk headings (h2/h3/h4) in document order; for each heading that maps
-  // to one of our categories, scan forward to the next sibling .wikitable.
-  const result = { 'Best Play': [], 'Best Foreign Play': [], 'Best Musical': [] };
-  const seenForCategory = new Set();
+  // Wikipedia's NYDCCC article uses a combined wikitable for pre-2010 winners
+  // and bulleted lists (<ul><li>YEAR: Title – Author</li>...) under H3 section
+  // headings for 2010+ winners. The per-category H3 sections are: Best Play,
+  // Best American Play, Best Musical, Best Foreign Play. Walk H3/UL in document
+  // order, take the FIRST year-prefixed UL after each matching heading.
 
-  const walker = doc.querySelectorAll('h2, h3, h4, table.wikitable');
-  let pendingCategory = null;
-  for (const node of walker) {
-    if (node.tagName === 'TABLE') {
-      if (!pendingCategory) continue;
-      if (seenForCategory.has(pendingCategory)) continue;
-      const winners = parseWinnersTable(node)
-        .filter((w) => w.year >= MIN_YEAR);
-      if (winners.length > 0) {
-        // De-dupe by year (later years should never overwrite earlier — first wins).
-        const have = new Set(result[pendingCategory].map((e) => e.year));
-        for (const w of winners) if (!have.has(w.year)) { result[pendingCategory].push(w); have.add(w.year); }
-        result[pendingCategory].sort((a, b) => a.year - b.year);
-        seenForCategory.add(pendingCategory);
-        pendingCategory = null;
+  const result = { 'Best Play': [], 'Best Foreign Play': [], 'Best Musical': [] };
+  const seenByCategory = { 'Best Play': new Set(), 'Best Foreign Play': new Set(), 'Best Musical': new Set() };
+  const populatedFromUl = new Set();
+
+  const headingOrUl = doc.querySelectorAll('h3, ul');
+  let currentCat = null;
+  for (const node of headingOrUl) {
+    if (node.tagName === 'H3') {
+      const txt = (node.textContent || '').trim();
+      currentCat = categoryForHeading(txt);
+    } else if (node.tagName === 'UL' && currentCat && !populatedFromUl.has(currentCat)) {
+      // Only take the FIRST year-prefixed UL per section — subsequent ULs
+      // contain references, related links, or runners-up.
+      let added = 0;
+      for (const li of node.querySelectorAll('li')) {
+        const liText = (li.textContent || '').trim();
+        const m = liText.match(/^([12]\d{3}):\s*(.+)/s);
+        if (!m) continue;
+        const year = parseInt(m[1], 10);
+        if (year < MIN_YEAR) continue;
+        // Title is up to ' – ' / ' - ' (author separator).
+        let titleRaw = m[2];
+        const splitIdx = titleRaw.search(/\s[–-]\s/);
+        if (splitIdx > 0) titleRaw = titleRaw.slice(0, splitIdx);
+        // Prefer <i> for the title if present (cleaner — no author suffix).
+        const italic = li.querySelector('i');
+        const title = cleanTitle(italic ? italic.textContent : titleRaw);
+        if (!title) continue;
+        if (seenByCategory[currentCat].has(year)) continue;
+        seenByCategory[currentCat].add(year);
+        result[currentCat].push({ year, winner: title });
+        added++;
       }
-      continue;
-    }
-    // Heading
-    const text = (node.textContent || '').trim();
-    const cat = categoryForHeading(text);
-    if (cat && !seenForCategory.has(cat)) {
-      pendingCategory = cat;
+      if (added > 0) populatedFromUl.add(currentCat);
     }
   }
+
+  // Fallback: also parse the pre-2010 combined wikitable (columns Year, Show,
+  // Author(s), Nominated for) for any years not yet captured. The UL data
+  // covers 2010+; the table covers 1936-2009. With MIN_YEAR=2014 the table
+  // pass is a no-op, but the code path stays here for future use.
+  const tables = Array.from(doc.querySelectorAll('table.wikitable'));
+  for (const t of tables) {
+    const headerText = Array.from(t.querySelectorAll('tr')[0]?.children || [])
+      .map((c) => (c.textContent || '').trim().toLowerCase())
+      .join('|');
+    if (!/nominated for|category/i.test(headerText) || !/year/i.test(headerText)) continue;
+    for (const row of t.querySelectorAll('tr')) {
+      const cells = Array.from(row.children).filter((el) => el.tagName === 'TD' || el.tagName === 'TH');
+      if (cells.length < 4) continue;
+      const yearMatch = (cells[0].textContent || '').trim().match(/^([12]\d{3})/);
+      if (!yearMatch) continue;
+      const year = parseInt(yearMatch[1], 10);
+      if (year < MIN_YEAR) continue;
+      const italic = cells[1].querySelector('i');
+      const title = cleanTitle(italic ? italic.textContent : cells[1].textContent);
+      if (!title) continue;
+      const cat = categoryForHeading((cells[3].textContent || '').trim());
+      if (!cat || !result[cat]) continue;
+      if (seenByCategory[cat].has(year)) continue;
+      seenByCategory[cat].add(year);
+      result[cat].push({ year, winner: title });
+    }
+    break;
+  }
+
+  for (const cat of Object.keys(result)) result[cat].sort((a, b) => a.year - b.year);
 
   for (const [cat, entries] of Object.entries(result)) {
     console.log(`  ${cat}: ${entries.length} winners`);

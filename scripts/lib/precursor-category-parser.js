@@ -67,13 +67,13 @@ function isWinnerCell(cell, rowBgHighlight) {
   return false;
 }
 
-function cellShowTitles(cell) {
+function cellShowTitles(cell, opts = {}) {
   const titles = [];
   const cleanOne = (raw) => {
     if (!raw || raw.length < 2) return null;
     const cleaned = raw
       .replace(/\s*\((?:musical|play|opera|ballet|revival)\)\s*$/i, '')
-      .replace(/\s*[‡†*]+\s*$/, '')
+      .replace(/\s*[‡†*≠]+\s*$/, '')  // strip footnote anchor chars (incl. Pulitzer's ≠)
       .replace(/\s*\[\d+\]\s*$/, '')  // strip trailing Wikipedia citation
       .trim();
     if (!cleaned) return null;
@@ -86,10 +86,12 @@ function cellShowTitles(cell) {
   }
   // Bold-only title fallback: some Wikipedia revival rows mark the winner as
   // <b><a>Title</a></b> (no <i>). Catch these by looking at <b> elements that
-  // don't have an <i> ancestor (to avoid double-counting italicized bold).
-  if (titles.length === 0) {
+  // don't have an <i> ancestor. ONLY apply to the first nominee cell of a row
+  // (opts.allowBoldFallback=true) — Pulitzer Drama bolds BOTH the title cell
+  // AND the author cell, so applying it to every cell would pick up author
+  // names as titles. Caller restricts to cells[0] for the row's title slot.
+  if (titles.length === 0 && opts.allowBoldFallback) {
     for (const b of cell.querySelectorAll('b')) {
-      // skip if inside an <i> (already handled) or if it wraps an <i> (also handled)
       if (b.closest('i')) continue;
       if (b.querySelector('i')) continue;
       const c = cleanOne((b.textContent || '').trim());
@@ -179,8 +181,13 @@ function parseCategoryPage(html, opts = {}) {
 
     const yearEntry = ensureYear(currentYear);
 
-    for (const cell of nomineeCells) {
-      const titles = cellShowTitles(cell);
+    for (let ci = 0; ci < nomineeCells.length; ci++) {
+      const cell = nomineeCells[ci];
+      // Bold-only fallback only on the first nominee cell — that's where the
+      // show title lives. Subsequent cells hold author / composer / lyricist
+      // names which may also be <b><a> on some pages (Pulitzer) and we don't
+      // want to pick them up as titles.
+      const titles = cellShowTitles(cell, { allowBoldFallback: ci === 0 });
       if (titles.length === 0) continue;
       const cellIsWinner = isWinnerCell(cell, rowBgHighlight);
       for (const t of titles) {
