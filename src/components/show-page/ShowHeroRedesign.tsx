@@ -24,7 +24,7 @@
  * showSignIn(); resumed when user lands back on this page authenticated.
  */
 
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -61,6 +61,7 @@ function slugify(str: string): string {
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { UserReview } from '@/types/user';
+import type { ShowRanks } from '@/lib/data-show-ranks';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -75,6 +76,9 @@ interface ShowHeroRedesignProps {
   lotteryRush: { lottery?: { price?: number | null } | null; rush?: { price?: number | null } | null } | null;
   isWestEnd: boolean;
   isOffBroadway: boolean;
+  /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
+   *  OR no rankable data. */
+  ranks: ShowRanks | null;
 }
 
 // ─── Suspense wrapper (useSearchParams requires it for static prerender) ──
@@ -100,6 +104,7 @@ function Inner({
   lotteryRush,
   isWestEnd,
   isOffBroadway,
+  ranks,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
@@ -410,6 +415,7 @@ function Inner({
                   <p className="text-sm text-gray-500 mt-1">
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
+                  <HeroRankLine ranks={ranks} market={show.category} />
                 </div>
               </a>
               {hasAudience && audienceGrade && (
@@ -468,6 +474,13 @@ function Inner({
             </a>
           )}
         </div>
+      )}
+
+      {/* Mobile-only rank line — sits below the dual score cards and above the
+          distribution bar. Desktop's rank line lives inline under "Based on N
+          Critic Reviews" in the score block above. */}
+      {hasEnoughCriticReviews && (
+        <HeroRankLine ranks={ranks} market={show.category} className="lg:hidden -mt-1" />
       )}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
@@ -651,6 +664,68 @@ function DateLine({ show }: { show: ComputedShow }) {
     <p>
       {show.openingDate && <>Opened {formatDate(show.openingDate)}</>}
       {show.closingDate && <> · Closes {formatDate(show.closingDate)}</>}
+    </p>
+  );
+}
+
+function marketLabel(category: ComputedShow['category']): string {
+  switch (category) {
+    case 'broadway': return 'Broadway';
+    case 'west-end': return 'West End';
+    case 'off-broadway': return 'Off-Broadway';
+    case 'off-west-end': return 'Off-West End';
+    default: return 'Broadway';
+  }
+}
+
+/** Hero "Variant B" rank line. Renders only the non-null fragments so a show
+ *  with a valid market rank but a too-small season pool still gets a useful
+ *  line, instead of being hidden entirely. */
+function HeroRankLine({
+  ranks,
+  market,
+  className = '',
+}: {
+  ranks: ShowRanks | null;
+  market: ComputedShow['category'];
+  className?: string;
+}) {
+  if (!ranks) return null;
+  const c = ranks.critic;
+  if (!c.openMarket && !c.season && !c.allTime) return null;
+
+  const label = marketLabel(market);
+  const fragments: React.ReactNode[] = [];
+  if (c.openMarket) {
+    fragments.push(
+      <span key="om">
+        <span className="font-semibold text-gray-200">#{c.openMarket.rank}</span> of {c.openMarket.total} open {label}
+      </span>,
+    );
+  }
+  if (c.season) {
+    fragments.push(
+      <span key="se">
+        <span className="font-semibold text-gray-200">#{c.season.rank}</span> this season
+      </span>,
+    );
+  }
+  if (c.allTime) {
+    fragments.push(
+      <span key="at" className="text-gray-500">
+        #{c.allTime.rank} all-time*
+      </span>,
+    );
+  }
+
+  return (
+    <p className={`text-[11px] sm:text-[12px] text-gray-400 mt-1 leading-snug ${className}`}>
+      Ranks {fragments.map((f, i) => (
+        <React.Fragment key={i}>
+          {i > 0 ? <span className="text-gray-600"> · </span> : null}
+          {f}
+        </React.Fragment>
+      ))}
     </p>
   );
 }

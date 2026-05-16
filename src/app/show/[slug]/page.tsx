@@ -61,6 +61,7 @@ import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
+import { getShowRanks } from '@/lib/data-show-ranks';
 
 export const revalidate = 86400;
 
@@ -311,6 +312,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
   const socialPulse = getSocialPulse(show.id);
+  // Cross-show ranks. O(1) lookup after the module-scope index is built on
+  // first call. 'all' format slice for the hero rank line (the bottom
+  // WhereItRanks card additionally fetches the show's-own-format slice).
+  const ranks = getShowRanks(show.id, { format: 'all' });
   const commercial = getShowCommercial(show.slug);
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
@@ -389,6 +394,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               lotteryRush={lotteryRush ?? null}
               isWestEnd={isWestEnd}
               isOffBroadway={isOffBroadway}
+              ranks={ranks}
             />
           </div>
         </RedesignOn>
