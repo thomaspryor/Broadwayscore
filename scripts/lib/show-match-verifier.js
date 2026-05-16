@@ -37,7 +37,11 @@ const STOP_WORDS = new Set([
   'for', 'with', 'from', 'by', 'as', 'be',
 ]);
 
-const STAGE_TRAP_TOKENS = ['cuckoo', 'cuckoos', 'cuckoonest', 'flew', 'nest'];
+// Stage trap canary tokens — narrowed in ship-check P1-2 fix. Previously
+// included bare 'flew' and 'nest'; any unrelated WE show with a slug or
+// title containing those words was getting page-title-mismatch rejected.
+// Keep the 'cuckoo'-flavoured tokens only (distinctive enough singly).
+const STAGE_TRAP_TOKENS = ['cuckoo', 'cuckoos', 'cuckoonest'];
 
 function titleTokens(title) {
   if (!title) return [];
@@ -75,9 +79,30 @@ function extractHtmlTitle(html) {
     .toLowerCase();
 }
 
+// Ship-check P1-3 fix: bare substring `includes()` matched "Globe Theatre"
+// on any page mentioning "globe" anywhere (and "Park Theatre" → "park"),
+// opening the URL-slug-bypass to false positives. Require the venue to
+// appear as a whole-token sequence (non-alphanumeric boundaries), and skip
+// generic single-word venues whose primary token is too common to match
+// safely. "London Palladium" is fine; "Globe Theatre" relies on the longer
+// "globe theatre" sequence to anchor.
+const GENERIC_VENUE_TOKENS = new Set([
+  'globe', 'park', 'palace', 'studio', 'arts', 'theatre', 'theater',
+  'playhouse', 'open', 'national', 'royal',
+]);
 function bodyContainsVenue(html, venue) {
   if (!html || !venue) return false;
-  return html.toLowerCase().includes(venue.toLowerCase());
+  const v = venue.trim().toLowerCase();
+  if (!v) return false;
+  // Refuse to match when the venue's distinguishing token is a generic
+  // single word (avoid "Globe Theatre" → "globe" anywhere in body trick).
+  const firstToken = v.split(/\s+/)[0];
+  if (firstToken.length < 5 || (v.split(/\s+/).length === 1 && GENERIC_VENUE_TOKENS.has(firstToken))) {
+    return false;
+  }
+  const escaped = v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(?:^|[^a-z0-9])${escaped}(?:[^a-z0-9]|$)`, 'i');
+  return re.test(html);
 }
 
 function explicitUrlYear(url) {

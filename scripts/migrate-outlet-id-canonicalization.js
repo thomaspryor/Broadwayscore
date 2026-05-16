@@ -28,6 +28,12 @@ const COLLISIONS_PATH = path.join(ROOT, 'data', 'audit', 'outlet-id-migration-co
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SKIP_REVIEW_TEXT = process.argv.includes('--no-review-text');
+// Ship-check P1-4 fix: without an explicit rebuild, data/reviews.json still
+// references the legacy outletId until the daily 4 AM UTC cron fires.
+// --rebuild shells out to the rebuild script after a successful migration
+// so callers get a consistent end state. Default off — the rebuild is
+// expensive (~30 min) and may already be scheduled.
+const TRIGGER_REBUILD = process.argv.includes('--rebuild');
 
 function parseFilename(file) {
   // {showId}/{outletId}--{critic}.json
@@ -117,6 +123,21 @@ function main() {
     const md = `# Outlet-id migration collisions\n\nGenerated: ${new Date().toISOString()}\n\n` + collisionLog.join('\n') + '\n';
     fs.writeFileSync(COLLISIONS_PATH, md);
     console.log(`Collisions logged to ${COLLISIONS_PATH}`);
+  }
+
+  if (TRIGGER_REBUILD && !DRY_RUN && results.renamed > 0) {
+    console.log('\n--rebuild flag set, dispatching rebuild-reviews workflow...');
+    const { spawnSync } = require('child_process');
+    const r = spawnSync('gh', ['workflow', 'run', 'rebuild-reviews.yml', '-f', 'reason=Post outlet-id canonicalization migration'], { stdio: 'inherit' });
+    if (r.status !== 0) {
+      console.error('  ⚠ gh workflow dispatch failed — run manually: gh workflow run "Rebuild Reviews Data" -f reason="Post outlet-id migration"');
+    } else {
+      console.log('  ✓ Rebuild dispatched. Watch with: gh run watch');
+    }
+  } else if (results.renamed > 0 && !DRY_RUN) {
+    console.log('\n⚠ Reviews.json still references the legacy outletId until the next rebuild fires.');
+    console.log('  Trigger now with: gh workflow run "Rebuild Reviews Data" -f reason="Post outlet-id migration"');
+    console.log('  (Or re-run this script with --rebuild.)');
   }
 
   process.exit(0);

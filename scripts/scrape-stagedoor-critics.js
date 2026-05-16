@@ -367,7 +367,22 @@ async function main() {
         isLondonMarket(s.category) && s.status === 'open' && !matchedIds.has(s.id)
       );
       const cap = parseInt(process.env.SD_SERP_DISCOVERY_CAP || '20', 10);
-      const toDiscover = candidateShows.slice(0, cap);
+      // Ship-check P1-5 fix: when candidateShows > cap, the same prefix
+      // gets retried every cron run while the tail never gets SERP'd.
+      // Rotate the window by day-of-year so every show eventually rolls
+      // into the candidate set. Deterministic — easy to reason about.
+      let toDiscover;
+      if (candidateShows.length > cap) {
+        const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+        const offset = (dayOfYear * cap) % candidateShows.length;
+        toDiscover = [
+          ...candidateShows.slice(offset, offset + cap),
+          ...candidateShows.slice(0, Math.max(0, (offset + cap) - candidateShows.length)),
+        ].slice(0, cap);
+        console.log(`  [SD-SERP] Rotating window: ${candidateShows.length} candidates, day-of-year offset ${offset}, taking ${toDiscover.length}`);
+      } else {
+        toDiscover = candidateShows.slice(0, cap);
+      }
       if (toDiscover.length > 0) {
         console.log(`\n  [SD-SERP] Trying SERP discovery for ${toDiscover.length} unmatched shows...`);
       }
