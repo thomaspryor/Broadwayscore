@@ -87,27 +87,38 @@ export function getRecipe(categoryKey: TonyCategoryKey, tier: RecipeTier = 1) {
   return tier === 2 ? TONY_RECIPES_TIER2[categoryKey] : TONY_RECIPES[categoryKey];
 }
 
-/** Tony top category → matching nominee category at each precursor. */
-const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string; outerCriticsCircle: string; dramaLeague: string }> = {
+/** Tony top category → matching nominee categories at each precursor. Each
+ *  entry is an ARRAY because some precursors (notably OCC, sometimes DL)
+ *  split their top category into Broadway / Off-Broadway buckets. Shows that
+ *  transferred OB → Broadway (Hamilton 2015, Fun Home 2014, etc.) have their
+ *  precursor wins recorded under the OB category name. Without aliasing,
+ *  the Broadway top-cat bonus misses them — Hamilton scored 75 instead of
+ *  the ~100 expected for a near-sweeper. See Notion 362637c5-...dcf0b0.
+ *
+ *  DD uses unified "Outstanding Musical" / "Outstanding Play" across venues
+ *  (single string suffices). DL sometimes records "Outstanding Production of
+ *  a Broadway or Off-Broadway Musical/Play" as a combined bucket — both
+ *  variants count toward the Broadway top-cat. */
+const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCriticsCircle: string[]; dramaLeague: string[] }> = {
   'Best Musical': {
-    dramadesk: 'Outstanding Musical',
-    outerCriticsCircle: 'Outstanding New Broadway Musical',
-    dramaLeague: 'Outstanding Production of a Musical',
+    dramadesk: ['Outstanding Musical'],
+    outerCriticsCircle: ['Outstanding New Broadway Musical', 'Outstanding New Off-Broadway Musical'],
+    dramaLeague: ['Outstanding Production of a Musical', 'Outstanding Production of a Broadway or Off-Broadway Musical'],
   },
   'Best Play': {
-    dramadesk: 'Outstanding Play',
-    outerCriticsCircle: 'Outstanding New Broadway Play',
-    dramaLeague: 'Outstanding Production of a Play',
+    dramadesk: ['Outstanding Play'],
+    outerCriticsCircle: ['Outstanding New Broadway Play', 'Outstanding New Off-Broadway Play'],
+    dramaLeague: ['Outstanding Production of a Play', 'Outstanding Production of a Broadway or Off-Broadway Play'],
   },
   'Best Revival of a Musical': {
-    dramadesk: 'Outstanding Revival of a Musical',
-    outerCriticsCircle: 'Outstanding Revival of a Musical',
-    dramaLeague: 'Outstanding Revival of a Musical',
+    dramadesk: ['Outstanding Revival of a Musical'],
+    outerCriticsCircle: ['Outstanding Revival of a Musical'],
+    dramaLeague: ['Outstanding Revival of a Musical'],
   },
   'Best Revival of a Play': {
-    dramadesk: 'Outstanding Revival of a Play',
-    outerCriticsCircle: 'Outstanding Revival of a Play',
-    dramaLeague: 'Outstanding Revival of a Play',
+    dramadesk: ['Outstanding Revival of a Play'],
+    outerCriticsCircle: ['Outstanding Revival of a Play'],
+    dramaLeague: ['Outstanding Revival of a Play'],
   },
 };
 
@@ -290,22 +301,25 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   const pool = categoryKey ? NOMS_POOL_BY_CATEGORY[categoryKey] : NOMS_POOL_BY_CATEGORY['best-musical'];
 
   const sources = [
-    { node: entry.dramaLeague,        matchCat: matching.dramaLeague,        tier: PRECURSOR_TIER_WEIGHTS.dramaLeague },
-    { node: entry.outerCriticsCircle, matchCat: matching.outerCriticsCircle, tier: PRECURSOR_TIER_WEIGHTS.outerCriticsCircle },
-    { node: entry.dramadesk,          matchCat: matching.dramadesk,          tier: PRECURSOR_TIER_WEIGHTS.dramadesk },
+    { node: entry.dramaLeague,        matchCats: matching.dramaLeague,        tier: PRECURSOR_TIER_WEIGHTS.dramaLeague },
+    { node: entry.outerCriticsCircle, matchCats: matching.outerCriticsCircle, tier: PRECURSOR_TIER_WEIGHTS.outerCriticsCircle },
+    { node: entry.dramadesk,          matchCats: matching.dramadesk,          tier: PRECURSOR_TIER_WEIGHTS.dramadesk },
   ];
 
   let base = 0;
   let weightedNoms = 0;
 
-  for (const { node, matchCat, tier } of sources) {
+  for (const { node, matchCats, tier } of sources) {
     if (!node) continue;
     const wins = node.wins || [];
     const noms = node.nominatedFor || [];
 
-    if (wins.includes(matchCat)) {
+    // Match if ANY of the matchCats variants is recorded as a win/nom.
+    // matchCats is an array to support OB → Broadway transfer aliasing
+    // (Hamilton, Fun Home etc. — see TONY_TO_PRECURSOR_CATEGORY comment).
+    if (matchCats.some((c) => wins.includes(c))) {
       base += 30 * tier;
-    } else if (noms.includes(matchCat)) {
+    } else if (matchCats.some((c) => noms.includes(c))) {
       base += 10 * tier;
     }
 
@@ -319,10 +333,11 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
     //     in wins[] only). Iterating only noms would silently miss most
     //     precursor wins and dramatically under-credit sweepers like Hamilton.
     // classifyCategory returns null for unrecognized strings — ignored.
+    const matchCatSet = new Set(matchCats);
     const seenCategories = new Set<string>();
     const allCategories = [...wins, ...noms];
     for (const nomCat of allCategories) {
-      if (nomCat === matchCat) continue;
+      if (matchCatSet.has(nomCat)) continue;
       if (seenCategories.has(nomCat)) continue;
       seenCategories.add(nomCat);
       const cls = classifyCategory(nomCat);
