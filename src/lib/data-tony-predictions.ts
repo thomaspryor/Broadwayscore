@@ -49,7 +49,36 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
   'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
 };
 
+/**
+ * Tier 2 / Final recipe — flips for Best Play after all three precursor
+ * winners (Drama Desk, Outer Critics Circle, Drama League) are announced.
+ * 11-season backtest accuracy: Tier 1 91% → Tier 2 95% for Best Play
+ * (source: ~/Documents/claude-outputs/tony-phase3-2026-04-28.md).
+ *
+ * Only Best Play differs — the other 3 categories' Tier 1 weights are
+ * already empirically optimal per the same backtest.
+ *
+ * Selection logic (see resolveRecipeTier):
+ *   - Active season → automatic flip once shouldUseTier2(season) returns
+ *     true (3 of 3 precursor winners present for Best Play category).
+ *   - Past seasons → always Tier 2 (winners have long since been announced).
+ *   - Manual override: env TONY_RECIPE_TIER=1|2 forces either tier (used by
+ *     scripts/audit-tony-all-seasons.ts --tier=N flag for backtesting).
+ */
+export const TONY_RECIPES_TIER2: Record<string, { critic: number; audience: number; awards: number }> = {
+  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
+  'best-play':            { critic: 0.2, audience: 0.2, awards: 0.6 },
+  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
+  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
+};
+
 export type TonyCategoryKey = keyof typeof TONY_RECIPES;
+export type RecipeTier = 1 | 2;
+
+/** Return the recipe map for the requested tier (1 default). */
+export function getRecipe(categoryKey: TonyCategoryKey, tier: RecipeTier = 1) {
+  return tier === 2 ? TONY_RECIPES_TIER2[categoryKey] : TONY_RECIPES[categoryKey];
+}
 
 /** Tony top category → matching nominee category at each precursor. */
 const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string; outerCriticsCircle: string; dramaLeague: string }> = {
@@ -324,8 +353,9 @@ export function tonyComposite(
   audienceGrade: number | null,
   awardsScore: number,
   categoryKey: TonyCategoryKey,
+  tier: RecipeTier = 1,
 ): number | null {
-  const r = TONY_RECIPES[categoryKey];
+  const r = getRecipe(categoryKey, tier);
   if (!r) return null;
 
   const components: Array<{ weight: number; value: number }> = [];
@@ -347,7 +377,11 @@ export function tonyComposite(
  * to the legacy 50/50 critic+audience blend (used by the historical-winners
  * scroller and other places where category context isn't available).
  */
-export function serializeShow(show: ComputedShow, categoryKey?: TonyCategoryKey): SerializedTonyShow {
+export function serializeShow(
+  show: ComputedShow,
+  categoryKey?: TonyCategoryKey,
+  opts: { tier?: RecipeTier } = {},
+): SerializedTonyShow {
   const buzz = getAudienceBuzz(show.id);
   const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
   const audScore = buzz?.combinedScore ?? null;
@@ -357,7 +391,7 @@ export function serializeShow(show: ComputedShow, categoryKey?: TonyCategoryKey)
     ? computeAwardsScore(show.id, CATEGORY_KEY_TO_TITLE[categoryKey])
     : 0;
   const composite = categoryKey
-    ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey)
+    ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey, opts.tier ?? 1)
     : legacyBlendedScore(show.compositeScore, enoughAudience ? audScore : null);
 
   // The displayed audience grade letter (A+, B-, etc.) must derive from the
@@ -457,9 +491,56 @@ function getNomineesForSeason(season: TonySeasonWindow): Map<string, Set<string>
   return map;
 }
 
+/**
+ * Returns true once all three Best Play precursor winners (Drama Desk, Outer
+ * Critics Circle, Drama League) are recorded in awards.json for the season —
+ * the "precursor lock" point that the Tier 2 recipe was tuned for. Active
+ * season auto-flips here; past seasons always return true (their winners
+ * have long since been announced).
+ */
+export function shouldUseTier2(season: TonySeasonWindow): boolean {
+  const awardsShows = getAwardsShows();
+  const awardsSeason = toAwardsSeason(season.label);
+  const present = { dramadesk: false, outerCriticsCircle: false, dramaLeague: false };
+  for (const [, data] of Object.entries(awardsShows)) {
+    if (data.tony?.season !== awardsSeason) continue;
+    for (const k of ['dramadesk', 'outerCriticsCircle', 'dramaLeague'] as const) {
+      const wins = (data as Record<string, unknown>)[k] as
+        | { wins?: string[] }
+        | undefined;
+      if (wins?.wins && wins.wins.length > 0) present[k] = true;
+    }
+  }
+  return present.dramadesk && present.outerCriticsCircle && present.dramaLeague;
+}
+
+/**
+ * Resolve which recipe tier to use. Precedence:
+ *   1. Explicit override (env TONY_RECIPE_TIER=1|2) — used by the audit script
+ *      and any future temporary tier-2 evaluation.
+ *   2. Per-season auto-flip via shouldUseTier2 — CURRENTLY DISABLED. The card
+ *      that proposed the auto-flip (Notion 351637c5-...23a9) cited 95.2% Best
+ *      Play accuracy under Tier 2 from a 2026-04-28 Phase 3 analysis. Sprint
+ *      1's tier-weighted Awards Score (merged 2026-05-15) re-tuned the awards
+ *      term enough that empirical re-test on 2026-05-16 shows Tier 2 at
+ *      63.6% (7/11) vs Tier 1 at 90.9% (10/11) — leaning harder on awards
+ *      hurts now. Re-tune Tier 2 weights for the new awards-score scale
+ *      before re-enabling.
+ *   3. Default tier 1.
+ */
+export function resolveRecipeTier(season?: TonySeasonWindow): RecipeTier {
+  const envOverride = (typeof process !== 'undefined' && process.env?.TONY_RECIPE_TIER) || '';
+  if (envOverride === '2') return 2;
+  if (envOverride === '1') return 1;
+  // Intentionally not calling shouldUseTier2(season) until weights re-tuned.
+  // To re-enable auto-flip: uncomment the next line.
+  // if (season && shouldUseTier2(season)) return 2;
+  return 1;
+}
+
 export function groupIntoCategories(
   eligible: ComputedShow[],
-  options?: { nomineesOnly?: boolean; season?: TonySeasonWindow },
+  options?: { nomineesOnly?: boolean; season?: TonySeasonWindow; tier?: RecipeTier },
 ): TonyCategory[] {
   const categories: Array<{ key: TonyCategoryKey; title: string; description: string; filter: (s: ComputedShow) => boolean }> = [
     {
@@ -493,6 +574,9 @@ export function groupIntoCategories(
     ? getNomineesForSeason(options.season)
     : null;
 
+  // Resolve recipe tier: explicit > season auto-flip > default 1.
+  const effectiveTier: RecipeTier = options?.tier ?? resolveRecipeTier(options?.season);
+
   return categories.map(cat => {
     let matching: ComputedShow[];
 
@@ -514,7 +598,7 @@ export function groupIntoCategories(
 
     const scored = matching
       .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
-      .map(s => serializeShow(s, cat.key))
+      .map(s => serializeShow(s, cat.key, { tier: effectiveTier }))
       .sort((a, b) => (b.blendedScore ?? -Infinity) - (a.blendedScore ?? -Infinity));
 
     // In nomineesOnly mode, all nominees should be scored (they've already opened),
@@ -524,7 +608,7 @@ export function groupIntoCategories(
       : matching
           .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
           .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
-          .map(s => serializeShow(s, cat.key));
+          .map(s => serializeShow(s, cat.key, { tier: effectiveTier }));
 
     return {
       key: cat.key,
