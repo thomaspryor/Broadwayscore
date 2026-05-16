@@ -6,7 +6,7 @@ import { computeSiteAwardScore, type CeremonyContribution } from '@/lib/awards-s
 import type { ShowAwards } from '@/lib/data-types';
 import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
-import { AwardScoreBadge, AWARD_TIER_LABEL } from '@/components/show-cards';
+import { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from '@/components/show-cards';
 import { featureFlags } from '@/config/feature-flags';
 
 interface AwardScoreCardProps {
@@ -33,21 +33,23 @@ function shortCategory(c: string): string {
     .replace(/ of a Play$/, ' (Play)');
 }
 
+// Sublabel sits right above the Tony stats panel, which already shows
+// "X Wins · Y Nominations." So the sublabel must add *new* signal — the
+// marquee win or top nomination — never repeat the counts.
 function buildSublabel(awards: ShowAwards | undefined, badge: string, inProgress: boolean): string {
-  const tonyWins = awards?.tony?.wins?.length ?? 0;
-  const tonyNoms = awards?.tony?.nominations ?? 0;
-  if (badge === 'sweeper' && tonyWins > 0) {
-    const top = shortCategory(sortByImportance(awards?.tony?.wins ?? [])[0]);
-    return tonyWins > 1 ? `Won ${top} + ${tonyWins - 1} more` : `Won ${top}`;
+  const tonyWins = sortByImportance(awards?.tony?.wins ?? []);
+  const tonyNoms = sortByImportance(awards?.tony?.nominatedFor ?? []);
+  if (tonyWins.length > 0) {
+    const top = shortCategory(tonyWins[0]);
+    return tonyWins.length > 1 ? `Won ${top} + ${tonyWins.length - 1} more` : `Won ${top}`;
   }
-  if (badge === 'decorated' && tonyWins > 0) return `${tonyWins} Tony win${tonyWins === 1 ? '' : 's'}`;
-  if (badge === 'honored' && tonyWins > 0) {
-    const top = shortCategory(sortByImportance(awards?.tony?.wins ?? [])[0]);
-    return `Won ${top}`;
+  if (inProgress && tonyNoms.length > 0) {
+    return `Nominated for ${shortCategory(tonyNoms[0])}`;
   }
   if (inProgress) return 'Awards season in progress';
-  if (tonyNoms > 0) return `${tonyNoms} Tony nomination${tonyNoms === 1 ? '' : 's'}`;
-  return 'Eligible for awards';
+  if (tonyNoms.length > 0) return `Nominated for ${shortCategory(tonyNoms[0])}`;
+  if (badge === 'eligible') return 'Eligible for awards';
+  return '';
 }
 
 function pointsByCategory(items: CeremonyContribution['items'] | undefined): Map<string, number> {
@@ -87,19 +89,15 @@ function TonyAwardsPanel({
   const totalCount = wins.length + nominationsOnly.length;
   const [expanded, setExpanded] = useState(totalCount > 0 && totalCount <= 5);
   const pointMap = pointsByCategory(contrib?.items);
-  const subtotal = Math.round(contrib?.subtotal ?? 0);
   const sortedWins = sortByImportance(wins);
   const sortedNoms = sortByImportance(nominationsOnly);
 
   return (
     <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-      <div className="flex items-center justify-between mb-3">
+      <div className="mb-3">
         <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
           Tony Awards {tony.season && `(${tony.season})`}
         </span>
-        {subtotal > 0 && (
-          <span className="text-xs text-amber-300/80 font-semibold tabular-nums">+{subtotal}</span>
-        )}
       </div>
 
       <div className="flex flex-wrap gap-x-4 gap-y-1.5">
@@ -253,8 +251,7 @@ function OtherAwardsPanel({
       </button>
 
       <div className="flex flex-wrap gap-2 mt-2">
-        {rows.map(({ cfg, wins, nomsTotal, contrib }) => {
-          const subtotal = Math.round(contrib?.subtotal ?? 0);
+        {rows.map(({ cfg, wins, nomsTotal }) => {
           const winLabel = nomsTotal && nomsTotal > wins.length
             ? `${nomsTotal} noms / ${wins.length} wins`
             : `${wins.length} win${wins.length === 1 ? '' : 's'}`;
@@ -262,7 +259,6 @@ function OtherAwardsPanel({
             <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} ${cfg.text} text-xs font-medium`}>
               <TrophyIcon className="w-3.5 h-3.5" />
               <span>{winLabel} {cfg.short}</span>
-              {subtotal > 0 && <span className="text-gray-400 tabular-nums">· +{subtotal}</span>}
             </span>
           );
         })}
@@ -314,9 +310,6 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
   const isPulitzerFinalist = !!awards?.pulitzer?.finalist?.includes('Drama') || !!awards?.pulitzerFinalist;
   const hasPulitzer = isPulitzerWinner || isPulitzerFinalist;
   const pulitzerYear = awards?.pulitzer?.year ?? awards?.pulitzerFinalist?.year;
-  const pulitzerContrib = result.breakdown.find(c => c.ceremony === 'Pulitzer Prize');
-  const pulitzerPts = Math.round(pulitzerContrib?.subtotal ?? 0);
-
   const tierLabel = result.inProgress && result.badge === 'nominated' ? 'In the Hunt' : AWARD_TIER_LABEL[result.badge];
   const sublabel = buildSublabel(awards, result.badge, result.inProgress);
 
@@ -331,10 +324,10 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-lg font-bold text-white">{tierLabel}</span>
+            <span className={`text-lg font-bold ${getAwardTierLabelClass(result.badge, result.displayScore)}`}>{tierLabel}</span>
             {result.inProgress && result.displayScore > 0 && <ProvisionalPill />}
           </div>
-          <div className="text-sm text-gray-400 line-clamp-2">{sublabel}</div>
+          {sublabel && <div className="text-sm text-gray-400 line-clamp-2">{sublabel}</div>}
         </div>
       </div>
 
@@ -345,9 +338,6 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
             Pulitzer Prize for Drama{isPulitzerWinner ? ' Winner' : ' Finalist'}
             {typeof pulitzerYear === 'number' ? ` (${pulitzerYear})` : ''}
           </span>
-          {pulitzerPts > 0 && (
-            <span className="text-xs text-amber-300/70 font-semibold tabular-nums">+{pulitzerPts}</span>
-          )}
         </div>
       )}
 
@@ -361,6 +351,18 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
         <p className="text-sm text-gray-400">
           No awards recognition yet this season. First nominations land in late April.
         </p>
+      )}
+
+      {(hasTony || hasPulitzer || result.displayScore > 0) && (
+        <div className="mt-4 pt-3 border-t border-white/5">
+          <Link
+            href="/methodology#award-score"
+            className="text-xs text-gray-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+          >
+            How the Award Score works
+            <span aria-hidden>&rarr;</span>
+          </Link>
+        </div>
       )}
     </div>
   );
