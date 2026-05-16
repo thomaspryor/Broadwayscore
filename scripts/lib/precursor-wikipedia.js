@@ -165,14 +165,35 @@ function normalizeForCompare(title) {
  *  unless `force` is true. Parsing failures shouldn't silently wipe data. */
 function writePrecursorJson(name, data, opts = {}) {
   const fp = path.join(PRECURSORS_DIR, `${name}.json`);
-  const newCount = countEntries(data);
   let oldCount = 0;
+  let existing = null;
   if (fs.existsSync(fp)) {
     try {
-      const existing = JSON.parse(fs.readFileSync(fp, 'utf8'));
+      existing = JSON.parse(fs.readFileSync(fp, 'utf8'));
       oldCount = countEntries(existing.data);
     } catch (_) { /* ignore */ }
   }
+
+  // Merge with existing categories that the current scraper doesn't cover.
+  // Scrapers typically only handle the 4 main per-category Wikipedia pages
+  // (e.g. Drama Desk Outstanding Musical / Play / Revival Musical / Revival
+  // Play). Baseline files often include additional categories (Direction,
+  // Choreography, Performance, etc.) that were hand-curated. Without this
+  // merge, every scraper run wiped those categories.
+  // For array-valued payloads (Pulitzer), preserve entries by year that
+  // aren't in the new write.
+  let mergedData = data;
+  if (existing && existing.data) {
+    if (Array.isArray(data) && Array.isArray(existing.data)) {
+      const newYears = new Set(data.map((e) => e.year));
+      const preserved = existing.data.filter((e) => !newYears.has(e.year));
+      mergedData = [...data, ...preserved].sort((a, b) => (a.year || 0) - (b.year || 0));
+    } else if (!Array.isArray(data) && typeof data === 'object' && data !== null) {
+      mergedData = { ...existing.data, ...data };
+    }
+  }
+
+  const newCount = countEntries(mergedData);
   const shrink = oldCount > 0 ? (oldCount - newCount) / oldCount : 0;
   if (shrink > 0.05 && !opts.force) {
     throw new Error(
@@ -186,7 +207,7 @@ function writePrecursorJson(name, data, opts = {}) {
       scrapedAt: new Date().toISOString(),
       ...opts.meta,
     },
-    data,
+    data: mergedData,
   };
   if (opts.dryRun) {
     console.log(`[dry-run] would write ${fp} (${newCount} entries, was ${oldCount})`);
