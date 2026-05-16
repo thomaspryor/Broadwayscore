@@ -4059,6 +4059,74 @@ try {
 }
 
 // ========================================
+// 3.6: CRITIC COVERAGE INDEX (admin digest)
+// ========================================
+// Reads data/audit/critic-coverage-audit.json (full critic audit array) and
+// last 12 history snapshots from data/audit/critic-coverage-history/*.json,
+// then writes public/data/admin/critic-coverage.json.
+// Drives /admin/critic-coverage UI. No scoring impact — read-only over disk
+// + single JSON write. Errors surface to stderr with a ::warning:: annotation
+// but don't fail the rebuild — this is an audit surface, not core data.
+{
+  try {
+    const criticAuditPath = path.join(__dirname, '..', 'data', 'audit', 'critic-coverage-audit.json');
+    const criticHistoryDir = path.join(__dirname, '..', 'data', 'audit', 'critic-coverage-history');
+    const criticOutPath = path.join(__dirname, '..', 'public', 'data', 'admin', 'critic-coverage.json');
+
+    // Read current audit
+    const auditEntries = JSON.parse(fs.readFileSync(criticAuditPath, 'utf8'));
+
+    // Read last 12 history snapshots (sorted ascending = oldest first)
+    let historySnapshots = [];
+    if (fs.existsSync(criticHistoryDir)) {
+      const histFiles = fs.readdirSync(criticHistoryDir)
+        .filter(f => f.endsWith('.json'))
+        .sort() // lexicographic = chronological for YYYY-MM-DD-HHmmss filenames
+        .slice(-12); // keep last 12
+      historySnapshots = histFiles.map(f => JSON.parse(fs.readFileSync(path.join(criticHistoryDir, f), 'utf8')));
+    }
+
+    // Derive current summary from audit entries
+    const totalCritics = auditEntries.length;
+    const totalGaps = auditEntries.reduce((s, e) => s + (e.missingCount || 0), 0);
+    // gapsByBucket: audit entries have no `bucket` field — source from latest history snapshot
+    // (same pattern as gapsBySource below; bucket categorisation lives in audit-critic-coverage-bucket.js)
+    const latestSnapshot = historySnapshots.length > 0 ? historySnapshots[historySnapshots.length - 1] : null;
+    const gapsByBucket = latestSnapshot?.gapsByBucket ?? { A: 0, B: 0, C: 0, D: 0, E: 0 };
+    // gapsBySource: copy from most recent snapshot, or default
+    const gapsBySource = latestSnapshot && latestSnapshot.gapsBySource
+      ? latestSnapshot.gapsBySource
+      : { muckrack: totalGaps };
+
+    // Top 10 critics by missingCount (project only needed fields, no missing array)
+    const topCriticsByGap = [...auditEntries]
+      .sort((a, b) => (b.missingCount || 0) - (a.missingCount || 0))
+      .slice(0, 10)
+      .map(e => ({
+        name: e.name,
+        outlet: e.outlet,
+        tier: e.tier,
+        missingCount: e.missingCount || 0,
+        lastDate: e.lastDate || null,
+      }));
+
+    const digest = {
+      generatedAt: new Date().toISOString(),
+      current: { totalCritics, totalGaps, gapsByBucket, gapsBySource },
+      history: historySnapshots, // oldest first (already sorted ascending)
+      topCriticsByGap,
+    };
+
+    fs.mkdirSync(path.dirname(criticOutPath), { recursive: true });
+    fs.writeFileSync(criticOutPath, JSON.stringify(digest, null, 2), 'utf8');
+    console.log(`\n📊 Critic coverage index: ${totalCritics} critics, ${totalGaps} gaps, ${historySnapshots.length} history snapshots → public/data/admin/critic-coverage.json`);
+  } catch (e) {
+    console.error(`\n::warning::Critic coverage index generation failed: ${e.message}`);
+    console.error(`   /admin/critic-coverage page will ship empty until the next successful rebuild. Stack: ${e.stack}`);
+  }
+}
+
+// ========================================
 // 4: POST-REBUILD EXCERPT AUDIT (Layer 2)
 // ========================================
 {
