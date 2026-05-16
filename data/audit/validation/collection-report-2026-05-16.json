@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-16T18:54:15.727Z",
+  "runDate": "2026-05-16T19:32:34.714Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,37 +11,37 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 208,
+    "processed": 9,
+    "failed": 230,
     "skipped": 0,
-    "successRate": "5.0%"
+    "successRate": "3.8%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 3,
-    "brightdata": 1,
-    "archiveToday": 0,
-    "archive": 4
+    "brightdata": 0,
+    "archiveToday": 2,
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 5,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 3,
     "tier2Success": 3,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 3,
-    "totalFailed": 206,
+    "tier4Attempts": 3,
+    "tier4Success": 2,
+    "totalFailed": 208,
     "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -58,12 +58,32 @@
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
     "company-2021/theatrely--andrew-martini.json",
-    "head-over-heels-2018/rollingstone--jerry-portwood.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-    "escape-to-margaritaville-2018/rollingstone--david-browne.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
   ],
   "failed": [
+    "end-of-the-rainbow-west-end-2026/whatsonstage--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "end-of-the-rainbow-west-end-2026/whatsonstage--unknown.json",
+    "1536-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+    "1536-west-end-2026/timeout-london--andrjez-lukowski.json",
+    "1536-west-end-2026/timeout-london--andrzej-lukowski.json",
+    "1536-west-end-2026/timeout-london--isobel-lewis.json",
+    "1536-west-end-2026/artsdesk--rachel-halliburton.json",
+    "1536-west-end-2026/british-theatre--susan-novak.json",
+    "1536-west-end-2026/independent--ella-duggan.json",
+    "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
+    "1536-west-end-2026/london-theatre--julia-rank.json",
+    "1536-west-end-2026/standard--nick-curtis.json",
+    "1536-west-end-2026/telegraph--dominic-cavendish.json",
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "1536-west-end-2026/theatre-weekly--greg-stewart.json",
+    "1536-west-end-2026/thestage--holly-o.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "1536-west-end-2026/times-uk--dominic-maxwell.json",
+    "1536-west-end-2026/whatsonstage--alex-wood.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "an-ideal-husband-west-end-2026/thestage--unknown.json",
     "end-of-the-rainbow-west-end-2026/whatsonstage--unknown.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
@@ -277,7 +297,8 @@
     "playwright": [
       "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -287,15 +308,14 @@
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json"
     ],
-    "brightdata": [
-      "escape-to-margaritaville-2018/rollingstone--david-browne.json"
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/an-ideal-husband-west-end-2026/thestage--unknown.json"
     ],
-    "archiveToday": [],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "head-over-heels-2018/rollingstone--jerry-portwood.json",
-      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
     ]
   },
   "failuresByOutlet": {},
