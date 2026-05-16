@@ -761,6 +761,13 @@ async function main(): Promise<void> {
     });
   }
 
+  // Sprint 3 (Phase B): announce anchored-bands mode if flag is set. Detection
+  // happens per-review inside EnsembleReviewScorer.scoreReviewFile; this log
+  // surfaces the mode at startup so CI logs / operators can confirm.
+  if (process.env.ANCHORED_BANDS_PILOT === '1') {
+    console.log('🎯 Anchored bands ENABLED (V6 prompt + band clamp; high-rel star/grade reviews score within [floor, ceiling]).\n');
+  }
+
   // Get review files
   // Support comma-separated show IDs: --show=foo,bar,baz
   const showIds = options.showId?.includes(',') ? options.showId.split(',') : undefined;

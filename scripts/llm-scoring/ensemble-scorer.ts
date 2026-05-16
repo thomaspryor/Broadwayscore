@@ -13,6 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
+const { detectBandFromReviewFile } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore } from './ensemble';
 
 // ========================================
@@ -389,8 +390,38 @@ export class EnsembleReviewScorer {
       console.log(`  ::warning::Input validator warnings: ${inputValidation.warnings.join(', ')}`);
     }
 
+    // Sprint 3 (S4): ANCHORED_BANDS_PILOT flag wiring. When env flag is ON,
+    // detect the critic's star rating or letter grade and either:
+    //   (a) HIGH-reliability star → ANCHORED mode (V6 prompt + band constraint)
+    //   (b) LOW-reliability star → UNANCHORED mode (V6 prompt, no band — prose
+    //       only, because the extraction itself may be wrong)
+    //   (c) no star/grade detected → UNANCHORED mode
+    //   (d) flag OFF → existing V5 behavior, untouched
+    // The result is stamped with scoreSource='anchored-v6' or 'llm-v6' so
+    // getBestScore() can identify which path produced the score.
+    const anchoredFlagOn = process.env.ANCHORED_BANDS_PILOT === '1';
+    let band: ScoreBand | undefined = undefined;
+    let starsRaw: string | undefined = undefined;
+    let anchoredBandScoreSource: 'anchored-v6' | 'llm-v6' | null = null;
+    if (anchoredFlagOn) {
+      const detection = detectBandFromReviewFile(reviewFile);
+      if (detection && detection.highReliability) {
+        band = detection.band;
+        starsRaw = detection.starsRaw;
+        anchoredBandScoreSource = 'anchored-v6';
+      } else {
+        // No detection, low-reliability, or no star — unanchored V6 either way.
+        anchoredBandScoreSource = 'llm-v6';
+      }
+    }
+
     // Score with ensemble
-    const ensembleResult = await this.scoreReview(scoringInput.text, scoringInput.context);
+    const ensembleResult = await this.scoreReview(
+      scoringInput.text,
+      scoringInput.context,
+      band,
+      starsRaw,
+    );
 
     // Check for rejection (v5.2+)
     if (ensembleResult.rejected) {
@@ -529,6 +560,20 @@ export class EnsembleReviewScorer {
         ...(ensembleResult.singleModelEmergency ? { singleModelEmergency: true } : {}),
       }
     };
+
+    // Sprint 3 (S4): stamp anchored-bands scoreSource + band metadata. Only
+    // overwrites scoreSource when the flag is ON; otherwise existing
+    // (originalScore-based) scoreSource on the file is preserved by spread.
+    if (anchoredBandScoreSource) {
+      (scoredFile as any).scoreSource = anchoredBandScoreSource;
+      if (band) {
+        (scoredFile.llmScore as any).band = {
+          floor: band.floor,
+          ceiling: band.ceiling,
+          fraction: band.fraction,
+        };
+      }
+    }
 
     // Extract publishDate from LLM if review doesn't already have one.
     // Take the first non-null date from any model (Claude > OpenAI > Gemini > Kimi).

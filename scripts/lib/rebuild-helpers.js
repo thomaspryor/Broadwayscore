@@ -363,6 +363,27 @@ function getBestScore(data, opts = {}) {
     inc('adjudicationSkippedExplicitStars');
   }
 
+  // P0.4: anchored-v6 / llm-v6 (Phase B Sprint 3, 2026-05-16)
+  // When the file was scored with the anchored-bands path
+  // (ANCHORED_BANDS_PILOT=1, see scripts/llm-scoring/ensemble-scorer.ts), the
+  // llmScore.score has ALREADY been constrained to the critic's band. It is
+  // the canonical answer — no need to fall through to P0.5 (originalScore)
+  // or P1 (raw LLM). This precedence beats originalScore because the LLM was
+  // deliberately given the critic's star/grade as a hard constraint and
+  // produced a within-band score; the originalScore (linear star-flat) is
+  // now superseded by the within-band LLM verdict.
+  //
+  // 'anchored-v6': high-reliability star/grade was detected → V6 prompt with band
+  // 'llm-v6':       no star OR low-reliability extraction → V6 prompt no band
+  //
+  // humanReviewScore (P0) + adjudicatedScore (P0a) still override — manual
+  // verdicts always win.
+  if ((data.scoreSource === 'anchored-v6' || data.scoreSource === 'llm-v6')
+      && data.llmScore && typeof data.llmScore.score === 'number'
+      && data.llmScore.score >= 0 && data.llmScore.score <= 100) {
+    return { score: data.llmScore.score, source: data.scoreSource };
+  }
+
   // P0.5: originalScore (aggregator-provided)
   // Downgrade aggregator-sourced ratings for WE ONLY when the aggregator is rating
   // the show independently (e.g., Show Score's own 1-100). Trust the rating when
