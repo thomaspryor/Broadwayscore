@@ -1,5 +1,5 @@
 /**
- * Regression guard — no aggregator URL-pattern Cartesian guess loops.
+ * Regression guard — no aggregator URL-pattern speculative construction.
  *
  * Background: 2026-04-22 Beaches opening. The opening-night-poller attempted
  * 14 guessed BWW URL slugs ("BEACHES-A-NEW-MUSICAL-Opens-on-Broadway-...")
@@ -10,14 +10,25 @@
  * (4 title variants × 9 URL patterns) = 36 guesses.
  *
  * The live URL-guessing was removed from scripts/gather-reviews.js on
- * 2026-04-26 (Lost Boys readiness audit — see comment at line 2122). The
- * dead orphan scripts/scrape-bww-roundups.js was deleted in this commit.
+ * 2026-04-26 (Lost Boys readiness audit). scripts/scrape-bww-roundups.js
+ * was deleted 2026-05-16 (Notion P0 34b637c5-416f-8167-ad13-e443be1dee1e).
+ * scripts/collect-reviews-comprehensive.js was deleted in the same audit's
+ * ship-check follow-up (orphan, no callers, same antipattern). Speculative
+ * URL construction in scripts/opening-night-readiness.js's
+ * checkBWWRoundupURL/checkTBURL was removed at the same time.
  *
- * This test fails if the antipattern reappears anywhere in scripts/.
- * Authoritative discovery must be by listing scrape (bww-rr-discover.js,
- * dtli-homepage-scan.js, etc.), sitemap fetch, or SERP — never by
- * Cartesian-product slug guessing. See Notion card
- * 34b637c5-416f-8167-ad13-e443be1dee1e for the rationale.
+ * The antipattern: building an aggregator URL by interpolating show title
+ * fragments into a template literal that ALSO contains marketing-copy
+ * fragments like "Opens-on-Broadway", "Officially-Opens", "Review-Roundup-",
+ * "What-Did-the-Critics-Think". Real discovery is by listing scrape,
+ * sitemap, or SERP — never by Cartesian-product slug guessing.
+ *
+ * This test catches the antipattern by SEMANTIC SHAPE, not exact identifiers:
+ * (1) Template literals containing AGGREGATOR_HOST + MARKETING_FRAGMENT + ${}
+ * (2) Any `<varname>.push(\`...AGGREGATOR_HOST...${...}\`)` regardless of name
+ * (3) Self-check that known dead orphans stay deleted
+ *
+ * See Notion card 34b637c5-416f-8167-ad13-e443be1dee1e for full rationale.
  */
 
 import { test } from 'node:test';
@@ -36,13 +47,34 @@ const AGGREGATOR_HOSTS = [
   'playbill.com',
   'westendtheatre.com',
   'theatre.reviews',
+  'talkinbroadway.com',
 ];
 
-// Hardcoded URL maps (one-time backfill tables keyed by showId, not runtime
-// slug guesses) are not the antipattern.
+// Marketing-copy URL fragments that real aggregator pages use in their slugs.
+// Their presence in source-code template literals is the antipattern signal:
+// real discovery NEVER constructs slugs containing these phrases — it scrapes
+// listings or SERP results which return the actual slugs as opaque strings.
+const MARKETING_FRAGMENTS = [
+  'Review-Roundup-',
+  'Opens-on-Broadway',
+  'Opens-On-Broadway',
+  'Officially-Opens',
+  'What-Did-the-Critics',
+  'Returns-to-Broadway',
+  'Returns-To-Broadway',
+  'Updating-LIVE',
+  'See-What-the-Critics',
+];
+
+// Exempt files:
+//   - Authoritative one-time backfill maps keyed by showId (not runtime guesses)
+//   - Test fixtures that build URLs from KNOWN-good slugs in regression tables
+//   - This test file itself (mentions the antipattern strings as evidence)
 const EXEMPT_FILES = new Set([
   'fetch-bww-roundups.js',
   'download-aggregator-pages.js',
+  'test-bww-title-validation.js',
+  'no-url-guess-loops.test.mjs',
 ]);
 
 function walkJsFiles(dir, out = []) {
@@ -63,71 +95,53 @@ const ALL_FILES = walkJsFiles(SCRIPTS_DIR).filter(
   f => !EXEMPT_FILES.has(path.basename(f))
 );
 
-test('no Cartesian URL-pattern guess loops targeting aggregator hosts', () => {
-  // Match: `searchUrls.push(\`...AGGREGATOR_HOST...${anything}...\`)`
-  // — i.e. a template-literal push with interpolation aimed at a known
-  // aggregator hostname. Catches the BWW antipattern and any future copies.
+test('no speculative aggregator URL construction (host + marketing fragment + interpolation)', () => {
+  // The semantic shape: a template literal that combines AGGREGATOR_HOST,
+  // a MARKETING_FRAGMENT, AND ${interpolation}. Real discovery returns
+  // opaque slugs from listings/SERP; only speculative guessers ever
+  // re-build a URL out of marketing copy + show-title fragments.
   const offenders = [];
   for (const file of ALL_FILES) {
     const content = readFileSync(file, 'utf8');
-    for (const host of AGGREGATOR_HOSTS) {
-      const escapedHost = host.replace(/\./g, '\\.');
-      const re = new RegExp(
-        String.raw`searchUrls\.push\(\`[^\`]*` + escapedHost + String.raw`[^\`]*\$\{`,
-        'g'
-      );
-      const matches = content.match(re);
-      if (matches) {
-        offenders.push(`${path.relative(SCRIPTS_DIR, file)} (host=${host}, ${matches.length} match(es))`);
-      }
+    // Extract all template literals (backtick strings) — may span lines but
+    // not nested backticks (we don't handle nested template literals).
+    const templates = content.match(/`[^`]*`/g) || [];
+    for (const tpl of templates) {
+      const hasHost = AGGREGATOR_HOSTS.some(h => tpl.includes(h));
+      if (!hasHost) continue;
+      const hasMarketingFragment = MARKETING_FRAGMENTS.some(m => tpl.includes(m));
+      if (!hasMarketingFragment) continue;
+      const hasInterpolation = tpl.includes('${');
+      if (!hasInterpolation) continue;
+      offenders.push(`${path.relative(SCRIPTS_DIR, file)}: ${tpl.slice(0, 120)}${tpl.length > 120 ? '…' : ''}`);
     }
   }
   assert.equal(
     offenders.length,
     0,
-    `URL-guess loop antipattern detected — replace with listing-page scrape, sitemap, or SERP:\n  ${offenders.join('\n  ')}`
+    `Speculative aggregator URL construction detected. Real discovery must come from listing scrapes, sitemaps, or SERP — not from interpolating title fragments into marketing-copy slugs.\n  ${offenders.join('\n  ')}`
   );
 });
 
-test('no titleVariations array combined with aggregator URL template pushes', () => {
-  // Catches the broader shape: file defines `titleVariations` AND uses it
-  // inside an aggregator URL template literal. The Cartesian shape.
-  const offenders = [];
-  for (const file of ALL_FILES) {
-    const content = readFileSync(file, 'utf8');
-    if (!/titleVariations\s*=\s*\[/.test(content)) continue;
-    for (const host of AGGREGATOR_HOSTS) {
-      const escapedHost = host.replace(/\./g, '\\.');
-      const re = new RegExp(
-        String.raw`\`https?://[^\`]*` + escapedHost + String.raw`[^\`]*\$\{(?:title|t)\b`
-      );
-      if (re.test(content)) {
-        offenders.push(`${path.relative(SCRIPTS_DIR, file)} (host=${host})`);
-        break;
-      }
+test('known dead orphans stay deleted', () => {
+  // Belt-and-suspenders: assert that the two historical homes of the BWW
+  // URL-guess antipattern don't get re-added from a stash or revert.
+  const orphans = [
+    'scrape-bww-roundups.js',
+    'collect-reviews-comprehensive.js',
+  ];
+  const restored = [];
+  for (const name of orphans) {
+    try {
+      statSync(path.join(SCRIPTS_DIR, name));
+      restored.push(name);
+    } catch {
+      /* expected: file should not exist */
     }
   }
   assert.equal(
-    offenders.length,
+    restored.length,
     0,
-    `File defines titleVariations AND uses it to build aggregator URLs (Cartesian guess pattern):\n  ${offenders.join('\n  ')}`
-  );
-});
-
-test('regression-guard self-check: orphan scrape-bww-roundups.js stays deleted', () => {
-  // Belt-and-suspenders: explicitly assert the dead orphan with the original
-  // antipattern doesn't get re-added. Catches accidental restore from a stash.
-  const orphan = path.join(SCRIPTS_DIR, 'scrape-bww-roundups.js');
-  let exists = false;
-  try {
-    statSync(orphan);
-    exists = true;
-  } catch {
-    /* expected: file should not exist */
-  }
-  assert.equal(
-    exists,
-    false,
-    `scripts/scrape-bww-roundups.js was re-introduced. It is the historical home of the 36-URL Cartesian guess loop. If you genuinely need it back, replace the guess loop with a listing-page scrape first.`
+    `Dead orphan(s) re-introduced: ${restored.join(', ')}. These files were the historical home of the 36-URL Cartesian guess loop. If you genuinely need them back, replace the guess loop with a listing-page scrape first.`
   );
 });
