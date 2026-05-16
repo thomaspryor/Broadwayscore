@@ -427,15 +427,11 @@ function loadOutlets(opts = {}) {
   // gaining the registry's broader US tier-1/2 coverage.
   const UK_REGIONS = new Set(['london', 'uk']);
   const US_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
-  // Ship-check P0-3 fix: tier-3 US outlets that exist in critic-outlets.json
-  // legacy AND in outlet-registry but lack a `region` tag (registry's region
-  // coverage is incomplete — 860+ outlets unset). Without this whitelist the
-  // tier-cap filter silently drops 8 tier-3 US critics with active scored
-  // reviews. Remove individual entries after the registry adds region: 'us'.
-  const TIER3_US_WHITELIST = new Set([
-    'cititour', 'frontmezzjunkies', 'culturesauce', 'nbcnews',
-    'forward', 'one-minute-critic', 'stageandcinema', 'jitney',
-  ]);
+  // (The TIER3_US_WHITELIST parity bridge from the original ship-check fix
+  // was removed once the 8 tier-3 US outlets — cititour, frontmezzjunkies,
+  // culturesauce, nbcnews, forward, one-minute-critic, stageandcinema,
+  // jitney — got region:'us' written into data/outlet-registry.json
+  // directly. The registry is now the single source of truth.)
   const registryCategories = new Set(['west-end', 'off-west-end', 'broadway', 'off-broadway']);
   if (registryCategories.has(category)) {
     try {
@@ -453,9 +449,8 @@ function loadOutlets(opts = {}) {
           include = isLondonRegion || isDual;
         } else {
           // Broadway / off-broadway: tier 1+2 always; tier 3 only with
-          // explicit US-flavoured region, dual-market flag, OR explicit
-          // tier-3 US whitelist (legacy critic-outlets parity).
-          include = tier <= 2 || isUSRegion || isDual || TIER3_US_WHITELIST.has(id);
+          // explicit US-flavoured region or dual-market flag.
+          include = tier <= 2 || isUSRegion || isDual;
           // Exclude London-only outlets even at tier 1+2 (e.g. Standard).
           if (include && isLondonRegion && !isDual) include = false;
         }
