@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 type MarketKey = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end';
-type TypeValue = 'all' | 'musical' | 'play';
+type TypeValue = 'all' | 'musical' | 'play' | 'opera';
 
 interface MarketFilterBarProps {
   /** Which pair of markets to render: NYC (Broadway + Off-Bway) or London (West End + Off-WE) */

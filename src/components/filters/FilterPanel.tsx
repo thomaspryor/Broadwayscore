@@ -6,6 +6,7 @@ import { FILTER_GROUPS, type SingleGroupConfig } from './filter-ui-config';
 import { FilterPillGroup } from './FilterPillGroup';
 import { FilterSinglePillGroup } from './FilterSinglePillGroup';
 import { TimePeriodSection } from './TimePeriodSection';
+import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import type { DateRange } from '@/lib/tony-seasons';
 
 interface FilterPanelProps {
@@ -43,6 +44,7 @@ export function FilterPanel({
 }: FilterPanelProps) {
   const headingId = useId();
   const containerRef = useFocusTrap<HTMLDivElement>(isOpen);
+  const isOperaHost = useIsOperaDomain();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -103,20 +105,29 @@ export function FilterPanel({
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-5 py-2">
-          {/* Single-select groups (Type, Status) — render at top */}
-          {singleGroups?.map((group) => (
-            <div key={group.paramKey} className="py-3 border-b border-white/5">
-              <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
-                {group.label}
-              </h3>
-              <FilterSinglePillGroup
-                options={group.options.map((o) => ({ value: o.id, label: o.label }))}
-                value={singleValueByGroup?.[group.paramKey] ?? group.defaultValue}
-                onChange={(v) => onSetSingleValue?.(group.paramKey, v)}
-                ariaLabel={`${group.label} filter`}
-              />
-            </div>
-          ))}
+          {/* Single-select groups (Type, Status) — render at top.
+              advancedOnly options (e.g. Opera) are hidden everywhere by default
+              and only shown on the matching brand domain (operascorecard.com).
+              Server-render hides them; client hydration reveals them after the
+              hostname check resolves. */}
+          {singleGroups?.map((group) => {
+            const visibleOptions = group.options.filter(
+              (o) => !o.advancedOnly || (o.id === 'opera' && isOperaHost),
+            );
+            return (
+              <div key={group.paramKey} className="py-3 border-b border-white/5">
+                <h3 className="text-[11px] font-bold uppercase tracking-wider text-gray-500 mb-2.5">
+                  {group.label}
+                </h3>
+                <FilterSinglePillGroup
+                  options={visibleOptions.map((o) => ({ value: o.id, label: o.label }))}
+                  value={singleValueByGroup?.[group.paramKey] ?? group.defaultValue}
+                  onChange={(v) => onSetSingleValue?.(group.paramKey, v)}
+                  ariaLabel={`${group.label} filter`}
+                />
+              </div>
+            );
+          })}
 
           {/* Multi-select groups */}
           {FILTER_GROUPS.map((group, idx) => (
