@@ -9,9 +9,22 @@ name: Update Precursor Awards Data
 # without committing.
 
 on:
-  schedule:
-    - cron: '0 17 * 4-5 *'    # 17:00 UTC daily, April-May (precursor season)
-    - cron: '0 17 * * 1'      # 17:00 UTC every Monday (year-round catch-up)
+  # CRON DISABLED — scrapers are not yet production-ready. The wikitable
+  # parsers in scripts/lib/precursor-category-parser.js have been verified
+  # against real Wikipedia (multi-table fix landed 2026-05-16), but winner
+  # detection is unreliable on several recent years (rows return winner=null
+  # when Wikipedia's row markup differs from the expected bold / highlight /
+  # dagger conventions). Re-enable the schedule blocks below once parser
+  # coverage has been confirmed across all 18 category pages — see Notion P1.
+  #
+  # Until then:
+  #   - data/precursors/*.json is the source of truth (seeded from the prior
+  #     inlined-constants data; refreshed manually via workflow_dispatch).
+  #   - workflow_dispatch with --force review remains available for one-offs.
+  #
+  # schedule:
+  #   - cron: '0 17 * 4-5 *'    # 17:00 UTC daily, April-May (precursor season)
+  #   - cron: '0 17 * * 1'      # 17:00 UTC every Monday (year-round catch-up)
   workflow_dispatch:
     inputs:
       ceremony:

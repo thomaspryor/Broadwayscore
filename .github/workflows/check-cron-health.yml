@@ -52,6 +52,10 @@ jobs:
             "update-mezzanine.yml|192|Update Mezzanine"
             # Weekly Sunday cron — director-attribution audit. 200h gap = 1 missed week = alert
             "check-show-metadata-consensus.yml|200|Check Show Metadata Consensus"
+            # Daily April-June cron — Tony Awards data refresh during ceremony
+            # season. 36h gap during Apr-Jun = 1 missed day + grace, alert needed.
+            # User-facing data feeds /awards-scorecard.
+            "update-tony-awards.yml|36|Update Tony Awards"
             # Drift detector runs every 30 min; 2h gap = 4 missed runs = alert needed
             "check-opening-night-drift.yml|2|Check Opening Night Drift"
             # Opening night checklist fires hourly; 3h = 2 missed runs = needs paging

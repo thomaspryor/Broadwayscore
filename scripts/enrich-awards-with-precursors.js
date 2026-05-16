@@ -37,7 +37,12 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
-const PRIVATE_AWARDS = '/Users/tompryor/broadway-scorecard-data/awards.json';
+// Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
+// script works for any developer / remote runner (env override available for
+// non-standard layouts). Skipped at write time if the path doesn't exist —
+// no failure mode for CI / contributors without the private checkout.
+const PRIVATE_AWARDS = process.env.PRIVATE_AWARDS_PATH
+  || path.join(process.env.HOME || '', 'broadway-scorecard-data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const PRECURSORS_DIR = path.join(__dirname, '..', 'data', 'precursors');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -69,6 +74,10 @@ const OUTER_CRITICS = loadPrecursor('outer-critics');
 const DRAMA_LEAGUE = loadPrecursor('drama-league');
 const NYDCCC = loadPrecursor('nydcc');
 const PULITZER = loadPrecursor('pulitzer');
+// Historic Pulitzer (pre-2014) uses explicit showIds — fuzzy title matching
+// fails on multiple revival history (e.g. 5 Death of a Salesman entries).
+// See data/precursors/pulitzer-historic.json header for full rationale.
+const HISTORIC_PULITZER = loadPrecursor('pulitzer-historic');
 
 
 // ============================================================
@@ -133,6 +142,13 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
 
   // Pass 2: prefix containment — for cases like "Shuffle Along" matching the long form
   // "Shuffle Along, or, the Making of the Musical Sensation of 1921 ..."
+  //
+  // Require the SHORTER side to be ≥2 tokens. Single-token shorter sides
+  // false-match: "Father Comes Home From the Wars" (Pulitzer 2015 finalist)
+  // normalized to "father comes home from the wars" caught "The Father" (norm
+  // "father", 1 token) and credited the-father-2016 with a Pulitzer it didn't
+  // earn. ≥2 tokens preserves the Shuffle Along case (norm "shuffle along")
+  // while killing the false-positive class.
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
     const noms = (sh.tony.nominatedFor || []).filter(c => CAT_SET.has(c));
@@ -141,6 +157,8 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     if (!t) continue;
     const nT = normalizeTitle(t);
     if (norm.length < 6 || nT.length < 6) continue;
+    const shorter = nT.length < norm.length ? nT : norm;
+    if (shorter.split(' ').filter(Boolean).length < 2) continue;
     if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
       if (Math.abs(nT.length - norm.length) <= 35) return showId;
     }
@@ -337,6 +355,50 @@ function applyPulitzer(source, awardsShows, titleById, opts) {
   return { matched, unmatched };
 }
 
+/** Apply HISTORIC_PULITZER (pre-2014 winners + finalists) by explicit showId.
+ *  Direct lookup, no fuzzy matching — historic titles + revivals are too
+ *  ambiguous for the predictions-era matcher. Skips entries whose showId is
+ *  missing from awards.json (e.g. OB-only winners and finalists). */
+function applyHistoricPulitzerById(source, awardsShows) {
+  let matched = 0;
+  const missing = [];
+  for (const e of source) {
+    if (e.winnerId) {
+      const sh = awardsShows[e.winnerId];
+      if (!sh) {
+        missing.push(`Pulitzer/${e.year} winner: ${e.winnerId} (not in awards.json)`);
+      } else {
+        if (!sh.pulitzer) sh.pulitzer = { wins: [], finalist: [] };
+        if (!Array.isArray(sh.pulitzer.wins)) sh.pulitzer.wins = [];
+        if (!Array.isArray(sh.pulitzer.finalist)) sh.pulitzer.finalist = [];
+        if (!sh.pulitzer.wins.includes('Drama')) sh.pulitzer.wins.push('Drama');
+        sh.pulitzer.wins = uniqSorted(sh.pulitzer.wins);
+        sh.pulitzer.year = e.year;
+        matched++;
+      }
+    }
+    if (Array.isArray(e.finalistIds)) {
+      for (const fId of e.finalistIds) {
+        const sh = awardsShows[fId];
+        if (!sh) {
+          missing.push(`Pulitzer/${e.year} finalist: ${fId} (not in awards.json)`);
+          continue;
+        }
+        if (!sh.pulitzer) sh.pulitzer = { wins: [], finalist: [] };
+        if (!Array.isArray(sh.pulitzer.wins)) sh.pulitzer.wins = [];
+        if (!Array.isArray(sh.pulitzer.finalist)) sh.pulitzer.finalist = [];
+        if (!sh.pulitzer.wins.includes('Drama') && !sh.pulitzer.finalist.includes('Drama')) {
+          sh.pulitzer.finalist.push('Drama');
+        }
+        sh.pulitzer.finalist = uniqSorted(sh.pulitzer.finalist);
+        if (typeof sh.pulitzer.year !== 'number') sh.pulitzer.year = e.year;
+        matched++;
+      }
+    }
+  }
+  return { matched, missing };
+}
+
 // ============================================================
 // MAIN
 // ============================================================
@@ -390,6 +452,7 @@ function main() {
   const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
+  const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
   console.log('\nMatch stats:');
   console.log(`  Drama Desk:           ${ddRes.matched} matched, ${ddRes.unmatched.length} unmatched (mostly OB shows not in awards.json)`);
@@ -397,6 +460,10 @@ function main() {
   console.log(`  Drama League:         ${dlRes.matched} matched, ${dlRes.unmatched.length} unmatched`);
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
+  console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
+  if (histPulRes.missing.length > 0) {
+    for (const m of histPulRes.missing) console.log(`    ! ${m}`);
+  }
   if (createdEntries.length > 0) {
     console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for Broadway shows missing entries:`);
     for (const id of createdEntries) console.log(`  + ${id}`);
@@ -438,6 +505,7 @@ function main() {
   applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
+  applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
   const firstNoMeta = JSON.parse(serialized);
   delete firstNoMeta._meta;
