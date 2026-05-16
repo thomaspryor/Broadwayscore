@@ -12,8 +12,8 @@
  * - safeWriteReview() — preserve scored/collected fields on overwrite
  * - classifyContentTier() — tag new files with content tier
  *
- * Used by: scrape-playbill-verdict, scrape-bww-reviews, scrape-bww-roundups,
- * scrape-dtli, scrape-nyc-theatre-roundups, scrape-london-box-office-roundups,
+ * Used by: scrape-playbill-verdict, scrape-bww-reviews, scrape-dtli,
+ * scrape-nyc-theatre-roundups, scrape-london-box-office-roundups,
  * scrape-westendtheatre-roundups, re-extract-aggregator-reviews.
  */
 
