@@ -112,12 +112,13 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 ---
 
 ## `rebuild-fast.yml`
-- **Runs:** Manual trigger only
+- **Runs:** Every 4 hours at :45 UTC (`45 */4 * * *` — safety-net cron) + manual trigger
 - **Does:** Lightweight rebuild: checkout → rebuild reviews.json → push → deploy. No backfill, classification, or flagging steps. ~5 min instead of ~30 min.
-- **Concurrency:** `rebuild-reviews` group (shared with full rebuild — queued, not cancelled)
-- **When to use:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
+- **Concurrency:** Per-run group (`rebuild-fast-${{ github.run_id }}`); parallel runs allowed.
+- **Safety-net role (Notion 362637c5-416f-81ce):** Vercel's static export only re-renders /opera, /broadway, /off-broadway, /west-end when a deploy fires. If `llm-ensemble-score.yml`'s rebuild dispatch silently 403s on GitHub API rate limits, reviews land but pages stay frozen at the last-build snapshot. The 4-hourly cron + dispatch-retry in `llm-ensemble-score.yml` close that gap. Cron runs are byte-identical no-ops via the change-gate commit/deploy step when there's nothing to do.
+- **When to use manually:** Opening-night corrections, manual data fixes, any time you need a fast rebuild without the full pipeline
 - **Manual trigger:** `gh workflow run "Rebuild Reviews (Fast)" -f reason="your reason"`
-- **Options:** `reason` (commit message), `force_write` (override regression guard)
+- **Options:** `reason` (commit message; defaults to "Scheduled safety-net refresh" on cron), `force_write` (override regression guard)
 - **Key difference from full rebuild:** Skips extract-pull-quotes, classify-non-reviews, flag-wrong-production, classify-wrong-production, classify-wrong-show, backfill-unknown-critics, cleanup-phantom-outlets, strip-stale-scores, detect-syndicated-duplicates, apply-audit-flags, analyze-rebuild-drops, audit-wrong-production, enrich-cast, generate-status-page. Keeps: rebuild, critic registry, mobile detail JSONs, deploy, **`check-opening-night-completeness.js`** (A #20 — strict per-show drop alert for shows in ±7d opening-night window).
 
 ## `enrich-reviews.yml`

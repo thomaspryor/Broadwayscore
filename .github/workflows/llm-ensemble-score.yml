@@ -524,13 +524,55 @@ jobs:
           #     ship-check 2026-04-27 caught that the old code silently
           #     swallowed the dispatch when an unrelated fast rebuild was
           #     already running, leaving freshly scored reviews unrebuilt.
+          #
+          # Retry-on-rate-limit (Notion 362637c5-416f-81ce, 2026-05-16): the bare
+          # `gh workflow run` returned HTTP 403 once during a data session and
+          # `set -e` aborted the step, silently losing the rebuild dispatch.
+          # The market pages /opera, /broadway, /off-broadway, /west-end stayed
+          # frozen at their last-build snapshot until a manual rebuild fired the
+          # next day. dispatch_with_retry handles 403/429/secondary-rate-limit
+          # with exponential backoff; rebuild-fast.yml's 4-hourly cron is the
+          # safety net if all retries still fail.
+          dispatch_with_retry() {
+            local workflow="$1"
+            local reason="$2"
+            local attempt=0
+            local max_attempts=4
+            local backoff=5
+            local err_output exit_code
+
+            while [ $attempt -lt $max_attempts ]; do
+              attempt=$((attempt + 1))
+              err_output=$(gh workflow run "$workflow" -f reason="$reason" 2>&1) && exit_code=0 || exit_code=$?
+              if [ $exit_code -eq 0 ]; then
+                [ -n "$err_output" ] && echo "$err_output"
+                echo "Dispatched $workflow on attempt $attempt."
+                return 0
+              fi
+
+              echo "Attempt $attempt/$max_attempts to dispatch $workflow failed (exit $exit_code):"
+              echo "$err_output"
+
+              if echo "$err_output" | grep -qiE 'rate.?limit|HTTP 403|HTTP 429|secondary'; then
+                if [ $attempt -lt $max_attempts ]; then
+                  echo "Rate-limit detected, sleeping ${backoff}s before retry..."
+                  sleep $backoff
+                  backoff=$((backoff * 3))
+                  continue
+                fi
+              fi
+              break
+            done
+
+            echo "::warning::Failed to dispatch $workflow after $attempt attempt(s). Reason: $reason. The 4-hourly rebuild-fast.yml cron (or the next scheduled rebuild) will pick up unrebuilt scores within 4 hours."
+            return 1
+          }
+
           if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
             REBUILD_WF="rebuild-fast.yml"
             REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
             echo "Triggering $REBUILD_WF to incorporate new scores (per-run concurrency, no skip-if-active check)..."
-            gh workflow run "$REBUILD_WF" \
-              -f reason="$REASON"
-            echo "Rebuild auto-triggered ($REBUILD_WF)."
+            dispatch_with_retry "$REBUILD_WF" "$REASON" || true
             exit 0
           fi
 
@@ -549,10 +591,7 @@ jobs:
           fi
 
           echo "Triggering $REBUILD_WF to incorporate new scores..."
-          gh workflow run "$REBUILD_WF" \
-            -f reason="$REASON"
-
-          echo "Rebuild auto-triggered ($REBUILD_WF)."
+          dispatch_with_retry "$REBUILD_WF" "$REASON" || true
 
       - name: Count remaining unscored reviews
         if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && steps.check-needed.outputs.skip != 'true'

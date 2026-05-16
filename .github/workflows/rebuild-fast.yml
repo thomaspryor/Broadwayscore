@@ -12,6 +12,15 @@ concurrency:
   cancel-in-progress: false
 
 on:
+  schedule:
+    # Safety-net cron: refresh static market pages between rebuilds.
+    # Vercel's static export only re-renders /opera, /off-broadway, /broadway,
+    # /west-end when a deploy fires. Reviews can land via review-texts pushes
+    # whose downstream rebuild dispatch silently 403s on GitHub API rate limits
+    # (Notion 362637c5-416f-81ce, 2026-05-16 incident). Pairs with the dispatch
+    # retry in llm-ensemble-score.yml. ~5 min when no diff; the change-gated
+    # commit/deploy steps short-circuit when reviews.json is byte-identical.
+    - cron: '45 */4 * * *'
   workflow_dispatch:
     inputs:
       reason:
@@ -201,7 +210,7 @@ jobs:
           AFTER=${{ steps.after.outputs.count }}
           DIFF=$((AFTER - BEFORE))
 
-          REASON="${{ inputs.reason }}"
+          REASON="${{ inputs.reason || 'Scheduled safety-net refresh' }}"
           MSG="data: Fast rebuild - $REASON"
 
           if [ $DIFF -ne 0 ]; then
