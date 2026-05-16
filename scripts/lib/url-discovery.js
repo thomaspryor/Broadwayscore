@@ -391,7 +391,23 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
  * @returns {{ results: Array|null, provider: string }}
  *   results=null means both providers are down; []=searched but nothing found.
  */
+const _serpCache = require('./serp-cache');
+
 async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed) {
+  // 24h disk cache — same query within TTL returns cached results, no API call.
+  // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
+  // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
+  const cacheOpts = {
+    geo: query.includes('West End') ? 'gb' : 'us',
+    dateMin: dateRange ? dateRange.dateMin.toISOString().split('T')[0] : '',
+    dateMax: dateRange ? dateRange.dateMax.toISOString().split('T')[0] : '',
+  };
+  const cached = _serpCache.get(query, cacheOpts);
+  if (cached) {
+    log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
+    return { results: cached.results, provider: `${cached.provider}-cached` };
+  }
+
   const primary = preferSpeed
     ? { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' }
     : { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' };
@@ -409,6 +425,12 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     } else if (!results && !fbResults) {
       results = null; // Both providers down
     }
+  }
+
+  // Cache successful results (including empty arrays — "no organic results" IS
+  // a valid stable answer). Never cache nulls (provider failures).
+  if (results !== null) {
+    _serpCache.set(query, cacheOpts, { results, provider });
   }
   return { results, provider };
 }
