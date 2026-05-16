@@ -23,6 +23,13 @@ function pct(n: number, d: number): string {
 }
 
 function main(): void {
+  // --tier=1|2 selects the recipe tier. Default: 1 (Tier 1 / Live). Pass
+  // --tier=2 to backtest the Tier 2 / Final recipe (Best Play 0.2/0.2/0.6
+  // post-precursor-lock weights). Use both to compare per-season deltas.
+  const tierArg = process.argv.find((a) => a.startsWith('--tier='));
+  const tier: 1 | 2 = tierArg && tierArg.split('=')[1] === '2' ? 2 : 1;
+  console.log(`Recipe tier: ${tier}`);
+
   const seasons = getAllPredictionSeasons();
   const allShows = getBroadwayShows();
 
@@ -40,7 +47,7 @@ function main(): void {
 
   for (const season of seasons) {
     const eligible = getEligibleShowsForPastSeason(allShows, season);
-    const categories = groupIntoCategories(eligible, { nomineesOnly: true, season });
+    const categories = groupIntoCategories(eligible, { nomineesOnly: true, season, tier });
     const winners = getWinnersForSeason(season);
 
     process.stdout.write(`\n${season.label.padEnd(10)} `);

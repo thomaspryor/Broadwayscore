@@ -30,7 +30,15 @@ import { starToBand, letterGradeToBand, buildSystemPromptV6, buildPromptV6, scor
 // Paths
 // ============================================================================
 
-const DATA_DIR = process.env.STAR_ANCHOR_DATA_DIR || '/Users/tompryor/Broadwayscore/data/review-texts';
+// Default to the in-tree data/review-texts (works in main checkout where
+// the private repo is symlinked, and in worktrees that set up the symlink).
+// Falls back to the canonical main-checkout absolute path for the developer
+// who originally wrote this; override via STAR_ANCHOR_DATA_DIR for any other
+// environment. This script is LOCAL-ONLY by contract — never run from CI.
+const DATA_DIR = process.env.STAR_ANCHOR_DATA_DIR ||
+  (fs.existsSync(path.resolve(__dirname, '../../data/review-texts'))
+    ? path.resolve(__dirname, '../../data/review-texts')
+    : '/Users/tompryor/Broadwayscore/data/review-texts');
 // /tmp/ was wiped between sessions, losing the sample. Persist to claude-outputs
 // (iCloud-synced) so multi-session runs survive. The HTML report contains
 // 80-char excerpts of copyrighted prose — short-snippet/fair-use territory,

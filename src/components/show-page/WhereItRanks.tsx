@@ -238,19 +238,29 @@ function Cell({
       </span>
     );
   }
-  const numClass = emphasis
+  // Display as "N/M" so the denominator (pool size) is visible per-cell,
+  // matching the hero rank line. Rank styled bold; "/M" muted so the number
+  // remains the focal point.
+  const rankClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
-    : 'text-gray-500 tabular-nums';
+    : 'font-semibold text-gray-400 tabular-nums';
+  const denomClass = emphasis ? 'font-normal text-gray-500' : 'font-normal text-gray-600';
+  const content = (
+    <>
+      <span className={rankClass}>{cell.rank}</span>
+      <span className={denomClass}>/{cell.total}</span>
+    </>
+  );
   if (!href) {
     // Visually distinct from links: no underline, default cursor, no hover.
-    return <span className={numClass}>#{cell.rank}</span>;
+    return <span className="tabular-nums">{content}</span>;
   }
   return (
     <Link
       href={href}
-      className={`${numClass} hover:text-white hover:underline underline-offset-[3px] decoration-white/20`}
+      className="tabular-nums hover:text-white hover:underline underline-offset-[3px] decoration-white/20"
     >
-      #{cell.rank}
+      {content}
     </Link>
   );
 }
