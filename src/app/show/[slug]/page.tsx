@@ -62,19 +62,14 @@ import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 import { getShowRanks } from '@/lib/data-show-ranks';
+import { getBrowseSlug } from '@/lib/browse-slugs';
+import WhereItRanks from '@/components/show-page/WhereItRanks';
 
 export const revalidate = 86400;
 
-/** Map category + show type to the correct browse page slug */
-function getBrowseSlug(category: string | undefined, type: string): string {
-  const isMusical = type === 'musical';
-  switch (category) {
-    case 'west-end': return isMusical ? 'best-west-end-musicals' : 'best-west-end-plays';
-    case 'off-west-end': return isMusical ? 'best-off-west-end-musicals' : 'best-off-west-end-plays';
-    case 'off-broadway': return isMusical ? 'best-off-broadway-musicals' : 'best-off-broadway-plays';
-    default: return isMusical ? 'best-broadway-musicals' : 'best-broadway-dramas';
-  }
-}
+// getBrowseSlug moved to src/lib/browse-slugs.ts so WhereItRanks + breadcrumb
+// share the same mapping (plays land on best-broadway-dramas, etc.). See that
+// file for documentation on the dramas-vs-plays slug convention.
 
 export function generateStaticParams() {
   // Pre-render open + previews + recently closed shows (high traffic).
@@ -1149,6 +1144,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </span>
             ))}
           </div>
+        )}
+
+        {/* Where it ranks — bottom-of-page rank card. Flag-gated; the ranks
+            value is null when featureFlags.showRanks is off, so the component
+            renders nothing. */}
+        {featureFlags.showRanks && (ranks || ranksByFormat) && (
+          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
         )}
 
         {/* How Scores Work */}
