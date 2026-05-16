@@ -32,3 +32,11 @@ jobs:
 
       - name: Run cutoff freshness check
         run: node scripts/check-cutoff-freshness.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Check Cutoff Freshness Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
