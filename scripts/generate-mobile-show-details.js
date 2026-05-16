@@ -19,6 +19,7 @@ const path = require('path');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
+const { shouldHideReviews } = require('./lib/should-hide-reviews');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -297,8 +298,14 @@ for (const show of visibleShows) {
     }
   }
 
-  // Compute composite score using shared module (matches engine.ts)
-  const scoreResult = computeCriticScore(showReviews, outletRegistry, show.category, show.type);
+  // Compute composite score using shared module (matches engine.ts).
+  // shouldHideReviews mirrors src/config/scoring.ts → engine.ts:676. Pre-2005
+  // closed shows (not in CURATED_HISTORICAL_SHOWS) get null criticScore so the
+  // per-show JSON matches what the market list pages render. Announced shows
+  // also suppressed — any reviews on file belong to a prior production.
+  // Notion 362637c5-416f-8132 audited this asymmetry 2026-05-16.
+  const hideReviews = shouldHideReviews(show) || show.status === 'announced';
+  const scoreResult = hideReviews ? null : computeCriticScore(showReviews, outletRegistry, show.category, show.type);
 
   // Minimum review thresholds per market (matches src/config/score-buckets.ts)
   const MIN_REVIEWS = 5;

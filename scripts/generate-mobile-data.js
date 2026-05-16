@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { computeCriticScore } = require('./lib/compute-critic-score');
+const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 
 const dataDir = path.join(__dirname, '../data');
@@ -141,14 +142,10 @@ function computeShowScore(showReviews, showCategory, showType) {
 // GENERATE MOBILE DATA
 // ===========================================
 
-// Helper: should reviews be hidden for this show? (matches src/config/scoring.ts)
-function shouldHideReviews(show) {
-  if (!show.openingDate) return false;
-  const openingYear = new Date(show.openingDate).getFullYear();
-  if (openingYear >= SCORE_DISPLAY_YEAR_CUTOFF) return false;
-  if (show.status === 'open' || show.status === 'previews') return false;
-  return true;
-}
+// shouldHideReviews — imported from ./lib/should-hide-reviews.js (single source of
+// truth mirroring src/config/scoring.ts). Prior version inlined the check here and
+// drifted from the TS source — silently missed the CURATED_HISTORICAL_SHOWS carve-out
+// for years. Notion 362637c5-416f-8132 unified all three call sites 2026-05-16.
 
 // Filter: include all non-closed shows + closed shows that have scores (and aren't review-hidden)
 const showsWithScores = new Set();
