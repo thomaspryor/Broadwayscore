@@ -3,7 +3,13 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
-    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json"
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
+    "company-2021/theatrely--andrew-martini.json",
+    "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1288,7 +1294,12 @@
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "mother-russia-off-broadway-2026/the-interested-bystander--cary-wong.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
@@ -1297,7 +1308,9 @@
     "directCookies": [],
     "scrapingbee": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "company-2021/theatrely--andrew-martini.json",
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -1329,7 +1342,7 @@
     ]
   },
   "startTime": "2026-05-16T08:55:18.664Z",
-  "lastProcessed": "an-ideal-husband-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
   "log": [
     {
       "t": "2026-05-16T09:29:38.496Z",
