@@ -155,6 +155,7 @@ export default function MethodologyPage() {
         <a href="#audience-grade" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">AudienceGrade</a>
         {featureFlags.boxOffice && <a href="#box-office-data" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>}
         {featureFlags.videoReviews && <a href="#video-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">VideoScore</a>}
+        {featureFlags.awardScoreV2 && <a href="#award-score" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Award Score</a>}
         <a href="#unique" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">What&apos;s Unique</a>
         <a href="#transparency" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Transparency</a>
       </nav>
@@ -530,6 +531,90 @@ export default function MethodologyPage() {
               <span>VideoScore is separate from CriticScore and does not affect the composite score shown in the show header.</span>
             </li>
           </ul>
+        </section>
+        )}
+
+        {/* Award Score (Awards Scorecard methodology) */}
+        {featureFlags.awardScoreV2 && (
+        <section id="award-score" className="card p-5 sm:p-6 scroll-mt-20">
+          <h2 className="text-xl font-bold text-white mb-4">Award Score</h2>
+          <p className="text-gray-300 text-sm mb-4">
+            The <strong className="text-white">Award Score</strong> is a 0&ndash;100 prestige rating that rolls every major theater-awards recognition into a single number. It runs alongside CriticScore (critics) and AudienceGrade (fans) on each show page&apos;s Awards Scorecard.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Ceremonies counted</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            Broadway: <strong className="text-white">Tony Awards, Pulitzer Prize for Drama, Drama Desk, Outer Critics Circle, Drama League, NY Drama Critics&apos; Circle, Olivier</strong> (when a transfer). West End uses the Olivier as the headline ceremony with proportionally higher weights.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">How categories are weighted</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            Every category is sorted into a tier; the tier sets the points awarded for a win. Nominations earn roughly <strong className="text-white">one-quarter</strong> of the same-tier win.
+          </p>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5 overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-wide text-gray-500 border-b border-white/5">
+                  <th className="pb-2 pr-3 font-semibold">Tier</th>
+                  <th className="pb-2 pr-3 font-semibold">Examples</th>
+                  <th className="pb-2 font-semibold tabular-nums">Tony win</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-300">
+                <tr className="border-b border-white/5">
+                  <td className="py-2 pr-3 font-semibold text-amber-400">S</td>
+                  <td className="py-2 pr-3">Best Musical, Best Play, Best Revival, Pulitzer Drama</td>
+                  <td className="py-2 tabular-nums">+150</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-2 pr-3 font-semibold text-violet-300">A+</td>
+                  <td className="py-2 pr-3">Best Score, Best Book (×1.2 multiplier)</td>
+                  <td className="py-2 tabular-nums">+90</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-2 pr-3 font-semibold text-emerald-400">A</td>
+                  <td className="py-2 pr-3">Best Direction, Choreography, lead Actor / Actress</td>
+                  <td className="py-2 tabular-nums">+75</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-2 pr-3 font-semibold text-teal-400">B</td>
+                  <td className="py-2 pr-3">Featured Actor / Actress, Orchestrations, Ensemble</td>
+                  <td className="py-2 tabular-nums">+35</td>
+                </tr>
+                <tr>
+                  <td className="py-2 pr-3 font-semibold text-gray-400">C</td>
+                  <td className="py-2 pr-3">Scenic, Costume, Lighting, Sound Design</td>
+                  <td className="py-2 tabular-nums">+25</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-gray-400 text-xs mt-3">
+            Pulitzer Drama, NY Drama Critics&apos; Circle, and other ceremonies use the same tier system with proportional weights (e.g. a Drama Desk Best Musical win is +28, not +150). Revivals get an 0.85× multiplier; stacked C-tier wins (4 design categories on one show) discount after the first.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">From raw points to 0&ndash;100</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            Raw points get log-scaled so the difference between an early-career honoree and a historic sweeper compresses into the same 0&ndash;100 scale used everywhere else on the site:
+          </p>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+            <code className="text-brand text-sm font-mono">displayScore = round(40 &times; log<sub>10</sub>(1 + rawPoints / 4))</code>
+            <p className="text-gray-400 text-xs mt-2">
+              Capped at 100. A show with ~12 raw points scores ~25; ~100 points scores ~55; ~500 points scores ~85; ~1,000+ points scores 95&ndash;100.
+            </p>
+          </div>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Tier badges</h3>
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-500 text-amber-950 font-bold flex items-center justify-center text-xs">85+</div><div><span className="text-amber-400 font-semibold">Sweeper</span> <span className="text-gray-500">— historic award haul</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">70-84</div><div><span className="text-emerald-400 font-semibold">Decorated</span> <span className="text-gray-500">— multiple major wins</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">41-69</div><div><span className="text-teal-400 font-semibold">Honored</span> <span className="text-gray-500">— at least one marquee win</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-700/70 text-amber-50 font-bold flex items-center justify-center text-xs">1-40</div><div><span className="text-amber-300 font-semibold">Nominated</span> <span className="text-gray-500">— recognized but yet to win</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-white/10 text-gray-400 font-bold flex items-center justify-center text-xs">&mdash;</div><div><span className="text-gray-400 font-semibold">Eligible</span> <span className="text-gray-500">— not yet recognized</span></div></div>
+          </div>
+          <p className="text-gray-400 text-xs mt-3">
+            During an active Tony season, a show&apos;s score is marked <strong className="text-amber-300">Provisional</strong> until the ceremony — wins land in June and the score will climb.
+          </p>
         </section>
         )}
 

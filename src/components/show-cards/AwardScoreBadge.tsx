@@ -8,17 +8,16 @@ interface AwardScoreBadgeProps {
 }
 
 // Tier ramp: monotonically intensifies (neutral → faint warm → warm → cool
-// achievement → richer green → top gold). Cool greens are reserved for the
-// "won something" tiers so they don't get out-shouted by warm pre-results
-// amber. Keep the amber/emerald/teal palette already used elsewhere on the
-// awards surface.
-const TIER_STYLES: Record<TierBadge, { bg: string; text: string }> = {
-  sweeper:       { bg: 'bg-amber-500',     text: 'text-amber-950' },
-  decorated:     { bg: 'bg-emerald-500',   text: 'text-white' },
-  honored:       { bg: 'bg-teal-600',      text: 'text-white' },
-  'in-the-hunt': { bg: 'bg-amber-700/70',  text: 'text-amber-50' },
-  nominated:     { bg: 'bg-amber-900/40',  text: 'text-amber-100' },
-  eligible:      { bg: 'bg-white/10',      text: 'text-gray-400' },
+// achievement → richer green → top gold). Glow shadow matches tier color so
+// the badge feels in-family with the critic ScoreBadge (.score-great etc.),
+// which uses `box-shadow: 0 2px 8px rgba(<tier-color>, 0.3)`.
+const TIER_STYLES: Record<TierBadge, { bg: string; text: string; label: string; glow: string }> = {
+  sweeper:       { bg: 'bg-amber-500',     text: 'text-amber-950', label: 'text-amber-400',   glow: '0 2px 8px rgba(245, 158, 11, 0.35), 0 0 18px rgba(245, 158, 11, 0.22)' },
+  decorated:     { bg: 'bg-emerald-500',   text: 'text-white',     label: 'text-emerald-400', glow: '0 2px 8px rgba(16, 185, 129, 0.35)' },
+  honored:       { bg: 'bg-teal-600',      text: 'text-white',     label: 'text-teal-400',    glow: '0 2px 8px rgba(13, 148, 136, 0.35)' },
+  'in-the-hunt': { bg: 'bg-amber-700/70',  text: 'text-amber-50',  label: 'text-amber-300',   glow: '0 2px 8px rgba(180, 83, 9, 0.28)' },
+  nominated:     { bg: 'bg-amber-900/40',  text: 'text-amber-100', label: 'text-amber-200',   glow: '0 2px 6px rgba(120, 53, 15, 0.22)' },
+  eligible:      { bg: 'bg-white/10',      text: 'text-gray-400',  label: 'text-gray-400',    glow: '0 2px 4px rgba(0, 0, 0, 0.25)' },
 };
 
 const TIER_LABEL: Record<TierBadge, string> = {
@@ -30,6 +29,10 @@ const TIER_LABEL: Record<TierBadge, string> = {
   eligible: 'Eligible',
 };
 
+export function getAwardTierLabelClass(badge: TierBadge, score: number): string {
+  return score > 0 ? TIER_STYLES[badge].label : TIER_STYLES.eligible.label;
+}
+
 export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: AwardScoreBadgeProps) {
   const styles = score > 0 ? TIER_STYLES[badge] : TIER_STYLES.eligible;
   const label = inProgress && badge === 'nominated' ? 'In the Hunt' : TIER_LABEL[badge];
@@ -39,7 +42,8 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
 
   return (
     <div
-      className={`${sizeBox} ${styles.bg} ${styles.text} rounded-xl flex items-center justify-center font-bold ${sizeText} shadow-sm`}
+      className={`${sizeBox} ${styles.bg} ${styles.text} rounded-xl flex items-center justify-center font-bold ${sizeText}`}
+      style={{ boxShadow: styles.glow }}
       aria-label={`Award Score ${score} — ${label}`}
     >
       {score > 0 ? score : '—'}
