@@ -57,7 +57,7 @@ interface WestEndPageClientProps {
 // URL parameter values
 type StatusParam = 'now_playing' | 'previews' | 'closed' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'alpha' | 'audience_buzz';
-type TypeParam = 'all' | 'musical' | 'play';
+type TypeParam = 'all' | 'musical' | 'play' | 'opera';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
@@ -132,7 +132,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
     sort: (['recent', 'score_desc', 'alpha', 'audience_buzz'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-    type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
+    type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
@@ -365,9 +365,10 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       result = result.filter(show => show.status === statusFilter);
     }
 
-    // Type filter
+    // Type filter — explicit per-type match (was a musical/non-musical binary
+    // until opera joined the type set).
     if (type !== 'all') {
-      result = result.filter(show => type === 'musical' ? show.type === 'musical' : show.type !== 'musical');
+      result = result.filter(show => show.type === type);
     }
 
     // Venue filter (Off-West End)

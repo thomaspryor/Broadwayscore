@@ -75,7 +75,7 @@ interface HomePageClientProps {
 // URL parameter values
 type StatusParam = 'now_playing' | 'closed' | 'upcoming' | 'closing_soon' | 'all';
 type SortParam = 'recent' | 'recent_asc' | 'score_desc' | 'score_asc' | 'alpha' | 'alpha_desc' | 'audience_buzz' | 'audience_asc';
-type TypeParam = 'all' | 'musical' | 'play';
+type TypeParam = 'all' | 'musical' | 'play' | 'opera';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'closed' | 'previews' | 'closing_soon';
 
@@ -218,7 +218,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
     sort: (['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-    type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
+    type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
       ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
     scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
       ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),
@@ -450,12 +450,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       });
     }
 
-    // Type filter
+    // Type filter — explicit per-type match (was a musical/non-musical binary
+    // until opera joined the type set; the binary would have buckets opera with
+    // plays which is wrong since opera and plays are distinct categories).
     if (type !== 'all') {
-      result = result.filter(show => {
-        const isMusical = show.type === 'musical';
-        return type === 'musical' ? isMusical : !isMusical;
-      });
+      result = result.filter(show => show.type === type);
     }
 
     // Sort - when filtering by closing_soon, default to sorting by closing date

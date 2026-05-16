@@ -23,6 +23,23 @@ function isDemo(): boolean {
   return window.location.hostname === 'demo.broadwayscorecard.com';
 }
 
+/**
+ * Detect whether the page is being served under the operascorecard.com domain.
+ * Runtime-only (window-dependent) — returns false during SSR / static generation
+ * so any server-rendered HTML defaults to the Broadway brand. Components that
+ * want to swap branding for opera-domain users must call this in a `useEffect`
+ * + `useState` pattern to avoid hydration mismatch.
+ *
+ * Why no SSR detection: static export builds one HTML payload for all domains;
+ * the same /opera page is served to broadwayscorecard.com/opera AND
+ * operascorecard.com/opera. Per-domain UI swaps happen client-side after hydration.
+ */
+export function isOperaDomain(): boolean {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.hostname;
+  return host === 'operascorecard.com' || host === 'www.operascorecard.com';
+}
+
 function has(name: string): boolean {
   if (enabledFeatures.has(name)) return true;
   if (DEMO_FEATURES.has(name) && isDemo()) return true;

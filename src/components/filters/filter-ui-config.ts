@@ -56,6 +56,14 @@ export interface MultiGroupConfig {
 export interface SingleOption {
   id: string;
   label: string;
+  /**
+   * When true, this option is rendered in the Advanced Filter panel only on
+   * the dedicated brand domain that surfaces it (e.g. opera → operascorecard.com).
+   * Hidden from the inline ToggleBar pill row everywhere AND from the panel on
+   * other domains. Use for show-type niches that have small audiences and
+   * would otherwise clutter the inline pill row for users who don't care.
+   */
+  advancedOnly?: boolean;
 }
 
 export interface SingleGroupConfig {
@@ -144,6 +152,11 @@ export const TYPE_GROUP: SingleGroupConfig = {
     { id: 'all', label: 'All' },
     { id: 'musical', label: 'Musicals' },
     { id: 'play', label: 'Plays' },
+    // 2026-05-01 — opera surfaces only via Advanced Filter on operascorecard.com.
+    // FilterPanel hides advancedOnly options when the host doesn't match. Met
+    // opera coverage is small enough that adding it to the inline pill row on
+    // broadwayscorecard.com would clutter the 99% case (Musicals / Plays).
+    { id: 'opera', label: 'Opera', advancedOnly: true },
   ],
 };
 
