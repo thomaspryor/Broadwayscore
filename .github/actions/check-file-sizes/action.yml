@@ -11,8 +11,12 @@ runs:
         # including gitignored ones. This caused 5 consecutive scoring failures (March 2026)
         # when gitignored diary-shows.json (13MB) and mezzanine-productions-raw.json
         # blocked every workflow that used this check.
-        # Known large files that are legitimately committed to the public repo
-        ALLOW_LARGE="llm-scoring-runs.json llm-scoring-garbage-skips.json master-review-list.json reviews.json shows.json show-score.json"
+        # Known large files that are legitimately committed to the public repo.
+        # stage-latency.jsonl is an append-only audit log that grows ~1MB/day;
+        # blocked the LLM scoring workflow twice (2026-05-01 at 5MB, 2026-05-16
+        # at 25MB) — added here because trimming-in-place keeps growing back.
+        # Long-term: move to private core-data or add a periodic rotation job.
+        ALLOW_LARGE="llm-scoring-runs.json llm-scoring-garbage-skips.json master-review-list.json reviews.json shows.json show-score.json stage-latency.jsonl"
 
         LARGE=""
         while IFS= read -r file; do
