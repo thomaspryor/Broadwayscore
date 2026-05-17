@@ -30,6 +30,7 @@ const cookieLoader = require('../../scripts/lib/cookie-loader');
 
 const origGet = https.get;
 const origRequest = https.request;
+const origFetch = globalThis.fetch;
 
 let capturedGets = [];
 let capturedRequests = [];
@@ -87,11 +88,25 @@ function installStubs() {
     req.setTimeout = () => {};
     return req;
   };
+
+  // fetch-plain.js (used by fetchWithCookiesPlain) was migrated from
+  // https.get to global fetch (undici) in 432a4bbf35 to bypass DataDome
+  // TLS fingerprinting on WSJ. Patch globalThis.fetch and reuse the
+  // capturedGets sink so the existing call.opts.headers.Cookie assertion
+  // still works — the (url, {headers}) shape happens to match.
+  globalThis.fetch = async (url, opts) => {
+    const urlStr = typeof url === 'string' ? url : url.href || String(url);
+    capturedGets.push({ url: urlStr, opts: opts || {} });
+    // Return a 404 Response so fetchWithCookiesPlain throws → returns null
+    // (same effective behavior as the https.get 404 stub).
+    return new Response('', { status: 404 });
+  };
 }
 
 function restoreStubs() {
   https.get = origGet;
   https.request = origRequest;
+  globalThis.fetch = origFetch;
 }
 
 function setBundleEnv(bundleObj) {
