@@ -175,6 +175,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
       const pmNominees = pmData?.categories[cat.title]?.nominees ?? null;
       return {
         ...show,
+        awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
         gdOdds: lookupGdOdds(gdData, showId, cat.title),
         polymarketOdds: pmNominees ? findPmOdds(pmNominees, show.title) : null,
       };
