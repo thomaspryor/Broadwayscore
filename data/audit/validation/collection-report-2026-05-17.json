@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-05-17T15:40:59.686Z",
+  "runDate": "2026-05-17T15:40:20.893Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "the-price-off-west-end-2026",
+    "showFilter": "please-please-me-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 4,
+    "processed": 3,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 3,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
@@ -33,16 +33,16 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 3,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 21,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -51,17 +51,20 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "mexodus-off-broadway-2026/playbill--unknown.json"
+    "please-please-me-west-end-2026/financialtimes--unknown.json",
+    "please-please-me-west-end-2026/independent--unknown.json",
+    "please-please-me-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
-    "the-price-off-west-end-2026/guardian--unknown.json",
-    "the-price-off-west-end-2026/theatre-reviews--unknown.json",
-    "the-price-off-west-end-2026/thestage--unknown.json",
-    "the-price-off-west-end-2026/times-uk--unknown.json"
+    "please-please-me-west-end-2026/guardian--unknown.json",
+    "please-please-me-west-end-2026/standard--unknown.json",
+    "please-please-me-west-end-2026/thestage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "mexodus-off-broadway-2026/playbill--unknown.json"
+      "please-please-me-west-end-2026/financialtimes--unknown.json",
+      "please-please-me-west-end-2026/independent--unknown.json",
+      "please-please-me-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -72,8 +75,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/the-price-off-west-end-2026/theatre-reviews--unknown.json",
-      "data/review-texts/the-price-off-west-end-2026/thestage--unknown.json"
+      "data/review-texts/please-please-me-west-end-2026/thestage--unknown.json"
     ],
     "archive": []
   },
