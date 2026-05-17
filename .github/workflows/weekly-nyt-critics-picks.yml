@@ -1,10 +1,10 @@
-name: Weekly NYT Critics Picks Refresh
+name: NYT Critics Picks Refresh
 
 on:
   schedule:
-    # Mondays at 5 AM UTC (midnight ET). NYT updates the spotlight page
-    # irregularly — weekly is enough to stay fresh without hammering the page.
-    - cron: '0 5 * * 1'
+    # Mon/Wed/Fri at 5 AM UTC (midnight ET). 3x/week reduces the window for
+    # new picks to miss the badge from up to 7 days to ~48h.
+    - cron: '0 5 * * 1,3,5'
   workflow_dispatch:
     inputs:
       dry_run:
