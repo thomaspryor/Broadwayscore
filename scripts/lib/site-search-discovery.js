@@ -739,6 +739,25 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'broadwayworld': {
+    name: 'BroadwayWorld',
+    domain: 'broadwayworld.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // BWW Opera coverage lives at /bwwopera/reviews. Hand-authored marketing
+    // slugs (e.g. "Review-FRIDA-Y-DIEGO-is-the-Ultimate-Dream…") need
+    // diacritic-stripped tokenization and a 50% match threshold — both
+    // handled in the dedicated sibling helper to keep this entry small.
+    skipUrlFilter: true,
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const { discoverBwwOperaReviews } = require('./bww-opera-discover');
+      const show = { type: 'opera', title: showTitle, openingDate, id: showId };
+      const results = await discoverBwwOperaReviews(show);
+      const urls = results.map((r) => r.url);
+      return filterOperaUrls(urls, 'broadwayworld', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
