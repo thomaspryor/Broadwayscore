@@ -587,7 +587,8 @@ function checkCookieExpiration() {
     return results;
   }
 
-  const files = fs.readdirSync(COOKIE_DIR).filter(f => f.endsWith('.json'));
+  // Skip sidecar/meta files (e.g. _extracted-at.json) and quarantined files.
+  const files = fs.readdirSync(COOKIE_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
   if (files.length === 0) {
     results.push({ name: 'Cookies: expiration', status: 'warn', message: 'No cookie files found' });
     return results;
