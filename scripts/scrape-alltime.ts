@@ -22,7 +22,6 @@ const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/sh
 
 const BASE_URL = 'https://www.broadwayworld.com/grossescumulative.cfm';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
-const BACKUP_DIR = path.join(__dirname, '../data');
 const MIN_SHOWS_MAIN_PAGE = 100; // BWW cumulative page typically lists 500+ shows
 
 interface AllTimeStats {
@@ -74,24 +73,6 @@ function loadGrosses(): GrossesData {
       weekEnding: null,
       shows: {}
     };
-  }
-}
-
-// Create backup of grosses.json before writing
-function createBackup(): void {
-  if (!fs.existsSync(GROSSES_PATH)) return;
-  const timestamp = Date.now();
-  const backupPath = path.join(BACKUP_DIR, `grosses.backup-${timestamp}.json`);
-  fs.copyFileSync(GROSSES_PATH, backupPath);
-  console.log(`[Backup] Saved to ${path.basename(backupPath)}`);
-
-  // Keep only last 5 backups
-  const backups = fs.readdirSync(BACKUP_DIR)
-    .filter(f => f.startsWith('grosses.backup-') && f.endsWith('.json'))
-    .sort()
-    .reverse();
-  for (const old of backups.slice(5)) {
-    fs.unlinkSync(path.join(BACKUP_DIR, old));
   }
 }
 
@@ -218,6 +199,7 @@ async function scrapeAllTime(): Promise<void> {
   let specificYear: number | null = null;
   let allYears = false;
   let dryRun = false;
+  let forceOverwrite = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--year' && args[i + 1]) {
@@ -227,6 +209,8 @@ async function scrapeAllTime(): Promise<void> {
       allYears = true;
     } else if (args[i] === '--dry-run') {
       dryRun = true;
+    } else if (args[i] === '--force-overwrite') {
+      forceOverwrite = true;
     }
   }
 
@@ -248,6 +232,8 @@ async function scrapeAllTime(): Promise<void> {
   const allMatches: Map<string, AllTimeStats> = new Map();
   const unmatchedShows: Set<string> = new Set();
   let totalRowsScraped = 0;
+  const failedPages: string[] = [];
+  let mainPageFailed = false;
 
   try {
     // Determine which URLs to scrape
@@ -312,6 +298,13 @@ async function scrapeAllTime(): Promise<void> {
           }
         }
         await page.close();
+      }
+
+      if (rows.length === 0) {
+        failedPages.push(label);
+        if (label === 'Main page (all shows)') mainPageFailed = true;
+        // GHA-recognized warning so CI surface shows the failure
+        console.log(`::warning::scrape-alltime: ${label} returned 0 rows after all retries`);
       }
 
       if (rows.length > 0) {
@@ -380,24 +373,61 @@ async function scrapeAllTime(): Promise<void> {
   console.log(`Total rows scraped: ${totalRowsScraped}`);
   console.log(`Matched to shows.json: ${allMatches.size}`);
   console.log(`Unmatched: ${unmatchedShows.size}`);
+  if (failedPages.length > 0) {
+    console.log(`Pages that returned 0 rows: ${failedPages.length}/${(specificYear ? 1 : allYears ? new Date().getUTCFullYear() - 2005 + 2 : 1)}`);
+    failedPages.forEach(p => console.log(`  - ${p}`));
+  }
+
+  // Per-page failure guard for --all-years. The existing MIN_SHOWS_MAIN_PAGE guard only catches
+  // total-outage on main-page-only mode; with --all-years, scattered year-page failures can
+  // silently degrade coverage. Abort on main-page failure (always serious) or if >50% of pages
+  // failed (BWW likely changed schema or is rate-limiting us).
+  if (mainPageFailed && !specificYear) {
+    console.error(`\nGUARD: Main page returned 0 rows. Aborting write to avoid persisting partial year-only data.`);
+    process.exit(1);
+  }
+  if (allYears) {
+    const totalPages = new Date().getUTCFullYear() - 2005 + 2; // main + (currentYear-2005+1) years
+    if (failedPages.length > totalPages / 2) {
+      console.error(`\nGUARD: ${failedPages.length}/${totalPages} pages failed. Aborting write — likely BWW schema change or rate-limit.`);
+      process.exit(1);
+    }
+  }
 
   // Show matches
-  // Disk-merge with Math.max: protects against partial-year stats overwriting lifetime totals.
-  // A standalone `--year YYYY` invocation only sees that one season's stats. Without this
-  // guard, running `--year 2026` would overwrite Hamilton's $1.14B lifetime gross with its
-  // $40M 2026-season gross. The --all-years path already merges via `allMatches` Math.max
-  // (main page lands first, year pages can't overwrite), but defending the disk write makes
-  // the script safe regardless of how it's invoked.
+  // Default: disk-merge with Math.max to protect against partial-year stats overwriting lifetime
+  // totals. A standalone `--year YYYY` invocation only sees that one season's stats; without
+  // the merge, running `--year 2026` would overwrite Hamilton's $1.14B lifetime with its $40M
+  // 2026-season gross. The --all-years path also relies on this via `allMatches` (main page
+  // lands first, year pages can't overwrite).
+  //
+  // Escape hatch: --force-overwrite bypasses the Math.max and writes scraped values verbatim.
+  // Use this when BWW publishes a downward correction (e.g., typo fix lowering Hamilton's total),
+  // when a bad-high scrape has poisoned a slug, or when intentionally repairing historical data.
+  // Without this flag, monotonic merge means lifetime numbers are permanently write-once-higher.
   let newCount = 0;
   let updateCount = 0;
+  let downgradeRefused = 0;
   for (const [slug, stats] of allMatches) {
     const existingAllTime = grossesData.shows[slug]?.allTime;
     const hadData = existingAllTime?.gross != null;
-    const merged: AllTimeStats = {
+    const merged: AllTimeStats = forceOverwrite ? {
+      gross: stats.gross,
+      performances: stats.performances,
+      attendance: stats.attendance,
+    } : {
       gross: Math.max(stats.gross || 0, existingAllTime?.gross || 0) || null,
       performances: Math.max(stats.performances || 0, existingAllTime?.performances || 0) || null,
       attendance: Math.max(stats.attendance || 0, existingAllTime?.attendance || 0) || null,
     };
+
+    // Surface downward refusals so operators can spot bad-high pinned values without --dry-run.
+    if (!forceOverwrite && hadData && (stats.gross || 0) < (existingAllTime?.gross || 0)) {
+      downgradeRefused++;
+      const scrapedStr = stats.gross ? `$${(stats.gross / 1_000_000).toFixed(1)}M` : 'null';
+      const existingStr = `$${((existingAllTime?.gross || 0) / 1_000_000).toFixed(1)}M`;
+      console.log(`  [merge] ${slug}: scraped ${scrapedStr} < stored ${existingStr} — kept stored (rerun with --force-overwrite to replace)`);
+    }
 
     if (!grossesData.shows[slug]) {
       grossesData.shows[slug] = {
@@ -426,6 +456,9 @@ async function scrapeAllTime(): Promise<void> {
 
   console.log(`\nNew entries: ${newCount}`);
   console.log(`Updated entries: ${updateCount}`);
+  if (downgradeRefused > 0) {
+    console.log(`Downward corrections refused (use --force-overwrite to apply): ${downgradeRefused}`);
+  }
 
   // Show unmatched (first 30)
   if (unmatchedShows.size > 0) {
@@ -440,9 +473,11 @@ async function scrapeAllTime(): Promise<void> {
     process.exit(1);
   }
 
-  // Write results
+  // Write results.
+  // Note: no backup file is written. Rollback path = `git revert` on the private data repo
+  // (broadway-scorecard-data). A local backup written here would only live in the ephemeral CI
+  // runner and never be committed, giving false comfort.
   if (!dryRun) {
-    createBackup();
     grossesData.lastUpdated = new Date().toISOString();
     fs.writeFileSync(GROSSES_PATH, JSON.stringify(grossesData, null, 2) + '\n');
     console.log(`\nWrote all-time stats to ${GROSSES_PATH}`);

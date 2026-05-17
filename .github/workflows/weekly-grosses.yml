@@ -20,6 +20,13 @@ permissions:
   contents: write
   actions: write
 
+# Serialize against scrape-alltime-grosses.yml — both write data/grosses.json. The shared
+# push-with-retry helper's rebase fallback uses -X ours and can silently drop the other
+# writer's edits if they collide. The shared group name (not per-workflow) is the point.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
 jobs:
   update-grosses:
     runs-on: ubuntu-latest
