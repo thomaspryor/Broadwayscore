@@ -1,15 +1,15 @@
 {
   "system": "push verify",
-  "status": "warn",
-  "lastChecked": "2026-05-17T04:16:56.853Z",
+  "status": "pass",
+  "lastChecked": "2026-05-17T07:49:52.034Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Push verify: shows.json",
-      "status": "warn",
-      "message": "Check failed: Command failed: gh run list --workflow=\"update-show-status.yml\" --status=success"
+      "status": "pass",
+      "message": "Data synced (2d old, workflow 2d ago)"
     }
   ]
 }
