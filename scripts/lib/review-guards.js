@@ -341,7 +341,15 @@ function getWrongProductionReasonForUnknownCritic(review, show) {
  * @returns {boolean}
  */
 function urlTitleWordsPass(lowerUrl, showTitle) {
-  const titleWords = showTitle.toLowerCase()
+  // NFD-normalize + strip diacritics BEFORE the [^a-z0-9\s] filter.
+  // Otherwise "Último" tokenizes to ["ltimo"] (the char filter removed the
+  // accented Ú leaving a meaningless fragment) and downstream slug matching
+  // fails silently. Same bug class as operaTitleWords in site-search-discovery.js
+  // (fixed 2026-05-17); applies to every non-opera SERP/site-search caller.
+  const titleWords = showTitle
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
     .replace(/[^a-z0-9\s]/g, '')
     .split(/\s+/)
     .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
@@ -388,7 +396,10 @@ function urlLooksLikeReview(url, showTitle) {
   const { shortTitleCandidate } = require('./title-normalization');
   const shortTitle = shortTitleCandidate(showTitle);
   if (shortTitle) {
-    const shortMeaningfulWords = shortTitle.toLowerCase()
+    const shortMeaningfulWords = shortTitle
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
       .replace(/[^a-z0-9\s]/g, '')
       .split(/\s+/)
       .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));

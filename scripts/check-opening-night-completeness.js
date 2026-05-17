@@ -296,24 +296,22 @@ async function main() {
     const description = `${alerts.length} opening-night show(s) had review/critic/score drops between checks. Investigate before next deploy — drops on opening-night shows are usually a stripping bug, not a quality flag.`;
 
     if (DRY_RUN) {
-      console.log('\n[DRY RUN] Would send Discord alert:');
+      console.log('\n[DRY RUN] Would send alert:');
       console.log('Title: Opening-Night Drop Alert');
       console.log('Description:', description);
       for (const f of fields) {
         console.log(`\n— ${f.name} —`);
         console.log(f.value);
       }
-    } else if (!process.env.DISCORD_WEBHOOK_ALERTS) {
-      console.warn('[completeness] DISCORD_WEBHOOK_ALERTS not set — skipping alert dispatch.');
     } else {
-      const ok = await sendAlert({
+      await sendAlert({
         title: `Opening-Night Drop Alert — ${alerts.length} show(s)`,
         description,
         severity: 'warning',
         fields,
         url: `https://github.com/${process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore'}/actions`,
       });
-      console.log(`[completeness] Discord alert dispatch: ${ok ? 'sent' : 'FAILED'}`);
+      console.log('[completeness] Alert dispatched (logged; surfaces in BSC Daily digest).');
     }
   } else {
     console.log('[completeness] No drops detected — opening-night shows look complete vs last snapshot.');

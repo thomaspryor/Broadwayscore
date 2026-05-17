@@ -239,6 +239,37 @@ async function checkBrightData() {
       }
       return { name: 'Bright Data', status: 'fail', message: `Zone ${zoneName} disabled: "${disableReason}" — auto-recovery failed, create new zone manually at brightdata.com` };
     }
+    // Also check token age — BD tokens expire after 42 days
+    const ghToken = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
+    const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+    if (ghToken) {
+      const tokenMeta = await httpsGet(
+        `https://api.github.com/repos/${repo}/actions/secrets/BRIGHTDATA_TOKEN`,
+        {
+          'Authorization': `Bearer ${ghToken}`,
+          'Accept': 'application/vnd.github+json',
+          'User-Agent': 'broadwayscorecard-health-check',
+        }
+      );
+      if (tokenMeta.status === 200) {
+        let meta;
+        try { meta = JSON.parse(tokenMeta.body); } catch { meta = null; }
+        if (meta && meta.updated_at) {
+          const updatedAt = new Date(meta.updated_at);
+          const daysOld = Math.floor((Date.now() - updatedAt.getTime()) / (1000 * 60 * 60 * 24));
+          const expiresAt = new Date(updatedAt.getTime() + 42 * 24 * 60 * 60 * 1000);
+          const expiryStr = expiresAt.toISOString().slice(0, 10);
+          if (daysOld >= 40) {
+            return { name: 'Bright Data', status: 'fail', message: `${zoneName} active but BRIGHTDATA_TOKEN is ${daysOld}d old — expires ${expiryStr}. Rotate NOW at brightdata.com/cp/setting` };
+          }
+          if (daysOld >= 35) {
+            return { name: 'Bright Data', status: 'warn', message: `${zoneName} active but BRIGHTDATA_TOKEN is ${daysOld}d old — expires ${expiryStr}. Rotate soon at brightdata.com/cp/setting` };
+          }
+          return { name: 'Bright Data', status: 'pass', message: `${zoneName} zone active, token age ${daysOld}d (expires ${expiryStr})` };
+        }
+      }
+    }
+
     return { name: 'Bright Data', status: 'pass', message: `${zoneName} zone active` };
   } catch {
     return { name: 'Bright Data', status: 'warn', message: 'Zone response unparseable' };

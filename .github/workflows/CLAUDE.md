@@ -12,9 +12,8 @@ All new workflows MUST include the `notify-failure` composite action (`.github/a
         with:
           title: 'Workflow Name Failed'
           severity: 'warning'  # Only use 'critical' for the 5 listed in §Notification Severity
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 ```
-For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. Currently 100/100 workflows have notifications.
+For critical workflows, add `email: 'true'` + `resend_api_key`/`owner_email` secrets. The `discord_webhook` input is accepted but ignored (kept for call-site compatibility — no need to pass it in new workflows). Currently 100/100 workflows have notifications.
 
 ## Playwright Setup
 
@@ -68,7 +67,7 @@ This automatically excludes `data/aggregator-archive/` and `data/review-texts/`.
 
 ## Notification Severity
 
-Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `check-cron-health`, `data-health-check` (carries the email digest — if it crashes, daily email won't send). These get real-time Discord alerts (+ email) with a 2-hour cooldown per workflow. **Important:** `.github/actions/notify-failure/action.yml` is a no-op for any severity other than `critical` — do not rely on invoking it with `warning`/`low` to send anything. Non-critical failures appear in the digest below.
+Only 5 workflows should use `severity: 'critical'`: `vercel-deploy`, `opening-night-broadcast`, `opening-night-poller`, `check-cron-health`, `data-health-check` (carries the email digest — if it crashes, daily email won't send). These get real-time email alerts (via Resend) with a 2-hour cooldown per workflow. **Important:** `.github/actions/notify-failure/action.yml` is a no-op for any severity other than `critical` — do not rely on invoking it with `warning`/`low` to send anything. Non-critical failures appear in the digest below.
 
 All other workflows (including `send-follow-notifications`) use `'warning'` or `'low'`. Their failures surface in the **daily email digest** sent by `health-check.js` — specifically `getWorkflowRunSummary()` at `scripts/health-check.js:818` which queries the GitHub Actions API for every workflow run in the last 24 hours and renders a `Workflow Runs (24h)` section plus a `⚠️ Repeat Workflow Failures (24h)` section for any workflow that failed 2+ times (surfaces stuck-broken workflows before they rot for days). Real-time escalation for scheduled workflows with deterministic cadence lives in `check-cron-health.yml`'s `CRITICAL_CRONS` list — add entries there when a workflow's staleness is user-facing (pages a user can screenshot).
 

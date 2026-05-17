@@ -1,5 +1,5 @@
 name: Notify on failure
-description: Send Discord + optional email alert when a workflow fails (with 2-hour cooldown per workflow)
+description: Send email alert when a workflow fails (with 2-hour cooldown per workflow)
 
 inputs:
   title:
@@ -10,7 +10,7 @@ inputs:
     required: false
     default: ''
   severity:
-    description: 'Alert severity: "critical" sends real-time Discord (+ email if set). Non-critical failures are aggregated in the daily failure digest (data-health-check.yml).'
+    description: '"critical" sends real-time email (if configured) + logs. Non-critical failures are aggregated in the BSC Daily email digest.'
     required: false
     default: 'low'
   email:
@@ -18,8 +18,9 @@ inputs:
     required: false
     default: 'false'
   discord_webhook:
-    description: Discord webhook URL
-    required: true
+    description: 'Unused — kept for backwards compatibility with existing callers.'
+    required: false
+    default: ''
   resend_api_key:
     description: Resend API key (required if email=true)
     required: false
@@ -88,7 +89,6 @@ runs:
       if: inputs.severity == 'critical' && steps.cooldown.outputs.suppressed != 'true'
       uses: actions/github-script@v7
       env:
-        DISCORD_WEBHOOK_ALERTS: ${{ inputs.discord_webhook }}
         RESEND_API_KEY: ${{ inputs.resend_api_key }}
         OWNER_EMAIL: ${{ inputs.owner_email }}
       with:

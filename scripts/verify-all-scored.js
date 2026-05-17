@@ -574,17 +574,15 @@ async function main() {
       console.log(`\n— ${f.name} —`);
       console.log(f.value);
     }
-  } else if (process.env.DISCORD_WEBHOOK_ALERTS) {
-    const ok = await sendAlert({
+  } else {
+    await sendAlert({
       title: `Orphan-Unscored Reviews — ${showsWithOrphans.length} show(s)`,
       description,
       severity: 'warning',
       fields,
       url: `https://github.com/${PUBLIC_REPO_OWNER}/${PUBLIC_REPO_NAME}/actions`,
     });
-    console.log(`[verify-all-scored] Discord alert dispatch: ${ok ? 'sent' : 'FAILED'}`);
-  } else {
-    console.warn('[verify-all-scored] DISCORD_WEBHOOK_ALERTS not set — skipping Discord alert');
+    console.log('[verify-all-scored] Alert dispatched (logged; surfaces in BSC Daily digest).');
   }
 
   // We DO NOT exit non-zero. The rebuild pipeline calls this with
