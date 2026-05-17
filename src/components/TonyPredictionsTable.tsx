@@ -32,6 +32,8 @@ interface TonyPredictionsTableProps {
   outcomes?: Record<string, 'winner' | 'nominated'>;
   /** Past-season prediction result for THIS category (correct/missed + winner info). */
   categoryOutcome?: CategoryOutcome;
+  /** Shows opening in this season but ruled ineligible for this category by the Tony Administration Committee */
+  ineligible?: Array<{ slug: string; title: string; note: string }>;
   /** Which scoring mode to rank and display */
   mode?: PredictionMode;
 }
@@ -113,7 +115,7 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   );
 }
 
-export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, categoryOutcome, mode = 'combined' }: TonyPredictionsTableProps) {
+export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, categoryOutcome, ineligible, mode = 'combined' }: TonyPredictionsTableProps) {
   // Re-sort scored shows by the active mode's score
   const scored = useMemo(() => {
     return [...shows].sort((a, b) => {
@@ -262,6 +264,28 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
           );
         })}
       </div>
+
+      {/* Ruled-ineligible footer — shown when the Tony Administration Committee
+          explicitly excluded a show in this category (e.g. solo storytelling,
+          concert specials, Special Tony recipients). Turns a confusing absence
+          into a credibility signal ("the site knows the rules"). */}
+      {ineligible && ineligible.length > 0 && (
+        <div className="mt-6 pt-4 border-t border-white/5">
+          <h3 className="text-xs uppercase tracking-wide text-gray-500 font-medium mb-2">
+            Ruled ineligible by the Tony Administration Committee
+          </h3>
+          <ul className="space-y-1.5">
+            {ineligible.map(item => (
+              <li key={item.slug} className="text-sm">
+                <Link href={`/show/${item.slug}`} className="text-gray-300 hover:text-white font-medium">
+                  {item.title}
+                </Link>
+                <span className="text-gray-500"> — {item.note}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }
