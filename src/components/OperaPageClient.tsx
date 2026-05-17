@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback, startTransition, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ShowListCard, ToggleBar, SCORE_TIERS } from '@/components/show-cards';
+import { ShowListCard, MiniShowCard, ToggleBar, SCORE_TIERS } from '@/components/show-cards';
 import type { ShowCardShow, ScoreModeParam } from '@/components/show-cards/types';
 import { hasEnoughReviews } from '@/config/score-buckets';
 
@@ -13,15 +13,14 @@ export interface OperaPageClientProps {
   totalReviews: number;
 }
 
-type StatusParam = 'now_playing' | 'previews' | 'closed' | 'all';
+type StatusParam = 'now_playing' | 'closed' | 'all';
 type SortParam = 'recent' | 'score_desc' | 'alpha';
 
 const DEFAULT_STATUS: StatusParam = 'all';
-const DEFAULT_SORT: SortParam = 'score_desc';
+const DEFAULT_SORT: SortParam = 'recent';
 
 const statusParamToFilter: Record<StatusParam, string> = {
   now_playing: 'open',
-  previews: 'previews',
   closed: 'closed',
   all: 'all',
 };
@@ -36,7 +35,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
   const initialSearchParams = useSearchParams();
 
   const [filters, setFilters] = useState(() => ({
-    status: (['now_playing', 'previews', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
+    status: (['now_playing', 'closed', 'all'].includes(initialSearchParams.get('status') as string)
       ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
     sort: (['recent', 'score_desc', 'alpha'].includes(initialSearchParams.get('sort') as string)
       ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
@@ -74,11 +73,23 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
     }));
   }, []);
 
+  // Upcoming shelf: shows not yet open, sorted by openingDate ascending
+  const upcomingShows = useMemo(
+    () => shows
+      .filter(s => s.status === 'upcoming')
+      .sort((a, b) => {
+        if (!a.openingDate && !b.openingDate) return 0;
+        if (!a.openingDate) return 1;
+        if (!b.openingDate) return -1;
+        return new Date(a.openingDate).getTime() - new Date(b.openingDate).getTime();
+      }),
+    [shows],
+  );
+
+  // Main list: only open/closed shows with enough reviews
   const filteredAndSortedShows = useMemo(() => {
     let result = shows.filter(show => {
-      if (show.status === 'previews' || show.status === 'upcoming') {
-        return statusFilter === 'previews' || statusFilter === 'all';
-      }
+      if (show.status === 'upcoming') return false;
       return show.criticScore && operaHasEnoughReviews(show);
     });
 
@@ -89,8 +100,8 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
     result.sort((a, b) => {
       switch (sort) {
         case 'score_desc': {
-          const aScore = (a.status === 'previews' || !operaHasEnoughReviews(a)) ? -1 : (a.criticScore?.score ?? -1);
-          const bScore = (b.status === 'previews' || !operaHasEnoughReviews(b)) ? -1 : (b.criticScore?.score ?? -1);
+          const aScore = operaHasEnoughReviews(a) ? (a.criticScore?.score ?? -1) : -1;
+          const bScore = operaHasEnoughReviews(b) ? (b.criticScore?.score ?? -1) : -1;
           return bScore - aScore;
         }
         case 'alpha':
@@ -108,7 +119,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
   }, [shows, statusFilter, sort]);
 
   const openCount = useMemo(
-    () => shows.filter(s => s.status === 'open' || s.status === 'previews').length,
+    () => shows.filter(s => s.status === 'open').length,
     [shows],
   );
 
@@ -143,13 +154,26 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
         )}
       </div>
 
+      {/* Upcoming shelf — horizontal scroll, sorted by opening date */}
+      {upcomingShows.length > 0 && (
+        <section className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-white">Coming Next Season</h2>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            {upcomingShows.map((show) => (
+              <MiniShowCard key={show.id} show={show} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
         <ToggleBar
           label="STATUS:"
           options={[
             { value: 'now_playing' as StatusParam, label: 'PLAYING' },
-            { value: 'previews' as StatusParam, label: 'PREVIEWS' },
             { value: 'all' as StatusParam, label: 'ALL' },
             { value: 'closed' as StatusParam, label: 'CLOSED' },
           ]}
@@ -233,6 +257,7 @@ export default function OperaPageClient(props: OperaPageClientProps) {
         </div>
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>
+          <div className="h-32 bg-surface-overlay rounded-xl"></div>
           <div className="space-y-3">
             {[1, 2, 3].map(i => (
               <div key={i} className="h-24 bg-surface-overlay rounded-xl"></div>
