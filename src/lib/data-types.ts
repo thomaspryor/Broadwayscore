@@ -280,6 +280,14 @@ export interface ObieAwards {
   nominations?: number;
 }
 
+/** Lucille Lortel Award (Off-Broadway Theater Award, 1986–present). */
+export interface LortelAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
@@ -287,6 +295,7 @@ export interface ShowAwards {
   dramaLeague?: DramaLeagueAwards;
   nyDramaCritics?: NyDramaCriticsAwards;
   obie?: ObieAwards;
+  lortel?: LortelAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */

@@ -210,6 +210,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'dramaLeague') return awards.dramaLeague;
   if (key === 'nydcc') return awards.nyDramaCritics;
   if (key === 'obie') return awards.obie;
+  if (key === 'lortel') return awards.lortel;
   return undefined;
 }
 
