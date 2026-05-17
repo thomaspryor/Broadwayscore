@@ -234,25 +234,32 @@ jobs:
             exit 0
           fi
 
+          # Wrap `gh workflow run` in retry-on-rate-limit. The bare command
+          # under `set -e` aborts the step on HTTP 403, silently losing the
+          # dispatch (2026-05-16 incident on run 25977592444). See
+          # scripts/lib/dispatch-with-retry.sh.
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+
           SHOWS="${{ inputs.shows }}"
           if [ -n "$SHOWS" ]; then
             echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
-            gh workflow run collect-review-texts.yml \
+            dispatch_with_retry collect-review-texts.yml \
               -f show_filter="$SHOWS" \
               -f max_reviews=300 \
               -f browserbase_enabled=true \
               -f retry_failed=true \
-              -f archive_first=true
+              -f archive_first=true \
+              || true
           else
             echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
-            gh workflow run collect-review-texts.yml \
+            dispatch_with_retry collect-review-texts.yml \
               -f max_reviews=300 \
               -f browserbase_enabled=true \
               -f retry_failed=true \
-              -f archive_first=true
+              -f archive_first=true \
+              || true
           fi
-
-          echo "Text collection auto-triggered."
 
       - name: Notify on failure
         if: failure()
