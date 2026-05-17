@@ -158,10 +158,9 @@ jobs:
             bash scripts/lib/push-with-retry.sh 3 main || echo "::warning::State push failed — next run will re-check."
           fi
 
-      - name: Send drift alert to Discord
+      - name: Send drift alert
         if: steps.drift.outputs.exit_code == '1'
         env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           ALERT_SHOWS: ${{ steps.drift.outputs.alert_shows }}
         uses: actions/github-script@v7
         with:
@@ -179,7 +178,7 @@ jobs:
                 { name: 'Run', value: `[View logs](${runUrl})`, inline: false },
               ],
               url: runUrl,
-            }).catch(e => console.error('Discord alert failed:', e.message));
+            }).catch(e => console.error('Alert failed:', e.message));
 
       - name: Notify on failure
         if: failure()
