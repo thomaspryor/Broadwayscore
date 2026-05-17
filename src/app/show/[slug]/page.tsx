@@ -66,6 +66,7 @@ import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
+import { AwardsNavLink } from '@/components/AwardsNavLink';
 
 export const revalidate = 86400;
 
@@ -750,9 +751,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           {audienceBuzz && audienceBuzz.combinedScore != null && (
             <a href="#audience" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Audience</a>
           )}
-          {featureFlags.awards && awards && (
-            <a href="#awards" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Awards</a>
-          )}
+          <AwardsNavLink hasAwards={!!awards} />
           {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
             <a href="#box-office" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Box Office</a>
           )}
@@ -929,7 +928,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* Awards */}
         <div id="awards" className="scroll-mt-20" />
-        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
+        {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
 
         {/* Commercial Scorecard — Broadway only */}
         {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
