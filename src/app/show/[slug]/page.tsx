@@ -681,26 +681,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         </div>
         </RedesignOff>
 
-        {/* Gold List Badges */}
-        {featureFlags.goldLists && goldListMemberships.length > 0 && (
-          <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
-            {goldListMemberships.map(m => {
-              const listConfig = GOLD_LIST_MAP[m.listType];
-              if (!listConfig) return null;
-              return (
-                <Link
-                  key={`${m.listType}-${m.season}`}
-                  href={`/lists/${m.listType}/${m.season}`}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap flex-shrink-0 ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
-                >
-                  <GoldListBadge type={m.listType} size="xs" />
-                  <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
-                  <span className="text-gray-500">({m.season})</span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        {/* Gold List Badges moved down to just above the "Where it ranks"
+            card per UX ordering 2026-05-17. They sit better next to the
+            ranks data (both convey leaderboard position) than between the
+            hero and Critic Reviews. */}
 
         {/* Historical Production banner — for old closed shows with no reviews */}
         {show.status === 'closed' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
@@ -742,30 +726,62 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </Link>
         )}
 
-        {/* Section Jump Links — hidden by default, re-enable via sectionJumpLinks feature flag */}
-        {featureFlags.sectionJumpLinks && (
-        <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
-          {show.criticScore && show.criticScore.reviews.length > 0 && (
-            <a href="#critic-reviews" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Reviews</a>
-          )}
-          {audienceBuzz && audienceBuzz.combinedScore != null && (
-            <a href="#audience" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Audience</a>
-          )}
-          <AwardsNavLink hasAwards={!!awards} />
-          {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
-            <a href="#box-office" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Box Office</a>
-          )}
-          {featureFlags.discountTickets && lotteryRush && (
-            <a href="#discount-tickets" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Tickets</a>
-          )}
-          {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (
-            <a href="#creative-team" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Creative</a>
-          )}
-          {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-            <a href="#cast" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Cast</a>
-          )}
-        </nav>
-        )}
+        {/* Section Jump Links — exhausts every card in the new ordering,
+            same order as the cards themselves below. Each pill is gated by
+            the same flag/data check that gates the card it links to, so
+            we never render a pill for a section the user can't reach. */}
+        {featureFlags.sectionJumpLinks && (() => {
+          const pillCls = "inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors";
+          const hasCast = !!(featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)));
+          const hasCreative = !!(featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0);
+          return (
+            <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
+              {show.criticScore && show.criticScore.reviews.length > 0 && (
+                <a href="#critic-reviews" className={pillCls}>Reviews</a>
+              )}
+              {featureFlags.videoReviews && videoReviews.length > 0 && (
+                <a href="#video-reviews" className={pillCls}>Video</a>
+              )}
+              {audienceBuzz && audienceBuzz.combinedScore != null && (
+                <a href="#audience" className={pillCls}>Audience</a>
+              )}
+              <AwardsNavLink hasAwards={!!awards} />
+              {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
+                <a href="#box-office" className={pillCls}>Box Office</a>
+              )}
+              {featureFlags.commercial && !isWestEnd && !isOffBroadway && commercial && (
+                <a href="#commercial" className={pillCls}>Commercial</a>
+              )}
+              {featureFlags.showRanks && (ranks || ranksByFormat) && (
+                <a href="#where-it-ranks" className={pillCls}>Ranks</a>
+              )}
+              {showSchedule && (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
+                <a href="#showtimes" className={pillCls}>Showtimes</a>
+              )}
+              {socialPulse && socialPulse.t !== 'Hidden' && (
+                <a href="#social-buzz" className={pillCls}>Social</a>
+              )}
+              {theater?.venueScores && (
+                <a href="#theater-scorecard" className={pillCls}>Theater</a>
+              )}
+              {theater && (
+                <a href="#seating-scorecard" className={pillCls}>Seating</a>
+              )}
+              {featureFlags.discountTickets && lotteryRush && (
+                <a href="#discount-tickets" className={pillCls}>Tickets</a>
+              )}
+              {featureFlags.castChanges && castChangesData && (
+                <a href="#cast-updates" className={pillCls}>Cast Updates</a>
+              )}
+              {hasCast && (
+                <a href="#cast" className={pillCls}>Cast</a>
+              )}
+              {hasCreative && (
+                <a href="#creative-team" className={pillCls}>Creative</a>
+              )}
+            </nav>
+          );
+        })()}
 
         {/* Critic Reviews / Scorecard */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
@@ -825,7 +841,31 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </section>
         )}
 
-        {/* Audience Buzz Section - below Critic Reviews */}
+        {/* === SECTION ORDERING (updated 2026-05-17) ===
+            1. Critic Reviews  (above)
+            2. Video Reviews
+            3. Audience Scorecard
+            4. Awards Scorecard
+            5. Box Office Scorecard
+            6. Commercial Scorecard
+            7. Where it ranks
+            8. Showtimes
+            9. Socials Scorecard
+           10. Theater Scorecard
+           11. Seating Scorecard
+           12. Discount Tickets
+           13. Cast Updates
+           14. Cast
+           15. Creative Team
+           16. Quick Facts                                                    */}
+
+        {/* Video Reviews — second, right under Critic Reviews */}
+        <div id="video-reviews" className="scroll-mt-20" />
+        {featureFlags.videoReviews && videoReviews.length > 0 && (
+          <VideoReviewsShelf reviews={videoReviews} />
+        )}
+
+        {/* Audience Scorecard */}
         <div id="audience" className="scroll-mt-20" />
         {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
           // Minimum 5 total reviews across all sources to display
@@ -866,9 +906,70 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           ) : null;
         })()}
 
-        {/* Video Reviews — below Audience Grade, behind feature flag */}
-        {featureFlags.videoReviews && videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} />
+        {/* Awards Scorecard */}
+        <div id="awards" className="scroll-mt-20" />
+        {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
+
+        {/* Box Office Scorecard — Broadway only (no public OB/WE gross data) */}
+        <div id="box-office" className="scroll-mt-20" />
+        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
+          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
+            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
+              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
+            </section>
+          ) : null
+        )}
+
+        {/* Commercial Scorecard — Broadway only */}
+        <div id="commercial" className="scroll-mt-20" />
+        {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
+          commercial ? (
+            <BizBuzzCard
+              commercial={commercial}
+              showTitle={show.title}
+              trend={getRecoupmentTrend(show.slug)}
+              weeklyGross={grosses?.thisWeek?.gross}
+              showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
+              allTimeGross={grosses?.allTime?.gross}
+            />
+          ) : show.status === 'previews' || show.status === 'upcoming' ? (
+            <section className="card p-5 sm:p-6 mb-6">
+              <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
+              <p className="text-gray-400 text-sm">Financial data not available yet.</p>
+            </section>
+          ) : null
+        )}
+
+        {/* Gold List badges — sit directly above Where It Ranks so the two
+            leaderboard-position blocks (Gold List membership + per-metric
+            ranks) read as one cluster. */}
+        {featureFlags.goldLists && goldListMemberships.length > 0 && (
+          <div className="flex gap-2 mb-3 overflow-x-auto scrollbar-hide">
+            {goldListMemberships.map(m => {
+              const listConfig = GOLD_LIST_MAP[m.listType];
+              if (!listConfig) return null;
+              return (
+                <Link
+                  key={`${m.listType}-${m.season}`}
+                  href={`/lists/${m.listType}/${m.season}`}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap flex-shrink-0 ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
+                >
+                  <GoldListBadge type={m.listType} size="xs" />
+                  <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
+                  <span className="text-gray-500">({m.season})</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Where it ranks */}
+        <div id="where-it-ranks" className="scroll-mt-20" />
+        {featureFlags.showRanks && (ranks || ranksByFormat) && (
+          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
         )}
 
         {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
@@ -888,31 +989,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           />
         )}
 
-        {/* Where it ranks — directly under Showtimes per UX ordering 2026-05-16.
-            Flag-gated; ranks value is null when featureFlags.showRanks is off, so the
-            component renders nothing in flag-off mode. */}
-        {featureFlags.showRanks && (ranks || ranksByFormat) && (
-          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
-        )}
-
-        {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
-        <div id="box-office" className="scroll-mt-20" />
-        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
-          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
-            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
-              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
+        {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
         <div id="social-buzz" className="scroll-mt-20" />
         <SocialPulseCard sp={socialPulse} />
 
-        {/* Theater Scorecard — moved below Social per UX ordering 2026-05-16 */}
+        {/* Theater Scorecard */}
+        <div id="theater-scorecard" className="scroll-mt-20" />
         {theater?.venueScores && (
           <TheaterScorecardCard
             venueScores={theater.venueScores}
@@ -923,7 +1005,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           />
         )}
 
-        {/* Seating Chart Scorecard — directly under Theater Scorecard */}
+        {/* Seating Scorecard — directly under Theater Scorecard */}
+        <div id="seating-scorecard" className="scroll-mt-20" />
         {theater && (
           <SeatingGuidanceCard
             sections={theater.structuredTips?.seating?.sections}
@@ -932,7 +1015,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           />
         )}
 
-        {/* Lottery/Rush Tickets */}
+        {/* Discount Tickets (Lottery / Rush / Standing Room) */}
         <div id="discount-tickets" className="scroll-mt-20" />
         {featureFlags.discountTickets && lotteryRush && (() => {
           // Don't show until previews have started
@@ -944,35 +1027,28 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
         })()}
 
-        {/* Awards */}
-        <div id="awards" className="scroll-mt-20" />
-        {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
-
-        {/* Commercial Scorecard — Broadway only */}
-        {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
-          commercial ? (
-            <BizBuzzCard
-              commercial={commercial}
-              showTitle={show.title}
-              trend={getRecoupmentTrend(show.slug)}
-              weeklyGross={grosses?.thisWeek?.gross}
-              showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
-              allTimeGross={grosses?.allTime?.gross}
-            />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
-              <p className="text-gray-400 text-sm">Financial data not available yet.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Cast Updates - below Lottery/Rush */}
+        {/* Cast Updates */}
+        <div id="cast-updates" className="scroll-mt-20" />
         {featureFlags.castChanges && castChangesData && (
           <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
         )}
 
-        {/* Creative Team — show only principal roles */}
+        {/* Cast — OBC and current cast from IBDB */}
+        <div id="cast" className="scroll-mt-20" />
+        {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
+          <CastSection
+            openingNightCast={castFile.openingNightCast}
+            currentCast={castFile.currentCast}
+            currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
+            replacements={castFile.replacements}
+            showStatus={show.status}
+            category={show.category}
+            actorSlugs={castActorSlugs}
+            tonyMap={getShowCastTonyMap(show.id)}
+          />
+        )}
+
+        {/* Creative Team — principal roles only */}
         <div id="creative-team" className="scroll-mt-20" />
         {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (() => {
           const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
@@ -980,7 +1056,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           return principals.length > 0 ? (
           <div className="mb-8">
             <div className="card p-5 sm:p-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 mb-4">Creative Team</h2>
               <ul className="space-y-2.5 sm:space-y-2">
                 {principals.map((member, i) => {
                   const creativeLink = getCreativeLink(member.name, member.role);
@@ -1000,21 +1076,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </div>
           ) : null;
         })()}
-
-        {/* Cast — OBC and current cast from IBDB */}
-        <div id="cast" className="scroll-mt-20" />
-        {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-          <CastSection
-            openingNightCast={castFile.openingNightCast}
-            currentCast={castFile.currentCast}
-            currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
-            replacements={castFile.replacements}
-            showStatus={show.status}
-            category={show.category}
-            actorSlugs={castActorSlugs}
-            tonyMap={getShowCastTonyMap(show.id)}
-          />
-        )}
 
         {/* Quick Facts - Structured data for users and AI systems */}
         <section className="card p-5 sm:p-6 mb-8" aria-labelledby="quick-facts-heading">

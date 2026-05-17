@@ -490,12 +490,13 @@ function Inner({
         <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
       )}
 
-      {/* Critics' Take — inlined; CriticsTakeCard component lives only on the v1
-          redesign branch and isn't merged to main. Styling matches the existing
-          consensus block on the desktop side of this same page. */}
+      {/* Critics' Take — inline directly below the breakdown bar with NO
+          card chrome. Per user feedback the rounded-card border made the
+          area feel busy; the breakdown bar + take read better as one
+          continuous block. */}
       {hasEnoughCriticReviews && consensusText && (
-        <div className="card p-4">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+        <div className="mt-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">
             Critics&apos; Take
           </p>
           <p className="text-gray-300 text-sm leading-relaxed">{consensusText}</p>
