@@ -163,11 +163,37 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   // pool, so no Pass 0 preference triggers and Pass 1 still wins.
   const targetSeasonForP1 = opts.sourceYear ? ceremonyYearToTonySeason(opts.sourceYear) : null;
   if (targetSeasonForP1 && PREDICTIONS_ERA.includes(targetSeasonForP1)) {
+    // Pass 0a: exact title match in the same season.
     for (const [showId, sh] of Object.entries(awardsShows)) {
       if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
       const t = titleById[showId];
       if (!t) continue;
       if (normalizeTitle(t) === norm) return showId;
+    }
+    // Pass 0b: prefix-containment match in the same season — handles long-
+    // subtitled show titles (e.g. source "Purlie Victorious" / show "Purlie
+    // Victorious: A Non-Confederate Romp Through the Cotton Patch", or
+    // source "A Beautiful Noise" / show "A Beautiful Noise, The Neil Diamond
+    // Musical"). Pass 2 has the same prefix logic but with a 35-char diff
+    // cap and a top-cat Tony noms gate; the season-match here is strict
+    // enough to safely drop both restrictions for this case.
+    //
+    // Token requirement (≥2 tokens on the shorter side) preserved to avoid
+    // the "Father Comes Home From the Wars" / "The Father" false-match class.
+    if (norm.length >= 6) {
+      const shorterNeeds2Tokens = norm.split(' ').filter(Boolean).length >= 2;
+      if (shorterNeeds2Tokens) {
+        for (const [showId, sh] of Object.entries(awardsShows)) {
+          if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
+          const t = titleById[showId];
+          if (!t) continue;
+          const nT = normalizeTitle(t);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return showId;
+          }
+        }
+      }
     }
   }
 
@@ -252,8 +278,7 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     const targetSeason = ceremonyYearToTonySeason(opts.sourceYear);
     if (PREDICTIONS_ERA.includes(targetSeason)) {
       const candidates = opts.broadwayShowsBySeason.get(targetSeason) || [];
-      for (const sh of candidates) {
-        if (normalizeTitle(sh.title) !== norm) continue;
+      const matchAndApply = (sh) => {
         if (!awardsShows[sh.id]) {
           awardsShows[sh.id] = { tony: { season: targetSeason, nominatedFor: [] } };
           if (opts.onCreate) opts.onCreate(sh.id);
@@ -271,6 +296,27 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
         }
         titleById[sh.id] = sh.title;
         return sh.id;
+      };
+      // Pass 4a: exact match by normalized title.
+      for (const sh of candidates) {
+        if (normalizeTitle(sh.title) !== norm) continue;
+        return matchAndApply(sh);
+      }
+      // Pass 4b: prefix-containment match for shows with long subtitles
+      // (e.g. source "A Beautiful Noise" / show "A Beautiful Noise, The Neil
+      // Diamond Musical"). Same season-gate as Pass 4a — the season match is
+      // the strict guard against false-positive cross-production attribution
+      // (the colliding-titles case that Pass 0/1/2 also guard against). Token
+      // requirement preserves the "Father Comes Home From the Wars" /
+      // "The Father" disambiguation rule.
+      if (norm.length >= 6 && norm.split(' ').filter(Boolean).length >= 2) {
+        for (const sh of candidates) {
+          const nT = normalizeTitle(sh.title);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return matchAndApply(sh);
+          }
+        }
       }
     }
   }
@@ -491,6 +537,20 @@ function main() {
   }
   const awardsShows = awards.shows || awards;
 
+  // Snapshot tony.eligible and tony.note BEFORE enrichment so they survive a full-file
+  // rewrite started from a stale base. These are human-curated fields (Tony Administration
+  // Committee rulings) that no automated script should remove. Pattern mirrors the
+  // spread-merge protection added to scrape-tony-awards.js in Sprint 1 (commit 2ccdaf6e).
+  const eligibilitySnapshot = new Map();
+  for (const [showId, sh] of Object.entries(awardsShows)) {
+    const t = sh.tony;
+    if (!t) continue;
+    const snap = {};
+    if (t.eligible !== undefined) snap.eligible = t.eligible;
+    if (t.note !== undefined) snap.note = t.note;
+    if (Object.keys(snap).length > 0) eligibilitySnapshot.set(showId, snap);
+  }
+
   // Broadway shows from shows.json bucketed by Tony season (PREDICTIONS_ERA only).
   // Used by matcher pass 4 to attribute DD/OCC/DL/Pulitzer noms to non-Tony-nominated
   // Broadway shows that aren't currently in awards.json. Year-gated by source year
@@ -546,6 +606,30 @@ function main() {
   if (backfilledTony.length > 0) {
     console.log(`\nBackfilled tony.season on ${backfilledTony.length} existing entries (had non-Tony awards data only):`);
     for (const id of backfilledTony) console.log(`  ~ ${id}`);
+  }
+
+  // 2.5) Restore human-curated tony.eligible and tony.note from snapshot.
+  // The enrichment passes above don't touch tony.eligible/note, but a "surgical reset"
+  // step (manually deleting stale precursor data before re-enriching) can inadvertently
+  // start from a stale awards.json that pre-dates manual eligibility rulings. This pass
+  // ensures those rulings survive regardless of the input base.
+  let eligibilityRestored = 0;
+  for (const [showId, snap] of eligibilitySnapshot) {
+    const sh = awardsShows[showId];
+    if (!sh || !sh.tony) continue;
+    let changed = false;
+    if ('eligible' in snap && sh.tony.eligible !== snap.eligible) {
+      sh.tony.eligible = snap.eligible;
+      changed = true;
+    }
+    if ('note' in snap && sh.tony.note !== snap.note) {
+      sh.tony.note = snap.note;
+      changed = true;
+    }
+    if (changed) eligibilityRestored++;
+  }
+  if (eligibilityRestored > 0) {
+    console.log(`⚠️  Restored tony.eligible/note for ${eligibilityRestored} show(s) that were clobbered by stale input.`);
   }
 
   // 3) Update _meta
