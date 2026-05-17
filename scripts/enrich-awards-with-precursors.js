@@ -163,11 +163,37 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   // pool, so no Pass 0 preference triggers and Pass 1 still wins.
   const targetSeasonForP1 = opts.sourceYear ? ceremonyYearToTonySeason(opts.sourceYear) : null;
   if (targetSeasonForP1 && PREDICTIONS_ERA.includes(targetSeasonForP1)) {
+    // Pass 0a: exact title match in the same season.
     for (const [showId, sh] of Object.entries(awardsShows)) {
       if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
       const t = titleById[showId];
       if (!t) continue;
       if (normalizeTitle(t) === norm) return showId;
+    }
+    // Pass 0b: prefix-containment match in the same season — handles long-
+    // subtitled show titles (e.g. source "Purlie Victorious" / show "Purlie
+    // Victorious: A Non-Confederate Romp Through the Cotton Patch", or
+    // source "A Beautiful Noise" / show "A Beautiful Noise, The Neil Diamond
+    // Musical"). Pass 2 has the same prefix logic but with a 35-char diff
+    // cap and a top-cat Tony noms gate; the season-match here is strict
+    // enough to safely drop both restrictions for this case.
+    //
+    // Token requirement (≥2 tokens on the shorter side) preserved to avoid
+    // the "Father Comes Home From the Wars" / "The Father" false-match class.
+    if (norm.length >= 6) {
+      const shorterNeeds2Tokens = norm.split(' ').filter(Boolean).length >= 2;
+      if (shorterNeeds2Tokens) {
+        for (const [showId, sh] of Object.entries(awardsShows)) {
+          if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
+          const t = titleById[showId];
+          if (!t) continue;
+          const nT = normalizeTitle(t);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return showId;
+          }
+        }
+      }
     }
   }
 
@@ -252,8 +278,7 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     const targetSeason = ceremonyYearToTonySeason(opts.sourceYear);
     if (PREDICTIONS_ERA.includes(targetSeason)) {
       const candidates = opts.broadwayShowsBySeason.get(targetSeason) || [];
-      for (const sh of candidates) {
-        if (normalizeTitle(sh.title) !== norm) continue;
+      const matchAndApply = (sh) => {
         if (!awardsShows[sh.id]) {
           awardsShows[sh.id] = { tony: { season: targetSeason, nominatedFor: [] } };
           if (opts.onCreate) opts.onCreate(sh.id);
@@ -271,6 +296,27 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
         }
         titleById[sh.id] = sh.title;
         return sh.id;
+      };
+      // Pass 4a: exact match by normalized title.
+      for (const sh of candidates) {
+        if (normalizeTitle(sh.title) !== norm) continue;
+        return matchAndApply(sh);
+      }
+      // Pass 4b: prefix-containment match for shows with long subtitles
+      // (e.g. source "A Beautiful Noise" / show "A Beautiful Noise, The Neil
+      // Diamond Musical"). Same season-gate as Pass 4a — the season match is
+      // the strict guard against false-positive cross-production attribution
+      // (the colliding-titles case that Pass 0/1/2 also guard against). Token
+      // requirement preserves the "Father Comes Home From the Wars" /
+      // "The Father" disambiguation rule.
+      if (norm.length >= 6 && norm.split(' ').filter(Boolean).length >= 2) {
+        for (const sh of candidates) {
+          const nT = normalizeTitle(sh.title);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return matchAndApply(sh);
+          }
+        }
       }
     }
   }
