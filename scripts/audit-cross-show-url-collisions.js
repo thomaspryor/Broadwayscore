@@ -21,6 +21,7 @@ const REPORT_PATH = path.join(__dirname, '..', 'data', 'audit', 'url-collision-r
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
 const { shouldSkipWrongProductionAudit, wrongShowCleared } = require('./lib/review-guards');
+const { validateShowMentioned } = require('./lib/content-quality');
 
 const args = process.argv.slice(2);
 const APPLY = args.includes('--apply');
@@ -353,9 +354,14 @@ if (APPLY) {
   }
 
   // Guard: skip wrongShow for manually-cleared files, London-market shows reviewed by UK outlets,
-  // OR when URL market signal matches the show's market
+  // URL market signal match, null publish date, or when fullText confirms the filed show.
   function shouldSkipWrongShow(showId, data) {
     if (wrongShowCleared(data)) return true;
+    // Guard A: null publishDate means no date signal — date-proximity logic is unreliable
+    if (!data.publishDate) {
+      log(`  SKIPPED (null publishDate — no date signal): ${showId}/${data.outletId || 'unknown'}`);
+      return true;
+    }
     const showInfo = showDateMap[showId];
     if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
       londonMarketSkipped++;
@@ -366,6 +372,14 @@ if (APPLY) {
       urlMarketMatchSkipped++;
       log(`  SKIPPED (URL market signal matches show): ${showId}/${data.outletId || 'unknown'} — ${data.url}`);
       return true;
+    }
+    // Guard B: fullText confirms the filed show — text evidence overrides date heuristic
+    if (showInfo && data.fullText && data.fullText.length >= 200) {
+      const textCheck = validateShowMentioned(data.fullText, showInfo.title, showId);
+      if (textCheck.valid) {
+        log(`  SKIPPED (fullText confirms filed show): ${showId}/${data.outletId || 'unknown'}`);
+        return true;
+      }
     }
     return false;
   }
