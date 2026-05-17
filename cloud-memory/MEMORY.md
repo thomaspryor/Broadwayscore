@@ -91,6 +91,7 @@
 - [Stage cookie minimal set](feedback_stage_cookie_minimal_set.md) — 5 cookies; cookie-only auth (THESTAGE_EMAIL/PASSWORD deleted).
 - [Mac Studio cookies](feedback_mac_studio_cookies.md) — Tahoe path changed; Terminal needs FDA; 11 COOKIES_BUNDLE_* secrets.
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — All audience scrapers must import `normalizeTitle` from `scripts/lib/title-match.js`.
+- [Commit audience-buzz before CI rebuild](feedback_audience_buzz_commit_before_rebuild.md) — After local audience scraping, commit `audience-buzz.json` to private repo immediately. CI rebuild reads GitHub-hosted file; uncommitted local data is silently overwritten.
 - [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — Hardcoded `cells[N]` + length-only guards make scrapers silently fail on source-side column changes. BWW broke scrape-alltime for 2 months in 2026-Q2.
 - [Object-literal duplicate keys silently overwrite](feedback_object_literal_duplicate_keys.md) — Adding `'vulture': {...}` to a registry that already has `'vulture': {...}` silently nukes the existing entry. Grep before adding; use sibling-key + outletIdOverride when same canonical id needs different dispatch. Caught Sprint 2 nuking Broadway-Vulture/West-End-Times-UK.
 
