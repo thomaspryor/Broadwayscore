@@ -248,12 +248,19 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
-  // Opera companies restage the same opera every season — any opening-year
-  // difference is a different production (e.g., Met's La Bohème 2025 vs 2026).
+  // Opera companies restage the same opera every season — different seasons are
+  // different productions (e.g., Met's La Bohème 2025 vs 2026). Use date-based
+  // comparison (>180 days) rather than year comparison to correctly handle
+  // productions that preview in December but open in January.
   if (newShow.type === 'opera' && existing.type === 'opera') {
-    const newYr = getYear(newShow);
-    const existYr = getYear(existing);
-    if (newYr && existYr && newYr !== existYr) return true;
+    if (newShow.openingDate && existing.openingDate) {
+      const daysDiff = Math.abs(new Date(newShow.openingDate) - new Date(existing.openingDate)) / 86400000;
+      if (daysDiff > 180) return true;
+    } else {
+      const newYr = getYear(newShow);
+      const existYr = getYear(existing);
+      if (newYr && existYr && Math.abs(newYr - existYr) > 1) return true;
+    }
   }
 
   // Transfers within the same market pool (e.g., off-broadway → broadway)
@@ -472,6 +479,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 9: Levenshtein distance for fuzzy matching (for titles > 5 chars)
     if (newTitleNormalized.length > 5 && existingTitleNormalized.length > 5) {
       if (areTitlesSimilar(newTitleNormalized, existingTitleNormalized)) {
+        if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
           reason: `Fuzzy match (Levenshtein): "${newTitleNormalized}" ~ "${existingTitleNormalized}"`,
