@@ -172,6 +172,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
       const savedSlugs = localStorage.getItem('btc-pick-slugs');
       if (saved) setPicks(JSON.parse(saved));
       if (savedSlugs) setPickSlugs(JSON.parse(savedSlugs));
+      if (localStorage.getItem('btc-email-submitted') === '1') setEmailSubmitted(true);
     } catch {}
     return () => document.body.classList.remove('btc-standalone');
   }, []);
@@ -266,6 +267,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         existing.email = email;
         localStorage.setItem('bsc_user_data', JSON.stringify(existing));
         localStorage.setItem(`${SUBSCRIBED_KEY_PREFIX}broadway`, 'true');
+        localStorage.setItem('btc-email-submitted', '1');
       } catch { /* localStorage unavailable */ }
       setEmailSubmitted(true);
     } catch {

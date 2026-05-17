@@ -6,6 +6,24 @@ const SUBMISSIONS_REPO = 'thomaspryor/broadway-scorecard-data';
 const SUBMISSIONS_PATH = 'data/beat-the-critics-submissions.jsonl';
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
 
+// In-memory rate limit: max 3 submissions per IP per 10 minutes.
+// Resets on cold start — good enough for casual spam prevention without Redis.
+const ipRateLimit = new Map<string, { count: number; windowStart: number }>();
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 3;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = ipRateLimit.get(ip);
+  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+    ipRateLimit.set(ip, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= RATE_MAX) return false;
+  entry.count++;
+  return true;
+}
+
 // Fire-and-forget: append submission to private repo JSONL. Non-blocking.
 async function storeSubmission(record: {
   email: string;
@@ -59,6 +77,13 @@ export async function POST(req: NextRequest) {
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
+    }
+
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+             ?? req.headers.get('x-real-ip')
+             ?? 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     if (!RESEND_API_KEY) {
