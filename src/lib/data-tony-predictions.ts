@@ -204,6 +204,12 @@ export interface SerializedTonyShow {
   tonyCategoryKey: TonyCategoryKey | null;
   /** Win probability 0–1 from GoldDerby crowd votes. */
   gdOdds?: number | null;
+  /** Cast page slug for linking to /cast/[slug] (person-level nominees only). */
+  nomineeActorSlug?: string | null;
+  /** Tony nominations won before the current season. */
+  nomineePriorNominations?: number;
+  /** Tony wins before the current season. */
+  nomineePriorWins?: number;
   /** Win probability 0–1 from Polymarket real-money market. Null if no market exists. */
   polymarketOdds?: number | null;
   /** Person name for acting/directing nominations (e.g. "Sarah Snook"); null for show-level categories. */

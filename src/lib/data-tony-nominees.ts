@@ -16,6 +16,8 @@ import {
   type TonySeasonWindow,
 } from '@/lib/data-tony-predictions';
 import { TONY_CATEGORY_ORDER } from '@/config/awards';
+import { getActorSlug } from '@/lib/data-actors';
+import { getPersonTonyStatsByName } from '@/lib/data-tony-noms';
 import gdRawData from '../../data/tony-win-probabilities.json';
 import nominationsRawData from '../../data/tony-nominations.json';
 
@@ -52,6 +54,22 @@ const MAJOR_CATEGORIES = new Set([
   'Best Revival of a Play',
 ]);
 
+// These categories nominate individuals — show one row per person.
+// All other non-major categories nominate shows (possibly with multiple
+// credited collaborators) — show one row per show.
+const PERSON_LEVEL_CATEGORIES = new Set([
+  'Best Actor in a Musical',
+  'Best Actress in a Musical',
+  'Best Actor in a Play',
+  'Best Actress in a Play',
+  'Best Featured Actor in a Musical',
+  'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play',
+  'Best Featured Actress in a Play',
+  'Best Direction of a Musical',
+  'Best Direction of a Play',
+]);
+
 // --- Types ---
 
 type GdShowEntry = {
@@ -71,6 +89,8 @@ type NominationEntry = {
   name: string;
   won: boolean;
 };
+
+type CastMember = { name: string; role?: string; ibdbPersonId?: string };
 
 // --- Helpers ---
 
@@ -108,6 +128,33 @@ function findPmOdds(nominees: Record<string, number>, name: string): number | nu
     if (k.toLowerCase() === lower) return v;
   }
   return null;
+}
+
+/** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
+function findActorSlug(showId: string, personName: string): string | null {
+  try {
+    const castPath = path.join(process.cwd(), 'data', 'cast', `${showId}.json`);
+    if (!fs.existsSync(castPath)) return null;
+    const castFile = JSON.parse(fs.readFileSync(castPath, 'utf-8'));
+    const cast: CastMember[] = castFile.openingNightCast ?? castFile.currentCast ?? [];
+    const normalizedTarget = personName.toLowerCase().trim();
+    const member = cast.find(m => m.name.toLowerCase().trim() === normalizedTarget);
+    if (!member?.ibdbPersonId) return null;
+    return getActorSlug(member.ibdbPersonId) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Tony nominations/wins before the given season (excludes current season). */
+function getPersonPastStats(name: string, currentAwardsSeason: string): { priorNominations: number; priorWins: number } {
+  const stats = getPersonTonyStatsByName(name);
+  if (!stats) return { priorNominations: 0, priorWins: 0 };
+  const prior = stats.entries.filter((e: NominationEntry) => e.season !== currentAwardsSeason);
+  return {
+    priorNominations: prior.length,
+    priorWins: prior.filter((e: NominationEntry) => e.won).length,
+  };
 }
 
 // --- Main export ---
@@ -150,22 +197,54 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const nonMajorCats: TonyCategory[] = [];
   for (const [catTitle, noms] of Array.from(nomsByCategory.entries())) {
     const shows: SerializedTonyShow[] = [];
-    for (const nom of noms) {
-      const computedShow = showById.get(nom.showId);
-      if (!computedShow) continue;
+    const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(catTitle);
+    const pmNominees = pmData?.categories[catTitle]?.nominees ?? null;
 
-      const serialized = serializeShow(computedShow);
-      const personName = nom.name !== '(show-level)' ? nom.name : null;
-      const pmNominees = pmData?.categories[catTitle]?.nominees ?? null;
-      const pmMatchName = personName ?? computedShow.title;
+    if (isPersonLevel) {
+      // One row per nominated individual
+      for (const nom of noms) {
+        const computedShow = showById.get(nom.showId);
+        if (!computedShow) continue;
 
-      shows.push({
-        ...serialized,
-        gdOdds: lookupGdOdds(gdData, nom.showId, catTitle),
-        polymarketOdds: pmNominees ? findPmOdds(pmNominees, pmMatchName) : null,
-        nomineePersonName: personName,
-        nomineeCategoryTitle: catTitle,
-      });
+        const personName = nom.name !== '(show-level)' ? nom.name : null;
+        const actorSlug = personName ? findActorSlug(nom.showId, personName) : null;
+        const pastStats = personName ? getPersonPastStats(personName, awardsSeason) : null;
+        const pmMatchName = personName ?? computedShow.title;
+
+        shows.push({
+          ...serializeShow(computedShow),
+          gdOdds: lookupGdOdds(gdData, nom.showId, catTitle),
+          polymarketOdds: pmNominees ? findPmOdds(pmNominees, pmMatchName) : null,
+          nomineePersonName: personName,
+          nomineeCategoryTitle: catTitle,
+          nomineeActorSlug: actorSlug,
+          nomineePriorNominations: pastStats?.priorNominations ?? 0,
+          nomineePriorWins: pastStats?.priorWins ?? 0,
+        });
+      }
+    } else {
+      // Group by show — one row per show, combining all credited collaborators
+      const showGroups = new Map<string, NominationEntry[]>();
+      for (const nom of noms) {
+        if (!showGroups.has(nom.showId)) showGroups.set(nom.showId, []);
+        showGroups.get(nom.showId)!.push(nom);
+      }
+
+      for (const [showId, showNoms] of Array.from(showGroups.entries())) {
+        const computedShow = showById.get(showId);
+        if (!computedShow) continue;
+
+        const names = showNoms.map(n => n.name).filter(n => n !== '(show-level)');
+        const personName = names.length > 0 ? names.join(' & ') : null;
+
+        shows.push({
+          ...serializeShow(computedShow),
+          gdOdds: lookupGdOdds(gdData, showId, catTitle),
+          polymarketOdds: pmNominees ? findPmOdds(pmNominees, computedShow.title) : null,
+          nomineePersonName: personName,
+          nomineeCategoryTitle: catTitle,
+        });
+      }
     }
 
     shows.sort((a, b) => {

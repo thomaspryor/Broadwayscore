@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { BlendedTrioDisplay, ScoreBadge, AudienceChip } from '@/components/show-cards';
+import { ScoreBadge } from '@/components/show-cards';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
@@ -15,6 +15,19 @@ const SHOW_LEVEL_CATEGORIES = new Set([
   'Best Play',
   'Best Revival of a Musical',
   'Best Revival of a Play',
+]);
+
+const PERSON_LEVEL_CATEGORIES = new Set([
+  'Best Actor in a Musical',
+  'Best Actress in a Musical',
+  'Best Actor in a Play',
+  'Best Actress in a Play',
+  'Best Featured Actor in a Musical',
+  'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play',
+  'Best Featured Actress in a Play',
+  'Best Direction of a Musical',
+  'Best Direction of a Play',
 ]);
 
 const season = getTonySeasonWindow();
@@ -44,18 +57,58 @@ function formatCeremonyDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-function OddsTag({ label, value }: { label: string; value: number | null | undefined }) {
-  if (value == null) return null;
-  const pct = Math.round(value * 100);
+// Shared style tokens
+const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
+const LABEL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-400';
+
+// --- Reusable score sub-components ---
+
+type ShowGrade = TonyCategory['shows'][number]['audienceGrade'];
+
+function AudienceBox({ grade, size }: { grade: ShowGrade; size: 'sm' | 'md' }) {
+  const boxClass = size === 'md' ? BOX_MD : BOX_SM;
+  if (!grade || grade.grade === '—') {
+    return <div className={`${boxClass} bg-surface-overlay text-gray-500`}>—</div>;
+  }
+  const isAplus = grade.grade === 'A+';
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/5 text-xs font-semibold">
-      <span className="text-gray-400">{label}</span>
-      <span className="text-white">{pct}%</span>
-    </span>
+    <div
+      className={`${boxClass} shadow-sm ${isAplus ? 'audience-top-grade' : ''}`}
+      style={isAplus ? undefined : { backgroundColor: grade.color, color: grade.textColor }}
+      title={grade.tooltip}
+    >
+      {grade.grade}
+    </div>
   );
 }
 
-// --- Major category row (show-level, with BlendedTrioDisplay) ---
+function AwardsBox({ score, size }: { score: number | null | undefined; size: 'sm' | 'md' }) {
+  const boxClass = size === 'md' ? BOX_MD : BOX_SM;
+  const hasScore = typeof score === 'number' && score > 0;
+  return (
+    <div
+      className={`${boxClass} ${hasScore ? 'bg-white/10 text-gray-200' : 'bg-surface-overlay text-gray-500'}`}
+      title={hasScore ? `Awards Score: ${Math.round(score!)}` : 'No precursor awards data'}
+    >
+      {hasScore ? Math.round(score!) : '—'}
+    </div>
+  );
+}
+
+function GoldDerbyCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
+  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
+  return (
+    <div className="hidden sm:flex flex-col items-center gap-1 flex-shrink-0 w-20">
+      <span className={LABEL}>Gold Derby</span>
+      <span className={numClass}>
+        {odds != null ? `${Math.round(odds * 100)}%` : '—'}
+      </span>
+    </div>
+  );
+}
+
+// --- Major category row (Best Musical / Play / Revival) ---
 
 function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
@@ -79,94 +132,171 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + odds */}
+      {/* Title + venue */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
         <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
-        {(show.gdOdds != null || show.polymarketOdds != null) && (
-          <div className="flex gap-1.5 mt-1.5 flex-wrap">
-            <OddsTag label="GD" value={show.gdOdds} />
-            <OddsTag label="PM" value={show.polymarketOdds} />
-          </div>
-        )}
       </div>
 
-      {/* Scores */}
-      <BlendedTrioDisplay
-        blendedScore={show.blendedScore}
-        compositeScore={show.compositeScore}
-        reviewCount={show.reviewCount}
-        status={show.status}
-        audienceGrade={show.audienceGrade}
-        awardsScore={show.awardsScore}
-        awardsWeighted={show.tonyCategoryKey === 'best-play'}
-        size="sm"
-      />
+      {/* Gold Derby column */}
+      <GoldDerbyCol odds={show.gdOdds} size="md" />
+
+      {/* Critics | Audience | Awards — all same size */}
+      <div className="flex items-start gap-2 flex-shrink-0">
+        <div className="flex flex-col items-center gap-1">
+          <span className={LABEL}>Critics</span>
+          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className={LABEL}>Audience</span>
+          <AudienceBox grade={show.audienceGrade} size="md" />
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className={LABEL}>Awards</span>
+          <AwardsBox score={show.awardsScore} size="md" />
+        </div>
+      </div>
     </Link>
   );
 }
 
-// --- Compact row (person-level or show-level non-major) ---
+// --- Performer row (acting + directing categories) ---
 
-function CompactNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
-  const displayName = show.nomineePersonName
-    ? `${show.nomineePersonName} in ${show.title}`
-    : show.title;
+function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
+  const priorNoms = show.nomineePriorNominations ?? 0;
+  const priorWins = show.nomineePriorWins ?? 0;
+
+  let historyLabel: string;
+  if (priorNoms === 0) {
+    historyLabel = 'First nomination';
+  } else if (priorWins > 0) {
+    historyLabel = `${priorNoms}× nominated · ${priorWins}× winner`;
+  } else {
+    historyLabel = `${priorNoms}× nominated`;
+  }
+
+  const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <Link
-      href={`/show/${show.slug}`}
-      className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors group"
-    >
-      {/* Small thumbnail */}
-      <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-md overflow-hidden bg-surface-raised flex-shrink-0">
+    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+      {/* Thumbnail → show page */}
+      <Link
+        href={`/show/${show.slug}`}
+        className="w-11 h-11 sm:w-12 sm:h-12 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
         {show.thumbnailPath ? (
           <img
             src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
-            alt={show.title}
+            alt=""
             className="w-full h-full object-cover"
-            width={40}
-            height={40}
+            width={48}
+            height={48}
             loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
         )}
-      </div>
+      </Link>
 
-      {/* Name */}
+      {/* Performer name (link to cast page) + show name + history */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate group-hover:text-brand transition-colors">
-          {displayName}
-        </p>
-      </div>
-
-      {/* Score indicators */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        {/* Audience grade chip */}
-        {show.audienceGrade && (
-          <AudienceChip grade={show.audienceGrade} />
+        {actorUrl ? (
+          <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
+            {show.nomineePersonName}
+          </Link>
+        ) : (
+          <p className="text-sm font-bold text-white truncate">{show.nomineePersonName}</p>
         )}
+        <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
+          {show.title}
+        </Link>
+        <span className="text-[10px] text-gray-600">{historyLabel}</span>
+      </div>
 
-        {/* Critic score badge */}
-        <div className="w-11 h-11 flex-shrink-0">
-          <ScoreBadge
-            score={show.compositeScore}
-            size="sm"
-            reviewCount={show.reviewCount}
-            status={show.status}
-          />
+      {/* Gold Derby + Audience + Critic — consistent right-side layout */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        {/* Gold Derby */}
+        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
+          <span className={LABEL}>Gold Derby</span>
+          <span className="text-sm font-bold text-white">
+            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
+          </span>
         </div>
 
-        {/* Odds pills */}
-        <div className="hidden sm:flex gap-1.5">
-          <OddsTag label="GD" value={show.gdOdds} />
-          <OddsTag label="PM" value={show.polymarketOdds} />
+        {/* Audience */}
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Audience</span>
+          <AudienceBox grade={show.audienceGrade} size="sm" />
+        </div>
+
+        {/* Critic */}
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Critics</span>
+          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         </div>
       </div>
-    </Link>
+    </div>
+  );
+}
+
+// --- Craft row (book, score, choreography, design, etc.) ---
+
+function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
+  return (
+    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+      {/* Thumbnail */}
+      <Link
+        href={`/show/${show.slug}`}
+        className="w-11 h-11 sm:w-12 sm:h-12 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        {show.thumbnailPath ? (
+          <img
+            src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
+            alt=""
+            className="w-full h-full object-cover"
+            width={48}
+            height={48}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-sm">🎭</div>
+        )}
+      </Link>
+
+      {/* Show name (bold) + credited names (dimmer) */}
+      <div className="flex-1 min-w-0">
+        <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
+          {show.title}
+        </Link>
+        {show.nomineePersonName && (
+          <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
+        )}
+      </div>
+
+      {/* Gold Derby + Audience + Critic */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
+          <span className={LABEL}>Gold Derby</span>
+          <span className="text-sm font-bold text-white">
+            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
+          </span>
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Audience</span>
+          <AudienceBox grade={show.audienceGrade} size="sm" />
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Critics</span>
+          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -174,6 +304,7 @@ function CompactNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
 
 function CategorySection({ category }: { category: TonyCategory }) {
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
+  const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
   const nominees = category.shows;
 
   if (nominees.length === 0) return null;
@@ -184,15 +315,22 @@ function CategorySection({ category }: { category: TonyCategory }) {
         {category.title}
       </h2>
       <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
-        {nominees.map(show => (
-          <div key={show.nomineePersonName ? `${show.slug}-${show.nomineePersonName}` : show.slug}>
-            {isMajor ? (
-              <MajorNomineeRow show={show} />
-            ) : (
-              <CompactNomineeRow show={show} />
-            )}
-          </div>
-        ))}
+        {nominees.map(show => {
+          const key = show.nomineePersonName
+            ? `${show.slug}-${show.nomineePersonName}`
+            : show.slug;
+          return (
+            <div key={key}>
+              {isMajor ? (
+                <MajorNomineeRow show={show} />
+              ) : isPersonLevel ? (
+                <PerformerRow show={show} />
+              ) : (
+                <CraftRow show={show} />
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -246,13 +384,6 @@ export default function TonyNomineesPage() {
           )}
         </div>
 
-        {/* Column key (compact rows) */}
-        <div className="flex items-center justify-end gap-3 mb-4 text-xs text-gray-500">
-          <span>audience</span>
-          <span>critic</span>
-          <span className="hidden sm:block">GD% · PM%</span>
-        </div>
-
         {/* Category sections */}
         {categories.map(cat => (
           <CategorySection key={cat.key} category={cat} />
@@ -260,7 +391,7 @@ export default function TonyNomineesPage() {
 
         {/* Legend */}
         <p className="mt-8 text-xs text-gray-600 text-center">
-          GD = GoldDerby crowd odds &middot; PM = Polymarket prediction market
+          Gold Derby win odds sourced from GoldDerby crowd predictions
         </p>
       </div>
     </>
