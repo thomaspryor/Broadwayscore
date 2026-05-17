@@ -43,8 +43,8 @@ const TIER_STYLES: Record<TierBadge, TierStyle> = {
   decorated: {
     fillBg: 'linear-gradient(135deg, #9a9a9a 0%, #D0D0D0 30%, #F0F0F0 50%, #D0D0D0 70%, #9a9a9a 100%)',
     ring: '2px solid rgba(240, 240, 240, 0.7)',
-    text: 'text-zinc-900',
-    label: 'text-zinc-300',
+    text: 'text-gray-900',
+    label: 'text-gray-300',
     glow: '0 0 14px rgba(200,200,200,0.3), inset 0 1px 3px rgba(255,255,255,0.4)',
     shimmer: true,
   },
