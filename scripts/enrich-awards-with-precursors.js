@@ -147,15 +147,48 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   const norm = normalizeTitle(scrapedTitle);
   if (!norm) return null;
 
-  // Pass 1: exact match against Tony-nominated shows in predictions era (strict gate)
+  // Pass 0 (season-match preference): when the source has a known year and
+  // MULTIPLE Broadway productions of the same title exist in awards.json
+  // (e.g. death-of-a-salesman-2022 + death-of-a-salesman-2026), prefer the
+  // one whose tony.season matches the source year's Tony season — REGARDLESS
+  // of whether that production also has top-category Tony noms. Without this
+  // preference, the stricter Pass 1 gate (top-cat Tony noms required) picked
+  // the wrong production: DD 2023 noms for "Death of a Salesman" were going
+  // to death-of-a-salesman-2026 (which has Best Revival of a Play 2025-26)
+  // instead of the actual 2022-23 production (which has only Best Actor +
+  // Best Lighting noms, neither in the top-cat set).
+  //
+  // OB→Broadway transfer cases (Hamilton DD 2015 OB → hamilton-2015 in
+  // 2015-16 Tony season) are unaffected — there's only ONE Hamilton in the
+  // pool, so no Pass 0 preference triggers and Pass 1 still wins.
+  const targetSeasonForP1 = opts.sourceYear ? ceremonyYearToTonySeason(opts.sourceYear) : null;
+  if (targetSeasonForP1 && PREDICTIONS_ERA.includes(targetSeasonForP1)) {
+    for (const [showId, sh] of Object.entries(awardsShows)) {
+      if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
+      const t = titleById[showId];
+      if (!t) continue;
+      if (normalizeTitle(t) === norm) return showId;
+    }
+  }
+
+  // Pass 1: exact match against Tony-nominated shows in predictions era (strict gate).
+  let p1PreferredId = null;
+  let p1FallbackId = null;
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
     const noms = (sh.tony.nominatedFor || []).filter(c => CAT_SET.has(c));
     if (noms.length === 0) continue;
     const t = titleById[showId];
     if (!t) continue;
-    if (normalizeTitle(t) === norm) return showId;
+    if (normalizeTitle(t) !== norm) continue;
+    if (targetSeasonForP1 && sh.tony.season === targetSeasonForP1) {
+      p1PreferredId = showId;
+      break;
+    }
+    if (!p1FallbackId) p1FallbackId = showId;
   }
+  if (p1PreferredId) return p1PreferredId;
+  if (p1FallbackId) return p1FallbackId;
 
   // Pass 2: prefix containment — for cases like "Shuffle Along" matching the long form
   // "Shuffle Along, or, the Making of the Musical Sensation of 1921 ..."
@@ -166,6 +199,11 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   // "father", 1 token) and credited the-father-2016 with a Pulitzer it didn't
   // earn. ≥2 tokens preserves the Shuffle Along case (norm "shuffle along")
   // while killing the false-positive class.
+  //
+  // Same season-collision logic as Pass 1: prefer the production whose
+  // tony.season matches the source year when multiple candidates fit.
+  let p2PreferredId = null;
+  let p2FallbackId = null;
   for (const [showId, sh] of Object.entries(awardsShows)) {
     if (!sh.tony || !PREDICTIONS_ERA.includes(sh.tony.season)) continue;
     const noms = (sh.tony.nominatedFor || []).filter(c => CAT_SET.has(c));
@@ -176,10 +214,16 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     if (norm.length < 6 || nT.length < 6) continue;
     const shorter = nT.length < norm.length ? nT : norm;
     if (shorter.split(' ').filter(Boolean).length < 2) continue;
-    if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
-      if (Math.abs(nT.length - norm.length) <= 35) return showId;
+    if (!(nT.startsWith(norm + ' ') || norm.startsWith(nT + ' '))) continue;
+    if (Math.abs(nT.length - norm.length) > 35) continue;
+    if (targetSeasonForP1 && sh.tony.season === targetSeasonForP1) {
+      p2PreferredId = showId;
+      break;
     }
+    if (!p2FallbackId) p2FallbackId = showId;
   }
+  if (p2PreferredId) return p2PreferredId;
+  if (p2FallbackId) return p2FallbackId;
 
   // Pass 3 (active season only): relaxed gate against awards.json — Tony noms may
   // not be published yet for the active season, so allow matching shows whose
