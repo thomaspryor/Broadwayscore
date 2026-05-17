@@ -26,12 +26,15 @@ const awards = JSON.parse(readFileSync(path.join(__dirname, '../../data/awards.j
 
 // Shows whose entire tony block was deleted because the stored data
 // demonstrably belonged to a different production or had no valid Tony record.
+// NOTE: grease-1994, play-on-1997, a-day-in-the-death-of-joe-egg-2003,
+// on-golden-pond-2005, 1776-2022, the-threepenny-opera-2006,
+// angels-in-america-2018, a-view-from-the-bridge-2010 were removed from
+// this list after SB-T3 (2026-05-17) — the scraper now populates correct
+// season data for these shows. Only shows with no legitimate Tony record,
+// WE/OB shows, or shows where wrong-production data can't be disambiguated
+// by year remain here.
 const DELETED_TONY_BLOCKS = [
-  // Wrong production / historical data attached to wrong show ID
-  'angels-in-america-2018',         // 1993 Millennium Approaches wins (Best Play, Best Direction) ≠ 2018 revival
-  'a-view-from-the-bridge-2010',    // 1997-98 LaPaglia revival wins ≠ 2010 Schreiber/Johansson production
-  'a-day-in-the-death-of-joe-egg-2003', // 1985 revival data ≠ 2003 Izzard production
-  'play-on-1997',                   // Stored Best Scenic + Best Lighting wins but Play On! 1997 won 0 Tonys
+  // Wrong production — Tony data belongs to a different production year
   'hair-2011',                      // "Best Revival of a Musical" belongs to hair-2009, not 2011 transfer
   'purlie-1972',                    // 1970 Tony wins; shows.json date 1972-12-27 is a different production
   'private-lives-2025',             // OB 2025 tagged with 1969 Tammy Grimes Tony (Broadway-only)
@@ -40,12 +43,8 @@ const DELETED_TONY_BLOCKS = [
   'a-month-in-the-country-west-end-2026',
   'man-to-man-west-end-2026',
   'oh-mary-west-end-2025',
-  // Empty metadata stubs (wrong season labels, empty wins)
+  // Empty metadata stubs with no legitimate Tony record
   'harvey-2012',
-  'on-golden-pond-2005',
-  '1776-2022',
-  'grease-1994',
-  'the-threepenny-opera-2006',
   'fiddler-on-the-roof-1976',
   'out-cry-1973',
 ];

@@ -48,23 +48,11 @@ const FIXES = {
     newCeremony: '64th',
     reason: 'Red won Best Play + 5 others at 2010 Tonys (64th). openingDate 2010-04-01.'
   },
-  // angels-in-america-2018: stored data is the 1992-93 Millennium Approaches
-  // record (Best Play + Best Direction were 1993 wins, not 2018) on the wrong
-  // show ID. The 2018 revival actually won Best Revival/Actor/Featured Actor
-  // but we don't have that as a verified block. Delete rather than carry mixed data.
-  'angels-in-america-2018': {
-    action: 'delete',
-    reason: 'Stored wins (Best Play, Best Direction) belong to 1992-93 Millennium Approaches, not the 2018 Revival. The 2018 production won Best Revival + Actor + Featured Actor but needs separate verified entry.'
-  },
-
   // DELETE-EMPTY: empty wins, wrong season — just a metadata stub
   'harvey-2012': { action: 'delete', reason: 'Empty wins, tagged 1969-70 but opened 2012-06-14. Metadata stub.' },
-  'on-golden-pond-2005': { action: 'delete', reason: 'Empty wins, tagged 1978-79 but opened 2005-04-07. Metadata stub.' },
-  '1776-2022': { action: 'delete', reason: 'Empty wins, tagged 1997-98 but opened 2022-10-06. Metadata stub.' },
-  'grease-1994': { action: 'delete', reason: 'Empty wins, tagged 1971-72 but opened 1994-05-11. Metadata stub.' },
-  'the-threepenny-opera-2006': { action: 'delete', reason: 'Empty wins, tagged 1989-90 but opened 2006-04-20. Metadata stub.' },
   'fiddler-on-the-roof-1976': { action: 'delete', reason: 'Empty wins, tagged 1981-82 but opened 1976-12-28. Metadata stub.' },
   'out-cry-1973': { action: 'delete', reason: 'Empty wins, tagged 1969-70 but opened 1973-03-01. Metadata stub.' },
+  'cyrano-1973': { action: 'delete', reason: 'Stored season=1993-94 but openingDate=1973-05-13. Misattribution of 1993-94 Tony data to 1973 production.' },
 
   // DELETE-WRONG-PRODUCTION: West End shows shouldn't have Tony data
   'a-month-in-the-country-west-end-2026': {
@@ -81,18 +69,6 @@ const FIXES = {
   },
 
   // DELETE-WRONG-PRODUCTION: stored data demonstrably belongs to a different production
-  'a-view-from-the-bridge-2010': {
-    action: 'delete',
-    reason: 'Stored data (8 noms incl. Best Revival win) belongs to 1997-98 LaPaglia revival. The actual 2010 Schreiber/Johansson production won Best Actor + Best Featured Actress only; needs separate verified entry.'
-  },
-  'a-day-in-the-death-of-joe-egg-2003': {
-    action: 'delete',
-    reason: 'Stored data is duplicate of joe-egg-1985 entry (1985 revival). The 2003 Eddie Izzard production has its own (separate) Tony record needing verification.'
-  },
-  'play-on-1997': {
-    action: 'delete',
-    reason: 'Stored wins (Best Scenic + Best Lighting) don\'t match Play On! 1997 — it had 3 nominations but won 0 Tonys.'
-  },
   'hair-2011': {
     action: 'delete',
     reason: 'Stored "Best Revival of a Musical" win belongs to hair-2009 revival, not the brief 2011 tour transfer.'
