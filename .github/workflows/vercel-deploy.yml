@@ -226,6 +226,9 @@ jobs:
             echo "Code-only change — fast prebuild"
           fi
 
+      - name: Clear build cache
+        run: rm -rf .next/cache .vercel/output
+
       - name: Build
         id: build
         env:
