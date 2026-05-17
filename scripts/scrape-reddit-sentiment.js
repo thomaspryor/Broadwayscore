@@ -54,12 +54,19 @@ const shard = shardArg ? parseInt(shardArg.split('=')[1]) : null;
 const totalShards = totalShardsArg ? parseInt(totalShardsArg.split('=')[1]) : null;
 const shardMode = shard !== null && totalShards !== null;
 
-// Config — subreddit per market
+// Config — subreddits per market
 const SUBREDDIT_BW = 'broadway';
 const SUBREDDIT_WE = 'TheWestEnd';
-function getSubreddit(show) {
+// Opera shows draw richer organic discussion outside r/Broadway. r/opera and
+// r/classicalmusic are the two active opera-adjacent communities; aggregating
+// them with r/Broadway gets Met productions past the 50-item Reddit-only
+// eligibility threshold in scripts/lib/audience-weighting.js.
+const SUBREDDITS_OPERA = ['broadway', 'opera', 'classicalmusic'];
+function getSubreddits(show) {
+  if ((show.type || '') === 'opera') return SUBREDDITS_OPERA;
+  if (isLondonMarket(show.category)) return [SUBREDDIT_WE];
   // OB shows search r/Broadway (r/OffBroadway doesn't exist)
-  return isLondonMarket(show.category) ? SUBREDDIT_WE : SUBREDDIT_BW;
+  return [SUBREDDIT_BW];
 }
 const MAX_POST_AGE_DAYS = 730;  // 2 years — filters out decade-old noise
 const TWO_YEARS_AGO = Date.now() / 1000 - (MAX_POST_AGE_DAYS * 86400); // Unix timestamp
@@ -215,7 +222,7 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null } = {}) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null, isOpera = false } = {}) {
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
   const isWestEnd = isLondonMarket(category);
   const isOffBroadway = category === 'off-broadway';
@@ -226,9 +233,23 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     ? new Date(previewsStartDate).getTime() / 1000
     : null;
 
-  // Audience-focused search strategies (ordered by relevance)
-  // For shows with movie adaptations, prioritize market-specific terms
-  const searches = [
+  // Opera titles ("Innocence", "La Traviata", "Tristan") are common words/works
+  // across centuries of recordings/productions. Without anchoring to the Met,
+  // r/opera and r/classicalmusic return decades of unrelated discussion (Met
+  // 1985 Tristan, La Scala Traviata, etc.). Anchor every query to "Met" or
+  // "Metropolitan Opera" so we get audience reactions to THIS production.
+  const searches = isOpera ? [
+    `flair:Review "${cleanTitle}" Met`,
+    `"${cleanTitle}" "Metropolitan Opera" saw`,
+    `"just saw ${cleanTitle}" Met`,
+    `"${cleanTitle}" Met saw`,
+    `"${cleanTitle}" Met review`,
+    `"${cleanTitle}" Metropolitan thoughts`,
+    `"${cleanTitle}" Met loved`,
+    `"${cleanTitle}" Met recommend`,
+    `"${cleanTitle}" "at the Met"`,
+    `"${cleanTitle}" Metropolitan Opera`,
+  ] : [
     `flair:Review "${cleanTitle}"`,           // Review-tagged posts (highest signal)
     `"${cleanTitle}" "${marketName}" saw`,    // Market-specific
     `"just saw ${cleanTitle}"`,               // "just saw Wicked"
@@ -325,28 +346,46 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
 
-  // 1. Search for posts with audience-focused queries
-  const subreddit = getSubreddit(show);
-  if (!subreddit) {
+  // 1. Search for posts with audience-focused queries — aggregate across
+  // all relevant subreddits (multi-subreddit for opera shows).
+  const subreddits = getSubreddits(show);
+  if (!subreddits || subreddits.length === 0) {
     console.log(`  Skipping — no relevant subreddit for ${show.category || 'unknown'} category`);
     return null;
   }
-  console.log(`  Searching r/${subreddit} for audience reactions...`);
+  console.log(`  Searching ${subreddits.map(s => 'r/' + s).join(' + ')} for audience reactions...`);
 
-  let searchResult;
-  try {
-    searchResult = await searchAudiencePosts(subreddit, show.title, 10000, {
-      category: show.category,
-      previewsStartDate: show.previewsStartDate || show.previewDate || null,
-    });
-  } catch (e) {
-    console.error(`  Search failed: ${e.message}`);
-    return null;
+  let posts = [];
+  let totalPosts = 0;
+  let totalComments = 0;
+  const seenPostIds = new Set();
+
+  for (const subreddit of subreddits) {
+    let searchResult;
+    try {
+      searchResult = await searchAudiencePosts(subreddit, show.title, 10000, {
+        category: show.category,
+        previewsStartDate: show.previewsStartDate || show.previewDate || null,
+        isOpera: (show.type || '') === 'opera',
+      });
+    } catch (e) {
+      console.error(`  Search failed in r/${subreddit}: ${e.message}`);
+      continue;
+    }
+
+    // Tag each post with its source subreddit so comment-fetching uses the right URL
+    for (const p of searchResult.posts) {
+      if (seenPostIds.has(p.id)) continue;
+      seenPostIds.add(p.id);
+      p._sourceSubreddit = subreddit;
+      posts.push(p);
+    }
+    totalPosts += searchResult.totalPosts;
+    totalComments += searchResult.totalComments;
+    console.log(`    r/${subreddit}: ${searchResult.posts.length} audience posts, ${searchResult.totalPosts} total unique, ${searchResult.totalComments} comments`);
   }
 
-  const { posts, totalPosts, totalComments } = searchResult;
-
-  console.log(`  Found ${posts.length} posts from audience-focused searches (last 2 years), ${totalPosts} total unique, ${totalComments} total comments`);
+  console.log(`  Aggregated: ${posts.length} posts from audience-focused searches (last 2 years), ${totalPosts} total unique, ${totalComments} total comments`);
 
   if (posts.length === 0) {
     if (totalPosts > 0) {
@@ -371,12 +410,22 @@ async function processShow(show) {
 
   console.log(`  Collecting comments from top ${topPosts.length} posts...`);
 
-  let comments;
-  try {
-    comments = await collectCommentsFromPosts(subreddit, topPosts, 10000);  // Effectively unlimited - collect all from selected posts
-  } catch (e) {
-    console.error(`  Comment collection failed: ${e.message}`);
-    return null;
+  // Group posts by their source subreddit for batched comment fetching.
+  const postsBySubreddit = new Map();
+  for (const p of topPosts) {
+    const sr = p._sourceSubreddit || subreddits[0];
+    if (!postsBySubreddit.has(sr)) postsBySubreddit.set(sr, []);
+    postsBySubreddit.get(sr).push(p);
+  }
+
+  let comments = [];
+  for (const [sr, srPosts] of postsBySubreddit) {
+    try {
+      const srComments = await collectCommentsFromPosts(sr, srPosts, 10000);
+      comments.push(...srComments);
+    } catch (e) {
+      console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
+    }
   }
 
   console.log(`  Collected ${comments.length} comments`);
