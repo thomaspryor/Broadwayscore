@@ -1848,7 +1848,7 @@ function validateOutletMapperSync() {
   // Structural sanity — each entry must have tier/name/scoreFormat
   let structuralIssues = 0;
   for (const [id, entry] of Object.entries(tiers)) {
-    if (![1, 2, 3].includes(entry.tier)) {
+    if (![1, 2, 3, 4].includes(entry.tier)) {
       warn(`[tier-sync] outlet-tiers.json: "${id}" has invalid tier ${entry.tier}`);
       structuralIssues++;
     }

@@ -161,6 +161,7 @@ jobs:
             weekly-grosses.yml
             reddit-engagement-digest.yml
             scrape-dtli-show-score.yml
+            scraper-cost-report.yml
           "
           VIOLATIONS=""
           for f in .github/workflows/*.yml; do
