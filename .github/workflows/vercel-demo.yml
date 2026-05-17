@@ -102,43 +102,26 @@ jobs:
           add_var NEXT_PUBLIC_SANITY_DATASET production
           add_var NEXT_PUBLIC_SANITY_API_VERSION 2024-10-01
 
-      - name: Set demo feature flags via .vercel/.env.preview.local
+      - name: Compute demo feature flag list (extract from feature-flags.ts)
+        id: demo-flags
         run: |
-          # Write NEXT_PUBLIC_FEATURES with every flag enabled to the env file
-          # that `vercel build` reads (same mechanism as the Sanity backfill
-          # above). Next.js inlines NEXT_PUBLIC_* env values at build time as
-          # string literals, so the resulting bundle has every flag enabled
-          # in BOTH server and client components. No source rewriting.
-          #
-          # Replaces the prior "Override feature flags" source-rewrite block.
-          # The old comment claimed `vercel build` ignores all env overrides;
-          # the Sanity backfill above (and the prod leak guard in
-          # vercel-deploy.yml that reads NEXT_PUBLIC_FEATURES from this same
-          # file) both contradict that claim. The 2026-05-17 invisible-card
-          # postmortem traced the rendering failure to a CI lint gap, not the
-          # rewrite mechanism itself.
-          ENV_FILE=".vercel/.env.preview.local"
-          if [ ! -f "$ENV_FILE" ]; then
-            echo "::error::$ENV_FILE not found — vercel pull may have failed"
-            exit 1
-          fi
+          # Compute the comma-separated flag list once and expose it as a
+          # step output. The Build step reads it as a shell env var
+          # (NEXT_PUBLIC_FEATURES) which Next.js inlines at build time as
+          # string literals — that's the mechanism that actually reaches
+          # the bundle. Earlier 2026-05-17 attempt at writing to
+          # .vercel/.env.preview.local DID NOT work: `npx vercel build`
+          # logs "WARNING! Build not running on Vercel. System environment
+          # variables will not be available." and only honors env vars in
+          # the build step's `env:` block (same pattern Sanity vars use).
           ALL=$(node -e "
             const src = require('fs').readFileSync('src/config/feature-flags.ts', 'utf8');
             const flags = [...src.matchAll(/get\s+(\w+)\(\)/g)].map(m => m[1]);
             if (flags.length < 5) { console.error('Only found', flags.length, 'flags — aborting'); process.exit(1); }
             process.stdout.write(flags.join(','));
           ")
-          # Replace any existing NEXT_PUBLIC_FEATURES line, or append if absent.
-          if grep -q "^NEXT_PUBLIC_FEATURES=" "$ENV_FILE"; then
-            # Use a portable in-place edit (no -i.bak suffix to avoid sed BSD/GNU split)
-            tmp=$(mktemp)
-            grep -v "^NEXT_PUBLIC_FEATURES=" "$ENV_FILE" > "$tmp"
-            echo "NEXT_PUBLIC_FEATURES=\"$ALL\"" >> "$tmp"
-            mv "$tmp" "$ENV_FILE"
-          else
-            echo "NEXT_PUBLIC_FEATURES=\"$ALL\"" >> "$ENV_FILE"
-          fi
-          echo "Set NEXT_PUBLIC_FEATURES with all $(echo "$ALL" | tr ',' '\n' | wc -l | tr -d ' ') flags in $ENV_FILE"
+          echo "flags=$ALL" >> "$GITHUB_OUTPUT"
+          echo "Computed $(echo "$ALL" | tr ',' '\n' | wc -l | tr -d ' ') flags: $ALL"
 
       # NO build cache for demo — config rewrites + cache = stale pages forever.
       # Demo builds every 8h; the ~3min penalty is worth guaranteed correctness.
@@ -148,6 +131,11 @@ jobs:
       - name: Build (all features enabled)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          # All feature flags enabled — Next.js inlines NEXT_PUBLIC_* env
+          # values at build time as string literals, so enabledFeatures Set
+          # gets populated with all flag names. Server and client components
+          # both see featureFlags.X === true. Computed by `demo-flags` step.
+          NEXT_PUBLIC_FEATURES: ${{ steps.demo-flags.outputs.flags }}
           # Sanity public config — preview Vercel env doesn't have these,
           # /blog needs them at build time. See "Backfill Sanity" step above.
           NEXT_PUBLIC_SANITY_PROJECT_ID: fp1ft8k8
