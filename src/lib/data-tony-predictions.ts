@@ -467,15 +467,12 @@ function legacyBlendedScore(criticScore: number | null, audienceScore: number | 
   return criticScore * 0.5 + audienceScore * 0.5;
 }
 
-// Tour stops explicitly ruled Tony-eligible by the Administration Committee
-const TONY_ELIGIBLE_TOUR_STOPS = new Set(['mamma-mia']);
-
 function getTourStopSlugs(): Set<string> {
   const slugs = new Set<string>();
   const shows = (commercialData as Record<string, unknown>).shows as Record<string, { designation?: string }> | undefined;
   if (!shows) return slugs;
   for (const [slug, data] of Object.entries(shows)) {
-    if (data.designation === 'Tour Stop' && !TONY_ELIGIBLE_TOUR_STOPS.has(slug)) slugs.add(slug);
+    if (data.designation === 'Tour Stop') slugs.add(slug);
   }
   return slugs;
 }

@@ -709,6 +709,15 @@ jobs:
         # theater metaphors. See memory/feedback_content_quality_regex_fps.md.
         # Added 2026-04-24 after 8-pattern tightening session.
 
+      - name: Verify Tony awards data
+        run: node scripts/verify-tony-data.js
+        continue-on-error: true
+        # Checks Tony record-holder stats, coverage, and eligibility consistency.
+        # Catches: eligible:false without note, nominations-vs-eligible contradiction.
+        # Requires awards.json + tony-nominations.json (both from checkout-core-data).
+        # Non-blocking until the ~16 pre-existing IBDB nomination gaps are addressed
+        # (promote to blocking by raising the threshold in verify-tony-data.js §3).
+
       - name: Validate review-text files
         run: |
           echo "Validating individual review-text files..."

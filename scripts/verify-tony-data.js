@@ -159,6 +159,54 @@ function main() {
   check(`Win rate: ${(winRate * 100).toFixed(1)}%`, winRate > 0.15 && winRate < 0.50,
     `expected 15-50%, got ${(winRate * 100).toFixed(1)}%`);
 
+  // === ELIGIBILITY CONSISTENCY ===
+  console.log('\n4. Eligibility consistency:\n');
+
+  const ineligibleShows = Object.entries(awardsData.shows || {})
+    .filter(([, s]) => s.tony?.eligible === false);
+
+  // eligible:false must have a note explaining the ruling
+  const missingNotes = ineligibleShows.filter(([, s]) => !s.tony.note);
+  check(
+    `All eligible:false shows have a note (${ineligibleShows.length} checked)`,
+    missingNotes.length === 0,
+    `Missing note on: ${missingNotes.map(([id]) => id).join(', ')}`
+  );
+
+  // eligible:false cannot coexist with nominations or wins — that's a contradiction
+  const contradictions = ineligibleShows.filter(([, s]) => {
+    const tony = s.tony;
+    return (tony.nominations > 0) || (tony.nominatedFor && tony.nominatedFor.length > 0) || (tony.wins > 0);
+  });
+  check(
+    `No eligible:false shows have nominations or wins (${ineligibleShows.length} checked)`,
+    contradictions.length === 0,
+    `Contradictions: ${contradictions.map(([id]) => id).join(', ')}`
+  );
+
+  // Per-season summary (informational — doesn't fail)
+  const bySeasonEligible = {};
+  for (const [, s] of Object.entries(awardsData.shows || {})) {
+    const tony = s.tony;
+    if (!tony?.season) continue;
+    if (!bySeasonEligible[tony.season]) bySeasonEligible[tony.season] = { eligible: 0, ineligible: 0, unruled: 0 };
+    if (tony.eligible === true) bySeasonEligible[tony.season].eligible++;
+    else if (tony.eligible === false) bySeasonEligible[tony.season].ineligible++;
+    else bySeasonEligible[tony.season].unruled++;
+  }
+  const seasons = Object.keys(bySeasonEligible).sort();
+  if (seasons.length > 0) {
+    console.log('  Per-season eligibility breakdown:');
+    for (const season of seasons) {
+      const { eligible, ineligible, unruled } = bySeasonEligible[season];
+      const parts = [];
+      if (eligible > 0) parts.push(`${eligible} explicit-eligible`);
+      if (ineligible > 0) parts.push(`${ineligible} ineligible`);
+      if (unruled > 0) parts.push(`${unruled} unruled`);
+      console.log(`    ${season}: ${parts.join(', ')}`);
+    }
+  }
+
   // === SUMMARY ===
   console.log(`\n=== RESULTS: ${passes} passed, ${failures} failed ===`);
   if (failures > 0) {
