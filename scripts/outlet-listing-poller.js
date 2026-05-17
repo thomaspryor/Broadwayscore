@@ -47,6 +47,7 @@ const https = require('https');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const {
   normalizeOutlet,
   normalizeCritic,
@@ -194,7 +195,7 @@ function createStub(showId, outletId, outletDisplayName, url, headline, publishD
   if (isMultiShow) stub.isMultiShowReview = true;
   if (nytCriticsPick) stub.nytCriticsPick = true;
 
-  fs.writeFileSync(filePath, JSON.stringify(stub, null, 2) + '\n', 'utf-8');
+  safeWriteReview(filePath, stub);
   console.log(`  ✓ Filed: ${showId}/${path.basename(filePath)}`);
 }
 
