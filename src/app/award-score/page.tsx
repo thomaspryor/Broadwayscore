@@ -129,7 +129,7 @@ export default function AwardScorePage() {
         <section className="mb-12">
           <h2 className="text-xl font-bold text-white mb-4">All Shows by Award Score</h2>
           <p className="text-gray-400 text-sm mb-4">
-            Click column headers to sort. ★ In Progress means Tony nominations are confirmed but the ceremony hasn&apos;t happened yet.
+            Click column headers to sort. <span className="animate-pulse font-bold">*</span> In Progress means Tony nominations are confirmed but the ceremony hasn&apos;t happened yet.
           </p>
           {showsWithScore.length > 0 ? (
             <SortableAwardScoreTable data={showsWithScore} />
