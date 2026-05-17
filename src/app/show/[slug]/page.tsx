@@ -795,16 +795,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
             }))} initialCount={5} category={show.category} />
 
-            {/* Footer link to the cross-show critic leaderboard */}
-            <div className="mt-4 pt-3.5 border-t border-white/5">
-              <Link
-                href="/critics"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
-              >
-                <span>Explore all critics</span>
-                <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+            {/* Subtle in-card methodology link — explains how CriticScore is
+                computed without a verbose accordion. Links to the same
+                methodology page the page-footer link uses. */}
+            <p className="mt-4 pt-3 border-t border-white/5 text-xs text-gray-500">
+              <Link href="/methodology" className="hover:text-brand-hover transition-colors">
+                How this score works →
               </Link>
-            </div>
+            </p>
           </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
@@ -1183,16 +1181,16 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </div>
         )}
 
-        {/* How Scores Work */}
-        <HowThisWorks heading="How This Score Works" className="mt-6">
-          <p>
-            The CriticScore is a weighted average of professional critic reviews.
-            {isWestEnd
-              ? ' Top-tier outlets (The Guardian, The Times, The Telegraph) carry more weight than smaller publications.'
-              : ' Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.'}
-            {' '}Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
-          </p>
-        </HowThisWorks>
+        {/* Subtle page-bottom methodology link. Covers all the scoring
+            systems on the page (CriticScore, AudienceGrade, AwardScore)
+            via the shared /methodology page. The verbose in-page accordion
+            was replaced — too redundant with the per-card "How this score
+            works" links and the dedicated methodology page. */}
+        <p className="mt-8 text-center text-xs text-gray-500">
+          <Link href="/methodology" className="hover:text-brand-hover transition-colors">
+            Learn how our scores work →
+          </Link>
+        </p>
       </div>
 
       {/* Follow Show Banner */}
