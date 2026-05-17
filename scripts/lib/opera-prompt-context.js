@@ -32,27 +32,49 @@ function isOperaShow(show) {
 }
 
 /**
- * Context block for the wrong-PRODUCTION classifier. Tells the model that
- * opera works are performed at many opera houses across many seasons, and
- * that mentions of prior performances elsewhere do NOT mean the review is
- * about a different production.
+ * Context block for the wrong-PRODUCTION classifier.
+ *
+ * IMPORTANT (2026-05-17 ship-check P1-A): wording carefully balanced to avoid
+ * false-negatives. The earlier draft said "Be lenient" which stacked with the
+ * classifier's pre-existing "lean toward CORRECT on ambiguous" instruction
+ * (classify-wrong-production.js:254) — three reviewers flagged this as
+ * false-negative risk for genuine wrong-production cases like the 2018 WSJ
+ * Waleson La Traviata review. The replacement language is symmetric:
+ * mentions of OTHER OPERA HOUSES (different company) are normal context;
+ * mentions of a DIFFERENT MET RUN (different cast/conductor/year, same
+ * venue) ARE wrong_production — and that distinction is spelled out
+ * before any leniency note, not after.
  *
  * @returns {string}
  */
 function getOperaWrongProductionContext() {
-  return `OPERA CONTEXT (read carefully): This is an opera production at the Metropolitan Opera. Opera works like Tchaikovsky's "Eugene Onegin", Verdi's "La Traviata", or Wagner's "Tristan und Isolde" have been performed at the Met across many seasons with different casts and conductors. Mentions of prior performances at other opera houses (Royal Opera, La Scala, San Francisco Opera, San Diego Opera, etc.) are NORMAL context in opera criticism and do NOT mean the review is about a different production. WRONG_PRODUCTION for opera means the review is clearly about a different Met run (different cast + conductor in a different year), NOT that the work has been performed elsewhere. Be lenient — opera reviews routinely compare current and historical performances.`;
+  return `OPERA CONTEXT (read carefully — opera classification differs from theater):
+This is an opera production at the Metropolitan Opera. Opera works (Tchaikovsky's "Eugene Onegin", Verdi's "La Traviata", Wagner's "Tristan und Isolde", etc.) are repertory pieces that the Met has performed across many seasons with different casts and conductors, and that other opera companies (Royal Opera, La Scala, San Francisco Opera, Lyric Opera Chicago, Houston Grand Opera, San Diego Opera, any non-Met house or company) have performed independently.
+
+DISTINCTION (apply this rule strictly — leniency does NOT apply when there is a year mismatch):
+  - WRONG_PRODUCTION (flag this): the review evaluates a DIFFERENT MET RUN — different cast, conductor, or season at the Metropolitan Opera House. Cues: prior Met opening year named in the text, prior Met music director named, prior Met staging credited (e.g. "the 2018 Michael Mayer staging" when the filed run is a 2026 Yannick Nézet-Séguin run), publishDate more than ~6 months before the filed production's opening date with no other explanation.
+  - CORRECT (do not flag): the review evaluates the CURRENT Met production but mentions performances at other opera houses or prior productions as comparison/context. Mere mention of "I saw this at San Diego Opera in 2022" or "Royal Opera's 2020 production" is contextual reference, not evidence of wrong production.
+
+Decide based on what the review is EVALUATING, not what it mentions. Year-mismatched publishDates are a strong WRONG_PRODUCTION signal even when the text reads as a legitimate review.`;
 }
 
 /**
- * Context block for the wrong-SHOW classifier. Tells the model that opera
- * reviews discussing arias, conductors, voice types, etc. ARE valid for the
- * filed show — only flag wrong_show if the text describes a different opera
- * by name.
+ * Context block for the wrong-SHOW classifier.
+ *
+ * Tightened 2026-05-17 (ship-check P1-A): explicit that "wrong show" is
+ * preserved as a real signal — opera framing does NOT relax the genuine
+ * wrong-show check, only prevents Broadway-vs-opera from being a false
+ * wrong-show signal.
  *
  * @returns {string}
  */
 function getOperaWrongShowContext() {
-  return `OPERA CONTEXT (read carefully): This show is an OPERA production at the Metropolitan Opera House (not a Broadway play or musical). Reviews discussing opera, conductors, sopranos/tenors/baritones/basses, arias, libretto, orchestral playing, and the Met are VALID for this show. Do NOT flag opera reviews as WRONG_SHOW just because they describe opera rather than Broadway theater. Only flag WRONG_SHOW if the review is clearly about a different opera/show by name.`;
+  return `OPERA CONTEXT (read carefully):
+This show is an OPERA production at the Metropolitan Opera House. The show being classified is opera, NOT a Broadway play or musical.
+
+CORRECT (do not flag as wrong_show): the review discusses opera, conductors, sopranos/tenors/baritones/basses, arias, libretto, orchestral playing, the Met, or other opera-specific vocabulary. Mentions of other operas or other opera houses for comparison are valid context.
+
+WRONG_SHOW (still flag): the review is clearly about a DIFFERENT opera or different show entirely — different title named in the text, different composer, different plot. The opera framing does NOT relax this — wrong show is wrong show regardless of genre. Garbage / navigation / non-review content is still WRONG_SHOW.`;
 }
 
 module.exports = {

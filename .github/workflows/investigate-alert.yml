@@ -138,7 +138,7 @@ jobs:
             const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url');
             const sig = crypto.createHmac('sha256', secret).update(encoded).digest('hex');
             const token = encodeURIComponent(`${encoded}.${sig}`);
-            approveUrl = `https://broadwayscorecard.com/api/approve-fix?token=${token}`;
+            approveUrl = `https://broadwayscorecard.com/api/dispatch-alert-fix?token=${token}`;
           }
 
           // --- Step 3: Send investigation email via Resend ---
