@@ -644,7 +644,7 @@ async function main() {
         title,
         description,
         severity,
-        email: criticalFailures.length > 0,
+        email: false,
         fields: fields.slice(0, 10),
       }).catch(e => console.error('[Alert] Failed to send:', e.message));
     } catch (e) {
