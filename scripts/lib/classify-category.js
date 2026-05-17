@@ -45,6 +45,11 @@ function classifyCategory(category) {
   if (/john gassner award/.test(c)) return { tier: 'C', revival: false };
   // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
   if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
+  // Obie Award categories (Village Voice Off-Broadway, 1956–2019)
+  if (/best new american play|outstanding new american play/.test(c)) return { tier: 'S', revival: false };
+  if (/best new musical/.test(c)) return { tier: 'S', revival: false };
+  // Obie "Best Performance" is a generic acting award (no lead/featured distinction)
+  if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
   // Special/honorary awards — recognized but intentionally worth 0 points; not a typo.
   if (/special achievement/.test(c)) return null;
   return null;

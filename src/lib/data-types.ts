@@ -271,12 +271,22 @@ export interface PulitzerPrize {
   year?: number;
 }
 
+/** Obie Award (Village Voice Off-Broadway Theater Award, 1956–2019).
+ *  Covers Off-Broadway and Off-Off-Broadway productions. */
+export interface ObieAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
   outerCriticsCircle?: OuterCriticsCircleAwards;
   dramaLeague?: DramaLeagueAwards;
   nyDramaCritics?: NyDramaCriticsAwards;
+  obie?: ObieAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */

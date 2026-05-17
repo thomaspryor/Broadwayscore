@@ -88,6 +88,10 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/john gassner award/.test(c)) return { tier: 'C', revival: false };
   // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
   if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
+  // Obie Award categories (Village Voice Off-Broadway, 1956–2019)
+  if (/best new american play|outstanding new american play/.test(c)) return { tier: 'S', revival: false };
+  if (/best new musical/.test(c)) return { tier: 'S', revival: false };
+  if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
   return null;
 }
 
@@ -253,6 +257,7 @@ interface AwardsShowEntry {
   outerCriticsCircle?: PrecursorNode & { season?: string };
   dramaLeague?: PrecursorNode & { season?: string };
   nyDramaCritics?: PrecursorNode & { season?: string; noAward?: boolean };
+  obie?: PrecursorNode & { season?: string };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };

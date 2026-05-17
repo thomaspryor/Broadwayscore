@@ -209,6 +209,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'occ') return awards.outerCriticsCircle;
   if (key === 'dramaLeague') return awards.dramaLeague;
   if (key === 'nydcc') return awards.nyDramaCritics;
+  if (key === 'obie') return awards.obie;
   return undefined;
 }
 
@@ -223,9 +224,7 @@ function OtherAwardsPanel({
     const node = nodeFor(awards, cfg.key);
     const wins = node?.wins ?? [];
     const rawNoms = node && 'nominations' in node ? node.nominations : undefined;
-    const nominationsCount = typeof rawNoms === 'number' ? rawNoms
-      : Array.isArray(rawNoms) ? rawNoms.length
-      : null;
+    const nominationsCount = typeof rawNoms === 'number' ? rawNoms : null;
     const nominatedFor = node && 'nominatedFor' in node && Array.isArray(node.nominatedFor)
       ? node.nominatedFor : [];
     // Prefer the larger source of nomination count. DD/OCC publish a `nominations`

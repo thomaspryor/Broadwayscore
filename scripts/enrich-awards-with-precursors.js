@@ -90,6 +90,7 @@ const DRAMA_DESK = loadPrecursor('drama-desk');
 const OUTER_CRITICS = loadPrecursor('outer-critics');
 const DRAMA_LEAGUE = loadPrecursor('drama-league');
 const NYDCCC = loadPrecursor('nydcc');
+const OBIE = loadPrecursor('obie');
 const PULITZER = loadPrecursor('pulitzer');
 // Historic Pulitzer (pre-2014) uses explicit showIds — fuzzy title matching
 // fails on multiple revival history (e.g. 5 Death of a Salesman entries).
@@ -594,6 +595,7 @@ function main() {
   const occRes = applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', awardsShows, titleById, matcherOpts);
   const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
+  const obieRes = applyDDOCCDL(OBIE, 'obie', awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
@@ -602,6 +604,7 @@ function main() {
   console.log(`  Outer Critics:        ${occRes.matched} matched, ${occRes.unmatched.length} unmatched`);
   console.log(`  Drama League:         ${dlRes.matched} matched, ${dlRes.unmatched.length} unmatched`);
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
+  console.log(`  Obie Awards:          ${obieRes.matched} matched, ${obieRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
   if (histPulRes.missing.length > 0) {
@@ -671,6 +674,7 @@ function main() {
   applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', secondShows, titleById, matcherOpts);
   applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
+  applyDDOCCDL(OBIE, 'obie', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
