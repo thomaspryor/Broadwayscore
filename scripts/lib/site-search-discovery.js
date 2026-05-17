@@ -713,6 +713,32 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'nystagereview': {
+    name: 'New York Stage Review',
+    domain: 'nystagereview.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // NYSR has no opera-category page; use WordPress search ?s={title}. URL
+    // pattern: /YYYY/MM/DD/slug/. NYSR primarily covers theater but reviews
+    // Met premieres (Innocence verified). Reviewers like Frank Scheck rotate
+    // in for opera coverage.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const q = encodeURIComponent(`${showTitle} opera`);
+      const html = await fetchSSR(`https://nystagereview.com/?s=${q}`);
+      const all = [];
+      const pattern = /href="(https:\/\/nystagereview\.com\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)\/?"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'nystagereview', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
