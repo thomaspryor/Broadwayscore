@@ -51,6 +51,7 @@ import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol } from '@/lib/market-utils';
+import { isOperaShow } from '@/lib/show-market';
 import type { ComputedShow } from '@/lib/engine';
 
 /** Inlined to avoid pulling @/lib/data-core (server-only JSON imports) into the
@@ -380,7 +381,7 @@ function Inner({
           <div className="flex flex-wrap items-center gap-1.5">
             <FormatPill type={show.type} />
             {show.isRevival && <ProductionPill isRevival />}
-            <CategoryBadge category={show.category} />
+            <CategoryBadge category={show.category} isOpera={isOperaShow(show)} />
             <StatusBadge status={show.status} />
           </div>
           <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
