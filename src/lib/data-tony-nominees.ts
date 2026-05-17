@@ -55,8 +55,8 @@ const MAJOR_CATEGORIES = new Set([
 ]);
 
 // These categories nominate individuals — show one row per person.
-// All other non-major categories nominate shows (possibly with multiple
-// credited collaborators) — show one row per show.
+// Direction is excluded: one show wins, co-directors share the same GD odds,
+// so they're grouped by show (like craft categories).
 const PERSON_LEVEL_CATEGORIES = new Set([
   'Best Actor in a Musical',
   'Best Actress in a Musical',
@@ -66,8 +66,6 @@ const PERSON_LEVEL_CATEGORIES = new Set([
   'Best Featured Actress in a Musical',
   'Best Featured Actor in a Play',
   'Best Featured Actress in a Play',
-  'Best Direction of a Musical',
-  'Best Direction of a Play',
 ]);
 
 // --- Types ---
