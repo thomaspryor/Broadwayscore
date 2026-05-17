@@ -9,6 +9,7 @@ import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from '@/components/show-cards';
 import { featureFlags } from '@/config/feature-flags';
 import { daysUntilTonyCeremony } from '@/lib/tony-cutoffs';
+import { OTHER_CEREMONY_CONFIGS, type OtherAwardConfig, type OtherAwardKey } from '@/config/ceremonies';
 
 interface AwardScoreCardProps {
   showId: string;
@@ -203,26 +204,7 @@ function TonyAwardsPanel({
   );
 }
 
-interface OtherAwardConfig {
-  key: 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc';
-  short: string;
-  display: string;
-  ceremonyName: string;
-  chip: string;
-  text: string;
-}
-
-// Per-ceremony color coding (re-introduced per Claude Design 2026-05-17 after
-// being briefly neutralized). Colors give each ceremony its own glanceable
-// identity in the chip row — important when 4 chips sit side-by-side.
-const OTHER_CONFIGS: OtherAwardConfig[] = [
-  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk',                  chip: 'bg-purple-500/10 border-purple-500/20', text: 'text-purple-300' },
-  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle',        chip: 'bg-cyan-500/10 border-cyan-500/20',     text: 'text-cyan-300' },
-  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League',                chip: 'bg-emerald-500/10 border-emerald-500/20', text: 'text-emerald-300' },
-  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle",    chip: 'bg-rose-500/10 border-rose-500/20',     text: 'text-rose-300' },
-];
-
-function nodeFor(awards: ShowAwards, key: OtherAwardConfig['key']) {
+function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'dramaDesk') return awards.dramadesk;
   if (key === 'occ') return awards.outerCriticsCircle;
   if (key === 'dramaLeague') return awards.dramaLeague;
@@ -237,7 +219,7 @@ function OtherAwardsPanel({
 }) {
   const [expanded, setExpanded] = useState(false);
 
-  const rows = OTHER_CONFIGS.map(cfg => {
+  const rows = OTHER_CEREMONY_CONFIGS.map(cfg => {
     const node = nodeFor(awards, cfg.key);
     const wins = node?.wins ?? [];
     const rawNoms = node && 'nominations' in node ? node.nominations : undefined;
