@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-17T15:33:53.161Z",
+  "timestamp": "2026-05-17T15:45:32.868Z",
   "stats": {
     "totalReviews": 36807,
-    "alreadyFlagged": 16121,
+    "alreadyFlagged": 16125,
     "dateGuardCatches": 102,
     "directorMismatch": 802,
-    "tvFilmSignals": 1014,
-    "londonSignals": 572,
+    "tvFilmSignals": 1016,
+    "londonSignals": 573,
     "offBroadwaySignals": 445,
     "yearMismatch": 77,
-    "noPublishDate": 3789
+    "noPublishDate": 3781
   },
   "findings": [
     {
@@ -2139,7 +2139,7 @@
       "showId": "buena-vista-social-club-2025",
       "file": "nytg--joe-dziemianowicz.json",
       "score": 78,
-      "publishDate": "March 19, 2025",
+      "publishDate": "March 19th, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
       "findings": [
         {
@@ -3128,6 +3128,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-05-01",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-05-01/broadway-musicals-cats-jellicle-ball-lost-boys-titanique",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -23358,6 +23371,19 @@
     },
     {
       "showId": "titanique-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-05-01",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-05-01/broadway-musicals-cats-jellicle-ball-lost-boys-titanique",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "titanique-2026",
       "file": "mashable--kristy-puchko.json",
       "score": 90,
       "publishDate": "2026-04-13",
@@ -26438,6 +26464,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": null,
+      "publishDate": "2026-04-18",
+      "url": "https://www.britishtheatre.com/da/posts/avenue-q-review-the-puppets-are-onto-something",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -35244,7 +35284,7 @@
       "showId": "stranger-things-2024",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": 66,
-      "publishDate": "April 22, 2025",
+      "publishDate": "April 22nd, 2025",
       "url": "https://www.nytimes.com/2025/04/22/theater/stranger-things-first-shadow-review-broadway.html",
       "findings": [
         {
