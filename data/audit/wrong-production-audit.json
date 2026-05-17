@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-16T23:55:32.924Z",
+  "timestamp": "2026-05-17T04:19:19.387Z",
   "stats": {
-    "totalReviews": 36759,
+    "totalReviews": 36778,
     "alreadyFlagged": 16097,
     "dateGuardCatches": 102,
-    "directorMismatch": 805,
+    "directorMismatch": 803,
     "tvFilmSignals": 1014,
     "londonSignals": 567,
     "offBroadwaySignals": 444,
     "yearMismatch": 77,
-    "noPublishDate": 3773
+    "noPublishDate": 3776
   },
   "findings": [
     {
@@ -24683,25 +24683,6 @@
       "score": 80,
       "publishDate": "February 20th, 2020",
       "url": "https://www.theatermania.com/broadway/reviews/ivo-van-hove-west-side-story_90632.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from west-side-story-2009"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerome robbins\" from west-side-story-1980"
-        }
-      ]
-    },
-    {
-      "showId": "west-side-story-2020",
-      "file": "theatre-news--jeremy-gerard.json",
-      "score": 25,
-      "publishDate": null,
-      "url": "http://www.theaternewsonline.com/NYTheaterReviews/RECKLESSREVIVAL.cfm",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
