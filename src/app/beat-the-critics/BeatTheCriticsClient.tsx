@@ -591,18 +591,18 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         {/* Email / Submission */}
         {emailSubmitted ? (
           <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-            <div className="text-3xl mb-2">&#10003;</div>
-            <h3 className="text-base font-bold text-green-400">Check your inbox!</h3>
-            <p className="text-sm text-gray-400 mt-1.5">Your picks are on their way. Come back June 7 to see how you did.</p>
+            <div className="text-3xl mb-2">🎭</div>
+            <h3 className="text-base font-bold text-green-400">You&apos;re entered!</h3>
+            <p className="text-sm text-gray-400 mt-1.5">After the June 7 ceremony, we&apos;ll email you with your results — showing exactly how your picks stacked up against the critics.</p>
           </div>
         ) : (
           <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
-            <h3 className="text-base font-bold">Email me my picks</h3>
-            <p className="text-sm text-gray-400 mt-1.5 mb-4">We&apos;ll send your ballot so you can check back after June 7 to see how you did.</p>
+            <h3 className="text-base font-bold">Submit your picks</h3>
+            <p className="text-sm text-gray-400 mt-1.5 mb-4">Enter your email to officially enter. After the ceremony on June 7, we&apos;ll automatically email you with your results.</p>
             <div className="flex gap-2 mb-3">
               <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
-                {emailSubmitting ? 'Sending...' : 'Send'}
+                {emailSubmitting ? 'Submitting...' : 'Submit'}
               </button>
             </div>
             {emailError && <p className="text-red-400 text-xs mb-2">{emailError}</p>}

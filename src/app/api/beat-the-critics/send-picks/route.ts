@@ -46,15 +46,16 @@ export async function POST(req: NextRequest) {
         </table>
       </div>
       <div style="padding:16px 28px 24px;text-align:center;">
-        <div style="font-size:13px;font-weight:700;color:#ff1368;margin-bottom:6px;">Can you beat the critics?</div>
-        <div style="font-size:12px;color:#4b5563;">Ceremony: June 7, 2026 &middot; CBS</div>
+        <div style="font-size:13px;font-weight:700;color:#ff1368;margin-bottom:6px;">You&apos;re entered — can you beat the critics?</div>
+        <div style="font-size:12px;color:#4b5563;margin-bottom:4px;">Ceremony: June 7, 2026 &middot; CBS</div>
+        <div style="font-size:12px;color:#4b5563;">We&apos;ll email you after the ceremony with your results.</div>
         <div style="margin-top:16px;">
           <a href="https://broadwayscorecard.com/beat-the-critics" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#ff1368,#d4106a);color:#ffffff;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">View Your Ballot &rarr;</a>
         </div>
       </div>
     </div>
     <div style="text-align:center;padding:20px 0 0;font-size:11px;color:#374151;">
-      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. Come back after June 7 to see how you did.<br>
+      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. After June 7, we&apos;ll email you with how you compared to the critics.<br>
       <a href="https://broadwayscorecard.com" style="color:#4b5563;text-decoration:none;">broadwayscorecard.com</a>
     </div>
   </div>
