@@ -45,7 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const { fetchPage, fetchWithCookiesPlain } = require('./lib/scraper');
+const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const {
@@ -305,9 +305,10 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
   console.log(`  [listing-html] Fetching ${listingUrl}`);
   let html;
   if (usePlainFetch) {
-    // SSR pages accessible without JS rendering — skip BD/SB/Playwright overhead
-    const result = await fetchWithCookiesPlain(listingUrl);
-    html = result && typeof result === 'object' ? result.content : result;
+    // SSR pages accessible without JS rendering — skip BD/SB/Playwright overhead.
+    // Use fetchSimple (plain HTTPS GET) rather than fetchWithCookiesPlain; WOS
+    // is publicly accessible and has no cookie requirement.
+    html = await fetchSimple(listingUrl, 20000).catch(() => '');
   } else {
     const result = await fetchPage(listingUrl, { timeout: 25000 });
     // fetchPage returns {content, format, source} or null on all-tiers failure
