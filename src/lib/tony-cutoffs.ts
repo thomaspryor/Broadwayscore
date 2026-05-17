@@ -194,6 +194,30 @@ export function currentTonySeason(today: Date = new Date()): TonySeasonRecord {
   return TONY_CUTOFFS[TONY_CUTOFFS.length - 1];
 }
 
+/**
+ * Returns the Tony season that should be featured on predictions pages.
+ *
+ * Differs from currentTonySeason() in the April→June gap between the eligibility
+ * cutoff and the ceremony: during that gap, currentTonySeason() has already
+ * advanced to the new season (no shows yet), but predictions should still show
+ * the outgoing season's nominees. E.g. from April 27 to June 6, 2026,
+ * currentTonySeason() returns 2026-27 (empty) while this returns 2025-26
+ * (16 nominees ready, ceremony June 7).
+ *
+ * Logic: if the previous season has a known ceremony date that's still in the
+ * future, return it — otherwise return the actual current season.
+ */
+export function currentPredictionSeason(today: Date = new Date()): TonySeasonRecord {
+  const iso = today.toISOString().slice(0, 10);
+  const actual = tonySeasonForDate(iso) ?? TONY_CUTOFFS[TONY_CUTOFFS.length - 1];
+  const actualIndex = TONY_CUTOFFS.findIndex(r => r.label === actual.label);
+  if (actualIndex > 0) {
+    const prev = TONY_CUTOFFS[actualIndex - 1];
+    if (prev.ceremonyDate && prev.ceremonyDate > iso) return prev;
+  }
+  return actual;
+}
+
 /** All seasons, newest first. */
 export function allTonySeasonsNewestFirst(): TonySeasonRecord[] {
   return [...TONY_CUTOFFS].reverse();
