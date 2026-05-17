@@ -78,7 +78,8 @@ function main() {
 
     // Unruled zero-nom: has a season but no nominations and no explicit ruling
     // These are candidates for human review — they might need eligible:false added
-    if (eligible === undefined && nominations === 0 && nominatedFor.length === 0 && wins === 0) {
+    // Use == null to catch both undefined and JSON null
+    if (eligible == null && nominations === 0 && nominatedFor.length === 0 && wins === 0) {
       issues.unruledZeroNom.push({
         showId,
         season: tony.season,
