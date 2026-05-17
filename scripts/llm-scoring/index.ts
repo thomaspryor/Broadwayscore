@@ -254,6 +254,7 @@ interface ShowPriorityInfo {
   openingDate: string | null;
   category: string;
   venue: string | null;
+  type: string | null;
 }
 
 /**
@@ -270,6 +271,7 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
         openingDate: show.openingDate || null,
         category: show.category || 'broadway',
         venue: show.venue || null,
+        type: show.type || null,
       });
     }
   } catch {
@@ -1182,6 +1184,7 @@ async function main(): Promise<void> {
     if (showMeta) {
       reviewFile.category = showMeta.category;
       reviewFile.venue = showMeta.venue;
+      reviewFile.type = showMeta.type;
     }
 
     // Progress
@@ -1361,7 +1364,12 @@ async function main(): Promise<void> {
             // La Traviata opera incident — required manual rescue with Haiku.)
             if (!manualClearFallbackScorer) {
               manualClearFallbackScorer = new ReviewScorer(claudeApiKey, {
-                model: 'claude-3-5-haiku-20241022',
+                // claude-3-5-haiku-20241022 deprecated 2026-02-19; bumped to
+                // current Haiku 4.5 (2026-05-17 root fix per Notion
+                // 363637c5-416f-81cc-8240-c48df8b4cfd2). With opera-aware
+                // input-builder this fallback should rarely fire, but keep
+                // it on a non-deprecated model so the rescue actually works.
+                model: 'claude-haiku-4-5-20251001',
                 verbose: false,
               });
             }

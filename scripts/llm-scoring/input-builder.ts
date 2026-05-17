@@ -26,6 +26,10 @@ export interface ReviewInputData {
   // Show context (for cross-market detection)
   category?: string;   // 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end'
   venue?: string;      // e.g. 'Lyric Theatre' or 'Broadhurst Theatre'
+  type?: string;       // 'musical' | 'play' | 'special' | 'opera' — opera shows
+                       // are stored as category='off-broadway' but framed
+                       // separately so the wrong_show check doesn't reject
+                       // opera reviews as "not theater"
 
   // Text sources
   fullText?: string | null;
@@ -151,12 +155,21 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
   }
 
   if (review.showTitle) {
-    const marketLabel = review.category === 'west-end' ? 'West End'
+    // Opera takes precedence over category — Met opera productions are stored
+    // with category='off-broadway' but reviews legitimately describe opera, not
+    // theater. Framing them as theater causes the ensemble's wrong_show gate
+    // to reject every opera review as "not the specified venue/category".
+    const isOpera = review.type === 'opera';
+    const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
+      : review.category === 'west-end' ? 'West End'
       : review.category === 'off-west-end' ? 'Off-West End'
       : review.category === 'off-broadway' ? 'Off-Broadway'
       : 'Broadway';
     const venueInfo = review.venue ? ` at ${review.venue}` : '';
     contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
+    if (isOpera) {
+      contextParts.push('NOTE: This is an opera production at the Metropolitan Opera. Reviews discussing opera, the Met, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the Met.');
+    }
   }
 
   // 2. Original rating (if present)
