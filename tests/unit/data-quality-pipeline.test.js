@@ -97,13 +97,14 @@ console.log('\n=== Outlet Registry Consistency ===\n');
 test('all outlets have required fields', () => {
   const registryPath = path.join(DATA_DIR, 'outlet-registry.json');
   const data = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const { VALID_TIERS } = require(path.join(SCRIPTS_DIR, 'lib', 'outlet-tiers'));
 
   const issues = [];
   for (const [id, outlet] of Object.entries(data.outlets)) {
     if (!outlet.displayName) issues.push(`${id}: missing displayName`);
     if (!outlet.tier) issues.push(`${id}: missing tier`);
-    if (outlet.tier && (outlet.tier < 1 || outlet.tier > 4)) {
-      issues.push(`${id}: invalid tier ${outlet.tier}`);
+    if (outlet.tier && !VALID_TIERS.includes(outlet.tier)) {
+      issues.push(`${id}: invalid tier ${outlet.tier} (valid: ${VALID_TIERS.join(',')})`);
     }
   }
 

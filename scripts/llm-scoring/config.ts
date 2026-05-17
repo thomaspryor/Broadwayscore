@@ -871,10 +871,15 @@ export function scoreToThumb(score: number): 'Up' | 'Flat' | 'Down' {
 /**
  * Calculate tier from outlet configuration.
  * Reads from outlet-registry.json (single source of truth).
+ *
+ * Returns the full canonical tier set (1-4 as of v5). Previously narrowed to
+ * 1|2|3 and collapsed T4→T3, which silently contaminated T3 calibration stats.
  */
-export function getOutletTier(outletId: string): 1 | 2 | 3 {
+export function getOutletTier(outletId: string): 1 | 2 | 3 | 4 {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { getTier } = require('../lib/outlet-tiers');
+  const { getTier, VALID_TIERS, DEFAULT_TIER } = require('../lib/outlet-tiers');
   const tier = getTier(outletId);
-  return (tier === 1 || tier === 2 || tier === 3) ? tier : 3;
+  return (VALID_TIERS as number[]).includes(tier)
+    ? (tier as 1 | 2 | 3 | 4)
+    : (DEFAULT_TIER as 1 | 2 | 3 | 4);
 }

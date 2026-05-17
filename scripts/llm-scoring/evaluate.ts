@@ -65,10 +65,10 @@ interface EvaluationSummary {
   meanBias: number;
   bucketAccuracy: number;
 
-  // By tier
-  tier1: { count: number; mae: number; bias: number };
-  tier2: { count: number; mae: number; bias: number };
-  tier3: { count: number; mae: number; bias: number };
+  // By tier — keys are `tier${n}` for each canonical VALID_TIERS entry.
+  // Optional per tier: omitted (not zero-filled) when sample count is below
+  // significance threshold to avoid misleading single-data-point metrics.
+  byTier: Partial<Record<`tier${1 | 2 | 3 | 4}`, { count: number; mae: number; bias: number }>>;
 
   // By bucket
   byHumanBucket: Record<string, { count: number; mae: number; bias: number }>;
@@ -189,23 +189,15 @@ function selectTestSet(
     return shuffled.slice(0, testSize);
   }
 
-  // Stratified by tier
-  const tier1 = candidates.filter(c => c.tier === 1);
-  const tier2 = candidates.filter(c => c.tier === 2);
-  const tier3 = candidates.filter(c => c.tier === 3);
-
-  const total = tier1.length + tier2.length + tier3.length;
-  const tier1Count = Math.round((tier1.length / total) * testSize);
-  const tier2Count = Math.round((tier2.length / total) * testSize);
-  const tier3Count = testSize - tier1Count - tier2Count;
-
-  const sample = [
-    ...tier1.sort(() => Math.random() - 0.5).slice(0, tier1Count),
-    ...tier2.sort(() => Math.random() - 0.5).slice(0, tier2Count),
-    ...tier3.sort(() => Math.random() - 0.5).slice(0, tier3Count)
-  ];
-
-  return sample;
+  // Stratified by tier — uses canonical VALID_TIERS so new tiers (T5+) flow
+  // through automatically. Shuffles each bucket before slicing.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { sampleStratifiedByTier } = require('../lib/outlet-tiers');
+  return sampleStratifiedByTier(
+    candidates,
+    testSize,
+    (arr: EvaluationExample[], n: number) => [...arr].sort(() => Math.random() - 0.5).slice(0, n)
+  ) as EvaluationExample[];
 }
 
 // ========================================
@@ -264,8 +256,12 @@ function analyzeResults(results: EvaluationResult[]): EvaluationSummary {
   const bucketMatches = results.filter(r => r.bucketMatch).length;
   const bucketAccuracy = (bucketMatches / n) * 100;
 
-  // By tier
-  const byTier = (tier: 1 | 2 | 3) => {
+  // By tier — uses canonical VALID_TIERS so adding T5+ propagates automatically.
+  // Suppresses below significance threshold (n<5) to avoid misleading metrics.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { VALID_TIERS: VALID_TIERS_EVAL } = require('../lib/outlet-tiers');
+  const MIN_TIER_SAMPLE_FOR_REPORT = 5;
+  const byTier = (tier: number) => {
     const tierResults = results.filter(r => r.example.tier === tier);
     if (tierResults.length === 0) return { count: 0, mae: 0, bias: 0 };
     return {
@@ -274,6 +270,16 @@ function analyzeResults(results: EvaluationResult[]): EvaluationSummary {
       bias: tierResults.reduce((sum, r) => sum + r.delta, 0) / tierResults.length
     };
   };
+  const byTierReport: Partial<Record<`tier${1|2|3|4}`, { count: number; mae: number; bias: number }>> = {};
+  for (const tier of VALID_TIERS_EVAL as number[]) {
+    const stats = byTier(tier);
+    if (stats.count < MIN_TIER_SAMPLE_FOR_REPORT) continue;
+    byTierReport[`tier${tier}` as `tier${1|2|3|4}`] = {
+      count: stats.count,
+      mae: Math.round(stats.mae * 100) / 100,
+      bias: Math.round(stats.bias * 100) / 100,
+    };
+  }
 
   // By human bucket
   const byHumanBucket: Record<string, { count: number; mae: number; bias: number }> = {};
@@ -338,9 +344,7 @@ function analyzeResults(results: EvaluationResult[]): EvaluationSummary {
     rmse: Math.round(rmse * 100) / 100,
     meanBias: Math.round(meanBias * 100) / 100,
     bucketAccuracy: Math.round(bucketAccuracy * 10) / 10,
-    tier1: { ...byTier(1), mae: Math.round(byTier(1).mae * 100) / 100, bias: Math.round(byTier(1).bias * 100) / 100 },
-    tier2: { ...byTier(2), mae: Math.round(byTier(2).mae * 100) / 100, bias: Math.round(byTier(2).bias * 100) / 100 },
-    tier3: { ...byTier(3), mae: Math.round(byTier(3).mae * 100) / 100, bias: Math.round(byTier(3).bias * 100) / 100 },
+    byTier: byTierReport,
     byHumanBucket,
     largestErrors,
     recommendations
@@ -380,9 +384,11 @@ async function main(): Promise<void> {
   // Select test set
   const testSet = selectTestSet(candidates, testSize, stratifyByTier);
   console.log(`Selected ${testSet.length} reviews for evaluation`);
-  console.log(`  Tier 1: ${testSet.filter(t => t.tier === 1).length}`);
-  console.log(`  Tier 2: ${testSet.filter(t => t.tier === 2).length}`);
-  console.log(`  Tier 3: ${testSet.filter(t => t.tier === 3).length}`);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { VALID_TIERS } = require('../lib/outlet-tiers');
+  for (const t of VALID_TIERS as number[]) {
+    console.log(`  Tier ${t}: ${testSet.filter(ts => ts.tier === t).length}`);
+  }
   console.log('');
 
   // Score each example

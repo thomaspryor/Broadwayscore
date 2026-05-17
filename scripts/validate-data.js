@@ -24,6 +24,9 @@ const path = require('path');
 // Shared with scripts/check-review-count-drift.js so both stay in sync.
 const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('./lib/review-text-scoreable');
 
+// Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
+const { VALID_TIERS } = require('./lib/outlet-tiers');
+
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
 // across 64 workflows, which meant validate-data.js exit-1 didn't prevent corrupt rows
@@ -1848,7 +1851,7 @@ function validateOutletMapperSync() {
   // Structural sanity — each entry must have tier/name/scoreFormat
   let structuralIssues = 0;
   for (const [id, entry] of Object.entries(tiers)) {
-    if (![1, 2, 3, 4].includes(entry.tier)) {
+    if (!VALID_TIERS.includes(entry.tier)) {
       warn(`[tier-sync] outlet-tiers.json: "${id}" has invalid tier ${entry.tier}`);
       structuralIssues++;
     }
