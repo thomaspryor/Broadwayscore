@@ -605,6 +605,186 @@ const SITE_SEARCH_ENDPOINTS = {
       return filterOperaUrls(unique, 'classical-voice-america', showId, openingDate);
     },
   },
+
+  'newyorker': {
+    name: 'The New Yorker',
+    domain: 'newyorker.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // The New Yorker contributor page (newyorker.com/contributors/alex-ross)
+    // is lazy-loaded — SSR HTML returns 0 article anchors. The /tag/opera
+    // listing returns only older (2022-2023) pieces. Use Alex Ross's personal
+    // blog therestisnoise.com as the index — he reblogs each New Yorker
+    // piece's URL on publication day. Verified 9 NY URLs returned via BD on
+    // 2026-05-17, including the same-week Tristan review.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.therestisnoise.com/');
+      const all = [];
+      const pattern = /(https?:\/\/(?:www\.)?newyorker\.com\/(?:magazine|culture|cultural-comment)\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        // Lower threshold (1 hit) than other outlets — therestisnoise.com
+        // surfaces ~10 URLs at a time and Alex Ross writes one Met review per
+        // month, so false-positive risk is low. Two-word match would miss
+        // "tristan-at-the-met-music-review" (operaTitleWords drops "und").
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'newyorker', showId, openingDate);
+    },
+  },
+
+  'washpost': {
+    name: 'The Washington Post',
+    domain: 'washingtonpost.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Philip Kennicott is the WaPo arts critic covering Met opera transmissions.
+    // His author archive renders server-side with ~55 article URLs but requires
+    // subscriber cookies (cookies-plain confirmed working in Sprint 1).
+    // fetchSSR's fetchPage fallback carries the washingtonpost.com cookie jar.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.washingtonpost.com/people/philip-kennicott/');
+      const all = [];
+      const pattern = /(https?:\/\/(?:www\.)?washingtonpost\.com\/[a-z-]+\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'washpost', showId, openingDate);
+    },
+  },
+
+  'times-uk': {
+    name: 'The Times (UK)',
+    domain: 'thetimes.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // The Times's classical-opera tag page lists every recent classical/opera
+    // review including Met transmissions. cookies-plain works for the
+    // listing (Sprint 1 verified 615KB body). URL pattern for individual
+    // reviews: /culture/classical-opera/article/{slug}-{8-char-hash}.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.thetimes.com/topic/opera');
+      const all = [];
+      // Times listing uses relative URLs like /culture/classical-opera/article/{slug}-{hash}.
+      // Capture relative path and prepend the canonical domain.
+      const pattern = /["'](\/culture\/classical-opera\/article\/[a-z0-9-]+)["']/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push('https://www.thetimes.com' + m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'times-uk', showId, openingDate);
+    },
+  },
+
+  'artsdesk': {
+    name: 'The Arts Desk',
+    domain: 'theartsdesk.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // theartsdesk.com/opera lists recent opera reviews. Open access (no
+    // cookies needed). URL pattern: /opera/{slug}. Met transmission reviews
+    // are tagged with "metropolitan-opera" in the slug (verified for Tristan).
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://theartsdesk.com/opera');
+      const all = [];
+      const pattern = /["'](?:https?:\/\/(?:www\.)?theartsdesk\.com)?(\/opera\/[a-z0-9-]+)["']/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push('https://theartsdesk.com' + m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'artsdesk', showId, openingDate);
+    },
+  },
+
+  'nystagereview': {
+    name: 'New York Stage Review',
+    domain: 'nystagereview.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // NYSR has no opera-category page; use WordPress search ?s={title}. URL
+    // pattern: /YYYY/MM/DD/slug/. NYSR primarily covers theater but reviews
+    // Met premieres (Innocence verified). Reviewers like Frank Scheck rotate
+    // in for opera coverage.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const q = encodeURIComponent(`${showTitle} opera`);
+      const html = await fetchSSR(`https://nystagereview.com/?s=${q}`);
+      const all = [];
+      const pattern = /href="(https:\/\/nystagereview\.com\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)\/?"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'nystagereview', showId, openingDate);
+    },
+  },
+
+  'broadwayworld': {
+    name: 'BroadwayWorld',
+    domain: 'broadwayworld.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // BWW Opera coverage lives at /bwwopera/reviews. Hand-authored marketing
+    // slugs (e.g. "Review-FRIDA-Y-DIEGO-is-the-Ultimate-Dream…") need
+    // diacritic-stripped tokenization and a 50% match threshold — both
+    // handled in the dedicated sibling helper to keep this entry small.
+    skipUrlFilter: true,
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const { discoverBwwOperaReviews } = require('./bww-opera-discover');
+      const show = { type: 'opera', title: showTitle, openingDate, id: showId };
+      const results = await discoverBwwOperaReviews(show);
+      const urls = results.map((r) => r.url);
+      return filterOperaUrls(urls, 'broadwayworld', showId, openingDate);
+    },
+  },
+
+  'vulture': {
+    name: 'Vulture',
+    domain: 'vulture.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Vulture has no opera category page. Justin Davidson is the music/opera
+    // critic; the SSR HTML for his author archive carries ~30 anchors per page
+    // (lazy-loaded beyond that). Slug-match against opera-title words because
+    // Vulture URLs are descriptive ("opera-review-met-new-tristan-und-isolde",
+    // "review-the-dismaying-opera-of-kavalier-and-clay").
+    // Pagination: first page only (no /page/2 walk) — covers ~2-3 months of
+    // Davidson's output, which exceeds the Sprint 3 daysSinceOpening<21 gate.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.vulture.com/author/justin-davidson/');
+      const all = [];
+      const pattern = /href="(https?:\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9-]+\.html)"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/article/')[1] || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= Math.min(2, titleWords.length);
+      });
+      return filterOperaUrls(matches, 'vulture', showId, openingDate);
+    },
+  },
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
