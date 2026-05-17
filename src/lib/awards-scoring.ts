@@ -63,8 +63,13 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   const c = category.toLowerCase();
   if (/revival of a musical|musical revival/.test(c)) return { tier: 'S', revival: true };
   if (/revival of a play|play revival/.test(c)) return { tier: 'S', revival: true };
+  // Lortel "Outstanding Revival" — combined musical+play revival category (no type distinction)
+  if (/^outstanding revival$/.test(c)) return { tier: 'S', revival: true };
   if (/best musical$|outstanding musical$|outstanding new (broadway|off-broadway) musical|outstanding production of a (broadway or off-broadway )?musical/.test(c)) return { tier: 'S', revival: false };
   if (/best play$|outstanding play$|outstanding new (broadway|off-broadway) play|outstanding production of a play/.test(c)) return { tier: 'S', revival: false };
+  // Olivier "Best New Play" and "Best Revival"
+  if (/best new play/.test(c)) return { tier: 'S', revival: false };
+  if (/^best revival$/.test(c)) return { tier: 'S', revival: true };
   if (/^drama$/.test(c)) return { tier: 'S', revival: false };
   if (/best (original )?score|outstanding (new )?score|outstanding music\b|outstanding lyrics|outstanding music in a play/.test(c)) return { tier: 'A+', revival: false };
   if (/best book|outstanding book/.test(c)) return { tier: 'A+', revival: false };
@@ -72,17 +77,32 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
-  // Lead Performance (DD 70th+) / Lead Performer (OCC) in a [Broadway|Off-Broadway] [play|musical]
-  if (/outstanding lead (performance|performer) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // Olivier "Best Actor" / "Best Actress" — Olivier play acting awards have no "in a play" qualifier
+  if (/^best (actor|actress)$/.test(c)) return { tier: 'A', revival: false };
+  // Lead Performance (DD 70th+) / Lead Performer (OCC) / Lead Actor|Actress (Lortel) in a [Broadway|Off-Broadway] [play|musical]
+  if (/outstanding lead (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
-  // Featured Performance (DD 70th+) / Featured Performer (OCC) variants
-  if (/outstanding featured (performance|performer) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
+  // Olivier supporting role categories (use "supporting role" instead of "featured")
+  if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
+  // Featured Performance (DD 70th+) / Featured Performer (OCC) / Featured Actor|Actress (Lortel) variants
+  if (/outstanding featured (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
   if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
+  if (/projection design/.test(c)) return { tier: 'C', revival: false };
+  if (/solo performance|solo show/.test(c)) return { tier: 'B', revival: false };
+  if (/john gassner award|most promising playwright/.test(c)) return { tier: 'C', revival: false };
+  // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
+  if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
+  // Obie Award categories (Village Voice Off-Broadway, 1956–2019)
+  if (/best new american play|outstanding new american play/.test(c)) return { tier: 'S', revival: false };
+  if (/best new musical/.test(c)) return { tier: 'S', revival: false };
+  if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
+  // Special/honorary career awards — recognized but intentionally worth 0 points; not a typo.
+  if (/special achievement|body of work/.test(c)) return null;
   return null;
 }
 
@@ -200,7 +220,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.olivier.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Olivier Awards', key, wins, noms, unknownNoms(entry.olivier.nominations, wins, noms)));
   }
-  if (entry.nyDramaCritics) {
+  if (entry.nyDramaCritics && !entry.nyDramaCritics.noAward) {
     breakdown.push(scoreCeremony("NY Drama Critics' Circle", 'nydcc', entry.nyDramaCritics.wins ?? [], []));
   }
   if (entry.outerCriticsCircle) {
@@ -247,7 +267,10 @@ interface AwardsShowEntry {
   dramadesk?: PrecursorNode & { season?: string };
   outerCriticsCircle?: PrecursorNode & { season?: string };
   dramaLeague?: PrecursorNode & { season?: string };
-  nyDramaCritics?: PrecursorNode & { season?: string };
+  nyDramaCritics?: PrecursorNode & { season?: string; noAward?: boolean };
+  obie?: PrecursorNode & { season?: string };
+  lortel?: PrecursorNode & { season?: string };
+  criticsCircle?: PrecursorNode & { season?: string };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };

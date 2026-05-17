@@ -37,7 +37,7 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
 const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
-const { classifyCategory } = require('./lib/classify-category');
+const { classifyCategory, KNOWN_UNSCORED_CATEGORIES } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
 // Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
@@ -78,7 +78,7 @@ function loadPrecursor(name) {
   // once at end-of-load (a typo like "Outstanding Direcetor" passes schema
   // but silently misses the +30 win bonus downstream).
   const { unknownCategories } = validatePrecursorSource(name, raw, {
-    isKnownCategory: (cat) => classifyCategory(cat) !== null,
+    isKnownCategory: (cat) => classifyCategory(cat) !== null || KNOWN_UNSCORED_CATEGORIES.has(cat),
   });
   for (const cat of unknownCategories) {
     _unknownCategoryWarnings.push(`  ${name}.json: "${cat}"`);
@@ -90,6 +90,9 @@ const DRAMA_DESK = loadPrecursor('drama-desk');
 const OUTER_CRITICS = loadPrecursor('outer-critics');
 const DRAMA_LEAGUE = loadPrecursor('drama-league');
 const NYDCCC = loadPrecursor('nydcc');
+const OBIE = loadPrecursor('obie');
+const LORTEL = loadPrecursor('lortel');
+const CRITICS_CIRCLE = loadPrecursor('critics-circle');
 const PULITZER = loadPrecursor('pulitzer');
 // Historic Pulitzer (pre-2014) uses explicit showIds — fuzzy title matching
 // fails on multiple revival history (e.g. 5 Death of a Salesman entries).
@@ -411,12 +414,15 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   return { matched, unmatched };
 }
 
-/** Apply NYDCCC source. Winners only — `wins` populated; no nominatedFor. */
+/** Apply NYDCCC source. Winners only — `wins` populated; no nominatedFor.
+ *  noAward entries ({year, noAward:true}) are skipped — they represent
+ *  years the Circle voted to give no award; there is no show to attach them to. */
 function applyNYDCCC(source, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [category, years] of Object.entries(source)) {
     for (const yearEntry of years) {
+      if (yearEntry.noAward) continue;
       if (!yearEntry.winner) continue;
       const callOpts = { ...opts, sourceYear: yearEntry.year };
       const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById, callOpts);
@@ -429,6 +435,32 @@ function applyNYDCCC(source, awardsShows, titleById, opts) {
       if (!sh.nyDramaCritics.wins.includes(category)) {
         sh.nyDramaCritics.wins.push(category);
         sh.nyDramaCritics.wins = uniqSorted(sh.nyDramaCritics.wins);
+      }
+      matched++;
+    }
+  }
+  return { matched, unmatched };
+}
+
+/** Apply Obie source. Winners only (Wikipedia has no nominees list for Obie Awards).
+ *  Per-category keyed, same source shape as DD/OCC/DL but only `winner` present. */
+function applyObie(source, awardsShows, titleById, opts) {
+  let matched = 0;
+  const unmatched = [];
+  for (const [category, years] of Object.entries(source)) {
+    for (const yearEntry of years) {
+      if (!yearEntry.winner) continue;
+      const callOpts = { ...opts, sourceYear: yearEntry.year };
+      const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById, callOpts);
+      if (!showId) {
+        unmatched.push(`obie/${category}/${yearEntry.year}: ${yearEntry.winner}`);
+        continue;
+      }
+      const sh = awardsShows[showId];
+      ensurePrecursorField(sh, 'obie', sh.tony && sh.tony.season);
+      if (!sh.obie.wins.includes(category)) {
+        sh.obie.wins.push(category);
+        sh.obie.wins = uniqSorted(sh.obie.wins);
       }
       matched++;
     }
@@ -591,6 +623,9 @@ function main() {
   const occRes = applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', awardsShows, titleById, matcherOpts);
   const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
+  const obieRes = applyObie(OBIE, awardsShows, titleById, matcherOpts);
+  const lortelRes = applyDDOCCDL(LORTEL, 'lortel', awardsShows, titleById, matcherOpts);
+  const ccRes = applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
@@ -599,6 +634,9 @@ function main() {
   console.log(`  Outer Critics:        ${occRes.matched} matched, ${occRes.unmatched.length} unmatched`);
   console.log(`  Drama League:         ${dlRes.matched} matched, ${dlRes.unmatched.length} unmatched`);
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
+  console.log(`  Obie Awards:          ${obieRes.matched} matched, ${obieRes.unmatched.length} unmatched`);
+  console.log(`  Lortel Awards:        ${lortelRes.matched} matched, ${lortelRes.unmatched.length} unmatched`);
+  console.log(`  Critics' Circle:      ${ccRes.matched} matched, ${ccRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
   if (histPulRes.missing.length > 0) {
@@ -668,6 +706,9 @@ function main() {
   applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', secondShows, titleById, matcherOpts);
   applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
+  applyObie(OBIE, secondShows, titleById, matcherOpts);
+  applyDDOCCDL(LORTEL, 'lortel', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare

@@ -256,6 +256,10 @@ export interface NyDramaCriticsAwards {
   season: string;
   wins: string[];
   nominatedFor?: string[];
+  /** True when the Critics' Circle voted to give no award in this category that
+   *  year. When present, this entry contributes 0 to the awards score and the
+   *  UI renders a "No award given" chip instead of a winner name. */
+  noAward?: boolean;
 }
 
 /** Pulitzer Prize for Drama. Single category ("Drama"), so `wins` and
@@ -267,12 +271,40 @@ export interface PulitzerPrize {
   year?: number;
 }
 
+/** Obie Award (Village Voice Off-Broadway Theater Award, 1956–2019).
+ *  Covers Off-Broadway and Off-Off-Broadway productions. */
+export interface ObieAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
+/** Critics' Circle Theatre Award (UK/West End, 1990–present). */
+export interface CriticsCircleAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
+/** Lucille Lortel Award (Off-Broadway Theater Award, 1986–present). */
+export interface LortelAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
   outerCriticsCircle?: OuterCriticsCircleAwards;
   dramaLeague?: DramaLeagueAwards;
   nyDramaCritics?: NyDramaCriticsAwards;
+  obie?: ObieAwards;
+  lortel?: LortelAwards;
+  criticsCircle?: CriticsCircleAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */

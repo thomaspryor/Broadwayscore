@@ -9,6 +9,7 @@ import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from '@/components/show-cards';
 import { featureFlags } from '@/config/feature-flags';
 import { daysUntilTonyCeremony } from '@/lib/tony-cutoffs';
+import { OTHER_CEREMONY_CONFIGS, type OtherAwardConfig, type OtherAwardKey } from '@/config/ceremonies';
 
 interface AwardScoreCardProps {
   showId: string;
@@ -203,30 +204,14 @@ function TonyAwardsPanel({
   );
 }
 
-interface OtherAwardConfig {
-  key: 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc';
-  short: string;
-  display: string;
-  ceremonyName: string;
-  chip: string;
-  text: string;
-}
-
-// Per-ceremony color coding (re-introduced per Claude Design 2026-05-17 after
-// being briefly neutralized). Colors give each ceremony its own glanceable
-// identity in the chip row — important when 4 chips sit side-by-side.
-const OTHER_CONFIGS: OtherAwardConfig[] = [
-  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk',                  chip: 'bg-purple-500/10 border-purple-500/20', text: 'text-purple-300' },
-  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle',        chip: 'bg-cyan-500/10 border-cyan-500/20',     text: 'text-cyan-300' },
-  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League',                chip: 'bg-emerald-500/10 border-emerald-500/20', text: 'text-emerald-300' },
-  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle",    chip: 'bg-rose-500/10 border-rose-500/20',     text: 'text-rose-300' },
-];
-
-function nodeFor(awards: ShowAwards, key: OtherAwardConfig['key']) {
+function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'dramaDesk') return awards.dramadesk;
   if (key === 'occ') return awards.outerCriticsCircle;
   if (key === 'dramaLeague') return awards.dramaLeague;
   if (key === 'nydcc') return awards.nyDramaCritics;
+  if (key === 'obie') return awards.obie;
+  if (key === 'lortel') return awards.lortel;
+  if (key === 'criticsCircle') return awards.criticsCircle;
   return undefined;
 }
 
@@ -237,27 +222,23 @@ function OtherAwardsPanel({
 }) {
   const [expanded, setExpanded] = useState(false);
 
-  const rows = OTHER_CONFIGS.map(cfg => {
+  const rows = OTHER_CEREMONY_CONFIGS.map(cfg => {
     const node = nodeFor(awards, cfg.key);
     const wins = node?.wins ?? [];
     const rawNoms = node && 'nominations' in node ? node.nominations : undefined;
-    const nominationsCount = typeof rawNoms === 'number' ? rawNoms
-      : Array.isArray(rawNoms) ? rawNoms.length
-      : null;
+    const nominationsCount = typeof rawNoms === 'number' ? rawNoms : null;
     const nominatedFor = node && 'nominatedFor' in node && Array.isArray(node.nominatedFor)
       ? node.nominatedFor : [];
     // Prefer the larger source of nomination count. DD/OCC publish a `nominations`
     // total separate from the per-category `nominatedFor` list (which may be
     // incomplete for older shows). DL/NYDCCC only have `nominatedFor`.
     const nomsTotal = Math.max(nominationsCount ?? 0, nominatedFor.length) || null;
-    return { cfg, wins, nominatedFor, nomsTotal };
+    const noAward = node && 'noAward' in node ? (node as { noAward?: boolean }).noAward === true : false;
+    return { cfg, wins, nominatedFor, nomsTotal, noAward };
   })
-    // Render a row only when we can produce a real label: either wins exist,
-    // or some flavor of nom count > 0. Subtotal-only (uncategorized) rows are
-    // suppressed to avoid "0 noms" chips — their points still affect the
-    // overall Award Score badge upstream.
-    .filter(r => r.wins.length > 0 || (r.nomsTotal ?? 0) > 0)
-    // Sort by wins desc, then noms desc, so the most impressive ceremony leads.
+    // Render a row when we can produce a real label: wins, noms, or noAward.
+    .filter(r => r.wins.length > 0 || (r.nomsTotal ?? 0) > 0 || r.noAward)
+    // Sort by wins desc, then noms desc. noAward rows sort below normal rows.
     .sort((a, b) => (b.wins.length - a.wins.length) || ((b.nomsTotal ?? 0) - (a.nomsTotal ?? 0)));
 
   if (rows.length === 0) return null;
@@ -288,18 +269,20 @@ function OtherAwardsPanel({
           Color-coded per ceremony so the row is glanceable; ceremony name
           leads (the noun the user recognizes), counts trail. */}
       <div className="flex flex-wrap gap-2 mt-2">
-        {rows.map(({ cfg, wins, nomsTotal }) => {
+        {rows.map(({ cfg, wins, nomsTotal, noAward }) => {
           const winsLabel = `${wins.length} win${wins.length === 1 ? '' : 's'}`;
           const nomsLabel = nomsTotal && nomsTotal > wins.length
             ? ` / ${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
             : '';
-          const detail = wins.length === 0 && nomsTotal
+          const detail = noAward
+            ? 'No award given'
+            : wins.length === 0 && nomsTotal
             ? `${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
             : `${winsLabel}${nomsLabel}`;
           return (
             <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} text-xs font-medium`}>
               <span className={cfg.text}>{cfg.short}:</span>
-              <span className="text-gray-300 tabular-nums">{detail}</span>
+              <span className={noAward ? 'text-gray-500 italic' : 'text-gray-300 tabular-nums'}>{detail}</span>
             </span>
           );
         })}
@@ -307,7 +290,7 @@ function OtherAwardsPanel({
 
       {expanded && (
         <div className="mt-3 space-y-3">
-          {rows.map(({ cfg, wins, nominatedFor, nomsTotal }) => {
+          {rows.map(({ cfg, wins, nominatedFor, nomsTotal, noAward }) => {
             const nomsOnly = nominatedFor.filter(n => !wins.includes(n));
             return (
               <div key={cfg.key}>
@@ -317,6 +300,9 @@ function OtherAwardsPanel({
                     <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
                   )}
                 </div>
+                {noAward && (
+                  <p className="text-xs text-gray-500 italic pl-4">No award given this year</p>
+                )}
                 {wins.length > 0 && (
                   <ul className="space-y-1 pl-4">
                     {wins.map((win, idx) => (

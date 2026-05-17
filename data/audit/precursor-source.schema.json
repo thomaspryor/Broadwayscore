@@ -35,6 +35,10 @@
                 "nominees": {
                   "type": "array",
                   "items": { "type": "string", "minLength": 1 }
+                },
+                "noAward": {
+                  "type": "boolean",
+                  "description": "True when the ceremony gave no award this year in this category (e.g. NYDCC Best Musical 2018, 2021, 2023)."
                 }
               }
             }
