@@ -9,6 +9,7 @@
 - [User device context](feedback_user_device_context.md) — Laptop AND phone; infer from message style, don't default to phone.
 - [Always wait for async](feedback_always_wait_async.md) — Never end a turn while a dispatched workflow/deploy/rebuild is still in progress.
 - [Flag-gated: verify on demo](feedback_flag_gated_verify_on_demo.md) — Prod deploy green ≠ user-visible for flag-gated features. Demo has its own cron-based pipeline; trigger it manually + verify the demo URL renders the feature before declaring shipped.
+- [Competition rank for leaderboards](feedback_competition_rank_for_leaderboards.md) — For `#N of M` UIs, use competition rank (1,1,3), not dense rank (1,1,2). Dense rank makes a Skippable show read as top 5%.
 - [Verification gate hook](feedback_verification_gate_hook.md) — Stop hook blocks "done" after edits unless a qualifying Bash ran. Bypass: NO-VERIFY:.
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — Parent-card "X files need Y" can be wrong by orders of magnitude; 5-20 file probe first.
 - [Save research findings to memory](feedback_save_research_findings.md) — After last30/web research, immediately save actionable ideas.
@@ -49,6 +50,7 @@
 - [Silent merge loss on reformat](feedback_silent_merge_loss_on_reformat.md) — Worktree JSON reformat + concurrent main edit silently drops additions on merge. Re-run feature unit tests on main post-merge.
 - [Pipe masks exit code](feedback_pipe_masks_exit_code.md) — `node x.js | tail` returns tail's exit, not node's; use pipefail.
 - [Workflow YAML inline-commit smoke test](feedback_workflow_yaml_needs_manual_fire.md) — Static reviewers miss missing `git config user.name/email` in commit steps. Manual-fire surfaces it.
+- [GHA heredoc indentation](feedback_yaml_heredoc_indentation.md) — Heredoc content starting at column 0 inside `run: |` breaks YAML parsing. Keep ≥10 spaces indent or use array.join() for multi-line strings.
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — Trace dispatch graph — circular chains blew up to 1000+ runs/day.
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — Never copy logic into tests; extract to `scripts/lib/` and require().
 - [Node test format, not Jest](feedback_test_format_node_not_jest.md) — Tests must be `.mjs` with `node:test` API; register in test.yml.
@@ -107,8 +109,10 @@
 - [Curated historical 4-review threshold](feedback_curated_historical_4review_threshold.md) — `isCuratedHistorical` flag → 4-review minimum (vs 5) when ≥1 T1/T2 review present.
 - [Bare X/Y regex FPs](feedback_regex_url_fragment_fps.md) — `\d/\d` patterns FP on CDN paths and date headers. Anchor + URL filter required.
 - [Content-quality regex bare-keyword FPs](feedback_content_quality_regex_fps.md) — Audit patterns against real corpus before edit.
+- [JS array > 0 is always false](feedback_js_array_gt_comparison.md) — `string[] > 0` silently returns false; use `Array.isArray(x) ? x : []` + `.length > 0` for array fields.
 
 ## 🤖 LLM / evals
+- [LLM prompts must be market/type-aware](feedback_llm_prompts_market_aware.md) — Theater-tuned prompts mis-classify opera/special shows that live as type-overlays on category=off-broadway. Inject canonical context blocks from `scripts/lib/opera-prompt-context.js`; spell out WRONG criteria BEFORE leniency.
 - [Eval patterns](feedback_eval_patterns.md) — Lib layout, 3-point validator, real-iteration loop, golden fixtures.
 - [LLM wrongprod false positives](feedback_llm_wrongprod_false_positives.md) — ~15% FP on high-conf flags; temporal override is a safety net.
 - [LLM verifier hallucinates](feedback_llm_verifier_hallucinates.md) — Gemini `isValid:true` at 48% on garbage; post-check with `findShowKeywordInText`.
@@ -118,6 +122,7 @@
 ## 🎨 UI / design system
 - [Design system reference](design-system.md) — Surfaces, score tiers, shared components, CSS classes, banned patterns.
 - [Visual verify before push](feedback_visual_verify_before_push.md) — Screenshot-verify on running site before commit; tsc is not visual.
+- [Preserve parallel-session colors](feedback_preserve_parallel_session_colors.md) — When porting Claude Design output, keep score-box / tier-badge colors shipped by parallel sessions (e.g. awards) instead of CD's proposed palette.
 - [Round once, share everywhere](feedback_round_once_share_everywhere.md) — Every gate on a rounded score must round too; centralize in `isCriticalGold()`.
 - [Map iterator spread broken](feedback_map_iterator_spread.md) — Never `[...map.keys()]`; use `Array.from()`. tsconfig es5 breaks spread.
 - [Demo flags client-only](feedback_demo_flags_client_only.md) — `isDemo()`/window checks must run in `'use client'` only; CI lint enforces.
