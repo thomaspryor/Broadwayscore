@@ -49,11 +49,13 @@ async function main() {
     await sleep(RATE_LIMIT_MS);
   }
 
-  // Diff summary
+  // Diff summary: compares raw scrape vs baseline. Years in '-' that are
+  // outside the MIN_YEAR window are NOT lost — writePrecursorJson preserves
+  // them via year-level merge. Only '+' entries are genuinely new additions.
   const fp = path.join(PRECURSORS_DIR, 'drama-desk.json');
   if (fs.existsSync(fp)) {
     const baseline = JSON.parse(fs.readFileSync(fp, 'utf8')).data;
-    console.log('\nDiff vs baseline:');
+    console.log(`\nDiff vs baseline (note: pre-${MIN_YEAR} '-' entries are preserved by merge, not dropped):`);
     for (const cat of Object.keys(PAGES)) {
       const baseYears = new Set((baseline[cat] || []).map((e) => e.year));
       const newYears = new Set(result[cat].map((e) => e.year));

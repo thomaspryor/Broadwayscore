@@ -171,7 +171,12 @@ function writePrecursorJson(name, data, opts = {}) {
     try {
       existing = JSON.parse(fs.readFileSync(fp, 'utf8'));
       oldCount = countEntries(existing.data);
-    } catch (_) { /* ignore */ }
+    } catch (e) {
+      // A corrupt baseline must never silently cause merge to be skipped:
+      // skipping merge → mergedData = raw partial scrape → shrink guard sees
+      // oldCount=0 → 0% shrink → guard passes → pre-MIN_YEAR history wiped.
+      throw new Error(`Cannot parse existing ${name}.json: ${e.message}. Fix or remove the file manually before re-running.`);
+    }
   }
 
   // Merge with existing data to preserve both uncovered categories and
