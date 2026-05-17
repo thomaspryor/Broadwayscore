@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-05-17T15:39:17.909Z",
+  "runDate": "2026-05-17T15:40:59.686Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "les-liaisons-dangereuses-west-end-2026",
+    "showFilter": "the-price-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 2,
+    "failed": 4,
     "skipped": 0,
     "successRate": "25.0%"
   },
@@ -23,26 +23,26 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
     "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 3,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 21,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,8 +54,10 @@
     "mexodus-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
-    "les-liaisons-dangereuses-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "les-liaisons-dangereuses-west-end-2026/the-upcoming-uk--unknown.json"
+    "the-price-off-west-end-2026/guardian--unknown.json",
+    "the-price-off-west-end-2026/theatre-reviews--unknown.json",
+    "the-price-off-west-end-2026/thestage--unknown.json",
+    "the-price-off-west-end-2026/times-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -69,7 +71,10 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/the-price-off-west-end-2026/theatre-reviews--unknown.json",
+      "data/review-texts/the-price-off-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
