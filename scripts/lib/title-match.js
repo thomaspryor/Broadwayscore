@@ -27,9 +27,23 @@
 // noise (codex caught: "Foo (Musical) Bar" used to bleed "musical" mid-token).
 const TYPE_DESIGNATOR_RE = /\s*\((play|musical|comedy|drama|dance|opera|new musical|new play)\)\s*$/i;
 
+// Common abbreviation expansions normalized to their full forms. Source
+// scrapers (especially Wikipedia tables) often abbreviate ("Sunset Blvd."
+// for "Sunset Boulevard"); without this, the matcher misses an entire DD
+// ceremony's worth of categories on every collision. Word-boundary anchored
+// so we don't munge unrelated tokens (e.g. "St." in "St. James" expands but
+// "BLVD" inside a longer word wouldn't). Period optional — some sources skip
+// it. Applied BEFORE the rest of normalization so the expanded word flows
+// through the standard punctuation/joiner pipeline.
+const ABBREV_EXPANSIONS = [
+  [/\bblvd\.?\b/gi, 'boulevard'],
+];
+
 function normalizeTitle(s) {
   if (!s) return '';
-  return s.toLowerCase()
+  let pre = s;
+  for (const [re, sub] of ABBREV_EXPANSIONS) pre = pre.replace(re, sub);
+  return pre.toLowerCase()
     // & → "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
     .replace(/&/g, ' and ')
     // Trailing type designator: keep as plain text so it survives parens-strip
