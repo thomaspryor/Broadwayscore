@@ -629,8 +629,14 @@ async function main() {
         updated++;
       } else if (filteredNominations.length > (existing.tony.nominations || 0) ||
                  filteredWins.length !== (existing.tony.wins?.length || 0)) {
-        // Update if more nominations OR wins count changed
+        // Update if more nominations OR wins count changed.
+        // Spread-merge preserves human-set fields (eligible, note) that the
+        // Wikipedia scraper doesn't manage. Without this, marking a show
+        // tony.eligible: false (e.g. Special Tony recipients like Just for Us)
+        // gets silently erased the next time the daily cron sees a noms/wins
+        // delta. See sprint-plan-tony-eligibility.md S1.
         existing.tony = {
+          ...existing.tony,
           season: data.season,
           ceremony: data.ceremony,
           nominations: filteredNominations.length,
