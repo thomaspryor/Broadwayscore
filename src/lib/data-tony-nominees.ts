@@ -169,9 +169,8 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const showById = new Map(eligible.map(s => [s.id, s]));
 
   // 4 major categories: delegate to groupIntoCategories (handles score blending)
-  const majorCats = groupIntoCategories(eligible, { nomineesOnly: true, season }).map(cat => ({
-    ...cat,
-    shows: cat.shows.map(show => {
+  const majorCats = groupIntoCategories(eligible, { nomineesOnly: true, season }).map(cat => {
+    const showsWithOdds = cat.shows.map(show => {
       const computedShow = eligible.find(s => s.slug === show.slug);
       const showId = computedShow?.id ?? '';
       const pmNominees = pmData?.categories[cat.title]?.nominees ?? null;
@@ -180,8 +179,10 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         gdOdds: lookupGdOdds(gdData, showId, cat.title),
         polymarketOdds: pmNominees ? findPmOdds(pmNominees, show.title) : null,
       };
-    }),
-  }));
+    });
+    showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
+    return { ...cat, shows: showsWithOdds };
+  });
 
   // 22 non-major categories: build from tony-nominations.json
   const nominations = (nominationsRawData as { nominations: NominationEntry[] })
