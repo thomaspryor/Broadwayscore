@@ -1,0 +1,17 @@
+---
+name: Parallel worktree sessions race on the same card
+description: When multiple sessions are handed the same multi-issue Notion card, they collide — no claim mechanism exists. Detect early by re-pulling main before Edit, not just before merge.
+type: feedback
+originSessionId: ea333588-eda7-4271-bbf8-49081b096e66
+---
+Three parallel sessions worked on the same parent Notion card (WE long-runner CV hardening 34c637c5-416f-812b) on 2026-04-24. They all implemented the same issues (1-4) independently in their own worktrees. Only the first two to merge won; the third (this session) discarded ~600 lines of duplicate work after a 4-file merge conflict.
+
+**Why:** `EnterWorktree` branches from HEAD at session start. If another session's commit lands on main 20 minutes later, the worktree is silently stale. `git pull origin main` before merge is too late — the duplicate work is already written.
+
+**How to apply:**
+- When picking up a multi-issue card, `git -C /Users/tompryor/Broadwayscore fetch origin && git log origin/main --since="30 minutes ago" --grep="<card-id-prefix>"` BEFORE starting implementation. If another session shipped something on the card in the last window, that issue is likely done.
+- For each issue before writing code: grep main's `scripts/lib/` for the filename you're about to create. A file named `long-runner-registry.js` vs `show-long-run.js` is a near-collision that only surfaces at merge time.
+- If the Notion card itself has been updated mid-session (new outcomes, sub-cards filed), treat it as a signal that another session is active.
+- Cheap heuristic: `node scripts/notion-brain.js search --status "In progress"` — if two cards reference the same parent ID, coordinate or narrow scope.
+
+**Why:** Engineering the "right" fix twice is waste; the second implementation never ships regardless of quality. The small upfront check (30s of greps) prevents hour-scale duplicate work.
