@@ -82,7 +82,7 @@ const LONG_NEUTRAL_TEXT = (
   'the costumes are various colors and styles. '
 ).repeat(25);
 
-test('long-biographical outlet + opinion + >600 words → DEFER', () => {
+test('long-biographical outlet + opinion + >500 words → DEFER', () => {
   assert.strictEqual(
     shouldDeferCvWrongShow({ outletId: 'new-york-sun', fullText: LONG_OPINION_TEXT }),
     true,
@@ -96,11 +96,30 @@ test('standard outlet (variety) → no defer', () => {
   );
 });
 
-test('long-biographical outlet but short (<600 words) → no defer', () => {
+test('long-biographical outlet but short (≤500 words) → no defer', () => {
   const text = 'Short review of just a few words. brilliant performance throughout.';
   assert.strictEqual(
     shouldDeferCvWrongShow({ outletId: 'new-york-sun', fullText: text }),
     false,
+  );
+});
+
+test('long-biographical + 500 words exactly → no defer (exclusive boundary)', () => {
+  // "the show is brilliant unfortunately here " = 6 words × 83 reps = 498 words (≤500) → must NOT defer
+  const text = 'the show is brilliant unfortunately here '.repeat(83).trim();
+  assert.strictEqual(
+    shouldDeferCvWrongShow({ outletId: 'new-york-sun', fullText: text }),
+    false,
+  );
+});
+
+test('long-biographical + 550 words (bughouse-class) + opinion → defer (true)', () => {
+  // "the show is brilliant unfortunately here " = 6 words × 90 reps = 540 words (>500)
+  // hits 2 opinion markers: "brilliant" (group 1) + "unfortunately" (group 4)
+  const text = 'the show is brilliant unfortunately here '.repeat(90).trim();
+  assert.strictEqual(
+    shouldDeferCvWrongShow({ outletId: 'new-york-sun', fullText: text }),
+    true,
   );
 });
 

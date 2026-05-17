@@ -689,7 +689,7 @@ function quickValidityCheck(text, showTitle) {
  *
  * Returns true only when ALL of:
  *   1. getCvStyle(outletId) === 'long-biographical'
- *   2. wordCount(fullText) > 600
+ *   2. wordCount(fullText) > 500
  *   3. hasOpinionLanguage(fullText) is true
  *
  * Safe defaults: returns false for missing outletId or fullText.
@@ -702,7 +702,7 @@ function shouldDeferCvWrongShow(reviewData) {
   if (!outletId || !fullText) return false;
   if (getCvStyle(outletId) !== 'long-biographical') return false;
   const wordCount = fullText.split(/\s+/).filter(Boolean).length;
-  if (wordCount <= 600) return false;
+  if (wordCount <= 500) return false;
   return hasOpinionLanguage(fullText);
 }
 
