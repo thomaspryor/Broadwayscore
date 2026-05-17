@@ -6,6 +6,7 @@
 import { getBroadwayShows } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/engine';
 import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/data-audience';
+import { isTonyEligible } from '@/lib/data-awards';
 import {
   tonySeasonForCeremonyYear,
   currentTonySeason,
@@ -242,6 +243,20 @@ export interface TonyCategory {
 }
 
 /**
+ * Shows that opened in the Tony season window but were ruled ineligible for
+ * competitive categories by the Tony Administration Committee (or marked
+ * eligible:false in awards.json for other reasons — e.g., not-yet-opened at
+ * time of entry). Rendered in a small footer under each prediction category
+ * to explain to visitors why a show they expected to see is missing.
+ */
+export interface IneligibleShow {
+  slug: string;
+  title: string;
+  categoryKey: TonyCategoryKey;
+  note: string;
+}
+
+/**
  * Compute the audience input for the Tony predictor.
  * Defined as mean(Show Score, Mezzanine) — narrower than the site-wide audience
  * grade (which blends 5 sources by reviewCount). These two have the most
@@ -465,11 +480,49 @@ function getTourStopSlugs(): Set<string> {
   return slugs;
 }
 
+/**
+ * Returns shows opening in the season window that were ruled ineligible by the
+ * Tony Administration Committee. Rendered as a "Ruled ineligible" footer under
+ * each prediction category — turns a confusing absence into a credibility win
+ * (the site knows the rules). A show only appears here if its awards.json
+ * entry has `tony.eligible === false` AND a `tony.note` explaining why.
+ */
+export function getIneligibleShows(allShows: ComputedShow[], season: TonySeasonWindow): IneligibleShow[] {
+  const awardsSeason = toAwardsSeason(season.label);
+  const awardsShows = getAwardsShows();
+  const out: IneligibleShow[] = [];
+  for (const show of allShows) {
+    if (!show.openingDate) continue;
+    if (show.openingDate < season.start || show.openingDate > season.end) continue;
+    const ruling = awardsShows[show.id]?.tony;
+    if (ruling?.season !== awardsSeason || ruling.eligible !== false) continue;
+    if (!ruling.note) continue; // no explanation = don't surface
+    let categoryKey: TonyCategoryKey;
+    if (show.type === 'musical' && !show.isRevival) categoryKey = 'best-musical';
+    else if (show.type === 'play' && !show.isRevival) categoryKey = 'best-play';
+    else if (show.type === 'musical' && show.isRevival) categoryKey = 'best-revival-musical';
+    else if (show.type === 'play' && show.isRevival) categoryKey = 'best-revival-play';
+    else continue;
+    out.push({ slug: show.slug, title: show.title, categoryKey, note: ruling.note });
+  }
+  return out.sort((a, b) => a.title.localeCompare(b.title));
+}
+
 export function getEligibleShows(allShows: ComputedShow[], season: TonySeasonWindow): ComputedShow[] {
   const tourStops = getTourStopSlugs();
+  const awardsSeason = toAwardsSeason(season.label);
   return allShows.filter(show => {
     if (!show.openingDate) return false;
     if (show.openingDate < season.start || show.openingDate > season.end) return false;
+
+    // Explicit Administration Committee ruling wins over heuristics. A `true`
+    // ruling lets us include shows the tour-stop filter would otherwise drop
+    // (e.g. mamma-mia). A `false` ruling excludes shows the heuristic would
+    // otherwise admit (e.g. Just for Us — solo storytelling, Special Tony
+    // recipient, never in competitive Best Play).
+    const ruling = isTonyEligible(show.id, awardsSeason);
+    if (ruling !== undefined) return ruling;
+
     if (tourStops.has(show.slug)) return false;
     return true;
   });
@@ -652,6 +705,8 @@ type AwardsShowEntry = {
     wins?: string[];
     nominatedFor?: string[];
     nominations?: number;
+    eligible?: boolean;
+    note?: string;
   };
 };
 
@@ -699,15 +754,17 @@ export function getEligibleShowsForPastSeason(allShows: ComputedShow[], season: 
   const awardsSeason = toAwardsSeason(season.label);
   const eligible = new Map<string, ComputedShow>();
 
-  // 1. Add all shows that have Tony data for this season in awards.json
+  // 1. Add all shows that have Tony data for this season in awards.json,
+  //    EXCEPT those explicitly ruled ineligible by the Committee.
   for (const [showId, data] of Object.entries(awardsShows)) {
-    if (data.tony?.season === awardsSeason) {
+    if (data.tony?.season === awardsSeason && data.tony?.eligible !== false) {
       const show = showMap.get(showId);
       if (show) eligible.set(show.id, show);
     }
   }
 
-  // 2. Also add shows from the standard date window (captures non-nominated eligible shows)
+  // 2. Also add shows from the standard date window (captures non-nominated eligible shows).
+  //    getEligibleShows already honors isTonyEligible, so ineligible shows are filtered there.
   const dateEligible = getEligibleShows(allShows, season);
   for (const show of dateEligible) {
     eligible.set(show.id, show);
