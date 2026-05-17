@@ -59,7 +59,7 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const LABEL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-400';
+const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-tight';
 
 // --- Reusable score sub-components ---
 
@@ -93,11 +93,44 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 function GoldDerbyCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className="hidden sm:flex flex-col items-center gap-1 flex-shrink-0 w-20">
-      <span className={LABEL}>Gold Derby</span>
+    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-20">
       <span className={numClass}>
         {odds != null ? `${Math.round(odds * 100)}%` : '—'}
       </span>
+    </div>
+  );
+}
+
+// Column header row — appears once per section inside the card, labels align with data columns
+function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
+  const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
+  const scoreW = isMajor ? 'w-14' : 'w-11';
+  const gdW = isMajor ? 'w-20' : 'w-16';
+  const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
+  const outerGap = isMajor ? 'gap-3 sm:gap-4' : 'gap-3';
+  const innerGap = isMajor ? 'gap-2' : 'gap-2 sm:gap-3';
+
+  return (
+    <div className={`flex items-end ${outerGap} ${padding} pt-2 pb-1.5 border-b border-white/5`}>
+      <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
+      <div className="flex-1 min-w-0" />
+      <div className={`flex items-end ${innerGap} flex-shrink-0`}>
+        <div className={`hidden sm:block ${gdW} text-center`}>
+          <span className={HEADER_COL}>Gold<br />Derby</span>
+        </div>
+        {isMajor ? (
+          <>
+            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Critic<br />Score</span></div>
+            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Audience<br />Grade</span></div>
+          </>
+        ) : (
+          <>
+            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Audience<br />Grade</span></div>
+            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Critic<br />Score</span></div>
+          </>
+        )}
+        <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Precursor<br />Awards</span></div>
+      </div>
     </div>
   );
 }
@@ -137,25 +170,16 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
       {/* Gold Derby column */}
       <GoldDerbyCol odds={show.gdOdds} size="md" />
 
-      {/* Critics | Audience | Awards — all same size */}
-      <div className="flex items-start gap-2 flex-shrink-0">
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="md" />
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Awards</span>
-          <AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-            size="md"
-          />
-        </div>
+      {/* Critics | Audience | Awards */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="md" />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="md"
+        />
       </div>
     </Link>
   );
@@ -221,38 +245,22 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         </span>
       </div>
 
-      {/* Gold Derby + Audience + Critic — consistent right-side layout */}
+      {/* Gold Derby + Audience + Critic + Awards */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Gold Derby — desktop column; mobile shown inline in history text above */}
-        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
-          <span className={LABEL}>Gold Derby</span>
+        <div className="hidden sm:flex items-center justify-center w-16">
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
           </span>
         </div>
-
-        {/* Audience */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="sm" />
-        </div>
-
-        {/* Critic */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        </div>
-
-        {/* Awards */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Awards</span>
-          <AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-            size="sm"
-          />
-        </div>
+        <AudienceBox grade={show.audienceGrade} size="sm" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="sm"
+        />
       </div>
     </div>
   );
@@ -296,29 +304,19 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Gold Derby + Audience + Critic + Awards */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
-          <span className={LABEL}>Gold Derby</span>
+        <div className="hidden sm:flex items-center justify-center w-16">
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
           </span>
         </div>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="sm" />
-        </div>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        </div>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Awards</span>
-          <AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-            size="sm"
-          />
-        </div>
+        <AudienceBox grade={show.audienceGrade} size="sm" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="sm"
+        />
       </div>
     </div>
   );
@@ -339,6 +337,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
         {category.title}
       </h2>
       <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
+        <SectionColumnHeader isMajor={isMajor} />
         {nominees.map(show => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
