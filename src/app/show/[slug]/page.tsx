@@ -24,6 +24,7 @@ import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
+import { isOperaShow } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -111,8 +112,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isLondonMeta = isLondonMarket(show.category);
   const isOffWestEndMeta = show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
-  const siteName = isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
+  const isOperaMeta = isOperaShow(show);
+  const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
+  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -283,6 +285,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const isWestEnd = isLondonMarket(show.category);
   const isOffWestEnd = show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
+  const isOpera = isOperaShow(show);
 
   // Theater scorecard lookup (Broadway only)
   const theater = !isWestEnd && !isOffBroadway && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
@@ -417,7 +420,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                     show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
-                  alt={`${show.title} ${isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type} poster`}
+                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : 'Broadway'} ${show.type} poster`}
                   width={176}
                   height={264}
                   decoding="async"
@@ -434,10 +437,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </div>
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
-                {show.category && show.category !== 'broadway' && (
+                {show.category && show.category !== 'broadway' && !isOpera && (
                   <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : 'Off-Bway'}</span>
                 )}
-                <span className={show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{show.type === 'musical' ? 'Musical' : 'Play'}</span>
+                <span className={isOpera ? 'text-indigo-400' : show.type === 'musical' ? 'text-purple-400' : 'text-blue-400'}>{isOpera ? 'Opera' : show.type === 'musical' ? 'Musical' : 'Play'}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
                 {show.limitedRun && <span className="text-red-400">Limited</span>}
               </div>
@@ -447,7 +450,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             <div className="flex-1 min-w-0">
               {/* Pills row — desktop only (mobile pills moved below poster) */}
               <div className="hidden sm:flex flex-wrap items-center gap-1.5 mb-2" data-testid="show-pills-row">
-                <CategoryBadge category={show.category} />
+                <CategoryBadge category={show.category} isOpera={isOpera} />
                 <FormatPill type={show.type} />
                 <ProductionPill isRevival={show.isRevival === true} />
                 {show.limitedRun && <LimitedRunBadge />}
@@ -486,7 +489,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   <>
                     <span> <span className="text-gray-500">·</span> Opened {formatDate(show.openingDate)}</span>
                     {(() => {
-                      const durationSuffix = isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+                      const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
                       const dur = getBroadwayDuration(show.openingDate, durationSuffix);
                       return dur ? <span> <span className="text-gray-500">·</span> {dur}</span> : null;
                     })()}
@@ -713,7 +716,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                 <div>
                   <p className="text-sm font-semibold text-blue-300">Historical Production</p>
                   <p className="text-xs text-gray-400 mt-0.5">
-                    {`${isWestEnd ? 'West End Scorecard' : isOffBroadway ? 'Off-Broadway Scorecard' : 'Broadway Scorecard'}'s critic review coverage begins in ${isWestEnd ? '2020' : '2005'}. Cast, creative team, and production details are available for this historical production.`}
+                    {`${isOpera ? 'Opera Scorecard' : isWestEnd ? 'West End Scorecard' : isOffBroadway ? 'Off-Broadway Scorecard' : 'Broadway Scorecard'}'s critic review coverage begins in ${isWestEnd ? '2020' : '2005'}. Cast, creative team, and production details are available for this historical production.`}
                   </p>
                 </div>
               </div>
@@ -1039,7 +1042,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               ) : null;
             })()}
             {show.status === 'open' && (() => {
-              const durationSuffix = isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+              const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
               const dur = getBroadwayDuration(show.openingDate, durationSuffix);
               return dur ? (
                 <div>
