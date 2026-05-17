@@ -114,6 +114,7 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
 const { isWithinPriorRun } = require('./lib/wrong-production-autoclear');
+const { checkBrowserbaseCaps } = require('./lib/browserbase-caps');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
 
@@ -293,11 +294,16 @@ const CONFIG = {
   browserbaseApiKey: process.env.BROWSERBASE_API_KEY || '',
   browserbaseProjectId: process.env.BROWSERBASE_PROJECT_ID || '',
 
-  // Browserbase spending limits (to control costs - $0.10/browser hour)
+  // Browserbase spending limits (to control costs - $0.10/session).
+  // Empirical April 2026 baseline (peak opening-night month): median 84/day, p95
+  // 199/day, max 275/day (April 26, Joe Turner). Cap of 250 covers the empirical
+  // max with 0 historical clip days; cap of 200 would have clipped April 26 alone.
+  // Feb 2026 runaway: max 2,448/day = $244.80 in one day, $1,548 in one week.
+  // The 250/day hard ceiling means worst-case month = $750 instead of unbounded.
   browserbaseEnabled: process.env.BROWSERBASE_ENABLED === 'true',
-  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '200'), // ~$20/day max (Startup plan: 500h)
-  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '40'), // Per workflow run
-  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '15'), // Prevent one domain starving others
+  browserbaseMaxSessionsPerDay: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DAY || '250'), // $25/day ceiling = $750/mo MAX; normal $5-9/day
+  browserbaseMaxSessionsPerRun: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_RUN || '30'), // Per workflow run; matches typical opening-night batch
+  browserbaseMaxSessionsPerDomain: parseInt(process.env.BROWSERBASE_MAX_SESSIONS_PER_DOMAIN || '10'), // Prevent one paywalled outlet monopolizing
   browserbaseUsageFile: 'data/collection-state/browserbase-usage.json',
 
   // Directories
@@ -1952,22 +1958,26 @@ function saveBrowserbaseUsage() {
 /**
  * Check if we can use Browserbase (within spending limits)
  */
-function canUseBrowserbase() {
+function canUseBrowserbase(urlDomain) {
   if (!CONFIG.browserbaseEnabled) return false;
   if (!CONFIG.browserbaseApiKey) return false;
 
-  // Check daily limit
-  if (browserbaseUsage.sessionsToday >= CONFIG.browserbaseMaxSessionsPerDay) {
-    console.log(`    ⚠ Browserbase daily limit reached (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay})`);
+  const decision = checkBrowserbaseCaps({
+    sessionsToday: browserbaseUsage.sessionsToday,
+    sessionsThisRun: browserbaseUsage.sessionsThisRun,
+    sessionsPerDomain: browserbaseUsage.sessionsPerDomain || {},
+    urlDomain,
+    config: {
+      maxPerDay: CONFIG.browserbaseMaxSessionsPerDay,
+      maxPerRun: CONFIG.browserbaseMaxSessionsPerRun,
+      maxPerDomain: CONFIG.browserbaseMaxSessionsPerDomain,
+    },
+  });
+  if (!decision.allowed) {
+    const labels = { day: 'daily', run: 'per-run', domain: `per-domain (${urlDomain})` };
+    console.log(`    ⚠ Browserbase ${labels[decision.reason]} limit reached (${decision.used}/${decision.limit})`);
     return false;
   }
-
-  // Check per-run limit
-  if (browserbaseUsage.sessionsThisRun >= CONFIG.browserbaseMaxSessionsPerRun) {
-    console.log(`    ⚠ Browserbase per-run limit reached (${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun})`);
-    return false;
-  }
-
   return true;
 }
 
@@ -3098,16 +3108,12 @@ function buildTierChain(ctx, review) {
       label: 'Browserbase (managed browser + CAPTCHA solving)',
       timeoutMs: 120000,
       shouldRun: () => {
-        if (!CONFIG.browserbaseEnabled || !canUseBrowserbase()) return false;
-        // Per-domain session cap — prevents one domain class from consuming all sessions
-        try {
-          const urlDomain = new URL(url).hostname.replace('www.', '');
-          const domainSessions = browserbaseUsage.sessionsPerDomain[urlDomain] || 0;
-          if (domainSessions >= CONFIG.browserbaseMaxSessionsPerDomain) {
-            console.log(`    ⚠ Browserbase per-domain limit reached for ${urlDomain} (${domainSessions}/${CONFIG.browserbaseMaxSessionsPerDomain})`);
-            return false;
-          }
-        } catch {}
+        if (!CONFIG.browserbaseEnabled) return false;
+        // canUseBrowserbase() now also enforces the per-domain cap when passed the
+        // hostname, so the day/run/domain decision is unified in one place.
+        let urlDomain;
+        try { urlDomain = new URL(url).hostname.replace('www.', ''); } catch {}
+        if (!canUseBrowserbase(urlDomain)) return false;
         return (
           ctx.isKnownBlocked || ctx.sawCaptcha || ctx.enableBrowserbase ||
           (ctx.hasPaywallCreds && (ctx.sawPaywall || ctx.anyTierFailed))
