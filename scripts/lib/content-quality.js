@@ -1240,6 +1240,10 @@ function hasOpinionLanguage(text) {
     /\b(gives?\s+a?\s*(great|terrific|wonderful|solid|fine|nuanced|layered)\s+performance)\b/,
     /\b(direction\s+is|score\s+is|choreography\s+is|book\s+is|script\s+is)\b/,
     /\b(outshines|overshadows|steals\s+the\s+show|carries\s+the\s+show)\b/,
+    // Common evaluative language in theater criticism — needed for long-biographical outlets
+    /\b(hilarious|deliriously|razor-sharp|piercing|lacerating|incisive|impeccably)\b/,
+    /\b(entertaining|enjoyable|engaging|charming|affecting|mesmerizing|hypnotic)\b/,
+    /\b(perfectly\s+cast|well\s+cast|perfectly\s+suited|well\s+suited)\b/,
   ];
   let matches = 0;
   for (const pattern of opinionMarkers) {
@@ -2516,4 +2520,6 @@ module.exports = {
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,
   HORROR_FILM_PATTERNS,
+  // Opinion language detection — used by content-verifier shouldDeferCvWrongShow
+  hasOpinionLanguage,
 };

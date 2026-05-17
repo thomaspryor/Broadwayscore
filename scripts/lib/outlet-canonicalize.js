@@ -142,8 +142,25 @@ function resolveCanonicalOutletId({ outletArg, url }) {
   };
 }
 
+const VALID_CV_STYLES = new Set(['standard', 'long-biographical']);
+
+/**
+ * getCvStyle(outletId)
+ * Returns the cvStyle for the given outlet, defaulting to 'standard'.
+ * Calls normalizeOutlet first so aliases (e.g. 'nysun') resolve to their
+ * canonical ID ('new-york-sun') before the registry lookup.
+ */
+function getCvStyle(outletId) {
+  const canonical = normalizeOutlet(outletId || '');
+  const registry = loadRegistry();
+  const entry = registry.outlets && registry.outlets[canonical];
+  const style = entry && entry.cvStyle;
+  return VALID_CV_STYLES.has(style) ? style : 'standard';
+}
+
 module.exports = {
   resolveCanonicalOutletId,
+  getCvStyle,
   // exposed for tests
   _buildDomainMap: buildDomainMap,
   _parseDomain: parseDomain,

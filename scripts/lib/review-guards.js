@@ -1822,6 +1822,32 @@ function buildMultiProdYearGuard(shows) {
 function isIncludableForRebuild(data, show) {
   if (!data) return false;
 
+  // S3-T6: CV-promotion-deferred reviews are explicitly includable.
+  //
+  // The defer mechanism (S3-T5, scripts/rebuild-all-reviews.js) sets
+  // `flaggedForReview=true` + `flagReason='cv-promotion-deferred'` when the
+  // LLM-CV pass would otherwise promote a long-biographical-lead review to
+  // `wrongShow=true`. The defer prevents that silent rejection at outlets
+  // whose house style legitimately opens with biographical framing
+  // (`cvStyle: 'biographical-lead'` in outlet-registry.json).
+  //
+  // These reviews must continue to appear in reviews.json AND be scored
+  // normally — the defer is about NOT being silently wrongShow'd, not about
+  // exclusion. We intentionally do not gate this on outletId or anything
+  // else; the specific `flagReason` value is sufficient (it is set only by
+  // the S3-T5 deferral logic in rebuild-all-reviews.js, search
+  // "cv-promotion-deferred").
+  //
+  // No `return true` here — that would override other legitimate exclusion
+  // rules (e.g. a separately-set wrongProduction). Instead, this comment
+  // documents the contract so a future contributor doesn't accidentally
+  // reject these reviews via a generic `flaggedForReview === true` check.
+  // The existing rules below already do the right thing because none of
+  // them gate on `flaggedForReview` or this specific `flagReason`.
+  //
+  // Cross-ref: memory/feedback_includability_predicates_must_be_canonical.md
+  // (every flag lives in the central guard).
+
   // wrongProduction — excluded unless cleared by one of three override flags
   if (data.wrongProduction === true) {
     const cleared =
