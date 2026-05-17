@@ -213,13 +213,18 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
-        <span className="text-[10px] text-gray-600">{historyLabel}</span>
+        <span className="text-[10px] text-gray-600">
+          {historyLabel}
+          {show.gdOdds != null && (
+            <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
+          )}
+        </span>
       </div>
 
       {/* Gold Derby + Audience + Critic — consistent right-side layout */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        {/* Gold Derby */}
-        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
+        {/* Gold Derby — desktop column; mobile shown inline in history text above */}
+        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
           <span className={LABEL}>Gold Derby</span>
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
@@ -291,7 +296,7 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Gold Derby + Audience + Critic + Awards */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
+        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
           <span className={LABEL}>Gold Derby</span>
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
