@@ -1,0 +1,162 @@
+name: Beat the Critics — Results Preview
+
+# Manual trigger only. Run this after the Tony Awards (June 7, 2026) when you
+# have filled in:
+#   data/beat-the-critics-winners.json      — actual Tony winners
+#   data/beat-the-critics-critic-picks.json — each panelist's picks
+#
+# What this does:
+#   1. Runs scripts/preview-btc-results.js to compute scores and generate:
+#        data/beat-the-critics-results-preview.md
+#        data/beat-the-critics-sample-email.html
+#   2. Commits those files to main
+#   3. Emails Tom a preview (markdown + link to sample HTML) for approval
+#
+# Sending the actual results emails is a SEPARATE manual step:
+#   node scripts/send-btc-results.js --dry-run
+#   node scripts/send-btc-results.js
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: btc-results-preview
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate results preview
+        run: node scripts/preview-btc-results.js
+
+      - name: Commit preview files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/beat-the-critics-results-preview.md data/beat-the-critics-sample-email.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit (preview unchanged)"
+          else
+            git commit -m "data: Beat the Critics results preview [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Read preview for email body
+        id: preview
+        run: |
+          PREVIEW=$(cat data/beat-the-critics-results-preview.md)
+          # GitHub Actions doesn't support multiline outputs cleanly without a temp file approach
+          echo "preview_path=data/beat-the-critics-results-preview.md" >> "$GITHUB_OUTPUT"
+          # Count submissions from preview
+          SUBMISSION_COUNT=$(grep -oP '(?<=\*\*Total submissions:\*\* )\d+' data/beat-the-critics-results-preview.md || echo "unknown")
+          echo "submission_count=$SUBMISSION_COUNT" >> "$GITHUB_OUTPUT"
+          TOP_SCORE=$(grep -oP '(?<=\*\*Top score:\*\* )\S+' data/beat-the-critics-results-preview.md || echo "unknown")
+          echo "top_score=$TOP_SCORE" >> "$GITHUB_OUTPUT"
+
+      - name: Send approval email to owner
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          PREVIEW_CONTENT=$(cat data/beat-the-critics-results-preview.md)
+          SUBMISSION_COUNT="${{ steps.preview.outputs.submission_count }}"
+          TOP_SCORE="${{ steps.preview.outputs.top_score }}"
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          SAMPLE_HTML_URL="https://github.com/${{ github.repository }}/blob/main/data/beat-the-critics-sample-email.html"
+
+          node -e "
+            const previewContent = require('fs').readFileSync('data/beat-the-critics-results-preview.md', 'utf8');
+            const escapedPreview = previewContent.replace(/\`/g, '\\\\`').replace(/\\\$/g, '\\\\\$');
+
+            const html = \`<!DOCTYPE html>
+          <html>
+          <head><meta charset=\"utf-8\"></head>
+          <body style=\"margin:0;padding:0;background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;\">
+            <div style=\"max-width:700px;margin:0 auto;padding:32px 16px;\">
+              <div style=\"background:#111111;border:1px solid #1f1f1f;border-radius:16px;padding:28px;\">
+                <div style=\"font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;\">Broadway Scorecard</div>
+                <h1 style=\"font-size:24px;font-weight:900;color:#ffffff;margin:0 0 8px;\">Beat the Critics — Results Ready</h1>
+                <p style=\"color:#9ca3af;font-size:14px;margin:0 0 24px;\">
+                  <strong style=\"color:#ffffff;\">${{ steps.preview.outputs.submission_count }}</strong> submissions &middot;
+                  Top score: <strong style=\"color:#ff1368;\">${{ steps.preview.outputs.top_score }}</strong>
+                </p>
+
+                <div style=\"margin-bottom:24px;\">
+                  <a href=\"${SAMPLE_HTML_URL}\" style=\"display:inline-block;padding:10px 20px;background:linear-gradient(135deg,#ff1368,#d4106a);color:#ffffff;text-decoration:none;border-radius:8px;font-size:13px;font-weight:700;margin-right:12px;\">View Sample Email →</a>
+                  <a href=\"${RUN_URL}\" style=\"display:inline-block;padding:10px 20px;background:#1f1f1f;color:#9ca3af;text-decoration:none;border-radius:8px;font-size:13px;font-weight:600;\">View Workflow Run</a>
+                </div>
+
+                <div style=\"background:#0a0a0a;border:1px solid #1f1f1f;border-radius:8px;padding:20px;margin-bottom:24px;\">
+                  <div style=\"font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;\">Send Results Command</div>
+                  <code style=\"color:#22c55e;font-size:13px;display:block;margin-bottom:6px;\">node scripts/send-btc-results.js --dry-run</code>
+                  <code style=\"color:#22c55e;font-size:13px;display:block;margin-bottom:6px;\">node scripts/send-btc-results.js --send-to=thomas.pryor@gmail.com</code>
+                  <code style=\"color:#ff1368;font-size:13px;display:block;\">node scripts/send-btc-results.js</code>
+                </div>
+
+                <div style=\"background:#0a0a0a;border:1px solid #1f1f1f;border-radius:8px;padding:20px;\">
+                  <div style=\"font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;\">Full Preview</div>
+                  <pre style=\"color:#9ca3af;font-size:12px;white-space:pre-wrap;overflow-x:auto;margin:0;\">\${previewContent.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>\`;
+
+            fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + process.env.RESEND_API_KEY,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                from: 'Broadway Scorecard <noreply@broadwayscorecard.com>',
+                to: [process.env.OWNER_EMAIL],
+                subject: 'Beat the Critics — ${{ steps.preview.outputs.submission_count }} submissions ready for results email approval',
+                html,
+              }),
+            })
+            .then(r => r.json())
+            .then(data => {
+              if (data.id) {
+                console.log('Approval email sent. ID:', data.id);
+              } else {
+                console.error('Resend error:', JSON.stringify(data));
+                process.exit(1);
+              }
+            })
+            .catch(err => {
+              console.error('Failed to send approval email:', err.message);
+              process.exit(1);
+            });
+          "
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Beat the Critics Results Preview Failed'
+          severity: 'warning'

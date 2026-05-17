@@ -118,8 +118,8 @@ function buildResultsHtml({ submission, score, criticScores, criticPicks, winner
   const winnerBanner = isWinner ? `
     <div style="background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(245,158,11,0.08));border:1px solid rgba(245,158,11,0.3);border-radius:12px;padding:20px;text-align:center;margin-bottom:24px;">
       <div style="font-size:28px;margin-bottom:8px;">🎉🏆🎟️</div>
-      <div style="font-size:16px;font-weight:900;color:#f59e0b;margin-bottom:6px;">You're the winner!</div>
-      <div style="font-size:13px;color:#d97706;">You had the most correct picks of anyone who played. Your $100 TodayTix voucher is on its way — we'll be in touch shortly.</div>
+      <div style="font-size:16px;font-weight:900;color:#f59e0b;margin-bottom:6px;">You won the prize draw!</div>
+      <div style="font-size:13px;color:#d97706;">You beat at least one critic and were selected in our random draw. Your $100 TodayTix voucher is on its way — we'll be in touch shortly.</div>
     </div>` : '';
 
   return `<!DOCTYPE html>
@@ -222,7 +222,7 @@ async function main() {
     console.log(`  ${name} (${outlet}): ${correct}/${Object.keys(winners).length}`);
   }
 
-  // Score all submissions and find winner
+  // Score all submissions
   const scored = submissions.map(s => ({
     ...s,
     score: scoreSubmission(s.picks, winners),
@@ -230,8 +230,25 @@ async function main() {
   scored.sort((a, b) => b.score.correct - a.score.correct);
 
   const topScore = scored[0]?.score.correct ?? 0;
-  const winners_ = scored.filter(s => s.score.correct === topScore);
-  console.log(`\nTop score: ${topScore}/${Object.keys(winners).length} (${winners_.length} tied)`);
+  console.log(`\nTop score: ${topScore}/${Object.keys(winners).length}`);
+
+  // Winner selection: random draw from users who beat ≥1 critic.
+  // Fallback if no one beats a critic: random draw from top scorers.
+  const minCriticScore = Math.min(...Object.values(criticScores).map(c => c.correct));
+  const qualifyingPool = scored.filter(s => s.score.correct > minCriticScore);
+  const fallbackPool = scored.filter(s => s.score.correct === topScore);
+  const prizePool = qualifyingPool.length > 0 ? qualifyingPool : fallbackPool;
+
+  // Deterministic random: seed with submittedAt of earliest qualifier so re-runs are stable
+  const prizePoolSorted = [...prizePool].sort((a, b) =>
+    new Date(a.submittedAt ?? 0) - new Date(b.submittedAt ?? 0)
+  );
+  const randomIndex = Math.floor(Math.random() * prizePoolSorted.length);
+  const prizeWinner = prizePoolSorted[randomIndex];
+
+  console.log(`Qualifying pool (beat ≥1 critic): ${qualifyingPool.length}`);
+  console.log(`Prize winner: ${prizeWinner?.email ?? 'none'} (${prizeWinner?.score.correct ?? 0} correct)`);
+  if (qualifyingPool.length === 0) console.log('  (fallback: no one beat a critic — drawing from top scorers)');
 
   // Filter if --send-to
   const toSend = SEND_TO
@@ -253,7 +270,7 @@ async function main() {
 
   let sent = 0, failed = 0;
   for (const sub of toSend) {
-    const isWinner = !SEND_TO && sub.score.correct === topScore && winners_.length === 1;
+    const isWinner = !SEND_TO && prizeWinner && sub.email.toLowerCase() === prizeWinner.email.toLowerCase();
     const html = buildResultsHtml({
       submission: sub,
       score: sub.score,

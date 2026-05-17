@@ -208,6 +208,7 @@ jobs:
             reddit-engagement-digest.yml
             scrape-dtli-show-score.yml
             scraper-cost-report.yml
+            btc-results-preview.yml
           "
           VIOLATIONS=""
           for f in .github/workflows/*.yml; do
