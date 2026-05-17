@@ -54,15 +54,46 @@ function isPreNominations(season: string): boolean {
 }
 
 /**
- * Calculate awards designation for a show
+ * Returns the Tony Administration Committee's explicit eligibility ruling for
+ * a show in a given season, or undefined when no ruling has been recorded.
+ *
+ * - `true` → explicitly eligible (overrides heuristics like the tour-stop filter)
+ * - `false` → ruled ineligible by the Committee, OR not-yet-eligible (e.g. show
+ *   opens after the season cutoff). Distinguishing those two states requires
+ *   the show's openingDate; see getAwardsDesignation.
+ * - `undefined` → no ruling recorded; caller falls back to its own heuristic
+ *   (date window + show.type + tour-stop exclusion)
+ *
+ * Centralizing this predicate keeps getEligibleShows, getEligibleShowsForPastSeason,
+ * and getAwardsDesignation from drifting apart over time.
  */
-export function getAwardsDesignation(showId: string): AwardsDesignation {
+export function isTonyEligible(showId: string, awardsSeason: string): boolean | undefined {
+  const ruling = awards.shows[showId]?.tony;
+  if (!ruling || ruling.season !== awardsSeason) return undefined;
+  return ruling.eligible;
+}
+
+/**
+ * Calculate awards designation for a show.
+ *
+ * Optional openingDate lets us distinguish `'ineligible'` (Committee ruled out,
+ * show has opened) from `'pre-season'` (not-yet-eligible — show opens after the
+ * Tony season cutoff). Callers that don't pass openingDate fall back to the
+ * conservative `'pre-season'` label for both cases.
+ */
+export function getAwardsDesignation(showId: string, openingDate?: string): AwardsDesignation {
   const showAwards = awards.shows[showId];
 
   if (!showAwards) return 'pre-season';
 
   const tony = showAwards.tony;
-  if (!tony || tony.eligible === false) return 'pre-season';
+  if (!tony || tony.eligible === false) {
+    if (tony?.eligible === false && openingDate) {
+      const today = new Date().toISOString().slice(0, 10);
+      if (openingDate <= today) return 'ineligible';
+    }
+    return 'pre-season';
+  }
 
   const tonyWins = tony.wins || [];
   const tonyWinCount = tonyWins.length;

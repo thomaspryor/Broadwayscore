@@ -78,6 +78,13 @@ const DESIGNATION_CONFIG: Record<AwardsDesignation, {
     textClass: 'text-gray-500',
     borderClass: 'border-white/10',
   },
+  'ineligible': {
+    label: 'Not Tony-Eligible',
+    sublabel: 'Ruled ineligible by the Tony Administration Committee',
+    bgClass: 'bg-surface-overlay/30',
+    textClass: 'text-gray-400',
+    borderClass: 'border-white/10',
+  },
 };
 
 // Combined Tony Awards item (win or nomination)
@@ -367,7 +374,7 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
     return <AwardScoreCard showId={showId} awards={awards} openingDate={openingDate} />;
   }
 
-  const designation = getAwardsDesignation(showId);
+  const designation = getAwardsDesignation(showId, openingDate);
   const tonyWins = getTonyWinCount(showId);
   const tonyNoms = getTonyNominationCount(showId);
   const isPulitzerWinner = !!awards?.pulitzer?.wins?.includes('Drama');
@@ -437,6 +444,12 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
             <div className="text-sm text-gray-400">{dynamicSublabel}</div>
           </div>
         </div>
+        {/* Render tony.note when present — most important for 'ineligible' shows
+            (explains the Committee's ruling) and 'pre-season' shows that have
+            opening-date context (e.g. "Not yet eligible — opens Nov 2025"). */}
+        {awards?.tony?.note && (
+          <p className="text-sm text-gray-300 mt-3">{awards.tony.note}</p>
+        )}
       </div>
 
       {/* Pulitzer Special Callout — Winner gets full amber callout; Finalist

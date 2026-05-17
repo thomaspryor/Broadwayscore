@@ -17,6 +17,8 @@ interface TonyPredictionsClientProps {
   categories: TonyCategory[];
   outcomes?: Record<string, 'winner' | 'nominated'>;
   categoryOutcomes?: Record<string, CategoryOutcome>;
+  /** Per-category list of shows ruled ineligible by the Tony Administration Committee */
+  ineligibleByCategory?: Record<string, Array<{ slug: string; title: string; note: string }>>;
 }
 
 const MODE_OPTIONS: Array<{ value: PredictionMode; label: string }> = [
@@ -25,7 +27,7 @@ const MODE_OPTIONS: Array<{ value: PredictionMode; label: string }> = [
   { value: 'audience', label: 'Audience' },
 ];
 
-export default function TonyPredictionsClient({ categories, outcomes, categoryOutcomes }: TonyPredictionsClientProps) {
+export default function TonyPredictionsClient({ categories, outcomes, categoryOutcomes, ineligibleByCategory }: TonyPredictionsClientProps) {
   const [mode, setMode] = useState<PredictionMode>('combined');
 
   let runningIndex = 0;
@@ -56,6 +58,7 @@ export default function TonyPredictionsClient({ categories, outcomes, categoryOu
             startIndex={startIndex}
             outcomes={outcomes && Object.keys(outcomes).length > 0 ? outcomes : undefined}
             categoryOutcome={categoryOutcomes?.[cat.key]}
+            ineligible={ineligibleByCategory?.[cat.key]}
             mode={mode}
           />
         );

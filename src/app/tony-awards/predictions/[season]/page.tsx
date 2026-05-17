@@ -14,6 +14,7 @@ import {
   getAllPredictionSeasons,
   getEligibleShows,
   getEligibleShowsForPastSeason,
+  getIneligibleShows,
   groupIntoCategories,
   getSeasonOutcomes,
   getWinnersForSeason,
@@ -80,6 +81,18 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     useNomineesOnly ? { nomineesOnly: true, season } : undefined
   );
   const outcomes = getSeasonOutcomes(allShows, season);
+
+  // Shows ruled ineligible by the Tony Administration Committee, grouped by
+  // category. Surfaced as a footer under each category so visitors who looked
+  // for a missing show see why it's missing rather than assuming the site
+  // dropped it. Empty groups are simply not rendered.
+  const ineligibleByCategory = getIneligibleShows(allShows, season).reduce<
+    Record<string, Array<{ slug: string; title: string; note: string }>>
+  >((acc, item) => {
+    if (!acc[item.categoryKey]) acc[item.categoryKey] = [];
+    acc[item.categoryKey].push({ slug: item.slug, title: item.title, note: item.note });
+    return acc;
+  }, {});
 
   const totalScored = categories.reduce((sum, cat) => sum + cat.shows.length, 0);
   const totalUpcoming = categories.reduce((sum, cat) => sum + cat.upcoming.length, 0);
@@ -406,6 +419,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           categories={categories}
           outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
           categoryOutcomes={Object.keys(categoryOutcomeStatus).length > 0 ? categoryOutcomeStatus : undefined}
+          ineligibleByCategory={Object.keys(ineligibleByCategory).length > 0 ? ineligibleByCategory : undefined}
         />
 
         {/* Data Source Note */}

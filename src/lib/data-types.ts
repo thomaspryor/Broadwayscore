@@ -286,7 +286,8 @@ export type AwardsDesignation =
   | 'recognized'
   | 'nominated'
   | 'shut-out'
-  | 'pre-season';
+  | 'pre-season'
+  | 'ineligible';
 
 // ============================================
 // Audience Buzz types
