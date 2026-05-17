@@ -105,18 +105,24 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
 
   if (!hasOBC && !hasCurrentCast && !hasReplacements) return null;
 
+  // Unified eyebrow style used for every sub-heading in this content card,
+  // matching the show-card chrome family (audience/critic/awards/etc.).
+  const eyebrow = "text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0";
+
   return (
     <div className="mb-8">
-      <div className="card p-5 sm:p-6">
+      <section className="card p-5 sm:p-6">
         {/* Current Cast — shown first for open shows */}
         {isOpen && hasCurrentCast && (
           <>
-            <div className="flex items-baseline justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Current Cast</h2>
+            <header className="flex items-center justify-between gap-3 mb-4">
+              <h2 className={eyebrow}>Current Cast</h2>
               {currentCastUpdatedAt && (
-                <span className="text-xs text-gray-500">Updated {formatDate(currentCastUpdatedAt)}</span>
+                <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+                  updated {formatDate(currentCastUpdatedAt)}
+                </span>
               )}
-            </div>
+            </header>
             <CastList cast={currentCast!} actorSlugs={actorSlugs} tonyMap={tonyMap} />
             {hasOBC && <div className="border-t border-white/10 my-5" />}
           </>
@@ -125,7 +131,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {/* Opening Night Cast */}
         {hasOBC && (
           <>
-            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+            <h2 className={`${eyebrow} mb-4`}>
               {category === 'broadway' || !category ? 'Original Broadway Cast' : isLondonMarket(category) ? 'Original London Cast' : 'Original Cast'}
             </h2>
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
@@ -136,13 +142,13 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
         {hasReplacements && (
           <>
             {hasOBC && <div className="border-t border-white/10 my-5" />}
-            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
+            <h2 className={`${eyebrow} mb-4`}>
               Notable Replacements
             </h2>
             <CastList cast={replacements!} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
         )}
-      </div>
+      </section>
     </div>
   );
 }
