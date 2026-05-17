@@ -226,7 +226,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   if (displayScore === 0) badge = 'eligible';
   else if (displayScore <= 40) badge = 'nominated';
   else if (displayScore <= 69) badge = 'honored';
-  else if (displayScore <= 84) badge = 'decorated';
+  else if (displayScore <= 89) badge = 'decorated';
   else badge = 'sweeper';
   // In-progress = the show's ceremony hasn't happened yet AND it has no wins.
   // Switched from "showSeason === currentSeason.label" (which dropped the flag
