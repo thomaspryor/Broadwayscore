@@ -154,8 +154,8 @@ function CrowdBar({ label, pct, isUserPick, variant, score }: { label: string; p
   return (
     <div className="mb-2.5">
       <div className="flex justify-between text-xs mb-1">
-        <span className="font-semibold">{label}{score != null && <span className="text-brand text-[10px] font-bold ml-1.5">{score}</span>}{isUserPick && <span className="text-[#ff1368] text-[10px] font-semibold ml-1">(Your pick)</span>}</span>
-        <span className="text-gray-500">{pct}%</span>
+        <span className="font-semibold">{label}{isUserPick && <span className="text-[#ff1368] text-[10px] font-semibold ml-1">(Your pick)</span>}</span>
+        <span className="text-white font-bold">{pct}%</span>
       </div>
       <div className="h-2 rounded bg-surface-overlay overflow-hidden"><div ref={barRef} className={`h-full rounded ${bgColor} transition-all duration-1000 ease-out`} style={{ width: 0 }} /></div>
     </div>
