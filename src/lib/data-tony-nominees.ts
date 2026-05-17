@@ -108,11 +108,11 @@ function lookupGdOdds(gdData: GdData, showId: string, canonicalCatName: string):
   return typeof cat.pWin === 'number' ? cat.pWin : null;
 }
 
-function loadPmData(): PmData | null {
+function loadMarketData(filename: string): PmData | null {
   try {
-    const pmPath = path.join(process.cwd(), 'data', 'tony-polymarket-odds.json');
-    if (!fs.existsSync(pmPath)) return null;
-    const raw = JSON.parse(fs.readFileSync(pmPath, 'utf-8')) as PmData;
+    const p = path.join(process.cwd(), 'data', filename);
+    if (!fs.existsSync(p)) return null;
+    const raw = JSON.parse(fs.readFileSync(p, 'utf-8')) as PmData;
     if (!raw?.categories || Object.keys(raw.categories).length === 0) return null;
     return raw;
   } catch {
@@ -120,13 +120,25 @@ function loadPmData(): PmData | null {
   }
 }
 
-function findPmOdds(nominees: Record<string, number>, name: string): number | null {
+function findMarketOdds(nominees: Record<string, number>, name: string): number | null {
   if (name in nominees) return nominees[name];
   const lower = name.toLowerCase();
   for (const [k, v] of Object.entries(nominees)) {
     if (k.toLowerCase() === lower) return v;
   }
   return null;
+}
+
+/** Average PM + Kalshi odds when both available, use whichever exists otherwise. */
+function averageMarketOdds(
+  pmNominees: Record<string, number> | null,
+  kalshiNominees: Record<string, number> | null,
+  name: string,
+): number | null {
+  const pm = pmNominees ? findMarketOdds(pmNominees, name) : null;
+  const k  = kalshiNominees ? findMarketOdds(kalshiNominees, name) : null;
+  if (pm !== null && k !== null) return (pm + k) / 2;
+  return pm ?? k;
 }
 
 /** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
@@ -162,10 +174,11 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
   const gdData = gdRawData as unknown as GdData;
-  const pmData = loadPmData();
+  const pmData = loadMarketData('tony-polymarket-odds.json');
   const awardsSeason = toAwardsSeason(season.label);
 
   const showById = new Map(eligible.map(s => [s.id, s]));
+  const kalshiData = loadMarketData('tony-kalshi-odds.json');
 
   // 4 major categories: delegate to groupIntoCategories (handles score blending)
   const majorCats = groupIntoCategories(eligible, { nomineesOnly: true, season }).map(cat => {
@@ -173,11 +186,12 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
       const computedShow = eligible.find(s => s.slug === show.slug);
       const showId = computedShow?.id ?? '';
       const pmNominees = pmData?.categories[cat.title]?.nominees ?? null;
+      const kalshiNominees = kalshiData?.categories[cat.title]?.nominees ?? null;
       return {
         ...show,
         awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
         gdOdds: lookupGdOdds(gdData, showId, cat.title),
-        polymarketOdds: pmNominees ? findPmOdds(pmNominees, show.title) : null,
+        polymarketOdds: averageMarketOdds(pmNominees, kalshiNominees, show.title),
       };
     });
     showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
@@ -216,7 +230,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(nom.showId).displayScore,
           gdOdds: lookupGdOdds(gdData, nom.showId, catTitle),
-          polymarketOdds: pmNominees ? findPmOdds(pmNominees, pmMatchName) : null,
+          polymarketOdds: pmNominees ? findMarketOdds(pmNominees, pmMatchName) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           nomineeActorSlug: actorSlug,
@@ -243,7 +257,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(showId).displayScore,
           gdOdds: lookupGdOdds(gdData, showId, catTitle),
-          polymarketOdds: pmNominees ? findPmOdds(pmNominees, computedShow.title) : null,
+          polymarketOdds: pmNominees ? findMarketOdds(pmNominees, computedShow.title) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
         });
