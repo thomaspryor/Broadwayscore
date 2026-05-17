@@ -253,7 +253,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # check-post-rebase-survival requires beforeSha~1 to be an ancestor of
     # HEAD. Reset+cherry-pick may have broken that invariant — verify first.
     if git merge-base --is-ancestor "${PRE_REBASE_SHA}~1" HEAD 2>/dev/null; then
-      if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA" --path-prefix="data/review-texts/"; then
+      if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA"; then
         echo "::error::Post-rebase survival check failed — aborting push to avoid shipping a corrupt state"
         exit 1
       fi
