@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-05-17T00:59:54.893Z",
+    "lastUpdated": "2026-05-17T00:59:54.898Z",
     "version": "2.1.0",
     "lastChange": "T3->T4 demotion of 38 long-tail/stale outlets"
   },
@@ -23,8 +23,7 @@
       "domain": "nytimes.com",
       "accessModel": "paywalled",
       "hasCredentials": true,
-      "isDualMarket": true,
-      "cvStyle": "long-biographical"
+      "isDualMarket": true
     },
     "vulture": {
       "displayName": "Vulture",
@@ -53,8 +52,7 @@
       "domainAliases": [
         "nymag.com",
         "newyorkmetro.com"
-      ],
-      "cvStyle": "long-biographical"
+      ]
     },
     "variety": {
       "displayName": "Variety",
@@ -95,8 +93,7 @@
       ],
       "domain": "newyorker.com",
       "accessModel": "paywalled",
-      "hasCredentials": true,
-      "cvStyle": "long-biographical"
+      "hasCredentials": true
     },
     "wsj": {
       "displayName": "The Wall Street Journal",
@@ -278,8 +275,7 @@
         "ny-stage-review"
       ],
       "domain": "nystagereview.com",
-      "accessModel": "free",
-      "cvStyle": "long-biographical"
+      "accessModel": "free"
     },
     "chicagotribune": {
       "displayName": "Chicago Tribune",
@@ -580,8 +576,7 @@
         "newyorksun"
       ],
       "domain": "nysun.com",
-      "accessModel": "paywalled",
-      "cvStyle": "long-biographical"
+      "accessModel": "paywalled"
     },
     "billboard": {
       "displayName": "Billboard",
