@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-17T14:22:14.687Z",
-  "processed": 34,
-  "failed": 775,
-  "successRate": "4.2%",
+  "updatedAt": "2026-05-17T14:25:40.473Z",
+  "processed": 39,
+  "failed": 780,
+  "successRate": "4.8%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 26,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 3,
+    "scrapingbee": 4,
+    "brightdata": 4,
     "archiveToday": 7,
     "archive": 1
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -80,6 +80,17 @@
       "t": "2026-05-17T14:21:55.200Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-17T14:25:18.306Z",
+      "event": "bb-session",
+      "session": "2468e069",
+      "url": "http://www.variety.com/review/VE1117947963?refCatId=33"
+    },
+    {
+      "t": "2026-05-17T14:25:18.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

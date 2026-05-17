@@ -33,7 +33,12 @@
     "the-balusters-2026/theatrely--unknown.json",
     "becky-shaw-2026/variety--unknown.json",
     "becky-shaw-2026/deadline--unknown.json",
-    "becky-shaw-2026/wsj--unknown.json"
+    "becky-shaw-2026/wsj--unknown.json",
+    "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+    "every-brilliant-thing-2026/timeout--adam-feldman.json",
+    "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+    "two-strangers-bway-2025/nypost--unknown.json",
+    "burlesque-west-end-2026/theatreandtonic--unknown.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
@@ -767,7 +772,12 @@
     "well-ill-let-you-go-off-broadway-2026/studioseaviewcom--unknown.json",
     "proof-2026/the-globe-and-mail--kelly-nestruck.json",
     "cats-the-jellicle-ball-2026/hollywood-reporter--frank-scheck.json",
-    "cats-the-jellicle-ball-2026/nydailynews--joe-dziemianowicz.json"
+    "cats-the-jellicle-ball-2026/nydailynews--joe-dziemianowicz.json",
+    "les-liaisons-dangereuses-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
+    "les-liaisons-dangereuses-west-end-2026/the-upcoming-uk--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "the-producers-west-end-2025/variety--bob-verini.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -794,7 +804,10 @@
       "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json",
       "well-ill-let-you-go-off-broadway-2026/one-minute-critic--emily-chackerian.json",
       "kenrex-off-broadway-2026/frontmezzjunkies--front-mezz-junkies.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+      "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+      "burlesque-west-end-2026/theatreandtonic--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -807,18 +820,21 @@
       "data/review-texts/becky-shaw-2026/deadline--unknown.json",
       "becky-shaw-2026/deadline--unknown.json",
       "data/review-texts/becky-shaw-2026/wsj--unknown.json",
-      "becky-shaw-2026/wsj--unknown.json"
+      "becky-shaw-2026/wsj--unknown.json",
+      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "the-great-gatsby-2024/nytimes--unknown.json",
       "masquerade-off-broadway-2025/nytimes--unknown.json",
-      "the-balusters-2026/theatrely--unknown.json"
+      "the-balusters-2026/theatrely--unknown.json",
+      "every-brilliant-thing-2026/timeout--adam-feldman.json"
     ],
     "brightdata": [
       "a-steady-rain-2009/latimes--unknown.json",
       "well-ill-let-you-go-off-broadway-2026/thewrap--robert-hofler.json",
-      "well-ill-let-you-go-off-broadway-2026/cititour--brian-scott-lipton.json"
+      "well-ill-let-you-go-off-broadway-2026/cititour--brian-scott-lipton.json",
+      "two-strangers-bway-2025/nypost--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
@@ -834,7 +850,7 @@
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "becky-shaw-2026/wsj--unknown.json",
+  "lastProcessed": "burlesque-west-end-2026/theatreandtonic--unknown.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -901,6 +917,17 @@
       "t": "2026-05-17T14:21:55.200Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-17T14:25:18.306Z",
+      "event": "bb-session",
+      "session": "2468e069",
+      "url": "http://www.variety.com/review/VE1117947963?refCatId=33"
+    },
+    {
+      "t": "2026-05-17T14:25:18.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
