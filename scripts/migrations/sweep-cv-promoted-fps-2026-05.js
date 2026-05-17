@@ -40,8 +40,14 @@ const path = require('path');
 
 const REVIEW_TEXTS_DIR = path.resolve(process.cwd(), 'data', 'review-texts');
 const CV_PREFIX = 'CV-promoted:';
-const DEFAULT_MAX_CAP = 50;
+const DEFAULT_MAX_CAP = 25;
 const TOP_N = 25;
+
+// Pre-filter: CV reasoning text that indicates a non-review or different-show
+// article. shouldDeferCvWrongShow rescues long-biographical-lead reviews of the
+// CORRECT show; it does NOT rescue wrong-article-type content. When the CV's
+// own reasoning matches these patterns, trust it regardless of outlet style.
+const OBVIOUS_WRONG_ARTICLE_PATTERNS = /collection of short news|news items|roundup|listicle|different show|different play|not a review of|homepage|preview piece|interview with|news feature|short item|article about|piece about/i;
 
 // ---------- args ----------
 const args = process.argv.slice(2);
@@ -145,6 +151,7 @@ const allFiles = listReviewFiles(REVIEW_TEXTS_DIR);
 let scanned = 0; // files with wrongShow=true
 let cvDerived = 0; // wrongShow=true AND CV-promoted: prefix
 let humanProtected = 0; // skipped because humanReviewedWrongProduction === true
+let skippedObviousWrongArticle = 0; // skipped because CV reasoning indicates wrong-article-type
 const candidates = []; // qualifying files
 
 for (const filePath of allFiles) {
@@ -159,6 +166,18 @@ for (const filePath of allFiles) {
 
   if (data.humanReviewedWrongProduction === true) {
     humanProtected += 1;
+    continue;
+  }
+
+  // Pre-filter: skip candidates whose CV reasoning text matches obvious
+  // wrong-article-type patterns. shouldDeferCvWrongShow is designed to rescue
+  // long-biographical-lead reviews of the CORRECT show — it is NOT a rescue
+  // for scraper junk, headline dumps, different-show content, or non-review
+  // articles. The CV's specific reasoning is trusted on these classes
+  // regardless of outlet style.
+  const cvText = reason.slice(CV_PREFIX.length).toLowerCase();
+  if (OBVIOUS_WRONG_ARTICLE_PATTERNS.test(cvText)) {
+    skippedObviousWrongArticle += 1;
     continue;
   }
 
@@ -192,6 +211,7 @@ console.log('Cap:            ' + MAX_CAP);
 console.log('Total scanned:  ' + scanned + ' (wrongShow=true)');
 console.log('CV-derived:     ' + cvDerived + ' (wrongShowReason starts with "' + CV_PREFIX + '")');
 console.log('Human-protected (skipped): ' + humanProtected);
+console.log('Skipped obvious wrong-article (CV reason match): ' + skippedObviousWrongArticle);
 console.log('Would clear:    ' + wouldClear);
 console.log('');
 
