@@ -14,16 +14,17 @@ interface CriticPanelist {
   name: string;
   outlets: string[];
   initials: string;
+  bio: string;
   // picks[categoryTitle] populated once critics submit; null = TBD
   picks?: Record<string, string>;
 }
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Dan Rubins', outlets: ['BroadwayRadio', 'TheaterMania'], initials: 'DR' },
-  { name: 'Naveen Kumar', outlets: ['Washington Post'], initials: 'NK' },
-  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF' },
-  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM' },
+  { name: 'Dan Rubins', outlets: ['BroadwayRadio', 'TheaterMania'], initials: 'DR', bio: 'Theater critic & host of BroadwayRadio, the #1 Broadway podcast' },
+  { name: 'Naveen Kumar', outlets: ['Washington Post'], initials: 'NK', bio: 'Theater critic covering Broadway for the Washington Post' },
+  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF', bio: 'Theater editor at Time Out NY, covering Broadway for 20+ years' },
+  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM', bio: 'Theater & culture critic at Vulture / New York Magazine' },
 ];
 
 function criticHasPicks(): boolean {
@@ -327,6 +328,22 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="animate-fade-up mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
             <span>🎟️</span> Beat a critic — enter the <strong>$100 TodayTix prize draw</strong>
           </div>
+
+          {/* Critic grid */}
+          <div className="animate-fade-up w-full mt-8" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Your Competition</div>
+            <div className="grid grid-cols-2 gap-2.5">
+              {CRITICS.map(c => (
+                <div key={c.name} className="rounded-2xl bg-surface-raised ring-1 ring-white/5 p-4 text-left">
+                  <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-black text-gray-300 mb-3">{c.initials}</div>
+                  <div className="text-sm font-bold leading-tight">{c.name}</div>
+                  <div className="text-[10px] text-brand font-semibold mt-0.5">{c.outlets.join(' · ')}</div>
+                  <div className="text-[11px] text-gray-500 mt-2 leading-snug">{c.bio}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-7 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
           <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div></div>
