@@ -43,6 +43,11 @@ function normalizeTitle(s) {
   if (!s) return '';
   let pre = s;
   for (const [re, sub] of ABBREV_EXPANSIONS) pre = pre.replace(re, sub);
+  // Strip diacritics: "Les Misérables" → "Les Miserables" so source titles
+  // using accented characters match shows.json titles that drop them. Hit
+  // when extending precursor scrape back to 1987 (DD 1987 Best Musical was
+  // "Les Misérables"; our shows.json has "Les Miserables" without accent).
+  pre = pre.normalize('NFD').replace(/[̀-ͯ]/g, '');
   return pre.toLowerCase()
     // & → "and" so "Bonnie & Clyde" === "Bonnie and Clyde"
     .replace(/&/g, ' and ')
