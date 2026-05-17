@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, getScoreTier, StatusBadge, BlendedTrioDisplay } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier, BlendedTrioDisplay } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
@@ -137,6 +137,7 @@ function ScoreDisplay({ show, mode, winProbability }: { show: SerializedTonyShow
             awardsScore={show.awardsScore}
             awardsWeighted={show.tonyCategoryKey === 'best-play'}
             size="sm"
+            hideScore
           />
         </div>
         {/* Win probabilities */}
@@ -282,36 +283,26 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                   </h3>
                   {rank === 1 && mode === 'combined' && !isInUpcomingSection && (
                     <span
-                      className="flex-shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white/85 rounded border border-white/30 bg-transparent"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40"
                       title="Our model's #1 pick in this category."
                     >
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 20 20" aria-hidden="true">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
                       </svg>
                       <span className="hidden sm:inline">Predicted Winner</span>
-                      <span className="sm:hidden">Predicted</span>
+                      <span className="sm:hidden">Our Pick</span>
                     </span>
                   )}
                   {outcomes?.[show.slug] === 'winner' && (
-                    <span className="flex-shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
+                    <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
+                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
                       Winner
                     </span>
                   )}
-                  {outcomes?.[show.slug] === 'nominated' && (
-                    <span className="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
-                      Nominated
-                    </span>
-                  )}
                 </div>
-                <div className="flex flex-wrap items-center gap-1 mt-1">
-                  <StatusBadge status={getEffectiveStatus(show)} />
-                </div>
-                <p className="text-xs text-gray-400 mt-1.5 truncate">
-                  {notYetOpen
-                    ? `Opens ${formatDate(show.openingDate)} · ${show.venue}`
-                    : show.venue}
-                </p>
+                {notYetOpen && (
+                  <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>
+                )}
               </div>
 
               {/* Score / Win probability */}
