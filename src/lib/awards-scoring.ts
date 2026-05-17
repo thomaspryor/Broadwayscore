@@ -83,6 +83,11 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
+  if (/projection design/.test(c)) return { tier: 'C', revival: false };
+  if (/solo performance/.test(c)) return { tier: 'B', revival: false };
+  if (/john gassner award/.test(c)) return { tier: 'C', revival: false };
+  // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
+  if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
   return null;
 }
 

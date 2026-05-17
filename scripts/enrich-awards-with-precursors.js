@@ -37,7 +37,7 @@ const path = require('path');
 const { normalizeTitle } = require('./lib/title-match');
 const { writeAwardsJsonAtomic } = require('./lib/awards-atomic-write');
 const { validateAwardsObject, validatePrecursorSource } = require('./lib/awards-schema-validator');
-const { classifyCategory } = require('./lib/classify-category');
+const { classifyCategory, KNOWN_UNSCORED_CATEGORIES } = require('./lib/classify-category');
 
 const PUBLIC_AWARDS = path.join(__dirname, '..', 'data', 'awards.json');
 // Private repo path. Defaults to ~/broadway-scorecard-data/awards.json so the
@@ -78,7 +78,7 @@ function loadPrecursor(name) {
   // once at end-of-load (a typo like "Outstanding Direcetor" passes schema
   // but silently misses the +30 win bonus downstream).
   const { unknownCategories } = validatePrecursorSource(name, raw, {
-    isKnownCategory: (cat) => classifyCategory(cat) !== null,
+    isKnownCategory: (cat) => classifyCategory(cat) !== null || KNOWN_UNSCORED_CATEGORIES.has(cat),
   });
   for (const cat of unknownCategories) {
     _unknownCategoryWarnings.push(`  ${name}.json: "${cat}"`);

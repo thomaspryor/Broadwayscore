@@ -40,7 +40,23 @@ function classifyCategory(category) {
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
+  if (/projection design/.test(c)) return { tier: 'C', revival: false };
+  if (/solo performance/.test(c)) return { tier: 'B', revival: false };
+  if (/john gassner award/.test(c)) return { tier: 'C', revival: false };
+  // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
+  if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
+  // Special/honorary awards — recognized but intentionally worth 0 points; not a typo.
+  if (/special achievement/.test(c)) return null;
   return null;
 }
 
-module.exports = { classifyCategory };
+/**
+ * Category names that classifyCategory() intentionally returns null for
+ * (honorary/special awards, not typos). Used by the enricher to suppress
+ * false "unknown category" warnings.
+ */
+const KNOWN_UNSCORED_CATEGORIES = new Set([
+  'Special Achievement Award',
+]);
+
+module.exports = { classifyCategory, KNOWN_UNSCORED_CATEGORIES };
