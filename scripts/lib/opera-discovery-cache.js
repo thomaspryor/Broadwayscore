@@ -123,21 +123,27 @@ async function withOperaCache(opts, fn) {
     console.log(`    [opera-cache] HIT ${opts.outletId} ${opts.showId} (${cached.length} URLs)`);
     return cached;
   }
-  // Per-show fetch cap — only counts cache misses (real expensive fetches).
+  // Per-show fetch cap — only counts SUCCESSFUL cache misses (real expensive
+  // fetches that returned a value). Counter increments AFTER fn resolves to
+  // avoid burning budget on transient failures (network blips, BD/SB outages).
   // Protects subsequent shows in the cron loop from a single runaway show
   // exhausting the SB/BD budget.
   if (PER_SHOW_CAP > 0) {
     const current = _perShowFetchCount.get(opts.showId) || 0;
     if (current >= PER_SHOW_CAP) {
       if (!_perShowWarned.has(opts.showId)) {
-        console.warn(`    [opera-cache] CAP-HIT ${opts.showId} reached ${PER_SHOW_CAP} cache-miss fetches this run; skipping ${opts.outletId} and remaining opera outlets`);
+        console.warn(`    [opera-cache] CAP-HIT ${opts.showId} reached ${PER_SHOW_CAP} successful cache-miss fetches this run; skipping ${opts.outletId} and remaining opera outlets`);
         _perShowWarned.add(opts.showId);
       }
       return [];
     }
-    _perShowFetchCount.set(opts.showId, current + 1);
   }
   const fresh = await fn();
+  // Increment AFTER successful fn() resolution so transient failures don't
+  // contribute to the cap.
+  if (PER_SHOW_CAP > 0) {
+    _perShowFetchCount.set(opts.showId, (_perShowFetchCount.get(opts.showId) || 0) + 1);
+  }
   // Don't cache empty results. Empty arrays are normal in the pre-publication
   // window (Playbill roundup before the article posts, author archive before
   // a review lands) — caching them for 24h would silently kill the discovery

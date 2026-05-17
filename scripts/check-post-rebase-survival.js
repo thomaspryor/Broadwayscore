@@ -52,7 +52,9 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
   const args = ['diff', '--name-only', '--diff-filter=A', `${fromSha}..${toRef}`];
   if (pathPrefix) args.push('--', pathPrefix);
   try {
-    const out = execFileSync('git', args, { encoding: 'utf8' });
+    // 30s timeout — a hung git op in CI should fail the check, not stall the
+    // workflow indefinitely (Claude P3 ship-check finding).
+    const out = execFileSync('git', args, { encoding: 'utf8', timeout: 30_000 });
     return out.split('\n').map((s) => s.trim()).filter(Boolean);
   } catch (e) {
     console.error(`[post-rebase-check] git diff failed: ${e.message}`);
