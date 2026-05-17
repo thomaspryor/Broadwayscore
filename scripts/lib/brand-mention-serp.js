@@ -173,7 +173,12 @@ async function runSerp(keyword, filter, opts = {}) {
     const results = await serpQuery(query, {
       nbResults: opts.nbResults || 20,
       dateRange: opts.dateRange || null,
-      preferSpeed: true, // use ScrapingBee first for faster runs
+      // BD-first (default). Was preferSpeed:true for "faster runs", but brand-
+      // mention is a daily background sweep with no user waiting on it. Flipping
+      // to BD-first saves ~60k SB credits/mo (~6% of post-2026-06-05 Startup
+      // cap) at a cost of ~$3.60/mo extra BD. Critical for fitting under the 1M
+      // cap. Routine flows are BD-first across the rest of the codebase.
+      preferSpeed: false,
       log: opts.verbose ? console.log : () => {},
     });
     return results || [];
