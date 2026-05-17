@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-05-17T15:26:56.487Z",
+  "runDate": "2026-05-17T15:26:32.876Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "kenrex-off-broadway-2026",
+    "showFilter": "mass-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,7 +12,7 @@
   },
   "summary": {
     "processed": 0,
-    "failed": 4,
+    "failed": 6,
     "skipped": 0,
     "successRate": "0%"
   },
@@ -23,39 +23,41 @@
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 5,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier2Attempts": 2,
-    "tier2Success": 1,
+    "tier2Success": 2,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [],
   "failed": [
-    "kenrex-off-broadway-2026/front-row-center--david-walters.json",
-    "kenrex-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "kenrex-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "kenrex-off-broadway-2026/thestage--unknown.json"
+    "mass-west-end-2026/timeout--unknown.json",
+    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "mass-west-end-2026/financialtimes--unknown.json",
+    "mass-west-end-2026/thestage--unknown.json",
+    "mass-west-end-2026/times-uk--clive-davis.json",
+    "mass-west-end-2026/whatsonstage--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
@@ -64,7 +66,9 @@
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
