@@ -202,6 +202,14 @@ export interface SerializedTonyShow {
   awardsScore: number;
   /** Which Tony category this show was serialized in (drives the recipe). */
   tonyCategoryKey: TonyCategoryKey | null;
+  /** Win probability 0–1 from GoldDerby crowd votes. */
+  gdOdds?: number | null;
+  /** Win probability 0–1 from Polymarket real-money market. Null if no market exists. */
+  polymarketOdds?: number | null;
+  /** Person name for acting/directing nominations (e.g. "Sarah Snook"); null for show-level categories. */
+  nomineePersonName?: string | null;
+  /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
+  nomineeCategoryTitle?: string | null;
 }
 
 // --- Tony Season Logic ---
