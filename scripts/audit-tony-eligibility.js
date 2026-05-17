@@ -47,14 +47,14 @@ function main() {
     if (seasonFilter && tony.season !== seasonFilter) continue;
 
     const nominatedFor = tony.nominatedFor || [];
-    const wins = tony.wins || 0;
+    const wins = Array.isArray(tony.wins) ? tony.wins : [];
     const nominations = tony.nominations || 0;
     const eligible = tony.eligible;
     const note = tony.note;
     const meta = showsById.get(showId) || {};
 
     // Contradiction: explicitly ineligible but has nominations or wins
-    if (eligible === false && (nominations > 0 || nominatedFor.length > 0 || wins > 0)) {
+    if (eligible === false && (nominations > 0 || nominatedFor.length > 0 || wins.length > 0)) {
       issues.contradiction.push({
         showId,
         season: tony.season,
