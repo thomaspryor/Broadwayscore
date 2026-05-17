@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-05-17T15:38:50.107Z",
+  "runDate": "2026-05-17T15:38:58.076Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "music-city-off-broadway-2026",
+    "showFilter": "mexodus-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
@@ -33,32 +33,35 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 20,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "death-of-a-salesman-2026/wsj--unknown.json"
+    "mexodus-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
-    "music-city-off-broadway-2026/new-york-city-theatre--unknown.json",
-    "music-city-off-broadway-2026/playbill--unknown.json"
+    "mexodus-off-broadway-2026/nyt-theater--unknown.json",
+    "mexodus-off-broadway-2026/nytimes--rachel-sherman.json",
+    "mexodus-off-broadway-2026/nytimes--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "mexodus-off-broadway-2026/playbill--unknown.json"
+    ],
     "amp": [],
     "browserbase": [
       "data/review-texts/death-of-a-salesman-2026/wsj--unknown.json",
