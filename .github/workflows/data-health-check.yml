@@ -23,9 +23,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,6 +57,7 @@ jobs:
           title: 'Daily Data Health Check Crashed'
           description: 'Health check script crashed — email digest may not have sent.'
           severity: 'critical'
+          email: 'true'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
