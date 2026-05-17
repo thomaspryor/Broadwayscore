@@ -20,6 +20,10 @@ const PAGES = {
   'Outstanding Production of a Play':    'Drama_League_Award_for_Outstanding_Production_of_a_Play',
   'Outstanding Revival of a Musical':    'Drama_League_Award_for_Outstanding_Revival_of_a_Musical',
   'Outstanding Revival of a Play':       'Drama_League_Award_for_Outstanding_Revival_of_a_Play',
+  // Direction sub-categories — Wikipedia has historical coverage. Already
+  // 3 yrs in source from hand-curation; this extends to ~30 years.
+  'Outstanding Direction of a Musical':  'Drama_League_Award_for_Outstanding_Direction_of_a_Musical',
+  'Outstanding Direction of a Play':     'Drama_League_Award_for_Outstanding_Direction_of_a_Play',
 };
 
 const MIN_YEAR = parseInt(
