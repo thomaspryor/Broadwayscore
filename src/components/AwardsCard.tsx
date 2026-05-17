@@ -430,11 +430,26 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
     dynamicSublabel = `${tonyNoms} Tony nomination${tonyNoms > 1 ? 's' : ''}`;
   }
 
-  return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
+  // Build a "year season meta" string for the right-aligned header slot.
+  // E.g. "2025–26 season" when we have a Tony season; falls back to year.
+  const awardsMeta = tonySeason
+    ? `${tonySeason} season`
+    : (awards?.tony?.ceremony ?? null);
 
-      {/* Main Designation Badge - More prominent */}
+  return (
+    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="awards-scorecard-heading">
+      {/* Unified scorecard chrome: eyebrow + lowercase season meta */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="awards-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
+        {awardsMeta && (
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+            {awardsMeta}
+          </span>
+        )}
+      </header>
+
+      {/* Main Designation Badge - More prominent (colors preserved per
+          parallel session's recent shipped polish) */}
       <div className={`rounded-xl p-4 border mb-4 ${config.bgClass} ${config.borderClass}`}>
         <div className="flex items-center gap-3">
           {tonyWins > 0 && <TrophyIcon className={`${config.textClass} w-6 h-6`} />}
@@ -531,6 +546,17 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
 
       {/* Other Major Awards - Expandable */}
       {awards && <OtherAwardsExpandableSection awards={awards} />}
-    </div>
+
+      {/* Footer link to the cross-show Tony awards hub */}
+      <div className="mt-4 pt-3.5 border-t border-white/5">
+        <Link
+          href="/tony-awards"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>Explore all Tony predictions</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </section>
   );
 }
