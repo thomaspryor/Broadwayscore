@@ -8,7 +8,7 @@
  */
 
 import awardsData from '../../data/awards.json';
-import { currentTonySeason } from './tony-cutoffs';
+import { tonyCeremonyIsFuture } from './tony-cutoffs';
 
 export type CategoryTier = 'S' | 'A+' | 'A' | 'B' | 'C';
 
@@ -216,10 +216,13 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   else if (displayScore <= 69) badge = 'honored';
   else if (displayScore <= 84) badge = 'decorated';
   else badge = 'sweeper';
-  const currentSeason = currentTonySeason();
+  // In-progress = the show's ceremony hasn't happened yet AND it has no wins.
+  // Switched from "showSeason === currentSeason.label" (which dropped the flag
+  // for shows in the April-cutoff-to-June-ceremony gap because currentSeason
+  // had already advanced to the next eligibility window). 2026-05-16.
   const showSeason = entry.tony?.season;
   const tonyDone = (entry.tony?.wins?.length ?? 0) > 0;
-  const inProgress = !!showSeason && showSeason === currentSeason.label && !tonyDone;
+  const inProgress = !!showSeason && !tonyDone && tonyCeremonyIsFuture(showSeason);
   return { rawPoints, displayScore, badge, inProgress, breakdown };
 }
 
