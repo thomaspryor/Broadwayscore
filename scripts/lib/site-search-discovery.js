@@ -753,6 +753,11 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'nystagereview.com',
     requiresJs: false,
     applies: (show) => show.type === 'opera',
+    // Registry canonical is 'nysr' (nystagereview is an alias). The
+    // outletIdOverride pushes the canonical downstream so scoring + dedup
+    // see 'nysr' uniformly. Sibling pattern to 'vulture-opera' and
+    // 'times-uk-opera'. (Added 2026-05-17 — Notion 363637c5-416f-8163.)
+    outletIdOverride: 'nysr',
     // NYSR has no opera-category page; use WordPress search ?s={title}. URL
     // pattern: /YYYY/MM/DD/slug/. NYSR primarily covers theater but reviews
     // Met premieres (Innocence verified). Reviewers like Frank Scheck rotate

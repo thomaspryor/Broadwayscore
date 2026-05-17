@@ -1,6 +1,6 @@
 {
-  "lastRun": "2026-05-14T07:58:52.313Z",
-  "consecutiveErrorDays": 0,
+  "lastRun": "2026-05-17T04:16:56.852Z",
+  "consecutiveErrorDays": 1,
   "results": [
     {
       "name": "Freshness: reviews.json",
@@ -9,13 +9,13 @@
     },
     {
       "name": "Freshness: shows.json",
-      "status": "pass",
-      "message": "1h old"
+      "status": "error",
+      "message": "2d old (error threshold: 2d)"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "8d old"
+      "message": "4h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -25,12 +25,12 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "12h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
@@ -45,22 +45,22 @@
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "6d old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "3d old"
+      "message": "6d old"
     },
     {
       "name": "Push verify: shows.json",
-      "status": "pass",
-      "message": "Data synced (1h old, workflow 23h ago)"
+      "status": "warn",
+      "message": "Check failed: Command failed: gh run list --workflow=\"update-show-status.yml\" --status=success"
     },
     {
       "name": "Sync: review-texts vs reviews.json",
@@ -84,43 +84,43 @@
     },
     {
       "name": "Sync: baseline drift",
-      "status": "warn",
-      "message": "Reviews dropped: 17684 vs baseline 17685"
+      "status": "pass",
+      "message": "2548 shows, 153 open, 17702 reviews (all at or above baseline)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
       "status": "pass",
-      "message": "Last success 0h ago"
+      "message": "Last success 4h ago"
     },
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 23h ago"
+      "message": "Last success 2d ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 1h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
-      "status": "pass",
-      "message": "Last success 8d ago"
+      "status": "warn",
+      "message": "Last success 11d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "warn",
-      "message": "Last success 60d ago (threshold: 10d)"
+      "message": "Last success 63d ago (threshold: 10d)"
     },
     {
       "name": "Pipeline: test",
-      "status": "warn",
-      "message": "Last success 15d ago (threshold: 2d)"
+      "status": "pass",
+      "message": "Last success 0h ago"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "99.3% scored (17684/17817)"
+      "message": "99.2% scored (17702/17849)"
     },
     {
       "name": "Cookies: expiration",
@@ -130,93 +130,93 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (4d ago)"
+      "message": "All metrics within thresholds (7d ago)"
     },
     {
       "name": "SEO: health",
       "status": "pass",
-      "message": "Healthy (4d ago)"
+      "message": "Healthy (7d ago)"
     },
     {
       "name": "Cron: Update Show Status",
-      "status": "pass",
-      "message": "23h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-show-status.yml\" --limit=1 --json"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "0h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"rebuild-reviews.yml\" --limit=1 --json cr"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"collect-review-texts.yml\" --limit=1 --js"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, "
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"llm-ensemble-score.yml\" --limit=1 --json"
     },
     {
       "name": "Cron: Test Suite",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"test.yml\" --limit=1 --json createdAt,con"
     },
     {
       "name": "Cron: Opening Night Broadcast",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"opening-night-broadcast.yml\" --limit=1 -"
     },
     {
       "name": "Cron: Update Lottery/Rush",
-      "status": "pass",
-      "message": "3d ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-lottery-rush.yml\" --limit=1 --jso"
     },
     {
-      "name": "Cron failed: Weekly Grosses",
+      "name": "Cron: Weekly Grosses",
       "status": "warn",
-      "message": "Last run failed (16h ago)"
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-grosses.yml\" --limit=1 --json cre"
     },
     {
       "name": "Cron: Update Show Score",
-      "status": "pass",
-      "message": "2h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-show-score.yml\" --limit=1 --json "
     },
     {
       "name": "Cron: Update Mezzanine",
-      "status": "pass",
-      "message": "7h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-mezzanine.yml\" --limit=1 --json c"
     },
     {
       "name": "Cron: Update Cast Changes",
-      "status": "pass",
-      "message": "22h ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-cast-changes.yml\" --limit=1 --jso"
     },
     {
       "name": "Cron: Weekly NYT Critics Picks",
-      "status": "pass",
-      "message": "3d ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-nyt-critics-picks.yml\" --limit=1 "
     },
     {
       "name": "Cron: Weekly Video Reviews",
-      "status": "pass",
-      "message": "3d ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"weekly-video-reviews.yml\" --limit=1 --js"
     },
     {
       "name": "Cron: Update Social Pulse",
-      "status": "pass",
-      "message": "3d ago, success"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"update-social-pulse.yml\" --limit=1 --jso"
     },
     {
       "name": "Secrets: health",
-      "status": "pass",
-      "message": "Last check passed (3d ago)"
+      "status": "warn",
+      "message": "gh CLI failed: Command failed: gh run list --workflow=\"check-secrets-health.yml\" --limit=1 --js"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "2441k credits left (81%) · 74k/day burn · lasts until renewal Jun 5"
+      "message": "2223k credits left (74%) · 75k/day burn · lasts until renewal Jun 5"
     }
   ],
-  "lastCleanStreak": 3
+  "lastCleanStreak": 0
 }
