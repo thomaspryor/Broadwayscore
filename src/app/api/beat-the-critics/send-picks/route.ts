@@ -1,7 +1,53 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const REVIEW_TEXTS_TOKEN = process.env.REVIEW_TEXTS_TOKEN || '';
+const SUBMISSIONS_REPO = 'thomaspryor/broadway-scorecard-data';
+const SUBMISSIONS_PATH = 'data/beat-the-critics-submissions.jsonl';
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
+
+// Fire-and-forget: append submission to private repo JSONL. Non-blocking.
+async function storeSubmission(record: {
+  email: string;
+  picks: Record<string, string>;
+  ceremonyYear: number;
+  submittedAt: string;
+}): Promise<void> {
+  if (!REVIEW_TEXTS_TOKEN) return;
+  try {
+    const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${SUBMISSIONS_PATH}`;
+    const headers = {
+      Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+    };
+
+    const existing = await fetch(apiBase, { headers }).catch(() => null);
+    let currentContent = '';
+    let sha: string | undefined;
+
+    if (existing?.ok) {
+      const data = await existing.json() as { content: string; sha: string };
+      currentContent = Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf8');
+      sha = data.sha;
+    }
+
+    const newLine = JSON.stringify(record) + '\n';
+    const newContent = Buffer.from(currentContent + newLine).toString('base64');
+
+    await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `feat: Beat the Critics submission [skip ci]`,
+        content: newContent,
+        ...(sha ? { sha } : {}),
+      }),
+    });
+  } catch {
+    // Non-critical — Resend email already sent
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -56,7 +102,7 @@ export async function POST(req: NextRequest) {
       </div>
     </div>
     <div style="text-align:center;padding:20px 0 0;font-size:11px;color:#374151;">
-      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. After June 7, we&apos;ll email you with how you compared to the critics.<br>
+      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. After June 7, we'll email you with how you compared to the critics.<br>
       <a href="https://broadwayscorecard.com" style="color:#4b5563;text-decoration:none;">broadwayscorecard.com</a>
     </div>
   </div>
@@ -82,6 +128,9 @@ export async function POST(req: NextRequest) {
       console.error('Resend error:', res.status, body);
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
     }
+
+    // Store submission for results email — non-blocking
+    void storeSubmission({ email, picks, ceremonyYear, submittedAt: new Date().toISOString() });
 
     return NextResponse.json({ success: true });
   } catch (err) {
