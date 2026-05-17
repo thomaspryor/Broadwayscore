@@ -1,0 +1,201 @@
+name: Investigate Alert
+
+on:
+  workflow_dispatch:
+    inputs:
+      alert_type:
+        description: 'Alert type (vercel_deploy_fail|poller_fail|data_health_fail|opening_night_broadcast_fail)'
+        required: true
+      alert_title:
+        description: 'Human-readable alert title'
+        required: true
+      alert_context:
+        description: 'JSON context object (error snippets, relevant metadata)'
+        required: false
+        default: '{}'
+      run_url:
+        description: 'Direct URL to the failed workflow run'
+        required: false
+        default: ''
+
+jobs:
+  investigate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Investigate with Claude and send email
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          ALERT_TYPE: ${{ github.event.inputs.alert_type }}
+          ALERT_TITLE: ${{ github.event.inputs.alert_title }}
+          ALERT_CONTEXT: ${{ github.event.inputs.alert_context }}
+          RUN_URL: ${{ github.event.inputs.run_url }}
+        run: |
+          node << 'SCRIPT'
+          const https = require('https');
+          const crypto = require('crypto');
+
+          const alertType = process.env.ALERT_TYPE || '';
+          const alertTitle = process.env.ALERT_TITLE || '';
+          const alertContext = process.env.ALERT_CONTEXT || '{}';
+          const runUrl = process.env.RUN_URL || '';
+
+          // --- Step 1: Call Claude API for diagnosis ---
+
+          const systemPrompt = `You are an operations assistant for Broadway Scorecard (broadwayscorecard.com), a Next.js/TypeScript static site on Vercel with GitHub Actions automation.
+
+Stack: Next.js 14, TypeScript, Tailwind CSS, static export. Data pipeline uses Node.js scripts.
+
+Available fix IDs:
+- "redeploy": Trigger a fresh Vercel deployment. Safe to retry — use when the failure is likely transient (Vercel infra blip, network timeout, OOM spike).
+- "no-auto-fix": No automated fix available. Use when the issue requires code changes or investigation.
+
+Alert type guidance:
+- vercel_deploy_fail: Build failures (TypeScript error, missing env var) need no-auto-fix. Transient failures (exit code 1 with no code changes, Vercel timeout) can use redeploy.
+- poller_fail: Opening-night review poller. Causes: ScrapingBee/BrightData credit exhaustion, cookie invalidation, network timeout. Always no-auto-fix.
+- data_health_fail: Daily data health check. Almost always no-auto-fix — requires investigation.
+- opening_night_broadcast_fail: Email broadcast workflow failed. Always no-auto-fix — never auto-retry broadcasts.
+
+Respond ONLY with a valid JSON object (no markdown fences, no explanation outside the JSON):
+{
+  "rootCause": "One sentence: most likely cause",
+  "fixId": "redeploy OR no-auto-fix",
+  "fixDescription": "One sentence: what the fix does (omit if no-auto-fix)",
+  "watchFor": "One sentence: what to check if the fix doesn't work or if more investigation is needed"
+}`;
+
+          const userPrompt = `Alert type: ${alertType}
+Alert title: ${alertTitle}
+Run URL: ${runUrl}
+Additional context: ${alertContext}
+
+Diagnose this alert and recommend a fix.`;
+
+          function httpsPost(hostname, path, headers, body) {
+            return new Promise((resolve, reject) => {
+              const req = https.request({ hostname, path, method: 'POST', headers }, (res) => {
+                let data = '';
+                res.on('data', c => data += c);
+                res.on('end', () => resolve({ status: res.statusCode, body: data }));
+              });
+              req.on('error', reject);
+              req.write(body);
+              req.end();
+            });
+          }
+
+          const claudeBody = JSON.stringify({
+            model: 'claude-opus-4-7',
+            max_tokens: 512,
+            system: systemPrompt,
+            messages: [{ role: 'user', content: userPrompt }],
+          });
+
+          let diagnosis = {
+            rootCause: 'Claude investigation unavailable — check run logs manually.',
+            fixId: 'no-auto-fix',
+            fixDescription: '',
+            watchFor: 'Review the failed workflow run directly.',
+          };
+
+          try {
+            const claudeResp = await httpsPost(
+              'api.anthropic.com',
+              '/v1/messages',
+              {
+                'x-api-key': process.env.ANTHROPIC_API_KEY,
+                'anthropic-version': '2023-06-01',
+                'content-type': 'application/json',
+                'content-length': Buffer.byteLength(claudeBody),
+              },
+              claudeBody
+            );
+            console.log('[Claude] status:', claudeResp.status);
+            const parsed = JSON.parse(claudeResp.body);
+            const text = parsed.content?.[0]?.text || '';
+            console.log('[Claude] response text:', text);
+            diagnosis = JSON.parse(text);
+          } catch (e) {
+            console.error('[Claude] Error:', e.message);
+          }
+
+          // --- Step 2: Generate signed approve URL if there's an auto-fix ---
+
+          let approveUrl = '';
+          const secret = process.env.ALERT_TOKEN_SECRET;
+          if (diagnosis.fixId !== 'no-auto-fix' && secret) {
+            const payload = {
+              fixId: diagnosis.fixId,
+              alertTitle,
+              expiry: Date.now() + 86400000, // 24 hours
+            };
+            const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url');
+            const sig = crypto.createHmac('sha256', secret).update(encoded).digest('hex');
+            const token = encodeURIComponent(`${encoded}.${sig}`);
+            approveUrl = `https://broadwayscorecard.com/api/approve-fix?token=${token}`;
+          }
+
+          // --- Step 3: Send investigation email via Resend ---
+
+          const approveSection = approveUrl
+            ? `<div style="margin:24px 0;">
+                <a href="${approveUrl}" style="background:#27ae60;color:white;padding:14px 28px;border-radius:6px;text-decoration:none;font-weight:bold;display:inline-block;font-size:16px;">
+                  Approve Fix: ${(diagnosis.fixDescription || diagnosis.fixId).replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+                </a>
+                <p style="color:#999;font-size:11px;margin-top:8px;">Link expires in 24 hours &nbsp;|&nbsp; Fix that will run: <code>${diagnosis.fixId}</code></p>
+              </div>`
+            : `<div style="margin:24px 0;padding:12px 16px;background:#fff3cd;border-radius:6px;border-left:4px solid #f39c12;">
+                <strong>No automated fix available.</strong> Manual investigation required.
+              </div>`;
+
+          const watchForSection = diagnosis.watchFor
+            ? `<p style="color:#666;font-size:13px;margin-top:4px;">Watch for: ${diagnosis.watchFor.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>`
+            : '';
+
+          const runLink = runUrl
+            ? `<p style="margin-top:16px;"><a href="${runUrl}" style="color:#3498db;">View failed run &rarr;</a></p>`
+            : '';
+
+          const html = `<div style="font-family:system-ui,sans-serif;max-width:600px;padding:20px;">
+            <h2 style="color:#e74c3c;margin-bottom:4px;">[Investigation] ${alertTitle.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</h2>
+            <p style="color:#999;font-size:12px;margin-top:4px;">Analyzed by Claude &mdash; ${new Date().toUTCString()}</p>
+
+            <h3 style="margin-bottom:8px;">Root cause</h3>
+            <div style="background:#f8f9fa;padding:14px;border-radius:6px;border-left:4px solid #e74c3c;">
+              ${diagnosis.rootCause.replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+            </div>
+
+            ${approveSection}
+            ${watchForSection}
+            <hr style="border:none;border-top:1px solid #eee;margin:20px 0;">
+            ${runLink}
+            <p style="color:#999;font-size:11px;">Broadway Scorecard automated investigation</p>
+          </div>`;
+
+          const emailBody = JSON.stringify({
+            from: 'alerts@broadwayscorecard.com',
+            to: [process.env.OWNER_EMAIL],
+            subject: `[Investigation] ${alertTitle}`,
+            html,
+          });
+
+          const emailResp = await httpsPost(
+            'api.resend.com',
+            '/emails',
+            {
+              'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(emailBody),
+            },
+            emailBody
+          );
+
+          if (emailResp.status < 300) {
+            console.log('[Email] Investigation email sent successfully');
+          } else {
+            console.error('[Email] Send failed:', emailResp.status, emailResp.body);
+            process.exit(1);
+          }
+          SCRIPT
