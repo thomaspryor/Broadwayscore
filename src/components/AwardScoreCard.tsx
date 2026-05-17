@@ -4,10 +4,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { computeSiteAwardScore, type CeremonyContribution } from '@/lib/awards-scoring';
 import type { ShowAwards } from '@/lib/data-types';
-import { TrophyIcon, StarIcon, ChevronIcon, PulitzerIcon } from '@/components/icons';
+import { ChevronIcon, PulitzerIcon, TrophyIconLine, StarIconLine } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
 import { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from '@/components/show-cards';
 import { featureFlags } from '@/config/feature-flags';
+import { daysUntilTonyCeremony } from '@/lib/tony-cutoffs';
 
 interface AwardScoreCardProps {
   showId: string;
@@ -62,11 +63,20 @@ function pointsByCategory(items: CeremonyContribution['items'] | undefined): Map
   return m;
 }
 
-function ProvisionalPill() {
+function CountdownPill({ season }: { season: string }) {
+  // Days-to-ceremony pill — gives concrete urgency instead of generic
+  // "Provisional." When the ceremony date isn't in our records, falls back
+  // to generic Provisional so the in-progress signal is never lost.
+  const days = daysUntilTonyCeremony(season);
+  const label = days === null
+    ? 'Provisional'
+    : days === 1
+      ? '1 day to Tony ceremony'
+      : `${days} days to Tony ceremony`;
   return (
     <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[10px] font-semibold uppercase tracking-wide whitespace-nowrap">
       <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-      Provisional
+      {label}
     </span>
   );
 }
@@ -100,19 +110,22 @@ function TonyAwardsPanel({
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-        {wins.length > 0 && (
-          <div className="flex items-center gap-1.5">
-            <TrophyIcon className="text-amber-400" />
-            <span className="text-white font-bold text-lg tabular-nums">{wins.length}</span>
-            <span className="text-gray-400 text-sm">Win{wins.length !== 1 ? 's' : ''}</span>
-          </div>
+      {/* Single-line "X wins of Y noms" — no mental math required, leads
+          with the more impressive number (wins). Per Claude Design 2026-05-17. */}
+      <div className="flex items-center flex-wrap gap-x-3 gap-y-1.5 text-sm">
+        <div className="flex items-baseline gap-1.5">
+          <TrophyIconLine className="text-amber-400 self-center" />
+          <span className="text-white font-bold text-lg tabular-nums leading-none">{wins.length}</span>
+          <span className="text-gray-400">win{wins.length === 1 ? '' : 's'}</span>
+        </div>
+        {(wins.length + nominationsOnly.length) > 0 && (
+          <span className="text-gray-500">of</span>
         )}
-        {nominationsOnly.length > 0 && (
-          <div className="flex items-center gap-1.5">
-            <StarIcon className="text-gray-400" />
-            <span className="text-white font-bold text-lg tabular-nums">{nominationsOnly.length}</span>
-            <span className="text-gray-400 text-sm">{wins.length > 0 ? 'Other ' : ''}Nomination{nominationsOnly.length !== 1 ? 's' : ''}</span>
+        {(wins.length + nominationsOnly.length) > 0 && (
+          <div className="flex items-baseline gap-1.5">
+            <StarIconLine className="text-gray-400 self-center" />
+            <span className="text-white font-bold text-lg tabular-nums leading-none">{wins.length + nominationsOnly.length}</span>
+            <span className="text-gray-400">nom{(wins.length + nominationsOnly.length) === 1 ? '' : 's'}</span>
           </div>
         )}
       </div>
@@ -137,7 +150,7 @@ function TonyAwardsPanel({
                 const major = isMajorCategory(cat);
                 return (
                   <li key={`w-${idx}`} className="flex items-center gap-2 text-sm">
-                    <TrophyIcon className="text-amber-400 flex-shrink-0" />
+                    <TrophyIconLine className="text-amber-400 flex-shrink-0" />
                     <span className={`flex-1 ${major ? 'text-white font-medium' : 'text-amber-200'}`}>
                       {cat}
                     </span>
@@ -153,7 +166,7 @@ function TonyAwardsPanel({
                 const major = isMajorCategory(cat);
                 return (
                   <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
-                    <StarIcon className="text-gray-500 flex-shrink-0" />
+                    <StarIconLine className="text-gray-500 flex-shrink-0" />
                     <span className={`flex-1 ${major ? 'text-gray-300' : 'text-gray-500'}`}>
                       {cat}
                     </span>
@@ -190,17 +203,18 @@ interface OtherAwardConfig {
   short: string;
   display: string;
   ceremonyName: string;
+  chip: string;
+  text: string;
 }
 
-// Neutralized chips: legacy color-coded chips (purple/cyan/teal/rose) read as
-// decorative because the colors didn't map to any system. Single neutral
-// surface chip with amber trophy keeps ceremonies visually equal; the numbers
-// + ceremony name carry the meaning.
+// Per-ceremony color coding (re-introduced per Claude Design 2026-05-17 after
+// being briefly neutralized). Colors give each ceremony its own glanceable
+// identity in the chip row — important when 4 chips sit side-by-side.
 const OTHER_CONFIGS: OtherAwardConfig[] = [
-  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk' },
-  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle' },
-  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League' },
-  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle" },
+  { key: 'dramaDesk',   short: 'Drama Desk',       display: 'Drama Desk Awards',                ceremonyName: 'Drama Desk',                  chip: 'bg-purple-500/10 border-purple-500/20', text: 'text-purple-300' },
+  { key: 'occ',         short: 'Outer Critics',    display: 'Outer Critics Circle',             ceremonyName: 'Outer Critics Circle',        chip: 'bg-cyan-500/10 border-cyan-500/20',     text: 'text-cyan-300' },
+  { key: 'dramaLeague', short: 'Drama League',     display: 'Drama League Awards',              ceremonyName: 'Drama League',                chip: 'bg-emerald-500/10 border-emerald-500/20', text: 'text-emerald-300' },
+  { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards",  ceremonyName: "NY Drama Critics' Circle",    chip: 'bg-rose-500/10 border-rose-500/20',     text: 'text-rose-300' },
 ];
 
 function nodeFor(awards: ShowAwards, key: OtherAwardConfig['key']) {
@@ -236,13 +250,14 @@ function OtherAwardsPanel({
     const nomsTotal = Math.max(nominationsCount ?? 0, nominatedFor.length) || null;
     const contrib = byName.get(cfg.ceremonyName);
     return { cfg, wins, nominatedFor, nomsTotal, contrib };
-  }).filter(r =>
+  })
     // Render a row only when we can produce a real label: either wins exist,
     // or some flavor of nom count > 0. Subtotal-only (uncategorized) rows are
     // suppressed to avoid "0 noms" chips — their points still affect the
     // overall Award Score badge upstream.
-    r.wins.length > 0 || (r.nomsTotal ?? 0) > 0
-  );
+    .filter(r => r.wins.length > 0 || (r.nomsTotal ?? 0) > 0)
+    // Sort by wins desc, then noms desc, so the most impressive ceremony leads.
+    .sort((a, b) => (b.wins.length - a.wins.length) || ((b.nomsTotal ?? 0) - (a.nomsTotal ?? 0)));
 
   if (rows.length === 0) return null;
 
@@ -267,20 +282,23 @@ function OtherAwardsPanel({
         <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
       </button>
 
+      {/* Chip format per Claude Design 2026-05-17:
+            "Drama Desk: 1 win / 5 noms"
+          Color-coded per ceremony so the row is glanceable; ceremony name
+          leads (the noun the user recognizes), counts trail. */}
       <div className="flex flex-wrap gap-2 mt-2">
         {rows.map(({ cfg, wins, nomsTotal }) => {
-          // Lead with the more impressive number (wins). Add noms suffix only
-          // when there are losing nominations to mention.
-          const losingNoms = nomsTotal && nomsTotal > wins.length ? nomsTotal - wins.length : 0;
-          const winLabel = wins.length > 0
-            ? `${wins.length} win${wins.length === 1 ? '' : 's'}${losingNoms > 0 ? ` · ${losingNoms} nom${losingNoms === 1 ? '' : 's'}` : ''}`
-            : `${nomsTotal ?? 0} nom${nomsTotal === 1 ? '' : 's'}`;
+          const winsLabel = `${wins.length} win${wins.length === 1 ? '' : 's'}`;
+          const nomsLabel = nomsTotal && nomsTotal > wins.length
+            ? ` / ${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
+            : '';
+          const detail = wins.length === 0 && nomsTotal
+            ? `${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
+            : `${winsLabel}${nomsLabel}`;
           return (
-            <span key={cfg.key} className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border bg-surface-overlay border-white/5 text-gray-300 text-xs font-medium">
-              {wins.length > 0
-                ? <TrophyIcon className="w-3.5 h-3.5 text-amber-400" />
-                : <StarIcon className="w-3.5 h-3.5 text-gray-400" />}
-              <span>{winLabel} {cfg.short}</span>
+            <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} text-xs font-medium`}>
+              <span className={cfg.text}>{cfg.short}:</span>
+              <span className="text-gray-300 tabular-nums">{detail}</span>
             </span>
           );
         })}
@@ -293,7 +311,7 @@ function OtherAwardsPanel({
             const nomsOnly = nominatedFor.filter(n => !wins.includes(n));
             return (
               <div key={cfg.key}>
-                <div className="text-xs font-medium mb-1.5 text-gray-300">
+                <div className={`text-xs font-medium mb-1.5 ${cfg.text}`}>
                   {cfg.display}
                   {nomsTotal && nomsTotal > wins.length && (
                     <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
@@ -305,7 +323,7 @@ function OtherAwardsPanel({
                       const pts = Math.round(pointMap.get(`win:${win}`) ?? 0);
                       return (
                         <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
-                          <TrophyIcon className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                          <TrophyIconLine className="w-3 h-3 text-amber-400 flex-shrink-0" />
                           <span className="flex-1">{win}</span>
                           {pts > 0 && <span className="text-xs text-gray-500 tabular-nums">+{pts}</span>}
                         </li>
@@ -326,7 +344,7 @@ function OtherAwardsPanel({
                             key={`n-${idx}`}
                             className="flex items-center gap-2 text-sm text-gray-500 italic"
                           >
-                            <span className="w-3 h-3 flex-shrink-0 text-amber-400/40">·</span>
+                            <StarIconLine className="w-3 h-3 text-gray-500/60 flex-shrink-0" />
                             <span className="flex-1">{nom}</span>
                             {pts > 0 && <span className="text-xs text-gray-500 tabular-nums not-italic">+{pts}</span>}
                           </li>
@@ -363,18 +381,33 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
   const tonyContrib = result.breakdown.find(c => c.ceremony === 'Tony Awards');
   const hasTony = !!awards?.tony && ((awards.tony.wins?.length ?? 0) > 0 || (awards.tony.nominatedFor?.length ?? 0) > 0);
 
+  const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
+
   return (
     <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
+      <div className="flex items-baseline justify-between gap-3 mb-4">
+        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Awards Scorecard</h2>
+        {awards?.tony?.season && (
+          <span className="text-xs text-gray-500 uppercase tracking-wide whitespace-nowrap">{awards.tony.season} season</span>
+        )}
+      </div>
 
       <div className="flex items-center gap-4 mb-4">
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
         <div className="min-w-0 flex-1">
+          {/* Tier label upgraded per Claude Design 2026-05-17:
+                uppercase + larger size + tier-color, so it reads as a status
+                headline (parallel to "Critical Gold" / "Loving It" on critic
+                and audience cards). */}
           <div className="flex items-center gap-2 flex-wrap">
-            <span className={`text-base font-semibold ${getAwardTierLabelClass(result.badge, result.displayScore)}`}>{tierLabel}</span>
-            {result.inProgress && result.displayScore > 0 && <ProvisionalPill />}
+            <span className={`text-xl sm:text-2xl font-bold uppercase tracking-tight ${getAwardTierLabelClass(result.badge, result.displayScore)}`}>{tierLabel}</span>
           </div>
-          {sublabel && <div className="text-sm text-gray-400 line-clamp-2">{sublabel}</div>}
+          {sublabel && <div className="text-sm text-gray-400 line-clamp-2 mt-0.5">{sublabel}</div>}
+          {seasonForCountdown && result.displayScore > 0 && (
+            <div className="mt-2">
+              <CountdownPill season={seasonForCountdown} />
+            </div>
+          )}
         </div>
       </div>
 

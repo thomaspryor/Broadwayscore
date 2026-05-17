@@ -42,11 +42,16 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
 
   return (
     <div
-      className={`${sizeBox} ${styles.bg} ${styles.text} rounded-xl flex items-center justify-center font-bold ${sizeText}`}
+      className={`${sizeBox} ${styles.bg} ${styles.text} rounded-xl flex items-center justify-center font-bold ${sizeText} relative`}
       style={{ boxShadow: styles.glow }}
-      aria-label={`Award Score ${score} — ${label}`}
+      aria-label={inProgress && score > 0 ? `Provisional Award Score ${score} — ${label}` : `Award Score ${score} — ${label}`}
     >
-      {score > 0 ? score : '—'}
+      <span className="flex items-start gap-0.5 leading-none">
+        <span>{score > 0 ? score : '—'}</span>
+        {inProgress && score > 0 && (
+          <span aria-hidden className="text-base align-super animate-pulse" style={{ marginTop: '-0.15em' }}>*</span>
+        )}
+      </span>
     </div>
   );
 }
