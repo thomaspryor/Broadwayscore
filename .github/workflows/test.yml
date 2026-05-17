@@ -273,7 +273,9 @@ jobs:
           # Missing `awards` here caused the 2026-05-17 invisible-AwardsCard-on-demo
           # incident — server-side `featureFlags.awards` always evaluated false on
           # demo, but no lint caught the SSR usage.
-          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes|awards|awardScoreV2"
+          # NOTE: awardScoreV2 is NOT in DEMO_FEATURES — it's a build-time env flag
+          # safe in server components. vercel-demo.yml rewrites it to true at build time.
+          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes|awards"
           VIOLATIONS=""
           for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
             # Check if file has 'use client' directive

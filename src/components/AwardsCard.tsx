@@ -368,6 +368,9 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
 }
 
 export default function AwardsCard({ showId, awards, openingDate }: AwardsCardProps) {
+  // Guard here (not in server page.tsx) so isDemo() is evaluated at runtime.
+  if (!featureFlags.awards) return null;
+
   // v2 card behind feature flag — same props, completely different rendering.
   // See src/components/AwardScoreCard.tsx and src/lib/awards-scoring.ts.
   if (featureFlags.awardScoreV2) {
