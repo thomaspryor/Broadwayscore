@@ -72,13 +72,23 @@ jobs:
           # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
           BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
 
+          # Disable `bash -e` for the rest of this step. Everything from here on is
+          # observability — partial data is acceptable, but a failed report email is
+          # not. Original report ran for weeks with -e on for the workflow-summing
+          # loop above; the new BB+SB API calls below have many fragile dependencies
+          # (jq versions, curl exit codes, bc edge cases) where one silent failure
+          # should not blank the entire Monday report.
+          set +e
+
           # Top 5 SB-credit consumers — fast attribution when a spike happens.
           # Format: "Workflow_Name: 12,345 credits" (one per line).
+          # NOTE: every conditional below uses if/then/fi (NOT `[ ] && X`) because
+          # the workflow runs under `bash -e` and `[ false ] && X` exits 1.
           SB_TOP5=$(awk '{a[$2]+=$1} END {for(k in a) printf "%d %s\n", a[k], k}' "$SB_BY_WF_FILE" 2>/dev/null \
             | sort -rn | head -5 \
             | awk '{printf "%s: %s credits\n", substr($0, index($0," ")+1), $1}' \
             | tr "_" " " || echo "—")
-          [ -z "$SB_TOP5" ] && SB_TOP5="—"
+          if [ -z "$SB_TOP5" ]; then SB_TOP5="—"; fi
 
           # --- Browserbase last 7 days (sessions × \$0.10) ---
           # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in
