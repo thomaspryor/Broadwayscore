@@ -24,6 +24,10 @@ function classifyCategory(category) {
   if (/^outstanding revival$/.test(c)) return { tier: 'S', revival: true };
   if (/best musical$|outstanding musical$|outstanding new (broadway|off-broadway) musical|outstanding production of a (broadway or off-broadway )?musical/.test(c)) return { tier: 'S', revival: false };
   if (/best play$|outstanding play$|outstanding new (broadway|off-broadway) play|outstanding production of a play/.test(c)) return { tier: 'S', revival: false };
+  // Olivier "Best New Play" (no "best play$" match since it ends in "new play")
+  if (/best new play/.test(c)) return { tier: 'S', revival: false };
+  // Olivier "Best Revival" — combined musical+play revival with no type qualifier
+  if (/^best revival$/.test(c)) return { tier: 'S', revival: true };
   if (/^drama$/.test(c)) return { tier: 'S', revival: false };
   if (/best (original )?score|outstanding (new )?score|outstanding music\b|outstanding lyrics|outstanding music in a play/.test(c)) return { tier: 'A+', revival: false };
   if (/best book|outstanding book/.test(c)) return { tier: 'A+', revival: false };
@@ -31,9 +35,13 @@ function classifyCategory(category) {
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // Olivier "Best Actor" / "Best Actress" — Olivier play acting awards have no "in a play" qualifier
+  if (/^best (actor|actress)$/.test(c)) return { tier: 'A', revival: false };
   // Lead Performance (DD 70th+) / Lead Performer (OCC) / Lead Actor|Actress (Lortel) in a [Broadway|Off-Broadway] [play|musical]
   if (/outstanding lead (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
+  // Olivier supporting role categories (use "supporting role" instead of "featured")
+  if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
   // Featured Performance (DD 70th+) / Featured Performer (OCC) / Featured Actor|Actress (Lortel) variants
   if (/outstanding featured (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
