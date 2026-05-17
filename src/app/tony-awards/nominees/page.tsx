@@ -59,7 +59,7 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-tight';
+const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-none';
 
 // --- Reusable score sub-components ---
 
