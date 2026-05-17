@@ -763,7 +763,14 @@ assert(
 
 // ============================================================
 // Endpoint-registry ID consistency check
-// All SITE_SEARCH_ENDPOINTS keys must exist in outlet-registry.json
+// Every SITE_SEARCH_ENDPOINTS entry must resolve to a registry outlet —
+// either directly (key matches outlet id) or via `outletIdOverride` (sibling
+// entries like `vulture-opera` push the canonical `vulture` downstream so
+// scoring + dedup don't see a stranger id). The override pattern lets one
+// outlet have multiple discovery dispatch paths (e.g. theater section page
+// vs. opera author page) without colliding in the JS object literal.
+// Previously this test ignored `outletIdOverride` and falsely failed on
+// every -opera sibling key. (Fixed 2026-05-17 — Notion 363637c5-416f-8163.)
 // ============================================================
 console.log('\n=== Endpoint-Registry ID Consistency ===\n');
 
@@ -771,8 +778,12 @@ const registry = require('../data/outlet-registry.json').outlets;
 const endpointKeys = Object.keys(SITE_SEARCH_ENDPOINTS);
 let idMismatches = 0;
 for (const key of endpointKeys) {
-  if (!registry[key]) {
-    console.error(`  ✗ FAIL: endpoint "${key}" not in outlet-registry.json`);
+  const effectiveId = SITE_SEARCH_ENDPOINTS[key].outletIdOverride || key;
+  if (!registry[effectiveId]) {
+    const detail = effectiveId === key
+      ? `endpoint "${key}" not in outlet-registry.json`
+      : `endpoint "${key}" → outletIdOverride "${effectiveId}" not in outlet-registry.json`;
+    console.error(`  ✗ FAIL: ${detail}`);
     idMismatches++;
     failed++;
   }
