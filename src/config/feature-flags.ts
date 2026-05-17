@@ -16,7 +16,7 @@ const enabledFeatures = new Set(
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
 // CI: lint-feature-flags checks these are never referenced in server components.
-const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes', 'awards']);
+const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -61,7 +61,7 @@ export const featureFlags = {
   get boxOffice() { return true; }, // launched — flag retained for cleanup
   get goldLists() { return has('goldLists'); },
   get commercial() { return has('commercial'); },
-  get awards() { return has('awards'); },
+  get awards() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   get tonyPredictions() { return has('tonyPredictions'); },
   get castPages() { return has('castPages'); },
   get westEnd() { return has('westEnd'); },
@@ -75,7 +75,7 @@ export const featureFlags = {
   get fantasyLeague() { return has('fantasyLeague'); },
   get videoReviews() { return has('videoReviews'); },
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
-  get awardScoreV2() { return has('awardScoreV2'); },
+  get awardScoreV2() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   /** Show-page rank surfaces: hero rank line ("Ranks #3 of 28 open Broadway · ...")
    *  and bottom "Where it ranks" card. Off by default — flip on per-market after
    *  smoke test. Enable via NEXT_PUBLIC_FEATURES=showRanks. */
