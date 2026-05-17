@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-17T04:19:19.387Z",
+  "timestamp": "2026-05-17T06:30:58.018Z",
   "stats": {
-    "totalReviews": 36778,
-    "alreadyFlagged": 16097,
+    "totalReviews": 36780,
+    "alreadyFlagged": 16096,
     "dateGuardCatches": 102,
-    "directorMismatch": 803,
+    "directorMismatch": 802,
     "tvFilmSignals": 1014,
     "londonSignals": 567,
     "offBroadwaySignals": 444,
     "yearMismatch": 77,
-    "noPublishDate": 3776
+    "noPublishDate": 3777
   },
   "findings": [
     {
@@ -14244,20 +14244,6 @@
       "file": "nytimes--ben-brantley.json",
       "score": 95,
       "publishDate": "April 7, 2019",
-      "url": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from oklahoma-2002"
-        }
-      ]
-    },
-    {
-      "showId": "oklahoma-2019",
-      "file": "nytimes--jesse-green.json",
-      "score": 95,
-      "publishDate": "April 8, 2019",
       "url": "https://www.nytimes.com/2019/04/07/theater/oklahoma-review.html",
       "findings": [
         {
