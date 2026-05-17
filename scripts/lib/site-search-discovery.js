@@ -637,6 +637,31 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'washpost': {
+    name: 'The Washington Post',
+    domain: 'washingtonpost.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Philip Kennicott is the WaPo arts critic covering Met opera transmissions.
+    // His author archive renders server-side with ~55 article URLs but requires
+    // subscriber cookies (cookies-plain confirmed working in Sprint 1).
+    // fetchSSR's fetchPage fallback carries the washingtonpost.com cookie jar.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.washingtonpost.com/people/philip-kennicott/');
+      const all = [];
+      const pattern = /(https?:\/\/(?:www\.)?washingtonpost\.com\/[a-z-]+\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'washpost', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
