@@ -53,12 +53,16 @@ const tierConfig: { badge: TierBadge; chipClass: string; description: string }[]
 export default function AwardScorePage() {
   if (!featureFlags.awardScoreV2) notFound();
 
-  const allShows = getBroadwayShows().filter(s => s.status === 'open');
+  const allShows = getBroadwayShows();
 
   const showsWithScore = allShows
     .map(show => {
       try {
-        return { show, awardScore: computeSiteAwardScore(show.id) };
+        const awardScore = computeSiteAwardScore(show.id);
+        return {
+          show: { slug: show.slug, title: show.title, status: show.status, images: show.images },
+          awardScore,
+        };
       } catch {
         return null;
       }
@@ -99,7 +103,7 @@ export default function AwardScorePage() {
             Which shows are winning Broadway&apos;s awards season? Each score weighs seven ceremonies — Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC — with Tony wins carrying the most weight.
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            {showsWithScore.length} shows with award activity · Currently open Broadway shows
+            {showsWithScore.length} shows with award activity across all seasons
           </p>
         </div>
 
