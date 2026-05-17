@@ -1,18 +1,129 @@
 {
-  "updatedAt": "2026-05-17T18:50:38.286Z",
-  "processed": 1,
-  "failed": 17,
-  "successRate": "5.6%",
+  "updatedAt": "2026-05-17T15:08:39.440Z",
+  "processed": 68,
+  "failed": 1004,
+  "successRate": "6.3%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 39,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 24,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 0
+    "scrapingbee": 11,
+    "brightdata": 5,
+    "archiveToday": 7,
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 15,
+  "recentActivity": [
+    {
+      "t": "2026-05-17T14:27:31.990Z",
+      "event": "bb-session",
+      "session": "b110daef",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-05-17T14:27:32.378Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T14:30:00.882Z",
+      "event": "bb-session",
+      "session": "cf1c484b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
+    },
+    {
+      "t": "2026-05-17T14:30:01.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T14:34:55.069Z",
+      "event": "bb-session",
+      "session": "6a3f8aac",
+      "url": "http://www.hollywoodreporter.com/review/glengarry-glen-ross-theater-review-39963"
+    },
+    {
+      "t": "2026-05-17T14:34:55.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-17T14:35:12.862Z",
+      "event": "bb-session",
+      "session": "c477a7de",
+      "url": "http://www.variety.com/review/VE1117948889?refCatId=33"
+    },
+    {
+      "t": "2026-05-17T14:35:13.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T15:03:46.068Z",
+      "event": "bb-session",
+      "session": "e294a3dd",
+      "url": "https://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-17T15:03:46.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:09.726Z",
+      "event": "bb-session",
+      "session": "e0f155cf",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9902E6DE123EF936A2575BC0"
+    },
+    {
+      "t": "2026-05-17T15:05:10.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:23.582Z",
+      "event": "bb-session",
+      "session": "435a4cda",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=980"
+    },
+    {
+      "t": "2026-05-17T15:05:23.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:37.760Z",
+      "event": "bb-session",
+      "session": "c8ec116a",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C0"
+    },
+    {
+      "t": "2026-05-17T15:05:38.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:51.260Z",
+      "event": "bb-session",
+      "session": "ba942a8d",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF93"
+    },
+    {
+      "t": "2026-05-17T15:05:51.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:06:05.369Z",
+      "event": "bb-session",
+      "session": "81d11897",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1"
+    },
+    {
+      "t": "2026-05-17T15:06:05.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
