@@ -67,7 +67,8 @@
     "spring-awakening-2015/abc-news--mark-kennedy.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "the-scottsboro-boys-2010/abc-news--unknown.json",
-    "animal-wisdom-2022/nytimes--ben-brantley.json"
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "the-receptionist-off-broadway-2026/talkinbroadway--james-wilson.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
@@ -1236,7 +1237,13 @@
     "1536-west-end-2026/times-uk--clive-davis.json",
     "1536-west-end-2026/times-uk--dominic-maxwell.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "an-ideal-husband-west-end-2026/thestage--unknown.json"
+    "an-ideal-husband-west-end-2026/thestage--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "new-born-off-broadway-2026/culturesauce--thom-geier.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+    "hamlet-off-broadway-2026/here--unknown.json",
+    "hamlet-off-broadway-2026/theater-scene--deirdre-donovan.json",
+    "the-maids-off-broadway-2026/ew--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1306,7 +1313,8 @@
       "data/review-texts/frozen-2004/about-entertainment--unknown.json",
       "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
       "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
-      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json"
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1327,7 +1335,8 @@
       "well-ill-let-you-go-off-broadway-2026/thewrap--robert-hofler.json",
       "well-ill-let-you-go-off-broadway-2026/cititour--brian-scott-lipton.json",
       "two-strangers-bway-2025/nypost--unknown.json",
-      "therese-raquin-2015/timeout--adam-feldman.json"
+      "therese-raquin-2015/timeout--adam-feldman.json",
+      "the-receptionist-off-broadway-2026/talkinbroadway--james-wilson.json"
     ],
     "archiveToday": [
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
@@ -1339,7 +1348,8 @@
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/1536-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -1351,7 +1361,7 @@
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "an-ideal-husband-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "the-maids-off-broadway-2026/ew--unknown.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -1539,6 +1549,12 @@
       "t": "2026-05-17T15:06:05.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T23:56:09.885Z",
+      "event": "bb-session",
+      "session": "d9cdf3c5",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
