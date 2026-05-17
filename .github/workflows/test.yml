@@ -468,6 +468,47 @@ jobs:
         # color values match between the two files.
         run: node scripts/check-brand-tokens-sync.js
 
+  typescript-check:
+    name: TypeScript Check
+    # Skip on Dependabot PRs — they don't have access to REVIEW_TEXTS_TOKEN, so
+    # checkout-core-data fails; root tsc transitively imports data/*.json files
+    # via resolveJsonModule and breaks without them. Same pattern as unit-tests.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        # Need node_modules for tsc to resolve imports.
+        run: npm ci --prefer-offline --no-audit --no-fund
+      - name: Checkout core data
+        # src/lib/data-*.ts imports data/shows.json, data/reviews.json, etc. via
+        # resolveJsonModule. Without checkout-core-data tsc fails with TS2307 on
+        # the JSON imports. Same composite action used by unit-tests.
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: tsc — root (src/, app/, tests/)
+        # Catches type errors in app code. Root tsconfig excludes scripts/.
+        # Currently green on main — this gate ensures it stays that way.
+        run: npx tsc --noEmit
+      - name: tsc — scripts/llm-scoring/
+        # Catches type errors in the llm-scoring pipeline. Scoped via
+        # scripts/llm-scoring/tsconfig.json because the parent
+        # scripts/tsconfig.json has pre-existing rootDir errors in
+        # unrelated scripts (audit-tony-all-seasons, scrape-grosses, etc).
+        # Why this gate exists: 2026-05-16 — the systematic-tier fix
+        # shipped a 12-error consumer mismatch (evaluate.ts:446-448)
+        # that no CI check caught because root tsc skips scripts/. Adding
+        # this gate would have failed the merge and prevented the bug.
+        run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
+
   unit-tests:
     name: Unit Tests
     # Skip on Dependabot PRs — they don't have access to REVIEW_TEXTS_TOKEN
