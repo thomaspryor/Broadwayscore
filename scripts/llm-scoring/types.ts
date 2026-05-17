@@ -47,6 +47,8 @@ export interface ReviewTextFile {
   category?: string;
   /** Venue name — injected at scoring time */
   venue?: string;
+  /** Show type — injected at scoring time */
+  type?: string;
 }
 
 /**

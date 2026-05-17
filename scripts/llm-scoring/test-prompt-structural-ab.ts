@@ -803,7 +803,7 @@ async function loadQuickSample(): Promise<SampleReview[]> {
       outletId: data.outletId,
       outlet: data.outlet,
       criticName: data.criticName,
-      publishDate: data.publishDate || null,
+      publishDate: data.publishDate || '',
       category: data.category || showInfo?.category,
       venue: data.venue || showInfo?.venue || undefined,
       fullText: data.fullText,

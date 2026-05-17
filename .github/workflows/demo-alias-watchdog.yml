@@ -40,6 +40,7 @@ jobs:
       - name: Check and re-pin demo alias if drifted
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
           DEMO_DOMAIN="demo.broadwayscorecard.com"
@@ -63,9 +64,32 @@ jobs:
                 x.target !== 'production' &&
                 x.meta?.githubCommitRef === 'main'
               );
-              if (candidates.length === 0) { console.error('No demo-shaped deployments found'); process.exit(2); }
+              if (candidates.length === 0) { process.exit(2); }
               console.log(candidates[0].url);
             ")
+          FILTER_EXIT=$?
+
+          if [ $FILTER_EXIT -eq 2 ]; then
+            # No demo-shaped deployments — diagnose whether the demo build itself is broken
+            echo "No READY demo deployments found (filter: source=cli, target!=production, ref=main)."
+            RECENT_RUNS=$(gh run list --workflow="vercel-demo.yml" --limit=5 \
+              --json conclusion,status,displayTitle,createdAt 2>/dev/null || echo '[]')
+            FAILED_COUNT=$(echo "$RECENT_RUNS" | node -e "
+              const runs = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+              console.log(runs.filter(r => r.conclusion === 'failure').length);
+            ")
+            if [ "$FAILED_COUNT" -gt "0" ]; then
+              echo "::error::Deploy Demo Site has $FAILED_COUNT recent failure(s) — fix the build first. The alias will self-heal once a READY demo deployment exists."
+              echo "$RECENT_RUNS" | node -e "
+                const runs = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+                runs.slice(0,3).forEach(r => console.log('  ' + r.createdAt + ' ' + (r.conclusion||r.status) + ': ' + r.displayTitle));
+              "
+            else
+              echo "::error::No READY demo deployments found and Deploy Demo Site shows no recent failures. The build may be in progress — check https://github.com/thomaspryor/Broadwayscore/actions/workflows/vercel-demo.yml"
+            fi
+            exit 1
+          fi
+
           echo "Latest demo build: $LATEST_DEMO"
 
           # 3. If they match, nothing to do.

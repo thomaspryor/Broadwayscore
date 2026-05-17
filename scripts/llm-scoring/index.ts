@@ -1182,9 +1182,9 @@ async function main(): Promise<void> {
     reviewFile.showTitle = showTitles.get(reviewFile.showId) || undefined;
     const showMeta = showPriority.get(reviewFile.showId);
     if (showMeta) {
-      reviewFile.category = showMeta.category;
-      reviewFile.venue = showMeta.venue;
-      reviewFile.type = showMeta.type;
+      reviewFile.category = showMeta.category ?? undefined;
+      reviewFile.venue = showMeta.venue ?? undefined;
+      reviewFile.type = showMeta.type ?? undefined;
     }
 
     // Progress

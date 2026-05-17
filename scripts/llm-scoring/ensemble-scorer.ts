@@ -545,7 +545,7 @@ export class EnsembleReviewScorer {
         promptVersion: PROMPT_VERSION,
         inputTokens: 0,
         outputTokens: 0,
-        previousScore: reviewFile.assignedScore,
+        previousScore: reviewFile.assignedScore ?? undefined,
         previousVersion: (reviewFile as any).llmMetadata?.promptVersion,
         textSource: {
           type: scoringInput.textQuality === 'excerpt-only' ? 'excerpt' as const : 'fullText' as const,
