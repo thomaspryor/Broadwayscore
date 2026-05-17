@@ -14,9 +14,11 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { TIER_WEIGHTS, VALID_TIERS } from '../../src/config/scoring';
+import { TIER_WEIGHTS, VALID_TIERS, DEFAULT_TIER } from '../../src/config/scoring';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsOutletTiers = require('../../scripts/lib/outlet-tiers');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const jsComputeCriticScore = require('../../scripts/lib/compute-critic-score');
 
 test('VALID_TIERS derives from TIER_WEIGHTS (TS side)', () => {
   const keys = Object.keys(TIER_WEIGHTS).map(Number).sort((a, b) => a - b);
@@ -83,4 +85,36 @@ test('sampleStratifiedByTier covers every populated tier', () => {
 test('sampleStratifiedByTier handles empty input', () => {
   assert.deepEqual(jsOutletTiers.sampleStratifiedByTier([], 10), []);
   assert.deepEqual(jsOutletTiers.sampleStratifiedByTier([{ tier: 1 }], 0), []);
+});
+
+test('compute-critic-score.js re-exports the canonical (no duplicate)', () => {
+  // Codex 2026-05-16: compute-critic-score.js used to declare its own copy of
+  // TIER_WEIGHTS, DEFAULT_TIER, OFF_MARKET_MULTIPLIER — a third silent canonical
+  // alongside scripts/lib/outlet-tiers.js and src/config/scoring.ts. It now
+  // re-imports from outlet-tiers.js; this test asserts they are the same value
+  // (which would also be true if someone re-declared them with identical
+  // numbers, but the stronger goal is to make sure they don't drift in practice).
+  assert.deepEqual(
+    jsComputeCriticScore.TIER_WEIGHTS,
+    jsOutletTiers.TIER_WEIGHTS,
+    'compute-critic-score TIER_WEIGHTS must equal outlet-tiers TIER_WEIGHTS'
+  );
+  assert.equal(
+    jsComputeCriticScore.DEFAULT_TIER,
+    jsOutletTiers.DEFAULT_TIER,
+    'compute-critic-score DEFAULT_TIER must equal outlet-tiers DEFAULT_TIER'
+  );
+  assert.equal(
+    jsComputeCriticScore.OFF_MARKET_MULTIPLIER,
+    jsOutletTiers.OFF_MARKET_MULTIPLIER,
+    'compute-critic-score OFF_MARKET_MULTIPLIER must equal outlet-tiers'
+  );
+});
+
+test('DEFAULT_TIER agrees across TS and JS canonicals', () => {
+  assert.equal(
+    DEFAULT_TIER,
+    jsOutletTiers.DEFAULT_TIER,
+    'TS DEFAULT_TIER and JS DEFAULT_TIER must match'
+  );
 });

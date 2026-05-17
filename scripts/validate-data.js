@@ -27,6 +27,10 @@ const { wouldBeIncludedInRebuild, passesFlagFilters, hasValidScore } = require('
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
 
+// Canonical Broadway-category predicate. Treats null category as Broadway
+// per historical-import convention; use this instead of raw string compare.
+const { isBroadwayCategory } = require('./lib/venue-classification');
+
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
 // across 64 workflows, which meant validate-data.js exit-1 didn't prevent corrupt rows
@@ -3759,7 +3763,11 @@ function validateCrossMarketContamination() {
     const region = outletRegionMap[oid];
     if (region === 'london') {
       const category = showCategoryMap[r.showId];
-      if (category === 'broadway') {
+      // Use canonical isBroadwayCategory helper instead of `category === 'broadway'`
+      // (Codex 2026-05-16): treats null category as Broadway per the historical-
+      // import convention in venue-classification.js:48, and any new NYC category
+      // (off-off-broadway, opera, festival) routes correctly without touching here.
+      if (isBroadwayCategory({ category })) {
         reverseIssues++;
         if (reverseIssues <= 5) {
           error(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
