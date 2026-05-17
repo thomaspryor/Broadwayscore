@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       ceremonyYear: number;
     };
 
-    if (!email || !email.includes('@')) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
     }
 
