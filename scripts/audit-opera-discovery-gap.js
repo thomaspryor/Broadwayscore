@@ -2,37 +2,43 @@
 /**
  * audit-opera-discovery-gap.js
  *
- * Sprint 0 instrumentation for the Opera Auto-Discovery V2 plan.
+ * Discovery-gap audit instrument — originally written for opera (Sprint 0),
+ * now generalized to any show category: broadway, off-broadway, west-end,
+ * off-west-end, or opera.
  *
- * Question: for each opera review we manually ingested this session, which of
- * the three paths did the CURRENT gather pipeline miss it on?
+ * For each show in scope it calls searchOutletSites and buckets every known
+ * review URL into one of four buckets:
  *
- *   discovery-miss   the URL was never returned by ANY discovery path
- *                    (site-search dispatch or SERP). Fix: add a new outlet
- *                    endpoint to scripts/lib/site-search-discovery.js.
+ *   discovery-miss   the URL was never returned by ANY discovery path.
+ *                    Fix: add a new outlet endpoint to site-search-discovery.js.
  *
- *   filter-miss      the URL WAS returned by the dispatch, but a downstream
- *                    filter (filterOperaUrls year-window, urlLooksLikeReview
- *                    title-match, wrong-production guard, etc.) dropped it.
- *                    Fix: relax the offending filter, not add an outlet.
+ *   filter-miss      the URL WAS returned but a downstream filter (year-window,
+ *                    urlLooksLikeReview title-match, wrong-production guard)
+ *                    dropped it. Fix: relax the offending filter.
  *
- *   extraction-miss  the URL was discovered AND filtered through, but the
- *                    extractor returned empty/teaser/garbage and the file
- *                    was flagged as invalid. Fix: outlet-specific extractor.
+ *   extraction-miss  URL discovered + filtered through, but extracted text was
+ *                    partial/garbage (contentTier !== complete).
+ *                    Fix: outlet-specific extractor.
+ *
+ *   hit              URL discovered and successfully ingested with complete
+ *                    content. No action needed.
  *
  * Usage:
- *   node scripts/audit-opera-discovery-gap.js --show=tristan-und-isolde-off-broadway-2026
- *   node scripts/audit-opera-discovery-gap.js --all
+ *   node scripts/audit-opera-discovery-gap.js --show=the-lost-boys-2026
+ *   node scripts/audit-opera-discovery-gap.js --category=broadway --all
+ *   node scripts/audit-opera-discovery-gap.js --all          # runs all categories
  *
- * Output: JSON to stdout (single show) or markdown table to
- * data/audit/opera-discovery-gap-2026-05.md (--all).
+ * Flags:
+ *   --category=CAT   broadway | off-broadway | west-end | off-west-end | opera
+ *   --all            audit all shows in scope (required for category mode)
+ *   --show=ID        audit a single show (prints JSON to stdout)
+ *   --days=N         openingDate window ±N days around today (default: 60)
  *
- * Cost: site-search dispatch only — uses WP REST / public listing pages with
- * cookies. No SERP calls. Total cost ~free (a handful of HTTP fetches per
- * show via existing cookie/Bright Data infrastructure).
+ * Output (--all):
+ *   data/audit/discovery-gap-{category}-{YYYY-MM}.md  (one file per category)
  *
- * For SERP-path coverage, see the SERP audit follow-up (filed separately if
- * Sprint 0 bucketing shows discovery-miss is the dominant bucket).
+ * Cost: site-search dispatch only — WP REST / public listing pages with
+ * cookies/Bright Data. No SERP calls.
  */
 
 'use strict';
@@ -41,24 +47,11 @@ const fs = require('fs');
 const path = require('path');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 
-// ─── Inputs ──────────────────────────────────────────────────────────────────
-
-// The 6 recent Met productions whose coverage we audited this session.
-// Source of truth: data/shows.json (type: opera).
-const OPERA_SHOWS = [
-  'tristan-und-isolde-off-broadway-2026',
-  'innocence-off-broadway-2026',
-  'the-amazing-adventures-of-kavalier-and-clay-off-broadway-2025',
-  'eugene-onegin-off-broadway-2026',
-  'la-traviata-off-broadway-2026',
-  'el-ultimo-sueno-de-frida-y-diego-off-broadway-2026',
-];
+const VALID_CATEGORIES = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'opera'];
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REVIEWS_JSON_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
-const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
-const OUT_MD = path.join(__dirname, '..', 'data', 'audit', 'opera-discovery-gap-2026-05.md');
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -69,12 +62,41 @@ function getArg(name) {
   return a.split('=').slice(1).join('=');
 }
 
-function loadShow(showId) {
+function outMdPath(category) {
+  const now = new Date();
+  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  return path.join(__dirname, '..', 'data', 'audit', `discovery-gap-${category}-${ym}.md`);
+}
+
+function loadAllShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  const shows = data.shows || data;
-  const show = shows.find((s) => s.id === showId);
+  return data.shows || data;
+}
+
+function loadShow(showId) {
+  const show = loadAllShows().find((s) => s.id === showId);
   if (!show) throw new Error(`show not found: ${showId}`);
   return show;
+}
+
+function loadShowsByCategory(category, daysWindow = 60) {
+  const shows = loadAllShows();
+  const today = new Date();
+  const windowMs = daysWindow * 24 * 60 * 60 * 1000;
+  return shows.filter((s) => {
+    // Opera shows have category='off-broadway' but type='opera' — match by type.
+    // All other categories match by category field and exclude opera type.
+    if (category === 'opera') {
+      if (s.type !== 'opera') return false;
+    } else {
+      if (s.category !== category) return false;
+      if (s.type === 'opera') return false;
+    }
+    if (!['open', 'closed'].includes(s.status)) return false;
+    if (!s.openingDate) return false;
+    const diff = Math.abs(today - new Date(s.openingDate));
+    return diff <= windowMs;
+  });
 }
 
 function loadKnownReviewsForShow(showId) {
@@ -85,7 +107,7 @@ function loadKnownReviewsForShow(showId) {
     if (!f.endsWith('.json')) continue;
     const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     if (!j.url) continue;
-    if (j.wrongProduction || j.wrongShow) continue; // skip flagged
+    if (j.wrongProduction || j.wrongShow) continue;
     out.push({
       file: f,
       url: j.url,
@@ -112,18 +134,6 @@ function loadReviewsJsonIndex() {
   return index;
 }
 
-function loadOutletIdsForBroadway() {
-  const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
-  const outlets = reg.outlets || reg;
-  const ids = [];
-  for (const [id, info] of Object.entries(outlets)) {
-    if (typeof info !== 'object') continue;
-    if (!SITE_SEARCH_ENDPOINTS[id]) continue;
-    ids.push(id);
-  }
-  return ids;
-}
-
 // ─── Audit one show ──────────────────────────────────────────────────────────
 
 async function auditShow(showId, reviewsJsonIndex) {
@@ -132,9 +142,6 @@ async function auditShow(showId, reviewsJsonIndex) {
   const inReviewsJson = reviewsJsonIndex.get(showId) || new Set();
   for (const k of known) k.isInReviewsJson = inReviewsJson.has(k.url);
 
-  // 1. Run site-search dispatch across every outlet that has a site-search
-  //    endpoint registered. This matches what gather-reviews.js does for
-  //    opera shows via searchOutletSites().
   const outletIds = Object.keys(SITE_SEARCH_ENDPOINTS);
   let discovered = [];
   try {
@@ -149,16 +156,12 @@ async function auditShow(showId, reviewsJsonIndex) {
   }
   const discoveredSet = new Set(discovered.map((d) => d.url));
 
-  // 2. Bucket each known URL.
   const buckets = { discoveryMiss: [], filterMiss: [], extractionMiss: [], hit: [] };
   for (const k of known) {
     const seen = discoveredSet.has(k.url);
     if (seen && k.isInReviewsJson && k.contentTier === 'complete') {
       buckets.hit.push(k);
-    } else if (seen && (!k.isInReviewsJson || k.contentTier !== 'complete')) {
-      // Discovery DID return the URL, but the review either didn't make it
-      // to reviews.json (filter dropped it) or has incomplete text (extractor
-      // failed). Distinguish by contentTier.
+    } else if (seen) {
       if (k.contentTier === 'complete' && !k.isInReviewsJson) {
         buckets.filterMiss.push({ ...k, reason: 'complete but not in reviews.json' });
       } else if (k.contentTier !== 'complete') {
@@ -167,7 +170,6 @@ async function auditShow(showId, reviewsJsonIndex) {
         buckets.filterMiss.push({ ...k, reason: 'unclear' });
       }
     } else {
-      // Discovery did not return the URL.
       buckets.discoveryMiss.push(k);
     }
   }
@@ -183,24 +185,43 @@ async function auditShow(showId, reviewsJsonIndex) {
 
 // ─── Markdown output ─────────────────────────────────────────────────────────
 
-function formatMarkdown(results) {
+function top5MissOutlets(results) {
+  const counts = new Map();
+  for (const r of results) {
+    for (const it of r.buckets.discoveryMiss) {
+      const key = it.outlet || it.outletId || 'unknown';
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+}
+
+function formatMarkdown(results, category) {
+  const now = new Date();
+  const ym = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const catLabel = category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ');
   const lines = [];
-  lines.push('# Opera Discovery Gap Audit — 2026-05');
+
+  lines.push(`# ${catLabel} Discovery Gap Audit — ${ym}`);
   lines.push('');
-  lines.push('Generated by `scripts/audit-opera-discovery-gap.js` as Sprint 0 of the Opera Auto-Discovery V2 plan.');
+  lines.push(`Generated by \`scripts/audit-opera-discovery-gap.js --category=${category} --all\`.`);
   lines.push('');
   lines.push('## Bucket definitions');
   lines.push('- **discovery-miss** — `searchOutletSites` did not return the URL. Fix: add outlet endpoint.');
   lines.push('- **filter-miss** — URL was returned but downstream filter (year-window, urlLooksLikeReview, wrong-production guard) blocked ingestion. Fix: relax filter.');
   lines.push('- **extraction-miss** — URL discovered + filtered through, but extracted text was partial/garbage (`contentTier !== complete`). Fix: outlet-specific extractor.');
-  lines.push('- **hit** — URL was discovered and successfully ingested with complete content. (No action — the pipeline got this one right.)');
+  lines.push('- **hit** — URL discovered and successfully ingested with complete content. No action needed.');
   lines.push('');
   lines.push('## Summary');
   lines.push('');
   lines.push('| Show | Known | Discovered | discovery-miss | filter-miss | extraction-miss | hit |');
   lines.push('|---|---|---|---|---|---|---|');
   for (const r of results) {
-    lines.push(`| ${r.showId} | ${r.knownCount} | ${r.discoveredCount} | ${r.buckets.discoveryMiss.length} | ${r.buckets.filterMiss.length} | ${r.buckets.extractionMiss.length} | ${r.buckets.hit.length} |`);
+    lines.push(
+      `| ${r.showId} | ${r.knownCount} | ${r.discoveredCount} | ${r.buckets.discoveryMiss.length} | ${r.buckets.filterMiss.length} | ${r.buckets.extractionMiss.length} | ${r.buckets.hit.length} |`,
+    );
   }
   const tot = results.reduce(
     (a, r) => ({
@@ -213,11 +234,30 @@ function formatMarkdown(results) {
     }),
     { known: 0, disc: 0, dm: 0, fm: 0, em: 0, hit: 0 },
   );
-  lines.push(`| **TOTAL** | **${tot.known}** | **${tot.disc}** | **${tot.dm}** | **${tot.fm}** | **${tot.em}** | **${tot.hit}** |`);
+  lines.push(
+    `| **TOTAL** | **${tot.known}** | **${tot.disc}** | **${tot.dm}** | **${tot.fm}** | **${tot.em}** | **${tot.hit}** |`,
+  );
   lines.push('');
   const pct = (n) => (tot.known === 0 ? '–' : `${Math.round((100 * n) / tot.known)}%`);
-  lines.push(`**Of ${tot.known} known reviews:** discovery-miss ${pct(tot.dm)}, filter-miss ${pct(tot.fm)}, extraction-miss ${pct(tot.em)}, hit ${pct(tot.hit)}.`);
+  lines.push(
+    `**Of ${tot.known} known reviews:** discovery-miss ${pct(tot.dm)}, filter-miss ${pct(tot.fm)}, extraction-miss ${pct(tot.em)}, hit ${pct(tot.hit)}.`,
+  );
   lines.push('');
+
+  lines.push('## Top 5 highest-miss outlets (discovery-miss)');
+  lines.push('');
+  const top5 = top5MissOutlets(results);
+  if (top5.length === 0) {
+    lines.push('_No discovery misses found._');
+  } else {
+    lines.push('| Outlet | discovery-miss count |');
+    lines.push('|---|---|');
+    for (const [outlet, count] of top5) {
+      lines.push(`| ${outlet} | ${count} |`);
+    }
+  }
+  lines.push('');
+
   lines.push('## Per-show detail');
   for (const r of results) {
     lines.push('');
@@ -234,14 +274,20 @@ function formatMarkdown(results) {
     }
   }
   lines.push('');
-  lines.push('## Sprint 2 scope implication');
+  lines.push('## Scope implication');
   lines.push('');
   if (tot.dm >= Math.ceil(tot.known * 0.5)) {
-    lines.push(`Discovery-miss is the dominant bucket (${pct(tot.dm)} of known reviews). Sprint 2 proceeds as planned — add per-outlet endpoints for each discovery-missed outlet.`);
+    lines.push(
+      `Discovery-miss is the dominant bucket (${pct(tot.dm)} of known reviews). Add per-outlet endpoints for each discovery-missed outlet.`,
+    );
   } else if (tot.fm >= Math.ceil(tot.known * 0.3)) {
-    lines.push(`Filter-miss accounts for ≥30% (${pct(tot.fm)}). File a Notion follow-up to investigate \`filterOperaUrls()\` year-window and \`urlLooksLikeReview()\` title-matching for opera URLs BEFORE adding new outlet endpoints.`);
+    lines.push(
+      `Filter-miss accounts for ≥30% (${pct(tot.fm)}). Investigate \`filterOperaUrls()\` year-window and \`urlLooksLikeReview()\` title-matching BEFORE adding new outlet endpoints.`,
+    );
   } else {
-    lines.push(`No single bucket dominates. Address discovery-miss in Sprint 2 as planned; review filter-miss and extraction-miss case-by-case.`);
+    lines.push(
+      `No single bucket dominates. Address discovery-miss as planned; review filter-miss and extraction-miss case-by-case.`,
+    );
   }
   return lines.join('\n') + '\n';
 }
@@ -251,23 +297,52 @@ function formatMarkdown(results) {
 (async function main() {
   const showArg = getArg('show');
   const allArg = getArg('all');
+  const categoryArg = getArg('category');
+  const daysArg = getArg('days');
+  const daysWindow = daysArg ? parseInt(daysArg, 10) : 60;
+
   if (!showArg && !allArg) {
-    console.error('Usage: node scripts/audit-opera-discovery-gap.js --show=ID | --all');
+    console.error('Usage:');
+    console.error('  node scripts/audit-opera-discovery-gap.js --show=SHOW_ID');
+    console.error('  node scripts/audit-opera-discovery-gap.js --category=broadway --all');
+    console.error('  node scripts/audit-opera-discovery-gap.js --all   # all categories');
     process.exit(2);
   }
-  const reviewsJsonIndex = loadReviewsJsonIndex();
-  const shows = allArg ? OPERA_SHOWS : [showArg];
-  const results = [];
-  for (const showId of shows) {
-    process.stderr.write(`auditing ${showId}…\n`);
-    results.push(await auditShow(showId, reviewsJsonIndex));
+
+  if (categoryArg && !VALID_CATEGORIES.includes(categoryArg)) {
+    console.error(`Unknown category "${categoryArg}". Valid: ${VALID_CATEGORIES.join(', ')}`);
+    process.exit(2);
   }
-  if (allArg) {
-    fs.mkdirSync(path.dirname(OUT_MD), { recursive: true });
-    fs.writeFileSync(OUT_MD, formatMarkdown(results));
-    process.stderr.write(`wrote ${OUT_MD}\n`);
-  } else {
-    process.stdout.write(JSON.stringify(results[0], null, 2) + '\n');
+
+  const reviewsJsonIndex = loadReviewsJsonIndex();
+
+  // ── Single-show mode ──────────────────────────────────────────────────────
+  if (showArg) {
+    process.stderr.write(`auditing ${showArg}…\n`);
+    const result = await auditShow(showArg, reviewsJsonIndex);
+    process.stdout.write(JSON.stringify(result, null, 2) + '\n');
+    return;
+  }
+
+  // ── Category / all-categories mode ───────────────────────────────────────
+  const categoriesToRun = categoryArg ? [categoryArg] : VALID_CATEGORIES;
+
+  for (const cat of categoriesToRun) {
+    const shows = loadShowsByCategory(cat, daysWindow);
+    if (shows.length === 0) {
+      process.stderr.write(`[${cat}] no shows found in ±${daysWindow}-day window — skipping\n`);
+      continue;
+    }
+    process.stderr.write(`[${cat}] auditing ${shows.length} shows…\n`);
+    const results = [];
+    for (const show of shows) {
+      process.stderr.write(`  ${show.id}…\n`);
+      results.push(await auditShow(show.id, reviewsJsonIndex));
+    }
+    const outMd = outMdPath(cat);
+    fs.mkdirSync(path.dirname(outMd), { recursive: true });
+    fs.writeFileSync(outMd, formatMarkdown(results, cat));
+    process.stderr.write(`wrote ${outMd}\n`);
   }
 })().catch((e) => {
   console.error(e.stack || e.message);
