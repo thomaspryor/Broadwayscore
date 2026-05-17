@@ -173,6 +173,21 @@ const PRECURSOR_TIER_NOM_WEIGHTS: Record<CategoryTier, number> = {
   C:    0.5,
 };
 
+/**
+ * Points awarded per Tony nomination (NOT wins — wins come at the ceremony
+ * and are what we're trying to predict). Used in computeAwardsScore to add
+ * Tony nomination breadth as a pre-ceremony signal. The top category being
+ * predicted is excluded (all nominees have it). Higher-tier categories
+ * (direction, leading acting) carry more voter-support signal than design.
+ */
+const TONY_NOM_WEIGHTS: Record<CategoryTier, number> = {
+  S:    0,    // excluded (top category being predicted)
+  'A+': 5,
+  A:    4,
+  B:    3,
+  C:    2,
+};
+
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
   'best-musical': 'Best Musical',
   'best-play': 'Best Play',
@@ -384,6 +399,21 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   // cross-category awards numbers are visually fair.
   const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
+
+  // Tony nomination breadth bonus (post-nomination-announcement only).
+  // Tony nominations are pre-ceremony signals — they indicate broad voter
+  // support across categories. Tony WINS are excluded (that's what we
+  // predict). The top category being predicted is also excluded since all
+  // nominees share it. Using nominatedFor (which includes all noms, won or
+  // not) is correct: wins-vs-noms distinction only matters for the ceremony
+  // outcome we're predicting, not for counting voter interest pre-ceremony.
+  const tonyNoms = (entry.tony?.nominatedFor ?? []).filter(n => n !== tonyCategory);
+  for (const nomCat of tonyNoms) {
+    const cls = classifyCategory(nomCat);
+    if (!cls) continue;
+    base += TONY_NOM_WEIGHTS[cls.tier];
+  }
+
   return Math.min(100, base);
 }
 
