@@ -102,7 +102,7 @@ test('all outlets have required fields', () => {
   for (const [id, outlet] of Object.entries(data.outlets)) {
     if (!outlet.displayName) issues.push(`${id}: missing displayName`);
     if (!outlet.tier) issues.push(`${id}: missing tier`);
-    if (outlet.tier && (outlet.tier < 1 || outlet.tier > 3)) {
+    if (outlet.tier && (outlet.tier < 1 || outlet.tier > 4)) {
       issues.push(`${id}: invalid tier ${outlet.tier}`);
     }
   }
