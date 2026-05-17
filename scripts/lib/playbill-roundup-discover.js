@@ -44,6 +44,7 @@ const REVIEW_OUTLET_DOMAINS = [
   'washingtonpost.com',
   'ft.com',
   'thetimes.com',
+  'thetimes.co.uk', // canonical Times-UK domain per outlet-registry.json
   'theartsdesk.com',
   'operawire.com',
   'bachtrack.com',
@@ -99,13 +100,20 @@ async function discoverPlaybillRoundup(show, options = {}) {
 
     const found = new Set();
     // Greedy URL extraction across the article body. Restrict to known
-    // review-outlet domains so we don't pull in tracker/ads/Playbill nav.
-    const urlPattern = /https?:\/\/(?:[a-z0-9-]+\.)*([a-z0-9-]+\.[a-z]{2,})\/[^\s"')<>]+/gi;
+    // review-outlet domains by strict host match (no substring fallback —
+    // `fullUrl.includes('nytimes.com')` would match notnytimes.com.fake/x).
+    // Captures the FULL host (not just the registrable suffix) so .co.uk
+    // hosts aren't truncated; the domain check then matches exact host or
+    // subdomain (www., m., etc.).
+    const urlPattern = /https?:\/\/((?:[a-z0-9-]+\.)+[a-z]{2,})\/[^\s"')<>]+/gi;
     let m;
     while ((m = urlPattern.exec(html)) !== null) {
       const fullUrl = m[0];
       const host = m[1].toLowerCase();
-      if (!REVIEW_OUTLET_DOMAINS.some((d) => host === d || host.endsWith('.' + d) || fullUrl.includes(d))) continue;
+      // Strict host match: exact equality OR subdomain ending in '.{domain}'.
+      // Rejects notnytimes.com.fake because its host is 'notnytimes.com.fake'
+      // which is neither 'nytimes.com' nor ends in '.nytimes.com'.
+      if (!REVIEW_OUTLET_DOMAINS.some((d) => host === d || host.endsWith('.' + d))) continue;
       // Drop obvious non-article paths
       if (/\/(?:tag|category|author|search|wp-content|assets|cdn|static)\b/i.test(fullUrl)) continue;
       // Drop image/asset/tracking suffixes

@@ -138,12 +138,19 @@ async function withOperaCache(opts, fn) {
     _perShowFetchCount.set(opts.showId, current + 1);
   }
   const fresh = await fn();
-  if (Array.isArray(fresh)) {
+  // Don't cache empty results. Empty arrays are normal in the pre-publication
+  // window (Playbill roundup before the article posts, author archive before
+  // a review lands) — caching them for 24h would silently kill the discovery
+  // window. The cost of re-fetching empty results is bounded by the per-show
+  // fetch cap (counted above) so re-trying isn't a budget risk.
+  if (Array.isArray(fresh) && fresh.length > 0) {
     try {
       _atomicWrite(filePath, fresh);
     } catch (e) {
       console.warn(`    [opera-cache] write failed for ${opts.outletId}/${opts.showId}: ${e.message}`);
     }
+  } else if (Array.isArray(fresh) && fresh.length === 0) {
+    console.log(`    [opera-cache] not caching empty result for ${opts.outletId}/${opts.showId}`);
   }
   return fresh;
 }

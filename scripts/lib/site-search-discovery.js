@@ -676,6 +676,13 @@ const SITE_SEARCH_ENDPOINTS = {
     // one fetch. Discovered URLs carry their outlet domain so downstream
     // resolveOutletFromUrl maps each to its canonical outletId at ingest.
     skipUrlFilter: true,
+    // Roundup URLs are heterogeneous (NYT, Vulture, FT, Operawire, etc.) —
+    // the dispatcher must re-resolve each result's outletId from the URL.
+    // Without this flag, every URL inherits outletId='playbill-roundup' and
+    // every outlet='Playbill (roundup)', which causes downstream code in
+    // gather-reviews.js:1665 (the `if (!outlet)` resolveOutletFromUrl gate)
+    // to SKIP resolution because outlet is already set.
+    resolveOutletPerUrl: true,
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const { discoverPlaybillRoundup } = require('./playbill-roundup-discover');
       const show = { type: 'opera', title: showTitle, openingDate, id: showId };
@@ -1082,8 +1089,29 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         // lookups and scoring don't see a stranger id. Required when opera
         // dispatch differs from the default dispatch for the SAME outlet —
         // the map can't carry two entries under one key.
-        const effectiveOutletId = config.outletIdOverride || outletId;
-        results.push({ url, outletId: effectiveOutletId, outlet: config.name, source: 'site-search' });
+        let effectiveOutletId = config.outletIdOverride || outletId;
+        let effectiveOutletName = config.name;
+        // resolveOutletPerUrl: for entries that return heterogeneous URLs
+        // (e.g. playbill-roundup: NYT + Vulture + FT + ... in one batch),
+        // resolve outletId per-URL from the domain. Without this, every URL
+        // inherits the entry's outletId and downstream resolveOutletFromUrl
+        // is skipped because outlet is already set.
+        if (config.resolveOutletPerUrl) {
+          try {
+            const { resolveOutletFromUrl } = require('./review-normalization');
+            const resolved = resolveOutletFromUrl(url);
+            if (resolved && resolved.outletId) {
+              effectiveOutletId = resolved.outletId;
+              effectiveOutletName = resolved.displayName || resolved.outletId;
+            }
+          } catch (_e) {
+            // resolveOutletFromUrl unavailable — leave defaults and let
+            // gather-reviews.js's downstream re-resolution kick in via the
+            // `if (!outlet)` gate. To enable that gate, clear outlet here.
+            effectiveOutletName = null;
+          }
+        }
+        results.push({ url, outletId: effectiveOutletId, outlet: effectiveOutletName, source: 'site-search' });
       }
     } else {
       // Standard fetch + regex path
