@@ -6,6 +6,7 @@ import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/li
 import OperaPageClient from '@/components/OperaPageClient';
 
 const currentYear = new Date().getFullYear();
+const operaOgImageUrl = `${BASE_URL}/og/opera.png`;
 
 export const metadata: Metadata = {
   title: `Met Opera Reviews & Ratings (${currentYear}) — OperaScorecard`,
@@ -20,6 +21,13 @@ export const metadata: Metadata = {
       'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
     url: `${BASE_URL}/opera`,
     type: 'article',
+    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard — Met Opera Reviews & Ratings' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'OperaScorecard',
+    description: 'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
+    images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard — Met Opera Reviews & Ratings' }],
   },
 };
 
