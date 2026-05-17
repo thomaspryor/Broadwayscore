@@ -96,10 +96,10 @@ export default function AwardScorePage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Award Scorecard</h1>
           <p className="text-gray-400 mt-2">
-            Prestige-weighted scores across Tony Awards, Pulitzer Prize, Olivier Awards, Drama Desk, Outer Critics Circle, Drama League, and NY Drama Critics&apos; Circle.
+            Which shows are winning Broadway&apos;s awards season? Each score weighs seven ceremonies — Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC — with Tony wins carrying the most weight.
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            {showsWithScore.length} shows with award activity · Currently open shows only
+            {showsWithScore.length} shows with award activity · Currently open Broadway shows
           </p>
         </div>
 
