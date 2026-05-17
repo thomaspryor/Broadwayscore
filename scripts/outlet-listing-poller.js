@@ -97,6 +97,12 @@ const OUTLET_STRATEGY_CONFIG = {
   nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', titleFilter: /\b(review|critic['’]?s\s+pick)\b/i },
   // TheaterMania full-site RSS; urlFilter selects review slugs only
   theatermania:        { strategy: 'rss', url: 'https://www.theatermania.com/rss.xml', urlFilter: /\/news\/review-/ },
+  // Variety theater-specific RSS — /v/theater/ path is review-only, no filter needed
+  variety:             { strategy: 'rss', url: 'https://variety.com/v/theater/feed/' },
+  // TheWrap theater tag RSS; urlFilter keeps only slugs ending in -review (drops news/obituaries)
+  thewrap:             { strategy: 'rss', url: 'https://www.thewrap.com/tag/theater/feed/', urlFilter: /-review\/$/ },
+  // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
+  thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
 
   // Sitemap strategy — Vulture's /rss/tag/theater.xml returns 404 since their CMS migration.
   // URL patterns for Vulture theater reviews:
@@ -113,6 +119,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // timeout-london: SSR reviews index, BD fetches directly (~35 links)
   // timeout (NY): hub page renders navigation only via BD; SERP (10-result cap) is sufficient
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
+  // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
+  standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
