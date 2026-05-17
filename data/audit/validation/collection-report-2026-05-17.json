@@ -1,48 +1,48 @@
 {
-  "runDate": "2026-05-17T15:40:20.893Z",
+  "runDate": "2026-05-17T15:39:54.346Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "please-please-me-west-end-2026",
+    "showFilter": "avenue-q-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 2,
     "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "40.0%"
   },
   "tierBreakdown": {
     "playwright": 3,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 2,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 2,
     "tier2Success": 1,
     "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 3,
-    "scrapingBeePageCredits": 10,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -51,20 +51,17 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "please-please-me-west-end-2026/financialtimes--unknown.json",
-    "please-please-me-west-end-2026/independent--unknown.json",
-    "please-please-me-west-end-2026/whatsonstage--unknown.json"
+    "avenue-q-west-end-2026/british-theatre--unknown.json",
+    "avenue-q-west-end-2026/times-uk--unknown.json"
   ],
   "failed": [
-    "please-please-me-west-end-2026/guardian--unknown.json",
-    "please-please-me-west-end-2026/standard--unknown.json",
-    "please-please-me-west-end-2026/thestage--unknown.json"
+    "avenue-q-west-end-2026/the-recs--unknown.json",
+    "avenue-q-west-end-2026/theupcoming--michael-higgs.json",
+    "avenue-q-west-end-2026/london-theatre--the-anonymous-reviewer.json"
   ],
   "tierDetails": {
     "playwright": [
-      "please-please-me-west-end-2026/financialtimes--unknown.json",
-      "please-please-me-west-end-2026/independent--unknown.json",
-      "please-please-me-west-end-2026/whatsonstage--unknown.json"
+      "avenue-q-west-end-2026/british-theatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -72,10 +69,12 @@
       "death-of-a-salesman-2026/wsj--unknown.json"
     ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "avenue-q-west-end-2026/times-uk--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/please-please-me-west-end-2026/thestage--unknown.json"
+      "data/review-texts/avenue-q-west-end-2026/the-recs--unknown.json"
     ],
     "archive": []
   },
