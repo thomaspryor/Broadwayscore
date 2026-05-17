@@ -1,5 +1,15 @@
 import { ScoreBadge, getScoreTier } from './ScoreBadge';
+import { AwardScoreBadge } from './AwardScoreBadge';
+import type { TierBadge } from '@/lib/awards-scoring';
 import type { AudienceGrade } from './types';
+
+function awardBadgeFromScore(score: number | null | undefined): TierBadge {
+  if (!score || score <= 0) return 'eligible';
+  if (score <= 40) return 'nominated';
+  if (score <= 69) return 'honored';
+  if (score <= 84) return 'decorated';
+  return 'sweeper';
+}
 
 export interface BlendedTrioDisplayProps {
   blendedScore: number | null;
@@ -13,6 +23,10 @@ export interface BlendedTrioDisplayProps {
   awardsWeighted?: boolean;
   size?: 'sm' | 'md';
   showCrown?: boolean;
+  /** Hide the "Prediction Score" header + blended number (e.g. when win% is shown alongside) */
+  hideScore?: boolean;
+  /** True when the Tony ceremony hasn't happened yet (activates award-breathe animation) */
+  inProgress?: boolean;
 }
 
 /**
@@ -37,6 +51,8 @@ export function BlendedTrioDisplay({
   awardsWeighted,
   size = 'md',
   showCrown,
+  hideScore = false,
+  inProgress = true,
 }: BlendedTrioDisplayProps) {
   const showTier =
     blendedScore != null &&
@@ -49,11 +65,10 @@ export function BlendedTrioDisplay({
   const showAwardsBox = awardsScore !== undefined;
   const hasAwards = typeof awardsScore === 'number' && awardsScore > 0;
 
-  // All three peer boxes share the same dimensions — match ScoreBadge sm
-  // (44px) at every viewport so they read as equal-weight inputs.
+  // All three peer boxes share the same dimensions — match ScoreBadge sm (w-11 h-11 = 44px).
   const boxClass =
     size === 'sm'
-      ? 'w-9 h-9 rounded-lg flex items-center justify-center text-base font-bold'
+      ? 'w-11 h-11 rounded-lg flex items-center justify-center text-base font-bold'
       : 'w-11 h-11 rounded-lg flex items-center justify-center text-lg font-bold';
   const blendedNumberClass =
     size === 'sm'
@@ -61,27 +76,10 @@ export function BlendedTrioDisplay({
       : 'text-2xl sm:text-3xl font-bold leading-none';
   const labelClass = 'text-[9px] font-semibold uppercase tracking-wide text-gray-400';
 
-  // Awards box visual treatment:
-  //   - weighted (Best Play):    brand gold accent (counts toward the prediction)
-  //   - unweighted (others):     muted gray (shown for transparency only)
-  //   - no data (score is 0):    muted "—" (same as audience empty state)
-  const awardsBoxStyle = hasAwards
-    ? awardsWeighted
-      ? { backgroundColor: 'rgba(234, 179, 8, 0.15)', color: 'rgb(250, 204, 21)' }   // amber-500/15 + amber-400
-      : { backgroundColor: 'rgba(255, 255, 255, 0.05)', color: 'rgb(156, 163, 175)' } // white/5 + gray-400
-    : undefined;
-  const awardsBoxClassName = hasAwards
-    ? boxClass
-    : `${boxClass} bg-surface-overlay text-gray-500`;
-  const awardsTooltip = hasAwards
-    ? awardsWeighted
-      ? `Awards Score ${Math.round(awardsScore!)} — counts for 20% of the Best Play prediction.`
-      : `Awards Score ${Math.round(awardsScore!)} — shown for transparency; not weighted in this category's prediction.`
-    : 'No precursor nominations yet.';
 
   return (
     <div className="flex flex-col items-center gap-1 flex-shrink-0">
-      {showTier && (
+      {showTier && !hideScore && (
         <>
           <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-white">
             Prediction Score
@@ -129,14 +127,12 @@ export function BlendedTrioDisplay({
         {showAwardsBox && (
           <div className="flex flex-col items-center gap-1">
             <span className={labelClass}>Awards</span>
-            <div
-              className={awardsBoxClassName}
-              style={awardsBoxStyle}
-              title={awardsTooltip}
-              aria-label={awardsTooltip}
-            >
-              {hasAwards ? Math.round(awardsScore!) : '—'}
-            </div>
+            <AwardScoreBadge
+              score={Math.round(awardsScore ?? 0)}
+              badge={awardBadgeFromScore(awardsScore)}
+              inProgress={inProgress}
+              size="sm"
+            />
           </div>
         )}
       </div>
