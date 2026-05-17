@@ -28,9 +28,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 // Discord daily reports removed — email digest is the single notification channel.
+
+// Generate a signed one-tap approve URL for a fix workflow.
+// Returns '' if ALERT_TOKEN_SECRET is not set.
+function generateApproveUrl(workflowFile, alertTitle) {
+  const secret = process.env.ALERT_TOKEN_SECRET;
+  if (!secret || !workflowFile) return '';
+  const payload = { fixId: workflowFile, alertTitle, expiry: Date.now() + 86400000 };
+  const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const sig = crypto.createHmac('sha256', secret).update(encoded).digest('hex');
+  return `https://broadwayscorecard.com/api/dispatch-alert-fix?token=${encodeURIComponent(`${encoded}.${sig}`)}`;
+}
 // Critical workflow failures still alert via notify-failure composite action.
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -1258,12 +1270,25 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           ? `<p style="color:#f39c12;margin:4px 0 0;font-size:12px;">${r.cookieCountdowns.join(' · ')}</p>`
           : '';
 
+        // One-tap approve button for fix-now items with a known fix workflow
+        const urgencyLevel = r._escalatedUrgency || (entry ? entry.urgency : 'low');
+        const approveUrl = urgencyLevel === 'fix-now' && entry?.workflow
+          ? generateApproveUrl(entry.workflow, r.name)
+          : '';
+        const approveButton = approveUrl
+          ? `<div style="margin-top:10px;">
+              <a href="${approveUrl}" style="display:inline-block;background:#27ae60;color:white;padding:8px 18px;border-radius:5px;text-decoration:none;font-weight:bold;font-size:13px;">Run Fix</a>
+              <span style="color:#666;font-size:11px;margin-left:8px;">Triggers ${entry.workflow} &nbsp;·&nbsp; Link expires in 24h</span>
+            </div>`
+          : '';
+
         return `<div style="padding:10px 12px;margin-bottom:8px;background:#2a1a1a;border-left:3px solid ${urgency.bg};border-radius:4px;">
           <span style="display:inline-block;padding:2px 8px;border-radius:3px;background:${urgency.bg};color:${urgency.color};font-size:11px;font-weight:bold;">${urgency.label}</span>
           <span style="color:#ddd;margin-left:8px;font-weight:bold;">${r.name.split(': ').pop()}</span>
           ${countdowns}
           <p style="color:#bbb;margin:6px 0 0;font-size:13px;line-height:1.4;">${instruction}</p>
           ${failNote}
+          ${approveButton}
         </div>`;
       }).join('');
 
