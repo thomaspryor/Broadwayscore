@@ -102,27 +102,45 @@ jobs:
           add_var NEXT_PUBLIC_SANITY_DATASET production
           add_var NEXT_PUBLIC_SANITY_API_VERSION 2024-10-01
 
-      - name: Override feature flags for demo (all enabled)
+      - name: Set demo feature flags via .vercel/.env.preview.local
         run: |
-          # vercel build ignores ALL env overrides (.env.local, shell env,
-          # .vercel/.env.*.local rewrites) — it uses Vercel project settings.
-          # Nuclear fix: rewrite the source file to hardcode all features ON.
-          # Auto-extracts flag names from source — no manual sync needed.
-          node -e "
-            const fs = require('fs');
-            const src = fs.readFileSync('src/config/feature-flags.ts', 'utf8');
+          # Write NEXT_PUBLIC_FEATURES with every flag enabled to the env file
+          # that `vercel build` reads (same mechanism as the Sanity backfill
+          # above). Next.js inlines NEXT_PUBLIC_* env values at build time as
+          # string literals, so the resulting bundle has every flag enabled
+          # in BOTH server and client components. No source rewriting.
+          #
+          # Replaces the prior "Override feature flags" source-rewrite block.
+          # The old comment claimed `vercel build` ignores all env overrides;
+          # the Sanity backfill above (and the prod leak guard in
+          # vercel-deploy.yml that reads NEXT_PUBLIC_FEATURES from this same
+          # file) both contradict that claim. The 2026-05-17 invisible-card
+          # postmortem traced the rendering failure to a CI lint gap, not the
+          # rewrite mechanism itself.
+          ENV_FILE=".vercel/.env.preview.local"
+          if [ ! -f "$ENV_FILE" ]; then
+            echo "::error::$ENV_FILE not found — vercel pull may have failed"
+            exit 1
+          fi
+          ALL=$(node -e "
+            const src = require('fs').readFileSync('src/config/feature-flags.ts', 'utf8');
             const flags = [...src.matchAll(/get\s+(\w+)\(\)/g)].map(m => m[1]);
             if (flags.length < 5) { console.error('Only found', flags.length, 'flags — aborting'); process.exit(1); }
-            const ALL = flags.join(',');
-            const out = src.replace(
-              /\(process\.env\.NEXT_PUBLIC_FEATURES \|\| ''\)/,
-              \"'\" + ALL + \"'\"
-            );
-            fs.writeFileSync('src/config/feature-flags.ts', out);
-            console.log('Feature flags source rewritten. Inlined', flags.length, 'flags:', ALL);
-          "
+            process.stdout.write(flags.join(','));
+          ")
+          # Replace any existing NEXT_PUBLIC_FEATURES line, or append if absent.
+          if grep -q "^NEXT_PUBLIC_FEATURES=" "$ENV_FILE"; then
+            # Use a portable in-place edit (no -i.bak suffix to avoid sed BSD/GNU split)
+            tmp=$(mktemp)
+            grep -v "^NEXT_PUBLIC_FEATURES=" "$ENV_FILE" > "$tmp"
+            echo "NEXT_PUBLIC_FEATURES=\"$ALL\"" >> "$tmp"
+            mv "$tmp" "$ENV_FILE"
+          else
+            echo "NEXT_PUBLIC_FEATURES=\"$ALL\"" >> "$ENV_FILE"
+          fi
+          echo "Set NEXT_PUBLIC_FEATURES with all $(echo "$ALL" | tr ',' '\n' | wc -l | tr -d ' ') flags in $ENV_FILE"
 
-      # NO build cache for demo — source rewrite + cache = stale pages forever.
+      # NO build cache for demo — config rewrites + cache = stale pages forever.
       # Demo builds every 8h; the ~3min penalty is worth guaranteed correctness.
       - name: Clear any leftover build cache
         run: rm -rf .next/cache
