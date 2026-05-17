@@ -15,17 +15,10 @@ const { fetchHtml, parseCategoryPage } = require('./lib/precursor-category-parse
 const { writePrecursorJson, sleep, RATE_LIMIT_MS, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
 
 const PAGES = {
-  // Top categories
   'Outstanding New Broadway Musical':  'Outer_Critics_Circle_Award_for_Outstanding_New_Broadway_Musical',
   'Outstanding New Broadway Play':     'Outer_Critics_Circle_Award_for_Outstanding_New_Broadway_Play',
   'Outstanding Revival of a Musical':  'Outer_Critics_Circle_Award_for_Outstanding_Revival_of_a_Musical',
   'Outstanding Revival of a Play':     'Outer_Critics_Circle_Award_for_Outstanding_Revival_of_a_Play',
-  // Sub-categories — Wikipedia has per-page historical coverage for these.
-  'Outstanding Director of a Musical': 'Outer_Critics_Circle_Award_for_Outstanding_Director_of_a_Musical',
-  'Outstanding Director of a Play':    'Outer_Critics_Circle_Award_for_Outstanding_Director_of_a_Play',
-  'Outstanding Choreography':          'Outer_Critics_Circle_Award_for_Outstanding_Choreography',
-  'Outstanding New Score':             'Outer_Critics_Circle_Award_for_Outstanding_New_Score',
-  'Outstanding Book of a Musical':     'Outer_Critics_Circle_Award_for_Outstanding_Book_of_a_Musical',
 };
 
 const MIN_YEAR = parseInt(
