@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-05-17T15:03:58.456Z",
+  "updatedAt": "2026-05-17T15:05:36.889Z",
   "processed": 67,
-  "failed": 982,
-  "successRate": "6.4%",
+  "failed": 992,
+  "successRate": "6.3%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 19,
+    "browserbase": 21,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 5,
     "archiveToday": 7,
     "archive": 6
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-05-17T14:21:07.721Z",
-      "event": "bb-session",
-      "session": "03f1bced",
-      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
-    },
-    {
-      "t": "2026-05-17T14:21:08.089Z",
-      "event": "bb-cookie-inject",
-      "domain": "hollywoodreporter.com"
-    },
-    {
-      "t": "2026-05-17T14:21:22.058Z",
-      "event": "bb-session",
-      "session": "62e74b63",
-      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
-    },
-    {
-      "t": "2026-05-17T14:21:22.414Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-05-17T14:21:38.648Z",
       "event": "bb-session",
@@ -122,6 +100,28 @@
     },
     {
       "t": "2026-05-17T15:03:46.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:09.726Z",
+      "event": "bb-session",
+      "session": "e0f155cf",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9902E6DE123EF936A2575BC0"
+    },
+    {
+      "t": "2026-05-17T15:05:10.140Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:23.582Z",
+      "event": "bb-session",
+      "session": "435a4cda",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=980"
+    },
+    {
+      "t": "2026-05-17T15:05:23.994Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
