@@ -70,25 +70,49 @@ jobs:
           WARNINGS=""
           NOW=$(date +%s)
 
+          # Fetch state for every workflow in the repo (two pages cover ~200 workflows).
+          # A workflow in `disabled_manually` keeps emitting cancelled scheduled runs that
+          # *look* recent to a plain `gh run list` — the May 2026 orchestrator outage went
+          # undetected for ~2.5 days because of this. Querying state directly catches it
+          # within one check-cron-health cycle.
+          WF_STATES=$(
+            gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=1" \
+              --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null;
+            gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=2" \
+              --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null
+          )
+
           for entry in "${CRITICAL_CRONS[@]}"; do
             IFS='|' read -r workflow max_hours name <<< "$entry"
 
-            # Get most recent run (any trigger type)
-            LAST_RUN=$(gh run list --workflow="$workflow" --limit=1 --json createdAt,conclusion -q '.[0]' 2>/dev/null || echo '{}')
+            # 1. State check — fast, catches disabled_manually immediately.
+            STATE=$(echo "$WF_STATES" | grep -F "${workflow}|" | head -1 | cut -d'|' -f2)
+            if [ -n "$STATE" ] && [ "$STATE" != "active" ]; then
+              FAILURES="${FAILURES}❌ ${name}: workflow state is '${STATE}' (expected 'active'). Re-enable in the Actions tab or via: gh api -X PUT repos/$GITHUB_REPOSITORY/actions/workflows/${workflow}/enable\n"
+              continue
+            fi
+
+            # 2. Recency check — require a recent *successful* run, not just any run.
+            # Plain `gh run list --limit=1` returns cancelled runs as "recent," which is
+            # how a disabled workflow's still-firing schedule events hide a real outage.
+            LAST_RUN=$(gh run list --workflow="$workflow" --status=success --limit=1 --json createdAt,conclusion -q '.[0]' 2>/dev/null || echo '{}')
             LAST_DATE=$(echo "$LAST_RUN" | jq -r '.createdAt // empty' 2>/dev/null)
             LAST_CONCLUSION=$(echo "$LAST_RUN" | jq -r '.conclusion // empty' 2>/dev/null)
 
             if [ -z "$LAST_DATE" ]; then
-              FAILURES="${FAILURES}❌ ${name}: No runs found at all!\n"
+              FAILURES="${FAILURES}❌ ${name}: No successful runs found at all!\n"
               continue
             fi
 
-            # Calculate hours since last run
+            # Calculate hours since last successful run
             LAST_TS=$(date -d "$LAST_DATE" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_DATE" +%s 2>/dev/null || echo "0")
             HOURS_AGO=$(( (NOW - LAST_TS) / 3600 ))
 
             if [ "$HOURS_AGO" -gt "$max_hours" ]; then
-              FAILURES="${FAILURES}❌ ${name}: Last run ${HOURS_AGO}h ago (max ${max_hours}h). Last conclusion: ${LAST_CONCLUSION}\n"
+              # Surface the *latest* run's conclusion (any status) so the alert tells us
+              # whether recent runs are failing vs cancelled vs simply absent.
+              LATEST_ANY=$(gh run list --workflow="$workflow" --limit=1 --json conclusion -q '.[0].conclusion // "missing"' 2>/dev/null || echo "missing")
+              FAILURES="${FAILURES}❌ ${name}: Last SUCCESS ${HOURS_AGO}h ago (max ${max_hours}h). Latest run conclusion: ${LATEST_ANY}\n"
             elif [ "$LAST_CONCLUSION" = "failure" ]; then
               WARNINGS="${WARNINGS}⚠️ ${name}: Last run failed (${HOURS_AGO}h ago)\n"
             fi
