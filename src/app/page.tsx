@@ -3,7 +3,7 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getWestEndShows, getOperaShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import type { ComputedShow } from '@/lib/data-types';
 import { serializeShowForClient } from '@/lib/serialize-show';
@@ -56,10 +56,18 @@ export default function HomePage() {
   const archiveHash = crypto.createHash('md5').update(archiveFile).digest('hex').slice(0, 8);
   const obShows = getOffBroadwayShows().filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
+    s.type !== 'opera' && // opera gets its own "At the Met" shelf
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
   );
   const weShows = getWestEndShows().filter(s =>
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 3
+  );
+  // Opera shelf: small universe (typically 3-4 Met productions running concurrently),
+  // so the reviewCount threshold is lower than OB (5) / WE (3). Currently-running
+  // productions only — the /opera page shows the full archive including closed runs.
+  const operaShelfShows = getOperaShows().filter(s =>
+    (s.status === 'open' || s.status === 'previews') &&
+    s.criticScore && s.criticScore.score && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 2
   );
 
   // Precompute "Best Recent Shows" server-side for both preload links and SSR featured row
@@ -204,6 +212,11 @@ export default function HomePage() {
       return { ...serializeShow(s), subtitle: startDate ? `Starts ${shortDate(startDate)}` : undefined, subtitleColor: 'text-gray-400' };
     });
 
+  // At the Met — currently-running opera productions with scores, sorted by score
+  const bestOperaList = operaShelfShows
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(serializeShow);
+
   // Best of the West End — open WE shows with scores, sorted by score
   const bestWestEndList = weShows
     .filter(s => s.status === 'open' && s.criticScore?.score)
@@ -219,6 +232,10 @@ export default function HomePage() {
 
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
+    // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
+    // Positioned right after Off-Broadway so opera coverage is visible without
+    // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
+    { title: 'At the Met', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
     { title: 'In Previews / Opening Soon', shows: inPreviewsList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
