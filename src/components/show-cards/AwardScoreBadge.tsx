@@ -134,15 +134,7 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
           }}
         />
       )}
-<<<<<<< HEAD
-      {/* Asterisk absolutely positioned so it never displaces the centered number */}
-      {inProgress && score > 0 && (
-        <span aria-hidden className="absolute top-1.5 right-1.5 animate-pulse font-bold text-sm leading-none">*</span>
-      )}
-      <span className="leading-none">{score > 0 ? score : '—'}</span>
-=======
       <span className="leading-none relative">{score > 0 ? score : '—'}</span>
->>>>>>> worktree-awards-scorecard-ux
     </div>
   );
 }
