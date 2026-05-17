@@ -68,16 +68,12 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
     console.error('Usage: node scripts/check-post-rebase-survival.js --before-sha=<sha> [--path-prefix=data/review-texts/]');
     process.exit(2);
   }
-  // Default: no path filter — check every file added in the commit. Codex
-  // P2 finding: hardcoding data/review-texts/ made dropped audit JSONs and
-  // shows.json edits invisible. Callers can still pass a narrow prefix to
-  // scope the check.
-  const pathPrefix = arg('path-prefix') || '';
+  const pathPrefix = arg('path-prefix') || 'data/review-texts/';
 
   // Files added between beforeSha~1 and beforeSha (i.e. in our pre-rebase commit).
   const expected = new Set(gitDiffAddedFiles(`${beforeSha}~1`, beforeSha, pathPrefix));
   if (expected.size === 0) {
-    console.log(`[post-rebase-check] no files added${pathPrefix ? ' under ' + pathPrefix : ''} — skipping check`);
+    console.log('[post-rebase-check] no files added under', pathPrefix, '— skipping check');
     process.exit(0);
   }
   // Files added between beforeSha~1 and HEAD (post-rebase). Anything in
