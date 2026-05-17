@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import {
   getAllShowSlugs,
   getShowBySlug,
+  getBroadwayShows,
   getAllBestOfCategories,
   getAllTheaterSlugs,
   getAllLondonTheaterSlugs,
@@ -18,6 +19,8 @@ import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
 import { getAllPredictionSeasons, getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
+import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { seasonSlug } from '@/app/award-score/[season]/page';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -375,12 +378,24 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    ...(featureFlags.awardScoreV2 ? [{
-      url: `${BASE_URL}/award-score`,
-      lastModified: ctx.showsDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }] : []),
+    ...(featureFlags.awardScoreV2 ? (() => {
+      const awardSeasons = new Set<string>();
+      for (const show of getBroadwayShows()) {
+        try {
+          const s = computeSiteAwardScore(show.id);
+          if (s.tonySeason) awardSeasons.add(s.tonySeason);
+        } catch {}
+      }
+      return [
+        { url: `${BASE_URL}/award-score`, lastModified: ctx.showsDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+        ...Array.from(awardSeasons).map(season => ({
+          url: `${BASE_URL}/award-score/${seasonSlug(season)}`,
+          lastModified: ctx.showsDate,
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+        })),
+      ];
+    })() : []),
     {
       url: `${BASE_URL}/west-end/audience-buzz`,
       lastModified: ctx.showsDate,
