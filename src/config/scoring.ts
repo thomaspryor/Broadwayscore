@@ -82,6 +82,13 @@ export const TIER_WEIGHTS = {
 
 export const DEFAULT_TIER = 3 as const;
 
+// Canonical valid-tier list derived from TIER_WEIGHTS. Mirrored on the JS
+// side as scripts/lib/outlet-tiers.js:VALID_TIERS;
+// tests/unit/tier-config-consistency.test.ts asserts the two stay in sync.
+export const VALID_TIERS: readonly (1 | 2 | 3 | 4)[] = (
+  Object.keys(TIER_WEIGHTS).map(Number) as (1 | 2 | 3 | 4)[]
+).sort((a, b) => a - b);
+
 // Off-market multiplier applied to Off-Broadway / Off-West-End reviews.
 // Acknowledges that off-market coverage is typically lighter / different
 // critical engagement than the parent market. Set to 1.0 to disable.

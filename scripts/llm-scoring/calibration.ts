@@ -219,19 +219,37 @@ function calculateStats(dataPoints: CalibrationDataPoint[]): CalibrationStats {
     }
   }
 
-  // By tier
-  const byTier = {
-    tier1: { count: 0, totalError: 0, totalDelta: 0 },
-    tier2: { count: 0, totalError: 0, totalDelta: 0 },
-    tier3: { count: 0, totalError: 0, totalDelta: 0 }
-  };
+  // By tier — uses canonical VALID_TIERS via buildTierAccumulator so a new
+  // tier (T5+) automatically gets a bucket without code changes here.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { buildTierAccumulator, VALID_TIERS } = require('../lib/outlet-tiers');
+  type TierBucket = { count: number; totalError: number; totalDelta: number };
+  const byTier: Record<string, TierBucket> = buildTierAccumulator(
+    () => ({ count: 0, totalError: 0, totalDelta: 0 })
+  );
 
   for (const dp of dataPoints) {
     const tier = getOutletTier(dp.outletId || dp.outlet);
-    const tierKey = `tier${tier}` as 'tier1' | 'tier2' | 'tier3';
-    byTier[tierKey].count++;
-    byTier[tierKey].totalError += dp.absoluteError;
-    byTier[tierKey].totalDelta += dp.delta;
+    const tierKey = `tier${tier}`;
+    if (byTier[tierKey]) {
+      byTier[tierKey].count++;
+      byTier[tierKey].totalError += dp.absoluteError;
+      byTier[tierKey].totalDelta += dp.delta;
+    }
+  }
+
+  // Suppress per-tier metrics below significance threshold. T4 (and any future
+  // long-tail tier) may have tiny samples; raw mae/meanBias for n<5 is noise.
+  const MIN_TIER_SAMPLE_FOR_REPORT = 5;
+  const byTierReport: Partial<Record<`tier${1|2|3|4}`, { count: number; mae: number; meanBias: number }>> = {};
+  for (const tier of VALID_TIERS as number[]) {
+    const bucket = byTier[`tier${tier}`];
+    if (!bucket || bucket.count < MIN_TIER_SAMPLE_FOR_REPORT) continue;
+    byTierReport[`tier${tier}` as `tier${1|2|3|4}`] = {
+      count: bucket.count,
+      mae: Math.round((bucket.totalError / bucket.count) * 100) / 100,
+      meanBias: Math.round((bucket.totalDelta / bucket.count) * 100) / 100,
+    };
   }
 
   return {
@@ -255,35 +273,7 @@ function calculateStats(dataPoints: CalibrationDataPoint[]): CalibrationStats {
         mae: Math.round(byConfidence.low.mae * 100) / 100
       }
     },
-    byTier: {
-      tier1: {
-        count: byTier.tier1.count,
-        mae: byTier.tier1.count > 0
-          ? Math.round((byTier.tier1.totalError / byTier.tier1.count) * 100) / 100
-          : 0,
-        meanBias: byTier.tier1.count > 0
-          ? Math.round((byTier.tier1.totalDelta / byTier.tier1.count) * 100) / 100
-          : 0
-      },
-      tier2: {
-        count: byTier.tier2.count,
-        mae: byTier.tier2.count > 0
-          ? Math.round((byTier.tier2.totalError / byTier.tier2.count) * 100) / 100
-          : 0,
-        meanBias: byTier.tier2.count > 0
-          ? Math.round((byTier.tier2.totalDelta / byTier.tier2.count) * 100) / 100
-          : 0
-      },
-      tier3: {
-        count: byTier.tier3.count,
-        mae: byTier.tier3.count > 0
-          ? Math.round((byTier.tier3.totalError / byTier.tier3.count) * 100) / 100
-          : 0,
-        meanBias: byTier.tier3.count > 0
-          ? Math.round((byTier.tier3.totalDelta / byTier.tier3.count) * 100) / 100
-          : 0
-      }
-    },
+    byTier: byTierReport,
     outletBias: outletBiasFinal
   };
 }
@@ -345,9 +335,16 @@ export function printCalibrationReport(
 
   if (stats.byTier) {
     console.log('\n--- By Outlet Tier ---\n');
-    console.log(`Tier 1: ${stats.byTier.tier1.count} reviews, MAE: ${stats.byTier.tier1.mae}, Bias: ${stats.byTier.tier1.meanBias > 0 ? '+' : ''}${stats.byTier.tier1.meanBias}`);
-    console.log(`Tier 2: ${stats.byTier.tier2.count} reviews, MAE: ${stats.byTier.tier2.mae}, Bias: ${stats.byTier.tier2.meanBias > 0 ? '+' : ''}${stats.byTier.tier2.meanBias}`);
-    console.log(`Tier 3: ${stats.byTier.tier3.count} reviews, MAE: ${stats.byTier.tier3.mae}, Bias: ${stats.byTier.tier3.meanBias > 0 ? '+' : ''}${stats.byTier.tier3.meanBias}`);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { VALID_TIERS } = require('../lib/outlet-tiers');
+    for (const tier of VALID_TIERS as number[]) {
+      const bucket = stats.byTier[`tier${tier}` as `tier${1|2|3|4}`];
+      if (!bucket) {
+        console.log(`Tier ${tier}: (suppressed — sample below significance threshold)`);
+        continue;
+      }
+      console.log(`Tier ${tier}: ${bucket.count} reviews, MAE: ${bucket.mae}, Bias: ${bucket.meanBias > 0 ? '+' : ''}${bucket.meanBias}`);
+    }
   }
 
   // Show outlets with significant bias

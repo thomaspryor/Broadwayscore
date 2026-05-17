@@ -397,12 +397,10 @@ export interface CalibrationStats {
     low: { count: number; mae: number };
   };
 
-  /** Error distribution by outlet tier */
-  byTier?: {
-    tier1: { count: number; mae: number; meanBias: number };
-    tier2: { count: number; mae: number; meanBias: number };
-    tier3: { count: number; mae: number; meanBias: number };
-  };
+  /** Error distribution by outlet tier. Keys are `tier${n}` for each canonical
+   *  VALID_TIERS entry. Per-tier objects may be omitted when count is below
+   *  the significance threshold (MIN_TIER_SAMPLE_FOR_REPORT). */
+  byTier?: Partial<Record<`tier${1 | 2 | 3 | 4}`, { count: number; mae: number; meanBias: number }>>;
 
   /** Per-outlet bias (positive = LLM scores this outlet higher) */
   outletBias: Record<string, { count: number; meanBias: number }>;

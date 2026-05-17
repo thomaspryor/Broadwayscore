@@ -34,6 +34,12 @@ const fs = require('fs');
 const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.40, 4: 0.20 };
 const DEFAULT_TIER = 3;
 
+// Canonical valid-tier list derived from TIER_WEIGHTS. Single source of truth
+// for the JS side — wire guards/validators here instead of hardcoding [1,2,3,4].
+// Mirrored on the TS side as src/config/scoring.ts:VALID_TIERS;
+// tier-config-consistency.test.ts asserts the two stay in sync.
+const VALID_TIERS = Object.keys(TIER_WEIGHTS).map(Number).sort((a, b) => a - b);
+
 // Off-market multiplier — applied to Off-Broadway and Off-West-End reviews
 // to acknowledge that off-market coverage is typically lighter critical
 // engagement than the parent market. Set OFF_MARKET_MULTIPLIER = 1.0 to disable.
@@ -152,12 +158,71 @@ function getEffectiveWeight(outletId, opts) {
   return isOffMarket ? base * OFF_MARKET_MULTIPLIER : base;
 }
 
+/**
+ * Build a per-tier accumulator object pre-keyed by every valid tier.
+ * Use this for collecting per-tier metrics so that downstream code never
+ * silently drops a tier when a new one is added to TIER_WEIGHTS.
+ *
+ * @param {() => any} factory  — returns the initial value for each tier
+ *                               (e.g. () => ({ count: 0, totalError: 0 }))
+ * @returns {Record<string, any>} keyed by `tier${n}` for each n in VALID_TIERS
+ */
+function buildTierAccumulator(factory) {
+  const out = {};
+  for (const tier of VALID_TIERS) {
+    out[`tier${tier}`] = factory();
+  }
+  return out;
+}
+
+/**
+ * Stratified-by-tier sample of an array of items that each have a `tier` field.
+ * Returns proportional counts per VALID_TIERS bucket so callers don't hardcode
+ * tier1/tier2/tier3 and silently drop new tiers.
+ *
+ * @template T  item shape; must expose a numeric `tier` field
+ * @param {T[]} items
+ * @param {number} sampleSize  — total items desired across all tiers
+ * @param {(arr: T[], n: number) => T[]} [pickN]
+ *        — defaults to deterministic head-slice (callers can pass a shuffler)
+ * @returns {T[]} flattened sample
+ */
+function sampleStratifiedByTier(items, sampleSize, pickN) {
+  const take = pickN || ((arr, n) => arr.slice(0, n));
+  const buckets = {};
+  for (const tier of VALID_TIERS) buckets[tier] = [];
+  for (const item of items) {
+    if (buckets[item.tier]) buckets[item.tier].push(item);
+  }
+  const total = VALID_TIERS.reduce((sum, t) => sum + buckets[t].length, 0);
+  if (total === 0 || sampleSize <= 0) return [];
+
+  // Proportional allocation; the last tier absorbs any rounding remainder.
+  const counts = {};
+  let allocated = 0;
+  for (let i = 0; i < VALID_TIERS.length - 1; i++) {
+    const tier = VALID_TIERS[i];
+    counts[tier] = Math.round((buckets[tier].length / total) * sampleSize);
+    allocated += counts[tier];
+  }
+  counts[VALID_TIERS[VALID_TIERS.length - 1]] = Math.max(0, sampleSize - allocated);
+
+  const sample = [];
+  for (const tier of VALID_TIERS) {
+    if (counts[tier] > 0) sample.push(...take(buckets[tier], counts[tier]));
+  }
+  return sample;
+}
+
 module.exports = {
   getTier,
   getTierWeight,
   getEffectiveWeight,
   regionForShowCategory,
+  buildTierAccumulator,
+  sampleStratifiedByTier,
   TIER_WEIGHTS,
+  VALID_TIERS,
   OFF_MARKET_MULTIPLIER,
   DEFAULT_TIER,
 };
