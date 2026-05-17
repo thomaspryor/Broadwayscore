@@ -1017,7 +1017,17 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "lennon-2005/about-entertainment--ben-brantley.json",
-    "frozen-2004/about-entertainment--unknown.json"
+    "frozen-2004/about-entertainment--unknown.json",
+    "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+    "salome-2003/about-entertainment--ben-brantley.json",
+    "man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+    "say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+    "sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+    "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+    "the-crucible-2002/about-entertainment--ben-brantley.json",
+    "metamorphoses-2002/about-entertainment--ben-brantley.json",
+    "major-barbara-2001/about-entertainment--bruce-weber.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1084,7 +1094,10 @@
       "glengarry-glen-ross-west-end-2026/variety--unknown.json",
       "data/review-texts/13-2008/about-entertainment--ben-brantley.json",
       "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
-      "data/review-texts/frozen-2004/about-entertainment--unknown.json"
+      "data/review-texts/frozen-2004/about-entertainment--unknown.json",
+      "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1125,7 +1138,7 @@
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "frozen-2004/about-entertainment--unknown.json",
+  "lastProcessed": "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -1278,6 +1291,39 @@
     },
     {
       "t": "2026-05-17T15:05:23.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:37.760Z",
+      "event": "bb-session",
+      "session": "c8ec116a",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C0"
+    },
+    {
+      "t": "2026-05-17T15:05:38.168Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:05:51.260Z",
+      "event": "bb-session",
+      "session": "ba942a8d",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF93"
+    },
+    {
+      "t": "2026-05-17T15:05:51.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T15:06:05.369Z",
+      "event": "bb-session",
+      "session": "81d11897",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1"
+    },
+    {
+      "t": "2026-05-17T15:06:05.740Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
