@@ -222,9 +222,11 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   // Hard-cap display at 100 — UX call: scores >100 read as bugs.
   const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
+  const totalWins = breakdown.reduce((s, b) => s + b.items.filter(i => i.result === 'win').length, 0);
   let badge: TierBadge;
   if (displayScore === 0) badge = 'eligible';
-  else if (displayScore <= 40) badge = 'nominated';
+  // "Honored" requires at least one win — nominations alone don't count as being honored.
+  else if (displayScore <= 40 || totalWins === 0) badge = 'nominated';
   else if (displayScore <= 69) badge = 'honored';
   else if (displayScore <= 89) badge = 'decorated';
   else badge = 'sweeper';
