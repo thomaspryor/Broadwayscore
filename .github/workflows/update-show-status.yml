@@ -1285,7 +1285,7 @@ jobs:
       # already-finished `update-shows` job (verified against real failed runs).
       - name: Resolve failing step + run URL
         id: step-info
-        if: fromJSON(steps.check.outputs.failure_count) >= 3
+        if: fromJSON(steps.check.outputs.failure_count) >= 6
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ github.run_id }}
@@ -1299,8 +1299,8 @@ jobs:
           echo "Failing step in update-shows job: ${FAILING_STEP}"
           echo "Run URL: ${RUN_URL}"
 
-      - name: Send alert on 3+ consecutive failures
-        if: fromJSON(steps.check.outputs.failure_count) >= 3
+      - name: Send alert on 6+ consecutive failures
+        if: fromJSON(steps.check.outputs.failure_count) >= 6
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

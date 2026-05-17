@@ -269,8 +269,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Cron Health Check Failed (stale crons or deploy regression)'
-          severity: 'critical'
-          email: 'true'
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
