@@ -449,7 +449,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Collect Review Texts" --field show_filter=show-id`
 - **Parallel runs:** YES - launch multiple with different show_filter values
 - **Options:** `batch_size` (default 10), `max_reviews` (default 500), `show_filter` (REQUIRED for parallel runs), `stealth_proxy`, `browserbase_enabled` (default true), `browserbase_max_sessions` (default 10)
-- **Browserbase tier (1.5):** Managed browser cloud with CAPTCHA solving. Costs ~$0.10/session. Enabled by default. Has spending limits: `browserbase_max_sessions` (default 10 per run), daily limit of 30 sessions (~$3/day max).
+- **Browserbase tier (1.5):** Managed browser cloud with CAPTCHA solving. Costs ~$0.10/session. Enabled by default. Spending caps (raised 2026-05-17 from incorrect "30/day, $3/day" doc — empirical April 2026 max was 275/day on Joe Turner opening night): `BROWSERBASE_MAX_SESSIONS_PER_DAY` 250 (hard ceiling $25/day = $750/mo MAX), `_PER_RUN` 30, `_PER_DOMAIN` 10. Normal usage $5-9/day. Cap defaults live in `scripts/collect-review-texts.js` and the pure decision function in `scripts/lib/browserbase-caps.js`. Per-run override via `browserbase_max_sessions` input.
 - **Script:** `scripts/collect-review-texts.js`
 - **Truncation detection:** Checks for paywall text, "read more" prompts, proper punctuation, text length ratios, footer junk. Marks as `textQuality: "truncated"`.
 

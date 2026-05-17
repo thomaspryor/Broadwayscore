@@ -163,6 +163,14 @@ function _recordSerpResult(success) {
  * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
+// Geo derivation: explicit override > heuristic. Slug-discovery and other UK-
+// only callers pass `geo: 'gb'` explicitly because their query strings don't
+// contain the literal "West End" trigger word.
+function _resolveGeo(query, override) {
+  if (override) return override;
+  return query.includes('West End') ? 'gb' : 'us';
+}
+
 async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
   if (_scrapingBeeSerpExhausted || !apiKey || scraper.sbCreditsLow) return null;
 
@@ -224,7 +232,7 @@ async function _serpViaScrapingBee(query, apiKey, log, dateRange) {
  * @param {{ dateMin: Date, dateMax: Date }} [dateRange] - Optional date range filter
  * @returns {Array<{url: string, title: string}>|null} organic results, or null if provider unavailable
  */
-async function _serpViaBrightData(query, apiKey, log, dateRange) {
+async function _serpViaBrightData(query, apiKey, log, dateRange, geo) {
   if (!apiKey || _brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) return null;
 
   const fmtD = d => d.toISOString().split('T')[0];
@@ -232,20 +240,21 @@ async function _serpViaBrightData(query, apiKey, log, dateRange) {
   const fullQuery = query + dateQuery;
 
   // Try synchronous SERP API first (fastest, returns structured JSON directly)
-  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log);
+  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo);
   if (syncResult !== null) return syncResult;
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
-  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log);
+  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo);
 }
 
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
 const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
-async function _serpViaBrightDataSerpApi(query, apiKey, log) {
+async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
   try {
     // Use Google UK for West End queries, Google US for Broadway/OB
-    const geo = query.includes('West End') ? 'gb' : 'us';
+    // (explicit override wins — see _resolveGeo for UK-only slug-discovery callers)
+    const geo = _resolveGeo(query, geoOverride);
     const submitRes = await fetch(
       `https://api.brightdata.com/serp/req?customer=${_BD_CUSTOMER}&zone=${_BD_SERP_ZONE}`,
       {
@@ -308,10 +317,10 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log) {
   }
 }
 
-async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
+async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
   const axios = require('axios');
   // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
-  const geo = query.includes('West End') ? 'gb' : 'us';
+  const geo = _resolveGeo(query, geoOverride);
   const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=10&hl=en&gl=${geo}`;
 
   try {
@@ -393,7 +402,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log) {
  */
 const _serpCache = require('./serp-cache');
 
-async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed) {
+async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride) {
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
   // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
@@ -409,8 +418,9 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     const wkMs = 7 * 24 * 60 * 60 * 1000;
     return new Date(Math.floor(d.getTime() / wkMs) * wkMs).toISOString().split('T')[0];
   };
+  const resolvedGeo = _resolveGeo(query, geoOverride);
   const cacheOpts = {
-    geo: query.includes('West End') ? 'gb' : 'us',
+    geo: resolvedGeo,
     dateMin: dateRange ? dateRange.dateMin.toISOString().split('T')[0] : '',
     dateMax: dateRange ? _weeklyBucket(dateRange.dateMax) : '',
   };
@@ -427,10 +437,19 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     ? { fn: _serpViaBrightData, key: brightDataKey, name: 'brightdata' }
     : { fn: _serpViaScrapingBee, key: scrapingBeeKey, name: 'scrapingbee' };
 
-  let results = await primary.fn(query, primary.key, log, dateRange);
+  // Geo override only flows to BD providers — ScrapingBee's SERP endpoint does
+  // not accept a country param (its /store/google endpoint geo-localizes by SB's
+  // own proxy pool, not by a request param). Pass undefined to SB to keep the
+  // existing behavior.
+  const bdGeo = geoOverride;
+  const _withGeo = (fn) => (q, k, l, dr) => (fn === _serpViaBrightData
+    ? fn(q, k, l, dr, bdGeo)
+    : fn(q, k, l, dr));
+
+  let results = await _withGeo(primary.fn)(query, primary.key, log, dateRange);
   let provider = primary.name;
   if (!results || results.length === 0) {
-    const fbResults = await fallback.fn(query, fallback.key, log, dateRange);
+    const fbResults = await _withGeo(fallback.fn)(query, fallback.key, log, dateRange);
     if (fbResults && fbResults.length > 0) {
       results = fbResults;
       provider = fallback.name;
@@ -814,13 +833,16 @@ async function serpQuery(query, options = {}) {
   const dateRange = options.dateRange || null;
   const preferSpeed = options.preferSpeed || false;
   const nbResults = options.nbResults || 10;
+  // Explicit geo override for callers whose queries don't contain "West End"
+  // but target UK-only sites (e.g. slug discovery for SeatPlan/LBO/LTD).
+  const geo = options.geo;
 
   if (!sbKey && !bdKey) {
     log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
     return null;
   }
 
-  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed);
+  const { results } = await _serpWithChain(query, sbKey, bdKey, log, dateRange, preferSpeed, geo);
   if (!results) return null;
 
   return results.slice(0, nbResults);
