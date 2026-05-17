@@ -18,6 +18,8 @@ const crypto = require('crypto');
 const { isLondonMarket } = require('./venue-classification');
 const { applyTemporalOverrides } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
+const { getCvStyle } = require('./outlet-canonicalize');
+const { hasOpinionLanguage } = require('./content-quality');
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -680,9 +682,34 @@ function quickValidityCheck(text, showTitle) {
   return hasTheaterContent && showMentioned && junkRatio < 3;
 }
 
+/**
+ * Decide whether the LLM CV pass's wrongShow promotion should be deferred
+ * (flagged for human review instead of auto-promoted) because the outlet is
+ * known for long-biographical leads that resemble wrong-show content.
+ *
+ * Returns true only when ALL of:
+ *   1. getCvStyle(outletId) === 'long-biographical'
+ *   2. wordCount(fullText) > 600
+ *   3. hasOpinionLanguage(fullText) is true
+ *
+ * Safe defaults: returns false for missing outletId or fullText.
+ *
+ * @param {{ outletId?: string, fullText?: string }} reviewData
+ * @returns {boolean}
+ */
+function shouldDeferCvWrongShow(reviewData) {
+  const { outletId, fullText } = reviewData || {};
+  if (!outletId || !fullText) return false;
+  if (getCvStyle(outletId) !== 'long-biographical') return false;
+  const wordCount = fullText.split(/\s+/).filter(Boolean).length;
+  if (wordCount <= 600) return false;
+  return hasOpinionLanguage(fullText);
+}
+
 module.exports = {
   verifyContent,
   heuristicVerify,
   quickValidityCheck,
-  contentHash
+  contentHash,
+  shouldDeferCvWrongShow,
 };
