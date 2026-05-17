@@ -164,6 +164,17 @@ jobs:
         with:
           node-version: 20
 
+      # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
+      # Bright Data SERP calls across poller/orchestrator dispatches.
+      - name: Restore SERP cache
+        if: steps.find.outputs.has_shows == 'true'
+        uses: actions/cache@v4
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}
+          restore-keys: |
+            bd-serp-cache-
+
       - name: Install dependencies
         if: steps.find.outputs.has_shows == 'true'
         run: npm ci
