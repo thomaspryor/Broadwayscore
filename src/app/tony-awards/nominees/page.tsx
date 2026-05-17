@@ -2,7 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
-import { ScoreBadge } from '@/components/show-cards';
+import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
+import type { TierBadge } from '@/lib/awards-scoring';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
@@ -83,17 +84,12 @@ function AudienceBox({ grade, size }: { grade: ShowGrade; size: 'sm' | 'md' }) {
   );
 }
 
-function AwardsBox({ score, size }: { score: number | null | undefined; size: 'sm' | 'md' }) {
-  const boxClass = size === 'md' ? BOX_MD : BOX_SM;
-  const hasScore = typeof score === 'number' && score > 0;
-  return (
-    <div
-      className={`${boxClass} ${hasScore ? 'bg-white/10 text-gray-200' : 'bg-surface-overlay text-gray-500'}`}
-      title={hasScore ? `Awards Score: ${Math.round(score!)}` : 'No precursor awards data'}
-    >
-      {hasScore ? Math.round(score!) : '—'}
-    </div>
-  );
+function badgeFromScore(score: number | null | undefined): TierBadge {
+  if (!score || score <= 0) return 'eligible';
+  if (score <= 40) return 'nominated';
+  if (score <= 69) return 'honored';
+  if (score <= 84) return 'decorated';
+  return 'sweeper';
 }
 
 function GoldDerbyCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
@@ -155,7 +151,12 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         </div>
         <div className="flex flex-col items-center gap-1">
           <span className={LABEL}>Awards</span>
-          <AwardsBox score={show.awardsScore} size="md" />
+          <AwardScoreBadge
+            score={show.awardsScore ?? 0}
+            badge={badgeFromScore(show.awardsScore)}
+            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+            size="md"
+          />
         </div>
       </div>
     </Link>
