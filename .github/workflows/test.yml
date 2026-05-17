@@ -508,6 +508,10 @@ jobs:
         # Currently green on main — this gate ensures it stays that way.
         run: npx tsc --noEmit
       - name: tsc — scripts/llm-scoring/
+        # if: always() so this runs even if root tsc fails (root tsc covers
+        # src/app/tests/; llm-scoring is scoped separately and must not be
+        # masked by an unrelated root failure).
+        if: always()
         # Catches type errors in the llm-scoring pipeline. Scoped via
         # scripts/llm-scoring/tsconfig.json because the parent
         # scripts/tsconfig.json has pre-existing rootDir errors in

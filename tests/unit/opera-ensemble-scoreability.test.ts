@@ -17,7 +17,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildScoringInput } from '../../scripts/llm-scoring/input-builder.ts';
+import { buildScoringInput } from '../../scripts/llm-scoring/input-builder';
 
 test('opera shows are framed as opera, not off-broadway theater', () => {
   const built = buildScoringInput({
