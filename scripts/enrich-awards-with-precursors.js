@@ -162,14 +162,19 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
   // 2015-16 Tony season) are unaffected — there's only ONE Hamilton in the
   // pool, so no Pass 0 preference triggers and Pass 1 still wins.
   const targetSeasonForP1 = opts.sourceYear ? ceremonyYearToTonySeason(opts.sourceYear) : null;
-  if (targetSeasonForP1 && PREDICTIONS_ERA.includes(targetSeasonForP1)) {
-    // Pass 0a: exact title match in the same season.
+  // Pass 0a: exact title match in same Tony season. Works for both
+  // PREDICTIONS_ERA and pre-PE seasons (historical scrape coverage extends
+  // back to 1970). The season-match is strict enough to safely disambiguate
+  // multiple productions of the same title.
+  if (targetSeasonForP1) {
     for (const [showId, sh] of Object.entries(awardsShows)) {
       if (!sh.tony || sh.tony.season !== targetSeasonForP1) continue;
       const t = titleById[showId];
       if (!t) continue;
       if (normalizeTitle(t) === norm) return showId;
     }
+  }
+  if (targetSeasonForP1 && PREDICTIONS_ERA.includes(targetSeasonForP1)) {
     // Pass 0b: prefix-containment match in the same season — handles long-
     // subtitled show titles (e.g. source "Purlie Victorious" / show "Purlie
     // Victorious: A Non-Confederate Romp Through the Cotton Patch", or
