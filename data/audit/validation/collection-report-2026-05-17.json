@@ -1,74 +1,72 @@
 {
-  "runDate": "2026-05-17T15:26:32.876Z",
+  "runDate": "2026-05-17T15:38:37.810Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "mass-west-end-2026",
+    "showFilter": "death-of-a-salesman-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 6,
+    "processed": 1,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
+    "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 4,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 20,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "death-of-a-salesman-2026/wsj--unknown.json"
+  ],
   "failed": [
-    "mass-west-end-2026/timeout--unknown.json",
-    "mass-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "mass-west-end-2026/financialtimes--unknown.json",
-    "mass-west-end-2026/thestage--unknown.json",
-    "mass-west-end-2026/times-uk--clive-davis.json",
-    "mass-west-end-2026/whatsonstage--unknown.json"
+    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json"
   ],
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/death-of-a-salesman-2026/wsj--unknown.json",
+      "death-of-a-salesman-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/mass-west-end-2026/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {},
