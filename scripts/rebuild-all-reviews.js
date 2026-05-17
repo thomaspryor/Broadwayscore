@@ -1454,9 +1454,19 @@ showDirs.forEach(showId => {
             stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
           }
           if (ucv.wrongArticle === true && !uEnsembleSaysReview && ud.wrongShow !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
-            ud.wrongShow = true;
-            ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
-            promoted = true;
+            // CV outlet-style override (S3-T5 followup): defer wrongShow for known long-biographical
+            // outlets even on upcoming-show path. Long-biographical previews share the same
+            // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).
+            if (shouldDeferCvWrongShow(ud)) {
+              ud.flaggedForReview = true;
+              ud.flagReason = 'cv-promotion-deferred';
+              stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+              try { safeWriteReview(path.join(upcomingDir, uf), ud); } catch (e) {}
+            } else {
+              ud.wrongShow = true;
+              ud.wrongShowReason = `CV-promoted: ${(ucv.reasoning || '').substring(0, 200)}`;
+              promoted = true;
+            }
           } else if (ucv.wrongArticle === true && uEnsembleSaysReview) {
             stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
@@ -1896,6 +1906,7 @@ showDirs.forEach(showId => {
               data.flaggedForReview = true;
               data.flagReason = 'cv-promotion-deferred';
               stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
             } else {
               data.wrongShow = true;
               data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
@@ -1909,6 +1920,7 @@ showDirs.forEach(showId => {
               data.flaggedForReview = true;
               data.flagReason = 'cv-promotion-deferred';
               stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
             } else {
               data.wrongShow = true;
               data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
@@ -1928,10 +1940,20 @@ showDirs.forEach(showId => {
         // doesn't invalidate the finding if the text is still wrong.
         if (cvIsStale && data.wrongShow !== true && data.wrongShowReason
             && /wrong|different|not a review|not the|Minerva|Chichester/i.test(data.wrongShowReason)) {
-          data.wrongShow = true;
-          data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
-          stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
-          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+          // CV outlet-style override (S3-T5 followup): defer for long-biographical
+          // outlets even on the stale-CV fallback path. The wrongShowReason itself
+          // is a CV-derived signal, so the same FP class applies.
+          if (shouldDeferCvWrongShow(data)) {
+            data.flaggedForReview = true;
+            data.flagReason = 'cv-promotion-deferred';
+            stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+          } else {
+            data.wrongShow = true;
+            data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
+            stats.contentVerificationPromoted = (stats.contentVerificationPromoted || 0) + 1;
+            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+          }
         }
       }
 
