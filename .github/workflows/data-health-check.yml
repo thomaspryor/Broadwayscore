@@ -61,3 +61,14 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Trigger investigation
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=data_health_fail \
+            -f alert_title="Daily Data Health Check Crashed" \
+            -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
