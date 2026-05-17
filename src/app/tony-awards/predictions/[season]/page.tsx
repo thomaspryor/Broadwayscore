@@ -176,7 +176,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 40% critic / 60% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 39 of 42 contests.',
+          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 45% critic / 55% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 39 of 42 contests — vs 28 of 42 for critics alone.',
         },
       },
       {
@@ -386,11 +386,11 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
                 Each Tony category gets its own recipe, tuned against 11 years of Tony history. The model
-                correctly picked the winner in 39 of 42 contests across that backtest, vs 32 of 43 for
+                correctly picked the winner in 39 of 42 contests across that backtest, vs 28 of 42 for
                 critic-only:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
-                <li><span className="text-white font-medium">Best Musical:</span> 40% critic + 60% audience.</li>
+                <li><span className="text-white font-medium">Best Musical:</span> 45% critic + 55% audience.</li>
                 <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor signal).</li>
                 <li><span className="text-white font-medium">Best Revival of a Musical / Play:</span> ranked purely on audience grade.</li>
               </ul>
