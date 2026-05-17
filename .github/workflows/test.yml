@@ -401,7 +401,11 @@ jobs:
   awards-data-freshness:
     name: Awards Data Freshness
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    # 3-minute timeout was hitting on every workflow_dispatch — the full-
+    # history clone (fetch-depth: 0) alone takes ~3 min on this repo, leaving
+    # zero budget for the actual freshness check. Bumped to 8 min on 2026-05-17
+    # (Notion 363637c5-416f-8137) so the check actually runs to completion.
+    timeout-minutes: 8
     # Schedule + manual only — never block unrelated PRs.
     # Surfaces in daily digest via getWorkflowRunSummary; promotes from
     # "operator forgot annual update" silent rot to a loud weekly failure.
