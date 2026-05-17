@@ -47,7 +47,8 @@
     "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "maybe-happy-ending-2024/variety--unknown.json",
-    "the-outsiders-2024/nysr--frank-scheck.json"
+    "the-outsiders-2024/nysr--frank-scheck.json",
+    "wicked-2003/playbill--wayman-wong.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
@@ -797,7 +798,16 @@
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "harry-potter-2021/front-row-center--tulis-mccall.json"
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "aladdin-2014/ap--mark-kennedy.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -849,7 +859,8 @@
       "becky-shaw-2026/wsj--unknown.json",
       "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -876,11 +887,12 @@
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "wicked-2003/playbill--wayman-wong.json"
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "harry-potter-2021/front-row-center--tulis-mccall.json",
+  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -969,6 +981,17 @@
       "t": "2026-05-17T14:27:32.378Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T14:30:00.882Z",
+      "event": "bb-session",
+      "session": "cf1c484b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
+    },
+    {
+      "t": "2026-05-17T14:30:01.321Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
