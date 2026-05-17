@@ -136,8 +136,8 @@ function loadReviewsJsonIndex() {
 
 // ─── Audit one show ──────────────────────────────────────────────────────────
 
-async function auditShow(showId, reviewsJsonIndex) {
-  const show = loadShow(showId);
+async function auditShow(show, reviewsJsonIndex) {
+  const { id: showId } = show;
   const known = loadKnownReviewsForShow(showId);
   const inReviewsJson = reviewsJsonIndex.get(showId) || new Set();
   for (const k of known) k.isInReviewsJson = inReviewsJson.has(k.url);
@@ -319,7 +319,7 @@ function formatMarkdown(results, category) {
   // ── Single-show mode ──────────────────────────────────────────────────────
   if (showArg) {
     process.stderr.write(`auditing ${showArg}…\n`);
-    const result = await auditShow(showArg, reviewsJsonIndex);
+    const result = await auditShow(loadShow(showArg), reviewsJsonIndex);
     process.stdout.write(JSON.stringify(result, null, 2) + '\n');
     return;
   }
@@ -337,7 +337,7 @@ function formatMarkdown(results, category) {
     const results = [];
     for (const show of shows) {
       process.stderr.write(`  ${show.id}…\n`);
-      results.push(await auditShow(show.id, reviewsJsonIndex));
+      results.push(await auditShow(show, reviewsJsonIndex));
     }
     const outMd = outMdPath(cat);
     fs.mkdirSync(path.dirname(outMd), { recursive: true });
