@@ -35,14 +35,11 @@ const GAMMA_BASE = 'https://gamma-api.polymarket.com';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
 const FETCH_TIMEOUT_MS = 30000;
 
-// Verified slugs → canonical Tony category names
+// Verified slugs → canonical Tony category names (confirmed live 2026-05-17)
+// Acting/revival markets not yet created by Polymarket for 2026 season.
 const SLUG_TO_CATEGORY = {
-  'tony-awards-best-musical': 'Best Musical',
-  'tony-awards-best-play': 'Best Play',
-  'tony-awards-best-leading-actor-in-a-musical': 'Best Actor in a Musical',
-  'tony-awards-best-leading-actress-in-a-musical': 'Best Actress in a Musical',
-  'tony-awards-best-leading-actor-in-a-play': 'Best Actor in a Play',
-  'tony-awards-best-leading-actress-in-a-play': 'Best Actress in a Play',
+  'tony-awards-best-musical-winner': 'Best Musical',
+  'tony-awards-best-play-winner': 'Best Play',
 };
 
 async function fetchWithTimeout(url) {
