@@ -12,8 +12,6 @@ const {
   findMatchingShows,
   parseRssFeed,
   parseWpApiPosts,
-  parseSitemapXml,
-  buildSerpQuery,
 } = require('../../scripts/lib/outlet-listing-helpers.js');
 
 // ---------------------------------------------------------------------------
@@ -180,118 +178,5 @@ describe('parseWpApiPosts', () => {
     const posts = [{ link: 'https://nysr.com/r', title: { rendered: '<em>Suffs</em> Review' }, date: recent }];
     const items = parseWpApiPosts(posts, cutoff);
     assert.equal(items[0].headline, 'Suffs Review');
-  });
-});
-
-// ---------------------------------------------------------------------------
-// parseSitemapXml
-// ---------------------------------------------------------------------------
-
-describe('parseSitemapXml', () => {
-  const RECENT = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-  const OLD    = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-
-  test('returns URLs within cutoff matching urlFilter', () => {
-    const xml = `<?xml version="1.0"?>
-<urlset>
-  <url><loc>https://www.vulture.com/article/suffs-theater-review-2026.html</loc><lastmod>${RECENT}</lastmod></url>
-  <url><loc>https://www.vulture.com/article/old-theater-review.html</loc><lastmod>${OLD}</lastmod></url>
-  <url><loc>https://www.vulture.com/article/not-a-review.html</loc><lastmod>${RECENT}</lastmod></url>
-</urlset>`;
-    const items = parseSitemapXml(xml, cutoff, /theater-review/);
-    assert.equal(items.length, 1);
-    assert.equal(items[0].url, 'https://www.vulture.com/article/suffs-theater-review-2026.html');
-  });
-
-  test('includes entries with no <lastmod> (do not silently drop)', () => {
-    const xml = `<?xml version="1.0"?>
-<urlset>
-  <url><loc>https://www.vulture.com/article/new-theater-review.html</loc></url>
-</urlset>`;
-    const items = parseSitemapXml(xml, cutoff, /theater-review/);
-    assert.equal(items.length, 1, 'should include URL with no lastmod');
-    assert.equal(items[0].publishDate, null);
-  });
-
-  test('excludes URLs not matching urlFilter', () => {
-    const xml = `<?xml version="1.0"?>
-<urlset>
-  <url><loc>https://www.vulture.com/article/film-review.html</loc><lastmod>${RECENT}</lastmod></url>
-</urlset>`;
-    const items = parseSitemapXml(xml, cutoff, /theater-review/);
-    assert.equal(items.length, 0);
-  });
-
-  test('works without urlFilter (returns all in-window URLs)', () => {
-    const xml = `<?xml version="1.0"?>
-<urlset>
-  <url><loc>https://example.com/article-one</loc><lastmod>${RECENT}</lastmod></url>
-  <url><loc>https://example.com/article-two</loc><lastmod>${OLD}</lastmod></url>
-</urlset>`;
-    const items = parseSitemapXml(xml, cutoff);
-    assert.equal(items.length, 1);
-  });
-});
-
-// ---------------------------------------------------------------------------
-// parseRssFeed — urlFilter and titleFilter (S1-T2/T3 config options)
-// ---------------------------------------------------------------------------
-
-describe('parseRssFeed with filters applied by caller', () => {
-  const RECENT = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toUTCString();
-  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-
-  test('urlFilter keeps review URLs, drops non-review URLs (theatermania pattern)', () => {
-    const xml = `<?xml version="1.0"?>
-<rss version="2.0"><channel>
-<item><title>Suffs Review</title><link>https://theatermania.com/news/review-suffs-2026</link><pubDate>${RECENT}</pubDate></item>
-<item><title>Opening Night Tonight</title><link>https://theatermania.com/news/opening-suffs</link><pubDate>${RECENT}</pubDate></item>
-</channel></rss>`;
-    const urlFilter = /\/news\/review-/;
-    const items = parseRssFeed(xml, cutoff).filter(i => urlFilter.test(i.url));
-    assert.equal(items.length, 1);
-    assert.ok(items[0].url.includes('/news/review-'));
-  });
-
-  test('titleFilter keeps articles with "review" in title, drops features (nytimes pattern)', () => {
-    const xml = `<?xml version="1.0"?>
-<rss version="2.0"><channel>
-<item><title>Suffs Review: Revolutionary</title><link>https://nytimes.com/suffs-review</link><pubDate>${RECENT}</pubDate></item>
-<item><title>Broadway Season in Review</title><link>https://nytimes.com/season-roundup</link><pubDate>${RECENT}</pubDate></item>
-<item><title>Opening Night for New Born</title><link>https://nytimes.com/new-born-opening</link><pubDate>${RECENT}</pubDate></item>
-</channel></rss>`;
-    const titleFilter = /\b(review|critic['']?s\s+pick)\b/i;
-    const items = parseRssFeed(xml, cutoff).filter(i => titleFilter.test(i.headline));
-    assert.equal(items.length, 2, 'should match "Suffs Review" and "Season in Review"');
-    assert.ok(items.every(i => titleFilter.test(i.headline)));
-  });
-});
-
-// ---------------------------------------------------------------------------
-// buildSerpQuery — UK vs US spelling
-// ---------------------------------------------------------------------------
-
-describe('buildSerpQuery', () => {
-  test('uses "theatre" for .co.uk domains', () => {
-    const q = buildSerpQuery('thestage.co.uk');
-    assert.ok(q.includes('theatre'), `expected "theatre" in "${q}"`);
-    assert.ok(!q.includes('theater'), `unexpected "theater" in "${q}"`);
-  });
-
-  test('uses "theater" for US domains', () => {
-    const q = buildSerpQuery('theatermania.com');
-    assert.ok(q.includes('theater'), `expected "theater" in "${q}"`);
-    assert.ok(!q.includes('theatre review'), `unexpected "theatre" in "${q}"`);
-  });
-
-  test('uses "theater" for times-uk if domain is not .co.uk', () => {
-    const q = buildSerpQuery('thetimes.com');
-    assert.ok(q.includes('theater'));
-  });
-
-  test('includes site: prefix', () => {
-    const q = buildSerpQuery('thestage.co.uk');
-    assert.ok(q.startsWith('site:thestage.co.uk'));
   });
 });

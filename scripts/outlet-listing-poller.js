@@ -59,9 +59,7 @@ const {
   deriveQualifyingOutlets,
   parseRssFeed,
   parseWpApiPosts,
-  parseSitemapXml,
   extractListingUrls,
-  buildSerpQuery,
 } = require('./lib/outlet-listing-helpers');
 
 // ---------------------------------------------------------------------------
@@ -80,42 +78,13 @@ const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 // Outlets with dedicated aggregator scrapers — skip entirely
 const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-office']);
 
-// Per-outlet fetch strategies. Each entry declares a strategy + required URL/config.
-// Outlets not listed here fall back to SERP. All strategy fetches are wrapped in
-// try/catch — on exception the poller falls back to SERP automatically (S3-T1).
-//
-// strategy: 'rss'          — fetch an RSS/Atom feed, optional urlFilter + titleFilter
-// strategy: 'sitemap'      — fetch an annual XML sitemap, filter by urlFilter + <lastmod>
-// strategy: 'listing-html' — fetch a known listing page via fetchPage() (BD→SB→Playwright)
-const OUTLET_STRATEGY_CONFIG = {
-  // RSS strategies
-  guardian:            { strategy: 'rss', url: 'https://www.theguardian.com/stage/rss' },
-  'one-minute-critic': { strategy: 'rss', url: 'https://1minutecritic.com/feed' },
-  // culturesauce: use .net canonical (registry domain); urlFilter guards against film/TV posts
-  culturesauce:        { strategy: 'rss', url: 'https://culturesauce.net/feed', urlFilter: /\/[^/]*-review\b/ },
-  // NYT Theater RSS is a 21-item rolling window; titleFilter drops features/news from the feed
-  nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', titleFilter: /\b(review|critic['’]?s\s+pick)\b/i },
-  // TheaterMania full-site RSS; urlFilter selects review slugs only
-  theatermania:        { strategy: 'rss', url: 'https://www.theatermania.com/rss.xml', urlFilter: /\/news\/review-/ },
-
-  // Sitemap strategy — Vulture's /rss/tag/theater.xml returns 404 since their CMS migration.
-  // URL patterns for Vulture theater reviews:
-  //   theater-review-*   (most reviews — explicit theater-review slug prefix)
-  //   *-reviewed.*       (multi-show reviews: "The Receptionist and The Fever Reviewed")
-  //   broadway*review*   (reviews with "broadway" in slug like "becky-shaw-broadway-play-review")
-  vulture:             { strategy: 'sitemap', urlTemplate: year => `https://www.vulture.com/sitemaps/sitemap-${year}.xml`, urlFilter: /theater-review|-reviewed\.|broadway[^/]*review/i },
-
-  // Listing-page HTML strategies (known-good review index URLs)
-  // nytg: SSR listing page; fetchPage() gets 10 reviews per page via BD/SB
-  nytg:              { strategy: 'listing-html', url: 'https://newyorktheatreguide.com/reviews' },
-  // thestage: SSR listing page; 18 reviews per page, BD fetches directly
-  thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews' },
-  // timeout-london: SSR reviews index, BD fetches directly (~35 links)
-  // timeout (NY): hub page renders navigation only via BD; SERP (10-result cap) is sufficient
-  'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
+// Outlets where we use RSS instead of SERP
+const RSS_CONFIG = {
+  guardian: 'https://www.theguardian.com/stage/rss',
+  vulture: 'https://www.vulture.com/rss/tag/theater.xml',
 };
 
-// Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
+// Outlets where we use WordPress REST API
 const WP_API_CONFIG = {
   nysr: {
     apiBase: 'https://nystagereview.com/wp-json/wp/v2/posts',
@@ -234,13 +203,10 @@ function createStub(showId, outletId, outletDisplayName, url, headline, publishD
 // Per-outlet fetch strategies
 // ---------------------------------------------------------------------------
 
-async function fetchViaRss(outletId, config, cutoff) {
-  const url = config.url;
-  console.log(`  [rss] Fetching ${url}`);
-  const xml = await fetchSimple(url);
-  let items = parseRssFeed(xml, cutoff);
-  if (config.urlFilter) items = items.filter(i => config.urlFilter.test(i.url));
-  if (config.titleFilter) items = items.filter(i => config.titleFilter.test(i.headline));
+async function fetchViaRss(outletId, rssUrl, cutoff) {
+  console.log(`  [rss] Fetching ${rssUrl}`);
+  const xml = await fetchSimple(rssUrl);
+  const items = parseRssFeed(xml, cutoff);
   console.log(`  [rss] ${items.length} items in window`);
   return items;
 }
@@ -257,44 +223,11 @@ async function fetchViaWpApi(outletId, config, cutoff) {
   return items;
 }
 
-async function fetchViaSitemap(outletId, config, cutoff) {
-  const thisYear = new Date().getFullYear();
-  // Try current year first; if no matching entries, check prior year (reviews near year boundary)
-  for (const year of [thisYear, thisYear - 1]) {
-    const url = config.urlTemplate(year);
-    console.log(`  [sitemap] Fetching ${url}`);
-    try {
-      const xml = await fetchSimple(url, 30000);
-      const items = parseSitemapXml(xml, cutoff, config.urlFilter);
-      console.log(`  [sitemap] ${items.length} items in window (${year})`);
-      if (items.length > 0) return items;
-    } catch (err) {
-      console.log(`  [sitemap] ${year} failed: ${err.message}`);
-    }
-  }
-  return [];
-}
-
-async function fetchViaListingHtml(outletId, listingUrl) {
-  console.log(`  [listing-html] Fetching ${listingUrl}`);
-  const result = await fetchPage(listingUrl, { timeout: 25000 });
-  // fetchPage returns {content, format, source} or null on all-tiers failure
-  const html = result && typeof result === 'object' ? result.content : result;
-  if (!html || html.length < 500) {
-    console.log(`  [listing-html] Empty or too-short response`);
-    return [];
-  }
-  const domain = new URL(listingUrl).hostname.replace(/^www\./, '');
-  const items = extractListingUrls(html, domain);
-  console.log(`  [listing-html] ${items.length} links extracted`);
-  return items;
-}
-
 async function fetchViaSerp(outletId, domain, cutoff, opts) {
-  // UK outlets (thestage, times-uk) use "theatre" spelling; US outlets use "theater"
-  const query = buildSerpQuery(domain);
+  // site: query limited to 7-day window
+  const query = `site:${domain} theater review`;
   const dateRange = { dateMin: cutoff, dateMax: new Date() };
-  console.log(`  [serp] Query: "${query}" (last ${opts.lookbackDays}d)`);
+  console.log(`  [serp] Querying: "${query}" (last ${opts.lookbackDays}d)`);
 
   const results = await serpQuery(query, {
     dateRange,
@@ -407,51 +340,28 @@ async function main() {
 
     let articles = [];
 
-    if (WP_API_CONFIG[outletId]) {
-      // WordPress REST API — try directly, no SERP fallback (API errors are informative)
-      try {
+    try {
+      if (RSS_CONFIG[outletId]) {
+        articles = await fetchViaRss(outletId, RSS_CONFIG[outletId], cutoff);
+
+      } else if (WP_API_CONFIG[outletId]) {
         articles = await fetchViaWpApi(outletId, WP_API_CONFIG[outletId], cutoff);
-      } catch (err) {
-        console.warn(`  ⚠ WP API failed for ${outletId}: ${err.message}`);
-        outletsFailed++;
-        continue;
-      }
 
-    } else {
-      const sc = OUTLET_STRATEGY_CONFIG[outletId];
-
-      if (sc) {
-        // Try the outlet-specific strategy; fall back to SERP on any thrown error
-        try {
-          switch (sc.strategy) {
-            case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff); break;
-            case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff); break;
-            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url); break;
-            default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
-          }
-        } catch (err) {
-          console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
-          if (!domain) { outletsFailed++; continue; }
-          try {
-            articles = await fetchViaSerp(outletId, domain, cutoff, opts);
-          } catch (serpErr) {
-            console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
-            outletsFailed++;
-            continue;
-          }
-        }
+      } else if (isPaid || !domain) {
+        // Paywalled or unknown domain — SERP is the only viable approach
+        if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
+        articles = await fetchViaSerp(outletId, domain, cutoff, opts);
 
       } else {
-        // No outlet-specific strategy — SERP only (covers paywalled and uncharted outlets)
-        if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
-        try {
-          articles = await fetchViaSerp(outletId, domain, cutoff, opts);
-        } catch (err) {
-          console.warn(`  ⚠ SERP failed for ${outletId}: ${err.message}`);
-          outletsFailed++;
-          continue;
-        }
+        // Free outlet: try SERP (reliable, no per-outlet HTML parsing complexity)
+        // SERP gives us 10 relevant results vs. scraping an entire listing page
+        articles = await fetchViaSerp(outletId, domain, cutoff, opts);
       }
+
+    } catch (err) {
+      console.warn(`  ⚠ Error fetching ${outletId}: ${err.message}`);
+      outletsFailed++;
+      continue;
     }
 
     if (articles.length === 0) {
@@ -468,6 +378,9 @@ async function main() {
     // --- Match each article to shows ---
     let outletNewStubs = 0;
 
+    // Capture listing HTML for NYT critics pick detection (if we fetched HTML)
+    const listingHtmlForNyt = outletId === 'nytimes' ? null : null; // SERP doesn't give us HTML
+
     for (const { url, headline, publishDate } of articles) {
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
       const matchedShows = findMatchingShows(headline, urlSlug, activeShows);
@@ -475,10 +388,10 @@ async function main() {
       if (matchedShows.length === 0) continue;
 
       const isMultiShow = matchedShows.length > 1;
-      const nytCriticsPick = outletId === 'nytimes' && detectNytCriticsPick('', url);
+      const nytCriticsPick = outletId === 'nytimes' && detectNytCriticsPick(listingHtmlForNyt || '', url);
 
       if (isMultiShow) {
-        console.log(`  Cross-show article: "${(headline || url).slice(0, 80)}" → ${matchedShows.map(s => s.id).join(', ')}`);
+        console.log(`  Cross-show article: "${headline.slice(0, 60)}" → ${matchedShows.map(s => s.id).join(', ')}`);
       }
 
       for (const show of matchedShows) {
@@ -508,9 +421,7 @@ async function main() {
   }
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch(err => {
-    console.error('Fatal:', err);
-    process.exit(1);
-  });
+main().catch(err => {
+  console.error('Fatal:', err);
+  process.exit(1);
+});

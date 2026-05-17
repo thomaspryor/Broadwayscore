@@ -188,55 +188,6 @@ function parseWpApiPosts(posts, cutoff) {
 }
 
 /**
- * Parse an XML sitemap and return URLs matching the filter that are >= cutoff.
- *
- * Handles the missing-<lastmod> case: if an entry lacks <lastmod>, it is
- * INCLUDED (not dropped) — the caller's active-show filter is the safety net.
- * This prevents a CDN-cached sitemap with no <lastmod> from silently zeroing out
- * the feed (the failure mode that plagued the broken Vulture RSS strategy).
- *
- * @param {string}  xml
- * @param {Date}    cutoff
- * @param {RegExp}  [urlFilter]  — only return URLs matching this pattern
- * @returns {Array<{url: string, headline: null, publishDate: string|null}>}
- */
-function parseSitemapXml(xml, cutoff, urlFilter) {
-  const items = [];
-  const urlBlocks = [...xml.matchAll(/<url>([\s\S]*?)<\/url>/gi)];
-  for (const [, body] of urlBlocks) {
-    const locMatch = body.match(/<loc>([^<]+)<\/loc>/);
-    if (!locMatch) continue;
-    const url = locMatch[1].trim();
-    if (!url.startsWith('http')) continue;
-    if (urlFilter && !urlFilter.test(url)) continue;
-
-    const lastmodMatch = body.match(/<lastmod>([^<]+)<\/lastmod>/);
-    if (lastmodMatch) {
-      const lastmod = new Date(lastmodMatch[1].trim());
-      if (!isNaN(lastmod) && lastmod < cutoff) continue;
-    }
-    // No <lastmod> → include (don't silently drop — see function comment)
-
-    items.push({ url, headline: null, publishDate: lastmodMatch ? lastmodMatch[1].trim().slice(0, 10) : null });
-  }
-  return items;
-}
-
-/**
- * Build a SERP site: query for the given domain. UK outlets (.co.uk) use the
- * correct British English spelling "theatre"; US outlets use "theater".
- *
- * Exported for unit testing.
- *
- * @param {string} domain  e.g. "thestage.co.uk" or "theatermania.com"
- * @returns {string}
- */
-function buildSerpQuery(domain) {
-  const isUk = domain.endsWith('.co.uk');
-  return `site:${domain} ${isUk ? 'theatre' : 'theater'} review`;
-}
-
-/**
  * Extract article URLs from a generic HTML listing page.
  * Looks for <a href> links on the outlet's domain with URL patterns
  * that suggest individual article pages (not nav/category/tag pages).
@@ -259,17 +210,13 @@ function extractListingUrls(html, domain) {
     } catch { continue; }
 
     const urlObj = new URL(url);
-    // Strict domain check: accept only exact match or www. subdomain.
-    // Substring check (e.g. "broadway.timeout.com".includes("timeout.com")) is too permissive
-    // and admits ticket/calendar subdomains that aren't article pages.
-    const normalizedDomain = domain.replace(/^www\./, '');
-    const urlHostNorm = urlObj.hostname.replace(/^www\./, '');
-    if (urlHostNorm !== normalizedDomain) continue;
+    const urlDomain = urlObj.hostname.replace(/^www\./, '');
+    if (!urlDomain.includes(domain.replace(/^www\./, ''))) continue;
 
     // Skip navigation/utility links
     const path = urlObj.pathname;
     if (path === '/' || path === '' || path.split('/').filter(Boolean).length < 2) continue;
-    if (/\/(tag|category|author|page|search|about|contact|advertise|subscribe|calendar)\//i.test(path)) continue;
+    if (/\/(tag|category|author|page|search|about|contact|advertise|subscribe)\//i.test(path)) continue;
 
     if (seen.has(url)) continue;
     seen.add(url);
@@ -288,7 +235,5 @@ module.exports = {
   deriveQualifyingOutlets,
   parseRssFeed,
   parseWpApiPosts,
-  parseSitemapXml,
   extractListingUrls,
-  buildSerpQuery,
 };
