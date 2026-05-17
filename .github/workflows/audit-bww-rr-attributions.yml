@@ -72,17 +72,14 @@ jobs:
             echo "found=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Discord alert on new candidates
+      - name: Log new candidates
         if: steps.audit.outputs.found == 'true'
-        env:
-          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
         run: |
           COUNT=$(jq '[.findings[] | select(.alreadyInCanonMap == false)] | length' /tmp/audit.json)
           SUMMARY=$(jq -r '.findings[] | select(.alreadyInCanonMap == false) | "• \(.showId) — \(.outletId): \"\(.observedCritic)\" (expected \"\(.expectedCritic)\")"' /tmp/audit.json | head -20)
-          if [ -n "$DISCORD_WEBHOOK_ALERTS" ]; then
-            jq -n --arg content "⚠️ BWW RR mis-attribution audit found **$COUNT** new candidate(s):\n\`\`\`\n$SUMMARY\n\`\`\`\n\nAction: review each, add confirmed mis-attributions to \`scripts/lib/critic-canonicalization.js\` CRITIC_CANONICAL_MAP." '{content:$content}' \
-              | curl -s -X POST -H "Content-Type: application/json" -d @- "$DISCORD_WEBHOOK_ALERTS"
-          fi
+          echo "BWW RR mis-attribution audit found $COUNT new candidate(s):"
+          echo "$SUMMARY"
+          echo "Action: review each, add confirmed mis-attributions to scripts/lib/critic-canonicalization.js CRITIC_CANONICAL_MAP."
 
       - name: Upload audit artifact
         uses: actions/upload-artifact@v4
