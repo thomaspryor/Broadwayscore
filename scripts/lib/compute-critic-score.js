@@ -19,11 +19,20 @@
 
 const path = require('path');
 
-// v5 (2026-04-29): T4 added (0.20), T3 raised 0.35→0.40
-const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.40, 4: 0.20 };
-const DEFAULT_TIER = 3;
-// Off-market multiplier — applied to off-broadway / off-west-end reviews
-const OFF_MARKET_MULTIPLIER = 0.8;
+// Tier weights, default tier, and off-market multiplier are SHARED with
+// scripts/lib/outlet-tiers.js — re-imported here instead of duplicated so
+// the two JS-side canonicals can't silently drift. Adding T5 to TIER_WEIGHTS
+// in outlet-tiers.js automatically propagates here; tier-config-consistency
+// test enforces the equivalent contract on the TS side too.
+//
+// (Previous comment claimed "drift between the two code paths is impossible
+// by construction" but referred only to the outlet-tiers.json data file —
+// the WEIGHTS themselves were duplicated. Codex flagged this 2026-05-16.)
+const {
+  TIER_WEIGHTS,
+  DEFAULT_TIER,
+  OFF_MARKET_MULTIPLIER,
+} = require('./outlet-tiers');
 
 const DESIGNATION_BUMPS = { 'Critics_Pick': 3, 'Critics_Choice': 2 };
 const DESIGNATION_FLOORS = { 'Critics_Pick': 70 };
