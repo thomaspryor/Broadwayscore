@@ -15,6 +15,9 @@ jobs:
       - name: Collect data and build report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
         run: |
           SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
           PERIOD_START=$(date -d '7 days ago' '+%b %d' 2>/dev/null || date -v-7d '+%b %d')
@@ -44,8 +47,12 @@ jobs:
           # to 100 recent runs per workflow, summing EVERY [Scraper Summary]
           # line in each log (not just the first — some long-running scripts
           # emit the summary multiple times per run).
+          # Also tracks SB credits per workflow so the report can attribute spikes.
           PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
-          for wf_id in $(gh api --paginate repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[].id' 2>/dev/null); do
+          SB_BY_WF_FILE=$(mktemp)
+          for wf_entry in $(gh api --paginate repos/$GITHUB_REPOSITORY/actions/workflows --jq '.workflows[] | "\(.id)|\(.name | gsub(" "; "_"))"' 2>/dev/null); do
+            wf_id="${wf_entry%%|*}"
+            wf_name="${wf_entry#*|}"
             for run_id in $(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$wf_id/runs?created=>$SINCE&per_page=100&status=completed" --jq '.workflow_runs[].id' 2>/dev/null); do
               # Sum ALL summary lines per log (multi-call scripts emit multiple)
               while IFS= read -r SUMMARY; do
@@ -56,11 +63,68 @@ jobs:
                 SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
                 PW_TOTAL=$((PW_TOTAL + PW)); BD_TOTAL=$((BD_TOTAL + BD))
                 SB_TOTAL=$((SB_TOTAL + SB)); SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
+                if [ "$SB_CR" -gt 0 ]; then
+                  echo "$SB_CR $wf_name" >> "$SB_BY_WF_FILE"
+                fi
               done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
             done
           done
           # Real BD Web Unlocker pricing: $0.0015/req (was 0.001 — 50% under-report)
           BD_COST=$(echo "scale=2; $BD_TOTAL * 0.0015" | bc)
+
+          # Top 5 SB-credit consumers — fast attribution when a spike happens.
+          # Format: "Workflow_Name: 12,345 credits" (one per line).
+          SB_TOP5=$(awk '{a[$2]+=$1} END {for(k in a) printf "%d %s\n", a[k], k}' "$SB_BY_WF_FILE" 2>/dev/null \
+            | sort -rn | head -5 \
+            | awk '{printf "%s: %s credits\n", substr($0, index($0," ")+1), $1}' \
+            | tr "_" " " || echo "—")
+          [ -z "$SB_TOP5" ] && SB_TOP5="—"
+
+          # --- Browserbase last 7 days (sessions × \$0.10) ---
+          # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in
+          # one week, missed entirely by this report. Now tracked explicitly.
+          #
+          # The /v1/sessions endpoint returns ALL project sessions in a single call
+          # (verified: 22,809 sessions returned across all time in one response).
+          # We compute a TOTAL_ITEMS sanity check — if BB later adds default
+          # pagination, an unusually small response (<7-day baseline) would trigger
+          # the API_DEGRADED flag rather than silently undercounting and missing
+          # the exact catastrophic-spike scenario this code exists to catch.
+          BB_SESSIONS=0; BB_COST="0.00"; BB_TOTAL_ITEMS=0
+          API_DEGRADED=""
+          if [ -n "$BROWSERBASE_API_KEY" ] && [ -n "$BROWSERBASE_PROJECT_ID" ]; then
+            BB_HTTP_CODE=$(curl -s -o /tmp/bb_raw.json -w "%{http_code}" -H "X-BB-API-Key: $BROWSERBASE_API_KEY" "https://api.browserbase.com/v1/sessions?projectId=$BROWSERBASE_PROJECT_ID" 2>/dev/null || echo "000")
+            if [ "$BB_HTTP_CODE" = "200" ]; then
+              BB_PARSED=$(python3 -c "import sys,json; from datetime import datetime,timedelta,timezone; d=json.load(open('/tmp/bb_raw.json')); items=d if isinstance(d,list) else d.get('data',[]); cutoff=(datetime.now(timezone.utc)-timedelta(days=7)).isoformat(); recent=sum(1 for s in items if s.get('createdAt','')>=cutoff); print(f'{recent}|{len(items)}')" 2>/dev/null || echo "0|0")
+              BB_SESSIONS=$(echo "$BB_PARSED" | cut -d'|' -f1)
+              BB_TOTAL_ITEMS=$(echo "$BB_PARSED" | cut -d'|' -f2)
+              BB_COST=$(echo "scale=2; $BB_SESSIONS * 0.10" | bc 2>/dev/null || echo "0.00")
+              # Suspicious-pagination check: if total items returned is suspiciously
+              # round (100, 500, 1000, 10000) AND we have any sessions in window,
+              # treat as possible pagination cap.
+              case "$BB_TOTAL_ITEMS" in
+                100|500|1000|5000|10000) API_DEGRADED="$API_DEGRADED Browserbase API returned exactly $BB_TOTAL_ITEMS items — possible pagination cap, count may be low. ";;
+              esac
+            else
+              API_DEGRADED="$API_DEGRADED Browserbase API HTTP $BB_HTTP_CODE — cost data missing this week. "
+            fi
+          fi
+
+          # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
+          # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
+
+          # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
+          # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
+          SB_PCT="—"; SB_PROJECTED="—"; SB_PROJECTED_ABS=0; SB_CAP_NUM=0; SB_USED_NUM=0
+          if [ -n "$SCRAPINGBEE_API_KEY" ]; then
+            SB_USAGE=$(curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_API_KEY" 2>/dev/null || echo "{}")
+            SB_PARSED=$(echo "$SB_USAGE" | python3 -c "import sys,json; from datetime import datetime,timezone; d=json.load(sys.stdin); used=d.get('used_api_credit',0); cap=d.get('max_api_credit',1) or 1; renewal=d.get('renewal_subscription_date',''); pct=used/cap*100; rdt=datetime.fromisoformat(renewal[:10]+'T00:00:00+00:00') if renewal else None; days_left=max((rdt-datetime.now(timezone.utc)).days,1) if rdt else 30; days_elapsed=max(31-days_left,1); projected=used/days_elapsed*31 if renewal else used; proj_pct=projected/cap*100; print(f'{pct:.1f}|{proj_pct:.0f}|{used}|{cap}|{projected:.0f}')" 2>/dev/null || echo "—|—|0|0|0")
+            SB_PCT=$(echo "$SB_PARSED" | cut -d'|' -f1)
+            SB_PROJECTED=$(echo "$SB_PARSED" | cut -d'|' -f2)
+            SB_USED_NUM=$(echo "$SB_PARSED" | cut -d'|' -f3)
+            SB_CAP_NUM=$(echo "$SB_PARSED" | cut -d'|' -f4)
+            SB_PROJECTED_ABS=$(echo "$SB_PARSED" | cut -d'|' -f5)
+          fi
 
           # --- SB credit status ---
           HEALTH_RUN=$(gh run list --workflow=check-secrets-health.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null)
@@ -93,15 +157,39 @@ jobs:
           done
 
           # --- Determine if action needed ---
+          # SB_TARGET_CAP: post-downgrade cap to project against (default 1M = Startup
+          # plan). Lets the report scream "you'll exceed the new cap" weeks before the
+          # downgrade takes effect, instead of finding out mid-month when the site
+          # degrades. Override via repo secret if plan changes.
+          SB_TARGET_CAP=${SB_TARGET_CAP:-1000000}
           ACTION_NEEDED=""
           if [ "$TOTAL_FAILED" -gt 5 ]; then
             ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>$TOTAL_FAILED workflow failures this week — check logs</li>"
           fi
+          # Forward-looking SB cap alert (highest priority — site degrades when cap hits).
+          # Explicit numeric guard: bash -gt on non-numeric is undefined and could silently
+          # skip the alert when we most need it.
+          if [[ "$SB_PROJECTED_ABS" =~ ^[0-9]+$ ]] && [ "$SB_PROJECTED_ABS" -gt "$SB_TARGET_CAP" ]; then
+            OVER_PCT=$(echo "scale=0; ($SB_PROJECTED_ABS - $SB_TARGET_CAP) * 100 / $SB_TARGET_CAP" | bc 2>/dev/null || echo "?")
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'><strong>SB projected $SB_PROJECTED_ABS credits this cycle — ${OVER_PCT}% OVER ${SB_TARGET_CAP} cap.</strong> Site will degrade mid-cycle when SB exhausts and BD/Playwright take the overflow.</li>"
+          fi
+          # API-degraded alert (e.g. BB pagination cap or HTTP error) — surface visibly
+          # so a silent zero never reads as "all clear".
+          if [ -n "$API_DEGRADED" ]; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>Cost data partially unavailable: $API_DEGRADED</li>"
+          fi
           if echo "$SB_STATUS" | grep -qi "exhausted"; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>ScrapingBee credits exhausted (fallbacks active, renews Apr 2)</li>"
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>ScrapingBee credits exhausted (fallbacks active)</li>"
           fi
           if [ "$SB_CREDITS_TOTAL" -gt 50000 ]; then
             ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>High SB credit usage ($SB_CREDITS_TOTAL) — review if BD-first is working</li>"
+          fi
+          # Browserbase weekly cost alert (Feb 2026 had \$1,287 in 1 week — never again)
+          BB_COST_INT=$(printf '%.0f' "$BB_COST" 2>/dev/null || echo "0")
+          if [ "$BB_COST_INT" -gt 50 ]; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>Browserbase \$$BB_COST this week ($BB_SESSIONS sessions) — investigate spike</li>"
+          elif [ "$BB_COST_INT" -gt 25 ]; then
+            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>Browserbase \$$BB_COST this week ($BB_SESSIONS sessions) — monitor</li>"
           fi
 
           BANNER=""
@@ -124,12 +212,18 @@ jobs:
               <tr><td style="padding:6px 0;color:#6b7280">Playwright (free)</td><td style="padding:6px 0;text-align:right;font-weight:600">$PW_TOTAL requests</td><td style="padding:6px 0 6px 8px;color:#10b981;text-align:right">\$0</td></tr>
               <tr><td style="padding:6px 0;color:#6b7280">BrightData</td><td style="padding:6px 0;text-align:right;font-weight:600">$BD_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">~\$$BD_COST</td></tr>
               <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">ScrapingBee</td><td style="padding:6px 0;text-align:right;font-weight:600">$SB_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">$SB_CREDITS_TOTAL credits</td></tr>
+              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">Browserbase</td><td style="padding:6px 0;text-align:right;font-weight:600">$BB_SESSIONS sessions</td><td style="padding:6px 0 6px 8px;text-align:right">\$$BB_COST</td></tr>
             </table>
 
             <p style="font-size:12px;color:#9ca3af;margin:4px 0 0 0">SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP</p>
 
-            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Credits</h3>
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Cycle Usage</h3>
+            <p style="font-size:14px;margin:0 0 4px 0"><strong>${SB_PCT}% used</strong> ($SB_USED_NUM / $SB_CAP_NUM credits). Projected end-of-cycle: <strong>${SB_PROJECTED}%</strong> of current cap.</p>
+            <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Post-downgrade cap (Startup plan): <strong>$SB_TARGET_CAP credits.</strong> Current trajectory will land at ~${SB_PROJECTED}% of <em>current</em> 3M cap = projected use vs new cap is what matters.</p>
             <p style="font-size:14px;margin:0"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:$SB_COLOR;margin-right:6px"></span>$SB_STATUS</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Top SB Credit Consumers This Week</h3>
+            <pre style="font-size:12px;background:#f9fafb;padding:8px 12px;border-radius:6px;margin:0">$SB_TOP5</pre>
 
             <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Workflow Runs ($TOTAL_RUNS total)</h3>
             <table style="font-size:13px;border-collapse:collapse;width:100%">
@@ -151,11 +245,20 @@ jobs:
           | Playwright (free) | $PW_TOTAL | \$0 |
           | BrightData | $BD_TOTAL | ~\$$BD_COST |
           | ScrapingBee | $SB_TOTAL | $SB_CREDITS_TOTAL credits |
+          | Browserbase | $BB_SESSIONS sessions | \$$BB_COST |
 
           SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP
 
-          ## ScrapingBee Credits
-          $SB_STATUS
+          ## ScrapingBee Cycle Usage
+          - Used this cycle: $SB_USED_NUM / $SB_CAP_NUM (${SB_PCT}%)
+          - Projected end-of-cycle: ${SB_PROJECTED}% of current cap
+          - Post-downgrade target cap: $SB_TARGET_CAP credits (Startup plan)
+          - Status: $SB_STATUS
+
+          ## Top SB Credit Consumers This Week
+          \`\`\`
+          $SB_TOP5
+          \`\`\`
 
           ## Workflow Runs ($TOTAL_RUNS total, $TOTAL_FAILED failed)
           MDEOF
