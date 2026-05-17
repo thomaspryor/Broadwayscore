@@ -135,6 +135,43 @@ describe('anchored-v6 precedence', () => {
   });
 });
 
+describe('shouldUseAnchoredMode (Phase B-WE W1-T3)', () => {
+  const { shouldUseAnchoredMode } = require('../../scripts/lib/star-reliability');
+
+  it('west-end category auto-anchors regardless of envFlag', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'west-end', envFlag: false }), true);
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'west-end', envFlag: true }), true);
+  });
+
+  it('off-west-end category auto-anchors regardless of envFlag', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'off-west-end', envFlag: false }), true);
+  });
+
+  it('broadway + envFlag=true → anchored (existing pilot path preserved)', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'broadway', envFlag: true }), true);
+  });
+
+  it('broadway + envFlag=false → unanchored', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'broadway', envFlag: false }), false);
+  });
+
+  it('off-broadway + envFlag=false → unanchored', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: 'off-broadway', envFlag: false }), false);
+  });
+
+  it('category=null → unanchored even with envFlag=true (deny-list drift safety)', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: null, envFlag: true }), false);
+  });
+
+  it('category=undefined → unanchored even with envFlag=true', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: undefined, envFlag: true }), false);
+  });
+
+  it('category="" → unanchored even with envFlag=true', () => {
+    assert.strictEqual(shouldUseAnchoredMode({ category: '', envFlag: true }), false);
+  });
+});
+
 describe('detectBandFromReviewFile (star-reliability helper)', () => {
   const { detectBandFromReviewFile } = require('../../scripts/lib/star-reliability');
 

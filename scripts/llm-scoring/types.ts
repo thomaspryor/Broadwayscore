@@ -487,6 +487,11 @@ export interface ScoringPipelineOptions {
 
   /** Filter rescores to reviews whose rescoreReason starts with this prefix */
   rescoreReason?: string;
+
+  /** Budget cap in USD — abort cleanly when cumulative cost exceeds this.
+   * 0 (default) = no cap. Matches classify-non-reviews.js:84 convention.
+   * Phase B-WE W1-T5. */
+  maxCost?: number;
 }
 
 /**

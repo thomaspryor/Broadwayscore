@@ -21,6 +21,23 @@ export const LOW_CONF_SCORE_SOURCES = new Set([
   'bwwScore-fallback',
 ]);
 
+// ===========================================
+// ANCHORED-BANDS ROLLOUT POLICY (Phase B)
+// ===========================================
+// Markets that get the V6 anchored-bands scoring path by default.
+// Reviews whose show.category is in this set use band-constrained LLM scoring
+// (see scripts/lib/star-reliability.js::shouldUseAnchoredMode). Other markets
+// use V5 unless the ANCHORED_BANDS_PILOT env flag is set explicitly.
+//
+// Rollout sequence:
+//   2026-05-17 (this commit): WE + Off-West-End soft-launched
+//   POST-TONYS 2026:          add 'broadway' (and 'off-broadway') — one-line
+//                             data change in this Set, no engine edit required
+export const ANCHORED_MARKETS: ReadonlySet<string> = new Set([
+  'west-end',
+  'off-west-end',
+]);
+
 // Shows pre-dating the 2005 cutoff that have been manually curated with
 // verified opening-night reviews. Bypasses shouldHideReviews.
 // To add a new historical show: edit data/curated-historical-shows.json (no code change needed).
