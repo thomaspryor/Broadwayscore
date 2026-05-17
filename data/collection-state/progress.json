@@ -26,7 +26,14 @@
     "well-ill-let-you-go-off-broadway-2026/cititour--brian-scott-lipton.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "well-ill-let-you-go-off-broadway-2026/culturesauce--thom-geier.json",
-    "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json"
+    "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json",
+    "well-ill-let-you-go-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+    "kenrex-off-broadway-2026/frontmezzjunkies--front-mezz-junkies.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "the-balusters-2026/theatrely--unknown.json",
+    "becky-shaw-2026/variety--unknown.json",
+    "becky-shaw-2026/deadline--unknown.json",
+    "becky-shaw-2026/wsj--unknown.json"
   ],
   "failed": [
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
@@ -757,7 +764,10 @@
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "new-born-off-broadway-2026/culturesauce--thom-geier.json",
-    "well-ill-let-you-go-off-broadway-2026/studioseaviewcom--unknown.json"
+    "well-ill-let-you-go-off-broadway-2026/studioseaviewcom--unknown.json",
+    "proof-2026/the-globe-and-mail--kelly-nestruck.json",
+    "cats-the-jellicle-ball-2026/hollywood-reporter--frank-scheck.json",
+    "cats-the-jellicle-ball-2026/nydailynews--joe-dziemianowicz.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -781,26 +791,50 @@
       "the-people-versus-lenny-bruce-off-broadway-2026/stageandcinema--alex-simmons.json",
       "hamlet-off-broadway-2026/nysr--michael-sommers.json",
       "well-ill-let-you-go-off-broadway-2026/culturesauce--thom-geier.json",
-      "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json"
+      "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json",
+      "well-ill-let-you-go-off-broadway-2026/one-minute-critic--emily-chackerian.json",
+      "kenrex-off-broadway-2026/frontmezzjunkies--front-mezz-junkies.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/jerusalem-2011/about-entertainment--unknown.json",
+      "jerusalem-2011/about-entertainment--unknown.json",
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
+      "data/review-texts/cats-the-jellicle-ball-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/deadline--unknown.json",
+      "becky-shaw-2026/deadline--unknown.json",
+      "data/review-texts/becky-shaw-2026/wsj--unknown.json",
+      "becky-shaw-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-great-gatsby-2024/nytimes--unknown.json",
+      "masquerade-off-broadway-2025/nytimes--unknown.json",
+      "the-balusters-2026/theatrely--unknown.json"
+    ],
     "brightdata": [
       "a-steady-rain-2009/latimes--unknown.json",
       "well-ill-let-you-go-off-broadway-2026/thewrap--robert-hofler.json",
       "well-ill-let-you-go-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
     "archiveToday": [
-      "data/review-texts/1536-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/an-ideal-husband-west-end-2026/thestage--unknown.json",
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/chichester-observer--unknown.json",
+      "data/review-texts/spring-awakening-2015/abc-news--mark-kennedy.json",
+      "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "well-ill-let-you-go-off-broadway-2026/nysr--steven-suskin.json",
+  "lastProcessed": "becky-shaw-2026/wsj--unknown.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -823,6 +857,50 @@
       "t": "2026-05-17T10:49:31.399Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T14:21:07.721Z",
+      "event": "bb-session",
+      "session": "03f1bced",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-05-17T14:21:08.089Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-17T14:21:22.058Z",
+      "event": "bb-session",
+      "session": "62e74b63",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-05-17T14:21:22.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T14:21:38.648Z",
+      "event": "bb-session",
+      "session": "7daa42a9",
+      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
+    },
+    {
+      "t": "2026-05-17T14:21:39.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-17T14:21:54.725Z",
+      "event": "bb-session",
+      "session": "d6a1f8d1",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-05-17T14:21:55.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

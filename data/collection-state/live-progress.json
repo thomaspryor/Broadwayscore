@@ -1,18 +1,85 @@
 {
-  "updatedAt": "2026-05-17T14:20:01.337Z",
-  "processed": 27,
-  "failed": 772,
-  "successRate": "3.4%",
+  "updatedAt": "2026-05-17T14:22:14.687Z",
+  "processed": 34,
+  "failed": 775,
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 20,
+    "playwright": 23,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 3,
-    "archiveToday": 6,
+    "archiveToday": 7,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-05-17T10:48:57.261Z",
+      "event": "bb-session",
+      "session": "3425e683",
+      "url": "http://theater.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylanc"
+    },
+    {
+      "t": "2026-05-17T10:48:58.193Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T10:49:30.671Z",
+      "event": "bb-session",
+      "session": "0c1e4f50",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-17T10:49:31.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T14:21:07.721Z",
+      "event": "bb-session",
+      "session": "03f1bced",
+      "url": "http://www.hollywoodreporter.com/review/cats-theater-review-915947"
+    },
+    {
+      "t": "2026-05-17T14:21:08.089Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-17T14:21:22.058Z",
+      "event": "bb-session",
+      "session": "62e74b63",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-05-17T14:21:22.414Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T14:21:38.648Z",
+      "event": "bb-session",
+      "session": "7daa42a9",
+      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
+    },
+    {
+      "t": "2026-05-17T14:21:39.037Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-17T14:21:54.725Z",
+      "event": "bb-session",
+      "session": "d6a1f8d1",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-05-17T14:21:55.200Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
