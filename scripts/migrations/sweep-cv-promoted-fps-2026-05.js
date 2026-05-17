@@ -47,7 +47,7 @@ const TOP_N = 25;
 // article. shouldDeferCvWrongShow rescues long-biographical-lead reviews of the
 // CORRECT show; it does NOT rescue wrong-article-type content. When the CV's
 // own reasoning matches these patterns, trust it regardless of outlet style.
-const OBVIOUS_WRONG_ARTICLE_PATTERNS = /collection of short news|news items|roundup|listicle|different show|different play|not a review of|homepage|preview piece|interview with|news feature|short item|article about|piece about/i;
+const OBVIOUS_WRONG_ARTICLE_PATTERNS = /collection of short news|news items|roundup|listicle|different show|different play|not a review of|review of [^,]{1,80}, not |homepage|preview piece|preview article|interview with|news feature|news article|feature article|short item|article about|piece about|cultural\/historical essay|describing the show'?s background|without offering the critic'?s assessment/i;
 
 // ---------- args ----------
 const args = process.argv.slice(2);
