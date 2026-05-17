@@ -11,11 +11,15 @@ const REPO_NAME = 'Broadwayscore';
 // Whitelist of safe fix IDs → workflow dispatch targets.
 // Never accept arbitrary workflow names from the token — this prevents
 // a token forgery from dispatching arbitrary workflows.
+// BSC Daily health-check uses workflow filenames directly as fixId.
 const FIX_WORKFLOWS: Record<string, { workflow: string; inputs?: Record<string, string> }> = {
   redeploy: {
     workflow: 'vercel-deploy.yml',
     inputs: { reason: 'approve-fix: operator-approved redeploy' },
   },
+  'rebuild-reviews.yml': { workflow: 'rebuild-reviews.yml' },
+  'update-show-status.yml': { workflow: 'update-show-status.yml' },
+  'update-lottery-rush.yml': { workflow: 'update-lottery-rush.yml' },
 };
 
 interface TokenPayload {
