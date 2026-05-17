@@ -16,6 +16,8 @@
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — Pure-helper unit tests are insufficient; also exercise the wrapper against real data. The 073db6bab0 ship-check bugs that birthed this rule.
 - [Email drafting style](feedback_email_drafting.md) — Minimal em dashes; no mid-paragraph hard line breaks in Gmail.
 - [Ask with recommendation](feedback_ask_with_recommendation.md) — Every AskUserQuestion leads with `(Recommended)` option 1 + why. Never neutral menus.
+- [Two-model UI review](feedback_two_model_ui_review.md) — For "would this embarrass me?" UI/copy reviews, run GPT-4o + Gemini in parallel on screenshots; convergent findings = ship, divergent = mention with context.
+- [Gemini thinking token budget](feedback_gemini_thinking_token_budget.md) — Gemini 2.5 Flash uses internal thinking tokens that count against maxOutputTokens; set `thinkingConfig.thinkingBudget=0` for one-shot prompts or response truncates silently.
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle, fallbacks. Read first.
@@ -39,6 +41,7 @@
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [CI red check vs main baseline](feedback_ci_failure_preexisting_baseline.md) — Before blocking on a red PR check, check if main's last run of the same job was also red.
+- [GitHub auto-disables stale scheduled workflows](feedback_github_auto_disable_workflows.md) — After ~60 days without a successful cron run, GitHub silently disables. `gh workflow run` returns HTTP 422; `gh workflow list` omits.
 - [GHA secrets not usable in if:](feedback_gha_secrets_in_if.md) — Step-level if conditions can't read secrets; 422 at dispatch.
 - [GHA cron delays](feedback_github_cron_delays.md) — Crons fire 30min-3h late; shift earlier; launchd backup.
 - [Silent workflow failures](feedback_silent_workflow_failures.md) — Never `|| true` on git push/commit; use `|| echo "::warning::..."`.
@@ -49,6 +52,7 @@
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — Trace dispatch graph — circular chains blew up to 1000+ runs/day.
 - [Test extraction pattern](feedback_test_extraction_pattern.md) — Never copy logic into tests; extract to `scripts/lib/` and require().
 - [Node test format, not Jest](feedback_test_format_node_not_jest.md) — Tests must be `.mjs` with `node:test` API; register in test.yml.
+- [CI tsc gate scope](feedback_ci_tsc_gate_scope.md) — `typescript-check` job covers root tsc + scoped `scripts/llm-scoring/tsconfig.json`. Other scripts/* subtrees not gated.
 - [Hook stdin format](feedback_hook_stdin_format.md) — PostToolUse stdin nested under `tool_input`; jq `.tool_input.command`.
 - [Outlet registry dual repo](feedback_outlet_registry_dual_repo.md) — Update `outlet-registry.json` in BOTH repos; CI uses private.
 
@@ -84,12 +88,14 @@
 - [Mac Studio cookies](feedback_mac_studio_cookies.md) — Tahoe path changed; Terminal needs FDA; 11 COOKIES_BUNDLE_* secrets.
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — All audience scrapers must import `normalizeTitle` from `scripts/lib/title-match.js`.
 - [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — Hardcoded `cells[N]` + length-only guards make scrapers silently fail on source-side column changes. BWW broke scrape-alltime for 2 months in 2026-Q2.
+- [Object-literal duplicate keys silently overwrite](feedback_object_literal_duplicate_keys.md) — Adding `'vulture': {...}` to a registry that already has `'vulture': {...}` silently nukes the existing entry. Grep before adding; use sibling-key + outletIdOverride when same canonical id needs different dispatch. Caught Sprint 2 nuking Broadway-Vulture/West-End-Times-UK.
 
 ## 🧮 Scoring & review guards
 - [\b regex fails for trailing-punct titles](feedback_word_boundary_punct_titles.md) — `\b{title}\b` silently returns 0 matches for ~90 catalogue shows ending in `!`/`?`/`.` (Schmigadoon!, Mamma Mia!, etc.). Use non-alphanumeric lookbehind/lookahead.
 - [Apostrophe in names breaks \b regex matching](feedback_apostrophe_name_matching.md) — `\bobrien\b` doesn't match "O'Brien"; normalize text + name identically (lowercase + strip apostrophes/hyphens) before matching.
 - [Orphan utility scripts hide existing solutions](feedback_orphan_utility_scripts.md) — Before writing new detection code, grep `scripts/` for existing utilities that may already solve the problem (often unwired from CI).
 - [Scoring-logic delta required](feedback_scoring_delta_required.md) — Edits to review-guards/rebuild/scoring MUST run `scoring-delta.js` + temporal fixture. Stop hook enforces.
+- ["Must match X" comment IS the bug](feedback_must_match_comment_is_a_bug.md) — When code says "must match X" / "keep in sync with Y", eliminate the duplicate; don't preserve the comment. TIER_WEIGHTS had 4 silent canonicals before this.
 - [Includability predicates must be canonical](feedback_includability_predicates_must_be_canonical.md) — New scripts gating on review-includability flags must call `isIncludableForRebuild` from `review-guards.js`.
 - [Manual-clear covers all rejection types](feedback_manual_clear_covers_all_rejection_types.md) — wrongProduction carve-out MUST extend to wrongShow.
 - [Star score cap rule](feedback_star_score_cap.md) — Stars are ground truth; 5/5=100 is correct, never cap with LLM.
