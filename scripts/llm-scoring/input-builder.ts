@@ -243,9 +243,12 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       if (review.bwwExcerpt && review.bwwExcerpt !== textResult.text && review.bwwExcerpt !== review.dtliExcerpt && review.bwwExcerpt !== review.showScoreExcerpt) {
         excerpts.push(`BWW excerpt: "${review.bwwExcerpt}"`);
       }
-      if (review.lboRoundupExcerpt && review.lboRoundupExcerpt !== textResult.text &&
-          !excerpts.some(e => e.includes(review.lboRoundupExcerpt))) {
-        excerpts.push(`LBO Roundup excerpt: "${review.lboRoundupExcerpt}"`);
+      if (review.lboRoundupExcerpt && review.lboRoundupExcerpt !== textResult.text) {
+        // Extract to local so TS keeps the truthy narrowing across the arrow.
+        const lbo = review.lboRoundupExcerpt;
+        if (!excerpts.some(e => e.includes(lbo))) {
+          excerpts.push(`LBO Roundup excerpt: "${lbo}"`);
+        }
       }
 
       if (excerpts.length > 0) {
