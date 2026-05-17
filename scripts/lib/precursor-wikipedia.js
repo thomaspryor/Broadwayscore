@@ -174,14 +174,16 @@ function writePrecursorJson(name, data, opts = {}) {
     } catch (_) { /* ignore */ }
   }
 
-  // Merge with existing categories that the current scraper doesn't cover.
-  // Scrapers typically only handle the 4 main per-category Wikipedia pages
-  // (e.g. Drama Desk Outstanding Musical / Play / Revival Musical / Revival
-  // Play). Baseline files often include additional categories (Direction,
-  // Choreography, Performance, etc.) that were hand-curated. Without this
-  // merge, every scraper run wiped those categories.
-  // For array-valued payloads (Pulitzer), preserve entries by year that
-  // aren't in the new write.
+  // Merge with existing data to preserve both uncovered categories and
+  // historical years outside the scraper's MIN_YEAR window.
+  //
+  // For object payloads (DD/OCC/DL): scrapers only cover 4 main categories but
+  // baselines include hand-curated extras (Direction, Choreography, etc.).
+  // Within each covered category, new years override existing ones and
+  // pre-MIN_YEAR entries are preserved by merging at the year level —
+  // a category-level spread (`{ ...existing, ...data }`) would wipe history.
+  //
+  // For array payloads (Pulitzer): preserve entries for years not in new write.
   let mergedData = data;
   if (existing && existing.data) {
     if (Array.isArray(data) && Array.isArray(existing.data)) {
@@ -189,7 +191,19 @@ function writePrecursorJson(name, data, opts = {}) {
       const preserved = existing.data.filter((e) => !newYears.has(e.year));
       mergedData = [...data, ...preserved].sort((a, b) => (a.year || 0) - (b.year || 0));
     } else if (!Array.isArray(data) && typeof data === 'object' && data !== null) {
-      mergedData = { ...existing.data, ...data };
+      // Start from existing (preserves uncovered categories like Direction/Choreography).
+      mergedData = { ...existing.data };
+      for (const [cat, entries] of Object.entries(data)) {
+        if (Array.isArray(entries) && Array.isArray(existing.data[cat])) {
+          // Year-level merge: new entries override, old entries outside the
+          // scraped window are preserved (prevents MIN_YEAR from wiping history).
+          const newYears = new Set(entries.map((e) => e.year));
+          const preserved = existing.data[cat].filter((e) => !newYears.has(e.year));
+          mergedData[cat] = [...entries, ...preserved].sort((a, b) => (a.year || 0) - (b.year || 0));
+        } else {
+          mergedData[cat] = entries;
+        }
+      }
     }
   }
 
