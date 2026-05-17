@@ -64,7 +64,7 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Freshness: cast-changes\.json$/, urgency: 'this-week', workflow: 'update-cast-changes.yml',
     humanFallback: 'Cast change tracking is out of date. Runs Wednesday and Saturday — stale >5 days means the workflow is failing.' },
   { match: /^Freshness: nyt-critics-picks\.json$/, urgency: 'this-week', workflow: 'weekly-nyt-critics-picks.yml',
-    humanFallback: 'NYT Critics Picks list is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
+    humanFallback: 'NYT Critics Picks list is out of date. Runs Mon/Wed/Fri — stale >3 days means the workflow is failing.' },
   { match: /^Freshness: video-reviews\.json$/, urgency: 'this-week', workflow: 'weekly-video-reviews.yml',
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
   { match: /^Freshness: social-pulse\/_budget\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
@@ -222,7 +222,7 @@ const FRESHNESS_CHECKS = [
   { file: 'critic-consensus.json', field: '_meta.lastGenerated', warnH: 336, errorH: 504, hint: 'Check update-critic-consensus workflow in Actions tab' },
   { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 48, errorH: 72, hint: 'Check update-lottery-rush workflow in Actions tab' },
   { file: 'cast-changes.json', field: 'lastUpdated', warnH: 72, errorH: 120, hint: 'Check update-cast-changes workflow in Actions tab (runs Wed+Sat)' },
-  { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 192, errorH: 336, hint: 'Check weekly-nyt-critics-picks workflow in Actions tab (runs Monday)' },
+  { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 72, errorH: 120, hint: 'Check nyt-critics-picks workflow in Actions tab (runs Mon/Wed/Fri)' },
   { file: 'video-reviews.json', field: '_meta.generatedAt', warnH: 192, errorH: 336, hint: 'Check weekly-video-reviews workflow in Actions tab (runs Monday)' },
   { file: 'social-pulse/_budget.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
 ];
@@ -758,7 +758,7 @@ function checkCronHealth() {
     { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
     { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
     { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
-    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 192, name: 'Weekly NYT Critics Picks' },
+    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
     { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
     { workflow: 'update-social-pulse.yml', maxHours: 192, name: 'Update Social Pulse' },
   ];
