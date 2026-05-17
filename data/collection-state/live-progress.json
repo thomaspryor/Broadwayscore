@@ -1,18 +1,41 @@
 {
-  "updatedAt": "2026-05-17T10:27:02.096Z",
-  "processed": 1,
-  "failed": 47,
-  "successRate": "2.1%",
+  "updatedAt": "2026-05-17T10:52:08.940Z",
+  "processed": 11,
+  "failed": 132,
+  "successRate": "7.7%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 4,
+    "brightdata": 1,
+    "archiveToday": 6,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-17T10:48:57.261Z",
+      "event": "bb-session",
+      "session": "3425e683",
+      "url": "http://theater.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylanc"
+    },
+    {
+      "t": "2026-05-17T10:48:58.193Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T10:49:30.671Z",
+      "event": "bb-session",
+      "session": "0c1e4f50",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-17T10:49:31.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
