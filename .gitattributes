@@ -1,2 +1,8 @@
 *.png binary
 src/config/feature-flags.ts merge=ours
+
+# cloud-memory/ is a mirror of ~/.claude/projects/.../memory/ for cloud Claude
+# Code sessions. Marking it vendored keeps language stats accurate and lets
+# GitHub collapse it in the diff view.
+cloud-memory/** linguist-vendored=true
+cloud-memory/** linguist-generated=true

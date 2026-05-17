@@ -134,10 +134,12 @@ data/outlet-registry.json
 # Mobile app (separate repo)
 BroadwayScorecard/data/theatr-refresh-token.tmp
 
-# Claude Code agent config (local tooling only)
-/CLAUDE.md
-/.claude/commands/
-/.claude/settings.json
+# Claude Code agent config
+# - /.claude/settings.local.json — local-only (machine secrets, paths)
+# - /.claude/commands/ + /.claude/settings.json — INTENTIONALLY TRACKED so
+#   cloud Claude Code sessions (iOS/Mac app/web) load them. See .claude/CLOUD.md.
+# - /.claude/worktrees/ — always local
+/.claude/settings.local.json
 /.claude/worktrees/
 /.core-data-checkout/
 

@@ -144,3 +144,6 @@ See `memory/email-broadcast-rules.md` for full incident history.
 ## File Hygiene
 CLAUDE.md (**limit: 150 lines**) and MEMORY.md (**limit: 180 lines**) load every session.
 New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memory/completed-migrations.md`.
+
+## Cloud sessions
+If you're a cloud Claude Code session (iOS, Mac app, claude.ai/code) you don't have `~/.claude/`. Read `.claude/CLOUD.md` first, then `cloud-memory/INDEX.md`. Run `node scripts/check-cloud-secrets.js` to verify required secrets are present.
