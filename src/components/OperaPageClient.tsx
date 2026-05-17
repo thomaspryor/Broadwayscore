@@ -154,20 +154,6 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
         )}
       </div>
 
-      {/* Upcoming shelf — horizontal scroll, sorted by opening date */}
-      {upcomingShows.length > 0 && (
-        <section className="mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-bold text-white">Coming Next Season</h2>
-          </div>
-          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-            {upcomingShows.map((show) => (
-              <MiniShowCard key={show.id} show={show} />
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* Status & Sort Filters */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-4 sm:mb-6 text-sm">
         <ToggleBar
@@ -215,6 +201,20 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
             How scores work →
           </Link>
         </div>
+      )}
+
+      {/* Upcoming shelf — below main list, sorted by opening date */}
+      {upcomingShows.length > 0 && (
+        <section className="mt-8 pt-8 border-t border-white/5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-bold text-white">Coming Next Season</h2>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
+            {upcomingShows.map((show) => (
+              <MiniShowCard key={show.id} show={show} />
+            ))}
+          </div>
+        </section>
       )}
 
       {/* Score Legend */}
