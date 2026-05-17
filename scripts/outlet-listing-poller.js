@@ -45,7 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, fetchWithCookiesPlain } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const {
@@ -131,8 +131,9 @@ const OUTLET_STRATEGY_CONFIG = {
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
   // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
   standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
-  // WhatsOnStage: SSR reviews category page; urlFilter keeps only -review_NNN slugs (drops news/features)
-  whatsonstage:      { strategy: 'listing-html', url: 'https://www.whatsonstage.com/news/?categories=reviews', urlFilter: /-review_\d+/ },
+  // WhatsOnStage: SSR reviews category page; usePlainFetch bypasses BD/SB/Playwright (JS render breaks links);
+  // urlFilter keeps only -review_NNN slugs (drops news/features mixed into the listing)
+  whatsonstage:      { strategy: 'listing-html', url: 'https://www.whatsonstage.com/news/?categories=reviews', urlFilter: /-review_\d+/, usePlainFetch: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -300,11 +301,18 @@ async function fetchViaSitemap(outletId, config, cutoff) {
   return [];
 }
 
-async function fetchViaListingHtml(outletId, listingUrl, urlFilter) {
+async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetch) {
   console.log(`  [listing-html] Fetching ${listingUrl}`);
-  const result = await fetchPage(listingUrl, { timeout: 25000 });
-  // fetchPage returns {content, format, source} or null on all-tiers failure
-  const html = result && typeof result === 'object' ? result.content : result;
+  let html;
+  if (usePlainFetch) {
+    // SSR pages accessible without JS rendering — skip BD/SB/Playwright overhead
+    const result = await fetchWithCookiesPlain(listingUrl);
+    html = result && typeof result === 'object' ? result.content : result;
+  } else {
+    const result = await fetchPage(listingUrl, { timeout: 25000 });
+    // fetchPage returns {content, format, source} or null on all-tiers failure
+    html = result && typeof result === 'object' ? result.content : result;
+  }
   if (!html || html.length < 500) {
     console.log(`  [listing-html] Empty or too-short response`);
     return [];
@@ -452,7 +460,7 @@ async function main() {
           switch (sc.strategy) {
             case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff); break;
             case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff); break;
-            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter); break;
+            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter, sc.usePlainFetch); break;
             default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
           }
         } catch (err) {
