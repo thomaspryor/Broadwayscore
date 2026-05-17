@@ -14,8 +14,7 @@ function slugToFullSeason(slug: string): string {
   return `${m[1]}-${m[1].slice(0, 2)}${m[2]}`;
 }
 
-export function seasonSlug(fullSeason: string): string {
-  // "2025-2026" → "2025-26"
+function seasonSlug(fullSeason: string): string {
   const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
   if (!m) return fullSeason;
   return `${m[1]}-${m[2]}`;

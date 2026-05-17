@@ -20,7 +20,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { getAllPredictionSeasons, getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
-import { seasonSlug } from '@/app/award-score/[season]/page';
+import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
