@@ -52,7 +52,7 @@ function classifyCategory(category) {
   if (/sound/.test(c)) return { tier: 'C', revival: false };
   if (/projection design/.test(c)) return { tier: 'C', revival: false };
   if (/solo performance|solo show/.test(c)) return { tier: 'B', revival: false };
-  if (/john gassner award/.test(c)) return { tier: 'C', revival: false };
+  if (/john gassner award|most promising playwright/.test(c)) return { tier: 'C', revival: false };
   // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
   if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
   // Obie Award categories (Village Voice Off-Broadway, 1956–2019)

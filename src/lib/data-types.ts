@@ -280,6 +280,14 @@ export interface ObieAwards {
   nominations?: number;
 }
 
+/** Critics' Circle Theatre Award (UK/West End, 1990–present). */
+export interface CriticsCircleAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 /** Lucille Lortel Award (Off-Broadway Theater Award, 1986–present). */
 export interface LortelAwards {
   season?: string;
@@ -296,6 +304,7 @@ export interface ShowAwards {
   nyDramaCritics?: NyDramaCriticsAwards;
   obie?: ObieAwards;
   lortel?: LortelAwards;
+  criticsCircle?: CriticsCircleAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */
