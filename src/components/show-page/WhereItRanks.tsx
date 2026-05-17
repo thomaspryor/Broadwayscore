@@ -257,9 +257,12 @@ function Cell({
       </span>
     );
   }
+  // Always bold the #N rank number — denominator stays normal weight + muted.
+  // `emphasis` only changes color (brighter for primary cells, muted for
+  // secondary like All-Time) so the # always pops visually.
   const rankClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
-    : 'text-gray-500 tabular-nums';
+    : 'font-bold text-gray-300 tabular-nums';
   const rankNode = <span className={rankClass}>#{cell.rank}</span>;
   // Inline "/M" — lighter weight than the rank, same line, no wrap.
   const denomNode = showDenominator ? (
