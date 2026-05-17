@@ -3194,6 +3194,81 @@ function validateCrossFileKeys(shows) {
           issues++;
         }
       }
+
+      // 2a. tony.season must be plausible given the show's openingDate.
+      // Catches the "fossilized misattribution" bug class where a show ID
+      // got data from a different production via title-only matching. See
+      // scripts/audit-tony-attribution.js for the full audit.
+      const showsById = new Map();
+      for (const sh of shows) showsById.set(sh.id, sh);
+      const parseSeasonStart = (s) => {
+        const m = /^(\d{4})-(\d{2})$/.exec(s || '');
+        return m ? parseInt(m[1], 10) : null;
+      };
+      const expectedSeasonStarts = (openingDate) => {
+        if (!openingDate) return [];
+        const d = new Date(openingDate);
+        const y = d.getFullYear();
+        const mo = d.getMonth() + 1;
+        // Tony eligibility window straddles late April; accept both bracketing seasons.
+        return mo <= 5 ? [y - 1, y] : [y, y - 1];
+      };
+      // West End shows shouldn't have Tony data at all.
+      let weTonyCount = 0, mismatchCount = 0;
+      for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
+        if (!awardsEntry.tony || !awardsEntry.tony.season) continue;
+        const show = showsById.get(showId);
+        if (!show) continue;
+        if (show.market === 'west-end') {
+          error(`awards.json: West End show "${showId}" has tony block (Tonys are US-only). Delete it.`);
+          weTonyCount++;
+          issues++;
+          continue;
+        }
+        if (!show.openingDate) continue;
+        const tonyStart = parseSeasonStart(awardsEntry.tony.season);
+        if (!tonyStart) continue;
+        const expected = expectedSeasonStarts(show.openingDate);
+        const gap = Math.min(...expected.map(e => Math.abs(e - tonyStart)));
+        if (gap > 1) {
+          error(`awards.json: "${showId}" tony.season=${awardsEntry.tony.season} but openingDate=${show.openingDate} (expected ${expected[0]}-${(expected[0]+1).toString().slice(-2)}). Gap ${gap}y — misattribution.`);
+          mismatchCount++;
+          issues++;
+        }
+      }
+      if (weTonyCount === 0 && mismatchCount === 0) {
+        ok(`awards.json: Tony attribution clean (${Object.keys(awards.shows || {}).length} shows checked)`);
+      }
+
+      // 2b. Tony season+category must have at most 1 winner (real ties are rare
+      // and must be explicitly annotated in data/awards-confirmed-ties.json).
+      const TIES_FILE = path.join(__dirname, '..', 'data', 'awards-confirmed-ties.json');
+      let confirmedTies = new Set();
+      if (fs.existsSync(TIES_FILE)) {
+        try {
+          const tiesData = JSON.parse(fs.readFileSync(TIES_FILE, 'utf8'));
+          for (const t of tiesData.ties || []) confirmedTies.add(`${t.season}|${t.category}`);
+        } catch {}
+      }
+      const winnerMap = {};
+      for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
+        if (!awardsEntry.tony || !awardsEntry.tony.season) continue;
+        for (const cat of awardsEntry.tony.wins || []) {
+          const k = `${awardsEntry.tony.season}|${cat}`;
+          (winnerMap[k] = winnerMap[k] || []).push(showId);
+        }
+      }
+      let dupTieCount = 0;
+      for (const [k, ids] of Object.entries(winnerMap)) {
+        if (ids.length > 1 && !confirmedTies.has(k)) {
+          error(`awards.json: Tony ${k} has ${ids.length} winners (${ids.join(', ')}). If a real tie, add to data/awards-confirmed-ties.json; otherwise fix the misattribution.`);
+          dupTieCount++;
+          issues++;
+        }
+      }
+      if (dupTieCount === 0) {
+        ok(`awards.json: Tony winner uniqueness clean (${confirmedTies.size} confirmed ties registered)`);
+      }
     } catch (e) {
       // Parse errors handled elsewhere
     }

@@ -1,0 +1,169 @@
+#!/usr/bin/env node
+
+/**
+ * fix-tony-attribution.js
+ *
+ * Applies surgical fixes to Tony attribution bugs surfaced by
+ * audit-tony-attribution.js. Three fix classes:
+ *
+ *   1. SEASON-RELABEL: stored wins/noms match the actual production's
+ *      Tony record, only the season label is wrong. Fix the label.
+ *   2. DELETE-EMPTY: tony block has empty wins AND nominations==0/missing,
+ *      it's just a misattributed metadata stub. Delete.
+ *   3. DELETE-WRONG-PRODUCTION: West End show that wouldn't have Tonys, OR
+ *      stored data demonstrably belongs to a different production. Delete.
+ *
+ * For findings that don't fit any class (need human verification), no
+ * action is taken — they remain visible to audit-tony-attribution.js.
+ *
+ * Usage:
+ *   node scripts/fix-tony-attribution.js --dry-run   # preview
+ *   node scripts/fix-tony-attribution.js              # apply
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
+const DRY_RUN = process.argv.includes('--dry-run');
+
+const awards = JSON.parse(fs.readFileSync(AWARDS_FILE, 'utf8'));
+
+// Fixes verified against Wikipedia / Tony Awards archive.
+// Format: showId → { action: 'relabel' | 'delete', reason, newSeason?, newCeremony? }
+const FIXES = {
+  // SEASON-RELABEL: stored data verified to match actual production's Tony record
+  'the-boy-from-oz-2003': {
+    action: 'relabel',
+    newSeason: '2003-04',
+    newCeremony: '58th',
+    reason: 'Hugh Jackman won Best Actor in a Musical at 2004 Tonys (58th). openingDate 2003-10-16.'
+  },
+  'red-2010': {
+    action: 'relabel',
+    newSeason: '2009-10',
+    newCeremony: '64th',
+    reason: 'Red won Best Play + 5 others at 2010 Tonys (64th). openingDate 2010-04-01.'
+  },
+  // angels-in-america-2018: stored data is the 1992-93 Millennium Approaches
+  // record (Best Play + Best Direction were 1993 wins, not 2018) on the wrong
+  // show ID. The 2018 revival actually won Best Revival/Actor/Featured Actor
+  // but we don't have that as a verified block. Delete rather than carry mixed data.
+  'angels-in-america-2018': {
+    action: 'delete',
+    reason: 'Stored wins (Best Play, Best Direction) belong to 1992-93 Millennium Approaches, not the 2018 Revival. The 2018 production won Best Revival + Actor + Featured Actor but needs separate verified entry.'
+  },
+
+  // DELETE-EMPTY: empty wins, wrong season — just a metadata stub
+  'harvey-2012': { action: 'delete', reason: 'Empty wins, tagged 1969-70 but opened 2012-06-14. Metadata stub.' },
+  'on-golden-pond-2005': { action: 'delete', reason: 'Empty wins, tagged 1978-79 but opened 2005-04-07. Metadata stub.' },
+  '1776-2022': { action: 'delete', reason: 'Empty wins, tagged 1997-98 but opened 2022-10-06. Metadata stub.' },
+  'grease-1994': { action: 'delete', reason: 'Empty wins, tagged 1971-72 but opened 1994-05-11. Metadata stub.' },
+  'the-threepenny-opera-2006': { action: 'delete', reason: 'Empty wins, tagged 1989-90 but opened 2006-04-20. Metadata stub.' },
+  'fiddler-on-the-roof-1976': { action: 'delete', reason: 'Empty wins, tagged 1981-82 but opened 1976-12-28. Metadata stub.' },
+  'out-cry-1973': { action: 'delete', reason: 'Empty wins, tagged 1969-70 but opened 1973-03-01. Metadata stub.' },
+
+  // DELETE-WRONG-PRODUCTION: West End shows shouldn't have Tony data
+  'a-month-in-the-country-west-end-2026': {
+    action: 'delete',
+    reason: 'West End show tagged with Tony data (1994-95). West End shows don\'t get Tonys.'
+  },
+  'man-to-man-west-end-2026': {
+    action: 'delete',
+    reason: 'West End show tagged with Tony data (2011-12). West End shows don\'t get Tonys.'
+  },
+  'oh-mary-west-end-2025': {
+    action: 'delete',
+    reason: 'West End transfer of Oh, Mary! tagged with 2024-25 Tony data. Tonys belong to the Broadway production (oh-mary-2024); WE transfer shouldn\'t have its own Tony block.'
+  },
+
+  // DELETE-WRONG-PRODUCTION: stored data demonstrably belongs to a different production
+  'a-view-from-the-bridge-2010': {
+    action: 'delete',
+    reason: 'Stored data (8 noms incl. Best Revival win) belongs to 1997-98 LaPaglia revival. The actual 2010 Schreiber/Johansson production won Best Actor + Best Featured Actress only; needs separate verified entry.'
+  },
+  'a-day-in-the-death-of-joe-egg-2003': {
+    action: 'delete',
+    reason: 'Stored data is duplicate of joe-egg-1985 entry (1985 revival). The 2003 Eddie Izzard production has its own (separate) Tony record needing verification.'
+  },
+  'play-on-1997': {
+    action: 'delete',
+    reason: 'Stored wins (Best Scenic + Best Lighting) don\'t match Play On! 1997 — it had 3 nominations but won 0 Tonys.'
+  },
+  'hair-2011': {
+    action: 'delete',
+    reason: 'Stored "Best Revival of a Musical" win belongs to hair-2009 revival, not the brief 2011 tour transfer.'
+  },
+  'purlie-1972': {
+    action: 'delete',
+    reason: 'shows.json has openingDate 1972-12-27 but Purlie won Best Actor in a Musical at 1969-70 Tonys (24th). Either shows.json date is wrong or this is a tour/revival entry — either way the Tony data needs to be on a separate 1970 production entry, not this one.'
+  },
+};
+
+// Remove specific wrongly-attributed wins (the show was nominated but not
+// actually a winner). These are misattribution bugs where stale data put a
+// show on the winners list of a category another show won outright.
+// Verified against Wikipedia Tony Awards by Year.
+const WIN_REMOVALS = {
+  'porgy-and-bess-1976': ['Best Actress in a Musical'],          // Dorothy Loudon (Annie) won outright
+  'the-cherry-orchard-1977': ['Best Costume Design'],            // Theoni V. Aldredge (Annie) won outright
+  'talleys-folly-1980': ['Best Scenic Design'],                  // David Mitchell (Barnum) won outright
+  'little-me-1982': ['Best Actor in a Musical'],                 // Ben Harney (Dreamgirls) won outright
+  'you-cant-take-it-with-you-1983': ['Best Actress in a Play'],  // Jessica Tandy (Foxfire) won outright
+  'cabaret-1987': [
+    'Best Actor in a Musical',                                    // Michael Crawford (Phantom) won
+    'Best Actress in a Musical',                                  // Joanna Gleason (Into the Woods) won
+    'Best Featured Actor in a Musical',                           // Bill McCutcheon (Anything Goes) won
+  ],
+};
+
+let relabeled = 0, deleted = 0, skipped = 0, winsRemoved = 0;
+const log = [];
+
+for (const [showId, fix] of Object.entries(FIXES)) {
+  const entry = awards.shows[showId];
+  if (!entry || !entry.tony) {
+    log.push(`SKIP ${showId}: no tony block to fix`);
+    skipped++;
+    continue;
+  }
+  if (fix.action === 'relabel') {
+    const before = { season: entry.tony.season, ceremony: entry.tony.ceremony };
+    entry.tony.season = fix.newSeason;
+    entry.tony.ceremony = fix.newCeremony;
+    log.push(`RELABEL ${showId}: ${JSON.stringify(before)} → ${JSON.stringify({ season: fix.newSeason, ceremony: fix.newCeremony })}`);
+    relabeled++;
+  } else if (fix.action === 'delete') {
+    log.push(`DELETE ${showId}.tony (${JSON.stringify(entry.tony).slice(0, 80)}…)`);
+    delete entry.tony;
+    deleted++;
+  }
+}
+
+for (const [showId, winsToRemove] of Object.entries(WIN_REMOVALS)) {
+  const entry = awards.shows[showId];
+  if (!entry || !entry.tony) {
+    log.push(`SKIP-REMOVE ${showId}: no tony block`);
+    skipped++;
+    continue;
+  }
+  const before = entry.tony.wins ? [...entry.tony.wins] : [];
+  entry.tony.wins = (entry.tony.wins || []).filter(w => !winsToRemove.includes(w));
+  const removed = winsToRemove.filter(w => before.includes(w));
+  if (removed.length > 0) {
+    log.push(`REMOVE-WINS ${showId}: removed ${JSON.stringify(removed)} (kept ${JSON.stringify(entry.tony.wins)})`);
+    winsRemoved += removed.length;
+  }
+}
+
+console.log(log.join('\n'));
+console.log(`\nSummary: ${relabeled} relabeled, ${deleted} deleted, ${winsRemoved} wins removed, ${skipped} skipped`);
+
+if (DRY_RUN) {
+  console.log('\n(dry-run: no file written)');
+} else {
+  awards._meta = awards._meta || {};
+  awards._meta.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(AWARDS_FILE, JSON.stringify(awards, null, 2) + '\n');
+  console.log(`\nWrote ${AWARDS_FILE}`);
+}
