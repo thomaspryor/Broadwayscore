@@ -77,7 +77,9 @@ const DD_2023 = {
     ],
   },
   'Outstanding Lead Performance in a Play': {
-    // Two winners (gender-neutral first year): Jessica Chastain (A Doll's House) + Sean Hayes (Good Night, Oscar)
+    // Tied winners (gender-neutral first year):
+    //   Jessica Chastain (A Doll's House) + Sean Hayes (Good Night, Oscar)
+    winners: ["A Doll's House", 'Good Night, Oscar'],
     winner: "A Doll's House",
     nominees: [
       "A Doll's House",       // Jessica Chastain (W)
@@ -93,6 +95,8 @@ const DD_2023 = {
     ],
   },
   'Outstanding Lead Performance in a Musical': {
+    // Tied: Annaleigh Ashford (Sweeney Todd) + J. Harrison Ghee (Some Like It Hot)
+    winners: ['Sweeney Todd', 'Some Like It Hot'],
     winner: 'Sweeney Todd',
     nominees: [
       'Sweeney Todd',         // Annaleigh Ashford (W)
@@ -109,6 +113,8 @@ const DD_2023 = {
     ],
   },
   'Outstanding Featured Performance in a Play': {
+    // Tied: Miriam Silverman (Sign in Sidney Brustein's Window) + Brandon Uranowitz (Leopoldstadt)
+    winners: ["The Sign in Sidney Brustein's Window", 'Leopoldstadt'],
     winner: "The Sign in Sidney Brustein's Window",
     nominees: [
       "The Sign in Sidney Brustein's Window", // Miriam Silverman (W)
@@ -123,6 +129,8 @@ const DD_2023 = {
     ],
   },
   'Outstanding Featured Performance in a Musical': {
+    // Tied: Kevin Del Aguila (Some Like It Hot) + Alex Newell (Shucked)
+    winners: ['Some Like It Hot', 'Shucked'],
     winner: 'Some Like It Hot',
     nominees: [
       'Some Like It Hot',     // Kevin Del Aguila (W)
@@ -367,6 +375,8 @@ const DD_2024 = {
     ],
   },
   'Outstanding Lead Performance in a Play': {
+    // Tied: Jessica Lange (Mother Play) + Sarah Paulson (Appropriate)
+    winners: ['Mother Play', 'Appropriate'],
     winner: 'Mother Play',
     nominees: [
       'Mother Play',          // Jessica Lange (W)
@@ -382,6 +392,11 @@ const DD_2024 = {
     ],
   },
   'Outstanding Lead Performance in a Musical': {
+    // Three-way tie: Brian d'Arcy James (Days of Wine and Roses) +
+    //   Maleah Joi Moon (Hell's Kitchen) + Kelli O'Hara (Days of Wine and Roses)
+    // Days of Wine and Roses appears once but had two co-winners; Hell's
+    // Kitchen had its own. Distinct winning shows = 2 (DOWAR, Hell's Kitchen).
+    winners: ['Days of Wine and Roses', "Hell's Kitchen"],
     winner: 'Days of Wine and Roses',
     nominees: [
       'Days of Wine and Roses', // Brian d'Arcy James (W) + Kelli O'Hara (W)
@@ -396,6 +411,8 @@ const DD_2024 = {
     ],
   },
   'Outstanding Featured Performance in a Play': {
+    // Tied: Celia Keenan-Bolger (Mother Play) + Kara Young (Purlie Victorious)
+    winners: ['Mother Play', 'Purlie Victorious'],
     winner: 'Mother Play',
     nominees: [
       'Mother Play',          // Celia Keenan-Bolger (W)
@@ -411,6 +428,8 @@ const DD_2024 = {
     ],
   },
   'Outstanding Featured Performance in a Musical': {
+    // Tied: Kecia Lewis (Hell's Kitchen) + Bebe Neuwirth (Cabaret at the Kit Kat Club)
+    winners: ["Hell's Kitchen", 'Cabaret at the Kit Kat Club'],
     winner: "Hell's Kitchen",
     nominees: [
       "Hell's Kitchen",       // Kecia Lewis (W) + Shoshana Bean
@@ -576,6 +595,9 @@ const DD_2024 = {
     ],
   },
   'Outstanding Sound Design of a Musical': {
+    // Three-way tie: Nick Lidster (Cabaret) + Cody Spencer (The Outsiders) +
+    //   Walter Trarbach (Water for Elephants)
+    winners: ['Cabaret at the Kit Kat Club', 'The Outsiders', 'Water for Elephants'],
     winner: 'Cabaret at the Kit Kat Club',
     nominees: [
       'Cabaret at the Kit Kat Club', // Nick Lidster (W)
@@ -631,9 +653,17 @@ function mergeIntoBaseline(baseline, year, perCategory) {
     if (existing) {
       const union = new Set([...(existing.nominees || []), ...sorted]);
       existing.nominees = [...union].sort();
-      if (entry.winner) existing.winner = entry.winner; // hand-typed source overrides
+      // Hand-typed source overrides on both winner and winners (tied).
+      if (entry.winners && entry.winners.length > 0) {
+        existing.winners = [...entry.winners];
+        existing.winner = entry.winners[0];
+      } else if (entry.winner) {
+        existing.winner = entry.winner;
+      }
     } else {
-      list.push({ year, winner: entry.winner, nominees: sorted });
+      const item = { year, winner: entry.winner, nominees: sorted };
+      if (entry.winners && entry.winners.length > 0) item.winners = [...entry.winners];
+      list.push(item);
       list.sort((a, b) => a.year - b.year);
     }
   }

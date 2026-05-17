@@ -294,7 +294,16 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
           sh[fieldKey].nominatedFor.push(scrapedCategory);
           sh[fieldKey].nominatedFor = uniqSorted(sh[fieldKey].nominatedFor);
         }
-        if (yearEntry.winner && normalizeTitle(yearEntry.winner) === normalizeTitle(nomineeName)) {
+        // Resolve the set of winning shows for this category-year. Modern
+        // ceremonies can have tied winners (DD 67th+ gender-neutral
+        // performance categories); `winners` (array) takes precedence over
+        // the legacy single `winner` field.
+        const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
+          ? yearEntry.winners
+          : (yearEntry.winner ? [yearEntry.winner] : []);
+        const normalizedNominee = normalizeTitle(nomineeName);
+        const isWinner = winnerTitles.some((w) => normalizeTitle(w) === normalizedNominee);
+        if (isWinner) {
           if (!sh[fieldKey].wins.includes(scrapedCategory)) {
             sh[fieldKey].wins.push(scrapedCategory);
             sh[fieldKey].wins = uniqSorted(sh[fieldKey].wins);

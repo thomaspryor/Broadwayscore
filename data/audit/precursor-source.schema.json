@@ -26,6 +26,12 @@
               "properties": {
                 "year": { "type": "integer", "minimum": 1900, "maximum": 2100 },
                 "winner": { "type": ["string", "null"], "minLength": 1 },
+                "winners": {
+                  "description": "Optional. For ceremonies with tied/co-winners in a single category (DD 67th+ gender-neutral performance categories, occasional design ties), list ALL winning shows. Enrich credits each show with a win. `winner` is the legacy single-string equivalent. If both are present, `winners` takes precedence. Tied winners must still appear in `nominees`.",
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "type": "string", "minLength": 1 }
+                },
                 "nominees": {
                   "type": "array",
                   "items": { "type": "string", "minLength": 1 }
