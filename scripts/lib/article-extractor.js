@@ -137,6 +137,14 @@ function extractArticleText(html, hostname) {
   if (!html || typeof html !== 'string') return null;
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
 
+  // WSJ: modern articles serve full body via __NEXT_DATA__ JSON for
+  // authenticated sessions. Plain DOM patterns only catch the lede teaser
+  // (~800 chars). Mirror scripts/recover-wsj-subscriber.js extraction.
+  if (host.includes('wsj.com')) {
+    const wsjText = extractWsjNextData(html);
+    if (wsjText && wsjText.length >= 300) return wsjText;
+  }
+
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
     // Generic fallbacks (hostMatch === null) pick the LARGEST match, not the
@@ -169,6 +177,32 @@ function extractArticleTextFromUrl(html, url) {
   let host = '';
   try { host = new URL(url).hostname; } catch { /* fall through with empty host */ }
   return extractArticleText(html, host);
+}
+
+function extractWsjNextData(html) {
+  const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (!m) return null;
+  let nextData;
+  try { nextData = JSON.parse(m[1]); } catch { return null; }
+  const articleData = nextData?.props?.pageProps?.articleData;
+  const flattenedBody = articleData?.flattenedBody;
+  if (!Array.isArray(flattenedBody)) return null;
+
+  const extractNode = (node) => {
+    if (typeof node === 'string') return node;
+    if (node && node.content) return node.content.map(extractNode).join('');
+    if (node && node.text) return node.text;
+    return '';
+  };
+
+  let text = '';
+  for (const item of flattenedBody) {
+    if (item && item.content) {
+      const paragraph = item.content.map(extractNode).join('');
+      if (paragraph.trim()) text += paragraph.trim() + '\n\n';
+    }
+  }
+  return text.trim() || null;
 }
 
 module.exports = { extractArticleText, extractArticleTextFromUrl, stripHtml };
