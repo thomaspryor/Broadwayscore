@@ -1019,8 +1019,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         )}
 
         {/* Quick Facts - Structured data for users and AI systems */}
-        <div className="card p-4 sm:p-5 mb-8">
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
+        <section className="card p-5 sm:p-6 mb-8" aria-labelledby="quick-facts-heading">
+          <header className="mb-4">
+            <h2 id="quick-facts-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Quick Facts</h2>
+          </header>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             {/* Key metrics first for AI extractability */}
             {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0), isCuratedHistoricalShow) && (
@@ -1131,7 +1133,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </div>
             )}
           </dl>
-        </div>
+        </section>
 
         {/* Other Productions of the same show */}
         {otherProductions.length > 0 && (
