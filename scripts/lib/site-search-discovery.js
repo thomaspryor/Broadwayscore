@@ -59,6 +59,18 @@ function _safeJsonArray(body, outletId) {
  */
 function filterOperaUrls(urls, outletId, showId, openingDate) {
   if (!Array.isArray(urls)) return [];
+
+  // Stopgap day-window gate. Sprint 3 will add a per-endpoint
+  // daysSinceOpening<21 gate plus a 24h filesystem cache; in the meantime
+  // this prevents the new opera endpoints from re-walking listing pages for
+  // shows that opened months ago and won't get further reviews. Bounded at
+  // 30 (slightly looser than Sprint 3's 21) so this stopgap doesn't have to
+  // be removed when Sprint 3 lands — the tighter gate will fire first.
+  if (openingDate) {
+    const daysSince = Math.floor((Date.now() - new Date(openingDate).getTime()) / 86400000);
+    if (daysSince > 30) return [];
+  }
+
   const total = urls.length;
   const openingYear = openingDate ? new Date(openingDate).getFullYear() : null;
 
@@ -94,7 +106,14 @@ function filterOperaUrls(urls, outletId, showId, openingDate) {
 function operaTitleWords(title) {
   if (!title) return [];
   const stop = new Set(['the','and','und','et','y','le','la','les','el','un','una','di','da','du','dei','der','die','das','of','for','to','at','in','on','with','from']);
-  return title.toLowerCase()
+  // NFD-normalize + strip diacritics BEFORE the char filter. Without this,
+  // "Último Sueño" tokenizes to ["ltimo","sue"] (fragments left after \w
+  // drops accented letters) instead of ["ultimo","sueno"]. Met productions
+  // routinely carry French/Italian/Spanish/German titles with accents.
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
     .replace(/[^\w\s]/g, ' ')
     .split(/\s+/)
     .filter(w => w.length >= 3 && !stop.has(w));
@@ -623,6 +642,9 @@ const SITE_SEARCH_ENDPOINTS = {
       const pattern = /(https?:\/\/(?:www\.)?newyorker\.com\/(?:magazine|culture|cultural-comment)\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: newyorker therestisnoise index returned 0 NY URLs (blog down or structural change)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
@@ -652,6 +674,9 @@ const SITE_SEARCH_ENDPOINTS = {
       const pattern = /(https?:\/\/(?:www\.)?washingtonpost\.com\/[a-z-]+\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: washpost Kennicott archive returned 0 article URLs (cookies stale or structural change)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
@@ -662,11 +687,15 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
-  'times-uk': {
+  'times-uk-opera': {
     name: 'The Times (UK)',
     domain: 'thetimes.com',
     requiresJs: false,
     applies: (show) => show.type === 'opera',
+    // Sibling to the 'times-uk' (line ~221) West-End Algolia entry — separate
+    // key required because the map can't hold two entries with the same id.
+    // outletIdOverride pushes canonical 'times-uk' downstream.
+    outletIdOverride: 'times-uk',
     // The Times's classical-opera tag page lists every recent classical/opera
     // review including Met transmissions. cookies-plain works for the
     // listing (Sprint 1 verified 615KB body). URL pattern for individual
@@ -679,6 +708,9 @@ const SITE_SEARCH_ENDPOINTS = {
       const pattern = /["'](\/culture\/classical-opera\/article\/[a-z0-9-]+)["']/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push('https://www.thetimes.com' + m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: times-uk-opera tag page returned 0 links (possible structural change)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
@@ -703,6 +735,9 @@ const SITE_SEARCH_ENDPOINTS = {
       const pattern = /["'](?:https?:\/\/(?:www\.)?theartsdesk\.com)?(\/opera\/[a-z0-9-]+)["']/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push('https://theartsdesk.com' + m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: artsdesk opera section returned 0 links (possible structural change)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
@@ -729,6 +764,9 @@ const SITE_SEARCH_ENDPOINTS = {
       const pattern = /href="(https:\/\/nystagereview\.com\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)\/?"/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: nystagereview search returned 0 article URLs (CMS change or empty result)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
@@ -758,24 +796,32 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
-  'vulture': {
+  'vulture-opera': {
     name: 'Vulture',
     domain: 'vulture.com',
     requiresJs: false,
     applies: (show) => show.type === 'opera',
-    // Vulture has no opera category page. Justin Davidson is the music/opera
-    // critic; the SSR HTML for his author archive carries ~30 anchors per page
-    // (lazy-loaded beyond that). Slug-match against opera-title words because
-    // Vulture URLs are descriptive ("opera-review-met-new-tristan-und-isolde",
+    // Sibling to the 'vulture' (line ~182) Broadway-theater entry — separate
+    // key required because the map can't hold two entries with the same id.
+    // outletIdOverride pushes canonical 'vulture' downstream so outlet-registry,
+    // scoring, and dedup don't see a stranger 'vulture-opera' id.
+    outletIdOverride: 'vulture',
+    // Justin Davidson is the music/opera critic; the SSR HTML for his author
+    // archive carries ~30 anchors per page (lazy-loaded beyond that). Slug-match
+    // against opera-title words because Vulture URLs are descriptive
+    // ("opera-review-met-new-tristan-und-isolde",
     // "review-the-dismaying-opera-of-kavalier-and-clay").
-    // Pagination: first page only (no /page/2 walk) — covers ~2-3 months of
-    // Davidson's output, which exceeds the Sprint 3 daysSinceOpening<21 gate.
+    // Pagination: first page only — covers ~2-3 months of Davidson's output,
+    // which exceeds the Sprint 3 daysSinceOpening<21 gate.
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
       const html = await fetchSSR('https://www.vulture.com/author/justin-davidson/');
       const all = [];
       const pattern = /href="(https?:\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9-]+\.html)"/gi;
       let m;
       while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      if (all.length === 0) {
+        console.warn('    [opera-discovery] WARN: vulture-opera author page returned 0 links (possible structural change)');
+      }
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/article/')[1] || '').toLowerCase();
@@ -1006,7 +1052,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
         // Applying urlLooksLikeReview() would reintroduce title-matching and drop valid URLs.
         if (!config.skipUrlFilter && !urlLooksLikeReview(url, showTitle)) continue;
         seen.add(url);
-        results.push({ url, outletId, outlet: config.name, source: 'site-search' });
+        // outletIdOverride lets a sibling entry (e.g. 'vulture-opera') push the
+        // canonical outlet id (e.g. 'vulture') downstream so outlet-registry
+        // lookups and scoring don't see a stranger id. Required when opera
+        // dispatch differs from the default dispatch for the SAME outlet —
+        // the map can't carry two entries under one key.
+        const effectiveOutletId = config.outletIdOverride || outletId;
+        results.push({ url, outletId: effectiveOutletId, outlet: config.name, source: 'site-search' });
       }
     } else {
       // Standard fetch + regex path
