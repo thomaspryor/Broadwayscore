@@ -356,6 +356,13 @@ export class EnsembleReviewScorer {
       // calling the scorer — we just need to forward them.
       category: (reviewFile as any).category,
       venue: (reviewFile as any).venue,
+      // type must be propagated so input-builder can frame opera shows as
+      // "opera at the Met" rather than "Off-Broadway theater". Without this,
+      // the ensemble's wrong_show check rejects opera reviews because the
+      // text clearly describes opera but the prompt says the show is
+      // Off-Broadway theater. (2026-05-17 root fix for Onegin Haiku-fallback
+      // incident — see Notion 363637c5-416f-81cc-8240-c48df8b4cfd2.)
+      type: (reviewFile as any).type,
       fullText: reviewFile.fullText,
       ...excerptData,
       bwwThumb: reviewFile.bwwThumb,

@@ -208,6 +208,11 @@ export default function AudienceBuzzPage() {
                 Commercial Scorecard →
               </Link>
             )}
+            {featureFlags.awardScoreV2 && (
+              <Link href="/award-score" className="text-brand hover:text-brand-hover transition-colors text-sm">
+                Award Scorecard →
+              </Link>
+            )}
             <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors text-sm">
               How Scoring Works →
             </Link>

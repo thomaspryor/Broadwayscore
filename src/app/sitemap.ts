@@ -369,6 +369,12 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
+    ...(featureFlags.awardScoreV2 ? [{
+      url: `${BASE_URL}/award-score`,
+      lastModified: ctx.showsDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }] : []),
     {
       url: `${BASE_URL}/west-end/audience-buzz`,
       lastModified: ctx.showsDate,

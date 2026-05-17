@@ -169,6 +169,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
   git fetch origin "$PULL_BRANCH" 2>/dev/null || true
 
+  # Capture pre-rebase HEAD so the post-rebase survival check (Sprint 5)
+  # can diff against the commit we expect to preserve. Guards against
+  # -X theirs auto-resolution silently discarding local additions.
+  PRE_REBASE_SHA=$(git rev-parse HEAD)
+
   # Attempt 1: rebase with theirs strategy (= keep our commits' content)
   # In rebase context: "theirs" = our commits being replayed
   rebase_ok=false
@@ -225,6 +230,17 @@ for i in $(seq 1 "$MAX_RETRIES"); do
           echo "  All conflict resolution strategies failed for this attempt"
         fi
       fi
+    fi
+  fi
+
+  # Post-rebase survival check (Sprint 5). If the rebase succeeded but the
+  # auto-resolution silently dropped files we added, the script reports the
+  # missing files and exits non-zero — better to fail the workflow loud
+  # than push a half-corrupt state on the next loop iteration.
+  if [ "$rebase_ok" = "true" ] && [ -n "${PRE_REBASE_SHA:-}" ] && [ -f "$SCRIPT_DIR/../check-post-rebase-survival.js" ]; then
+    if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA" --path-prefix="data/review-texts/"; then
+      echo "::error::Post-rebase survival check failed — aborting push to avoid shipping a corrupt state"
+      exit 1
     fi
   fi
 

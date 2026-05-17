@@ -43,6 +43,11 @@
 
 'use strict';
 
+// Bypass the Sprint 3 opera-discovery cache. The audit is an instrumentation
+// pass — re-runs must read fresh discovery output so cache staleness can't
+// mask a real regression.
+process.env.OPERA_DISCOVERY_BYPASS_CACHE = '1';
+
 const fs = require('fs');
 const path = require('path');
 const { searchOutletSites, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');

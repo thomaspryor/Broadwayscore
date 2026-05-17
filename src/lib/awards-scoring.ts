@@ -102,6 +102,8 @@ export interface ScoreResult {
   badge: TierBadge;
   inProgress: boolean;
   breakdown: CeremonyContribution[];
+  tonyWins: number;
+  tonyNoms: number;
 }
 
 function applyMultipliers(points: number, tier: CategoryTier, isRevival: boolean): number {
@@ -173,7 +175,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const shows = (awardsData as { shows: Record<string, AwardsShowEntry> }).shows;
   const entry = shows[showId];
   if (!entry) {
-    return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [] };
+    return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [], tonyWins: 0, tonyNoms: 0 };
   }
   const breakdown: CeremonyContribution[] = [];
   if (entry.tony) {
@@ -227,7 +229,9 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const showSeason = entry.tony?.season;
   const tonyDone = (entry.tony?.wins?.length ?? 0) > 0;
   const inProgress = !!showSeason && !tonyDone && tonyCeremonyIsFuture(showSeason);
-  return { rawPoints, displayScore, badge, inProgress, breakdown };
+  const tonyWins = entry.tony?.wins?.length ?? 0;
+  const tonyNoms = entry.tony?.nominatedFor?.length ?? 0;
+  return { rawPoints, displayScore, badge, inProgress, breakdown, tonyWins, tonyNoms };
 }
 
 interface PrecursorNode { wins?: string[]; nominatedFor?: string[]; nominations?: number }

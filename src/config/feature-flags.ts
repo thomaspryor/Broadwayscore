@@ -16,7 +16,7 @@ const enabledFeatures = new Set(
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
 // CI: lint-feature-flags checks these are never referenced in server components.
-const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes', 'awards', 'awardScoreV2']);
+const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes', 'awards']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;

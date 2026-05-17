@@ -19,6 +19,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
+const { withOperaCache } = require('./opera-discovery-cache');
 
 // Helper: parse JSON response, returning empty array if the body is HTML
 // (Cloudflare fallback can return HTML even after fetchSSR's challenge detection
@@ -68,7 +69,11 @@ function filterOperaUrls(urls, outletId, showId, openingDate) {
   // be removed when Sprint 3 lands — the tighter gate will fire first.
   if (openingDate) {
     const daysSince = Math.floor((Date.now() - new Date(openingDate).getTime()) / 86400000);
-    if (daysSince > 30) return [];
+    // 21-day window per the Opera V2 plan. Met opera reviews typically land
+    // within 14 days of opening; tail at 21 picks up late critics without
+    // walking archives forever. Sprint 2.1 shipped a temporary 30-day
+    // stopgap before the cache existed; now tightened to plan threshold.
+    if (daysSince > 21) return [];
   }
 
   const total = urls.length;
@@ -636,7 +641,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // blog therestisnoise.com as the index — he reblogs each New Yorker
     // piece's URL on publication day. Verified 9 NY URLs returned via BD on
     // 2026-05-17, including the same-week Tristan review.
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'newyorker', showId }, async () => {
       const html = await fetchSSR('https://www.therestisnoise.com/');
       const all = [];
       const pattern = /(https?:\/\/(?:www\.)?newyorker\.com\/(?:magazine|culture|cultural-comment)\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
@@ -656,6 +661,26 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= 1;
       });
       return filterOperaUrls(matches, 'newyorker', showId, openingDate);
+    }),
+  },
+
+  'playbill-roundup': {
+    name: 'Playbill (roundup)',
+    domain: 'playbill.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Per-show review-roundup discovery. SERPs Playbill for an article
+    // matching one of three slug patterns and extracts outlet URLs from the
+    // body. High-recall safety net for the per-outlet fan-out — when this
+    // hits, it returns 5-8 outlet URLs covering NYT/WSJ/FT/Vulture/etc. in
+    // one fetch. Discovered URLs carry their outlet domain so downstream
+    // resolveOutletFromUrl maps each to its canonical outletId at ingest.
+    skipUrlFilter: true,
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const { discoverPlaybillRoundup } = require('./playbill-roundup-discover');
+      const show = { type: 'opera', title: showTitle, openingDate, id: showId };
+      const urls = await discoverPlaybillRoundup(show);
+      return filterOperaUrls(urls, 'playbill-roundup', showId, openingDate);
     },
   },
 
@@ -668,7 +693,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // His author archive renders server-side with ~55 article URLs but requires
     // subscriber cookies (cookies-plain confirmed working in Sprint 1).
     // fetchSSR's fetchPage fallback carries the washingtonpost.com cookie jar.
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'washpost', showId }, async () => {
       const html = await fetchSSR('https://www.washingtonpost.com/people/philip-kennicott/');
       const all = [];
       const pattern = /(https?:\/\/(?:www\.)?washingtonpost\.com\/[a-z-]+\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
@@ -684,7 +709,7 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= 1;
       });
       return filterOperaUrls(matches, 'washpost', showId, openingDate);
-    },
+    }),
   },
 
   'times-uk-opera': {
@@ -700,7 +725,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // review including Met transmissions. cookies-plain works for the
     // listing (Sprint 1 verified 615KB body). URL pattern for individual
     // reviews: /culture/classical-opera/article/{slug}-{8-char-hash}.
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'times-uk-opera', showId }, async () => {
       const html = await fetchSSR('https://www.thetimes.com/topic/opera');
       const all = [];
       // Times listing uses relative URLs like /culture/classical-opera/article/{slug}-{hash}.
@@ -718,7 +743,7 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= 1;
       });
       return filterOperaUrls(matches, 'times-uk', showId, openingDate);
-    },
+    }),
   },
 
   'artsdesk': {
@@ -729,7 +754,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // theartsdesk.com/opera lists recent opera reviews. Open access (no
     // cookies needed). URL pattern: /opera/{slug}. Met transmission reviews
     // are tagged with "metropolitan-opera" in the slug (verified for Tristan).
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'artsdesk', showId }, async () => {
       const html = await fetchSSR('https://theartsdesk.com/opera');
       const all = [];
       const pattern = /["'](?:https?:\/\/(?:www\.)?theartsdesk\.com)?(\/opera\/[a-z0-9-]+)["']/gi;
@@ -745,7 +770,7 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= 1;
       });
       return filterOperaUrls(matches, 'artsdesk', showId, openingDate);
-    },
+    }),
   },
 
   'nystagereview': {
@@ -762,7 +787,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // pattern: /YYYY/MM/DD/slug/. NYSR primarily covers theater but reviews
     // Met premieres (Innocence verified). Reviewers like Frank Scheck rotate
     // in for opera coverage.
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'nystagereview', showId }, async () => {
       const q = encodeURIComponent(`${showTitle} opera`);
       const html = await fetchSSR(`https://nystagereview.com/?s=${q}`);
       const all = [];
@@ -779,7 +804,7 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= 1;
       });
       return filterOperaUrls(matches, 'nystagereview', showId, openingDate);
-    },
+    }),
   },
 
   'broadwayworld': {
@@ -792,13 +817,13 @@ const SITE_SEARCH_ENDPOINTS = {
     // diacritic-stripped tokenization and a 50% match threshold — both
     // handled in the dedicated sibling helper to keep this entry small.
     skipUrlFilter: true,
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'broadwayworld-opera', showId }, async () => {
       const { discoverBwwOperaReviews } = require('./bww-opera-discover');
       const show = { type: 'opera', title: showTitle, openingDate, id: showId };
       const results = await discoverBwwOperaReviews(show);
       const urls = results.map((r) => r.url);
       return filterOperaUrls(urls, 'broadwayworld', showId, openingDate);
-    },
+    }),
   },
 
   'vulture-opera': {
@@ -818,7 +843,7 @@ const SITE_SEARCH_ENDPOINTS = {
     // "review-the-dismaying-opera-of-kavalier-and-clay").
     // Pagination: first page only — covers ~2-3 months of Davidson's output,
     // which exceeds the Sprint 3 daysSinceOpening<21 gate.
-    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+    fetchAndParse: async (showTitle, market, openingDate, showId) => withOperaCache({ outletId: 'vulture-opera', showId }, async () => {
       const html = await fetchSSR('https://www.vulture.com/author/justin-davidson/');
       const all = [];
       const pattern = /href="(https?:\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9-]+\.html)"/gi;
@@ -834,7 +859,7 @@ const SITE_SEARCH_ENDPOINTS = {
         return hits >= Math.min(2, titleWords.length);
       });
       return filterOperaUrls(matches, 'vulture', showId, openingDate);
-    },
+    }),
   },
 };
 
