@@ -8,6 +8,9 @@
   "//6": "Added 2026-05-16 after evaluate.ts shipped a 12-error consumer mismatch",
   "//7": "that no existing CI gate caught.",
   "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "strictNullChecks": true
+  },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
