@@ -549,7 +549,7 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">How categories are weighted</h3>
           <p className="text-gray-300 text-sm mb-3">
-            Every category is sorted into a tier; the tier sets the points awarded for a win. Nominations earn roughly <strong className="text-white">one-quarter</strong> of the same-tier win.
+            Every category is sorted into a tier; the tier sets the points awarded for a win. Nominations earn roughly <strong className="text-white">one-eighth to one-tenth</strong> of the same-tier win — wins dominate; nominations signal recognition but have limited score impact.
           </p>
           <div className="bg-surface-overlay rounded-lg p-4 border border-white/5 overflow-x-auto">
             <table className="w-full text-sm">
@@ -564,7 +564,7 @@ export default function MethodologyPage() {
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-amber-400">S</td>
                   <td className="py-2 pr-3">Best Musical, Best Play, Best Revival, Pulitzer Drama</td>
-                  <td className="py-2 tabular-nums">+150</td>
+                  <td className="py-2 tabular-nums">+200</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-violet-300">A+</td>
@@ -590,7 +590,7 @@ export default function MethodologyPage() {
             </table>
           </div>
           <p className="text-gray-400 text-xs mt-3">
-            Pulitzer Drama, NY Drama Critics&apos; Circle, and other ceremonies use the same tier system with proportional weights (e.g. a Drama Desk Best Musical win is +28, not +150). Revivals get an 0.85× multiplier; stacked C-tier wins (4 design categories on one show) discount after the first.
+            Pulitzer Drama, NY Drama Critics&apos; Circle, and other ceremonies use the same tier system with proportional weights (e.g. a Drama Desk Best Musical win is +28, not +200). Revivals get an 0.85× multiplier; stacked C-tier wins (4 design categories on one show) discount after the first.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">From raw points to 0&ndash;100</h3>
@@ -601,7 +601,7 @@ export default function MethodologyPage() {
             <ul className="text-gray-300 text-sm space-y-1.5 tabular-nums">
               <li><strong className="text-white">~12</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~25</strong> score &nbsp;<span className="text-gray-500">(one Featured win)</span></li>
               <li><strong className="text-white">~100</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~55</strong> score &nbsp;<span className="text-gray-500">(Pulitzer finalist + a few Tony noms)</span></li>
-              <li><strong className="text-white">~500</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~85</strong> score &nbsp;<span className="text-gray-500">(several major Tony wins)</span></li>
+              <li><strong className="text-white">~500</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">~84</strong> score &nbsp;<span className="text-gray-500">(several major Tony wins)</span></li>
               <li><strong className="text-white">~1,000+</strong> raw points &nbsp;&rarr;&nbsp; <strong className="text-white">95&ndash;100</strong> score &nbsp;<span className="text-gray-500">(historic sweep)</span></li>
             </ul>
           </div>
@@ -611,10 +611,10 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Tier badges</h3>
           <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-500 text-amber-950 font-bold flex items-center justify-center text-xs">85+</div><div><span className="text-amber-400 font-semibold">Sweeper</span> <span className="text-gray-500">— historic award haul</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">70-84</div><div><span className="text-emerald-400 font-semibold">Decorated</span> <span className="text-gray-500">— multiple major wins</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">41-69</div><div><span className="text-teal-400 font-semibold">Honored</span> <span className="text-gray-500">— at least one marquee win</span></div></div>
-            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-700/70 text-amber-50 font-bold flex items-center justify-center text-xs">1-40</div><div><span className="text-amber-300 font-semibold">Nominated</span> <span className="text-gray-500">— recognized but yet to win</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-500 text-amber-950 font-bold flex items-center justify-center text-xs">90+</div><div><span className="text-amber-400 font-semibold">Sweeper</span> <span className="text-gray-500">— historic award haul</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-emerald-500 text-white font-bold flex items-center justify-center text-xs">70-89</div><div><span className="text-emerald-400 font-semibold">Decorated</span> <span className="text-gray-500">— multiple major wins</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-teal-600 text-white font-bold flex items-center justify-center text-xs">41-69</div><div><span className="text-teal-400 font-semibold">Honored</span> <span className="text-gray-500">— at least one win</span></div></div>
+            <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-amber-700/70 text-amber-50 font-bold flex items-center justify-center text-xs">0 wins</div><div><span className="text-amber-300 font-semibold">Nominated</span> <span className="text-gray-500">— recognized but yet to win</span></div></div>
             <div className="flex items-center gap-3"><div className="w-12 h-8 rounded-lg bg-white/10 text-gray-400 font-bold flex items-center justify-center text-xs">&mdash;</div><div><span className="text-gray-400 font-semibold">Eligible</span> <span className="text-gray-500">— not yet recognized</span></div></div>
           </div>
           <p className="text-gray-400 text-xs mt-3">

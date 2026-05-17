@@ -128,3 +128,10 @@ export function parseDateRanges(raw: string | null | undefined): DateRange[] {
 export function serializeDateRanges(ranges: DateRange[]): string {
   return ranges.map((r) => `${r.from}~${r.to}`).join(',');
 }
+
+/** "2025-2026" → "2025-26" (URL slug form) */
+export function seasonSlug(fullSeason: string): string {
+  const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
+  if (!m) return fullSeason;
+  return `${m[1]}-${m[2]}`;
+}
