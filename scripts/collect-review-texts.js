@@ -5069,10 +5069,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   if (!data.isMultiShowReview && !data.isRoundupArticle && data.fullText && data.fullText.length >= 1000) {
     const splitterShows = loadSplitterShows();
     const boldHeaders = findBoldHeaderAnchors(data.fullText, splitterShows);
+    // Require 2+ distinct POSITIONS, not just 2+ show IDs. The same bold title
+    // (e.g. "**Miss Saigon**") matches all productions of that show, so distinctShows
+    // alone would flag a single-show review as multi-show whenever the title has
+    // multiple productions in the catalogue.
+    const distinctPositions = new Set(boldHeaders.map(a => a.position));
     const distinctShows = new Set(boldHeaders.map(a => a.showId));
-    if (distinctShows.size >= 2) {
+    if (distinctPositions.size >= 2 && distinctShows.size >= 2) {
       data.isMultiShowReview = true;
-      console.log(`    ↔ Bold-header multi-show detected (${distinctShows.size} shows): ${[...distinctShows].join(', ')}`);
+      console.log(`    ↔ Bold-header multi-show detected (${distinctPositions.size} positions, ${distinctShows.size} shows): ${[...distinctShows].join(', ')}`);
     }
   }
 
