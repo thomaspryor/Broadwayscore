@@ -456,3 +456,10 @@ jobs:
           else
             echo "Streak is $STREAK — no escalation needed"
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Deploy Streak Check Failed'
+          severity: 'warning'
