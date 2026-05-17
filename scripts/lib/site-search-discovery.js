@@ -606,6 +606,37 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'newyorker': {
+    name: 'The New Yorker',
+    domain: 'newyorker.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // The New Yorker contributor page (newyorker.com/contributors/alex-ross)
+    // is lazy-loaded — SSR HTML returns 0 article anchors. The /tag/opera
+    // listing returns only older (2022-2023) pieces. Use Alex Ross's personal
+    // blog therestisnoise.com as the index — he reblogs each New Yorker
+    // piece's URL on publication day. Verified 9 NY URLs returned via BD on
+    // 2026-05-17, including the same-week Tristan review.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.therestisnoise.com/');
+      const all = [];
+      const pattern = /(https?:\/\/(?:www\.)?newyorker\.com\/(?:magazine|culture|cultural-comment)\/\d{4}\/\d{2}\/\d{2}\/[a-z0-9-]+)/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        // Lower threshold (1 hit) than other outlets — therestisnoise.com
+        // surfaces ~10 URLs at a time and Alex Ross writes one Met review per
+        // month, so false-positive risk is low. Two-word match would miss
+        // "tristan-at-the-met-music-review" (operaTitleWords drops "und").
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'newyorker', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
