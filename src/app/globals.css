@@ -107,6 +107,14 @@
     100% { left: 100%; }
   }
 
+  /* Subtle whole-badge breathing — used by AwardScoreBadge when a show is
+     in-progress (Tony season open, score will keep climbing). Replaces the
+     small asterisk overlay; the breathing IS the "score is alive" signal. */
+  @keyframes award-breathe {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.04); filter: brightness(1.08); }
+  }
+
   /* Gold List badges — gold metallic with shimmer, square shape */
   .gold-badge {
     display: inline-flex;

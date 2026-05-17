@@ -35,12 +35,17 @@ type CeremonyKey =
 interface TierPoints { win: number; nom: number }
 
 const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
-  tony:         { S: { win: 150, nom: 38 }, A: { win: 75, nom: 18 }, B: { win: 35, nom: 9 }, C: { win: 25, nom: 6 } },
+  // Tony S-tier raised so Best Musical/Play dominates over any craft-award combination.
+  // Previously 150 — two A+ craft wins (Book + Score = 180) could outrank Best Musical.
+  tony:         { S: { win: 200, nom: 40 }, A: { win: 75, nom: 18 }, B: { win: 35, nom: 9 }, C: { win: 25, nom: 6 } },
   pulitzer:     { S: { win: 110, nom: 35 } },
   olivier_bway: { S: { win: 50,  nom: 12 }, A: { win: 25, nom: 6 },  B: { win: 15, nom: 4 }, C: { win: 12, nom: 3 } },
   olivier_we:   { S: { win: 110, nom: 28 }, A: { win: 55, nom: 14 }, B: { win: 32, nom: 8 }, C: { win: 24, nom: 6 } },
-  nydcc:        { S: { win: 75,  nom: 0 } },
-  occ:          { S: { win: 50,  nom: 13 }, A: { win: 28, nom: 7 },  B: { win: 16, nom: 4 }, C: { win: 10, nom: 2 } },
+  // NYDCC reduced: single-award body with no nominations was generating 75 pts (= Tony Best Musical nom).
+  nydcc:        { S: { win: 45,  nom: 0 } },
+  // OCC reduced: precursor "New Musical" wins were generating ~50 pts — nearly = Tony S nom (38 pts).
+  // A-tier also trimmed to keep overall precursor weight proportional.
+  occ:          { S: { win: 30,  nom: 10 }, A: { win: 20, nom: 5 },  B: { win: 12, nom: 3 }, C: { win: 8,  nom: 2 } },
   dramaLeague:  { S: { win: 35,  nom: 9 },  A: { win: 22, nom: 6 } },
   dramaDesk:    { S: { win: 28,  nom: 7 },  A: { win: 18, nom: 4 },  B: { win: 12, nom: 3 }, C: { win: 8,  nom: 2 } },
 };
