@@ -23,7 +23,7 @@ const CARD_TARGETS = {
   awards:  { headings: ['Awards','Award Score','Awards Scorecard'], shows: ['hamilton','maybe-happy-ending','oh-mary','the-lost-boys','wicked'] },
   theater: { headings: ['Theater','Theater Scorecard','Venue'], shows: ['hamilton','the-lion-king','oh-mary','the-lost-boys'] },
   boxoffice: { headings: ['Box Office'], shows: ['hamilton','wicked','the-lion-king','death-becomes-her','the-lost-boys'] },
-  social:  { headings: ['Social','Social Pulse','SOCIAL'], shows: ['the-lost-boys','beaches','oh-mary','becky-shaw','aladdin'] },
+  social:  { headings: ['Socials Scorecard','Social Pulse','Social'], shows: ['the-lost-boys','beaches','oh-mary','becky-shaw','aladdin'] },
   commercial: { headings: ['Commercial','Biz Buzz','Commercial Performance','Commercial Scorecard'], shows: ['hamilton','wicked','the-lion-king','maybe-happy-ending','death-becomes-her'] },
 };
 
