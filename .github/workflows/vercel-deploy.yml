@@ -396,3 +396,14 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Trigger investigation
+        if: failure() && steps.check-newer.outputs.skip_alert != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=vercel_deploy_fail \
+            -f alert_title="Deploy to Vercel Failed" \
+            -f alert_context='{}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

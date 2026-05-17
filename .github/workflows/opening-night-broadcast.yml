@@ -904,3 +904,14 @@ jobs:
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Trigger investigation
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          gh workflow run investigate-alert.yml \
+            -f alert_type=opening_night_broadcast_fail \
+            -f alert_title="Opening Night Broadcast Failed" \
+            -f alert_context='{"note":"Broadcast auto-retry is prohibited — investigation only, no auto-fix."}' \
+            -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

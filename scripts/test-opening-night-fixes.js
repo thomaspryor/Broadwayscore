@@ -778,6 +778,10 @@ const registry = require('../data/outlet-registry.json').outlets;
 const endpointKeys = Object.keys(SITE_SEARCH_ENDPOINTS);
 let idMismatches = 0;
 for (const key of endpointKeys) {
+  // resolveOutletPerUrl=true endpoints are virtual aggregators (e.g. playbill-roundup):
+  // they return URLs whose outletId is resolved per-URL from the domain, so they
+  // intentionally have no outlet-registry entry of their own.
+  if (SITE_SEARCH_ENDPOINTS[key].resolveOutletPerUrl) continue;
   const effectiveId = SITE_SEARCH_ENDPOINTS[key].outletIdOverride || key;
   if (!registry[effectiveId]) {
     const detail = effectiveId === key
