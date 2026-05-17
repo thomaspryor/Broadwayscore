@@ -239,9 +239,8 @@ function Cell({
   href: string | null;
   naHint?: string;
   emphasis?: boolean;
-  /** When true, renders "of M" muted on a second line under the rank.
-   *  Reserved for the Overall row so the denominator is visible without
-   *  cluttering every cell. */
+  /** When true, renders the denominator inline ("/M") in a lighter weight
+   *  next to the rank. Same line, no wrap. */
   showDenominator?: boolean;
 }) {
   if (!cell) {
@@ -254,28 +253,28 @@ function Cell({
       </span>
     );
   }
-  const numClass = emphasis
+  const rankClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
     : 'text-gray-500 tabular-nums';
-  const rankNode = <span className={numClass}>#{cell.rank}</span>;
+  const rankNode = <span className={rankClass}>#{cell.rank}</span>;
+  // Inline "/M" — lighter weight than the rank, same line, no wrap.
   const denomNode = showDenominator ? (
-    <span className="block text-[10px] font-normal text-gray-500 mt-0.5 tabular-nums">
-      of {cell.total}
-    </span>
+    <span className="font-normal text-gray-500 tabular-nums">/{cell.total}</span>
   ) : null;
+  const content = (
+    <span className="whitespace-nowrap tabular-nums">
+      {rankNode}
+      {denomNode}
+    </span>
+  );
   if (!href) {
     // Visually distinct from links: no underline, default cursor, no hover.
-    return (
-      <span className="tabular-nums">
-        {rankNode}
-        {denomNode}
-      </span>
-    );
+    return content;
   }
   return (
     <Link
       href={href}
-      className="tabular-nums hover:text-white hover:underline underline-offset-[3px] decoration-white/20"
+      className="whitespace-nowrap tabular-nums hover:text-white hover:underline underline-offset-[3px] decoration-white/20"
     >
       {rankNode}
       {denomNode}
