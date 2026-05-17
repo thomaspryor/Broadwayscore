@@ -6,7 +6,7 @@ This file + a small set of project-scoped substitutes (`.claude/hooks/`, `cloud-
 
 ## Before your first tool call
 
-1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. If Tier 1 is missing, ask the user to set them in claude.ai → Settings → Secrets.
+1. **Verify secrets:** `node scripts/check-cloud-secrets.js`. If Tier 1 is missing, ask the user to set them at claude.ai/code → click the **cloud icon showing the current environment's name** (top of the input area) → hover environment row → click the **gear icon** → paste into the **Environment variables** field (`KEY=value` per line, no quotes). Caveat per Anthropic docs: this is NOT a dedicated secrets store — values are visible to anyone with environment edit access.
 2. **Read accumulated learnings:** `cat cloud-memory/INDEX.md` then `cat cloud-memory/MEMORY.md` for the full index. Specific feedback files referenced in the index live alongside it.
 
 ## Project hooks that fire in cloud (project-scoped subset)
