@@ -80,7 +80,8 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 // Score extraction for original scores
-const { extractScore, extractDesignation, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
@@ -2904,7 +2905,8 @@ function withTimeout(promise, ms, tierName) {
  * used by tier shouldRun predicates and onFailure hooks.
  */
 function buildTierContext(review) {
-  const url = review.url;
+  // Strip browser-only fragment hashes (#google_vignette etc) — HTTP servers never see them
+  const url = (review.url || '').replace(/#[^#]*$/, '');
   const urlLower = url.toLowerCase();
 
   const isKnownBlocked = CONFIG.knownBlockedSites.some(s => urlLower.includes(s));
@@ -2926,7 +2928,7 @@ function buildTierContext(review) {
   const forceArchiveFirst = ['paywall', 'partial_text'].includes(reason);
   // Only skip direct scrapers for paywall if we DON'T have cookies (cookies = try Playwright first)
   const skipDirectScrapers = reason === 'paywall' && !getPaywallCredentials(url)?.email;
-  const enableBrowserbase = reason === 'bot_blocked';
+  const enableBrowserbase = reason === 'bot_blocked' || reason === 'url_content_mismatch';
 
   const isArchiveFirst = forceArchiveFirst || (!archiveOrgDisabledForBatch &&
     ((!archiveFirstExplicitlyDisabled && isArchiveFirstSite) || (CONFIG.archiveFirst && isOldReview)));
@@ -5020,12 +5022,18 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     } catch (e) { /* invalid URL — skip */ }
   }
 
-  // NYT Critics' Pick: check URL against authoritative list (no HTML parsing — avoids 10% FP from page chrome)
+  // NYT Critics' Pick: structural HTML check at collection time, plus URL-list belt-and-suspenders.
+  // HTML check (data-testid, JSON-LD, CSS class) is structural — no prose FP risk.
   if (data.url && /nytimes\.com/.test(data.url) && !data.isCriticsPick) {
-    const normalizedUrl = data.url.replace(/[?#].*$/, '').replace(/\/$/, '');
-    if (getNytCriticsPicks().has(normalizedUrl)) {
+    if (html && extractNYTCriticsPick(html, null)) {
       data.isCriticsPick = true;
-      console.log(`    ★ NYT Critics' Pick: ${normalizedUrl}`);
+      console.log(`    ★ NYT Critics' Pick (HTML): ${data.url}`);
+    } else {
+      const normalizedUrl = data.url.replace(/[?#].*$/, '').replace(/\/$/, '');
+      if (getNytCriticsPicks().has(normalizedUrl)) {
+        data.isCriticsPick = true;
+        console.log(`    ★ NYT Critics' Pick (URL list): ${normalizedUrl}`);
+      }
     }
   }
 
@@ -5048,6 +5056,25 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // NOTE: Do NOT extract years from URLs to flag wrong production.
   // URL patterns are inconsistent across outlets (republished content, migrated URLs,
   // article IDs that resemble years, etc.). Use publish date or review text content instead.
+
+  // Normalize stored URL: strip browser-only fragments that HTTP servers never receive.
+  // Only rewrite if there was actually a fragment to avoid unnecessary diffs.
+  if (data.url && /#/.test(data.url)) {
+    data.url = data.url.replace(/#[^#]*$/, '');
+  }
+
+  // Detect prose-style multi-show articles via structural bold headers (**Title**).
+  // Only set isMultiShowReview if not already flagged and text has 2+ distinct shows
+  // with bold headers. split-multi-show-roundups.js (CI) handles the actual split.
+  if (!data.isMultiShowReview && !data.isRoundupArticle && data.fullText && data.fullText.length >= 1000) {
+    const splitterShows = loadSplitterShows();
+    const boldHeaders = findBoldHeaderAnchors(data.fullText, splitterShows);
+    const distinctShows = new Set(boldHeaders.map(a => a.showId));
+    if (distinctShows.size >= 2) {
+      data.isMultiShowReview = true;
+      console.log(`    ↔ Bold-header multi-show detected (${distinctShows.size} shows): ${[...distinctShows].join(', ')}`);
+    }
+  }
 
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
 

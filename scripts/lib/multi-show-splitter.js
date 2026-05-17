@@ -327,6 +327,57 @@ function findAnchorsForTitle(text, title, shows) {
   return [...captionAnchors, ...tailrunAnchors, ...plain].sort((a, b) => a.position - b.position);
 }
 
+/**
+ * Find bold-header anchors: WSJ/NYSR-style `\n**Show Title**\n` section headers.
+ *
+ * These outlets don't use photo captions or tailrun lines — they separate shows
+ * with a bolded title on its own line. The markdown-to-text conversion preserves
+ * the `**Title**` markers, which we can detect structurally.
+ *
+ * Only matches titles that appear as a standalone `**Title**` line (possibly with
+ * surrounding whitespace). COMMON_WORD_SHOW_TITLES guard applies to prevent
+ * `**Hair**` from matching any bold word.
+ *
+ * Returns array of { position, kind: 'bold_header', showId, showTitle, raw }
+ * sorted by position.
+ */
+function findBoldHeaderAnchors(text, shows) {
+  if (!text || !shows || !shows.length) return [];
+  const anchors = [];
+
+  for (const show of shows) {
+    if (!show || !show.id || !show.title) continue;
+    if (show.title.length < 4) continue;
+    const tLow = show.title.toLowerCase();
+    if (COMMON_WORD_SHOW_TITLES.has(tLow)) continue;
+
+    const variants = getTitleVariants(show.title);
+    for (const variant of variants) {
+      if (variant.length < 4) continue;
+      const escaped = escapeRegex(variant);
+      // Match: optional leading whitespace + ** + title + ** + optional trailing whitespace
+      // Anchored to line boundaries via \n or start-of-string
+      const re = new RegExp(
+        `(?:^|\\n)[ \\t]*\\*\\*[ \\t]*(?:${escaped})[ \\t]*\\*\\*[ \\t]*(?:\\n|$)`,
+        'gi'
+      );
+      let m;
+      while ((m = re.exec(text)) !== null) {
+        anchors.push({
+          position: m.index + (m[0].startsWith('\n') ? 1 : 0),
+          kind: 'bold_header',
+          showId: show.id,
+          showTitle: show.title,
+          raw: m[0].trim(),
+        });
+      }
+    }
+  }
+
+  anchors.sort((a, b) => a.position - b.position);
+  return anchors;
+}
+
 // ============================================================================
 // SPLITTER
 // ============================================================================
@@ -363,18 +414,24 @@ function splitMultiShowArticle(text, showsList, options = {}) {
     ? allShows.filter(s => s && allowedCategories.includes(s.category))
     : allShows;
 
-  // 1. Find caption anchors (photo-credit-anchored) and tailrun anchors.
+  // 1. Find caption anchors (photo-credit-anchored), tailrun anchors, and bold headers.
   const captionAnchors = findCaptionAnchors(text, shows);
   const tailrunAnchors = findTailrunAnchors(text, shows);
+  const boldHeaderAnchors = findBoldHeaderAnchors(text, shows);
 
-  // 2. Per-show: pick earliest strong anchor (caption preferred over tailrun).
+  // 2. Per-show: pick earliest strong anchor (caption preferred over bold_header over tailrun).
   const showToAnchor = new Map();
   for (const a of captionAnchors) {
     const cur = showToAnchor.get(a.showId);
     if (!cur || a.position < cur.position) showToAnchor.set(a.showId, a);
   }
-  for (const a of tailrunAnchors) {
+  for (const a of boldHeaderAnchors) {
     if (showToAnchor.has(a.showId)) continue; // caption already wins
+    const cur = showToAnchor.get(a.showId);
+    if (!cur || a.position < cur.position) showToAnchor.set(a.showId, a);
+  }
+  for (const a of tailrunAnchors) {
+    if (showToAnchor.has(a.showId)) continue; // caption or bold_header already wins
     const cur = showToAnchor.get(a.showId);
     if (!cur || a.position < cur.position) showToAnchor.set(a.showId, a);
   }
@@ -449,6 +506,7 @@ module.exports = {
   splitMultiShowArticle,
   findCaptionAnchors,
   findTailrunAnchors,
+  findBoldHeaderAnchors,
   findAnchorsForTitle,
   getTitleVariants,
   loadShows,
