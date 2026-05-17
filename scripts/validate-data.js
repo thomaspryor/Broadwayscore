@@ -3209,19 +3209,22 @@ function validateCrossFileKeys(shows) {
         if (!openingDate) return [];
         const d = new Date(openingDate);
         const y = d.getFullYear();
+        if (Number.isNaN(y)) return [];
         const mo = d.getMonth() + 1;
         // Tony eligibility window straddles late April; accept both bracketing seasons.
         return mo <= 5 ? [y - 1, y] : [y, y - 1];
       };
-      // West End shows shouldn't have Tony data at all.
-      let weTonyCount = 0, mismatchCount = 0;
+      // Only Broadway productions are Tony-eligible. West End and Off-Broadway
+      // shows must not have tony blocks. Gate on category (the canonical
+      // eligibility field), not market — OB shows have market='broadway'.
+      let nonBroadwayTonyCount = 0, mismatchCount = 0, malformedDateCount = 0;
       for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
         if (!awardsEntry.tony || !awardsEntry.tony.season) continue;
         const show = showsById.get(showId);
         if (!show) continue;
-        if (show.market === 'west-end') {
-          error(`awards.json: West End show "${showId}" has tony block (Tonys are US-only). Delete it.`);
-          weTonyCount++;
+        if (show.category && show.category !== 'broadway') {
+          error(`awards.json: ${show.category} show "${showId}" has tony block (Tonys are Broadway-only). Delete it.`);
+          nonBroadwayTonyCount++;
           issues++;
           continue;
         }
@@ -3229,6 +3232,13 @@ function validateCrossFileKeys(shows) {
         const tonyStart = parseSeasonStart(awardsEntry.tony.season);
         if (!tonyStart) continue;
         const expected = expectedSeasonStarts(show.openingDate);
+        if (expected.length === 0) {
+          // Malformed openingDate — surface it instead of silently passing.
+          error(`awards.json: "${showId}" openingDate="${show.openingDate}" is unparseable; cannot verify tony.season=${awardsEntry.tony.season}.`);
+          malformedDateCount++;
+          issues++;
+          continue;
+        }
         const gap = Math.min(...expected.map(e => Math.abs(e - tonyStart)));
         if (gap > 1) {
           error(`awards.json: "${showId}" tony.season=${awardsEntry.tony.season} but openingDate=${show.openingDate} (expected ${expected[0]}-${(expected[0]+1).toString().slice(-2)}). Gap ${gap}y — misattribution.`);
@@ -3236,7 +3246,7 @@ function validateCrossFileKeys(shows) {
           issues++;
         }
       }
-      if (weTonyCount === 0 && mismatchCount === 0) {
+      if (nonBroadwayTonyCount === 0 && mismatchCount === 0 && malformedDateCount === 0) {
         ok(`awards.json: Tony attribution clean (${Object.keys(awards.shows || {}).length} shows checked)`);
       }
 
