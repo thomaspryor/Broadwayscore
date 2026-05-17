@@ -32,6 +32,7 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
@@ -1370,16 +1371,34 @@ const crossShowFingerprints = new Map();
         // is advisory, not blocking. Don't promote to wrongShow.
         const ensembleSaysReview = hasHighConfidenceLlmScore(d);
         if (cv.wrongArticle === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
-          d.wrongShow = true;
-          d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
-          promoted = true;
+          // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
+          // outlets when the text is substantive + opinionated. The CV pass false-positives
+          // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
+          // these to humanReview rather than auto-promoting.
+          if (shouldDeferCvWrongShow(d)) {
+            d.flaggedForReview = true;
+            d.flagReason = 'cv-promotion-deferred';
+            stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            try { safeWriteReview(path.join(sDir, f), d); } catch {}
+          } else {
+            d.wrongShow = true;
+            d.wrongShowReason = d.wrongShowReason || `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
         } else if (cv.wrongArticle === true && ensembleSaysReview) {
           stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
         if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
-          d.wrongShow = true;
-          d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
-          promoted = true;
+          if (shouldDeferCvWrongShow(d)) {
+            d.flaggedForReview = true;
+            d.flagReason = 'cv-promotion-deferred';
+            stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            try { safeWriteReview(path.join(sDir, f), d); } catch {}
+          } else {
+            d.wrongShow = true;
+            d.wrongShowReason = d.wrongShowReason || `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
+            promoted = true;
+          }
         }
         if (promoted) {
           d.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
@@ -1869,16 +1888,32 @@ showDirs.forEach(showId => {
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
           if (cv.wrongArticle === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
-            data.wrongShow = true;
-            data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
-            promoted = true;
+            // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
+            // outlets when the text is substantive + opinionated. The CV pass false-positives
+            // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
+            // these to humanReview rather than auto-promoting.
+            if (shouldDeferCvWrongShow(data)) {
+              data.flaggedForReview = true;
+              data.flagReason = 'cv-promotion-deferred';
+              stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            } else {
+              data.wrongShow = true;
+              data.wrongShowReason = `CV-promoted: ${(cv.reasoning || '').substring(0, 200)}`;
+              promoted = true;
+            }
           } else if (cv.wrongArticle === true && ensembleSaysReview) {
             stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
           if (cv.isFilmTv === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
-            data.wrongShow = true;
-            data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
-            promoted = true;
+            if (shouldDeferCvWrongShow(data)) {
+              data.flaggedForReview = true;
+              data.flagReason = 'cv-promotion-deferred';
+              stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
+            } else {
+              data.wrongShow = true;
+              data.wrongShowReason = `CV-promoted (film/TV): ${(cv.reasoning || '').substring(0, 200)}`;
+              promoted = true;
+            }
           }
           if (promoted) {
             data.contentVerificationPromoted = `rebuild: promoted from contentVerification (${cv.verifiedBy}, ${cv.confidence})`;
