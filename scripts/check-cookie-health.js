@@ -18,7 +18,7 @@
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-const { loadCookiesByFileKey, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
+const { loadCookiesByFileKey, loadCookieMeta, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 
@@ -88,10 +88,18 @@ for (const fk of getAllFileKeys()) {
   ALL_OUTLETS[fk] = getEnvVarForFileKey(fk);
 }
 
-// Thresholds — NYT cookies only last ~7 days, so thresholds must be tight
+// Thresholds. AUTH_WARN_DAYS deliberately set to 14 to surface short-cycle auth
+// (e.g. wapo's wp_ak_signinv2, 30d expiry) well before it goes critical — gives
+// us at least one full cron cycle of warning even if check-cookie-health runs
+// only twice weekly.
 const AUTH_ERROR_DAYS = 1;   // Auth cookie <1 day = fail
-const AUTH_WARN_DAYS = 3;    // Auth cookie <3 days = warn
+const AUTH_WARN_DAYS = 14;   // Auth cookie <14 days = warn
 const EXPIRED_PCT_WARN = 80; // >80% of all cookies expired = warn
+// Staleness — independent of auth-cookie expiry. 21d (not 30d) closes a
+// monitoring hole: a 25d-old extract with 20d auth left would otherwise pass
+// both checks. With 21d we always trip staleness before auth-warn lapses for
+// any cookie cycle ≥35d, and before wapo's 30d auth even goes warn.
+const STALENESS_WARN_DAYS = 21;
 
 // --- HTTP Helper ---
 
@@ -223,6 +231,43 @@ function checkAuthExpiry(cookies, authCookieNames) {
   }
 
   return { status: 'pass', message: `Auth OK ${days}d (${earliest.name})`, authDays: days };
+}
+
+// --- Staleness check (extraction-time-based, independent of cookie expiry) ---
+
+function checkStaleness(fileKey) {
+  const meta = loadCookieMeta(fileKey);
+  if (!meta) {
+    return { status: 'pass', message: '', staleDays: null };
+  }
+
+  const now = Date.now() / 1000;
+  let extractedUnix = meta.extractedAtUnix;
+  if (!extractedUnix && meta.extractedAt) {
+    const parsed = Date.parse(meta.extractedAt) / 1000;
+    if (Number.isFinite(parsed)) extractedUnix = parsed;
+  }
+  if (!extractedUnix) return { status: 'pass', message: '', staleDays: null };
+
+  // Clock-skew / corrupt-meta guard: a future timestamp means the sidecar
+  // is wrong (or this machine's clock is). Don't silently pass — flag it.
+  if (extractedUnix > now + 86400) {
+    return {
+      status: 'warn',
+      message: `extractedAt in future (${meta.source} sidecar corrupt or clock skew)`,
+      staleDays: null,
+    };
+  }
+
+  const ageDays = Math.round((now - extractedUnix) / 86400 * 10) / 10;
+  if (ageDays >= STALENESS_WARN_DAYS) {
+    return {
+      status: 'warn',
+      message: `stale (${ageDays}d since extract, ${meta.source})`,
+      staleDays: ageDays,
+    };
+  }
+  return { status: 'pass', message: '', staleDays: ageDays };
 }
 
 // --- Layer 2b: General health (all outlets) ---
@@ -416,6 +461,7 @@ async function main() {
 
     const auth = checkAuthExpiry(structure.cookies, config.authCookies || []);
     const health = checkGeneralHealth(structure.cookies);
+    const stale = checkStaleness(fileKey);
 
     // Volume check: outlets where authCookies: [] (can't check specific names) but we know
     // a healthy bundle should have at least N cookies. Low count = stale/incomplete extraction.
@@ -428,12 +474,13 @@ async function main() {
     }
 
     const worstStatus = auth.status === 'fail' || volume.status === 'fail' ? 'fail'
-      : auth.status === 'warn' || volume.status === 'warn' ? 'warn'
+      : auth.status === 'warn' || volume.status === 'warn' || stale.status === 'warn' ? 'warn'
       : health.status === 'warn' ? 'warn' : 'pass';
 
     const parts = [structure.message];
     if (auth.message) parts.push(auth.message);
     if (volume.message) parts.push(volume.message);
+    if (stale.message) parts.push(stale.message);
     if (health.message) parts.push(health.message);
     const msg = parts.join(' | ');
 
@@ -445,6 +492,7 @@ async function main() {
       isCritical: true,
       layer: 2,
       authDays: auth.authDays,
+      staleDays: stale.staleDays,
       cookies: structure.cookies,
     });
   }
@@ -458,14 +506,17 @@ async function main() {
 
     const structure = checkStructure(fileKey);
     const health = structure.cookies ? checkGeneralHealth(structure.cookies) : { status: 'skip', message: '' };
-    const worstStatus = structure.status !== 'pass' ? structure.status : health.status;
+    const stale = structure.status === 'pass' ? checkStaleness(fileKey) : { status: 'pass', message: '', staleDays: null };
+    let worstStatus = structure.status !== 'pass' ? structure.status : health.status;
+    if (stale.status === 'warn' && worstStatus === 'pass') worstStatus = 'warn';
 
     const parts = [structure.message];
+    if (stale.message) parts.push(stale.message);
     if (health.message) parts.push(health.message);
     const msg = parts.join(' | ');
 
     console.log(`${icons[worstStatus]} ${fileKey}: ${msg}`);
-    results.push({ name: fileKey, status: worstStatus, message: msg, isCritical: false, layer: 1 });
+    results.push({ name: fileKey, status: worstStatus, message: msg, isCritical: false, layer: 1, staleDays: stale.staleDays });
   }
 
   // --- Layer 3: Live access (critical outlets only, opt-in) ---
@@ -526,8 +577,23 @@ async function main() {
     console.log('\nTo refresh: python3 scripts/extract-safari-cookies.py --push');
   }
 
+  // Critical outlets whose extraction has aged past STALENESS_WARN_DAYS —
+  // surface as their own alert lane so the user knows to re-extract even
+  // when auth cookies still look alive.
+  const staleCritical = results
+    .filter(r => r.isCritical && r.staleDays && r.staleDays >= STALENESS_WARN_DAYS)
+    .sort((a, b) => b.staleDays - a.staleDays);
+
+  if (staleCritical.length > 0) {
+    console.log(`\n${icons.warn} STALE CRITICAL EXTRACTIONS:`);
+    for (const r of staleCritical) {
+      console.log(`  ${r.name}: extracted ${r.staleDays}d ago`);
+    }
+    console.log('\nTo refresh: python3 scripts/extract-safari-cookies.py --push');
+  }
+
   // --- Alerting ---
-  if (criticalFailures.length > 0 || expiringSoon.length > 0) {
+  if (criticalFailures.length > 0 || expiringSoon.length > 0 || staleCritical.length > 0) {
     try {
       const { sendAlert } = require('./lib/discord-notify');
 
@@ -549,6 +615,14 @@ async function main() {
         });
       }
 
+      if (staleCritical.length > 0) {
+        fields.push({
+          name: 'Stale Critical Extractions',
+          value: staleCritical.map(r => `**${r.name}**: ${r.staleDays}d since extract`).join(', '),
+          inline: false,
+        });
+      }
+
       fields.push({
         name: 'Action',
         value: 'Refresh: `python3 scripts/extract-safari-cookies.py --push`',
@@ -556,13 +630,19 @@ async function main() {
       });
 
       const severity = criticalFailures.length > 0 ? 'error' : 'warning';
+      const title = criticalFailures.length > 0
+        ? `Cookie Health — ${criticalFailures.length} Failed`
+        : expiringSoon.length > 0
+          ? `Cookie Health — ${expiringSoon.length} Expiring Soon`
+          : `Cookie Health — ${staleCritical.length} Stale`;
+      const description = criticalFailures.length > 0
+        ? 'Critical outlet cookies are dead or expiring. Review collection is silently degraded.'
+        : expiringSoon.length > 0
+          ? 'Auth cookies expiring soon. Refresh before they die.'
+          : 'Critical outlet extractions are stale (>30d). Re-extract from Safari.';
       await sendAlert({
-        title: criticalFailures.length > 0
-          ? `Cookie Health — ${criticalFailures.length} Failed`
-          : `Cookie Health — ${expiringSoon.length} Expiring Soon`,
-        description: criticalFailures.length > 0
-          ? 'Critical outlet cookies are dead or expiring. Review collection is silently degraded.'
-          : 'Auth cookies expiring soon. Refresh before they die.',
+        title,
+        description,
         severity,
         email: criticalFailures.length > 0,
         fields: fields.slice(0, 10),
@@ -576,7 +656,7 @@ async function main() {
     process.exit(1);
   }
 
-  if (failures.length === 0 && warnings.length === 0 && expiringSoon.length === 0) {
+  if (failures.length === 0 && warnings.length === 0 && expiringSoon.length === 0 && staleCritical.length === 0) {
     console.log('\nAll cookies healthy.');
   }
 }

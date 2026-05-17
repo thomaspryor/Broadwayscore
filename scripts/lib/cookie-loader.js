@@ -71,14 +71,19 @@ for (const config of Object.values(COOKIE_DOMAIN_MAP)) {
 // ============================================================================
 
 let _bundleCache = null;
+let _bundleMetaCache = null;
 
 /**
  * Parse all COOKIES_BUNDLE_* env vars into a single map: { fileKey: [cookies] }
  * Cached after first call.
+ *
+ * Bundles may also contain a `_meta` key (object, not array) with extraction
+ * metadata — extracted into _bundleMetaCache and not surfaced as cookies.
  */
 function loadBundles() {
   if (_bundleCache !== null) return _bundleCache;
   _bundleCache = {};
+  _bundleMetaCache = {};
 
   for (const [key, val] of Object.entries(process.env)) {
     if (!key.startsWith('COOKIES_BUNDLE_') || !val) continue;
@@ -86,9 +91,12 @@ function loadBundles() {
       const decoded = Buffer.from(val, 'base64').toString('utf-8');
       const bundle = JSON.parse(decoded);
       if (typeof bundle === 'object' && !Array.isArray(bundle)) {
+        const meta = bundle._meta && typeof bundle._meta === 'object' ? bundle._meta : null;
         for (const [outletKey, cookies] of Object.entries(bundle)) {
+          if (outletKey.startsWith('_')) continue;
           if (Array.isArray(cookies) && cookies.length > 0) {
             _bundleCache[outletKey] = cookies;
+            if (meta) _bundleMetaCache[outletKey] = meta;
           }
         }
       }
@@ -102,6 +110,41 @@ function loadBundles() {
     console.log(`  🍪 Loaded cookie bundles: ${count} outlets from COOKIES_BUNDLE_* env vars`);
   }
   return _bundleCache;
+}
+
+let _fileMetaCache = null;
+
+function loadFileMeta() {
+  if (_fileMetaCache !== null) return _fileMetaCache;
+  _fileMetaCache = {};
+  const metaPath = path.join(COOKIE_DIR, '_extracted-at.json');
+  if (!fs.existsSync(metaPath)) return _fileMetaCache;
+  try {
+    _fileMetaCache = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+  } catch (e) {
+    // Surface — otherwise staleness silently passes for every outlet.
+    console.log(`  ⚠ Failed to parse ${metaPath}: ${e.message}`);
+  }
+  return _fileMetaCache;
+}
+
+/**
+ * Return extraction metadata for a fileKey, or null.
+ * Shape: { extractedAt: ISOString, extractedAtUnix: number, source: 'bundle'|'file' }
+ * Bundle metadata wins over file metadata (matches the load order in
+ * loadCookiesByFileKey — bundles are tier 1).
+ */
+function loadCookieMeta(fileKey) {
+  loadBundles();
+  const bundleMeta = _bundleMetaCache && _bundleMetaCache[fileKey];
+  if (bundleMeta && (bundleMeta.extractedAt || bundleMeta.extractedAtUnix)) {
+    return { ...bundleMeta, source: 'bundle' };
+  }
+  const fileMeta = loadFileMeta()[fileKey];
+  if (fileMeta && (fileMeta.extractedAt || fileMeta.extractedAtUnix)) {
+    return { ...fileMeta, source: 'file' };
+  }
+  return null;
 }
 
 // ============================================================================
@@ -271,6 +314,8 @@ function getAllFileKeys() {
 function clearCache() {
   Object.keys(_cookieCache).forEach(k => delete _cookieCache[k]);
   _bundleCache = null;
+  _bundleMetaCache = null;
+  _fileMetaCache = null;
 }
 
 module.exports = {
@@ -278,6 +323,7 @@ module.exports = {
   FILE_KEY_TO_ENV_VAR,
   loadCookiesForDomain,
   loadCookiesByFileKey,
+  loadCookieMeta,
   hasCookiesForUrl,
   buildCookieHeaderForUrl,
   getEnvVarForFileKey,

@@ -207,16 +207,6 @@ DOMAIN_GROUPS = {
         "output": "newsday.json",
         "secret_name": "NEWSDAY_COOKIES",
     },
-    "curtainup": {
-        "domains": [".curtainup.com", "curtainup.com"],
-        "output": "curtainup.json",
-        "secret_name": "CURTAINUP_COOKIES",
-    },
-    "theaterscene": {
-        "domains": [".theaterscene.net", "theaterscene.net"],
-        "output": "theaterscene.json",
-        "secret_name": "THEATERSCENE_COOKIES",
-    },
 }
 
 # Project root (where data/ lives)
@@ -453,8 +443,31 @@ def main():
     output_dir = os.path.join(PROJECT_ROOT, "data", "cookies")
     os.makedirs(output_dir, exist_ok=True)
 
+    # Dry-run shorthand: short-circuit FS-mutating side effects (quarantine,
+    # sidecar write) before they run. Bundle generation + --push still happen
+    # below if explicitly requested; dry-run dampens THIS pass's mutations.
+    dry_run_mode = "--dry-run" in sys.argv
+
+    # Load existing extraction metadata sidecar (per-outlet timestamps).
+    # Keeps a record of when each outlet was last successfully extracted, so
+    # check-cookie-health can warn about stale bundles even when the cookies
+    # in them are still technically "alive."
+    meta_path = os.path.join(output_dir, "_extracted-at.json")
+    meta = {}
+    if os.path.exists(meta_path):
+        try:
+            with open(meta_path) as f:
+                meta = json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"WARNING: existing {meta_path} unreadable ({e}); starting fresh")
+            meta = {}
+
+    now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    now_unix = int(datetime.datetime.now(datetime.timezone.utc).timestamp())
+
     gh_commands = []
     any_found = False
+    stale_outlets = []
 
     for group_name, group in DOMAIN_GROUPS.items():
         matched = filter_cookies_for_group(all_cookies, group)
@@ -463,6 +476,22 @@ def main():
         if not matched:
             print(f"  {group_name}: No cookies found.")
             print(f"    -> Make sure you're logged into {group['domains'][0].strip('.')} in Safari")
+
+            # If a stale local file exists, quarantine it so the loader can't
+            # pretend the outlet is still healthy. The bundle in GitHub
+            # secrets may still be alive; that's reported separately by
+            # the staleness check in check-cookie-health.
+            if os.path.exists(output_path):
+                if dry_run_mode:
+                    print(f"    -> [dry-run] would quarantine stale local file → {os.path.basename(output_path)}.stale")
+                else:
+                    stale_path = output_path + ".stale"
+                    try:
+                        os.replace(output_path, stale_path)
+                        print(f"    -> Quarantined stale local file → {os.path.basename(stale_path)}")
+                        stale_outlets.append(group_name)
+                    except OSError as e:
+                        print(f"    -> WARNING: could not quarantine {output_path}: {e}")
             print()
             continue
 
@@ -471,12 +500,27 @@ def main():
         # Count httpOnly cookies (the important auth ones)
         http_only_count = sum(1 for c in matched if c["httpOnly"])
 
-        # Save as Playwright-compatible JSON
-        with open(output_path, "w") as f:
-            json.dump(matched, f, indent=2)
+        if dry_run_mode:
+            print(f"  {group_name}: {len(matched)} cookies ({http_only_count} httpOnly) [dry-run, not saved]")
+        else:
+            # Save as Playwright-compatible JSON
+            with open(output_path, "w") as f:
+                json.dump(matched, f, indent=2)
 
-        print(f"  {group_name}: {len(matched)} cookies ({http_only_count} httpOnly)")
-        print(f"    -> Saved to {output_path}")
+            # Clear any prior quarantine — we just got a fresh successful
+            # extraction for this outlet, so the .stale sibling is obsolete.
+            stale_path = output_path + ".stale"
+            if os.path.exists(stale_path):
+                try:
+                    os.remove(stale_path)
+                except OSError:
+                    pass
+
+            # Stamp this outlet's extraction time in the sidecar.
+            meta[group_name] = {"extractedAt": now_iso, "extractedAtUnix": now_unix}
+
+            print(f"  {group_name}: {len(matched)} cookies ({http_only_count} httpOnly)")
+            print(f"    -> Saved to {output_path}")
 
         # Generate base64 for GitHub secret
         cookie_json = json.dumps(matched)
@@ -497,6 +541,27 @@ def main():
         print("No matching cookies found for any site.")
         print("Make sure you're logged into these sites in Safari first.")
         sys.exit(1)
+
+    # Persist sidecar metadata (skip in dry-run — no filesystem mutation).
+    # Atomic write: tmp file + rename. Two parallel runs can still
+    # last-writer-wins, but neither leaves the sidecar half-written.
+    if not dry_run_mode:
+        try:
+            tmp_meta_path = meta_path + ".tmp"
+            with open(tmp_meta_path, "w") as f:
+                json.dump(meta, f, indent=2, sort_keys=True)
+            os.replace(tmp_meta_path, meta_path)
+        except OSError as e:
+            print(f"WARNING: failed to write {meta_path}: {e}")
+
+    # Loud summary for any outlet whose local file was quarantined this run.
+    if stale_outlets:
+        print()
+        print("=" * 60)
+        print(f"  ⚠ {len(stale_outlets)} outlet(s) had no fresh Safari cookies — quarantined")
+        print("=" * 60)
+        for o in stale_outlets:
+            print(f"  - {o}: log into {DOMAIN_GROUPS[o]['domains'][0].strip('.')} in Safari, then re-run")
 
     # Also note the gitignore
     gitignore_path = os.path.join(output_dir, ".gitignore")
@@ -526,21 +591,32 @@ def main():
                     outlet_cookies[file_key] = cmd["_cookies"]
                     break
 
-        # Bin-pack into bundles
+        # Bin-pack into bundles. Each bundle gets a _meta entry so
+        # check-cookie-health can flag stale extractions even when the
+        # local data/cookies/ files aren't present (i.e. in CI).
+        # cookie-loader.js already ignores non-array entries when loading
+        # bundles, so _meta is safely skipped by consumers.
+        def empty_bundle():
+            return {"_meta": {"extractedAt": now_iso, "extractedAtUnix": now_unix}}
+
         bundles = []
-        current_bundle = {}
+        current_bundle = empty_bundle()
         for file_key, cookies in sorted(outlet_cookies.items()):
             test_bundle = {**current_bundle, file_key: cookies}
             test_json = json.dumps(test_bundle)
             test_b64_size = len(base64.b64encode(test_json.encode("utf-8")))
 
-            if test_b64_size > MAX_BUNDLE_SIZE and current_bundle:
+            # Bundle full if adding this outlet exceeds size AND we already
+            # have at least one outlet in it (i.e. more than just _meta).
+            outlet_count = len([k for k in current_bundle if not k.startswith("_")])
+            if test_b64_size > MAX_BUNDLE_SIZE and outlet_count > 0:
                 bundles.append(current_bundle)
-                current_bundle = {file_key: cookies}
+                current_bundle = {**empty_bundle(), file_key: cookies}
             else:
                 current_bundle = test_bundle
 
-        if current_bundle:
+        outlet_count = len([k for k in current_bundle if not k.startswith("_")])
+        if outlet_count > 0:
             bundles.append(current_bundle)
 
         # Print bundle plan
@@ -555,7 +631,7 @@ def main():
             b64 = base64.b64encode(raw.encode("utf-8"))
             size_kb = len(b64) / 1024
             warn = " ⚠ >40KB" if size_kb > 40 else ""
-            outlets = list(bundle.keys())
+            outlets = [k for k in bundle.keys() if not k.startswith("_")]
             print(f"  COOKIES_BUNDLE_{i}: {len(outlets)} outlets, {size_kb:.1f} KB{warn}")
             print(f"    → {', '.join(outlets)}")
 
@@ -588,7 +664,7 @@ def main():
                     stdin=open(tmp_path, "r"),
                     capture_output=True, text=True, timeout=30,
                 )
-                outlets = list(bundle.keys())
+                outlets = [k for k in bundle.keys() if not k.startswith("_")]
                 if result.returncode == 0:
                     print(f"  ✓ {secret_name}: {len(outlets)} outlets pushed ({', '.join(outlets)})")
                 else:
