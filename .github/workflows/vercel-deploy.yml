@@ -410,3 +410,49 @@ jobs:
             -f alert_title="Deploy to Vercel Failed" \
             -f alert_context='{}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # Fires only when the deploy job fails AND this is the 3rd consecutive failure.
+  # Sends a second "still broken" alert (~15 min into the outage) so parallel sessions
+  # notice without polling. First-failure alert comes from the deploy job above.
+  # Uses streak == 3 exactly (not >= 3) to fire once per outage, not every cron tick.
+  check-streak:
+    needs: [deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Count consecutive failures and re-alert at streak 3
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Count leading consecutive failures in the last 20 completed deploy runs.
+          # Exclude null conclusions (in-progress), skipped, and cancelled runs —
+          # those are workflow_run triggers for failed rebuilds and don't represent
+          # real deploy attempts.
+          STREAK=$(gh run list \
+            --workflow="vercel-deploy.yml" \
+            --limit=20 \
+            --json conclusion \
+            --jq '[.[] | select(.conclusion != null and .conclusion != "skipped" and .conclusion != "cancelled")] |
+                  reduce .[] as $r (
+                    {"streak": 0, "done": false};
+                    if .done then .
+                    elif $r.conclusion == "failure" then {"streak": (.streak + 1), "done": false}
+                    else {"streak": .streak, "done": true}
+                    end
+                  ) | .streak' 2>/dev/null || echo "0")
+
+          echo "Consecutive failure streak: $STREAK"
+
+          # Fire exactly at 3 — the first-failure alert covers streak 1.
+          # Streak 3 = ~15 min of broken deploys on the 5-min cron.
+          if [ "$STREAK" -eq 3 ]; then
+            echo "Streak hit 3 — dispatching escalation alert"
+            gh workflow run investigate-alert.yml \
+              -f alert_type=vercel_deploy_fail \
+              -f alert_title="Deploy still broken: 3rd consecutive failure (~15 min)" \
+              -f alert_context="{\"streak\":$STREAK,\"note\":\"Deploys have been failing for ~15 min across all parallel sessions. Check Actions tab.\"}" \
+              -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/workflows/vercel-deploy.yml"
+          else
+            echo "Streak is $STREAK — no escalation needed"
+          fi
