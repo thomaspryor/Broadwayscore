@@ -59,7 +59,7 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-tight';
+const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-none';
 
 // --- Reusable score sub-components ---
 
@@ -225,24 +225,26 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Performer name (link to cast page) + show name + history */}
+      {/* Performer name + history inline, show name below */}
       <div className="flex-1 min-w-0">
-        {actorUrl ? (
-          <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
-            {show.nomineePersonName}
-          </Link>
-        ) : (
-          <p className="text-sm font-bold text-white truncate">{show.nomineePersonName}</p>
-        )}
+        <div className="flex items-baseline gap-1.5 min-w-0">
+          {actorUrl ? (
+            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors truncate flex-shrink-0">
+              {show.nomineePersonName}
+            </Link>
+          ) : (
+            <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
+          )}
+          <span className="text-[10px] text-gray-500 truncate min-w-0">
+            {historyLabel}
+            {show.gdOdds != null && (
+              <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
+            )}
+          </span>
+        </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
-        <span className="text-[10px] text-gray-600">
-          {historyLabel}
-          {show.gdOdds != null && (
-            <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
-          )}
-        </span>
       </div>
 
       {/* Gold Derby + Audience + Critic + Awards */}
