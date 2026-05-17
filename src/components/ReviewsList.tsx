@@ -133,6 +133,14 @@ function TopCriticLabel() {
   );
 }
 
+// Outlets that pick up tier=1 via the flat-tier opera methodology but are not
+// considered tier-1 critics of record by serious opera-goers. We still display
+// the review and count it in the composite — we just don't badge it as a Top
+// Critic. Maintain in lowercase. Notion 363637c5-416f-8112.
+const TOP_CRITIC_BADGE_SUPPRESS: ReadonlySet<string> = new Set([
+  'broadwayworld',
+]);
+
 function ExternalLinkIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -177,7 +185,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
             <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
           ) : review.outlet}
         </span>
-        {review.tier === 1 && <TopCriticLabel />}
+        {review.tier === 1 && !TOP_CRITIC_BADGE_SUPPRESS.has((review.outlet || '').toLowerCase()) && <TopCriticLabel />}
         {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
         {review.designation && review.designation !== 'Critics_Pick' && (
           <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
