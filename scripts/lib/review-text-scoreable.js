@@ -41,6 +41,18 @@ const { isLikelyStaleRoundupFlag, isLikelyStaleWrongShow, wrongShowCleared, isLi
 
 function passesFlagFilters(data, show) {
   if (!data) return false;
+
+  // S3-T6: CV-promotion-deferred reviews are explicitly includable.
+  // Mirrors the documentation block in review-guards.js:isIncludableForRebuild.
+  // The defer (S3-T5, rebuild-all-reviews.js sets
+  // `flaggedForReview=true` + `flagReason='cv-promotion-deferred'`) prevents
+  // the LLM-CV pass from silently promoting biographical-lead reviews to
+  // wrongShow at outlets with `cvStyle: 'biographical-lead'`. These reviews
+  // are scoreable + must appear in reviews.json. We do not gate on
+  // `flaggedForReview` anywhere here today, but documenting the contract
+  // future-proofs against a generic flag-based reject being added.
+  // Cross-ref: memory/feedback_includability_predicates_must_be_canonical.md
+
   if (data.rejectionReason) return false;
   if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
   if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
