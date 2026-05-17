@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-05-17T01:11:11.223Z",
+    "lastUpdated": "2026-05-17T04:28:49.000Z",
     "sources": [
       "Wikipedia",
       "Playbill",
@@ -1889,9 +1889,10 @@
         "ceremony": "79th",
         "nominations": 0,
         "wins": [],
-        "nominatedFor": []
-      },
-      "note": "Original production - 2025 revival not yet eligible"
+        "nominatedFor": [],
+        "eligible": true,
+        "note": "25th Anniversary Tour Broadway engagement — explicitly ruled eligible for competitive Best Musical by the Tony Administration Committee."
+      }
     },
     "liberation-2025": {
       "tony": {
@@ -1946,9 +1947,7 @@
     "queen-versailles-2025": {
       "tony": {
         "season": "2025-26",
-        "ceremony": "79th",
-        "eligible": false,
-        "note": "Not yet eligible - opens Nov 2025"
+        "ceremony": "79th"
       }
     },
     "oedipus-2025": {
@@ -2213,9 +2212,7 @@
     "beaches-2026": {
       "tony": {
         "season": "2025-26",
-        "ceremony": "79th",
-        "eligible": false,
-        "note": "Not yet eligible - opens Mar 2026"
+        "ceremony": "79th"
       }
     },
     "the-25th-annual-putnam-county-spelling-bee-2005": {
@@ -6638,6 +6635,22 @@
           "Best Scenic Design of a Musical"
         ],
         "wins": []
+      },
+      "dramadesk": {
+        "season": "2015-16",
+        "wins": [
+          "Outstanding Musical"
+        ],
+        "nominatedFor": [
+          "Outstanding Musical"
+        ]
+      },
+      "nyDramaCritics": {
+        "season": "2015-16",
+        "wins": [
+          "Best Musical"
+        ],
+        "nominatedFor": []
       }
     },
     "disaster-2016": {
@@ -7618,6 +7631,13 @@
         "nominatedFor": [
           "Outstanding Revival of a Play"
         ]
+      },
+      "dramadesk": {
+        "season": "2021-22",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Play"
+        ]
       }
     },
     "how-i-learned-to-drive-2022": {
@@ -8082,6 +8102,7 @@
       "dramadesk": {
         "season": "2022-23",
         "wins": [
+          "Outstanding Featured Performance in a Play",
           "Outstanding Play"
         ],
         "nominatedFor": [
@@ -8434,6 +8455,7 @@
       "dramadesk": {
         "season": "2022-23",
         "wins": [
+          "Outstanding Featured Performance in a Musical",
           "Outstanding Music"
         ],
         "nominatedFor": [
@@ -8516,6 +8538,7 @@
           "Outstanding Choreography",
           "Outstanding Costume Design of a Musical",
           "Outstanding Featured Performance in a Musical",
+          "Outstanding Lead Performance in a Musical",
           "Outstanding Lyrics",
           "Outstanding Musical",
           "Outstanding Orchestrations"
@@ -8836,7 +8859,9 @@
       },
       "dramadesk": {
         "season": "2022-23",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performance in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Performance in a Play",
           "Outstanding Lead Performance in a Play"
@@ -8880,6 +8905,8 @@
         "season": "2022-23",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Lead Performance in a Play",
           "Outstanding Revival of a Play"
         ]
       },
@@ -8887,6 +8914,7 @@
         "season": "2022-23",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Revival of a Play"
         ]
       }
@@ -9383,6 +9411,7 @@
       "dramadesk": {
         "season": "2023-24",
         "wins": [
+          "Outstanding Lead Performance in a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Revival of a Play"
         ],
@@ -9440,6 +9469,30 @@
         "season": "2023-24",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Revival of a Play"
+        ]
+      },
+      "dramadesk": {
+        "season": "2023-24",
+        "wins": [
+          "Outstanding Featured Performance in a Play"
+        ],
+        "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Featured Performance in a Play",
+          "Outstanding Lead Performance in a Play",
+          "Outstanding Revival of a Play",
+          "Outstanding Scenic Design of a Play"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2023-24",
+        "wins": [
+          "Outstanding Featured Performer in a Broadway Play"
+        ],
+        "nominatedFor": [
+          "Outstanding Director of Play",
+          "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Revival of a Play"
         ]
       }
@@ -10224,6 +10277,8 @@
         "season": "2024-25",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Direction of a Musical",
+          "Outstanding Lead Performance in a Musical",
           "Outstanding Revival of a Musical"
         ]
       },
@@ -10243,6 +10298,7 @@
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
+          "Outstanding Direction of a Musical",
           "Outstanding Revival of a Musical"
         ]
       }
@@ -11731,6 +11787,13 @@
           "Best Actress",
           "Best Revival"
         ]
+      },
+      "dramaLeague": {
+        "season": "2017-18",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Production of a Musical"
+        ]
       }
     },
     "travesties-2018": {
@@ -11870,6 +11933,20 @@
           "Best Actress in a Musical"
         ],
         "wins": []
+      },
+      "outerCriticsCircle": {
+        "season": "2016-17",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2016-17",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
       }
     },
     "sunday-in-the-park-with-george-2017": {
@@ -14165,7 +14242,8 @@
         "season": "2016-17",
         "wins": [],
         "nominatedFor": [
-          "Outstanding Production of a Play"
+          "Outstanding Production of a Play",
+          "Outstanding Revival of a Play"
         ]
       }
     },
@@ -14332,6 +14410,13 @@
           "Best Choreography"
         ],
         "wins": []
+      },
+      "outerCriticsCircle": {
+        "season": "2016-17",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding New Broadway Musical"
+        ]
       }
     },
     "the-children-2017": {
@@ -32024,6 +32109,33 @@
         "ceremony": "77th",
         "eligible": false,
         "note": "Solo storytelling — Special Tony Award recipient at the 77th ceremony, not eligible for competitive Best Play."
+      }
+    },
+    "a-beautiful-noise-the-neil-diamond-musical-2022": {
+      "tony": {
+        "season": "2022-23",
+        "nominatedFor": []
+      },
+      "dramadesk": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performance in a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding New Broadway Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Production of a Musical"
+        ]
       }
     }
   }
