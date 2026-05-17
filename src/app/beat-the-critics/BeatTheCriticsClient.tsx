@@ -12,7 +12,7 @@ type Screen = 'landing' | 'picking' | 'reveal' | 'tier-complete' | 'results';
 
 interface CriticPanelist {
   name: string;
-  outlet: string;
+  outlets: string[];
   initials: string;
   // picks[categoryTitle] populated once critics submit; null = TBD
   picks?: Record<string, string>;
@@ -20,10 +20,10 @@ interface CriticPanelist {
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Dan Rubins', outlet: 'BroadwayRadio', initials: 'DR' },
-  { name: 'Naveen Kumar', outlet: 'Washington Post', initials: 'NK' },
-  { name: 'Adam Feldman', outlet: 'Time Out NY', initials: 'AF' },
-  { name: 'Jackson McHenry', outlet: 'Vulture', initials: 'JM' },
+  { name: 'Dan Rubins', outlets: ['BroadwayRadio', 'TheaterMania'], initials: 'DR' },
+  { name: 'Naveen Kumar', outlets: ['Washington Post'], initials: 'NK' },
+  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF' },
+  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM' },
 ];
 
 function criticHasPicks(): boolean {
@@ -32,8 +32,8 @@ function criticHasPicks(): boolean {
 
 // ─── Helpers ───
 
-function getCriticScorePick(nominees: SerializedTonyShow[]): string {
-  const scored = nominees.filter(n => n.compositeScore != null);
+function getTonyPredictionPick(nominees: SerializedTonyShow[]): string {
+  const scored = [...nominees].filter(n => n.blendedScore != null || n.compositeScore != null);
   if (scored.length === 0) return nominees[0]?.title ?? '';
   scored.sort((a, b) => (b.blendedScore ?? b.compositeScore ?? 0) - (a.blendedScore ?? a.compositeScore ?? 0));
   return scored[0].title;
@@ -385,15 +385,15 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const hasMoreCatsInTier = findNextNonEmptyCategory(currentCatIdx) !== null;
 
     // Show categories: full reveal with CriticScore + critics + crowd
-    // Actor categories: critics only (no CriticScore)
+    // Actor categories: critics only (no Tony prediction)
     const nominees = isActor ? [] : [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
     const actorNominees = isActor ? (currentCategory.actorNominees ?? []) : [];
-    const criticScorePick = isActor ? '' : getCriticScorePick(nominees);
+    const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
     const picksAvailable = criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
     const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
-    const criticScorePickShow = isActor ? undefined : nominees.find(n => n.title === criticScorePick);
-    const matchesCriticScore = isActor ? false : userPick === criticScorePick;
+    const tonyPredictionPickShow = isActor ? undefined : nominees.find(n => n.title === tonyPredictionPick);
+    const matchesTonyPrediction = isActor ? false : userPick === tonyPredictionPick;
     const criticMatches = picksAvailable ? criticPicks.filter(p => p === userPick).length : 0;
 
     return (
@@ -414,7 +414,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 <div className="text-lg font-extrabold">{userPick}</div>
                 {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-sm text-gray-400">({picked.showTitle})</div> : null; })()}
                 <div className="text-xs text-gray-400 mt-0.5">
-                  {!isActor && matchesCriticScore && <><span className="text-green-500 font-semibold">Matches CriticScore prediction</span>{' \u00b7 '}</>}
+                  {!isActor && matchesTonyPrediction && <><span className="text-green-500 font-semibold">Matches Tony prediction</span>{' \u00b7 '}</>}
                   {picksAvailable ? `You agree with ${criticMatches} of ${CRITICS.length} critics` : 'Critics\u2019 picks revealed June 7'}
                 </div>
               </div>
@@ -429,21 +429,18 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className="flex-1 h-px bg-white/5" />
             </div>
 
-            {/* CriticScore card — only for show categories */}
+            {/* Tony Prediction row — show categories only */}
             {!isActor && (
-              <div className={`rounded-xl mb-2.5 animate-slide-in overflow-hidden ${matchesCriticScore ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-red-500/[0.06] ring-1 ring-red-500/15'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <div className="px-3.5 pt-3 pb-1.5 flex items-center justify-between">
-                  <div className="leading-tight">
-                    <div className="text-xs font-bold text-brand tracking-tight">Broadway Scorecard</div>
-                    <div className="text-[9px] font-semibold text-gray-500 tracking-wider">CriticScore&trade;</div>
+              <div className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${matchesTonyPrediction ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <div className="min-w-0 flex-1 flex items-center gap-2.5">
+                  <div className="leading-tight shrink-0">
+                    <div className="text-xs font-bold text-brand">Broadway Scorecard</div>
+                    <div className="text-[9px] font-semibold text-gray-500 tracking-wider">Tony Prediction</div>
                   </div>
-                  <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${matchesCriticScore ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{matchesCriticScore ? 'Match!' : 'Different'}</span>
+                  {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
+                  <div className="text-sm font-bold truncate">{tonyPredictionPick}</div>
                 </div>
-                <div className="px-3.5 pb-3 flex items-center gap-2.5">
-                  {criticScorePickShow && <ShowPoster show={criticScorePickShow} size="xs" />}
-                  <div className="text-[15px] font-bold truncate flex-1">{criticScorePick}</div>
-                  {criticScorePickShow && <ScoreBadge score={criticScorePickShow.compositeScore ?? undefined} status={criticScorePickShow.status} size="sm" />}
-                </div>
+                <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>
               </div>
             )}
 
@@ -462,29 +459,31 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               CRITICS.map((critic, i) => {
                 const pick = criticPicks[i];
                 const isMatch = pick !== null && userPick === pick;
+                const pickShow = !isActor && pick ? nominees.find(n => n.title === pick) : undefined;
+                const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
                 return (
-                  <div key={critic.name} className={`rounded-xl mb-2.5 animate-slide-in overflow-hidden ${pick === null ? 'bg-surface-raised ring-1 ring-white/5' : isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-red-500/[0.04] ring-1 ring-red-500/10'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
-                    <div className="px-3.5 pt-3 pb-1.5 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-bold text-gray-400 flex-shrink-0">{critic.initials}</div>
-                        <div><div className="text-sm font-bold">{critic.name}</div><div className="text-[11px] text-gray-500">{critic.outlet}</div></div>
+                  <div key={critic.name} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${pick === null ? 'bg-surface-raised ring-1 ring-white/5' : isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
+                    <div className="min-w-0 flex-1 flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
+                      <div className="leading-tight shrink-0">
+                        <div className="text-xs font-bold">{critic.name}</div>
+                        <div className="text-[10px] text-gray-500">{critic.outlets.join(' · ')}</div>
                       </div>
-                      {pick !== null && <span className={`text-[10px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full ${isMatch ? 'bg-green-500/20 text-green-400' : 'bg-red-500/15 text-red-400'}`}>{isMatch ? 'Match!' : 'Different'}</span>}
-                    </div>
-                    <div className="px-3.5 pb-3 flex items-center gap-2.5">
                       {pick === null ? (
-                        <div className="text-sm text-gray-500 italic">Pick revealed June 7</div>
+                        <div className="text-xs text-gray-600 italic ml-1">Revealed June 7</div>
                       ) : (
                         <>
-                          {!isActor && (() => { const pickShow = nominees.find(n => n.title === pick); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
-                          <div className="flex-1 min-w-0">
-                            <div className="text-[15px] font-bold truncate">{pick}</div>
-                            {isActor && (() => { const actorPick = actorNominees.find(n => n.name === pick); return actorPick ? <div className="text-xs text-gray-500 truncate">({actorPick.showTitle})</div> : null; })()}
+                          {pickShow && <ShowPoster show={pickShow} size="xs" />}
+                          <div className="min-w-0">
+                            <div className="text-sm font-bold truncate">{pick}</div>
+                            {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
                           </div>
-                          {!isActor && (() => { const pickShow = nominees.find(n => n.title === pick); return pickShow ? <ScoreBadge score={pickShow.compositeScore ?? undefined} status={pickShow.status} size="sm" /> : null; })()}
                         </>
                       )}
                     </div>
+                    {pick !== null && (
+                      <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{isMatch ? 'Match!' : 'Different'}</span>
+                    )}
                   </div>
                 );
               })
