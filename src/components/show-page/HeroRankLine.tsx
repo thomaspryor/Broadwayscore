@@ -19,39 +19,45 @@ interface Props {
   ranks: ShowRanks | null;
   market: ComputedShow['category'];
   className?: string;
+  /** Which metric's ranks to render. Defaults to 'critic' for backwards
+   *  compatibility with existing critic-side callers (hero + legacy header). */
+  metric?: 'critic' | 'audience';
 }
 
-export default function HeroRankLine({ ranks, market, className = '' }: Props) {
+export default function HeroRankLine({ ranks, market, className = '', metric = 'critic' }: Props) {
   if (!ranks) return null;
-  const c = ranks.critic;
-  if (!c.openMarket && !c.season && !c.allTime) return null;
+  const c = ranks[metric];
+  if (!c || (!c.openMarket && !c.season && !c.allTime)) return null;
 
   const shortLabel = getShortMarketLabel(market);
   const fragments: React.ReactNode[] = [];
   if (c.openMarket) {
     fragments.push(
       <span key="om">
-        <span className="font-semibold text-gray-200">{c.openMarket.rank}/{c.openMarket.total}</span> open {shortLabel}
+        <span className="font-bold text-brand">#{c.openMarket.rank}</span>
+        {' '}of {c.openMarket.total} open {shortLabel} shows
       </span>,
     );
   }
   if (c.season) {
     fragments.push(
       <span key="se">
-        <span className="font-semibold text-gray-200">{c.season.rank}/{c.season.total}</span> this season
+        <span className="font-bold text-brand">#{c.season.rank}</span>
+        {' '}of {c.season.total} season openers
       </span>,
     );
   }
   if (c.allTime) {
     fragments.push(
-      <span key="at" className="text-gray-500">
-        {c.allTime.rank}/{c.allTime.total} all-time<span className="text-gray-600">*</span>
+      <span key="at">
+        <span className="font-bold text-brand">#{c.allTime.rank}</span>
+        {' '}of {c.allTime.total} all-time<span className="text-gray-600">*</span>
       </span>,
     );
   }
 
   return (
-    <p className={`text-[11px] sm:text-[12px] text-gray-400 mt-1 leading-snug ${className}`}>
+    <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug ${className}`}>
       Ranks {fragments.map((f, i) => (
         <React.Fragment key={i}>
           {i > 0 ? <span className="text-gray-600"> · </span> : null}
