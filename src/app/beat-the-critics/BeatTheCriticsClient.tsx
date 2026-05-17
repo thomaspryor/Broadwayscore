@@ -604,7 +604,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
             <h3 className="text-base font-bold">Submit your picks</h3>
             <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 7, we&apos;ll automatically email you with your results.</p>
-            <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic? You&apos;re entered in the <strong>$100 TodayTix prize draw</strong>.</p>
+            <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$100 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
               <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
