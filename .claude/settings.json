@@ -1,0 +1,38 @@
+{
+  "_comment": "Project-scoped Claude Code config. Loaded by cloud apps (iOS, Mac, web) that can't reach the user's ~/.claude/. Each project hook script begins with a self-skip preamble: if ~/.claude/hooks/<basename> exists (local CLI), the project copy exits 0 and the user-level master fires. On cloud sandboxes ~/.claude/hooks/ does not exist, so the project copy runs. See .claude/CLOUD.md.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Edit|Write|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/notion-create-block.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/verify-edits.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

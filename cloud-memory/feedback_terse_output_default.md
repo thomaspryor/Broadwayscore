@@ -1,0 +1,19 @@
+---
+name: terse output default
+description: Default to short answers — no trailing recap, no pleasantries, no narrating thought process. Verification evidence still required.
+type: feedback
+originSessionId: 96a5cc07-46ce-4ec1-a2fe-07a70b48b334
+---
+Default tone is terse. Short answers, no trailing recap, no pleasantries, no narrating internal deliberation.
+
+**Why:** User has flagged token cost as a real pain point twice (2026-05-04). Output tokens cost ~5x input on Claude Opus, so verbose explanation is the single biggest token leak Claude directly controls. Caveman skill was considered and rejected — its compression conflicts with this project's verification-evidence rules. The compromise: keep verification rigor (rule 2 — show the command + output), drop the narration around it.
+
+**How to apply:**
+- A simple question gets a direct answer, not headers and sections.
+- End-of-turn summary: one or two sentences max ("X done, next is Y"). Never reiterate what's already in the diff.
+- Don't list what tools were used or recap the plan you just executed. The user can see the tool calls.
+- Drop "Sure!", "Happy to help", "Let me know if...", "Great question", "Based on the analysis...".
+- Don't narrate thinking ("Now I'll check X, then Y") — just do it.
+- Verification evidence is NOT a recap. Showing the command + its output is the proof rule 2 demands. Keep that.
+- For multi-step destructive work: terse rules don't apply — clarity over brevity when the user needs to make a decision or when ambiguity could destroy work.
+- For exploratory questions ("what could we do about X?"): 2-3 sentences with a recommendation and the main tradeoff. Don't pre-implement.
