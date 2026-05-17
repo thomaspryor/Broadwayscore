@@ -55,7 +55,7 @@ export default function OperaPage() {
         startDate: show.openingDate,
         endDate: show.closingDate,
         status: show.status,
-        category: 'off-broadway',
+        category: 'opera',
       })),
     'Opera Productions',
   );
