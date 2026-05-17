@@ -689,6 +689,30 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'artsdesk': {
+    name: 'The Arts Desk',
+    domain: 'theartsdesk.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // theartsdesk.com/opera lists recent opera reviews. Open access (no
+    // cookies needed). URL pattern: /opera/{slug}. Met transmission reviews
+    // are tagged with "metropolitan-opera" in the slug (verified for Tristan).
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://theartsdesk.com/opera');
+      const all = [];
+      const pattern = /["'](?:https?:\/\/(?:www\.)?theartsdesk\.com)?(\/opera\/[a-z0-9-]+)["']/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push('https://theartsdesk.com' + m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'artsdesk', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
