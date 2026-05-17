@@ -24,7 +24,6 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // for routing only, and surfacing that label embarrasses the site to opera
   // professionals. See Notion 363637c5-416f-8112.
   const isOperaShowPage = isOperaShowPath(pathname);
-  const isOpera = isOperaDomain || isOperaShowPage;
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +32,11 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
+  // Don't apply opera domain branding when user has explicitly navigated to
+  // another market (off-broadway, west-end, off-west-end). The opera domain
+  // flag only matters on opera-specific pages.
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway;
+  const isOpera = (isOperaDomain || isOperaShowPage) && !isExplicitNonOperaMarket;
   const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isOpera;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
