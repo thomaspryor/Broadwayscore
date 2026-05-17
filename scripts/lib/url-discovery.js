@@ -397,10 +397,22 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // 24h disk cache — same query within TTL returns cached results, no API call.
   // Cuts duplicate SERP spend across orchestrator iterations, poller dispatches,
   // gather-reviews runs targeting the same shows. See scripts/lib/serp-cache.js.
+  //
+  // dateMax is rounded to weekly buckets in the cache key (downstream SERP call
+  // still uses the precise dateMax). Without this, calculateDateWindow's
+  // now+30d window made the cache key churn daily on every open show — neutering
+  // the cache for the highest-volume case. Weekly buckets keep results stable
+  // enough that one cached snapshot serves a whole week of queries with near-
+  // identical Google windows.
+  const _weeklyBucket = (d) => {
+    if (!d) return '';
+    const wkMs = 7 * 24 * 60 * 60 * 1000;
+    return new Date(Math.floor(d.getTime() / wkMs) * wkMs).toISOString().split('T')[0];
+  };
   const cacheOpts = {
     geo: query.includes('West End') ? 'gb' : 'us',
     dateMin: dateRange ? dateRange.dateMin.toISOString().split('T')[0] : '',
-    dateMax: dateRange ? dateRange.dateMax.toISOString().split('T')[0] : '',
+    dateMax: dateRange ? _weeklyBucket(dateRange.dateMax) : '',
   };
   const cached = _serpCache.get(query, cacheOpts);
   if (cached) {
@@ -427,9 +439,14 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     }
   }
 
-  // Cache successful results (including empty arrays — "no organic results" IS
-  // a valid stable answer). Never cache nulls (provider failures).
-  if (results !== null) {
+  // Cache successful results. Empty arrays ARE cached for routine flows because
+  // "no organic results" is a stable answer. EXCEPTION: during opening-night
+  // polling (preferSpeed=true), an empty array often means "review hasn't
+  // dropped yet" — caching it would hide a freshly-published review for up to
+  // 24h. So we skip caching empty results on the opening-night path; routine
+  // gather-reviews scans still benefit from negative caching.
+  const shouldCache = results !== null && !(preferSpeed && results.length === 0);
+  if (shouldCache) {
     _serpCache.set(query, cacheOpts, { results, provider });
   }
   return { results, provider };
