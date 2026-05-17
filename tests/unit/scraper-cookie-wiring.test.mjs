@@ -8,14 +8,26 @@
  * ScrapingBee) must propagate them. Without this guard, future refactors can
  * silently drop cookies again and paywalls go dark.
  *
- * Strategy: monkey-patch https.get / https.request to capture args without
- * actually making network calls. Assert Cookie header / cookies param shows up
- * where expected. Responses are stubbed 404 so each fetch returns null cleanly.
+ * Strategy:
+ *   - Plain path (fetch-plain.js, uses global fetch / undici): undici MockAgent
+ *     intercepts at the undici layer. Survives refactors between fetch() and
+ *     undici.request() — both go through the same dispatcher.
+ *   - Bright Data + ScrapingBee paths (still use https.get / https.request):
+ *     monkey-patch https.* and capture call args. Keep as-is until those callers
+ *     migrate too.
+ *
+ * Migration history: 432a4bbf35 swapped fetchWithCookiesPlain from https.get
+ * to global fetch (DataDome TLS fingerprinting bypass). The first test patch
+ * (6df524db96) monkey-patched globalThis.fetch — survived that one migration
+ * but would break the next (e.g., undici.request, axios). MockAgent is the
+ * blessed undici-layer interception that survives any client that ultimately
+ * routes through undici's dispatcher.
  */
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { createRequire } from 'module';
+import { MockAgent, setGlobalDispatcher, getGlobalDispatcher } from 'undici';
 
 // IMPORTANT: scraper.js caches BRIGHTDATA_TOKEN / SCRAPINGBEE_API_KEY at module
 // load time. Set placeholders here BEFORE requiring the module so each backend
@@ -30,10 +42,12 @@ const cookieLoader = require('../../scripts/lib/cookie-loader');
 
 const origGet = https.get;
 const origRequest = https.request;
-const origFetch = globalThis.fetch;
+const origDispatcher = getGlobalDispatcher();
 
-let capturedGets = [];
-let capturedRequests = [];
+let capturedGets = [];           // https.get stub (SB path)
+let capturedRequests = [];        // https.request stub (BD path)
+let capturedUndiciRequests = []; // undici/fetch MockAgent (plain path)
+let mockAgent = null;
 
 function fakeResponse(statusCode = 404, body = '') {
   const res = new EventEmitter();
@@ -50,6 +64,7 @@ function fakeResponse(statusCode = 404, body = '') {
 function installStubs() {
   capturedGets = [];
   capturedRequests = [];
+  capturedUndiciRequests = [];
 
   https.get = (url, optsOrCb, cb) => {
     let opts = optsOrCb;
@@ -89,24 +104,54 @@ function installStubs() {
     return req;
   };
 
-  // fetch-plain.js (used by fetchWithCookiesPlain) was migrated from
-  // https.get to global fetch (undici) in 432a4bbf35 to bypass DataDome
-  // TLS fingerprinting on WSJ. Patch globalThis.fetch and reuse the
-  // capturedGets sink so the existing call.opts.headers.Cookie assertion
-  // still works — the (url, {headers}) shape happens to match.
-  globalThis.fetch = async (url, opts) => {
-    const urlStr = typeof url === 'string' ? url : url.href || String(url);
-    capturedGets.push({ url: urlStr, opts: opts || {} });
-    // Return a 404 Response so fetchWithCookiesPlain throws → returns null
-    // (same effective behavior as the https.get 404 stub).
-    return new Response('', { status: 404 });
+  // undici MockAgent intercepts global fetch and undici.request at the dispatcher
+  // layer. Use a catch-all interceptor that records every request and returns 404.
+  // Survives refactors within the fetch/undici client family — only breaks if the
+  // codebase migrates to a non-undici HTTP client (axios, etc.) which is unlikely.
+  mockAgent = new MockAgent({ connections: 1 });
+  mockAgent.disableNetConnect();
+  setGlobalDispatcher(mockAgent);
+
+  // Pool any origin we expect to hit. Interceptors are registered per (origin, path)
+  // and reply with a 404 stub while capturing the request shape for assertions.
+  for (const origin of ['https://www.wsj.com', 'https://example.com']) {
+    const pool = mockAgent.get(origin);
+    pool.intercept({ path: () => true, method: 'GET' }).reply(404, '', {
+      headers: { 'content-type': 'text/html' },
+    }).persist().times(10);
+    // MockPool's onRequest hook isn't directly exposed for capture; instead we
+    // wrap the underlying intercept. Since intercept returns a synchronous reply,
+    // we capture via a thin override on dispatcher.dispatch below.
+  }
+
+  // Wrap dispatcher.dispatch to capture each outbound request (url + headers).
+  const origDispatch = mockAgent.dispatch.bind(mockAgent);
+  mockAgent.dispatch = (opts, handler) => {
+    // opts has .origin (or .url), .path, .method, .headers
+    const url = (opts.origin || '') + (opts.path || '');
+    const headers = {};
+    if (opts.headers) {
+      if (Array.isArray(opts.headers)) {
+        for (let i = 0; i < opts.headers.length; i += 2) {
+          headers[opts.headers[i]] = opts.headers[i + 1];
+        }
+      } else if (typeof opts.headers === 'object') {
+        Object.assign(headers, opts.headers);
+      }
+    }
+    capturedUndiciRequests.push({ url, opts: { headers }, method: opts.method });
+    return origDispatch(opts, handler);
   };
 }
 
 function restoreStubs() {
   https.get = origGet;
   https.request = origRequest;
-  globalThis.fetch = origFetch;
+  if (mockAgent) {
+    mockAgent.close().catch(() => {});
+    mockAgent = null;
+  }
+  setGlobalDispatcher(origDispatcher);
 }
 
 function setBundleEnv(bundleObj) {
@@ -136,8 +181,9 @@ describe('scraper cookie wiring', () => {
       clearBundleEnv();
       const result = await scraper.fetchWithCookiesPlain('https://example.com/any');
       assert.equal(result, null);
-      // Should not have dispatched any request
+      // Should not have dispatched any request (neither https.get nor undici)
       assert.equal(capturedGets.length, 0);
+      assert.equal(capturedUndiciRequests.length, 0);
     });
 
     test('sends Cookie header when WSJ cookies present', async () => {
@@ -150,12 +196,14 @@ describe('scraper cookie wiring', () => {
 
       await scraper.fetchWithCookiesPlain('https://www.wsj.com/articles/proof-review');
 
-      assert.equal(capturedGets.length, 1, 'one https.get call expected');
-      const call = capturedGets[0];
-      assert.ok(call.opts.headers, 'opts.headers should exist');
-      assert.ok(call.opts.headers.Cookie, 'Cookie header should be set');
-      assert.ok(/sess=abc123/.test(call.opts.headers.Cookie), `Cookie should include sess=abc123 (got: ${call.opts.headers.Cookie})`);
-      assert.ok(/tok=xyz789/.test(call.opts.headers.Cookie), `Cookie should include tok=xyz789 (got: ${call.opts.headers.Cookie})`);
+      // Captured via undici MockAgent (plain path uses global fetch / undici).
+      assert.equal(capturedUndiciRequests.length, 1, 'one undici dispatch expected');
+      const call = capturedUndiciRequests[0];
+      assert.ok(call.opts.headers, 'request headers should exist');
+      const cookie = call.opts.headers.Cookie || call.opts.headers.cookie;
+      assert.ok(cookie, 'Cookie header should be set');
+      assert.ok(/sess=abc123/.test(cookie), `Cookie should include sess=abc123 (got: ${cookie})`);
+      assert.ok(/tok=xyz789/.test(cookie), `Cookie should include tok=xyz789 (got: ${cookie})`);
     });
   });
 
