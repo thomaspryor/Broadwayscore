@@ -664,6 +664,26 @@ const SITE_SEARCH_ENDPOINTS = {
     }),
   },
 
+  'playbill-roundup': {
+    name: 'Playbill (roundup)',
+    domain: 'playbill.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Per-show review-roundup discovery. SERPs Playbill for an article
+    // matching one of three slug patterns and extracts outlet URLs from the
+    // body. High-recall safety net for the per-outlet fan-out — when this
+    // hits, it returns 5-8 outlet URLs covering NYT/WSJ/FT/Vulture/etc. in
+    // one fetch. Discovered URLs carry their outlet domain so downstream
+    // resolveOutletFromUrl maps each to its canonical outletId at ingest.
+    skipUrlFilter: true,
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const { discoverPlaybillRoundup } = require('./playbill-roundup-discover');
+      const show = { type: 'opera', title: showTitle, openingDate, id: showId };
+      const urls = await discoverPlaybillRoundup(show);
+      return filterOperaUrls(urls, 'playbill-roundup', showId, openingDate);
+    },
+  },
+
   'washpost': {
     name: 'The Washington Post',
     domain: 'washingtonpost.com',
