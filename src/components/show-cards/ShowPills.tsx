@@ -24,16 +24,19 @@ export function StatusBadge({ status }: { status: string }) {
 }
 
 // Format pill - outline style
-export function FormatPill({ type }: { type: string }) {
-  const isMusical = type === 'musical';
-  const label = isMusical ? 'MUSICAL' : 'PLAY';
-  const colorClass = isMusical
-    ? 'border-purple-500/50 text-purple-400'
-    : 'border-blue-500/50 text-blue-400';
+// Opera color: indigo, chosen to avoid collision with score-tier reds
+// and the musical-purple / play-blue palette.
+const FORMAT_PILL_CONFIG: Record<string, { label: string; colorClass: string }> = {
+  musical: { label: 'MUSICAL', colorClass: 'border-purple-500/50 text-purple-400' },
+  opera: { label: 'OPERA', colorClass: 'border-indigo-500/50 text-indigo-400' },
+  play: { label: 'PLAY', colorClass: 'border-blue-500/50 text-blue-400' },
+};
 
+export function FormatPill({ type }: { type: string }) {
+  const cfg = FORMAT_PILL_CONFIG[type] || FORMAT_PILL_CONFIG.play;
   return (
-    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide border ${colorClass}`}>
-      {label}
+    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide border ${cfg.colorClass}`}>
+      {cfg.label}
     </span>
   );
 }
@@ -52,8 +55,10 @@ export function AudienceChip({ grade }: { grade: { grade: string; color: string;
   );
 }
 
-// Category badge - for Off-Broadway and West End shows
-export function CategoryBadge({ category }: { category?: string }) {
+// Category badge - for Off-Broadway and West End shows.
+// Opera shows (Met Opera) suppress the badge since FormatPill already says "OPERA".
+export function CategoryBadge({ category, isOpera = false }: { category?: string; isOpera?: boolean }) {
+  if (isOpera) return null;
   if (!category || category === 'broadway') return null;
 
   const config: Record<string, { label: string; colorClass: string }> = {

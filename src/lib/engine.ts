@@ -31,6 +31,7 @@ import {
 } from '@/config/scoring';
 import { getRegistryTier } from './outlet-id-mapper';
 import { getMarketDate } from './date-utils';
+import { isOperaShow } from './show-market';
 
 // ===========================================
 // TYPES
@@ -337,7 +338,7 @@ export function computeCriticScore(reviews: RawReview[], showCategory?: string, 
   // tier hierarchy (Operawire/Parterre/NYCR are first-class voices, not T3 blogs).
   // Force tier=1 for all opera reviews and skip the off-market multiplier.
   // Mirrors scripts/lib/compute-critic-score.js — drift = silent score divergence.
-  const isOpera = showType === 'opera';
+  const isOpera = isOperaShow({ type: showType });
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
   // publishDate. This dedups the case where the same critic re-reviews after a cast

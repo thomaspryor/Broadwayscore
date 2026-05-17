@@ -2,6 +2,7 @@
 
 import { ComputedShow } from './engine';
 import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel } from './venue-classification';
+import { isOperaShow } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { isPlatformHidden } from './ticket-utils';
 
@@ -369,7 +370,7 @@ export function generateItemListSchema(items: {
         address: item.theaterAddress ? toPostalAddress(item.theaterAddress, getMarketCountry(item.category)) : item.venue,
       } : {
         '@type': 'PerformingArtsTheater',
-        name: isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
+        name: item.category === 'opera' ? 'Metropolitan Opera House' : isLondonMarket(item.category) ? 'West End Theatre' : item.category === 'off-broadway' ? 'Off-Broadway Theater' : 'Broadway Theater',
         address: toPostalAddress(
           isLondonMarket(item.category) ? 'London, England' : 'New York, NY',
           getMarketCountry(item.category)
@@ -391,7 +392,7 @@ export function generateItemListSchema(items: {
       // Organizer
       event.organizer = {
         '@type': 'Organization',
-        name: isLondonMarket(item.category) ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
+        name: item.category === 'opera' ? 'Opera Scorecard' : isLondonMarket(item.category) ? 'West End Scorecard' : item.category === 'off-broadway' ? 'Off-Broadway Scorecard' : 'Broadway Scorecard',
         url: BASE_URL,
       };
 
@@ -442,7 +443,8 @@ export function generateShowFAQSchema(show: ComputedShow) {
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isLondon = isLondonMarket(show.category);
   const isOffBroadway = show.category === 'off-broadway';
-  const marketLabel = isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
+  const isOpera = isOperaShow(show);
+  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 

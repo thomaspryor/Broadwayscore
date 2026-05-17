@@ -10,6 +10,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix } from '@/lib/date-utils';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
+import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/show-market';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
@@ -72,8 +73,9 @@ const ShowListCard = memo(function ShowListCard({
   const sortedLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const primaryTicket = sortedLinks[0];
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
-  const marketLabel = getMarketLabel(category);
-  const durationSuffix = getDurationSuffix(category);
+  const isOpera = isOperaShow(show);
+  const marketLabel = isOpera ? OPERA_MARKET_LABEL : getMarketLabel(category);
+  const durationSuffix = isOpera ? OPERA_DURATION_SUFFIX : getDurationSuffix(category);
 
   // Score computation
   let score: number | null | undefined;
@@ -184,7 +186,7 @@ const ShowListCard = memo(function ShowListCard({
         <FormatPill type={show.type} />
         <ProductionPill isRevival={isRevival} />
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
-        {showCategoryBadge && category === 'off-broadway' && (
+        {showCategoryBadge && category === 'off-broadway' && !isOpera && (
           <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded">Off-Bway</span>
         )}
         {!hideStatus && <StatusBadge status={show.status} />}

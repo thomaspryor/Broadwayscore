@@ -14,6 +14,7 @@ import {
 import type { Director, Theater, TheaterStructuredTips, TheaterVenueScores, TheaterAccessibility, TheaterExternalLinks, BestOfCategory, BestOfList, BrowseList } from './data-types';
 import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
+import { isOperaShow } from './show-market';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
@@ -105,7 +106,7 @@ export function getOffBroadwayShows(): ComputedShow[] {
  * routing but tagged type='opera'). Powers the /opera route + operascorecard.com.
  */
 export function getOperaShows(): ComputedShow[] {
-  return getAllShows().filter(show => (show as { type?: string }).type === 'opera');
+  return getAllShows().filter(show => isOperaShow(show));
 }
 
 /**
