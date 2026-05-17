@@ -60,7 +60,7 @@ function OddsTag({ label, value }: { label: string; value: number | null | undef
 function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
     <Link
-      href={`/shows/${show.slug}`}
+      href={`/show/${show.slug}`}
       className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-white/[0.03] transition-colors group"
     >
       {/* Thumbnail */}
@@ -117,7 +117,7 @@ function CompactNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
 
   return (
     <Link
-      href={`/shows/${show.slug}`}
+      href={`/show/${show.slug}`}
       className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors group"
     >
       {/* Small thumbnail */}
