@@ -1,18 +1,18 @@
 {
-  "runDate": "2026-05-17T15:38:37.810Z",
+  "runDate": "2026-05-17T15:38:50.107Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "death-of-a-salesman-2026",
+    "showFilter": "music-city-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
     "successRate": "50.0%"
   },
@@ -27,21 +27,21 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
@@ -54,7 +54,8 @@
     "death-of-a-salesman-2026/wsj--unknown.json"
   ],
   "failed": [
-    "death-of-a-salesman-2026/nypost--elisabeth-vincentelli.json"
+    "music-city-off-broadway-2026/new-york-city-theatre--unknown.json",
+    "music-city-off-broadway-2026/playbill--unknown.json"
   ],
   "tierDetails": {
     "playwright": [],
