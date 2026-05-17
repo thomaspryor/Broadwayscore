@@ -232,14 +232,12 @@ function OtherAwardsPanel({
     // total separate from the per-category `nominatedFor` list (which may be
     // incomplete for older shows). DL/NYDCCC only have `nominatedFor`.
     const nomsTotal = Math.max(nominationsCount ?? 0, nominatedFor.length) || null;
-    return { cfg, wins, nominatedFor, nomsTotal };
+    const noAward = node && 'noAward' in node ? (node as { noAward?: boolean }).noAward === true : false;
+    return { cfg, wins, nominatedFor, nomsTotal, noAward };
   })
-    // Render a row only when we can produce a real label: either wins exist,
-    // or some flavor of nom count > 0. Subtotal-only (uncategorized) rows are
-    // suppressed to avoid "0 noms" chips — their points still affect the
-    // overall Award Score badge upstream.
-    .filter(r => r.wins.length > 0 || (r.nomsTotal ?? 0) > 0)
-    // Sort by wins desc, then noms desc, so the most impressive ceremony leads.
+    // Render a row when we can produce a real label: wins, noms, or noAward.
+    .filter(r => r.wins.length > 0 || (r.nomsTotal ?? 0) > 0 || r.noAward)
+    // Sort by wins desc, then noms desc. noAward rows sort below normal rows.
     .sort((a, b) => (b.wins.length - a.wins.length) || ((b.nomsTotal ?? 0) - (a.nomsTotal ?? 0)));
 
   if (rows.length === 0) return null;
@@ -270,18 +268,20 @@ function OtherAwardsPanel({
           Color-coded per ceremony so the row is glanceable; ceremony name
           leads (the noun the user recognizes), counts trail. */}
       <div className="flex flex-wrap gap-2 mt-2">
-        {rows.map(({ cfg, wins, nomsTotal }) => {
+        {rows.map(({ cfg, wins, nomsTotal, noAward }) => {
           const winsLabel = `${wins.length} win${wins.length === 1 ? '' : 's'}`;
           const nomsLabel = nomsTotal && nomsTotal > wins.length
             ? ` / ${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
             : '';
-          const detail = wins.length === 0 && nomsTotal
+          const detail = noAward
+            ? 'No award given'
+            : wins.length === 0 && nomsTotal
             ? `${nomsTotal} nom${nomsTotal === 1 ? '' : 's'}`
             : `${winsLabel}${nomsLabel}`;
           return (
             <span key={cfg.key} className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border ${cfg.chip} text-xs font-medium`}>
               <span className={cfg.text}>{cfg.short}:</span>
-              <span className="text-gray-300 tabular-nums">{detail}</span>
+              <span className={noAward ? 'text-gray-500 italic' : 'text-gray-300 tabular-nums'}>{detail}</span>
             </span>
           );
         })}
@@ -289,7 +289,7 @@ function OtherAwardsPanel({
 
       {expanded && (
         <div className="mt-3 space-y-3">
-          {rows.map(({ cfg, wins, nominatedFor, nomsTotal }) => {
+          {rows.map(({ cfg, wins, nominatedFor, nomsTotal, noAward }) => {
             const nomsOnly = nominatedFor.filter(n => !wins.includes(n));
             return (
               <div key={cfg.key}>
@@ -299,6 +299,9 @@ function OtherAwardsPanel({
                     <span className="text-gray-500 font-normal ml-1.5">· {nomsTotal} total noms</span>
                   )}
                 </div>
+                {noAward && (
+                  <p className="text-xs text-gray-500 italic pl-4">No award given this year</p>
+                )}
                 {wins.length > 0 && (
                   <ul className="space-y-1 pl-4">
                     {wins.map((win, idx) => (

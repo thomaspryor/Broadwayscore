@@ -411,12 +411,15 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   return { matched, unmatched };
 }
 
-/** Apply NYDCCC source. Winners only — `wins` populated; no nominatedFor. */
+/** Apply NYDCCC source. Winners only — `wins` populated; no nominatedFor.
+ *  noAward entries ({year, noAward:true}) are skipped — they represent
+ *  years the Circle voted to give no award; there is no show to attach them to. */
 function applyNYDCCC(source, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [category, years] of Object.entries(source)) {
     for (const yearEntry of years) {
+      if (yearEntry.noAward) continue;
       if (!yearEntry.winner) continue;
       const callOpts = { ...opts, sourceYear: yearEntry.year };
       const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById, callOpts);

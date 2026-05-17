@@ -29,6 +29,15 @@ const MIN_YEAR = parseInt(
 const WRITE = process.argv.includes('--write');
 const FORCE = process.argv.includes('--force');
 
+// Years the Circle voted to give no award in a category. Wikipedia omits
+// these years from the list, so we inject noAward:true entries explicitly.
+// Verified against Wikipedia + NYDCC annual reports.
+const KNOWN_NO_AWARD_YEARS = {
+  'Best Musical': [2018, 2021, 2023],
+  'Best Foreign Play': [],
+  'Best Play': [2021],
+};
+
 // Map Wikipedia section heading text → output category name. Match is
 // substring + case-insensitive so heading variants like "Best Play (1936–"
 // still resolve.
@@ -104,7 +113,13 @@ async function main() {
         if (!title) continue;
         if (seenByCategory[currentCat].has(year)) continue;
         seenByCategory[currentCat].add(year);
-        result[currentCat].push({ year, winner: title });
+        // Detect "no award given" marker (Wikipedia uses "No award given" or
+        // "Not awarded" as the show title for years the Circle voted to abstain).
+        if (/^no award|^not awarded/i.test(title)) {
+          result[currentCat].push({ year, noAward: true });
+        } else {
+          result[currentCat].push({ year, winner: title });
+        }
         added++;
       }
       if (added > 0) populatedFromUl.add(currentCat);
@@ -135,9 +150,25 @@ async function main() {
       if (!cat || !result[cat]) continue;
       if (seenByCategory[cat].has(year)) continue;
       seenByCategory[cat].add(year);
-      result[cat].push({ year, winner: title });
+      if (/^no award|^not awarded/i.test(title)) {
+        result[cat].push({ year, noAward: true });
+      } else {
+        result[cat].push({ year, winner: title });
+      }
     }
     break;
+  }
+
+  // Inject known noAward years (Wikipedia omits them from the winner list).
+  for (const [cat, years] of Object.entries(KNOWN_NO_AWARD_YEARS)) {
+    if (!result[cat]) continue;
+    for (const year of years) {
+      if (year < MIN_YEAR) continue;
+      if (!seenByCategory[cat]?.has(year)) {
+        result[cat].push({ year, noAward: true });
+        seenByCategory[cat]?.add(year);
+      }
+    }
   }
 
   for (const cat of Object.keys(result)) result[cat].sort((a, b) => a.year - b.year);

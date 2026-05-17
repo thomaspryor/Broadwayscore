@@ -200,7 +200,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.olivier.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Olivier Awards', key, wins, noms, unknownNoms(entry.olivier.nominations, wins, noms)));
   }
-  if (entry.nyDramaCritics) {
+  if (entry.nyDramaCritics && !entry.nyDramaCritics.noAward) {
     breakdown.push(scoreCeremony("NY Drama Critics' Circle", 'nydcc', entry.nyDramaCritics.wins ?? [], []));
   }
   if (entry.outerCriticsCircle) {
@@ -247,7 +247,7 @@ interface AwardsShowEntry {
   dramadesk?: PrecursorNode & { season?: string };
   outerCriticsCircle?: PrecursorNode & { season?: string };
   dramaLeague?: PrecursorNode & { season?: string };
-  nyDramaCritics?: PrecursorNode & { season?: string };
+  nyDramaCritics?: PrecursorNode & { season?: string; noAward?: boolean };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };

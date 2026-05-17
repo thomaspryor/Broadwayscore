@@ -256,6 +256,10 @@ export interface NyDramaCriticsAwards {
   season: string;
   wins: string[];
   nominatedFor?: string[];
+  /** True when the Critics' Circle voted to give no award in this category that
+   *  year. When present, this entry contributes 0 to the awards score and the
+   *  UI renders a "No award given" chip instead of a winner name. */
+  noAward?: boolean;
 }
 
 /** Pulitzer Prize for Drama. Single category ("Drama"), so `wins` and
