@@ -8,7 +8,8 @@
     "romeo-and-juliet-west-end-2026/british-theatre--unknown.json",
     "romeo-and-juliet-west-end-2026/click-liverpool--unknown.json",
     "wicked-2003/playbill--unknown.json",
-    "wicked-2003/time--unknown.json"
+    "wicked-2003/time--unknown.json",
+    "jerusalem-2011/about-entertainment--unknown.json"
   ],
   "failed": [
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
@@ -119,7 +120,16 @@
     "all-the-way-2014/observer--rex-reed.json",
     "motown-the-musical-2013/observer--rex-reed.json",
     "rodgers-hammersteins-cinderella-2013/vulture--jesse-green.json",
-    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json"
+    "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
+    "picnic-2013/observer--rex-reed.json",
+    "ghost-the-musical-2012/timeout--david-cote.json",
+    "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "jesus-christ-superstar-2012/stageandcinema--jonas-schwartz.json",
+    "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
+    "bloody-bloody-andrew-jackson-2010/vulture--jesse-green.json",
+    "red-2010/chicagotribune--chris-jones.json",
+    "ragtime-2009/nydailynews--joe-dziemianowicz.json",
+    "after-miss-julie-2009/about-entertainment--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -135,7 +145,11 @@
       "wicked-2003/time--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/jerusalem-2011/about-entertainment--unknown.json",
+      "jerusalem-2011/about-entertainment--unknown.json",
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -150,6 +164,29 @@
     "archive": []
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "rodgers-hammersteins-cinderella-2013/stageandcinema--jonas-schwartz.json",
-  "log": []
+  "lastProcessed": "after-miss-julie-2009/about-entertainment--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-17T10:48:57.261Z",
+      "event": "bb-session",
+      "session": "3425e683",
+      "url": "http://theater.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylanc"
+    },
+    {
+      "t": "2026-05-17T10:48:58.193Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-17T10:49:30.671Z",
+      "event": "bb-session",
+      "session": "0c1e4f50",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-17T10:49:31.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
