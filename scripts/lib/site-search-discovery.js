@@ -605,6 +605,34 @@ const SITE_SEARCH_ENDPOINTS = {
       return filterOperaUrls(unique, 'classical-voice-america', showId, openingDate);
     },
   },
+
+  'vulture': {
+    name: 'Vulture',
+    domain: 'vulture.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // Vulture has no opera category page. Justin Davidson is the music/opera
+    // critic; the SSR HTML for his author archive carries ~30 anchors per page
+    // (lazy-loaded beyond that). Slug-match against opera-title words because
+    // Vulture URLs are descriptive ("opera-review-met-new-tristan-und-isolde",
+    // "review-the-dismaying-opera-of-kavalier-and-clay").
+    // Pagination: first page only (no /page/2 walk) — covers ~2-3 months of
+    // Davidson's output, which exceeds the Sprint 3 daysSinceOpening<21 gate.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.vulture.com/author/justin-davidson/');
+      const all = [];
+      const pattern = /href="(https?:\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9-]+\.html)"/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push(m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/article/')[1] || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= Math.min(2, titleWords.length);
+      });
+      return filterOperaUrls(matches, 'vulture', showId, openingDate);
+    },
+  },
 };
 
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
