@@ -537,6 +537,20 @@ function main() {
   }
   const awardsShows = awards.shows || awards;
 
+  // Snapshot tony.eligible and tony.note BEFORE enrichment so they survive a full-file
+  // rewrite started from a stale base. These are human-curated fields (Tony Administration
+  // Committee rulings) that no automated script should remove. Pattern mirrors the
+  // spread-merge protection added to scrape-tony-awards.js in Sprint 1 (commit 2ccdaf6e).
+  const eligibilitySnapshot = new Map();
+  for (const [showId, sh] of Object.entries(awardsShows)) {
+    const t = sh.tony;
+    if (!t) continue;
+    const snap = {};
+    if (t.eligible !== undefined) snap.eligible = t.eligible;
+    if (t.note !== undefined) snap.note = t.note;
+    if (Object.keys(snap).length > 0) eligibilitySnapshot.set(showId, snap);
+  }
+
   // Broadway shows from shows.json bucketed by Tony season (PREDICTIONS_ERA only).
   // Used by matcher pass 4 to attribute DD/OCC/DL/Pulitzer noms to non-Tony-nominated
   // Broadway shows that aren't currently in awards.json. Year-gated by source year
@@ -592,6 +606,30 @@ function main() {
   if (backfilledTony.length > 0) {
     console.log(`\nBackfilled tony.season on ${backfilledTony.length} existing entries (had non-Tony awards data only):`);
     for (const id of backfilledTony) console.log(`  ~ ${id}`);
+  }
+
+  // 2.5) Restore human-curated tony.eligible and tony.note from snapshot.
+  // The enrichment passes above don't touch tony.eligible/note, but a "surgical reset"
+  // step (manually deleting stale precursor data before re-enriching) can inadvertently
+  // start from a stale awards.json that pre-dates manual eligibility rulings. This pass
+  // ensures those rulings survive regardless of the input base.
+  let eligibilityRestored = 0;
+  for (const [showId, snap] of eligibilitySnapshot) {
+    const sh = awardsShows[showId];
+    if (!sh || !sh.tony) continue;
+    let changed = false;
+    if ('eligible' in snap && sh.tony.eligible !== snap.eligible) {
+      sh.tony.eligible = snap.eligible;
+      changed = true;
+    }
+    if ('note' in snap && sh.tony.note !== snap.note) {
+      sh.tony.note = snap.note;
+      changed = true;
+    }
+    if (changed) eligibilityRestored++;
+  }
+  if (eligibilityRestored > 0) {
+    console.log(`⚠️  Restored tony.eligible/note for ${eligibilityRestored} show(s) that were clobbered by stale input.`);
   }
 
   // 3) Update _meta
