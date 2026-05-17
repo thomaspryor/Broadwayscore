@@ -507,6 +507,7 @@ function parseArgs(): ScoringPipelineOptions & {
   totalShards?: number;
   scoreRange?: [number, number];
   maxPromptVersion?: string;
+  skipAlreadyAnchored: boolean;
 } {
   const args = process.argv.slice(2);
 
@@ -556,6 +557,14 @@ function parseArgs(): ScoringPipelineOptions & {
   const maxCostArg = args.find(a => a.startsWith('--max-cost='));
   const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : 0;
 
+  // Phase B-WE ship-check fix: --skip-already-anchored flag. When set,
+  // skip files where scoreSource is already 'anchored-v6' or 'llm-v6'.
+  // Required for safe re-runs of W3 after a partial completion (e.g.,
+  // --max-cost hit, network failure). Otherwise --rescore re-processes
+  // every file and doubles cost. Default false to preserve existing
+  // --rescore semantics for other workflows.
+  const skipAlreadyAnchored = args.includes('--skip-already-anchored');
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
@@ -585,7 +594,8 @@ function parseArgs(): ScoringPipelineOptions & {
     scoreRange,
     maxPromptVersion,
     rescoreReason,
-    maxCost
+    maxCost,
+    skipAlreadyAnchored
   };
 }
 
@@ -1137,10 +1147,24 @@ async function main(): Promise<void> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { estimateCost: __estimateCost } = require('./cost');
   const maxCost: number = (options as any).maxCost || 0;
+  const skipAlreadyAnchored: boolean = (options as any).skipAlreadyAnchored === true;
   let budgetUsed = 0;
   let budgetAborted = false;
+
+  // Phase B-WE ship-check fix P0-2: --max-cost requires --ensemble shape.
+  // ReviewScorer (single) returns flat {input, output, total}; the delta
+  // tracking below expects {claude, openai, gemini, kimi}. Mismatched shape
+  // would silently yield $0 per call and the cap never fires.
+  if (maxCost > 0 && !options.ensemble) {
+    console.log(`\n⛔ --max-cost requires --ensemble (single-scorer mode lacks per-model token shape). Aborting.\n`);
+    process.exit(2);
+  }
+
   if (maxCost > 0) {
     console.log(`\n💰 Budget cap: $${maxCost.toFixed(2)} (--max-cost). Per-call cost tracked from token deltas.\n`);
+  }
+  if (skipAlreadyAnchored) {
+    console.log(`\n🔁 --skip-already-anchored: files with scoreSource='anchored-v6' or 'llm-v6' will be skipped for safe re-run.\n`);
   }
 
   for (let i = 0; i < finalFiles.length; i++) {
@@ -1260,6 +1284,19 @@ async function main(): Promise<void> {
             console.log(`  Pre-flagged multi-show: trimmed ${trimResult.originalLength}→${trimResult.trimmedLength} chars`);
           }
         }
+      }
+    }
+
+    // Phase B-WE ship-check fix P0-1: idempotence guard. When
+    // --skip-already-anchored is set, skip any file whose scoreSource is
+    // already 'anchored-v6' or 'llm-v6'. Safe re-runs after partial
+    // completion (e.g., --max-cost hit) won't double-charge.
+    if (skipAlreadyAnchored) {
+      const existingSource = (reviewFile as any).scoreSource;
+      if (existingSource === 'anchored-v6' || existingSource === 'llm-v6') {
+        console.log(`SKIPPED (already ${existingSource})`);
+        skipped++;
+        continue;
       }
     }
 
@@ -1666,6 +1703,13 @@ async function main(): Promise<void> {
     if (options.runValidation) {
       runValidation(true);
     }
+  }
+
+  // Phase B-WE ship-check fix P1-4: surface budget-abort via exit code so
+  // CI / parent scripts can detect a cap-hit without parsing logs.
+  if (budgetAborted) {
+    console.log(`\n⚠️  Budget cap was reached during this run. Exit code 2.`);
+    process.exitCode = 2;
   }
 }
 

@@ -4,21 +4,30 @@
 # rollback path. Designed to be run from any working directory.
 #
 # Usage:
-#   bash scripts/llm-scoring/rollback-we-anchored.sh --dry-run   # show what would change
-#   bash scripts/llm-scoring/rollback-we-anchored.sh             # actually restore
+#   bash rollback-we-anchored.sh --dry-run                                          # default tag
+#   bash rollback-we-anchored.sh                                                    # actually restore
+#   bash rollback-we-anchored.sh --tag=before-anchored-bands-WE-2026-05-20 --dry-run  # override tag
 
 set -euo pipefail
 
-TAG="before-anchored-bands-WE-2026-05-16"
+# Tag can be overridden via --tag=NAME. Default is the W0-T2 tag created on
+# 2026-05-16; override when W0 ran on a different date or for a different
+# rollback target. Ship-check P1-5: tag is no longer hardcoded.
+DEFAULT_TAG="before-anchored-bands-WE-2026-05-16"
 SHOW_LIST="$HOME/Documents/claude-outputs/anchored-bands/we-show-ids.txt"
 REVIEW_TEXTS_REPO="$HOME/broadway-review-texts"
 SCORECARD_DATA_REPO="$HOME/broadway-scorecard-data"
 
 DRY_RUN=false
-if [ "${1:-}" = "--dry-run" ]; then
-  DRY_RUN=true
-  echo "[dry-run] no files will be modified"
-fi
+TAG="$DEFAULT_TAG"
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run) DRY_RUN=true; echo "[dry-run] no files will be modified" ;;
+    --tag=*)   TAG="${arg#--tag=}" ;;
+    --help|-h) echo "Usage: $0 [--dry-run] [--tag=before-anchored-bands-WE-YYYY-MM-DD]"; exit 0 ;;
+  esac
+done
+echo "[rollback] using tag: $TAG"
 
 if [ ! -f "$SHOW_LIST" ]; then
   echo "ERROR: $SHOW_LIST missing (run W0-T4 first)"
