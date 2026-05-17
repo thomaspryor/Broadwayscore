@@ -42,11 +42,25 @@ async function runCategoryScraper({ pages, ceremonyName, minYear, write, force }
       const html = await fetchHtml(url);
       const entries = parseCategoryPage(html, { minYear })
         .filter((e) => e.year >= minYear);
+      // Structural contract: if this category had ≥5 entries in baseline and
+      // the page now returns 0, something broke — throw so CI catches it.
+      const baselineEntries = fs.existsSync(path.join(PRECURSORS_DIR, `${ceremonyName}.json`))
+        ? (JSON.parse(fs.readFileSync(path.join(PRECURSORS_DIR, `${ceremonyName}.json`), 'utf8')).data?.[category] || [])
+        : [];
+      if (entries.length === 0 && baselineEntries.length >= 5) {
+        throw new Error(`Structural assertion failed: ${slug} returned 0 entries but baseline had ${baselineEntries.length}. Wikipedia page may have changed structure.`);
+      }
       console.log(`${entries.length} year-entries`);
       result[category] = entries;
     } catch (e) {
-      console.log(`ERROR: ${e.message}`);
-      throw e;
+      if (e.message.includes('HTTP 404') || e.message.includes('HTTP 410')) {
+        // 404/410: page doesn't exist (or was merged/renamed) — skip gracefully
+        console.log(`SKIP (${e.message.includes('404') ? '404' : '410'} — page not found, category may have been renamed)`);
+        result[category] = [];
+      } else {
+        console.log(`ERROR: ${e.message}`);
+        throw e;
+      }
     }
     await sleep(RATE_LIMIT_MS);
   }
