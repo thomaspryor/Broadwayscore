@@ -125,8 +125,10 @@ jobs:
 
       # NO build cache for demo — config rewrites + cache = stale pages forever.
       # Demo builds every 8h; the ~3min penalty is worth guaranteed correctness.
+      # Also clear .vercel/output — stale symlinks from a prior vercel build in the
+      # same runner workspace cause EEXIST errors on the next build.
       - name: Clear any leftover build cache
-        run: rm -rf .next/cache
+        run: rm -rf .next/cache .vercel/output
 
       - name: Build (all features enabled)
         env:
