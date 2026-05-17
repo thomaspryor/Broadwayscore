@@ -4,12 +4,18 @@
  * pages (Muckrack + optional BWW/NY Sun/NYSR overrides) against our
  * reviews.json and surface gaps.
  *
- * Output: data/audit/critic-coverage-audit.json (full critic-by-critic detail).
+ * Output:
+ *   data/audit/critic-coverage-audit.json          (default mode)
+ *   data/audit/critic-coverage-audit-historical.json (--mode=historical)
+ *
  * Run weekly via .github/workflows/audit-critic-coverage.yml.
  *
  * CLI flags:
- *   --only=<slug>   run a single critic by slug
- *   --limit=<N>     run only the first N critics
+ *   --only=<slug>       run a single critic by slug
+ *   --limit=<N>         run only the first N critics
+ *   --mode=historical   archive-era sweep (totalReviews>=200, no date floor,
+ *                       excludes active set, capped at top 100)
+ *   --dry-run           print selected critics + counts and exit (no scraping)
  */
 const fs = require('fs');
 const path = require('path');
@@ -24,7 +30,11 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 // ── CLI flags ────────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const limitArg = args.find(a => a.startsWith('--limit='));
-const onlyArg = args.find(a => a.startsWith('--only='));
+const onlyArg  = args.find(a => a.startsWith('--only='));
+const modeArg  = args.find(a => a.startsWith('--mode='));
+const dryRun   = args.includes('--dry-run');
+
+const mode = modeArg ? modeArg.split('=')[1] : 'default';
 
 // ── Data files ───────────────────────────────────────────────────────────────
 // critic-registry.json lives in the private data repo; fall back to main.
@@ -61,7 +71,11 @@ for (const r of rev.reviews) {
   if (!last[r.criticName] || r.publishDate > last[r.criticName]) last[r.criticName] = r.publishDate;
 }
 
-let critics = [];
+// ── Critic selection ──────────────────────────────────────────────────────────
+
+// Active set: critics that default mode selects (lastDate>=2025-01-01 AND totalReviews>=20)
+// This is computed regardless of mode so historical can exclude it.
+const activeSet = new Set();
 for (const [slug, c] of Object.entries(reg.critics)) {
   if (c.displayName === 'Unknown') continue;
   const tier = tierMap[c.primaryOutlet];
@@ -69,11 +83,39 @@ for (const [slug, c] of Object.entries(reg.critics)) {
   const lastDate = last[c.displayName];
   if (!lastDate || lastDate < '2025-01-01') continue;
   if (c.totalReviews < 20) continue;
-  critics.push({ slug, name: c.displayName, outlet: c.primaryOutlet, tier, total: c.totalReviews, lastDate });
+  activeSet.add(slug);
 }
-critics.sort((a,b)=>b.total-a.total);
 
-// Apply CLI filters
+let critics = [];
+
+if (mode === 'historical') {
+  // Historical mode: totalReviews>=200, no date floor, exclude active set, cap at 100
+  for (const [slug, c] of Object.entries(reg.critics)) {
+    if (c.displayName === 'Unknown') continue;
+    const tier = tierMap[c.primaryOutlet];
+    if (tier !== 1 && tier !== 2) continue;
+    if (activeSet.has(slug)) continue; // already covered by active sweep
+    if (c.totalReviews < 200) continue;
+    const lastDate = last[c.displayName];
+    critics.push({ slug, name: c.displayName, outlet: c.primaryOutlet, tier, total: c.totalReviews, lastDate });
+  }
+  critics.sort((a,b) => b.total - a.total);
+  critics = critics.slice(0, 100); // cap at top 100
+} else {
+  // Default mode: lastDate>=2025-01-01 AND totalReviews>=20
+  for (const [slug, c] of Object.entries(reg.critics)) {
+    if (c.displayName === 'Unknown') continue;
+    const tier = tierMap[c.primaryOutlet];
+    if (tier !== 1 && tier !== 2) continue;
+    const lastDate = last[c.displayName];
+    if (!lastDate || lastDate < '2025-01-01') continue;
+    if (c.totalReviews < 20) continue;
+    critics.push({ slug, name: c.displayName, outlet: c.primaryOutlet, tier, total: c.totalReviews, lastDate });
+  }
+  critics.sort((a,b) => b.total - a.total);
+}
+
+// Apply CLI filters (layer on top of mode selection)
 if (onlyArg) {
   const slug = onlyArg.split('=')[1];
   critics = critics.filter(c => c.slug === slug);
@@ -82,7 +124,25 @@ if (onlyArg) {
   critics = critics.slice(0, n);
 }
 
-console.error(`Auditing ${critics.length} active T1/T2 critics (full missing capture)`);
+// ── Dry-run (print selection and exit) ───────────────────────────────────────
+if (dryRun) {
+  if (mode === 'historical') {
+    console.log(`Selected ${critics.length} critics for historical audit (mode=historical)`);
+  } else {
+    console.log(`Selected ${critics.length} critics for active audit (mode=default)`);
+  }
+  const top5 = critics.slice(0, 5);
+  for (const c of top5) {
+    console.log(`- ${c.slug}  ${c.name}  totalReviews=${c.total}  lastDate=${c.lastDate || 'none'}`);
+  }
+  if (critics.length > 5) {
+    console.log(`... and ${critics.length - 5} more`);
+  }
+  process.exit(0);
+}
+
+const modeLabel = mode === 'historical' ? 'historical T1/T2 critics' : 'active T1/T2 critics';
+console.error(`Auditing ${critics.length} ${modeLabel} (full missing capture)`);
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function urlKey(u) {
@@ -186,7 +246,10 @@ async function runBatch() {
   REPORT.sort((a,b) => (b.missingCount||0) - (a.missingCount||0));
   const auditDir = path.join(REPO_ROOT, 'data/audit');
   if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-  const outPath = path.join(auditDir, 'critic-coverage-audit.json');
+  const outFile = mode === 'historical'
+    ? 'critic-coverage-audit-historical.json'
+    : 'critic-coverage-audit.json';
+  const outPath = path.join(auditDir, outFile);
   fs.writeFileSync(outPath, JSON.stringify(REPORT, null, 2));
   console.error(`\nWrote ${outPath}`);
   console.error(`Total review-looking gaps: ${REPORT.reduce((s,r)=>s+(r.missingCount||0),0)}`);
