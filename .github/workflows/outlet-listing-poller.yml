@@ -21,12 +21,12 @@ on:
         default: ''
         type: string
       market:
-        description: 'Filter active shows by market (default: all)'
+        description: 'Filter active shows by market'
         required: false
-        default: ''
+        default: 'all'
         type: choice
         options:
-          - ''
+          - all
           - broadway
           - off-broadway
           - west-end
@@ -82,7 +82,7 @@ jobs:
           if [ -n "${{ github.event.inputs.outlets }}" ]; then
             ARGS="$ARGS --outlets ${{ github.event.inputs.outlets }}"
           fi
-          if [ -n "${{ github.event.inputs.market }}" ]; then
+          if [ -n "${{ github.event.inputs.market }}" ] && [ "${{ github.event.inputs.market }}" != "all" ]; then
             ARGS="$ARGS --market ${{ github.event.inputs.market }}"
           fi
           echo "Running: node scripts/outlet-listing-poller.js $ARGS"
