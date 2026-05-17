@@ -103,6 +103,16 @@ const OUTLET_STRATEGY_CONFIG = {
   thewrap:             { strategy: 'rss', url: 'https://www.thewrap.com/tag/theater/feed/', urlFilter: /-review\/$/ },
   // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
   thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
+  // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
+  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\// },
+  // Theatre Weekly (UK): review URLs have /review- prefix; drops news/industry pieces
+  'theatre-weekly':    { strategy: 'rss', url: 'https://theatreweekly.com/feed', urlFilter: /\/review-/ },
+  // Pages on Stages: theater review blog; no URL discriminator, findMatchingShows guards noise
+  'pages-on-stages':   { strategy: 'rss', url: 'https://pagesonstages.com/feed' },
+  // Theater Life: covers shows + occasional ballet galas; findMatchingShows guards non-show content
+  'theater-life':      { strategy: 'rss', url: 'https://theaterlife.com/feed' },
+  // Front Row Center: covers theater + classical + cabaret; findMatchingShows guards non-theater content
+  'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed' },
 
   // Sitemap strategy — Vulture's /rss/tag/theater.xml returns 404 since their CMS migration.
   // URL patterns for Vulture theater reviews:
@@ -121,6 +131,8 @@ const OUTLET_STRATEGY_CONFIG = {
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
   // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
   standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
+  // WhatsOnStage: SSR reviews category page; urlFilter keeps only -review_NNN slugs (drops news/features)
+  whatsonstage:      { strategy: 'listing-html', url: 'https://www.whatsonstage.com/news/?categories=reviews', urlFilter: /-review_\d+/ },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -133,6 +145,11 @@ const WP_API_CONFIG = {
   'nyt-theater': {
     apiBase: 'https://newyorktheater.me/wp-json/wp/v2/posts',
     params: 'per_page=50&orderby=date&order=desc',
+  },
+  // LondonTheatre1: WP REST API, category 14 = reviews
+  londontheatre1: {
+    apiBase: 'https://www.londontheatre1.com/wp-json/wp/v2/posts',
+    params: 'categories=14&per_page=50&orderby=date&order=desc',
   },
 };
 
@@ -283,7 +300,7 @@ async function fetchViaSitemap(outletId, config, cutoff) {
   return [];
 }
 
-async function fetchViaListingHtml(outletId, listingUrl) {
+async function fetchViaListingHtml(outletId, listingUrl, urlFilter) {
   console.log(`  [listing-html] Fetching ${listingUrl}`);
   const result = await fetchPage(listingUrl, { timeout: 25000 });
   // fetchPage returns {content, format, source} or null on all-tiers failure
@@ -293,7 +310,8 @@ async function fetchViaListingHtml(outletId, listingUrl) {
     return [];
   }
   const domain = new URL(listingUrl).hostname.replace(/^www\./, '');
-  const items = extractListingUrls(html, domain);
+  let items = extractListingUrls(html, domain);
+  if (urlFilter) items = items.filter(i => urlFilter.test(i.url));
   console.log(`  [listing-html] ${items.length} links extracted`);
   return items;
 }
@@ -434,7 +452,7 @@ async function main() {
           switch (sc.strategy) {
             case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff); break;
             case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff); break;
-            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url); break;
+            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter); break;
             default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
           }
         } catch (err) {
