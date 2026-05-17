@@ -15,6 +15,12 @@ import {
   OutletTier,
   DEFAULT_WEIGHTS,
 } from '@/types/show';
+// Single canonical source for tier weights. Was previously redeclared
+// locally — flagged by Codex 2026-05-17 as a fourth silent canonical
+// (alongside src/config/scoring.ts, scripts/lib/outlet-tiers.js, and the
+// duplicate now-eliminated in scripts/lib/compute-critic-score.js).
+// tier-config-consistency.test.ts asserts these never drift.
+import { TIER_WEIGHTS as CANONICAL_TIER_WEIGHTS } from '@/config/scoring';
 
 // ============================================
 // RATING NORMALIZATION (0-100 scale)
@@ -96,14 +102,10 @@ export function normalizeRating(rating: string): { score: number; isInferred: bo
 // CRITIC SCORE CALCULATION
 // ============================================
 
-// Tier weights (must match src/config/scoring.ts)
-// T4 added 2026-04-29 with v5 tier reassignment.
-const TIER_WEIGHTS: Record<OutletTier, number> = {
-  1: 1.0,
-  2: 0.75,
-  3: 0.40,
-  4: 0.20,
-};
+// Tier weights re-imported from src/config/scoring.ts so the two files cannot
+// drift. (T4 added 2026-04-29.) Cast preserves the legacy Record<OutletTier>
+// shape so the rest of this file is unchanged.
+const TIER_WEIGHTS = CANONICAL_TIER_WEIGHTS as Record<OutletTier, number>;
 
 /**
  * Calculate weighted critic score from reviews
