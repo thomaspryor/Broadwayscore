@@ -667,8 +667,11 @@ async function main() {
   // Only for recent seasons where we can be sure they were eligible
   if (!targetYear || targetYear >= 2020) {
     for (const show of shows) {
-      // Skip non-Broadway shows (West End, Off-Broadway)
+      // Skip non-Broadway shows (West End, Off-Broadway).
+      // Also guard by ID — shows with null category at scrape time but
+      // "-off-broadway-" in their ID are never Tony-eligible.
       if (show.category && show.category !== 'broadway') continue;
+      if (!show.category && show.id && show.id.includes('-off-broadway-')) continue;
 
       const openYear = new Date(show.openingDate).getFullYear();
       // Check if show was eligible for a Tony season we scraped

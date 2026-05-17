@@ -14,8 +14,7 @@ function slugToFullSeason(slug: string): string {
   return `${m[1]}-${m[1].slice(0, 2)}${m[2]}`;
 }
 
-export function seasonSlug(fullSeason: string): string {
-  // "2025-2026" → "2025-26"
+function toSlug(fullSeason: string): string {
   const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
   if (!m) return fullSeason;
   return `${m[1]}-${m[2]}`;
@@ -55,7 +54,7 @@ export async function generateStaticParams() {
       if (score.tonySeason) seasons.add(score.tonySeason);
     } catch {}
   }
-  return Array.from(seasons).map(season => ({ season: seasonSlug(season) }));
+  return Array.from(seasons).map(season => ({ season: toSlug(season) }));
 }
 
 export async function generateMetadata({ params }: { params: { season: string } }): Promise<Metadata> {
