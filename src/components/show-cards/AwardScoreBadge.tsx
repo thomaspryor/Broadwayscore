@@ -4,7 +4,7 @@ interface AwardScoreBadgeProps {
   score: number;
   badge: TierBadge;
   inProgress: boolean;
-  size?: 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
 }
 
 // Award badge — round "medal" shape with a lighter-tier-color ring (2026-05-17).
@@ -91,8 +91,8 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
   const styles = score > 0 ? TIER_STYLES[badge] : TIER_STYLES.eligible;
   const label = inProgress && badge === 'nominated' ? 'In the Hunt' : TIER_LABEL[badge];
 
-  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : 'w-14 h-14';
-  const sizeText = size === 'lg' ? 'text-3xl' : 'text-2xl';
+  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : size === 'md' ? 'w-14 h-14' : 'w-11 h-11';
+  const sizeText = size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl' : 'text-lg';
 
   return (
     <div
