@@ -79,12 +79,11 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
       style={!styles.criticClass && styles.glow ? { boxShadow: styles.glow } : undefined}
       aria-label={inProgress && score > 0 ? `Provisional Award Score ${score} — ${label}` : `Award Score ${score} — ${label}`}
     >
-      <span className="relative leading-none inline-flex">
-        <span>{score > 0 ? score : '—'}</span>
-        {inProgress && score > 0 && (
-          <span aria-hidden className="absolute animate-pulse font-bold text-base" style={{ top: '-0.2em', right: '-0.45em' }}>*</span>
-        )}
-      </span>
+      {/* Asterisk is absolute so it never displaces the centered number */}
+      {inProgress && score > 0 && (
+        <span aria-hidden className="absolute top-1.5 right-1.5 animate-pulse font-bold text-sm leading-none">*</span>
+      )}
+      <span className="leading-none">{score > 0 ? score : '—'}</span>
     </div>
   );
 }
