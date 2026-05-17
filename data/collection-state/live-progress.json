@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-17T14:27:31.059Z",
-  "processed": 46,
-  "failed": 783,
-  "successRate": "5.5%",
+  "updatedAt": "2026-05-17T14:28:41.916Z",
+  "processed": 48,
+  "failed": 791,
+  "successRate": "5.7%",
   "tierBreakdown": {
-    "playwright": 31,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 4,
     "archiveToday": 7,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -89,6 +89,17 @@
     },
     {
       "t": "2026-05-17T14:25:18.691Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T14:27:31.990Z",
+      "event": "bb-session",
+      "session": "b110daef",
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-br"
+    },
+    {
+      "t": "2026-05-17T14:27:32.378Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
