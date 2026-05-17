@@ -662,6 +662,33 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'times-uk': {
+    name: 'The Times (UK)',
+    domain: 'thetimes.com',
+    requiresJs: false,
+    applies: (show) => show.type === 'opera',
+    // The Times's classical-opera tag page lists every recent classical/opera
+    // review including Met transmissions. cookies-plain works for the
+    // listing (Sprint 1 verified 615KB body). URL pattern for individual
+    // reviews: /culture/classical-opera/article/{slug}-{8-char-hash}.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const html = await fetchSSR('https://www.thetimes.com/topic/opera');
+      const all = [];
+      // Times listing uses relative URLs like /culture/classical-opera/article/{slug}-{hash}.
+      // Capture relative path and prepend the canonical domain.
+      const pattern = /["'](\/culture\/classical-opera\/article\/[a-z0-9-]+)["']/gi;
+      let m;
+      while ((m = pattern.exec(html)) !== null) all.push('https://www.thetimes.com' + m[1]);
+      const titleWords = operaTitleWords(showTitle);
+      const matches = [...new Set(all)].filter((url) => {
+        const slug = (url.split('/').pop() || '').toLowerCase();
+        const hits = titleWords.filter((w) => slug.includes(w)).length;
+        return hits >= 1;
+      });
+      return filterOperaUrls(matches, 'times-uk', showId, openingDate);
+    },
+  },
+
   'vulture': {
     name: 'Vulture',
     domain: 'vulture.com',
