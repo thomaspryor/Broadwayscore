@@ -440,6 +440,32 @@ function applyNYDCCC(source, awardsShows, titleById, opts) {
   return { matched, unmatched };
 }
 
+/** Apply Obie source. Winners only (Wikipedia has no nominees list for Obie Awards).
+ *  Per-category keyed, same source shape as DD/OCC/DL but only `winner` present. */
+function applyObie(source, awardsShows, titleById, opts) {
+  let matched = 0;
+  const unmatched = [];
+  for (const [category, years] of Object.entries(source)) {
+    for (const yearEntry of years) {
+      if (!yearEntry.winner) continue;
+      const callOpts = { ...opts, sourceYear: yearEntry.year };
+      const showId = findShowIdByTitle(yearEntry.winner, awardsShows, titleById, callOpts);
+      if (!showId) {
+        unmatched.push(`obie/${category}/${yearEntry.year}: ${yearEntry.winner}`);
+        continue;
+      }
+      const sh = awardsShows[showId];
+      ensurePrecursorField(sh, 'obie', sh.tony && sh.tony.season);
+      if (!sh.obie.wins.includes(category)) {
+        sh.obie.wins.push(category);
+        sh.obie.wins = uniqSorted(sh.obie.wins);
+      }
+      matched++;
+    }
+  }
+  return { matched, unmatched };
+}
+
 /** Apply Pulitzer source. Sets wins (winner) or finalist per show, records year. */
 function applyPulitzer(source, awardsShows, titleById, opts) {
   let matched = 0;
@@ -595,7 +621,7 @@ function main() {
   const occRes = applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', awardsShows, titleById, matcherOpts);
   const dlRes = applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', awardsShows, titleById, matcherOpts);
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
-  const obieRes = applyDDOCCDL(OBIE, 'obie', awardsShows, titleById, matcherOpts);
+  const obieRes = applyObie(OBIE, awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
@@ -674,7 +700,7 @@ function main() {
   applyDDOCCDL(OUTER_CRITICS, 'outerCriticsCircle', secondShows, titleById, matcherOpts);
   applyDDOCCDL(DRAMA_LEAGUE, 'dramaLeague', secondShows, titleById, matcherOpts);
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
-  applyDDOCCDL(OBIE, 'obie', secondShows, titleById, matcherOpts);
+  applyObie(OBIE, secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
