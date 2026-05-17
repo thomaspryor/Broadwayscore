@@ -51,46 +51,39 @@ function isBestShowCategory(category: string): boolean {
   return /best (musical|play)$|revival of a (musical|play)/.test(c);
 }
 
-interface Highlight { label: string; isWin: boolean }
-
-function computeTopHighlight(breakdown: CeremonyContribution[], badge: TierBadge, tonyWins: number): Highlight | null {
+// Returns a single notable win label for the Notable column, or null if none.
+// Only returns win-type results (no nom-count fallback — that lives in Tony Record column).
+function computeNotableWin(breakdown: CeremonyContribution[], tonyWins: number): string | null {
   // Pulitzer — always most prestigious
   const pulitzer = breakdown.find(b => b.ceremony === 'Pulitzer Prize');
   if (pulitzer) {
-    if (pulitzer.items.find(i => i.result === 'win')) return { label: 'Pulitzer Drama', isWin: true };
-    if (pulitzer.items.find(i => i.result === 'nom')) return { label: 'Pulitzer Finalist', isWin: false };
+    if (pulitzer.items.find(i => i.result === 'win')) return 'Pulitzer Drama';
+    if (pulitzer.items.find(i => i.result === 'nom')) return 'Pulitzer Finalist';
   }
 
   // NYDCC
   const nydcc = breakdown.find(b => b.ceremony === "NY Drama Critics' Circle");
-  if (nydcc?.items.find(i => i.result === 'win')) return { label: 'NYDCC Winner', isWin: true };
+  if (nydcc?.items.find(i => i.result === 'win')) return 'NYDCC Winner';
 
   const tony = breakdown.find(b => b.ceremony === 'Tony Awards');
 
-  // Sweepers: "X Tony Wins" is more interesting than listing one category
-  if (tonyWins >= 3) return { label: `${tonyWins} Tony Wins`, isWin: true };
+  // Sweepers: "X Tony Wins" is more distinctive than listing one category
+  if (tonyWins >= 3) return `${tonyWins} Tony Wins`;
 
-  // Notable Tony win that isn't Best Musical/Play (more distinctive)
+  // Notable Tony win that isn't Best Musical/Play (more distinctive than Best Show)
   if (tony) {
     const notableWin = tony.items.find(i => i.result === 'win' && !isBestShowCategory(i.category));
-    if (notableWin) return { label: `Tony · ${categoryShort(notableWin.category)}`, isWin: true };
+    if (notableWin) return `Tony · ${categoryShort(notableWin.category)}`;
 
     // Best Musical/Play/Revival win as fallback
     const bestShowWin = tony.items.find(i => i.result === 'win' && isBestShowCategory(i.category));
-    if (bestShowWin) return { label: `Tony · ${categoryShort(bestShowWin.category)}`, isWin: true };
-  }
-
-  // Nom count for nom-only shows (at least 3 to be worth showing)
-  const tonyNomItems = tony?.items.filter(i => i.result === 'nom') ?? [];
-  if (tonyNomItems.length >= 3) {
-    return { label: `${tonyNomItems.length} Tony Nom${tonyNomItems.length !== 1 ? 's' : ''}`, isWin: false };
+    if (bestShowWin) return `Tony · ${categoryShort(bestShowWin.category)}`;
   }
 
   return null;
 }
 
 function formatSeason(season: string): string {
-  // "2024-2025" → "2024–25"
   const m = season.match(/^(\d{4})-(\d{4})$/);
   if (!m) return season;
   return `${m[1]}–${m[2].slice(2)}`;
@@ -146,13 +139,13 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
     });
   }, [data, sortColumn, sortDirection, seasonFilter, statusFilter]);
 
-  const headerClass = 'py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group';
   const selectClass = 'text-sm bg-surface-overlay border border-white/10 text-gray-300 rounded-lg px-3 py-1.5 cursor-pointer hover:border-white/20 transition-colors focus:outline-none focus:ring-1 focus:ring-brand/50';
+  const thClass = 'py-3 px-4 text-gray-400 font-medium text-center cursor-pointer hover:text-white transition-colors select-none group';
 
   return (
     <div className="card overflow-hidden">
       {/* Filters */}
-      {(seasons.length > 1) && (
+      {seasons.length > 1 && (
         <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-white/10 bg-surface-overlay/50">
           <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">Filter</span>
           <select
@@ -193,29 +186,29 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-left py-3 pl-4 pr-2 text-gray-400 font-medium w-8">#</th>
-              <th className={`text-left ${headerClass}`} onClick={() => handleSort('show')}>
+              <th className="text-center py-3 pl-4 pr-2 text-gray-400 font-medium w-10">#</th>
+              <th className="text-left py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group" onClick={() => handleSort('show')}>
                 Show
                 <SortIcon active={sortColumn === 'show'} direction={sortDirection} />
               </th>
-              <th className={`text-center ${headerClass}`} onClick={() => handleSort('score')}>
+              <th className={thClass} onClick={() => handleSort('score')}>
                 Award Score
                 <SortIcon active={sortColumn === 'score'} direction={sortDirection} />
               </th>
-              <th className="text-left py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Tier</th>
+              <th className="text-center py-3 px-4 text-gray-400 font-medium hidden sm:table-cell">Tier</th>
+              <th className="text-center py-3 px-4 text-gray-400 font-medium hidden lg:table-cell">Notable</th>
               <th className="text-center py-3 px-4 text-gray-400 font-medium hidden md:table-cell">Tony Record</th>
             </tr>
           </thead>
           <tbody>
             {sortedData.map((item, index) => {
               const { awardScore, show } = item;
-              const highlight = computeTopHighlight(awardScore.breakdown, awardScore.badge, awardScore.tonyWins);
-              const hasTonyRecord = awardScore.tonyWins > 0 || awardScore.tonyNoms > 0;
-              const tonyRecord = hasTonyRecord
-                ? [
-                    awardScore.tonyWins > 0 ? `${awardScore.tonyWins} Win${awardScore.tonyWins !== 1 ? 's' : ''}` : null,
-                    awardScore.tonyNoms > 0 ? `${awardScore.tonyNoms} Nom${awardScore.tonyNoms !== 1 ? 's' : ''}` : null,
-                  ].filter(Boolean).join(' · ')
+              const notableWin = computeNotableWin(awardScore.breakdown, awardScore.tonyWins);
+
+              // Always show both wins and noms so columns are consistent across all seasons
+              const hasTonyActivity = awardScore.tonyWins > 0 || awardScore.tonyNoms > 0;
+              const tonyRecord = hasTonyActivity
+                ? `${awardScore.tonyWins} Win${awardScore.tonyWins !== 1 ? 's' : ''} · ${awardScore.tonyNoms} Nom${awardScore.tonyNoms !== 1 ? 's' : ''}`
                 : '—';
 
               const posterUrl = show.images?.poster ?? show.images?.thumbnail ?? show.images?.hero;
@@ -223,15 +216,18 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
 
               return (
                 <tr key={show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                  <td className="py-3 pl-4 pr-2 align-middle">
+                  {/* Rank */}
+                  <td className="py-3 pl-4 pr-2 text-center align-middle">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                     }`}>
                       {index + 1}
                     </span>
                   </td>
-                  <td className="py-3 px-4">
-                    <div className="flex items-start gap-3">
+
+                  {/* Show */}
+                  <td className="py-3 px-4 align-middle">
+                    <div className="flex items-center gap-3">
                       {/* Thumbnail */}
                       <Link href={`/show/${show.slug}`} className="shrink-0 hidden sm:block" tabIndex={-1} aria-hidden>
                         <div className="w-10 h-14 rounded overflow-hidden bg-surface-overlay">
@@ -244,62 +240,54 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                             height={56}
                             loading="lazy"
                             fallback={
-                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">
-                                🎭
-                              </div>
+                              <div className="w-full h-full flex items-center justify-center text-gray-600 text-lg">🎭</div>
                             }
                           />
                         </div>
                       </Link>
                       <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                          <Link href={`/show/${show.slug}`} className="text-white hover:text-brand transition-colors font-medium leading-tight">
-                            {show.title}
-                          </Link>
-                          {awardScore.inProgress && (
-                            <span className="inline-flex items-center gap-1 text-xs font-medium px-1.5 py-0.5 rounded bg-amber-900/40 text-amber-300 border border-amber-700/40">
-                              In Progress
-                            </span>
-                          )}
-                        </div>
-                        {/* Status + season row */}
+                        <Link href={`/show/${show.slug}`} className="text-white hover:text-brand transition-colors font-medium leading-tight block">
+                          {show.title}
+                        </Link>
                         <div className="flex flex-wrap items-center gap-2 mt-1">
-                          {show.status && (
-                            <StatusBadge status={show.status} />
-                          )}
+                          {show.status && <StatusBadge status={show.status} />}
                           {awardScore.tonySeason && (
                             <span className="text-xs text-gray-500">{formatSeason(awardScore.tonySeason)}</span>
                           )}
                         </div>
-                        {/* Highlight pill */}
-                        {highlight && (
-                          <div className="mt-1.5">
-                            <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${
-                              highlight.isWin
-                                ? 'bg-amber-500/15 text-amber-300 border border-amber-600/30'
-                                : 'bg-white/5 text-gray-400 border border-white/10'
-                            }`}>
-                              {highlight.label}
-                            </span>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-4 text-center align-top">
-                    <AwardScoreBadge
-                      score={awardScore.displayScore}
-                      badge={awardScore.badge}
-                      inProgress={awardScore.inProgress}
-                      size="md"
-                    />
+
+                  {/* Award Score */}
+                  <td className="py-3 px-4 text-center align-middle">
+                    <div className="flex justify-center">
+                      <AwardScoreBadge
+                        score={awardScore.displayScore}
+                        badge={awardScore.badge}
+                        inProgress={awardScore.inProgress}
+                        size="md"
+                      />
+                    </div>
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell align-top pt-4">
+
+                  {/* Tier */}
+                  <td className="py-3 px-4 text-center align-middle hidden sm:table-cell">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${TIER_CHIP[awardScore.badge] ?? TIER_CHIP.eligible}`}>
                       {AWARD_TIER_LABEL[awardScore.badge]}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-center hidden md:table-cell align-top pt-4">
+
+                  {/* Notable */}
+                  <td className="py-3 px-4 text-center align-middle hidden lg:table-cell">
+                    {notableWin
+                      ? <span className="text-amber-300 text-xs font-medium">{notableWin}</span>
+                      : <span className="text-gray-600">—</span>
+                    }
+                  </td>
+
+                  {/* Tony Record */}
+                  <td className="py-3 px-4 text-center align-middle hidden md:table-cell">
                     <span className="text-gray-400 text-sm tabular-nums">{tonyRecord}</span>
                   </td>
                 </tr>
@@ -307,7 +295,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
             })}
             {sortedData.length === 0 && (
               <tr>
-                <td colSpan={5} className="py-12 text-center text-gray-500 text-sm">
+                <td colSpan={6} className="py-12 text-center text-gray-500 text-sm">
                   No shows match the current filters.
                 </td>
               </tr>

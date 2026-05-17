@@ -79,10 +79,10 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
       style={!styles.criticClass && styles.glow ? { boxShadow: styles.glow } : undefined}
       aria-label={inProgress && score > 0 ? `Provisional Award Score ${score} — ${label}` : `Award Score ${score} — ${label}`}
     >
-      <span className="flex items-start gap-0.5 leading-none">
+      <span className="relative leading-none inline-flex">
         <span>{score > 0 ? score : '—'}</span>
         {inProgress && score > 0 && (
-          <span aria-hidden className="text-base align-super animate-pulse" style={{ marginTop: '-0.15em' }}>*</span>
+          <span aria-hidden className="absolute animate-pulse font-bold text-base" style={{ top: '-0.2em', right: '-0.45em' }}>*</span>
         )}
       </span>
     </div>
