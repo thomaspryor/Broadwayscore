@@ -25,6 +25,14 @@ const CARD_TARGETS = {
   boxoffice: { headings: ['Box Office'], shows: ['hamilton','wicked','the-lion-king','death-becomes-her','the-lost-boys'] },
   social:  { headings: ['Socials Scorecard','Social Pulse','Social'], shows: ['the-lost-boys','beaches','oh-mary','becky-shaw','aladdin'] },
   commercial: { headings: ['Commercial','Biz Buzz','Commercial Performance','Commercial Scorecard'], shows: ['hamilton','wicked','the-lion-king','maybe-happy-ending','death-becomes-her'] },
+  showtimes:   { headings: ['Showtimes'], shows: ['hamilton','oh-mary','the-lost-boys','death-becomes-her','wicked'] },
+  castupdates: { headings: ['Cast Updates'], shows: ['hamilton','wicked','the-lion-king','oh-mary'] },
+  castsection: { headings: ['Original Broadway Cast','Original Cast','Original London Cast','Current Cast'], shows: ['hamilton','wicked','the-lion-king','oh-mary','the-lost-boys'] },
+  seating:     { headings: ['Seating Scorecard','Where to Sit'], shows: ['hamilton','wicked','the-lion-king','oh-mary'] },
+  video:       { headings: ['Video Reviews'], shows: ['the-lost-boys','oh-mary','maybe-happy-ending','hamilton'] },
+  lottery:     { headings: ['Discount Tickets'], shows: ['hamilton','oh-mary','the-lost-boys','wicked'] },
+  quickfacts:  { headings: ['Quick Facts'], shows: ['hamilton','oh-mary','the-lost-boys','wicked','death-becomes-her'] },
+  whereitranks: { headings: ['Where It Ranks','Where it ranks'], shows: ['hamilton','oh-mary','the-lost-boys','wicked','death-becomes-her'] },
 };
 
 const target = CARD_TARGETS[CARD];
