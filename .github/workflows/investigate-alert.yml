@@ -44,34 +44,38 @@ jobs:
 
           // --- Step 1: Call Claude API for diagnosis ---
 
-          const systemPrompt = `You are an operations assistant for Broadway Scorecard (broadwayscorecard.com), a Next.js/TypeScript static site on Vercel with GitHub Actions automation.
+          const systemPrompt = [
+            'You are an operations assistant for Broadway Scorecard (broadwayscorecard.com), a Next.js/TypeScript static site on Vercel with GitHub Actions automation.',
+            '',
+            'Stack: Next.js 14, TypeScript, Tailwind CSS, static export. Data pipeline uses Node.js scripts.',
+            '',
+            'Available fix IDs:',
+            '- "redeploy": Trigger a fresh Vercel deployment. Safe to retry — use when the failure is likely transient (Vercel infra blip, network timeout, OOM spike).',
+            '- "no-auto-fix": No automated fix available. Use when the issue requires code changes or investigation.',
+            '',
+            'Alert type guidance:',
+            '- vercel_deploy_fail: Build failures (TypeScript error, missing env var) need no-auto-fix. Transient failures (exit code 1 with no code changes, Vercel timeout) can use redeploy.',
+            '- poller_fail: Opening-night review poller. Causes: ScrapingBee/BrightData credit exhaustion, cookie invalidation, network timeout. Always no-auto-fix.',
+            '- data_health_fail: Daily data health check. Almost always no-auto-fix — requires investigation.',
+            '- opening_night_broadcast_fail: Email broadcast workflow failed. Always no-auto-fix — never auto-retry broadcasts.',
+            '',
+            'Respond ONLY with a valid JSON object (no markdown fences, no explanation outside the JSON):',
+            '{',
+            '  "rootCause": "One sentence: most likely cause",',
+            '  "fixId": "redeploy OR no-auto-fix",',
+            '  "fixDescription": "One sentence: what the fix does (omit if no-auto-fix)",',
+            '  "watchFor": "One sentence: what to check if the fix does not work or if more investigation is needed"',
+            '}',
+          ].join('\n');
 
-Stack: Next.js 14, TypeScript, Tailwind CSS, static export. Data pipeline uses Node.js scripts.
-
-Available fix IDs:
-- "redeploy": Trigger a fresh Vercel deployment. Safe to retry — use when the failure is likely transient (Vercel infra blip, network timeout, OOM spike).
-- "no-auto-fix": No automated fix available. Use when the issue requires code changes or investigation.
-
-Alert type guidance:
-- vercel_deploy_fail: Build failures (TypeScript error, missing env var) need no-auto-fix. Transient failures (exit code 1 with no code changes, Vercel timeout) can use redeploy.
-- poller_fail: Opening-night review poller. Causes: ScrapingBee/BrightData credit exhaustion, cookie invalidation, network timeout. Always no-auto-fix.
-- data_health_fail: Daily data health check. Almost always no-auto-fix — requires investigation.
-- opening_night_broadcast_fail: Email broadcast workflow failed. Always no-auto-fix — never auto-retry broadcasts.
-
-Respond ONLY with a valid JSON object (no markdown fences, no explanation outside the JSON):
-{
-  "rootCause": "One sentence: most likely cause",
-  "fixId": "redeploy OR no-auto-fix",
-  "fixDescription": "One sentence: what the fix does (omit if no-auto-fix)",
-  "watchFor": "One sentence: what to check if the fix doesn't work or if more investigation is needed"
-}`;
-
-          const userPrompt = `Alert type: ${alertType}
-Alert title: ${alertTitle}
-Run URL: ${runUrl}
-Additional context: ${alertContext}
-
-Diagnose this alert and recommend a fix.`;
+          const userPrompt = [
+            'Alert type: ' + alertType,
+            'Alert title: ' + alertTitle,
+            'Run URL: ' + runUrl,
+            'Additional context: ' + alertContext,
+            '',
+            'Diagnose this alert and recommend a fix.',
+          ].join('\n');
 
           function httpsPost(hostname, path, headers, body) {
             return new Promise((resolve, reject) => {

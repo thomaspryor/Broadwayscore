@@ -14,11 +14,11 @@ export default function robots(): MetadataRoute.Robots {
 
   return {
     rules: [
-      // Search engines (ALLOWED — index us, but not BTC co-branded page or admin)
-      { userAgent: 'Googlebot', allow: '/', disallow: ['/beat-the-critics', '/status.html', '/opening-night-status.json', '/admin/'] },
-      { userAgent: 'Bingbot', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
-      { userAgent: 'Slurp', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
-      { userAgent: 'DuckDuckBot', allow: '/', disallow: ['/beat-the-critics', '/admin/'] },
+      // Search engines (ALLOWED — index us, not admin/internal pages)
+      { userAgent: 'Googlebot', allow: '/', disallow: ['/status.html', '/opening-night-status.json', '/admin/'] },
+      { userAgent: 'Bingbot', allow: '/', disallow: ['/admin/'] },
+      { userAgent: 'Slurp', allow: '/', disallow: ['/admin/'] },
+      { userAgent: 'DuckDuckBot', allow: '/', disallow: ['/admin/'] },
       // AI search bots (ALLOWED — shows us in AI search results with citations)
       { userAgent: 'OAI-SearchBot', allow: '/', disallow: '/admin/' },
       { userAgent: 'PerplexityBot', allow: '/', disallow: '/admin/' },

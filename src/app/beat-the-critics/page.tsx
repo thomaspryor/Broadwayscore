@@ -9,9 +9,8 @@ import {
 import { BeatTheCriticsClient } from './BeatTheCriticsClient';
 
 export const metadata = {
-  title: 'Beat the Critics | TodayTix x Broadway Scorecard',
-  description: 'Pick Tony Award winners and compete against top critics and the CriticScore algorithm. Win free TodayTix tickets.',
-  robots: { index: false, follow: false },
+  title: 'Beat the Critics | Tony Award Picks | Broadway Scorecard',
+  description: 'Make your Tony Award picks and see how you stack up against top critics and the CriticScore algorithm. Ceremony: June 7, 2026.',
 };
 
 export interface ActorNominee {
@@ -39,105 +38,96 @@ export interface BeatTheCriticsData {
   stats: { reviewsScored: number; showsTracked: number; criticsTracked: number };
 }
 
-// Curated likely nominees per Tier 1 category (~5 per, simulating post-nomination slate)
-// NOTE: These use SerializedTonyShow.slug (not show ID), e.g. 'ragtime' not 'ragtime-2025'
+// Official 2026 Tony nominees — show slugs (without year suffix)
 const CURATED_SHOW_NOMINEES: Record<string, string[]> = {
   'Best Musical': [
-    'two-strangers',             // NYT Critics Pick, frontrunner
-    'queen-of-versailles',       // Kristin Chenoweth, Stephen Schwartz
-    'schmigadoon',               // Apple TV+ adaptation
-    'the-lost-boys',             // Michael Arden directing
-    'beaches',                   // Major new musical
+    'two-strangers',
+    'schmigadoon',
+    'the-lost-boys',
+    'titanique',
   ],
   'Best Play': [
-    'giant',                     // Olivier Award winner, John Lithgow
-    'dog-day-afternoon',         // Stephen Adly Guirgis, Jon Bernthal
-    'the-balusters',             // David Lindsay-Abaire, Kenny Leon
-    'oedipus',                   // Mark Strong, Lesley Manville
-    'the-fear-of-13',            // Adrien Brody, Tessa Thompson
+    'liberation',
+    'giant',
+    'the-balusters',
+    'little-bear-ridge-road',
   ],
   'Best Revival of a Musical': [
-    'ragtime',                   // Lincoln Center, 96% audience score
-    'chess',                     // Aaron Tveit, Lea Michele
-    'cats-the-jellicle-ball',    // Ballroom reimagining, OB hit
-    'the-rocky-horror-show',     // Luke Evans, Roundabout
-    'mamma-mia',                 // Tony-eligible revival
+    'ragtime',
+    'the-rocky-horror-show',
+    'cats-the-jellicle-ball',
   ],
   'Best Revival of a Play': [
-    'waiting-for-godot-2025',    // Keanu Reeves, Jamie Lloyd
-    'art-2025',                  // Cannavale, NPH, Corden
-    'marjorie-prime',            // June Squibb, Cynthia Nixon
-    'joe-turners-come-and-gone', // August Wilson classic
-    'bug',                       // Carrie Coon, Namir Smallwood
+    'oedipus',
+    'every-brilliant-thing',
+    'death-of-a-salesman',
+    'becky-shaw',
+    'fallen-angels',
   ],
 };
 
-// Tier 2: Lead Actor contenders — curated from eligible shows' cast data
+// Official 2026 Tony nominees — lead acting categories
 const LEAD_ACTOR_NOMINEES: Record<string, { name: string; showTitle: string; showSlug: string }[]> = {
   'Best Actor in a Musical': [
+    { name: 'Sam Tutty', showTitle: 'Two Strangers (Carry a Cake Across New York)', showSlug: 'two-strangers-bway-2025' },
     { name: 'Joshua Henry', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
-    { name: 'Sam Tutty', showTitle: 'Two Strangers', showSlug: 'two-strangers-bway-2025' },
-    { name: 'Aaron Tveit', showTitle: 'Chess', showSlug: 'chess-2025' },
     { name: 'Brandon Uranowitz', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
-    { name: 'Alex Brightman', showTitle: 'Schmigadoon!', showSlug: 'schmigadoon-2026' },
     { name: 'Nicholas Christopher', showTitle: 'Chess', showSlug: 'chess-2025' },
+    { name: 'Luke Evans', showTitle: 'The Rocky Horror Show', showSlug: 'the-rocky-horror-show-2026' },
   ],
   'Best Actress in a Musical': [
+    { name: 'Christiani Pitts', showTitle: 'Two Strangers (Carry a Cake Across New York)', showSlug: 'two-strangers-bway-2025' },
     { name: 'Caissie Levy', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
-    { name: 'Lea Michele', showTitle: 'Chess', showSlug: 'chess-2025' },
-    { name: 'Kristin Chenoweth', showTitle: 'The Queen of Versailles', showSlug: 'queen-versailles-2025' },
-    { name: 'Christiani Pitts', showTitle: 'Two Strangers', showSlug: 'two-strangers-bway-2025' },
-    { name: 'Christine Sherrill', showTitle: 'Mamma Mia!', showSlug: 'mamma-mia-2025' },
-    { name: 'Jessica Vosk', showTitle: 'Beaches', showSlug: 'beaches-2026' },
+    { name: 'Sara Chase', showTitle: 'Schmigadoon!', showSlug: 'schmigadoon-2026' },
+    { name: 'Stephanie Hsu', showTitle: 'The Rocky Horror Show', showSlug: 'the-rocky-horror-show-2026' },
+    { name: 'Marla Mindelle', showTitle: 'Titanique', showSlug: 'titanique-2026' },
   ],
   'Best Actor in a Play': [
     { name: 'Mark Strong', showTitle: 'Oedipus', showSlug: 'oedipus-2025' },
-    { name: 'Keanu Reeves', showTitle: 'Waiting for Godot', showSlug: 'waiting-for-godot-2025' },
+    { name: 'Daniel Radcliffe', showTitle: 'Every Brilliant Thing', showSlug: 'every-brilliant-thing-2026' },
+    { name: 'Nathan Lane', showTitle: 'Death of a Salesman', showSlug: 'death-of-a-salesman-2026' },
+    { name: 'John Lithgow', showTitle: 'Giant', showSlug: 'giant-2026' },
     { name: 'Will Harrison', showTitle: 'Punch', showSlug: 'punch-2025' },
-    { name: 'Namir Smallwood', showTitle: 'Bug', showSlug: 'bug-2026' },
-    { name: 'Bobby Cannavale', showTitle: 'Art', showSlug: 'art-2025' },
-    { name: 'Adrien Brody', showTitle: 'The Fear of 13', showSlug: 'the-fear-of-13-2026' },
   ],
   'Best Actress in a Play': [
+    { name: 'Susannah Flood', showTitle: 'Liberation', showSlug: 'liberation-2025' },
     { name: 'Lesley Manville', showTitle: 'Oedipus', showSlug: 'oedipus-2025' },
-    { name: 'Jean Smart', showTitle: 'Call Me Izzy', showSlug: 'call-me-izzy-2025' },
     { name: 'Carrie Coon', showTitle: 'Bug', showSlug: 'bug-2026' },
-    { name: 'Ayo Edebiri', showTitle: 'Proof', showSlug: 'proof-2026' },
-    { name: 'Laurie Metcalf', showTitle: 'Little Bear Ridge Road', showSlug: 'little-bear-ridge-road-2025' },
-    { name: 'Taraji P. Henson', showTitle: "Joe Turner's Come and Gone", showSlug: 'joe-turners-come-and-gone-2026' },
+    { name: 'Rose Byrne', showTitle: 'Fallen Angels', showSlug: 'fallen-angels-2026' },
+    { name: 'Kelli O\'Hara', showTitle: 'Fallen Angels', showSlug: 'fallen-angels-2026' },
   ],
 };
 
-// Tier 3: Featured Actor contenders
+// Official 2026 Tony nominees — featured acting categories
 const FEATURED_ACTOR_NOMINEES: Record<string, { name: string; showTitle: string; showSlug: string }[]> = {
   'Best Featured Actor in a Musical': [
     { name: 'Ben Levi Ross', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
     { name: 'Bryce Pinkham', showTitle: 'Chess', showSlug: 'chess-2025' },
-    { name: 'Colin Donnell', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
-    { name: 'Brad Oscar', showTitle: 'Schmigadoon!', showSlug: 'schmigadoon-2026' },
-    { name: 'Ephraim Sykes', showTitle: 'Buena Vista Social Club', showSlug: 'buena-vista-social-club-2025' },
+    { name: 'Ali Louis Bourzgui', showTitle: 'The Lost Boys', showSlug: 'the-lost-boys-2026' },
+    { name: 'Layton Williams', showTitle: 'Titanique', showSlug: 'titanique-2026' },
+    { name: 'André De Shields', showTitle: "Cats: The Jellicle Ball", showSlug: 'cats-the-jellicle-ball-2026' },
   ],
   'Best Featured Actress in a Musical': [
-    { name: 'Shaina Taub', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
     { name: 'Nichelle Lewis', showTitle: 'Ragtime', showSlug: 'ragtime-2025' },
     { name: 'Hannah Cruz', showTitle: 'Chess', showSlug: 'chess-2025' },
     { name: 'Ana Gasteyer', showTitle: 'Schmigadoon!', showSlug: 'schmigadoon-2026' },
-    { name: 'Carly Sakolove', showTitle: 'Mamma Mia!', showSlug: 'mamma-mia-2025' },
-    { name: 'McKenzie Kurtz', showTitle: 'Schmigadoon!', showSlug: 'schmigadoon-2026' },
+    { name: 'Rachel Dratch', showTitle: 'The Rocky Horror Show', showSlug: 'the-rocky-horror-show-2026' },
+    { name: 'Shoshana Bean', showTitle: 'The Lost Boys', showSlug: 'the-lost-boys-2026' },
   ],
   'Best Featured Actor in a Play': [
     { name: 'Danny Burstein', showTitle: 'Marjorie Prime', showSlug: 'marjorie-prime-2025' },
-    { name: 'Christopher Lowell', showTitle: 'Marjorie Prime', showSlug: 'marjorie-prime-2025' },
-    { name: 'Glenn Fleshler', showTitle: 'Good Night, and Good Luck', showSlug: 'good-night-and-good-luck-2025' },
-    { name: 'Joshua Boone', showTitle: "Joe Turner's Come and Gone", showSlug: 'joe-turners-come-and-gone-2026' },
-    { name: 'Jin Ha', showTitle: 'Proof', showSlug: 'proof-2026' },
+    { name: 'Christopher Abbott', showTitle: 'Death of a Salesman', showSlug: 'death-of-a-salesman-2026' },
+    { name: 'Brandon J. Dirden', showTitle: 'Waiting for Godot', showSlug: 'waiting-for-godot-2025' },
+    { name: 'Richard Thomas', showTitle: 'The Balusters', showSlug: 'the-balusters-2026' },
+    { name: 'Alden Ehrenreich', showTitle: 'Becky Shaw', showSlug: 'becky-shaw-2026' },
+    { name: 'Ruben Santiago-Hudson', showTitle: "Joe Turner's Come and Gone", showSlug: 'joe-turners-come-and-gone-2026' },
   ],
   'Best Featured Actress in a Play': [
+    { name: 'Betsy Aidem', showTitle: 'Liberation', showSlug: 'liberation-2025' },
     { name: 'June Squibb', showTitle: 'Marjorie Prime', showSlug: 'marjorie-prime-2025' },
-    { name: 'Cynthia Nixon', showTitle: 'Marjorie Prime', showSlug: 'marjorie-prime-2025' },
-    { name: 'Susannah Flood', showTitle: 'Liberation', showSlug: 'liberation-2025' },
-    { name: 'Samira Wiley', showTitle: 'Proof', showSlug: 'proof-2026' },
-    { name: 'Tessa Thompson', showTitle: 'The Fear of 13', showSlug: 'the-fear-of-13-2026' },
+    { name: 'Laurie Metcalf', showTitle: 'Death of a Salesman', showSlug: 'death-of-a-salesman-2026' },
+    { name: 'Aya Cash', showTitle: 'Giant', showSlug: 'giant-2026' },
+    { name: 'Marylouise Burke', showTitle: 'The Balusters', showSlug: 'the-balusters-2026' },
   ],
 };
 
