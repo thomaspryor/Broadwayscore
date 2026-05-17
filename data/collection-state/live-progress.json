@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-17T15:02:04.553Z",
+  "updatedAt": "2026-05-17T15:03:58.456Z",
   "processed": 67,
-  "failed": 972,
+  "failed": 982,
   "successRate": "6.4%",
   "tierBreakdown": {
     "playwright": 39,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 19,
     "directCookies": 0,
     "scrapingbee": 10,
     "brightdata": 5,
     "archiveToday": 7,
     "archive": 6
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-05-17T10:49:30.671Z",
-      "event": "bb-session",
-      "session": "0c1e4f50",
-      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
-    },
-    {
-      "t": "2026-05-17T10:49:31.399Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-05-17T14:21:07.721Z",
       "event": "bb-session",
@@ -124,6 +113,17 @@
       "t": "2026-05-17T14:35:13.233Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T15:03:46.068Z",
+      "event": "bb-session",
+      "session": "e294a3dd",
+      "url": "https://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-17T15:03:46.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

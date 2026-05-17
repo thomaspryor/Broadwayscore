@@ -997,7 +997,17 @@
     "waiting-for-godot-2009/backstage--david-sheward.json",
     "the-philanthropist-2009/backstage--david-sheward.json",
     "mary-stuart-2009/backstage--david-sheward.json",
-    "next-to-normal-2009/newyorker--john-lahr.json"
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "next-to-normal-2009/neontommy--jason-kehe.json",
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1061,7 +1071,8 @@
       "data/review-texts/glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
       "glengarry-glen-ross-west-end-2026/hollywood-reporter--unknown.json",
       "data/review-texts/glengarry-glen-ross-west-end-2026/variety--unknown.json",
-      "glengarry-glen-ross-west-end-2026/variety--unknown.json"
+      "glengarry-glen-ross-west-end-2026/variety--unknown.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1102,7 +1113,7 @@
     ]
   },
   "startTime": "2026-05-17T08:47:05.589Z",
-  "lastProcessed": "next-to-normal-2009/newyorker--john-lahr.json",
+  "lastProcessed": "13-2008/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-17T10:48:57.261Z",
@@ -1224,6 +1235,17 @@
       "t": "2026-05-17T14:35:13.233Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-17T15:03:46.068Z",
+      "event": "bb-session",
+      "session": "e294a3dd",
+      "url": "https://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-17T15:03:46.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
