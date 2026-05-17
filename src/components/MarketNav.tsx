@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
+import { isOperaShowPath } from '@/lib/opera-show-ids';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -14,15 +16,24 @@ interface MarketStats {
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
+  const pathname = usePathname() || '';
   const marketId = useCurrentMarket();
-  const isOpera = useIsOperaDomain();
+  const isOperaDomain = useIsOperaDomain();
+  // An opera show detail page (regardless of domain) should render the Opera
+  // pill instead of "Off-Bway" — Met productions are categorized off-broadway
+  // for routing only, and surfacing that label embarrasses the site to opera
+  // professionals. See Notion 363637c5-416f-8112.
+  const isOperaShowPage = isOperaShowPath(pathname);
+  const isOpera = isOperaDomain || isOperaShowPage;
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isWestEnd = marketId === 'west-end';
   const isOffWestEnd = marketId === 'off-west-end';
-  const isOffBroadway = marketId === 'off-broadway';
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway;
+  // Treat opera show pages as NOT off-broadway for the pill label, even though
+  // the URL-derived marketId is 'off-broadway' (shared routing convention).
+  const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isOpera;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -58,18 +69,20 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           border transition-colors whitespace-nowrap
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
-            : isOffBroadway
-              ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
-              : isOffWestEnd
-                ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
-                : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
+            : isOpera
+              ? 'bg-amber-500/[0.12] border-amber-500/25 text-amber-300 hover:bg-amber-500/20'
+              : isOffBroadway
+                ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
+                : isOffWestEnd
+                  ? 'bg-violet-500/[0.12] border-violet-500/25 text-violet-300 hover:bg-violet-500/20'
+                  : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
         `}
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         <svg className={`w-3 h-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
