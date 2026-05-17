@@ -9,7 +9,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import { isTonyEligible } from '@/lib/data-awards';
 import {
   tonySeasonForCeremonyYear,
-  currentTonySeason,
+  currentPredictionSeason,
   FIRST_TRACKED_CEREMONY_YEAR,
 } from '@/lib/tony-cutoffs';
 // classifyCategory maps precursor category names → tier (S/A+/A/B/C). Shared
@@ -214,8 +214,12 @@ export interface TonySeasonWindow {
 }
 
 export function getTonySeasonWindow(): TonySeasonWindow {
-  // Sourced from src/lib/tony-cutoffs.ts — exact per-year cutoffs with citations.
-  const record = currentTonySeason();
+  // Uses currentPredictionSeason() (not currentTonySeason()) so the predictions
+  // page stays on the outgoing season during the April→June gap — after the
+  // eligibility cutoff but before the ceremony. E.g. Apr 27–Jun 6, 2026:
+  // currentTonySeason() → 2026-27 (empty); currentPredictionSeason() → 2025-26
+  // (16 nominees, ceremony Jun 7). See tony-cutoffs.ts for the gap logic.
+  const record = currentPredictionSeason();
   return recordToWindow(record);
 }
 
