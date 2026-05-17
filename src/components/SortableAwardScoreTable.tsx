@@ -144,10 +144,10 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
 
   return (
     <div className="card overflow-hidden">
-      {/* Filters */}
-      {seasons.length > 1 && (
-        <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-white/10 bg-surface-overlay/50">
-          <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">Filter</span>
+      {/* Filters — always show status filter; season filter only when multiple seasons in data */}
+      <div className="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-white/10 bg-surface-overlay/50">
+        <span className="text-xs text-gray-500 font-medium uppercase tracking-wide">Filter</span>
+        {seasons.length > 1 && (
           <select
             value={seasonFilter}
             onChange={e => setSeasonFilter(e.target.value)}
@@ -159,28 +159,28 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
               <option key={s} value={s}>{formatSeason(s)}</option>
             ))}
           </select>
-          <select
-            value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            className={selectClass}
-            aria-label="Filter by status"
+        )}
+        <select
+          value={statusFilter}
+          onChange={e => setStatusFilter(e.target.value)}
+          className={selectClass}
+          aria-label="Filter by status"
+        >
+          <option value="all">All Shows</option>
+          <option value="open">Now Playing</option>
+          <option value="previews">In Previews</option>
+          <option value="closed">Closed</option>
+        </select>
+        {(seasonFilter !== 'all' || statusFilter !== 'all') && (
+          <button
+            onClick={() => { setSeasonFilter('all'); setStatusFilter('all'); }}
+            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
           >
-            <option value="all">All Shows</option>
-            <option value="open">Now Playing</option>
-            <option value="previews">In Previews</option>
-            <option value="closed">Closed</option>
-          </select>
-          {(seasonFilter !== 'all' || statusFilter !== 'all') && (
-            <button
-              onClick={() => { setSeasonFilter('all'); setStatusFilter('all'); }}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
-            >
-              Clear filters
-            </button>
-          )}
-          <span className="ml-auto text-xs text-gray-500">{sortedData.length} show{sortedData.length !== 1 ? 's' : ''}</span>
-        </div>
-      )}
+            Clear filters
+          </button>
+        )}
+        <span className="ml-auto text-xs text-gray-500">{sortedData.length} show{sortedData.length !== 1 ? 's' : ''}</span>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
