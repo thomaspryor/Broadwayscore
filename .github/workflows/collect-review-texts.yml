@@ -56,9 +56,9 @@ on:
         required: false
         default: 'true'
       browserbase_max_sessions:
-        description: 'Max Browserbase sessions per run (default 20, daily cap 30)'
+        description: 'Max Browserbase sessions per run (default 30, daily cap 250 — see scripts/lib/browserbase-caps.js)'
         required: false
-        default: '20'
+        default: '30'
       content_tier:
         description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
         required: false
