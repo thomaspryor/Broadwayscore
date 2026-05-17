@@ -1055,7 +1055,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <dt className="text-gray-500">Runtime</dt>
               <dd className="text-white mt-0.5">{show.runtime}</dd>
             </div>
-            {show.intermissions !== undefined && (
+            {show.intermissions !== undefined && show.intermissions !== null && (
               <div>
                 <dt className="text-gray-500">Intermissions</dt>
                 <dd className="text-white mt-0.5">{show.intermissions}</dd>
