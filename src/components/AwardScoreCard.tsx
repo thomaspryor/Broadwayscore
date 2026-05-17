@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { computeSiteAwardScore, type CeremonyContribution } from '@/lib/awards-scoring';
+import { computeSiteAwardScore } from '@/lib/awards-scoring';
 import type { ShowAwards } from '@/lib/data-types';
 import { ChevronIcon, PulitzerIcon, TrophyIconLine, StarIconLine } from '@/components/icons';
 import { sortByImportance, isMajorCategory } from '@/config/awards';
@@ -14,6 +14,11 @@ interface AwardScoreCardProps {
   showId: string;
   awards: ShowAwards | undefined;
   openingDate?: string;
+  /** Map of Tony category → [person names]. Computed server-side from
+   *  data/tony-nominations.json. When present, the expanded Tony category
+   *  list surfaces the performer/creative behind each category subtly inline
+   *  (e.g. "Best Actor in a Musical · Leslie Odom, Jr."). */
+  tonyNamesByCategory?: Record<string, string[]>;
 }
 
 function toFullSeasonLabel(season: string): string {
@@ -53,16 +58,6 @@ function buildSublabel(awards: ShowAwards | undefined, badge: string, inProgress
   return '';
 }
 
-function pointsByCategory(items: CeremonyContribution['items'] | undefined): Map<string, number> {
-  const m = new Map<string, number>();
-  if (!items) return m;
-  for (const it of items) {
-    const key = `${it.result}:${it.category}`;
-    m.set(key, (m.get(key) ?? 0) + it.points);
-  }
-  return m;
-}
-
 function CountdownPill({ season }: { season: string }) {
   // Days-to-ceremony pill — gives concrete urgency instead of generic
   // "Provisional." When the ceremony date isn't in our records, falls back
@@ -86,21 +81,31 @@ function CountdownPill({ season }: { season: string }) {
 // fallback when awardScoreV2 flag is off), with point values overlaid.
 function TonyAwardsPanel({
   tony,
-  contrib,
   inProgress,
+  tonyNamesByCategory,
 }: {
   tony: NonNullable<ShowAwards['tony']>;
-  contrib: CeremonyContribution | undefined;
   inProgress: boolean;
+  tonyNamesByCategory?: Record<string, string[]>;
 }) {
   const wins = tony.wins ?? [];
   const nominatedFor = tony.nominatedFor ?? [];
   const nominationsOnly = nominatedFor.filter(n => !wins.includes(n));
   const totalCount = wins.length + nominationsOnly.length;
   const [expanded, setExpanded] = useState(totalCount > 0 && totalCount <= 5);
-  const pointMap = pointsByCategory(contrib?.items);
   const sortedWins = sortByImportance(wins);
   const sortedNoms = sortByImportance(nominationsOnly);
+
+  // Helper: subtle " · {name}" suffix for performer/creative categories.
+  // Show-level categories (Best Musical/Play/Revival) get no name (data
+  // marks them "(show-level)" which is filtered out in
+  // getTonyNamesByCategory). If multiple people share a category (e.g. 3
+  // Featured Actor noms), join with " · ".
+  const nameFor = (category: string): string | null => {
+    const names = tonyNamesByCategory?.[category];
+    if (!names || names.length === 0) return null;
+    return names.join(' · ');
+  };
 
   return (
     <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
@@ -146,33 +151,33 @@ function TonyAwardsPanel({
           {expanded && (
             <ul className="mt-3 space-y-2">
               {sortedWins.map((cat, idx) => {
-                const pts = Math.round(pointMap.get(`win:${cat}`) ?? 0);
                 const major = isMajorCategory(cat);
+                const name = nameFor(cat);
                 return (
                   <li key={`w-${idx}`} className="flex items-center gap-2 text-sm">
                     <TrophyIconLine className="text-amber-400 flex-shrink-0" />
                     <span className={`flex-1 ${major ? 'text-white font-medium' : 'text-amber-200'}`}>
                       {cat}
+                      {name && (
+                        <span className="text-gray-500 font-normal"> · {name}</span>
+                      )}
                     </span>
                     <span className="text-[10px] uppercase tracking-wide text-amber-400/70 font-semibold">Won</span>
-                    {pts > 0 && (
-                      <span className="text-xs text-gray-500 tabular-nums w-10 text-right">+{pts}</span>
-                    )}
                   </li>
                 );
               })}
               {sortedNoms.map((cat, idx) => {
-                const pts = Math.round(pointMap.get(`nom:${cat}`) ?? 0);
                 const major = isMajorCategory(cat);
+                const name = nameFor(cat);
                 return (
                   <li key={`n-${idx}`} className="flex items-center gap-2 text-sm">
                     <StarIconLine className="text-gray-500 flex-shrink-0" />
                     <span className={`flex-1 ${major ? 'text-gray-300' : 'text-gray-500'}`}>
                       {cat}
+                      {name && (
+                        <span className="text-gray-600 font-normal"> · {name}</span>
+                      )}
                     </span>
-                    {pts > 0 && (
-                      <span className="text-xs text-gray-500 tabular-nums w-10 text-right">+{pts}</span>
-                    )}
                   </li>
                 );
               })}
@@ -227,13 +232,10 @@ function nodeFor(awards: ShowAwards, key: OtherAwardConfig['key']) {
 
 function OtherAwardsPanel({
   awards,
-  breakdown,
 }: {
   awards: ShowAwards;
-  breakdown: CeremonyContribution[];
 }) {
   const [expanded, setExpanded] = useState(false);
-  const byName = new Map(breakdown.map(c => [c.ceremony, c]));
 
   const rows = OTHER_CONFIGS.map(cfg => {
     const node = nodeFor(awards, cfg.key);
@@ -248,8 +250,7 @@ function OtherAwardsPanel({
     // total separate from the per-category `nominatedFor` list (which may be
     // incomplete for older shows). DL/NYDCCC only have `nominatedFor`.
     const nomsTotal = Math.max(nominationsCount ?? 0, nominatedFor.length) || null;
-    const contrib = byName.get(cfg.ceremonyName);
-    return { cfg, wins, nominatedFor, nomsTotal, contrib };
+    return { cfg, wins, nominatedFor, nomsTotal };
   })
     // Render a row only when we can produce a real label: either wins exist,
     // or some flavor of nom count > 0. Subtotal-only (uncategorized) rows are
@@ -306,8 +307,7 @@ function OtherAwardsPanel({
 
       {expanded && (
         <div className="mt-3 space-y-3">
-          {rows.map(({ cfg, wins, nominatedFor, nomsTotal, contrib }) => {
-            const pointMap = pointsByCategory(contrib?.items);
+          {rows.map(({ cfg, wins, nominatedFor, nomsTotal }) => {
             const nomsOnly = nominatedFor.filter(n => !wins.includes(n));
             return (
               <div key={cfg.key}>
@@ -319,16 +319,12 @@ function OtherAwardsPanel({
                 </div>
                 {wins.length > 0 && (
                   <ul className="space-y-1 pl-4">
-                    {wins.map((win, idx) => {
-                      const pts = Math.round(pointMap.get(`win:${win}`) ?? 0);
-                      return (
-                        <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
-                          <TrophyIconLine className="w-3 h-3 text-amber-400 flex-shrink-0" />
-                          <span className="flex-1">{win}</span>
-                          {pts > 0 && <span className="text-xs text-gray-500 tabular-nums">+{pts}</span>}
-                        </li>
-                      );
-                    })}
+                    {wins.map((win, idx) => (
+                      <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
+                        <TrophyIconLine className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                        <span className="flex-1">{win}</span>
+                      </li>
+                    ))}
                   </ul>
                 )}
                 {nomsOnly.length > 0 && (
@@ -337,19 +333,15 @@ function OtherAwardsPanel({
                       Nominated for
                     </div>
                     <ul className="space-y-1 pl-4">
-                      {nomsOnly.map((nom, idx) => {
-                        const pts = Math.round(pointMap.get(`nom:${nom}`) ?? 0);
-                        return (
-                          <li
-                            key={`n-${idx}`}
-                            className="flex items-center gap-2 text-sm text-gray-500 italic"
-                          >
-                            <StarIconLine className="w-3 h-3 text-gray-500/60 flex-shrink-0" />
-                            <span className="flex-1">{nom}</span>
-                            {pts > 0 && <span className="text-xs text-gray-500 tabular-nums not-italic">+{pts}</span>}
-                          </li>
-                        );
-                      })}
+                      {nomsOnly.map((nom, idx) => (
+                        <li
+                          key={`n-${idx}`}
+                          className="flex items-center gap-2 text-sm text-gray-500 italic"
+                        >
+                          <StarIconLine className="w-3 h-3 text-gray-500/60 flex-shrink-0" />
+                          <span className="flex-1">{nom}</span>
+                        </li>
+                      ))}
                     </ul>
                   </>
                 )}
@@ -362,7 +354,7 @@ function OtherAwardsPanel({
   );
 }
 
-export default function AwardScoreCard({ showId, awards, openingDate }: AwardScoreCardProps) {
+export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesByCategory }: AwardScoreCardProps) {
   const result = computeSiteAwardScore(showId, 'broadway');
 
   if (result.displayScore === 0 && !result.inProgress) {
@@ -378,7 +370,6 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
   const tierLabel = result.inProgress && result.badge === 'nominated' ? 'In the Hunt' : AWARD_TIER_LABEL[result.badge];
   const sublabel = buildSublabel(awards, result.badge, result.inProgress);
 
-  const tonyContrib = result.breakdown.find(c => c.ceremony === 'Tony Awards');
   const hasTony = !!awards?.tony && ((awards.tony.wins?.length ?? 0) > 0 || (awards.tony.nominatedFor?.length ?? 0) > 0);
 
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
@@ -422,10 +413,10 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
       )}
 
       {hasTony && awards?.tony && (
-        <TonyAwardsPanel tony={awards.tony} contrib={tonyContrib} inProgress={result.inProgress} />
+        <TonyAwardsPanel tony={awards.tony} inProgress={result.inProgress} tonyNamesByCategory={tonyNamesByCategory} />
       )}
 
-      {awards && <OtherAwardsPanel awards={awards} breakdown={result.breakdown} />}
+      {awards && <OtherAwardsPanel awards={awards} />}
 
       {result.displayScore === 0 && result.inProgress && !hasTony && (
         <p className="text-sm text-gray-400">

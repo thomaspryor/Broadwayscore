@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
+import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getLotteryRush } from '@/lib/data-lottery';
@@ -306,6 +307,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
   const awards = getShowAwards(show.id);
+  const tonyNamesByCategory = getTonyNamesByCategory(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
@@ -929,7 +931,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* Awards */}
         <div id="awards" className="scroll-mt-20" />
-        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} />}
+        {featureFlags.awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory} />}
 
         {/* Commercial Scorecard — Broadway only */}
         {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
