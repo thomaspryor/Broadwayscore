@@ -18,10 +18,22 @@ const { fetchHtml, parseCategoryPage } = require('./lib/precursor-category-parse
 const { writePrecursorJson, sleep, RATE_LIMIT_MS, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
 
 const PAGES = {
+  // Top categories (well-covered back to 1970s)
   'Outstanding Musical':           'Drama_Desk_Award_for_Outstanding_Musical',
   'Outstanding Play':              'Drama_Desk_Award_for_Outstanding_Play',
   'Outstanding Revival of a Musical': 'Drama_Desk_Award_for_Outstanding_Revival_of_a_Musical',
   'Outstanding Revival of a Play': 'Drama_Desk_Award_for_Outstanding_Revival_of_a_Play',
+  // Sub-categories — Wikipedia has per-page coverage back to the 1970s for
+  // most of these. Adding them fleshes out pre-2014 awards data for classic
+  // shows (Phantom, Wicked, Les Mis, etc.) which previously only had the
+  // top-category nominations after extending MIN_YEAR=1970.
+  'Outstanding Director of a Musical': 'Drama_Desk_Award_for_Outstanding_Director_of_a_Musical',
+  'Outstanding Director of a Play':    'Drama_Desk_Award_for_Outstanding_Director_of_a_Play',
+  'Outstanding Choreography':          'Drama_Desk_Award_for_Outstanding_Choreography',
+  'Outstanding Book of a Musical':     'Drama_Desk_Award_for_Outstanding_Book_of_a_Musical',
+  'Outstanding Music':                 'Drama_Desk_Award_for_Outstanding_Music',
+  'Outstanding Lyrics':                'Drama_Desk_Award_for_Outstanding_Lyrics',
+  'Outstanding Orchestrations':        'Drama_Desk_Award_for_Outstanding_Orchestrations',
 };
 
 const MIN_YEAR = parseInt(
