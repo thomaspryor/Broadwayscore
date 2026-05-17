@@ -270,10 +270,10 @@ jobs:
             exit 0
           fi
           # Keep in sync with DEMO_FEATURES in src/config/feature-flags.ts.
-          # Missing `awards` here caused the 2026-05-17 invisible-AwardsCard-on-demo
-          # incident — server-side `featureFlags.awards` always evaluated false on
-          # demo, but no lint caught the SSR usage.
-          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes|awards|awardScoreV2"
+          # awards/awardScoreV2 launched 2026-05-17 — removed from this list now
+          # that their getters return true unconditionally (server-side usage is
+          # safe). Re-add any flag here if you put it back in DEMO_FEATURES.
+          DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes"
           VIOLATIONS=""
           for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
             # Check if file has 'use client' directive
