@@ -35,7 +35,9 @@ interface EvaluationExample {
   outlet: string;
   outletId: string;
   criticName: string;
-  tier: 1 | 2 | 3;
+  // tier reflects canonical VALID_TIERS (1-4 as of v5); widened from 1|2|3 when
+  // getOutletTier() stopped collapsing T4→T3.
+  tier: 1 | 2 | 3 | 4;
   fullText: string;
   humanScore: number;
   humanBucket: string;
@@ -443,9 +445,16 @@ async function main(): Promise<void> {
   console.log(`Bucket Accuracy: ${summary.bucketAccuracy}%`);
 
   console.log('\n--- By Outlet Tier ---\n');
-  console.log(`Tier 1: ${summary.tier1.count} reviews, MAE: ${summary.tier1.mae}, Bias: ${summary.tier1.bias > 0 ? '+' : ''}${summary.tier1.bias}`);
-  console.log(`Tier 2: ${summary.tier2.count} reviews, MAE: ${summary.tier2.mae}, Bias: ${summary.tier2.bias > 0 ? '+' : ''}${summary.tier2.bias}`);
-  console.log(`Tier 3: ${summary.tier3.count} reviews, MAE: ${summary.tier3.mae}, Bias: ${summary.tier3.bias > 0 ? '+' : ''}${summary.tier3.bias}`);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { VALID_TIERS: VT } = require('../lib/outlet-tiers');
+  for (const tier of VT as number[]) {
+    const bucket = summary.byTier[`tier${tier}` as `tier${1|2|3|4}`];
+    if (!bucket) {
+      console.log(`Tier ${tier}: (suppressed — sample below significance threshold)`);
+      continue;
+    }
+    console.log(`Tier ${tier}: ${bucket.count} reviews, MAE: ${bucket.mae}, Bias: ${bucket.bias > 0 ? '+' : ''}${bucket.bias}`);
+  }
 
   console.log('\n--- By Human Bucket ---\n');
   for (const [bucket, stats] of Object.entries(summary.byHumanBucket)) {
