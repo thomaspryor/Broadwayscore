@@ -570,7 +570,17 @@
     "waiting-for-godot-2009/backstage--david-sheward.json",
     "the-philanthropist-2009/backstage--david-sheward.json",
     "mary-stuart-2009/backstage--david-sheward.json",
-    "next-to-normal-2009/newyorker--john-lahr.json"
+    "next-to-normal-2009/newyorker--john-lahr.json",
+    "next-to-normal-2009/ap--unknown.json",
+    "next-to-normal-2009/neontommy--jason-kehe.json",
+    "rock-of-ages-2009/theater-news-online--unknown.json",
+    "exit-the-king-2009/variety--david-rooney.json",
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "impressionism-2009/newsday--linda-winer.json",
+    "33-variations-2009/newsday--unknown.json",
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "13-2008/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -582,7 +592,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/escape-to-margaritaville-2018/deadline--greg-evans.json",
-      "escape-to-margaritaville-2018/deadline--greg-evans.json"
+      "escape-to-margaritaville-2018/deadline--greg-evans.json",
+      "data/review-texts/13-2008/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -611,7 +622,7 @@
     ]
   },
   "startTime": "2026-05-16T16:09:31.873Z",
-  "lastProcessed": "next-to-normal-2009/newyorker--john-lahr.json",
+  "lastProcessed": "13-2008/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-17T01:56:56.829Z",
@@ -623,6 +634,17 @@
       "t": "2026-05-17T01:56:57.610Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-17T02:13:30.548Z",
+      "event": "bb-session",
+      "session": "aad8a30e",
+      "url": "https://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
+    },
+    {
+      "t": "2026-05-17T02:13:31.318Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
