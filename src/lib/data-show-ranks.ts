@@ -146,6 +146,15 @@ function valCritic(show: ComputedShow): number | null {
   return Math.round(s);
 }
 
+/** Looser variant — any show with a critic score, no review-threshold gate.
+ *  Used for the all-time pool so the denominator reflects every show we've
+ *  scored (~750-800), not just modern shows passing the display threshold. */
+function valCriticAllTime(show: ComputedShow): number | null {
+  const s = show.criticScore?.score;
+  if (s == null) return null;
+  return Math.round(s);
+}
+
 function valAudience(show: ComputedShow): number | null {
   const buzz = getAudienceBuzz(show.id);
   if (!buzz || buzz.combinedScore == null) return null;
@@ -203,6 +212,13 @@ function valOverall(show: ComputedShow): number | null {
   return s;
 }
 
+/** Looser variant — every show with a compositeScore. All-time pool. */
+function valOverallAllTime(show: ComputedShow): number | null {
+  const s = show.compositeScore;
+  if (s == null) return null;
+  return s;
+}
+
 /**
  * Resolves the value for a (metric, pool) combo. Most metrics use the same
  * extractor regardless of pool — boxOffice is the exception: weekly gross
@@ -214,6 +230,16 @@ function getMetricValue(show: ComputedShow, metric: RankMetric, pool: RankPool):
     if (pool === 'openMarket') return valBoxOfficeThisWeek(show);
     if (pool === 'allTime') return valBoxOfficeAllTime(show);
     return null; // season — no season-to-date cumulative available
+  }
+  // All-time pool uses the fullest data we have for each metric — no
+  // review-threshold or season gate. Audience already self-filters via
+  // hasEnoughAudienceReviews; awards self-filters via score>0; box-office
+  // via allTime.gross presence.
+  if (pool === 'allTime') {
+    if (metric === 'critic') return valCriticAllTime(show);
+    if (metric === 'audience') return valAudience(show);
+    if (metric === 'awards') return valAwards(show);
+    if (metric === 'overall') return valOverallAllTime(show);
   }
   if (metric === 'critic') return valCritic(show);
   if (metric === 'audience') return valAudience(show);
@@ -256,7 +282,12 @@ const MARKETS: Category[] = ['broadway', 'west-end', 'off-broadway', 'off-west-e
 function poolPredicate(pool: RankPool): (show: ComputedShow) => boolean {
   if (pool === 'openMarket') return isInOpenPool;
   if (pool === 'season') return (s) => isInSeasonPool(s, s.category);
-  return isInAllTimePool;
+  // All-time: include every show in the catalogue. Per-metric filtering is
+  // done by the metric extractor (a show only enters a metric's all-time
+  // pool if its extractor returns a value), so the pool size is the FULLEST
+  // we have for each metric — e.g. ~750 critic-scored shows, ~1340 with
+  // all-time gross, ~250 with audience grade.
+  return () => true;
 }
 
 function computePool(

@@ -176,9 +176,16 @@ for i in $(seq 1 "$MAX_RETRIES"); do
 
   # Attempt 1: rebase with theirs strategy (= keep our commits' content)
   # In rebase context: "theirs" = our commits being replayed
+  # history_changed: tracks whether ANY conflict-resolution path produced a
+  # new HEAD this iteration. The post-rebase survival check fires on every
+  # path that changed history, not just the happy rebase path — merge -X ours
+  # and reset+cherry-pick are MORE likely to silently drop files than the
+  # rebase path.
   rebase_ok=false
+  history_changed=false
   if git rebase -X theirs "origin/$PULL_BRANCH" 2>/dev/null; then
     rebase_ok=true
+    history_changed=true
     restore_protected_fields
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
@@ -187,6 +194,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       if resolve_conflicts rebase; then
         if GIT_EDITOR=true git rebase --continue 2>/dev/null; then
           rebase_ok=true
+          history_changed=true
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
           break
@@ -208,9 +216,11 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # -X ours in merge context = keep our branch's version
     if git merge "origin/$PULL_BRANCH" -X ours --no-edit 2>/dev/null; then
       echo "  Merge succeeded"
+      history_changed=true
       restore_protected_fields
     elif resolve_conflicts merge && git commit --no-edit 2>/dev/null; then
       echo "  Merge succeeded after auto-resolving conflicts"
+      history_changed=true
       restore_protected_fields
     else
       echo "  Merge also failed, aborting..."
@@ -223,6 +233,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         git reset --hard "origin/$PULL_BRANCH" 2>/dev/null || true
         if git cherry-pick "$OUR_HEAD" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
+          history_changed=true
           restore_protected_fields
         else
           git cherry-pick --abort 2>/dev/null || true
@@ -233,14 +244,21 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     fi
   fi
 
-  # Post-rebase survival check (Sprint 5). If the rebase succeeded but the
-  # auto-resolution silently dropped files we added, the script reports the
-  # missing files and exits non-zero — better to fail the workflow loud
-  # than push a half-corrupt state on the next loop iteration.
-  if [ "$rebase_ok" = "true" ] && [ -n "${PRE_REBASE_SHA:-}" ] && [ -f "$SCRIPT_DIR/../check-post-rebase-survival.js" ]; then
-    if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA" --path-prefix="data/review-texts/"; then
-      echo "::error::Post-rebase survival check failed — aborting push to avoid shipping a corrupt state"
-      exit 1
+  # Post-resolution survival check (Sprint 5 + Sprint 2.7 ship-check fix).
+  # Fires on ANY path that changed history this iteration (rebase, merge
+  # -X ours, reset+cherry-pick). The merge -X ours and cherry-pick paths
+  # are MORE dangerous than rebase: they routinely drop local additions
+  # when the strategy keeps the remote side of a conflict.
+  if [ "$history_changed" = "true" ] && [ -n "${PRE_REBASE_SHA:-}" ] && [ -f "$SCRIPT_DIR/../check-post-rebase-survival.js" ]; then
+    # check-post-rebase-survival requires beforeSha~1 to be an ancestor of
+    # HEAD. Reset+cherry-pick may have broken that invariant — verify first.
+    if git merge-base --is-ancestor "${PRE_REBASE_SHA}~1" HEAD 2>/dev/null; then
+      if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA"; then
+        echo "::error::Post-rebase survival check failed — aborting push to avoid shipping a corrupt state"
+        exit 1
+      fi
+    else
+      echo "::warning::PRE_REBASE_SHA~1 is no longer an ancestor of HEAD (reset+cherry-pick likely ran); survival check skipped"
     fi
   fi
 
