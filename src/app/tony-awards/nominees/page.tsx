@@ -27,8 +27,6 @@ const PERSON_LEVEL_CATEGORIES = new Set([
   'Best Featured Actress in a Musical',
   'Best Featured Actor in a Play',
   'Best Featured Actress in a Play',
-  'Best Direction of a Musical',
-  'Best Direction of a Play',
 ]);
 
 const season = getTonySeasonWindow();
@@ -221,7 +219,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
       {/* Gold Derby + Audience + Critic — consistent right-side layout */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         {/* Gold Derby */}
-        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
+        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
           <span className={LABEL}>Gold Derby</span>
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
@@ -282,7 +280,7 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Gold Derby + Audience + Critic */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <div className="hidden sm:flex flex-col items-center gap-0.5 w-16">
+        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
           <span className={LABEL}>Gold Derby</span>
           <span className="text-sm font-bold text-white">
             {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
