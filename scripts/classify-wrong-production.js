@@ -260,6 +260,8 @@ function buildUserPrompt(result, reviewData, revivals) {
   const show = showById.get(result.showId);
   const showTitle = show?.title || result.showTitle;
   const showYear = result.showYear;
+  const { isOperaShow, getOperaWrongProductionContext } = require('./lib/opera-prompt-context');
+  const isOpera = isOperaShow(show);
 
   // Build revival context
   const revivalLines = revivals.map(r => {
@@ -281,13 +283,26 @@ function buildUserPrompt(result, reviewData, revivals) {
     truncated = text.substring(0, 2000) + '\n\n[...truncated...]\n\n' + text.substring(text.length - 1000);
   }
 
+  // Opera-aware framing — opera works (Eugene Onegin, La Traviata, Tristan) have
+  // been performed at the Met dozens of times across decades. "WRONG_PRODUCTION"
+  // for opera means the review is about a different Met run / different cast +
+  // conductor in a different year — NOT that the work has been performed elsewhere.
+  // Without this framing, the LLM mis-flags opera reviews as wrong_production whenever
+  // the review notes prior productions at other opera houses (which is normal context
+  // in opera criticism). See Notion 363637c5-416f-81cc-8240-c48df8b4cfd2.
+  const filedUnderLabel = isOpera
+    ? `FILED UNDER PRODUCTION: ${result.showId} (Metropolitan Opera run opening: ${showYear})
+
+${getOperaWrongProductionContext()}`
+    : `FILED UNDER PRODUCTION: ${result.showId} (Broadway opening: ${showYear})`;
+
   return `SHOW: "${showTitle}"
-FILED UNDER PRODUCTION: ${result.showId} (Broadway opening: ${showYear})
+${filedUnderLabel}
 OUTLET: ${result.outlet || 'Unknown'}
 CRITIC: ${result.criticName || 'Unknown'}
 PUBLISH DATE: ${result.publishDate || 'Unknown'}
 
-OTHER BROADWAY PRODUCTIONS OF THIS SHOW:
+${isOpera ? 'PRIOR MET PRODUCTIONS OF THIS WORK:' : 'OTHER BROADWAY PRODUCTIONS OF THIS SHOW:'}
 ${revivalLines || '  (none known)'}
 
 AUDIT SIGNALS THAT FLAGGED THIS REVIEW:

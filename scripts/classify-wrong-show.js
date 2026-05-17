@@ -83,6 +83,7 @@ const { wrongShowCleared } = require('./lib/review-guards');
 const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
 const showTitleMap = new Map(showsData.shows.map(s => [s.id, s.title]));
 const showCategoryMap = new Map(showsData.shows.map(s => [s.id, s.category]));
+const showTypeMap = new Map(showsData.shows.map(s => [s.id, s.type]));
 
 // --- Stats ---
 const stats = {
@@ -202,9 +203,15 @@ IMPORTANT GUIDELINES:
 
 Return JSON only: {"verdict":"CORRECT|WRONG_SHOW|UNCERTAIN", "confidence":"high|medium|low", "reasoning":"1-2 sentences"}`;
 
+const { getOperaWrongShowContext } = require('./lib/opera-prompt-context');
+
 function buildUserPrompt(showTitle, showId, text) {
   const truncated = text.length > 2000 ? text.substring(0, 2000) : text;
-  return `Show: "${showTitle}" (${showId})\n\nReview text (first ${Math.min(text.length, 2000)} chars):\n${truncated}`;
+  const isOpera = showTypeMap.get(showId) === 'opera';
+  // See scripts/lib/opera-prompt-context.js for the framing rationale.
+  const operaContext = isOpera ? `\n\n${getOperaWrongShowContext()}\n` : '';
+
+  return `Show: "${showTitle}" (${showId})${operaContext}\n\nReview text (first ${Math.min(text.length, 2000)} chars):\n${truncated}`;
 }
 
 // ============================================================
