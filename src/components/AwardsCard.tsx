@@ -547,13 +547,21 @@ export default function AwardsCard({ showId, awards, openingDate }: AwardsCardPr
       {/* Other Major Awards - Expandable */}
       {awards && <OtherAwardsExpandableSection awards={awards} />}
 
-      {/* Footer link to the cross-show Tony awards hub */}
-      <div className="mt-4 pt-3.5 border-t border-white/5">
+      {/* Footer: two links — Gold List leaderboard (all award scores) and
+          the current-season Tony predictions hub. */}
+      <div className="mt-4 pt-3.5 border-t border-white/5 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <Link
+          href="/lists"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>See all award scores</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
         <Link
           href="/tony-awards"
           className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
         >
-          <span>Explore all Tony predictions</span>
+          <span>See Tony predictions</span>
           <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
         </Link>
       </div>
