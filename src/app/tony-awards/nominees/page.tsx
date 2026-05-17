@@ -108,7 +108,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-white/[0.03] transition-colors group"
+      className="flex items-center gap-3 sm:gap-4 p-3 pr-5 sm:p-4 sm:pr-6 rounded-xl hover:bg-white/[0.03] transition-colors group"
     >
       {/* Thumbnail */}
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
@@ -150,7 +150,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <div className="flex flex-col items-center gap-1">
           <span className={LABEL}>Awards</span>
           <AwardScoreBadge
-            score={show.awardsScore ?? 0}
+            score={Math.round(show.awardsScore ?? 0)}
             badge={badgeFromScore(show.awardsScore)}
             inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
             size="md"
