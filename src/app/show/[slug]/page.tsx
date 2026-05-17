@@ -831,6 +831,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
                   .filter((entry): entry is [string, string] => entry[1] != null)
               )}
+              ranks={ranks}
             />
           );
         })() : show.status === 'previews' || show.status === 'upcoming' ? (
