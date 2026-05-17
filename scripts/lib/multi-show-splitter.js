@@ -452,6 +452,7 @@ module.exports = {
   findAnchorsForTitle,
   getTitleVariants,
   loadShows,
+  COMMON_WORD_SHOW_TITLES,
   // Test surface
   _internal: {
     findParagraphStart,
