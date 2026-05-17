@@ -10,7 +10,8 @@
  *
  * URL pattern: /bwwopera/article/Review-{HAND-AUTHORED-SLUG}-{YYYYMMDD}
  *
- * Used by: scripts/gather-reviews.js for type:opera shows.
+ * Used by: SITE_SEARCH_ENDPOINTS['broadwayworld'] in site-search-discovery.js,
+ * which is dispatched by scripts/opening-night-poller.js for type:opera shows.
  *
  * Soft-404 guard: BWW returns the homepage HTML with 200 OK for missing
  * URLs (see memory/feedback_aggregator_soft_404.md). The discovery path
@@ -60,16 +61,13 @@ async function discoverBwwOperaReviews(show, options = {}) {
     return [];
   }
 
-  // Soft-404 guard. BWW returns the generic homepage with 200 OK when a
-  // section page is missing. We expect the title to contain "Opera" or
-  // "Review" — if it doesn't, the response is the homepage, not /bwwopera/reviews.
-  const titleMatch = html.match(/<title[^>]*>([^<]*)</);
-  const titleText = (titleMatch ? titleMatch[1] : '').toLowerCase();
-  if (!titleText.includes('opera') && !titleText.includes('review')) {
-    console.warn(`    [bww-opera-discover] soft-404 detected (title="${titleText.slice(0, 80)}")`);
-    return [];
-  }
-
+  // Soft-404 detection. BWW returns the generic homepage with 200 OK when
+  // a section page is missing — we can't rely on the title to distinguish
+  // (the legit /bwwopera/reviews page returns "Broadway Show Reviews &
+  // Critics' Ratings | BroadwayWorld", same title family as the homepage).
+  // Instead, rely on the URL pattern itself: /bwwopera/article/Review- is
+  // specific to the section. If the response has zero such URLs, treat as
+  // soft-404 or structural change and bail.
   const urls = new Set();
   const pattern = /["'](?:https?:\/\/(?:www\.)?broadwayworld\.com)?(\/bwwopera\/article\/Review-[A-Za-z0-9-]+)["']/g;
   let m;
@@ -78,7 +76,7 @@ async function discoverBwwOperaReviews(show, options = {}) {
   }
 
   if (urls.size === 0) {
-    console.warn('    [bww-opera-discover] listing returned 0 review URLs (possible structural change)');
+    console.warn('    [bww-opera-discover] 0 /bwwopera/article/Review- URLs found (soft-404 or structural change)');
     return [];
   }
 
