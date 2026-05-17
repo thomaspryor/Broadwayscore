@@ -1986,7 +1986,14 @@ function canUseBrowserbase(urlDomain) {
  * Uses their API to create a browser session and control it
  */
 async function fetchWithBrowserbase(url, review) {
-  if (!canUseBrowserbase()) {
+  // Extract domain ONCE — used by both the cap gate and the per-domain counter.
+  // canUseBrowserbase needs it to enforce the per-domain cap (otherwise
+  // anything that bypasses the shouldRun gate would silently skip the
+  // domain-level guard — caught by ship-check on commit ae46715a0a).
+  let urlDomain;
+  try { urlDomain = new URL(url).hostname.replace('www.', ''); } catch {}
+
+  if (!canUseBrowserbase(urlDomain)) {
     throw new Error('Browserbase unavailable (limits reached or not configured)');
   }
 
@@ -1997,12 +2004,9 @@ async function fetchWithBrowserbase(url, review) {
   browserbaseUsage.sessionsToday++;
   browserbaseUsage.sessionsThisRun++;
   stats.browserbaseSessionsUsed++;
-
-  // Track per-domain usage to prevent one domain starving others
-  try {
-    const urlDomain = new URL(url).hostname.replace('www.', '');
+  if (urlDomain) {
     browserbaseUsage.sessionsPerDomain[urlDomain] = (browserbaseUsage.sessionsPerDomain[urlDomain] || 0) + 1;
-  } catch {}
+  }
 
 
   console.log(`    Browserbase session ${browserbaseUsage.sessionsThisRun}/${CONFIG.browserbaseMaxSessionsPerRun} (${browserbaseUsage.sessionsToday}/${CONFIG.browserbaseMaxSessionsPerDay} today)`);
