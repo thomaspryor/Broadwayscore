@@ -270,12 +270,24 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                       />
                     </div>
                   </td>
+<<<<<<< HEAD
 
                   {/* Tier */}
                   <td className="py-3 px-4 text-center align-middle hidden sm:table-cell">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${TIER_CHIP[awardScore.badge] ?? TIER_CHIP.eligible}`}>
                       {AWARD_TIER_LABEL[awardScore.badge]}
                     </span>
+=======
+                  <td className="py-3 px-4 hidden sm:table-cell align-top">
+                    <span className="text-gray-400 text-sm">{
+                      // Match AwardScoreCard's relabel: an in-progress show
+                      // sitting on the 'nominated' tier displays as 'In the
+                      // Hunt' for consistency across surfaces.
+                      awardScore.inProgress && awardScore.badge === 'nominated'
+                        ? 'In the Hunt'
+                        : AWARD_TIER_LABEL[awardScore.badge]
+                    }</span>
+>>>>>>> worktree-awards-scorecard-ux
                   </td>
 
                   {/* Notable */}

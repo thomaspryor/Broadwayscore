@@ -43,11 +43,14 @@ const faqSchema = {
   ],
 };
 
+// Legend chip colors match the medal palette in AwardScoreBadge (2026-05-17 v2):
+// gold / silver / bronze for top 3 ("won something") tiers; subdued white for
+// the unwon tier. Keep in sync with TIER_STYLES in AwardScoreBadge.tsx.
 const tierConfig: { badge: TierBadge; chipClass: string; description: string }[] = [
-  { badge: 'sweeper',   chipClass: 'bg-amber-500/20 text-amber-400',   description: '85+ · Dominated the awards season' },
-  { badge: 'decorated', chipClass: 'bg-emerald-500/20 text-emerald-400', description: '70–84 · Won multiple major awards' },
-  { badge: 'honored',   chipClass: 'bg-teal-600/20 text-teal-400',      description: '41–69 · Won at least one major award' },
-  { badge: 'nominated', chipClass: 'bg-amber-900/40 text-amber-200',    description: '1–40 · Received nominations' },
+  { badge: 'sweeper',   chipClass: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',   description: '85+ · Dominated the awards season' },
+  { badge: 'decorated', chipClass: 'bg-zinc-400/20 text-zinc-200 border border-zinc-300/30',     description: '70–84 · Won multiple major awards' },
+  { badge: 'honored',   chipClass: 'bg-orange-700/20 text-orange-300 border border-orange-500/30', description: '41–69 · Won at least one major award' },
+  { badge: 'nominated', chipClass: 'bg-white/5 text-gray-300 border border-white/20',             description: '1–40 · Received nominations' },
 ];
 
 export default function AwardScorePage() {
