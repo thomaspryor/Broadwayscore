@@ -270,6 +270,30 @@ export function getTonyLeaderboard(): LeaderboardEntry[] {
 }
 
 /**
+ * For a given show, return a map of `category → [person names]` covering
+ * BOTH wins and nominations. "(show-level)" entries (e.g. Best Musical
+ * which doesn't have an individual person attached) are filtered out.
+ * Names are de-duplicated within each category.
+ *
+ * Consumed by the Awards Scorecard (AwardScoreCard.tsx) to surface the
+ * performer/creative behind each Tony category subtly inline.
+ *
+ * Returns {} when the show has no person-level entries in
+ * tony-nominations.json (older shows pre-1970 or fully show-level
+ * categories only).
+ */
+export function getTonyNamesByCategory(showId: string): Record<string, string[]> {
+  const entries = getTonyNominationsByShowId(showId);
+  const map: Record<string, string[]> = {};
+  for (const nom of entries) {
+    if (!nom.name || nom.name === '(show-level)') continue;
+    const existing = map[nom.category] ?? (map[nom.category] = []);
+    if (!existing.includes(nom.name)) existing.push(nom.name);
+  }
+  return map;
+}
+
+/**
  * Get total counts — person-level only (matches what the leaderboard displays).
  * _meta totals include show-level entries (Best Musical/Play/Revival) which
  * are not shown in the person leaderboard.

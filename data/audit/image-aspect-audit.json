@@ -1,0 +1,2996 @@
+{
+  "summary": {
+    "auditedAt": "2026-05-17T15:28:27.428Z",
+    "totalShows": 2548,
+    "totalChecks": 5057,
+    "violations": 298,
+    "byRole": {
+      "poster": 86,
+      "thumbnail": 198,
+      "hero": 14
+    },
+    "apply": false
+  },
+  "violations": [
+    {
+      "showId": "punch-2025",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/punch-2025/thumbnail.jpg",
+      "width": 400,
+      "height": 210,
+      "ratio": 0.525,
+      "ok": false,
+      "reason": "400x210 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/water-for-elephants-2024/thumbnail.jpg",
+      "width": 332,
+      "height": 152,
+      "ratio": 0.458,
+      "ok": false,
+      "reason": "332x152 h/w=0.46 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/bob-fosses-dancin-2023/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "saint-joan-2018",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/saint-joan-2018/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-bronx-tale-the-musical-2016",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-bronx-tale-the-musical-2016/thumbnail.jpg",
+      "width": 253,
+      "height": 199,
+      "ratio": 0.787,
+      "ok": false,
+      "reason": "253x199 h/w=0.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "blackbird-2016",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/blackbird-2016/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dames-at-sea-2015",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dames-at-sea-2015/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-heidi-chronicles-2015/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-audience-2015",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-audience-2015/thumbnail.jpg",
+      "width": 326,
+      "height": 154,
+      "ratio": 0.472,
+      "ok": false,
+      "reason": "326x154 h/w=0.47 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "bullets-over-broadway-2014",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/bullets-over-broadway-2014/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "mothers-and-sons-2014",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/mothers-and-sons-2014/thumbnail.jpg",
+      "width": 290,
+      "height": 174,
+      "ratio": 0.6,
+      "ok": false,
+      "reason": "290x174 h/w=0.60 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "soul-doctor-2013",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/soul-doctor-2013/thumbnail.jpg",
+      "width": 367,
+      "height": 137,
+      "ratio": 0.373,
+      "ok": false,
+      "reason": "367x137 h/w=0.37 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "orphans-2013",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/orphans-2013/thumbnail.jpg",
+      "width": 251,
+      "height": 201,
+      "ratio": 0.801,
+      "ok": false,
+      "reason": "251x201 h/w=0.80 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "breakfast-at-tiffanys-2013",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/breakfast-at-tiffanys-2013/thumbnail.jpg",
+      "width": 161,
+      "height": 313,
+      "ratio": 1.944,
+      "ok": false,
+      "reason": "161x313 h/w=1.94 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "vanya-and-sonia-and-masha-and-spike-2013",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/vanya-and-sonia-and-masha-and-spike-2013/thumbnail.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/rodgers-hammersteins-cinderella-2013/poster.jpg",
+      "width": 300,
+      "height": 225,
+      "ratio": 0.75,
+      "ok": false,
+      "reason": "300x225 h/w=0.75 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/rodgers-hammersteins-cinderella-2013/hero.jpg",
+      "width": 400,
+      "height": 600,
+      "ratio": 1.5,
+      "ok": false,
+      "reason": "400x600 h/w=1.50 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "the-anarchist-2012",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-anarchist-2012/hero.jpg",
+      "width": 210,
+      "height": 274,
+      "ratio": 1.305,
+      "ok": false,
+      "reason": "210x274 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "dead-accounts-2012",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dead-accounts-2012/thumbnail.jpg",
+      "width": 255,
+      "height": 198,
+      "ratio": 0.776,
+      "ok": false,
+      "reason": "255x198 h/w=0.78 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "chaplin-2012",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/chaplin-2012/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "chaplin-2012",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/chaplin-2012/thumbnail.jpg",
+      "width": 367,
+      "height": 137,
+      "ratio": 0.373,
+      "ok": false,
+      "reason": "367x137 h/w=0.37 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "leap-of-faith-2012",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/leap-of-faith-2012/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "nice-work-if-you-can-get-it-2012",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nice-work-if-you-can-get-it-2012/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ghost-the-musical-2012/thumbnail.jpg",
+      "width": 251,
+      "height": 201,
+      "ratio": 0.801,
+      "ok": false,
+      "reason": "251x201 h/w=0.80 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "magicbird-2012",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/magicbird-2012/hero.jpg",
+      "width": 400,
+      "height": 589,
+      "ratio": 1.472,
+      "ok": false,
+      "reason": "400x589 h/w=1.47 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "wit-2012",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/wit-2012/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "lysistrata-jones-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/lysistrata-jones-2011/thumbnail.jpg",
+      "width": 299,
+      "height": 168,
+      "ratio": 0.562,
+      "ok": false,
+      "reason": "299x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "venus-in-fur-2011",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/venus-in-fur-2011/hero.jpg",
+      "width": 400,
+      "height": 600,
+      "ratio": 1.5,
+      "ok": false,
+      "reason": "400x600 h/w=1.50 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "godspell-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/godspell-2011/thumbnail.jpg",
+      "width": 269,
+      "height": 187,
+      "ratio": 0.695,
+      "ok": false,
+      "reason": "269x187 h/w=0.70 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "chinglish-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/chinglish-2011/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "follies-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/follies-2011/thumbnail.jpg",
+      "width": 289,
+      "height": 175,
+      "ratio": 0.606,
+      "ok": false,
+      "reason": "289x175 h/w=0.61 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "sister-act-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sister-act-2011/thumbnail.jpg",
+      "width": 262,
+      "height": 192,
+      "ratio": 0.733,
+      "ok": false,
+      "reason": "262x192 h/w=0.73 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/catch-me-if-you-can-2011/thumbnail.jpg",
+      "width": 260,
+      "height": 194,
+      "ratio": 0.746,
+      "ok": false,
+      "reason": "260x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-peewee-herman-show-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-peewee-herman-show-2010/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "driving-miss-daisy-2010",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/driving-miss-daisy-2010/thumbnail.jpg",
+      "width": 284,
+      "height": 177,
+      "ratio": 0.623,
+      "ok": false,
+      "reason": "284x177 h/w=0.62 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-pitmen-painters-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-pitmen-painters-2010/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "everyday-rapture-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/everyday-rapture-2010/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "fences-2010",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/fences-2010/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "sondheim-on-sondheim-2010",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sondheim-on-sondheim-2010/poster.jpg",
+      "width": 244,
+      "height": 207,
+      "ratio": 0.848,
+      "ok": false,
+      "reason": "244x207 h/w=0.85 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "sondheim-on-sondheim-2010",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sondheim-on-sondheim-2010/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "lend-me-a-tenor-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/lend-me-a-tenor-2010/hero.jpg",
+      "width": 400,
+      "height": 600,
+      "ratio": 1.5,
+      "ok": false,
+      "reason": "400x600 h/w=1.50 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "next-fall-2010",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/next-fall-2010/thumbnail.jpg",
+      "width": 320,
+      "height": 157,
+      "ratio": 0.491,
+      "ok": false,
+      "reason": "320x157 h/w=0.49 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-behanding-in-spokane-2010/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "the-miracle-worker-2010",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-miracle-worker-2010/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/brighton-beach-memoirs-2009/poster.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "brighton-beach-memoirs-2009",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/brighton-beach-memoirs-2009/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "superior-donuts-2009",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/superior-donuts-2009/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "accent-on-youth-2009",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/accent-on-youth-2009/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "to-be-or-not-to-be-2008",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/to-be-or-not-to-be-2008/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "top-girls-2008",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/top-girls-2008/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "boeingboeing-2008",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/boeingboeing-2008/hero.jpg",
+      "width": 230,
+      "height": 300,
+      "ratio": 1.304,
+      "ok": false,
+      "reason": "230x300 h/w=1.30 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "a-catered-affair-2008",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-catered-affair-2008/poster.jpg",
+      "width": 226,
+      "height": 223,
+      "ratio": 0.987,
+      "ok": false,
+      "reason": "226x223 h/w=0.99 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "cymbeline-2007",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cymbeline-2007/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dr-seuss-how-the-grinch-stole-christmas-2007",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dr-seuss-how-the-grinch-stole-christmas-2007/poster.jpg",
+      "width": 230,
+      "height": 212,
+      "ratio": 0.922,
+      "ok": false,
+      "reason": "230x212 h/w=0.92 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "110-in-the-shade-2007",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/110-in-the-shade-2007/poster.jpg",
+      "width": 230,
+      "height": 219,
+      "ratio": 0.952,
+      "ok": false,
+      "reason": "230x219 h/w=0.95 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "coram-boy-2007",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/coram-boy-2007/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "prelude-to-a-kiss-2007",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/prelude-to-a-kiss-2007/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-coast-of-utopia-2006",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-coast-of-utopia-2006/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "heartbreak-house-2006",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/heartbreak-house-2006/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-caine-mutiny-courtmartial-2006",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-caine-mutiny-courtmartial-2006/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-pajama-game-2006",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-pajama-game-2006/poster.jpg",
+      "width": 226,
+      "height": 223,
+      "ratio": 0.987,
+      "ok": false,
+      "reason": "226x223 h/w=0.99 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "barefoot-in-the-park-2006",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/barefoot-in-the-park-2006/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "seascape-2005",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/seascape-2005/thumbnail.jpg",
+      "width": 329,
+      "height": 153,
+      "ratio": 0.465,
+      "ok": false,
+      "reason": "329x153 h/w=0.47 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "souvenir-2005",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/souvenir-2005/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "mark-twain-tonight-2005",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/mark-twain-tonight-2005/thumbnail.jpg",
+      "width": 332,
+      "height": 152,
+      "ratio": 0.458,
+      "ok": false,
+      "reason": "332x152 h/w=0.46 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-producers-2001",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-producers-2001/poster.jpg",
+      "width": 300,
+      "height": 158,
+      "ratio": 0.527,
+      "ok": false,
+      "reason": "300x158 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-producers-2001",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-producers-2001/thumbnail.jpg",
+      "width": 400,
+      "height": 210,
+      "ratio": 0.525,
+      "ok": false,
+      "reason": "400x210 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-boys-from-syracuse-2002",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-boys-from-syracuse-2002/thumbnail.jpg",
+      "width": 299,
+      "height": 168,
+      "ratio": 0.562,
+      "ok": false,
+      "reason": "299x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "short-talks-on-the-universe-2002",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/short-talks-on-the-universe-2002/poster.jpg",
+      "width": 350,
+      "height": 144,
+      "ratio": 0.411,
+      "ok": false,
+      "reason": "350x144 h/w=0.41 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "life-x-3-2003",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/life-x-3-2003/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "nine-2003",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nine-2003/poster.jpg",
+      "width": 227,
+      "height": 222,
+      "ratio": 0.978,
+      "ok": false,
+      "reason": "227x222 h/w=0.98 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "qed-2001",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/qed-2001/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "fortunes-fool-2002",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/fortunes-fool-2002/thumbnail.jpg",
+      "width": 277,
+      "height": 182,
+      "ratio": 0.657,
+      "ok": false,
+      "reason": "277x182 h/w=0.66 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "side-show-1997",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/side-show-1997/thumbnail.jpg",
+      "width": 333,
+      "height": 151,
+      "ratio": 0.453,
+      "ok": false,
+      "reason": "333x151 h/w=0.45 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-sound-of-music-1998",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-sound-of-music-1998/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "victor-victoria-1995",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/victor-victoria-1995/poster.jpg",
+      "width": 227,
+      "height": 222,
+      "ratio": 0.978,
+      "ok": false,
+      "reason": "227x222 h/w=0.98 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "sacrilege-1995",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sacrilege-1995/poster.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "sacrilege-1995",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sacrilege-1995/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "holiday-1995",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/holiday-1995/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "paul-robeson-1995",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/paul-robeson-1995/thumbnail.jpg",
+      "width": 168,
+      "height": 300,
+      "ratio": 1.786,
+      "ok": false,
+      "reason": "168x300 h/w=1.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "seven-guitars-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/seven-guitars-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-delicate-balance-1996/hero.jpg",
+      "width": 400,
+      "height": 362,
+      "ratio": 0.905,
+      "ok": false,
+      "reason": "400x362 h/w=0.91 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "big-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/big-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "whats-wrong-with-this-picture-1994",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/whats-wrong-with-this-picture-1994/thumbnail.jpg",
+      "width": 335,
+      "height": 150,
+      "ratio": 0.448,
+      "ok": false,
+      "reason": "335x150 h/w=0.45 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-tuna-christmas-1994",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-tuna-christmas-1994/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "a-tuna-christmas-1994",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-tuna-christmas-1994/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "on-the-waterfront-1995",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/on-the-waterfront-1995/poster.jpg",
+      "width": 269,
+      "height": 187,
+      "ratio": 0.695,
+      "ok": false,
+      "reason": "269x187 h/w=0.70 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-twilight-of-the-golds-1993",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-twilight-of-the-golds-1993/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "wonderful-tennessee-1993",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/wonderful-tennessee-1993/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "wonderful-tennessee-1993",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/wonderful-tennessee-1993/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "any-given-day-1993",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/any-given-day-1993/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "any-given-day-1993",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/any-given-day-1993/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "angels-in-america-perestroika-1993",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/angels-in-america-perestroika-1993/thumbnail.jpg",
+      "width": 267,
+      "height": 189,
+      "ratio": 0.708,
+      "ok": false,
+      "reason": "267x189 h/w=0.71 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "damn-yankees-1994",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/damn-yankees-1994/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "an-inspector-calls-1994",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/an-inspector-calls-1994/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "oba-oba-93-1992",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/oba-oba-93-1992/poster.jpg",
+      "width": 350,
+      "height": 144,
+      "ratio": 0.411,
+      "ok": false,
+      "reason": "350x144 h/w=0.41 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "oba-oba-93-1992",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/oba-oba-93-1992/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "someone-wholl-watch-over-me-1992",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/someone-wholl-watch-over-me-1992/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-sisters-rosensweig-1993",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-sisters-rosensweig-1993/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "andre-hellers-wonderhouse-1991",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/andre-hellers-wonderhouse-1991/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dancing-at-lughnasa-1991",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dancing-at-lughnasa-1991/thumbnail.jpg",
+      "width": 274,
+      "height": 184,
+      "ratio": 0.672,
+      "ok": false,
+      "reason": "274x184 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "two-shakespearean-actors-1992",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/two-shakespearean-actors-1992/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "search-and-destroy-1992",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/search-and-destroy-1992/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "death-and-the-maiden-1992",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/death-and-the-maiden-1992/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "metro-1992",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/metro-1992/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "metro-1992",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/metro-1992/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "those-were-the-days-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/those-were-the-days-1990/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "shogun-the-musical-1990",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/shogun-the-musical-1990/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "taking-steps-1991",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/taking-steps-1991/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "orpheus-descending-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/orpheus-descending-1989/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dangerous-games-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dangerous-games-1989/thumbnail.jpg",
+      "width": 150,
+      "height": 335,
+      "ratio": 2.233,
+      "ok": false,
+      "reason": "150x335 h/w=2.23 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "sid-caesar-and-company-1989",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sid-caesar-and-company-1989/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "sid-caesar-and-company-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sid-caesar-and-company-1989/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "3-penny-opera-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/3-penny-opera-1989/thumbnail.jpg",
+      "width": 163,
+      "height": 309,
+      "ratio": 1.896,
+      "ok": false,
+      "reason": "163x309 h/w=1.90 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-circle-1989",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-circle-1989/poster.jpg",
+      "width": 316,
+      "height": 160,
+      "ratio": 0.506,
+      "ok": false,
+      "reason": "316x160 h/w=0.51 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-circle-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-circle-1989/thumbnail.jpg",
+      "width": 316,
+      "height": 160,
+      "ratio": 0.506,
+      "ok": false,
+      "reason": "316x160 h/w=0.51 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "artist-descending-a-staircase-1989",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/artist-descending-a-staircase-1989/poster.jpg",
+      "width": 277,
+      "height": 182,
+      "ratio": 0.657,
+      "ok": false,
+      "reason": "277x182 h/w=0.66 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "artist-descending-a-staircase-1989",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/artist-descending-a-staircase-1989/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "miss-margaridas-way-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/miss-margaridas-way-1990/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-grapes-of-wrath-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-grapes-of-wrath-1990/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "lettice-and-lovage-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/lettice-and-lovage-1990/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "accomplice-1990",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/accomplice-1990/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "a-change-in-the-heir-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-change-in-the-heir-1990/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-cemetery-club-1990",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-cemetery-club-1990/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "sex-and-longing-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/sex-and-longing-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "taking-sides-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/taking-sides-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-three-sisters-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-three-sisters-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "julia-sweeneys-god-said-ha-1996",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/julia-sweeneys-god-said-ha-1996/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "julia-sweeneys-god-said-ha-1996",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/julia-sweeneys-god-said-ha-1996/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "play-on-1997",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/play-on-1997/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "play-on-1997",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/play-on-1997/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-young-man-from-atlanta-1997",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-young-man-from-atlanta-1997/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dream-1997",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dream-1997/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "an-american-daughter-1997",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/an-american-daughter-1997/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "il-berretto-a-songali-1987",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/il-berretto-a-songali-1987/thumbnail.jpg",
+      "width": 319,
+      "height": 158,
+      "ratio": 0.495,
+      "ok": false,
+      "reason": "319x158 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dont-get-god-started-1987",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dont-get-god-started-1987/thumbnail.jpg",
+      "width": 168,
+      "height": 299,
+      "ratio": 1.78,
+      "ok": false,
+      "reason": "168x299 h/w=1.78 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "design-for-living-1984",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/design-for-living-1984/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "oedipus-rex-1984",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/oedipus-rex-1984/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "hurlyburly-1984",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/hurlyburly-1984/thumbnail.jpg",
+      "width": 270,
+      "height": 187,
+      "ratio": 0.693,
+      "ok": false,
+      "reason": "270x187 h/w=0.69 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "singin-in-the-rain-1985",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/singin-in-the-rain-1985/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "blood-knot-1985",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/blood-knot-1985/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "wind-in-the-willows-1985",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/wind-in-the-willows-1985/thumbnail.jpg",
+      "width": 332,
+      "height": 152,
+      "ratio": 0.458,
+      "ok": false,
+      "reason": "332x152 h/w=0.46 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "uptownits-hot-1986",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/uptownits-hot-1986/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "uptownits-hot-1986",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/uptownits-hot-1986/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-house-of-blue-leaves-1986",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-house-of-blue-leaves-1986/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-boys-in-autumn-1986",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-boys-in-autumn-1986/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "jerry-seinfeld-live-on-broadway-1998",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/jerry-seinfeld-live-on-broadway-1998/thumbnail.jpg",
+      "width": 166,
+      "height": 304,
+      "ratio": 1.831,
+      "ok": false,
+      "reason": "166x304 h/w=1.83 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "swan-lake-1998",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/swan-lake-1998/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "getting-and-spending-1998",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/getting-and-spending-1998/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "getting-and-spending-1998",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/getting-and-spending-1998/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "via-dolorosa-1999",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/via-dolorosa-1999/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "closer-1999",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/closer-1999/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-civil-war-1999",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-civil-war-1999/poster.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "it-aint-nothin-but-the-blues-1999",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/it-aint-nothin-but-the-blues-1999/poster.jpg",
+      "width": 226,
+      "height": 223,
+      "ratio": 0.987,
+      "ok": false,
+      "reason": "226x223 h/w=0.99 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "charlie-and-algernon-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/charlie-and-algernon-1980/poster.jpg",
+      "width": 226,
+      "height": 223,
+      "ratio": 0.987,
+      "ok": false,
+      "reason": "226x223 h/w=0.99 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "charlie-and-algernon-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/charlie-and-algernon-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "passione-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/passione-1980/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "passione-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/passione-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-bacchae-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-bacchae-1980/thumbnail.jpg",
+      "width": 253,
+      "height": 199,
+      "ratio": 0.787,
+      "ok": false,
+      "reason": "253x199 h/w=0.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "division-street-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/division-street-1980/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "division-street-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/division-street-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "tricks-of-the-trade-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/tricks-of-the-trade-1980/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "tricks-of-the-trade-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/tricks-of-the-trade-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-father-1981",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-father-1981/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "fools-1981",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/fools-1981/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "king-richard-iii-1979",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/king-richard-iii-1979/poster.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "king-richard-iii-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/king-richard-iii-1979/thumbnail.jpg",
+      "width": 269,
+      "height": 187,
+      "ratio": 0.695,
+      "ok": false,
+      "reason": "269x187 h/w=0.70 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "devour-the-snow-1979",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/devour-the-snow-1979/poster.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "devour-the-snow-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/devour-the-snow-1979/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "strider-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/strider-1979/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "last-licks-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/last-licks-1979/thumbnail.jpg",
+      "width": 172,
+      "height": 293,
+      "ratio": 1.703,
+      "ok": false,
+      "reason": "172x293 h/w=1.70 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "watch-on-the-rhine-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/watch-on-the-rhine-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "harold-and-maude-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/harold-and-maude-1980/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "whose-life-is-it-anyway-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/whose-life-is-it-anyway-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "happy-new-year-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/happy-new-year-1980/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "happy-new-year-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/happy-new-year-1980/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "nuts-1980",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nuts-1980/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "nuts-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nuts-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-roast-1980",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-roast-1980/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-inspector-general-1978",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-inspector-general-1978/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "zoot-suit-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/zoot-suit-1979/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "whose-life-is-it-anyway-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/whose-life-is-it-anyway-1979/thumbnail.jpg",
+      "width": 168,
+      "height": 299,
+      "ratio": 1.78,
+      "ok": false,
+      "reason": "168x299 h/w=1.78 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-goodbye-people-1979",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-goodbye-people-1979/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "bully-1977",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/bully-1977/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-condition-of-shadow-1977",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-condition-of-shadow-1977/thumbnail.jpg",
+      "width": 435,
+      "height": 116,
+      "ratio": 0.267,
+      "ok": false,
+      "reason": "435x116 h/w=0.27 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "jesus-christ-superstar-1977",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/jesus-christ-superstar-1977/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "cheaters-1978",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cheaters-1978/poster.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "13-rue-de-lamour-1978",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/13-rue-de-lamour-1978/thumbnail.jpg",
+      "width": 171,
+      "height": 294,
+      "ratio": 1.719,
+      "ok": false,
+      "reason": "171x294 h/w=1.72 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "a-history-of-the-american-film-1978",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-history-of-the-american-film-1978/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "a-history-of-the-american-film-1978",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-history-of-the-american-film-1978/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "angel-1978",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/angel-1978/thumbnail.jpg",
+      "width": 299,
+      "height": 168,
+      "ratio": 0.562,
+      "ok": false,
+      "reason": "299x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-leaf-people-1975",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-leaf-people-1975/poster.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "a-musical-jubilee-1975",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-musical-jubilee-1975/poster.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "a-musical-jubilee-1975",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/a-musical-jubilee-1975/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "murder-among-friends-1975",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/murder-among-friends-1975/poster.jpg",
+      "width": 299,
+      "height": 168,
+      "ratio": 0.562,
+      "ok": false,
+      "reason": "299x168 h/w=0.56 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "1600-pennsylvania-avenue-1976",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/1600-pennsylvania-avenue-1976/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "hms-pinafore-1976",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/hms-pinafore-1976/thumbnail.jpg",
+      "width": 154,
+      "height": 328,
+      "ratio": 2.13,
+      "ok": false,
+      "reason": "154x328 h/w=2.13 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "medea-and-jason-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/medea-and-jason-1974/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-national-health-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-national-health-1974/thumbnail.jpg",
+      "width": 259,
+      "height": 195,
+      "ratio": 0.753,
+      "ok": false,
+      "reason": "259x195 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "hosanna-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/hosanna-1974/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "love-for-love-1974",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/love-for-love-1974/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "saturday-sunday-monday-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/saturday-sunday-monday-1974/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "gods-favorite-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/gods-favorite-1974/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-night-that-made-america-famous-1975",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-night-that-made-america-famous-1975/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dont-call-back-1975",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dont-call-back-1975/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "all-gods-chillun-got-wings-1975",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/all-gods-chillun-got-wings-1975/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "children-of-the-wind-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/children-of-the-wind-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "children-of-the-wind-1973",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/children-of-the-wind-1973/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "boom-boom-room-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/boom-boom-room-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-visit-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-visit-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "measure-for-measure-1973",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/measure-for-measure-1973/thumbnail.jpg",
+      "width": 258,
+      "height": 195,
+      "ratio": 0.756,
+      "ok": false,
+      "reason": "258x195 h/w=0.76 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "lorelei-1974",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/lorelei-1974/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "come-into-the-garden-maud-1974",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/come-into-the-garden-maud-1974/poster.jpg",
+      "width": 258,
+      "height": 195,
+      "ratio": 0.756,
+      "ok": false,
+      "reason": "258x195 h/w=0.76 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "come-into-the-garden-maud-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/come-into-the-garden-maud-1974/thumbnail.jpg",
+      "width": 258,
+      "height": 195,
+      "ratio": 0.756,
+      "ok": false,
+      "reason": "258x195 h/w=0.76 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "thieves-1974",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/thieves-1974/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "thieves-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/thieves-1974/thumbnail.jpg",
+      "width": 171,
+      "height": 295,
+      "ratio": 1.725,
+      "ok": false,
+      "reason": "171x295 h/w=1.73 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "words-and-music-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/words-and-music-1974/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "ride-the-winds-1974",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ride-the-winds-1974/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "from-israel-with-love-1972",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/from-israel-with-love-1972/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "from-israel-with-love-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/from-israel-with-love-1972/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "hurry-harry-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/hurry-harry-1972/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-lincoln-mask-1972",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-lincoln-mask-1972/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "lysistrata-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/lysistrata-1972/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "ambassador-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ambassador-1972/thumbnail.jpg",
+      "width": 249,
+      "height": 203,
+      "ratio": 0.815,
+      "ok": false,
+      "reason": "249x203 h/w=0.82 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-creation-of-the-world-and-other-business-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-creation-of-the-world-and-other-business-1972/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-great-god-brown-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-great-god-brown-1972/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-last-of-mrs-lincoln-1972",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-last-of-mrs-lincoln-1972/thumbnail.jpg",
+      "width": 167,
+      "height": 301,
+      "ratio": 1.802,
+      "ok": false,
+      "reason": "167x301 h/w=1.80 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "let-me-hear-you-smile-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/let-me-hear-you-smile-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "finishing-touches-1973",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/finishing-touches-1973/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "status-quo-vadis-1973",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/status-quo-vadis-1973/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "no-hard-feelings-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/no-hard-feelings-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "cyrano-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cyrano-1973/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "nash-at-nine-1973",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nash-at-nine-1973/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "nash-at-nine-1973",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nash-at-nine-1973/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "cuba-and-his-teddy-bear-1986",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cuba-and-his-teddy-bear-1986/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "opium-1970",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/opium-1970/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "light-lively-and-yiddish-1970",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/light-lively-and-yiddish-1970/thumbnail.jpg",
+      "width": 290,
+      "height": 174,
+      "ratio": 0.6,
+      "ok": false,
+      "reason": "290x174 h/w=0.60 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-presidents-daughter-1970",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-presidents-daughter-1970/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-presidents-daughter-1970",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-presidents-daughter-1970/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-good-woman-of-setzuan-1970",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-good-woman-of-setzuan-1970/thumbnail.jpg",
+      "width": 159,
+      "height": 318,
+      "ratio": 2,
+      "ok": false,
+      "reason": "159x318 h/w=2.00 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-candyapple-1970",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-candyapple-1970/poster.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-candyapple-1970",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-candyapple-1970/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "ari-1971",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ari-1971/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "house-of-dunkelmayer-1971",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/house-of-dunkelmayer-1971/thumbnail.jpg",
+      "width": 268,
+      "height": 188,
+      "ratio": 0.701,
+      "ok": false,
+      "reason": "268x188 h/w=0.70 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "the-school-for-wives-1971",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-school-for-wives-1971/poster.jpg",
+      "width": 263,
+      "height": 191,
+      "ratio": 0.726,
+      "ok": false,
+      "reason": "263x191 h/w=0.73 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-school-for-wives-1971",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-school-for-wives-1971/thumbnail.jpg",
+      "width": 263,
+      "height": 191,
+      "ratio": 0.726,
+      "ok": false,
+      "reason": "263x191 h/w=0.73 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "abelard-and-heloise-1971",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/abelard-and-heloise-1971/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "all-over-1971",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/all-over-1971/poster.jpg",
+      "width": 235,
+      "height": 214,
+      "ratio": 0.911,
+      "ok": false,
+      "reason": "235x214 h/w=0.91 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "earl-of-ruston-1971",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/earl-of-ruston-1971/thumbnail.jpg",
+      "width": 310,
+      "height": 163,
+      "ratio": 0.526,
+      "ok": false,
+      "reason": "310x163 h/w=0.53 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "burnout-paradise-off-broadway-2026",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/burnout-paradise-off-broadway-2026/hero.webp",
+      "width": 400,
+      "height": 600,
+      "ratio": 1.5,
+      "ok": false,
+      "reason": "400x600 h/w=1.50 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-spy-who-came-in-from-the-cold-west-end-2025/poster.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "dracula-west-end-2025",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dracula-west-end-2025/thumbnail.jpg",
+      "width": 400,
+      "height": 200,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "400x200 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "role": "hero",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/operation-mincemeat-west-end-2024/hero.webp",
+      "width": 400,
+      "height": 631,
+      "ratio": 1.577,
+      "ok": false,
+      "reason": "400x631 h/w=1.58 — expected landscape (h/w <= 0.85)"
+    },
+    {
+      "showId": "the-paparazzi-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-paparazzi-off-broadway-2026/poster.jpg",
+      "width": 270,
+      "height": 186,
+      "ratio": 0.689,
+      "ok": false,
+      "reason": "270x186 h/w=0.69 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ulster-american-irish-repertory-theatre-off-broadway-2026/poster.jpg",
+      "width": 288,
+      "height": 175,
+      "ratio": 0.608,
+      "ok": false,
+      "reason": "288x175 h/w=0.61 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/ulster-american-irish-repertory-theatre-off-broadway-2026/thumbnail.jpg",
+      "width": 288,
+      "height": 175,
+      "ratio": 0.608,
+      "ok": false,
+      "reason": "288x175 h/w=0.61 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "our-house-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/our-house-off-broadway-2026/poster.jpg",
+      "width": 248,
+      "height": 203,
+      "ratio": 0.819,
+      "ok": false,
+      "reason": "248x203 h/w=0.82 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "our-house-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/our-house-off-broadway-2026/thumbnail.jpg",
+      "width": 248,
+      "height": 203,
+      "ratio": 0.819,
+      "ok": false,
+      "reason": "248x203 h/w=0.82 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "miracle-on-south-division-street-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/miracle-on-south-division-street-off-broadway-2026/poster.jpg",
+      "width": 225,
+      "height": 224,
+      "ratio": 0.996,
+      "ok": false,
+      "reason": "225x224 h/w=1.00 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "north-star-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/north-star-off-broadway-2026/poster.jpg",
+      "width": 269,
+      "height": 187,
+      "ratio": 0.695,
+      "ok": false,
+      "reason": "269x187 h/w=0.70 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/thumbnail.jpg",
+      "width": 168,
+      "height": 300,
+      "ratio": 1.786,
+      "ok": false,
+      "reason": "168x300 h/w=1.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/dear-england-new-wimbledon-theatre-west-end-2026/poster.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-gruffalo-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-gruffalo-west-end-2026/poster.jpg",
+      "width": 267,
+      "height": 189,
+      "ratio": 0.708,
+      "ok": false,
+      "reason": "267x189 h/w=0.71 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "anansi-the-spider-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/anansi-the-spider-west-end-2026/poster.jpg",
+      "width": 1640,
+      "height": 496,
+      "ratio": 0.302,
+      "ok": false,
+      "reason": "1640x496 h/w=0.30 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/the-guy-who-didnt-like-musicals-west-end-2026/thumbnail.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/henry-vi-a-trilogy-in-two-parts-off-broadway-2026/poster.jpg",
+      "width": 264,
+      "height": 191,
+      "ratio": 0.723,
+      "ok": false,
+      "reason": "264x191 h/w=0.72 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/henry-vi-a-trilogy-in-two-parts-off-broadway-2026/thumbnail.jpg",
+      "width": 264,
+      "height": 191,
+      "ratio": 0.723,
+      "ok": false,
+      "reason": "264x191 h/w=0.72 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "under-the-shadow-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/under-the-shadow-off-west-end-2026/thumbnail.jpg",
+      "width": 168,
+      "height": 300,
+      "ratio": 1.786,
+      "ok": false,
+      "reason": "168x300 h/w=1.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cleansed-off-west-end-2026/poster.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/cleansed-off-west-end-2026/thumbnail.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "legend-the-music-of-bob-marley-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/legend-the-music-of-bob-marley-off-west-end-2026/poster.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/bloodsport-after-helen-of-troy-off-west-end-2026/poster.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/robin-hood-and-the-merry-mandem-off-west-end-2026/thumbnail.jpg",
+      "width": 262,
+      "height": 193,
+      "ratio": 0.737,
+      "ok": false,
+      "reason": "262x193 h/w=0.74 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "in-the-print-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/in-the-print-off-west-end-2026/poster.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "voices-from-ukraine-overview-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/voices-from-ukraine-overview-off-west-end-2026/poster.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "say-shava-shava-celebrating-25-ye-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/say-shava-shava-celebrating-25-ye-off-west-end-2026/thumbnail.jpg",
+      "width": 262,
+      "height": 193,
+      "ratio": 0.737,
+      "ok": false,
+      "reason": "262x193 h/w=0.74 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/nt-connections-double-bill-cloud-busting-and-ride-or-die-off-west-end-2026/poster.jpg",
+      "width": 244,
+      "height": 207,
+      "ratio": 0.848,
+      "ok": false,
+      "reason": "244x207 h/w=0.85 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "qawwali-live-with-hussain-brothers-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/qawwali-live-with-hussain-brothers-off-west-end-2026/poster.jpg",
+      "width": 262,
+      "height": 193,
+      "ratio": 0.737,
+      "ok": false,
+      "reason": "262x193 h/w=0.74 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "qawwali-live-with-hussain-brothers-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/qawwali-live-with-hussain-brothers-off-west-end-2026/thumbnail.jpg",
+      "width": 262,
+      "height": 193,
+      "ratio": 0.737,
+      "ok": false,
+      "reason": "262x193 h/w=0.74 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/yokos-husbands-killers-japanese-wife-gloria-off-broadway-2026/thumbnail.jpg",
+      "width": 311,
+      "height": 162,
+      "ratio": 0.521,
+      "ok": false,
+      "reason": "311x162 h/w=0.52 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/now-you-see-me-live-west-end-2026/poster.jpg",
+      "width": 249,
+      "height": 203,
+      "ratio": 0.815,
+      "ok": false,
+      "reason": "249x203 h/w=0.82 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/milk-and-honey-amt-theater-off-broadway-2026/poster.jpg",
+      "width": 266,
+      "height": 190,
+      "ratio": 0.714,
+      "ok": false,
+      "reason": "266x190 h/w=0.71 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "can-i-be-frank-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/can-i-be-frank-off-broadway-2026/thumbnail.jpg",
+      "width": 261,
+      "height": 193,
+      "ratio": 0.739,
+      "ok": false,
+      "reason": "261x193 h/w=0.74 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "meow-meow-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/meow-meow-off-broadway-2026/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "chat-noir-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/chat-noir-off-west-end-2026/thumbnail.jpg",
+      "width": 248,
+      "height": 203,
+      "ratio": 0.819,
+      "ok": false,
+      "reason": "248x203 h/w=0.82 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "love-and-other-life-sentences-off-broadway-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/love-and-other-life-sentences-off-broadway-2026/poster.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026",
+      "role": "poster",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/what-we-talk-about-when-we-talk-about-anne-frank-off-west-end-2026/poster.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected portrait or square (h/w >= 1.0)"
+    },
+    {
+      "showId": "scratching-the-itch-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/scratching-the-itch-off-west-end-2026/thumbnail.jpg",
+      "width": 168,
+      "height": 300,
+      "ratio": 1.786,
+      "ok": false,
+      "reason": "168x300 h/w=1.79 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "new-26-feral-threads-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/new-26-feral-threads-off-west-end-2026/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "new-26-van-man-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/new-26-van-man-off-west-end-2026/thumbnail.jpg",
+      "width": 313,
+      "height": 161,
+      "ratio": 0.514,
+      "ok": false,
+      "reason": "313x161 h/w=0.51 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "new-26-that-last-summer-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/new-26-that-last-summer-off-west-end-2026/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "new-26-xl-bully-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/new-26-xl-bully-off-west-end-2026/thumbnail.jpg",
+      "width": 300,
+      "height": 168,
+      "ratio": 0.56,
+      "ok": false,
+      "reason": "300x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/james-baldwin-a-life-and-legacy-with-ben-okri-off-west-end-2026/thumbnail.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "im-every-woman-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/im-every-woman-off-west-end-2026/thumbnail.jpg",
+      "width": 299,
+      "height": 168,
+      "ratio": 0.562,
+      "ok": false,
+      "reason": "299x168 h/w=0.56 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/jasmines-demo-show-4-the-end-off-broadway-2026/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "surinderella-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/surinderella-off-west-end-2026/thumbnail.jpg",
+      "width": 318,
+      "height": 159,
+      "ratio": 0.5,
+      "ok": false,
+      "reason": "318x159 h/w=0.50 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "michael-off-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/michael-off-west-end-2026/thumbnail.jpg",
+      "width": 275,
+      "height": 183,
+      "ratio": 0.665,
+      "ok": false,
+      "reason": "275x183 h/w=0.67 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "role": "thumbnail",
+      "filePath": "/Users/tompryor/Broadwayscore/public/images/shows/catarina-and-the-beauty-of-killing-fascists-west-end-2026/thumbnail.jpg",
+      "width": 259,
+      "height": 194,
+      "ratio": 0.749,
+      "ok": false,
+      "reason": "259x194 h/w=0.75 — expected square or mild-portrait (0.85 <= h/w <= 1.70)"
+    }
+  ]
+}
