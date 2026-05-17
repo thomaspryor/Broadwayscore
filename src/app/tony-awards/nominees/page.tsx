@@ -237,6 +237,17 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           <span className={LABEL}>Critics</span>
           <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         </div>
+
+        {/* Awards */}
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Awards</span>
+          <AwardScoreBadge
+            score={Math.round(show.awardsScore ?? 0)}
+            badge={badgeFromScore(show.awardsScore)}
+            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+            size="sm"
+          />
+        </div>
       </div>
     </div>
   );
@@ -278,7 +289,7 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Gold Derby + Audience + Critic */}
+      {/* Gold Derby + Audience + Critic + Awards */}
       <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
         <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
           <span className={LABEL}>Gold Derby</span>
@@ -293,6 +304,15 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         <div className="flex flex-col items-center gap-0.5">
           <span className={LABEL}>Critics</span>
           <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        </div>
+        <div className="flex flex-col items-center gap-0.5">
+          <span className={LABEL}>Awards</span>
+          <AwardScoreBadge
+            score={Math.round(show.awardsScore ?? 0)}
+            badge={badgeFromScore(show.awardsScore)}
+            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+            size="sm"
+          />
         </div>
       </div>
     </div>
