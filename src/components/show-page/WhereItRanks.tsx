@@ -113,15 +113,15 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   return (
     <section
       data-testid="where-it-ranks"
-      className="card p-4 sm:p-5 mb-8 space-y-3"
+      className="card p-5 sm:p-6 mb-8 space-y-4"
       aria-labelledby="where-it-ranks-heading"
     >
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h2 id="where-it-ranks-heading" className="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500">
-            Where it ranks
+          <h2 id="where-it-ranks-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
+            Where It Ranks
           </h2>
-          <p className="text-[11px] text-gray-500 mt-1">
+          <p className="text-[12px] text-gray-500 mt-1.5">
             Compared against all open {marketName} {formatNoun}
           </p>
         </div>
