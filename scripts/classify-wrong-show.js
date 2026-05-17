@@ -203,15 +203,15 @@ IMPORTANT GUIDELINES:
 
 Return JSON only: {"verdict":"CORRECT|WRONG_SHOW|UNCERTAIN", "confidence":"high|medium|low", "reasoning":"1-2 sentences"}`;
 
-const { getOperaWrongShowContext } = require('./lib/opera-prompt-context');
+// Pure prompt builder extracted to scripts/lib/classifier-prompts.js so the
+// opera-aware branching can be unit-tested directly (CLAUDE.md rule 15).
+const { buildWrongShowUserPrompt } = require('./lib/classifier-prompts');
 
 function buildUserPrompt(showTitle, showId, text) {
-  const truncated = text.length > 2000 ? text.substring(0, 2000) : text;
-  const isOpera = showTypeMap.get(showId) === 'opera';
-  // See scripts/lib/opera-prompt-context.js for the framing rationale.
-  const operaContext = isOpera ? `\n\n${getOperaWrongShowContext()}\n` : '';
-
-  return `Show: "${showTitle}" (${showId})${operaContext}\n\nReview text (first ${Math.min(text.length, 2000)} chars):\n${truncated}`;
+  // showTypeMap is populated at module load from shows.json; synthesize a
+  // minimal show object for the lib's isOperaShow check.
+  const show = { type: showTypeMap.get(showId) || null };
+  return buildWrongShowUserPrompt({ show, showTitle, showId, text });
 }
 
 // ============================================================
