@@ -767,13 +767,16 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         </nav>
         )}
 
-        {/* Critic Reviews */}
+        {/* Critic Reviews / Scorecard */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
-            </div>
+          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading">
+            {/* Unified scorecard chrome: eyebrow + lowercase meta count */}
+            <header className="flex items-center justify-between gap-3 mb-4">
+              <h2 id="critic-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+                {show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}
+              </span>
+            </header>
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
@@ -791,21 +794,37 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
             }))} initialCount={5} category={show.category} />
-          </div>
+
+            {/* Footer link to the cross-show critic leaderboard */}
+            <div className="mt-4 pt-3.5 border-t border-white/5">
+              <Link
+                href="/critics"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+              >
+                <span>Explore all critics</span>
+                <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
+            <header className="flex items-center justify-between gap-3 mb-3">
+              <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">tbd</span>
+            </header>
             <p className="text-gray-400 text-sm">
               Reviews coming after {isWestEnd ? 'press night' : 'opening night'}: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
             </p>
-          </div>
+          </section>
         ) : (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">
+            <header className="flex items-center justify-between gap-3 mb-3">
+              <h2 id="critic-scorecard-heading-archived" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+            </header>
             <p className="text-gray-400 text-sm">
               Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.
             </p>
-          </div>
+          </section>
         )}
 
         {/* Audience Buzz Section - below Critic Reviews */}
