@@ -80,8 +80,9 @@ for (const name of TIER_2) {
 
 console.log('');
 if (tier1Missing > 0) {
-  console.log(`✗ ${tier1Missing} Tier 1 secret(s) missing — set them in claude.ai → Settings → Secrets.`);
-  console.log('  See: ~/Documents/claude-outputs/cloud-secrets-checklist.md (local) or `.claude/CLOUD.md` (in this repo).');
+  console.log(`✗ ${tier1Missing} Tier 1 secret(s) missing.`);
+  console.log('  Set them at claude.ai/code → cloud icon (env name, top of input area) → hover env row → gear icon → Environment variables field (KEY=value, no quotes).');
+  console.log('  Full guide: ~/Documents/claude-outputs/cloud-secrets-checklist.md (local) or `.claude/CLOUD.md` (in this repo).');
   process.exit(1);
 }
 console.log('✓ All Tier 1 secrets present. Cloud session is ready.');
