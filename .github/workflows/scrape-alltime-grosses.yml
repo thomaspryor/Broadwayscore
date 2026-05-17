@@ -23,6 +23,13 @@ on:
         default: 'false'
         type: boolean
 
+# Serialize against weekly-grosses.yml — both workflows write data/grosses.json. The shared
+# push-with-retry helper's rebase fallback uses -X ours and can silently drop the other
+# writer's edits if they collide. The shared group name (not per-workflow) is the point.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
 jobs:
   scrape-alltime:
     runs-on: ubuntu-latest
