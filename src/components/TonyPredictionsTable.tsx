@@ -108,33 +108,53 @@ function ScoreDisplay({ show, mode, winProbability }: { show: SerializedTonyShow
     const gdPct = show.gdOdds != null ? Math.round(show.gdOdds * 100) : null;
     const hasOdds = ourPct != null || gdPct != null;
 
-    return hasOdds ? (
-      <div className="flex items-stretch gap-2 sm:gap-3 flex-shrink-0">
-        {ourPct != null && (
-          <div className="flex flex-col items-center justify-center min-w-[40px]">
-            <span className="text-xl sm:text-2xl font-bold text-white leading-none">{ourPct}%</span>
-            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
-          </div>
-        )}
-        {gdPct != null && (
-          <div className="flex flex-col items-center justify-center min-w-[40px] border-l border-white/10 pl-2 sm:pl-3">
-            <span className="text-xl sm:text-2xl font-bold text-amber-400 leading-none">{gdPct}%</span>
-            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
-          </div>
-        )}
+    if (!hasOdds) {
+      return (
+        <BlendedTrioDisplay
+          blendedScore={show.blendedScore}
+          compositeScore={show.compositeScore}
+          reviewCount={show.reviewCount}
+          status={show.status}
+          audienceGrade={show.audienceGrade}
+          awardsScore={show.awardsScore}
+          awardsWeighted={show.tonyCategoryKey === 'best-play'}
+          size="md"
+          showCrown
+        />
+      );
+    }
+
+    return (
+      <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
+        {/* Component scores — desktop only */}
+        <div className="hidden sm:block">
+          <BlendedTrioDisplay
+            blendedScore={show.blendedScore}
+            compositeScore={show.compositeScore}
+            reviewCount={show.reviewCount}
+            status={show.status}
+            audienceGrade={show.audienceGrade}
+            awardsScore={show.awardsScore}
+            awardsWeighted={show.tonyCategoryKey === 'best-play'}
+            size="sm"
+          />
+        </div>
+        {/* Win probabilities */}
+        <div className="flex items-stretch gap-2">
+          {ourPct != null && (
+            <div className="flex flex-col items-center justify-center min-w-[40px]">
+              <span className="text-xl sm:text-2xl font-bold text-white leading-none">{ourPct}%</span>
+              <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
+            </div>
+          )}
+          {gdPct != null && (
+            <div className="flex flex-col items-center justify-center min-w-[40px] border-l border-white/10 pl-2 sm:pl-3">
+              <span className="text-xl sm:text-2xl font-bold text-amber-400 leading-none">{gdPct}%</span>
+              <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
+            </div>
+          )}
+        </div>
       </div>
-    ) : (
-      <BlendedTrioDisplay
-        blendedScore={show.blendedScore}
-        compositeScore={show.compositeScore}
-        reviewCount={show.reviewCount}
-        status={show.status}
-        audienceGrade={show.audienceGrade}
-        awardsScore={show.awardsScore}
-        awardsWeighted={show.tonyCategoryKey === 'best-play'}
-        size="md"
-        showCrown
-      />
     );
   }
 

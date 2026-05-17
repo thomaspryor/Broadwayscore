@@ -54,17 +54,35 @@ export default function TonyPredictionsOverviewPage() {
     nominationsAnnounced ? { nomineesOnly: true, season: currentSeason } : undefined
   );
 
-  // Build picks data: #1 show per category with thumbnail
+  // Softmax win probabilities per category (T=10, same logic as TonyPredictionsTable)
+  const T = 10;
+  const categoryWinProbs = new Map<string, Map<string, number>>();
+  for (const cat of currentCategories) {
+    const scored = cat.shows.filter(s => s.blendedScore != null);
+    if (scored.length === 0) continue;
+    const exps = scored.map(s => Math.exp(s.blendedScore! / T));
+    const sum = exps.reduce((a, b) => a + b, 0);
+    const probs = new Map<string, number>();
+    scored.forEach((show, i) => probs.set(show.slug, exps[i] / sum));
+    categoryWinProbs.set(cat.key, probs);
+  }
+
+  // Build picks data: #1 show per category with thumbnail + probabilities
   const picks = currentCategories
     .filter(cat => cat.shows.length > 0)
-    .map(cat => ({
-      key: cat.key,
-      label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
-      fullTitle: cat.title,
-      show: cat.shows[0],
-      runnerUp: cat.shows.length > 1 ? cat.shows[1] : null,
-      totalInCategory: cat.shows.length + cat.upcoming.length,
-    }));
+    .map(cat => {
+      const probs = categoryWinProbs.get(cat.key);
+      return {
+        key: cat.key,
+        label: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
+        fullTitle: cat.title,
+        show: cat.shows[0],
+        winProbability: probs?.get(cat.shows[0].slug) ?? null,
+        runnerUp: cat.shows.length > 1 ? cat.shows[1] : null,
+        runnerUpProbability: cat.shows.length > 1 ? (probs?.get(cat.shows[1].slug) ?? null) : null,
+        totalInCategory: cat.shows.length + cat.upcoming.length,
+      };
+    });
 
   // Upcoming shows count (awaiting reviews)
   const totalUpcoming = currentCategories.reduce((sum, cat) => sum + cat.upcoming.length, 0);
@@ -176,25 +194,55 @@ export default function TonyPredictionsOverviewPage() {
                         {pick.show.venue}
                       </p>
                     </div>
-                    {/* Blended trio: tier + bold blended above critic + audience boxes */}
-                    <BlendedTrioDisplay
-                      blendedScore={pick.show.blendedScore}
-                      compositeScore={pick.show.compositeScore}
-                      reviewCount={pick.show.reviewCount}
-                      status={pick.show.status}
-                      audienceGrade={pick.show.audienceGrade}
-                      awardsScore={pick.show.awardsScore}
-                      awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
-                      size="md"
-                      showCrown
-                    />
+                    {/* Win probabilities + component scores */}
+                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                      <div className="flex items-stretch gap-2">
+                        {pick.winProbability != null && (
+                          <div className="flex flex-col items-center justify-center min-w-[44px]">
+                            <span className="text-2xl font-bold text-white leading-none">{Math.round(pick.winProbability * 100)}%</span>
+                            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
+                          </div>
+                        )}
+                        {pick.show.gdOdds != null && (
+                          <div className="flex flex-col items-center justify-center min-w-[44px] border-l border-white/10 pl-2">
+                            <span className="text-2xl font-bold text-amber-400 leading-none">{Math.round(pick.show.gdOdds * 100)}%</span>
+                            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
+                          </div>
+                        )}
+                        {pick.winProbability == null && pick.show.gdOdds == null && (
+                          <BlendedTrioDisplay
+                            blendedScore={pick.show.blendedScore}
+                            compositeScore={pick.show.compositeScore}
+                            reviewCount={pick.show.reviewCount}
+                            status={pick.show.status}
+                            audienceGrade={pick.show.audienceGrade}
+                            awardsScore={pick.show.awardsScore}
+                            awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
+                            size="md"
+                            showCrown
+                          />
+                        )}
+                      </div>
+                      <BlendedTrioDisplay
+                        blendedScore={pick.show.blendedScore}
+                        compositeScore={pick.show.compositeScore}
+                        reviewCount={pick.show.reviewCount}
+                        status={pick.show.status}
+                        audienceGrade={pick.show.audienceGrade}
+                        awardsScore={pick.show.awardsScore}
+                        awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
+                        size="sm"
+                      />
+                    </div>
                   </div>
                   {pick.runnerUp && (
                     <p className="text-xs text-gray-500 mt-2.5 truncate border-t border-white/5 pt-2">
                       Runner-up: <span className="text-gray-400 font-medium">{pick.runnerUp.title}</span>
-                      {pick.runnerUp.blendedScore != null && (
+                      {pick.runnerUpProbability != null ? (
+                        <span className="text-gray-600 ml-1">({Math.round(pick.runnerUpProbability * 100)}%)</span>
+                      ) : pick.runnerUp.blendedScore != null ? (
                         <span className="text-gray-600 ml-1">({Math.round(pick.runnerUp.blendedScore)})</span>
-                      )}
+                      ) : null}
                     </p>
                   )}
                 </Link>

@@ -74,10 +74,10 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
-  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
-  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
-  'best-revival-play':    { critic: 0,    audience: 1.0,  awards: 0   },
+  'best-musical':         { critic: 0.43, audience: 0.52, awards: 0.05 },
+  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2  },
+  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0    },
+  'best-revival-play':    { critic: 0,    audience: 0.8,  awards: 0.2  },
 };
 
 /**
@@ -97,10 +97,10 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
  *     scripts/audit-tony-all-seasons.ts --tier=N flag for backtesting).
  */
 export const TONY_RECIPES_TIER2: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
-  'best-play':            { critic: 0.2, audience: 0.2, awards: 0.6 },
-  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
-  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
+  'best-musical':         { critic: 0.4, audience: 0.55, awards: 0.05 },
+  'best-play':            { critic: 0.2, audience: 0.2,  awards: 0.6  },
+  'best-revival-musical': { critic: 0,   audience: 1.0,  awards: 0    },
+  'best-revival-play':    { critic: 0,   audience: 0.7,  awards: 0.3  },
 };
 
 export type TonyCategoryKey = keyof typeof TONY_RECIPES;
