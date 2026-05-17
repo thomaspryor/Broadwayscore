@@ -232,6 +232,7 @@ export default function TonyPredictionsOverviewPage() {
                         awardsScore={pick.show.awardsScore}
                         awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
                         size="sm"
+                        hideScore
                       />
                     </div>
                   </div>
