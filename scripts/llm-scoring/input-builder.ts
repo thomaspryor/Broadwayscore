@@ -9,6 +9,13 @@ import { getOutletTier } from './config';
 
 // Import text quality functions - use require for JS module
 const textQuality = require('../lib/text-quality.js');
+// Canonical opera discriminator — single source of truth shared with
+// classify-wrong-production.js and classify-wrong-show.js. Ship-check P1-C
+// (2026-05-17): previously this file inlined `review.type === 'opera'` and
+// scripts/lib/opera-prompt-context.js exported its own check; both did the
+// same thing but could drift on the first time someone broadens opera
+// detection (e.g. to non-Met houses).
+const { isOperaShow } = require('../lib/opera-prompt-context');
 
 // ========================================
 // TYPES
@@ -159,7 +166,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // with category='off-broadway' but reviews legitimately describe opera, not
     // theater. Framing them as theater causes the ensemble's wrong_show gate
     // to reject every opera review as "not the specified venue/category".
-    const isOpera = review.type === 'opera';
+    const isOpera = isOperaShow(review);
     const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
       : review.category === 'west-end' ? 'West End'
       : review.category === 'off-west-end' ? 'Off-West End'
