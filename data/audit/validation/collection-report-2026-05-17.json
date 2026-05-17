@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-05-17T02:13:47.078Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 200,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 11,
+    "failed": 568,
+    "skipped": 0,
+    "successRate": "1.9%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 3,
+    "directCookies": 0,
+    "scrapingbee": 3,
+    "brightdata": 0,
+    "archiveToday": 10,
+    "archive": 4
+  },
+  "statistics": {
+    "tier1Attempts": 2,
+    "tier1Success": 2,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 2,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 198,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
+    "urlDiscoveryAttempts": 200,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -582,8 +633,7 @@
     "hedda-gabler-2009/newsday--linda-winer.json",
     "13-2008/about-entertainment--ben-brantley.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/financialtimes--unknown.json",
       "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
@@ -621,30 +671,6 @@
       "spring-awakening-2015/abc-news--mark-kennedy.json"
     ]
   },
-  "startTime": "2026-05-16T16:09:31.873Z",
-  "lastProcessed": "13-2008/about-entertainment--ben-brantley.json",
-  "log": [
-    {
-      "t": "2026-05-17T01:56:56.829Z",
-      "event": "bb-session",
-      "session": "1d1c6333",
-      "url": "https://deadline.com/2018/05/jimmy-buffett-musical-closing-date-escape-to-margar"
-    },
-    {
-      "t": "2026-05-17T01:56:57.610Z",
-      "event": "bb-cookie-inject",
-      "domain": "deadline.com"
-    },
-    {
-      "t": "2026-05-17T02:13:30.548Z",
-      "event": "bb-session",
-      "session": "aad8a30e",
-      "url": "https://theater.nytimes.com/2008/10/06/theater/reviews/06bran.html"
-    },
-    {
-      "t": "2026-05-17T02:13:31.318Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
