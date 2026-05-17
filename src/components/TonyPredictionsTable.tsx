@@ -10,6 +10,19 @@ import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
 export type PredictionMode = 'combined' | 'critics' | 'audience';
 
+/** Softmax-based win probabilities within a category, temperature T=10.
+ *  Shows with null blendedScore are excluded from the denominator. */
+function computeWinProbabilities(shows: SerializedTonyShow[], mode: PredictionMode): Map<string, number> {
+  const T = 10;
+  const scored = shows.filter(s => getScoreForMode(s, mode) != null);
+  if (scored.length === 0) return new Map();
+  const exps = scored.map(s => Math.exp((getScoreForMode(s, mode) as number) / T));
+  const sum = exps.reduce((a, b) => a + b, 0);
+  const result = new Map<string, number>();
+  scored.forEach((show, i) => result.set(show.slug, exps[i] / sum));
+  return result;
+}
+
 export type { SerializedTonyShow };
 
 export interface CategoryOutcome {
@@ -73,7 +86,7 @@ function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number
   }
 }
 
-function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: PredictionMode }) {
+function ScoreDisplay({ show, mode, winProbability }: { show: SerializedTonyShow; mode: PredictionMode; winProbability?: number }) {
   if (mode === 'audience') {
     const grade = show.audienceGrade;
     if (!grade || grade.grade === '—') {
@@ -91,7 +104,26 @@ function ScoreDisplay({ show, mode }: { show: SerializedTonyShow; mode: Predicti
   }
 
   if (mode === 'combined') {
-    return (
+    const ourPct = winProbability != null ? Math.round(winProbability * 100) : null;
+    const gdPct = show.gdOdds != null ? Math.round(show.gdOdds * 100) : null;
+    const hasOdds = ourPct != null || gdPct != null;
+
+    return hasOdds ? (
+      <div className="flex items-stretch gap-2 sm:gap-3 flex-shrink-0">
+        {ourPct != null && (
+          <div className="flex flex-col items-center justify-center min-w-[40px]">
+            <span className="text-xl sm:text-2xl font-bold text-white leading-none">{ourPct}%</span>
+            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
+          </div>
+        )}
+        {gdPct != null && (
+          <div className="flex flex-col items-center justify-center min-w-[40px] border-l border-white/10 pl-2 sm:pl-3">
+            <span className="text-xl sm:text-2xl font-bold text-amber-400 leading-none">{gdPct}%</span>
+            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
+          </div>
+        )}
+      </div>
+    ) : (
       <BlendedTrioDisplay
         blendedScore={show.blendedScore}
         compositeScore={show.compositeScore}
@@ -128,6 +160,12 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
       return sb - sa;
     });
   }, [shows, mode]);
+
+  // Softmax win probabilities within this category (combined mode only)
+  const winProbabilities = useMemo(
+    () => mode === 'combined' ? computeWinProbabilities(scored, mode) : new Map<string, number>(),
+    [scored, mode]
+  );
 
   const upcomingSorted = [...upcoming].sort((a, b) =>
     (a.openingDate || '').localeCompare(b.openingDate || '')
@@ -256,9 +294,9 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                 </p>
               </div>
 
-              {/* Score */}
+              {/* Score / Win probability */}
               <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                <ScoreDisplay show={show} mode={mode} />
+                <ScoreDisplay show={show} mode={mode} winProbability={winProbabilities.get(show.slug)} />
               </div>
             </Link>
           );

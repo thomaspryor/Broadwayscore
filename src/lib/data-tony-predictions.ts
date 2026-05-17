@@ -20,6 +20,29 @@ import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
+import gdRawData from '../../data/tony-win-probabilities.json';
+
+// GoldDerby category names → canonical Tony category titles
+const TONY_TO_GD: Record<string, string> = {
+  'Best Musical':           'Best Musical',
+  'Best Play':              'Best Play',
+  'Best Revival of a Musical': 'Best Musical Revival',
+  'Best Revival of a Play':    'Best Play Revival',
+};
+
+type GdShowEntry = { categories: Record<string, { pWin: number; votes: number }> };
+type GdData = { shows: Record<string, GdShowEntry> };
+
+function lookupGdOdds(showId: string, tonyCategory: string): number | null {
+  const gdCatName = TONY_TO_GD[tonyCategory];
+  if (!gdCatName) return null;
+  const gd = gdRawData as unknown as GdData;
+  const show = gd.shows?.[showId];
+  if (!show) return null;
+  const cat = show.categories?.[gdCatName];
+  if (!cat || cat.votes === 0) return null;
+  return typeof cat.pWin === 'number' ? cat.pWin : null;
+}
 
 /**
  * Legacy: per-category Tony recipes replaced the flat 50/50 blend on 2026-04-29.
@@ -504,6 +527,7 @@ export function serializeShow(
     tonyAudienceGrade: tonyAud,
     awardsScore: awards,
     tonyCategoryKey: categoryKey ?? null,
+    gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
   };
 }
 
