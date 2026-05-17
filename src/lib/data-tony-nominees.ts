@@ -98,21 +98,45 @@ function toAwardsSeason(label: string): string {
   return `${parts[0]}-${parts[1].slice(2)}`;
 }
 
-function lookupGdOdds(gdData: GdData, showId: string, canonicalCatName: string): number | null {
+/**
+ * Pre-compute per-GD-category pWin totals. When a category's total < 0.5
+ * (sparse market — most votes went to nominees outside our dataset), we
+ * normalize within our known nominees so relative rankings still render.
+ */
+function buildGdNormMap(gdData: GdData): Map<string, number> {
+  const totals = new Map<string, number>();
+  for (const show of Object.values(gdData.shows)) {
+    for (const [cat, entry] of Object.entries(show.categories)) {
+      if (entry.votes > 0 && typeof entry.pWin === 'number') {
+        totals.set(cat, (totals.get(cat) ?? 0) + entry.pWin);
+      }
+    }
+  }
+  return totals;
+}
+
+function lookupGdOdds(
+  gdData: GdData,
+  normMap: Map<string, number>,
+  showId: string,
+  canonicalCatName: string,
+): number | null {
   const gdCatName = TONY_TO_GD[canonicalCatName];
   if (!gdCatName) return null;
   const show = gdData.shows[showId];
   if (!show) return null;
   const cat = show.categories[gdCatName];
-  if (!cat || cat.votes === 0) return null;
-  return typeof cat.pWin === 'number' ? cat.pWin : null;
+  if (!cat || cat.votes === 0 || typeof cat.pWin !== 'number') return null;
+  const total = normMap.get(gdCatName) ?? 1;
+  // Normalize when the category total is < 0.5 (sparse/stale market data)
+  return total < 0.5 ? cat.pWin / total : cat.pWin;
 }
 
-function loadPmData(): PmData | null {
+function loadMarketData(filename: string): PmData | null {
   try {
-    const pmPath = path.join(process.cwd(), 'data', 'tony-polymarket-odds.json');
-    if (!fs.existsSync(pmPath)) return null;
-    const raw = JSON.parse(fs.readFileSync(pmPath, 'utf-8')) as PmData;
+    const p = path.join(process.cwd(), 'data', filename);
+    if (!fs.existsSync(p)) return null;
+    const raw = JSON.parse(fs.readFileSync(p, 'utf-8')) as PmData;
     if (!raw?.categories || Object.keys(raw.categories).length === 0) return null;
     return raw;
   } catch {
@@ -120,13 +144,25 @@ function loadPmData(): PmData | null {
   }
 }
 
-function findPmOdds(nominees: Record<string, number>, name: string): number | null {
+function findMarketOdds(nominees: Record<string, number>, name: string): number | null {
   if (name in nominees) return nominees[name];
   const lower = name.toLowerCase();
   for (const [k, v] of Object.entries(nominees)) {
     if (k.toLowerCase() === lower) return v;
   }
   return null;
+}
+
+/** Average PM + Kalshi odds when both available, use whichever exists otherwise. */
+function averageMarketOdds(
+  pmNominees: Record<string, number> | null,
+  kalshiNominees: Record<string, number> | null,
+  name: string,
+): number | null {
+  const pm = pmNominees ? findMarketOdds(pmNominees, name) : null;
+  const k  = kalshiNominees ? findMarketOdds(kalshiNominees, name) : null;
+  if (pm !== null && k !== null) return (pm + k) / 2;
+  return pm ?? k;
 }
 
 /** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
@@ -162,10 +198,12 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
   const gdData = gdRawData as unknown as GdData;
-  const pmData = loadPmData();
+  const pmData = loadMarketData('tony-polymarket-odds.json');
   const awardsSeason = toAwardsSeason(season.label);
 
   const showById = new Map(eligible.map(s => [s.id, s]));
+  const kalshiData = loadMarketData('tony-kalshi-odds.json');
+  const gdNormMap = buildGdNormMap(gdData);
 
   // 4 major categories: delegate to groupIntoCategories (handles score blending)
   const majorCats = groupIntoCategories(eligible, { nomineesOnly: true, season }).map(cat => {
@@ -173,11 +211,12 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
       const computedShow = eligible.find(s => s.slug === show.slug);
       const showId = computedShow?.id ?? '';
       const pmNominees = pmData?.categories[cat.title]?.nominees ?? null;
+      const kalshiNominees = kalshiData?.categories[cat.title]?.nominees ?? null;
       return {
         ...show,
         awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
-        gdOdds: lookupGdOdds(gdData, showId, cat.title),
-        polymarketOdds: pmNominees ? findPmOdds(pmNominees, show.title) : null,
+        gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
+        polymarketOdds: averageMarketOdds(pmNominees, kalshiNominees, show.title),
       };
     });
     showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
@@ -215,8 +254,8 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(nom.showId).displayScore,
-          gdOdds: lookupGdOdds(gdData, nom.showId, catTitle),
-          polymarketOdds: pmNominees ? findPmOdds(pmNominees, pmMatchName) : null,
+          gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle),
+          polymarketOdds: pmNominees ? findMarketOdds(pmNominees, pmMatchName) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           nomineeActorSlug: actorSlug,
@@ -242,8 +281,8 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(showId).displayScore,
-          gdOdds: lookupGdOdds(gdData, showId, catTitle),
-          polymarketOdds: pmNominees ? findPmOdds(pmNominees, computedShow.title) : null,
+          gdOdds: lookupGdOdds(gdData, gdNormMap, showId, catTitle),
+          polymarketOdds: pmNominees ? findMarketOdds(pmNominees, computedShow.title) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
         });

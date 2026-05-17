@@ -90,13 +90,18 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-function GoldDerbyCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
+function GoldDerbyCol({ odds, marketOdds, size }: { odds: number | null | undefined; marketOdds?: number | null; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-20">
+    <div className="hidden sm:flex flex-col items-center justify-center gap-0.5 flex-shrink-0 w-20">
       <span className={numClass}>
         {odds != null ? `${Math.round(odds * 100)}%` : '—'}
       </span>
+      {marketOdds != null && (
+        <span className="text-[10px] text-gray-500">
+          Mkt {Math.round(marketOdds * 100)}%
+        </span>
+      )}
     </div>
   );
 }
@@ -168,7 +173,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
       </div>
 
       {/* Gold Derby column */}
-      <GoldDerbyCol odds={show.gdOdds} size="md" />
+      <GoldDerbyCol odds={show.gdOdds} marketOdds={show.polymarketOdds} size="md" />
 
       {/* Critics | Audience | Awards */}
       <div className="flex items-center gap-2 flex-shrink-0">
