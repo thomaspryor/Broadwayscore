@@ -3739,24 +3739,45 @@ function validateCrossMarketContamination() {
     warn(`... and ${issues - 5} more US→WE cross-market reviews`);
   }
 
-  // Reverse direction: London outlets on Broadway/off-Broadway shows
-  // Unlike forward guard, Tier 1/2 exemption does NOT apply here — London Tier 1 outlets
-  // (Evening Standard, Times UK) never legitimately cover Broadway. Only isDualMarket outlets are exempt.
+  // Reverse direction: London outlets on Broadway/off-Broadway shows.
+  // Unlike forward guard, Tier 1/2 exemption does NOT apply for mainstage Broadway —
+  // London Tier 1 outlets (Evening Standard, Times UK) never legitimately cover it.
+  // Only isDualMarket outlets are exempt.
+  //
+  // Off-Broadway carve-out (2026-05-16): off-Broadway productions regularly have
+  // legitimate UK-outlet coverage — Met opera cinema transmissions reviewed by
+  // The Arts Desk, London-to-NYC transfers covered by their UK home outlet,
+  // festival co-productions. Downgrade off-Broadway hits to a warning so the
+  // validator doesn't block CI on legitimate coverage; reserve error-level for
+  // category==='broadway' only.
   let reverseIssues = 0;
+  let reverseWarnings = 0;
   const nonWeReviews = reviews.filter(r => !isLondonMarket(showCategoryMap[r.showId]));
   for (const r of nonWeReviews) {
     const oid = (r.outletId || r.outlet || '').toLowerCase();
     if (dualMarket.has(oid)) continue;  // Only dual-market exemption, NOT Tier 1/2
     const region = outletRegionMap[oid];
     if (region === 'london') {
-      reverseIssues++;
-      if (reverseIssues <= 5) {
-        error(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
+      const category = showCategoryMap[r.showId];
+      if (category === 'broadway') {
+        reverseIssues++;
+        if (reverseIssues <= 5) {
+          error(`Cross-market: Broadway show "${r.showId}" has review from London outlet "${r.outlet || oid}"`);
+        }
+      } else {
+        // off-broadway (and any other non-london, non-broadway category)
+        reverseWarnings++;
+        if (reverseWarnings <= 5) {
+          warn(`Cross-market: ${category || 'unknown'} show "${r.showId}" has review from London outlet "${r.outlet || oid}" (allowed — opera cinema transmissions, transfers)`);
+        }
       }
     }
   }
   if (reverseIssues > 5) {
     error(`... and ${reverseIssues - 5} more London→Broadway cross-market reviews`);
+  }
+  if (reverseWarnings > 5) {
+    warn(`... and ${reverseWarnings - 5} more London→off-Broadway/other cross-market reviews`);
   }
 
   const totalIssues = issues + reverseIssues;
