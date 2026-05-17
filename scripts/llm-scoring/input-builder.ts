@@ -243,9 +243,10 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       if (review.bwwExcerpt && review.bwwExcerpt !== textResult.text && review.bwwExcerpt !== review.dtliExcerpt && review.bwwExcerpt !== review.showScoreExcerpt) {
         excerpts.push(`BWW excerpt: "${review.bwwExcerpt}"`);
       }
-      if (review.lboRoundupExcerpt && review.lboRoundupExcerpt !== textResult.text &&
-          !excerpts.some(e => e.includes(review.lboRoundupExcerpt))) {
-        excerpts.push(`LBO Roundup excerpt: "${review.lboRoundupExcerpt}"`);
+      const lboExcerpt = review.lboRoundupExcerpt;
+      if (lboExcerpt && lboExcerpt !== textResult.text &&
+          !excerpts.some(e => e.includes(lboExcerpt))) {
+        excerpts.push(`LBO Roundup excerpt: "${lboExcerpt}"`);
       }
 
       if (excerpts.length > 0) {
