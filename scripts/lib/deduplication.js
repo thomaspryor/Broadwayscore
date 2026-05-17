@@ -248,6 +248,14 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
+  // Opera companies restage the same opera every season — any opening-year
+  // difference is a different production (e.g., Met's La Bohème 2025 vs 2026).
+  if (newShow.type === 'opera' && existing.type === 'opera') {
+    const newYr = getYear(newShow);
+    const existYr = getYear(existing);
+    if (newYr && existYr && newYr !== existYr) return true;
+  }
+
   // Transfers within the same market pool (e.g., off-broadway → broadway)
   // are separate productions IF they have different venues. Same venue +
   // same pool + same title = duplicate, not a transfer (e.g., Phantom WE
@@ -350,6 +358,10 @@ function checkForDuplicate(newShow, existingShows) {
 
     // Skip cross-market pairs (e.g., Broadway vs West End) — same title is expected
     if (isCrossMarket(newShow, existing)) continue;
+
+    // Skip opera vs non-opera comparisons — similar-sounding titles are different works
+    // (e.g., Verdi's "Otello" should never match Shakespeare's "Othello")
+    if ((newShow.type === 'opera') !== (existing.type === 'opera')) continue;
 
     // Check 1: Exact title match (case-insensitive)
     if (newTitleLower === existingTitleLower) {
