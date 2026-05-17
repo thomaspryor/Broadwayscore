@@ -20,6 +20,29 @@ import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
+import gdRawData from '../../data/tony-win-probabilities.json';
+
+// GoldDerby category names → canonical Tony category titles
+const TONY_TO_GD: Record<string, string> = {
+  'Best Musical':           'Best Musical',
+  'Best Play':              'Best Play',
+  'Best Revival of a Musical': 'Best Musical Revival',
+  'Best Revival of a Play':    'Best Play Revival',
+};
+
+type GdShowEntry = { categories: Record<string, { pWin: number; votes: number }> };
+type GdData = { shows: Record<string, GdShowEntry> };
+
+function lookupGdOdds(showId: string, tonyCategory: string): number | null {
+  const gdCatName = TONY_TO_GD[tonyCategory];
+  if (!gdCatName) return null;
+  const gd = gdRawData as unknown as GdData;
+  const show = gd.shows?.[showId];
+  if (!show) return null;
+  const cat = show.categories?.[gdCatName];
+  if (!cat || cat.votes === 0) return null;
+  return typeof cat.pWin === 'number' ? cat.pWin : null;
+}
 
 /**
  * Legacy: per-category Tony recipes replaced the flat 50/50 blend on 2026-04-29.
@@ -171,6 +194,21 @@ const PRECURSOR_TIER_NOM_WEIGHTS: Record<CategoryTier, number> = {
   A:    1.5,
   B:    1.0,
   C:    0.5,
+};
+
+/**
+ * Points awarded per Tony nomination (NOT wins — wins come at the ceremony
+ * and are what we're trying to predict). Used in computeAwardsScore to add
+ * Tony nomination breadth as a pre-ceremony signal. The top category being
+ * predicted is excluded (all nominees have it). Higher-tier categories
+ * (direction, leading acting) carry more voter-support signal than design.
+ */
+const TONY_NOM_WEIGHTS: Record<CategoryTier, number> = {
+  S:    0,    // excluded (top category being predicted)
+  'A+': 5,
+  A:    4,
+  B:    3,
+  C:    2,
 };
 
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
@@ -384,6 +422,21 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   // cross-category awards numbers are visually fair.
   const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
+
+  // Tony nomination breadth bonus (post-nomination-announcement only).
+  // Tony nominations are pre-ceremony signals — they indicate broad voter
+  // support across categories. Tony WINS are excluded (that's what we
+  // predict). The top category being predicted is also excluded since all
+  // nominees share it. Using nominatedFor (which includes all noms, won or
+  // not) is correct: wins-vs-noms distinction only matters for the ceremony
+  // outcome we're predicting, not for counting voter interest pre-ceremony.
+  const tonyNoms = (entry.tony?.nominatedFor ?? []).filter(n => n !== tonyCategory);
+  for (const nomCat of tonyNoms) {
+    const cls = classifyCategory(nomCat);
+    if (!cls) continue;
+    base += TONY_NOM_WEIGHTS[cls.tier];
+  }
+
   return Math.min(100, base);
 }
 
@@ -474,6 +527,7 @@ export function serializeShow(
     tonyAudienceGrade: tonyAud,
     awardsScore: awards,
     tonyCategoryKey: categoryKey ?? null,
+    gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
   };
 }
 

@@ -25,9 +25,12 @@ const fs = require('fs');
 const path = require('path');
 
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
+const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const awards = JSON.parse(fs.readFileSync(AWARDS_FILE, 'utf8'));
+const shows = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8')).shows || [];
+const showsById = new Map(shows.map(s => [s.id, s]));
 
 // Fixes verified against Wikipedia / Tony Awards archive.
 // Format: showId → { action: 'relabel' | 'delete', reason, newSeason?, newCeremony? }
@@ -98,6 +101,14 @@ const FIXES = {
     action: 'delete',
     reason: 'shows.json has openingDate 1972-12-27 but Purlie won Best Actor in a Musical at 1969-70 Tonys (24th). Either shows.json date is wrong or this is a tour/revival entry — either way the Tony data needs to be on a separate 1970 production entry, not this one.'
   },
+  'private-lives-2025': {
+    action: 'delete',
+    reason: 'Off-Broadway 2025 production tagged with 1969-70 Tony win (Tammy Grimes won Best Actress in a Play for the 1969 Broadway revival). Historical data attached to wrong (OB) show ID. Tonys are Broadway-only.'
+  },
+  'monte-cristo-the-york-theatre-company-off-broadway-2026': {
+    action: 'delete',
+    reason: 'Off-Broadway 2026 production tagged with 1970-71 Tony data (Best Scenic Design winner). Historical data attached to wrong (OB) show ID. Tonys are Broadway-only.'
+  },
 };
 
 // Remove specific wrongly-attributed wins (the show was nominated but not
@@ -156,8 +167,35 @@ for (const [showId, winsToRemove] of Object.entries(WIN_REMOVALS)) {
   }
 }
 
+// Bulk pass: delete tony blocks from non-Broadway shows. Tonys are
+// Broadway-only; any West End or Off-Broadway entry with a tony block is
+// fossilized misattribution from pre-validation bootstrap. Done as a bulk
+// pass (vs per-ID FIXES) because the population is large (94+ as of
+// 2026-05-17) and the rule is uniform.
+let nonBroadwayDeleted = 0;
+const nonBroadwaySkipped = [];
+for (const [showId, awardsEntry] of Object.entries(awards.shows)) {
+  if (!awardsEntry.tony) continue;
+  const show = showsById.get(showId);
+  if (!show || !show.category || show.category === 'broadway') continue;
+  // Surface (don't auto-delete) entries with non-empty wins — they may need
+  // human inspection to confirm the data isn't worth preserving on a
+  // separate (correct) show ID.
+  if ((awardsEntry.tony.wins || []).length > 0) {
+    nonBroadwaySkipped.push(`${showId} (${show.category}, wins: ${JSON.stringify(awardsEntry.tony.wins)})`);
+    continue;
+  }
+  delete awardsEntry.tony;
+  nonBroadwayDeleted++;
+}
+
 console.log(log.join('\n'));
 console.log(`\nSummary: ${relabeled} relabeled, ${deleted} deleted, ${winsRemoved} wins removed, ${skipped} skipped`);
+console.log(`Non-Broadway sweep: ${nonBroadwayDeleted} deleted (empty/stub), ${nonBroadwaySkipped.length} flagged for human review`);
+if (nonBroadwaySkipped.length > 0) {
+  console.log('  Flagged (non-empty wins on non-Broadway show — likely historical data attached to wrong show ID):');
+  for (const s of nonBroadwaySkipped) console.log('    ' + s);
+}
 
 if (DRY_RUN) {
   console.log('\n(dry-run: no file written)');

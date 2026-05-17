@@ -19,6 +19,7 @@
 - [Ask with recommendation](feedback_ask_with_recommendation.md) — Every AskUserQuestion leads with `(Recommended)` option 1 + why. Never neutral menus.
 - [Two-model UI review](feedback_two_model_ui_review.md) — For "would this embarrass me?" UI/copy reviews, run GPT-4o + Gemini in parallel on screenshots; convergent findings = ship, divergent = mention with context.
 - [Gemini thinking token budget](feedback_gemini_thinking_token_budget.md) — Gemini 2.5 Flash uses internal thinking tokens that count against maxOutputTokens; set `thinkingConfig.thinkingBudget=0` for one-shot prompts or response truncates silently.
+- [GitHub polling rate limit](feedback_github_polling_rate_limit.md) — Never `gh run list` in a polling loop; burns rate limit in minutes. Use `gh run watch <id>` instead.
 
 ## 📇 Notion / brain
 - [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle, fallbacks. Read first.
@@ -41,6 +42,7 @@
 - [gh api emergency single-file commit](feedback_gh_api_emergency_commit.md) — When local git is broken, `gh api PUT /contents/` commits one file without touching the working tree.
 
 ## ⚙️ CI / GitHub Actions / workflows
+- [GitHub polling burns rate limit](feedback_github_polling_rate_limit.md) — Never `gh run list` in a loop; use `gh run watch <id>` or `gh api` directly. Loop + 403 = infinite retry, all quota gone.
 - [CI red check vs main baseline](feedback_ci_failure_preexisting_baseline.md) — Before blocking on a red PR check, check if main's last run of the same job was also red.
 - [GitHub auto-disables stale scheduled workflows](feedback_github_auto_disable_workflows.md) — After ~60 days without a successful cron run, GitHub silently disables. `gh workflow run` returns HTTP 422; `gh workflow list` omits.
 - [GHA secrets not usable in if:](feedback_gha_secrets_in_if.md) — Step-level if conditions can't read secrets; 422 at dispatch.
