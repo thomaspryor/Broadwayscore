@@ -197,7 +197,14 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                     />
                   </td>
                   <td className="py-3 px-4 hidden sm:table-cell align-top">
-                    <span className="text-gray-400 text-sm">{AWARD_TIER_LABEL[awardScore.badge]}</span>
+                    <span className="text-gray-400 text-sm">{
+                      // Match AwardScoreCard's relabel: an in-progress show
+                      // sitting on the 'nominated' tier displays as 'In the
+                      // Hunt' for consistency across surfaces.
+                      awardScore.inProgress && awardScore.badge === 'nominated'
+                        ? 'In the Hunt'
+                        : AWARD_TIER_LABEL[awardScore.badge]
+                    }</span>
                   </td>
                   <td className="py-3 px-4 text-center hidden md:table-cell align-top">
                     <span className="text-gray-400 text-sm">{tonyRecord}</span>
