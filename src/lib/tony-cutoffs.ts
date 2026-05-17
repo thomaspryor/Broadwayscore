@@ -34,6 +34,10 @@ export interface TonySeasonRecord {
   start: string;
   /** Window end (inclusive), ISO YYYY-MM-DD — the official eligibility cutoff */
   end: string;
+  /** Date the ceremony was/will be held, ISO YYYY-MM-DD. Optional — only
+   *  populated for seasons we have confirmed (or scheduled) dates for. Used
+   *  for the "X days to Tony ceremony" countdown on the Awards Scorecard. */
+  ceremonyDate?: string;
   /** Optional explanation when the window deviates from the standard April→April pattern */
   notes?: string;
   /** Citation for verifiability — URL or short description */
@@ -126,6 +130,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     label: '2024-25',
     start: '2024-04-26',
     end: '2025-04-27',
+    ceremonyDate: '2025-06-08',
     source: 'tonyawards.com — 78th announcement; en.wikipedia.org/wiki/78th_Tony_Awards',
   },
   {
@@ -133,6 +138,7 @@ export const TONY_CUTOFFS: TonySeasonRecord[] = [
     label: '2025-26',
     start: '2025-04-28',
     end: '2026-04-26',
+    ceremonyDate: '2026-06-07',
     source: 'tonyawards.com/press/the-tony-awards-announces-calendar-of-events-for-2025-2026-season; broadwaydirect.com/shows-eligible-for-the-2026-tony-awards',
   },
   {
@@ -198,3 +204,36 @@ export const FIRST_TRACKED_CEREMONY_YEAR = TONY_CUTOFFS[0].ceremonyYear;
 
 /** Latest tracked ceremony year. */
 export const LATEST_TRACKED_CEREMONY_YEAR = TONY_CUTOFFS[TONY_CUTOFFS.length - 1].ceremonyYear;
+
+/**
+ * Days until the Tony ceremony for a given season label. Returns null when:
+ *   - The season isn't in our records
+ *   - The season has no scheduled ceremonyDate
+ *   - The ceremony has already passed
+ * Used by the Awards Scorecard's "X days to Tony ceremony" pill.
+ */
+export function daysUntilTonyCeremony(season: string, today: Date = new Date()): number | null {
+  const record = BY_LABEL.get(season);
+  if (!record?.ceremonyDate) return null;
+  const ceremonyMs = new Date(`${record.ceremonyDate}T00:00:00Z`).getTime();
+  if (!Number.isFinite(ceremonyMs)) return null;
+  const diff = ceremonyMs - today.getTime();
+  if (diff <= 0) return null;
+  return Math.ceil(diff / (24 * 60 * 60 * 1000));
+}
+
+/**
+ * True if the ceremony for the given season is in the future (or unknown).
+ * False if we have a ceremonyDate and it's in the past. Used to compute
+ * `inProgress` on award scoring — a show is in-progress if its ceremony
+ * hasn't happened yet, not if the current eligibility window contains today
+ * (those differ for shows in the April-cutoff-to-June-ceremony gap).
+ */
+export function tonyCeremonyIsFuture(season: string | undefined, today: Date = new Date()): boolean {
+  if (!season) return false;
+  const record = BY_LABEL.get(season);
+  if (!record?.ceremonyDate) return true;
+  const ceremonyMs = new Date(`${record.ceremonyDate}T00:00:00Z`).getTime();
+  if (!Number.isFinite(ceremonyMs)) return true;
+  return ceremonyMs > today.getTime();
+}

@@ -34,6 +34,33 @@ export function ChevronIcon({ expanded, className }: { expanded: boolean; classN
   );
 }
 
+// Stroke-based trophy — matches the site's icon-light language (chevrons,
+// search, etc.). Use in surfaces where the filled TrophyIcon reads as
+// emoji-heavy (e.g. AwardScoreCard hero stats line per Claude Design
+// 2026-05-17 proposal). Filled TrophyIcon stays for legacy AwardsCard, gold
+// list badges, and cast pages where the heavier mark is intentional.
+export function TrophyIconLine({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+      <path d="M8 21h8" />
+      <path d="M12 17v4" />
+      <path d="M7 4h10v5a5 5 0 0 1-10 0V4z" />
+      <path d="M17 4h3v2a3 3 0 0 1-3 3" />
+      <path d="M7 4H4v2a3 3 0 0 0 3 3" />
+    </svg>
+  );
+}
+
+// Stroke-based star — same rationale as TrophyIconLine. Outline star for
+// nomination contexts where the filled mark feels over-loaded.
+export function StarIconLine({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+    </svg>
+  );
+}
+
 // Book/Pulitzer icon
 export function PulitzerIcon({ className }: { className?: string }) {
   return (
