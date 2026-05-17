@@ -54,12 +54,21 @@ function isHighReliabilityStar(data) {
 function detectBandFromReviewFile(data) {
   if (!data) return null;
 
-  // Try star fields in priority order. starRating + originalRating are
+  // Try star/grade fields in priority order. starRating + originalRating are
   // primary-source extractions; aggregatorStars is relayed (lower trust).
+  // Some outlets (NY Post /4, EW letter grades) store the raw rating in
+  // originalScore as a STRING (e.g. "1/4 stars", "C-") rather than as a
+  // numeric 0-100. detectBandFromReviewFile needs to check that string form
+  // as a fallback — otherwise high-rel ratings get silently skipped and the
+  // anchored-mode path won't fire on real pilot data.
   const candidates = [
     { value: data.starRating, source: 'starRating' },
     { value: data.originalRating, source: 'originalRating' },
     { value: data.aggregatorStars, source: 'aggregatorStars' },
+    // Only treat originalScore as a candidate when it's a STRING — numeric
+    // originalScore is the post-extraction 0-100 value, not the raw rating.
+    { value: typeof data.originalScore === 'string' ? data.originalScore : null,
+      source: 'originalScore' },
   ];
 
   for (const { value } of candidates) {
@@ -116,8 +125,50 @@ function detectBandFromReviewFile(data) {
   return null;
 }
 
+/**
+ * Decide whether a review should be scored via the V6 anchored-bands path.
+ *
+ * Rollout policy (Phase B):
+ *   - Markets in ANCHORED_MARKETS (src/config/scoring.ts) → always anchored.
+ *     2026-05-17: West End + Off-West-End.
+ *     POST-TONYS: Broadway + Off-Broadway will be added there.
+ *   - All other markets → anchored only when ANCHORED_BANDS_PILOT=1 env flag.
+ *
+ * Deny-list safety (per memory/feedback_shows_json_category_at_schedule.md):
+ *   - category === null / undefined / '' → REFUSED even with envFlag, because
+ *     shows.json drift around schedule-time has left categories null in the
+ *     past and we don't want a new BW show with null category to silently
+ *     pick up anchored scoring.
+ *   - category === 'broadway' / 'off-broadway' → only anchored when envFlag
+ *     is true (explicit pilot opt-in). This is the path BW will eventually
+ *     take post-Tonys via the ANCHORED_MARKETS config change.
+ *
+ * @param {{category: string|null|undefined, envFlag: boolean}} opts
+ * @returns {boolean} true → use anchored V6 path
+ */
+function shouldUseAnchoredMode({ category, envFlag }) {
+  // Inline the WE check so this module has zero TS-side imports. The
+  // src/config/scoring.ts ANCHORED_MARKETS set is the human-edited source
+  // of truth; we mirror it here. Keep both in sync — Sprint 5 cleanup can
+  // unify via a JSON-backed config if both ever drift.
+  const ANCHORED_MARKETS = new Set(['west-end', 'off-west-end']);
+
+  // Deny-list: missing category never auto-anchors, regardless of envFlag.
+  if (category === null || category === undefined || category === '') {
+    return false;
+  }
+
+  if (ANCHORED_MARKETS.has(category)) {
+    return true;
+  }
+
+  // Outside ANCHORED_MARKETS, fall through to env flag.
+  return envFlag === true;
+}
+
 module.exports = {
   LOW_RELIABILITY_EXTRACTION,
   isHighReliabilityStar,
   detectBandFromReviewFile,
+  shouldUseAnchoredMode,
 };

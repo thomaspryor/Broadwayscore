@@ -551,6 +551,11 @@ function parseArgs(): ScoringPipelineOptions & {
   const rescoreReasonArg = args.find(a => a.startsWith('--rescore-reason='));
   const rescoreReason = rescoreReasonArg ? rescoreReasonArg.split('=').slice(1).join('=') : undefined;
 
+  // Phase B-WE W1-T5: --max-cost=N circuit breaker. Matches
+  // classify-non-reviews.js:84 convention. Default 0 = no cap.
+  const maxCostArg = args.find(a => a.startsWith('--max-cost='));
+  const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : 0;
+
   return {
     showId,
     unscoredOnly: !args.includes('--rescore') && !args.includes('--needs-rescore') && !outdated && !ensembleSource && !args.includes('--stale-scores') && !upgradeEnsemble && !retryEmergency,
@@ -579,7 +584,8 @@ function parseArgs(): ScoringPipelineOptions & {
     totalShards,
     scoreRange,
     maxPromptVersion,
-    rescoreReason
+    rescoreReason,
+    maxCost
   };
 }
 
@@ -1123,6 +1129,20 @@ async function main(): Promise<void> {
   const errorDetails: Array<{ showId: string; outletId: string; error: string }> = [];
   // Note: garbageSkips is declared earlier and shared with getScorableText()
 
+  // Phase B-WE W1-T5: --max-cost circuit breaker. Sample cumulative token
+  // usage before/after each scoreReviewFile to compute per-call delta and
+  // accumulate. When cumulative cost >= maxCost (CLI arg, 0 = unlimited),
+  // abort cleanly. Matches stats.budgetUsed convention from
+  // classify-non-reviews.js:84.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { estimateCost: __estimateCost } = require('./cost');
+  const maxCost: number = (options as any).maxCost || 0;
+  let budgetUsed = 0;
+  let budgetAborted = false;
+  if (maxCost > 0) {
+    console.log(`\n💰 Budget cap: $${maxCost.toFixed(2)} (--max-cost). Per-call cost tracked from token deltas.\n`);
+  }
+
   for (let i = 0; i < finalFiles.length; i++) {
     const { path: filePath, data: reviewFile } = finalFiles[i];
 
@@ -1242,6 +1262,11 @@ async function main(): Promise<void> {
         }
       }
     }
+
+    // Sample token usage BEFORE the call so we can compute the per-call delta.
+    const tokensBefore = (scorer as any).getTokenUsage
+      ? JSON.parse(JSON.stringify((scorer as any).getTokenUsage()))
+      : null;
 
     try {
       const result = await scorer.scoreReviewFile(reviewFile);
@@ -1454,6 +1479,37 @@ async function main(): Promise<void> {
         outletId: reviewFile.outletId || '',
         error: e.message
       });
+    }
+
+    // Phase B-WE W1-T5: per-call cost delta + budget cap check.
+    if (maxCost > 0 && tokensBefore && (scorer as any).getTokenUsage) {
+      const tokensAfter = (scorer as any).getTokenUsage();
+      // Compute delta per model. Both shapes are { input, output } per model (or null).
+      const usageDelta: { claude?: { input: number; output: number }; openai?: { input: number; output: number }; gemini?: { input: number; output: number }; kimi?: { input: number; output: number } } = {};
+      for (const m of ['claude', 'openai', 'gemini', 'kimi'] as const) {
+        const after = tokensAfter[m];
+        const before = tokensBefore[m];
+        if (after && before) {
+          usageDelta[m] = {
+            input: Math.max(0, after.input - before.input),
+            output: Math.max(0, after.output - before.output),
+          };
+        } else if (after && !before) {
+          usageDelta[m] = { input: after.input, output: after.output };
+        }
+      }
+      const callCost = __estimateCost(usageDelta, { claudeModelName: options.model });
+      budgetUsed += callCost;
+      if (budgetUsed >= maxCost) {
+        console.log(`\n⛔ Budget cap reached ($${budgetUsed.toFixed(4)} >= $${maxCost.toFixed(2)}). Aborting cleanly after this review.`);
+        budgetAborted = true;
+        // Force a final checkpoint so we don't lose the just-completed work.
+        if (options.checkpointInterval && options.checkpointInterval > 0 && !options.dryRun) {
+          writeProgress(processed, finalFiles.length, errors, skipped, startTime);
+          gitCheckpoint(processed, finalFiles.length);
+        }
+        break;
+      }
     }
 
     // Rate limiting

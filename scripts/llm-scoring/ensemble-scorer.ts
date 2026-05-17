@@ -13,7 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
-const { detectBandFromReviewFile } = require('../lib/star-reliability');
+const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore } from './ensemble';
 
 // ========================================
@@ -399,11 +399,19 @@ export class EnsembleReviewScorer {
     //   (d) flag OFF → existing V5 behavior, untouched
     // The result is stamped with scoreSource='anchored-v6' or 'llm-v6' so
     // getBestScore() can identify which path produced the score.
-    const anchoredFlagOn = process.env.ANCHORED_BANDS_PILOT === '1';
+    // Sprint W1-T4 (Phase B-WE): shouldUseAnchoredMode replaces inline flag
+    // check. WE/OWE category auto-anchors (per src/config/scoring.ts
+    // ANCHORED_MARKETS); other markets need ANCHORED_BANDS_PILOT=1.
+    // Deny-list inside the helper: category=null/empty refuses to anchor,
+    // even with envFlag=true (drift safety).
+    const useAnchored = shouldUseAnchoredMode({
+      category: (reviewFile as any).category,
+      envFlag: process.env.ANCHORED_BANDS_PILOT === '1',
+    });
     let band: ScoreBand | undefined = undefined;
     let starsRaw: string | undefined = undefined;
     let anchoredBandScoreSource: 'anchored-v6' | 'llm-v6' | null = null;
-    if (anchoredFlagOn) {
+    if (useAnchored) {
       const detection = detectBandFromReviewFile(reviewFile);
       if (detection && detection.highReliability) {
         band = detection.band;

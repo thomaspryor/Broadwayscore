@@ -312,7 +312,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
         run: |
-          MAX_ITERATIONS=${{ inputs.max_iterations || 16 }}
+          # 2026-05-16: cut 16 → 10 to reduce duplicate aggregator+SERP fetches.
+          # With SERP_DEFER_ITERATIONS=8, iterations 1-8 are aggregator-only (no SERP),
+          # iterations 9-10 add SERP. Net: ~75% reduction in orchestrator SERP load and
+          # ~37% reduction in aggregator page-fetch load vs 16 iterations. Aggregator
+          # coverage during the first 80 min (the window when most reviews drop) is
+          # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
+          # can override with -f max_iterations=16.
+          MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
           POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
