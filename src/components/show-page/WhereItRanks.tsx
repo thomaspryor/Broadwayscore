@@ -178,12 +178,13 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           {ROWS.map((row, idx) => {
             const isLast = idx === ROWS.length - 1;
             const rs = activeRanks[row.metric];
-            // Show denominator only on the Overall row to keep per-row cells
-            // uncluttered. Per-row pool sizes can differ slightly (e.g. Box
-            // Office pool is shows that report grosses, not all open shows),
-            // so per-cell denominators would crowd the table for no real
-            // information gain.
-            const showDenom = isLast;
+            // Denominators vary widely per-metric in the all-time column
+            // (CriticScore=267, AudienceGrade=251, Awards=234, Box Office=252)
+            // and a "Box Office #18" without context reads as the same pool
+            // as "CriticScore #42" when they're not. Always show "of N" on
+            // all-time cells. Other columns are tighter — keep them clean,
+            // only Overall surfaces the denominator there.
+            const showOverallDenom = isLast;
             return (
               <tr key={row.metric} className={isLast ? 'border-t border-white/10' : ''}>
                 <td className={`py-2 pr-2 text-gray-300 align-top ${isLast ? 'pt-3 font-semibold text-gray-100' : ''}`}>
@@ -191,23 +192,27 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                 </td>
 
                 <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
+                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                 </td>
 
                 <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
+                  <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                 </td>
 
+                {/* All-time column: ALWAYS show "of N" so per-metric pool
+                    differences are explicit. */}
                 <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator={showDenom} />
+                  <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
                 </td>
 
-                {/* Mobile combined column — show season if present, fall back to all-time. */}
+                {/* Mobile combined column — show season if present, fall back
+                    to all-time. Always render denominator (so the fallback to
+                    all-time is unambiguous). */}
                 <td className={`sm:hidden py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   {rs.season ? (
-                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showDenom} />
+                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                   ) : (
-                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator={showDenom} />
+                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
                   )}
                 </td>
               </tr>
