@@ -19,3 +19,4 @@ runs:
         token: ${{ inputs.token }}
         path: data/review-texts
         fetch-depth: ${{ inputs.fetch-depth }}
+        ref: main
