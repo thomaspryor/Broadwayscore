@@ -381,7 +381,7 @@ export default function MyShowsClient() {
           aria-selected={activeTab === 'diary'}
           aria-controls="panel-diary"
           onClick={() => setActiveTab('diary')}
-          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
+          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'diary'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -397,7 +397,7 @@ export default function MyShowsClient() {
           aria-controls="panel-watchlist"
           onClick={() => setActiveTab('watchlist')}
           aria-label={watchlist.length > 0 ? `Watchlist, ${watchlist.length} shows` : 'Watchlist'}
-          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
+          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'watchlist'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -417,7 +417,7 @@ export default function MyShowsClient() {
           aria-selected={activeTab === 'lists'}
           aria-controls="panel-lists"
           onClick={() => setActiveTab('lists')}
-          className={`flex-shrink-0 px-3 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
+          className={`flex-shrink-0 px-2 sm:px-4 py-2.5 text-sm font-semibold transition-colors border-b-2 -mb-[1px] outline-none ${
             activeTab === 'lists'
               ? 'text-white border-brand'
               : 'text-gray-500 border-transparent hover:text-gray-300'
@@ -434,7 +434,7 @@ export default function MyShowsClient() {
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[110px] sm:max-w-none"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[80px] sm:max-w-none"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -446,7 +446,7 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[110px] sm:max-w-none"
+              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[80px] sm:max-w-none"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
