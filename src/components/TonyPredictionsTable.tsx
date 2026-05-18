@@ -231,7 +231,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate w-full sm:w-auto ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
           {show.title}
         </h3>
-        {rank === 1 && mode === 'combined' && !isUpcoming && (
+        {SHOW_OUR_PICK && rank === 1 && mode === 'combined' && !isUpcoming && (
           <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
@@ -315,14 +315,9 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
             />
           </div>
           <div className="hidden sm:flex w-20 items-center justify-center">
-            <span
-              className="text-xs font-medium text-gray-300 cursor-help"
-              title={show.precursorWins && show.precursorWins.length > 0
-                ? show.precursorWins.map(w => `${PRECURSOR_LABELS[w] ?? w} (${w})`).join(' · ')
-                : 'No precursor award wins in this category'}
-            >
-              {show.precursorWins && show.precursorWins.length > 0 ? show.precursorWins.join(' · ') : '—'}
-            </span>
+            {show.precursorWins && show.precursorWins.length > 0
+              ? <PrecursorChips wins={show.precursorWins} />
+              : <span className="text-xs text-gray-600">—</span>}
           </div>
           <div className="hidden sm:flex w-14 items-center justify-center">
             <PressPicks picks={show.criticPicks} />
