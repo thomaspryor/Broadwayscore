@@ -59,6 +59,17 @@ function getCrowdPercentages(nominees: SerializedTonyShow[]): number[] {
   return pcts;
 }
 
+function getActorCrowdPercentages(nominees: ActorNominee[]): number[] {
+  if (nominees.length === 0) return [];
+  const scores = nominees.map(n => n.showScore ?? 50);
+  const total = scores.reduce((a, b) => a + b, 0);
+  if (total === 0) return nominees.map(() => Math.round(100 / nominees.length));
+  const pcts = scores.map(s => Math.round((s / total) * 100));
+  const diff = 100 - pcts.reduce((a, b) => a + b, 0);
+  if (pcts.length > 0) pcts[0] += diff;
+  return pcts;
+}
+
 function seededShuffle<T>(arr: T[], seed: number): T[] {
   const shuffled = [...arr];
   let s = seed;
@@ -409,6 +420,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const picksAvailable = criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
     const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
+    const actorCrowdPcts = isActor ? getActorCrowdPercentages(actorNominees) : [];
     const tonyPredictionPickShow = isActor ? undefined : nominees.find(n => n.title === tonyPredictionPick);
     const matchesTonyPrediction = isActor ? false : userPick === tonyPredictionPick;
     const criticMatches = picksAvailable ? criticPicks.filter(p => p === userPick).length : 0;
@@ -492,6 +504,14 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             })}
           </div>
 
+          {/* Show score breakdown — actor categories */}
+          {isActor && actorCrowdPcts.length > 0 && (
+            <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">CriticScore Breakdown<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-gray-600 mb-3">Based on the show&apos;s CriticScore</div>
+              {actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={actor.showScore} />))}
+            </div>
+          )}
           {/* CriticScore breakdown — show categories only */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>

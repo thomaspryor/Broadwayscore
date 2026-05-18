@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
 import {
   getTonySeasonWindow,
@@ -7,10 +8,26 @@ import {
   type TonyCategory,
 } from '@/lib/data-tony-predictions';
 import { BeatTheCriticsClient } from './BeatTheCriticsClient';
+import { BASE_URL } from '@/lib/seo';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Beat the Critics | Tony Award Picks | Broadway Scorecard',
   description: 'Make your Tony Award picks and see how you stack up against top critics and the CriticScore algorithm. Ceremony: June 7, 2026.',
+  alternates: {
+    canonical: `${BASE_URL}/beat-the-critics`,
+  },
+  openGraph: {
+    title: 'Beat the Critics — Tony Award Picks',
+    description: 'Pick the Tony Award winners and see how your predictions compare to top critics and the CriticScore algorithm.',
+    url: `${BASE_URL}/beat-the-critics`,
+    type: 'website',
+    images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: 'Beat the Critics — Tony Award Picks' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Beat the Critics — Tony Award Picks',
+    description: 'Pick the Tony Award winners and compare your predictions to top critics and the CriticScore algorithm.',
+  },
 };
 
 export interface ActorNominee {

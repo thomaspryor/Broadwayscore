@@ -12,11 +12,20 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Broadway Award Scorecard - Prestige Scores for Every Show',
   description: 'Prestige-weighted award scores for Broadway shows. See which shows dominated the Tony Awards, Pulitzer Prize, Drama Desk, and more.',
+  alternates: {
+    canonical: `${BASE_URL}/award-score`,
+  },
   openGraph: {
     title: 'Broadway Award Scorecard',
     description: 'Prestige-weighted award scores across Tony, Pulitzer, Olivier, Drama Desk, Outer Critics Circle, Drama League, and NY Drama Critics.',
     url: `${BASE_URL}/award-score`,
-    type: 'article',
+    type: 'website',
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Broadway Award Scorecard' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Award Scorecard',
+    description: 'Prestige-weighted award scores for Broadway shows — Tony, Pulitzer, Drama Desk, and more.',
   },
 };
 
