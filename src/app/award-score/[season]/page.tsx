@@ -67,6 +67,7 @@ export default function AwardScoreSeasonPage({ params }: { params: { season: str
 
   if (!/^\d{4}-\d{2}$/.test(params.season)) notFound();
 
+
   const showsWithScore = getShowsForSeason(params.season);
   if (showsWithScore.length === 0) notFound();
 
