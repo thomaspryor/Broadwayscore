@@ -56,7 +56,7 @@ type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
 // Defaults
 const DEFAULT_STATUS: StatusParam = 'now_playing';
-const DEFAULT_SORT: SortParam = 'score_desc';
+const DEFAULT_SORT: SortParam = 'recent';
 const DEFAULT_TYPE: TypeParam = 'all';
 const DEFAULT_SCORE_MODE: ScoreModeParam = 'critics';
 
