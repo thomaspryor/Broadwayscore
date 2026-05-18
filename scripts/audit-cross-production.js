@@ -310,7 +310,7 @@ for (const group of multiProd) {
 issues.sort((a, b) => a.filedUnder.localeCompare(b.filedUnder));
 
 console.log(`Files scanned: ${totalFilesScanned}`);
-console.log(`Already flagged wrongProduction: ${totalAlreadyFlagged}`);
+console.log(`Already flagged (wrongProduction/wrongShow): ${totalAlreadyFlagged}`);
 console.log(`Cross-production duplicates (same filename): ${totalDuplicates}`);
 console.log(`Likely wrong-production reviews (date-based): ${totalWrongProd}`);
 console.log(`Null-date fallback cross-prod candidates: ${totalNullDateFallback}`);
