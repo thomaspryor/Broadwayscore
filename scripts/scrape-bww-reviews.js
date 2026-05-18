@@ -35,7 +35,8 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingRe
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway, isUrlYearOutsideWindow } = require('./lib/content-filters');
-const { isLondonMarket } = require('./lib/venue-classification');
+const { isLondonMarket, getMarketPool } = require('./lib/venue-classification');
+const { normalizeTitle } = require('./lib/market-routing');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isBWWRoundupContent, isBWWOperaArticleContent } = require('./lib/bww-roundup-validator');
@@ -69,6 +70,65 @@ const stats = {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ---------------------------------------------------------------------------
+// Token-overlap sibling detection
+// ---------------------------------------------------------------------------
+
+// Words too generic to signal production identity — filtering these out prevents
+// "revival", "broadway", "the" etc. from linking unrelated shows.
+const TOKEN_OVERLAP_STOPWORDS = new Set([
+  'the','a','an','of','and','or','for','to','in','on','at','with','as','by',
+  'revival','musical','play','show','new','york','broadway','west','end','off',
+]);
+
+/**
+ * Returns the set of show IDs that have "title-token-overlap" siblings:
+ * another show in the SAME market pool that shares ≥1 significant title token
+ * but normalizes to a DIFFERENT title.
+ *
+ * Example: "CATS: The Jellicle Ball" (2026) and "Cats" (2016) both contain
+ * the token "cats" and are same-market Broadway shows — both land in this set.
+ * The existing same-title cascade in classifyMarketRouting does NOT catch them
+ * because normalizeTitle("cats the jellicle ball") ≠ normalizeTitle("cats").
+ *
+ * Used in processShow to flag BWW aggregator reviews that lack date/URL-year
+ * disambiguation signals — marking them bwwAggregatorAmbiguous:true so
+ * isIncludableForRebuild excludes them from scoring until manually cleared.
+ */
+function buildTokenOverlapSiblingSet(shows) {
+  const tokenToShows = new Map();
+  for (const s of shows) {
+    if (!s || !s.title) continue;
+    const titleLower = s.title.toLowerCase().replace(/[^a-z0-9 ]/g, ' ');
+    const tokens = titleLower.split(/\s+/).filter(t => t.length >= 4 && !TOKEN_OVERLAP_STOPWORDS.has(t));
+    for (const tok of tokens) {
+      if (!tokenToShows.has(tok)) tokenToShows.set(tok, []);
+      tokenToShows.get(tok).push(s);
+    }
+  }
+
+  const overlapSet = new Set();
+  for (const tokenShows of tokenToShows.values()) {
+    if (tokenShows.length < 2) continue;
+    // Group by market pool
+    const byMarket = new Map();
+    for (const s of tokenShows) {
+      const market = getMarketPool(s.category || '');
+      if (!byMarket.has(market)) byMarket.set(market, []);
+      byMarket.get(market).push(s);
+    }
+    for (const marketShows of byMarket.values()) {
+      if (marketShows.length < 2) continue;
+      // Require at least 2 DISTINCT normalized titles in this market for this token.
+      // If all shows normalize to the same title, the existing same-title cascade handles them.
+      const distinctTitles = new Set(marketShows.map(s => normalizeTitle(s.title)));
+      if (distinctTitles.size < 2) continue;
+      for (const s of marketShows) overlapSet.add(s.id);
+    }
+  }
+  return overlapSet;
 }
 
 /**
@@ -847,6 +907,7 @@ function saveReview(showId, reviewData, options = {}) {
   if (reviewData.bwwScore != null) fields.bwwScore = reviewData.bwwScore;
   if (reviewData.bwwThumb) fields.bwwThumb = reviewData.bwwThumb;
   if (reviewData.bwwRoundupUrl) fields.bwwRoundupUrl = reviewData.bwwRoundupUrl;
+  if (reviewData.bwwAggregatorAmbiguous) fields.bwwAggregatorAmbiguous = true;
 
   // Session 3 #13 — canonicalize known mis-attributions at single-author outlets.
   let criticName = reviewData.critic;
@@ -909,6 +970,40 @@ async function processShow(show, showId, options = {}) {
           console.log(`    [SKIP] ${review.outlet}: URL year ${urlYear} outside production window`);
           stats.skippedGuards++;
           continue;
+        }
+
+        // BWW sub-info date year guard: skip reviews whose BWW-listed date is
+        // clearly outside this production's window. BWW's /reviews/ aggregator
+        // page can list reviews from earlier productions of the same base title
+        // (e.g. Cats 2016 reviews appearing on a Cats: The Jellicle Ball 2026
+        // page). When BWW provides the date in the sub-info block, use it.
+        if (review.date && showOpeningYear) {
+          const yearM = String(review.date).match(/\b((?:19|20)\d{2})\b/);
+          if (yearM) {
+            const reviewYear = parseInt(yearM[1], 10);
+            const currentYear = new Date().getFullYear();
+            const upper = showClosingYear
+              ? Math.max(showClosingYear + 1, showOpeningYear + 2)
+              : currentYear + 1;
+            if (reviewYear < showOpeningYear - 3 || reviewYear > upper) {
+              console.log(`    [SKIP] ${review.outlet}: BWW date year ${reviewYear} outside window (${showOpeningYear})`);
+              stats.skippedGuards++;
+              continue;
+            }
+          }
+        }
+
+        // BWW aggregator ambiguity guard: when the show has title-token-overlap
+        // siblings (different productions sharing a base title token, e.g. "Cats"
+        // and "CATS: The Jellicle Ball") AND a review has no date and no URL year
+        // signal, we cannot tell which production it belongs to. Flag it so
+        // isIncludableForRebuild excludes it from scoring until manually cleared.
+        if (options.tokenOverlapSet?.has(showId) && !review.date) {
+          const urlYear = review.url ? review.url.match(/\/((?:19|20)\d{2})\//)?.[1] : null;
+          if (!urlYear) {
+            console.log(`    [AMBIG] ${review.outlet}: no date/year signal, show has title-token siblings → bwwAggregatorAmbiguous`);
+            review.bwwAggregatorAmbiguous = true;
+          }
         }
 
         if (options.verify) {
@@ -1010,7 +1105,7 @@ async function main() {
   const limit = limitArg ? parseInt(limitArg.replace('--limit=', '')) : null;
   const type = typeArg ? typeArg.replace('--type=', '') : 'all';
 
-  const options = { type, force, dryRun, verify };
+  const options = { type, force, dryRun, verify, tokenOverlapSet: null }; // populated below
 
   console.log(`Type: ${type} | Force: ${force} | Dry-run: ${dryRun} | Verify: ${verify}`);
   if (targetShowIds) console.log(`Target shows: ${targetShowIds.join(', ')}`);
@@ -1024,6 +1119,11 @@ async function main() {
   // Load shows
   const shows = loadShows();
   console.log(`Loaded ${shows.length} shows\n`);
+
+  // Build title-token overlap sibling set once for the whole run.
+  // Used in processShow to detect reviews that can't be attributed to the
+  // current production when no date/URL-year signal is present.
+  options.tokenOverlapSet = buildTokenOverlapSiblingSet(shows);
 
   // Filter shows — exclude closed shows (won't get new reviews) and pre-2023 unless targeted
   let targetShows = shows;
