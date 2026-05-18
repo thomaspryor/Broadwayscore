@@ -268,8 +268,8 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const totalWins = breakdown.reduce((s, b) => s + b.items.filter(i => i.result === 'win').length, 0);
   let badge: TierBadge;
   if (displayScore === 0) badge = 'eligible';
-  // "Honored" requires at least one win — nominations alone don't count as being honored.
-  else if (displayScore <= 40 || totalWins === 0) badge = 'nominated';
+  // "Nominated" = recognized but 0 wins across all ceremonies. Any win earns at least Honored.
+  else if (totalWins === 0) badge = 'nominated';
   else if (displayScore <= 69) badge = 'honored';
   else if (displayScore <= 89) badge = 'decorated';
   else badge = 'sweeper';

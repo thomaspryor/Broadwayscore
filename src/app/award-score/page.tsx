@@ -46,7 +46,7 @@ const faqSchema = {
       name: 'What do the award tiers mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sweeper (90+): dominated the awards season. Decorated (70–89): won multiple major awards. Honored (41–69): at least one win at any ceremony. Nominated: recognized with nominations but 0 wins. Eligible (0): no award activity yet.',
+        text: 'Sweeper (90+): dominated the awards season. Decorated (70–89): won multiple major awards. Honored (1–69): at least one win at any ceremony. Nominated: recognized with nominations but 0 wins. Eligible (0): no award activity yet.',
       },
     },
   ],
@@ -58,7 +58,7 @@ const faqSchema = {
 const tierConfig: { badge: TierBadge; chipClass: string; description: string }[] = [
   { badge: 'sweeper',   chipClass: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',   description: '90+ · Dominated the awards season' },
   { badge: 'decorated', chipClass: 'bg-gray-500/20 text-gray-200 border border-white/10',     description: '70–89 · Won multiple major awards' },
-  { badge: 'honored',   chipClass: 'bg-orange-700/20 text-orange-300 border border-orange-500/30', description: '41–69 · At least one win' },
+  { badge: 'honored',   chipClass: 'bg-orange-700/20 text-orange-300 border border-orange-500/30', description: 'At least one win' },
   { badge: 'nominated', chipClass: 'bg-white/5 text-gray-300 border border-white/20',             description: 'Recognized · 0 wins' },
 ];
 
