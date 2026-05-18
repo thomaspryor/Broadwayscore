@@ -9,9 +9,10 @@
  *   outcomePrices: JSON string ["yesPrice", "noPrice"]  (0–1 scale)
  *   question: 'Will "Show/Person Name" win the Tony for Best ...'
  *
- * Verified slugs (Task 0, 2026-05-17):
- *   tony-awards-best-musical           → 5 nominees
- *   tony-awards-best-play              → 5 nominees
+ * Verified slugs (2026-05-17):
+ *   tony-awards-best-musical                      → 5 nominees
+ *   tony-awards-best-play                         → 5 nominees
+ *   tony-awards-best-book-of-a-musical-winner     → 4 nominees
  *   tony-awards-best-leading-actor-in-a-musical   → 6 nominees
  *   tony-awards-best-leading-actress-in-a-musical → 5 nominees
  *   tony-awards-best-leading-actor-in-a-play      → 6 nominees
@@ -36,9 +37,12 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const FETCH_TIMEOUT_MS = 30000;
 
 // Verified slugs → canonical Tony category names
+// Note: Polymarket uses "-winner" suffix for 2026 season slugs.
+// Probe: GET /events?slug=tony-awards-best-musical-winner (or without -winner for older slugs).
 const SLUG_TO_CATEGORY = {
   'tony-awards-best-musical': 'Best Musical',
   'tony-awards-best-play': 'Best Play',
+  'tony-awards-best-book-of-a-musical-winner': 'Best Book of a Musical',
   'tony-awards-best-leading-actor-in-a-musical': 'Best Actor in a Musical',
   'tony-awards-best-leading-actress-in-a-musical': 'Best Actress in a Musical',
   'tony-awards-best-leading-actor-in-a-play': 'Best Actor in a Play',
