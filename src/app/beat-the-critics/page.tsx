@@ -18,6 +18,7 @@ export interface ActorNominee {
   showTitle: string;
   showSlug: string;
   thumbnailPath: string | null;
+  showScore: number | null;
 }
 
 export interface BeatTheCriticsCategoryData {
@@ -142,10 +143,12 @@ export default function BeatTheCriticsPage() {
     categoryMap.set(cat.title, cat);
   }
 
-  // Build thumbnail lookup from eligible shows
+  // Build thumbnail + score lookup from eligible shows
   const thumbMap = new Map<string, string | null>();
+  const scoreMap = new Map<string, number | null>();
   for (const s of eligible) {
     thumbMap.set(s.id, s.images?.thumbnail ?? null);
+    scoreMap.set(s.slug, s.compositeScore ?? null);
   }
 
   // Tier 1: The Big Four (show categories) — filtered to curated likely nominees
@@ -176,6 +179,7 @@ export default function BeatTheCriticsPage() {
       actorNominees: actors.map(a => ({
         ...a,
         thumbnailPath: thumbMap.get(a.showSlug) ?? null,
+          showScore: scoreMap.get(a.showSlug) ?? null,
       })),
     })),
   };
@@ -192,6 +196,7 @@ export default function BeatTheCriticsPage() {
       actorNominees: actors.map(a => ({
         ...a,
         thumbnailPath: thumbMap.get(a.showSlug) ?? null,
+          showScore: scoreMap.get(a.showSlug) ?? null,
       })),
     })),
   };

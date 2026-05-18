@@ -130,13 +130,13 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
         <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Opera<span className="text-gradient">Scorecard</span>
+          Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
           <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">
             Beta
           </span>
         </h1>
         <h1 className="block sm:hidden text-3xl font-extrabold text-white mb-2 tracking-tight">
-          Opera<span className="text-gradient">Scorecard</span>
+          Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
           <span className="ml-2 align-middle inline-block text-[10px] font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5">
             Beta
           </span>
@@ -250,7 +250,7 @@ export default function OperaPageClient(props: OperaPageClientProps) {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
-            Opera<span className="text-gradient">Scorecard</span>
+            Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
             <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">Every Met production. Every critic. One score.</p>

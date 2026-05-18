@@ -11,6 +11,7 @@ import {
   getEligibleShows,
   groupIntoCategories,
   serializeShow,
+  lookupCriticPicks,
   type SerializedTonyShow,
   type TonyCategory,
   type TonySeasonWindow,
@@ -253,6 +254,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineeActorSlug: actorSlug,
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
+          criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
         });
       }
     } else {
@@ -277,6 +279,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           polymarketOdds: pmNominees ? findMarketOdds(pmNominees, computedShow.title) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
+          criticPicks: lookupCriticPicks(showId, null, catTitle),
         });
       }
     }
