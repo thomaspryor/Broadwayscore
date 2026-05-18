@@ -236,6 +236,51 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${decision.targetShowId} (${decision.reason})`);
       return createOrMergeReviewFile(decision.targetShowId, input, { ...options, _rerouteVisited: visited });
     }
+    // Accept-with-flag: classifier wants the file written but with a flag stamped
+    // on the payload (e.g. ambiguous same-title-different-production cases where
+    // we can't confidently reroute but the production likely doesn't match the
+    // current show). Follow-up to a169936e48 — wires the dead code path through.
+    if (decision.action === 'accept' && decision.flag) {
+      if (decision.flag === 'wrongProduction') {
+        // Guard: don't stamp wrongProduction if a human has already made a
+        // manual decision on this file. The downstream merge in
+        // _mergeIntoExisting() uses `!existing[key]` to gate writes — and
+        // `!false === true`, so stamping here would CLOBBER a human's
+        // explicit `wrongProduction: false` (the inverse of the bug we're
+        // fixing). Same for the manual-clear / override flags. Three signals
+        // count as "human decision in place":
+        //   • humanReviewedWrongProduction === false  (manual review verified RIGHT production)
+        //   • wrongProductionManualClear === true      (manual clear)
+        //   • wrongProduction === false                (explicitly cleared, not just absent)
+        // Look up the existing file via the same path the merge step uses so
+        // we don't add a redundant read.
+        const showDirForCheck = path.join(reviewTextsDir, showId);
+        const existingForCheck = findExistingReviewFile(
+          showDirForCheck,
+          outletId,
+          (input.criticName && input.criticName !== 'Unknown') ? input.criticName : null
+        );
+        const existingData = existingForCheck && existingForCheck.data;
+        const humanCleared = existingData && (
+          existingData.humanReviewedWrongProduction === false ||
+          existingData.wrongProductionManualClear === true ||
+          existingData.wrongProductionOverride === true ||
+          existingData.wrongProduction === false
+        );
+        if (humanCleared) {
+          console.warn(`  ⏭️  Skipping wrongProduction stamp for ${showId}/${outletId}: human override in place`);
+        } else {
+          fields.wrongProduction = true;
+          fields.wrongProductionReason = decision.reason || 'ambiguous-production';
+          if (decision.signalsByCandidate) {
+            fields.ambiguousProductionSignals = decision.signalsByCandidate;
+          }
+          console.warn(`  ⚠️  Ambiguous production for ${showId}/${outletId}: stamping wrongProduction (${fields.wrongProductionReason})`);
+        }
+      } else {
+        console.warn(`  ⚠️  Unknown decision.flag from classifyMarketRouting: "${decision.flag}" (showId=${showId}, outletId=${outletId}) — proceeding without flag`);
+      }
+    }
   }
 
   // --- Guard E: BWW Review-Roundup page detection ---
