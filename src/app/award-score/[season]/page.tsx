@@ -75,13 +75,10 @@ export async function generateMetadata({ params }: { params: { season: string } 
 export default function AwardScoreSeasonPage({ params }: { params: { season: string } }) {
   if (!featureFlags.awardScoreV2) notFound();
 
-  const fullSeason = slugToFullSeason(params.season);
-  if (!fullSeason) notFound();
-
-  const showsWithScore = getShowsForSeason(fullSeason);
+  const showsWithScore = getShowsForSeason(params.season);
   if (showsWithScore.length === 0) notFound();
 
-  const seasonLabel = formatSeason(fullSeason);
+  const seasonLabel = formatSeason(params.season);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
