@@ -59,6 +59,7 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
+// Two-span pattern: each span uses block+leading-none so line height is controlled by font
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
 
 // --- Reusable score sub-components ---
@@ -86,57 +87,66 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   if (!score || score <= 0) return 'eligible';
   if (score <= 40) return 'nominated';
   if (score <= 69) return 'honored';
-  if (score <= 89) return 'decorated';
+  if (score <= 84) return 'decorated';
   return 'sweeper';
 }
 
-function OddsCol({ odds, size, className = '' }: { odds: number | null | undefined; size: 'sm' | 'md'; className?: string }) {
+function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className={`hidden sm:flex items-center justify-center flex-shrink-0 w-14 ${className}`}>
+    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
     </div>
   );
 }
 
 // Column header row — appears once per section inside the card, labels align with data columns
+// CRITICAL: ALL header columns must be in ONE inner flex container with gap-2 so data rows can
+// wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
 function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
   const scoreW = isMajor ? 'w-14' : 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
-  const outerGap = isMajor ? 'gap-3 sm:gap-4' : 'gap-3';
-  const innerGap = isMajor ? 'gap-2' : 'gap-2 sm:gap-3';
 
   return (
-    <div className={`flex items-end ${outerGap} ${padding} pt-2 pb-1.5 border-b border-white/5`}>
+    <div className={`flex items-end gap-3 ${padding} pt-2 pb-1.5 border-b border-white/5`}>
       <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
       <div className="flex-1 min-w-0" />
-      <div className={`flex items-end ${innerGap} flex-shrink-0`}>
-        <div className="hidden sm:flex flex-col items-center w-14">
+      {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
+      <div className="flex items-end gap-2 flex-shrink-0">
+        {/* Odds columns (hidden on mobile) */}
+        <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        {isMajor && (
-          <>
-            <div className="hidden sm:flex flex-col items-center w-14">
-              <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
-            </div>
-            <div className="hidden sm:flex flex-col items-center w-14">
-              <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
-            </div>
-          </>
-        )}
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+        </div>
+        {/* Score columns */}
         {isMajor ? (
           <>
-            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span></div>
-            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span></div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
+            </div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
+            </div>
           </>
         ) : (
           <>
-            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span></div>
-            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span></div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
+            </div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
+            </div>
           </>
         )}
-        <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span></div>
+        <div className={`${scoreW} text-center`}>
+          <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+        </div>
       </div>
     </div>
   );
@@ -174,7 +184,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
       </div>
 
-      {/* All right-side columns in one flex group — must match SectionColumnHeader inner gap */}
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <OddsCol odds={show.gdOdds} size="md" />
         <OddsCol odds={show.polymarketOdds} size="md" />
@@ -254,14 +264,11 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         </Link>
       </div>
 
-      {/* Gold Derby + Audience + Critic + Awards */}
-      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        {/* Gold Derby — desktop column; mobile shown inline in history text above */}
-        <div className="hidden sm:flex items-center justify-center w-16">
-          <span className="text-sm font-bold text-white">
-            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
-          </span>
-        </div>
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.kalshiOdds} size="sm" />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AwardScoreBadge
@@ -311,13 +318,11 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Gold Derby + Audience + Critic + Awards */}
-      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <div className="hidden sm:flex items-center justify-center w-16">
-          <span className="text-sm font-bold text-white">
-            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
-          </span>
-        </div>
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.kalshiOdds} size="sm" />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AwardScoreBadge

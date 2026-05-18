@@ -11,7 +11,6 @@ import {
   getEligibleShows,
   groupIntoCategories,
   serializeShow,
-  lookupCriticPicks,
   type SerializedTonyShow,
   type TonyCategory,
   type TonySeasonWindow,
@@ -22,8 +21,6 @@ import { getActorSlug } from '@/lib/data-actors';
 import { getPersonTonyStatsByName } from '@/lib/data-tony-noms';
 import gdRawData from '../../data/tony-win-probabilities.json';
 import nominationsRawData from '../../data/tony-nominations.json';
-import polymarketRawData from '../../data/tony-polymarket-odds.json';
-import kalshiRawData from '../../data/tony-kalshi-odds.json';
 
 // --- GoldDerby category name normalization ---
 
@@ -135,16 +132,16 @@ function lookupGdOdds(
   return total < 0.5 ? cat.pWin / total : cat.pWin;
 }
 
-function loadPolymarketData(): PmData | null {
-  const raw = polymarketRawData as unknown as PmData;
-  if (!raw?.categories || Object.keys(raw.categories).length === 0) return null;
-  return raw;
-}
-
-function loadKalshiData(): PmData | null {
-  const raw = kalshiRawData as unknown as PmData;
-  if (!raw?.categories || Object.keys(raw.categories).length === 0) return null;
-  return raw;
+function loadMarketData(filename: string): PmData | null {
+  try {
+    const p = path.join(process.cwd(), 'data', filename);
+    if (!fs.existsSync(p)) return null;
+    const raw = JSON.parse(fs.readFileSync(p, 'utf-8')) as PmData;
+    if (!raw?.categories || Object.keys(raw.categories).length === 0) return null;
+    return raw;
+  } catch {
+    return null;
+  }
 }
 
 function findMarketOdds(nominees: Record<string, number>, name: string): number | null {
@@ -155,7 +152,6 @@ function findMarketOdds(nominees: Record<string, number>, name: string): number 
   }
   return null;
 }
-
 
 /** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
 function findActorSlug(showId: string, personName: string): string | null {
@@ -190,11 +186,11 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
   const gdData = gdRawData as unknown as GdData;
-  const pmData = loadPolymarketData();
+  const pmData = loadMarketData('tony-polymarket-odds.json');
   const awardsSeason = toAwardsSeason(season.label);
 
   const showById = new Map(eligible.map(s => [s.id, s]));
-  const kalshiData = loadKalshiData();
+  const kalshiData = loadMarketData('tony-kalshi-odds.json');
   const gdNormMap = buildGdNormMap(gdData);
 
   // 4 major categories: delegate to groupIntoCategories (handles score blending)
@@ -232,6 +228,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
     const shows: SerializedTonyShow[] = [];
     const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(catTitle);
     const pmNominees = pmData?.categories[catTitle]?.nominees ?? null;
+    const kalshiNominees = kalshiData?.categories[catTitle]?.nominees ?? null;
 
     if (isPersonLevel) {
       // One row per nominated individual
@@ -249,12 +246,12 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           awardsScore: computeSiteAwardScore(nom.showId).displayScore,
           gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle),
           polymarketOdds: pmNominees ? findMarketOdds(pmNominees, pmMatchName) : null,
+          kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, pmMatchName) : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           nomineeActorSlug: actorSlug,
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
-          criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
         });
       }
     } else {
@@ -271,15 +268,20 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
 
         const names = showNoms.map(n => n.name).filter(n => n !== '(show-level)');
         const personName = names.length > 0 ? names.join(' & ') : null;
+        // Kalshi craft nominees are listed by designer name, not show title — try both
+        const kalshiCraftKey = names[0] ?? null;
 
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(showId).displayScore,
           gdOdds: lookupGdOdds(gdData, gdNormMap, showId, catTitle),
           polymarketOdds: pmNominees ? findMarketOdds(pmNominees, computedShow.title) : null,
+          kalshiOdds: kalshiNominees
+            ? (findMarketOdds(kalshiNominees, computedShow.title)
+               ?? (kalshiCraftKey ? findMarketOdds(kalshiNominees, kalshiCraftKey) : null))
+            : null,
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
-          criticPicks: lookupCriticPicks(showId, null, catTitle),
         });
       }
     }
