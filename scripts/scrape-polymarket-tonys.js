@@ -9,14 +9,13 @@
  *   outcomePrices: JSON string ["yesPrice", "noPrice"]  (0–1 scale)
  *   question: 'Will "Show/Person Name" win the Tony for Best ...'
  *
- * Verified slugs (2026-05-17):
- *   tony-awards-best-musical                      → 5 nominees
- *   tony-awards-best-play                         → 5 nominees
- *   tony-awards-best-book-of-a-musical-winner     → 4 nominees
- *   tony-awards-best-leading-actor-in-a-musical   → 6 nominees
- *   tony-awards-best-leading-actress-in-a-musical → 5 nominees
- *   tony-awards-best-leading-actor-in-a-play      → 6 nominees
- *   tony-awards-best-leading-actress-in-a-play    → 5 nominees
+ * Verified slugs (2026-05-18 — all active 2026 markets use -winner suffix):
+ *   tony-awards-best-musical-winner           → 4 active nominees
+ *   tony-awards-best-play-winner              → 4 active nominees
+ *   tony-awards-best-book-of-a-musical-winner → 4 active nominees
+ *
+ * NOTE: Without -winner, slugs point to resolved 2025 markets (all prices 0/1).
+ * Acting/craft categories have no active Polymarket markets for 2026.
  *
  * NOTE: These slugs map to the MOST RECENT Tony season's markets. The 2025
  * markets (already closed) resolve to 0.00/1.00. When Polymarket creates 2026
@@ -37,16 +36,11 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 const FETCH_TIMEOUT_MS = 30000;
 
 // Verified slugs → canonical Tony category names
-// Note: Polymarket uses "-winner" suffix for 2026 season slugs.
-// Probe: GET /events?slug=tony-awards-best-musical-winner (or without -winner for older slugs).
+// 2026 markets all use the "-winner" suffix. Slugs without the suffix resolve to 2025 markets.
 const SLUG_TO_CATEGORY = {
-  'tony-awards-best-musical': 'Best Musical',
-  'tony-awards-best-play': 'Best Play',
+  'tony-awards-best-musical-winner': 'Best Musical',
+  'tony-awards-best-play-winner': 'Best Play',
   'tony-awards-best-book-of-a-musical-winner': 'Best Book of a Musical',
-  'tony-awards-best-leading-actor-in-a-musical': 'Best Actor in a Musical',
-  'tony-awards-best-leading-actress-in-a-musical': 'Best Actress in a Musical',
-  'tony-awards-best-leading-actor-in-a-play': 'Best Actor in a Play',
-  'tony-awards-best-leading-actress-in-a-play': 'Best Actress in a Play',
 };
 
 async function fetchWithTimeout(url) {
