@@ -36,14 +36,14 @@ const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Awards Nominees — Critic, Audience & Odds`,
-  description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby. All 26 categories.`,
+  title: `${season.ceremonyYear} Tony Nominees Scorecard — Critic, Audience & Odds`,
+  description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby, Polymarket, and Kalshi. All 26 categories.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
-    title: `${season.ceremonyYear} Tony Nominees — Broadway Scorecard`,
-    description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds.`,
+    title: `${season.ceremonyYear} Tony Nominees Scorecard — Broadway Scorecard`,
+    description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',
   },
@@ -59,7 +59,8 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const LABEL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-400';
+// Two-span pattern: each span uses block+leading-none so line height is controlled by font
+const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
 
 // --- Reusable score sub-components ---
 
@@ -90,14 +91,63 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-function GoldDerbyCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
+function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className="hidden sm:flex flex-col items-center gap-1 flex-shrink-0 w-20">
-      <span className={LABEL}>Gold Derby</span>
-      <span className={numClass}>
-        {odds != null ? `${Math.round(odds * 100)}%` : '—'}
-      </span>
+    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
+      <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
+    </div>
+  );
+}
+
+// Column header row — appears once per section inside the card, labels align with data columns
+// CRITICAL: ALL header columns must be in ONE inner flex container with gap-2 so data rows can
+// wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
+function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
+  const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
+  const scoreW = isMajor ? 'w-14' : 'w-11';
+  const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
+
+  return (
+    <div className={`flex items-end gap-3 ${padding} pt-2 pb-1.5 border-b border-white/5`}>
+      <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
+      <div className="flex-1 min-w-0" />
+      {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
+      <div className="flex items-end gap-2 flex-shrink-0">
+        {/* Odds columns (hidden on mobile) */}
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+        </div>
+        {/* Score columns */}
+        {isMajor ? (
+          <>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
+            </div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
+            </div>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
+            </div>
+          </>
+        )}
+        <div className={`${scoreW} text-center`}>
+          <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -108,7 +158,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
     <Link
       href={`/show/${show.slug}`}
-      className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl hover:bg-white/[0.03] transition-colors group"
+      className="flex items-center gap-3 sm:gap-4 p-3 pr-5 sm:p-4 sm:pr-6 rounded-xl hover:bg-white/[0.03] transition-colors group"
     >
       {/* Thumbnail */}
       <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
@@ -126,36 +176,26 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + venue */}
+      {/* Title */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
-        <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
       </div>
 
-      {/* Gold Derby column */}
-      <GoldDerbyCol odds={show.gdOdds} size="md" />
-
-      {/* Critics | Audience | Awards — all same size */}
-      <div className="flex items-start gap-2 flex-shrink-0">
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="md" />
-        </div>
-        <div className="flex flex-col items-center gap-1">
-          <span className={LABEL}>Awards</span>
-          <AwardScoreBadge
-            score={show.awardsScore ?? 0}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-            size="md"
-          />
-        </div>
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="md" />
+        <OddsCol odds={show.polymarketOdds} size="md" />
+        <OddsCol odds={show.kalshiOdds} size="md" />
+        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="md" />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="md"
+        />
       </div>
     </Link>
   );
@@ -201,42 +241,41 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Performer name (link to cast page) + show name + history */}
+      {/* Performer name + history inline, show name below */}
       <div className="flex-1 min-w-0">
-        {actorUrl ? (
-          <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
-            {show.nomineePersonName}
-          </Link>
-        ) : (
-          <p className="text-sm font-bold text-white truncate">{show.nomineePersonName}</p>
-        )}
+        <div className="flex items-baseline gap-1.5 min-w-0">
+          {actorUrl ? (
+            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors truncate flex-shrink-0">
+              {show.nomineePersonName}
+            </Link>
+          ) : (
+            <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
+          )}
+          <span className="text-[10px] text-gray-500 truncate min-w-0">
+            {historyLabel}
+            {show.gdOdds != null && (
+              <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
+            )}
+          </span>
+        </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
-        <span className="text-[10px] text-gray-600">{historyLabel}</span>
       </div>
 
-      {/* Gold Derby + Audience + Critic — consistent right-side layout */}
-      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        {/* Gold Derby */}
-        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
-          <span className={LABEL}>Gold Derby</span>
-          <span className="text-sm font-bold text-white">
-            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
-          </span>
-        </div>
-
-        {/* Audience */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="sm" />
-        </div>
-
-        {/* Critic */}
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        </div>
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.kalshiOdds} size="sm" />
+        <AudienceBox grade={show.audienceGrade} size="sm" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="sm"
+        />
       </div>
     </div>
   );
@@ -278,22 +317,19 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Gold Derby + Audience + Critic */}
-      <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-        <div className="flex flex-col items-center gap-0.5 w-14 sm:w-16">
-          <span className={LABEL}>Gold Derby</span>
-          <span className="text-sm font-bold text-white">
-            {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
-          </span>
-        </div>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Audience</span>
-          <AudienceBox grade={show.audienceGrade} size="sm" />
-        </div>
-        <div className="flex flex-col items-center gap-0.5">
-          <span className={LABEL}>Critics</span>
-          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        </div>
+      {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
+      <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.kalshiOdds} size="sm" />
+        <AudienceBox grade={show.audienceGrade} size="sm" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AwardScoreBadge
+          score={Math.round(show.awardsScore ?? 0)}
+          badge={badgeFromScore(show.awardsScore)}
+          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
+          size="sm"
+        />
       </div>
     </div>
   );
@@ -314,6 +350,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
         {category.title}
       </h2>
       <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
+        <SectionColumnHeader isMajor={isMajor} />
         {nominees.map(show => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
@@ -370,7 +407,7 @@ export default function TonyNomineesPage() {
         <div className="flex items-start justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              {season.ceremonyYear} Tony Nominees
+              {season.ceremonyYear} Tony Nominees Scorecard
             </h1>
             <p className="text-gray-400 mt-1 text-sm">
               {totalCategories} categories &middot; critic scores, audience grades, and win odds
@@ -390,7 +427,7 @@ export default function TonyNomineesPage() {
 
         {/* Legend */}
         <p className="mt-8 text-xs text-gray-600 text-center">
-          Gold Derby win odds sourced from GoldDerby crowd predictions
+          Win odds: GoldDerby (crowd predictions) · Polymarket &amp; Kalshi (real-money markets)
         </p>
       </div>
     </>
