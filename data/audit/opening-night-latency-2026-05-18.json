@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-05-18T13:36:30.924Z",
+  "generatedAt": "2026-05-18T15:30:17.405Z",
   "date": "2026-05-18",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 54829,
+  "entryCount": 57966,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -141,7 +141,7 @@
     },
     {
       "showId": "new-born-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1131,7 +1131,7 @@
     },
     {
       "showId": "joe-turners-come-and-gone-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1356,7 +1356,7 @@
     },
     {
       "showId": "im-not-being-funny-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1371,7 +1371,7 @@
     },
     {
       "showId": "well-ill-let-you-go-off-broadway-2026",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1386,7 +1386,7 @@
     },
     {
       "showId": "the-receptionist-off-broadway-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1491,7 +1491,7 @@
     },
     {
       "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1626,7 +1626,7 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1701,7 +1701,7 @@
     },
     {
       "showId": "the-people-versus-lenny-bruce-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1776,7 +1776,7 @@
     },
     {
       "showId": "jesa-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1837,6 +1837,21 @@
     {
       "showId": "hallelujah-baby-off-broadway-2026",
       "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-mystery-of-edwin-drood-amt-theater-off-broadway-2026",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
