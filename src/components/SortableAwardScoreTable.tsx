@@ -158,14 +158,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
         {seasons.length > 1 && (
           <select
             value={seasonFilter}
-            onChange={e => {
-              const val = e.target.value;
-              if (val === 'all') {
-                setSeasonFilter('all');
-              } else {
-                router.push(`/award-score/${toSeasonSlug(val)}`);
-              }
-            }}
+            onChange={e => setSeasonFilter(e.target.value)}
             className={selectClass}
             aria-label="Filter by season"
           >
