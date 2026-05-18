@@ -114,6 +114,18 @@ const OUTLET_STRATEGY_CONFIG = {
   'theater-life':      { strategy: 'rss', url: 'https://theaterlife.com/feed' },
   // Front Row Center: covers theater + classical + cabaret; findMatchingShows guards non-theater content
   'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed' },
+  // NY Post theater-specific RSS; urlFilter keeps only slugs with "review" (drops news/awards coverage)
+  nypost:              { strategy: 'rss', url: 'https://nypost.com/theater/feed/', urlFilter: /review/ },
+  // Observer theater RSS; reviews use /review- or /theater-review- slug prefixes
+  observer:            { strategy: 'rss', url: 'https://observer.com/theater/feed/', urlFilter: /\/(theater-review|review-)/ },
+  // amNewYork theater category RSS; reviews use /review- slug prefix
+  amny:                { strategy: 'rss', url: 'https://www.amny.com/category/entertainment/theater/feed/', urlFilter: /\/review-/ },
+  // TheatreCat: UK theater review aggregator; pure review content, no filter needed
+  theatrecat:          { strategy: 'rss', url: 'https://theatrecat.com/feed/' },
+  // Theater Pizzazz: NYC/Broadway review site; pure theater content, no filter needed
+  'theater-pizzazz':   { strategy: 'rss', url: 'https://theaterpizzazz.com/feed/' },
+  // Front Mezz Junkies: NYC theater features + reviews; findMatchingShows guards non-review content
+  frontmezzjunkies:    { strategy: 'rss', url: 'https://frontmezzjunkies.com/feed/' },
 
   // Sitemap strategy — Vulture's /rss/tag/theater.xml returns 404 since their CMS migration.
   // URL patterns for Vulture theater reviews:
@@ -123,8 +135,9 @@ const OUTLET_STRATEGY_CONFIG = {
   vulture:             { strategy: 'sitemap', urlTemplate: year => `https://www.vulture.com/sitemaps/sitemap-${year}.xml`, urlFilter: /theater-review|-reviewed\.|broadway[^/]*review/i },
 
   // Listing-page HTML strategies (known-good review index URLs)
-  // nytg: SSR listing page; fetchPage() gets 10 reviews per page via BD/SB
-  nytg:              { strategy: 'listing-html', url: 'https://newyorktheatreguide.com/reviews' },
+  // nytg: /reviews redirects to /reviews/broadway; plain fetch gets 12 review links per page.
+  // urlFilter: keep only individual review slugs (they all end in -review, dropping category pages)
+  nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
   thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews' },
   // timeout (NY): SSR reviews index page — 21 individual reviews confirmed via plain fetch;
@@ -138,6 +151,30 @@ const OUTLET_STRATEGY_CONFIG = {
   // WhatsOnStage: /news/?categories=reviews is a React SPA — plain fetch returns only the shell.
   // /news/feed/ is a WordPress RSS feed with reviews mixed in; urlFilter keeps -review_NNN slugs.
   whatsonstage:      { strategy: 'rss', url: 'https://www.whatsonstage.com/news/feed/', urlFilter: /-review_\d+/ },
+  // ArtsDesk: SSR theatre listing; review URLs contain "-review-" in path after the show/venue slug
+  artsdesk:          { strategy: 'listing-html', url: 'https://theartsdesk.com/theatre', urlFilter: /\/theatre\/[^/]+-review-/, usePlainFetch: true },
+  // British Theatre Guide: /reviews/ serves an Atom feed to non-browser User-Agents — use RSS strategy
+  'british-theatre': { strategy: 'rss', url: 'https://www.britishtheatreguide.info/reviews/' },
+
+  // --- Additional outlets (previously on SERP-only) ---
+
+  // Theatre Reviews Limited: Broadway/off-Broadway reviews; mix of reviews + news, findMatchingShows guards
+  'theatre-reviews-limited': { strategy: 'rss', url: 'https://www.theatrereviews.com/feed/' },
+  // The Recs: UK theatre review site; pure review content
+  'the-recs':               { strategy: 'rss', url: 'https://therecs.co.uk/feed/' },
+  // New York Classical Review: classical music + opera + some Broadway; show matching guards non-theater
+  'new-york-classical-review': { strategy: 'rss', url: 'https://www.newyorkclassicalreview.com/feed/' },
+  // Operawire: opera news + reviews; show matching keeps only matched Broadway/WE opera productions
+  operawire:                { strategy: 'rss', url: 'https://operawire.com/feed/' },
+  // Stage and Cinema: theater + film coverage; findMatchingShows guards film-only items
+  stageandcinema:           { strategy: 'rss', url: 'https://www.stageandcinema.com/feed/' },
+  // Slant Magazine: film + theater criticism; theater-specific feed for precision
+  slantmagazine:            { strategy: 'rss', url: 'https://www.slantmagazine.com/theater/feed/' },
+  // David Cote (Cote Notices) Substack: theater criticism newsletter; all content is theater
+  'cote-notices':           { strategy: 'rss', url: 'https://davidcote1.substack.com/feed' },
+  // City A.M.: London business paper; theatre category RSS has West End reviews
+  'city-am':                { strategy: 'rss', url: 'https://www.cityam.com/category/theatre/feed/' },
+  // LondonTheatre1: covered by WP_API_CONFIG (wp-json/wp/v2/posts?categories=14) — no entry needed here
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -155,6 +192,11 @@ const WP_API_CONFIG = {
   londontheatre1: {
     apiBase: 'https://www.londontheatre1.com/wp-json/wp/v2/posts',
     params: 'categories=14&per_page=50&orderby=date&order=desc',
+  },
+  // Chicago Tribune: WP REST API, category 135 = Theater (confirmed 9000+ posts)
+  chicagotribune: {
+    apiBase: 'https://www.chicagotribune.com/wp-json/wp/v2/posts',
+    params: 'categories=135&per_page=20&orderby=date&order=desc',
   },
 };
 
