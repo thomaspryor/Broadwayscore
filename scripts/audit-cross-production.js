@@ -13,6 +13,14 @@ const fs = require('fs');
 const path = require('path');
 const { urlYearFromPath } = require('./lib/review-guards');
 
+// ── CLI flags ────────────────────────────────────────────────────────────────
+// --dry-run: additionally emit data/audit/same-title-confusion.json (the
+// user-review gate artifact for the same-title-disambig plan, S1-T5/T6). The
+// script is already read-only — this flag does NOT change that — it just adds
+// a second output file with a curated schema. Existing
+// data/audit/cross-production-audit.json is still written every run.
+const DRY_RUN = process.argv.includes('--dry-run');
+
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const showsData = require('../data/shows.json');
 const shows = showsData.shows;
@@ -361,3 +369,53 @@ fs.writeFileSync(
   JSON.stringify(output, null, 2) + '\n'
 );
 console.log('Wrote data/audit/cross-production-audit.json');
+
+// ── --dry-run: additional curated output for user-review gate (S1-T5) ───────
+// Only includes entries with a positive signal (publish-date mismatch OR
+// URL-year/venue fallback hit). Excludes the noisy "ambiguous" bucket.
+if (DRY_RUN) {
+  const reasonToSignals = (i) => {
+    const signals = [];
+    if (i.matchReason === 'publish-date') {
+      signals.push('publish-date-mismatch');
+      if (typeof i.daysFromOwn === 'number') signals.push(`days-from-own:${i.daysFromOwn}`);
+      if (typeof i.daysFromCloser === 'number') signals.push(`days-from-closer:${i.daysFromCloser}`);
+    }
+    if (i.matchReason === 'url-year+venue') signals.push('url-year-match', 'venue-slug-match');
+    if (i.matchReason === 'url-year') signals.push('url-year-match');
+    if (i.matchReason === 'venue') signals.push('venue-slug-match');
+    if (i.hasDupeInCorrectDir) signals.push('duplicate-in-suggested-dir');
+    if (i.urlYear != null) signals.push(`url-year:${i.urlYear}`);
+    return signals;
+  };
+
+  const positive = issues.filter(i => i.matchReason !== 'ambiguous' && i.closerTo);
+  const findings = positive.map(i => ({
+    currentShowId: i.filedUnder,
+    suggestedShowId: i.closerTo,
+    confidence: i.confidence,
+    signals: reasonToSignals(i),
+    reviewFile: path.join('data', 'review-texts', i.file),
+    url: i.url,
+    reason: i.matchReason,
+  }));
+
+  // Sort: high → medium → low, then by currentShowId for stable output
+  const order = { high: 0, medium: 1, low: 2 };
+  findings.sort((a, b) => {
+    const c = (order[a.confidence] ?? 9) - (order[b.confidence] ?? 9);
+    if (c !== 0) return c;
+    return a.currentShowId.localeCompare(b.currentShowId);
+  });
+
+  const dryRunOutput = {
+    generatedAt: new Date().toISOString(),
+    totalFindings: findings.length,
+    findings,
+  };
+  fs.writeFileSync(
+    path.join(__dirname, '..', 'data', 'audit', 'same-title-confusion.json'),
+    JSON.stringify(dryRunOutput, null, 2) + '\n'
+  );
+  console.log(`Wrote data/audit/same-title-confusion.json (${findings.length} findings; --dry-run, no review-texts modified)`);
+}
