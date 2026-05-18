@@ -41,7 +41,8 @@
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-    "clybourne-park-2012/latimes--david-ng.json"
+    "clybourne-park-2012/latimes--david-ng.json",
+    "a-little-night-music-2009/nytg--unknown.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -251,7 +252,16 @@
     "come-fly-away-2010/nytheatre--martin-denton.json",
     "come-fly-away-2010/backstage--david-sheward.json",
     "looped-2010/ny1--roma-torre.json",
-    "next-fall-2010/backstage--david-sheward.json"
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "after-miss-julie-2009/wsj--unknown.json",
+    "after-miss-julie-2009/about-entertainment--unknown.json",
+    "a-steady-rain-2009/latimes--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -282,7 +292,8 @@
       "a-christmas-carol-west-end-2026/whatsonstage--unknown.json",
       "the-enormous-crocodile-west-end-2026/west-end-best-friend--unknown.json",
       "the-adding-machine-off-broadway-2026/theater-pizzazz--ron-fassler.json",
-      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "a-little-night-music-2009/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -291,7 +302,8 @@
       "the-producers-west-end-2025/variety--ellise-shafer.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
-      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -328,7 +340,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "next-fall-2010/backstage--david-sheward.json",
+  "lastProcessed": "the-philanthropist-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -371,6 +383,17 @@
     },
     {
       "t": "2026-05-18T11:44:28.540Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:17:12.762Z",
+      "event": "bb-session",
+      "session": "7715ec64",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-18T12:17:13.723Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
