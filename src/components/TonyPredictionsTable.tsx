@@ -8,6 +8,13 @@ import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
+// Outlet badge metadata — update when new critic sources are added to data/tony-critic-picks.json
+const CRITIC_PICK_SOURCES: Record<string, { shortName: string; color: string; outlet: string; critic: string }> = {
+  nyt:     { shortName: 'NYT', color: '#1a1a1a', outlet: 'The New York Times', critic: 'Helen Shaw' },
+  variety: { shortName: 'VAR', color: '#7b2d8b', outlet: 'Variety',            critic: 'Clayton Davis' },
+  deadline:{ shortName: 'DL',  color: '#1565c0', outlet: 'Deadline',           critic: 'Greg Evans' },
+};
+
 export type PredictionMode = 'combined' | 'critics' | 'audience';
 
 /** Softmax-based win probabilities within a category, temperature T=10.
@@ -75,6 +82,31 @@ function TierLabel({ score, reviewCount, status }: { score: number | null; revie
     >
       {tier.label}
     </span>
+  );
+}
+
+function CriticPickBadges({ picks }: { picks?: string[] }) {
+  if (!picks || picks.length === 0) return null;
+  return (
+    <div className="flex flex-col items-center gap-1 flex-shrink-0">
+      <div className="flex gap-0.5">
+        {picks.map(id => {
+          const src = CRITIC_PICK_SOURCES[id];
+          if (!src) return null;
+          return (
+            <span
+              key={id}
+              className="inline-flex items-center justify-center px-1 h-4 rounded text-[8px] font-bold text-white leading-none whitespace-nowrap"
+              style={{ backgroundColor: src.color }}
+              title={`${src.outlet} (${src.critic}) picks this show to win`}
+            >
+              {src.shortName}
+            </span>
+          );
+        })}
+      </div>
+      <span className="text-[8px] text-gray-600 uppercase tracking-wide leading-none">Press</span>
+    </div>
   );
 }
 
@@ -304,6 +336,9 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                   <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>
                 )}
               </div>
+
+              {/* Critic press picks */}
+              <CriticPickBadges picks={show.criticPicks} />
 
               {/* Score / Win probability */}
               <div className="flex flex-col items-center gap-1 flex-shrink-0">

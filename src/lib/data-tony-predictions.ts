@@ -21,6 +21,7 @@ import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
 import gdRawData from '../../data/tony-win-probabilities.json';
+import criticPicksRawData from '../../data/tony-critic-picks.json';
 
 // GoldDerby category names → canonical Tony category titles
 const TONY_TO_GD: Record<string, string> = {
@@ -42,6 +43,43 @@ function lookupGdOdds(showId: string, tonyCategory: string): number | null {
   const cat = show.categories?.[gdCatName];
   if (!cat || cat.votes === 0) return null;
   return typeof cat.pWin === 'number' ? cat.pWin : null;
+}
+
+// Acting categories match by person name; all others match by showId.
+const PERSON_MATCH_CATEGORIES = new Set([
+  'Best Actor in a Musical', 'Best Actress in a Musical',
+  'Best Actor in a Play', 'Best Actress in a Play',
+  'Best Featured Actor in a Musical', 'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
+]);
+
+type CriticPicksData = {
+  sources: Array<{ id: string; outlet: string; critic: string; shortName: string; color: string; url: string }>;
+  picks: Record<string, Record<string, string>>;
+};
+
+/** Return outlet IDs whose critic predicted this show/person for the given category. */
+export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
+  const data = criticPicksRawData as unknown as CriticPicksData;
+  const catPicks = data.picks[tonyCategory];
+  if (!catPicks) return [];
+  const isPersonCategory = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const result: string[] = [];
+  for (const [outletId, pick] of Object.entries(catPicks)) {
+    if (isPersonCategory) {
+      if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
+    } else {
+      if (pick === showId) result.push(outletId);
+    }
+  }
+  return result;
+}
+
+/** Metadata for critic pick outlet badges, keyed by outlet ID. */
+export type CriticPickSource = { outlet: string; critic: string; shortName: string; color: string; url: string };
+export function getCriticPickSources(): Record<string, CriticPickSource> {
+  const data = criticPicksRawData as unknown as CriticPicksData;
+  return Object.fromEntries(data.sources.map(s => [s.id, s]));
 }
 
 /**
@@ -256,6 +294,8 @@ export interface SerializedTonyShow {
   nomineePersonName?: string | null;
   /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
   nomineeCategoryTitle?: string | null;
+  /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
+  criticPicks?: string[];
 }
 
 // --- Tony Season Logic ---
@@ -530,6 +570,7 @@ export function serializeShow(
     awardsScore: awards,
     tonyCategoryKey: categoryKey ?? null,
     gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
+    criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
   };
 }
 
