@@ -24,7 +24,7 @@
 
 const { parseDate } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath } = require('./review-guards');
-const { isBroadwayUrl, isLondonMarket, getMarketPool } = require('./venue-classification');
+const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 
 const DAY = 86400000;
 const SIBLING_CLOSE_DAYS = 30;   // sibling opening this close to review → candidate
@@ -140,7 +140,10 @@ function collectSameTitleSignals(candidate, ctx) {
   }
 
   // Signal 3: venue substring in URL. Normalize venue to a single token like
-  // "lortel" / "criterion" / "barrymore" — first significant word, lowercased.
+  // "lortel" / "barrymore" — first significant word, lowercased. Skip tokens
+  // that are in GENERIC_VENUE_SLUGS (e.g. "broadway", "lyceum", "apollo",
+  // "criterion") — these overmatch unrelated URLs and would falsely link a
+  // review to the wrong production. Shared with audit-cross-production.js.
   if (url && candidate.venue) {
     const venueNorm = String(candidate.venue).toLowerCase();
     // Strip generic suffixes that match many URLs.
@@ -148,7 +151,7 @@ function collectSameTitleSignals(candidate, ctx) {
       .replace(/\b(theatre|theater|playhouse|the)\b/g, '')
       .replace(/[^a-z0-9 ]+/g, ' ')
       .trim();
-    const tokens = stripped.split(/\s+/).filter(t => t.length >= 5);
+    const tokens = stripped.split(/\s+/).filter(t => t.length >= 5 && !GENERIC_VENUE_SLUGS.has(t));
     const urlLower = url.toLowerCase();
     for (const tok of tokens) {
       if (urlLower.includes(tok)) {
@@ -268,7 +271,19 @@ function classifyMarketRouting(args) {
   // same-market branch and falls through to plain `{action:'accept'}` (pre-
   // 2026-05-17 behavior). Cross-market Tier 1/Tier 2 reroute and Guard H
   // above are unaffected.
-  if (process.env.DISABLE_PRODUCTION_DISAMBIG !== 'true' && sibData && sibData.siblings.length && sibData.title) {
+  // Null category means the show hasn't been categorized yet (e.g. pre-opening
+  // WE shows with null category — Schmigadoon 2026-04-22 postmortem). Per
+  // venue-classification.js:38, getMarketPool(null) falls back to 'nyc' (the
+  // Broadway pool), which would silently collapse a WE show into the same
+  // bucket as a Broadway sibling. Skip the same-market disambiguation branch
+  // when EITHER the current show OR any sibling has null category — wait for
+  // categorization before applying same-market rules. Guard H (cross-market
+  // rejection) below still runs so clearly-Broadway URLs land correctly.
+  const categoryUnknown = sibData
+    && (sibData.category == null || (sibData.siblings || []).some(s => s.category == null));
+
+  if (process.env.DISABLE_PRODUCTION_DISAMBIG !== 'true' && !categoryUnknown
+      && sibData && sibData.siblings.length && sibData.title) {
     const currentTitleNorm = normalizeTitle(sibData.title);
     const currentPool = getMarketPool(sibData.category);
     const sameMarketSiblings = sibData.siblings.filter(s =>

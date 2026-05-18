@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { urlYearFromPath } = require('./lib/review-guards');
+const { GENERIC_VENUE_SLUGS } = require('./lib/venue-classification');
 
 // ── CLI flags ────────────────────────────────────────────────────────────────
 // --dry-run: additionally emit data/audit/same-title-confusion.json (the
@@ -53,13 +54,9 @@ const multiProd = Object.entries(byTitle)
  * @param {string|null|undefined} venue
  * @returns {string|null}
  */
-const GENERIC_VENUE_SLUGS = new Set([
-  'broadway', 'lyceum', 'palace', 'majestic', 'imperial', 'studio-54',
-  'music-box', 'belasco', 'circle-in-the-square',
-  // West End generic-ish
-  'apollo', 'criterion', 'duke-of-yorks', 'gielgud', 'lyric', 'phoenix',
-  'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
-]);
+// GENERIC_VENUE_SLUGS imported from ./lib/venue-classification — single source
+// of truth shared with market-routing.js's same-title disambig branch. To add a
+// new generic-overmatching venue, update venue-classification.js only.
 function venueSlug(venue) {
   if (!venue || typeof venue !== 'string') return null;
   const cleaned = venue
