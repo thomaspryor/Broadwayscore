@@ -1,7 +1,7 @@
 {
   "system": "freshness",
-  "status": "error",
-  "lastChecked": "2026-05-17T07:49:52.034Z",
+  "status": "pass",
+  "lastChecked": "2026-05-18T08:22:31.360Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: shows.json",
-      "status": "error",
-      "message": "2d old (error threshold: 2d)"
+      "status": "pass",
+      "message": "1h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -29,37 +29,52 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "13h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
-      "status": "warn",
-      "message": "3d old (warn threshold: 2d)"
-    },
-    {
-      "name": "Freshness: cast-changes.json",
       "status": "pass",
       "message": "1d old"
     },
     {
+      "name": "Freshness: cast-changes.json",
+      "status": "pass",
+      "message": "2d old"
+    },
+    {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
+    },
+    {
+      "name": "Freshness: tony-win-probabilities.json",
+      "status": "pass",
+      "message": "15h old"
+    },
+    {
+      "name": "Freshness: tony-polymarket-odds.json",
+      "status": "pass",
+      "message": "6h old"
+    },
+    {
+      "name": "Freshness: tony-kalshi-odds.json",
+      "status": "pass",
+      "message": "7h old"
     }
   ]
 }

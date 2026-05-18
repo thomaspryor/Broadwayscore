@@ -29,6 +29,7 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included

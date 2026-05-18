@@ -470,3 +470,67 @@ describe('isIncludableForRebuild — contentTier=invalid (Pattern Card #1)', () 
     );
   });
 });
+
+// WE star-extraction bug regression suite (2026-05-18)
+// Covers the 4 pre-existing bugs surfaced by Phase B-WE rescore.
+describe('isIncludableForRebuild — not_a_review + json-ld star exception (Bug 3 class)', () => {
+  // Base object matching the Avenue Q / Independent / Chilton pattern:
+  // LBO promo excerpt was scored as 'not_a_review', but Independent json-ld had '2/5 stars'.
+  const bug3Base = {
+    outletId: 'independent',
+    originalScore: '2/5 stars',
+    originalScoreNormalized: 40,
+    originalScoreSource: 'json-ld',
+    aggregatorStars: '2/5 stars',
+    aggregatorStarsSource: 'json-ld',
+    rejectionReason: 'not_a_review',
+    rejectedAt: '2026-04-20T18:40:57.086Z',
+    textFetchedAt: '2026-04-18T05:47:09.213Z',
+    fullText: 'A real critical assessment of the show.',
+  };
+
+  it('allows inclusion: not_a_review + json-ld originalScore + known star outlet', () => {
+    assert.strictEqual(isIncludableForRebuild(bug3Base), true);
+  });
+
+  it('blocks when rejectionReason is not_a_review but NO json-ld source', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...bug3Base, originalScoreSource: 'text-pattern', aggregatorStarsSource: undefined }),
+      false
+    );
+  });
+
+  it('blocks when rejectionReason is not_a_review + json-ld but outlet NOT in KNOWN_STAR_OUTLETS', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...bug3Base, outletId: 'some-unknown-outlet' }),
+      false
+    );
+  });
+
+  it('blocks when rejectionReason is garbage_text even with json-ld star (only not_a_review gets exception)', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...bug3Base, rejectionReason: 'garbage_text' }),
+      false
+    );
+  });
+
+  it('blocks when rejectionReason is wrong_production even with json-ld star', () => {
+    assert.strictEqual(
+      isIncludableForRebuild({ ...bug3Base, rejectionReason: 'wrong_production' }),
+      false
+    );
+  });
+
+  it('allows inclusion when rejectedAt set + not_a_review + json-ld star (rejectedAt exception)', () => {
+    // textFetchedAt < rejectedAt so the re-fetch exception does not apply.
+    // The json-ld exception must carry both the rejectionReason AND rejectedAt gates.
+    assert.strictEqual(
+      isIncludableForRebuild({
+        ...bug3Base,
+        rejectedAt: '2026-04-20T18:40:57.086Z',
+        textFetchedAt: '2026-04-18T05:47:09.213Z', // before rejectedAt
+      }),
+      true
+    );
+  });
+});

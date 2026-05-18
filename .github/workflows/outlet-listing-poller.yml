@@ -1,0 +1,115 @@
+name: Outlet Listing Poller
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # Daily at 11 AM UTC (≤noon requirement, complements 9am per-show SERP)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (log discoveries, no files written)'
+        required: false
+        default: false
+        type: boolean
+      lookback_days:
+        description: 'Days to look back for articles (default: 7)'
+        required: false
+        default: '7'
+        type: string
+      outlets:
+        description: 'Comma-separated outlet IDs to poll (default: all qualifying)'
+        required: false
+        default: ''
+        type: string
+      market:
+        description: 'Filter active shows by market'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - broadway
+          - off-broadway
+          - west-end
+
+concurrency:
+  group: outlet-listing-poller
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      new_stubs: ${{ steps.poll.outputs.new_stubs }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts from private repo
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Poll outlet listings
+        id: poll
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          GITHUB_OUTPUT: ${{ env.GITHUB_OUTPUT }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ github.event.inputs.lookback_days }}" ]; then
+            ARGS="$ARGS --lookback-days ${{ github.event.inputs.lookback_days }}"
+          fi
+          if [ -n "${{ github.event.inputs.outlets }}" ]; then
+            ARGS="$ARGS --outlets ${{ github.event.inputs.outlets }}"
+          fi
+          if [ -n "${{ github.event.inputs.market }}" ] && [ "${{ github.event.inputs.market }}" != "all" ]; then
+            ARGS="$ARGS --market ${{ github.event.inputs.market }}"
+          fi
+          echo "Running: node scripts/outlet-listing-poller.js $ARGS"
+          node scripts/outlet-listing-poller.js $ARGS
+
+      - name: Push review-texts to private repo
+        if: always() && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: outlet listing poller — cross-show stub discovery'
+
+      - name: Trigger rebuild if new stubs were created
+        if: success() && github.event.inputs.dry_run != 'true' && steps.poll.outputs.new_stubs != '0'
+        run: |
+          NEW_STUBS="${{ steps.poll.outputs.new_stubs }}"
+          echo "New stubs created: ${NEW_STUBS}. Triggering rebuild..."
+          gh workflow run rebuild-reviews.yml -f reason="Post outlet listing poll — ${NEW_STUBS} new stubs"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Outlet Listing Poller Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

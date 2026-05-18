@@ -26,7 +26,9 @@ const KNOWN_PAYWALL_DOMAINS = new Set([
  */
 function classifyIncompleteReason(review, failedFetchEntry) {
   const tier = review.contentTier;
-  if (tier === 'complete') return null;
+  // url_content_mismatch can occur even on previously-complete reviews (CDN misroutes, content swaps).
+  // Always surface it regardless of contentTier so Browserbase escalation fires on next run.
+  if (tier === 'complete' && failedFetchEntry?.failureReason !== 'url_content_mismatch') return null;
 
   const hasUrl = !!review.url;
   const hasFetchHistory = !!(review.fetchMethod || review.textFetchedAt);
@@ -69,6 +71,12 @@ function classifyIncompleteReason(review, failedFetchEntry) {
       } catch (e) { /* malformed URL */ }
     }
     return { incompleteReason: 'scraper_garbage', incompleteDetail: garbageDetail };
+  }
+
+  // Priority 3.5: URL content mismatch (server served wrong page — Browserbase escalation on next run)
+  if (failureReason === 'url_content_mismatch') {
+    const detail = failedFetchEntry?.mismatchReason || 'Content did not mention show';
+    return { incompleteReason: 'url_content_mismatch', incompleteDetail: detail };
   }
 
   // Priority 4: No URL

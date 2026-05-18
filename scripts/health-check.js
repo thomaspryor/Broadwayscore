@@ -28,9 +28,21 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { execSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 // Discord daily reports removed — email digest is the single notification channel.
+
+// Generate a signed one-tap approve URL for a fix workflow.
+// Returns '' if ALERT_TOKEN_SECRET is not set.
+function generateApproveUrl(workflowFile, alertTitle) {
+  const secret = process.env.ALERT_TOKEN_SECRET;
+  if (!secret || !workflowFile) return '';
+  const payload = { fixId: workflowFile, alertTitle, expiry: Date.now() + 86400000 };
+  const encoded = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const sig = crypto.createHmac('sha256', secret).update(encoded).digest('hex');
+  return `https://broadwayscorecard.com/api/dispatch-alert-fix?token=${encodeURIComponent(`${encoded}.${sig}`)}`;
+}
 // Critical workflow failures still alert via notify-failure composite action.
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -64,7 +76,7 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Freshness: cast-changes\.json$/, urgency: 'this-week', workflow: 'update-cast-changes.yml',
     humanFallback: 'Cast change tracking is out of date. Runs Wednesday and Saturday — stale >5 days means the workflow is failing.' },
   { match: /^Freshness: nyt-critics-picks\.json$/, urgency: 'this-week', workflow: 'weekly-nyt-critics-picks.yml',
-    humanFallback: 'NYT Critics Picks list is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
+    humanFallback: 'NYT Critics Picks list is out of date. Runs Mon/Wed/Fri — stale >3 days means the workflow is failing.' },
   { match: /^Freshness: video-reviews\.json$/, urgency: 'this-week', workflow: 'weekly-video-reviews.yml',
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
   { match: /^Freshness: social-pulse\/_budget\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
@@ -222,14 +234,22 @@ const FRESHNESS_CHECKS = [
   { file: 'critic-consensus.json', field: '_meta.lastGenerated', warnH: 336, errorH: 504, hint: 'Check update-critic-consensus workflow in Actions tab' },
   { file: 'lottery-rush.json', field: 'lastUpdated', warnH: 48, errorH: 72, hint: 'Check update-lottery-rush workflow in Actions tab' },
   { file: 'cast-changes.json', field: 'lastUpdated', warnH: 72, errorH: 120, hint: 'Check update-cast-changes workflow in Actions tab (runs Wed+Sat)' },
-  { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 192, errorH: 336, hint: 'Check weekly-nyt-critics-picks workflow in Actions tab (runs Monday)' },
+  { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 72, errorH: 120, hint: 'Check nyt-critics-picks workflow in Actions tab (runs Mon/Wed/Fri)' },
   { file: 'video-reviews.json', field: '_meta.generatedAt', warnH: 192, errorH: 336, hint: 'Check weekly-video-reviews workflow in Actions tab (runs Monday)' },
   { file: 'social-pulse/_budget.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
+  // Tony odds — only relevant April–June. Large thresholds so stale off-season files don't false-alarm.
+  { file: 'tony-win-probabilities.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — GoldDerby scraper may have failed', seasonMonths: [4, 5, 6] },
+  { file: 'tony-polymarket-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Polymarket scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
+  { file: 'tony-kalshi-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Kalshi scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
 ];
 
 function checkFreshness() {
-  return FRESHNESS_CHECKS.map(({ file, field, warnH, errorH, hint }) =>
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  return FRESHNESS_CHECKS.map(({ file, field, warnH, errorH, hint, seasonMonths }) =>
     runCheck(`Freshness: ${file}`, () => {
+      if (seasonMonths && !seasonMonths.includes(currentMonth)) {
+        return { name: `Freshness: ${file}`, status: 'ok', message: 'Skipped (off-season)' };
+      }
       const filePath = path.join(DATA_DIR, file);
       if (!fs.existsSync(filePath)) {
         return { name: `Freshness: ${file}`, status: 'error', message: `File missing`, hint };
@@ -758,7 +778,7 @@ function checkCronHealth() {
     { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
     { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
     { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
-    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 192, name: 'Weekly NYT Critics Picks' },
+    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
     { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
     { workflow: 'update-social-pulse.yml', maxHours: 192, name: 'Update Social Pulse' },
   ];
@@ -1258,12 +1278,25 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
           ? `<p style="color:#f39c12;margin:4px 0 0;font-size:12px;">${r.cookieCountdowns.join(' · ')}</p>`
           : '';
 
+        // One-tap approve button for fix-now items with a known fix workflow
+        const urgencyLevel = r._escalatedUrgency || (entry ? entry.urgency : 'low');
+        const approveUrl = urgencyLevel === 'fix-now' && entry?.workflow
+          ? generateApproveUrl(entry.workflow, r.name)
+          : '';
+        const approveButton = approveUrl
+          ? `<div style="margin-top:10px;">
+              <a href="${approveUrl}" style="display:inline-block;background:#27ae60;color:white;padding:8px 18px;border-radius:5px;text-decoration:none;font-weight:bold;font-size:13px;">Run Fix</a>
+              <span style="color:#666;font-size:11px;margin-left:8px;">Triggers ${entry.workflow} &nbsp;·&nbsp; Link expires in 24h</span>
+            </div>`
+          : '';
+
         return `<div style="padding:10px 12px;margin-bottom:8px;background:#2a1a1a;border-left:3px solid ${urgency.bg};border-radius:4px;">
           <span style="display:inline-block;padding:2px 8px;border-radius:3px;background:${urgency.bg};color:${urgency.color};font-size:11px;font-weight:bold;">${urgency.label}</span>
           <span style="color:#ddd;margin-left:8px;font-weight:bold;">${r.name.split(': ').pop()}</span>
           ${countdowns}
           <p style="color:#bbb;margin:6px 0 0;font-size:13px;line-height:1.4;">${instruction}</p>
           ${failNote}
+          ${approveButton}
         </div>`;
       }).join('');
 

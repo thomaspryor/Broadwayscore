@@ -10,62 +10,29 @@
  *   node scripts/scrape-drama-league.js --write      # commit
  */
 
-const fs = require('fs');
-const path = require('path');
-const { fetchHtml, parseCategoryPage } = require('./lib/precursor-category-parser');
-const { writePrecursorJson, sleep, RATE_LIMIT_MS, PRECURSORS_DIR } = require('./lib/precursor-wikipedia');
+const { runCategoryScraper } = require('./lib/per-category-precursor');
 
 const PAGES = {
   'Outstanding Production of a Musical': 'Drama_League_Award_for_Outstanding_Production_of_a_Musical',
   'Outstanding Production of a Play':    'Drama_League_Award_for_Outstanding_Production_of_a_Play',
   'Outstanding Revival of a Musical':    'Drama_League_Award_for_Outstanding_Revival_of_a_Musical',
   'Outstanding Revival of a Play':       'Drama_League_Award_for_Outstanding_Revival_of_a_Play',
+  // Direction sub-categories (established 2022 — limited historical coverage)
+  'Outstanding Direction of a Musical':  'Drama_League_Award_for_Outstanding_Direction_of_a_Musical',
+  'Outstanding Direction of a Play':     'Drama_League_Award_for_Outstanding_Direction_of_a_Play',
+  // Individual performer recognition (goes back to 1975)
+  'Distinguished Performance Award':     'Drama_League_Award_for_Distinguished_Performance',
 };
 
 const MIN_YEAR = parseInt(
-  (process.argv.find((a) => a.startsWith('--min-year=')) || '--min-year=2014').split('=')[1],
+  (process.argv.find((a) => a.startsWith('--min-year=')) || '--min-year=1975').split('=')[1],
   10,
 );
-const WRITE = process.argv.includes('--write');
-const FORCE = process.argv.includes('--force');
 
-async function main() {
-  const result = {};
-  for (const [category, slug] of Object.entries(PAGES)) {
-    const url = `https://en.wikipedia.org/wiki/${slug}`;
-    process.stdout.write(`Fetching ${slug}... `);
-    try {
-      const html = await fetchHtml(url);
-      const entries = parseCategoryPage(html, { minYear: MIN_YEAR })
-        .filter((e) => e.year >= MIN_YEAR);
-      console.log(`${entries.length} year-entries`);
-      result[category] = entries;
-    } catch (e) {
-      console.log(`ERROR: ${e.message}`);
-      throw e;
-    }
-    await sleep(RATE_LIMIT_MS);
-  }
-
-  const fp = path.join(PRECURSORS_DIR, 'drama-league.json');
-  if (fs.existsSync(fp)) {
-    const baseline = JSON.parse(fs.readFileSync(fp, 'utf8')).data;
-    console.log('\nDiff vs baseline:');
-    for (const cat of Object.keys(PAGES)) {
-      const baseYears = new Set((baseline[cat] || []).map((e) => e.year));
-      const newYears = new Set(result[cat].map((e) => e.year));
-      const added = [...newYears].filter((y) => !baseYears.has(y)).sort();
-      const removed = [...baseYears].filter((y) => !newYears.has(y)).sort();
-      console.log(`  ${cat}: +${added.join(',') || '∅'} / -${removed.join(',') || '∅'}`);
-    }
-  }
-
-  const out = writePrecursorJson('drama-league', result, {
-    force: FORCE,
-    dryRun: !WRITE,
-    meta: { sourcePages: Object.values(PAGES), minYear: MIN_YEAR },
-  });
-  console.log(out.written ? `\nWrote ${out.fp} (${out.newCount} entries, was ${out.oldCount})` : `\nDry run; pass --write to overwrite (${out.newCount} entries vs baseline ${out.oldCount})`);
-}
-
-main().catch((e) => { console.error(e); process.exit(1); });
+runCategoryScraper({
+  pages: PAGES,
+  ceremonyName: 'drama-league',
+  minYear: MIN_YEAR,
+  write: process.argv.includes('--write'),
+  force: process.argv.includes('--force'),
+}).catch((e) => { console.error(e); process.exit(1); });

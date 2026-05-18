@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-05-17T13:53:38.316Z",
+  "generatedAt": "2026-05-18T12:42:34.537Z",
   "current": {
     "totalCritics": 70,
-    "totalGaps": 580,
+    "totalGaps": 871,
     "gapsByBucket": {
-      "A": 5,
-      "B": 11,
-      "C": 564,
-      "D": 0,
+      "A": 20,
+      "B": 15,
+      "C": 829,
+      "D": 7,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 580
+      "muckrack": 871
     }
   },
   "history": [
@@ -72,15 +72,85 @@
         "Andrzej Lukowski": 1,
         "Marianka Swain": 1
       }
+    },
+    {
+      "date": "2026-05-18",
+      "timestamp": "2026-05-18T10:52:20.309Z",
+      "totalCritics": 70,
+      "totalGaps": 871,
+      "gapsByBucket": {
+        "A": 20,
+        "B": 15,
+        "C": 829,
+        "D": 7,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 871
+      },
+      "perCritic": {
+        "Chris Jones": 120,
+        "Elysa Gardner": 109,
+        "Jesse Green": 95,
+        "Alice Saville": 36,
+        "David Rooney": 34,
+        "David Finkle": 34,
+        "Dan Rubins": 31,
+        "Roma Torre": 30,
+        "Frank Scheck": 28,
+        "Melissa Rose Bernardo": 26,
+        "Tim Bano": 26,
+        "Juan A. Ramirez": 25,
+        "Andrzej Lukowski": 25,
+        "Brittani Samuel": 22,
+        "Sarah Hemming": 22,
+        "Bob Verini": 21,
+        "Matt Wolf": 20,
+        "Pete Hempstead": 19,
+        "Helen Shaw": 17,
+        "Patrick Marmion": 17,
+        "Joey Sims": 15,
+        "Hayley Levitt": 15,
+        "Sam Marlowe": 14,
+        "Laura Collins-Hughes": 13,
+        "Matt Windman": 12,
+        "Johnny Oleksinski": 9,
+        "Charles Isherwood": 8,
+        "Tim Teeman": 6,
+        "Sara Holdren": 6,
+        "Mark Kennedy": 4,
+        "Charles McNulty": 3,
+        "Jackson McHenry": 2,
+        "David Gordon": 2,
+        "Joe Dziemianowicz": 1,
+        "Michael Musto": 1,
+        "Frank Rizzo": 1,
+        "Patrick Ryan": 1,
+        "Marianka Swain": 1
+      }
     }
   ],
   "topCriticsByGap": [
     {
-      "name": "Bob Verini",
-      "outlet": "nysr",
+      "name": "Chris Jones",
+      "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 38,
-      "lastDate": "2026-04-23"
+      "missingCount": 120,
+      "lastDate": "2026-04-27"
+    },
+    {
+      "name": "Elysa Gardner",
+      "outlet": "usatoday",
+      "tier": 2,
+      "missingCount": 109,
+      "lastDate": "2026-05-08"
+    },
+    {
+      "name": "Jesse Green",
+      "outlet": "vulture",
+      "tier": 1,
+      "missingCount": 95,
+      "lastDate": "2025-06-12"
     },
     {
       "name": "Alice Saville",
@@ -93,15 +163,8 @@
       "name": "David Rooney",
       "outlet": "hollywood-reporter",
       "tier": 1,
-      "missingCount": 35,
+      "missingCount": 34,
       "lastDate": "2026-04-15"
-    },
-    {
-      "name": "Steven Suskin",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 35,
-      "lastDate": "2026-04-16"
     },
     {
       "name": "David Finkle",
@@ -137,13 +200,6 @@
       "tier": 2,
       "missingCount": 26,
       "lastDate": "2026-04-25"
-    },
-    {
-      "name": "Tim Bano",
-      "outlet": "thestage",
-      "tier": 2,
-      "missingCount": 26,
-      "lastDate": "2026-04-30"
     }
   ]
 }

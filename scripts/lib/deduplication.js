@@ -248,6 +248,21 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
+  // Opera companies restage the same opera every season — different seasons are
+  // different productions (e.g., Met's La Bohème 2025 vs 2026). Use date-based
+  // comparison (>180 days) rather than year comparison to correctly handle
+  // productions that preview in December but open in January.
+  if (newShow.type === 'opera' && existing.type === 'opera') {
+    if (newShow.openingDate && existing.openingDate) {
+      const daysDiff = Math.abs(new Date(newShow.openingDate) - new Date(existing.openingDate)) / 86400000;
+      if (daysDiff > 180) return true;
+    } else {
+      const newYr = getYear(newShow);
+      const existYr = getYear(existing);
+      if (newYr && existYr && Math.abs(newYr - existYr) > 1) return true;
+    }
+  }
+
   // Transfers within the same market pool (e.g., off-broadway → broadway)
   // are separate productions IF they have different venues. Same venue +
   // same pool + same title = duplicate, not a transfer (e.g., Phantom WE
@@ -350,6 +365,10 @@ function checkForDuplicate(newShow, existingShows) {
 
     // Skip cross-market pairs (e.g., Broadway vs West End) — same title is expected
     if (isCrossMarket(newShow, existing)) continue;
+
+    // Skip opera vs non-opera comparisons — similar-sounding titles are different works
+    // (e.g., Verdi's "Otello" should never match Shakespeare's "Othello")
+    if ((newShow.type === 'opera') !== (existing.type === 'opera')) continue;
 
     // Check 1: Exact title match (case-insensitive)
     if (newTitleLower === existingTitleLower) {
@@ -460,6 +479,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 9: Levenshtein distance for fuzzy matching (for titles > 5 chars)
     if (newTitleNormalized.length > 5 && existingTitleNormalized.length > 5) {
       if (areTitlesSimilar(newTitleNormalized, existingTitleNormalized)) {
+        if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
           reason: `Fuzzy match (Levenshtein): "${newTitleNormalized}" ~ "${existingTitleNormalized}"`,

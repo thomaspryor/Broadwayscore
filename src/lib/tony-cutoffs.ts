@@ -247,17 +247,33 @@ export function daysUntilTonyCeremony(season: string, today: Date = new Date()):
 }
 
 /**
- * True if the ceremony for the given season is in the future (or unknown).
- * False if we have a ceremonyDate and it's in the past. Used to compute
+ * True if the ceremony for the given season is in the future. Used to compute
  * `inProgress` on award scoring — a show is in-progress if its ceremony
  * hasn't happened yet, not if the current eligibility window contains today
  * (those differ for shows in the April-cutoff-to-June-ceremony gap).
+ *
+ * Resolution order:
+ *  1. Unknown season → false (conservative; don't pulse shows with bad data)
+ *  2. Explicit `ceremonyDate` → compare directly
+ *  3. No ceremonyDate → fall back to record.end + 90-day gap. The Tony
+ *     ceremony historically lands ~5-7 weeks after the eligibility cutoff;
+ *     90 days is a comfortable upper bound. So a 2023-24 season ending
+ *     2024-04-25 is treated as concluded after 2024-07-24. This avoids
+ *     marking 733 historical Tony shows as "in progress" forever (the bug
+ *     that prompted this rewrite — ship-check 2026-05-17).
  */
 export function tonyCeremonyIsFuture(season: string | undefined, today: Date = new Date()): boolean {
   if (!season) return false;
   const record = BY_LABEL.get(season);
-  if (!record?.ceremonyDate) return true;
-  const ceremonyMs = new Date(`${record.ceremonyDate}T00:00:00Z`).getTime();
-  if (!Number.isFinite(ceremonyMs)) return true;
-  return ceremonyMs > today.getTime();
+  if (!record) return false;
+  if (record.ceremonyDate) {
+    const ceremonyMs = new Date(`${record.ceremonyDate}T00:00:00Z`).getTime();
+    if (!Number.isFinite(ceremonyMs)) return false;
+    return ceremonyMs > today.getTime();
+  }
+  // No explicit ceremonyDate — derive from eligibility cutoff + 90-day window.
+  const endMs = new Date(`${record.end}T00:00:00Z`).getTime();
+  if (!Number.isFinite(endMs)) return false;
+  const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+  return (endMs + NINETY_DAYS_MS) > today.getTime();
 }

@@ -264,6 +264,7 @@ const CO_OCCURRENCE_PATTERNS = [
       'src/components/FooterEmailCapture.tsx',    // Uses Market type ('broadway'|'west-end'), OWE routed via hook
       'src/lib/market-utils.ts',                  // Source of truth — defines isLondonMarket() itself
       'src/lib/venue-classification.ts',           // Re-exports from market-utils + venue-specific logic
+      'src/app/api/approve-broadcast/route.ts',   // Broadcast approval — OWE shows never get email broadcasts
     ],
   },
 ];

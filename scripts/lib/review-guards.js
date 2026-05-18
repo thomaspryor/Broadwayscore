@@ -255,6 +255,30 @@ const URL_MONTH_NAMES = {
   jul: '07', aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
 };
 
+/**
+ * Extract a 4-digit year from a URL path segment matching the standard
+ * `/YYYY/MM/` or `/YYYY/monthname/` review-URL conventions used by NYT,
+ * Variety, Playbill, Vulture, WaPo, and the Guardian. Returns the year as a
+ * number, or null when no such segment is present.
+ *
+ * Pure helper — shares the same regex as getWrongProductionReasonFromUrl
+ * below so behavior stays in lock-step. Intended for reuse by sibling-show
+ * disambiguation classifiers that only need the year, not the full window
+ * comparison.
+ *
+ * @param {string|null|undefined} url
+ * @returns {number|null}
+ */
+function urlYearFromPath(url) {
+  if (!url || typeof url !== 'string') return null;
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  return Number.isFinite(year) ? year : null;
+}
+
 function getWrongProductionReasonFromUrl(url, show) {
   if (!url || typeof url !== 'string') return null;
   if (!show || show.category === 'off-broadway') return null;
@@ -1905,8 +1929,17 @@ function isIncludableForRebuild(data, show) {
     data.contentVerification?.confidence === 'high'
   ) return false;
 
-  // Garbage text flagged by collection pipeline or LLM ensemble
-  if (data.rejectionReason) return false;
+  // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
+  // Exception: 'not_a_review' rejection fires on excerpt/promo text (ShowScore, LBO)
+  // even when the outlet's JSON-LD schema records an explicit star rating. The json-ld
+  // star IS the critic's published verdict — authoritative for KNOWN_STAR_OUTLETS. Allow
+  // inclusion so the P0.5 path in getBestScore can use the structured-data score.
+  if (data.rejectionReason) {
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    if (!isJsonLdStarNotAReview) return false;
+  }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
@@ -1931,7 +1964,12 @@ function isIncludableForRebuild(data, show) {
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false;
-    if (!reFetched && !wpCleared) return false;
+    // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
+    // from a known star outlet clears the rejectedAt gate as well.
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview) return false;
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -2293,6 +2331,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  urlYearFromPath,
   urlLooksLikeReview,
   isLikelyWrongProduction,
   isLikelyTourReview,

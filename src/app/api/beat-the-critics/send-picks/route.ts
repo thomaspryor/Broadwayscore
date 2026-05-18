@@ -1,7 +1,71 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const REVIEW_TEXTS_TOKEN = process.env.REVIEW_TEXTS_TOKEN || '';
+const SUBMISSIONS_REPO = 'thomaspryor/broadway-scorecard-data';
+const SUBMISSIONS_PATH = 'data/beat-the-critics-submissions.jsonl';
 const FROM_EMAIL = 'Broadway Scorecard <noreply@broadwayscorecard.com>';
+
+// In-memory rate limit: max 3 submissions per IP per 10 minutes.
+// Resets on cold start — good enough for casual spam prevention without Redis.
+const ipRateLimit = new Map<string, { count: number; windowStart: number }>();
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 3;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = ipRateLimit.get(ip);
+  if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
+    ipRateLimit.set(ip, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= RATE_MAX) return false;
+  entry.count++;
+  return true;
+}
+
+// Fire-and-forget: append submission to private repo JSONL. Non-blocking.
+async function storeSubmission(record: {
+  email: string;
+  picks: Record<string, string>;
+  ceremonyYear: number;
+  submittedAt: string;
+}): Promise<void> {
+  if (!REVIEW_TEXTS_TOKEN) return;
+  try {
+    const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${SUBMISSIONS_PATH}`;
+    const headers = {
+      Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+    };
+
+    const existing = await fetch(apiBase, { headers }).catch(() => null);
+    let currentContent = '';
+    let sha: string | undefined;
+
+    if (existing?.ok) {
+      const data = await existing.json() as { content: string; sha: string };
+      currentContent = Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf8');
+      sha = data.sha;
+    }
+
+    const newLine = JSON.stringify(record) + '\n';
+    const newContent = Buffer.from(currentContent + newLine).toString('base64');
+
+    await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `feat: Beat the Critics submission [skip ci]`,
+        content: newContent,
+        ...(sha ? { sha } : {}),
+      }),
+    });
+  } catch {
+    // Non-critical — Resend email already sent
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,8 +75,15 @@ export async function POST(req: NextRequest) {
       ceremonyYear: number;
     };
 
-    if (!email || !email.includes('@')) {
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
+    }
+
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+             ?? req.headers.get('x-real-ip')
+             ?? 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
     }
 
     if (!RESEND_API_KEY) {
@@ -46,15 +117,17 @@ export async function POST(req: NextRequest) {
         </table>
       </div>
       <div style="padding:16px 28px 24px;text-align:center;">
-        <div style="font-size:13px;font-weight:700;color:#ff1368;margin-bottom:6px;">Can you beat the critics?</div>
-        <div style="font-size:12px;color:#4b5563;">Ceremony: June 7, 2026 &middot; CBS</div>
+        <div style="font-size:13px;font-weight:700;color:#ff1368;margin-bottom:6px;">You're entered — can you beat the critics?</div>
+        <div style="font-size:12px;color:#4b5563;margin-bottom:4px;">Ceremony: June 7, 2026 &middot; CBS</div>
+        <div style="font-size:12px;color:#4b5563;margin-bottom:6px;">We'll email you after the ceremony with your results.</div>
+        <div style="font-size:12px;font-weight:700;color:#f59e0b;">🎟️ Beat a critic? You're entered in the $100 TodayTix prize draw.</div>
         <div style="margin-top:16px;">
           <a href="https://broadwayscorecard.com/beat-the-critics" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#ff1368,#d4106a);color:#ffffff;text-decoration:none;border-radius:10px;font-size:13px;font-weight:700;">View Your Ballot &rarr;</a>
         </div>
       </div>
     </div>
     <div style="text-align:center;padding:20px 0 0;font-size:11px;color:#374151;">
-      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. Come back after June 7 to see how you did.<br>
+      You picked ${pickCount} categor${pickCount === 1 ? 'y' : 'ies'}. After June 7, we'll email you with how you compared to the critics.<br>
       <a href="https://broadwayscorecard.com" style="color:#4b5563;text-decoration:none;">broadwayscorecard.com</a>
     </div>
   </div>
@@ -80,6 +153,9 @@ export async function POST(req: NextRequest) {
       console.error('Resend error:', res.status, body);
       return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
     }
+
+    // Store submission for results email — non-blocking
+    void storeSubmission({ email, picks, ceremonyYear, submittedAt: new Date().toISOString() });
 
     return NextResponse.json({ success: true });
   } catch (err) {

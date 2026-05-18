@@ -24,7 +24,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // for routing only, and surfacing that label embarrasses the site to opera
   // professionals. See Notion 363637c5-416f-8112.
   const isOperaShowPage = isOperaShowPath(pathname);
-  const isOpera = isOperaDomain || isOperaShowPage;
+  // /opera path itself should also trigger Opera branding regardless of domain
+  const isOperaPage = pathname === '/opera' || pathname.startsWith('/opera/');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -33,6 +34,11 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
+  // Don't apply opera domain branding when user has explicitly navigated to
+  // another market (off-broadway, west-end, off-west-end). The opera domain
+  // flag only matters on opera-specific pages.
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway;
+  const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
   const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isOpera;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
@@ -131,6 +137,29 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               )}
             </Link>
           )}
+          <Link
+            href="/opera"
+            className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+              isOpera ? 'bg-amber-500/[0.08]' : 'hover:bg-white/[0.04]'
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            <div className="flex items-center gap-2">
+              <span className={`w-1.5 h-1.5 rounded-full ${isOpera ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]' : 'bg-amber-500/60'}`} />
+              <div>
+                <div className={`flex items-center gap-1.5 text-sm font-semibold ${isOpera ? 'text-amber-200' : 'text-white'}`}>
+                  OperaScorecard
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/70 border border-amber-400/30 rounded px-1 py-px">Beta</span>
+                </div>
+                <div className="text-[11px] text-gray-500">Met Opera · New York</div>
+              </div>
+            </div>
+            {isOpera && (
+              <svg className="w-4 h-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            )}
+          </Link>
           <div className="h-px bg-white/[0.06] mx-2 my-1" />
           <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-gray-500">London</div>
           <Link

@@ -4,40 +4,89 @@ interface AwardScoreBadgeProps {
   score: number;
   badge: TierBadge;
   inProgress: boolean;
-  size?: 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
 }
 
-// Color palette aligned with the critic ScoreBadge (2026-05-17): the three
-// "winning" award tiers reuse the critic-positive CSS classes so a 100
-// Sweeper and a 91 Critical Gold share the same gold-metallic shimmer, an
-// 82 Decorated matches a Recommended-78 emerald, and a 58 Honored matches
-// a Worth Seeing-71 teal. Unwon tiers stay in their own warm/neutral
-// family (they don't map onto the critic Skippable/Stay-Away tiers — those
-// signal "bad," award unwon tiers signal "recognized but didn't win").
+// Award badge — round "medal" treatment (2026-05-17 v2):
+//   • Top 3 tiers = Olympic medals (gold / silver / bronze) with metallic
+//     gradients + shimmer light-sweep (same shimmer as critic .score-must-see).
+//   • Bottom 3 tiers = subdued outlined circles (no fill, faint white border),
+//     dashed for Eligible so it reads as "potential, not realized."
+//   • inProgress (Tony season open) = subtle whole-badge breathing animation
+//     via `award-breathe` keyframe in globals.css. Replaces the prior asterisk
+//     overlay — the breath IS the "score is alive" signal.
 //
-// Each tier provides ONE of:
-//   - `criticClass`: CSS class to apply (uses globals.css critic styles —
-//     .score-must-see / .score-great / .score-good — full polish for free)
-//   - `bg` + optional `glow`: standalone Tailwind background + box-shadow
-//
-// `label` is the tier-name text color used by the surrounding card.
+// Distinct shape (circle) keeps award badges visually separate from critic
+// ScoreBadge (rounded squares) so they don't read as the same thing on the
+// /award-score leaderboard. Gold/silver/bronze palette decouples from the
+// critic gold/emerald/teal so the two systems never collide.
+
 interface TierStyle {
-  criticClass?: string;
-  bg?: string;
-  text: string;
-  label: string;
-  glow?: string;
+  fillBg: string;       // CSS background (gradient or transparent)
+  ring: string;         // CSS border ("medal rim" or outline)
+  text: string;         // Tailwind text class for the score digit
+  label: string;        // Tailwind text class for the tier name (used by card)
+  glow: string;         // CSS box-shadow
+  shimmer?: boolean;    // Top 3 tiers — animated light-sweep across the badge
 }
 
 const TIER_STYLES: Record<TierBadge, TierStyle> = {
-  // Winning tiers — reuse critic-positive CSS classes for visual lockstep.
-  sweeper:       { criticClass: 'score-must-see', text: '',          label: 'text-amber-400' },
-  decorated:     { criticClass: 'score-great',    text: '',          label: 'text-emerald-400' },
-  honored:       { criticClass: 'score-good',     text: '',          label: 'text-teal-400' },
-  // Unwon tiers — muted warm so they don't compete with critic-positive tiers.
-  'in-the-hunt': { bg: 'bg-amber-600/40 border border-amber-500/30', text: 'text-amber-100', label: 'text-amber-300', glow: '0 2px 6px rgba(217, 119, 6, 0.25)' },
-  nominated:     { bg: 'bg-surface-overlay border border-amber-500/20', text: 'text-amber-200', label: 'text-amber-200' },
-  eligible:      { bg: 'bg-white/10', text: 'text-gray-400', label: 'text-gray-400' },
+  // ── Medal tiers ──────────────────────────────────────────────────────
+  sweeper: {
+    fillBg: 'linear-gradient(135deg, #C9A227 0%, #F7D560 30%, #FFF1B5 50%, #F7D560 70%, #C9A227 100%)',
+    ring: '2px solid rgba(255, 232, 117, 0.85)',
+    text: 'text-amber-950',
+    label: 'text-amber-400',
+    glow: '0 0 16px rgba(247, 213, 96, 0.4), inset 0 1px 3px rgba(255,255,255,0.4)',
+    shimmer: true,
+  },
+  decorated: {
+    fillBg: 'linear-gradient(135deg, #9a9a9a 0%, #D0D0D0 30%, #F0F0F0 50%, #D0D0D0 70%, #9a9a9a 100%)',
+    ring: '2px solid rgba(240, 240, 240, 0.7)',
+    text: 'text-gray-900',
+    label: 'text-gray-300',
+    glow: '0 0 14px rgba(200,200,200,0.3), inset 0 1px 3px rgba(255,255,255,0.4)',
+    shimmer: true,
+  },
+  honored: {
+    fillBg: 'linear-gradient(135deg, #8a4a23 0%, #C2773A 30%, #D89668 50%, #C2773A 70%, #8a4a23 100%)',
+    ring: '2px solid rgba(216, 150, 104, 0.75)',
+    text: 'text-amber-950',
+    label: 'text-orange-400',
+    glow: '0 0 14px rgba(194, 119, 58, 0.35), inset 0 1px 3px rgba(255,200,150,0.3)',
+    shimmer: true,
+  },
+  // ── Subdued outlined tiers ───────────────────────────────────────────
+  'in-the-hunt': {
+    fillBg: 'rgba(255, 255, 255, 0.04)',
+    ring: '1.5px solid rgba(255, 255, 255, 0.35)',
+    text: 'text-white/80',
+    label: 'text-gray-300',
+    glow: 'none',
+  },
+  nominated: {
+    fillBg: 'rgba(255, 255, 255, 0.03)',
+    ring: '1.5px solid rgba(255, 255, 255, 0.22)',
+    text: 'text-white/55',
+    label: 'text-gray-400',
+    glow: 'none',
+  },
+  eligible: {
+    fillBg: 'transparent',
+    ring: '1.5px dashed rgba(255, 255, 255, 0.18)',
+    text: 'text-white/40',
+    label: 'text-gray-500',
+    glow: 'none',
+  },
+};
+
+// Pre-ceremony: neutral white-outline ring — no tier color until winners are announced
+const PRE_CEREMONY: TierStyle = {
+  fillBg: 'transparent',
+  ring: '1.5px solid rgba(255, 255, 255, 0.35)',
+  text: 'text-white',
+  label: 'text-gray-400',
+  glow: 'none',
 };
 
 const TIER_LABEL: Record<TierBadge, string> = {
@@ -54,37 +103,51 @@ export function getAwardTierLabelClass(badge: TierBadge, score: number): string 
 }
 
 export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: AwardScoreBadgeProps) {
-  const styles = score > 0 ? TIER_STYLES[badge] : TIER_STYLES.eligible;
+  const styles = inProgress && score > 0
+    ? PRE_CEREMONY
+    : score > 0
+      ? TIER_STYLES[badge]
+      : TIER_STYLES.eligible;
   const label = inProgress && badge === 'nominated' ? 'In the Hunt' : TIER_LABEL[badge];
 
-  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : 'w-14 h-14';
-  const sizeText = size === 'lg' ? 'text-3xl' : 'text-2xl';
+  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : size === 'md' ? 'w-14 h-14' : 'w-11 h-11';
+  const sizeText = size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl' : 'text-lg';
 
-  // .score-must-see and .score-great / .score-good in globals.css set their
-  // own background/color/box-shadow/(shimmer ::before). When we use them we
-  // skip the inline glow override (would clobber the class's shadow). The
-  // `overflow-hidden` is needed for .score-must-see's shimmer pseudo-element.
-  const classes = [
-    sizeBox,
-    styles.criticClass ?? styles.bg ?? '',
-    styles.text,
-    'rounded-xl flex items-center justify-center font-bold',
-    sizeText,
-    'relative overflow-hidden',
-  ].filter(Boolean).join(' ');
+  // inProgress → whole badge breathes (replaces prior asterisk). Uses the
+  // `award-breathe` keyframe defined in globals.css.
+  const breatheStyle = inProgress && score > 0
+    ? { animation: 'award-breathe 2.5s ease-in-out infinite' }
+    : undefined;
 
   return (
     <div
-      className={classes}
-      style={!styles.criticClass && styles.glow ? { boxShadow: styles.glow } : undefined}
+      className={`${sizeBox} ${styles.text} rounded-full flex items-center justify-center font-bold ${sizeText} relative overflow-hidden`}
+      style={{
+        background: styles.fillBg,
+        border: styles.ring,
+        boxShadow: styles.glow,
+        ...breatheStyle,
+      }}
       aria-label={inProgress && score > 0 ? `Provisional Award Score ${score} — ${label}` : `Award Score ${score} — ${label}`}
     >
-      <span className="flex items-start gap-0.5 leading-none">
-        <span>{score > 0 ? score : '—'}</span>
-        {inProgress && score > 0 && (
-          <span aria-hidden className="text-base align-super animate-pulse" style={{ marginTop: '-0.15em' }}>*</span>
-        )}
-      </span>
+      {styles.shimmer && (
+        // Animated light-sweep, mirrors .score-must-see::before in globals.css.
+        // The @keyframes shimmer rule is defined in globals.css.
+        <span
+          aria-hidden
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '-100%',
+            width: '100%',
+            height: '100%',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)',
+            animation: 'shimmer 2.5s infinite',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+      <span className="leading-none relative">{score > 0 ? score : '—'}</span>
     </div>
   );
 }

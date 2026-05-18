@@ -18,8 +18,96 @@ import {
 import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
+import fs from 'fs';
+import path from 'path';
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
+import gdRawData from '../../data/tony-win-probabilities.json';
+import criticPicksRawData from '../../data/tony-critic-picks.json';
+
+type MarketData = { categories: Record<string, { nominees: Record<string, number> }> };
+
+function loadMarketJson(filename: string): MarketData | null {
+  try {
+    const p = path.join(process.cwd(), 'data', filename);
+    if (!fs.existsSync(p)) return null;
+    return JSON.parse(fs.readFileSync(p, 'utf-8')) as MarketData;
+  } catch { return null; }
+}
+
+const pmRawData = loadMarketJson('tony-polymarket-odds.json');
+const kaRawData = loadMarketJson('tony-kalshi-odds.json');
+
+function lookupMarketOdds(title: string, catTitle: string, data: MarketData | null): number | null {
+  if (!data) return null;
+  const nominees = data.categories?.[catTitle]?.nominees;
+  if (!nominees) return null;
+  if (title in nominees) return nominees[title];
+  const lower = title.toLowerCase();
+  for (const [k, v] of Object.entries(nominees)) {
+    if (k.toLowerCase() === lower) return v;
+  }
+  return null;
+}
+
+// GoldDerby category names → canonical Tony category titles
+const TONY_TO_GD: Record<string, string> = {
+  'Best Musical':           'Best Musical',
+  'Best Play':              'Best Play',
+  'Best Revival of a Musical': 'Best Musical Revival',
+  'Best Revival of a Play':    'Best Play Revival',
+};
+
+type GdShowEntry = { categories: Record<string, { pWin: number; votes: number }> };
+type GdData = { shows: Record<string, GdShowEntry> };
+
+function lookupGdOdds(showId: string, tonyCategory: string): number | null {
+  const gdCatName = TONY_TO_GD[tonyCategory];
+  if (!gdCatName) return null;
+  const gd = gdRawData as unknown as GdData;
+  const show = gd.shows?.[showId];
+  if (!show) return null;
+  const cat = show.categories?.[gdCatName];
+  if (!cat || cat.votes === 0) return null;
+  return typeof cat.pWin === 'number' ? cat.pWin : null;
+}
+
+// Acting categories match by person name; all others match by showId.
+const PERSON_MATCH_CATEGORIES = new Set([
+  'Best Actor in a Musical', 'Best Actress in a Musical',
+  'Best Actor in a Play', 'Best Actress in a Play',
+  'Best Featured Actor in a Musical', 'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
+]);
+
+type CriticPicksData = {
+  sources: Array<{ id: string; outlet: string; critic: string; shortName: string; color: string; url: string }>;
+  picks: Record<string, Record<string, string>>;
+};
+
+/** Return outlet IDs whose critic predicted this show/person for the given category. */
+export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
+  const data = criticPicksRawData as unknown as CriticPicksData;
+  const catPicks = data.picks[tonyCategory];
+  if (!catPicks) return [];
+  const isPersonCategory = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const result: string[] = [];
+  for (const [outletId, pick] of Object.entries(catPicks)) {
+    if (isPersonCategory) {
+      if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
+    } else {
+      if (pick === showId) result.push(outletId);
+    }
+  }
+  return result;
+}
+
+/** Metadata for critic pick outlet badges, keyed by outlet ID. */
+export type CriticPickSource = { outlet: string; critic: string; shortName: string; color: string; url: string };
+export function getCriticPickSources(): Record<string, CriticPickSource> {
+  const data = criticPicksRawData as unknown as CriticPicksData;
+  return Object.fromEntries(data.sources.map(s => [s.id, s]));
+}
 
 /**
  * Legacy: per-category Tony recipes replaced the flat 50/50 blend on 2026-04-29.
@@ -50,11 +138,28 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // the same weights. Net effect: +1 correct season (was 10/11, now 11/11)
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
+//
+// best-play changed from 0.40/0.40/0.20 to 0.65/0.00/0.35 on 2026-05-17.
+// Grid search at step 0.05 found critic+awards recipes dominate (11/11
+// in-sample, 90.9% LOOCV). {0.65/0/0.35} is the mode across 10/11 LOOCV
+// folds. Audience weight dropped to 0: audience is less predictive for plays
+// where Tony voters (theater professionals) follow critical consensus and
+// precursor awards over crowd reaction. Net: 10/11 (90.9%) in-sample →
+// 11/11 (100%). Also produces steeper score descent (Liberation leads by
+// 17pt vs 10pt), matching market confidence levels. See
+// scripts/search-tony-best-play-weights.ts --cat=best-play.
+//
+// best-revival-play changed from 0.00/0.95/0.05 to 0.40/0.60/0.00 on
+// 2026-05-17. All 3 historical misses had awards signal anti-correlated with
+// winning — dropping awards to 0 and adding critic (0.40) gets 9/10
+// in-sample (90.0%) vs 7/10 (70.0%) for the old 0.0/0.8/0.2 recipe.
+// LOOCV: 8/10 (80.0%). Current-season DoA still #1 by 2+ pts. See
+// scripts/search-tony-best-play-weights.ts --cat=best-revival-play.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
-  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
-  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
-  'best-revival-play':    { critic: 0,    audience: 1.0,  awards: 0   },
+  'best-musical':         { critic: 0.43, audience: 0.52, awards: 0.05 },
+  'best-play':            { critic: 0.65, audience: 0.00, awards: 0.35 },
+  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0    },
+  'best-revival-play':    { critic: 0.4,  audience: 0.6,  awards: 0    },
 };
 
 /**
@@ -74,10 +179,10 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
  *     scripts/audit-tony-all-seasons.ts --tier=N flag for backtesting).
  */
 export const TONY_RECIPES_TIER2: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
-  'best-play':            { critic: 0.2, audience: 0.2, awards: 0.6 },
-  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
-  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
+  'best-musical':         { critic: 0.4, audience: 0.55, awards: 0.05 },
+  'best-play':            { critic: 0.2, audience: 0.2,  awards: 0.6  },
+  'best-revival-musical': { critic: 0,   audience: 1.0,  awards: 0    },
+  'best-revival-play':    { critic: 0,   audience: 0.7,  awards: 0.3  },
 };
 
 export type TonyCategoryKey = keyof typeof TONY_RECIPES;
@@ -173,6 +278,21 @@ const PRECURSOR_TIER_NOM_WEIGHTS: Record<CategoryTier, number> = {
   C:    0.5,
 };
 
+/**
+ * Points awarded per Tony nomination (NOT wins — wins come at the ceremony
+ * and are what we're trying to predict). Used in computeAwardsScore to add
+ * Tony nomination breadth as a pre-ceremony signal. The top category being
+ * predicted is excluded (all nominees have it). Higher-tier categories
+ * (direction, leading acting) carry more voter-support signal than design.
+ */
+const TONY_NOM_WEIGHTS: Record<CategoryTier, number> = {
+  S:    0,    // excluded (top category being predicted)
+  'A+': 5,
+  A:    4,
+  B:    3,
+  C:    2,
+};
+
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
   'best-musical': 'Best Musical',
   'best-play': 'Best Play',
@@ -202,6 +322,24 @@ export interface SerializedTonyShow {
   awardsScore: number;
   /** Which Tony category this show was serialized in (drives the recipe). */
   tonyCategoryKey: TonyCategoryKey | null;
+  /** Win probability 0–1 from GoldDerby crowd votes. */
+  gdOdds?: number | null;
+  /** Cast page slug for linking to /cast/[slug] (person-level nominees only). */
+  nomineeActorSlug?: string | null;
+  /** Tony nominations won before the current season. */
+  nomineePriorNominations?: number;
+  /** Tony wins before the current season. */
+  nomineePriorWins?: number;
+  /** Win probability 0–1 from Polymarket real-money market. Null if no market exists. */
+  polymarketOdds?: number | null;
+  /** Win probability 0–1 from Kalshi real-money market. Null if no market exists. */
+  kalshiOdds?: number | null;
+  /** Person name for acting/directing nominations (e.g. "Sarah Snook"); null for show-level categories. */
+  nomineePersonName?: string | null;
+  /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
+  nomineeCategoryTitle?: string | null;
+  /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
+  criticPicks?: string[];
 }
 
 // --- Tony Season Logic ---
@@ -370,6 +508,21 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   // cross-category awards numbers are visually fair.
   const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
+
+  // Tony nomination breadth bonus (post-nomination-announcement only).
+  // Tony nominations are pre-ceremony signals — they indicate broad voter
+  // support across categories. Tony WINS are excluded (that's what we
+  // predict). The top category being predicted is also excluded since all
+  // nominees share it. Using nominatedFor (which includes all noms, won or
+  // not) is correct: wins-vs-noms distinction only matters for the ceremony
+  // outcome we're predicting, not for counting voter interest pre-ceremony.
+  const tonyNoms = (entry.tony?.nominatedFor ?? []).filter(n => n !== tonyCategory);
+  for (const nomCat of tonyNoms) {
+    const cls = classifyCategory(nomCat);
+    if (!cls) continue;
+    base += TONY_NOM_WEIGHTS[cls.tier];
+  }
+
   return Math.min(100, base);
 }
 
@@ -460,6 +613,10 @@ export function serializeShow(
     tonyAudienceGrade: tonyAud,
     awardsScore: awards,
     tonyCategoryKey: categoryKey ?? null,
+    gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
+    criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
+    polymarketOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], pmRawData) : null,
+    kalshiOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], kaRawData) : null,
   };
 }
 

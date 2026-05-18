@@ -17,6 +17,7 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Cron deploys main HEAD every 5 min** (auto-skips ticks where HEAD hasn't moved). After a push to main, the deploy lands within ~5-10 min — DO NOT run `gh workflow run "Deploy to Vercel"` after a normal push; it races with the cron and re-triggers the cascade we just fixed.
 - **Manual deploy** is for "ship NOW" only (opening night, broken page, post-rebuild data ship that can't wait): `gh workflow run "Deploy to Vercel"`. Auto-triggered post-rebuild via `workflow_run` already exists — manual dispatch is rarely needed.
 - **"Pushed" ≠ "Deployed"** — confirm via `gh run list --workflow="Deploy to Vercel" --limit 1`. If failed → fix.
+- **CI monitoring after multi-repo pushes:** Push ALL repos first, then get one final run ID and watch it once. Never watch intermediate cancelled runs. If you've already done >1 `gh run watch` call, switch to `ScheduleWakeup(270s)` + single `gh run view <id>` — do not keep chasing new run IDs synchronously.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.

@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import {
   getAllShowSlugs,
   getShowBySlug,
+  getBroadwayShows,
   getAllBestOfCategories,
   getAllTheaterSlugs,
   getAllLondonTheaterSlugs,
@@ -16,8 +17,10 @@ import { getAllComparisonSlugs } from '@/config/comparisons';
 import { GOLD_LIST_CONFIGS } from '@/config/gold-lists';
 import { getSeasonsForList } from '@/lib/data-gold-list-badges';
 import { featureFlags } from '@/config/feature-flags';
-import { getAllPredictionSeasons, getTonySeasonWindow } from '@/lib/data-tony-predictions';
+import { getAllPredictionSeasons, getTonySeasonWindow, hasNominationsBeenAnnounced } from '@/lib/data-tony-predictions';
 import { getAllBlogReviews } from '@/lib/data-reviews-blog';
+import { computeSiteAwardScore } from '@/lib/awards-scoring';
+import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
@@ -214,6 +217,12 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
+    ...(hasNominationsBeenAnnounced(getTonySeasonWindow()) ? [{
+      url: `${BASE_URL}/tony-awards/nominees`,
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.88,
+    }] : []),
     ...(featureFlags.tonyPredictions ? [
       {
         url: `${BASE_URL}/tony-awards/predictions`,
@@ -369,12 +378,24 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    ...(featureFlags.awardScoreV2 ? [{
-      url: `${BASE_URL}/award-score`,
-      lastModified: ctx.showsDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    }] : []),
+    ...(featureFlags.awardScoreV2 ? (() => {
+      const awardSeasons = new Set<string>();
+      for (const show of getBroadwayShows()) {
+        try {
+          const s = computeSiteAwardScore(show.id);
+          if (s.tonySeason) awardSeasons.add(s.tonySeason);
+        } catch {}
+      }
+      return [
+        { url: `${BASE_URL}/award-score`, lastModified: ctx.showsDate, changeFrequency: 'weekly' as const, priority: 0.8 },
+        ...Array.from(awardSeasons).map(season => ({
+          url: `${BASE_URL}/award-score/${seasonSlug(season)}`,
+          lastModified: ctx.showsDate,
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+        })),
+      ];
+    })() : []),
     {
       url: `${BASE_URL}/west-end/audience-buzz`,
       lastModified: ctx.showsDate,

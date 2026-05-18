@@ -864,6 +864,7 @@ function saveReview(showId, reviewData, options = {}) {
     criticName,
     url: reviewData.url,
     source: reviewData.source,
+    publishDate: reviewData.date || reviewData.publishDate || null,
     fields,
   });
 

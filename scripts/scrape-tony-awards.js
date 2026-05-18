@@ -262,18 +262,27 @@ function matchShow(showName, year) {
   // Direct title match
   const candidates = showsByTitle.get(normalized) || [];
 
+  // Year-eligibility filter applied to ALL candidates, including single-match.
+  // Without this, a unique-title match returns regardless of when the show
+  // opened — e.g. ceremony year=1970 + "The Boy from Oz" (opened 2003) would
+  // wrongly attach 1970 Tony data to the 2003 show. (Audit found 17 such
+  // misattributions; see scripts/audit-tony-attribution.js.)
+  const isYearEligible = (show) => {
+    if (!show.openingDate) return false;
+    const openYear = new Date(show.openingDate).getFullYear();
+    if (Number.isNaN(openYear)) return false;
+    // Tony eligibility: shows opening between late-April Y-1 and late-April Y
+    // are eligible for the Y ceremony. Accept Y, Y-1.
+    return openYear === year || openYear === year - 1;
+  };
+
   if (candidates.length === 1) {
-    return candidates[0];
+    return isYearEligible(candidates[0]) ? candidates[0] : null;
   }
 
   if (candidates.length > 1) {
     // Multiple shows with same title - find the one from the right year
-    const yearMatches = candidates.filter(show => {
-      const openYear = new Date(show.openingDate).getFullYear();
-      // Tony eligibility: show opened before cutoff (usually late April)
-      // So a show that opened in 2024 would be eligible for 2024 or 2025 Tonys
-      return openYear === year || openYear === year - 1;
-    });
+    const yearMatches = candidates.filter(isYearEligible);
     if (yearMatches.length === 1) {
       return yearMatches[0];
     }
@@ -658,8 +667,11 @@ async function main() {
   // Only for recent seasons where we can be sure they were eligible
   if (!targetYear || targetYear >= 2020) {
     for (const show of shows) {
-      // Skip non-Broadway shows (West End, Off-Broadway)
+      // Skip non-Broadway shows (West End, Off-Broadway).
+      // Also guard by ID — shows with null category at scrape time but
+      // "-off-broadway-" in their ID are never Tony-eligible.
       if (show.category && show.category !== 'broadway') continue;
+      if (!show.category && show.id && show.id.includes('-off-broadway-')) continue;
 
       const openYear = new Date(show.openingDate).getFullYear();
       // Check if show was eligible for a Tony season we scraped

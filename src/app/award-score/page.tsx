@@ -12,11 +12,20 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Broadway Award Scorecard - Prestige Scores for Every Show',
   description: 'Prestige-weighted award scores for Broadway shows. See which shows dominated the Tony Awards, Pulitzer Prize, Drama Desk, and more.',
+  alternates: {
+    canonical: `${BASE_URL}/award-score`,
+  },
   openGraph: {
     title: 'Broadway Award Scorecard',
     description: 'Prestige-weighted award scores across Tony, Pulitzer, Olivier, Drama Desk, Outer Critics Circle, Drama League, and NY Drama Critics.',
     url: `${BASE_URL}/award-score`,
-    type: 'article',
+    type: 'website',
+    images: [{ url: `${BASE_URL}/og/tony-awards.png`, width: 1200, height: 630, alt: 'Broadway Award Scorecard' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Broadway Award Scorecard',
+    description: 'Prestige-weighted award scores for Broadway shows — Tony, Pulitzer, Drama Desk, and more.',
   },
 };
 
@@ -37,28 +46,35 @@ const faqSchema = {
       name: 'What do the award tiers mean?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Sweeper (85+): dominated the awards season. Decorated (70–84): won multiple major awards. Honored (41–69): won at least one major award. Nominated (1–40): received nominations. Eligible (0): no award activity yet.',
+        text: 'Sweeper (90+): dominated the awards season. Decorated (70–89): won multiple major awards. Honored (1–69): at least one win at any ceremony. Nominated: recognized with nominations but 0 wins. Eligible (0): no award activity yet.',
       },
     },
   ],
 };
 
+// Legend chip colors match the medal palette in AwardScoreBadge (2026-05-17 v2):
+// gold / silver / bronze for top 3 ("won something") tiers; subdued white for
+// the unwon tier. Keep in sync with TIER_STYLES in AwardScoreBadge.tsx.
 const tierConfig: { badge: TierBadge; chipClass: string; description: string }[] = [
-  { badge: 'sweeper',   chipClass: 'bg-amber-500/20 text-amber-400',   description: '85+ · Dominated the awards season' },
-  { badge: 'decorated', chipClass: 'bg-emerald-500/20 text-emerald-400', description: '70–84 · Won multiple major awards' },
-  { badge: 'honored',   chipClass: 'bg-teal-600/20 text-teal-400',      description: '41–69 · Won at least one major award' },
-  { badge: 'nominated', chipClass: 'bg-amber-900/40 text-amber-200',    description: '1–40 · Received nominations' },
+  { badge: 'sweeper',   chipClass: 'bg-amber-400/20 text-amber-300 border border-amber-400/30',   description: '90+ · Dominated the awards season' },
+  { badge: 'decorated', chipClass: 'bg-gray-500/20 text-gray-200 border border-white/10',     description: '70–89 · Won multiple major awards' },
+  { badge: 'honored',   chipClass: 'bg-orange-700/20 text-orange-300 border border-orange-500/30', description: 'At least one win' },
+  { badge: 'nominated', chipClass: 'bg-white/5 text-gray-300 border border-white/20',             description: 'Recognized · 0 wins' },
 ];
 
 export default function AwardScorePage() {
   if (!featureFlags.awardScoreV2) notFound();
 
-  const allShows = getBroadwayShows().filter(s => s.status === 'open');
+  const allShows = getBroadwayShows();
 
   const showsWithScore = allShows
     .map(show => {
       try {
-        return { show, awardScore: computeSiteAwardScore(show.id) };
+        const awardScore = computeSiteAwardScore(show.id);
+        return {
+          show: { slug: show.slug, title: show.title, status: show.status, images: show.images },
+          awardScore,
+        };
       } catch {
         return null;
       }
@@ -99,7 +115,7 @@ export default function AwardScorePage() {
             Which shows are winning Broadway&apos;s awards season? Each score weighs seven ceremonies — Tonys, Pulitzer, Olivier, Drama Desk, OCC, Drama League, and NYDCC — with Tony wins carrying the most weight.
           </p>
           <p className="text-sm text-gray-500 mt-1">
-            {showsWithScore.length} shows with award activity · Currently open Broadway shows
+            {showsWithScore.length} shows with award activity across all seasons
           </p>
         </div>
 
@@ -125,7 +141,7 @@ export default function AwardScorePage() {
         <section className="mb-12">
           <h2 className="text-xl font-bold text-white mb-4">All Shows by Award Score</h2>
           <p className="text-gray-400 text-sm mb-4">
-            Click column headers to sort. ★ In Progress means Tony nominations are confirmed but the ceremony hasn&apos;t happened yet.
+            Click column headers to sort. <span className="animate-pulse font-bold">*</span> In Progress means Tony nominations are confirmed but the ceremony hasn&apos;t happened yet.
           </p>
           {showsWithScore.length > 0 ? (
             <SortableAwardScoreTable data={showsWithScore} />

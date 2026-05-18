@@ -30,19 +30,33 @@ type CeremonyKey =
   | 'nydcc'
   | 'occ'
   | 'dramaLeague'
-  | 'dramaDesk';
+  | 'dramaDesk'
+  | 'obie'
+  | 'lortel'
+  | 'criticsCircle';
 
 interface TierPoints { win: number; nom: number }
 
 const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
-  tony:         { S: { win: 150, nom: 38 }, A: { win: 75, nom: 18 }, B: { win: 35, nom: 9 }, C: { win: 25, nom: 6 } },
-  pulitzer:     { S: { win: 110, nom: 35 } },
-  olivier_bway: { S: { win: 50,  nom: 12 }, A: { win: 25, nom: 6 },  B: { win: 15, nom: 4 }, C: { win: 12, nom: 3 } },
-  olivier_we:   { S: { win: 110, nom: 28 }, A: { win: 55, nom: 14 }, B: { win: 32, nom: 8 }, C: { win: 24, nom: 6 } },
-  nydcc:        { S: { win: 75,  nom: 0 } },
-  occ:          { S: { win: 50,  nom: 13 }, A: { win: 28, nom: 7 },  B: { win: 16, nom: 4 }, C: { win: 10, nom: 2 } },
-  dramaLeague:  { S: { win: 35,  nom: 9 },  A: { win: 22, nom: 6 } },
-  dramaDesk:    { S: { win: 28,  nom: 7 },  A: { win: 18, nom: 4 },  B: { win: 12, nom: 3 }, C: { win: 8,  nom: 2 } },
+  // Tony S-tier raised so Best Musical/Play dominates over any craft-award combination.
+  // Previously 150 — two A+ craft wins (Book + Score = 180) could outrank Best Musical.
+  // Nom values ~50% of original — nominations signal industry recognition but a win is
+  // worth ~8-10x a nomination. Previously ~4-5x, which let 5 noms + 0 wins score 51 [Honored].
+  tony:         { S: { win: 200, nom: 20 }, A: { win: 75, nom: 9 }, B: { win: 35, nom: 5 }, C: { win: 25, nom: 3 } },
+  pulitzer:     { S: { win: 110, nom: 18 } },
+  olivier_bway: { S: { win: 50,  nom: 6 },  A: { win: 25, nom: 3 },  B: { win: 15, nom: 2 }, C: { win: 12, nom: 2 } },
+  olivier_we:   { S: { win: 110, nom: 14 }, A: { win: 55, nom: 7 },  B: { win: 32, nom: 4 }, C: { win: 24, nom: 3 } },
+  nydcc:        { S: { win: 45,  nom: 0 } },
+  occ:          { S: { win: 30,  nom: 5 },  A: { win: 20, nom: 3 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
+  dramaLeague:  { S: { win: 35,  nom: 5 },  A: { win: 22, nom: 3 } },
+  dramaDesk:    { S: { win: 28,  nom: 4 },  A: { win: 18, nom: 2 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
+  // Off-Broadway and UK critics' awards — lower weight than Broadway ceremony equivalents.
+  // Obie: wins only (Wikipedia has no nominee lists), S-tier per category matching.
+  // Lortel: full nom tracking, Off-Broadway prestige tier below OCC.
+  // criticsCircle: UK Critics' Circle Theatre Awards; primarily West End-relevant.
+  obie:         { S: { win: 18,  nom: 0 },  A: { win: 12, nom: 0 },  B: { win: 8,  nom: 0 }, C: { win: 5,  nom: 0 } },
+  lortel:       { S: { win: 20,  nom: 3 },  A: { win: 12, nom: 2 },  B: { win: 8,  nom: 1 }, C: { win: 5,  nom: 1 } },
+  criticsCircle:{ S: { win: 30,  nom: 0 },  A: { win: 18, nom: 0 },  B: { win: 10, nom: 0 }, C: { win: 6,  nom: 0 } },
 };
 
 const A_PLUS_MULTIPLIER = 1.2;
@@ -59,8 +73,13 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   const c = category.toLowerCase();
   if (/revival of a musical|musical revival/.test(c)) return { tier: 'S', revival: true };
   if (/revival of a play|play revival/.test(c)) return { tier: 'S', revival: true };
+  // Lortel "Outstanding Revival" — combined musical+play revival category (no type distinction)
+  if (/^outstanding revival$/.test(c)) return { tier: 'S', revival: true };
   if (/best musical$|outstanding musical$|outstanding new (broadway|off-broadway) musical|outstanding production of a (broadway or off-broadway )?musical/.test(c)) return { tier: 'S', revival: false };
   if (/best play$|outstanding play$|outstanding new (broadway|off-broadway) play|outstanding production of a play/.test(c)) return { tier: 'S', revival: false };
+  // Olivier "Best New Play" and "Best Revival"
+  if (/best new play/.test(c)) return { tier: 'S', revival: false };
+  if (/^best revival$/.test(c)) return { tier: 'S', revival: true };
   if (/^drama$/.test(c)) return { tier: 'S', revival: false };
   if (/best (original )?score|outstanding (new )?score|outstanding music\b|outstanding lyrics|outstanding music in a play/.test(c)) return { tier: 'A+', revival: false };
   if (/best book|outstanding book/.test(c)) return { tier: 'A+', revival: false };
@@ -68,17 +87,32 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
-  // Lead Performance (DD 70th+) / Lead Performer (OCC) in a [Broadway|Off-Broadway] [play|musical]
-  if (/outstanding lead (performance|performer) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // Olivier "Best Actor" / "Best Actress" — Olivier play acting awards have no "in a play" qualifier
+  if (/^best (actor|actress)$/.test(c)) return { tier: 'A', revival: false };
+  // Lead Performance (DD 70th+) / Lead Performer (OCC) / Lead Actor|Actress (Lortel) in a [Broadway|Off-Broadway] [play|musical]
+  if (/outstanding lead (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
-  // Featured Performance (DD 70th+) / Featured Performer (OCC) variants
-  if (/outstanding featured (performance|performer) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
+  // Olivier supporting role categories (use "supporting role" instead of "featured")
+  if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
+  // Featured Performance (DD 70th+) / Featured Performer (OCC) / Featured Actor|Actress (Lortel) variants
+  if (/outstanding featured (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
   if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
+  if (/projection design/.test(c)) return { tier: 'C', revival: false };
+  if (/solo performance|solo show/.test(c)) return { tier: 'B', revival: false };
+  if (/john gassner award|most promising playwright/.test(c)) return { tier: 'C', revival: false };
+  // NYDCC Best Foreign Play — S-tier like Best Play; foreign-authored Broadway productions
+  if (/best foreign play/.test(c)) return { tier: 'S', revival: false };
+  // Obie Award categories (Village Voice Off-Broadway, 1956–2019)
+  if (/best new american play|outstanding new american play/.test(c)) return { tier: 'S', revival: false };
+  if (/best new musical/.test(c)) return { tier: 'S', revival: false };
+  if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
+  // Special/honorary career awards — recognized but intentionally worth 0 points; not a typo.
+  if (/special achievement|body of work/.test(c)) return null;
   return null;
 }
 
@@ -104,6 +138,7 @@ export interface ScoreResult {
   breakdown: CeremonyContribution[];
   tonyWins: number;
   tonyNoms: number;
+  tonySeason?: string;
 }
 
 function applyMultipliers(points: number, tier: CategoryTier, isRevival: boolean): number {
@@ -175,7 +210,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const shows = (awardsData as { shows: Record<string, AwardsShowEntry> }).shows;
   const entry = shows[showId];
   if (!entry) {
-    return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [], tonyWins: 0, tonyNoms: 0 };
+    return { rawPoints: 0, displayScore: 0, badge: 'eligible', inProgress: false, breakdown: [], tonyWins: 0, tonyNoms: 0, tonySeason: undefined };
   }
   const breakdown: CeremonyContribution[] = [];
   if (entry.tony) {
@@ -195,7 +230,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.olivier.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Olivier Awards', key, wins, noms, unknownNoms(entry.olivier.nominations, wins, noms)));
   }
-  if (entry.nyDramaCritics) {
+  if (entry.nyDramaCritics && !entry.nyDramaCritics.noAward) {
     breakdown.push(scoreCeremony("NY Drama Critics' Circle", 'nydcc', entry.nyDramaCritics.wins ?? [], []));
   }
   if (entry.outerCriticsCircle) {
@@ -213,14 +248,30 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.dramadesk.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Drama Desk', 'dramaDesk', wins, noms, unknownNoms(entry.dramadesk.nominations, wins, noms)));
   }
+  if (entry.obie) {
+    const wins = entry.obie.wins ?? [];
+    breakdown.push(scoreCeremony('Obie Awards', 'obie', wins, []));
+  }
+  if (entry.lortel) {
+    const wins = entry.lortel.wins ?? [];
+    const noms = entry.lortel.nominatedFor ?? [];
+    breakdown.push(scoreCeremony('Lucille Lortel Awards', 'lortel', wins, noms, unknownNoms(entry.lortel.nominations, wins, noms)));
+  }
+  if (entry.criticsCircle) {
+    const wins = entry.criticsCircle.wins ?? [];
+    const noms = entry.criticsCircle.nominatedFor ?? [];
+    breakdown.push(scoreCeremony("Critics' Circle Theatre Awards", 'criticsCircle', wins, noms));
+  }
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   // Hard-cap display at 100 — UX call: scores >100 read as bugs.
   const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
+  const totalWins = breakdown.reduce((s, b) => s + b.items.filter(i => i.result === 'win').length, 0);
   let badge: TierBadge;
   if (displayScore === 0) badge = 'eligible';
-  else if (displayScore <= 40) badge = 'nominated';
+  // "Nominated" = recognized but 0 wins across all ceremonies. Any win earns at least Honored.
+  else if (totalWins === 0) badge = 'nominated';
   else if (displayScore <= 69) badge = 'honored';
-  else if (displayScore <= 84) badge = 'decorated';
+  else if (displayScore <= 89) badge = 'decorated';
   else badge = 'sweeper';
   // In-progress = the show's ceremony hasn't happened yet AND it has no wins.
   // Switched from "showSeason === currentSeason.label" (which dropped the flag
@@ -231,7 +282,7 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
   const inProgress = !!showSeason && !tonyDone && tonyCeremonyIsFuture(showSeason);
   const tonyWins = entry.tony?.wins?.length ?? 0;
   const tonyNoms = entry.tony?.nominatedFor?.length ?? 0;
-  return { rawPoints, displayScore, badge, inProgress, breakdown, tonyWins, tonyNoms };
+  return { rawPoints, displayScore, badge, inProgress, breakdown, tonyWins, tonyNoms, tonySeason: showSeason };
 }
 
 interface PrecursorNode { wins?: string[]; nominatedFor?: string[]; nominations?: number }
@@ -240,7 +291,10 @@ interface AwardsShowEntry {
   dramadesk?: PrecursorNode & { season?: string };
   outerCriticsCircle?: PrecursorNode & { season?: string };
   dramaLeague?: PrecursorNode & { season?: string };
-  nyDramaCritics?: PrecursorNode & { season?: string };
+  nyDramaCritics?: PrecursorNode & { season?: string; noAward?: boolean };
+  obie?: PrecursorNode & { season?: string };
+  lortel?: PrecursorNode & { season?: string };
+  criticsCircle?: PrecursorNode & { season?: string };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };
