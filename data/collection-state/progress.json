@@ -8,7 +8,10 @@
     "the-producers-west-end-2025/variety--ellise-shafer.json",
     "my-neighbour-totoro-west-end-2025/british-theatre--susan-novak.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-    "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json"
+    "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json",
+    "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json",
+    "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+    "consumed-west-end-2026/hampstead-highgate-express--unknown.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -21,7 +24,14 @@
     "les-liaisons-dangereuses-west-end-2026/the-upcoming-uk--unknown.json",
     "romeo-and-juliet-west-end-2026/thestage--unknown.json",
     "the-producers-west-end-2025/variety--bob-verini.json",
-    "titanique-west-end-2024/times-uk--clive-davis.json"
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/whatsonstage--unknown.json",
+    "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/et--desiree-murphy.json",
+    "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -29,19 +39,25 @@
       "the-boy-who-harnessed-the-wind-west-end-2026/artsdesk--unknown.json",
       "avenue-q-west-end-2026/sunday-express--callum-crumlish.json",
       "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
-      "my-neighbour-totoro-west-end-2025/british-theatre--susan-novak.json"
+      "my-neighbour-totoro-west-end-2025/british-theatre--susan-novak.json",
+      "trainspotting-the-musical-west-end-2026/london-theatre--unknown.json",
+      "consumed-west-end-2026/hampstead-highgate-express--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
       "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
-      "the-producers-west-end-2025/variety--ellise-shafer.json"
+      "the-producers-west-end-2025/variety--ellise-shafer.json",
+      "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
+      "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "dracula-west-end-2025/metro--unknown.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-      "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json"
+      "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json",
+      "mamma-mia-west-end-2021/broadwayworld--stephi-wild.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/et--desiree-murphy.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -54,7 +70,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json",
+  "lastProcessed": "consumed-west-end-2026/hampstead-highgate-express--unknown.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -75,6 +91,17 @@
     },
     {
       "t": "2026-05-18T09:17:16.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-18T09:21:48.820Z",
+      "event": "bb-session",
+      "session": "27b82d09",
+      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
+    },
+    {
+      "t": "2026-05-18T09:21:49.572Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
