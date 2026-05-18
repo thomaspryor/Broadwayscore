@@ -12,6 +12,7 @@ import {
   groupIntoCategories,
   serializeShow,
   lookupCriticPicks,
+  getPrecursorWins,
   type SerializedTonyShow,
   type TonyCategory,
   type TonySeasonWindow,
@@ -288,6 +289,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
+          precursorWins: getPrecursorWins(nom.showId, catTitle),
         });
       }
     } else {
@@ -323,6 +325,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           criticPicks: lookupCriticPicks(showId, null, catTitle),
+          precursorWins: getPrecursorWins(showId, catTitle),
         });
       }
     }
