@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-18T15:37:21.936Z",
+  "timestamp": "2026-05-18T23:05:58.989Z",
   "stats": {
-    "totalReviews": 36916,
-    "alreadyFlagged": 16175,
+    "totalReviews": 36926,
+    "alreadyFlagged": 16177,
     "dateGuardCatches": 103,
     "directorMismatch": 801,
     "tvFilmSignals": 1017,
-    "londonSignals": 570,
+    "londonSignals": 571,
     "offBroadwaySignals": 445,
     "yearMismatch": 77,
-    "noPublishDate": 3805
+    "noPublishDate": 3799
   },
   "findings": [
     {
@@ -25307,6 +25307,20 @@
       "score": 90,
       "publishDate": "2026-05-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-1536-The-Ambassadors-Theatre-20260514",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "1536-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 83,
+      "publishDate": "2026-05-11",
+      "url": "https://www.timeout.com/london/theatre/1536-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

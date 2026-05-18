@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-18T15:37:26.096Z",
+  "generatedAt": "2026-05-18T23:06:03.124Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -995,10 +995,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "TheWrap",
           "isDualMarket": false
         },
@@ -1242,28 +1238,23 @@
       "status": "open",
       "slug": "mother-courage-and-her-children-globe-west-end",
       "thumbnail": "/images/shows/mother-courage-and-her-children-globe-west-end-2026/thumbnail.webp",
-      "siteScore": 77.69,
-      "liveScore": 78,
-      "scoreDrift": 0.3100000000000023,
+      "siteScore": 76.78,
+      "liveScore": 77,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 1,
-      "t2": 5,
-      "t3": 1,
-      "positive": 5,
+      "total": 17,
+      "t1": 6,
+      "t2": 9,
+      "t3": 2,
+      "positive": 14,
       "mixed": 2,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "7/8 total",
-          "T1:1/3",
-          "T2:1/2",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1273,13 +1264,9 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1289,19 +1276,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
           "name": "The Independent",
           "isDualMarket": true
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -1316,10 +1295,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -1346,6 +1321,18 @@
           "p": 5,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-18T22:52:55.224Z",
+          "rc": 17,
+          "s": 76.78,
+          "t1": 6,
+          "t2": 9,
+          "t3": 2,
+          "p": 14,
+          "m": 2,
+          "n": 1,
           "bc": "waiting"
         }
       ]

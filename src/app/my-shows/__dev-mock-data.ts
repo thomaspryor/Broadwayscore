@@ -58,8 +58,8 @@ export const mockReviews: UserReview[] = [
 ];
 
 export const mockWatchlist: WatchlistEntry[] = [
-  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-03-20', created_at: '2026-01-01T00:00:00Z' },
-  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-04-10', created_at: '2026-02-01T00:00:00Z' },
+  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-09-15', created_at: '2026-01-01T00:00:00Z' },
+  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-10-10', created_at: '2026-02-01T00:00:00Z' },
   { id: 'w3', user_id: USER_ID, show_id: 'oh-mary-2024', planned_date: null, created_at: '2025-12-15T00:00:00Z' },
   { id: 'w4', user_id: USER_ID, show_id: 'operation-mincemeat-2025', planned_date: null, created_at: '2026-01-20T00:00:00Z' },
   // Past planned_date, no review → "To be rated"

@@ -56,14 +56,25 @@ test.describe('My Shows — Page Structure', () => {
 
   test('no console errors on page load', async ({ page }) => {
     const errors: string[] = [];
+    const notFoundUrls: string[] = [];
     page.on('console', msg => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
+    page.on('response', response => {
+      if (response.status() === 404) {
+        const url = response.url();
+        // Ignore expected 404s: favicon, analytics, external services
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase')) {
+          notFoundUrls.push(`404: ${url}`);
+        }
+      }
+    });
     await goToMock(page);
     const critical = errors.filter(e =>
-      !e.includes('favicon') && !e.includes('analytics') && !e.includes('DevTools')
+      !e.includes('favicon') && !e.includes('analytics') && !e.includes('DevTools') &&
+      !e.includes('Failed to load resource') // covered by notFoundUrls check below
     );
-    expect(critical).toEqual([]);
+    expect([...critical, ...notFoundUrls], 'Unexpected errors or 404s on page load').toEqual([]);
   });
 });
 
@@ -127,7 +138,7 @@ test.describe('My Shows — Diary Sections', () => {
   test('Upcoming section shows future watchlist items', async ({ page }) => {
     await goToMock(page);
     await expect(page.getByRole('heading', { name: 'Upcoming' })).toBeVisible();
-    // Gypsy (Mar 20) and Smash (Apr 10)
+    // Gypsy (Sep 15) and Smash (Oct 10)
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Smash', level: 4 })).toBeVisible();
   });
@@ -378,7 +389,7 @@ test.describe('My Shows — Watchlist', () => {
     await goToMock(page, 'watchlist');
     // Date picker buttons (Add date or actual dates)
     const dateButtons = page.locator('text=Add date');
-    const existingDates = page.locator('text=Mar 20');
+    const existingDates = page.locator('text=Sep 15');
     const totalDates = (await dateButtons.count()) + (await existingDates.count());
     expect(totalDates).toBeGreaterThan(0);
   });
