@@ -51,19 +51,37 @@ jobs:
             node scripts/scrape-tony-awards.js
           fi
 
+      - name: Update GoldDerby Tony odds
+        run: node scripts/scrape-gold-derby-tonys.js --season=2026
+        continue-on-error: true
+
+      - name: Update Polymarket Tony odds
+        run: node scripts/scrape-polymarket-tonys.js --season=2026
+        continue-on-error: true
+
+      - name: Update Kalshi Tony odds
+        run: node scripts/scrape-kalshi-tonys.js --season=2026
+        continue-on-error: true
+
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/awards.json; then
+          CHANGED_FILES=""
+          ! git diff --quiet data/awards.json && CHANGED_FILES="$CHANGED_FILES awards.json"
+          ! git diff --quiet data/tony-win-probabilities.json && CHANGED_FILES="$CHANGED_FILES tony-win-probabilities.json"
+          ! git diff --quiet data/tony-polymarket-odds.json && CHANGED_FILES="$CHANGED_FILES tony-polymarket-odds.json"
+          ! git diff --quiet data/tony-kalshi-odds.json && CHANGED_FILES="$CHANGED_FILES tony-kalshi-odds.json"
+          if [ -z "$CHANGED_FILES" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes to awards data"
+            echo "No changes to Tony data files"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
             BEFORE=$(git show HEAD:data/awards.json 2>/dev/null | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');console.log(Object.keys(JSON.parse(d).shows||{}).length)" 2>/dev/null || echo "0")
             AFTER=$(node -e "const d=require('./data/awards.json');console.log(Object.keys(d.shows||{}).length)")
             echo "before=$BEFORE" >> $GITHUB_OUTPUT
             echo "after=$AFTER" >> $GITHUB_OUTPUT
-            echo "Awards data changed: $BEFORE → $AFTER shows"
+            echo "Changed:$CHANGED_FILES | Awards: $BEFORE → $AFTER shows"
           fi
 
       - name: Commit and push
@@ -71,7 +89,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/awards.json
+          git add data/awards.json data/tony-win-probabilities.json data/tony-polymarket-odds.json data/tony-kalshi-odds.json
 
           YEAR_NOTE=""
           if [ -n "${{ inputs.year }}" ]; then
@@ -132,9 +150,8 @@ jobs:
           echo "## Tony Awards Update" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           if [ "${{ steps.changes.outputs.has_changes }}" == "true" ]; then
-            echo "✅ Awards data updated" >> $GITHUB_STEP_SUMMARY
-            echo "- Before: ${{ steps.changes.outputs.before }} shows" >> $GITHUB_STEP_SUMMARY
-            echo "- After: ${{ steps.changes.outputs.after }} shows" >> $GITHUB_STEP_SUMMARY
+            echo "✅ Tony data updated: ${{ steps.changes.outputs.changed_files }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Awards shows: ${{ steps.changes.outputs.before }} → ${{ steps.changes.outputs.after }}" >> $GITHUB_STEP_SUMMARY
           else
-            echo "ℹ️ No changes to awards data" >> $GITHUB_STEP_SUMMARY
+            echo "ℹ️ No changes to Tony data files" >> $GITHUB_STEP_SUMMARY
           fi
