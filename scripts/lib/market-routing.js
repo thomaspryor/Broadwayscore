@@ -263,7 +263,12 @@ function classifyMarketRouting(args) {
   // Require ≥2 corroborating signals before rerouting; with <2 signals on the
   // current show AND ≥1 sibling outscoring it, flag wrongProduction so the
   // existing manual-clear flow can resolve it.
-  if (sibData && sibData.siblings.length && sibData.title) {
+  //
+  // Escape hatch: `DISABLE_PRODUCTION_DISAMBIG=true` short-circuits ONLY this
+  // same-market branch and falls through to plain `{action:'accept'}` (pre-
+  // 2026-05-17 behavior). Cross-market Tier 1/Tier 2 reroute and Guard H
+  // above are unaffected.
+  if (process.env.DISABLE_PRODUCTION_DISAMBIG !== 'true' && sibData && sibData.siblings.length && sibData.title) {
     const currentTitleNorm = normalizeTitle(sibData.title);
     const currentPool = getMarketPool(sibData.category);
     const sameMarketSiblings = sibData.siblings.filter(s =>
