@@ -36,14 +36,14 @@ const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Awards Nominees — Critic, Audience & Odds`,
-  description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby. All 26 categories.`,
+  title: `${season.ceremonyYear} Tony Nominees Scorecard — Critic, Audience & Odds`,
+  description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby, Polymarket, and Kalshi. All 26 categories.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
-    title: `${season.ceremonyYear} Tony Nominees — Broadway Scorecard`,
-    description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds.`,
+    title: `${season.ceremonyYear} Tony Nominees Scorecard — Broadway Scorecard`,
+    description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',
   },
@@ -408,7 +408,7 @@ export default function TonyNomineesPage() {
         <div className="flex items-start justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              {season.ceremonyYear} Tony Nominees
+              {season.ceremonyYear} Tony Nominees Scorecard
             </h1>
             <p className="text-gray-400 mt-1 text-sm">
               {totalCategories} categories &middot; critic scores, audience grades, and win odds
@@ -428,7 +428,7 @@ export default function TonyNomineesPage() {
 
         {/* Legend */}
         <p className="mt-8 text-xs text-gray-600 text-center">
-          Gold Derby win odds sourced from GoldDerby crowd predictions
+          Win odds: GoldDerby (crowd predictions) · Polymarket &amp; Kalshi (real-money markets)
         </p>
       </div>
     </>
