@@ -63,6 +63,19 @@ jobs:
         run: node scripts/scrape-kalshi-tonys.js --season=2026
         continue-on-error: true
 
+      - name: Validate odds output
+        run: |
+          for file in data/tony-win-probabilities.json data/tony-polymarket-odds.json data/tony-kalshi-odds.json; do
+            if [ -f "$file" ]; then
+              fetched=$(node -e "try { const d=require('./$file'); console.log(d._meta?.categoriesFetched ?? 0); } catch(e) { console.log(0); }")
+              if [ "$fetched" = "0" ]; then
+                echo "::warning::$file: categoriesFetched=0 — scraper returned no data. Check API slugs/tickers or market availability."
+              else
+                echo "$file: $fetched categories fetched OK"
+              fi
+            fi
+          done
+
       - name: Check for changes
         id: changes
         run: |

@@ -237,11 +237,19 @@ const FRESHNESS_CHECKS = [
   { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 72, errorH: 120, hint: 'Check nyt-critics-picks workflow in Actions tab (runs Mon/Wed/Fri)' },
   { file: 'video-reviews.json', field: '_meta.generatedAt', warnH: 192, errorH: 336, hint: 'Check weekly-video-reviews workflow in Actions tab (runs Monday)' },
   { file: 'social-pulse/_budget.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
+  // Tony odds — only relevant April–June. Large thresholds so stale off-season files don't false-alarm.
+  { file: 'tony-win-probabilities.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — GoldDerby scraper may have failed', seasonMonths: [4, 5, 6] },
+  { file: 'tony-polymarket-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Polymarket scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
+  { file: 'tony-kalshi-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Kalshi scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
 ];
 
 function checkFreshness() {
-  return FRESHNESS_CHECKS.map(({ file, field, warnH, errorH, hint }) =>
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  return FRESHNESS_CHECKS.map(({ file, field, warnH, errorH, hint, seasonMonths }) =>
     runCheck(`Freshness: ${file}`, () => {
+      if (seasonMonths && !seasonMonths.includes(currentMonth)) {
+        return { name: `Freshness: ${file}`, status: 'ok', message: 'Skipped (off-season)' };
+      }
       const filePath = path.join(DATA_DIR, file);
       if (!fs.existsSync(filePath)) {
         return { name: `Freshness: ${file}`, status: 'error', message: `File missing`, hint };
