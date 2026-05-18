@@ -1905,8 +1905,17 @@ function isIncludableForRebuild(data, show) {
     data.contentVerification?.confidence === 'high'
   ) return false;
 
-  // Garbage text flagged by collection pipeline or LLM ensemble
-  if (data.rejectionReason) return false;
+  // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
+  // Exception: 'not_a_review' rejection fires on excerpt/promo text (ShowScore, LBO)
+  // even when the outlet's JSON-LD schema records an explicit star rating. The json-ld
+  // star IS the critic's published verdict — authoritative for KNOWN_STAR_OUTLETS. Allow
+  // inclusion so the P0.5 path in getBestScore can use the structured-data score.
+  if (data.rejectionReason) {
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    if (!isJsonLdStarNotAReview) return false;
+  }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return false;
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
@@ -1931,7 +1940,12 @@ function isIncludableForRebuild(data, show) {
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false;
-    if (!reFetched && !wpCleared) return false;
+    // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
+    // from a known star outlet clears the rejectedAt gate as well.
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview) return false;
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
