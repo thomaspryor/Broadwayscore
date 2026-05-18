@@ -4,10 +4,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
 import type { TierBadge } from '@/lib/awards-scoring';
+import { getOutletConfig } from '@/config/outlet-logos';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
+import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 
 // --- Constants ---
 
@@ -100,6 +102,57 @@ function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' |
   );
 }
 
+const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
+
+function PrecursorChips({ wins }: { wins?: string[] }) {
+  if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
+  return (
+    <div className="flex items-center gap-1">
+      {wins.map(w => (
+        <span
+          key={w}
+          title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`}
+          className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none"
+        >
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+const CRITIC_PICK_META: Record<string, { abbrev: string; color: string; label: string }> = {
+  nyt:      { abbrev: 'T',  color: '#1a1a1a', label: 'New York Times' },
+  variety:  { abbrev: 'V',  color: '#be0028', label: 'Variety' },
+  deadline: { abbrev: 'DL', color: '#444444', label: 'Deadline' },
+};
+
+function PressPicks({ picks }: { picks?: string[] }) {
+  if (!picks || picks.length === 0) return null;
+  const knownPicks = picks.filter(id => CRITIC_PICK_META[id]);
+  if (knownPicks.length === 0) return null;
+  return (
+    <div className="flex items-center gap-0.5">
+      {knownPicks.map(id => {
+        const meta = CRITIC_PICK_META[id];
+        const cfg = getOutletConfig(meta.label);
+        const bgColor = cfg?.color ?? meta.color;
+        const textSize = meta.abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
+        return (
+          <div
+            key={id}
+            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+            style={{ backgroundColor: bgColor }}
+            title={`${meta.label} picks this show to win`}
+          >
+            {meta.abbrev}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // Column header row — appears once per section inside the card, labels align with data columns
 // CRITICAL: ALL header columns must be in ONE inner flex container with gap-2 so data rows can
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
@@ -145,9 +198,17 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
           </>
         ))}
         {!isPersonLevel && (
-          <div className={`${scoreW} text-center`}>
-            <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
-          </div>
+          <>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
+            </div>
+            <div className="hidden sm:flex flex-col items-center w-20">
+              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+            </div>
+            <div className="hidden sm:flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -198,6 +259,12 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="md"
         />
+        <div className="hidden sm:flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="hidden sm:flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </Link>
   );
@@ -324,6 +391,12 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="sm"
         />
+        <div className="hidden sm:flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="hidden sm:flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </div>
   );
@@ -398,7 +471,7 @@ export default function TonyNomineesPage() {
         </Link>
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-8">
+        <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               {season.ceremonyYear} Tony Nominations Center
@@ -408,10 +481,19 @@ export default function TonyNomineesPage() {
             </p>
           </div>
           {ceremonyDate && (
-            <span className="flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20">
-              Ceremony {formatCeremonyDate(ceremonyDate)}
-            </span>
+            <div className="flex flex-col items-end flex-shrink-0">
+              <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20">
+                Ceremony {formatCeremonyDate(ceremonyDate)}
+              </span>
+              <CeremonyCountdown ceremonyDate={ceremonyDate} />
+            </div>
           )}
+        </div>
+
+        {/* Announcement banner */}
+        <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
+          <span className="text-brand font-semibold">Predictions being released on Thursday</span>
+          {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
         </div>
 
         {/* Category sections */}
