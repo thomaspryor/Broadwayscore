@@ -14,6 +14,7 @@
 - [Probe before scale backfills](feedback_investigate_premise_before_scaling.md) — Parent-card "X files need Y" can be wrong by orders of magnitude; 5-20 file probe first.
 - [Save research findings to memory](feedback_save_research_findings.md) — After last30/web research, immediately save actionable ideas.
 - [/ship-check catches real P1s](feedback_ship_check_finds_real_bugs.md) — Opus subagent catches bugs tsc/lint/tests miss — never skip. SHIPCHECK gate in verify-edits.sh now enforces for scripts/lib/ + .github/workflows/.
+- [Sprint plans always need /plan-review](feedback_sprint_plan_needs_review.md) — Multi-sprint plans authored without /plan-review almost always contain false premises about existing code. Caught 4 P0 + 5 P1 issues in awards sprint plan on 2026-05-17.
 - [Test pure function at I/O boundary](feedback_test_pure_function_at_io_boundary.md) — Pure-helper unit tests are insufficient; also exercise the wrapper against real data. The 073db6bab0 ship-check bugs that birthed this rule.
 - [Email drafting style](feedback_email_drafting.md) — Minimal em dashes; no mid-paragraph hard line breaks in Gmail.
 - [Ask with recommendation](feedback_ask_with_recommendation.md) — Every AskUserQuestion leads with `(Recommended)` option 1 + why. Never neutral menus.
@@ -42,6 +43,9 @@
 - [gh api emergency single-file commit](feedback_gh_api_emergency_commit.md) — When local git is broken, `gh api PUT /contents/` commits one file without touching the working tree.
 
 ## ⚙️ CI / GitHub Actions / workflows
+- [vercel build env block required](feedback_vercel_env_block_required.md) — `vercel build` ignores `.vercel/.env.preview.local` for NEXT_PUBLIC_* inlining. Must pass via build step's `env:` block (same as Sanity vars do). Writing the env file alone = no-op.
+- [Vercel NFT dynamic paths](feedback_vercel_nft_dynamic_paths.md) — `process.cwd()+'data/'+variable` causes NFT to include entire data/ tree (590MB git packs, audit logs). Static imports only; never dynamic paths from server code.
+- [Conservative default = common case](feedback_conservative_default_can_be_common_case.md) — Helper that defaults to "unknown → assume X" silently misbehaves when unknown IS the common case. 733 historical Tony shows pulsed because ceremonyDate was missing from most records.
 - [GitHub polling burns rate limit](feedback_github_polling_rate_limit.md) — Never `gh run list` in a loop; use `gh run watch <id>` or `gh api` directly. Loop + 403 = infinite retry, all quota gone.
 - [CI red check vs main baseline](feedback_ci_failure_preexisting_baseline.md) — Before blocking on a red PR check, check if main's last run of the same job was also red.
 - [GitHub auto-disables stale scheduled workflows](feedback_github_auto_disable_workflows.md) — After ~60 days without a successful cron run, GitHub silently disables. `gh workflow run` returns HTTP 422; `gh workflow list` omits.
@@ -78,6 +82,12 @@
 - [Broadcast quality bar](feedback_broadcast_quality_bar.md) — ≥1 more review than BWW RR; send 7-9am next morning.
 - [Orchestrator pause ≠ broadcast pause](feedback_orchestrator_pause_does_not_pause_broadcast.md) — Broadcast auto-fires on workflow_run; disable workflow.
 - [PROTECTED_FIELDS 3-way sync](feedback_protected_fields_three_way_sync.md) — review-write-guard + push-review-texts action + restore-protected-fields must all carry overrides.
+
+## 🏆 Awards scoring
+- [Awards enrichment ≠ scoring](feedback_awards_enrichment_scoring_decoupled.md) — Adding ceremony data to awards.json doesn't score it. computeSiteAwardScore() has an explicit allowlist; must add CeremonyKey + POINTS entry + if(entry.X) block for each new ceremony.
+
+## 🎭 Tony predictions model
+- [Tony predictions accuracy](project_tony_predictions_accuracy.md) — Recipe weights, historical accuracy (92.9%), current-season signals, market data coverage, backtest findings.
 
 ## 📊 Data pipeline & scraping
 - [Closing-date automation has 4 silent gaps](feedback_closing_date_audit_gaps.md) — update-show-status + check-closing-dates only detect LATER-than-stored extensions; both broadway.org "Through:" and TodayTix `endDate` lag the announced final performance by months; WE has zero closingDate automation.
@@ -125,6 +135,7 @@
 ## 🎨 UI / design system
 - [Design system reference](design-system.md) — Surfaces, score tiers, shared components, CSS classes, banned patterns.
 - [Visual verify before push](feedback_visual_verify_before_push.md) — Screenshot-verify on running site before commit; tsc is not visual.
+- [Playwright must be 1440px](feedback_playwright_1440px_required.md) — Always resize to 1440×900 before screenshot; small viewports hide desktop misalignment.
 - [Preserve parallel-session colors](feedback_preserve_parallel_session_colors.md) — When porting Claude Design output, keep score-box / tier-badge colors shipped by parallel sessions (e.g. awards) instead of CD's proposed palette.
 - [Round once, share everywhere](feedback_round_once_share_everywhere.md) — Every gate on a rounded score must round too; centralize in `isCriticalGold()`.
 - [Map iterator spread broken](feedback_map_iterator_spread.md) — Never `[...map.keys()]`; use `Array.from()`. tsconfig es5 breaks spread.
@@ -145,3 +156,4 @@
 ## 🗄️ Archive
 - [Archive memory files in place](feedback_memory_archive_in_place.md) — Don't `git mv` to `memory/archive/`; ~100s of source-code comments reference files by path. Use `archived: true` frontmatter instead.
 Older entries with `archived: true` frontmatter are skipped by `rebuild-memory-index.js` but remain on-disk for grep + hardcoded path refs.
+- [Phase B-WE → BW learnings](feedback_phase_b_we_learnings_for_broadway.md) — 6 concrete fixes from WE soft-launch to bake into BW W1, not catch in ship-check (idempotence flag, max-cost cap, push-noise log, workflow auto-re-enable, --ours/--theirs flip, apples-to-apples gate).
