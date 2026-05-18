@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { urlYearFromPath } = require('./lib/review-guards');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const showsData = require('../data/shows.json');
@@ -32,6 +33,47 @@ const multiProd = Object.entries(byTitle)
     return { title, shows: withDirs };
   })
   .filter(m => m.shows.length > 1);
+
+/**
+ * Convert a venue name to a URL-friendly slug fragment for substring matching.
+ * Strips the trailing "Theatre"/"Theater" so we match the distinctive part of
+ * the venue (e.g. "Ethel Barrymore Theatre" → "ethel-barrymore"). Returns null
+ * for empty/short inputs (<4 chars) or for generic words that would over-match
+ * arbitrary review URLs (e.g. "Broadway Theatre" → "broadway", which matches
+ * every Broadway-related URL).
+ *
+ * @param {string|null|undefined} venue
+ * @returns {string|null}
+ */
+const GENERIC_VENUE_SLUGS = new Set([
+  'broadway', 'lyceum', 'palace', 'majestic', 'imperial', 'studio-54',
+  'music-box', 'belasco', 'circle-in-the-square',
+  // West End generic-ish
+  'apollo', 'criterion', 'duke-of-yorks', 'gielgud', 'lyric', 'phoenix',
+  'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
+]);
+function venueSlug(venue) {
+  if (!venue || typeof venue !== 'string') return null;
+  const cleaned = venue
+    .toLowerCase()
+    .replace(/\btheatre\b|\btheater\b/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  if (!cleaned || cleaned.length < 5) return null;
+  if (GENERIC_VENUE_SLUGS.has(cleaned)) return null;
+  return cleaned;
+}
+
+/**
+ * Year extracted from an opening-date string ("YYYY-MM-DD" → YYYY as number).
+ * Returns null when missing/unparseable.
+ */
+function openingYear(dateLike) {
+  if (!dateLike) return null;
+  const d = new Date(dateLike);
+  if (isNaN(d.getTime())) return null;
+  return d.getUTCFullYear();
+}
 
 console.log(`Scanning ${multiProd.length} multi-production shows...\n`);
 
@@ -83,13 +125,18 @@ let totalFilesScanned = 0;
 let totalDuplicates = 0;
 let totalWrongProd = 0;
 let totalAlreadyFlagged = 0;
+let totalNullDateFallback = 0;
+let totalNullDateAmbiguous = 0;
 
 for (const group of multiProd) {
   const productions = group.shows.map(s => ({
     id: s.id,
     openingDate: parseDate(s.openingDate),
+    openingYear: openingYear(s.openingDate),
     closingDate: parseDate(s.closingDate),
     market: s.market,
+    venue: s.venue || null,
+    venueSlug: venueSlug(s.venue),
     dir: path.join(REVIEW_TEXTS_DIR, s.id)
   }));
 
@@ -130,39 +177,124 @@ for (const group of multiProd) {
       }
 
       const pubDate = parseDate(review.publishDate);
-      if (!pubDate) continue;
 
-      // Check if this review's publish date is closer to another production
-      const distToOwn = daysBetween(pubDate, prod.openingDate);
+      if (pubDate) {
+        // Existing date-based path — unchanged.
+        // Check if this review's publish date is closer to another production
+        const distToOwn = daysBetween(pubDate, prod.openingDate);
 
-      for (const other of otherProds) {
-        if (!other.openingDate) continue;
-        const distToOther = daysBetween(pubDate, other.openingDate);
+        for (const other of otherProds) {
+          if (!other.openingDate) continue;
+          const distToOther = daysBetween(pubDate, other.openingDate);
 
-        // Flag if review date is much closer to another production
-        // AND is within 180 days of other's opening (to catch legitimate reviews)
-        // AND is more than 365 days from own opening
-        if (distToOther < distToOwn && distToOwn > 365 && distToOther < 180) {
-          // Market-awareness: skip if this is a WE review correctly filed under a WE show
-          // (the "closer" production is in a different market)
-          if (isWEShow(prod.id) && !isWEShow(other.id) && isLikelyWEReview(review, file)) {
-            continue;
+          // Flag if review date is much closer to another production
+          // AND is within 180 days of other's opening (to catch legitimate reviews)
+          // AND is more than 365 days from own opening
+          if (distToOther < distToOwn && distToOwn > 365 && distToOther < 180) {
+            // Market-awareness: skip if this is a WE review correctly filed under a WE show
+            // (the "closer" production is in a different market)
+            if (isWEShow(prod.id) && !isWEShow(other.id) && isLikelyWEReview(review, file)) {
+              continue;
+            }
+            totalWrongProd++;
+            const issue = {
+              file: `${prod.id}/${file}`,
+              publishDate: review.publishDate,
+              filedUnder: prod.id,
+              filedUnderOpening: prod.openingDate.toISOString().split('T')[0],
+              daysFromOwn: Math.round(distToOwn),
+              closerTo: other.id,
+              closerToOpening: other.openingDate.toISOString().split('T')[0],
+              daysFromCloser: Math.round(distToOther),
+              url: (review.url || '').substring(0, 80),
+              hasDupeInCorrectDir: fs.existsSync(path.join(REVIEW_TEXTS_DIR, other.id, file)),
+              matchReason: 'publish-date',
+              confidence: 'high'
+            };
+            issues.push(issue);
           }
-          totalWrongProd++;
-          const issue = {
-            file: `${prod.id}/${file}`,
-            publishDate: review.publishDate,
-            filedUnder: prod.id,
-            filedUnderOpening: prod.openingDate.toISOString().split('T')[0],
-            daysFromOwn: Math.round(distToOwn),
-            closerTo: other.id,
-            closerToOpening: other.openingDate.toISOString().split('T')[0],
-            daysFromCloser: Math.round(distToOther),
-            url: (review.url || '').substring(0, 80),
-            hasDupeInCorrectDir: fs.existsSync(path.join(REVIEW_TEXTS_DIR, other.id, file))
-          };
-          issues.push(issue);
         }
+        continue;
+      }
+
+      // ── Fallback path (S1-T4): publishDate is null/unparseable ───────────
+      // Use the URL year (when present) and venue substring match to classify.
+      // This catches the BWW-excerpt / aggregator class where reviews are
+      // ingested without a parseable publishDate but the source URL still
+      // encodes the publication year.
+      const url = typeof review.url === 'string' ? review.url : '';
+      if (!url) continue;
+      const lowerUrl = url.toLowerCase();
+      const urlYear = urlYearFromPath(url);
+
+      // Try year match against productions: own opening year ± 1 wins (no flag).
+      const ownYear = prod.openingYear;
+      const ownYearMatches = urlYear != null && ownYear != null && Math.abs(urlYear - ownYear) <= 1;
+      const ownVenueMatches = !!(prod.venueSlug && lowerUrl.includes(prod.venueSlug));
+      // If url clearly points to the production it's filed under, leave alone.
+      if (ownYearMatches || ownVenueMatches) continue;
+
+      // Look for a different production that the URL more plausibly belongs to.
+      let bestOther = null;
+      let bestReason = null;
+      let bestConfidence = null;
+      for (const other of otherProds) {
+        const otherYear = other.openingYear;
+        const yearMatch = urlYear != null && otherYear != null && Math.abs(urlYear - otherYear) <= 1;
+        const venueMatch = !!(other.venueSlug && lowerUrl.includes(other.venueSlug));
+        // Market-awareness: skip if this is a WE review correctly filed under
+        // a WE show but the candidate "other" is non-WE.
+        if (isWEShow(prod.id) && !isWEShow(other.id) && isLikelyWEReview(review, file)) {
+          continue;
+        }
+        if (yearMatch && venueMatch) {
+          bestOther = other; bestReason = 'url-year+venue'; bestConfidence = 'high'; break;
+        }
+        if (yearMatch) {
+          if (bestConfidence !== 'high') { bestOther = other; bestReason = 'url-year'; bestConfidence = 'high'; }
+        } else if (venueMatch) {
+          if (!bestConfidence) { bestOther = other; bestReason = 'venue'; bestConfidence = 'medium'; }
+        }
+      }
+
+      if (bestOther) {
+        totalNullDateFallback++;
+        const issue = {
+          file: `${prod.id}/${file}`,
+          publishDate: null,
+          filedUnder: prod.id,
+          filedUnderOpening: prod.openingDate
+            ? prod.openingDate.toISOString().split('T')[0]
+            : null,
+          closerTo: bestOther.id,
+          closerToOpening: bestOther.openingDate
+            ? bestOther.openingDate.toISOString().split('T')[0]
+            : null,
+          urlYear: urlYear,
+          url: url.substring(0, 80),
+          hasDupeInCorrectDir: fs.existsSync(path.join(REVIEW_TEXTS_DIR, bestOther.id, file)),
+          matchReason: bestReason,
+          confidence: bestConfidence
+        };
+        issues.push(issue);
+      } else if (urlYear != null || lowerUrl) {
+        // No year match, no venue match — ambiguous. Record but don't claim.
+        totalNullDateAmbiguous++;
+        issues.push({
+          file: `${prod.id}/${file}`,
+          publishDate: null,
+          filedUnder: prod.id,
+          filedUnderOpening: prod.openingDate
+            ? prod.openingDate.toISOString().split('T')[0]
+            : null,
+          closerTo: null,
+          closerToOpening: null,
+          urlYear: urlYear,
+          url: url.substring(0, 80),
+          hasDupeInCorrectDir: false,
+          matchReason: 'ambiguous',
+          confidence: 'low'
+        });
       }
     }
   }
@@ -174,20 +306,42 @@ issues.sort((a, b) => a.filedUnder.localeCompare(b.filedUnder));
 console.log(`Files scanned: ${totalFilesScanned}`);
 console.log(`Already flagged wrongProduction: ${totalAlreadyFlagged}`);
 console.log(`Cross-production duplicates (same filename): ${totalDuplicates}`);
-console.log(`Likely wrong-production reviews: ${totalWrongProd}`);
+console.log(`Likely wrong-production reviews (date-based): ${totalWrongProd}`);
+console.log(`Null-date fallback cross-prod candidates: ${totalNullDateFallback}`);
+console.log(`Null-date ambiguous (no year/venue match): ${totalNullDateAmbiguous}`);
 console.log('');
 
-if (issues.length === 0) {
+const dateIssues = issues.filter(i => i.matchReason === 'publish-date');
+const fallbackIssues = issues.filter(i => i.matchReason === 'url-year+venue' || i.matchReason === 'url-year' || i.matchReason === 'venue');
+const ambiguousIssues = issues.filter(i => i.matchReason === 'ambiguous');
+
+if (dateIssues.length === 0 && fallbackIssues.length === 0 && ambiguousIssues.length === 0) {
   console.log('✅ No unflagged wrong-production reviews found!');
 } else {
-  console.log('⚠️  Likely wrong-production reviews:\n');
-  for (const i of issues) {
-    console.log(`  ${i.file}`);
-    console.log(`    Published: ${i.publishDate} (${i.daysFromOwn}d from ${i.filedUnder} opening ${i.filedUnderOpening})`);
-    console.log(`    Closer to: ${i.closerTo} (${i.daysFromCloser}d from opening ${i.closerToOpening})`);
-    console.log(`    Dupe in correct dir: ${i.hasDupeInCorrectDir ? 'YES' : 'no'}`);
-    console.log(`    URL: ${i.url}`);
-    console.log('');
+  if (dateIssues.length > 0) {
+    console.log('⚠️  Likely wrong-production reviews (publish-date based):\n');
+    for (const i of dateIssues) {
+      console.log(`  ${i.file}`);
+      console.log(`    Published: ${i.publishDate} (${i.daysFromOwn}d from ${i.filedUnder} opening ${i.filedUnderOpening})`);
+      console.log(`    Closer to: ${i.closerTo} (${i.daysFromCloser}d from opening ${i.closerToOpening})`);
+      console.log(`    Dupe in correct dir: ${i.hasDupeInCorrectDir ? 'YES' : 'no'}`);
+      console.log(`    URL: ${i.url}`);
+      console.log('');
+    }
+  }
+  if (fallbackIssues.length > 0) {
+    console.log(`⚠️  Null-date fallback candidates (URL year/venue heuristic):\n`);
+    for (const i of fallbackIssues) {
+      console.log(`  ${i.file}  [${i.confidence}/${i.matchReason}]`);
+      console.log(`    URL year: ${i.urlYear ?? 'n/a'} | filed under ${i.filedUnder} (opened ${i.filedUnderOpening})`);
+      console.log(`    Closer to: ${i.closerTo} (opened ${i.closerToOpening})`);
+      console.log(`    Dupe in correct dir: ${i.hasDupeInCorrectDir ? 'YES' : 'no'}`);
+      console.log(`    URL: ${i.url}`);
+      console.log('');
+    }
+  }
+  if (ambiguousIssues.length > 0) {
+    console.log(`ℹ️  Null-date ambiguous (review with no parseable publishDate, no URL-year or venue hit) — ${ambiguousIssues.length} entries; see JSON output for detail.\n`);
   }
 }
 
@@ -198,6 +352,8 @@ const output = {
   alreadyFlagged: totalAlreadyFlagged,
   crossProductionDupes: totalDuplicates,
   likelyWrongProduction: totalWrongProd,
+  nullDateFallback: totalNullDateFallback,
+  nullDateAmbiguous: totalNullDateAmbiguous,
   issues
 };
 fs.writeFileSync(
