@@ -73,11 +73,21 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // the same weights. Net effect: +1 correct season (was 10/11, now 11/11)
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
+//
+// best-revival-play changed from 0.00/0.80/0.20 to 0.00/0.95/0.05 on
+// 2026-05-17. All 3 historical misses had the winner with lower awards scores
+// than our pick — awards signal was anti-correlated in those cases. Grid
+// search at step 0.05 found pure audience (0/1.0/0) optimal in-sample
+// (10/11, 90.9%), but awards_weight=0 narrows margin on current-season
+// Death of a Salesman (aud=89.5 vs EBT aud=90.0, too close given noise).
+// Using 0.05 awards weight keeps DoA #1 comfortably while reducing awards
+// influence enough to fix the 2018-19 miss (Boys in the Band). Net: 8/11
+// (72.7%) → 9/11 (81.8%). See scripts/search-tony-best-play-weights.ts --cat=best-revival-play.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
   'best-musical':         { critic: 0.43, audience: 0.52, awards: 0.05 },
   'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2  },
   'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0    },
-  'best-revival-play':    { critic: 0,    audience: 0.8,  awards: 0.2  },
+  'best-revival-play':    { critic: 0,    audience: 0.95, awards: 0.05 },
 };
 
 /**
