@@ -236,6 +236,22 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       console.warn(`  ⚠️  Cross-market reroute: ${showId} → ${decision.targetShowId} (${decision.reason})`);
       return createOrMergeReviewFile(decision.targetShowId, input, { ...options, _rerouteVisited: visited });
     }
+    // Accept-with-flag: classifier wants the file written but with a flag stamped
+    // on the payload (e.g. ambiguous same-title-different-production cases where
+    // we can't confidently reroute but the production likely doesn't match the
+    // current show). Follow-up to a169936e48 — wires the dead code path through.
+    if (decision.action === 'accept' && decision.flag) {
+      if (decision.flag === 'wrongProduction') {
+        fields.wrongProduction = true;
+        fields.wrongProductionReason = decision.reason || 'ambiguous-production';
+        if (decision.signalsByCandidate) {
+          fields.ambiguousProductionSignals = decision.signalsByCandidate;
+        }
+        console.warn(`  ⚠️  Ambiguous production for ${showId}/${outletId}: stamping wrongProduction (${fields.wrongProductionReason})`);
+      } else {
+        console.warn(`  ⚠️  Unknown decision.flag from classifyMarketRouting: "${decision.flag}" (showId=${showId}, outletId=${outletId}) — proceeding without flag`);
+      }
+    }
   }
 
   // --- Guard E: BWW Review-Roundup page detection ---
