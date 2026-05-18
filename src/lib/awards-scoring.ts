@@ -30,7 +30,10 @@ type CeremonyKey =
   | 'nydcc'
   | 'occ'
   | 'dramaLeague'
-  | 'dramaDesk';
+  | 'dramaDesk'
+  | 'obie'
+  | 'lortel'
+  | 'criticsCircle';
 
 interface TierPoints { win: number; nom: number }
 
@@ -47,6 +50,13 @@ const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
   occ:          { S: { win: 30,  nom: 5 },  A: { win: 20, nom: 3 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
   dramaLeague:  { S: { win: 35,  nom: 5 },  A: { win: 22, nom: 3 } },
   dramaDesk:    { S: { win: 28,  nom: 4 },  A: { win: 18, nom: 2 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
+  // Off-Broadway and UK critics' awards — lower weight than Broadway ceremony equivalents.
+  // Obie: wins only (Wikipedia has no nominee lists), S-tier per category matching.
+  // Lortel: full nom tracking, Off-Broadway prestige tier below OCC.
+  // criticsCircle: UK Critics' Circle Theatre Awards; primarily West End-relevant.
+  obie:         { S: { win: 18,  nom: 0 },  A: { win: 12, nom: 0 },  B: { win: 8,  nom: 0 }, C: { win: 5,  nom: 0 } },
+  lortel:       { S: { win: 20,  nom: 3 },  A: { win: 12, nom: 2 },  B: { win: 8,  nom: 1 }, C: { win: 5,  nom: 1 } },
+  criticsCircle:{ S: { win: 30,  nom: 0 },  A: { win: 18, nom: 0 },  B: { win: 10, nom: 0 }, C: { win: 6,  nom: 0 } },
 };
 
 const A_PLUS_MULTIPLIER = 1.2;
@@ -237,6 +247,20 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const wins = entry.dramadesk.wins ?? [];
     const noms = entry.dramadesk.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Drama Desk', 'dramaDesk', wins, noms, unknownNoms(entry.dramadesk.nominations, wins, noms)));
+  }
+  if (entry.obie) {
+    const wins = entry.obie.wins ?? [];
+    breakdown.push(scoreCeremony('Obie Awards', 'obie', wins, []));
+  }
+  if (entry.lortel) {
+    const wins = entry.lortel.wins ?? [];
+    const noms = entry.lortel.nominatedFor ?? [];
+    breakdown.push(scoreCeremony('Lucille Lortel Awards', 'lortel', wins, noms, unknownNoms(entry.lortel.nominations, wins, noms)));
+  }
+  if (entry.criticsCircle) {
+    const wins = entry.criticsCircle.wins ?? [];
+    const noms = entry.criticsCircle.nominatedFor ?? [];
+    breakdown.push(scoreCeremony("Critics' Circle Theatre Awards", 'criticsCircle', wins, noms));
   }
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   // Hard-cap display at 100 — UX call: scores >100 read as bugs.
