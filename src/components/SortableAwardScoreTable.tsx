@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AwardScoreBadge, AWARD_TIER_LABEL } from '@/components/show-cards/AwardScoreBadge';
 import { StatusBadge } from '@/components/show-cards';
@@ -89,6 +90,12 @@ function formatSeason(season: string): string {
   return `${m[1]}–${m[2].slice(2)}`;
 }
 
+function toSeasonSlug(fullSeason: string): string {
+  const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
+  if (!m) return fullSeason;
+  return `${m[1]}-${m[2]}`;
+}
+
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
   if (!active) return <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">↕</span>;
   return <span className="ml-1 text-brand">{direction === 'asc' ? '↑' : '↓'}</span>;
@@ -99,6 +106,7 @@ interface SortableAwardScoreTableProps {
 }
 
 export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) {
+  const router = useRouter();
   const [sortColumn, setSortColumn] = useState<SortColumn>('score');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [seasonFilter, setSeasonFilter] = useState<string>('all');
@@ -150,7 +158,14 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
         {seasons.length > 1 && (
           <select
             value={seasonFilter}
-            onChange={e => setSeasonFilter(e.target.value)}
+            onChange={e => {
+              const val = e.target.value;
+              if (val === 'all') {
+                setSeasonFilter('all');
+              } else {
+                router.push(`/award-score/${toSeasonSlug(val)}`);
+              }
+            }}
             className={selectClass}
             aria-label="Filter by season"
           >
