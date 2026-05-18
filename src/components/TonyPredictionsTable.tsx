@@ -10,6 +10,7 @@ import { RankBadge } from '@/components/gold-list/GoldListCards';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import type { TierBadge } from '@/lib/awards-scoring';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
+import { featureFlags } from '@/config/feature-flags';
 
 // Maps outlet IDs in tony-critic-picks.json → outlet names in OUTLET_LOGOS registry
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
@@ -145,8 +146,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-// Feature flag: show "Our Pick %" column only when tony-predictions is in NEXT_PUBLIC_FEATURES
-const SHOW_OUR_PICK = process.env.NEXT_PUBLIC_FEATURES?.includes('tony-predictions') ?? false;
+const SHOW_OUR_PICK = featureFlags.tonyPredictionsOurPick;
 
 // Shared style tokens — mirrors nominees page
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
