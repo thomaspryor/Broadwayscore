@@ -43,23 +43,36 @@ async function runCategoryScraper({ pages, ceremonyName, minYear, write, force }
       const entries = parseCategoryPage(html, { minYear })
         .filter((e) => e.year >= minYear);
       // Structural contract: if this category had ≥5 entries in baseline and
-      // the page now returns 0, something broke — throw so CI catches it.
+      // the page now returns 0, something broke. WARN but continue scraping.
+      //
+      // 2026-05-18 incident: throwing here cascaded into every subsequent
+      // category being skipped — DD's retired "Outstanding Actor in a Musical"
+      // returned 0 entries, the throw killed the scrape, and 15+ DD 2026
+      // winners were silently dropped (Best Musical, Best Play, Best Revival
+      // of a Musical, Best Choreography, etc.). One bad page must not kill
+      // the whole run. Baseline preserved by per-year UNION merge in
+      // precursor-wikipedia.js writePrecursorJson().
       const baselineEntries = fs.existsSync(path.join(PRECURSORS_DIR, `${ceremonyName}.json`))
         ? (JSON.parse(fs.readFileSync(path.join(PRECURSORS_DIR, `${ceremonyName}.json`), 'utf8')).data?.[category] || [])
         : [];
       if (entries.length === 0 && baselineEntries.length >= 5) {
-        throw new Error(`Structural assertion failed: ${slug} returned 0 entries but baseline had ${baselineEntries.length}. Wikipedia page may have changed structure.`);
+        console.log(`⚠️  STRUCTURAL WARNING: 0 entries from page but baseline had ${baselineEntries.length}. Page may be restructured or category retired. Continuing — baseline preserved by UNION merge.`);
+        result[category] = [];
+      } else {
+        console.log(`${entries.length} year-entries`);
+        result[category] = entries;
       }
-      console.log(`${entries.length} year-entries`);
-      result[category] = entries;
     } catch (e) {
       if (e.message.includes('HTTP 404') || e.message.includes('HTTP 410')) {
         // 404/410: page doesn't exist (or was merged/renamed) — skip gracefully
         console.log(`SKIP (${e.message.includes('404') ? '404' : '410'} — page not found, category may have been renamed)`);
         result[category] = [];
       } else {
-        console.log(`ERROR: ${e.message}`);
-        throw e;
+        // Any OTHER error (network, parser exception): warn but continue.
+        // Aborting the whole scrape over one bad page is worse than missing
+        // one category's update. Baseline preserved by UNION merge.
+        console.log(`⚠️  ERROR (continuing): ${e.message}`);
+        result[category] = [];
       }
     }
     await sleep(RATE_LIMIT_MS);
