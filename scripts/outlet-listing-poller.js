@@ -95,8 +95,9 @@ const OUTLET_STRATEGY_CONFIG = {
   culturesauce:        { strategy: 'rss', url: 'https://culturesauce.net/feed', urlFilter: /\/[^/]*-review\b/ },
   // NYT Theater RSS is a 21-item rolling window; titleFilter drops features/news from the feed
   nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', titleFilter: /\b(review|critic['’]?s\s+pick)\b/i },
-  // TheaterMania full-site RSS; urlFilter selects review slugs only
-  theatermania:        { strategy: 'rss', url: 'https://www.theatermania.com/rss.xml', urlFilter: /\/news\/review-/ },
+  // TheaterMania: /rss.xml → 302 → sitemap.rss (site-wide feed, no reviews).
+  // Listing page at /news/?categories=reviews is SSR; plain fetch returns review anchors.
+  theatermania:        { strategy: 'listing-html', url: 'https://www.theatermania.com/news/?categories=reviews', urlFilter: /\/news\/review-/, usePlainFetch: true },
   // Variety theater-specific RSS — /v/theater/ path is review-only, no filter needed
   variety:             { strategy: 'rss', url: 'https://variety.com/v/theater/feed/' },
   // TheWrap theater tag RSS; urlFilter keeps only slugs ending in -review (drops news/obituaries)
@@ -134,9 +135,9 @@ const OUTLET_STRATEGY_CONFIG = {
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
   // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
   standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
-  // WhatsOnStage: SSR reviews category page; usePlainFetch bypasses BD/SB/Playwright (JS render breaks links);
-  // urlFilter keeps only -review_NNN slugs (drops news/features mixed into the listing)
-  whatsonstage:      { strategy: 'listing-html', url: 'https://www.whatsonstage.com/news/?categories=reviews', urlFilter: /-review_\d+/, usePlainFetch: true },
+  // WhatsOnStage: /news/?categories=reviews is a React SPA — plain fetch returns only the shell.
+  // /news/feed/ is a WordPress RSS feed with reviews mixed in; urlFilter keeps -review_NNN slugs.
+  whatsonstage:      { strategy: 'rss', url: 'https://www.whatsonstage.com/news/feed/', urlFilter: /-review_\d+/ },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
