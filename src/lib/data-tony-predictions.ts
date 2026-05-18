@@ -20,6 +20,33 @@ import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
+import criticPicksRawData from '../../data/tony-critic-picks.json';
+
+type CriticPicksFile = { picks: Record<string, Record<string, string>> };
+
+const PERSON_MATCH_CATEGORIES = new Set([
+  'Best Actor in a Musical', 'Best Actress in a Musical',
+  'Best Actor in a Play', 'Best Actress in a Play',
+  'Best Featured Actor in a Musical', 'Best Featured Actress in a Musical',
+  'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
+]);
+
+/** Return outlet IDs whose critic predicted this show/person for the given category. */
+export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
+  const data = criticPicksRawData as unknown as CriticPicksFile;
+  const catPicks = data.picks[tonyCategory];
+  if (!catPicks) return [];
+  const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const result: string[] = [];
+  for (const [outletId, pick] of Object.entries(catPicks)) {
+    if (isPersonCat) {
+      if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
+    } else {
+      if (pick === showId) result.push(outletId);
+    }
+  }
+  return result;
+}
 
 /**
  * Legacy: per-category Tony recipes replaced the flat 50/50 blend on 2026-04-29.
@@ -218,6 +245,10 @@ export interface SerializedTonyShow {
   nomineePersonName?: string | null;
   /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
   nomineeCategoryTitle?: string | null;
+  /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
+  criticPicks?: string[];
+  /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
+  precursorWins?: string[];
 }
 
 // --- Tony Season Logic ---
@@ -387,6 +418,24 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
   return Math.min(100, base);
+}
+
+/** Return 'DL', 'OCC', and/or 'DD' if the show won matching precursor categories. */
+export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
+    dramadesk?: { wins?: string[] };
+    outerCriticsCircle?: { wins?: string[] };
+    dramaLeague?: { wins?: string[] };
+  }>;
+  const entry = shows[showId];
+  if (!entry) return [];
+  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
+  if (!matching) return [];
+  const result: string[] = [];
+  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
+  if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
+  if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
+  return result;
 }
 
 /**
