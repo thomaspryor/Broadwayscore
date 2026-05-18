@@ -271,11 +271,13 @@ function extractListingUrls(html, domain) {
     if (path === '/' || path === '' || path.split('/').filter(Boolean).length < 2) continue;
     if (/\/(tag|category|author|page|search|about|contact|advertise|subscribe|calendar)\//i.test(path)) continue;
 
-    if (seen.has(url)) continue;
-    seen.add(url);
-
     const headline = rawText.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
     if (!headline || headline.length < 5) continue;
+
+    // Dedup after headline check: image-only anchors (empty headline) must not
+    // poison the seen set and block the subsequent text anchor for the same URL.
+    if (seen.has(url)) continue;
+    seen.add(url);
 
     items.push({ url, headline });
   }

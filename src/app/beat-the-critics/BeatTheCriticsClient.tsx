@@ -379,13 +379,13 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const actorNominees = isActor ? seededShuffle(currentCategory.actorNominees ?? [], shuffleSeed + currentCatIdx) : [];
 
     return (
-      <div className="min-h-screen bg-surface flex flex-col pb-[120px]">
+      <div className="min-h-screen bg-surface flex flex-col">
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => { let prevIdx: number | null = null; for (let i = currentCatIdx - 1; i >= 0; i--) { if (categoryHasNominees(currentTier.categories[i])) { prevIdx = i; break; } } if (prevIdx !== null) setCurrentCatIdx(prevIdx); else if (currentTierIdx > 0) { setCurrentTierIdx(currentTierIdx - 1); const prevTier = data.tiers[currentTierIdx - 1]; const lastCat = prevTier.categories.length - 1; setCurrentCatIdx(lastCat); setScreen('reveal'); } else goToScreen('landing'); }} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
           <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{currentProgressIdx + 1} of {catsWithNominees.length}</div>
         </div>
-        <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
+        <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
           <h2 className="text-[28px] font-extrabold tracking-tight mb-1.5">{currentCategory.title}</h2>
           <p className="text-sm text-gray-500 mb-7">Tap your pick.</p>
@@ -395,9 +395,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               : showNominees.map((show) => (<NomineeCard key={show.slug} show={show} selected={selectedTitle === show.title} onSelect={() => handlePick(currentCategory.title, show.title, show.slug)} />))
             }
           </div>
-        </div>
-        <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
-          <div className="max-w-[480px] mx-auto">
+          <div className="mt-8 pb-10">
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
           </div>
@@ -432,7 +430,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="flex gap-1.5">{currentTier.categories.filter(categoryHasNominees).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(categoryHasNominees).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Reveal</div>
         </div>
-        <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
+        <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 bg-[#ff1368]/[0.06] ring-1 ring-[#ff1368]/15 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="w-[116px] shrink-0 leading-tight min-w-0">

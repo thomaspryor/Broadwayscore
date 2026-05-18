@@ -1,18 +1,19 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ScoreBadge, getScoreTier, BlendedTrioDisplay } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
+import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
-// Outlet badge metadata — update when new critic sources are added to data/tony-critic-picks.json
-const CRITIC_PICK_SOURCES: Record<string, { shortName: string; color: string; outlet: string; critic: string }> = {
-  nyt:     { shortName: 'NYT', color: '#1a1a1a', outlet: 'The New York Times', critic: 'Helen Shaw' },
-  variety: { shortName: 'VAR', color: '#7b2d8b', outlet: 'Variety',            critic: 'Clayton Davis' },
-  deadline:{ shortName: 'DL',  color: '#1565c0', outlet: 'Deadline',           critic: 'Greg Evans' },
+// Maps outlet IDs in tony-critic-picks.json → outlet names in OUTLET_LOGOS registry
+const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
+  nyt:     { outletName: 'The New York Times', critic: 'Helen Shaw' },
+  variety: { outletName: 'Variety',            critic: 'Clayton Davis' },
+  deadline:{ outletName: 'Deadline',           critic: 'Greg Evans' },
 };
 
 export type PredictionMode = 'combined' | 'critics' | 'audience';
@@ -86,27 +87,48 @@ function TierLabel({ score, reviewCount, status }: { score: number | null; revie
   );
 }
 
-function CriticPickBadges({ picks }: { picks?: string[] }) {
+function OutletPickLogo({ outletId }: { outletId: string }) {
+  const [imgError, setImgError] = useState(false);
+  const meta = CRITIC_PICK_OUTLETS[outletId];
+  if (!meta) return null;
+  const logoUrl = getOutletLogoUrl(meta.outletName);
+  const config = getOutletConfig(meta.outletName);
+  const title = `${meta.outletName} (${meta.critic}) picks this show to win`;
+
+  if (logoUrl && !imgError) {
+    return (
+      <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
+        <img
+          src={logoUrl}
+          alt={meta.outletName}
+          className="w-4 h-4 object-contain"
+          onError={() => setImgError(true)}
+        />
+      </div>
+    );
+  }
+  const abbrev = config?.abbrev || meta.outletName.charAt(0);
+  const bgColor = config?.color || '#374151';
+  const textSize = abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
+  return (
+    <div
+      className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+      style={{ backgroundColor: bgColor }}
+      title={title}
+    >
+      {abbrev}
+    </div>
+  );
+}
+
+function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
-    <div className="flex flex-col items-center gap-1 flex-shrink-0">
-      <div className="flex gap-0.5">
-        {picks.map(id => {
-          const src = CRITIC_PICK_SOURCES[id];
-          if (!src) return null;
-          return (
-            <span
-              key={id}
-              className="inline-flex items-center justify-center px-1 h-4 rounded text-[8px] font-bold text-white leading-none whitespace-nowrap"
-              style={{ backgroundColor: src.color }}
-              title={`${src.outlet} (${src.critic}) picks this show to win`}
-            >
-              {src.shortName}
-            </span>
-          );
-        })}
+    <div className="flex flex-col items-center gap-1 flex-shrink-0 min-w-[56px]">
+      <span className="text-[9px] font-semibold uppercase tracking-wide text-gray-400 whitespace-nowrap">Press Picks</span>
+      <div className="flex gap-1">
+        {picks.map(id => <OutletPickLogo key={id} outletId={id} />)}
       </div>
-      <span className="text-[8px] text-gray-600 uppercase tracking-wide leading-none">Press</span>
     </div>
   );
 }
@@ -338,13 +360,13 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
                 )}
               </div>
 
-              {/* Critic press picks */}
-              <CriticPickBadges picks={show.criticPicks} />
-
               {/* Score / Win probability */}
               <div className="flex flex-col items-center gap-1 flex-shrink-0">
                 <ScoreDisplay show={show} mode={mode} winProbability={winProbabilities.get(show.slug)} />
               </div>
+
+              {/* Press picks — round outlet logos, rightmost column */}
+              <PressPicks picks={show.criticPicks} />
             </Link>
           );
         })}
