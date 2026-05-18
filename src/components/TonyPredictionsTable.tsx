@@ -194,6 +194,9 @@ function CombinedColumnHeader() {
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
         <div className="hidden sm:flex flex-col items-center w-14">
+          <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-20">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
         <div className="hidden sm:flex flex-col items-center w-14">
@@ -238,7 +241,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </span>
         )}
       </div>
-      <PrecursorChips wins={show.precursorWins} />
+      <div className="sm:hidden"><PrecursorChips wins={show.precursorWins} /></div>
       {notYetOpen && <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>}
     </div>
   );
@@ -302,6 +305,11 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
             inProgress={true}
             size="md"
           /></div>
+          <div className="hidden sm:flex w-20 items-center justify-center">
+            <span className="text-xs font-medium text-gray-300">
+              {show.precursorWins && show.precursorWins.length > 0 ? show.precursorWins.join(' · ') : '—'}
+            </span>
+          </div>
           <div className="hidden sm:flex w-14 items-center justify-center">
             <PressPicks picks={show.criticPicks} />
           </div>
