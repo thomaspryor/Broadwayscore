@@ -21,10 +21,10 @@ interface CriticPanelist {
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Dan Rubins', outlets: ['Slant Magazine'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
-  { name: 'Naveen Kumar', outlets: ['National Critics Institute'], initials: 'NK', bio: 'Theater critic & associate director, National Critics Institute' },
-  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF', bio: 'Theater critic at Time Out NY for over 20 years' },
-  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM', bio: 'Theater critic at Vulture / New York Magazine since 2015' },
+  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
+  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
+  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
+  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
 ];
 
 function criticHasPicks(): boolean {
@@ -344,8 +344,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="animate-fade-up w-full mt-8" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Your Competition</div>
             <div className="grid grid-cols-2 gap-2.5">
-              {CRITICS.map(c => (
-                <div key={c.name} className="rounded-2xl bg-surface-raised ring-1 ring-white/5 p-4 text-left">
+              {CRITICS.map((c, i) => (
+                <div key={i} className="rounded-2xl bg-surface-raised ring-1 ring-white/5 p-4 text-left">
                   <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-black text-gray-300 mb-3">{c.initials}</div>
                   <div className="text-sm font-bold leading-tight">{c.name}</div>
                   <div className="text-[10px] text-brand font-semibold mt-0.5">{c.outlets.join(' · ')}</div>
@@ -474,7 +474,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               const pickShow = !isActor && pick ? nominees.find(n => n.title === pick) : undefined;
               const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
               return (
-                <div key={critic.name} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
+                <div key={i} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
                   <div className="w-[116px] shrink-0 flex items-center gap-2 min-w-0 overflow-hidden">
                     <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
                     <div className="leading-tight min-w-0 overflow-hidden">
