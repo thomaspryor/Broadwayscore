@@ -422,20 +422,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         </div>
         <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
-          <div className="p-4 rounded-[14px] bg-[#ff1368]/[0.06] border border-[#ff1368]/15 mb-6 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
-            <div className="text-[10px] font-bold uppercase tracking-wider text-[#ff1368] mb-2">Your Pick</div>
-            <div className="flex items-center gap-3">
-              {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="sm" /> : null; })()}
-              {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
-              <div>
-                <div className="text-lg font-extrabold">{userPick}</div>
-                {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-sm text-gray-400">({picked.showTitle})</div> : null; })()}
-                <div className="text-xs text-gray-400 mt-0.5">
-                  {!isActor && matchesTonyPrediction && <><span className="text-green-500 font-semibold">Matches Tony prediction</span>{' \u00b7 '}</>}
-                  {picksAvailable ? `You agree with ${criticMatches} of ${CRITICS.length} critics` : 'Critics\u2019 picks revealed June 7'}
+          <div className="rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 bg-[#ff1368]/[0.06] ring-1 ring-[#ff1368]/15 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
+            <div className="min-w-0 flex-1 flex items-center gap-2.5">
+              <div className="leading-tight shrink-0">
+                <div className="text-xs font-bold text-[#ff1368]">Your Pick</div>
+                <div className="text-[9px] font-semibold text-gray-500 tracking-wider">
+                  {picksAvailable ? `${criticMatches} of ${CRITICS.length} critics agree` : 'Critics\u2019 picks June 7'}
                 </div>
               </div>
+              {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
+              {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
+              <div className="min-w-0">
+                <div className="text-sm font-bold truncate">{userPick}</div>
+                {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
+              </div>
             </div>
+            {!isActor && matchesTonyPrediction && (
+              <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>
+            )}
           </div>
 
           {/* Critics Panel */}
@@ -461,50 +465,37 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               </div>
             )}
 
-            {/* Critic cards — TBD until critics submit picks */}
-            {!picksAvailable ? (
-              <div className="rounded-xl p-4 bg-surface-raised ring-1 ring-white/5 animate-slide-in" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
-                <div className="flex items-center gap-3 mb-3">
-                  {CRITICS.map(c => (
-                    <div key={c.name} className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-bold text-gray-400 flex-shrink-0" title={c.name}>{c.initials}</div>
-                  ))}
-                </div>
-                <div className="text-sm font-semibold text-gray-300">Dan Rubins, Naveen Kumar, Adam Feldman &amp; Jackson McHenry</div>
-                <div className="text-xs text-gray-500 mt-1">Critics&apos; picks revealed on June 7 — come back after the ceremony to see how you compared!</div>
-              </div>
-            ) : (
-              CRITICS.map((critic, i) => {
-                const pick = criticPicks[i];
-                const isMatch = pick !== null && userPick === pick;
-                const pickShow = !isActor && pick ? nominees.find(n => n.title === pick) : undefined;
-                const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
-                return (
-                  <div key={critic.name} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${pick === null ? 'bg-surface-raised ring-1 ring-white/5' : isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
-                    <div className="min-w-0 flex-1 flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
-                      <div className="leading-tight shrink-0">
-                        <div className="text-xs font-bold">{critic.name}</div>
-                        <div className="text-[10px] text-gray-500">{critic.outlets.join(' · ')}</div>
-                      </div>
-                      {pick === null ? (
-                        <div className="text-xs text-gray-600 italic ml-1">Revealed June 7</div>
-                      ) : (
-                        <>
-                          {pickShow && <ShowPoster show={pickShow} size="xs" />}
-                          <div className="min-w-0">
-                            <div className="text-sm font-bold truncate">{pick}</div>
-                            {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
-                          </div>
-                        </>
-                      )}
+            {/* Critic rows — same layout whether picks are available or TBD */}
+            {CRITICS.map((critic, i) => {
+              const pick = picksAvailable ? criticPicks[i] : null;
+              const isMatch = pick !== null && userPick === pick;
+              const pickShow = !isActor && pick ? nominees.find(n => n.title === pick) : undefined;
+              const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
+              return (
+                <div key={critic.name} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
+                  <div className="min-w-0 flex-1 flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
+                    <div className="leading-tight shrink-0">
+                      <div className="text-xs font-bold">{critic.name}</div>
+                      <div className="text-[10px] text-gray-500">{critic.outlets.join(' · ')}</div>
                     </div>
-                    {pick !== null && (
-                      <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{isMatch ? 'Match!' : 'Different'}</span>
-                    )}
+                    {pick === null ? (
+                      <div className="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-lg text-gray-600 shrink-0">?</div>
+                    ) : pickShow ? (
+                      <ShowPoster show={pickShow} size="xs" />
+                    ) : null}
+                    <div className="min-w-0">
+                      <div className={`text-sm font-bold truncate ${pick === null ? 'text-gray-600' : ''}`}>{pick ?? '?'}</div>
+                      {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
+                      {pick === null && <div className="text-[10px] text-gray-600">Revealed June 7</div>}
+                    </div>
                   </div>
-                );
-              })
-            )}
+                  <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${pick === null ? 'bg-white/5 text-gray-700' : isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>
+                    {pick === null ? 'June 7' : isMatch ? 'Match!' : 'Different'}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
           {/* CriticScore breakdown — show categories only */}
