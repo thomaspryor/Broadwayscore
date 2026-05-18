@@ -18,4 +18,6 @@ When porting a Claude Design scorecard redesign to code, **preserve the score-bo
 - Sacred-score-badge rule already covers size/position/shape — this rule covers *color* on the broader card surface.
 - If Claude Design's color genuinely improves a thing the parallel session didn't touch, surface the diff to the user before changing it. Don't silently overwrite.
 
+**ALSO applies to color-consistency fixes:** When two elements have mismatched colors, unify toward the MORE distinctive/intentional color — not the default brand color. 2026-05-17: tried to fix Opera logo inconsistency by pulling header down to muted Broadway bronze (`text-gradient`). Wrong direction — user wanted page body brought UP to the distinctive bright amber (`from-amber-400 to-amber-500`). Always ask: "is the brighter color intentional?" before dulling it.
+
 Related: [[design-system]] · [[feedback_visual_verify_before_push]]
