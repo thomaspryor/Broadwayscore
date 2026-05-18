@@ -446,7 +446,7 @@ function Inner({
             <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
             <div className="min-w-0 flex-1">
               {tier && (
-                <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
+                <p className="text-sm font-bold leading-tight break-words" style={{ color: tier.color }}>
                   {tier.label}
                 </p>
               )}
@@ -464,7 +464,7 @@ function Inner({
                 {audienceGrade.grade}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
+                <p className="text-sm font-bold leading-tight break-words" style={{ color: audienceGrade.color }}>
                   {audienceGrade.label}
                 </p>
                 {audienceCount > 0 && (
@@ -601,11 +601,10 @@ function Inner({
         </div>
       )}
 
-      {/* Tickets — split-variant: primary CTA + secondary pills row.
-          Lottery/Rush pill rides the same scroll row via secondaryAfter so the
-          three secondary pills always sit on a single line (scrolls if too wide).
-          Primary CTA is full-width on mobile (standard CTA pattern), inline auto
-          width at lg+ (desktop has horizontal room — full-width feels too wide). */}
+      {/* Tickets — primary CTA only.
+          Lottery/Rush pill removed from hero per user feedback (pushed
+          content down). The full Discount Tickets card lower on the page
+          shows lottery/rush/standing-room with entry windows + instructions. */}
       {!isClosed && sortedTicketLinks.length > 0 && (
         <TicketButtonsAB
           showName={show.title}
@@ -619,27 +618,6 @@ function Inner({
           pageType="show"
           splitVariant
           primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
-          secondaryAfter={
-            featureFlags.discountTickets && lotteryRush ? (
-              <a
-                href="#discount-tickets"
-                className="inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                </svg>
-                {lotteryRush.lottery
-                  ? lotteryRush.lottery.price
-                    ? `${getCurrencySymbol(show.category)}${lotteryRush.lottery.price} Lottery`
-                    : 'Lottery'
-                  : lotteryRush.rush
-                    ? lotteryRush.rush.price
-                      ? `${getCurrencySymbol(show.category)}${lotteryRush.rush.price} Rush`
-                      : 'Rush'
-                    : 'Discount'}
-              </a>
-            ) : null
-          }
         />
       )}
     </div>
