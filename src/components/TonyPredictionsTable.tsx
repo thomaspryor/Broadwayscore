@@ -103,7 +103,7 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
-    <div className="hidden sm:flex items-center gap-0.5 flex-shrink-0">
+    <div className="flex items-center gap-0.5">
       {picks.map(id => <OutletPickLogo key={id} outletId={id} />)}
     </div>
   );
@@ -177,6 +177,9 @@ function CombinedColumnHeader() {
         <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
+        <div className="hidden sm:flex flex-col items-center w-14">
+          <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+        </div>
       </div>
     </div>
   );
@@ -198,11 +201,11 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
   const titleArea = (
     <div className="flex-1 min-w-0">
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-        <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
+        <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate w-full sm:w-auto ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
           {show.title}
         </h3>
         {rank === 1 && mode === 'combined' && !isUpcoming && (
-          <span className="hidden sm:inline-flex flex-shrink-0 items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
+          <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
             </svg>
@@ -215,7 +218,6 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
             Winner
           </span>
         )}
-        <PressPicks picks={show.criticPicks} />
       </div>
       {notYetOpen && <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>}
     </div>
@@ -280,6 +282,9 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
             inProgress={true}
             size="md"
           /></div>
+          <div className="hidden sm:flex w-14 items-center justify-center">
+            <PressPicks picks={show.criticPicks} />
+          </div>
         </div>
       </Link>
     );
