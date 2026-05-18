@@ -147,7 +147,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // urlFilter: keep only individual review slugs (they all end in -review, dropping category pages)
   nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
-  thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews' },
+  // urlFilter keeps /reviews/<slug> paths; drops /review-round-ups/ multi-show roundup pages
+  thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews', urlFilter: /\/reviews\/[^/]+/ },
   // timeout (NY): SSR reviews index page — 21 individual reviews confirmed via plain fetch;
   // usePlainFetch avoids BD/SB overhead; urlFilter keeps individual review slugs (*-review,
   // *-review-*) and drops the aggregate listing page itself (*-reviews plural).
