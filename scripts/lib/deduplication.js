@@ -336,7 +336,13 @@ function isMultiProduction(newShow, existing) {
       }
     }
 
-    // Different or unknown venues: trust year difference from actual openingDates only.
+    // Confirmed different venues: always separate productions, regardless of year.
+    // An "open" show that moved to a new venue IS a new production, and an "open"
+    // show that was wrongly-reopened from TodayTix at a different venue can't be
+    // the same as a show currently running elsewhere.
+    if (venuesKnownDifferent) return true;
+
+    // Unknown/same venue: trust year difference from actual openingDates only.
     // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years.
     const newYearFromDate = newShow.openingDate ? new Date(newShow.openingDate).getFullYear() : null;
     const existYearFromDate = existing.openingDate ? new Date(existing.openingDate).getFullYear() : null;

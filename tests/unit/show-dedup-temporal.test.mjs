@@ -119,6 +119,32 @@ test('closed + open same-title same-market different venue = not duplicate', () 
   assert.equal(result.isDuplicate, false, `closed+open different venue should not be duplicate: ${result.reason}`);
 });
 
+test('wrongly-reopened show (open + no closingDate) + new show at different venue = not duplicate', () => {
+  // Regression: USS "reopens" alice-in-wonderland-west-end-2026 because TodayTix id=46313
+  // still lists it (the ID actually refers to the new Marylebone production). USS changes
+  // status to open and deletes closingDate. The old isDefinitelyClosed check no longer
+  // fires. The open-show branch then falls through year=2026 vs year=null → returns false.
+  const wronglyReopened = {
+    id: 'alice-in-wonderland-west-end-2026',
+    title: 'Alice in Wonderland',
+    status: 'open', // wrongly reopened by USS
+    category: 'off-west-end',
+    venue: 'Riverside Studios',
+    openingDate: '2026-03-27',
+    closingDate: undefined, // deleted by USS reopen logic
+  };
+  const newShow = {
+    id: 'alice-in-wonderland-off-west-end-2026',
+    title: 'Alice In Wonderland',
+    status: 'announced',
+    category: 'off-west-end',
+    venue: 'Marylebone Theatre',
+    openingDate: null,
+  };
+  const result = checkForDuplicate(newShow, [wronglyReopened]);
+  assert.equal(result.isDuplicate, false, `wrongly-reopened show at different venue should not be duplicate: ${result.reason}`);
+});
+
 test('past closingDate counts as closed even without closed status', () => {
   const pastClose = {
     id: 'some-show-west-end-2024',
