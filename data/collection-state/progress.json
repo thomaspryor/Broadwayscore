@@ -81,7 +81,8 @@
     "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json",
     "1536-west-end-2026/telegraph--dominic-cavendish.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
-    "grace-pervades-west-end-2026/telegraph--unknown.json"
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "new-born-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -1062,7 +1063,11 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1123,11 +1128,14 @@
       "sinatra-the-musical-west-end-2026/london-theatre--unknown.json",
       "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
       "mother-courage-and-her-children-globe-west-end-2026/whatsonstage--sarah-crompton.json",
-      "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json"
+      "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json",
+      "new-born-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1199,7 +1207,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -1349,6 +1357,18 @@
       "event": "bb-session",
       "session": "a7a1ce53",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-18T23:58:27.190Z",
+      "event": "bb-session",
+      "session": "01e949a0",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-18T23:59:43.509Z",
+      "event": "bb-session",
+      "session": "ba1efbe4",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
