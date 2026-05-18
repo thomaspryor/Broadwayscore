@@ -162,6 +162,12 @@ jobs:
           echo "Deployed to: $URL"
 
       - name: Alias to demo domain
+        # Skip aliasing when a custom ref was dispatched. This prevents
+        # cron + main-push triggers from clobbering a non-main deployment
+        # that was deliberately put on demo for review. The deployment is
+        # still built — just not pointed at the demo subdomain. To restore
+        # main-on-demo: dispatch this workflow with no ref input.
+        if: github.event.inputs.ref == '' || github.event.inputs.ref == 'main' || github.event.inputs.ref == null
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DEPLOY_URL: ${{ steps.deploy.outputs.url }}
