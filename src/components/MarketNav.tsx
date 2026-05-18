@@ -58,7 +58,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           the shared static export. */}
       <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center group">
         {isOpera ? (
-          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="text-gradient">Scorecard</span></span>
+          <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : isWestEnd || isOffWestEnd ? (
           <span className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
