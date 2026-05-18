@@ -100,6 +100,25 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
   );
 }
 
+const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
+
+function PrecursorChips({ wins }: { wins?: string[] }) {
+  if (!wins || wins.length === 0) return null;
+  return (
+    <div className="flex items-center gap-1 flex-shrink-0">
+      {wins.map(w => (
+        <span
+          key={w}
+          title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`}
+          className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none"
+        >
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
@@ -219,6 +238,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </span>
         )}
       </div>
+      <PrecursorChips wins={show.precursorWins} />
       {notYetOpen && <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>}
     </div>
   );

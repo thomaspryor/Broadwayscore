@@ -340,6 +340,8 @@ export interface SerializedTonyShow {
   nomineeCategoryTitle?: string | null;
   /** Outlet IDs (e.g. "nyt", "variety") whose critic picked this show/person to win. */
   criticPicks?: string[];
+  /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
+  precursorWins?: string[];
 }
 
 // --- Tony Season Logic ---
@@ -441,6 +443,24 @@ type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: n
  *
  * Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
  */
+/** Returns abbreviated ceremony names where this show won the matching Tony category. */
+function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
+    dramadesk?: { wins?: string[] };
+    outerCriticsCircle?: { wins?: string[] };
+    dramaLeague?: { wins?: string[] };
+  }>;
+  const entry = shows[showId];
+  if (!entry) return [];
+  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
+  if (!matching) return [];
+  const result: string[] = [];
+  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
+  if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
+  if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
+  return result;
+}
+
 export function computeAwardsScore(showId: string, tonyCategory: string): number {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
     dramadesk?: PrecursorNode;
@@ -617,6 +637,7 @@ export function serializeShow(
     criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
     polymarketOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], pmRawData) : null,
     kalshiOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], kaRawData) : null,
+    precursorWins: categoryKey ? getPrecursorWins(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
   };
 }
 
