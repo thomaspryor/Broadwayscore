@@ -118,7 +118,7 @@ function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
         {isMajor && (
           <>
             <div className="hidden sm:flex flex-col items-center w-14">
-              <span className={HEADER_LINE}>Poly-</span><span className={HEADER_LINE}>market</span>
+              <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
             </div>
             <div className="hidden sm:flex flex-col items-center w-14">
               <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
@@ -174,13 +174,11 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
       </div>
 
-      {/* Odds columns: Gold Derby | Polymarket | Kalshi */}
-      <OddsCol odds={show.gdOdds} size="md" />
-      <OddsCol odds={show.polymarketOdds} size="md" />
-      <OddsCol odds={show.kalshiOdds} size="md" />
-
-      {/* Critics | Audience | Awards */}
+      {/* All right-side columns in one flex group — must match SectionColumnHeader inner gap */}
       <div className="flex items-center gap-2 flex-shrink-0">
+        <OddsCol odds={show.gdOdds} size="md" />
+        <OddsCol odds={show.polymarketOdds} size="md" />
+        <OddsCol odds={show.kalshiOdds} size="md" />
         <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
