@@ -103,7 +103,8 @@ for (const vp of VIEWPORTS) {
       if (vp.name === 'mobile') return;
 
       await goToMock(page, 'diary');
-      // Grid is the default view — verify we're in grid
+      // Switch to grid view (diary defaults to list)
+      await page.getByRole('button', { name: 'Grid view' }).click();
       await expect(page.getByRole('button', { name: 'Grid view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
       // Grid delete button exists in DOM but is opacity-0 until hover
