@@ -126,8 +126,11 @@ const OUTLET_STRATEGY_CONFIG = {
   nytg:              { strategy: 'listing-html', url: 'https://newyorktheatreguide.com/reviews' },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
   thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews' },
+  // timeout (NY): SSR reviews index page — 21 individual reviews confirmed via plain fetch;
+  // usePlainFetch avoids BD/SB overhead; urlFilter keeps individual review slugs (*-review,
+  // *-review-*) and drops the aggregate listing page itself (*-reviews plural).
+  timeout:           { strategy: 'listing-html', url: 'https://www.timeout.com/newyork/theater/new-york-theater-and-broadway-reviews', urlFilter: /\/theater\/[^/]+-review(?!s)[^/]*$/, usePlainFetch: true },
   // timeout-london: SSR reviews index, BD fetches directly (~35 links)
-  // timeout (NY): hub page renders navigation only via BD; SERP (10-result cap) is sufficient
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
   // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
   standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
@@ -306,9 +309,9 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
   let html;
   if (usePlainFetch) {
     // SSR pages accessible without JS rendering — skip BD/SB/Playwright overhead.
-    // Use fetchSimple (plain HTTPS GET) rather than fetchWithCookiesPlain; WOS
-    // is publicly accessible and has no cookie requirement.
-    html = await fetchSimple(listingUrl, 20000).catch(() => '');
+    // Let errors propagate — the try/catch in fetchOutlet handles them and
+    // falls back to SERP. Swallowing here would prevent that fallback.
+    html = await fetchSimple(listingUrl, 20000);
   } else {
     const result = await fetchPage(listingUrl, { timeout: 25000 });
     // fetchPage returns {content, format, source} or null on all-tiers failure
