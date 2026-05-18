@@ -72,6 +72,53 @@ test('closed + open same-title same-market same-year = still a duplicate (data e
   assert.equal(result.isDuplicate, true, 'same open show at same venue should be flagged');
 });
 
+test('closed + previews same-title same-market different venue = not duplicate (Alice regression)', () => {
+  // Regression: alice-in-wonderland-off-west-end-2026 entered previews at Marylebone Theatre
+  // while alice-in-wonderland-west-end-2026 was already closed at Riverside Studios.
+  // The venue check was skipped for previews/open shows, causing a false positive.
+  const closed = {
+    id: 'alice-in-wonderland-west-end-2026',
+    title: 'Alice in Wonderland',
+    status: 'closed',
+    category: 'off-west-end',
+    venue: 'Riverside Studios',
+    openingDate: '2026-03-27',
+    closingDate: '2026-04-12',
+  };
+  const previewing = {
+    id: 'alice-in-wonderland-off-west-end-2026',
+    title: 'Alice In Wonderland',
+    status: 'previews',
+    category: 'off-west-end',
+    venue: 'Marylebone Theatre',
+    openingDate: null,
+  };
+  const result = checkForDuplicate(previewing, [closed]);
+  assert.equal(result.isDuplicate, false, `closed+previews different venue should not be duplicate: ${result.reason}`);
+});
+
+test('closed + open same-title same-market different venue = not duplicate', () => {
+  const closed = {
+    id: 'alice-in-wonderland-west-end-2026',
+    title: 'Alice in Wonderland',
+    status: 'closed',
+    category: 'off-west-end',
+    venue: 'Riverside Studios',
+    openingDate: '2026-03-27',
+    closingDate: '2026-04-12',
+  };
+  const open = {
+    id: 'alice-in-wonderland-off-west-end-2026',
+    title: 'Alice In Wonderland',
+    status: 'open',
+    category: 'off-west-end',
+    venue: 'Marylebone Theatre',
+    openingDate: null,
+  };
+  const result = checkForDuplicate(open, [closed]);
+  assert.equal(result.isDuplicate, false, `closed+open different venue should not be duplicate: ${result.reason}`);
+});
+
 test('past closingDate counts as closed even without closed status', () => {
   const pastClose = {
     id: 'some-show-west-end-2024',

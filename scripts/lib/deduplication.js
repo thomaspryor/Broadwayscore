@@ -302,9 +302,14 @@ function isMultiProduction(newShow, existing) {
   // "The Band's Visit" (Ethel Barrymore) vs "The Visit" (Lyceum).
   // We do NOT apply this when one side is open/previews — the open-show branch
   // below handles transfer/re-listing semantics for active runs explicitly.
+  // Exception: if the OTHER show is definitively closed, there's no ambiguity —
+  // a closed show can't be the same as a current production at a different venue.
   if (newCat === existingCat && venuesKnownDifferent) {
     const isActive = (s) => s === 'open' || s === 'previews';
     if (!isActive(newShow.status) && !isActive(existing.status)) {
+      return true;
+    }
+    if (isDefinitelyClosed(newShow) || isDefinitelyClosed(existing)) {
       return true;
     }
   }
