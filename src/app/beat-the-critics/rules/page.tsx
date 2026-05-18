@@ -1,0 +1,75 @@
+import { Metadata } from 'next';
+import { BASE_URL } from '@/lib/seo';
+
+export const metadata: Metadata = {
+  title: 'Official Rules — Beat the Critics Prize Draw | Broadway Scorecard',
+  alternates: { canonical: `${BASE_URL}/beat-the-critics/rules` },
+  robots: { index: false },
+};
+
+export default function BeatTheCriticsRulesPage() {
+  return (
+    <div className="max-w-[680px] mx-auto px-5 py-12">
+      <div className="mb-8">
+        <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Beat the Critics</div>
+        <h1 className="text-2xl font-extrabold tracking-tight mb-1">Official Rules — Prize Draw</h1>
+        <p className="text-sm text-gray-500">$100 TodayTix Gift Card · Tony Awards 2026</p>
+      </div>
+
+      <div className="prose prose-invert prose-sm max-w-none space-y-6 text-gray-300 leading-relaxed">
+
+        <p className="text-sm font-semibold text-white">No Purchase Necessary. Void where prohibited.</p>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">1. Eligibility</h2>
+          <p className="text-sm">Open to legal residents of the fifty (50) United States and the District of Columbia who are 18 years of age or older at time of entry. Employees of Broadway Scorecard and members of their immediate families are not eligible.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">2. Entry Period</h2>
+          <p className="text-sm">Entries are accepted beginning at the time the feature launches and closing at 11:59 PM Eastern Time on June 6, 2026. Entries submitted after that time will not be eligible for the prize draw.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">3. How to Enter</h2>
+          <p className="text-sm">Visit <a href="https://broadwayscorecard.com/beat-the-critics" className="text-brand underline">broadwayscorecard.com/beat-the-critics</a>, submit your Tony Award picks for the required categories, and provide your email address on the final screen. Limit one (1) entry per person. Entries submitted by automated means are void.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">4. Prize</h2>
+          <p className="text-sm">One (1) winner will receive a TodayTix gift card with an approximate retail value of $100 USD. Prize is non-transferable. No cash equivalent or substitution, except at the sole discretion of Broadway Scorecard.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">5. Winner Selection</h2>
+          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant correctly predicted the winner in at least one category, as determined by matching the pick of at least one critic panelist. If no eligible entries meet this criterion, one winner will be selected at random from all eligible entries.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">6. Winner Notification</h2>
+          <p className="text-sm">The winner will be notified by email within fourteen (14) days following the ceremony. If the selected winner does not respond within seven (7) days of notification, an alternate winner may be selected.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">7. Privacy</h2>
+          <p className="text-sm">Email addresses collected are used solely to notify entrants of their results and to contact the winner. We will not share your email with third parties for marketing purposes.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">8. General Conditions</h2>
+          <p className="text-sm">Broadway Scorecard reserves the right to cancel, modify, or suspend this promotion at any time. This promotion is in no way sponsored, endorsed, or administered by, or associated with TodayTix Group. By participating, entrants agree to be bound by these Official Rules and the decisions of Broadway Scorecard, which are final and binding.</p>
+        </section>
+
+        <section>
+          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">9. Sponsor</h2>
+          <p className="text-sm">Broadway Scorecard · <a href="mailto:hello@broadwayscorecard.com" className="text-brand underline">hello@broadwayscorecard.com</a></p>
+        </section>
+
+      </div>
+
+      <div className="mt-10 pt-6 border-t border-white/10">
+        <a href="/beat-the-critics" className="text-sm text-brand hover:underline">&larr; Back to Beat the Critics</a>
+      </div>
+    </div>
+  );
+}

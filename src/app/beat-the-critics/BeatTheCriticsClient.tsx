@@ -335,8 +335,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
           <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.<br />Ceremony: <strong className="text-gray-200 font-semibold">June 7, 2026</strong>.</p>
-          <div className="animate-fade-up mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-            <span>🎟️</span> Beat a critic — enter the <strong>$100 TodayTix prize draw</strong>
+          <div className="animate-fade-up mt-5 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold">
+              <span>🎟️</span> Beat a critic — enter the <strong>$100 TodayTix prize draw</strong>
+            </div>
+            <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
           {/* Critic grid */}
