@@ -21,10 +21,10 @@ interface CriticPanelist {
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Dan Rubins', outlets: ['BroadwayRadio', 'TheaterMania'], initials: 'DR', bio: 'Theater critic & host of BroadwayRadio, the #1 Broadway podcast' },
-  { name: 'Naveen Kumar', outlets: ['Washington Post'], initials: 'NK', bio: 'Theater critic covering Broadway for the Washington Post' },
-  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF', bio: 'Theater editor at Time Out NY, covering Broadway for 20+ years' },
-  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM', bio: 'Theater & culture critic at Vulture / New York Magazine' },
+  { name: 'Dan Rubins', outlets: ['Slant Magazine', 'BroadwayRadio'], initials: 'DR', bio: 'Theater critic at Slant Magazine & BroadwayRadio podcast host' },
+  { name: 'Naveen Kumar', outlets: ['National Critics Institute'], initials: 'NK', bio: 'Theater critic & associate director, National Critics Institute' },
+  { name: 'Adam Feldman', outlets: ['Time Out NY'], initials: 'AF', bio: 'Theater critic at Time Out NY for over 20 years' },
+  { name: 'Jackson McHenry', outlets: ['Vulture'], initials: 'JM', bio: 'Theater critic at Vulture / New York Magazine since 2015' },
 ];
 
 function criticHasPicks(): boolean {
