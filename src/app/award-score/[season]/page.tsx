@@ -7,26 +7,16 @@ import { SortableAwardScoreTable } from '@/components/SortableAwardScoreTable';
 import { featureFlags } from '@/config/feature-flags';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 
-function slugToFullSeason(slug: string): string {
-  // "2025-26" → "2025-2026"
+// tonySeason in awards.json is stored in short format "YYYY-YY" which
+// matches the URL slug directly — no conversion needed.
+function formatSeason(slug: string): string {
+  // "2025-26" → "2025–26"
   const m = slug.match(/^(\d{4})-(\d{2})$/);
-  if (!m) return '';
-  return `${m[1]}-${m[1].slice(0, 2)}${m[2]}`;
-}
-
-function toSlug(fullSeason: string): string {
-  const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
-  if (!m) return fullSeason;
-  return `${m[1]}-${m[2]}`;
-}
-
-function formatSeason(fullSeason: string): string {
-  const m = fullSeason.match(/^(\d{4})-\d{2}(\d{2})$/);
-  if (!m) return fullSeason;
+  if (!m) return slug;
   return `${m[1]}–${m[2]}`;
 }
 
-function getShowsForSeason(fullSeason: string) {
+function getShowsForSeason(seasonSlug: string) {
   return getBroadwayShows()
     .map(show => {
       try {
@@ -39,7 +29,7 @@ function getShowsForSeason(fullSeason: string) {
     })
     .filter((item): item is NonNullable<typeof item> =>
       item !== null &&
-      item.awardScore.tonySeason === fullSeason &&
+      item.awardScore.tonySeason === seasonSlug &&
       item.awardScore.displayScore > 0
     )
     .sort((a, b) => b.awardScore.displayScore - a.awardScore.displayScore);
@@ -54,12 +44,12 @@ export async function generateStaticParams() {
       if (score.tonySeason) seasons.add(score.tonySeason);
     } catch {}
   }
-  return Array.from(seasons).map(season => ({ season: toSlug(season) }));
+  // tonySeason is already in "YYYY-YY" slug format — use directly as URL param
+  return Array.from(seasons).map(season => ({ season }));
 }
 
 export async function generateMetadata({ params }: { params: { season: string } }): Promise<Metadata> {
-  const fullSeason = slugToFullSeason(params.season);
-  const label = formatSeason(fullSeason) || params.season;
+  const label = formatSeason(params.season);
   return {
     title: `${label} Broadway Award Scorecard`,
     description: `Prestige-weighted award scores for the ${label} Broadway season — Tony Awards, Pulitzer Prize, Drama Desk, Outer Critics Circle, Drama League, and NYDCC.`,
@@ -75,13 +65,12 @@ export async function generateMetadata({ params }: { params: { season: string } 
 export default function AwardScoreSeasonPage({ params }: { params: { season: string } }) {
   if (!featureFlags.awardScoreV2) notFound();
 
-  const fullSeason = slugToFullSeason(params.season);
-  if (!fullSeason) notFound();
+  if (!/^\d{4}-\d{2}$/.test(params.season)) notFound();
 
-  const showsWithScore = getShowsForSeason(fullSeason);
+  const showsWithScore = getShowsForSeason(params.season);
   if (showsWithScore.length === 0) notFound();
 
-  const seasonLabel = formatSeason(fullSeason);
+  const seasonLabel = formatSeason(params.season);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
