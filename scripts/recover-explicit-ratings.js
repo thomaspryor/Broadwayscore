@@ -558,6 +558,8 @@ const ARCHIVE_FIRST_DOMAINS = [
   'rollingstone.com', 'chicagotribune.com', 'nypost.com',
   'timeout.com', 'usatoday.com', 'ft.com', 'telegraph.co.uk',
   'thetimes.co.uk', 'thestage.co.uk', 'standard.co.uk',
+  // UK/niche paywalls — BD/SB can't crack anyway
+  'independent.co.uk', 'nysun.com', 'spectator.co.uk', 'thejc.com',
 ];
 
 function isArchiveFirstSite(url) {

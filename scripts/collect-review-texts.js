@@ -379,6 +379,11 @@ const CONFIG = {
     'bloomberg.com',                      // Hard paywall
     'backstage.com',                      // Paywall + JSP URLs
     'thestage.co.uk',                     // UK theater paywall
+    // UK paywalls + FT — in SB_PREMIUM_DOMAINS but archive-first saves credits
+    'ft.com', 'telegraph.co.uk', 'thetimes.co.uk', 'thetimes.com',
+    'standard.co.uk', 'independent.co.uk',
+    // Smaller paywalled outlets surfaced via SERP
+    'nysun.com', 'spectator.co.uk', 'thejc.com',
   ],
 
   // Minimum word count for valid review
