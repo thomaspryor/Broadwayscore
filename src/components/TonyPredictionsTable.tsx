@@ -17,10 +17,11 @@ const CRITIC_PICK_SOURCES: Record<string, { shortName: string; color: string; ou
 
 export type PredictionMode = 'combined' | 'critics' | 'audience';
 
-/** Softmax-based win probabilities within a category, temperature T=10.
+/** Softmax-based win probabilities within a category, temperature T=7.
+ *  T=7 produces distributions closer to GD/Kalshi market odds (T=10 was too flat).
  *  Shows with null blendedScore are excluded from the denominator. */
 function computeWinProbabilities(shows: SerializedTonyShow[], mode: PredictionMode): Map<string, number> {
-  const T = 10;
+  const T = 7;
   const scored = shows.filter(s => getScoreForMode(s, mode) != null);
   if (scored.length === 0) return new Map();
   const exps = scored.map(s => Math.exp((getScoreForMode(s, mode) as number) / T));
