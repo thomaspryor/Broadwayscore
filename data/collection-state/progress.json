@@ -281,7 +281,17 @@
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
-    "lennon-2005/about-entertainment--ben-brantley.json"
+    "lennon-2005/about-entertainment--ben-brantley.json",
+    "frozen-2004/about-entertainment--unknown.json",
+    "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+    "salome-2003/about-entertainment--ben-brantley.json",
+    "man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+    "say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+    "sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+    "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+    "the-crucible-2002/about-entertainment--ben-brantley.json",
+    "metamorphoses-2002/about-entertainment--ben-brantley.json",
+    "major-barbara-2001/about-entertainment--bruce-weber.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -324,7 +334,14 @@
       "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
       "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
-      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json"
+      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
+      "data/review-texts/frozen-2004/about-entertainment--unknown.json",
+      "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+      "data/review-texts/sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -361,7 +378,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "lennon-2005/about-entertainment--ben-brantley.json",
+  "lastProcessed": "major-barbara-2001/about-entertainment--bruce-weber.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -426,6 +443,83 @@
     },
     {
       "t": "2026-05-18T12:21:24.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:21:38.107Z",
+      "event": "bb-session",
+      "session": "9ab3e445",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=980"
+    },
+    {
+      "t": "2026-05-18T12:21:38.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:21:53.527Z",
+      "event": "bb-session",
+      "session": "ad641cab",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C0"
+    },
+    {
+      "t": "2026-05-18T12:21:54.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:08.281Z",
+      "event": "bb-session",
+      "session": "4843fb3b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF93"
+    },
+    {
+      "t": "2026-05-18T12:22:09.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:22.643Z",
+      "event": "bb-session",
+      "session": "510352d9",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1"
+    },
+    {
+      "t": "2026-05-18T12:22:23.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:37.994Z",
+      "event": "bb-session",
+      "session": "bbe7cde1",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C1"
+    },
+    {
+      "t": "2026-05-18T12:22:38.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:52.516Z",
+      "event": "bb-session",
+      "session": "047de8f1",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=S"
+    },
+    {
+      "t": "2026-05-18T12:22:53.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:23:06.950Z",
+      "event": "bb-session",
+      "session": "9f7da81a",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c0"
+    },
+    {
+      "t": "2026-05-18T12:23:07.909Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

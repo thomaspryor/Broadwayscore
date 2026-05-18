@@ -1,53 +1,20 @@
 {
-  "updatedAt": "2026-05-18T12:21:37.211Z",
+  "updatedAt": "2026-05-18T12:24:04.183Z",
   "processed": 43,
-  "failed": 237,
-  "successRate": "15.4%",
+  "failed": 247,
+  "successRate": "14.8%",
   "tierBreakdown": {
     "playwright": 28,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 1,
     "archiveToday": 7,
     "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-05-18T09:17:00.073Z",
-      "event": "bb-session",
-      "session": "a04cf413",
-      "url": "http://www.variety.com/review/VE1117947963?refCatId=33"
-    },
-    {
-      "t": "2026-05-18T09:17:00.884Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-05-18T09:17:15.997Z",
-      "event": "bb-session",
-      "session": "6a26cb5b",
-      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
-    },
-    {
-      "t": "2026-05-18T09:17:16.757Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-05-18T09:21:48.820Z",
-      "event": "bb-session",
-      "session": "27b82d09",
-      "url": "https://variety.com/2026/theater/global/trainspotting-the-musical-coming-london-"
-    },
-    {
-      "t": "2026-05-18T09:21:49.572Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
     {
       "t": "2026-05-18T11:44:27.337Z",
       "event": "bb-session",
@@ -78,6 +45,83 @@
     },
     {
       "t": "2026-05-18T12:21:24.644Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:21:38.107Z",
+      "event": "bb-session",
+      "session": "9ab3e445",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=980"
+    },
+    {
+      "t": "2026-05-18T12:21:38.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:21:53.527Z",
+      "event": "bb-session",
+      "session": "ad641cab",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C0"
+    },
+    {
+      "t": "2026-05-18T12:21:54.548Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:08.281Z",
+      "event": "bb-session",
+      "session": "4843fb3b",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF93"
+    },
+    {
+      "t": "2026-05-18T12:22:09.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:22.643Z",
+      "event": "bb-session",
+      "session": "510352d9",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1"
+    },
+    {
+      "t": "2026-05-18T12:22:23.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:37.994Z",
+      "event": "bb-session",
+      "session": "bbe7cde1",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C1"
+    },
+    {
+      "t": "2026-05-18T12:22:38.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:22:52.516Z",
+      "event": "bb-session",
+      "session": "047de8f1",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=S"
+    },
+    {
+      "t": "2026-05-18T12:22:53.855Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:23:06.950Z",
+      "event": "bb-session",
+      "session": "9f7da81a",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c0"
+    },
+    {
+      "t": "2026-05-18T12:23:07.909Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
