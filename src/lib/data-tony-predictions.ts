@@ -250,6 +250,8 @@ export interface SerializedTonyShow {
   nomineePriorWins?: number;
   /** Win probability 0–1 from Polymarket real-money market. Null if no market exists. */
   polymarketOdds?: number | null;
+  /** Win probability 0–1 from Kalshi real-money market. Null if no market exists. */
+  kalshiOdds?: number | null;
   /** Person name for acting/directing nominations (e.g. "Sarah Snook"); null for show-level categories. */
   nomineePersonName?: string | null;
   /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
