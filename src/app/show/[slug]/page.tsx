@@ -663,14 +663,16 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             );
           })()}
 
-          {/* Critics' Take - inline below the poster/score row */}
+          {/* Critics' Take — inline below the score row, no border/card chrome.
+              Matches the redesign hero treatment so the consensus reads as a
+              continuous block with whatever sits above it. */}
           {consensus && show.criticScore ? (
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Critics&apos; Take</p>
+            <div className="mt-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
               <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
             </div>
           ) : show.synopsis ? (
-            <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
+            <p className="text-gray-400 text-sm leading-relaxed mt-3">
               {show.synopsis}
             </p>
           ) : null}
