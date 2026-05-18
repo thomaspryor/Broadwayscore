@@ -2,7 +2,13 @@
   "processed": [
     "the-boy-who-harnessed-the-wind-west-end-2026/artsdesk--unknown.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "avenue-q-west-end-2026/sunday-express--callum-crumlish.json"
+    "avenue-q-west-end-2026/sunday-express--callum-crumlish.json",
+    "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+    "dracula-west-end-2025/metro--unknown.json",
+    "the-producers-west-end-2025/variety--ellise-shafer.json",
+    "my-neighbour-totoro-west-end-2025/british-theatre--susan-novak.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -11,28 +17,66 @@
     "an-ideal-husband-west-end-2026/the-recs--unknown.json",
     "grace-pervades-west-end-2026/timeout-london--unknown.json",
     "the-price-off-west-end-2026/daily-mail--unknown.json",
-    "les-liaisons-dangereuses-west-end-2026/all-that-dazzles-uk--unknown.json"
+    "les-liaisons-dangereuses-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/the-upcoming-uk--unknown.json",
+    "romeo-and-juliet-west-end-2026/thestage--unknown.json",
+    "the-producers-west-end-2025/variety--bob-verini.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "the-boy-who-harnessed-the-wind-west-end-2026/artsdesk--unknown.json",
-      "avenue-q-west-end-2026/sunday-express--callum-crumlish.json"
+      "avenue-q-west-end-2026/sunday-express--callum-crumlish.json",
+      "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+      "my-neighbour-totoro-west-end-2025/british-theatre--susan-novak.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
+      "data/review-texts/the-producers-west-end-2025/variety--ellise-shafer.json",
+      "the-producers-west-end-2025/variety--ellise-shafer.json"
+    ],
     "directCookies": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "dracula-west-end-2025/metro--unknown.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json"
+    ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
-      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "les-liaisons-dangereuses-west-end-2026/all-that-dazzles-uk--unknown.json",
-  "log": []
+  "lastProcessed": "the-devil-wears-prada-west-end-2024/independent--lindsey-bahr.json",
+  "log": [
+    {
+      "t": "2026-05-18T09:17:00.073Z",
+      "event": "bb-session",
+      "session": "a04cf413",
+      "url": "http://www.variety.com/review/VE1117947963?refCatId=33"
+    },
+    {
+      "t": "2026-05-18T09:17:00.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-18T09:17:15.997Z",
+      "event": "bb-session",
+      "session": "6a26cb5b",
+      "url": "https://variety.com/2026/theater/global/richard-kind-returning-the-producers-lon"
+    },
+    {
+      "t": "2026-05-18T09:17:16.757Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
