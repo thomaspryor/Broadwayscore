@@ -145,6 +145,9 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
+// Feature flag: show "Our Pick %" column only when tony-predictions is in NEXT_PUBLIC_FEATURES
+const SHOW_OUR_PICK = process.env.NEXT_PUBLIC_FEATURES?.includes('tony-predictions') ?? false;
+
 // Shared style tokens — mirrors nominees page
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -175,9 +178,11 @@ function CombinedColumnHeader() {
       <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
       <div className="flex-1 min-w-0" />
       <div className="flex items-end gap-2 flex-shrink-0">
-        <div className="w-14 text-center">
-          <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
-        </div>
+        {SHOW_OUR_PICK && (
+          <div className="w-14 text-center">
+            <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
+          </div>
+        )}
         <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
@@ -277,11 +282,13 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         {titleArea}
         {/* ALL right-side columns in ONE flex group — must mirror CombinedColumnHeader inner gap-2 */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-14 flex items-center justify-center">
-            {ourPct != null
-              ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
-              : <span className="text-base text-gray-600">—</span>}
-          </div>
+          {SHOW_OUR_PICK && (
+            <div className="w-14 flex items-center justify-center">
+              {ourPct != null
+                ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
+                : <span className="text-base text-gray-600">—</span>}
+            </div>
+          )}
           <div className="hidden sm:flex w-12 items-center justify-center">
             <span className="text-base font-bold text-white">
               {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
