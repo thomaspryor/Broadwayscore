@@ -50,6 +50,15 @@ const MANUAL_FIELDS = [
   'wrongShowOverride',
   'humanReviewedWrongProduction',
   'humanReviewedWrongArticle',
+  // The wrongProduction / wrongShow flags themselves. Added 2026-05-17 alongside
+  // the review-file-writer.js human-override guard. A human's manual
+  // `wrongProduction: false` (i.e. "this IS the right production, don't exclude")
+  // must survive rebase — otherwise CI's `true` from a remote classifier run
+  // silently re-excludes the review. The ORIG_HEAD recovery below handles the
+  // -X theirs case (post-rebase local matches remote); the MANUAL_FIELDS
+  // restoration only handles the simpler local-lost-field case.
+  'wrongProduction',
+  'wrongShow',
   // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
   'allowEarlyDate',
   'allowLateDate',
@@ -176,6 +185,19 @@ try {
           local.fullText = oursText;
           modified = true;
           process.stderr.write(`  Restored fullText (${oursText.length} chars) from pre-rebase HEAD in ${f}\n`);
+        }
+        // Restore manual `wrongProduction: false` / `wrongShow: false` from
+        // pre-rebase HEAD. After `-X theirs`, local matches remote so the
+        // simple MANUAL_FIELDS restoration (which only fills missing locals)
+        // doesn't help. If OURS explicitly had `false` (the human-cleared
+        // sentinel) and remote has `true`, prefer OURS — otherwise CI's
+        // classifier output silently re-excludes a human-verified review.
+        for (const flagField of ['wrongProduction', 'wrongShow']) {
+          if (ours[flagField] === false && local[flagField] === true) {
+            local[flagField] = false;
+            modified = true;
+            process.stderr.write(`  Restored ${flagField}=false from pre-rebase HEAD in ${f}\n`);
+          }
         }
       } catch {
         // ORIG_HEAD not available or file didn't exist — skip

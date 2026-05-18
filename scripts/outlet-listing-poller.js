@@ -47,7 +47,7 @@ const https = require('https');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const {
   normalizeOutlet,
   normalizeCritic,
@@ -72,6 +72,14 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+// Rejected-URL cache: when the shared writer's classifier rejects a URL as
+// cross-market (or any other 'skipped' reason that isn't transient), we record
+// the URL here so the next poll cycle doesn't re-discover and re-process it.
+// Without this we burn time + log noise every cycle on the same dead URLs.
+// FIFO-capped at REJECTED_URL_CACHE_MAX entries. Schema:
+//   [{ url, showId, outletId, reason, rejectedAt }]
+const REJECTED_URL_CACHE = path.join(__dirname, '..', 'data', 'audit', 'outlet-poller-rejected-urls.json');
+const REJECTED_URL_CACHE_MAX = 1000;
 
 // ---------------------------------------------------------------------------
 // Outlet strategy overrides (all other qualifying outlets fall back to serp)
@@ -251,6 +259,81 @@ function fetchSimple(url, timeoutMs = 15000) {
 }
 
 // ---------------------------------------------------------------------------
+// Rejected-URL cache (cross-market / classifier rejects)
+// ---------------------------------------------------------------------------
+
+let _rejectedCache = null;       // Set<string>: "url|||showId" keys for fast lookup
+let _rejectedCacheList = null;   // Array<{url,showId,outletId,reason,rejectedAt}>: ordered FIFO
+
+function _loadRejectedCache() {
+  if (_rejectedCache) return _rejectedCache;
+  _rejectedCache = new Set();
+  _rejectedCacheList = [];
+  try {
+    if (fs.existsSync(REJECTED_URL_CACHE)) {
+      const raw = JSON.parse(fs.readFileSync(REJECTED_URL_CACHE, 'utf-8'));
+      if (Array.isArray(raw)) {
+        _rejectedCacheList = raw;
+        for (const e of raw) {
+          if (e && e.url && e.showId) _rejectedCache.add(`${e.url}|||${e.showId}`);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn(`  ⚠ Could not load rejected-URL cache (${e.message}); starting empty`);
+    _rejectedCache = new Set();
+    _rejectedCacheList = [];
+  }
+  return _rejectedCache;
+}
+
+function isRejectedCached(url, showId) {
+  _loadRejectedCache();
+  return _rejectedCache.has(`${url}|||${showId}`);
+}
+
+function recordRejection({ url, showId, outletId, reason }) {
+  _loadRejectedCache();
+  const key = `${url}|||${showId}`;
+  if (_rejectedCache.has(key)) return;  // Already recorded
+  _rejectedCache.add(key);
+  _rejectedCacheList.push({
+    url,
+    showId,
+    outletId,
+    reason,
+    rejectedAt: new Date().toISOString(),
+  });
+  // FIFO cap: drop oldest entries when over the limit.
+  while (_rejectedCacheList.length > REJECTED_URL_CACHE_MAX) {
+    const removed = _rejectedCacheList.shift();
+    if (removed) _rejectedCache.delete(`${removed.url}|||${removed.showId}`);
+  }
+}
+
+function flushRejectedCache() {
+  if (!_rejectedCacheList) return;
+  try {
+    const dir = path.dirname(REJECTED_URL_CACHE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(REJECTED_URL_CACHE, JSON.stringify(_rejectedCacheList, null, 2) + '\n');
+  } catch (e) {
+    console.warn(`  ⚠ Could not write rejected-URL cache: ${e.message}`);
+  }
+}
+
+/**
+ * Heuristic: is this 'skipped' reason worth caching? Transient failures
+ * (e.g. domain-mismatch on URL that may later be corrected) shouldn't pin a
+ * URL forever. Classifier rejections (cross-market) are durable — the URL
+ * isn't going to magically become a different market on retry.
+ */
+function shouldCacheSkipReason(reason) {
+  if (!reason) return false;
+  return /cross-market|^domain-mismatch|junk-outlet|suspicious-outlet-id/.test(reason);
+}
+
+// ---------------------------------------------------------------------------
 // Stub file creation
 // ---------------------------------------------------------------------------
 
@@ -273,33 +356,44 @@ function alreadyFiled(showId, outletId, url) {
 }
 
 function createStub(showId, outletId, outletDisplayName, url, headline, publishDate, isMultiShow, nytCriticsPick, dryRun) {
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-  const filePath = buildStubPath(showId, outletId);
+  // Route through the shared writer so the cross-market/same-title classifier
+  // (classifyMarketRouting in market-routing.js) runs on every poller stub.
+  // Without this the poller can file an article under the wrong production of
+  // a same-titled revival (Codex flagged this in plan-review of bc88039868).
+  const fields = {
+    publishDate: publishDate || null,
+  };
+  if (isMultiShow) fields.isMultiShowReview = true;
+  if (nytCriticsPick) fields.nytCriticsPick = true;
 
-  if (dryRun) {
-    console.log(`  [DRY RUN] Would write: ${showId}/${path.basename(filePath)}`);
-    console.log(`            url: ${url}`);
-    if (isMultiShow) console.log(`            isMultiShowReview: true`);
-    return;
-  }
-
-  if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
-
-  const stub = {
-    showId,
+  const result = createOrMergeReviewFile(showId, {
     outletId,
     outlet: outletDisplayName,
     criticName: 'Unknown',
     url,
     source: 'outlet-listing-poller',
-    sources: ['outlet-listing-poller'],
     publishDate: publishDate || null,
-  };
-  if (isMultiShow) stub.isMultiShowReview = true;
-  if (nytCriticsPick) stub.nytCriticsPick = true;
+    fields,
+  }, { dryRun });
 
-  safeWriteReview(filePath, stub);
-  console.log(`  ✓ Filed: ${showId}/${path.basename(filePath)}`);
+  if (dryRun) {
+    if (result.action === 'skipped') {
+      console.log(`  [DRY RUN] Skipped ${showId}/${outletId}: ${result.reason}`);
+    } else {
+      console.log(`  [DRY RUN] Would ${result.action}: ${showId}/${outletId} (${url})`);
+      if (isMultiShow) console.log(`            isMultiShowReview: true`);
+    }
+    return result;
+  }
+
+  if (result.action === 'skipped') {
+    console.log(`  ⤼ Skipped ${showId}/${outletId}: ${result.reason}`);
+  } else if (result.action === 'new') {
+    console.log(`  ✓ Filed: ${showId}/${path.basename(result.filepath || '')}`);
+  } else if (result.action === 'updated') {
+    console.log(`  ↻ Merged: ${showId}/${path.basename(result.filepath || '')}`);
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -564,10 +658,23 @@ async function main() {
 
       for (const show of matchedShows) {
         if (alreadyFiled(show.id, outletId, url)) continue;
+        // Skip URLs the classifier durably rejected on a prior cycle. The
+        // writer would just reject them again and we'd burn classifier work.
+        if (isRejectedCached(url, show.id)) continue;
 
-        createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
-        if (!opts.dryRun) outletNewStubs++;
-        totalNewStubs++;
+        const result = createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
+        // Only count NEW writes — the shared writer may also reject (cross-market
+        // classifier), reroute, or merge into an existing file. None of those
+        // are "new stubs" for the workflow output.
+        if (result && result.action === 'new') {
+          if (!opts.dryRun) outletNewStubs++;
+          totalNewStubs++;
+        } else if (result && result.action === 'skipped' && !opts.dryRun
+            && shouldCacheSkipReason(result.reason)) {
+          // Record durable rejections (cross-market classifier, junk outlet,
+          // domain mismatch) so the next poll cycle doesn't re-process them.
+          recordRejection({ url, showId: show.id, outletId, reason: result.reason });
+        }
       }
     }
 
@@ -578,6 +685,11 @@ async function main() {
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
+
+  // Persist rejected-URL cache (cross-market classifier rejects, etc.) so the
+  // next poll cycle skips them upfront. Skip in dry-run since recordRejection
+  // is already gated above.
+  if (!opts.dryRun) flushRejectedCache();
 
   // Signal to GitHub Actions workflow
   if (process.env.GITHUB_OUTPUT) {
