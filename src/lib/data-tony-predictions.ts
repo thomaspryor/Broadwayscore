@@ -74,20 +74,27 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
 //
-// best-revival-play changed from 0.00/0.80/0.20 to 0.00/0.95/0.05 on
-// 2026-05-17. All 3 historical misses had the winner with lower awards scores
-// than our pick — awards signal was anti-correlated in those cases. Grid
-// search at step 0.05 found pure audience (0/1.0/0) optimal in-sample
-// (10/11, 90.9%), but awards_weight=0 narrows margin on current-season
-// Death of a Salesman (aud=89.5 vs EBT aud=90.0, too close given noise).
-// Using 0.05 awards weight keeps DoA #1 comfortably while reducing awards
-// influence enough to fix the 2018-19 miss (Boys in the Band). Net: 8/11
-// (72.7%) → 9/11 (81.8%). See scripts/search-tony-best-play-weights.ts --cat=best-revival-play.
+// best-play changed from 0.40/0.40/0.20 to 0.65/0.00/0.35 on 2026-05-17.
+// Grid search at step 0.05 found critic+awards recipes dominate (11/11
+// in-sample, 90.9% LOOCV). {0.65/0/0.35} is the mode across 10/11 LOOCV
+// folds. Audience weight dropped to 0: audience is less predictive for plays
+// where Tony voters (theater professionals) follow critical consensus and
+// precursor awards over crowd reaction. Net: 10/11 (90.9%) in-sample →
+// 11/11 (100%). Also produces steeper score descent (Liberation leads by
+// 17pt vs 10pt), matching market confidence levels. See
+// scripts/search-tony-best-play-weights.ts --cat=best-play.
+//
+// best-revival-play changed from 0.00/0.95/0.05 to 0.40/0.60/0.00 on
+// 2026-05-17. All 3 historical misses had awards signal anti-correlated with
+// winning — dropping awards to 0 and adding critic (0.40) gets 9/10
+// in-sample (90.0%) vs 7/10 (70.0%) for the old 0.0/0.8/0.2 recipe.
+// LOOCV: 8/10 (80.0%). Current-season DoA still #1 by 2+ pts. See
+// scripts/search-tony-best-play-weights.ts --cat=best-revival-play.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
   'best-musical':         { critic: 0.43, audience: 0.52, awards: 0.05 },
-  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2  },
+  'best-play':            { critic: 0.65, audience: 0.00, awards: 0.35 },
   'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0    },
-  'best-revival-play':    { critic: 0,    audience: 0.95, awards: 0.05 },
+  'best-revival-play':    { critic: 0.4,  audience: 0.6,  awards: 0    },
 };
 
 /**
