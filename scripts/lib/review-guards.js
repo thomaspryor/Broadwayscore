@@ -1918,6 +1918,11 @@ function isIncludableForRebuild(data, show) {
   if (data.fabricatedEntry === true) return false;
   if (data.isSyndicatedDuplicate === true) return false;
   if (data.crossOutletDuplicate === true) return false;
+  // BWW aggregator ambiguity: review was extracted from BWW's /reviews/ page for a show
+  // that has title-token-overlap siblings (e.g. "Cats" reviews landing on a
+  // "CATS: The Jellicle Ball" page) with no date or URL-year to disambiguate.
+  // Excluded until manually cleared via bwwAggregatorAmbiguousClearedNote.
+  if (data.bwwAggregatorAmbiguous === true && !data.bwwAggregatorAmbiguousClearedNote) return false;
   // suspectedMisattribution: stale-flag override mirrors wrongShow's pattern at
   // line 1726. Pre-2026-04-29 only is-scoreable.ts honored isLikelyStale*; rebuild
   // unconditionally blocked, which made the LLM/rebuild parity refactor (Notion
