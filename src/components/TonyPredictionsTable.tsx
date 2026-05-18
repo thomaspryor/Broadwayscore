@@ -103,7 +103,7 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
-    <div className="flex items-center gap-0.5 flex-shrink-0">
+    <div className="hidden sm:flex items-center gap-0.5 flex-shrink-0">
       {picks.map(id => <OutletPickLogo key={id} outletId={id} />)}
     </div>
   );
@@ -168,13 +168,13 @@ function CombinedColumnHeader() {
         <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
-        <div className="w-14 text-center">
+        <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
         </div>
-        <div className="w-14 text-center">
+        <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
-        <div className="w-14 text-center">
+        <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
       </div>
@@ -202,7 +202,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           {show.title}
         </h3>
         {rank === 1 && mode === 'combined' && !isUpcoming && (
-          <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
+          <span className="hidden sm:inline-flex flex-shrink-0 items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
             </svg>
@@ -272,14 +272,14 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
               {show.kalshiOdds != null ? `${Math.round(show.kalshiOdds * 100)}%` : '—'}
             </span>
           </div>
-          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
-          <AudienceBox grade={show.audienceGrade} />
-          <AwardScoreBadge
+          <div className="hidden sm:flex"><ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} /></div>
+          <div className="hidden sm:flex"><AudienceBox grade={show.audienceGrade} /></div>
+          <div className="hidden sm:flex"><AwardScoreBadge
             score={Math.round(show.awardsScore ?? 0)}
             badge={badgeFromScore(show.awardsScore)}
             inProgress={true}
             size="md"
-          />
+          /></div>
         </div>
       </Link>
     );
