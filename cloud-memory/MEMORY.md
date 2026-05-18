@@ -123,7 +123,6 @@
 - [Bare X/Y regex FPs](feedback_regex_url_fragment_fps.md) — `\d/\d` patterns FP on CDN paths and date headers. Anchor + URL filter required.
 - [Content-quality regex bare-keyword FPs](feedback_content_quality_regex_fps.md) — Audit patterns against real corpus before edit.
 - [JS array > 0 is always false](feedback_js_array_gt_comparison.md) — `string[] > 0` silently returns false; use `Array.isArray(x) ? x : []` + `.length > 0` for array fields.
-- [Same-title-different-production routing](feedback_same_title_disambiguation.md) — Extend `classifyMarketRouting` at the single writer chokepoint; ≥2-signal cascade (url-year/publish-date/venue); stamp wrongProduction with humanReviewedWrongProduction guard. Don't add a new resolver.
 
 ## 🤖 LLM / evals
 - [LLM prompts must be market/type-aware](feedback_llm_prompts_market_aware.md) — Theater-tuned prompts mis-classify opera/special shows that live as type-overlays on category=off-broadway. Inject canonical context blocks from `scripts/lib/opera-prompt-context.js`; spell out WRONG criteria BEFORE leniency.
