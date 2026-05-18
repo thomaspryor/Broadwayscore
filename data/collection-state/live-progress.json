@@ -1,26 +1,20 @@
 {
-  "updatedAt": "2026-05-18T22:16:05.246Z",
-  "processed": 80,
-  "failed": 565,
-  "successRate": "12.4%",
+  "updatedAt": "2026-05-18T22:58:34.649Z",
+  "processed": 82,
+  "failed": 573,
+  "successRate": "12.5%",
   "tierBreakdown": {
     "playwright": 57,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 20,
-    "brightdata": 2,
-    "archiveToday": 27,
-    "archive": 6
+    "brightdata": 3,
+    "archiveToday": 29,
+    "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-18T11:44:27.337Z",
-      "event": "bb-session",
-      "session": "67da84d6",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c1"
-    },
     {
       "t": "2026-05-18T11:44:28.540Z",
       "event": "bb-cookie-inject",
@@ -124,6 +118,12 @@
       "t": "2026-05-18T12:23:07.909Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T22:54:54.413Z",
+      "event": "bb-session",
+      "session": "a7a1ce53",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
     }
   ]
 }
