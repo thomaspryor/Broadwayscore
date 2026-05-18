@@ -53,6 +53,8 @@ jobs:
         env:
           NEXT_PUBLIC_FEATURES: "criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts"
           SKIP_HEAVY_PREBUILD: "true"
+          NEXT_PUBLIC_SANITY_DATASET: "production"
+          NEXT_PUBLIC_SANITY_PROJECT_ID: "fp1ft8k8"
 
       - name: Start server
         run: |
