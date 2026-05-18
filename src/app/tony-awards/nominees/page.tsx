@@ -36,13 +36,13 @@ const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Nominees Scorecard — Critic, Audience & Odds`,
+  title: `${season.ceremonyYear} Tony Nominations Center — Critic, Audience & Odds`,
   description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby, Polymarket, and Kalshi. All 26 categories.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
-    title: `${season.ceremonyYear} Tony Nominees Scorecard — Broadway Scorecard`,
+    title: `${season.ceremonyYear} Tony Nominations Center — Broadway Scorecard`,
     description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',
@@ -402,7 +402,7 @@ export default function TonyNomineesPage() {
         <div className="flex items-start justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              {season.ceremonyYear} Tony Nominees Scorecard
+              {season.ceremonyYear} Tony Nominations Center
             </h1>
             <p className="text-gray-400 mt-1 text-sm">
               {totalCategories} categories &middot; critic scores, audience grades, and win odds
