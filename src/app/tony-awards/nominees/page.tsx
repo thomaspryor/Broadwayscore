@@ -59,7 +59,7 @@ function formatCeremonyDate(iso: string): string {
 // Shared style tokens
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const HEADER_COL = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 text-center leading-none';
+const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
 
 // --- Reusable score sub-components ---
 
@@ -120,21 +120,21 @@ function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
       <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
       <div className="flex-1 min-w-0" />
       <div className={`flex items-end ${innerGap} flex-shrink-0`}>
-        <div className={`hidden sm:block ${gdW} text-center`}>
-          <span className={HEADER_COL}>Gold<br />Derby</span>
+        <div className={`hidden sm:flex flex-col items-center ${gdW}`}>
+          <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
         {isMajor ? (
           <>
-            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Critic<br />Score</span></div>
-            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Audience<br />Grade</span></div>
+            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span></div>
+            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span></div>
           </>
         ) : (
           <>
-            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Audience<br />Grade</span></div>
-            <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Critic<br />Score</span></div>
+            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span></div>
+            <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span></div>
           </>
         )}
-        <div className={`${scoreW} text-center`}><span className={HEADER_COL}>Precursor<br />Awards</span></div>
+        <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span></div>
       </div>
     </div>
   );
