@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-18T15:37:24.509Z",
+    "lastUpdated": "2026-05-18T17:40:13.539Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37588,
-    "skippedFiles": 17036,
+    "totalFilesScanned": 37600,
+    "skippedFiles": 17035,
     "totalCritics": 1391,
     "registryCritics": 504,
-    "flaggedReviews": 21
+    "flaggedReviews": 20
   },
   "flaggedReviews": [
     {
@@ -31,17 +31,6 @@
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
       "totalReviews": 339
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 2,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 98,
-      "totalReviews": 43
     },
     {
       "critic": "Andrzej Lukowski",
@@ -352,8 +341,8 @@
         "nytimes",
         "timeout",
         "guardian",
-        "ny1",
         "nydailynews",
+        "ny1",
         "backstage",
         "broadwayworld",
         "whatsonstage",
@@ -366,17 +355,17 @@
         "washpost",
         "artsdesk",
         "west-end-wilma",
+        "plays-international",
         "theatre-weekly",
         "theupcoming",
         "all-that-dazzles-uk",
-        "plays-international",
         "hollywood-reporter",
+        "standard",
         "new-york-city-theatre",
         "stagebuddy",
         "cititour",
         "british-theatre",
         "ew",
-        "standard",
         "stageandcinema",
         "times-uk",
         "daily-mail",
@@ -395,11 +384,13 @@
         "i-paper",
         "londonist",
         "curtainup",
+        "londontheatre1",
         "the-upcoming-uk",
         "independent",
         "exeunt-magazine",
         "latimes",
         "deadline",
+        "timeout-london",
         "one-minute-critic",
         "nysr",
         "reddit",
@@ -412,13 +403,11 @@
         "americanpsychothemusicalcomlottery",
         "curtain-call-reviews",
         "ct-now",
-        "londontheatre1",
         "nycitycenterorg",
         "indiewire",
         "minneapolis-star-tribune",
         "ricky-martin",
         "burlington-free-press",
-        "timeout-london",
         "cnn",
         "here",
         "billboard",
@@ -434,6 +423,7 @@
         "a-younger-theatre",
         "fathomentertainmentcom",
         "front-row-center",
+        "london-box-office",
         "the-sun",
         "theatreandtonic",
         "center-on-the-aisle",
@@ -449,13 +439,15 @@
         "hypable",
         "familyvacationcritic",
         "streetdirectory",
+        "lincolncenterfestivalorg",
+        "thewrap",
         "metro-uk",
         "manhattantheatreclubcom",
         "theatre-reviews",
         "bamorg",
         "everything-theatre"
       ],
-      "totalReviews": 566
+      "totalReviews": 577
     },
     {
       "critic": "Rachel Halliburton",
@@ -474,6 +466,17 @@
         "express-uk"
       ],
       "totalReviews": 31
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "slug": "dominic-cavendish",
+      "outlets": [
+        "telegraph",
+        "sunday-telegraph",
+        "timeout-london",
+        "times-uk"
+      ],
+      "totalReviews": 44
     },
     {
       "critic": "Sam Marlowe",
