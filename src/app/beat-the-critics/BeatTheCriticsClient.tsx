@@ -21,8 +21,7 @@ interface CriticPanelist {
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
-  { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
+  { name: 'Dan Rubins', outlets: ['Slant Magazine'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
   { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
   { name: 'Invited Critic', outlets: ['Theater Publication'], initials: '?', bio: 'Your name, outlet, and bio would appear here.' },
 ];
@@ -343,7 +342,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {/* Critic grid */}
           <div className="animate-fade-up w-full mt-8" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Your Competition</div>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-3 gap-2.5">
               {CRITICS.map((c, i) => (
                 <div key={i} className="rounded-2xl bg-surface-raised ring-1 ring-white/5 p-4 text-left">
                   <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-black text-gray-300 mb-3">{c.initials}</div>
