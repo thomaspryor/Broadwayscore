@@ -144,11 +144,45 @@ function loadMarketData(filename: string): PmData | null {
   }
 }
 
+// Normalize for odds matching — mirrors normalizeTitle() in scripts/lib/title-normalization.js:
+// strips accents (NFD), apostrophes, commas, converts & → "and", collapses whitespace.
+// Used to handle: Titaníque↔Titanique (accent), Arthur Miller's↔bare title (apostrophe),
+// "The Lost Boys" leading-the strip, etc.
+function normTitle(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '') // strip accents
+    .replace(/&/g, 'and')
+    .replace(/^the\s+/, '')
+    .replace(/[^a-z0-9\s]/g, '') // strip apostrophes, commas, punctuation
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Sort-normalized name tokens for order-insensitive matching of multi-person credit lists.
+// e.g. "Marla Mindelle, Constantine Rousouli and Tye Blue" ↔ "Marla Mindelle & Constantine Rousouli & Tye Blue"
+// Also handles different ordering: "Ethan Popp, Kyler England, ... Gabriel Mann" ↔ "Ethan Popp & ... & Kyler England"
+function normForNameList(s: string): string {
+  return normTitle(s).split(' ').filter(t => t !== 'and').sort().join(' ');
+}
+
 function findMarketOdds(nominees: Record<string, number>, name: string): number | null {
   if (name in nominees) return nominees[name];
-  const lower = name.toLowerCase();
+  const normName = normTitle(name);
+  const nameListNorm = normForNameList(name);
+  const nameTokens = new Set(nameListNorm.split(' '));
   for (const [k, v] of Object.entries(nominees)) {
-    if (k.toLowerCase() === lower) return v;
+    const normK = normTitle(k);
+    // Exact normalized match (handles accents: Titaníque ↔ Titanique)
+    if (normK === normName) return v;
+    // Playwright-prefix suffix match: "Arthur Miller's Death of a Salesman" ends with "death of a salesman"
+    if (normK.endsWith(' ' + normName)) return v;
+    // Name-separator-insensitive + order-insensitive match (sorted tokens, commas/&/and equivalent)
+    if (normForNameList(k) === nameListNorm) return v;
+    // Shared-credit subset match: "Zhailon Levingston" matches "Zhailon Levingston and Bill Rauch"
+    // (co-credited collaborators share the same market entry)
+    const keyTokens = new Set(normForNameList(k).split(' '));
+    if (nameTokens.size >= 2 && Array.from(nameTokens).every(t => keyTokens.has(t))) return v;
   }
   return null;
 }
@@ -275,9 +309,13 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(showId).displayScore,
           gdOdds: lookupGdOdds(gdData, gdNormMap, showId, catTitle),
-          polymarketOdds: pmNominees ? findMarketOdds(pmNominees, computedShow.title) : null,
+          polymarketOdds: pmNominees
+            ? (findMarketOdds(pmNominees, computedShow.title)
+               ?? (personName ? findMarketOdds(pmNominees, personName) : null))
+            : null,
           kalshiOdds: kalshiNominees
             ? (findMarketOdds(kalshiNominees, computedShow.title)
+               ?? (personName ? findMarketOdds(kalshiNominees, personName) : null)
                ?? (kalshiCraftKey ? findMarketOdds(kalshiNominees, kalshiCraftKey) : null))
             : null,
           nomineePersonName: personName,
