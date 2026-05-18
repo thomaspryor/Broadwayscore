@@ -271,7 +271,17 @@
     "exit-the-king-2009/newsday--linda-winer.json",
     "impressionism-2009/newsday--linda-winer.json",
     "33-variations-2009/newsday--unknown.json",
-    "the-story-of-my-life-2009/newsday--linda-winer.json"
+    "the-story-of-my-life-2009/newsday--linda-winer.json",
+    "hedda-gabler-2009/newsday--linda-winer.json",
+    "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "lennon-2005/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -313,7 +323,8 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "trainspotting-the-musical-west-end-2026/variety--alex-ritman.json",
       "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
-      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
+      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -350,7 +361,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "the-story-of-my-life-2009/newsday--linda-winer.json",
+  "lastProcessed": "lennon-2005/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -404,6 +415,17 @@
     },
     {
       "t": "2026-05-18T12:17:13.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-18T12:21:23.264Z",
+      "event": "bb-session",
+      "session": "75b5fb1f",
+      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9902E6DE123EF936A2575BC0"
+    },
+    {
+      "t": "2026-05-18T12:21:24.644Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
