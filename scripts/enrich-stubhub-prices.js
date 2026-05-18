@@ -103,6 +103,11 @@ async function main() {
     } catch (e) {
       console.log(`  ✗ Error: ${e.message}`);
       failed++;
+      consecutiveFailures++;
+      if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+        console.log(`\n⚠ ${MAX_CONSECUTIVE_FAILURES} consecutive failures — scraping provider likely down. Aborting early.`);
+        break;
+      }
     }
   }
 
