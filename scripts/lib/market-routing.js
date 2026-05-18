@@ -215,7 +215,8 @@ function classifyMarketRouting(args) {
       for (const sib of sibData.siblings) {
         if (!sib.openingDate || visitedSet.has(sib.id)) continue;
         const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
-        const isCrossMarketSib = getMarketPool(sib.category || '') !== currentPool;
+        const isCrossMarketSib = sibData.category != null && sib.category != null
+          && getMarketPool(sib.category) !== currentPool;
         const threshold = isCrossMarketSib ? CROSS_MARKET_SIBLING_CLOSE_DAYS : SIBLING_CLOSE_DAYS;
         if (distToSib <= threshold && distToCurrent > CURRENT_FAR_DAYS) {
           if (!best || distToSib < best.dist) {
