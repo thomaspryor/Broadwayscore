@@ -18,6 +18,12 @@ on:
   # It caused 100+ demo deploys/day during cascade events. The 8-hour cron
   # is sufficient — demo only needs to stay reasonably fresh for partner meetings.
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch / tag / SHA to deploy (default: main)'
+        required: false
+        default: 'main'
+        type: string
 
 jobs:
   deploy-demo:
@@ -30,7 +36,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          ref: main
+          ref: ${{ github.event.inputs.ref || 'main' }}
           fetch-depth: 1
 
       - name: Checkout core data
