@@ -62,7 +62,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">9. Sponsor</h2>
-          <p className="text-sm">Broadway Scorecard · <a href="mailto:hello@broadwayscorecard.com" className="text-brand underline">hello@broadwayscorecard.com</a></p>
+          <p className="text-sm">Broadway Scorecard · <a href="mailto:hi@broadwayscorecard.com" className="text-brand underline">hi@broadwayscorecard.com</a></p>
         </section>
 
       </div>
