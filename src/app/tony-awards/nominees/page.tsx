@@ -176,12 +176,11 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + venue */}
+      {/* Title */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
-        <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}

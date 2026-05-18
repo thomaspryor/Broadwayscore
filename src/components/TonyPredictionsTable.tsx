@@ -2,11 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ScoreBadge, getScoreTier, BlendedTrioDisplay } from '@/components/show-cards';
+import { ScoreBadge, getScoreTier } from '@/components/show-cards';
+import { AwardScoreBadge } from '@/components/show-cards/AwardScoreBadge';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { RankBadge } from '@/components/gold-list/GoldListCards';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
+import type { TierBadge } from '@/lib/awards-scoring';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 
 // Maps outlet IDs in tony-critic-picks.json → outlet names in OUTLET_LOGOS registry
@@ -17,10 +19,9 @@ const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }
 };
 
 export type PredictionMode = 'combined' | 'critics' | 'audience';
+export type { SerializedTonyShow };
 
-/** Softmax-based win probabilities within a category, temperature T=7.
- *  T=7 produces distributions closer to GD/Kalshi market odds (T=10 was too flat).
- *  Shows with null blendedScore are excluded from the denominator. */
+/** Softmax win probabilities, T=7 (closer to market odds than T=10). */
 function computeWinProbabilities(shows: SerializedTonyShow[], mode: PredictionMode): Map<string, number> {
   const T = 7;
   const scored = shows.filter(s => getScoreForMode(s, mode) != null);
@@ -31,8 +32,6 @@ function computeWinProbabilities(shows: SerializedTonyShow[], mode: PredictionMo
   scored.forEach((show, i) => result.set(show.slug, exps[i] / sum));
   return result;
 }
-
-export type { SerializedTonyShow };
 
 export interface CategoryOutcome {
   status: 'correct' | 'missed';
@@ -46,17 +45,11 @@ interface TonyPredictionsTableProps {
   description: string;
   shows: SerializedTonyShow[];
   upcoming: SerializedTonyShow[];
-  /** Unique key used as the section anchor ID */
   sectionId?: string;
-  /** Global index offset so only the first few images across all sections are eager-loaded */
   startIndex?: number;
-  /** Tony outcomes for historical seasons: slug → 'winner' | 'nominated' */
   outcomes?: Record<string, 'winner' | 'nominated'>;
-  /** Past-season prediction result for THIS category (correct/missed + winner info). */
   categoryOutcome?: CategoryOutcome;
-  /** Shows opening in this season but ruled ineligible for this category by the Tony Administration Committee */
   ineligible?: Array<{ slug: string; title: string; note: string }>;
-  /** Which scoring mode to rank and display */
   mode?: PredictionMode;
 }
 
@@ -73,20 +66,6 @@ function getEffectiveStatus(show: SerializedTonyShow): string {
   return 'previews';
 }
 
-function TierLabel({ score, reviewCount, status }: { score: number | null; reviewCount: number; status: string }) {
-  if (status === 'previews' || status === 'upcoming' || reviewCount < 5) return null;
-  const tier = getScoreTier(score);
-  if (!tier) return null;
-  return (
-    <span
-      className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap"
-      style={{ color: tier.color }}
-    >
-      {tier.label}
-    </span>
-  );
-}
-
 function OutletPickLogo({ outletId }: { outletId: string }) {
   const [imgError, setImgError] = useState(false);
   const meta = CRITIC_PICK_OUTLETS[outletId];
@@ -97,11 +76,11 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
 
   if (logoUrl && !imgError) {
     return (
-      <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
+      <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
         <img
           src={logoUrl}
           alt={meta.outletName}
-          className="w-4 h-4 object-contain"
+          className="w-3.5 h-3.5 object-contain"
           onError={() => setImgError(true)}
         />
       </div>
@@ -112,7 +91,7 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
   const textSize = abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
   return (
     <div
-      className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
       style={{ backgroundColor: bgColor }}
       title={title}
     >
@@ -124,14 +103,12 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
-    <div className="flex flex-col items-center gap-1 flex-shrink-0 min-w-[56px]">
-      <span className="text-[9px] font-semibold uppercase tracking-wide text-gray-400 whitespace-nowrap">Press Picks</span>
-      <div className="flex gap-1">
-        {picks.map(id => <OutletPickLogo key={id} outletId={id} />)}
-      </div>
+    <div className="flex items-center gap-0.5 flex-shrink-0">
+      {picks.map(id => <OutletPickLogo key={id} outletId={id} />)}
     </div>
   );
 }
+
 
 function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number | null {
   switch (mode) {
@@ -141,95 +118,216 @@ function getScoreForMode(show: SerializedTonyShow, mode: PredictionMode): number
   }
 }
 
-function ScoreDisplay({ show, mode, winProbability }: { show: SerializedTonyShow; mode: PredictionMode; winProbability?: number }) {
-  if (mode === 'audience') {
-    const grade = show.audienceGrade;
-    if (!grade || grade.grade === '—') {
-      return <span className="text-sm text-gray-500">—</span>;
-    }
-    return (
-      <div
-        className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-base sm:text-lg font-bold"
-        style={{ backgroundColor: `${grade.color}20`, color: grade.color }}
-        title={grade.tooltip}
-      >
-        {grade.grade}
-      </div>
-    );
+function badgeFromScore(score: number | null | undefined): TierBadge {
+  if (!score || score <= 0) return 'eligible';
+  if (score <= 40) return 'nominated';
+  if (score <= 69) return 'honored';
+  if (score <= 84) return 'decorated';
+  return 'sweeper';
+}
+
+// Shared style tokens — mirrors nominees page
+const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
+
+function AudienceBox({ grade }: { grade: SerializedTonyShow['audienceGrade'] }) {
+  if (!grade || grade.grade === '—') {
+    return <div className={`${BOX_MD} bg-surface-overlay text-gray-500`}>—</div>;
   }
-
-  if (mode === 'combined') {
-    const ourPct = winProbability != null ? Math.round(winProbability * 100) : null;
-    const gdPct = show.gdOdds != null ? Math.round(show.gdOdds * 100) : null;
-    const hasOdds = ourPct != null || gdPct != null;
-
-    if (!hasOdds) {
-      return (
-        <BlendedTrioDisplay
-          blendedScore={show.blendedScore}
-          compositeScore={show.compositeScore}
-          reviewCount={show.reviewCount}
-          status={show.status}
-          audienceGrade={show.audienceGrade}
-          awardsScore={show.awardsScore}
-          awardsWeighted={show.tonyCategoryKey === 'best-play'}
-          size="md"
-          showCrown
-        />
-      );
-    }
-
-    return (
-      <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
-        {/* Component scores — desktop only */}
-        <div className="hidden sm:block">
-          <BlendedTrioDisplay
-            blendedScore={show.blendedScore}
-            compositeScore={show.compositeScore}
-            reviewCount={show.reviewCount}
-            status={show.status}
-            audienceGrade={show.audienceGrade}
-            awardsScore={show.awardsScore}
-            awardsWeighted={show.tonyCategoryKey === 'best-play'}
-            size="sm"
-            hideScore
-          />
-        </div>
-        {/* Win probabilities */}
-        <div className="flex items-stretch gap-2">
-          {ourPct != null && (
-            <div className="flex flex-col items-center justify-center min-w-[40px]">
-              <span className="text-xl sm:text-2xl font-bold text-white leading-none">{ourPct}%</span>
-              <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
-            </div>
-          )}
-          {gdPct != null && (
-            <div className="flex flex-col items-center justify-center min-w-[40px] border-l border-white/10 pl-2 sm:pl-3">
-              <span className="text-xl sm:text-2xl font-bold text-amber-400 leading-none">{gdPct}%</span>
-              <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // critics mode — original behavior
+  const isAplus = grade.grade === 'A+';
   return (
-    <div className="flex flex-col items-center gap-1">
-      <TierLabel score={show.compositeScore} reviewCount={show.reviewCount} status={show.status} />
-      <ScoreBadge score={show.compositeScore} size="lg" showCrown reviewCount={show.reviewCount} status={show.status} />
+    <div
+      className={`${BOX_MD} shadow-sm ${isAplus ? 'audience-top-grade' : ''}`}
+      style={isAplus ? undefined : { backgroundColor: grade.color, color: grade.textColor }}
+      title={grade.tooltip}
+    >
+      {grade.grade}
     </div>
   );
 }
 
+// Column header row for combined mode — labels align with data columns below.
+// CRITICAL: ALL header columns must be in ONE inner flex container with gap-2
+// so data rows can mirror it exactly for pixel-perfect alignment.
+function CombinedColumnHeader() {
+  return (
+    <div className="flex items-end gap-3 px-3 pr-5 sm:px-4 sm:pr-6 pt-2 pb-1.5 border-b border-white/5">
+      <div className="w-8 flex-shrink-0" aria-hidden="true" />
+      <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
+      <div className="flex-1 min-w-0" />
+      <div className="flex items-end gap-2 flex-shrink-0">
+        <div className="w-14 text-center">
+          <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+        </div>
+        <div className="w-14 text-center">
+          <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
+        </div>
+        <div className="w-14 text-center">
+          <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
+        </div>
+        <div className="w-14 text-center">
+          <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface RowProps {
+  show: SerializedTonyShow;
+  rank: number | null;
+  isUpcoming: boolean;
+  globalIndex: number;
+  outcomes?: Record<string, 'winner' | 'nominated'>;
+  winProbability?: number;
+  mode: PredictionMode;
+}
+
+function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability, mode }: RowProps) {
+  const notYetOpen = getEffectiveStatus(show) === 'announced';
+
+  const titleArea = (
+    <div className="flex-1 min-w-0">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
+          {show.title}
+        </h3>
+        {rank === 1 && mode === 'combined' && !isUpcoming && (
+          <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
+            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
+            </svg>
+            Predicted Winner
+          </span>
+        )}
+        {outcomes?.[show.slug] === 'winner' && (
+          <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
+            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
+            Winner
+          </span>
+        )}
+        <PressPicks picks={show.criticPicks} />
+      </div>
+      {notYetOpen && <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>}
+    </div>
+  );
+
+  const thumbnail = (
+    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
+      {show.thumbnailPath ? (
+        <img
+          src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
+          alt={`${show.title} ${getMarketLabel()} show`}
+          className="w-full h-full object-cover"
+          width={80}
+          height={80}
+          loading={globalIndex < 3 ? 'eager' : 'lazy'}
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-2xl">🎭</div>
+      )}
+    </div>
+  );
+
+  const rankEl = rank != null ? <RankBadge rank={rank} /> : <div className="w-8 flex-shrink-0" />;
+
+  if (mode === 'combined') {
+    const ourPct = winProbability != null ? Math.round(winProbability * 100) : null;
+    return (
+      <Link
+        href={`/show/${show.slug}`}
+        className={`flex items-center gap-3 px-3 pr-5 sm:px-4 sm:pr-6 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
+      >
+        {rankEl}
+        {thumbnail}
+        {titleArea}
+        {/* ALL right-side columns in ONE flex group — must mirror CombinedColumnHeader inner gap-2 */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="w-14 flex items-center justify-center">
+            {ourPct != null
+              ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
+              : <span className="text-base text-gray-600">—</span>}
+          </div>
+          <div className="hidden sm:flex w-12 items-center justify-center">
+            <span className="text-base font-bold text-white">
+              {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
+            </span>
+          </div>
+          <div className="hidden sm:flex w-12 items-center justify-center">
+            <span className="text-base font-bold text-white">
+              {show.polymarketOdds != null ? `${Math.round(show.polymarketOdds * 100)}%` : '—'}
+            </span>
+          </div>
+          <div className="hidden sm:flex w-12 items-center justify-center">
+            <span className="text-base font-bold text-white">
+              {show.kalshiOdds != null ? `${Math.round(show.kalshiOdds * 100)}%` : '—'}
+            </span>
+          </div>
+          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+          <AudienceBox grade={show.audienceGrade} />
+          <AwardScoreBadge
+            score={Math.round(show.awardsScore ?? 0)}
+            badge={badgeFromScore(show.awardsScore)}
+            inProgress={true}
+            size="md"
+          />
+        </div>
+      </Link>
+    );
+  }
+
+  if (mode === 'critics') {
+    const tier = getScoreTier(show.compositeScore);
+    return (
+      <Link
+        href={`/show/${show.slug}`}
+        className={`flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
+      >
+        {rankEl}
+        {thumbnail}
+        {titleArea}
+        <div className="flex flex-col items-center gap-1 flex-shrink-0">
+          {tier && (
+            <span className="text-[9px] font-semibold uppercase tracking-wide" style={{ color: tier.color }}>
+              {tier.label}
+            </span>
+          )}
+          <ScoreBadge score={show.compositeScore} size="lg" showCrown reviewCount={show.reviewCount} status={show.status} />
+        </div>
+      </Link>
+    );
+  }
+
+  // audience mode
+  return (
+    <Link
+      href={`/show/${show.slug}`}
+      className={`flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
+    >
+      {rankEl}
+      {thumbnail}
+      {titleArea}
+      <div className="flex-shrink-0">
+        <AudienceBox grade={show.audienceGrade} />
+      </div>
+    </Link>
+  );
+}
+
 export default function TonyPredictionsTable({ title, description, shows, upcoming, sectionId, startIndex = 0, outcomes, categoryOutcome, ineligible, mode = 'combined' }: TonyPredictionsTableProps) {
-  // Re-sort scored shows by the active mode's score
   const scored = useMemo(() => {
     return [...shows].sort((a, b) => {
       const sa = getScoreForMode(a, mode);
       const sb = getScoreForMode(b, mode);
-      // nulls sort to bottom
       if (sa == null && sb == null) return 0;
       if (sa == null) return 1;
       if (sb == null) return -1;
@@ -237,7 +335,6 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
     });
   }, [shows, mode]);
 
-  // Softmax win probabilities within this category (combined mode only)
   const winProbabilities = useMemo(
     () => mode === 'combined' ? computeWinProbabilities(scored, mode) : new Map<string, number>(),
     [scored, mode]
@@ -250,12 +347,10 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
 
   if (allShows.length === 0) return null;
 
-  const hasNotOpened = (show: SerializedTonyShow) =>
-    getEffectiveStatus(show) === 'announced';
-
   return (
     <section className="mb-10" id={sectionId}>
-      <div className="mb-4">
+      {/* Category heading */}
+      <div className="mb-3">
         <div className="flex flex-wrap items-center gap-2.5">
           <h2 className="text-xl font-bold text-white">{title}</h2>
           {categoryOutcome && (
@@ -283,7 +378,7 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
           )}
         </div>
         <p className="text-sm text-gray-400 mt-1">{description}</p>
-        {categoryOutcome && categoryOutcome.status === 'missed' && (
+        {categoryOutcome?.status === 'missed' && (
           <p className="text-xs text-gray-400 mt-1.5">
             Winner: <span className="text-white font-medium">{categoryOutcome.winnerTitle}</span>
             {categoryOutcome.predictedTitle && (
@@ -293,91 +388,30 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
         )}
       </div>
 
-      <div className="space-y-3 sm:space-y-4">
+      {/* Unified card — all nominees in one bordered container */}
+      <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
+        {mode === 'combined' && <CombinedColumnHeader />}
         {allShows.map((show, i) => {
-          const isInUpcomingSection = upcoming.some(u => u.slug === show.slug);
-          const notYetOpen = hasNotOpened(show);
-          const rank = !isInUpcomingSection ? i + 1 : null;
-          const globalIndex = startIndex + i;
+          const isUpcoming = upcoming.some(u => u.slug === show.slug);
+          const rank = !isUpcoming ? i + 1 : null;
           return (
-            <Link
+            <ShowRow
               key={show.slug}
-              href={`/show/${show.slug}`}
-              className={`card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
-            >
-              {/* Rank badge or empty spacer */}
-              {rank ? (
-                <RankBadge rank={rank} />
-              ) : (
-                <div className="w-8 h-8 flex-shrink-0" />
-              )}
-
-              {/* Thumbnail */}
-              <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
-                {show.thumbnailPath ? (
-                  <img
-                    src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
-                    alt={`${show.title} ${getMarketLabel()} show`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    width={96}
-                    height={96}
-                    loading={globalIndex < 3 ? 'eager' : 'lazy'}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-2xl">🎭</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
-                  <h3 className={`font-bold text-base sm:text-xl group-hover:text-brand transition-colors truncate w-full sm:w-auto sm:min-w-0 ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
-                    {show.title}
-                  </h3>
-                  {rank === 1 && mode === 'combined' && !isInUpcomingSection && (
-                    <span
-                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40"
-                      title="Our model's #1 pick in this category."
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
-                      </svg>
-                      <span className="hidden sm:inline">Predicted Winner</span>
-                      <span className="sm:hidden">Our Pick</span>
-                    </span>
-                  )}
-                  {outcomes?.[show.slug] === 'winner' && (
-                    <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/20">
-                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" /></svg>
-                      Winner
-                    </span>
-                  )}
-                </div>
-                {notYetOpen && (
-                  <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>
-                )}
-              </div>
-
-              {/* Score / Win probability */}
-              <div className="flex flex-col items-center gap-1 flex-shrink-0">
-                <ScoreDisplay show={show} mode={mode} winProbability={winProbabilities.get(show.slug)} />
-              </div>
-
-              {/* Press picks — round outlet logos, rightmost column */}
-              <PressPicks picks={show.criticPicks} />
-            </Link>
+              show={show}
+              rank={rank}
+              isUpcoming={isUpcoming}
+              globalIndex={startIndex + i}
+              outcomes={outcomes}
+              winProbability={winProbabilities.get(show.slug)}
+              mode={mode}
+            />
           );
         })}
       </div>
 
-      {/* Ruled-ineligible footer — shown when the Tony Administration Committee
-          explicitly excluded a show in this category (e.g. solo storytelling,
-          concert specials, Special Tony recipients). Turns a confusing absence
-          into a credibility signal ("the site knows the rules"). */}
+      {/* Ruled-ineligible footer */}
       {ineligible && ineligible.length > 0 && (
-        <div className="mt-6 pt-4 border-t border-white/5">
+        <div className="mt-4 pt-4 border-t border-white/5">
           <h3 className="text-xs uppercase tracking-wide text-gray-500 font-medium mb-2">
             Ruled ineligible by the Tony Administration Committee
           </h3>

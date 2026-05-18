@@ -18,10 +18,37 @@ import {
 import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
+import fs from 'fs';
+import path from 'path';
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
 import gdRawData from '../../data/tony-win-probabilities.json';
 import criticPicksRawData from '../../data/tony-critic-picks.json';
+
+type MarketData = { categories: Record<string, { nominees: Record<string, number> }> };
+
+function loadMarketJson(filename: string): MarketData | null {
+  try {
+    const p = path.join(process.cwd(), 'data', filename);
+    if (!fs.existsSync(p)) return null;
+    return JSON.parse(fs.readFileSync(p, 'utf-8')) as MarketData;
+  } catch { return null; }
+}
+
+const pmRawData = loadMarketJson('tony-polymarket-odds.json');
+const kaRawData = loadMarketJson('tony-kalshi-odds.json');
+
+function lookupMarketOdds(title: string, catTitle: string, data: MarketData | null): number | null {
+  if (!data) return null;
+  const nominees = data.categories?.[catTitle]?.nominees;
+  if (!nominees) return null;
+  if (title in nominees) return nominees[title];
+  const lower = title.toLowerCase();
+  for (const [k, v] of Object.entries(nominees)) {
+    if (k.toLowerCase() === lower) return v;
+  }
+  return null;
+}
 
 // GoldDerby category names → canonical Tony category titles
 const TONY_TO_GD: Record<string, string> = {
@@ -588,6 +615,8 @@ export function serializeShow(
     tonyCategoryKey: categoryKey ?? null,
     gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
     criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
+    polymarketOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], pmRawData) : null,
+    kalshiOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], kaRawData) : null,
   };
 }
 
