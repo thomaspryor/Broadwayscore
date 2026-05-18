@@ -82,7 +82,7 @@ export default function MyShowsClient() {
   const [diarySort, setDiarySort] = useState<DiarySort>('date-desc');
   const [watchlistSort, setWatchlistSort] = useState<WatchlistSort>('added-desc');
   const [watchlistView, setWatchlistView] = useState<ViewMode>('grid');
-  const [diaryView, setDiaryView] = useState<ViewMode>('grid');
+  const [diaryView, setDiaryView] = useState<ViewMode>('list');
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
@@ -372,8 +372,10 @@ export default function MyShowsClient() {
         </div>
       )}
 
-      {/* Tab bar + inline sort/view controls */}
-      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-6">
+      {/* Tab bar + sort/view controls.
+          On mobile: tabs only in the tablist row; controls on a second row below.
+          On sm+: controls inline to the right of the tabs. */}
+      <div role="tablist" className="flex items-center gap-1 border-b border-white/10 mb-0 sm:mb-6">
         <button
           type="button"
           role="tab"
@@ -426,15 +428,15 @@ export default function MyShowsClient() {
           Lists
         </button>
 
-        {/* Inline controls on the right (hidden for Lists tab) */}
+        {/* Desktop-only inline controls (hidden on mobile — shown in second row below) */}
         {activeTab !== 'lists' && (
-        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
+        <div className="ml-auto hidden sm:flex items-center gap-1.5 sm:gap-2 -mb-[1px]">
           {activeTab === 'diary' && (
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[80px] sm:max-w-none"
+              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 h-8 text-gray-300"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -446,19 +448,19 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-[11px] sm:text-xs bg-white/5 border border-white/10 rounded px-1.5 sm:px-2 py-1 h-9 sm:h-8 text-gray-300 max-w-[80px] sm:max-w-none"
+              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 h-8 text-gray-300"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle — MUST match sort dropdown height (h-9 sm:h-8). Height on container, NOT buttons. */}
-          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9 sm:h-8">
+          {/* Grid / List toggle */}
+          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-8">
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
-              className={`inline-flex items-center justify-center w-9 sm:w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="Grid view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -468,7 +470,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
-              className={`inline-flex items-center justify-center w-9 sm:w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`inline-flex items-center justify-center w-8 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
               aria-label="List view"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -479,6 +481,59 @@ export default function MyShowsClient() {
         </div>
         )}
       </div>
+
+      {/* Mobile controls row — only visible on mobile, hidden on sm+ */}
+      {activeTab !== 'lists' && (
+        <div className="flex sm:hidden items-center justify-end gap-1.5 py-2 mb-4">
+          {activeTab === 'diary' && (
+            <select
+              value={diarySort}
+              onChange={e => setDiarySort(e.target.value as DiarySort)}
+              aria-label="Sort diary"
+              className="text-[11px] bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+            >
+              <option value="date-desc">Newest</option>
+              <option value="date-asc">Oldest</option>
+              <option value="rating-desc">Top Rated</option>
+            </select>
+          )}
+          {activeTab === 'watchlist' && (
+            <select
+              value={watchlistSort}
+              onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
+              aria-label="Sort watchlist"
+              className="text-[11px] bg-white/5 border border-white/10 rounded px-1.5 py-1 h-9 text-gray-300 max-w-[90px]"
+            >
+              <option value="added-desc">Recent</option>
+              <option value="alphabetical">A-Z</option>
+              <option value="closing-soon">Closing</option>
+            </select>
+          )}
+          {/* Grid / List toggle */}
+          <div className="inline-flex flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-9">
+            <button
+              type="button"
+              onClick={() => activeTab === 'diary' ? setDiaryView('grid') : setWatchlistView('grid')}
+              className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              aria-label="Grid view"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => activeTab === 'diary' ? setDiaryView('list') : setWatchlistView('list')}
+              className={`inline-flex items-center justify-center w-9 outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              aria-label="List view"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Diary tab */}
       {activeTab === 'diary' && (
