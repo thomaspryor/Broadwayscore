@@ -198,13 +198,13 @@ function CombinedColumnHeader() {
         <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Award Score: combined momentum from Drama League, Outer Critics Circle, and Drama Desk">
           <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-20">
+        <div className="hidden sm:flex flex-col items-center w-20" title="Won the matching category at Drama League (DL), Outer Critics Circle (OCC), or Drama Desk (DD)">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Press picks: New York Times, Variety, and Deadline predictions">
           <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
         </div>
       </div>
@@ -306,14 +306,21 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </div>
           <div className="hidden sm:flex"><ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} /></div>
           <div className="hidden sm:flex"><AudienceBox grade={show.audienceGrade} /></div>
-          <div className="hidden sm:flex"><AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={true}
-            size="md"
-          /></div>
+          <div className="hidden sm:flex" title="Award Score: momentum from precursor ceremonies (Drama League, Outer Critics Circle, Drama Desk)">
+            <AwardScoreBadge
+              score={Math.round(show.awardsScore ?? 0)}
+              badge={badgeFromScore(show.awardsScore)}
+              inProgress={true}
+              size="md"
+            />
+          </div>
           <div className="hidden sm:flex w-20 items-center justify-center">
-            <span className="text-xs font-medium text-gray-300">
+            <span
+              className="text-xs font-medium text-gray-300 cursor-help"
+              title={show.precursorWins && show.precursorWins.length > 0
+                ? show.precursorWins.map(w => `${PRECURSOR_LABELS[w] ?? w} (${w})`).join(' · ')
+                : 'No precursor award wins in this category'}
+            >
               {show.precursorWins && show.precursorWins.length > 0 ? show.precursorWins.join(' · ') : '—'}
             </span>
           </div>
