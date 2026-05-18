@@ -255,6 +255,30 @@ const URL_MONTH_NAMES = {
   jul: '07', aug: '08', sep: '09', sept: '09', oct: '10', nov: '11', dec: '12',
 };
 
+/**
+ * Extract a 4-digit year from a URL path segment matching the standard
+ * `/YYYY/MM/` or `/YYYY/monthname/` review-URL conventions used by NYT,
+ * Variety, Playbill, Vulture, WaPo, and the Guardian. Returns the year as a
+ * number, or null when no such segment is present.
+ *
+ * Pure helper — shares the same regex as getWrongProductionReasonFromUrl
+ * below so behavior stays in lock-step. Intended for reuse by sibling-show
+ * disambiguation classifiers that only need the year, not the full window
+ * comparison.
+ *
+ * @param {string|null|undefined} url
+ * @returns {number|null}
+ */
+function urlYearFromPath(url) {
+  if (!url || typeof url !== 'string') return null;
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  return Number.isFinite(year) ? year : null;
+}
+
 function getWrongProductionReasonFromUrl(url, show) {
   if (!url || typeof url !== 'string') return null;
   if (!show || show.category === 'off-broadway') return null;
@@ -2307,6 +2331,7 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  urlYearFromPath,
   urlLooksLikeReview,
   isLikelyWrongProduction,
   isLikelyTourReview,
