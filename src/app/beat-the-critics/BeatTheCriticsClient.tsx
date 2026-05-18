@@ -59,6 +59,17 @@ function getCrowdPercentages(nominees: SerializedTonyShow[]): number[] {
   return pcts;
 }
 
+function getActorCrowdPercentages(nominees: ActorNominee[]): number[] {
+  if (nominees.length === 0) return [];
+  const scores = nominees.map(n => n.showScore ?? 50);
+  const total = scores.reduce((a, b) => a + b, 0);
+  if (total === 0) return nominees.map(() => Math.round(100 / nominees.length));
+  const pcts = scores.map(s => Math.round((s / total) * 100));
+  const diff = 100 - pcts.reduce((a, b) => a + b, 0);
+  if (pcts.length > 0) pcts[0] += diff;
+  return pcts;
+}
+
 function seededShuffle<T>(arr: T[], seed: number): T[] {
   const shuffled = [...arr];
   let s = seed;
@@ -409,12 +420,13 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const picksAvailable = criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
     const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
+    const actorCrowdPcts = isActor ? getActorCrowdPercentages(actorNominees) : [];
     const tonyPredictionPickShow = isActor ? undefined : nominees.find(n => n.title === tonyPredictionPick);
     const matchesTonyPrediction = isActor ? false : userPick === tonyPredictionPick;
     const criticMatches = picksAvailable ? criticPicks.filter(p => p === userPick).length : 0;
 
     return (
-      <div className="min-h-screen bg-surface flex flex-col pb-[140px]">
+      <div className="min-h-screen bg-surface flex flex-col">
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
           <div className="flex gap-1.5">{currentTier.categories.filter(categoryHasNominees).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(categoryHasNominees).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
@@ -423,23 +435,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 bg-[#ff1368]/[0.06] ring-1 ring-[#ff1368]/15 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
-            <div className="min-w-0 flex-1 flex items-center gap-2.5">
-              <div className="leading-tight shrink-0">
-                <div className="text-xs font-bold text-[#ff1368]">Your Pick</div>
-                <div className="text-[9px] font-semibold text-gray-500 tracking-wider">
-                  {picksAvailable ? `${criticMatches} of ${CRITICS.length} critics agree` : 'Critics\u2019 picks June 7'}
-                </div>
-              </div>
-              {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
-              {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
-              <div className="min-w-0">
-                <div className="text-sm font-bold truncate">{userPick}</div>
-                {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
-              </div>
+            <div className="w-[116px] shrink-0 leading-tight min-w-0">
+              <div className="text-xs font-bold text-[#ff1368]">Your Pick</div>
+              {picksAvailable && <div className="text-[9px] font-semibold text-gray-500 tracking-wider truncate">{criticMatches} of {CRITICS.length} agree</div>}
             </div>
-            {!isActor && matchesTonyPrediction && (
-              <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>
-            )}
+            {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
+            {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-bold truncate">{userPick}</div>
+              {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
+            </div>
+            {!isActor && <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>}
           </div>
 
           {/* Critics Panel */}
@@ -453,14 +459,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             {/* Tony Prediction row — show categories only */}
             {!isActor && (
               <div className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${matchesTonyPrediction ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <div className="min-w-0 flex-1 flex items-center gap-2.5">
-                  <div className="leading-tight shrink-0">
-                    <div className="text-xs font-bold text-brand">Broadway Scorecard</div>
-                    <div className="text-[9px] font-semibold text-gray-500 tracking-wider">Tony Prediction</div>
-                  </div>
-                  {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
-                  <div className="text-sm font-bold truncate">{tonyPredictionPick}</div>
+                <div className="w-[116px] shrink-0 leading-tight min-w-0">
+                  <div className="text-xs font-bold text-brand">Broadway Scorecard</div>
+                  <div className="text-[9px] font-semibold text-gray-500 tracking-wider">Tony Prediction</div>
                 </div>
+                {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
+                <div className="text-sm font-bold truncate flex-1 min-w-0">{tonyPredictionPick}</div>
                 <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${matchesTonyPrediction ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>{matchesTonyPrediction ? 'Match!' : 'Different'}</span>
               </div>
             )}
@@ -473,22 +477,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               const actorPick = isActor && pick ? actorNominees.find(n => n.name === pick) : undefined;
               return (
                 <div key={critic.name} className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${isMatch ? 'bg-green-500/[0.06] ring-1 ring-green-500/15' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: `${(isActor ? 0.3 : 0.4) + i * 0.1}s`, animationFillMode: 'both' }}>
-                  <div className="min-w-0 flex-1 flex items-center gap-2.5">
+                  <div className="w-[116px] shrink-0 flex items-center gap-2 min-w-0 overflow-hidden">
                     <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
-                    <div className="leading-tight shrink-0">
-                      <div className="text-xs font-bold">{critic.name}</div>
-                      <div className="text-[10px] text-gray-500">{critic.outlets.join(' · ')}</div>
+                    <div className="leading-tight min-w-0 overflow-hidden">
+                      <div className="text-xs font-bold truncate">{critic.name}</div>
+                      <div className="text-[10px] text-gray-500 truncate">{critic.outlets.join(' · ')}</div>
                     </div>
-                    {pick === null ? (
-                      <div className="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-lg text-gray-600 shrink-0">?</div>
-                    ) : pickShow ? (
-                      <ShowPoster show={pickShow} size="xs" />
-                    ) : null}
-                    <div className="min-w-0">
-                      <div className={`text-sm font-bold truncate ${pick === null ? 'text-gray-600' : ''}`}>{pick ?? '?'}</div>
-                      {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
-                      {pick === null && <div className="text-[10px] text-gray-600">Revealed June 7</div>}
-                    </div>
+                  </div>
+                  {pick === null ? (
+                    <div className="w-8 h-8 rounded-lg bg-surface-overlay flex items-center justify-center text-lg text-gray-600 shrink-0">?</div>
+                  ) : pickShow ? (
+                    <ShowPoster show={pickShow} size="xs" />
+                  ) : actorPick ? (
+                    <ActorPoster nominee={actorPick} />
+                  ) : null}
+                  <div className="min-w-0 flex-1">
+                    <div className={`text-sm font-bold truncate ${pick === null ? 'text-gray-600' : ''}`}>{pick ?? '?'}</div>
+                    {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}
+                    {pick === null && <div className="text-[10px] text-gray-600">Revealed June 7</div>}
                   </div>
                   <span className={`shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg ${pick === null ? 'bg-white/5 text-gray-700' : isMatch ? 'bg-green-500/25 text-green-300' : 'bg-white/8 text-gray-300'}`}>
                     {pick === null ? 'June 7' : isMatch ? 'Match!' : 'Different'}
@@ -498,6 +504,14 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             })}
           </div>
 
+          {/* Show score breakdown — actor categories */}
+          {isActor && actorCrowdPcts.length > 0 && (
+            <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">CriticScore Breakdown<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-gray-600 mb-3">Based on the show&apos;s CriticScore</div>
+              {actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={actor.showScore} />))}
+            </div>
+          )}
           {/* CriticScore breakdown — show categories only */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
@@ -506,11 +520,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
             </div>
           )}
-        </div>
-
-        {/* Bottom buttons */}
-        <div className="fixed bottom-0 left-0 right-0 z-20 px-5 pb-6 pt-3 bg-gradient-to-t from-surface via-surface to-transparent">
-          <div className="max-w-[480px] mx-auto flex flex-col gap-2.5">
+          {/* Bottom button \u2014 inline, no fixed positioning */}
+          <div className="mt-8 pb-10 flex flex-col gap-2.5">
             {hasMoreCatsInTier ? (
               <button onClick={handleNextCategory} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
                 Keep Going &rarr;
