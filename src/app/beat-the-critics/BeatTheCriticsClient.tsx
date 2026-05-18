@@ -385,7 +385,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{currentProgressIdx + 1} of {catsWithNominees.length}</div>
         </div>
-        <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
+        <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
           <h2 className="text-[28px] font-extrabold tracking-tight mb-1.5">{currentCategory.title}</h2>
           <p className="text-sm text-gray-500 mb-7">Tap your pick.</p>
@@ -430,7 +430,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="flex gap-1.5">{currentTier.categories.filter(categoryHasNominees).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(categoryHasNominees).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Reveal</div>
         </div>
-        <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full">
+        <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 bg-[#ff1368]/[0.06] ring-1 ring-[#ff1368]/15 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="w-[116px] shrink-0 leading-tight min-w-0">
