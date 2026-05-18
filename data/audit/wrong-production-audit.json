@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-18T09:53:30.542Z",
+  "timestamp": "2026-05-18T12:19:55.709Z",
   "stats": {
-    "totalReviews": 36888,
-    "alreadyFlagged": 16155,
+    "totalReviews": 36923,
+    "alreadyFlagged": 16170,
     "dateGuardCatches": 103,
     "directorMismatch": 801,
     "tvFilmSignals": 1017,
     "londonSignals": 570,
     "offBroadwaySignals": 445,
     "yearMismatch": 77,
-    "noPublishDate": 3821
+    "noPublishDate": 3820
   },
   "findings": [
     {
@@ -25316,6 +25316,20 @@
       ]
     },
     {
+      "showId": "1536-west-end-2026",
+      "file": "timeout-london--isobel-lewis.json",
+      "score": null,
+      "publishDate": "2026-05-13",
+      "url": "https://www.timeout.com/london/theatre/1536-review-1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "1984-2017",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 65,
@@ -26502,7 +26516,7 @@
       "file": "standard--nick-curtis.json",
       "score": 80,
       "publishDate": "2026-04-17",
-      "url": "https://www.standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
+      "url": "https://standard.co.uk/culture/theatre/avenue-q-review-b1278927.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -33260,20 +33274,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 86,
-      "publishDate": "January 15th, 2025",
-      "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
