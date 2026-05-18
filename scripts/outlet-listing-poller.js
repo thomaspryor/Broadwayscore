@@ -309,9 +309,9 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
   let html;
   if (usePlainFetch) {
     // SSR pages accessible without JS rendering — skip BD/SB/Playwright overhead.
-    // Use fetchSimple (plain HTTPS GET) rather than fetchWithCookiesPlain; WOS
-    // is publicly accessible and has no cookie requirement.
-    html = await fetchSimple(listingUrl, 20000).catch(() => '');
+    // Let errors propagate — the try/catch in fetchOutlet handles them and
+    // falls back to SERP. Swallowing here would prevent that fallback.
+    html = await fetchSimple(listingUrl, 20000);
   } else {
     const result = await fetchPage(listingUrl, { timeout: 25000 });
     // fetchPage returns {content, format, source} or null on all-tiers failure
