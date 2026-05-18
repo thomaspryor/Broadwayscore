@@ -155,17 +155,6 @@ function findMarketOdds(nominees: Record<string, number>, name: string): number 
   return null;
 }
 
-/** Average PM + Kalshi odds when both available, use whichever exists otherwise. */
-function averageMarketOdds(
-  pmNominees: Record<string, number> | null,
-  kalshiNominees: Record<string, number> | null,
-  name: string,
-): number | null {
-  const pm = pmNominees ? findMarketOdds(pmNominees, name) : null;
-  const k  = kalshiNominees ? findMarketOdds(kalshiNominees, name) : null;
-  if (pm !== null && k !== null) return (pm + k) / 2;
-  return pm ?? k;
-}
 
 /** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
 function findActorSlug(showId: string, personName: string): string | null {
@@ -218,7 +207,8 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         ...show,
         awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
         gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
-        polymarketOdds: averageMarketOdds(pmNominees, kalshiNominees, show.title),
+        polymarketOdds: pmNominees ? findMarketOdds(pmNominees, show.title) : null,
+        kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
       };
     });
     showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));

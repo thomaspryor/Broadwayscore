@@ -90,18 +90,11 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-function GoldDerbyCol({ odds, marketOdds, size }: { odds: number | null | undefined; marketOdds?: number | null; size: 'sm' | 'md' }) {
+function OddsCol({ odds, size, className = '' }: { odds: number | null | undefined; size: 'sm' | 'md'; className?: string }) {
   const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className="hidden sm:flex flex-col items-center justify-center gap-0.5 flex-shrink-0 w-20">
-      <span className={numClass}>
-        {odds != null ? `${Math.round(odds * 100)}%` : '—'}
-      </span>
-      {marketOdds != null && (
-        <span className="text-[10px] text-gray-500">
-          Mkt {Math.round(marketOdds * 100)}%
-        </span>
-      )}
+    <div className={`hidden sm:flex items-center justify-center flex-shrink-0 w-14 ${className}`}>
+      <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
     </div>
   );
 }
@@ -110,7 +103,6 @@ function GoldDerbyCol({ odds, marketOdds, size }: { odds: number | null | undefi
 function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
   const scoreW = isMajor ? 'w-14' : 'w-11';
-  const gdW = isMajor ? 'w-20' : 'w-16';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
   const outerGap = isMajor ? 'gap-3 sm:gap-4' : 'gap-3';
   const innerGap = isMajor ? 'gap-2' : 'gap-2 sm:gap-3';
@@ -120,9 +112,19 @@ function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
       <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
       <div className="flex-1 min-w-0" />
       <div className={`flex items-end ${innerGap} flex-shrink-0`}>
-        <div className={`hidden sm:flex flex-col items-center ${gdW}`}>
+        <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
+        {isMajor && (
+          <>
+            <div className="hidden sm:flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Poly-</span><span className={HEADER_LINE}>market</span>
+            </div>
+            <div className="hidden sm:flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+            </div>
+          </>
+        )}
         {isMajor ? (
           <>
             <div className={`flex flex-col items-center ${scoreW}`}><span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span></div>
@@ -172,8 +174,10 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
       </div>
 
-      {/* Gold Derby column */}
-      <GoldDerbyCol odds={show.gdOdds} marketOdds={show.polymarketOdds} size="md" />
+      {/* Odds columns: Gold Derby | Polymarket | Kalshi */}
+      <OddsCol odds={show.gdOdds} size="md" />
+      <OddsCol odds={show.polymarketOdds} size="md" />
+      <OddsCol odds={show.kalshiOdds} size="md" />
 
       {/* Critics | Audience | Awards */}
       <div className="flex items-center gap-2 flex-shrink-0">
