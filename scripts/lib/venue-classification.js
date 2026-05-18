@@ -139,4 +139,28 @@ function isBroadwayUrl(url, outletId) {
   return null;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES };
+/**
+ * Generic venue tokens that match too many unrelated URLs to be useful as
+ * disambiguation signals. These get stripped from venue-substring checks in
+ * audit-cross-production.js AND market-routing.js's same-title branch.
+ *
+ * Examples of why each is "generic":
+ *   - "broadway"  → matches every URL with /broadway/ in the path
+ *   - "lyceum"    → London + NYC venues share the name; substring match wins
+ *                   for whichever is listed first.
+ *   - "apollo"    → London Apollo, Apollo Victoria, Apollo Harlem all exist.
+ *
+ * Stored as a Set for O(1) membership checks. Shared so both consumers update
+ * together — if a new generic-overmatching venue is discovered (e.g. via a
+ * cross-production audit FP), add it here once.
+ */
+const GENERIC_VENUE_SLUGS = new Set([
+  // NYC-ish
+  'broadway', 'lyceum', 'palace', 'majestic', 'imperial', 'studio-54',
+  'music-box', 'belasco', 'circle-in-the-square',
+  // West End generic-ish
+  'apollo', 'criterion', 'duke-of-yorks', 'gielgud', 'lyric', 'phoenix',
+  'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
+]);
+
+module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, GENERIC_VENUE_SLUGS };
