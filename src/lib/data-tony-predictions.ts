@@ -444,7 +444,7 @@ type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: n
  * Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
  */
 /** Returns abbreviated ceremony names where this show won the matching Tony category. */
-function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
     dramadesk?: { wins?: string[] };
     outerCriticsCircle?: { wins?: string[] };
