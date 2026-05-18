@@ -145,6 +145,9 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
+// Feature flag: show "Our Pick %" column only when tony-predictions is in NEXT_PUBLIC_FEATURES
+const SHOW_OUR_PICK = process.env.NEXT_PUBLIC_FEATURES?.includes('tony-predictions') ?? false;
+
 // Shared style tokens — mirrors nominees page
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -175,9 +178,11 @@ function CombinedColumnHeader() {
       <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
       <div className="flex-1 min-w-0" />
       <div className="flex items-end gap-2 flex-shrink-0">
-        <div className="w-14 text-center">
-          <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
-        </div>
+        {SHOW_OUR_PICK && (
+          <div className="w-14 text-center">
+            <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
+          </div>
+        )}
         <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
@@ -193,13 +198,13 @@ function CombinedColumnHeader() {
         <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Award Score: combined momentum from Drama League, Outer Critics Circle, and Drama Desk">
           <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-20">
+        <div className="hidden sm:flex flex-col items-center w-20" title="Won the matching category at Drama League (DL), Outer Critics Circle (OCC), or Drama Desk (DD)">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Press picks: New York Times, Variety, and Deadline predictions">
           <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
         </div>
       </div>
@@ -277,11 +282,13 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         {titleArea}
         {/* ALL right-side columns in ONE flex group — must mirror CombinedColumnHeader inner gap-2 */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-14 flex items-center justify-center">
-            {ourPct != null
-              ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
-              : <span className="text-base text-gray-600">—</span>}
-          </div>
+          {SHOW_OUR_PICK && (
+            <div className="w-14 flex items-center justify-center">
+              {ourPct != null
+                ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
+                : <span className="text-base text-gray-600">—</span>}
+            </div>
+          )}
           <div className="hidden sm:flex w-12 items-center justify-center">
             <span className="text-base font-bold text-white">
               {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
@@ -299,14 +306,21 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </div>
           <div className="hidden sm:flex"><ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} /></div>
           <div className="hidden sm:flex"><AudienceBox grade={show.audienceGrade} /></div>
-          <div className="hidden sm:flex"><AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={true}
-            size="md"
-          /></div>
+          <div className="hidden sm:flex" title="Award Score: momentum from precursor ceremonies (Drama League, Outer Critics Circle, Drama Desk)">
+            <AwardScoreBadge
+              score={Math.round(show.awardsScore ?? 0)}
+              badge={badgeFromScore(show.awardsScore)}
+              inProgress={true}
+              size="md"
+            />
+          </div>
           <div className="hidden sm:flex w-20 items-center justify-center">
-            <span className="text-xs font-medium text-gray-300">
+            <span
+              className="text-xs font-medium text-gray-300 cursor-help"
+              title={show.precursorWins && show.precursorWins.length > 0
+                ? show.precursorWins.map(w => `${PRECURSOR_LABELS[w] ?? w} (${w})`).join(' · ')
+                : 'No precursor award wins in this category'}
+            >
               {show.precursorWins && show.precursorWins.length > 0 ? show.precursorWins.join(' · ') : '—'}
             </span>
           </div>
