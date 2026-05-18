@@ -103,7 +103,7 @@ function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' |
 // Column header row — appears once per section inside the card, labels align with data columns
 // CRITICAL: ALL header columns must be in ONE inner flex container with gap-2 so data rows can
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
-function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
+function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
   const scoreW = isMajor ? 'w-14' : 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
@@ -124,8 +124,8 @@ function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
         <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
-        {/* Score columns */}
-        {isMajor ? (
+        {/* Score columns — omitted for performer/acting categories */}
+        {!isPersonLevel && (isMajor ? (
           <>
             <div className={`${scoreW} text-center`}>
               <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
@@ -143,10 +143,12 @@ function SectionColumnHeader({ isMajor }: { isMajor: boolean }) {
               <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
             </div>
           </>
+        ))}
+        {!isPersonLevel && (
+          <div className={`${scoreW} text-center`}>
+            <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+          </div>
         )}
-        <div className={`${scoreW} text-center`}>
-          <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
-        </div>
       </div>
     </div>
   );
@@ -268,14 +270,6 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="sm" />
         <OddsCol odds={show.polymarketOdds} size="sm" />
         <OddsCol odds={show.kalshiOdds} size="sm" />
-        <AudienceBox grade={show.audienceGrade} size="sm" />
-        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        <AwardScoreBadge
-          score={Math.round(show.awardsScore ?? 0)}
-          badge={badgeFromScore(show.awardsScore)}
-          inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-          size="sm"
-        />
       </div>
     </div>
   );
@@ -350,7 +344,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
         {category.title}
       </h2>
       <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
-        <SectionColumnHeader isMajor={isMajor} />
+        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
         {nominees.map(show => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`

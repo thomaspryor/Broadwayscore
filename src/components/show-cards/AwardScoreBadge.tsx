@@ -80,6 +80,15 @@ const TIER_STYLES: Record<TierBadge, TierStyle> = {
   },
 };
 
+// Pre-ceremony: neutral white-outline ring — no tier color until winners are announced
+const PRE_CEREMONY: TierStyle = {
+  fillBg: 'transparent',
+  ring: '1.5px solid rgba(255, 255, 255, 0.35)',
+  text: 'text-white',
+  label: 'text-gray-400',
+  glow: 'none',
+};
+
 const TIER_LABEL: Record<TierBadge, string> = {
   sweeper: 'Sweeper',
   decorated: 'Decorated',
@@ -94,7 +103,11 @@ export function getAwardTierLabelClass(badge: TierBadge, score: number): string 
 }
 
 export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: AwardScoreBadgeProps) {
-  const styles = score > 0 ? TIER_STYLES[badge] : TIER_STYLES.eligible;
+  const styles = inProgress && score > 0
+    ? PRE_CEREMONY
+    : score > 0
+      ? TIER_STYLES[badge]
+      : TIER_STYLES.eligible;
   const label = inProgress && badge === 'nominated' ? 'In the Hunt' : TIER_LABEL[badge];
 
   const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : size === 'md' ? 'w-14 h-14' : 'w-11 h-11';
