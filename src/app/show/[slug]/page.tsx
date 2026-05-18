@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
@@ -40,9 +38,11 @@ import LotteryRushCard from '@/components/LotteryRushCard';
 import ShowtimesCard from '@/components/ShowtimesCard';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import CastUpdatesCard from '@/components/CastUpdatesCard';
+import CastSection from '@/components/CastSection';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import RelatedShows from '@/components/RelatedShows';
+import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import MiniShowCard from '@/components/show-cards/MiniShowCard';
@@ -53,57 +53,21 @@ import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
+import ShowPageRatingConnected from '@/components/user/ShowPageRatingConnected';
+import ShowPageWatchlistButton from '@/components/user/ShowPageWatchlistButton';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
+import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
+import TheaterScorecardCard from '@/components/TheaterScorecardCard';
+import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
+import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
 import { getSocialPulse } from '@/lib/data-social-pulse';
 import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
+import WhereItRanks from '@/components/show-page/WhereItRanks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
-
-// Group A: personalized, auth-dependent — ssr:false so they don't block
-// the pre-rendered HTML, Suspense prevents hydration mismatch.
-const ShowPageRatingConnected = dynamic(
-  () => import('@/components/user/ShowPageRatingConnected'),
-  { ssr: false }
-);
-const ShowPageWatchlistButton = dynamic(
-  () => import('@/components/user/ShowPageWatchlistButton'),
-  { ssr: false }
-);
-const ShowPageAddToListButton = dynamic(
-  () => import('@/components/user/ShowPageAddToListButton'),
-  { ssr: false }
-);
-
-// Group B: below-fold content — still SSR'd into static HTML (ssr:true default)
-// but JS is code-split so it doesn't count toward First Load JS.
-// loading:()=>null is the client-nav fallback only; initial load uses pre-rendered HTML.
-const SocialPulseCard = dynamic(
-  () => import('@/components/show-page/SocialPulseCard'),
-  { loading: () => null }
-);
-const WhereItRanks = dynamic(
-  () => import('@/components/show-page/WhereItRanks'),
-  { loading: () => null }
-);
-const VideoReviewsShelf = dynamic(
-  () => import('@/components/VideoReviewsShelf'),
-  { loading: () => null }
-);
-const CastSection = dynamic(
-  () => import('@/components/CastSection'),
-  { loading: () => null }
-);
-const TheaterScorecardCard = dynamic(
-  () => import('@/components/TheaterScorecardCard'),
-  { loading: () => null }
-);
-const SeatingGuidanceCard = dynamic(
-  () => import('@/components/SeatingGuidanceCard'),
-  { loading: () => null }
-);
 
 export const revalidate = 86400;
 
@@ -705,19 +669,17 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </div>
 
             {/* Watchlist + List buttons — right-aligned */}
-            <Suspense fallback={null}><ShowPageAddToListButton showId={show.id} /></Suspense>
-            <Suspense fallback={null}><ShowPageWatchlistButton showId={show.id} /></Suspense>
+            <ShowPageAddToListButton showId={show.id} />
+            <ShowPageWatchlistButton showId={show.id} />
           </div>
 
           {/* User Rating — feature-flagged */}
-          <Suspense fallback={null}>
-            <ShowPageRatingConnected
-              showId={show.id}
-              showTitle={show.title}
-              previewDate={show.previewsStartDate}
-              closingDate={show.closingDate}
-            />
-          </Suspense>
+          <ShowPageRatingConnected
+            showId={show.id}
+            showTitle={show.title}
+            previewDate={show.previewsStartDate}
+            closingDate={show.closingDate}
+          />
         </div>
         </RedesignOff>
 
