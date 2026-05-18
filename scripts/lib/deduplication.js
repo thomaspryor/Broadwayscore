@@ -248,6 +248,17 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
+  // Temporal non-overlap: a definitively closed production cannot be the same as
+  // one that is announced/upcoming (hasn't started previews yet). This fires
+  // regardless of venue data, which may be missing for newly-added shows.
+  const isDefinitelyClosed = (s) => s.status === 'closed' ||
+    (s.closingDate && new Date(s.closingDate) < new Date());
+  const isNotYetOpen = (s) => s.status === 'announced' || s.status === 'upcoming';
+  if ((isDefinitelyClosed(newShow) && isNotYetOpen(existing)) ||
+      (isDefinitelyClosed(existing) && isNotYetOpen(newShow))) {
+    return true;
+  }
+
   // Opera companies restage the same opera every season — different seasons are
   // different productions (e.g., Met's La Bohème 2025 vs 2026). Use date-based
   // comparison (>180 days) rather than year comparison to correctly handle
