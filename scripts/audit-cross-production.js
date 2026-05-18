@@ -175,8 +175,9 @@ for (const group of multiProd) {
         review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       } catch { continue; }
 
-      // Skip already flagged
-      if (review.wrongProduction) {
+      // Skip already flagged or wrong-show (date proximity is meaningless for
+      // files whose content doesn't match the current show at all).
+      if (review.wrongProduction || review.wrongShow) {
         totalAlreadyFlagged++;
         continue;
       }
