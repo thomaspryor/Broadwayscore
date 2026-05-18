@@ -13,6 +13,7 @@ const {
   parseRssFeed,
   parseWpApiPosts,
   parseSitemapXml,
+  extractListingUrls,
   buildSerpQuery,
 } = require('../../scripts/lib/outlet-listing-helpers.js');
 
@@ -265,6 +266,47 @@ describe('parseRssFeed with filters applied by caller', () => {
     const items = parseRssFeed(xml, cutoff).filter(i => titleFilter.test(i.headline));
     assert.equal(items.length, 2, 'should match "Suffs Review" and "Season in Review"');
     assert.ok(items.every(i => titleFilter.test(i.headline)));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// extractListingUrls — dedup behavior (image-only vs text anchors)
+// ---------------------------------------------------------------------------
+
+describe('extractListingUrls', () => {
+  test('image-only anchor does not block text anchor for same URL', () => {
+    // Before the dedup fix, the image anchor (empty headline) was added to
+    // seen first, causing the text anchor to be silently skipped.
+    const html = `
+      <a href="/reviews/suffs-review"><img src="suffs.jpg" alt="Suffs"></a>
+      <a href="/reviews/suffs-review">Suffs Review: Electrifying</a>
+    `;
+    const items = extractListingUrls(html, 'thestage.co.uk');
+    assert.equal(items.length, 1, 'should return exactly 1 item (deduped)');
+    assert.equal(items[0].headline, 'Suffs Review: Electrifying');
+  });
+
+  test('two text anchors for same URL yield only one result', () => {
+    const html = `
+      <a href="/reviews/suffs-review">Suffs Review: Electrifying</a>
+      <a href="/reviews/suffs-review">Suffs Review: Electrifying</a>
+    `;
+    const items = extractListingUrls(html, 'thestage.co.uk');
+    assert.equal(items.length, 1);
+  });
+
+  test('thestage urlFilter /\\/reviews\\/[^/]+/ keeps review URLs, drops /review-round-ups/', () => {
+    const html = `
+      <a href="/reviews/suffs-review">Suffs Review</a>
+      <a href="/review-round-ups/romeo-and-juliet-round-up">Romeo Roundup</a>
+      <a href="/reviews/new-born-review-2026">New Born Review</a>
+    `;
+    const urlFilter = /\/reviews\/[^/]+/;
+    const items = extractListingUrls(html, 'thestage.co.uk')
+      .filter(i => urlFilter.test(i.url));
+    assert.equal(items.length, 2);
+    assert.ok(items.every(i => i.url.includes('/reviews/')));
+    assert.ok(!items.some(i => i.url.includes('/review-round-ups/')));
   });
 });
 
