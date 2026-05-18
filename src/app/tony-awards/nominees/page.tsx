@@ -86,7 +86,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   if (!score || score <= 0) return 'eligible';
   if (score <= 40) return 'nominated';
   if (score <= 69) return 'honored';
-  if (score <= 84) return 'decorated';
+  if (score <= 89) return 'decorated';
   return 'sweeper';
 }
 
