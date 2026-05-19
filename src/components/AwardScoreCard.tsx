@@ -404,7 +404,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
         <div className="mt-3">
           <Link
-            href={tony.season ? `/award-score/${toFullSeasonLabel(tony.season)}` : '/award-score'}
+            href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
           >
             <span>See all award scores</span>
