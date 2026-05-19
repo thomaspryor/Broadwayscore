@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-05-18T08:22:31.360Z",
+  "lastChecked": "2026-05-19T08:11:06.844Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Sync: open show coverage",
       "status": "pass",
-      "message": "40 open shows all have reviews and grosses"
+      "message": "41 open shows all have reviews and grosses"
     },
     {
       "name": "Sync: phantom show detection",
@@ -24,12 +24,17 @@
     {
       "name": "Sync: cast coverage",
       "status": "warn",
-      "message": "2 empty cast: Aladdin, Wicked"
+      "message": "3 empty cast: Aladdin, Wicked, Celebrity Autobiography"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2575 shows, 147 open, 17705 reviews (all at or above baseline)"
+      "message": "2580 shows, 151 open, 17738 reviews (all at or above baseline)"
+    },
+    {
+      "name": "Sync: grosses weekEnding",
+      "status": "pass",
+      "message": "weekEnding 5/10/2026 (9d ago)"
     }
   ]
 }
