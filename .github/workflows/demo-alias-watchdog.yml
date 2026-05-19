@@ -45,24 +45,38 @@ jobs:
           PROJECT_ID="prj_wmBnDUrCQCwabIAYPbnMiIP3wg15"
           DEMO_DOMAIN="demo.broadwayscorecard.com"
 
+          # 0. Read demo pin from .github/demo-pin.txt. If set, watchdog
+          # tracks builds of that branch instead of main. See .github/DEMO-PIN.md.
+          # 2026-05-19: demo.broadwayscorecard.com was removed from the Vercel
+          # project's domain list, so prod deploys no longer auto-stomp this
+          # alias. Watchdog stays as a safety net + pin-aware self-healer.
+          PIN=$(tr -d '[:space:]' < .github/demo-pin.txt 2>/dev/null || true)
+          TARGET_REF="${PIN:-main}"
+          if [ -n "$PIN" ]; then
+            echo "Demo pin set to '$PIN' — watchdog tracking that branch."
+          else
+            echo "No demo pin — watchdog tracking main (default)."
+          fi
+
           # 1. What deployment does demo currently point to?
           CURRENT_URL=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
             "https://api.vercel.com/v4/aliases/$DEMO_DOMAIN" \
             | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.deployment?.url || 'UNKNOWN')")
           echo "Demo currently points to: $CURRENT_URL"
 
-          # 2. What's the latest Deploy Demo Site build?
+          # 2. What's the latest Deploy Demo Site build for the target ref?
           # Demo workflow uses `vercel deploy --prebuilt` (no --prod), so its
-          # deployments have target!=production. Production deploys use --prod
-          # (target=production). Filter on source=cli + ref=main + non-production.
+          # deployments have target!=production. Filter on source=cli +
+          # ref=$TARGET_REF + non-production.
           LATEST_DEMO=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
             "https://api.vercel.com/v6/deployments?projectId=$PROJECT_ID&state=READY&limit=20" \
-            | node -e "
+            | TARGET_REF="$TARGET_REF" node -e "
               const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+              const target = process.env.TARGET_REF || 'main';
               const candidates = (d.deployments || []).filter(x =>
                 x.source === 'cli' &&
                 x.target !== 'production' &&
-                x.meta?.githubCommitRef === 'main'
+                x.meta?.githubCommitRef === target
               );
               if (candidates.length === 0) { process.exit(2); }
               console.log(candidates[0].url);
