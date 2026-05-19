@@ -1,45 +1,22 @@
 {
-  "updatedAt": "2026-05-19T09:52:22.941Z",
-  "processed": 7,
-  "failed": 20,
-  "successRate": "25.9%",
+  "updatedAt": "2026-05-19T06:32:45.613Z",
+  "processed": 129,
+  "failed": 1051,
+  "successRate": "10.9%",
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 99,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "scrapingbee": 31,
+    "brightdata": 6,
+    "archiveToday": 34,
+    "archive": 8
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-05-19T09:35:49.114Z",
-      "event": "bb-session",
-      "session": "7f3379df",
-      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
-    },
-    {
-      "t": "2026-05-19T09:35:50.055Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-19T09:38:44.479Z",
-      "event": "bb-session",
-      "session": "d054c7f8",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T09:49:45.539Z",
-      "event": "bb-session",
-      "session": "c4c3b61a",
-      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
-    },
-    {
-      "t": "2026-05-19T09:49:46.133Z",
+      "t": "2026-05-18T12:23:07.909Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -54,6 +31,17 @@
       "event": "bb-session",
       "session": "f23ed070",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T06:17:21.943Z",
+      "event": "bb-session",
+      "session": "3bdd3e68",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-05-19T06:17:23.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
