@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-19T05:42:48.648Z",
+  "generatedAt": "2026-05-19T09:30:37.111Z",
   "date": "2026-05-19",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 60113,
+  "entryCount": 61168,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -21,7 +21,7 @@
     },
     {
       "showId": "grace-pervades-west-end-2026",
-      "reviewCount": 15,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -426,7 +426,7 @@
     },
     {
       "showId": "the-price-off-west-end-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1476,7 +1476,7 @@
     },
     {
       "showId": "equus-west-end-2026",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1596,7 +1596,7 @@
     },
     {
       "showId": "hercules-west-end-2025",
-      "reviewCount": 24,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2107,6 +2107,21 @@
     {
       "showId": "the-maids-off-broadway-2026",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
