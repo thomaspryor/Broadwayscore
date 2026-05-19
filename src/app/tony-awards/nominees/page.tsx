@@ -267,14 +267,20 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Title + mobile-only precursor chips */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
-          {show.title}
-        </h3>
-        {show.precursorWins && show.precursorWins.length > 0 && (
-          <div className="sm:hidden mt-1">
-            <PrecursorChips wins={show.precursorWins} />
-          </div>
-        )}
+        <div className="flex items-center gap-1 min-w-0">
+          <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors min-w-0">
+            {show.title}
+          </h3>
+          {show.precursorWins && show.precursorWins.length > 0 && (
+            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
+              {show.precursorWins.map(w => (
+                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                  {w}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -365,14 +371,20 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           )}
           <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{historyLabel}</p>
         </div>
-        <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
-          {show.title}
-        </Link>
-        {show.precursorWins && show.precursorWins.length > 0 && (
-          <div className="sm:hidden mt-1">
-            <PrecursorChips wins={show.precursorWins} />
-          </div>
-        )}
+        <div className="flex items-center gap-1 mt-0.5 min-w-0">
+          <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors truncate min-w-0">
+            {show.title}
+          </Link>
+          {show.precursorWins && show.precursorWins.length > 0 && (
+            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
+              {show.precursorWins.map(w => (
+                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                  {w}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -419,16 +431,22 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Show name (bold) + credited names (dimmer) + precursor chips */}
       <div className="flex-1 min-w-0">
-        <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
-          {show.title}
-        </Link>
+        <div className="flex items-center gap-1 min-w-0">
+          <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors truncate min-w-0">
+            {show.title}
+          </Link>
+          {show.precursorWins && show.precursorWins.length > 0 && (
+            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
+              {show.precursorWins.map(w => (
+                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                  {w}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
-        )}
-        {show.precursorWins && show.precursorWins.length > 0 && (
-          <div className="sm:hidden mt-1">
-            <PrecursorChips wins={show.precursorWins} />
-          </div>
         )}
       </div>
 
