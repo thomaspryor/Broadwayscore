@@ -93,11 +93,17 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
+function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-xl font-bold text-white' : 'text-base font-bold text-white';
+  const changeAbs = change != null ? Math.round(Math.abs(change) * 100) : 0;
   return (
-    <div className="flex items-center justify-center flex-shrink-0 w-12">
+    <div className="flex flex-col items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
+      {change != null && changeAbs > 0 && (
+        <span className={`text-[9px] font-semibold leading-none mt-0.5 ${change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+          {change > 0 ? '▲' : '▼'}{changeAbs}%
+        </span>
+      )}
     </div>
   );
 }
@@ -273,9 +279,9 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="md" />
-        <OddsCol odds={show.kalshiOdds} size="md" />
-        <OddsCol odds={show.polymarketOdds} size="md" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
         <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
@@ -371,9 +377,9 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.kalshiOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
@@ -428,9 +434,9 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.kalshiOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AwardScoreBadge

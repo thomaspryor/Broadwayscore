@@ -318,6 +318,12 @@ export interface SerializedTonyShow {
   criticPicks?: string[];
   /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
   precursorWins?: string[];
+  /** Day-over-day change in GoldDerby pWin (current − previous). Null if no prev data. */
+  gdOddsChange?: number | null;
+  /** Day-over-day change in Polymarket pWin. Null if no prev data. */
+  polymarketOddsChange?: number | null;
+  /** Day-over-day change in Kalshi pWin. Null if no prev data. */
+  kalshiOddsChange?: number | null;
 }
 
 // --- Tony Season Logic ---
