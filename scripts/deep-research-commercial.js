@@ -26,6 +26,10 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeSources } = require('./lib/commercial-sources');
+const {
+  isSixMonthEligible,
+  hasMissingEssentialFields,
+} = require('./lib/research-eligibility');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -416,19 +420,8 @@ function getWeekStart() {
   return start.toISOString().split('T')[0];
 }
 
-// ---------------------------------------------------------------------------
-// 6-month re-research eligibility
-// ---------------------------------------------------------------------------
-function isSixMonthEligible(entry) {
-  if (!entry || !entry.lastResearchedAt) return false;
-  if ((entry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
-  if (entry.designation && entry.designation !== 'TBD') return false;
-
-  const lastResearched = new Date(entry.lastResearchedAt);
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-  return lastResearched < sixMonthsAgo;
-}
+// Re-research eligibility predicates extracted to ./lib/research-eligibility
+// so they can be unit-tested without invoking main().
 
 // ---------------------------------------------------------------------------
 // Main
@@ -534,7 +527,27 @@ async function main() {
         && !commShows[s.slug])
       .map(s => s.slug);
 
-    // 6-month eligible shows (TBD, Broadway only, researched 6+ months ago, still open)
+    // Classified Broadway shows still missing essential fields. Without this
+    // pool a show that gets a non-TBD designation but lacks capitalization
+    // never gets re-researched, since both `tbdSlugs` and `isSixMonthEligible`
+    // historically gated on `designation === 'TBD'`.
+    const incompleteClassifiedSlugs = Object.entries(commShows)
+      .filter(([slug, v]) => {
+        if (!v || !v.designation || v.designation === 'TBD') return false;
+        if (!hasMissingEssentialFields(v)) return false;
+        if (!FORCE && (v.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) return false;
+        const show = showBySlug[slug];
+        if (show && show.category && show.category !== 'broadway') return false;
+        return true;
+      })
+      .map(([k]) => k);
+
+    if (incompleteClassifiedSlugs.length > 0) {
+      console.log(`Classified-but-incomplete: ${incompleteClassifiedSlugs.length} shows`);
+    }
+
+    // 6-month eligible shows (TBD or classified-incomplete, Broadway only,
+    // researched 6+ months ago, still open)
     sixMonthSlugs = Object.entries(commShows)
       .filter(([slug, entry]) => {
         const show = showBySlug[slug];
@@ -548,12 +561,14 @@ async function main() {
       console.log(`6-month re-research eligible: ${sixMonthSlugs.length} shows`);
     }
 
-    // Priority order: queued first, then 6-month, then remaining TBDs (shuffled)
+    // Priority order: queued, then 6-month, then incomplete-classified,
+    // then remaining TBDs/uncovered (shuffled).
     const remaining = [...new Set([...tbdSlugs, ...uncoveredSlugs])];
     targetSlugs = [
       ...queuedSlugs,
       ...sixMonthSlugs.filter(s => !queuedSlugs.includes(s)),
-      ...shuffle(remaining.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s))),
+      ...incompleteClassifiedSlugs.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s)),
+      ...shuffle(remaining.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s) && !incompleteClassifiedSlugs.includes(s))),
     ];
     // Deduplicate
     targetSlugs = [...new Set(targetSlugs)];
