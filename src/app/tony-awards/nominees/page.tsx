@@ -182,10 +182,10 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
         <div className="flex flex-col items-center w-12">
-          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
+          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
         <div className="flex flex-col items-center w-12">
-          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
         {/* Score columns — omitted for performer/acting categories */}
         {!isPersonLevel && (isMajor ? (
@@ -274,8 +274,8 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <OddsCol odds={show.gdOdds} size="md" />
-        <OddsCol odds={show.polymarketOdds} size="md" />
         <OddsCol odds={show.kalshiOdds} size="md" />
+        <OddsCol odds={show.polymarketOdds} size="md" />
         <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
@@ -372,8 +372,8 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
         <OddsCol odds={show.kalshiOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
@@ -429,8 +429,8 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
         <OddsCol odds={show.kalshiOdds} size="sm" />
+        <OddsCol odds={show.polymarketOdds} size="sm" />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AwardScoreBadge
@@ -562,7 +562,7 @@ export default function TonyNomineesPage() {
 
         {/* Legend */}
         <p className="mt-8 text-xs text-gray-600 text-center">
-          Win odds: GoldDerby (crowd predictions) · Polymarket &amp; Kalshi (real-money markets)
+          Win odds: GoldDerby (crowd predictions) · Kalshi &amp; Polymarket (real-money markets)
         </p>
       </div>
     </>
