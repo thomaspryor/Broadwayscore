@@ -347,7 +347,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
-          precursorWins: getPrecursorWins(nom.showId, catTitle),
+          precursorWins: getPrecursorWins(nom.showId, catTitle, personName),
         });
       }
     } else {
