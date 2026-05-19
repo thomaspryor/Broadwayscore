@@ -175,49 +175,60 @@ const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCri
     outerCriticsCircle: ['Outstanding Choreographer', 'Outstanding Choreography'],
     dramaLeague: [],
   },
-  // Lead acting (show-level storage: chip appears for all nominees from same show)
+  // Acting categories — DL "Distinguished Performance Award" is per-performer
+  // (one winner across all 8 Tony acting categories per year). Listing it under
+  // all 8 mappings is required so the chip CAN render for any winner; the
+  // getPrecursorWins() filter then uses `dramaLeague.winnerNames` to ensure
+  // the chip only appears next to the actual performer, not every nominee
+  // from that show.
+  // Lead acting
   'Best Actor in a Musical': {
     dramadesk: ['Outstanding Actor in a Musical', 'Outstanding Lead Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Actor in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actress in a Musical': {
     dramadesk: ['Outstanding Actress in a Musical', 'Outstanding Lead Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Actress in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actor in a Play': {
     dramadesk: ['Outstanding Actor in a Play', 'Outstanding Lead Performance in a Play'],
     outerCriticsCircle: ['Outstanding Actor in a Play', 'Outstanding Lead Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actress in a Play': {
     dramadesk: ['Outstanding Actress in a Play', 'Outstanding Lead Performance in a Play'],
     outerCriticsCircle: ['Outstanding Actress in a Play', 'Outstanding Lead Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   // Featured acting
   'Best Featured Actor in a Musical': {
     dramadesk: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actress in a Musical': {
     dramadesk: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actor in a Play': {
     dramadesk: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performance in a Play'],
     outerCriticsCircle: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actress in a Play': {
     dramadesk: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performance in a Play'],
     outerCriticsCircle: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
 };
+
+/** Categories where DL "Distinguished Performance Award" must be filtered
+ *  by performer name — without this filter, every acting nominee from the
+ *  winning show would render a DL chip. */
+const DL_PER_PERFORMER_AWARDS = new Set(['Distinguished Performance Award']);
 
 /** Precursor predictive weight (DL strongest, DD weakest historically). */
 const PRECURSOR_TIER_WEIGHTS = {
@@ -496,18 +507,33 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
 }
 
 /** Return 'DL', 'OCC', and/or 'DD' if the show won matching precursor categories. */
-export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+export function getPrecursorWins(showId: string, tonyCategory: string, nomineeName?: string | null): string[] {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
     dramadesk?: { wins?: string[] };
     outerCriticsCircle?: { wins?: string[] };
-    dramaLeague?: { wins?: string[] };
+    dramaLeague?: { wins?: string[]; winnerNames?: Record<string, string[]> };
   }>;
   const entry = shows[showId];
   if (!entry) return [];
   const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
   if (!matching) return [];
   const result: string[] = [];
-  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
+  // DL chip: a matched win counts only if either (a) it's a show-level award
+  // (not in DL_PER_PERFORMER_AWARDS), or (b) the nomineeName is in the
+  // winnerNames list for that award. Without (b), a per-performer DL award
+  // would render a chip next to every acting nominee from the winning show.
+  const dlWins = entry.dramaLeague?.wins ?? [];
+  const dlMatched = matching.dramaLeague.filter(c => dlWins.includes(c));
+  if (dlMatched.length > 0) {
+    const dlWinnerNames = entry.dramaLeague?.winnerNames || {};
+    const ok = dlMatched.some(c => {
+      if (!DL_PER_PERFORMER_AWARDS.has(c)) return true;  // show-level award
+      if (!nomineeName) return false;  // can't disambiguate without name
+      const winners = dlWinnerNames[c] || [];
+      return winners.includes(nomineeName);
+    });
+    if (ok) result.push('DL');
+  }
   if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
   if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
   return result;
