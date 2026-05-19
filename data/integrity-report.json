@@ -1,48 +1,68 @@
 {
-  "timestamp": "2026-03-19T00:26:05.855Z",
+  "timestamp": "2026-05-19T03:57:15.492Z",
   "hasIssues": true,
   "current": {
-    "date": "2026-03-19",
-    "totalReviews": 32630,
-    "unknownOutlets": 2,
+    "date": "2026-05-19",
+    "totalReviews": 37694,
+    "unknownOutlets": 6,
     "duplicates": 0,
-    "syncDelta": 14871
+    "syncDelta": 19958
   },
   "previous": {
-    "date": "2026-03-19",
-    "totalReviews": 32630,
-    "unknownOutlets": 2,
-    "duplicates": 0,
-    "syncDelta": 14871
+    "date": "2026-03-15",
+    "totalReviews": 31996,
+    "unknownOutlets": 10,
+    "duplicates": 3,
+    "syncDelta": 14392
   },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "warning",
-      "message": "2 reviews have unknown outlets",
+      "message": "6 reviews have unknown outlets",
       "examples": [
         {
-          "file": "data/review-texts/act-one-2014/its-a-brave-writer-who-would-contrive-this-show--moss-hart.json",
-          "outletId": "its-a-brave-writer-who-would-contrive-this-show",
-          "outlet": "its-a-brave-writer-who-would-contrive-this-show"
+          "file": "data/review-texts/and-juliet-2022/this-show-delivers-just-what-youd-expect-it-is-what-it-is--over-heels.json",
+          "outletId": "this-show-delivers-just-what-youd-expect-it-is-what-it-is",
+          "outlet": "this-show-delivers-just-what-youd-expect-it-is-what-it-is"
         },
         {
-          "file": "data/review-texts/the-seagull-2008/arifa-akbar-found-the-show-hypnotic-in-a-rare--unknown.json",
-          "outletId": "arifa-akbar-found-the-show-hypnotic-in-a-rare",
-          "outlet": "arifa-akbar-found-the-show-hypnotic-in-a-rare"
+          "file": "data/review-texts/joe-turners-come-and-gone-2026/reddit--unknown.json",
+          "outletId": "reddit",
+          "outlet": "reddit"
+        },
+        {
+          "file": "data/review-texts/la-traviata-off-broadway-2026/was-along-for-the-ride--jonathan-loy.json",
+          "outletId": "was-along-for-the-ride",
+          "outlet": "was-along-for-the-ride"
+        },
+        {
+          "file": "data/review-texts/the-lost-boys-2026/reddit--unknown.json",
+          "outletId": "reddit",
+          "outlet": "reddit"
+        },
+        {
+          "file": "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+          "outletId": "lincolncenterfestivalorg",
+          "outlet": "lincolncenterfestivalorg"
+        },
+        {
+          "file": "data/review-texts/the-price-off-west-end-2026/theatre-reviews--unknown.json",
+          "outletId": "theatre-reviews",
+          "outlet": "theatre-reviews"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (32630) and reviews.json (17759) are out of sync by 14871 reviews"
+      "message": "review-texts (37694) and reviews.json (17736) are out of sync by 19958 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 32630,
-    "unknownOutlets": 2,
+    "totalReviews": 37694,
+    "unknownOutlets": 6,
     "duplicates": 0,
-    "syncDelta": 14871
+    "syncDelta": 19958
   }
 }
