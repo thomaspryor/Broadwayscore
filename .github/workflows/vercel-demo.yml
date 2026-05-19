@@ -163,14 +163,21 @@ jobs:
 
       - name: Check demo pin
         id: pin
-        # Demo can be pinned to a branch via .github/demo-pin.txt. While
-        # pinned, only deploys of that branch alias demo; everything else
-        # builds-without-aliasing. Empty / missing file = legacy behavior
-        # (every successful deploy aliases). See .github/DEMO-PIN.md.
+        # Demo can be pinned to a branch via .github/demo-pin.txt (which
+        # lives on main, NOT on feature branches). The workflow fetches
+        # main here and reads the pin file directly. While pinned, only
+        # deploys of that branch alias demo; everything else builds-
+        # without-aliasing. Empty / missing file = legacy behavior (every
+        # successful deploy aliases). See .github/DEMO-PIN.md.
         run: |
-          PIN=$(tr -d '[:space:]' < .github/demo-pin.txt 2>/dev/null || true)
+          set +e
+          git fetch origin main --depth=1 2>/dev/null
+          PIN=$(git show origin/main:.github/demo-pin.txt 2>/dev/null | tr -d '[:space:]')
+          set -e
           REF="${{ github.event.inputs.ref }}"
           if [ -z "$REF" ] || [ "$REF" = "null" ]; then REF="${{ github.ref_name }}"; fi
+          echo "Pin from origin/main: '${PIN}'"
+          echo "Deployed ref:         '${REF}'"
           if [ -n "$PIN" ] && [ "$PIN" != "$REF" ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
             echo "::notice::Demo pinned to '$PIN'; deploy from '$REF' — skipping alias (preview URL still accessible)."
