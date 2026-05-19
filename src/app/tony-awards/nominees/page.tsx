@@ -202,23 +202,15 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
             <div className={`${scoreW} text-center`}>
               <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
             </div>
-            <div className="flex flex-col items-center w-20">
-              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
-            </div>
             <div className="flex flex-col items-center w-14">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
         )}
         {isPersonLevel && (
-          <>
-            <div className="flex flex-col items-center w-20">
-              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
-            </div>
-            <div className="flex flex-col items-center w-14">
-              <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
-            </div>
-          </>
+          <div className="flex flex-col items-center w-14">
+            <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+          </div>
         )}
       </div>
     </div>
@@ -249,12 +241,16 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + venue */}
+      {/* Title + precursor chips */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
-        <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="mt-1">
+            <PrecursorChips wins={show.precursorWins} />
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -270,9 +266,6 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="md"
         />
-        <div className="flex w-20 items-center justify-center">
-          <PrecursorChips wins={show.precursorWins} />
-        </div>
         <div className="flex w-14 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
@@ -299,11 +292,11 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+    <div className="flex items-center gap-2.5 px-3 py-2 hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail → show page */}
       <Link
         href={`/show/${show.slug}`}
-        className="w-11 h-11 sm:w-12 sm:h-12 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
+        className="w-10 h-10 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -312,8 +305,8 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
             src={getOptimizedImageUrl(show.thumbnailPath, 'thumbnail')}
             alt=""
             className="w-full h-full object-cover"
-            width={48}
-            height={48}
+            width={40}
+            height={40}
             loading="lazy"
           />
         ) : (
@@ -321,23 +314,24 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Performer name + history inline, show name below */}
+      {/* Performer name, history (wrapping), show title stacked */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-baseline gap-1.5 min-w-0">
-          {actorUrl ? (
-            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors truncate flex-shrink-0">
-              {show.nomineePersonName}
-            </Link>
-          ) : (
-            <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
-          )}
-          <span className="text-[10px] text-gray-500 truncate min-w-0">
-            {historyLabel}
-          </span>
-        </div>
+        {actorUrl ? (
+          <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors leading-tight block">
+            {show.nomineePersonName}
+          </Link>
+        ) : (
+          <span className="text-sm font-bold text-white leading-tight block">{show.nomineePersonName}</span>
+        )}
+        <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{historyLabel}</p>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="mt-1">
+            <PrecursorChips wins={show.precursorWins} />
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -345,9 +339,6 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="sm" />
         <OddsCol odds={show.polymarketOdds} size="sm" />
         <OddsCol odds={show.kalshiOdds} size="sm" />
-        <div className="flex w-20 items-center justify-center">
-          <PrecursorChips wins={show.precursorWins} />
-        </div>
         <div className="flex w-14 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
@@ -382,13 +373,18 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Show name (bold) + credited names (dimmer) */}
+      {/* Show name (bold) + credited names (dimmer) + precursor chips */}
       <div className="flex-1 min-w-0">
         <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
           {show.title}
         </Link>
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
+        )}
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="mt-1">
+            <PrecursorChips wins={show.precursorWins} />
+          </div>
         )}
       </div>
 
@@ -405,9 +401,6 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="sm"
         />
-        <div className="flex w-20 items-center justify-center">
-          <PrecursorChips wins={show.precursorWins} />
-        </div>
         <div className="flex w-14 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
@@ -425,7 +418,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
 
   if (nominees.length === 0) return null;
 
-  const minW = isMajor ? 'min-w-[760px]' : isPersonLevel ? 'min-w-[530px]' : 'min-w-[660px]';
+  const minW = isMajor ? 'min-w-[680px]' : isPersonLevel ? 'min-w-[440px]' : 'min-w-[580px]';
 
   return (
     <section className="mb-6">
