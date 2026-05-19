@@ -130,8 +130,11 @@ function lookupGdOdds(
   const cat = show.categories[gdCatName];
   if (!cat || cat.votes === 0 || typeof cat.pWin !== 'number') return null;
   const total = normMap.get(gdCatName) ?? 1;
-  // Normalize when the category total is < 0.5 (sparse/stale market data)
-  return total < 0.5 ? cat.pWin / total : cat.pWin;
+  // Hide GD odds when total coverage < 0.5 — sparse data produces misleading
+  // normalized values (e.g. Best Actor Musical: GD tracks per-person but
+  // scraper keys by showId, so most votes are missing from our index).
+  if (total < 0.5) return null;
+  return cat.pWin;
 }
 
 function loadMarketData(filename: string): PmData | null {

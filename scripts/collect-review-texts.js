@@ -2927,8 +2927,11 @@ function buildTierContext(review) {
 
   const archiveFirstExplicitlyDisabled = process.env.ARCHIVE_FIRST === 'false';
 
-  // Reason-aware routing: override tier strategy based on incompleteReason
-  const reason = review.incompleteReason || '';
+  // Reason-aware routing: override tier strategy based on incompleteReason.
+  // Ignore stale incompleteReason when the review already has complete text — a different
+  // source (Theatre Record, WET, etc.) may have provided full content after the flag was set.
+  const alreadyComplete = review.contentTier === 'complete' || review.textQuality === 'full';
+  const reason = alreadyComplete ? '' : (review.incompleteReason || '');
   // NOT scraper_garbage — many got garbage FROM archive.org, so archive-first creates a loop
   const forceArchiveFirst = ['paywall', 'partial_text'].includes(reason);
   // Only skip direct scrapers for paywall if we DON'T have cookies (cookies = try Playwright first)
@@ -5559,6 +5562,12 @@ function findReviewsToProcess() {
           const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+            continue;
+          }
+          // Skip complete reviews even if they appear in failedFetches — the failure entry is stale
+          // from URL discovery before a different source (Theatre Record, WET, etc.) provided full text.
+          // Prevents wasted Browserbase sessions on reviews that don't need re-collection.
+          if ((data.contentTier === 'complete' || data.textQuality === 'full') && !isTruncated && !hasGarbageText) {
             continue;
           }
           // Guard: never re-fetch a review that has an assigned score + reasonable text, even if it
