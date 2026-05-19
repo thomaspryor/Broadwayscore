@@ -513,7 +513,9 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup,
-      capitalization: data.capitalization || 0,
+      capitalization: typeof data.capitalization === 'number' && data.capitalization > 0
+        ? data.capitalization
+        : null,
       recoupDate: data.recoupedDate,
     });
   }

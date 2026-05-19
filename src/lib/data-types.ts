@@ -453,7 +453,7 @@ export interface RecentRecoupmentShow {
   title: string;
   season: string;
   weeksToRecoup: number;
-  capitalization: number;
+  capitalization: number | null;
   recoupDate: string;
 }
 

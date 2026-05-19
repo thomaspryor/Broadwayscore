@@ -13,7 +13,7 @@ interface RecoupmentShow {
   title: string;
   season: string;
   weeksToRecoup: number;
-  capitalization: number;
+  capitalization: number | null;
   recoupDate: string;
 }
 
@@ -79,9 +79,16 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
         case 'weeks':
           comparison = a.weeksToRecoup - b.weeksToRecoup;
           break;
-        case 'capitalization':
-          comparison = a.capitalization - b.capitalization;
+        case 'capitalization': {
+          // Unknown values always sort to the bottom, regardless of direction.
+          const aUnknown = a.capitalization == null;
+          const bUnknown = b.capitalization == null;
+          if (aUnknown && bUnknown) comparison = 0;
+          else if (aUnknown) return 1;
+          else if (bUnknown) return -1;
+          else comparison = (a.capitalization as number) - (b.capitalization as number);
           break;
+        }
         case 'date':
           comparison = new Date(a.recoupDate).getTime() - new Date(b.recoupDate).getTime();
           break;
@@ -159,7 +166,11 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 <td className="py-3 px-4 text-emerald-400 font-semibold">
                   ~{show.weeksToRecoup}
                 </td>
-                <td className="py-3 px-4">~{formatCurrency(show.capitalization)}</td>
+                <td className="py-3 px-4">
+                  {show.capitalization == null
+                    ? <span className="text-gray-500">Unknown</span>
+                    : `~${formatCurrency(show.capitalization)}`}
+                </td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
                   {formatDate(show.recoupDate)}
                 </td>
