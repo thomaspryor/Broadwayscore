@@ -107,7 +107,7 @@ const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Out
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-start gap-1">
       {wins.map(w => (
         <span
           key={w}
