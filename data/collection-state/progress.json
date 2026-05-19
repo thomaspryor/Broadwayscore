@@ -4,7 +4,10 @@
     "equus-west-end-2026/timeout-london--unknown.json",
     "equus-west-end-2026/independent--unknown.json",
     "the-emporium-off-broadway-2025/front-row-center--unknown.json",
-    "the-maids-off-broadway-2026/thewrap--unknown.json"
+    "the-maids-off-broadway-2026/thewrap--unknown.json",
+    "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+    "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "care-west-end-2026/broadwayworld--unknown.json",
@@ -16,13 +19,22 @@
     "equus-west-end-2026/times-uk--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
-    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "1536-west-end-2026/artsdesk--helen-hawkins.json",
+    "please-please-me-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "proof-2026/pages-on-stages--unknown.json",
+    "titanique-2026/theater-scene--unknown.json",
+    "inter-alia-west-end-2026/standard--unknown.json",
+    "inter-alia-west-end-2026/sunday-telegraph--unknown.json",
+    "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "equus-west-end-2026/timeout-london--unknown.json",
-      "equus-west-end-2026/independent--unknown.json"
+      "equus-west-end-2026/independent--unknown.json",
+      "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -37,18 +49,27 @@
       "the-maids-off-broadway-2026/thewrap--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json"
     ],
-    "archive": []
+    "archive": [
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+    ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "lastProcessed": "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
       "event": "bb-session",
       "session": "2f23cef1",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T19:24:37.427Z",
+      "event": "bb-session",
+      "session": "4a2da626",
+      "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/"
     }
   ]
 }
