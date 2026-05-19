@@ -3,7 +3,10 @@
     "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "73-seconds-off-broadway-2026/nysr--michael-sommers.json",
-    "73-seconds-off-broadway-2026/off-off-online--deirdre-donovan.json"
+    "73-seconds-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "celebrity-autobiography-2026/playbill--unknown.json",
+    "equus-west-end-2026/british-theatre--unknown.json",
+    "equus-west-end-2026/whatsonstage--sarah-crompton.json"
   ],
   "failed": [
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
@@ -13,17 +16,29 @@
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-    "beauty-freak-off-broadway-2026/theater-pizzazz--unknown.json"
+    "beauty-freak-off-broadway-2026/theater-pizzazz--unknown.json",
+    "care-west-end-2026/telegraph--dominic-cavendish.json",
+    "care-west-end-2026/whatsonstage--sarah-crompton.json",
+    "the-emporium-off-broadway-2025/nytimes--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "73-seconds-off-broadway-2026/nysr--michael-sommers.json",
-      "73-seconds-off-broadway-2026/off-off-online--deirdre-donovan.json"
+      "73-seconds-off-broadway-2026/off-off-online--deirdre-donovan.json",
+      "celebrity-autobiography-2026/playbill--unknown.json",
+      "equus-west-end-2026/british-theatre--unknown.json",
+      "equus-west-end-2026/whatsonstage--sarah-crompton.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-emporium-off-broadway-2025/nytimes--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -33,6 +48,24 @@
     ]
   },
   "startTime": "2026-05-19T09:21:58.752Z",
-  "lastProcessed": "beauty-freak-off-broadway-2026/theater-pizzazz--unknown.json",
-  "log": []
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-19T09:35:49.114Z",
+      "event": "bb-session",
+      "session": "7f3379df",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
+    },
+    {
+      "t": "2026-05-19T09:35:50.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T09:38:44.479Z",
+      "event": "bb-session",
+      "session": "d054c7f8",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }
