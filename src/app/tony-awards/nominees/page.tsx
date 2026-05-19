@@ -4,12 +4,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
 import type { TierBadge } from '@/lib/awards-scoring';
+import { getOutletConfig } from '@/config/outlet-logos';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
-import { PressPicks } from '@/components/tony/OutletPickLogo';
 
 // --- Constants ---
 
@@ -58,8 +58,8 @@ function formatCeremonyDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-// Shared style tokens — BOX_MD reduced to match BOX_SM so score badges don't overpower odds numbers
-const BOX_MD = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
+// Shared style tokens
+const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 // Two-span pattern: each span uses block+leading-none so line height is controlled by font
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -94,26 +94,20 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-lg font-bold text-white' : 'text-base font-bold text-white';
+  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
   return (
-    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
+    <div className="flex items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
     </div>
   );
 }
 
-const PRECURSOR_LABELS: Record<string, string> = {
-  DL: 'Drama League',
-  OCC: 'Outer Critics Circle',
-  DD: 'Drama Desk',
-  PULITZER: 'Pulitzer Prize for Drama',
-  NYDCC: 'NY Drama Critics Circle',
-};
+const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
 
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
   return (
-    <div className="flex flex-col items-start gap-1">
+    <div className="flex items-center gap-1">
       {wins.map(w => (
         <span
           key={w}
@@ -127,30 +121,34 @@ function PrecursorChips({ wins }: { wins?: string[] }) {
   );
 }
 
+const CRITIC_PICK_META: Record<string, { abbrev: string; color: string; label: string }> = {
+  nyt:      { abbrev: 'T',  color: '#1a1a1a', label: 'New York Times' },
+  variety:  { abbrev: 'V',  color: '#be0028', label: 'Variety' },
+  deadline: { abbrev: 'DL', color: '#444444', label: 'Deadline' },
+};
 
-// Mobile-only compact secondary line: odds + precursor chips + press picks
-function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, criticPicks }: {
-  gdOdds?: number | null;
-  polymarketOdds?: number | null;
-  kalshiOdds?: number | null;
-  precursorWins?: string[];
-  criticPicks?: string[];
-}) {
-  const hasOdds = gdOdds != null || polymarketOdds != null || kalshiOdds != null;
-  const hasPrecursor = (precursorWins?.length ?? 0) > 0;
-  const hasPicks = (criticPicks?.length ?? 0) > 0;
-  if (!hasOdds && !hasPrecursor && !hasPicks) return null;
-
-  const fmt = (v: number | null | undefined, label: string) =>
-    v != null ? <span key={label} className="text-gray-300"><span className="text-gray-600">{label} </span>{Math.round(v * 100)}%</span> : null;
-
+function PressPicks({ picks }: { picks?: string[] }) {
+  if (!picks || picks.length === 0) return null;
+  const knownPicks = picks.filter(id => CRITIC_PICK_META[id]);
+  if (knownPicks.length === 0) return null;
   return (
-    <div className="sm:hidden flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
-      {fmt(gdOdds, 'GD')}
-      {fmt(polymarketOdds, 'PM')}
-      {fmt(kalshiOdds, 'K')}
-      {hasPrecursor && <PrecursorChips wins={precursorWins} />}
-      {hasPicks && <PressPicks picks={criticPicks} />}
+    <div className="flex items-center gap-0.5">
+      {knownPicks.map(id => {
+        const meta = CRITIC_PICK_META[id];
+        const cfg = getOutletConfig(meta.label);
+        const bgColor = cfg?.color ?? meta.color;
+        const textSize = meta.abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
+        return (
+          <div
+            key={id}
+            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+            style={{ backgroundColor: bgColor }}
+            title={`${meta.label} picks this show to win`}
+          >
+            {meta.abbrev}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -160,7 +158,7 @@ function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, cri
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
 function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
-  const scoreW = 'w-11';
+  const scoreW = isMajor ? 'w-14' : 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
 
   return (
@@ -169,14 +167,14 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
       <div className="flex-1 min-w-0" />
       {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
       <div className="flex items-end gap-2 flex-shrink-0">
-        {/* Odds columns (hidden on mobile) */}
-        <div className="hidden sm:flex flex-col items-center w-12">
+        {/* Odds columns */}
+        <div className="flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
         {/* Score columns — omitted for performer/acting categories */}
@@ -204,10 +202,20 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
             <div className={`${scoreW} text-center`}>
               <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
             </div>
-            <div className="hidden sm:flex flex-col items-center w-20">
+            <div className="flex flex-col items-center w-20">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
-            <div className="hidden sm:flex flex-col items-center w-14">
+            <div className="flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+            </div>
+          </>
+        )}
+        {isPersonLevel && (
+          <>
+            <div className="flex flex-col items-center w-20">
+              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+            </div>
+            <div className="flex flex-col items-center w-14">
               <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
             </div>
           </>
@@ -241,13 +249,12 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + venue + mobile odds */}
+      {/* Title + venue */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
         <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
-        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -255,18 +262,18 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="md" />
         <OddsCol odds={show.polymarketOdds} size="md" />
         <OddsCol odds={show.kalshiOdds} size="md" />
-        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
-        <AudienceBox grade={show.audienceGrade} size="sm" />
+        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
           badge={badgeFromScore(show.awardsScore)}
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-          size="sm"
+          size="md"
         />
-        <div className="hidden sm:flex w-20 items-center justify-center">
+        <div className="flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="hidden sm:flex w-14 items-center justify-center">
+        <div className="flex w-14 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -324,12 +331,13 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           ) : (
             <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
           )}
-          <span className="text-[10px] text-gray-500 truncate min-w-0">{historyLabel}</span>
+          <span className="text-[10px] text-gray-500 truncate min-w-0">
+            {historyLabel}
+          </span>
         </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
-        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -337,6 +345,12 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="sm" />
         <OddsCol odds={show.polymarketOdds} size="sm" />
         <OddsCol odds={show.kalshiOdds} size="sm" />
+        <div className="flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </div>
   );
@@ -376,7 +390,6 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
         )}
-        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -392,10 +405,10 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="sm"
         />
-        <div className="hidden sm:flex w-20 items-center justify-center">
+        <div className="flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
-        <div className="hidden sm:flex w-14 items-center justify-center">
+        <div className="flex w-14 items-center justify-center">
           <PressPicks picks={show.criticPicks} />
         </div>
       </div>
@@ -412,12 +425,15 @@ function CategorySection({ category }: { category: TonyCategory }) {
 
   if (nominees.length === 0) return null;
 
+  const minW = isMajor ? 'min-w-[760px]' : isPersonLevel ? 'min-w-[530px]' : 'min-w-[660px]';
+
   return (
     <section className="mb-6">
       <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-1">
         {category.title}
       </h2>
-      <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
+      <div className="overflow-x-auto">
+      <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
         <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
         {nominees.map(show => {
           const key = show.nomineePersonName
@@ -435,6 +451,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
             </div>
           );
         })}
+      </div>
       </div>
     </section>
   );
@@ -472,18 +489,23 @@ export default function TonyNomineesPage() {
         </Link>
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-6">
-          <div>
+        <div className="mb-6">
+          <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               {season.ceremonyYear} Tony Nominations Center
             </h1>
-            <p className="text-gray-400 mt-1 text-sm">
-              {totalCategories} categories &middot; critic scores, audience grades, and win odds. Updated daily.
-            </p>
+            {ceremonyDate && (
+              <span className="hidden sm:inline-flex text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20 flex-shrink-0 whitespace-nowrap self-start mt-1">
+                Ceremony {formatCeremonyDate(ceremonyDate)}
+              </span>
+            )}
           </div>
+          <p className="text-gray-400 mt-1 text-sm">
+            {totalCategories} categories &middot; critic scores, audience grades, and win odds. Updated daily.
+          </p>
           {ceremonyDate && (
-            <div className="flex flex-col items-end flex-shrink-0">
-              <span className="text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20">
+            <div className="mt-2 flex items-center gap-2">
+              <span className="sm:hidden text-xs font-medium px-2.5 py-1 rounded-full bg-brand/10 text-brand border border-brand/20 whitespace-nowrap">
                 Ceremony {formatCeremonyDate(ceremonyDate)}
               </span>
               <CeremonyCountdown ceremonyDate={ceremonyDate} />

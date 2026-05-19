@@ -15,64 +15,15 @@ import {
 // classifyCategory maps precursor category names → tier (S/A+/A/B/C). Shared
 // with awards-scoring.ts (Site Award Score uses different prestige weights;
 // we use predictive weights below).
-import { classifyCategory, computeSiteAwardScore, type CategoryTier } from '@/lib/awards-scoring';
+import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
-import fs from 'fs';
-import path from 'path';
 import commercialData from '../../data/commercial.json';
 import awardsData from '../../data/awards.json';
-import gdRawData from '../../data/tony-win-probabilities.json';
 import criticPicksRawData from '../../data/tony-critic-picks.json';
 
-type MarketData = { categories: Record<string, { nominees: Record<string, number> }> };
+type CriticPicksFile = { picks: Record<string, Record<string, string>> };
 
-function loadMarketJson(filename: string): MarketData | null {
-  try {
-    const p = path.join(process.cwd(), 'data', filename);
-    if (!fs.existsSync(p)) return null;
-    return JSON.parse(fs.readFileSync(p, 'utf-8')) as MarketData;
-  } catch { return null; }
-}
-
-const pmRawData = loadMarketJson('tony-polymarket-odds.json');
-const kaRawData = loadMarketJson('tony-kalshi-odds.json');
-
-function lookupMarketOdds(title: string, catTitle: string, data: MarketData | null): number | null {
-  if (!data) return null;
-  const nominees = data.categories?.[catTitle]?.nominees;
-  if (!nominees) return null;
-  if (title in nominees) return nominees[title];
-  const lower = title.toLowerCase();
-  for (const [k, v] of Object.entries(nominees)) {
-    if (k.toLowerCase() === lower) return v;
-  }
-  return null;
-}
-
-// GoldDerby category names → canonical Tony category titles
-const TONY_TO_GD: Record<string, string> = {
-  'Best Musical':           'Best Musical',
-  'Best Play':              'Best Play',
-  'Best Revival of a Musical': 'Best Musical Revival',
-  'Best Revival of a Play':    'Best Play Revival',
-};
-
-type GdShowEntry = { categories: Record<string, { pWin: number; votes: number }> };
-type GdData = { shows: Record<string, GdShowEntry> };
-
-function lookupGdOdds(showId: string, tonyCategory: string): number | null {
-  const gdCatName = TONY_TO_GD[tonyCategory];
-  if (!gdCatName) return null;
-  const gd = gdRawData as unknown as GdData;
-  const show = gd.shows?.[showId];
-  if (!show) return null;
-  const cat = show.categories?.[gdCatName];
-  if (!cat || cat.votes === 0) return null;
-  return typeof cat.pWin === 'number' ? cat.pWin : null;
-}
-
-// Acting categories match by person name; all others match by showId.
 const PERSON_MATCH_CATEGORIES = new Set([
   'Best Actor in a Musical', 'Best Actress in a Musical',
   'Best Actor in a Play', 'Best Actress in a Play',
@@ -80,33 +31,21 @@ const PERSON_MATCH_CATEGORIES = new Set([
   'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
 ]);
 
-type CriticPicksData = {
-  sources: Array<{ id: string; outlet: string; critic: string; shortName: string; color: string; url: string }>;
-  picks: Record<string, Record<string, string>>;
-};
-
 /** Return outlet IDs whose critic predicted this show/person for the given category. */
 export function lookupCriticPicks(showId: string, personName: string | null, tonyCategory: string): string[] {
-  const data = criticPicksRawData as unknown as CriticPicksData;
+  const data = criticPicksRawData as unknown as CriticPicksFile;
   const catPicks = data.picks[tonyCategory];
   if (!catPicks) return [];
-  const isPersonCategory = PERSON_MATCH_CATEGORIES.has(tonyCategory);
+  const isPersonCat = PERSON_MATCH_CATEGORIES.has(tonyCategory);
   const result: string[] = [];
   for (const [outletId, pick] of Object.entries(catPicks)) {
-    if (isPersonCategory) {
+    if (isPersonCat) {
       if (personName && pick.toLowerCase() === personName.toLowerCase()) result.push(outletId);
     } else {
       if (pick === showId) result.push(outletId);
     }
   }
   return result;
-}
-
-/** Metadata for critic pick outlet badges, keyed by outlet ID. */
-export type CriticPickSource = { outlet: string; critic: string; shortName: string; color: string; url: string };
-export function getCriticPickSources(): Record<string, CriticPickSource> {
-  const data = criticPicksRawData as unknown as CriticPicksData;
-  return Object.fromEntries(data.sources.map(s => [s.id, s]));
 }
 
 /**
@@ -138,28 +77,11 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // the same weights. Net effect: +1 correct season (was 10/11, now 11/11)
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
-//
-// best-play changed from 0.40/0.40/0.20 to 0.65/0.00/0.35 on 2026-05-17.
-// Grid search at step 0.05 found critic+awards recipes dominate (11/11
-// in-sample, 90.9% LOOCV). {0.65/0/0.35} is the mode across 10/11 LOOCV
-// folds. Audience weight dropped to 0: audience is less predictive for plays
-// where Tony voters (theater professionals) follow critical consensus and
-// precursor awards over crowd reaction. Net: 10/11 (90.9%) in-sample →
-// 11/11 (100%). Also produces steeper score descent (Liberation leads by
-// 17pt vs 10pt), matching market confidence levels. See
-// scripts/search-tony-best-play-weights.ts --cat=best-play.
-//
-// best-revival-play changed from 0.00/0.95/0.05 to 0.40/0.60/0.00 on
-// 2026-05-17. All 3 historical misses had awards signal anti-correlated with
-// winning — dropping awards to 0 and adding critic (0.40) gets 9/10
-// in-sample (90.0%) vs 7/10 (70.0%) for the old 0.0/0.8/0.2 recipe.
-// LOOCV: 8/10 (80.0%). Current-season DoA still #1 by 2+ pts. See
-// scripts/search-tony-best-play-weights.ts --cat=best-revival-play.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.43, audience: 0.52, awards: 0.05 },
-  'best-play':            { critic: 0.65, audience: 0.00, awards: 0.35 },
-  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0    },
-  'best-revival-play':    { critic: 0.4,  audience: 0.6,  awards: 0    },
+  'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
+  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
+  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
+  'best-revival-play':    { critic: 0,    audience: 1.0,  awards: 0   },
 };
 
 /**
@@ -179,10 +101,10 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
  *     scripts/audit-tony-all-seasons.ts --tier=N flag for backtesting).
  */
 export const TONY_RECIPES_TIER2: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.4, audience: 0.55, awards: 0.05 },
-  'best-play':            { critic: 0.2, audience: 0.2,  awards: 0.6  },
-  'best-revival-musical': { critic: 0,   audience: 1.0,  awards: 0    },
-  'best-revival-play':    { critic: 0,   audience: 0.7,  awards: 0.3  },
+  'best-musical':         { critic: 0.4, audience: 0.6, awards: 0   },
+  'best-play':            { critic: 0.2, audience: 0.2, awards: 0.6 },
+  'best-revival-musical': { critic: 0,   audience: 1.0, awards: 0   },
+  'best-revival-play':    { critic: 0,   audience: 1.0, awards: 0   },
 };
 
 export type TonyCategoryKey = keyof typeof TONY_RECIPES;
@@ -225,6 +147,75 @@ const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCri
     dramadesk: ['Outstanding Revival of a Play'],
     outerCriticsCircle: ['Outstanding Revival of a Play'],
     dramaLeague: ['Outstanding Revival of a Play'],
+  },
+  // Direction
+  'Best Direction of a Musical': {
+    dramadesk: ['Outstanding Direction of a Musical', 'Outstanding Director of a Musical'],
+    outerCriticsCircle: ['Outstanding Direction of a Musical', 'Outstanding Director of a Musical', 'Outstanding Director of Musical'],
+    dramaLeague: ['Outstanding Direction of a Musical'],
+  },
+  'Best Direction of a Play': {
+    dramadesk: ['Outstanding Direction of a Play', 'Outstanding Director of a Play'],
+    outerCriticsCircle: ['Outstanding Direction of a Play', 'Outstanding Director of a Play', 'Outstanding Director of Play'],
+    dramaLeague: ['Outstanding Direction of a Play'],
+  },
+  // Craft
+  'Best Book of a Musical': {
+    dramadesk: ['Outstanding Book of a Musical'],
+    outerCriticsCircle: ['Outstanding Book of a Musical', 'Outstanding Book of a Musical (Broadway or Off-Broadway)'],
+    dramaLeague: [],
+  },
+  'Best Original Score': {
+    dramadesk: ['Outstanding Music', 'Outstanding Lyrics', 'Outstanding New Score'],
+    outerCriticsCircle: ['Outstanding New Score', 'Outstanding Score'],
+    dramaLeague: [],
+  },
+  'Best Choreography': {
+    dramadesk: ['Outstanding Choreography'],
+    outerCriticsCircle: ['Outstanding Choreographer', 'Outstanding Choreography'],
+    dramaLeague: [],
+  },
+  // Lead acting (show-level storage: chip appears for all nominees from same show)
+  'Best Actor in a Musical': {
+    dramadesk: ['Outstanding Actor in a Musical', 'Outstanding Lead Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Actor in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Actress in a Musical': {
+    dramadesk: ['Outstanding Actress in a Musical', 'Outstanding Lead Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Actress in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Actor in a Play': {
+    dramadesk: ['Outstanding Actor in a Play', 'Outstanding Lead Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Actor in a Play', 'Outstanding Lead Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  'Best Actress in a Play': {
+    dramadesk: ['Outstanding Actress in a Play', 'Outstanding Lead Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Actress in a Play', 'Outstanding Lead Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  // Featured acting
+  'Best Featured Actor in a Musical': {
+    dramadesk: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Featured Actress in a Musical': {
+    dramadesk: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Featured Actor in a Play': {
+    dramadesk: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  'Best Featured Actress in a Play': {
+    dramadesk: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performer in a Broadway Play'],
+    dramaLeague: [],
   },
 };
 
@@ -278,21 +269,6 @@ const PRECURSOR_TIER_NOM_WEIGHTS: Record<CategoryTier, number> = {
   C:    0.5,
 };
 
-/**
- * Points awarded per Tony nomination (NOT wins — wins come at the ceremony
- * and are what we're trying to predict). Used in computeAwardsScore to add
- * Tony nomination breadth as a pre-ceremony signal. The top category being
- * predicted is excluded (all nominees have it). Higher-tier categories
- * (direction, leading acting) carry more voter-support signal than design.
- */
-const TONY_NOM_WEIGHTS: Record<CategoryTier, number> = {
-  S:    0,    // excluded (top category being predicted)
-  'A+': 5,
-  A:    4,
-  B:    3,
-  C:    2,
-};
-
 const CATEGORY_KEY_TO_TITLE: Record<TonyCategoryKey, string> = {
   'best-musical': 'Best Musical',
   'best-play': 'Best Play',
@@ -318,10 +294,8 @@ export interface SerializedTonyShow {
   blendedScore: number | null;
   /** Mean of Show Score + Mezzanine — the audience input the predictor uses. */
   tonyAudienceGrade: number | null;
-  /** 0-100 internal predictive signal from precursor wins/noms (used in blended model only). */
+  /** 0-100 Awards Score from precursor nominations (Drama League, OCC, Drama Desk). */
   awardsScore: number;
-  /** Site Award Score displayed to users — same as the show page badge (computeSiteAwardScore). */
-  siteAwardsScore: number;
   /** Which Tony category this show was serialized in (drives the recipe). */
   tonyCategoryKey: TonyCategoryKey | null;
   /** Win probability 0–1 from GoldDerby crowd votes. */
@@ -445,34 +419,6 @@ type PrecursorNode = { wins?: string[]; nominatedFor?: string[]; nominations?: n
  *
  * Returns 0 pre-precursor (which makes Best Play degenerate to 50/50).
  */
-/** Returns abbreviated ceremony names where this show won the matching Tony category. */
-export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
-  const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
-    dramadesk?: { wins?: string[] };
-    outerCriticsCircle?: { wins?: string[] };
-    dramaLeague?: { wins?: string[] };
-    pulitzer?: { wins?: string[] };
-    nyDramaCritics?: { wins?: string[] };
-  }>;
-  const entry = shows[showId];
-  if (!entry) return [];
-  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
-  if (!matching) return [];
-  const result: string[] = [];
-  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
-  if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
-  if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
-  // Pulitzer Prize for Drama (relevant for plays and musicals, including revivals)
-  if ((entry.pulitzer?.wins ?? []).includes('Drama')) result.push('PULITZER');
-  // NY Drama Critics Circle (Best Play and Best Musical categories only)
-  const nydccCat =
-    tonyCategory === 'Best Play' || tonyCategory === 'Best Revival of a Play' ? 'Best Play' :
-    tonyCategory === 'Best Musical' || tonyCategory === 'Best Revival of a Musical' ? 'Best Musical' :
-    null;
-  if (nydccCat && (entry.nyDramaCritics?.wins ?? []).includes(nydccCat)) result.push('NYDCC');
-  return result;
-}
-
 export function computeAwardsScore(showId: string, tonyCategory: string): number {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
     dramadesk?: PrecursorNode;
@@ -540,22 +486,25 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   // cross-category awards numbers are visually fair.
   const nomsScore = NOMS_TAIL_CAP * Math.min(1, weightedNoms / pool);
   base += nomsScore;
-
-  // Tony nomination breadth bonus (post-nomination-announcement only).
-  // Tony nominations are pre-ceremony signals — they indicate broad voter
-  // support across categories. Tony WINS are excluded (that's what we
-  // predict). The top category being predicted is also excluded since all
-  // nominees share it. Using nominatedFor (which includes all noms, won or
-  // not) is correct: wins-vs-noms distinction only matters for the ceremony
-  // outcome we're predicting, not for counting voter interest pre-ceremony.
-  const tonyNoms = (entry.tony?.nominatedFor ?? []).filter(n => n !== tonyCategory);
-  for (const nomCat of tonyNoms) {
-    const cls = classifyCategory(nomCat);
-    if (!cls) continue;
-    base += TONY_NOM_WEIGHTS[cls.tier];
-  }
-
   return Math.min(100, base);
+}
+
+/** Return 'DL', 'OCC', and/or 'DD' if the show won matching precursor categories. */
+export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
+    dramadesk?: { wins?: string[] };
+    outerCriticsCircle?: { wins?: string[] };
+    dramaLeague?: { wins?: string[] };
+  }>;
+  const entry = shows[showId];
+  if (!entry) return [];
+  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
+  if (!matching) return [];
+  const result: string[] = [];
+  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
+  if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
+  if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
+  return result;
 }
 
 /**
@@ -644,13 +593,7 @@ export function serializeShow(
     blendedScore: composite,
     tonyAudienceGrade: tonyAud,
     awardsScore: awards,
-    siteAwardsScore: computeSiteAwardScore(show.id).displayScore,
     tonyCategoryKey: categoryKey ?? null,
-    gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
-    criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
-    polymarketOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], pmRawData) : null,
-    kalshiOdds: categoryKey ? lookupMarketOdds(show.title, CATEGORY_KEY_TO_TITLE[categoryKey], kaRawData) : null,
-    precursorWins: categoryKey ? getPrecursorWins(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
   };
 }
 
