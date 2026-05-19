@@ -451,6 +451,8 @@ export function getPrecursorWins(showId: string, tonyCategory: string): string[]
     dramadesk?: { wins?: string[] };
     outerCriticsCircle?: { wins?: string[] };
     dramaLeague?: { wins?: string[] };
+    pulitzer?: { wins?: string[] };
+    nyDramaCritics?: { wins?: string[] };
   }>;
   const entry = shows[showId];
   if (!entry) return [];
@@ -460,6 +462,14 @@ export function getPrecursorWins(showId: string, tonyCategory: string): string[]
   if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
   if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
   if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
+  // Pulitzer Prize for Drama (relevant for plays and musicals, including revivals)
+  if ((entry.pulitzer?.wins ?? []).includes('Drama')) result.push('PULITZER');
+  // NY Drama Critics Circle (Best Play and Best Musical categories only)
+  const nydccCat =
+    tonyCategory === 'Best Play' || tonyCategory === 'Best Revival of a Play' ? 'Best Play' :
+    tonyCategory === 'Best Musical' || tonyCategory === 'Best Revival of a Musical' ? 'Best Musical' :
+    null;
+  if (nydccCat && (entry.nyDramaCritics?.wins ?? []).includes(nydccCat)) result.push('NYDCC');
   return result;
 }
 
