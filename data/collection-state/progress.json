@@ -93,7 +93,15 @@
     "the-rocky-horror-show-2026/theater-pizzazz--unknown.json",
     "the-rocky-horror-show-2026/theater-scene--unknown.json",
     "clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--unknown.json",
-    "the-balusters-2026/theatrely--unknown.json"
+    "the-balusters-2026/theatrely--unknown.json",
+    "fallen-angels-2026/theatre-reviews-limited--unknown.json",
+    "fallen-angels-2026/exeunt-magazine--unknown.json",
+    "fallen-angels-2026/theater-pizzazz--unknown.json",
+    "fallen-angels-2026/theater-scene--unknown.json",
+    "proof-2026/variety--unknown.json",
+    "avenue-q-west-end-2026/british-theatre--unknown.json",
+    "please-please-me-west-end-2026/independent--unknown.json",
+    "proof-2026/nysr--unknown.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -1132,7 +1140,9 @@
     "the-price-off-west-end-2026/the-jewish-chronicle--unknown.json",
     "the-balusters-2026/theater-life--unknown.json",
     "the-balusters-2026/theater-scene--unknown.json",
-    "schmigadoon-2026/theater-life--unknown.json"
+    "schmigadoon-2026/theater-life--unknown.json",
+    "schmigadoon-2026/theater-pizzazz--unknown.json",
+    "please-please-me-west-end-2026/all-that-dazzles-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1206,7 +1216,14 @@
       "the-price-off-west-end-2026/british-theatre--unknown.json",
       "the-rocky-horror-show-2026/theater-pizzazz--unknown.json",
       "the-rocky-horror-show-2026/theater-scene--unknown.json",
-      "clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--unknown.json"
+      "clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--unknown.json",
+      "fallen-angels-2026/theatre-reviews-limited--unknown.json",
+      "fallen-angels-2026/exeunt-magazine--unknown.json",
+      "fallen-angels-2026/theater-pizzazz--unknown.json",
+      "fallen-angels-2026/theater-scene--unknown.json",
+      "avenue-q-west-end-2026/british-theatre--unknown.json",
+      "please-please-me-west-end-2026/independent--unknown.json",
+      "proof-2026/nysr--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1225,7 +1242,9 @@
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+      "data/review-texts/proof-2026/variety--unknown.json",
+      "proof-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1251,7 +1270,10 @@
       "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
       "joe-turners-come-and-gone-2026/theater-life--unknown.json",
       "the-balusters-2026/theatrely--unknown.json",
-      "the-balusters-2026/theater-life--unknown.json"
+      "the-balusters-2026/theater-life--unknown.json",
+      "the-balusters-2026/theater-scene--unknown.json",
+      "schmigadoon-2026/theater-life--unknown.json",
+      "schmigadoon-2026/theater-pizzazz--unknown.json"
     ],
     "brightdata": [
       "clybourne-park-2012/latimes--david-ng.json",
@@ -1305,7 +1327,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "schmigadoon-2026/theater-life--unknown.json",
+  "lastProcessed": "proof-2026/nysr--unknown.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -1550,6 +1572,17 @@
       "event": "bb-session",
       "session": "e57b0811",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T06:17:21.943Z",
+      "event": "bb-session",
+      "session": "3bdd3e68",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-05-19T06:17:23.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

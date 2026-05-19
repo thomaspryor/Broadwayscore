@@ -1,31 +1,20 @@
 {
-  "updatedAt": "2026-05-19T06:14:55.261Z",
-  "processed": 94,
-  "failed": 1037,
-  "successRate": "8.3%",
+  "updatedAt": "2026-05-19T06:18:15.607Z",
+  "processed": 102,
+  "failed": 1039,
+  "successRate": "8.9%",
   "tierBreakdown": {
-    "playwright": 70,
+    "playwright": 77,
     "amp": 0,
-    "browserbase": 16,
+    "browserbase": 18,
     "directCookies": 0,
-    "scrapingbee": 23,
+    "scrapingbee": 26,
     "brightdata": 4,
     "archiveToday": 33,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-18T12:22:53.855Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:23:06.950Z",
-      "event": "bb-session",
-      "session": "9f7da81a",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c0"
-    },
     {
       "t": "2026-05-18T12:23:07.909Z",
       "event": "bb-cookie-inject",
@@ -131,6 +120,17 @@
       "event": "bb-session",
       "session": "e57b0811",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T06:17:21.943Z",
+      "event": "bb-session",
+      "session": "3bdd3e68",
+      "url": "https://variety.com/2026/legit/reviews/proof-broadway-review-ayo-edebiri-don-che"
+    },
+    {
+      "t": "2026-05-19T06:17:23.013Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
