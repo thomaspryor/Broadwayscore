@@ -148,6 +148,15 @@ async function main() {
     }
   }
 
+  // Snapshot current odds before overwriting (for day-over-day arrow display)
+  const outPath = path.join(__dirname, '..', 'data', 'tony-polymarket-odds.json');
+  let prevCategories = {};
+  try { prevCategories = JSON.parse(fs.readFileSync(outPath, 'utf8')).categories || {}; } catch {}
+  for (const [catName, catData] of Object.entries(categories)) {
+    const prevNominees = prevCategories[catName]?.nominees;
+    if (prevNominees) catData.prevNominees = prevNominees;
+  }
+
   const output = {
     _meta: {
       source: 'polymarket',
@@ -165,7 +174,6 @@ async function main() {
     console.error(`\nFetched ${fetchedCount} categories`);
   }
 
-  const outPath = path.join(__dirname, '..', 'data', 'tony-polymarket-odds.json');
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error('--dry-run: output to stdout only');

@@ -213,12 +213,25 @@ async function main() {
   const rowCount = Object.values(oddsByCategory).reduce((s, r) => s + r.length, 0);
   console.error(`  Pulled ${categoryCount} categories, ${rowCount} total rows`);
 
+  // Snapshot current pWin values before overwriting (for day-over-day arrow display)
+  const outPath = path.join(__dirname, '..', 'data', 'tony-win-probabilities.json');
+  let prevShows = {};
+  try { prevShows = JSON.parse(fs.readFileSync(outPath, 'utf8')).shows || {}; } catch {}
+
   const shows = loadShows();
   const showsOut = {};
   const personsOut = {};
   const unmatched = [];
   for (const [catName, rows] of Object.entries(oddsByCategory)) {
     mergeOdds(showsOut, personsOut, catName, rows, shows, mode, unmatched);
+  }
+
+  // Stamp prevDayPWin on each category entry where the value changed
+  for (const [showId, showData] of Object.entries(showsOut)) {
+    for (const [catName, catData] of Object.entries(showData.categories)) {
+      const prev = prevShows[showId]?.categories?.[catName]?.pWin;
+      if (prev != null) catData.prevDayPWin = prev;
+    }
   }
 
   const output = {
@@ -264,7 +277,6 @@ async function main() {
     }
   }
 
-  const outPath = path.join(__dirname, '..', 'data', 'tony-win-probabilities.json');
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error(`\n--dry-run: output to stdout only`);

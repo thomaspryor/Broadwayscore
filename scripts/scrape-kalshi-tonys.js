@@ -194,6 +194,15 @@ async function main() {
     await new Promise(r => setTimeout(r, 100));
   }
 
+  // Snapshot current odds before overwriting (for day-over-day arrow display)
+  const outPath = path.join(__dirname, '..', 'data', 'tony-kalshi-odds.json');
+  let prevCategories = {};
+  try { prevCategories = JSON.parse(fs.readFileSync(outPath, 'utf8')).categories || {}; } catch {}
+  for (const [catName, catData] of Object.entries(categories)) {
+    const prevNominees = prevCategories[catName]?.nominees;
+    if (prevNominees) catData.prevNominees = prevNominees;
+  }
+
   const output = {
     _meta: {
       source: 'kalshi',
@@ -210,7 +219,6 @@ async function main() {
     console.error(`[info] ${skipped} events skipped (unknown titles or empty markets)`);
   }
 
-  const outPath = path.join(__dirname, '..', 'data', 'tony-kalshi-odds.json');
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error('--dry-run: output to stdout only');

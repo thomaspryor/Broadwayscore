@@ -310,6 +310,12 @@ export interface SerializedTonyShow {
   polymarketOdds?: number | null;
   /** Win probability 0–1 from Kalshi real-money market. Null if no market exists. */
   kalshiOdds?: number | null;
+  /** Day-over-day change in GoldDerby odds (positive = up, negative = down). Null if no prior day. */
+  gdOddsChange?: number | null;
+  /** Day-over-day change in Polymarket odds. */
+  polymarketOddsChange?: number | null;
+  /** Day-over-day change in Kalshi odds. */
+  kalshiOddsChange?: number | null;
   /** Person name for acting/directing nominations (e.g. "Sarah Snook"); null for show-level categories. */
   nomineePersonName?: string | null;
   /** Tony category title for non-major categories (e.g. "Best Costume Design of a Musical"). */
@@ -318,12 +324,6 @@ export interface SerializedTonyShow {
   criticPicks?: string[];
   /** Ceremonies where this show won the matching Tony category: 'DL', 'OCC', 'DD'. */
   precursorWins?: string[];
-  /** Day-over-day change in GoldDerby pWin (current − previous). Null if no prev data. */
-  gdOddsChange?: number | null;
-  /** Day-over-day change in Polymarket pWin. Null if no prev data. */
-  polymarketOddsChange?: number | null;
-  /** Day-over-day change in Kalshi pWin. Null if no prev data. */
-  kalshiOddsChange?: number | null;
 }
 
 // --- Tony Season Logic ---
