@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T11:50:31.913Z",
-  "processed": 34,
-  "failed": 196,
-  "successRate": "14.8%",
+  "updatedAt": "2026-05-19T11:51:57.921Z",
+  "processed": 35,
+  "failed": 205,
+  "successRate": "14.6%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 5
+    "archive": 6
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -25,6 +25,17 @@
       "t": "2026-05-19T11:35:40.381Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-19T11:50:48.957Z",
+      "event": "bb-session",
+      "session": "9a34abfb",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-19T11:50:49.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -33,7 +33,8 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "glengarry-glen-ross-2012/amny--unknown.json",
     "death-of-a-salesman-2012/nytg--unknown.json",
-    "death-of-a-salesman-2012/playbill--unknown.json"
+    "death-of-a-salesman-2012/playbill--unknown.json",
+    "after-miss-julie-2009/wsj--unknown.json"
   ],
   "failed": [
     "care-west-end-2026/guardian--unknown.json",
@@ -231,7 +232,16 @@
     "come-fly-away-2010/backstage--david-sheward.json",
     "looped-2010/ny1--roma-torre.json",
     "next-fall-2010/backstage--david-sheward.json",
-    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json"
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "after-miss-julie-2009/about-entertainment--unknown.json",
+    "a-steady-rain-2009/latimes--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json",
+    "the-philanthropist-2009/backstage--david-sheward.json",
+    "mary-stuart-2009/backstage--david-sheward.json",
+    "next-to-normal-2009/newyorker--john-lahr.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -258,7 +268,9 @@
       "death-of-a-salesman-2012/playbill--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "the-emporium-off-broadway-2025/nytimes--jonathan-abrams.json",
@@ -285,11 +297,12 @@
       "the-devil-wears-prada-west-end-2024/the-jewish-chronicle--john-nathan.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "glengarry-glen-ross-2012/amny--unknown.json"
+      "glengarry-glen-ross-2012/amny--unknown.json",
+      "after-miss-julie-2009/wsj--unknown.json"
     ]
   },
   "startTime": "2026-05-19T11:02:12.292Z",
-  "lastProcessed": "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+  "lastProcessed": "next-to-normal-2009/newyorker--john-lahr.json",
   "log": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -301,6 +314,17 @@
       "t": "2026-05-19T11:35:40.381Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-19T11:50:48.957Z",
+      "event": "bb-session",
+      "session": "9a34abfb",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-19T11:50:49.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
