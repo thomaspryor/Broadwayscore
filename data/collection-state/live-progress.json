@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T11:55:09.361Z",
-  "processed": 38,
-  "failed": 222,
-  "successRate": "14.6%",
+  "updatedAt": "2026-05-19T11:56:29.461Z",
+  "processed": 40,
+  "failed": 225,
+  "successRate": "15.1%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 23,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 1,
     "archiveToday": 3,
     "archive": 6
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -34,6 +34,17 @@
     },
     {
       "t": "2026-05-19T11:50:49.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T11:55:43.755Z",
+      "event": "bb-session",
+      "session": "54c29216",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-05-19T11:55:44.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

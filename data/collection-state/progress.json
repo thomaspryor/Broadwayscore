@@ -37,7 +37,9 @@
     "after-miss-julie-2009/wsj--unknown.json",
     "hairspray-2002/musical-theatre-review--unknown.json",
     "hairspray-2002/people--dave-quinn.json",
-    "hairspray-2002/philadelphia-inquirer--unknown.json"
+    "hairspray-2002/philadelphia-inquirer--unknown.json",
+    "hairspray-2002/time--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "care-west-end-2026/guardian--unknown.json",
@@ -261,7 +263,10 @@
     "journeys-end-2007/variety--david-rooney.json",
     "mary-poppins-2006/variety--charles-isherwood.json",
     "tarzan-2006/variety--charles-isherwood.json",
-    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json"
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "beauty-freak-off-broadway-2026/theater-pizzazz--unknown.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -287,11 +292,14 @@
       "death-of-a-salesman-2012/nytg--unknown.json",
       "death-of-a-salesman-2012/playbill--unknown.json",
       "hairspray-2002/musical-theatre-review--unknown.json",
-      "hairspray-2002/people--dave-quinn.json"
+      "hairspray-2002/people--dave-quinn.json",
+      "hairspray-2002/time--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
+      "data/review-texts/animal-wisdom-2022/nytimes--ben-brantley.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -326,7 +334,7 @@
     ]
   },
   "startTime": "2026-05-19T11:02:12.292Z",
-  "lastProcessed": "hairspray-2002/philadelphia-inquirer--unknown.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -347,6 +355,17 @@
     },
     {
       "t": "2026-05-19T11:50:49.360Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T11:55:43.755Z",
+      "event": "bb-session",
+      "session": "54c29216",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-05-19T11:55:44.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
