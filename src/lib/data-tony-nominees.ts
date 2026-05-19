@@ -263,6 +263,8 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
         polymarketOdds: pmNominees ? findMarketOdds(pmNominees, show.title) : null,
         kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
+        criticPicks: showId ? lookupCriticPicks(showId, null, cat.title) : [],
+        precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
       };
     });
     showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
