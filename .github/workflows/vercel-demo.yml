@@ -29,8 +29,12 @@ jobs:
   deploy-demo:
     runs-on: ubuntu-latest
     if: true  # Simplified — workflow_run trigger removed
+    # Split concurrency by event type so user-initiated dispatches don't
+    # get evicted from the queue by rapid main-push triggers. Both groups
+    # still serialize against themselves (queued, not cancelled) — they
+    # just don't compete with each other for the single queue slot.
     concurrency:
-      group: vercel-demo-deploy
+      group: vercel-demo-deploy-${{ github.event_name == 'workflow_dispatch' && format('dispatch-{0}', github.event.inputs.ref || 'main') || 'auto' }}
       cancel-in-progress: false
     steps:
       - name: Checkout
