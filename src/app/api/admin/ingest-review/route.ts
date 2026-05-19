@@ -93,6 +93,9 @@ interface IngestResponse {
   workflowRunUrl?: string;
   collisionDetail?: unknown;
   error?: string;
+  // Typed triage enum so the UI can show distinct icons/messages instead of
+  // the raw error string. Issue #1 (Lost Boys 2026-04-27) remaining scope.
+  failureReason?: 'malformed-url' | 'outlet-unknown' | 'no-show' | 'duplicate' | 'server-error' | 'other';
   warning?: string;
   detectionWarnings?: string[];
   // Set when byline detection fell back to criticName='Unknown'. Operator
@@ -138,12 +141,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   // Only URL and fullText are strictly required on input. Everything else is
   // auto-detected (with caller overrides winning).
   if (!url || typeof url !== 'string') {
-    return NextResponse.json({ success: false, error: 'url is required' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'url is required', failureReason: 'malformed-url' }, { status: 400 });
   }
   try {
     new URL(url);
   } catch {
-    return NextResponse.json({ success: false, error: 'url must be a valid URL' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'url must be a valid URL', failureReason: 'malformed-url' }, { status: 400 });
   }
   if (!fullText || typeof fullText !== 'string' || fullText.trim().length < 50) {
     return NextResponse.json(
@@ -186,6 +189,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       {
         success: false,
         error: `Unregistered outlet domain for ${url}. Add it to data/outlet-registry.json before ingesting.`,
+        failureReason: 'outlet-unknown',
         detectionWarnings: detected.warnings,
       },
       { status: 400 },
@@ -213,6 +217,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       {
         success: false,
         error: 'Could not auto-detect show from text. Pass showId explicitly.',
+        failureReason: 'no-show',
         detectionWarnings: detected.warnings,
       },
       { status: 400 },
@@ -267,7 +272,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json(
-      { success: false, error: `GitHub GET failed: ${msg}` },
+      { success: false, error: `GitHub GET failed: ${msg}`, failureReason: 'server-error' },
       { status: 502 },
     );
   }
@@ -353,6 +358,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
           success: false,
           error:
             'Stale-flag collision: an existing review file for this outlet+critic has a wrongProduction/wrongShow flag on a DIFFERENT URL. Set forceClearStale=true to override (verify the existing file is actually for a different production first).',
+          failureReason: 'duplicate',
           collisionDetail: {
             existingUrl,
             incomingUrl: url,
@@ -451,7 +457,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   );
   if (!putResult.ok) {
     return NextResponse.json(
-      { success: false, error: `GitHub PUT failed: ${putResult.error}` },
+      { success: false, error: `GitHub PUT failed: ${putResult.error}`, failureReason: 'server-error' },
       { status: 502 },
     );
   }
