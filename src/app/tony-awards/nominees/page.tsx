@@ -478,7 +478,7 @@ export default function TonyNomineesPage() {
               {season.ceremonyYear} Tony Nominations Center
             </h1>
             <p className="text-gray-400 mt-1 text-sm">
-              {totalCategories} categories &middot; critic scores, audience grades, and win odds
+              {totalCategories} categories &middot; critic scores, audience grades, and win odds. Updated daily.
             </p>
           </div>
           {ceremonyDate && (
