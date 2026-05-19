@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-19T02:58:05.193Z",
+  "generatedAt": "2026-05-19T05:25:33.048Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -104,28 +104,27 @@
       "status": "open",
       "slug": "the-emporium-off-broadway",
       "thumbnail": "/images/shows/the-emporium-off-broadway-2025/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "siteScore": 60.57,
+      "liveScore": 61,
+      "scoreDrift": 0.4299999999999997,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 0,
+      "total": 4,
       "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "t2": 3,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 2,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -452,6 +451,20 @@
           "name": "London Box Office",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 4,
+          "s": 60.57,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 1,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -465,23 +478,23 @@
       "slug": "equus-west-end",
       "thumbnail": "/images/shows/equus-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 65,
+      "liveScore": 70,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
+      "total": 2,
+      "t1": 2,
       "t2": 0,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
+          "2/8 total",
+          "T1:1/3",
           "T2:1/2",
           "hi-conf:1/6"
         ],
@@ -553,6 +566,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 2,
+          "s": 70,
+          "t1": 2,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -567,24 +592,24 @@
       "slug": "celebrity-autobiography",
       "thumbnail": "/images/shows/celebrity-autobiography-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 56,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 2,
+      "t1": 1,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:2/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -921,6 +946,20 @@
         {
           "name": "London Box Office",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 2,
+          "s": 56,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
