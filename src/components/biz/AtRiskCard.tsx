@@ -11,7 +11,7 @@ interface AtRiskCardProps {
   slug: string;
   title: string;
   season: string;
-  capitalization: number;
+  capitalization: number | null;
   weeklyGross: number;
   breakEven: number;
   trend: RecoupmentTrend;
@@ -61,7 +61,9 @@ export default function AtRiskCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Investment</span>
-        <span className="text-white">~{formatCurrency(capitalization)}</span>
+        <span className="text-white">
+          {capitalization == null ? 'Unknown' : `~${formatCurrency(capitalization)}`}
+        </span>
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Weekly Gross</span>

@@ -427,7 +427,9 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      capitalization: data.capitalization || 0,
+      capitalization: typeof data.capitalization === 'number' && data.capitalization > 0
+        ? data.capitalization
+        : null,
       estimatedRecoupmentPct: data.estimatedRecoupmentPct || [0, 0],
       modelRecoupmentPct: data.modelRecoupmentPct || null,
       modelMethod: data.modelMethod || null,
@@ -474,7 +476,9 @@ export function getShowsAtRisk(): AtRiskShow[] {
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      capitalization: data.capitalization || 0,
+      capitalization: typeof data.capitalization === 'number' && data.capitalization > 0
+        ? data.capitalization
+        : null,
       weeklyGross,
       weeklyRunningCost,
       trend,
