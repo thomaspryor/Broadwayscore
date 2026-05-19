@@ -4,12 +4,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
 import type { TierBadge } from '@/lib/awards-scoring';
-import { getOutletConfig } from '@/config/outlet-logos';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
+import { PressPicks } from '@/components/tony/OutletPickLogo';
 
 // --- Constants ---
 
@@ -58,8 +58,8 @@ function formatCeremonyDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-// Shared style tokens
-const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+// Shared style tokens — BOX_MD reduced to match BOX_SM so score badges don't overpower odds numbers
+const BOX_MD = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 // Two-span pattern: each span uses block+leading-none so line height is controlled by font
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -94,7 +94,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
+  const numClass = size === 'md' ? 'text-lg font-bold text-white' : 'text-base font-bold text-white';
   return (
     <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
@@ -113,7 +113,7 @@ const PRECURSOR_LABELS: Record<string, string> = {
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex flex-col items-start gap-1">
       {wins.map(w => (
         <span
           key={w}
@@ -127,37 +127,6 @@ function PrecursorChips({ wins }: { wins?: string[] }) {
   );
 }
 
-const CRITIC_PICK_META: Record<string, { abbrev: string; color: string; label: string }> = {
-  nyt:      { abbrev: 'T',  color: '#1a1a1a', label: 'New York Times' },
-  variety:  { abbrev: 'V',  color: '#be0028', label: 'Variety' },
-  deadline: { abbrev: 'DL', color: '#444444', label: 'Deadline' },
-};
-
-function PressPicks({ picks }: { picks?: string[] }) {
-  if (!picks || picks.length === 0) return null;
-  const knownPicks = picks.filter(id => CRITIC_PICK_META[id]);
-  if (knownPicks.length === 0) return null;
-  return (
-    <div className="flex items-center gap-0.5">
-      {knownPicks.map(id => {
-        const meta = CRITIC_PICK_META[id];
-        const cfg = getOutletConfig(meta.label);
-        const bgColor = cfg?.color ?? meta.color;
-        const textSize = meta.abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
-        return (
-          <div
-            key={id}
-            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
-            style={{ backgroundColor: bgColor }}
-            title={`${meta.label} picks this show to win`}
-          >
-            {meta.abbrev}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 // Mobile-only compact secondary line: odds + precursor chips + press picks
 function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, criticPicks }: {
@@ -169,7 +138,7 @@ function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, cri
 }) {
   const hasOdds = gdOdds != null || polymarketOdds != null || kalshiOdds != null;
   const hasPrecursor = (precursorWins?.length ?? 0) > 0;
-  const hasPicks = (criticPicks?.filter(id => CRITIC_PICK_META[id])?.length ?? 0) > 0;
+  const hasPicks = (criticPicks?.length ?? 0) > 0;
   if (!hasOdds && !hasPrecursor && !hasPicks) return null;
 
   const fmt = (v: number | null | undefined, label: string) =>
@@ -191,7 +160,7 @@ function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, cri
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
 function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
-  const scoreW = isMajor ? 'w-14' : 'w-11';
+  const scoreW = 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
 
   return (
@@ -286,13 +255,13 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="md" />
         <OddsCol odds={show.polymarketOdds} size="md" />
         <OddsCol odds={show.kalshiOdds} size="md" />
-        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
-        <AudienceBox grade={show.audienceGrade} size="md" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="sm" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
           badge={badgeFromScore(show.awardsScore)}
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-          size="md"
+          size="sm"
         />
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
