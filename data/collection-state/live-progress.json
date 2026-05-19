@@ -1,133 +1,52 @@
 {
-  "updatedAt": "2026-05-19T03:25:56.072Z",
-  "processed": 83,
-  "failed": 1013,
-  "successRate": "7.6%",
+  "updatedAt": "2026-05-19T12:47:16.929Z",
+  "processed": 53,
+  "failed": 440,
+  "successRate": "10.8%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 30,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingbee": 20,
-    "brightdata": 3,
-    "archiveToday": 32,
-    "archive": 7
+    "scrapingbee": 14,
+    "brightdata": 0,
+    "archiveToday": 4,
+    "archive": 11
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-05-18T12:22:09.597Z",
+      "t": "2026-05-19T11:35:40.001Z",
+      "event": "bb-session",
+      "session": "d03e5b8c",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarr"
+    },
+    {
+      "t": "2026-05-19T11:35:40.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-19T11:50:48.957Z",
+      "event": "bb-session",
+      "session": "9a34abfb",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-19T11:50:49.360Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-05-18T12:22:22.643Z",
+      "t": "2026-05-19T11:55:43.755Z",
       "event": "bb-session",
-      "session": "510352d9",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c1"
+      "session": "54c29216",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
     },
     {
-      "t": "2026-05-18T12:22:23.626Z",
+      "t": "2026-05-19T11:55:44.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:22:37.994Z",
-      "event": "bb-session",
-      "session": "bbe7cde1",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C1"
-    },
-    {
-      "t": "2026-05-18T12:22:38.858Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:22:52.516Z",
-      "event": "bb-session",
-      "session": "047de8f1",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title=S"
-    },
-    {
-      "t": "2026-05-18T12:22:53.855Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:23:06.950Z",
-      "event": "bb-session",
-      "session": "9f7da81a",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c0"
-    },
-    {
-      "t": "2026-05-18T12:23:07.909Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T22:54:54.413Z",
-      "event": "bb-session",
-      "session": "a7a1ce53",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-18T23:58:27.190Z",
-      "event": "bb-session",
-      "session": "01e949a0",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-18T23:59:43.509Z",
-      "event": "bb-session",
-      "session": "ba1efbe4",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
-    {
-      "t": "2026-05-19T01:24:59.852Z",
-      "event": "bb-session",
-      "session": "28f4eb19",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T01:26:01.459Z",
-      "event": "bb-session",
-      "session": "89d5e9c2",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
-    {
-      "t": "2026-05-19T01:32:04.633Z",
-      "event": "bb-session",
-      "session": "19d8ae52",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T01:33:05.170Z",
-      "event": "bb-session",
-      "session": "551e1c54",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
-    {
-      "t": "2026-05-19T03:23:27.510Z",
-      "event": "bb-session",
-      "session": "ad8fd6e7",
-      "url": "https://www.nytimes.com/2026/05/16/movies/is-god-is-aleshea-harris.html"
-    },
-    {
-      "t": "2026-05-19T03:23:28.010Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-19T03:24:41.281Z",
-      "event": "bb-session",
-      "session": "c37f27c4",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T03:25:44.453Z",
-      "event": "bb-session",
-      "session": "7f30e801",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-19T02:58:00.906Z",
+  "timestamp": "2026-05-19T13:04:00.425Z",
   "stats": {
-    "totalReviews": 37022,
-    "alreadyFlagged": 16192,
+    "totalReviews": 37014,
+    "alreadyFlagged": 16216,
     "dateGuardCatches": 103,
-    "directorMismatch": 801,
-    "tvFilmSignals": 1017,
-    "londonSignals": 571,
+    "directorMismatch": 803,
+    "tvFilmSignals": 1018,
+    "londonSignals": 576,
     "offBroadwaySignals": 445,
-    "yearMismatch": 77,
-    "noPublishDate": 3835
+    "yearMismatch": 78,
+    "noPublishDate": 3792
   },
   "findings": [
     {
@@ -4597,6 +4597,20 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
+      "file": "broadwayworld--robert-diamond.json",
+      "score": null,
+      "publishDate": "2012-03-15",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
       "file": "kansas-city-star--robert-trussell.json",
       "score": 89,
       "publishDate": "2012-03-15",
@@ -4930,6 +4944,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 76,
+      "publishDate": "2026-04-20",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/death-of-a-salesman-2/samuel-l-leiter/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2026 (1x). 2012 matches production: death-of-a-salesman-2012"
         }
       ]
     },
@@ -25317,20 +25350,6 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 83,
-      "publishDate": "2026-05-11",
-      "url": "https://www.timeout.com/london/theatre/1536-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "1536-west-end-2026",
       "file": "timeout-london--isobel-lewis.json",
       "score": 93,
       "publishDate": "2026-05-13",
@@ -27506,6 +27525,20 @@
       ]
     },
     {
+      "showId": "care-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "carousel-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 88,
@@ -28086,6 +28119,20 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
+      "file": "broadwayworld--blair-ingenthron.json",
+      "score": null,
+      "publishDate": "2022-10-09",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
       "file": "frontmezzjunkies--ross.json",
       "score": 89,
       "publishDate": "2022-10-30",
@@ -28580,6 +28627,20 @@
       "score": 78,
       "publishDate": "2026-04-19",
       "url": "https://1minutecritic.com/fallen-angels-rose-byrne-kelli-ohara-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "fallen-angels-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 78,
+      "publishDate": "2026-04-23",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/fallen-angels-2/samuel-l-leiter/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -30751,19 +30812,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--clementine-scott.json",
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -33335,6 +33383,20 @@
     },
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "city-am--steve-dinneen.json",
+      "score": 86,
+      "publishDate": "2026-04-17",
+      "url": "https://www.cityam.com/one-flew-over-the-cuckoos-nest-at-the-old-vic-a-blistering-revival/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "guardian--david-jays.json",
       "score": 62,
       "publishDate": "2026-04-16",
@@ -34194,6 +34256,20 @@
       ]
     },
     {
+      "showId": "sabrage-off-west-end-2026",
+      "file": "londontheatre1--ryan-collins.json",
+      "score": 96,
+      "publishDate": "2026-05-08",
+      "url": "https://www.londontheatre1.com/reviews/sabrage-lafayette-london-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "saint-joan-2018",
       "file": "nysr--elysa-gardner.json",
       "score": 77,
@@ -34283,6 +34359,20 @@
       "score": 69,
       "publishDate": "2026-04-20",
       "url": "https://people.com/schmigadoon-broadway-review-11953679",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "schmigadoon-2026",
+      "file": "theater-life--unknown.json",
+      "score": 91,
+      "publishDate": "2026-05-02",
+      "url": "https://theaterlife.com/schmigadoon-2/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -37142,6 +37232,20 @@
     },
     {
       "showId": "the-fear-of-13-2026",
+      "file": "theater-scene--joseph-pisano.json",
+      "score": 45,
+      "publishDate": "2026-04-23",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/the-fear-of-13/joseph-pisano/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-fear-of-13-2026",
       "file": "vulture--jackson-mchenry.json",
       "score": 64,
       "publishDate": "2026-04-15",
@@ -38349,6 +38453,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-price-off-west-end-2026",
+      "file": "british-theatre--susan-novak.json",
+      "score": 82,
+      "publishDate": "2026-04-26",
+      "url": "https://www.britishtheatre.com/posts/the-price-at-marylebone-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
