@@ -187,11 +187,15 @@ function main() {
     comm.modelLastRun = today;
     comm.modelWarnings = result.warnings;
 
-    // Flag designation contradictions
+    // Flag designation contradictions. TBD-with-model-≥100% is included
+    // because a producer hasn't certified recoupment yet — either the model
+    // is outpacing reality or we should be researching for an updated
+    // designation. Either way, it's worth surfacing.
     if (comm.designation && result.recoupmentPctCentral != null) {
       const pct = result.recoupmentPctCentral;
       const desig = comm.designation;
       const isContradiction =
+        (pct >= 100 && desig === 'TBD') ||
         (pct > 150 && (desig === 'Fizzle' || desig === 'Flop')) ||
         (pct < 0 && (desig === 'Windfall' || desig === 'Miracle' || desig === 'Easy Winner')) ||
         (pct > 300 && desig === 'Trickle');

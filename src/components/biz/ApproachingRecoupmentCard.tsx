@@ -29,6 +29,27 @@ function formatCurrency(amount: number): string {
   return `$${amount}`;
 }
 
+// TBD shows are *by definition* not yet declared recouped by their producers.
+// If the financial model output exceeds 100% on a TBD show, the model is
+// outpacing producer confirmation (or overestimating) — either way, showing
+// "105% recouped" while the row carries a TBD pill is contradictory and was
+// confusing readers. Cap the displayed central at "≈100%" for these rows;
+// the underlying value still flows through to the model audit / contradiction
+// flag in merge-model-recoupment.js.
+function formatRecoupmentEstimate(
+  modelRecoupmentPct: [number, number, number] | null | undefined,
+  estimatedRecoupmentPct: [number, number],
+): string {
+  if (modelRecoupmentPct) {
+    const central = modelRecoupmentPct[1];
+    if (central >= 100) return '≈100% recouped';
+    return `${Math.round(central)}% recouped`;
+  }
+  const [low, high] = estimatedRecoupmentPct;
+  if (high >= 100) return `~${low}-100%+ recouped`;
+  return `~${low}-${high}% recouped`;
+}
+
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
   improving: 'Improving',
   steady: 'Steady',
@@ -68,9 +89,7 @@ export default function ApproachingRecoupmentCard({
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. Recouped</span>
         <span className="text-amber-400 font-semibold">
-          {modelRecoupmentPct
-            ? `${Math.round(modelRecoupmentPct[1])}% recouped`
-            : `~${estimatedRecoupmentPct[0]}-${estimatedRecoupmentPct[1]}% recouped`}
+          {formatRecoupmentEstimate(modelRecoupmentPct, estimatedRecoupmentPct)}
         </span>
       </div>
       <div className="flex justify-between text-sm mt-1">
