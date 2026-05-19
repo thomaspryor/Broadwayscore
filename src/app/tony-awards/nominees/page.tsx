@@ -491,11 +491,13 @@ export default function TonyNomineesPage() {
           )}
         </div>
 
-        {/* Announcement banner */}
-        <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
-          <span className="text-brand font-semibold">Predictions being released on Thursday</span>
-          {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
-        </div>
+        {/* Announcement banner — hidden after May 22 */}
+        {new Date() < new Date('2026-05-23T00:00:00Z') && (
+          <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
+            <span className="text-brand font-semibold">Predictions being released Thursday, May 22</span>
+            {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
+          </div>
+        )}
 
         {/* Category sections */}
         {categories.map(cat => (
