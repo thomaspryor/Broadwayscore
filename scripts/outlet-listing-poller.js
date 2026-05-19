@@ -95,6 +95,9 @@ const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-off
 // strategy: 'rss'          — fetch an RSS/Atom feed, optional urlFilter + titleFilter
 // strategy: 'sitemap'      — fetch an annual XML sitemap, filter by urlFilter + <lastmod>
 // strategy: 'listing-html' — fetch a known listing page via fetchPage() (BD→SB→Playwright)
+//
+// After adding new entries here, run a one-time historical backfill:
+//   gh workflow run outlet-listing-poller.yml -f lookback_days=365
 const OUTLET_STRATEGY_CONFIG = {
   // RSS strategies
   guardian:            { strategy: 'rss', url: 'https://www.theguardian.com/stage/rss' },
