@@ -154,12 +154,18 @@ function mergeOdds(showsOut, catName, oddsRows, shows, mode, unmatched) {
     }
     const p = parsePercentage(row.percentage);
     const existing = showsOut[showId].categories[catName] || {};
+    // When 2 nominees from the same show appear in the same category (e.g. two
+    // actors from the same production), take the highest pWin — the leading
+    // performer represents the show's actual win probability.
+    const prevPWin = existing.pWin ?? 0;
+    const prevVotes = existing.votes ?? 0;
+    if (prevPWin >= p) continue; // keep existing higher-odds entry
     if (mode === 'pre-noms') {
       showsOut[showId].categories[catName] = {
         ...existing,
         pNom: p,
         pWin: p,
-        votes: row.votes || 0,
+        votes: (row.votes || 0) + prevVotes,
         gdNomineeId: row.id,
       };
     } else {
@@ -167,7 +173,7 @@ function mergeOdds(showsOut, catName, oddsRows, shows, mode, unmatched) {
         ...existing,
         pNom: 1.0,
         pWin: p,
-        votes: row.votes || 0,
+        votes: (row.votes || 0) + prevVotes,
         gdNomineeId: row.id,
       };
     }
