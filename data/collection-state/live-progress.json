@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-05-19T11:33:47.080Z",
-  "processed": 31,
-  "failed": 109,
-  "successRate": "22.1%",
+  "updatedAt": "2026-05-19T11:36:12.233Z",
+  "processed": 32,
+  "failed": 118,
+  "successRate": "21.3%",
   "tierBreakdown": {
     "playwright": 18,
     "amp": 0,
@@ -10,9 +10,21 @@
     "directCookies": 0,
     "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 4
+    "archiveToday": 3,
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-19T11:35:40.001Z",
+      "event": "bb-session",
+      "session": "d03e5b8c",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarr"
+    },
+    {
+      "t": "2026-05-19T11:35:40.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }

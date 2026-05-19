@@ -30,7 +30,8 @@
     "death-of-a-salesman-2022/whatsonstage--unknown.json",
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "glengarry-glen-ross-2012/amny--unknown.json"
   ],
   "failed": [
     "care-west-end-2026/guardian--unknown.json",
@@ -141,7 +142,16 @@
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
     "orphans-2013/bloomberg--jeremy-gerard.json",
     "the-nance-2013/hollywood-reporter--david-rooney.json",
-    "the-nance-2013/new-jersey-newsroom--michael-sommers.json"
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "glengarry-glen-ross-2012/washpost--ben-brantley.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "fela-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -184,16 +194,30 @@
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/godots-to-do-list-west-end-2026/thestage--unknown.json"
+      "data/review-texts/godots-to-do-list-west-end-2026/thestage--unknown.json",
+      "data/review-texts/glengarry-glen-ross-2012/washpost--ben-brantley.json"
     ],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "the-devil-wears-prada-west-end-2024/the-jewish-chronicle--john-nathan.json",
       "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "glengarry-glen-ross-2012/amny--unknown.json"
     ]
   },
   "startTime": "2026-05-19T11:02:12.292Z",
-  "lastProcessed": "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
-  "log": []
+  "lastProcessed": "leap-of-faith-2012/variety--marilyn-stasio.json",
+  "log": [
+    {
+      "t": "2026-05-19T11:35:40.001Z",
+      "event": "bb-session",
+      "session": "d03e5b8c",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarr"
+    },
+    {
+      "t": "2026-05-19T11:35:40.381Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    }
+  ]
 }
