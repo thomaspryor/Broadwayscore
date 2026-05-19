@@ -288,7 +288,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   ].filter((p) => p.count > 0);
 
   return (
-    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="socials-scorecard-heading">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="socials-scorecard-heading">
       {/* Unified scorecard chrome */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="socials-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
@@ -413,7 +413,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
       {/* Footer: discovery link to the full leaderboard + refresh metadata.
           Anatomy matches the audience/critic/awards/boxoffice/commercial
           family — gold link with arrow, separator, lowercase faint meta. */}
-      <div className="mt-3 flex items-center justify-between gap-4 flex-wrap">
+      <div className="mt-1.5 -mb-1 sm:-mb-2 flex items-center justify-between gap-4 flex-wrap">
         <Link
           href={trendingHref}
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

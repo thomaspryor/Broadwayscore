@@ -67,7 +67,7 @@ export default function LotteryRushCard({ data, showStatus, showCategory }: Lott
   if (!hasLottery && !hasRush && !hasSRO) return null;
 
   return (
-    <section id="discount-tickets" className="card p-5 sm:p-6 mb-6 scroll-mt-20" aria-labelledby="lottery-rush-heading">
+    <section id="discount-tickets" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-4 sm:mb-6 scroll-mt-20" aria-labelledby="lottery-rush-heading">
       {/* Unified section-card chrome: icon + eyebrow title */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="lottery-rush-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 inline-flex items-center gap-2">

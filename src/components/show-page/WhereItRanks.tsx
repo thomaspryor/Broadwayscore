@@ -113,7 +113,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   return (
     <section
       data-testid="where-it-ranks"
-      className="card p-5 sm:p-6 mb-8 space-y-4"
+      className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 space-y-4"
       aria-labelledby="where-it-ranks-heading"
     >
       <header className="flex flex-row items-start justify-between gap-3">

@@ -410,7 +410,7 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
     }
 
     return (
-      <section className="card p-5 sm:p-6 mb-6">
+      <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-4 sm:mb-6">
         <h2 className="text-lg font-bold text-white mb-3">Awards Scorecard</h2>
         <p className="text-gray-400 text-sm">This show has not yet been eligible for major awards.</p>
       </section>
@@ -442,7 +442,7 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
     : (awards?.tony?.ceremony ?? null);
 
   return (
-    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="awards-scorecard-heading">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="awards-scorecard-heading">
       {/* Unified scorecard chrome: eyebrow + lowercase season meta */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="awards-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>

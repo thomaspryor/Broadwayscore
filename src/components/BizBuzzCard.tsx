@@ -151,7 +151,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const showTrend = trend && trend !== 'unknown' && commercial.designation === 'TBD' && !commercial.recouped;
 
   return (
-    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="commercial-scorecard-heading">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
       {/* Unified scorecard chrome — eyebrow on left, recoup status on right */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
@@ -317,7 +317,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
       </div>
 
       {/* Footer link to the cross-show commercial leaderboard */}
-      <div className="mt-3">
+      <div className="mt-1.5 -mb-1 sm:-mb-2">
         <Link
           href="/biz"
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

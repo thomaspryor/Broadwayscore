@@ -351,7 +351,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
 
   return (
-    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="awards-scorecard-heading-v2">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="awards-scorecard-heading-v2">
       {/* Unified scorecard chrome — typography matches audience/critic/box-office/etc. */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="awards-scorecard-heading-v2" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
@@ -402,7 +402,7 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       )}
 
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
-        <div className="mt-3">
+        <div className="mt-1.5 -mb-1 sm:-mb-2">
           <Link
             href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

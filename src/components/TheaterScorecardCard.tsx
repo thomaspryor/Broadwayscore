@@ -152,7 +152,7 @@ export default function TheaterScorecardCard({
   const hasExternal = !!(externalLinks && (externalLinks.seatplan || externalLinks.aviewfrommyseat));
 
   return (
-    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="theater-scorecard-heading">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="theater-scorecard-heading">
       {/* Unified scorecard chrome: eyebrow + designation pill in meta slot */}
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="theater-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Theater Scorecard</h2>
@@ -269,7 +269,7 @@ export default function TheaterScorecardCard({
       )}
 
       {/* Footer link to the cross-show theater leaderboard */}
-      <div className="mt-3">
+      <div className="mt-1.5 -mb-1 sm:-mb-2">
         <Link
           href="/theater"
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

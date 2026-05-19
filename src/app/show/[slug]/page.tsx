@@ -776,7 +776,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* Critic Reviews / Scorecard */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
-          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading">
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading">
             {/* Unified scorecard chrome: eyebrow + lowercase meta count */}
             <header className="flex items-center justify-between gap-3 mb-4">
               <h2 id="critic-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
@@ -812,7 +812,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </p>
           </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
-          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
               <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">tbd</span>
@@ -822,7 +822,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </p>
           </section>
         ) : (
-          <section id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-archived" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
             </header>
