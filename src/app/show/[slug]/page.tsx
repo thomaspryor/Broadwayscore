@@ -768,48 +768,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </Link>
         )}
 
-        {/* Section Jump Links — exhausts every card in the new ordering,
-            same order as the cards themselves below. Each pill is gated by
-            the same flag/data check that gates the card it links to, so
-            we never render a pill for a section the user can't reach. */}
-        {featureFlags.sectionJumpLinks && (() => {
-          const pillCls = "inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors";
-          // Reviews / Tickets / Cast / Creative / Ranks pills removed
-          // per user feedback (2026-05-19) — too many pills + most users
-          // hit those sections by scroll, not by jump.
-          return (
-            <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
-              {featureFlags.videoReviews && videoReviews.length > 0 && (
-                <a href="#video-reviews" className={pillCls}>Video</a>
-              )}
-              {audienceBuzz && audienceBuzz.combinedScore != null && (
-                <a href="#audience" className={pillCls}>Audience</a>
-              )}
-              <AwardsNavLink hasAwards={!!awards} />
-              {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
-                <a href="#box-office" className={pillCls}>Box Office</a>
-              )}
-              {featureFlags.commercial && !isWestEnd && !isOffBroadway && commercial && (
-                <a href="#commercial" className={pillCls}>Commercial</a>
-              )}
-              {showSchedule && (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
-                <a href="#showtimes" className={pillCls}>Showtimes</a>
-              )}
-              {socialPulse && socialPulse.t !== 'Hidden' && (
-                <a href="#social-buzz" className={pillCls}>Social</a>
-              )}
-              {theater?.venueScores && (
-                <a href="#theater-scorecard" className={pillCls}>Theater</a>
-              )}
-              {theater && (
-                <a href="#seating-scorecard" className={pillCls}>Seating</a>
-              )}
-              {featureFlags.castChanges && castChangesData && (
-                <a href="#cast-updates" className={pillCls}>Cast Updates</a>
-              )}
-            </nav>
-          );
-        })()}
+        {/* Section Jump Links removed entirely 2026-05-19 per user feedback —
+            the pill row took ~80px of mobile vertical for an affordance most
+            users skip in favor of scrolling. featureFlags.sectionJumpLinks
+            is now effectively dead; leaving the flag in place in case we
+            revisit, but no surface renders it. */}
 
         {/* Critic Reviews / Scorecard */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
