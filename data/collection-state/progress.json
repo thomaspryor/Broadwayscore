@@ -2,7 +2,9 @@
   "processed": [
     "the-emporium-off-broadway-2025/nytimes--jonathan-abrams.json",
     "equus-west-end-2026/timeout-london--unknown.json",
-    "equus-west-end-2026/independent--unknown.json"
+    "equus-west-end-2026/independent--unknown.json",
+    "the-emporium-off-broadway-2025/front-row-center--unknown.json",
+    "the-maids-off-broadway-2026/thewrap--unknown.json"
   ],
   "failed": [
     "care-west-end-2026/broadwayworld--unknown.json",
@@ -11,7 +13,10 @@
     "care-west-end-2026/telegraph--dominic-cavendish.json",
     "care-west-end-2026/whatsonstage--sarah-crompton.json",
     "equus-west-end-2026/sunday-telegraph--unknown.json",
-    "equus-west-end-2026/times-uk--unknown.json"
+    "equus-west-end-2026/times-uk--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -20,18 +25,30 @@
       "equus-west-end-2026/independent--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
-      "the-emporium-off-broadway-2025/nytimes--jonathan-abrams.json"
+      "the-emporium-off-broadway-2025/nytimes--jonathan-abrams.json",
+      "the-emporium-off-broadway-2025/front-row-center--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "the-maids-off-broadway-2026/thewrap--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "equus-west-end-2026/times-uk--unknown.json",
-  "log": []
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-19T17:12:15.211Z",
+      "event": "bb-session",
+      "session": "2f23cef1",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }
