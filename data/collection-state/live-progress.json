@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T12:47:16.929Z",
+  "updatedAt": "2026-05-19T13:11:12.197Z",
   "processed": 53,
-  "failed": 440,
-  "successRate": "10.8%",
+  "failed": 445,
+  "successRate": "10.6%",
   "tierBreakdown": {
     "playwright": 30,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 0,
     "archiveToday": 4,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -47,6 +47,18 @@
       "t": "2026-05-19T11:55:44.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T13:09:56.154Z",
+      "event": "bb-session",
+      "session": "c71cc319",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T13:11:00.165Z",
+      "event": "bb-session",
+      "session": "54816cf8",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }

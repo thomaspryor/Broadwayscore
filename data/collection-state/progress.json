@@ -494,7 +494,12 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -534,7 +539,9 @@
     "browserbase": [
       "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
       "data/review-texts/animal-wisdom-2022/nytimes--ben-brantley.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -575,7 +582,7 @@
     ]
   },
   "startTime": "2026-05-19T11:02:12.292Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-19T11:35:40.001Z",
@@ -609,6 +616,18 @@
       "t": "2026-05-19T11:55:44.092Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T13:09:56.154Z",
+      "event": "bb-session",
+      "session": "c71cc319",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T13:11:00.165Z",
+      "event": "bb-session",
+      "session": "54816cf8",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
