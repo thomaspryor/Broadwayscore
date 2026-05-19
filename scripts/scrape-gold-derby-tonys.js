@@ -141,7 +141,16 @@ function matchShow(gdTitle, gdRelatedTitle, shows) {
   return null;
 }
 
-function mergeOdds(showsOut, catName, oddsRows, shows, mode, unmatched) {
+// GD categories where row.title is a person name, not a show title.
+const PERSON_LEVEL_GD_CATS = new Set([
+  'Best Actor (Musical)', 'Best Actress (Musical)',
+  'Best Actor (Play)', 'Best Actress (Play)',
+  'Best Featured Actor (Musical)', 'Best Featured Actress (Musical)',
+  'Best Featured Actor (Play)', 'Best Featured Actress (Play)',
+]);
+
+function mergeOdds(showsOut, personsOut, catName, oddsRows, shows, mode, unmatched) {
+  const isPersonLevel = PERSON_LEVEL_GD_CATS.has(catName);
   for (const row of oddsRows) {
     const matched = matchShow(row.title, row.related_title, shows);
     if (!matched) {
@@ -153,22 +162,26 @@ function mergeOdds(showsOut, catName, oddsRows, shows, mode, unmatched) {
       showsOut[showId] = { title: matched.title, goldDerbyId: row.id, categories: {} };
     }
     const p = parsePercentage(row.percentage);
+
+    // For person-level categories, store individual odds keyed by person name.
+    // Show-level entry gets max pWin as a fallback for unmatched lookups.
+    if (isPersonLevel && row.title && row.title !== row.related_title) {
+      if (!personsOut[row.title]) personsOut[row.title] = {};
+      personsOut[row.title][catName] = { pWin: p, votes: row.votes || 0 };
+    }
+
     const existing = showsOut[showId].categories[catName] || {};
+    const prevPWin = existing.pWin ?? 0;
+    if (prevPWin >= p) continue; // keep max pWin for show-level fallback
     if (mode === 'pre-noms') {
       showsOut[showId].categories[catName] = {
-        ...existing,
-        pNom: p,
-        pWin: p,
-        votes: row.votes || 0,
-        gdNomineeId: row.id,
+        ...existing, pNom: p, pWin: p,
+        votes: (row.votes || 0) + (existing.votes ?? 0), gdNomineeId: row.id,
       };
     } else {
       showsOut[showId].categories[catName] = {
-        ...existing,
-        pNom: 1.0,
-        pWin: p,
-        votes: row.votes || 0,
-        gdNomineeId: row.id,
+        ...existing, pNom: 1.0, pWin: p,
+        votes: (row.votes || 0) + (existing.votes ?? 0), gdNomineeId: row.id,
       };
     }
   }
@@ -201,9 +214,10 @@ async function main() {
 
   const shows = loadShows();
   const showsOut = {};
+  const personsOut = {};
   const unmatched = [];
   for (const [catName, rows] of Object.entries(oddsByCategory)) {
-    mergeOdds(showsOut, catName, rows, shows, mode, unmatched);
+    mergeOdds(showsOut, personsOut, catName, rows, shows, mode, unmatched);
   }
 
   const output = {
@@ -220,6 +234,7 @@ async function main() {
       unmatchedRowCount: unmatched.length,
     },
     shows: showsOut,
+    persons: personsOut,
   };
 
   const v = validateTonyPredictions(output);

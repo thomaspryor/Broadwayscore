@@ -78,7 +78,12 @@ type GdShowEntry = {
   categories: Record<string, { pWin: number; pNom: number; votes: number }>;
 };
 
-type GdData = { shows: Record<string, GdShowEntry> };
+type GdPersonEntry = Record<string, { pWin: number; votes: number }>;
+
+type GdData = {
+  shows: Record<string, GdShowEntry>;
+  persons?: Record<string, GdPersonEntry>;
+};
 
 type PmCategoryData = { nominees: Record<string, number> };
 type PmData = { categories: Record<string, PmCategoryData> };
@@ -122,16 +127,32 @@ function lookupGdOdds(
   normMap: Map<string, number>,
   showId: string,
   canonicalCatName: string,
+  personName?: string | null,
 ): number | null {
   const gdCatName = TONY_TO_GD[canonicalCatName];
   if (!gdCatName) return null;
+
+  // For acting categories, use per-person odds (avoids show-level max-pWin conflation
+  // when two performers from the same show are in the same category).
+  if (personName && gdData.persons) {
+    const personEntry = gdData.persons[personName];
+    if (personEntry?.[gdCatName]) {
+      const p = personEntry[gdCatName];
+      if (p.votes > 0 && typeof p.pWin === 'number') return p.pWin;
+    }
+  }
+
+  // Fallback to show-keyed lookup (non-acting categories, or person not found in persons map)
   const show = gdData.shows[showId];
   if (!show) return null;
   const cat = show.categories[gdCatName];
   if (!cat || cat.votes === 0 || typeof cat.pWin !== 'number') return null;
   const total = normMap.get(gdCatName) ?? 1;
-  // Normalize when the category total is < 0.5 (sparse/stale market data)
-  return total < 0.5 ? cat.pWin / total : cat.pWin;
+  // Hide GD odds when total coverage < 0.5 — sparse data produces misleading
+  // normalized values (e.g. Best Actor Musical: GD tracks per-person but
+  // scraper keys by showId, so most votes are missing from our index).
+  if (total < 0.5) return null;
+  return cat.pWin;
 }
 
 function loadMarketData(filename: string): PmData | null {
@@ -282,7 +303,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(nom.showId).displayScore,
-          gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle),
+          gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle, personName),
           polymarketOdds: pmNominees ? findMarketOdds(pmNominees, pmMatchName) : null,
           kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, pmMatchName) : null,
           nomineePersonName: personName,
