@@ -212,6 +212,17 @@ function getAuthorRoyaltyPre(showType) {
  * This calculates the additional variable share the theater gets
  * when gross × pct exceeds the fixed rent.
  */
+/**
+ * ISO 8601 week-of-year (1-53). Used to apply Tony season and holiday
+ * marketing surcharges based on calendar position rather than week-from-open.
+ */
+function isoWeekOfYear(date) {
+  const d = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
 function calcTheaterOverage(weeklyGross, weeklyNut) {
   const rentInNut = weeklyNut * THEATER_DEAL.rentPctOfNut;
   const pctShare = weeklyGross * THEATER_DEAL.pctOfGross;
@@ -235,7 +246,7 @@ function calcTheaterOverage(weeklyGross, weeklyNut) {
  * @param {number} scenarioMult - Scenario multiplier object
  * @returns {{ profit: number, variableCosts: number, theaterCost: number, fixedCosts: number }}
  */
-function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory) {
+function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, weekNumber, isPreview, scenarioMult, totalWeeks, showType, showCategory, calendarWeek) {
   const mult = scenarioMult || SCENARIO_MULTIPLIERS.central;
   const adjGross = weeklyGross * mult.grossAdj;
 
@@ -253,29 +264,42 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   const theaterCost = calcTheaterOverage(adjGross, weeklyNut);
 
   // Fixed costs: phased model reflecting how costs change over a run.
-  // The weeklyNut we have is typically the steady-state cost.
-  // Phase 1 (weeks 1-26): Full nut (launch period, original cast/stars)
-  // Phase 2 (weeks 27-52): Full nut (steady state, year 1)
-  // Phase 3 (weeks 53-104): Nut × 0.93 (year 2+: cast replacements save ~7%, reduced marketing)
-  // Phase 4 (weeks 105+): Nut × 0.88 (mature run: further optimization, but offset by union escalators)
+  //
+  // Year 1 (weeks 1-52): Steady-state nut, unchanged.
+  // Year 2+ (weeks 53+): One-time -4% step at week 53 for cast-replacement
+  //   savings (stars roll off, marketing tapers), then +3% annual union
+  //   escalation applied to that reduced baseline. The previous model
+  //   subtracted 7% in year 2 and 12% in year 5+ without any escalation —
+  //   which made every long-running show look more profitable each year.
+  //   That overstated cumulative profit by 5-15% on 2+ year runs and was a
+  //   major contributor to model > actual recoupment percentages on TBD
+  //   shows like Buena Vista Social Club and Operation Mincemeat.
   let fixedCosts = weeklyNut * mult.fixedCost;
-  if (weekNumber > 104) {
-    fixedCosts *= 0.88; // Mature run cap — no further reduction
-  } else if (weekNumber > 52) {
-    fixedCosts *= 0.93;
+  if (weekNumber > 52) {
+    const yearsAfterFirst = (weekNumber - 53) / 52; // 0 at week 53, 1 at week 105, …
+    const escalation = Math.pow(1 + ANNUAL_COST_ESCALATION, yearsAfterFirst);
+    fixedCosts *= 0.96 * escalation; // -4% one-time, then +3%/yr from there
   }
-  // No additional deflation for long runs — Broadway costs inflate over time.
-  // The 0.88 floor already captures cast replacement savings and optimization.
 
   // Preview cost premium
   if (isPreview) {
     fixedCosts *= PREVIEW_DEFAULTS.costMultiplier;
   }
 
-  // Marketing surcharges (scaled by show type)
+  // Marketing surcharges (scaled by show type). Opening push runs on run-week
+  // 1-8; Tony / holiday pushes run on the corresponding calendar weeks
+  // *every year of the run*. Tony + holiday were defined as constants but
+  // never wired up — that under-counted ~$1.3M/yr in marketing for a musical
+  // and was the second-biggest contributor to model overestimation.
   const cat = showCategory || 'musical';
   if (weekNumber <= 8) {
     fixedCosts += MARKETING_SURCHARGES.openingPush[cat] || MARKETING_SURCHARGES.openingPush.musical;
+  }
+  if (calendarWeek && MARKETING_SURCHARGES.tonySeasonApprox.weekOfYear.includes(calendarWeek)) {
+    fixedCosts += MARKETING_SURCHARGES.tonySeasonApprox[cat] || MARKETING_SURCHARGES.tonySeasonApprox.musical;
+  }
+  if (calendarWeek && MARKETING_SURCHARGES.holidayApprox.weekOfYear.includes(calendarWeek)) {
+    fixedCosts += MARKETING_SURCHARGES.holidayApprox[cat] || MARKETING_SURCHARGES.holidayApprox.musical;
   }
 
   // Pre-recoupment operating profit
@@ -430,6 +454,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     // Cap simulation at 520 weeks (10 years) to prevent accumulation errors
     const maxWeeks = Math.min(weeklySchedule.length, 520);
 
+    // Anchor calendar week to previewsStart (or openingDate if missing).
+    // Used to apply Tony season + holiday marketing surcharges based on
+    // the actual time of year a given run-week falls on.
+    const scheduleAnchor = previewsStart || openingDate;
+
     for (let i = 0; i < maxWeeks; i++) {
       const week = weeklySchedule[i];
       const weekNum = i + 1;
@@ -439,8 +468,10 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
         cumProfit += taxCreditAmount;
       }
 
+      const calendarWeek = scheduleAnchor ? isoWeekOfYear(new Date(scheduleAnchor.getTime() + (i * 7 * 86400000))) : null;
+
       const weekResult = calcWeeklyProfit(
-        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category
+        week.gross, weeklyNut, baseVarRate, isPostRecoup, weekNum, week.isPreview, mult, weeklySchedule.length, show.type || 'musical', category, calendarWeek
       );
 
       let weekProfit = weekResult.profit;
@@ -680,14 +711,23 @@ function estimateWeeklyNut(show, commercial) {
 
 function parseSvogFromNotes(notes, deepResearch) {
   const text = (notes || '') + ' ' + (deepResearch || '');
-  // Look for SVOG/PPP/grant amounts
+  // Look for SVOG/PPP/grant amounts.
   const match = text.match(/SVOG[:\s]*\$?([\d.]+)\s*(?:million|M)/i);
   if (match) return parseFloat(match[1]) * 1e6;
 
-  const match2 = text.match(/(?:shuttered|venue|grant)[:\s]*\$?([\d,.]+)/i);
+  // Require an explicit currency marker ($ prefix OR million/M suffix) AND a
+  // grant-context keyword. The previous regex matched bare "venue" or "grant"
+  // followed by ANY number — e.g. "venue capacity 1,500 seats" parsed as a
+  // $1.5M grant and wiped 1.5M off effectiveCap.
+  const match2 = text.match(/(?:shuttered\s*venue|SVOG|relief\s*grant)[^.\n]{0,80}?\$\s*([\d.,]+)\s*(?:million|M)?/i);
   if (match2) {
-    const val = parseFloat(match2[1].replace(/,/g, ''));
-    return val > 1000 ? val : val * 1e6;
+    const raw = parseFloat(match2[1].replace(/,/g, ''));
+    if (isNaN(raw)) return 0;
+    // If "million"/"M" follows, treat as millions; otherwise the captured
+    // value is already in dollars (require ≥ $100K to avoid junk matches).
+    const followedByMillion = /million|M(?!\w)/i.test(match2[0]);
+    const val = followedByMillion ? raw * 1e6 : raw;
+    return val >= 100000 ? val : 0;
   }
 
   return 0;
