@@ -15,7 +15,7 @@ import {
 // classifyCategory maps precursor category names → tier (S/A+/A/B/C). Shared
 // with awards-scoring.ts (Site Award Score uses different prestige weights;
 // we use predictive weights below).
-import { classifyCategory, type CategoryTier } from '@/lib/awards-scoring';
+import { classifyCategory, computeSiteAwardScore, type CategoryTier } from '@/lib/awards-scoring';
 
 // Import commercial.json directly to avoid pulling in grosses-history.json
 import fs from 'fs';
@@ -318,8 +318,10 @@ export interface SerializedTonyShow {
   blendedScore: number | null;
   /** Mean of Show Score + Mezzanine — the audience input the predictor uses. */
   tonyAudienceGrade: number | null;
-  /** 0-100 Awards Score from precursor nominations (Drama League, OCC, Drama Desk). */
+  /** 0-100 internal predictive signal from precursor wins/noms (used in blended model only). */
   awardsScore: number;
+  /** Site Award Score displayed to users — same as the show page badge (computeSiteAwardScore). */
+  siteAwardsScore: number;
   /** Which Tony category this show was serialized in (drives the recipe). */
   tonyCategoryKey: TonyCategoryKey | null;
   /** Win probability 0–1 from GoldDerby crowd votes. */
@@ -632,6 +634,7 @@ export function serializeShow(
     blendedScore: composite,
     tonyAudienceGrade: tonyAud,
     awardsScore: awards,
+    siteAwardsScore: computeSiteAwardScore(show.id).displayScore,
     tonyCategoryKey: categoryKey ?? null,
     gdOdds: categoryKey ? lookupGdOdds(show.id, CATEGORY_KEY_TO_TITLE[categoryKey]) : null,
     criticPicks: categoryKey ? lookupCriticPicks(show.id, null, CATEGORY_KEY_TO_TITLE[categoryKey]) : [],
