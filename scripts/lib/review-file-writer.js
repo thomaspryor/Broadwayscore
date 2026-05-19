@@ -408,11 +408,22 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   const { input, fields, dryRun, onMerge } = ctx;
   let changed = false;
 
+  // Fields that are FINAL once set by a human — never overwrite regardless of
+  // whether the stored value is truthy or falsy. The !existing[key] guard below
+  // already protects truthy values, but humanReviewedWrongProduction:false (human
+  // explicitly verified it IS the right production) is falsy and must not be clobbered.
+  const HUMAN_PROTECTED = new Set([
+    'humanReviewedWrongProduction',
+    'humanReviewScore',
+    'humanReviewedScore',
+  ]);
+
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
   for (const [key, val] of Object.entries(fields)) {
     if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
+    if (HUMAN_PROTECTED.has(key) && existing[key] != null) continue;
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
