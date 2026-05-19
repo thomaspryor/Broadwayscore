@@ -101,7 +101,13 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
   );
 }
 
-const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
+const PRECURSOR_LABELS: Record<string, string> = {
+  DL: 'Drama League',
+  OCC: 'Outer Critics Circle',
+  DD: 'Drama Desk',
+  PULITZER: 'Pulitzer Prize for Drama',
+  NYDCC: 'NY Drama Critics Circle',
+};
 
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return null;
