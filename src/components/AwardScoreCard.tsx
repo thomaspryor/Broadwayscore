@@ -361,13 +361,14 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
 
   return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <div className="flex items-baseline justify-between gap-3 mb-4">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Awards Scorecard</h2>
+    <section className="card p-5 sm:p-6 mb-8" aria-labelledby="awards-scorecard-heading-v2">
+      {/* Unified scorecard chrome — typography matches audience/critic/box-office/etc. */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="awards-scorecard-heading-v2" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
         {awards?.tony?.season && (
-          <span className="text-xs text-gray-500 uppercase tracking-wide whitespace-nowrap">{awards.tony.season} season</span>
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0 whitespace-nowrap">{awards.tony.season} season</span>
         )}
-      </div>
+      </header>
 
       <div className="flex items-center gap-4 mb-4">
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
@@ -421,6 +422,6 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
           </Link>
         </div>
       )}
-    </div>
+    </section>
   );
 }

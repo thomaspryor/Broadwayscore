@@ -774,13 +774,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             we never render a pill for a section the user can't reach. */}
         {featureFlags.sectionJumpLinks && (() => {
           const pillCls = "inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors";
-          const hasCast = !!(featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)));
-          const hasCreative = !!(featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0);
+          // Reviews / Tickets / Cast / Creative / Ranks pills removed
+          // per user feedback (2026-05-19) — too many pills + most users
+          // hit those sections by scroll, not by jump.
           return (
             <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
-              {show.criticScore && show.criticScore.reviews.length > 0 && (
-                <a href="#critic-reviews" className={pillCls}>Reviews</a>
-              )}
               {featureFlags.videoReviews && videoReviews.length > 0 && (
                 <a href="#video-reviews" className={pillCls}>Video</a>
               )}
@@ -794,9 +792,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {featureFlags.commercial && !isWestEnd && !isOffBroadway && commercial && (
                 <a href="#commercial" className={pillCls}>Commercial</a>
               )}
-              {featureFlags.showRanks && (ranks || ranksByFormat) && (
-                <a href="#where-it-ranks" className={pillCls}>Ranks</a>
-              )}
               {showSchedule && (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
                 <a href="#showtimes" className={pillCls}>Showtimes</a>
               )}
@@ -809,17 +804,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {theater && (
                 <a href="#seating-scorecard" className={pillCls}>Seating</a>
               )}
-              {featureFlags.discountTickets && lotteryRush && (
-                <a href="#discount-tickets" className={pillCls}>Tickets</a>
-              )}
               {featureFlags.castChanges && castChangesData && (
                 <a href="#cast-updates" className={pillCls}>Cast Updates</a>
-              )}
-              {hasCast && (
-                <a href="#cast" className={pillCls}>Cast</a>
-              )}
-              {hasCreative && (
-                <a href="#creative-team" className={pillCls}>Creative</a>
               )}
             </nav>
           );
