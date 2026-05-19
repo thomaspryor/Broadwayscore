@@ -698,7 +698,14 @@ export default function MyShowsClient() {
                 const showYearHeaders = diaryView === 'grid' || sortedYears.length > 1 || hasOtherSections;
 
                 return (
-                  <div className="space-y-6">
+                  <>
+                    {hasOtherSections && (
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Past Shows</h3>
+                        <span className="text-[11px] text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
+                      </div>
+                    )}
+                    <div className="space-y-6">
                     {sortedYears.map((year, yearIdx) => (
                       <div key={year}>
                         {showYearHeaders && (
@@ -735,6 +742,7 @@ export default function MyShowsClient() {
                       </div>
                     ))}
                   </div>
+                  </>
                 );
               })()}
             </>
@@ -753,6 +761,41 @@ export default function MyShowsClient() {
               ctaLabel="Browse Shows"
               ctaHref="/"
             />
+          ) : watchlistSort === 'alphabetical' ? (
+            /* Flat alphabetical list — no booked/unbooked split */
+            watchlistView === 'grid' ? (
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {sortedWatchlist.map(entry => (
+                  <WatchlistCard
+                    key={entry.id}
+                    entry={entry}
+                    show={showMap[entry.show_id]}
+                    onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                  />
+                ))}
+                <AddShowCard context="watchlist" onOpen={() => {
+                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                  btn?.click();
+                }} />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {sortedWatchlist.map(entry => (
+                  <WatchlistListItem
+                    key={entry.id}
+                    entry={entry}
+                    show={showMap[entry.show_id]}
+                    onDateChange={(date) => effectiveUpdatePlannedDate(entry.show_id, date)}
+                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                  />
+                ))}
+                <AddShowCard context="watchlist" variant="list" onOpen={() => {
+                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                  btn?.click();
+                }} />
+              </div>
+            )
           ) : (
             <div className="space-y-6">
               {/* Not yet booked section */}
