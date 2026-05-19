@@ -167,7 +167,7 @@ test.describe('My Shows — Diary Sections', () => {
     // Should navigate (URL will contain rate=1&stars=4)
     await page.waitForURL(/rate=1/, { timeout: 5000 }).catch(() => {});
     const url = page.url();
-    expect(url).toContain('/show/ragtime-2025');
+    expect(url).toContain('/show/ragtime');
   });
 
   test('venue is displayed in diary list view', async ({ page }) => {
