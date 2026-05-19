@@ -1,18 +1,36 @@
 {
-  "updatedAt": "2026-05-19T09:12:48.548Z",
-  "processed": 9,
-  "failed": 7,
-  "successRate": "56.3%",
+  "updatedAt": "2026-05-19T09:38:55.815Z",
+  "processed": 7,
+  "failed": 14,
+  "successRate": "33.3%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-19T09:35:49.114Z",
+      "event": "bb-session",
+      "session": "7f3379df",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
+    },
+    {
+      "t": "2026-05-19T09:35:50.055Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T09:38:44.479Z",
+      "event": "bb-session",
+      "session": "d054c7f8",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }
