@@ -1,42 +1,20 @@
 {
-  "updatedAt": "2026-05-19T01:33:16.159Z",
+  "updatedAt": "2026-05-19T03:25:56.072Z",
   "processed": 83,
-  "failed": 1008,
+  "failed": 1013,
   "successRate": "7.6%",
   "tierBreakdown": {
     "playwright": 58,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 10,
     "directCookies": 0,
     "scrapingbee": 20,
     "brightdata": 3,
     "archiveToday": 32,
     "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-05-18T12:21:38.982Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:21:53.527Z",
-      "event": "bb-session",
-      "session": "ad641cab",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C0"
-    },
-    {
-      "t": "2026-05-18T12:21:54.548Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T12:22:08.281Z",
-      "event": "bb-session",
-      "session": "4843fb3b",
-      "url": "http://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF93"
-    },
     {
       "t": "2026-05-18T12:22:09.597Z",
       "event": "bb-cookie-inject",
@@ -126,6 +104,29 @@
       "t": "2026-05-19T01:33:05.170Z",
       "event": "bb-session",
       "session": "551e1c54",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T03:23:27.510Z",
+      "event": "bb-session",
+      "session": "ad8fd6e7",
+      "url": "https://www.nytimes.com/2026/05/16/movies/is-god-is-aleshea-harris.html"
+    },
+    {
+      "t": "2026-05-19T03:23:28.010Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T03:24:41.281Z",
+      "event": "bb-session",
+      "session": "c37f27c4",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T03:25:44.453Z",
+      "event": "bb-session",
+      "session": "7f30e801",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
