@@ -1,6 +1,10 @@
 /**
- * Hero rank line — Variant B from the design mock.
- * Renders: "Ranks #N of M open {Market} · #N this season · #N all-time*"
+ * Hero rank line — compact format.
+ * Renders: "Ranks #N/M open {Market} · #N/M this season · #N/M all-time*"
+ *
+ * Mobile: stays on a single line, allows horizontal scroll if it overflows
+ * (whitespace-nowrap + overflow-x-auto). User feedback 2026-05-19 — wrapping
+ * to 2 lines on narrow viewports added too much vertical.
  *
  * Partial-null friendly: only renders the fragments that have data, so a
  * show with a valid market rank but a too-small season pool still gets a
@@ -34,30 +38,30 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
   if (c.openMarket) {
     fragments.push(
       <span key="om">
-        <span className="font-bold text-brand">#{c.openMarket.rank}</span>
-        {' '}of {c.openMarket.total} open {shortLabel} shows
+        <span className="font-bold text-brand">#{c.openMarket.rank}/{c.openMarket.total}</span>
+        {' '}open {shortLabel}
       </span>,
     );
   }
   if (c.season) {
     fragments.push(
       <span key="se">
-        <span className="font-bold text-brand">#{c.season.rank}</span>
-        {' '}of {c.season.total} season openers
+        <span className="font-bold text-brand">#{c.season.rank}/{c.season.total}</span>
+        {' '}this season
       </span>,
     );
   }
   if (c.allTime) {
     fragments.push(
       <span key="at">
-        <span className="font-bold text-brand">#{c.allTime.rank}</span>
-        {' '}of {c.allTime.total} all-time<span className="text-gray-600">*</span>
+        <span className="font-bold text-brand">#{c.allTime.rank}/{c.allTime.total}</span>
+        {' '}all-time<span className="text-gray-600">*</span>
       </span>,
     );
   }
 
   return (
-    <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug ${className}`}>
+    <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug whitespace-nowrap overflow-x-auto scrollbar-hide ${className}`}>
       Ranks {fragments.map((f, i) => (
         <React.Fragment key={i}>
           {i > 0 ? <span className="text-gray-600"> · </span> : null}
