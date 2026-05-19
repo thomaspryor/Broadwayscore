@@ -94,7 +94,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
+  const numClass = size === 'md' ? 'text-xl font-bold text-white' : 'text-base font-bold text-white';
   return (
     <div className="flex items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
