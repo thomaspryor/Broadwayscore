@@ -102,7 +102,13 @@ function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' |
   );
 }
 
-const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
+const PRECURSOR_LABELS: Record<string, string> = {
+  DL: 'Drama League',
+  OCC: 'Outer Critics Circle',
+  DD: 'Drama Desk',
+  PULITZER: 'Pulitzer Prize for Drama',
+  NYDCC: 'NY Drama Critics Circle',
+};
 
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
@@ -149,6 +155,33 @@ function PressPicks({ picks }: { picks?: string[] }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// Mobile-only compact secondary line: odds + precursor chips + press picks
+function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, criticPicks }: {
+  gdOdds?: number | null;
+  polymarketOdds?: number | null;
+  kalshiOdds?: number | null;
+  precursorWins?: string[];
+  criticPicks?: string[];
+}) {
+  const hasOdds = gdOdds != null || polymarketOdds != null || kalshiOdds != null;
+  const hasPrecursor = (precursorWins?.length ?? 0) > 0;
+  const hasPicks = (criticPicks?.filter(id => CRITIC_PICK_META[id])?.length ?? 0) > 0;
+  if (!hasOdds && !hasPrecursor && !hasPicks) return null;
+
+  const fmt = (v: number | null | undefined, label: string) =>
+    v != null ? <span key={label} className="text-gray-300"><span className="text-gray-600">{label} </span>{Math.round(v * 100)}%</span> : null;
+
+  return (
+    <div className="sm:hidden flex flex-wrap items-center gap-x-2 gap-y-1 mt-1.5">
+      {fmt(gdOdds, 'GD')}
+      {fmt(polymarketOdds, 'PM')}
+      {fmt(kalshiOdds, 'K')}
+      {hasPrecursor && <PrecursorChips wins={precursorWins} />}
+      {hasPicks && <PressPicks picks={criticPicks} />}
     </div>
   );
 }
@@ -239,11 +272,13 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title */}
+      {/* Title + venue + mobile odds */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
+        <p className="text-xs text-gray-500 truncate mt-0.5">{show.venue}</p>
+        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -320,16 +355,12 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           ) : (
             <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
           )}
-          <span className="text-[10px] text-gray-500 truncate min-w-0">
-            {historyLabel}
-            {show.gdOdds != null && (
-              <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
-            )}
-          </span>
+          <span className="text-[10px] text-gray-500 truncate min-w-0">{historyLabel}</span>
         </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
+        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -376,6 +407,7 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
         )}
+        <MobileOddsLine gdOdds={show.gdOdds} polymarketOdds={show.polymarketOdds} kalshiOdds={show.kalshiOdds} precursorWins={show.precursorWins} criticPicks={show.criticPicks} />
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
