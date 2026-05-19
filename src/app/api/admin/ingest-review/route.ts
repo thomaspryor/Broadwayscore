@@ -123,7 +123,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   const token = process.env.REVIEW_TEXTS_TOKEN;
   if (!token) {
     return NextResponse.json(
-      { success: false, error: 'REVIEW_TEXTS_TOKEN not configured on server' },
+      { success: false, error: 'REVIEW_TEXTS_TOKEN not configured on server', failureReason: 'server-error' },
       { status: 500 },
     );
   }
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   try {
     body = (await request.json()) as IngestRequest;
   } catch {
-    return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 });
+    return NextResponse.json({ success: false, error: 'Invalid JSON body', failureReason: 'malformed-url' }, { status: 400 });
   }
 
   const { url, fullText, originalScore, forceClearStale } = body;
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   }
   if (!fullText || typeof fullText !== 'string' || fullText.trim().length < 50) {
     return NextResponse.json(
-      { success: false, error: 'fullText is required (min 50 chars)' },
+      { success: false, error: 'fullText is required (min 50 chars)', failureReason: 'other' },
       { status: 400 },
     );
   }
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     (typeof humanReviewScore !== 'number' || humanReviewScore < 1 || humanReviewScore > 100)
   ) {
     return NextResponse.json(
-      { success: false, error: 'humanReviewScore must be a number between 1 and 100' },
+      { success: false, error: 'humanReviewScore must be a number between 1 and 100', failureReason: 'other' },
       { status: 400 },
     );
   }
@@ -227,7 +227,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   const publishDate = body.publishDate || detected.publishDate || null;
   if (publishDate && !/^\d{4}-\d{2}-\d{2}$/.test(publishDate)) {
     return NextResponse.json(
-      { success: false, error: 'publishDate must be YYYY-MM-DD' },
+      { success: false, error: 'publishDate must be YYYY-MM-DD', failureReason: 'other' },
       { status: 400 },
     );
   }
