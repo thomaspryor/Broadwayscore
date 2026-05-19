@@ -64,7 +64,7 @@ test.describe('My Shows — Page Structure', () => {
       if (response.status() === 404) {
         const url = response.url();
         // Ignore expected 404s: favicon, analytics, external services
-        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase')) {
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase') && !url.includes('_vercel')) {
           notFoundUrls.push(`404: ${url}`);
         }
       }
@@ -225,7 +225,9 @@ test.describe('My Shows — Sorting', () => {
   test('watchlist "A-Z" sort orders alphabetically', async ({ page }) => {
     await goToMock(page, 'watchlist');
     // Switch to list view so titles are easier to extract from card headings
-    await page.getByRole('button', { name: 'List view' }).click();
+    const listBtn = page.getByRole('button', { name: 'List view' });
+    await listBtn.click();
+    await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
     await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
     // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
     const headings = page.locator('[role="tabpanel"] h4');
