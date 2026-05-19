@@ -4,12 +4,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
 import type { TierBadge } from '@/lib/awards-scoring';
-import { getOutletConfig } from '@/config/outlet-logos';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
+import { PressPicks } from '@/components/tony/OutletPickLogo';
 
 // --- Constants ---
 
@@ -127,37 +127,6 @@ function PrecursorChips({ wins }: { wins?: string[] }) {
   );
 }
 
-const CRITIC_PICK_META: Record<string, { abbrev: string; color: string; label: string }> = {
-  nyt:      { abbrev: 'T',  color: '#1a1a1a', label: 'New York Times' },
-  variety:  { abbrev: 'V',  color: '#be0028', label: 'Variety' },
-  deadline: { abbrev: 'DL', color: '#444444', label: 'Deadline' },
-};
-
-function PressPicks({ picks }: { picks?: string[] }) {
-  if (!picks || picks.length === 0) return null;
-  const knownPicks = picks.filter(id => CRITIC_PICK_META[id]);
-  if (knownPicks.length === 0) return null;
-  return (
-    <div className="flex items-center gap-0.5">
-      {knownPicks.map(id => {
-        const meta = CRITIC_PICK_META[id];
-        const cfg = getOutletConfig(meta.label);
-        const bgColor = cfg?.color ?? meta.color;
-        const textSize = meta.abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
-        return (
-          <div
-            key={id}
-            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
-            style={{ backgroundColor: bgColor }}
-            title={`${meta.label} picks this show to win`}
-          >
-            {meta.abbrev}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 // Mobile-only compact secondary line: odds + precursor chips + press picks
 function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, criticPicks }: {
@@ -169,7 +138,7 @@ function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, cri
 }) {
   const hasOdds = gdOdds != null || polymarketOdds != null || kalshiOdds != null;
   const hasPrecursor = (precursorWins?.length ?? 0) > 0;
-  const hasPicks = (criticPicks?.filter(id => CRITIC_PICK_META[id])?.length ?? 0) > 0;
+  const hasPicks = (criticPicks?.length ?? 0) > 0;
   if (!hasOdds && !hasPrecursor && !hasPicks) return null;
 
   const fmt = (v: number | null | undefined, label: string) =>
