@@ -971,10 +971,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           ) : null
         )}
 
-        {/* Gold List badges — sit directly above Where It Ranks so the two
-            leaderboard-position blocks (Gold List membership + per-metric
-            ranks) read as one cluster. */}
-        {featureFlags.goldLists && goldListMemberships.length > 0 && (
+        {/* Gold List badges — COMMENTED OUT 2026-05-19 per user request.
+            Will re-enable when Gold Lists launch publicly. The
+            goldListMemberships data still loads (cheap), just not rendered.
+            To re-enable: uncomment this block and the import of GoldListBadge
+            stays available. */}
+        {/* {featureFlags.goldLists && goldListMemberships.length > 0 && (
           <div className="flex gap-2 mb-3 overflow-x-auto scrollbar-hide">
             {goldListMemberships.map(m => {
               const listConfig = GOLD_LIST_MAP[m.listType];
@@ -992,7 +994,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               );
             })}
           </div>
-        )}
+        )} */}
 
         {/* Where it ranks */}
         <div id="where-it-ranks" className="scroll-mt-20" />

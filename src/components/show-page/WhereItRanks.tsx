@@ -116,18 +116,18 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
       className="card p-5 sm:p-6 mb-8 space-y-4"
       aria-labelledby="where-it-ranks-heading"
     >
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
+      <header className="flex flex-row items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <h2 id="where-it-ranks-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
             Where It Ranks
           </h2>
-          <p className="text-[12px] text-gray-500 mt-1.5">
+          <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
             Compared against all open {marketName} {formatNoun}
           </p>
         </div>
         {ownFormatAvailable && (
           <div
-            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 self-start sm:self-auto"
+            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 shrink-0"
             role="tablist"
             aria-label="Filter by format"
           >
@@ -136,18 +136,19 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
               role="tab"
               aria-selected={choice === 'all'}
               onClick={() => setChoice('all')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors ${
                 choice === 'all' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              All shows
+              <span className="sm:hidden">All</span>
+              <span className="hidden sm:inline">All shows</span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={choice === 'own'}
               onClick={() => setChoice('own')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors capitalize ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors capitalize ${
                 choice === 'own' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >

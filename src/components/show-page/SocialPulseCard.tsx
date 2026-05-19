@@ -413,10 +413,10 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
       {/* Footer: discovery link to the full leaderboard + refresh metadata.
           Anatomy matches the audience/critic/awards/boxoffice/commercial
           family — gold link with arrow, separator, lowercase faint meta. */}
-      <div className="mt-4 pt-3.5 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
+      <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
         <Link
           href={trendingHref}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
         >
           <span>See all trending shows</span>
           <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>

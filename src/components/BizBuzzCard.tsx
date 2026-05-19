@@ -317,10 +317,10 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
       </div>
 
       {/* Footer link to the cross-show commercial leaderboard */}
-      <div className="mt-4 pt-3.5 border-t border-white/5">
+      <div className="mt-3 pt-2 border-t border-white/5">
         <Link
           href="/biz"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
         >
           <span>See all commercial scores</span>
           <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
