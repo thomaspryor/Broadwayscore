@@ -155,8 +155,8 @@ const OUTLET_STRATEGY_CONFIG = {
   timeout:           { strategy: 'listing-html', url: 'https://www.timeout.com/newyork/theater/new-york-theater-and-broadway-reviews', urlFilter: /\/theater\/[^/]+-review(?!s)[^/]*$/, usePlainFetch: true },
   // timeout-london: SSR reviews index, BD fetches directly (~35 links)
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
-  // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
-  standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
+  // Evening Standard UK theatre reviews topic page — SSR, reviews-only (avoids news/features on /culture/theatre)
+  standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/topic/theatre-reviews', usePlainFetch: true },
   // WhatsOnStage: /news/?categories=reviews is a React SPA — plain fetch returns only the shell.
   // /news/feed/ is a WordPress RSS feed with reviews mixed in; urlFilter keeps -review_NNN slugs.
   whatsonstage:      { strategy: 'rss', url: 'https://www.whatsonstage.com/news/feed/', urlFilter: /-review_\d+/ },
