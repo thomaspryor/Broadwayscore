@@ -58,8 +58,8 @@ function formatCeremonyDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-// Shared style tokens
-const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+// Shared style tokens — BOX_MD reduced to match BOX_SM so score badges don't overpower odds numbers
+const BOX_MD = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 // Two-span pattern: each span uses block+leading-none so line height is controlled by font
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -94,7 +94,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
+  const numClass = size === 'md' ? 'text-lg font-bold text-white' : 'text-base font-bold text-white';
   return (
     <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
@@ -160,7 +160,7 @@ function MobileOddsLine({ gdOdds, polymarketOdds, kalshiOdds, precursorWins, cri
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
 function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
-  const scoreW = isMajor ? 'w-14' : 'w-11';
+  const scoreW = 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
 
   return (
@@ -255,13 +255,13 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} size="md" />
         <OddsCol odds={show.polymarketOdds} size="md" />
         <OddsCol odds={show.kalshiOdds} size="md" />
-        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
-        <AudienceBox grade={show.audienceGrade} size="md" />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="sm" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
           badge={badgeFromScore(show.awardsScore)}
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-          size="md"
+          size="sm"
         />
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
