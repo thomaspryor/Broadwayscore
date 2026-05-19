@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T19:46:15.045Z",
-  "processed": 8,
-  "failed": 57,
-  "successRate": "12.3%",
+  "updatedAt": "2026-05-19T19:59:52.924Z",
+  "processed": 23,
+  "failed": 224,
+  "successRate": "9.3%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 3,
-    "brightdata": 1,
-    "archiveToday": 12,
-    "archive": 0
+    "scrapingbee": 7,
+    "brightdata": 2,
+    "archiveToday": 3,
+    "archive": 4
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -22,10 +22,21 @@
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
     },
     {
-      "t": "2026-05-19T19:37:10.273Z",
+      "t": "2026-05-19T19:24:37.427Z",
       "event": "bb-session",
-      "session": "a4d3930a",
-      "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
+      "session": "4a2da626",
+      "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/"
+    },
+    {
+      "t": "2026-05-19T19:43:44.540Z",
+      "event": "bb-session",
+      "session": "65dff2b4",
+      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarr"
+    },
+    {
+      "t": "2026-05-19T19:43:45.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
