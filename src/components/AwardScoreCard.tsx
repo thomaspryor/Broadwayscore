@@ -427,6 +427,34 @@ export default function AwardScoreCard({ showId, awards, openingDate }: AwardSco
 
       {awards && <OtherAwardsPanel awards={awards} breakdown={result.breakdown} />}
 
+      {(() => {
+        // Show breakdown fallback when the standard panels (Tony, OtherAwards) have nothing
+        // to display. OtherAwardsPanel covers Drama Desk/OCC/DramaLeague/NYDCC from shows.json —
+        // it silently renders nothing for Olivier/Obie/Lortel/etc. (OB/WE-specific ceremonies).
+        const hasStandardContent = awards?.tony || awards?.dramadesk || awards?.outerCriticsCircle
+          || awards?.dramaLeague || awards?.nyDramaCritics;
+        if (hasStandardContent || result.breakdown.length === 0) return null;
+        return (
+          <div className="mt-4 pt-4 border-t border-white/5">
+            <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-2">Award Recognition</div>
+            <div className="space-y-1.5">
+              {result.breakdown.map(contrib => {
+                const wins = contrib.items.filter(i => i.result === 'win');
+                const noms = contrib.items.filter(i => i.result === 'nom');
+                const detail = wins.length > 0
+                  ? `${wins.length} win${wins.length !== 1 ? 's' : ''}${noms.length > 0 ? ` · ${noms.length} nom${noms.length !== 1 ? 's' : ''}` : ''}`
+                  : `${noms.length} nom${noms.length !== 1 ? 's' : ''}`;
+                return (
+                  <div key={contrib.ceremony} className="text-sm text-gray-400">
+                    <span className="text-gray-300">{contrib.ceremony}:</span>{' '}{detail}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
       {result.displayScore === 0 && result.inProgress && !hasTony && (
         <p className="text-sm text-gray-400">
           No awards recognition yet this season. First nominations land in late April.
