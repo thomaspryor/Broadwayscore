@@ -96,7 +96,6 @@
 - [Tony predictions accuracy](project_tony_predictions_accuracy.md) — Recipe weights, historical accuracy (92.9%), current-season signals, market data coverage, backtest findings.
 
 ## 📊 Data pipeline & scraping
-- [Outlet poller SERP audit](project_outlet_poller_serp_audit.md) — 25 SERP-only outlets audited 2026-05-18; all are genuinely non-upgradeable (paywalls, JS SPAs, per-show structures). Don't re-investigate.
 - [Closing-date automation has 4 silent gaps](feedback_closing_date_audit_gaps.md) — update-show-status + check-closing-dates only detect LATER-than-stored extensions; both broadway.org "Through:" and TodayTix `endDate` lag the announced final performance by months; WE has zero closingDate automation.
 - [Scraper architecture](feedback_scraper_architecture.md) — New scraping scripts MUST use `fetchPage()`; CI enforces BD+SB both present.
 - [fetchPage gotchas](feedback_fetchpage_gotchas.md) — BD empty 200s, Playwright renders 404s as success, fetchPage is HTML-only.
