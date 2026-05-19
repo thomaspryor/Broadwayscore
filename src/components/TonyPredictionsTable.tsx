@@ -112,7 +112,7 @@ const PRECURSOR_LABELS: Record<string, string> = {
 function PrecursorChips({ wins }: { wins?: string[] }) {
   if (!wins || wins.length === 0) return null;
   return (
-    <div className="flex items-center gap-1 flex-shrink-0">
+    <div className="flex flex-col items-start gap-1 flex-shrink-0">
       {wins.map(w => (
         <span
           key={w}
