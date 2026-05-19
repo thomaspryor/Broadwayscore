@@ -1,43 +1,20 @@
 {
-  "updatedAt": "2026-05-19T06:51:03.717Z",
-  "processed": 83,
-  "failed": 1052,
-  "successRate": "7.3%",
+  "updatedAt": "2026-05-19T06:55:56.459Z",
+  "processed": 85,
+  "failed": 1057,
+  "successRate": "7.4%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 60,
     "amp": 0,
-    "browserbase": 18,
+    "browserbase": 21,
     "directCookies": 0,
     "scrapingbee": 20,
     "brightdata": 3,
     "archiveToday": 36,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-05-18T12:23:07.909Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-18T22:54:54.413Z",
-      "event": "bb-session",
-      "session": "a7a1ce53",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-18T23:58:27.190Z",
-      "event": "bb-session",
-      "session": "01e949a0",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-18T23:59:43.509Z",
-      "event": "bb-session",
-      "session": "ba1efbe4",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
     {
       "t": "2026-05-19T01:24:59.852Z",
       "event": "bb-session",
@@ -131,6 +108,29 @@
       "t": "2026-05-19T05:58:49.407Z",
       "event": "bb-session",
       "session": "4a36364d",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T06:53:25.931Z",
+      "event": "bb-session",
+      "session": "bb3a3ea9",
+      "url": "https://www.nytimes.com/2026/05/16/movies/is-god-is-aleshea-harris.html"
+    },
+    {
+      "t": "2026-05-19T06:53:26.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T06:54:42.872Z",
+      "event": "bb-session",
+      "session": "3855f5fb",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T06:55:44.671Z",
+      "event": "bb-session",
+      "session": "0f9b650a",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
