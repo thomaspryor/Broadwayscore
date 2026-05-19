@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-19T09:40:01.223Z",
+  "timestamp": "2026-05-19T12:12:23.821Z",
   "stats": {
-    "totalReviews": 37029,
-    "alreadyFlagged": 16211,
+    "totalReviews": 37021,
+    "alreadyFlagged": 16218,
     "dateGuardCatches": 103,
-    "directorMismatch": 802,
+    "directorMismatch": 803,
     "tvFilmSignals": 1018,
-    "londonSignals": 575,
+    "londonSignals": 576,
     "offBroadwaySignals": 445,
     "yearMismatch": 78,
-    "noPublishDate": 3818
+    "noPublishDate": 3798
   },
   "findings": [
     {
@@ -4592,6 +4592,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
+      "file": "broadwayworld--robert-diamond.json",
+      "score": null,
+      "publishDate": "2012-03-15",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Starring-Hoffman-Garfield-More-Updating-LIVE-20120315",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         }
       ]
     },
@@ -27511,6 +27525,20 @@
       ]
     },
     {
+      "showId": "care-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "carousel-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 88,
@@ -28086,6 +28114,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "broadwayworld--blair-ingenthron.json",
+      "score": null,
+      "publishDate": "2022-10-09",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -30770,19 +30812,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "inter-alia-west-end-2026",
-      "file": "broadwayworld--clementine-scott.json",
-      "publishDate": "2026-04-07",
-      "url": "https://www.broadwayworld.com/article/Review-INTER-ALIA-Starring-Rosamund-Pike-Wyndhams-Theatre-20260407",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
