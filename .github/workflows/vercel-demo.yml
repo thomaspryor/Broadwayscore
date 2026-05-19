@@ -1,22 +1,19 @@
 name: Deploy Demo Site
 
 on:
-  # push + schedule triggers DISABLED 2026-05-18 during card-batch demo review.
-  # Re-enable both below after the worktree-show-cards-batch-redesign branch is
-  # merged to main. Was clobbering branch-deploy alias every few minutes.
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - 'src/**'
-  #     - 'public/**'
-  #     - 'content/**'
-  #     - 'next.config.*'
-  #     - 'tailwind.config.*'
-  #     - 'tsconfig.*'
-  #     - 'package.json'
-  #     - 'package-lock.json'
-  # schedule:
-  #   - cron: '0 6,14,22 * * *'  # Every 8 hours: 6 AM, 2 PM, 10 PM UTC
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'content/**'
+      - 'next.config.*'
+      - 'tailwind.config.*'
+      - 'tsconfig.*'
+      - 'package.json'
+      - 'package-lock.json'
+  schedule:
+    - cron: '0 6,14,22 * * *'  # Every 8 hours: 6 AM, 2 PM, 10 PM UTC
   # NOTE: workflow_run trigger on "Deploy to Vercel" removed 2026-04-01.
   # It caused 100+ demo deploys/day during cascade events. The 8-hour cron
   # is sufficient — demo only needs to stay reasonably fresh for partner meetings.
@@ -164,13 +161,26 @@ jobs:
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "Deployed to: $URL"
 
+      - name: Check demo pin
+        id: pin
+        # Demo can be pinned to a branch via .github/demo-pin.txt. While
+        # pinned, only deploys of that branch alias demo; everything else
+        # builds-without-aliasing. Empty / missing file = legacy behavior
+        # (every successful deploy aliases). See .github/DEMO-PIN.md.
+        run: |
+          PIN=$(tr -d '[:space:]' < .github/demo-pin.txt 2>/dev/null || true)
+          REF="${{ github.event.inputs.ref }}"
+          if [ -z "$REF" ] || [ "$REF" = "null" ]; then REF="${{ github.ref_name }}"; fi
+          if [ -n "$PIN" ] && [ "$PIN" != "$REF" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Demo pinned to '$PIN'; deploy from '$REF' — skipping alias (preview URL still accessible)."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            [ -n "$PIN" ] && echo "::notice::Pin matches deployed ref '$REF' — aliasing as normal."
+          fi
+
       - name: Alias to demo domain
-        # Skip aliasing when a custom ref was dispatched. This prevents
-        # cron + main-push triggers from clobbering a non-main deployment
-        # that was deliberately put on demo for review. The deployment is
-        # still built — just not pointed at the demo subdomain. To restore
-        # main-on-demo: dispatch this workflow with no ref input.
-        if: github.event.inputs.ref == '' || github.event.inputs.ref == 'main' || github.event.inputs.ref == null
+        if: steps.pin.outputs.skip != 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DEPLOY_URL: ${{ steps.deploy.outputs.url }}
