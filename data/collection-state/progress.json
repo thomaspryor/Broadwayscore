@@ -82,7 +82,9 @@
     "1536-west-end-2026/telegraph--dominic-cavendish.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
     "grace-pervades-west-end-2026/telegraph--unknown.json",
-    "new-born-off-broadway-2026/culturesauce--thom-geier.json"
+    "new-born-off-broadway-2026/culturesauce--thom-geier.json",
+    "the-emporium-off-broadway-2025/nytg--unknown.json",
+    "celebrity-autobiography-2026/playbill--unknown.json"
   ],
   "failed": [
     "equus-west-end-2026/whatsonstage--unknown.json",
@@ -1136,7 +1138,12 @@
     "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
     "an-ideal-husband-west-end-2026/the-recs--unknown.json",
     "an-ideal-husband-west-end-2026/thestage--unknown.json",
-    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json"
+    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+    "the-emporium-off-broadway-2025/nytimes--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1198,7 +1205,9 @@
       "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
       "mother-courage-and-her-children-globe-west-end-2026/whatsonstage--sarah-crompton.json",
       "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json",
-      "new-born-off-broadway-2026/culturesauce--thom-geier.json"
+      "new-born-off-broadway-2026/culturesauce--thom-geier.json",
+      "the-emporium-off-broadway-2025/nytg--unknown.json",
+      "celebrity-autobiography-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1218,6 +1227,9 @@
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+      "data/review-texts/the-emporium-off-broadway-2025/nytimes--unknown.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
@@ -1298,7 +1310,7 @@
     ]
   },
   "startTime": "2026-05-18T09:10:34.603Z",
-  "lastProcessed": "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-18T09:17:00.073Z",
@@ -1554,6 +1566,29 @@
       "t": "2026-05-19T05:58:49.407Z",
       "event": "bb-session",
       "session": "4a36364d",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-19T06:53:25.931Z",
+      "event": "bb-session",
+      "session": "bb3a3ea9",
+      "url": "https://www.nytimes.com/2026/05/16/movies/is-god-is-aleshea-harris.html"
+    },
+    {
+      "t": "2026-05-19T06:53:26.458Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T06:54:42.872Z",
+      "event": "bb-session",
+      "session": "3855f5fb",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T06:55:44.671Z",
+      "event": "bb-session",
+      "session": "0f9b650a",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
