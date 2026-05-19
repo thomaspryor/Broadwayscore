@@ -137,6 +137,14 @@ export default function TonyPredictionsOverviewPage() {
           </p>
         </div>
 
+        {/* Announcement banner — hidden once win probabilities are live */}
+        {!featureFlags.tonyPredictionsOurPick && (
+          <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
+            <span className="text-brand font-semibold">Predictions being released on Thursday</span>
+            {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
+          </div>
+        )}
+
         {/* Current Season Picks — Prominent */}
         {picks.length > 0 && (
           <section className="mb-10">
