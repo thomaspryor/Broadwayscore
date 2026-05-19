@@ -535,6 +535,35 @@ function checkSync() {
     return { name: 'Sync: baseline drift', status: worstStatus, message: issues.join('; '), hint: 'Run validate-data.js to update baseline' };
   }));
 
+  // B6: Grosses weekEnding currency — guards against timestamp refreshes masking stale content.
+  // The lastUpdated timestamp in grosses.json can be refreshed by rebuilds without new scrape data.
+  // This check reads weekEnding directly so a 2-week-old scrape can't hide behind a fresh timestamp.
+  results.push(runCheck('Sync: grosses weekEnding', () => {
+    const grossesPath = path.join(DATA_DIR, 'grosses.json');
+    if (!fs.existsSync(grossesPath)) {
+      return { name: 'Sync: grosses weekEnding', status: 'warn', message: 'grosses.json missing' };
+    }
+    const grosses = readJSON(grossesPath);
+    const weekEnding = grosses.weekEnding; // format "M/D/YYYY"
+    if (!weekEnding) {
+      return { name: 'Sync: grosses weekEnding', status: 'warn', message: 'No weekEnding field in grosses.json' };
+    }
+    // Parse "M/D/YYYY" → Date
+    const parts = weekEnding.split('/');
+    if (parts.length !== 3) {
+      return { name: 'Sync: grosses weekEnding', status: 'warn', message: `Unparseable weekEnding: ${weekEnding}` };
+    }
+    const weekDate = new Date(`${parts[2]}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}T12:00:00Z`);
+    const daysOld = (Date.now() - weekDate.getTime()) / (1000 * 60 * 60 * 24);
+    if (daysOld > 21) {
+      return { name: 'Sync: grosses weekEnding', status: 'error', message: `weekEnding ${weekEnding} is ${Math.round(daysOld)} days ago (3+ missed weeks)`, hint: 'weekly-grosses.yml scraper may be broken — check Actions tab' };
+    }
+    if (daysOld > 14) {
+      return { name: 'Sync: grosses weekEnding', status: 'warn', message: `weekEnding ${weekEnding} is ${Math.round(daysOld)} days ago (2 missed weeks)`, hint: 'Run: gh workflow run "Weekly Broadway Grosses"' };
+    }
+    return { name: 'Sync: grosses weekEnding', status: 'pass', message: `weekEnding ${weekEnding} (${Math.round(daysOld)}d ago)` };
+  }));
+
   return results;
 }
 
