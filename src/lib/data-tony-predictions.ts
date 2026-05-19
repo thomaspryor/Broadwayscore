@@ -148,6 +148,75 @@ const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCri
     outerCriticsCircle: ['Outstanding Revival of a Play'],
     dramaLeague: ['Outstanding Revival of a Play'],
   },
+  // Direction
+  'Best Direction of a Musical': {
+    dramadesk: ['Outstanding Direction of a Musical', 'Outstanding Director of a Musical'],
+    outerCriticsCircle: ['Outstanding Direction of a Musical', 'Outstanding Director of a Musical', 'Outstanding Director of Musical'],
+    dramaLeague: ['Outstanding Direction of a Musical'],
+  },
+  'Best Direction of a Play': {
+    dramadesk: ['Outstanding Direction of a Play', 'Outstanding Director of a Play'],
+    outerCriticsCircle: ['Outstanding Direction of a Play', 'Outstanding Director of a Play', 'Outstanding Director of Play'],
+    dramaLeague: ['Outstanding Direction of a Play'],
+  },
+  // Craft
+  'Best Book of a Musical': {
+    dramadesk: ['Outstanding Book of a Musical'],
+    outerCriticsCircle: ['Outstanding Book of a Musical', 'Outstanding Book of a Musical (Broadway or Off-Broadway)'],
+    dramaLeague: [],
+  },
+  'Best Original Score': {
+    dramadesk: ['Outstanding Music', 'Outstanding Lyrics', 'Outstanding New Score'],
+    outerCriticsCircle: ['Outstanding New Score', 'Outstanding Score'],
+    dramaLeague: [],
+  },
+  'Best Choreography': {
+    dramadesk: ['Outstanding Choreography'],
+    outerCriticsCircle: ['Outstanding Choreographer', 'Outstanding Choreography'],
+    dramaLeague: [],
+  },
+  // Lead acting (show-level storage: chip appears for all nominees from same show)
+  'Best Actor in a Musical': {
+    dramadesk: ['Outstanding Actor in a Musical', 'Outstanding Lead Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Actor in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Actress in a Musical': {
+    dramadesk: ['Outstanding Actress in a Musical', 'Outstanding Lead Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Actress in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Actor in a Play': {
+    dramadesk: ['Outstanding Actor in a Play', 'Outstanding Lead Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Actor in a Play', 'Outstanding Lead Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  'Best Actress in a Play': {
+    dramadesk: ['Outstanding Actress in a Play', 'Outstanding Lead Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Actress in a Play', 'Outstanding Lead Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  // Featured acting
+  'Best Featured Actor in a Musical': {
+    dramadesk: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Featured Actress in a Musical': {
+    dramadesk: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performance in a Musical'],
+    outerCriticsCircle: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
+    dramaLeague: [],
+  },
+  'Best Featured Actor in a Play': {
+    dramadesk: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
+  'Best Featured Actress in a Play': {
+    dramadesk: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performance in a Play'],
+    outerCriticsCircle: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performer in a Broadway Play'],
+    dramaLeague: [],
+  },
 };
 
 /** Precursor predictive weight (DL strongest, DD weakest historically). */
