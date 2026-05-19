@@ -212,7 +212,7 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
       )}
 
       {/* Footer link to the cross-show box-office leaderboard */}
-      <div className="mt-3 pt-2 border-t border-white/5">
+      <div className="mt-3">
         <Link
           href="/box-office"
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

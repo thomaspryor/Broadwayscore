@@ -187,19 +187,9 @@ function TonyAwardsPanel({
         </div>
       )}
 
-      {/* Predictions cross-link — only while the season is in progress. After
-          the ceremony, predictions read as a retrospective and pull users off
-          the show page for less value. */}
-      {featureFlags.tonyPredictions && tony.season && inProgress && (
-        <div className="border-t border-white/5 pt-3 mt-3">
-          <Link
-            href={`/tony-awards/predictions/${toFullSeasonLabel(tony.season)}`}
-            className="text-sm text-brand hover:text-brand-hover transition-colors"
-          >
-            See {tony.season} Tony predictions &rarr;
-          </Link>
-        </div>
-      )}
+      {/* Inline 'See {season} Tony predictions' link removed 2026-05-19 —
+          the bottom-of-card 'See all award scores' link handles cross-page
+          navigation; this duplicated and pulled focus off the data. */}
     </div>
   );
 }
@@ -412,13 +402,13 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       )}
 
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
-        <div className="mt-4 pt-3 border-t border-white/5">
+        <div className="mt-3">
           <Link
-            href="/methodology#award-score"
-            className="text-xs text-gray-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+            href={tony.season ? `/award-score/${toFullSeasonLabel(tony.season)}` : '/award-score'}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
           >
-            How the Award Score works
-            <span aria-hidden>&rarr;</span>
+            <span>See all award scores</span>
+            <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
           </Link>
         </div>
       )}

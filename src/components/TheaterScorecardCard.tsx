@@ -269,7 +269,7 @@ export default function TheaterScorecardCard({
       )}
 
       {/* Footer link to the cross-show theater leaderboard */}
-      <div className="mt-3 pt-2 border-t border-white/5">
+      <div className="mt-3">
         <Link
           href="/theater"
           className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"

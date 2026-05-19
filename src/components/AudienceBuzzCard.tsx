@@ -238,7 +238,7 @@ export default function AudienceBuzzCard({
           Uses next/link for client-side navigation (a plain <a> works too
           but does a full page reload). */}
       {audienceBuzzHref && (
-        <div className="mt-3 pt-2 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
+        <div className="mt-3 flex items-center justify-between gap-4 flex-wrap">
           <Link
             href={audienceBuzzHref}
             className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
