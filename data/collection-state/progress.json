@@ -248,7 +248,17 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "care-west-end-2026/financialtimes--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "please-please-me-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "proof-2026/pages-on-stages--unknown.json",
+    "titanique-2026/theater-scene--unknown.json",
+    "inter-alia-west-end-2026/standard--unknown.json",
+    "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "oh-mary-west-end-2025/west-end-best-friend--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -278,7 +288,8 @@
       "the-play-that-goes-wrong-west-end-2021/timeout--anya-ryan.json",
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "company-2021/theatrely--andrew-martini.json",
-      "carrie-1988/independent--jessie-thompson.json"
+      "carrie-1988/independent--jessie-thompson.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ],
     "brightdata": [
       "the-maids-off-broadway-2026/thewrap--unknown.json",
@@ -287,7 +298,9 @@
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
-      "data/review-texts/glengarry-glen-ross-2012/washpost--ben-brantley.json"
+      "data/review-texts/glengarry-glen-ross-2012/washpost--ben-brantley.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -297,7 +310,7 @@
     ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "oh-mary-west-end-2025/west-end-best-friend--unknown.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -321,6 +334,17 @@
       "t": "2026-05-19T19:43:45.473Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-19T20:13:05.077Z",
+      "event": "bb-session",
+      "session": "b295228a",
+      "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-"
+    },
+    {
+      "t": "2026-05-19T20:13:05.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

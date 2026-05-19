@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T19:59:52.924Z",
+  "updatedAt": "2026-05-19T20:16:41.463Z",
   "processed": 23,
-  "failed": 224,
-  "successRate": "9.3%",
+  "failed": 234,
+  "successRate": "8.9%",
   "tierBreakdown": {
     "playwright": 11,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 7,
+    "scrapingbee": 8,
     "brightdata": 2,
-    "archiveToday": 3,
+    "archiveToday": 5,
     "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -37,6 +37,17 @@
       "t": "2026-05-19T19:43:45.473Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-19T20:13:05.077Z",
+      "event": "bb-session",
+      "session": "b295228a",
+      "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-"
+    },
+    {
+      "t": "2026-05-19T20:13:05.707Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
