@@ -42,7 +42,17 @@
     "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
     "an-ideal-husband-west-end-2026/the-recs--unknown.json",
     "an-ideal-husband-west-end-2026/thestage--unknown.json",
-    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json"
+    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+    "care-west-end-2026/broadwayworld--unknown.json",
+    "care-west-end-2026/daily-echo--unknown.json",
+    "care-west-end-2026/financialtimes--unknown.json",
+    "care-west-end-2026/telegraph--dominic-cavendish.json",
+    "care-west-end-2026/whatsonstage--sarah-crompton.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json",
+    "end-of-the-rainbow-west-end-2026/whatsonstage--unknown.json",
+    "the-guy-who-didnt-like-musicals-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -54,7 +64,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/care-west-end-2026/daily-echo--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -71,18 +82,25 @@
       "data/review-texts/the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
-      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json"
     ],
     "archive": []
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+  "lastProcessed": "the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
       "event": "bb-session",
       "session": "2f23cef1",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T19:37:10.273Z",
+      "event": "bb-session",
+      "session": "a4d3930a",
+      "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
     }
   ]
 }
