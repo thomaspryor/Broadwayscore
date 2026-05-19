@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-19T09:38:55.815Z",
+  "updatedAt": "2026-05-19T09:52:22.941Z",
   "processed": 7,
-  "failed": 14,
-  "successRate": "33.3%",
+  "failed": 20,
+  "successRate": "25.9%",
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 5,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-19T09:35:49.114Z",
@@ -31,6 +31,29 @@
       "event": "bb-session",
       "session": "d054c7f8",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T09:49:45.539Z",
+      "event": "bb-session",
+      "session": "c4c3b61a",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
+    },
+    {
+      "t": "2026-05-19T09:49:46.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T09:51:07.160Z",
+      "event": "bb-session",
+      "session": "070636fb",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T09:52:09.821Z",
+      "event": "bb-session",
+      "session": "f23ed070",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }

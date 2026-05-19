@@ -22,7 +22,13 @@
     "the-emporium-off-broadway-2025/nytimes--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
-    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "the-emporium-off-broadway-2025/nytimes--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026/playbill--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -37,7 +43,10 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-emporium-off-broadway-2025/nytimes--unknown.json",
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-emporium-off-broadway-2025/nytimes--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [],
@@ -48,7 +57,7 @@
     ]
   },
   "startTime": "2026-05-19T09:21:58.752Z",
-  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-19T09:35:49.114Z",
@@ -66,6 +75,29 @@
       "event": "bb-session",
       "session": "d054c7f8",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T09:49:45.539Z",
+      "event": "bb-session",
+      "session": "c4c3b61a",
+      "url": "https://www.nytimes.com/2026/05/17/theater/dad-dont-read-this-review.html"
+    },
+    {
+      "t": "2026-05-19T09:49:46.133Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-19T09:51:07.160Z",
+      "event": "bb-session",
+      "session": "070636fb",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-19T09:52:09.821Z",
+      "event": "bb-session",
+      "session": "f23ed070",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
