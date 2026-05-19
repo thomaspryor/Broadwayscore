@@ -314,8 +314,8 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           <div className="hidden sm:flex"><AudienceBox grade={show.audienceGrade} /></div>
           <div className="hidden sm:flex" title="Award Score: momentum from precursor ceremonies (Drama League, Outer Critics Circle, Drama Desk)">
             <AwardScoreBadge
-              score={Math.round(show.siteAwardsScore ?? 0)}
-              badge={badgeFromScore(show.siteAwardsScore)}
+              score={Math.round(show.awardsScore ?? 0)}
+              badge={badgeFromScore(show.awardsScore)}
               inProgress={true}
               size="md"
             />
