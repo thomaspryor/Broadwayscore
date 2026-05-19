@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { normalizeSources } = require('./lib/commercial-sources');
+const { buildMergedEntry } = require('./lib/commercial-merge');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
@@ -135,33 +136,14 @@ function main() {
       continue;
     }
 
-    // Build clean commercial entry, preserving research metadata from existing
-    const commercialEntry = {};
-    if (entry.designation) commercialEntry.designation = entry.designation;
-    if (entry.capitalization != null) commercialEntry.capitalization = entry.capitalization;
-    if (entry.capitalizationSource) commercialEntry.capitalizationSource = entry.capitalizationSource;
-    if (entry.weeklyRunningCost != null) commercialEntry.weeklyRunningCost = entry.weeklyRunningCost;
-    if (entry.costMethodology) commercialEntry.costMethodology = entry.costMethodology;
-    if (entry.recouped != null) commercialEntry.recouped = entry.recouped;
-    if (entry.recoupedDate) commercialEntry.recoupedDate = entry.recoupedDate;
-    if (entry.recoupedSource) commercialEntry.recoupedSource = entry.recoupedSource;
-    if (entry.notes) commercialEntry.notes = entry.notes;
-    if (entry.sources && entry.sources.length > 0) {
-      // Normalize: coerce unknown type values (e.g. "other") to validator-allowed
-      // types and preserve null dates (validator tolerates null, not bad format).
-      const normalized = normalizeSources(entry.sources);
-      if (normalized.length > 0) commercialEntry.sources = normalized;
-    }
-
-    commercialEntry.lastUpdated = new Date().toISOString();
-    commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();
-
-    // Preserve research tracking metadata from existing entry
-    if (existing) {
-      if (existing.researchAttempts != null) commercialEntry.researchAttempts = existing.researchAttempts;
-      if (existing.lastResearchedAt != null) commercialEntry.lastResearchedAt = existing.lastResearchedAt;
-      if (existing.researchTrigger != null) commercialEntry.researchTrigger = existing.researchTrigger;
-    }
+    // Merge pending onto existing. Fields the LLM didn't populate (model
+    // recoupment, weekly grosses, recoupedWeeks, …) used to be silently
+    // dropped here; buildMergedEntry preserves them. See commercial-merge.js.
+    const commercialEntry = buildMergedEntry({
+      existing,
+      pending: entry,
+      normalizeSources,
+    });
 
     if (DRY_RUN) {
       console.log(`  [DRY RUN] Would apply "${showId}" → ${JSON.stringify(commercialEntry, null, 2).slice(0, 200)}...`);
