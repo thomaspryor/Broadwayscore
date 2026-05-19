@@ -108,8 +108,8 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardPr
       </div>
       {hasChanges && (
         <div className="flex flex-row flex-wrap justify-center gap-2 mt-1 sm:mt-1.5">
-          <ChangeIndicator change={wowChange ?? null} label="weekly" />
-          <ChangeIndicator change={yoyChange ?? null} label="yearly" />
+          <ChangeIndicator change={wowChange ?? null} label="WoW" />
+          <ChangeIndicator change={yoyChange ?? null} label="YoY" />
         </div>
       )}
     </div>
