@@ -477,7 +477,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
 
   if (nominees.length === 0) return null;
 
-  const minW = isMajor ? 'min-w-[680px]' : isPersonLevel ? 'min-w-[430px]' : 'min-w-[570px]';
+  const minW = isMajor ? 'min-w-[780px]' : isPersonLevel ? 'min-w-[520px]' : 'min-w-[660px]';
 
   return (
     <section className="mb-6">
