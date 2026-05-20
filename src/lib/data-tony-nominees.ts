@@ -322,6 +322,11 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
     const kalshiNominees = kalshiCatData?.nominees ?? null;
 
     if (isPersonLevel) {
+      // Precursor chips are stored at show level — suppress when multiple nominees from same
+      // show compete in the same acting category (can't know which person actually won).
+      const showNomineeCount = new Map<string, number>();
+      for (const nom of noms) showNomineeCount.set(nom.showId, (showNomineeCount.get(nom.showId) ?? 0) + 1);
+
       // One row per nominated individual
       for (const nom of noms) {
         const computedShow = showById.get(nom.showId);
@@ -347,7 +352,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
-          precursorWins: getPrecursorWins(nom.showId, catTitle),
+          precursorWins: (showNomineeCount.get(nom.showId) ?? 0) > 1 ? [] : getPrecursorWins(nom.showId, catTitle),
         });
       }
     } else {

@@ -238,7 +238,10 @@ async function main() {
   if (shouldSnapshot) {
     for (const [showId, showData] of Object.entries(showsOut)) {
       for (const [catName, catData] of Object.entries(showData.categories)) {
-        const prev = prevShows[showId]?.categories?.[catName]?.pWin;
+        // Prefer existing prevDayPWin (true day-ago delta); fall back to current pWin (first-ever run)
+        const existingPrev = existingData.shows?.[showId]?.categories?.[catName]?.prevDayPWin;
+        const currentPWin = prevShows[showId]?.categories?.[catName]?.pWin;
+        const prev = existingPrev ?? currentPWin;
         if (prev != null) catData.prevDayPWin = prev;
       }
     }
