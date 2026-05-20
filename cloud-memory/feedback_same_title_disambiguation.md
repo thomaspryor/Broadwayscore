@@ -25,7 +25,8 @@ When the catalog has multiple shows sharing a normalized title (titanique ×3, h
 
 3. **Writer integration** (`review-file-writer.js`):
    - Honor `decision.flag === 'wrongProduction'` from classifier by stamping `wrongProduction: true` + `wrongProductionReason` on the payload BEFORE merge
-   - **CRITICAL GUARD**: Skip the stamp when existing review has `humanReviewedWrongProduction === false`, `wrongProductionManualClear === true`, `wrongProductionOverride === true`, OR `wrongProduction === false` (explicit). The merge gate `!existing[key]` is true for false-values, so without this guard the classifier clobbers human overrides.
+   - **CRITICAL GUARD (stamp-level)**: Skip the stamp when existing review has `humanReviewedWrongProduction === false`, `wrongProductionManualClear === true`, `wrongProductionOverride === true`, OR `wrongProduction === false` (explicit). The merge gate `!existing[key]` is true for false-values, so without this guard the classifier clobbers human overrides.
+   - **CRITICAL GUARD (merge-level)**: `_mergeIntoExisting` has a `HUMAN_PROTECTED` Set containing `humanReviewedWrongProduction`, `humanReviewScore`, `humanReviewedScore`. Any key in this set is skipped in the merge loop if `existing[key] != null` — covers the `humanReviewedWrongProduction:false` case where `!existing[key]` would otherwise pass through.
 
 4. **Null-category protection**: When `sibData.category` is null OR any sibling has null category, skip the same-market branch entirely. Per `feedback_shows_json_category_at_schedule.md`, new shows often have null category pre-opening; same-market routing on null = collapsing to Broadway pool.
 
