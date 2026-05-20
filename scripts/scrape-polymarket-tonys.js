@@ -148,19 +148,31 @@ async function main() {
     }
   }
 
-  // Snapshot current odds before overwriting (for day-over-day arrow display)
   const outPath = path.join(__dirname, '..', 'data', 'tony-polymarket-odds.json');
-  let prevCategories = {};
-  try { prevCategories = JSON.parse(fs.readFileSync(outPath, 'utf8')).categories || {}; } catch {}
-  for (const [catName, catData] of Object.entries(categories)) {
-    const prevNominees = prevCategories[catName]?.nominees;
-    if (prevNominees) catData.prevNominees = prevNominees;
+  const todayUTC = new Date().toISOString().slice(0, 10);
+  let existingData = {};
+  try { existingData = JSON.parse(fs.readFileSync(outPath, 'utf8')); } catch {}
+  // Only snapshot prevNominees once per UTC day so hourly runs don't overwrite it
+  const shouldSnapshot = existingData?._meta?.snapshotDate !== todayUTC;
+  if (shouldSnapshot) {
+    console.error(`  [snapshot] Taking day-over-day snapshot (first run today)`);
+    for (const [catName, catData] of Object.entries(categories)) {
+      const prevNominees = existingData.categories?.[catName]?.nominees;
+      if (prevNominees) catData.prevNominees = prevNominees;
+    }
+  } else {
+    console.error(`  [snapshot] Skipping prevDay snapshot (already taken today)`);
+    for (const [catName, catData] of Object.entries(categories)) {
+      const prevNominees = existingData.categories?.[catName]?.prevNominees;
+      if (prevNominees) catData.prevNominees = prevNominees;
+    }
   }
 
   const output = {
     _meta: {
       source: 'polymarket',
       lastUpdated: new Date().toISOString(),
+      snapshotDate: shouldSnapshot ? todayUTC : (existingData._meta?.snapshotDate ?? todayUTC),
       season,
       categoriesFetched: fetchedCount,
     },

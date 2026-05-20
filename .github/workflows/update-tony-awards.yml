@@ -19,6 +19,11 @@ on:
         required: false
         type: string
 
+# Prevent two runs from committing awards.json simultaneously
+concurrency:
+  group: tony-awards-update
+  cancel-in-progress: false
+
 jobs:
   update-awards:
     runs-on: ubuntu-latest
@@ -51,39 +56,11 @@ jobs:
             node scripts/scrape-tony-awards.js
           fi
 
-      - name: Update GoldDerby Tony odds
-        run: node scripts/scrape-gold-derby-tonys.js --season=2026
-        continue-on-error: true
-
-      - name: Update Polymarket Tony odds
-        run: node scripts/scrape-polymarket-tonys.js --season=2026
-        continue-on-error: true
-
-      - name: Update Kalshi Tony odds
-        run: node scripts/scrape-kalshi-tonys.js --season=2026
-        continue-on-error: true
-
-      - name: Validate odds output
-        run: |
-          for file in data/tony-win-probabilities.json data/tony-polymarket-odds.json data/tony-kalshi-odds.json; do
-            if [ -f "$file" ]; then
-              fetched=$(node -e "try { const d=require('./$file'); console.log(d._meta?.categoriesFetched ?? 0); } catch(e) { console.log(0); }")
-              if [ "$fetched" = "0" ]; then
-                echo "::warning::$file: categoriesFetched=0 — scraper returned no data. Check API slugs/tickers or market availability."
-              else
-                echo "$file: $fetched categories fetched OK"
-              fi
-            fi
-          done
-
       - name: Check for changes
         id: changes
         run: |
           CHANGED_FILES=""
           ! git diff --quiet data/awards.json && CHANGED_FILES="$CHANGED_FILES awards.json"
-          ! git diff --quiet data/tony-win-probabilities.json && CHANGED_FILES="$CHANGED_FILES tony-win-probabilities.json"
-          ! git diff --quiet data/tony-polymarket-odds.json && CHANGED_FILES="$CHANGED_FILES tony-polymarket-odds.json"
-          ! git diff --quiet data/tony-kalshi-odds.json && CHANGED_FILES="$CHANGED_FILES tony-kalshi-odds.json"
           if [ -z "$CHANGED_FILES" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No changes to Tony data files"
@@ -102,7 +79,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/awards.json data/tony-win-probabilities.json data/tony-polymarket-odds.json data/tony-kalshi-odds.json
+          git add data/awards.json
 
           YEAR_NOTE=""
           if [ -n "${{ inputs.year }}" ]; then

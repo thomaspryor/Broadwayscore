@@ -213,10 +213,18 @@ async function main() {
   const rowCount = Object.values(oddsByCategory).reduce((s, r) => s + r.length, 0);
   console.error(`  Pulled ${categoryCount} categories, ${rowCount} total rows`);
 
-  // Snapshot current pWin values before overwriting (for day-over-day arrow display)
   const outPath = path.join(__dirname, '..', 'data', 'tony-win-probabilities.json');
-  let prevShows = {};
-  try { prevShows = JSON.parse(fs.readFileSync(outPath, 'utf8')).shows || {}; } catch {}
+  const todayUTC = new Date().toISOString().slice(0, 10);
+  let existingData = {};
+  try { existingData = JSON.parse(fs.readFileSync(outPath, 'utf8')); } catch {}
+  // Only snapshot prevDayPWin once per UTC day so hourly runs don't overwrite it
+  const shouldSnapshot = existingData?._meta?.snapshotDate !== todayUTC;
+  const prevShows = shouldSnapshot ? (existingData.shows || {}) : {};
+  if (shouldSnapshot) {
+    console.error(`  [snapshot] Taking day-over-day snapshot (first run today)`);
+  } else {
+    console.error(`  [snapshot] Skipping prevDay snapshot (already taken today)`);
+  }
 
   const shows = loadShows();
   const showsOut = {};
@@ -226,11 +234,21 @@ async function main() {
     mergeOdds(showsOut, personsOut, catName, rows, shows, mode, unmatched);
   }
 
-  // Stamp prevDayPWin on each category entry where the value changed
-  for (const [showId, showData] of Object.entries(showsOut)) {
-    for (const [catName, catData] of Object.entries(showData.categories)) {
-      const prev = prevShows[showId]?.categories?.[catName]?.pWin;
-      if (prev != null) catData.prevDayPWin = prev;
+  // Stamp prevDayPWin on each category entry (only when snapshotting)
+  if (shouldSnapshot) {
+    for (const [showId, showData] of Object.entries(showsOut)) {
+      for (const [catName, catData] of Object.entries(showData.categories)) {
+        const prev = prevShows[showId]?.categories?.[catName]?.pWin;
+        if (prev != null) catData.prevDayPWin = prev;
+      }
+    }
+  } else {
+    // Carry forward existing prevDayPWin values unchanged
+    for (const [showId, showData] of Object.entries(showsOut)) {
+      for (const [catName, catData] of Object.entries(showData.categories)) {
+        const prev = existingData.shows?.[showId]?.categories?.[catName]?.prevDayPWin;
+        if (prev != null) catData.prevDayPWin = prev;
+      }
     }
   }
 
@@ -238,6 +256,7 @@ async function main() {
     _meta: {
       source: 'goldderby',
       lastUpdated: new Date().toISOString(),
+      snapshotDate: shouldSnapshot ? todayUTC : (existingData._meta?.snapshotDate ?? todayUTC),
       season,
       hasNominations,
       mode,
