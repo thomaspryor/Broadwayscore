@@ -52,15 +52,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # workflow_dispatch and workflow_run: explicit signals — always deploy.
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "Event ${{ github.event_name }} — always proceeding"
-            echo "proceed=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          # Cron path: skip if main HEAD hasn't moved since the most recent
-          # successful deploy. Looks back 30 runs to find the last success;
-          # ignores cancelled / failed runs (they didn't actually ship).
+          # All paths: fetch HEAD and last-successful-deploy SHA first.
           MAIN_HEAD=$(git rev-parse origin/main)
           LAST_DEPLOYED=$(gh run list \
             --workflow="Deploy to Vercel" \
@@ -69,6 +61,27 @@ jobs:
             --jq '[.[] | select(.conclusion == "success")][0].headSha // ""')
           echo "Main HEAD:     $MAIN_HEAD"
           echo "Last deployed: $LAST_DEPLOYED"
+
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            # workflow_dispatch / workflow_run: explicit "ship it" signals.
+            # Still skip if this exact SHA is already live — prevents the
+            # 5+ parallel builds that fire when gather-reviews, rebuild-fast,
+            # rebuild-reviews, update-show-status, etc. all dispatch within
+            # seconds of each other after completing. Previously each got a
+            # full 15-min build even when the first one already deployed.
+            if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
+              echo "::notice::SHA $MAIN_HEAD already live — skipping duplicate ${{ github.event_name }} dispatch"
+              echo "proceed=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "::notice::Event ${{ github.event_name }} — proceeding (new SHA)"
+              echo "proceed=true" >> "$GITHUB_OUTPUT"
+            fi
+            exit 0
+          fi
+
+          # Cron path: skip if main HEAD hasn't moved since the most recent
+          # successful deploy. Looks back 30 runs to find the last success;
+          # ignores cancelled / failed runs (they didn't actually ship).
           if [ -n "$LAST_DEPLOYED" ] && [ "$LAST_DEPLOYED" = "$MAIN_HEAD" ]; then
             echo "::notice::No new commits since last deploy ($MAIN_HEAD) — skipping scheduled deploy"
             echo "proceed=false" >> "$GITHUB_OUTPUT"
@@ -81,11 +94,16 @@ jobs:
     needs: should-deploy
     if: needs.should-deploy.outputs.proceed == 'true'
     runs-on: ubuntu-latest
-    # 15-minute job timeout. Typical deploy completes in 2-5 min. On 2026-04-22, deploy
-    # 24760225201 hung in_progress for 13+ min, blocking 3 subsequent deploys (Balusters
-    # postmortem CLASS 9). GitHub Actions default is 6 hours. 15 min is generous enough to
-    # absorb Vercel build variance without letting a hung run wedge the queue.
-    timeout-minutes: 15
+    # 25-minute job timeout (raised from 15 on 2026-05-20). The vercel build
+    # step alone takes ~10-12 min for 727+ static pages; the previous 15-min
+    # cap left only 3-5 min for post-deploy steps (smoke tests, Playwright,
+    # stage-latency push). push-with-retry.sh's 7-attempt retry loop (10-45s
+    # jitter each) consumed that window, making jobs show "cancelled" even
+    # after a successful Vercel deploy. The should-deploy SHA check ignores
+    # "cancelled" runs, so the cron kept re-deploying in a self-reinforcing
+    # loop — that's the "1hr+ to go live" pattern. 25 min is still tight
+    # enough to let a hung run be caught quickly.
+    timeout-minutes: 25
     concurrency:
       # Per-run group: GH concurrency queue depth is 1, so a shared
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
@@ -329,6 +347,7 @@ jobs:
       - name: Emit deployed-live stage-latency event
         if: success()
         continue-on-error: true
+        timeout-minutes: 3
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ github.token }}
