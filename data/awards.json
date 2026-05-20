@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-05-20T05:07:58.895Z",
+    "lastUpdated": "2026-05-20T04:32:52.249Z",
     "sources": [
       "Wikipedia",
       "Playbill",
@@ -23943,7 +23943,17 @@
       }
     },
     "purlie-1972": {},
-    "out-cry-1973": {},
+    "out-cry-1973": {
+      "tony": {
+        "season": "1969-70",
+        "ceremony": "24th",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Scenic Design"
+        ],
+        "wins": []
+      }
+    },
     "sleuth-1970": {
       "tony": {
         "season": "1970-71",
@@ -24328,6 +24338,21 @@
         "nominatedFor": [
           "Outstanding Choreography"
         ]
+      },
+      "tony": {
+        "season": "1971-72",
+        "ceremony": "26th",
+        "nominations": 7,
+        "nominatedFor": [
+          "Best Musical",
+          "Best Book of a Musical",
+          "Best Actor in a Musical",
+          "Best Choreography",
+          "Best Costume Design",
+          "Best Revival of a Musical",
+          "Best Featured Actress in a Musical"
+        ],
+        "wins": []
       }
     },
     "jesus-christ-superstar-1971": {
@@ -26169,6 +26194,7 @@
           "Best Lighting Design"
         ],
         "wins": [
+          "Best Costume Design",
           "Best Lighting Design"
         ]
       },
@@ -27035,7 +27061,9 @@
           "Best Scenic Design",
           "Best Lighting Design"
         ],
-        "wins": []
+        "wins": [
+          "Best Scenic Design"
+        ]
       },
       "pulitzer": {
         "wins": [
@@ -34244,7 +34272,24 @@
         ]
       }
     },
-    "play-on-1997": {},
+    "play-on-1997": {
+      "tony": {
+        "season": "1969-70",
+        "ceremony": "24th",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Scenic Design",
+          "Best Lighting Design",
+          "Best Actress in a Musical",
+          "Best Featured Actor in a Musical",
+          "Best Orchestrations"
+        ],
+        "wins": [
+          "Best Scenic Design",
+          "Best Lighting Design"
+        ]
+      }
+    },
     "dream-1997": {
       "tony": {
         "season": "1996-97",
@@ -34688,7 +34733,10 @@
           "Best Choreography"
         ],
         "wins": [
-          "Best Revival of a Musical"
+          "Best Revival of a Musical",
+          "Best Actor in a Musical",
+          "Best Actress in a Musical",
+          "Best Featured Actor in a Musical"
         ]
       },
       "dramadesk": {
@@ -37900,6 +37948,18 @@
         "nominations": 1,
         "nominatedFor": [
           "Best Actress"
+        ],
+        "wins": []
+      },
+      "tony": {
+        "season": "2002-03",
+        "ceremony": "57th",
+        "nominations": 4,
+        "nominatedFor": [
+          "Best Revival of a Play",
+          "Best Actor in a Play",
+          "Best Actress in a Play",
+          "Best Direction of a Play"
         ],
         "wins": []
       },
@@ -45555,6 +45615,22 @@
           "Best Actor in a Supporting Role"
         ],
         "wins": []
+      },
+      "tony": {
+        "season": "2024-25",
+        "ceremony": "78th",
+        "nominations": 5,
+        "nominatedFor": [
+          "Best Play",
+          "Best Actor in a Play",
+          "Best Featured Actor in a Play",
+          "Best Direction of a Play",
+          "Best Costume Design of a Play"
+        ],
+        "wins": [
+          "Best Actor in a Play",
+          "Best Direction of a Play"
+        ]
       }
     },
     "paddington-the-musical-west-end-2025": {
@@ -45661,7 +45737,20 @@
         ]
       }
     },
-    "monte-cristo-the-york-theatre-company-off-broadway-2026": {},
+    "monte-cristo-the-york-theatre-company-off-broadway-2026": {
+      "tony": {
+        "season": "1970-71",
+        "ceremony": "25th",
+        "nominations": 2,
+        "nominatedFor": [
+          "Best Scenic Design",
+          "Best Lighting Design"
+        ],
+        "wins": [
+          "Best Scenic Design"
+        ]
+      }
+    },
     "the-gingerbread-lady-1970": {
       "tony": {
         "season": "1970-71",
@@ -46204,7 +46293,17 @@
         "wins": []
       }
     },
-    "fiddler-on-the-roof-1976": {},
+    "fiddler-on-the-roof-1976": {
+      "tony": {
+        "season": "1981-82",
+        "ceremony": "36th",
+        "nominations": 1,
+        "nominatedFor": [
+          "Best Actor in a Musical"
+        ],
+        "wins": []
+      }
+    },
     "your-arms-too-short-to-box-with-god-1982": {
       "tony": {
         "season": "1982-83",
@@ -47137,7 +47236,15 @@
         ]
       }
     },
-    "man-to-man-west-end-2026": {},
+    "man-to-man-west-end-2026": {
+      "tony": {
+        "season": "2011-12",
+        "ceremony": "66th",
+        "nominations": 0,
+        "nominatedFor": [],
+        "wins": []
+      }
+    },
     "titanique-2026": {
       "tony": {
         "season": "2025-26",
@@ -48126,17 +48233,6 @@
         "wins": [],
         "nominatedFor": [
           "Outstanding Projection Design"
-        ]
-      }
-    },
-    "inter-alia-west-end-2026": {
-      "criticsCircle": {
-        "season": "2025-26",
-        "wins": [
-          "Best Actress"
-        ],
-        "nominatedFor": [
-          "Best Actress"
         ]
       }
     }
