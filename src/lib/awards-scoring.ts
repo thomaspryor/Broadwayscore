@@ -33,7 +33,8 @@ type CeremonyKey =
   | 'dramaDesk'
   | 'obie'
   | 'lortel'
-  | 'criticsCircle';
+  | 'criticsCircle'
+  | 'eveningStandard';
 
 interface TierPoints { win: number; nom: number }
 
@@ -57,6 +58,10 @@ const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
   obie:         { S: { win: 18,  nom: 0 },  A: { win: 12, nom: 0 },  B: { win: 8,  nom: 0 }, C: { win: 5,  nom: 0 } },
   lortel:       { S: { win: 20,  nom: 3 },  A: { win: 12, nom: 2 },  B: { win: 8,  nom: 1 }, C: { win: 5,  nom: 1 } },
   criticsCircle:{ S: { win: 30,  nom: 0 },  A: { win: 18, nom: 0 },  B: { win: 10, nom: 0 }, C: { win: 6,  nom: 0 } },
+  // Evening Standard Theatre Awards (UK, 1955–present). Second-most prestigious
+  // WE award after Olivier. Lower weight than olivier_we — popular jury award
+  // with full nominee lists (winners marked by <b> in Wikipedia tables).
+  eveningStandard: { S: { win: 60, nom: 8 }, A: { win: 30, nom: 4 }, B: { win: 18, nom: 2 }, C: { win: 12, nom: 2 } },
 };
 
 const A_PLUS_MULTIPLIER = 1.2;
@@ -262,6 +267,11 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.criticsCircle.nominatedFor ?? [];
     breakdown.push(scoreCeremony("Critics' Circle Theatre Awards", 'criticsCircle', wins, noms));
   }
+  if (entry.eveningStandard) {
+    const wins = entry.eveningStandard.wins ?? [];
+    const noms = entry.eveningStandard.nominatedFor ?? [];
+    breakdown.push(scoreCeremony('Evening Standard Theatre Awards', 'eveningStandard', wins, noms));
+  }
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   // Hard-cap display at 100 — UX call: scores >100 read as bugs.
   const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
@@ -295,6 +305,7 @@ interface AwardsShowEntry {
   obie?: PrecursorNode & { season?: string };
   lortel?: PrecursorNode & { season?: string };
   criticsCircle?: PrecursorNode & { season?: string };
+  eveningStandard?: PrecursorNode & { season?: string };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };

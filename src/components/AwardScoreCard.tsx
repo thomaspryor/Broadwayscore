@@ -212,6 +212,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'obie') return awards.obie;
   if (key === 'lortel') return awards.lortel;
   if (key === 'criticsCircle') return awards.criticsCircle;
+  if (key === 'eveningStandard') return awards.eveningStandard;
   return undefined;
 }
 

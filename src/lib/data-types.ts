@@ -303,6 +303,17 @@ export interface LortelAwards {
   nominations?: number;
 }
 
+/** Evening Standard Theatre Awards (UK/West End, 1955–present). Second-most
+ *  prestigious WE award after the Olivier. Per-category Wikipedia pages
+ *  exist for Best Play, Best Actor, Best Actress (no Best Musical page).
+ *  Ceremonies identified by ordinal ("Nth"); see scripts/lib/evening-standard-parser.js. */
+export interface EveningStandardAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
@@ -312,6 +323,7 @@ export interface ShowAwards {
   obie?: ObieAwards;
   lortel?: LortelAwards;
   criticsCircle?: CriticsCircleAwards;
+  eveningStandard?: EveningStandardAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */
