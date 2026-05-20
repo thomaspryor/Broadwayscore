@@ -99,8 +99,8 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
   return (
     <div className="flex flex-col items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
-      <span className={`text-[9px] font-semibold leading-none mt-0.5 h-3 block ${change != null && changeAbs > 0 ? (change > 0 ? 'text-emerald-400' : 'text-red-400') : 'invisible'}`}>
-        {change != null && changeAbs > 0 ? `${change > 0 ? '▲' : '▼'}${changeAbs}%` : '·'}
+      <span className={`text-[9px] font-semibold leading-none mt-0.5 h-3 block ${change != null && changeAbs > 0 ? (change > 0 ? 'text-emerald-400' : 'text-red-400') : 'text-transparent'}`}>
+        {change != null && changeAbs > 0 ? `${change > 0 ? '▲' : '▼'}${changeAbs}%` : '▲0%'}
       </span>
     </div>
   );
@@ -561,14 +561,11 @@ export default function TonyNomineesPage() {
           )}
         </div>
 
-        {/* Announcement banner — hidden after May 22 */}
-        {new Date() < new Date('2026-05-23T00:00:00Z') && (
+        {/* Announcement banner — hidden after May 24 */}
+        {new Date() < new Date('2026-05-25T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
-            <span className="text-brand font-semibold">Predictions being released Thursday, May 22</span>
-            {' '}— our model-based win predictions (separate from the market odds shown here) will be published on{' '}
-            <Link href="/tony-awards/predictions" className="text-brand underline underline-offset-2 hover:text-brand-hover">
-              our predictions page
-            </Link>.
+            <span className="text-brand font-semibold">Win predictions coming Saturday, May 24.</span>
+            {' '}Our model ranks each nominee&apos;s win probability based on all this data.
           </div>
         )}
 
