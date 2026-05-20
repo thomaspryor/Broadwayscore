@@ -91,6 +91,7 @@
 
 ## 🏆 Awards scoring
 - [Awards enrichment ≠ scoring](feedback_awards_enrichment_scoring_decoupled.md) — Adding ceremony data to awards.json doesn't score it. computeSiteAwardScore() has an explicit allowlist; must add CeremonyKey + POINTS entry + if(entry.X) block for each new ceremony.
+- [Critics' Circle winners — FIXED](project_critics_circle_winners_untracked.md) — Fixed 2026-05-20 (commit 5e10fc8e46) via custom plain-list parser; 22 WE shows now have CC wins scored.
 
 ## 🎭 Tony predictions model
 - [Tony predictions accuracy](project_tony_predictions_accuracy.md) — Recipe weights, historical accuracy (92.9%), current-season signals, market data coverage, backtest findings.
