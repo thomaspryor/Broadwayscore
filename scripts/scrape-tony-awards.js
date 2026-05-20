@@ -41,7 +41,7 @@ function getOrdinalSuffix(num) {
 // Tony Awards ceremonies by year (ceremony number, Wikipedia page suffix)
 // Broadway season 2004-05 had 59th Tonys in 2005, which is our data start
 // Year range is dynamic - no manual updates needed each year
-const START_YEAR = 1970;
+const START_YEAR = 2005;
 const CURRENT_YEAR = new Date().getFullYear();
 
 const TONY_CEREMONIES = [];
@@ -182,11 +182,17 @@ function filterCategoriesByShowType(categories, showType) {
 const showsPath = path.join(__dirname, '../data/shows.json');
 const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
 
-// Build lookup maps
+// Build lookup maps — restrict showsByTitle to Broadway shows so that
+// West End / Off-Broadway productions sharing a title (e.g. "Oh, Mary!")
+// can never be matched to Tony data.
 const showsByTitle = new Map();
 const showsBySlug = new Map();
 shows.forEach(show => {
   showsBySlug.set(show.slug, show);
+  // Tony Awards are Broadway-only; skip non-Broadway shows from title map.
+  // Also skip by ID pattern when category is null (pre-opening shows).
+  if (show.category && show.category !== 'broadway') return;
+  if (!show.category && show.id && show.id.includes('-off-broadway-')) return;
   // Normalize title for matching
   const normalizedTitle = normalizeTitle(show.title);
   if (!showsByTitle.has(normalizedTitle)) {
@@ -608,6 +614,12 @@ async function main() {
   for (const [showId, data] of showNominations) {
     const existing = awardsData.shows[showId];
     const show = shows.find(s => s.id === showId);
+
+    // Belt-and-suspenders: never write Tony data to non-Broadway shows even if
+    // they somehow slipped through the showsByTitle filter above.
+    if (show && show.category && show.category !== 'broadway') continue;
+    if (show && !show.category && showId.includes('-off-broadway-')) continue;
+
     const showType = show?.type; // 'musical' or 'play'
 
     // Filter out impossible categories based on show type
