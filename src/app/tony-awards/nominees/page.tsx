@@ -391,7 +391,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
 
 function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
-    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+    <div className="craft-row flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail */}
       <Link
         href={`/show/${show.slug}`}
