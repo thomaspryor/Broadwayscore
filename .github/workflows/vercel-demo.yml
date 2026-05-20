@@ -187,7 +187,9 @@ jobs:
             echo "::notice::Demo pinned to '$PIN'; deploy from '$REF' — skipping alias (preview URL still accessible)."
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
-            [ -n "$PIN" ] && echo "::notice::Pin matches deployed ref '$REF' — aliasing as normal."
+            if [ -n "$PIN" ]; then
+              echo "::notice::Pin matches deployed ref '$REF' — aliasing as normal."
+            fi
           fi
 
       - name: Alias to demo domain
