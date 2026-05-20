@@ -113,13 +113,30 @@ function parseWinnersNomineesCell(cellText) {
     return cleanWikiText(b.replace(/'+/g, '')).replace(/^([^,]+),.*/, '$1').trim();
   }
 
+  /** Extract person name from a bullet in person+show format: [[Person]], ''[[Show]]''.
+   *  Returns null for show-only categories. */
+  function bulletPersonName(b) {
+    // Wikilink person before `, ''`: [[Person]], ''[[Show]]'' or [[Person Name]], ''Show''
+    const m = b.match(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]\s*,\s*''/);
+    if (m) return cleanTitle(m[2] || m[1]);
+    // Plain text person: Person Name, ''[[Show]]''
+    const plain = b.match(/^([^[',\n]+),\s*''/);
+    if (plain) {
+      const t = cleanWikiText(plain[1]).trim();
+      if (t && t.length > 2) return t;
+    }
+    return null;
+  }
+
   let winner = null;
+  let winnerPersonName = null;
   const nominees = [];
   for (const b of bullets) {
     const title = bulletTitle(b);
     if (!title) continue;
     if (winner === null && /'{5}/.test(b)) {
       winner = title;
+      winnerPersonName = bulletPersonName(b);
     }
     nominees.push(title);
   }
@@ -131,7 +148,7 @@ function parseWinnersNomineesCell(cellText) {
     seen.add(key);
     return true;
   });
-  return { winner, nominees: unique };
+  return { winner, nominees: unique, winnerPersonName };
 }
 
 async function scrapeYear(year) {
@@ -181,9 +198,9 @@ async function scrapeYear(year) {
       const restCell = cells.slice(1).join('\n| ');
       const category = extractCategory(firstCell);
       if (!category || !/(?:Outstanding|Best|John Gassner|Special)/i.test(category)) continue;
-      const { winner, nominees } = parseWinnersNomineesCell(restCell);
+      const { winner, nominees, winnerPersonName } = parseWinnersNomineesCell(restCell);
       if (nominees.length === 0) continue;
-      categories[category] = { year, winner, nominees };
+      categories[category] = { year, winner, nominees, ...(winnerPersonName ? { winnerPersonName } : {}) };
       rowCount++;
     }
   }
@@ -207,10 +224,12 @@ function mergeYearIntoBaseline(baseline, year, perCategory) {
       const union = new Set([...(existing.nominees || []), ...entry.nominees]);
       existing.nominees = [...union].sort();
       if (entry.winner && !existing.winner) existing.winner = entry.winner;
+      if (entry.winnerPersonName && !existing.winnerPersonName) existing.winnerPersonName = entry.winnerPersonName;
     } else {
       list.push({
         year,
         winner: entry.winner,
+        ...(entry.winnerPersonName ? { winnerPersonName: entry.winnerPersonName } : {}),
         nominees: [...entry.nominees].sort(),
       });
       list.sort((a, b) => a.year - b.year);
