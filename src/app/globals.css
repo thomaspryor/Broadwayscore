@@ -555,6 +555,12 @@ img {
     min-height: auto;
     min-width: auto;
   }
+
+  /* Exception for compact table rows — links here are text labels, not standalone tap targets */
+  .performer-row a {
+    min-height: auto;
+    min-width: auto;
+  }
 }
 
 /* Beat the Critics — standalone mode hides site chrome */

@@ -102,10 +102,10 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
     : null;
   return (
     <div className={`flex-shrink-0 ${size === 'md' ? 'w-12' : 'w-10'} flex items-center justify-center`}>
-      <div className={`flex flex-col items-center justify-center bg-surface-overlay rounded-xl ${boxClass} gap-0.5`}>
+      <div className={`relative flex items-center justify-center bg-surface-overlay rounded-xl ${boxClass}`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
-        <span className={`text-[9px] font-semibold leading-none h-3 block ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
-          {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '▲0%'}
+        <span className={`absolute bottom-1 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
+          {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '–'}
         </span>
       </div>
     </div>
@@ -321,11 +321,11 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <div className="flex items-start sm:items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
+    <div className="performer-row flex items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail → show page */}
       <Link
         href={`/show/${show.slug}`}
-        className="w-10 h-10 sm:w-11 sm:h-11 rounded-md overflow-hidden bg-surface-raised flex-shrink-0 mt-0.5 sm:mt-0"
+        className="w-10 h-10 sm:w-11 sm:h-11 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -365,20 +365,10 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           ) : (
             <span className="text-sm font-bold text-white leading-tight block truncate">{show.nomineePersonName}</span>
           )}
-          <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{historyLabel}</p>
         </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
-        {show.precursorWins && show.precursorWins.length > 0 && (
-          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
-            {show.precursorWins.map(w => (
-              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
-                {w}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
