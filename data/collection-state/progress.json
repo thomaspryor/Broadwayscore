@@ -38,7 +38,10 @@
     "art-2025/philadelphia-inquirer--peter-dobrin.json",
     "art-2025/playbill--margaret-hall.json",
     "angels-in-america-2018/playbill--adam-hetrick.json",
-    "a-delicate-balance-2014/latimes--david-ng.json"
+    "a-delicate-balance-2014/latimes--david-ng.json",
+    "a-little-night-music-2009/broadwayworld--robert-diamond.json",
+    "a-little-night-music-2009/latimes--david-ng.json",
+    "a-little-night-music-2009/whatsonstage--alex-wood.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1362,7 +1365,14 @@
     "red-2010/washpost--peter-marks.json",
     "come-fly-away-2010/nytheatre--martin-denton.json",
     "come-fly-away-2010/backstage--david-sheward.json",
-    "looped-2010/ny1--roma-torre.json"
+    "looped-2010/ny1--roma-torre.json",
+    "next-fall-2010/backstage--david-sheward.json",
+    "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
+    "after-miss-julie-2009/about-entertainment--unknown.json",
+    "burn-the-floor-2009/ew--jennifer-armstrong.json",
+    "burn-the-floor-2009/backstage--jo-sagolla.json",
+    "waiting-for-godot-2009/newsday--linda-winer.json",
+    "waiting-for-godot-2009/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1381,7 +1391,8 @@
       "a-little-night-music-2009/musical-theatre-review--unknown.json",
       "a-little-night-music-2009/whatsonstage--unknown.json",
       "a-delicate-balance-1996/playbill--unknown.json",
-      "carrie-1988/nytg--unknown.json"
+      "carrie-1988/nytg--unknown.json",
+      "a-little-night-music-2009/whatsonstage--alex-wood.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1399,7 +1410,8 @@
       "data/review-texts/1536-west-end-2026/london-theatre--unknown.json",
       "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
       "data/review-texts/a-delicate-balance-1996/hollywood-reporter--unknown.json",
-      "a-delicate-balance-1996/hollywood-reporter--unknown.json"
+      "a-delicate-balance-1996/hollywood-reporter--unknown.json",
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1435,11 +1447,13 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "art-2025/playbill--margaret-hall.json",
       "angels-in-america-2018/playbill--adam-hetrick.json",
-      "a-delicate-balance-2014/latimes--david-ng.json"
+      "a-delicate-balance-2014/latimes--david-ng.json",
+      "a-little-night-music-2009/broadwayworld--robert-diamond.json",
+      "a-little-night-music-2009/latimes--david-ng.json"
     ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "looped-2010/ny1--roma-torre.json",
+  "lastProcessed": "waiting-for-godot-2009/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -1556,6 +1570,17 @@
       "t": "2026-05-20T11:47:40.041Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-20T12:32:16.519Z",
+      "event": "bb-session",
+      "session": "e3eeaa41",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-20T12:32:19.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

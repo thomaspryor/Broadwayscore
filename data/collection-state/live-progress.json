@@ -1,32 +1,20 @@
 {
-  "updatedAt": "2026-05-20T12:31:28.095Z",
-  "processed": 39,
-  "failed": 1322,
-  "successRate": "2.9%",
+  "updatedAt": "2026-05-20T12:33:07.288Z",
+  "processed": 42,
+  "failed": 1329,
+  "successRate": "3.1%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 16,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingbee": 7,
     "brightdata": 4,
     "archiveToday": 4,
-    "archive": 12
+    "archive": 14
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-05-19T17:12:15.211Z",
-      "event": "bb-session",
-      "session": "2f23cef1",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T19:24:37.427Z",
-      "event": "bb-session",
-      "session": "4a2da626",
-      "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/"
-    },
     {
       "t": "2026-05-19T19:43:44.540Z",
       "event": "bb-session",
@@ -130,6 +118,17 @@
       "t": "2026-05-20T11:47:40.041Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-20T12:32:16.519Z",
+      "event": "bb-session",
+      "session": "e3eeaa41",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-20T12:32:19.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
