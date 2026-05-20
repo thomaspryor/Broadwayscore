@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-20T11:45:40.304Z",
-  "processed": 23,
-  "failed": 1146,
-  "successRate": "2.0%",
+  "updatedAt": "2026-05-20T11:49:38.457Z",
+  "processed": 32,
+  "failed": 1147,
+  "successRate": "2.7%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "scrapingbee": 6,
+    "brightdata": 3,
     "archiveToday": 4,
-    "archive": 6
+    "archive": 8
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -108,6 +108,28 @@
       "event": "bb-session",
       "session": "0b3ed92a",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
+    },
+    {
+      "t": "2026-05-20T11:47:13.221Z",
+      "event": "bb-session",
+      "session": "ee668bc4",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-20T11:47:15.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-20T11:47:37.192Z",
+      "event": "bb-session",
+      "session": "31cc3548",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-delicate-balance-theater-r"
+    },
+    {
+      "t": "2026-05-20T11:47:40.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
