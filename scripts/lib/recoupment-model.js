@@ -291,15 +291,27 @@ function calcWeeklyProfit(weeklyGross, weeklyNut, baseVarRate, isPostRecoup, wee
   // *every year of the run*. Tony + holiday were defined as constants but
   // never wired up — that under-counted ~$1.3M/yr in marketing for a musical
   // and was the second-biggest contributor to model overestimation.
+  //
+  // CALIBRATION: the constants in MARKETING_SURCHARGES were sized for
+  // big-musical budgets ($1M+ nuts). Smaller musicals (e.g., BVSC at
+  // $700K nut, Op Mincemeat at $560K nut) would get hit so hard by a flat
+  // $125K Tony surcharge that the model showed negative recoupment.
+  // Cap each surcharge at 15% of the weekly nut — proportional to show
+  // size, which matches how real productions actually scale marketing.
   const cat = showCategory || 'musical';
+  const surchargeCap = weeklyNut * 0.15;
+  const applySurcharge = (defaultAmt) => Math.min(defaultAmt, surchargeCap);
   if (weekNumber <= 8) {
-    fixedCosts += MARKETING_SURCHARGES.openingPush[cat] || MARKETING_SURCHARGES.openingPush.musical;
+    const amt = MARKETING_SURCHARGES.openingPush[cat] || MARKETING_SURCHARGES.openingPush.musical;
+    fixedCosts += applySurcharge(amt);
   }
   if (calendarWeek && MARKETING_SURCHARGES.tonySeasonApprox.weekOfYear.includes(calendarWeek)) {
-    fixedCosts += MARKETING_SURCHARGES.tonySeasonApprox[cat] || MARKETING_SURCHARGES.tonySeasonApprox.musical;
+    const amt = MARKETING_SURCHARGES.tonySeasonApprox[cat] || MARKETING_SURCHARGES.tonySeasonApprox.musical;
+    fixedCosts += applySurcharge(amt);
   }
   if (calendarWeek && MARKETING_SURCHARGES.holidayApprox.weekOfYear.includes(calendarWeek)) {
-    fixedCosts += MARKETING_SURCHARGES.holidayApprox[cat] || MARKETING_SURCHARGES.holidayApprox.musical;
+    const amt = MARKETING_SURCHARGES.holidayApprox[cat] || MARKETING_SURCHARGES.holidayApprox.musical;
+    fixedCosts += applySurcharge(amt);
   }
 
   // Pre-recoupment operating profit
@@ -483,9 +495,16 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
         weekProfit -= grossAboveThreshold * starDeal.grossPct;
       }
 
-      cumProfit += weekProfit;
+      // Preview burn is a sunk cost already funded by capitalization; trade
+      // press and Reddit weekly-grosses reports compute recoupment as
+      // cumulative *post-opening* operating profit / capitalization.
+      // Accumulating preview losses into cumProfit double-counted them and
+      // dragged BVSC and Op Mincemeat ~25-35pts below their reported ranges.
+      if (!week.isPreview) {
+        cumProfit += weekProfit;
+        totalProfit += weekProfit;
+      }
       totalGross += weekResult.adjGross;
-      totalProfit += weekProfit;
 
       // Check recoupment threshold
       if (!isPostRecoup && cumProfit >= effectiveCap) {
