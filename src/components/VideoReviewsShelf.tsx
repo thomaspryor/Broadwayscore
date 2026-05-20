@@ -40,28 +40,32 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
   const tier = showAggregate ? getScoreTier(avgScore) : null;
 
   return (
-    <section className="card p-4 sm:p-5 mb-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-bold text-white">Video Reviews</h2>
-        <div className="flex items-center gap-2.5">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-4 sm:mb-6" aria-labelledby="video-reviews-heading">
+      {/* Unified content-card chrome — eyebrow on left, aggregate badge cluster on right */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="video-reviews-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
+          Video Reviews
+        </h2>
+        <div className="flex items-center gap-2.5 shrink-0">
           {showAggregate ? (
             <>
               <div className="text-right">
                 {tier && (
                   <div className={`text-sm font-bold ${getScoreTextColorClass(avgScore)}`}>{tier.label}</div>
                 )}
-                <div className="text-xs text-gray-500">{reviews.length} reviews</div>
+                <div className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase">{reviews.length} reviews</div>
               </div>
               <div className={`score-badge w-14 h-14 text-2xl rounded-xl font-extrabold ${getScoreColorClass(avgScore)}`}>
                 {avgScore}
               </div>
             </>
           ) : (
-            <span className="text-gray-400 text-sm">{reviews.length} review</span>
+            <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase">
+              {reviews.length} review
+            </span>
           )}
         </div>
-      </div>
+      </header>
 
       {/* Horizontal shelf */}
       <div className="relative">

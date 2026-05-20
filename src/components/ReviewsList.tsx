@@ -159,7 +159,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
   else scoreLabel = 'Critical Miss';
 
   return (
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-3'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
          Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
          display:block in flex and ALWAYS stretch to cross-axis height (44px),
@@ -168,7 +168,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
          with the <Link> nested inside it (not the other way around).
          Verified via Playwright: <span> = height:20, top:12 (centered in 44px).
          DO NOT put flex/overflow styles on a <Link>/<a> — it will stretch. */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
         <div
           className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
           role="meter"
@@ -200,22 +200,22 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
       {/* Quote + Author, indented to align with outlet name */}
       <div className="pl-24 sm:pl-[6.25rem]">
         {review.quote && (
-          <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1">
+          <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
             &ldquo;{review.quote}&rdquo;
           </p>
         )}
         {review.summary && !review.quote && (
-          <p className="text-sm sm:text-base text-gray-400 leading-snug mb-1">
+          <p className="text-sm sm:text-base text-gray-400 leading-snug mb-0.5">
             {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}
           </p>
         )}
         {review.pullQuote && !review.quote && !review.summary && (
-          <p className="text-sm sm:text-base text-gray-300 leading-snug mb-1">
+          <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
             &ldquo;{review.pullQuote}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
           </p>
         )}
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between text-xs sm:text-sm leading-tight">
           {review.criticName && review.criticName !== 'Unknown' ? (
             <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
@@ -265,7 +265,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
   const hiddenCount = sortedReviews.length - initialCount;
 
   return (
-    <div className="space-y-3" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
+    <div className="space-y-2" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
       {reviews.length > 3 && (
         <div className="flex items-center gap-3 text-xs text-gray-500 mb-1">
           <span>Sort:</span>
