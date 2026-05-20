@@ -160,7 +160,7 @@ async function main() {
   if (!seriesEvents || seriesEvents.length === 0) {
     console.error('[info] No active Kalshi Tony events found. Markets may not exist yet for this season.');
     const output = {
-      _meta: { source: 'kalshi', lastUpdated: new Date().toISOString(), season, categoriesFetched: 0 },
+      _meta: { source: 'kalshi', lastUpdated: new Date().toISOString(), snapshotDate: new Date().toISOString().slice(0, 10), season, categoriesFetched: 0 },
       categories: {},
     };
     if (!dryRun) {
