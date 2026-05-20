@@ -175,10 +175,13 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
   const scoreW = isMajor ? 'w-14' : 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
 
+  // Cap title column on mobile so 3 odds columns fit in 390px viewport without scrolling.
+  const titleMaxW = isMajor ? 'max-w-[100px] sm:max-w-none' : !isPersonLevel ? 'max-w-[90px] sm:max-w-none' : 'max-w-[80px] sm:max-w-none';
+
   return (
     <div className={`flex items-end gap-3 ${padding} pt-2 pb-1.5 border-b border-white/5`}>
       <div className={`${thumbnailW} flex-shrink-0`} aria-hidden="true" />
-      <div className="flex-1 min-w-0" />
+      <div className={`flex-1 min-w-0 ${titleMaxW}`} />
       {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
       <div className="flex items-end gap-2 flex-shrink-0">
         {/* Odds columns */}
@@ -255,7 +258,7 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
       </div>
 
       {/* Title + mobile-only precursor chips */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 max-w-[100px] sm:max-w-none">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
@@ -335,7 +338,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
       </Link>
 
       {/* Desktop: name + history inline; Mobile: stacked */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 max-w-[80px] sm:max-w-none">
         {/* Desktop layout: name + dimmer history on one line */}
         <div className="hidden sm:flex items-baseline gap-1.5 min-w-0">
           {actorUrl ? (
@@ -415,10 +418,13 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
       </Link>
 
       {/* Show name (bold) + credited names (dimmer) + precursor chips */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 max-w-[90px] sm:max-w-none">
         <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
           {show.title}
         </Link>
+        {show.nomineePersonName && (
+          <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
+        )}
         {show.precursorWins && show.precursorWins.length > 0 && (
           <div className="sm:hidden flex flex-row gap-1 mt-0.5">
             {show.precursorWins.map(w => (
@@ -427,9 +433,6 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
               </span>
             ))}
           </div>
-        )}
-        {show.nomineePersonName && (
-          <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
         )}
       </div>
 
