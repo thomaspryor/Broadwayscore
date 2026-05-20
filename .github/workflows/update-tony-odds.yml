@@ -2,11 +2,12 @@ name: Update Tony Odds Data
 
 on:
   # Tony Awards season: nominations announced ~early May, ceremony ~early June.
-  # Cron runs daily during April–June at 17:00 UTC (1 PM ET) — one hour after
-  # update-tony-awards.yml so awards.json is fresh before we scrape odds.
-  # Both GoldDerby and Polymarket are public REST APIs (no auth or web scraping).
+  # Cron runs hourly during April–June. All three scrapers self-gate their
+  # day-over-day snapshot: only the first run each UTC day captures prevDay
+  # values; subsequent runs carry them forward unchanged. Zero extra cost —
+  # all three APIs are public REST with no auth or scraping.
   schedule:
-    - cron: '0 17 * 4-6 *'  # 17:00 UTC daily, April–June
+    - cron: '0 * * 4-6 *'  # hourly, April–June
   workflow_dispatch:
     inputs:
       season:
@@ -56,29 +57,43 @@ jobs:
           node scripts/scrape-polymarket-tonys.js --season=$SEASON 2>&1 \
             || echo "::warning::Polymarket scrape exited non-zero — check output above"
 
+      - name: Scrape Kalshi Tony odds
+        id: kalshi
+        run: |
+          SEASON="${{ inputs.season || '2026' }}"
+          node scripts/scrape-kalshi-tonys.js --season=$SEASON 2>&1 \
+            || echo "::warning::Kalshi scrape exited non-zero — check output above"
+
       - name: Check for changes
         id: changes
         run: |
           GD_CHANGED=false
           PM_CHANGED=false
+          KL_CHANGED=false
 
           if ! git diff --quiet data/tony-win-probabilities.json 2>/dev/null; then
             GD_CHANGED=true
           fi
 
-          # tony-polymarket-odds.json may not exist yet on first run
           if [ -f data/tony-polymarket-odds.json ] && ! git diff --quiet data/tony-polymarket-odds.json 2>/dev/null; then
             PM_CHANGED=true
           elif [ -f data/tony-polymarket-odds.json ] && ! git ls-files --error-unmatch data/tony-polymarket-odds.json 2>/dev/null; then
             PM_CHANGED=true
           fi
 
+          if [ -f data/tony-kalshi-odds.json ] && ! git diff --quiet data/tony-kalshi-odds.json 2>/dev/null; then
+            KL_CHANGED=true
+          elif [ -f data/tony-kalshi-odds.json ] && ! git ls-files --error-unmatch data/tony-kalshi-odds.json 2>/dev/null; then
+            KL_CHANGED=true
+          fi
+
           echo "gd_changed=$GD_CHANGED" >> $GITHUB_OUTPUT
           echo "pm_changed=$PM_CHANGED" >> $GITHUB_OUTPUT
+          echo "kl_changed=$KL_CHANGED" >> $GITHUB_OUTPUT
 
-          if [ "$GD_CHANGED" = "true" ] || [ "$PM_CHANGED" = "true" ]; then
+          if [ "$GD_CHANGED" = "true" ] || [ "$PM_CHANGED" = "true" ] || [ "$KL_CHANGED" = "true" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Odds data changed: GD=$GD_CHANGED PM=$PM_CHANGED"
+            echo "Odds data changed: GD=$GD_CHANGED PM=$PM_CHANGED KL=$KL_CHANGED"
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No changes to odds data"
@@ -92,13 +107,16 @@ jobs:
 
           GD_CHANGED="${{ steps.changes.outputs.gd_changed }}"
           PM_CHANGED="${{ steps.changes.outputs.pm_changed }}"
+          KL_CHANGED="${{ steps.changes.outputs.kl_changed }}"
 
           [ "$GD_CHANGED" = "true" ] && git add data/tony-win-probabilities.json
           [ "$PM_CHANGED" = "true" ] && git add data/tony-polymarket-odds.json
+          [ "$KL_CHANGED" = "true" ] && git add data/tony-kalshi-odds.json
 
           CHANGED_LIST=""
           [ "$GD_CHANGED" = "true" ] && CHANGED_LIST="${CHANGED_LIST} GoldDerby"
           [ "$PM_CHANGED" = "true" ] && CHANGED_LIST="${CHANGED_LIST} Polymarket"
+          [ "$KL_CHANGED" = "true" ] && CHANGED_LIST="${CHANGED_LIST} Kalshi"
 
           git commit -m "chore: Update Tony odds data —${CHANGED_LIST} [skip ci]"
 
@@ -120,7 +138,8 @@ jobs:
             echo "✅ Odds data updated" >> $GITHUB_STEP_SUMMARY
             echo "- GoldDerby changed: ${{ steps.changes.outputs.gd_changed }}" >> $GITHUB_STEP_SUMMARY
             echo "- Polymarket changed: ${{ steps.changes.outputs.pm_changed }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Kalshi changed: ${{ steps.changes.outputs.kl_changed }}" >> $GITHUB_STEP_SUMMARY
           else
             echo "ℹ️ No changes to odds data" >> $GITHUB_STEP_SUMMARY
-            echo "(Both scrapers ran — no new data since last run)" >> $GITHUB_STEP_SUMMARY
+            echo "(All scrapers ran — no new data since last run)" >> $GITHUB_STEP_SUMMARY
           fi
