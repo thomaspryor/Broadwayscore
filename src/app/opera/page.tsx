@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getOperaShows } from '@/lib/data-core';
+import { getOperaShows, getOperaTitleSlug } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { generateBreadcrumbSchema, generateItemListSchema, BASE_URL } from '@/lib/seo';
 import OperaPageClient from '@/components/OperaPageClient';
@@ -55,7 +55,7 @@ export default function OperaPage() {
       .filter(s => s.status !== 'upcoming')
       .map(show => ({
         name: show.title,
-        url: `${BASE_URL}/show/${show.slug}`,
+        url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}`,
         image: show.images?.hero,
         score: show.criticScore?.score ? Math.round(show.criticScore.score) : undefined,
         reviewCount: show.criticScore?.reviewCount,
@@ -70,11 +70,21 @@ export default function OperaPage() {
 
   const totalReviews = ordered.reduce((sum, s) => sum + (s.criticScore?.reviewCount ?? 0), 0);
 
+  const operaOrgSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Opera Scorecard',
+    url: 'https://operascorecard.com',
+    logo: `${BASE_URL}/og/opera.png`,
+    description: 'Aggregated critic ratings for Metropolitan Opera productions',
+    inLanguage: 'en',
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema, operaOrgSchema]) }}
       />
 
       <OperaPageClient

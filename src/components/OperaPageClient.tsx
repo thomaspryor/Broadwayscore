@@ -25,6 +25,10 @@ const statusParamToFilter: Record<StatusParam, string> = {
   all: 'all',
 };
 
+function operaTitleSlug(fullSlug: string): string {
+  return fullSlug.replace(/-off-broadway/, '');
+}
+
 function operaHasEnoughReviews(show: ShowCardShow): boolean {
   const rc = show.criticScore?.reviewCount ?? 0;
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
@@ -129,18 +133,22 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
       {/* Hero */}
       <div className="mb-4 sm:mb-8">
-        <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white mb-3 tracking-tight">
-          Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
-          <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">
+        <div className="relative inline-block mb-3">
+          <h1 className="hidden sm:block text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+            Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
+          </h1>
+          <span className="hidden sm:inline-block ml-2 align-middle text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-3 sm:-top-4 right-0 translate-x-full">
             Beta
           </span>
-        </h1>
-        <h1 className="block sm:hidden text-3xl font-extrabold text-white mb-2 tracking-tight">
-          Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
-          <span className="ml-2 align-middle inline-block text-[10px] font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5">
+        </div>
+        <div className="relative inline-block mb-2">
+          <h1 className="block sm:hidden text-3xl font-extrabold text-white tracking-tight">
+            Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
+          </h1>
+          <span className="sm:hidden ml-2 align-middle inline-block text-[10px] font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-1 right-0 translate-x-full">
             Beta
           </span>
-        </h1>
+        </div>
         <p className="text-gray-400 text-lg sm:text-xl">
           Every Met production. Every critic. One score.
         </p>
@@ -185,7 +193,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       <h2 className="sr-only">Met Opera productions</h2>
       <div className="space-y-3" role="list" aria-label="Met Opera productions">
         {filteredAndSortedShows.map((show, index) => (
-          <ShowListCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} />
+          <ShowListCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} overrideHref={`/opera/${operaTitleSlug(show.slug)}`} />
         ))}
         {filteredAndSortedShows.length === 0 && (
           <p className="text-gray-500 text-sm py-8 text-center">

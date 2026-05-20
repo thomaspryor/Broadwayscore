@@ -109,6 +109,15 @@ export function getOperaShows(): ComputedShow[] {
   return getAllShows().filter(show => isOperaShow(show));
 }
 
+/** 'la-traviata-off-broadway' → 'la-traviata', 'la-boheme-off-broadway-2025' → 'la-boheme-2025' */
+export function getOperaTitleSlug(fullSlug: string): string {
+  return fullSlug.replace(/-off-broadway/, '');
+}
+
+export function getOperaShowByTitleSlug(titleSlug: string): ComputedShow | undefined {
+  return getOperaShows().find(s => getOperaTitleSlug(s.slug) === titleSlug);
+}
+
 /**
  * Get Off-West End shows only (excludes West End proper)
  */

@@ -8,6 +8,8 @@ import {
   getAllLondonTheaterSlugs,
   getAllBrowseSlugs,
   getDataFreshness,
+  getOperaShows,
+  getOperaTitleSlug,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
 import { getAllActorSlugs } from '@/lib/data-actors';
@@ -41,16 +43,43 @@ function getDateContext(): DateContext {
 }
 
 function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
-  return getAllShowSlugs().map((slug) => {
-    const show = getShowBySlug(slug);
-    const isOpen = show?.status === 'open';
-    return {
-      url: `${BASE_URL}/show/${slug}`,
-      lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
-      changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
-      priority: isOpen ? 0.9 : 0.6,
-    };
-  });
+  const operaSlugs = new Set(getOperaShows().map(s => s.slug));
+  return getAllShowSlugs()
+    .filter(slug => !operaSlugs.has(slug))
+    .map((slug) => {
+      const show = getShowBySlug(slug);
+      const isOpen = show?.status === 'open';
+      return {
+        url: `${BASE_URL}/show/${slug}`,
+        lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
+        changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
+        priority: isOpen ? 0.9 : 0.6,
+      };
+    });
+}
+
+function buildOperaShard(ctx: DateContext): MetadataRoute.Sitemap {
+  const operaShows = getOperaShows();
+  const showPages = operaShows
+    .filter(s => s.status !== 'upcoming')
+    .map((show) => {
+      const isOpen = show.status === 'open';
+      return {
+        url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}`,
+        lastModified: isOpen ? ctx.latestDate : ctx.showsDate,
+        changeFrequency: isOpen ? 'weekly' as const : 'monthly' as const,
+        priority: isOpen ? 0.8 : 0.6,
+      };
+    });
+  return [
+    {
+      url: `${BASE_URL}/opera`,
+      lastModified: ctx.latestDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
+    },
+    ...showPages,
+  ];
 }
 
 function buildTheatersShard(ctx: DateContext): MetadataRoute.Sitemap {
@@ -478,5 +507,6 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
     case 'actors-ah': return buildActorsShard(ctx, 'actors-ah');
     case 'actors-iq': return buildActorsShard(ctx, 'actors-iq');
     case 'actors-rz': return buildActorsShard(ctx, 'actors-rz');
+    case 'opera': return buildOperaShard(ctx);
   }
 }

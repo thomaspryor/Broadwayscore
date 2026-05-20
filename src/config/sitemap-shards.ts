@@ -7,6 +7,7 @@ export const SITEMAP_SHARDS = [
   { name: 'actors-ah', label: 'Actor pages A-H' },
   { name: 'actors-iq', label: 'Actor pages I-Q' },
   { name: 'actors-rz', label: 'Actor pages R-Z' },
+  { name: 'opera', label: 'Opera pages (hub + show pages)' },
 ] as const;
 
 export type ShardName = typeof SITEMAP_SHARDS[number]['name'];
