@@ -693,7 +693,11 @@
     "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
     "an-ideal-husband-west-end-2026/the-recs--unknown.json",
     "an-ideal-husband-west-end-2026/thestage--unknown.json",
-    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json"
+    "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -714,7 +718,9 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/care-west-end-2026/daily-echo--unknown.json"
+      "data/review-texts/care-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -754,7 +760,7 @@
     ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "the-boy-who-harnessed-the-wind-west-end-2026/standard--unknown.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -789,6 +795,18 @@
       "t": "2026-05-19T20:13:05.707Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-05-20T00:35:27.566Z",
+      "event": "bb-session",
+      "session": "43b4d90d",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-20T00:36:27.061Z",
+      "event": "bb-session",
+      "session": "70576348",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
