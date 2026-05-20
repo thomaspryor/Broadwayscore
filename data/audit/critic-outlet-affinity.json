@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-20T05:34:32.013Z",
+    "lastUpdated": "2026-05-20T12:54:17.027Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 37718,
-    "skippedFiles": 17086,
-    "totalCritics": 1397,
-    "registryCritics": 509,
+    "totalFilesScanned": 37745,
+    "skippedFiles": 17107,
+    "totalCritics": 1398,
+    "registryCritics": 508,
     "flaggedReviews": 21
   },
   "flaggedReviews": [
@@ -148,10 +148,10 @@
       "outlet": "timeout",
       "showId": "dog-man-the-musical-west-end-2026",
       "file": "timeout--andrzej-lukowski.json",
-      "outletShare": 9,
+      "outletShare": 10,
       "primaryOutlet": "timeout-london",
-      "primaryShare": 91,
-      "totalReviews": 53
+      "primaryShare": 90,
+      "totalReviews": 52
     },
     {
       "critic": "Andrzej Lukowski",
@@ -159,10 +159,10 @@
       "outlet": "timeout",
       "showId": "machinal-2014",
       "file": "timeout--andrzej-lukowski.json",
-      "outletShare": 9,
+      "outletShare": 10,
       "primaryOutlet": "timeout-london",
-      "primaryShare": 91,
-      "totalReviews": 53
+      "primaryShare": 90,
+      "totalReviews": 52
     },
     {
       "critic": "Andrzej Lukowski",
@@ -170,10 +170,10 @@
       "outlet": "timeout",
       "showId": "mj-the-musical-west-end-2024",
       "file": "timeout--andrzej-lukowski.json",
-      "outletShare": 9,
+      "outletShare": 10,
       "primaryOutlet": "timeout-london",
-      "primaryShare": 91,
-      "totalReviews": 53
+      "primaryShare": 90,
+      "totalReviews": 52
     },
     {
       "critic": "Andrzej Lukowski",
@@ -181,10 +181,10 @@
       "outlet": "timeout",
       "showId": "much-ado-about-nothing-globe-west-end-2026",
       "file": "timeout--andrzej-lukowski.json",
-      "outletShare": 9,
+      "outletShare": 10,
       "primaryOutlet": "timeout-london",
-      "primaryShare": 91,
-      "totalReviews": 53
+      "primaryShare": 90,
+      "totalReviews": 52
     },
     {
       "critic": "Andrzej Lukowski",
@@ -192,10 +192,10 @@
       "outlet": "timeout",
       "showId": "skylight-2015",
       "file": "timeout--andrzej-lukowski.json",
-      "outletShare": 9,
+      "outletShare": 10,
       "primaryOutlet": "timeout-london",
-      "primaryShare": 91,
-      "totalReviews": 53
+      "primaryShare": 90,
+      "totalReviews": 52
     },
     {
       "critic": "Chris Omaweng",
@@ -351,8 +351,8 @@
         "ap",
         "playbill",
         "guardian",
-        "nytimes",
         "timeout",
+        "nytimes",
         "theater-pizzazz",
         "nydailynews",
         "ny1",
@@ -362,33 +362,33 @@
         "whatsonstage",
         "nytg",
         "newsday",
+        "artsdesk",
         "musical-theatre-review",
         "chicagotribune",
         "theater-life",
         "west-end-wilma",
+        "all-that-dazzles-uk",
         "washpost",
-        "artsdesk",
         "variety",
         "theatre-weekly",
-        "all-that-dazzles-uk",
+        "cititour",
         "plays-international",
         "theupcoming",
+        "financialtimes",
+        "the-recs",
+        "british-theatre",
         "exeunt-magazine",
         "hollywood-reporter",
         "standard",
         "new-york-city-theatre",
         "stagebuddy",
-        "cititour",
-        "the-recs",
-        "british-theatre",
         "ew",
-        "financialtimes",
         "stageandcinema",
+        "theatre-reviews-limited",
         "times-uk",
         "daily-mail",
         "huffpost",
         "independent",
-        "theatre-reviews-limited",
         "culturesauce",
         "bloomberg",
         "amny",
@@ -397,7 +397,9 @@
         "i-paper",
         "londonist",
         "curtainup",
+        "londontheatre1",
         "the-upcoming-uk",
+        "sunday-telegraph",
         "latimes",
         "deadline",
         "one-minute-critic",
@@ -416,10 +418,10 @@
         "daily-echo",
         "theatrely",
         "ct-now",
-        "londontheatre1",
         "nycitycenterorg",
         "indiewire",
         "minneapolis-star-tribune",
+        "thereviewshub",
         "ricky-martin",
         "burlington-free-press",
         "timeout-london",
@@ -429,7 +431,6 @@
         "seattlereporg",
         "parterre-box",
         "new-statesman",
-        "sunday-telegraph",
         "the-daily",
         "nypost",
         "nysr",
@@ -463,7 +464,7 @@
         "theater-scene",
         "everything-theatre"
       ],
-      "totalReviews": 609
+      "totalReviews": 621
     },
     {
       "critic": "Rachel Halliburton",
@@ -473,6 +474,15 @@
         "times-uk"
       ],
       "totalReviews": 5
+    },
+    {
+      "critic": "Mary Beer",
+      "slug": "mary-beer",
+      "outlets": [
+        "british-theatre",
+        "londontheatre1"
+      ],
+      "totalReviews": 4
     },
     {
       "critic": "Robert Gore-Langton",
@@ -492,6 +502,15 @@
         "timeout"
       ],
       "totalReviews": 4
+    },
+    {
+      "critic": "Maryam Philpott",
+      "slug": "maryam-philpott",
+      "outlets": [
+        "thereviewshub",
+        "plays-international"
+      ],
+      "totalReviews": 13
     },
     {
       "critic": "Sam Marlowe",
@@ -729,11 +748,10 @@
         "nytimes",
         "newsday",
         "washpost",
-        "timeout",
         "broadwayworld",
         "newyorker"
       ],
-      "totalReviews": 218
+      "totalReviews": 217
     },
     {
       "critic": "Christopher Kelly",
@@ -766,7 +784,7 @@
         "thewrap",
         "nytg"
       ],
-      "totalReviews": 230
+      "totalReviews": 222
     },
     {
       "critic": "Marilyn Stasio.",
@@ -836,10 +854,9 @@
         "scheckontheater",
         "reuters",
         "nypost",
-        "nytg",
         "dtli"
       ],
-      "totalReviews": 187
+      "totalReviews": 186
     },
     {
       "critic": "Melissa Rose Bernardo",
@@ -921,7 +938,7 @@
         "theater-scene",
         "stageandcinema"
       ],
-      "totalReviews": 123
+      "totalReviews": 124
     },
     {
       "critic": "Joey Sims",
@@ -1073,16 +1090,6 @@
       "totalReviews": 66
     },
     {
-      "critic": "Alix Cohen",
-      "slug": "alix-cohen",
-      "outlets": [
-        "theater-pizzazz",
-        "theater-life",
-        "woman-around-town"
-      ],
-      "totalReviews": 11
-    },
-    {
       "critic": "Ron Cohen",
       "slug": "ron-cohen",
       "outlets": [
@@ -1099,7 +1106,7 @@
         "whatsonstage",
         "theatrely"
       ],
-      "totalReviews": 147
+      "totalReviews": 148
     },
     {
       "critic": "William Wolf",
@@ -1160,15 +1167,6 @@
         "london-theatre"
       ],
       "totalReviews": 10
-    },
-    {
-      "critic": "Mary Beer",
-      "slug": "mary-beer",
-      "outlets": [
-        "londontheatre1",
-        "british-theatre"
-      ],
-      "totalReviews": 3
     },
     {
       "critic": "Matt Wolf",
@@ -1341,15 +1339,6 @@
       "totalReviews": 30
     },
     {
-      "critic": "Maryam Philpott",
-      "slug": "maryam-philpott",
-      "outlets": [
-        "thereviewshub",
-        "plays-international"
-      ],
-      "totalReviews": 12
-    },
-    {
       "critic": "Tim Bano",
       "slug": "tim-bano",
       "outlets": [
@@ -1379,6 +1368,16 @@
         "stagebiz"
       ],
       "totalReviews": 3
+    },
+    {
+      "critic": "Alix Cohen",
+      "slug": "alix-cohen",
+      "outlets": [
+        "theater-pizzazz",
+        "theater-life",
+        "woman-around-town"
+      ],
+      "totalReviews": 6
     },
     {
       "critic": "Michall Jeffers",
@@ -1547,7 +1546,7 @@
         "curtainup",
         "off-off-online"
       ],
-      "totalReviews": 19
+      "totalReviews": 20
     },
     {
       "critic": "Stuart Miller",
@@ -1723,7 +1722,7 @@
         "theater-pizzazz",
         "la-voce-di-new-york"
       ],
-      "totalReviews": 23
+      "totalReviews": 21
     },
     {
       "critic": "Philip Dorian",
@@ -1893,15 +1892,6 @@
       "outlets": [
         "guardian",
         "variety"
-      ],
-      "totalReviews": 3
-    },
-    {
-      "critic": "Roy Berko",
-      "slug": "roy-berko",
-      "outlets": [
-        "royberkinfo",
-        "broadwayworld"
       ],
       "totalReviews": 3
     },
