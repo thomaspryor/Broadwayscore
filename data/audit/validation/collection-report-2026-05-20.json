@@ -1,4 +1,55 @@
 {
+  "runDate": "2026-05-20T06:02:25.138Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 300,
+    "priority": "all",
+    "showFilter": "",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 30,
+    "failed": 679,
+    "skipped": 0,
+    "successRate": "4.2%"
+  },
+  "tierBreakdown": {
+    "playwright": 15,
+    "amp": 0,
+    "browserbase": 8,
+    "directCookies": 0,
+    "scrapingbee": 10,
+    "brightdata": 2,
+    "archiveToday": 12,
+    "archive": 5
+  },
+  "statistics": {
+    "tier1Attempts": 3,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 11,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 4,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
   "processed": [
     "the-emporium-off-broadway-2025/nytimes--jonathan-abrams.json",
     "equus-west-end-2026/timeout-london--unknown.json",
@@ -712,8 +763,7 @@
     "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
     "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
-  "skipped": [],
-  "tierBreakdown": {
+  "tierDetails": {
     "playwright": [
       "equus-west-end-2026/timeout-london--unknown.json",
       "equus-west-end-2026/independent--unknown.json",
@@ -781,78 +831,6 @@
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json"
     ]
   },
-  "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "the-miracle-worker-2010/newsday--linda-winer.json",
-  "log": [
-    {
-      "t": "2026-05-19T17:12:15.211Z",
-      "event": "bb-session",
-      "session": "2f23cef1",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-19T19:24:37.427Z",
-      "event": "bb-session",
-      "session": "4a2da626",
-      "url": "https://www.theaterscene.net/musicals/broadway/titanique-2/victor-gluck/"
-    },
-    {
-      "t": "2026-05-19T19:43:44.540Z",
-      "event": "bb-session",
-      "session": "65dff2b4",
-      "url": "http://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengarr"
-    },
-    {
-      "t": "2026-05-19T19:43:45.473Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-05-19T20:13:05.077Z",
-      "event": "bb-session",
-      "session": "b295228a",
-      "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-"
-    },
-    {
-      "t": "2026-05-19T20:13:05.707Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-05-20T00:35:27.566Z",
-      "event": "bb-session",
-      "session": "43b4d90d",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-20T00:36:27.061Z",
-      "event": "bb-session",
-      "session": "70576348",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
-    {
-      "t": "2026-05-20T01:13:03.507Z",
-      "event": "bb-session",
-      "session": "3109178a",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-20T01:14:03.030Z",
-      "event": "bb-session",
-      "session": "b1147682",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    },
-    {
-      "t": "2026-05-20T01:27:12.514Z",
-      "event": "bb-session",
-      "session": "b44749ce",
-      "url": "http://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-20T01:28:11.007Z",
-      "event": "bb-session",
-      "session": "b38c56bc",
-      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
-    }
-  ]
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
 }
