@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug } from '@/lib/data-core';
+import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
@@ -259,11 +259,17 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // Theater scorecard lookup (Broadway only)
   const theater = !isWestEnd && !isOffBroadway && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
-    { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
-    { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
-  ]);
+  const breadcrumbSchema = isOpera
+    ? generateBreadcrumbSchema([
+        { name: 'Home', url: BASE_URL },
+        { name: 'Opera', url: `${BASE_URL}/opera` },
+        { name: show.title, url: `${BASE_URL}/opera/${getOperaTitleSlug(show.slug)}` },
+      ])
+    : generateBreadcrumbSchema([
+        { name: 'Home', url: isWestEnd ? `${BASE_URL}/west-end` : isOffBroadway ? `${BASE_URL}/off-broadway` : BASE_URL },
+        { name: show.type === 'musical' ? 'Musicals' : 'Plays', url: `${BASE_URL}/browse/${getBrowseSlug(show.category, show.type)}` },
+        { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+      ]);
   const faqSchema = generateShowFAQSchema(show);
   // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
   // Google's review snippet rich result; safer than nesting reviews inside Event
@@ -364,7 +370,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       <StickyScoreHeader title={show.title} score={score} category={show.category} backHref={isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/'} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8">
-        <Breadcrumb items={[
+        <Breadcrumb items={isOpera ? [
+          { label: 'Home', href: '/' },
+          { label: 'Opera', href: '/opera' },
+          { label: show.title },
+        ] : [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
           { label: show.type === 'musical' ? 'Musicals' : 'Plays', href: `/browse/${getBrowseSlug(show.category, show.type)}` },
           { label: show.title },
