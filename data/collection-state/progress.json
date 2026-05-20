@@ -3,7 +3,37 @@
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
     "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+    "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+    "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+    "turandot-off-broadway-2025/new-york-classical-review--george-grella.json",
+    "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
+    "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "art-2025/newsday--unknown.json",
+    "art-2025/broadwayworld--unknown.json",
+    "art-2025/philadelphia-inquirer--unknown.json",
+    "art-2025/playbill--unknown.json",
+    "company-2021/theatrely--andrew-martini.json",
+    "angels-in-america-2018/latimes--unknown.json",
+    "angels-in-america-2018/playbill--unknown.json",
+    "angels-in-america-2018/time--unknown.json",
+    "angels-in-america-2018/wnyc--jennifer-vanasco.json",
+    "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "a-delicate-balance-2014/latimes--unknown.json",
+    "fences-2010/nytg--unknown.json",
+    "a-little-night-music-2009/musical-theatre-review--unknown.json",
+    "a-little-night-music-2009/broadwayworld--unknown.json",
+    "a-little-night-music-2009/latimes--unknown.json",
+    "a-little-night-music-2009/talkinbroadway--unknown.json",
+    "a-little-night-music-2009/whatsonstage--unknown.json",
+    "a-steady-rain-2009/latimes--unknown.json",
+    "a-delicate-balance-1996/hollywood-reporter--unknown.json",
+    "a-delicate-balance-1996/broadwayworld--unknown.json",
+    "a-delicate-balance-1996/playbill--unknown.json",
+    "carrie-1988/nytg--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1178,7 +1208,21 @@
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json"
+      "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "inter-alia-west-end-2026/buy-tickets-directly-from-the-theatre--unknown.json",
+      "inter-alia-west-end-2026/londontheatre1--chris-omaweng.json",
+      "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
+      "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+      "art-2025/playbill--unknown.json",
+      "angels-in-america-2018/playbill--unknown.json",
+      "angels-in-america-2018/time--unknown.json",
+      "angels-in-america-2018/wnyc--jennifer-vanasco.json",
+      "fences-2010/nytg--unknown.json",
+      "a-little-night-music-2009/musical-theatre-review--unknown.json",
+      "a-little-night-music-2009/whatsonstage--unknown.json",
+      "a-delicate-balance-1996/playbill--unknown.json",
+      "carrie-1988/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1193,14 +1237,26 @@
       "data/review-texts/care-west-end-2026/daily-echo--unknown.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
-      "data/review-texts/1536-west-end-2026/london-theatre--unknown.json"
+      "data/review-texts/1536-west-end-2026/london-theatre--unknown.json",
+      "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
+      "data/review-texts/a-delicate-balance-1996/hollywood-reporter--unknown.json",
+      "a-delicate-balance-1996/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json"
+      "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
+      "art-2025/newsday--unknown.json",
+      "art-2025/broadwayworld--unknown.json",
+      "company-2021/theatrely--andrew-martini.json",
+      "a-delicate-balance-1996/broadwayworld--unknown.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "art-2025/philadelphia-inquirer--unknown.json",
+      "a-little-night-music-2009/talkinbroadway--unknown.json",
+      "a-steady-rain-2009/latimes--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
@@ -1211,11 +1267,18 @@
       "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "turandot-off-broadway-2025/new-york-classical-review--george-grella.json",
+      "angels-in-america-2018/latimes--unknown.json",
+      "escape-to-margaritaville-2018/broadwaynews--charles-isherwood.json",
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "a-delicate-balance-2014/latimes--unknown.json",
+      "a-little-night-music-2009/broadwayworld--unknown.json",
+      "a-little-night-music-2009/latimes--unknown.json"
     ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "an-ideal-husband-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -1310,6 +1373,28 @@
       "event": "bb-session",
       "session": "0b3ed92a",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=27853"
+    },
+    {
+      "t": "2026-05-20T11:47:13.221Z",
+      "event": "bb-session",
+      "session": "ee668bc4",
+      "url": "http://theater.nytimes.com/2009/10/23/theater/reviews/23after.html?ref=theater"
+    },
+    {
+      "t": "2026-05-20T11:47:15.982Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-20T11:47:37.192Z",
+      "event": "bb-session",
+      "session": "31cc3548",
+      "url": "https://www.hollywoodreporter.com/news/general-news/a-delicate-balance-theater-r"
+    },
+    {
+      "t": "2026-05-20T11:47:40.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
