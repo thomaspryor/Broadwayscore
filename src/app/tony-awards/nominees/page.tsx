@@ -102,7 +102,7 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
     : null;
   return (
     <div className="flex-shrink-0 w-12 flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center bg-surface-elevated border border-white/8 rounded-xl w-11 py-2 gap-0.5">
+      <div className="flex flex-col items-center justify-center bg-surface-overlay rounded-xl w-12 py-2 gap-0.5">
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
         <span className={`text-[9px] font-semibold leading-none h-3 block ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '▲0%'}
