@@ -18,34 +18,24 @@ import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
-import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
-import { GOLD_LIST_MAP } from '@/config/gold-lists';
-import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
-import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
+import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
-import BoxOfficeStats from '@/components/BoxOfficeStats';
-import AwardsCard from '@/components/AwardsCard';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
-import HowThisWorks from '@/components/HowThisWorks';
-import LotteryRushCard from '@/components/LotteryRushCard';
-import ShowtimesCard from '@/components/ShowtimesCard';
-import BizBuzzCard from '@/components/BizBuzzCard';
-import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
-import RelatedShows from '@/components/RelatedShows';
+import VideoReviewsShelf from '@/components/VideoReviewsShelf';
+import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
-import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -75,34 +65,6 @@ const ShowPageWatchlistButton = dynamic(
 const ShowPageAddToListButton = dynamic(
   () => import('@/components/user/ShowPageAddToListButton'),
   { ssr: false }
-);
-
-// Group B: below-fold content — still SSR'd into static HTML (ssr:true default)
-// but JS is code-split so it doesn't count toward First Load JS.
-// loading:()=>null is the client-nav fallback only; initial load uses pre-rendered HTML.
-const SocialPulseCard = dynamic(
-  () => import('@/components/show-page/SocialPulseCard'),
-  { loading: () => null }
-);
-const WhereItRanks = dynamic(
-  () => import('@/components/show-page/WhereItRanks'),
-  { loading: () => null }
-);
-const VideoReviewsShelf = dynamic(
-  () => import('@/components/VideoReviewsShelf'),
-  { loading: () => null }
-);
-const CastSection = dynamic(
-  () => import('@/components/CastSection'),
-  { loading: () => null }
-);
-const TheaterScorecardCard = dynamic(
-  () => import('@/components/TheaterScorecardCard'),
-  { loading: () => null }
-);
-const SeatingGuidanceCard = dynamic(
-  () => import('@/components/SeatingGuidanceCard'),
-  { loading: () => null }
 );
 
 export const revalidate = 86400;
@@ -253,31 +215,6 @@ function formatDate(dateStr: string | null | undefined): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
-function MapPinIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  );
-}
-
-function GlobeIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-    </svg>
-  );
-}
-
 function TicketIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -301,10 +238,6 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
     label: tier?.label ?? 'Critical Miss',
     colorClass: getScoreTextColorClass(score, category),
   };
-}
-
-function getGoogleMapsUrl(address: string): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
 export default async function ShowPage({ params }: { params: { slug: string } }) {
@@ -376,13 +309,26 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       castActorSlugs[id] = slug;
     }
   }
-  const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = await getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
   const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
   const otherProductions = getOtherProductions(show);
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
+
+  // Pre-compute values that would require data-module imports in a client component.
+  // These are passed as serializable props to ShowPageBelowFoldLoader.
+  const currentMonday = getScheduleCurrentMonday();
+  const showtimeIds = getShowShowtimeIds(show.id);
+  const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
+  const recoupmentTrend = getRecoupmentTrend(show.slug);
+  const venueSlug = show.venue ? slugify(show.venue) : null;
+  const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
+  const creativePrincipals = featureFlags.creativePages && show.creativeTeam
+    ? show.creativeTeam
+        .filter(m => PRINCIPAL_ROLES.test(m.role))
+        .map(m => ({ name: m.name, role: m.role, link: getCreativeLink(m.name, m.role) }))
+    : [];
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema, ...criticReviewSchemas].filter(Boolean);
@@ -897,354 +843,42 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           ) : null;
         })()}
 
-        {/* Awards Scorecard */}
-        <div id="awards" className="scroll-mt-20" />
-        {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory} />}
+        <ShowPageBelowFoldLoader
+          show={show}
+          awards={awards ?? null}
+          tonyNamesByCategory={tonyNamesByCategory}
+          grosses={grosses ?? null}
+          weekEnding={weekEnding}
+          commercial={commercial}
+          recoupmentTrend={recoupmentTrend}
+          ranks={ranks}
+          ranksByFormat={ranksByFormat}
+          showSchedule={showSchedule ?? null}
+          currentMonday={currentMonday}
+          showtimeIds={showtimeIds}
+          sortedTicketLinks={sortedTicketLinks}
+          socialPulse={socialPulse}
+          theater={theater}
+          lotteryRush={lotteryRush}
+          castChangesData={castChangesData}
+          castFile={castFile}
+          castActorSlugs={castActorSlugs}
+          castTonyMap={castTonyMap}
+          creativePrincipals={creativePrincipals}
+          otherProductions={otherProductions}
+          relatedShowsOpen={relatedShowsOpen}
+          relatedShowsClosed={relatedShowsClosed}
+          comparisons={comparisons}
+          venueSlug={venueSlug}
+          isWestEnd={isWestEnd}
+          isOffBroadway={isOffBroadway}
+          isOffWestEnd={isOffWestEnd}
+          isOpera={isOpera}
+          isCuratedHistoricalShow={isCuratedHistoricalShow}
+          lastUpdated={lastUpdated}
+          score={score}
+        />
 
-        {/* Box Office Scorecard — Broadway only (no public OB/WE gross data) */}
-        <div id="box-office" className="scroll-mt-20" />
-        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
-          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
-            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
-              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Commercial Scorecard — Broadway only */}
-        <div id="commercial" className="scroll-mt-20" />
-        {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
-          commercial ? (
-            <BizBuzzCard
-              commercial={commercial}
-              showTitle={show.title}
-              trend={getRecoupmentTrend(show.slug)}
-              weeklyGross={grosses?.thisWeek?.gross}
-              showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
-              allTimeGross={grosses?.allTime?.gross}
-            />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
-              <p className="text-gray-400 text-sm">Financial data not available yet.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Gold List badges — COMMENTED OUT 2026-05-19 per user request.
-            Will re-enable when Gold Lists launch publicly. The
-            goldListMemberships data still loads (cheap), just not rendered.
-            To re-enable: uncomment this block and the import of GoldListBadge
-            stays available. */}
-        {/* {featureFlags.goldLists && goldListMemberships.length > 0 && (
-          <div className="flex gap-2 mb-3 overflow-x-auto scrollbar-hide">
-            {goldListMemberships.map(m => {
-              const listConfig = GOLD_LIST_MAP[m.listType];
-              if (!listConfig) return null;
-              return (
-                <Link
-                  key={`${m.listType}-${m.season}`}
-                  href={`/lists/${m.listType}/${m.season}`}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap flex-shrink-0 ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
-                >
-                  <GoldListBadge type={m.listType} size="xs" />
-                  <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
-                  <span className="text-gray-500">({m.season})</span>
-                </Link>
-              );
-            })}
-          </div>
-        )} */}
-
-        {/* Where it ranks */}
-        <div id="where-it-ranks" className="scroll-mt-20" />
-        {featureFlags.showRanks && (ranks || ranksByFormat) && (
-          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
-        )}
-
-        {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
-        <div id="showtimes" className="scroll-mt-20" />
-        {showSchedule &&
-          (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
-          <ShowtimesCard
-            schedule={showSchedule}
-            currentMonday={getScheduleCurrentMonday()}
-            showStatus={show.status}
-            ticketLinks={sortedTicketLinks}
-            todaytixShowtimes={getShowShowtimeIds(show.id)}
-            showName={show.title}
-            showId={show.id}
-            showSlug={show.slug}
-            market={show.category}
-          />
-        )}
-
-        {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
-        <div id="social-buzz" className="scroll-mt-20" />
-        <SocialPulseCard sp={socialPulse} />
-
-        {/* Theater Scorecard */}
-        <div id="theater-scorecard" className="scroll-mt-20" />
-        {theater?.venueScores && (
-          <TheaterScorecardCard
-            venueScores={theater.venueScores}
-            accessibility={theater.accessibility}
-            externalLinks={theater.externalLinks}
-            theaterName={theater.name}
-            theaterSlug={theater.slug}
-          />
-        )}
-
-        {/* Seating Scorecard — directly under Theater Scorecard */}
-        <div id="seating-scorecard" className="scroll-mt-20" />
-        {theater && (
-          <SeatingGuidanceCard
-            sections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-            variant="show"
-          />
-        )}
-
-        {/* Discount Tickets (Lottery / Rush / Standing Room) */}
-        <div id="discount-tickets" className="scroll-mt-20" />
-        {featureFlags.discountTickets && lotteryRush && (() => {
-          // Don't show until previews have started
-          if (show.previewsStartDate) {
-            const previewsStart = new Date(show.previewsStartDate);
-            const today = new Date();
-            if (today < previewsStart) return null;
-          }
-          return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
-        })()}
-
-        {/* Cast Updates */}
-        <div id="cast-updates" className="scroll-mt-20" />
-        {featureFlags.castChanges && castChangesData && (
-          <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
-        )}
-
-        {/* Cast — OBC and current cast from IBDB */}
-        <div id="cast" className="scroll-mt-20" />
-        {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-          <CastSection
-            openingNightCast={castFile.openingNightCast}
-            currentCast={castFile.currentCast}
-            currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
-            replacements={castFile.replacements}
-            showStatus={show.status}
-            category={show.category}
-            actorSlugs={castActorSlugs}
-            tonyMap={getShowCastTonyMap(show.id)}
-          />
-        )}
-
-        {/* Creative Team — principal roles only */}
-        <div id="creative-team" className="scroll-mt-20" />
-        {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (() => {
-          const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
-          const principals = show.creativeTeam.filter(m => PRINCIPAL_ROLES.test(m.role));
-          return principals.length > 0 ? (
-          <div className="mb-8">
-            <div className="card p-5 sm:p-6">
-              <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0 mb-4">Creative Team</h2>
-              <ul className="space-y-2.5 sm:space-y-2">
-                {principals.map((member, i) => {
-                  const creativeLink = getCreativeLink(member.name, member.role);
-                  return (
-                  <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
-                    {featureFlags.creativePages && creativeLink ? (
-                      <Link href={creativeLink} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
-                    ) : (
-                      <span className="text-white font-medium">{member.name}</span>
-                    )}
-                    <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">{member.role}</span>
-                  </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-          ) : null;
-        })()}
-
-        {/* Quick Facts - Structured data for users and AI systems */}
-        <section className="card p-5 sm:p-6 mb-8" aria-labelledby="quick-facts-heading">
-          <header className="mb-4">
-            <h2 id="quick-facts-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Quick Facts</h2>
-          </header>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
-            {/* Key metrics first for AI extractability */}
-            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0), isCuratedHistoricalShow) && (
-              <div>
-                <dt className="text-gray-500">CriticScore</dt>
-                <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>
-              </div>
-            )}
-            <div>
-              <dt className="text-gray-500">Status</dt>
-              <dd className="text-white mt-0.5">
-                {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-gray-500">{show.status === 'previews' || show.status === 'upcoming' ? 'Opens' : 'Opened'}</dt>
-              <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
-            </div>
-            {show.previewsStartDate && (show.status === 'previews' || show.status === 'upcoming') && (
-              <div>
-                <dt className="text-gray-500">Previews Start</dt>
-                <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>
-              </div>
-            )}
-            {show.closingDate && (
-              <div>
-                <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
-                <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
-              </div>
-            )}
-            {show.status === 'closed' && (() => {
-              const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
-              return runLen ? (
-                <div>
-                  <dt className="text-gray-500">Run Length</dt>
-                  <dd className="text-white mt-0.5">{runLen}</dd>
-                </div>
-              ) : null;
-            })()}
-            {show.status === 'open' && (() => {
-              const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
-              const dur = getBroadwayDuration(show.openingDate, durationSuffix);
-              return dur ? (
-                <div>
-                  <dt className="text-gray-500">Running</dt>
-                  <dd className="text-white mt-0.5">{dur}</dd>
-                </div>
-              ) : null;
-            })()}
-            <div>
-              <dt className="text-gray-500">Runtime</dt>
-              <dd className="text-white mt-0.5">{show.runtime}</dd>
-            </div>
-            {show.intermissions !== undefined && show.intermissions !== null && (
-              <div>
-                <dt className="text-gray-500">Intermissions</dt>
-                <dd className="text-white mt-0.5">{show.intermissions}</dd>
-              </div>
-            )}
-            {show.ageRecommendation && (
-              <div>
-                <dt className="text-gray-500">Age</dt>
-                <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
-              </div>
-            )}
-            <div className="sm:col-span-2">
-              <dt className="text-gray-500">{isWestEnd ? 'Theatre' : 'Theater'}</dt>
-              <dd className="text-white mt-0.5">
-                {isWestEnd ? (
-                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
-                ) : isOffBroadway ? (
-                  <span>{show.venue}</span>
-                ) : (
-                  <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
-                )}
-                {show.theaterAddress && (
-                  <>
-                    {' — '}
-                    <a
-                      href={getGoogleMapsUrl(show.theaterAddress)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-gray-400 hover:text-brand transition-colors"
-                    >
-                      <MapPinIcon />
-                      {show.theaterAddress}
-                    </a>
-                  </>
-                )}
-              </dd>
-            </div>
-            {show.synopsis && (
-              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-                <dt className="text-gray-500">Synopsis</dt>
-                <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
-              </div>
-            )}
-            {lastUpdated && (
-              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-                <dt className="text-gray-500">Data Last Updated</dt>
-                <dd className="text-gray-400 mt-0.5 text-xs">
-                  {new Date(lastUpdated).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </dd>
-              </div>
-            )}
-          </dl>
-        </section>
-
-        {/* Other Productions of the same show */}
-        {otherProductions.length > 0 && (
-          <section className="mt-8 pt-6 border-t border-white/5">
-            <h2 className="text-base font-bold text-white mb-3">Other Productions of {show.title}</h2>
-            <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-              {otherProductions.map(prod => {
-                const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
-                const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
-                const yearRange = openYear
-                  ? closeYear && closeYear !== openYear
-                    ? `${openYear}\u2013${String(closeYear).slice(-2)}`
-                    : String(openYear)
-                  : null;
-                const market = getMarketLabel(prod.category ?? 'broadway');
-                const subtitle = [market, yearRange].filter(Boolean).join(' · ');
-                const subtitleColor = prod.status === 'open' || prod.status === 'previews' ? 'text-emerald-400' : 'text-gray-400';
-                return (
-                  <MiniShowCard
-                    key={prod.id}
-                    show={{ ...prod as unknown as import('@/components/show-cards/types').ShowCardShow, subtitle, subtitleColor }}
-                  />
-                );
-              })}
-            </div>
-          </section>
-        )}
-
-        {/* Related Shows */}
-        <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
-        {show.category !== 'west-end' && show.category !== 'off-west-end' && (
-          <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
-        )}
-
-        {/* Compare This Show */}
-        {comparisons.length > 0 && (
-          <div className="mt-4 text-sm text-gray-400">
-            <span className="text-gray-500">Compare: </span>
-            {comparisons.slice(0, 6).map((comp, i) => (
-              <span key={comp.slug}>
-                {i > 0 && <span className="text-gray-600"> · </span>}
-                <Link href={`/compare/${comp.slug}`} className="text-gray-400 hover:text-white transition-colors">
-                  vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
-                </Link>
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Subtle page-bottom methodology link. Covers all the scoring
-            systems on the page (CriticScore, AudienceGrade, AwardScore)
-            via the shared /methodology page. The verbose in-page accordion
-            was replaced — too redundant with the per-card "How this score
-            works" links and the dedicated methodology page. */}
-        <p className="mt-8 text-center text-xs text-gray-500">
-          <Link href="/methodology" className="hover:text-brand-hover transition-colors">
-            Learn how our scores work →
-          </Link>
-        </p>
       </div>
 
       {/* Follow Show Banner */}
