@@ -5,7 +5,9 @@
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
+import { featureFlags } from '@/config/feature-flags';
 import {
   getSeasonsWithCommercialData,
   getSeasonStats,
@@ -136,6 +138,8 @@ function generateRecentDevelopments(): DevelopmentItem[] {
 }
 
 export default function BizDashboard() {
+  if (!featureFlags.commercial) notFound();
+
   // Get data for all sections
   // Dynamically get seasons with commercial data (most recent first)
   const allSeasons = getSeasonsWithCommercialData();

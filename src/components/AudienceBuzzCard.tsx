@@ -168,7 +168,7 @@ export default function AudienceBuzzCard({
   return (
     <section
       id="audience"
-      className="card p-5 sm:p-6 mb-8"
+      className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8"
       aria-labelledby="audience-scorecard-heading"
     >
       {/* Header: eyebrow on left, lowercase meta count on right */}
@@ -238,10 +238,10 @@ export default function AudienceBuzzCard({
           Uses next/link for client-side navigation (a plain <a> works too
           but does a full page reload). */}
       {audienceBuzzHref && (
-        <div className="mt-4 pt-3.5 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
+        <div className="mt-1.5 -mb-1 sm:-mb-2 flex items-center justify-between gap-4 flex-wrap">
           <Link
             href={audienceBuzzHref}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-hover transition-colors group"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
           >
             <span>See all audience scores</span>
             <span

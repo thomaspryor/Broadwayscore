@@ -18,34 +18,22 @@ import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
 import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
-import { getShowSeasonGoldLists } from '@/lib/data-gold-list-badges';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
-import { GOLD_LIST_MAP } from '@/config/gold-lists';
-import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { featureFlags } from '@/config/feature-flags';
 import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
-import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
+import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
-import BoxOfficeStats from '@/components/BoxOfficeStats';
-import AwardsCard from '@/components/AwardsCard';
-import AudienceBuzzCard from '@/components/AudienceBuzzCard';
-import HowThisWorks from '@/components/HowThisWorks';
-import LotteryRushCard from '@/components/LotteryRushCard';
-import ShowtimesCard from '@/components/ShowtimesCard';
-import BizBuzzCard from '@/components/BizBuzzCard';
-import CastUpdatesCard from '@/components/CastUpdatesCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
-import RelatedShows from '@/components/RelatedShows';
+import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
-import MiniShowCard from '@/components/show-cards/MiniShowCard';
 import { hasEnoughReviews, reviewsRemainingForScore } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -75,34 +63,6 @@ const ShowPageWatchlistButton = dynamic(
 const ShowPageAddToListButton = dynamic(
   () => import('@/components/user/ShowPageAddToListButton'),
   { ssr: false }
-);
-
-// Group B: below-fold content — still SSR'd into static HTML (ssr:true default)
-// but JS is code-split so it doesn't count toward First Load JS.
-// loading:()=>null is the client-nav fallback only; initial load uses pre-rendered HTML.
-const SocialPulseCard = dynamic(
-  () => import('@/components/show-page/SocialPulseCard'),
-  { loading: () => null }
-);
-const WhereItRanks = dynamic(
-  () => import('@/components/show-page/WhereItRanks'),
-  { loading: () => null }
-);
-const VideoReviewsShelf = dynamic(
-  () => import('@/components/VideoReviewsShelf'),
-  { loading: () => null }
-);
-const CastSection = dynamic(
-  () => import('@/components/CastSection'),
-  { loading: () => null }
-);
-const TheaterScorecardCard = dynamic(
-  () => import('@/components/TheaterScorecardCard'),
-  { loading: () => null }
-);
-const SeatingGuidanceCard = dynamic(
-  () => import('@/components/SeatingGuidanceCard'),
-  { loading: () => null }
 );
 
 export const revalidate = 86400;
@@ -253,31 +213,6 @@ function formatDate(dateStr: string | null | undefined): string {
   return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
 }
 
-function MapPinIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  );
-}
-
-function PlayIcon() {
-  return (
-    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  );
-}
-
-function GlobeIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-    </svg>
-  );
-}
-
 function TicketIcon() {
   return (
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -301,10 +236,6 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
     label: tier?.label ?? 'Critical Miss',
     colorClass: getScoreTextColorClass(score, category),
   };
-}
-
-function getGoogleMapsUrl(address: string): string {
-  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }
 
 export default async function ShowPage({ params }: { params: { slug: string } }) {
@@ -376,13 +307,33 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       castActorSlugs[id] = slug;
     }
   }
-  const goldListMemberships = getShowSeasonGoldLists(show.id);
   const blogReview = await getBlogReviewByShowSlug(show.slug);
   const relatedShowsOpen = getRelatedShowsOpen(show);
   const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end') ? getRelatedShowsClosed(show) : [];
   const otherProductions = getOtherProductions(show);
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
+
+  // Pre-compute values that would require data-module imports in a client component.
+  // These are passed as serializable props to ShowPageBelowFoldLoader.
+  const audienceShowScoreUrl = audienceBuzz?.sources.showScore ? getShowScoreUrl(show.id) : undefined;
+  const audiencePlatformUrls: Record<string, string> = audienceBuzz ? Object.fromEntries(
+    Object.keys(audienceBuzz.sources)
+      .filter(k => k !== 'showScore')
+      .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
+      .filter((entry): entry is [string, string] => entry[1] != null)
+  ) : {};
+  const currentMonday = getScheduleCurrentMonday();
+  const showtimeIds = getShowShowtimeIds(show.id);
+  const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
+  const recoupmentTrend = getRecoupmentTrend(show.slug);
+  const venueSlug = show.venue ? slugify(show.venue) : null;
+  const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
+  const creativePrincipals = featureFlags.creativePages && show.creativeTeam
+    ? show.creativeTeam
+        .filter(m => PRINCIPAL_ROLES.test(m.role))
+        .map(m => ({ name: m.name, role: m.role, link: getCreativeLink(m.name, m.role) }))
+    : [];
 
   // Combine schemas, filtering out null FAQ schema
   const schemas = [showSchema, breadcrumbSchema, faqSchema, ...criticReviewSchemas].filter(Boolean);
@@ -663,14 +614,16 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             );
           })()}
 
-          {/* Critics' Take - inline below the poster/score row */}
+          {/* Critics' Take — inline below the score row, no border/card chrome.
+              Matches the redesign hero treatment so the consensus reads as a
+              continuous block with whatever sits above it. */}
           {consensus && show.criticScore ? (
-            <div className="mt-4 pt-4 border-t border-white/5">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Critics&apos; Take</p>
+            <div className="mt-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
               <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
             </div>
           ) : show.synopsis ? (
-            <p className="text-gray-400 text-sm leading-relaxed mt-4 pt-4 border-t border-white/5">
+            <p className="text-gray-400 text-sm leading-relaxed mt-3">
               {show.synopsis}
             </p>
           ) : null}
@@ -721,26 +674,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         </div>
         </RedesignOff>
 
-        {/* Gold List Badges */}
-        {featureFlags.goldLists && goldListMemberships.length > 0 && (
-          <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
-            {goldListMemberships.map(m => {
-              const listConfig = GOLD_LIST_MAP[m.listType];
-              if (!listConfig) return null;
-              return (
-                <Link
-                  key={`${m.listType}-${m.season}`}
-                  href={`/lists/${m.listType}/${m.season}`}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap flex-shrink-0 ${listConfig.bgClass} ${listConfig.color} border ${listConfig.borderClass} hover:brightness-125 transition-all`}
-                >
-                  <GoldListBadge type={m.listType} size="xs" />
-                  <span>{listConfig.shortTitle} Gold List #{m.rank}</span>
-                  <span className="text-gray-500">({m.season})</span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        {/* Gold List Badges moved down to just above the "Where it ranks"
+            card per UX ordering 2026-05-17. They sit better next to the
+            ranks data (both convey leaderboard position) than between the
+            hero and Critic Reviews. */}
 
         {/* Historical Production banner — for old closed shows with no reviews */}
         {show.status === 'closed' && (!show.criticScore || show.criticScore.reviewCount === 0) && (() => {
@@ -782,38 +719,22 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </Link>
         )}
 
-        {/* Section Jump Links — hidden by default, re-enable via sectionJumpLinks feature flag */}
-        {featureFlags.sectionJumpLinks && (
-        <nav className="flex flex-wrap gap-2 mb-6 text-xs" aria-label="Page sections">
-          {show.criticScore && show.criticScore.reviews.length > 0 && (
-            <a href="#critic-reviews" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Reviews</a>
-          )}
-          {audienceBuzz && audienceBuzz.combinedScore != null && (
-            <a href="#audience" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Audience</a>
-          )}
-          <AwardsNavLink hasAwards={!!awards} />
-          {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && grosses && (
-            <a href="#box-office" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Box Office</a>
-          )}
-          {featureFlags.discountTickets && lotteryRush && (
-            <a href="#discount-tickets" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Tickets</a>
-          )}
-          {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (
-            <a href="#creative-team" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Creative</a>
-          )}
-          {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-            <a href="#cast" className="inline-flex items-center px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white leading-none transition-colors">Cast</a>
-          )}
-        </nav>
-        )}
+        {/* Section Jump Links removed entirely 2026-05-19 per user feedback —
+            the pill row took ~80px of mobile vertical for an affordance most
+            users skip in favor of scrolling. featureFlags.sectionJumpLinks
+            is now effectively dead; leaving the flag in place in case we
+            revisit, but no surface renders it. */}
 
-        {/* Critic Reviews */}
+        {/* Critic Reviews / Scorecard */}
         {show.criticScore && show.criticScore.reviews.length > 0 ? (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-lg font-bold text-white">Critic Reviews</h2>
-              <span className="text-sm text-gray-400 font-medium">{show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}</span>
-            </div>
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading">
+            {/* Unified scorecard chrome: eyebrow + lowercase meta count */}
+            <header className="flex items-center justify-between gap-3 mb-4">
+              <h2 id="critic-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+                {show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'}
+              </span>
+            </header>
 
             {/* Breakdown bar — shown when redesign moves it out of the header card */}
             {show.criticScore?.reviews && show.criticScore.reviews.length > 0 && (
@@ -831,387 +752,97 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
             }))} initialCount={5} category={show.category} />
-          </div>
+
+            {/* Subtle in-card methodology link — explains how CriticScore is
+                computed without a verbose accordion. Links to the same
+                methodology page the page-footer link uses. */}
+            <p className="mt-4 pt-3 border-t border-white/5 text-xs text-gray-500">
+              <Link href="/methodology" className="hover:text-brand-hover transition-colors">
+                How this score works →
+              </Link>
+            </p>
+          </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-pending">
+            <header className="flex items-center justify-between gap-3 mb-3">
+              <h2 id="critic-scorecard-heading-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">tbd</span>
+            </header>
             <p className="text-gray-400 text-sm">
               Reviews coming after {isWestEnd ? 'press night' : 'opening night'}: <span className="text-white font-medium">{formatDate(show.openingDate)}</span>
             </p>
-          </div>
+          </section>
         ) : (
-          <div id="critic-reviews" className="card p-5 sm:p-6 mb-8 scroll-mt-20">
-            <h2 className="text-lg font-bold text-white mb-3">Critic Reviews</h2>
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-archived">
+            <header className="flex items-center justify-between gap-3 mb-3">
+              <h2 id="critic-scorecard-heading-archived" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+            </header>
             <p className="text-gray-400 text-sm">
               Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.
             </p>
-          </div>
-        )}
-
-        {/* Audience Buzz Section - below Critic Reviews */}
-        <div id="audience" className="scroll-mt-20" />
-        {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
-          // Minimum 5 total reviews across all sources to display
-          const totalReviews = Object.values(audienceBuzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
-          return totalReviews >= 5;
-        })() ? (() => {
-          const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;
-          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
-          const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
-          return (
-            <AudienceBuzzCard
-              buzz={audienceBuzz}
-              showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
-              limitedSources={isHistorical && sourceCount <= 1}
-              market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
-              platformUrls={Object.fromEntries(
-                Object.keys(audienceBuzz.sources)
-                  .filter(k => k !== 'showScore')
-                  .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
-                  .filter((entry): entry is [string, string] => entry[1] != null)
-              )}
-              ranks={ranks}
-            />
-          );
-        })() : show.status === 'previews' || show.status === 'upcoming' ? (
-          <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Audience Grade</h2>
-            <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
-          </section>
-        ) : show.status === 'closed' && (() => {
-          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
-          const isPreDigital = showYear !== null && showYear < 2015;
-          return isPreDigital ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
-              <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
-            </section>
-          ) : null;
-        })()}
-
-        {/* Video Reviews — below Audience Grade, behind feature flag */}
-        {featureFlags.videoReviews && videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} />
-        )}
-
-        {/* Showtimes — all markets (Broadway via bwayrush, WE/OB via TodayTix) */}
-        <div id="showtimes" className="scroll-mt-20" />
-        {showSchedule &&
-          (show.status === 'open' || show.status === 'previews' || show.status === 'upcoming') && (
-          <ShowtimesCard
-            schedule={showSchedule}
-            currentMonday={getScheduleCurrentMonday()}
-            showStatus={show.status}
-            ticketLinks={sortedTicketLinks}
-            todaytixShowtimes={getShowShowtimeIds(show.id)}
-            showName={show.title}
-            showId={show.id}
-            showSlug={show.slug}
-            market={show.category}
-          />
-        )}
-
-        {/* Where it ranks — directly under Showtimes per UX ordering 2026-05-16.
-            Flag-gated; ranks value is null when featureFlags.showRanks is off, so the
-            component renders nothing in flag-off mode. */}
-        {featureFlags.showRanks && (ranks || ranksByFormat) && (
-          <WhereItRanks ranks={ranks} ranksByFormat={ranksByFormat} show={show} />
-        )}
-
-        {/* Box Office Stats — Broadway only (no public OB/WE gross data) */}
-        <div id="box-office" className="scroll-mt-20" />
-        {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
-          grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
-            <BoxOfficeStats grosses={grosses} weekEnding={weekEnding} />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Box Office</h2>
-              <p className="text-gray-400 text-sm">Box office data starts one week after previews begin.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Social Buzz — weekly X+TikTok+Instagram mention tiering */}
-        <div id="social-buzz" className="scroll-mt-20" />
-        <SocialPulseCard sp={socialPulse} />
-
-        {/* Theater Scorecard — moved below Social per UX ordering 2026-05-16 */}
-        {theater?.venueScores && (
-          <TheaterScorecardCard
-            venueScores={theater.venueScores}
-            accessibility={theater.accessibility}
-            externalLinks={theater.externalLinks}
-            theaterName={theater.name}
-            theaterSlug={theater.slug}
-          />
-        )}
-
-        {/* Seating Chart Scorecard — directly under Theater Scorecard */}
-        {theater && (
-          <SeatingGuidanceCard
-            sections={theater.structuredTips?.seating?.sections}
-            bestSeats={theater.structuredTips?.seating?.bestSeats}
-            variant="show"
-          />
-        )}
-
-        {/* Lottery/Rush Tickets */}
-        <div id="discount-tickets" className="scroll-mt-20" />
-        {featureFlags.discountTickets && lotteryRush && (() => {
-          // Don't show until previews have started
-          if (show.previewsStartDate) {
-            const previewsStart = new Date(show.previewsStartDate);
-            const today = new Date();
-            if (today < previewsStart) return null;
-          }
-          return <LotteryRushCard data={lotteryRush} showStatus={show.status} showCategory={show.category} />;
-        })()}
-
-        {/* Awards */}
-        <div id="awards" className="scroll-mt-20" />
-        {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory} />}
-
-        {/* Commercial Scorecard — Broadway only */}
-        {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
-          commercial ? (
-            <BizBuzzCard
-              commercial={commercial}
-              showTitle={show.title}
-              trend={getRecoupmentTrend(show.slug)}
-              weeklyGross={grosses?.thisWeek?.gross}
-              showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
-              allTimeGross={grosses?.allTime?.gross}
-            />
-          ) : show.status === 'previews' || show.status === 'upcoming' ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-lg font-bold text-white mb-3">Commercial Performance</h2>
-              <p className="text-gray-400 text-sm">Financial data not available yet.</p>
-            </section>
-          ) : null
-        )}
-
-        {/* Cast Updates - below Lottery/Rush */}
-        {featureFlags.castChanges && castChangesData && (
-          <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
-        )}
-
-        {/* Creative Team — show only principal roles */}
-        <div id="creative-team" className="scroll-mt-20" />
-        {featureFlags.creativePages && show.creativeTeam && show.creativeTeam.length > 0 && (() => {
-          const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
-          const principals = show.creativeTeam.filter(m => PRINCIPAL_ROLES.test(m.role));
-          return principals.length > 0 ? (
-          <div className="mb-8">
-            <div className="card p-5 sm:p-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Creative Team</h2>
-              <ul className="space-y-2.5 sm:space-y-2">
-                {principals.map((member, i) => {
-                  const creativeLink = getCreativeLink(member.name, member.role);
-                  return (
-                  <li key={i} className="flex flex-col sm:flex-row sm:items-baseline text-sm gap-0.5 sm:gap-0">
-                    {featureFlags.creativePages && creativeLink ? (
-                      <Link href={creativeLink} className="text-white font-medium hover:text-brand transition-colors">{member.name}</Link>
-                    ) : (
-                      <span className="text-white font-medium">{member.name}</span>
-                    )}
-                    <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">{member.role}</span>
-                  </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-          ) : null;
-        })()}
-
-        {/* Cast — OBC and current cast from IBDB */}
-        <div id="cast" className="scroll-mt-20" />
-        {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-          <CastSection
-            openingNightCast={castFile.openingNightCast}
-            currentCast={castFile.currentCast}
-            currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
-            replacements={castFile.replacements}
-            showStatus={show.status}
-            category={show.category}
-            actorSlugs={castActorSlugs}
-            tonyMap={getShowCastTonyMap(show.id)}
-          />
-        )}
-
-        {/* Quick Facts - Structured data for users and AI systems */}
-        <div className="card p-4 sm:p-5 mb-8">
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Quick Facts</h2>
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
-            {/* Key metrics first for AI extractability */}
-            {score && show.criticScore && hasEnoughReviews(show.criticScore.reviewCount, show.category, (show.criticScore.tier1Count || 0) + (show.criticScore.tier2Count || 0), isCuratedHistoricalShow) && (
-              <div>
-                <dt className="text-gray-500">CriticScore</dt>
-                <dd className="text-white mt-0.5 font-semibold">{Math.round(score)}/100 <span className="font-normal text-gray-400">({show.criticScore.reviewCount} {show.criticScore.reviewCount === 1 ? 'review' : 'reviews'})</span></dd>
-              </div>
-            )}
-            <div>
-              <dt className="text-gray-500">Status</dt>
-              <dd className="text-white mt-0.5">
-                {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : 'Closed'}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-gray-500">{show.status === 'previews' || show.status === 'upcoming' ? 'Opens' : 'Opened'}</dt>
-              <dd className="text-white mt-0.5">{formatDate(show.openingDate)}</dd>
-            </div>
-            {show.previewsStartDate && (show.status === 'previews' || show.status === 'upcoming') && (
-              <div>
-                <dt className="text-gray-500">Previews Start</dt>
-                <dd className="text-white mt-0.5">{formatDate(show.previewsStartDate)}</dd>
-              </div>
-            )}
-            {show.closingDate && (
-              <div>
-                <dt className="text-gray-500">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
-                <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
-              </div>
-            )}
-            {show.status === 'closed' && (() => {
-              const runLen = getRunLength(show.openingDate, show.closingDate, 'precise');
-              return runLen ? (
-                <div>
-                  <dt className="text-gray-500">Run Length</dt>
-                  <dd className="text-white mt-0.5">{runLen}</dd>
-                </div>
-              ) : null;
-            })()}
-            {show.status === 'open' && (() => {
-              const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : 'on Broadway';
-              const dur = getBroadwayDuration(show.openingDate, durationSuffix);
-              return dur ? (
-                <div>
-                  <dt className="text-gray-500">Running</dt>
-                  <dd className="text-white mt-0.5">{dur}</dd>
-                </div>
-              ) : null;
-            })()}
-            <div>
-              <dt className="text-gray-500">Runtime</dt>
-              <dd className="text-white mt-0.5">{show.runtime}</dd>
-            </div>
-            {show.intermissions !== undefined && show.intermissions !== null && (
-              <div>
-                <dt className="text-gray-500">Intermissions</dt>
-                <dd className="text-white mt-0.5">{show.intermissions}</dd>
-              </div>
-            )}
-            {show.ageRecommendation && (
-              <div>
-                <dt className="text-gray-500">Age</dt>
-                <dd className="text-white mt-0.5">{show.ageRecommendation}</dd>
-              </div>
-            )}
-            <div className="sm:col-span-2">
-              <dt className="text-gray-500">{isWestEnd ? 'Theatre' : 'Theater'}</dt>
-              <dd className="text-white mt-0.5">
-                {isWestEnd ? (
-                  <Link href={`/west-end/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
-                ) : isOffBroadway ? (
-                  <span>{show.venue}</span>
-                ) : (
-                  <Link href={`/theater/${slugify(show.venue)}`} className="hover:text-brand transition-colors">{show.venue}</Link>
-                )}
-                {show.theaterAddress && (
-                  <>
-                    {' — '}
-                    <a
-                      href={getGoogleMapsUrl(show.theaterAddress)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-gray-400 hover:text-brand transition-colors"
-                    >
-                      <MapPinIcon />
-                      {show.theaterAddress}
-                    </a>
-                  </>
-                )}
-              </dd>
-            </div>
-            {show.synopsis && (
-              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-                <dt className="text-gray-500">Synopsis</dt>
-                <dd className="text-gray-300 mt-1 leading-relaxed">{show.synopsis}</dd>
-              </div>
-            )}
-            {lastUpdated && (
-              <div className="sm:col-span-2 pt-2 mt-2 border-t border-white/5">
-                <dt className="text-gray-500">Data Last Updated</dt>
-                <dd className="text-gray-400 mt-0.5 text-xs">
-                  {new Date(lastUpdated).toLocaleDateString('en-US', {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}
-                </dd>
-              </div>
-            )}
-          </dl>
-        </div>
-
-        {/* Other Productions of the same show */}
-        {otherProductions.length > 0 && (
-          <section className="mt-8 pt-6 border-t border-white/5">
-            <h2 className="text-base font-bold text-white mb-3">Other Productions of {show.title}</h2>
-            <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
-              {otherProductions.map(prod => {
-                const openYear = prod.openingDate ? new Date(prod.openingDate + 'T12:00:00').getFullYear() : null;
-                const closeYear = prod.closingDate ? new Date(prod.closingDate + 'T12:00:00').getFullYear() : null;
-                const yearRange = openYear
-                  ? closeYear && closeYear !== openYear
-                    ? `${openYear}\u2013${String(closeYear).slice(-2)}`
-                    : String(openYear)
-                  : null;
-                const market = getMarketLabel(prod.category ?? 'broadway');
-                const subtitle = [market, yearRange].filter(Boolean).join(' · ');
-                const subtitleColor = prod.status === 'open' || prod.status === 'previews' ? 'text-emerald-400' : 'text-gray-400';
-                return (
-                  <MiniShowCard
-                    key={prod.id}
-                    show={{ ...prod as unknown as import('@/components/show-cards/types').ShowCardShow, subtitle, subtitleColor }}
-                  />
-                );
-              })}
-            </div>
           </section>
         )}
 
-        {/* Related Shows */}
-        <RelatedShows shows={relatedShowsOpen} title="Open Shows You Might Like" />
-        {show.category !== 'west-end' && show.category !== 'off-west-end' && (
-          <RelatedShows shows={relatedShowsClosed} title="Closed Shows You Might Like" />
-        )}
+        {/* === SECTION ORDERING ===
+            ABOVE FOLD (server component):
+              1. Critic Reviews
+            BELOW FOLD (ShowPageBelowFold lazy chunk):
+              2. Video Reviews
+              3. Audience Scorecard
+              4. Awards Scorecard
+              5. Box Office Scorecard
+              6. Commercial Scorecard
+              7. Where it ranks
+              8. Showtimes
+              9. Socials Scorecard
+             10. Theater Scorecard
+             11. Seating Scorecard
+             12. Discount Tickets
+             13. Cast Updates
+             14. Cast
+             15. Creative Team
+             16. Quick Facts                                                  */}
 
-        {/* Compare This Show */}
-        {comparisons.length > 0 && (
-          <div className="mt-4 text-sm text-gray-400">
-            <span className="text-gray-500">Compare: </span>
-            {comparisons.slice(0, 6).map((comp, i) => (
-              <span key={comp.slug}>
-                {i > 0 && <span className="text-gray-600"> · </span>}
-                <Link href={`/compare/${comp.slug}`} className="text-gray-400 hover:text-white transition-colors">
-                  vs {comp.otherSlug.replace(/-\d{4}$/, '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
-                </Link>
-              </span>
-            ))}
-          </div>
-        )}
+        <ShowPageBelowFoldLoader
+          show={show}
+          videoReviews={videoReviews}
+          audienceBuzz={audienceBuzz}
+          audienceShowScoreUrl={audienceShowScoreUrl}
+          audiencePlatformUrls={audiencePlatformUrls}
+          awards={awards ?? null}
+          tonyNamesByCategory={tonyNamesByCategory}
+          grosses={grosses ?? null}
+          weekEnding={weekEnding}
+          commercial={commercial}
+          recoupmentTrend={recoupmentTrend}
+          ranks={ranks}
+          ranksByFormat={ranksByFormat}
+          showSchedule={showSchedule ?? null}
+          currentMonday={currentMonday}
+          showtimeIds={showtimeIds}
+          sortedTicketLinks={sortedTicketLinks}
+          socialPulse={socialPulse}
+          theater={theater}
+          lotteryRush={lotteryRush}
+          castChangesData={castChangesData}
+          castFile={castFile}
+          castActorSlugs={castActorSlugs}
+          castTonyMap={castTonyMap}
+          creativePrincipals={creativePrincipals}
+          otherProductions={otherProductions}
+          relatedShowsOpen={relatedShowsOpen}
+          relatedShowsClosed={relatedShowsClosed}
+          comparisons={comparisons}
+          venueSlug={venueSlug}
+          isWestEnd={isWestEnd}
+          isOffBroadway={isOffBroadway}
+          isOffWestEnd={isOffWestEnd}
+          isOpera={isOpera}
+          isCuratedHistoricalShow={isCuratedHistoricalShow}
+          lastUpdated={lastUpdated}
+          score={score}
+        />
 
-        {/* How Scores Work */}
-        <HowThisWorks heading="How This Score Works" className="mt-6">
-          <p>
-            The CriticScore is a weighted average of professional critic reviews.
-            {isWestEnd
-              ? ' Top-tier outlets (The Guardian, The Times, The Telegraph) carry more weight than smaller publications.'
-              : ' Top-tier outlets (NYT, Vulture, Variety) carry more weight than smaller publications.'}
-            {' '}Each review is scored 0&ndash;100 based on the critic&apos;s language and explicit ratings.
-          </p>
-        </HowThisWorks>
       </div>
 
       {/* Follow Show Banner */}

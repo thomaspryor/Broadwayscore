@@ -46,16 +46,21 @@ interface RowDef {
 const ROWS: RowDef[] = [
   { metric: 'critic', label: 'CriticScore' },
   { metric: 'audience', label: 'AudienceGrade' },
-  { metric: 'awards', label: 'Awards Score', notApplicableHint: 'Awards Score is Broadway-only for now' },
+  { metric: 'awards', label: 'Awards Score', notApplicableHint: "Award data isn't tracked for this market" },
   { metric: 'boxOffice', label: 'Box Office', notApplicableHint: "Box-office data isn't tracked for this market" },
   { metric: 'overall', label: 'Overall' },
 ];
 
 export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   // Default to the show's own format if one is available. Falls back to 'all'
-  // for Specials / Limited Engagements where ranksByFormat is null.
+  // for Limited Engagements where ranksByFormat is null.
   const ownFormatAvailable = ranksByFormat !== null && (show.type === 'musical' || show.type === 'play');
   const [choice, setChoice] = useState<FormatChoice>(ownFormatAvailable ? 'own' : 'all');
+
+  // Specials (concerts, magic shows, one-off events) and operas don't compare
+  // meaningfully against a musical/play pool — skip the whole card. Placed
+  // after useState to keep hooks-order stable on prop changes.
+  if (show.type === 'special' || show.type === 'opera') return null;
 
   if (!ranks && !ranksByFormat) return null;
 
@@ -67,6 +72,20 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   const formatNoun = choice === 'own' && show.type === 'musical' ? 'musicals'
     : choice === 'own' && show.type === 'play' ? 'plays'
     : 'shows';
+  const isClosed = show.status === 'closed';
+
+  // Per-row visibility: hide any row where the show has no rank in any pool.
+  // Covers: previews shows that aren't yet scored, OB/OWE shows (no Awards
+  // pool), historic shows missing all-time data. Don't show "—" cells for
+  // metrics the show legitimately has no data on.
+  const visibleRows = ROWS.filter(row => {
+    const rs = activeRanks[row.metric];
+    return Boolean(rs.openMarket || rs.season || rs.allTime);
+  });
+
+  // Pre-2005 closed shows have no all-time rank (footnote: "shows scored
+  // 2005-present"); if no rows survive the per-row filter, hide the card.
+  if (visibleRows.length === 0) return null;
 
   // Cell-link computation. Returns the href or null (renders unlinked).
   function linkFor(metric: RankMetric, pool: 'openMarket' | 'season' | 'allTime'): string | null {
@@ -113,21 +132,23 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   return (
     <section
       data-testid="where-it-ranks"
-      className="card p-4 sm:p-5 mb-8 space-y-3"
+      className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 space-y-4"
       aria-labelledby="where-it-ranks-heading"
     >
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h2 id="where-it-ranks-heading" className="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500">
-            Where it ranks
+      <header className="flex flex-row items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h2 id="where-it-ranks-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
+            Where It Ranks
           </h2>
-          <p className="text-[11px] text-gray-500 mt-1">
-            Compared against all open {marketName} {formatNoun}
+          <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
+            {isClosed
+              ? `Among ${marketName} ${formatNoun} of its season and all-time`
+              : `Compared against all open ${marketName} ${formatNoun}`}
           </p>
         </div>
         {ownFormatAvailable && (
           <div
-            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 self-start sm:self-auto"
+            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 shrink-0"
             role="tablist"
             aria-label="Filter by format"
           >
@@ -136,18 +157,19 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
               role="tab"
               aria-selected={choice === 'all'}
               onClick={() => setChoice('all')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors ${
                 choice === 'all' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              All shows
+              <span className="sm:hidden">All</span>
+              <span className="hidden sm:inline">All shows</span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={choice === 'own'}
               onClick={() => setChoice('own')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors capitalize ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors capitalize ${
                 choice === 'own' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
@@ -157,30 +179,30 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
         )}
       </header>
 
-      <table className="w-full text-sm">
+      <div className="-mx-1 sm:mx-0 overflow-x-auto scrollbar-hide">
+      <table className="w-full text-sm min-w-[280px]">
         <thead>
           <tr>
             <th className="text-left text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               Metric
             </th>
+            {!isClosed && (
+              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+                Open {marketName}
+              </th>
+            )}
             <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
-              Open {marketName}
+              <span className="sm:hidden">Season</span>
+              <span className="hidden sm:inline">This season</span>
             </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 hidden sm:table-cell">
-              This season
-            </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 hidden sm:table-cell">
+            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               All-time<span className="text-gray-600 font-normal">*</span>
-            </th>
-            {/* Mobile: collapse Season + All-time into a single trailing column to fit 390px. */}
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 sm:hidden">
-              Seas. · All<span className="text-gray-600 font-normal">*</span>
             </th>
           </tr>
         </thead>
         <tbody>
-          {ROWS.map((row, idx) => {
-            const isLast = idx === ROWS.length - 1;
+          {visibleRows.map((row, idx) => {
+            const isLast = idx === visibleRows.length - 1;
             const rs = activeRanks[row.metric];
             // Denominators vary widely per-metric in the all-time column
             // (CriticScore=267, AudienceGrade=251, Awards=234, Box Office=252)
@@ -195,35 +217,27 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                   {row.label}
                 </td>
 
-                <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
-                </td>
+                {!isClosed && (
+                  <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                    <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
+                  </td>
+                )}
 
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                 </td>
 
                 {/* All-time column: ALWAYS show "of N" so per-metric pool
                     differences are explicit. */}
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
-                </td>
-
-                {/* Mobile combined column — show season if present, fall back
-                    to all-time. Always render denominator (so the fallback to
-                    all-time is unambiguous). */}
-                <td className={`sm:hidden py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  {rs.season ? (
-                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
-                  ) : (
-                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
-                  )}
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
+      </div>
 
       <p className="text-[10px] text-gray-500">
         <span className="text-gray-600">*</span> All-time pool: shows scored 2005–present. Ranks update daily.
@@ -257,9 +271,12 @@ function Cell({
       </span>
     );
   }
+  // Always bold the #N rank number — denominator stays normal weight + muted.
+  // `emphasis` only changes color (brighter for primary cells, muted for
+  // secondary like All-Time) so the # always pops visually.
   const rankClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
-    : 'text-gray-500 tabular-nums';
+    : 'font-bold text-gray-300 tabular-nums';
   const rankNode = <span className={rankClass}>#{cell.rank}</span>;
   // Inline "/M" — lighter weight than the rank, same line, no wrap.
   const denomNode = showDenominator ? (

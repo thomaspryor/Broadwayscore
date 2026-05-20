@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
 import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
@@ -150,25 +151,36 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   const showTrend = trend && trend !== 'unknown' && commercial.designation === 'TBD' && !commercial.recouped;
 
   return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">
-        Commercial Scorecard
-      </h2>
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
+      {/* Unified scorecard chrome — eyebrow on left, recoup status on right */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
+          Commercial Scorecard
+        </h2>
+        <div className="shrink-0">
+          <RecoupmentBadge recouped={commercial.recouped} />
+        </div>
+      </header>
 
       {/* Main Content */}
       <div className="space-y-4">
-        {/* Designation Card */}
-        <div className={`rounded-xl p-4 ${style.bgClass} border ${style.borderClass}`}>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-2xl">{style.icon}</span>
-            <span className={`font-bold text-xl ${style.textClass}`}>{commercial.designation}</span>
-            <RecoupmentBadge recouped={commercial.recouped} />
+        {/* Designation hero (no outer colored frame — emoji + title supply
+            the color, matching the audience card's hero treatment) */}
+        <div>
+          <div className="flex flex-wrap items-baseline gap-2">
+            <span className="text-2xl leading-none" aria-hidden="true">{style.icon}</span>
+            <span className={`font-extrabold text-xl sm:text-[1.375rem] uppercase tracking-[0.04em] leading-[1.15] ${style.textClass}`}>
+              {commercial.designation}
+            </span>
             {showTrend && <TrendIndicator trend={trend} />}
           </div>
-          <p className="text-xs text-gray-400 mt-2">
+          <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
             {style.description}
           </p>
         </div>
+
+        {/* Divider between hero and stat tiles */}
+        <div className="h-px bg-white/5" aria-hidden="true" />
 
         {/* Stats Row */}
         <div className="flex gap-2 sm:gap-3">
@@ -304,6 +316,16 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         )}
       </div>
 
-    </div>
+      {/* Footer link to the cross-show commercial leaderboard */}
+      <div className="mt-1.5 -mb-1 sm:-mb-2">
+        <Link
+          href="/biz"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>See all commercial scores</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </section>
   );
 }

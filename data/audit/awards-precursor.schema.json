@@ -38,6 +38,14 @@
       "type": "string",
       "format": "uri",
       "description": "Optional Wikipedia URL of the source page for this entry"
+    },
+    "winnerNames": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1 }
+      },
+      "description": "Per-award winner names for per-performer awards (e.g. Drama League 'Distinguished Performance Award'). Key = award category in wins[]. Value = array of winner names (supports ties). Used by Tony Nominations Center chip-render to attribute the chip to the actual performer rather than every acting nominee from the winning show."
     }
   },
   "required": ["season"]

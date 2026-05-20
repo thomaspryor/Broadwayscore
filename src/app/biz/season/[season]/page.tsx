@@ -6,6 +6,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { featureFlags } from '@/config/feature-flags';
 import {
   getSeasonsWithCommercialData,
   getSeasonStats,
@@ -53,6 +54,8 @@ function formatCurrency(amount: number): string {
 }
 
 export default function SeasonPage({ params }: { params: { season: string } }) {
+  if (!featureFlags.commercial) notFound();
+
   const { season } = params;
 
   // Validate season format

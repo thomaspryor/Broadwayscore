@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import type { ShowGrosses } from '@/lib/data-types';
 
 interface BoxOfficeStatsProps {
@@ -135,14 +136,22 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
   const atpYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.atp, grosses.thisWeek.atpYoY) : null;
 
   return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Box Office Scorecard</h2>
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="box-office-scorecard-heading">
+      {/* Unified scorecard chrome: eyebrow + lowercase meta */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="box-office-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Box Office Scorecard</h2>
+        {hasThisWeek && weekEnding && (
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+            week of {weekEnding}
+          </span>
+        )}
+      </header>
 
       {/* This Week Row */}
       {hasThisWeek && grosses.thisWeek && (
         <div className="mb-4">
-          <div className="text-xs text-gray-500 mb-2 font-medium">
-            This Week <span className="text-gray-500">({weekEnding})</span>
+          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">
+            This Week
           </div>
           <div className="flex gap-2 sm:gap-3">
             <StatCard
@@ -184,7 +193,7 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
       {/* All Time Row */}
       {hasAllTime && (
         <div>
-          <div className="text-xs text-gray-500 mb-2 font-medium">All Time</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">All Time</div>
           <div className="flex gap-2 sm:gap-3">
             <StatCard
               value={formatCurrency(grosses.allTime.gross)}
@@ -201,6 +210,17 @@ export default function BoxOfficeStats({ grosses, weekEnding }: BoxOfficeStatsPr
           </div>
         </div>
       )}
-    </div>
+
+      {/* Footer link to the cross-show box-office leaderboard */}
+      <div className="mt-1.5 -mb-1 sm:-mb-2">
+        <Link
+          href="/box-office"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>See all box office stats</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </section>
   );
 }

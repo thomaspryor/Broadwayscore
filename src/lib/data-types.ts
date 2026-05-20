@@ -245,6 +245,13 @@ export interface DramaLeagueAwards {
   wins: string[];
   /** See note on DramaDeskAwards.nominatedFor. */
   nominatedFor?: string[];
+  /** Per-award winner names (for awards that go to a specific performer
+   *  rather than a show, e.g. "Distinguished Performance Award"). Used by
+   *  the Tony Nominations Center chip-render to attribute the DL chip to
+   *  the actual performer rather than every acting nominee from that show.
+   *  Key = award category string (matches an entry in `wins`).
+   *  Value = list of winner names (array for tie support). */
+  winnerNames?: Record<string, string[]>;
 }
 
 /** NY Drama Critics' Circle Awards. Winners only — NYDCCC does not publish a
@@ -296,6 +303,17 @@ export interface LortelAwards {
   nominations?: number;
 }
 
+/** Evening Standard Theatre Awards (UK/West End, 1955–present). Second-most
+ *  prestigious WE award after the Olivier. Per-category Wikipedia pages
+ *  exist for Best Play, Best Actor, Best Actress (no Best Musical page).
+ *  Ceremonies identified by ordinal ("Nth"); see scripts/lib/evening-standard-parser.js. */
+export interface EveningStandardAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
@@ -305,6 +323,7 @@ export interface ShowAwards {
   obie?: ObieAwards;
   lortel?: LortelAwards;
   criticsCircle?: CriticsCircleAwards;
+  eveningStandard?: EveningStandardAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */

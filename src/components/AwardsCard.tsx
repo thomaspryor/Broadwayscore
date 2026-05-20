@@ -196,6 +196,7 @@ function PrecursorExpanded({
   totalNomCount,
   titleColor,
   iconColor,
+  winnerNames,
 }: {
   label: string;
   wins: string[];
@@ -203,6 +204,11 @@ function PrecursorExpanded({
   totalNomCount: number | null;
   titleColor: string;
   iconColor: string;
+  /** Optional per-award winner names (for performer-attributed awards like
+   *  Drama League Distinguished Performance). When provided, the win line
+   *  renders as "Award Name — Performer Name" instead of a bare show-level
+   *  win. Key = award name (must match a string in `wins`). */
+  winnerNames?: Record<string, string[]>;
 }) {
   const nomsOnly = noms.filter((n) => !wins.includes(n));
   if (wins.length === 0 && nomsOnly.length === 0) return null;
@@ -217,12 +223,18 @@ function PrecursorExpanded({
       </div>
       {wins.length > 0 && (
         <ul className="space-y-1 pl-4">
-          {wins.map((win, idx) => (
-            <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
-              <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
-              {win}
-            </li>
-          ))}
+          {wins.map((win, idx) => {
+            const performers = winnerNames?.[win] || [];
+            return (
+              <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
+                <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
+                {win}
+                {performers.length > 0 && (
+                  <span className="text-gray-500 font-normal">— {performers.join(' & ')}</span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
       {nomsOnly.length > 0 && (
@@ -357,6 +369,7 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
             totalNomCount={null}
             titleColor="text-teal-400"
             iconColor="text-teal-400"
+            winnerNames={awards.dramaLeague?.winnerNames}
           />
           <PrecursorExpanded
             label={"NY Drama Critics’ Circle Awards"}
@@ -410,7 +423,7 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
     }
 
     return (
-      <section className="card p-5 sm:p-6 mb-6">
+      <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-4 sm:mb-6">
         <h2 className="text-lg font-bold text-white mb-3">Awards Scorecard</h2>
         <p className="text-gray-400 text-sm">This show has not yet been eligible for major awards.</p>
       </section>
@@ -435,11 +448,26 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
     dynamicSublabel = `${tonyNoms} Tony nomination${tonyNoms > 1 ? 's' : ''}`;
   }
 
-  return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-4">Awards Scorecard</h2>
+  // Build a "year season meta" string for the right-aligned header slot.
+  // E.g. "2025–26 season" when we have a Tony season; falls back to year.
+  const awardsMeta = tonySeason
+    ? `${tonySeason} season`
+    : (awards?.tony?.ceremony ?? null);
 
-      {/* Main Designation Badge - More prominent */}
+  return (
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="awards-scorecard-heading">
+      {/* Unified scorecard chrome: eyebrow + lowercase season meta */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="awards-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
+        {awardsMeta && (
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+            {awardsMeta}
+          </span>
+        )}
+      </header>
+
+      {/* Main Designation Badge - More prominent (colors preserved per
+          parallel session's recent shipped polish) */}
       <div className={`rounded-xl p-4 border mb-4 ${config.bgClass} ${config.borderClass}`}>
         <div className="flex items-center gap-3">
           {tonyWins > 0 && <TrophyIcon className={`${config.textClass} w-6 h-6`} />}
@@ -536,6 +564,26 @@ export default function AwardsCard({ showId, awards, openingDate, tonyNamesByCat
 
       {/* Other Major Awards - Expandable */}
       {awards && <OtherAwardsExpandableSection awards={awards} />}
-    </div>
+
+      {/* Footer: two links — dedicated AwardScore leaderboard (new
+          /award-score route shipped by parallel session 2026-05-17) and
+          season-specific Tony predictions page. */}
+      <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2">
+        <Link
+          href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>See all award scores</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+        <Link
+          href={awards?.tony?.season ? `/tony-awards/predictions/${toFullSeasonLabel(awards.tony.season)}` : '/tony-awards/predictions'}
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>See Tony predictions</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </section>
   );
 }

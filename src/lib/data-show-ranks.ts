@@ -164,15 +164,15 @@ function valAudience(show: ComputedShow): number | null {
 
 function marketToAwardsKey(category: Category): Market | null {
   if (category === 'broadway') return 'broadway';
+  if (category === 'off-broadway') return 'broadway'; // OB: Obie/Lortel/Drama Desk use broadway weights
   if (category === 'west-end') return 'west-end';
-  return null; // OB / OWE — no precursor-based site award score for v1
+  // Off-West End: Olivier predictions not wired yet
+  return null;
 }
 
 function valAwards(show: ComputedShow): number | null {
   const key = marketToAwardsKey(show.category);
   if (!key) return null;
-  // Broadway only for v1 — West End Olivier predictions aren't wired.
-  if (key !== 'broadway') return null;
   try {
     const result = computeSiteAwardScore(show.id, key);
     if (!result || typeof result.displayScore !== 'number') return null;

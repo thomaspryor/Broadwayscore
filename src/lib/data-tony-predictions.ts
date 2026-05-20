@@ -175,49 +175,76 @@ const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCri
     outerCriticsCircle: ['Outstanding Choreographer', 'Outstanding Choreography'],
     dramaLeague: [],
   },
-  // Lead acting (show-level storage: chip appears for all nominees from same show)
+  // Acting categories — DL "Distinguished Performance Award" is per-performer
+  // (one winner across all 8 Tony acting categories per year). Listing it under
+  // all 8 mappings is required so the chip CAN render for any winner; the
+  // getPrecursorWins() filter then uses `dramaLeague.winnerNames` to ensure
+  // the chip only appears next to the actual performer, not every nominee
+  // from that show.
+  // Lead acting
   'Best Actor in a Musical': {
     dramadesk: ['Outstanding Actor in a Musical', 'Outstanding Lead Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Actor in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actress in a Musical': {
     dramadesk: ['Outstanding Actress in a Musical', 'Outstanding Lead Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Actress in a Musical', 'Outstanding Lead Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actor in a Play': {
     dramadesk: ['Outstanding Actor in a Play', 'Outstanding Lead Performance in a Play'],
     outerCriticsCircle: ['Outstanding Actor in a Play', 'Outstanding Lead Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Actress in a Play': {
     dramadesk: ['Outstanding Actress in a Play', 'Outstanding Lead Performance in a Play'],
     outerCriticsCircle: ['Outstanding Actress in a Play', 'Outstanding Lead Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   // Featured acting
   'Best Featured Actor in a Musical': {
     dramadesk: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Featured Actor in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actress in a Musical': {
     dramadesk: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performance in a Musical'],
     outerCriticsCircle: ['Outstanding Featured Actress in a Musical', 'Outstanding Featured Performer in a Broadway Musical'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actor in a Play': {
     dramadesk: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performance in a Play'],
     outerCriticsCircle: ['Outstanding Featured Actor in a Play', 'Outstanding Featured Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
   'Best Featured Actress in a Play': {
     dramadesk: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performance in a Play'],
     outerCriticsCircle: ['Outstanding Featured Actress in a Play', 'Outstanding Featured Performer in a Broadway Play'],
-    dramaLeague: [],
+    dramaLeague: ['Distinguished Performance Award'],
   },
 };
+
+/** Acting award categories that are given to a specific performer, not a show.
+ *  When winnerNames is present in awards.json, chips are attributed only to the actual winner.
+ *  Without winnerNames, falls back to show-level (chip shows for all nominees from the show). */
+const DL_PER_PERFORMER_AWARDS = new Set(['Distinguished Performance Award']);
+const OCC_PER_PERFORMER_AWARDS = new Set([
+  'Outstanding Actor in a Musical', 'Outstanding Actress in a Musical',
+  'Outstanding Actor in a Play', 'Outstanding Actress in a Play',
+  'Outstanding Lead Performer in a Broadway Musical', 'Outstanding Lead Performer in a Broadway Play',
+  'Outstanding Featured Actor in a Musical', 'Outstanding Featured Actress in a Musical',
+  'Outstanding Featured Actor in a Play', 'Outstanding Featured Actress in a Play',
+  'Outstanding Featured Performer in a Broadway Musical', 'Outstanding Featured Performer in a Broadway Play',
+]);
+const DD_PER_PERFORMER_AWARDS = new Set([
+  'Outstanding Actor in a Musical', 'Outstanding Actress in a Musical',
+  'Outstanding Actor in a Play', 'Outstanding Actress in a Play',
+  'Outstanding Lead Performance in a Musical', 'Outstanding Lead Performance in a Play',
+  'Outstanding Featured Actor in a Musical', 'Outstanding Featured Actress in a Musical',
+  'Outstanding Featured Actor in a Play', 'Outstanding Featured Actress in a Play',
+  'Outstanding Featured Performance in a Musical', 'Outstanding Featured Performance in a Play',
+]);
 
 /** Precursor predictive weight (DL strongest, DD weakest historically). */
 const PRECURSOR_TIER_WEIGHTS = {
@@ -496,20 +523,42 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
 }
 
 /** Return 'DL', 'OCC', and/or 'DD' if the show won matching precursor categories. */
-export function getPrecursorWins(showId: string, tonyCategory: string): string[] {
+export function getPrecursorWins(showId: string, tonyCategory: string, nomineeName?: string | null): string[] {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
-    dramadesk?: { wins?: string[] };
-    outerCriticsCircle?: { wins?: string[] };
-    dramaLeague?: { wins?: string[] };
+    dramadesk?: { wins?: string[]; winnerNames?: Record<string, string[]> };
+    outerCriticsCircle?: { wins?: string[]; winnerNames?: Record<string, string[]> };
+    dramaLeague?: { wins?: string[]; winnerNames?: Record<string, string[]> };
   }>;
   const entry = shows[showId];
   if (!entry) return [];
   const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
   if (!matching) return [];
+
+  // Generic check: a per-performer award (in perPersonSet) uses winnerNames when
+  // populated to attribute the chip to the correct person. Without winnerNames, falls
+  // back to show-level behavior (chip shows for all nominees from the winning show).
+  // Show-level awards (not in perPersonSet) always show the chip regardless.
+  function checkCeremony(
+    wins: string[] | undefined,
+    winnerNames: Record<string, string[]> | undefined,
+    categories: string[],
+    perPersonSet: Set<string>,
+  ): boolean {
+    const matched = categories.filter(c => (wins ?? []).includes(c));
+    if (matched.length === 0) return false;
+    return matched.some(c => {
+      if (!perPersonSet.has(c)) return true;  // show-level award — always show
+      const winners = winnerNames?.[c];
+      if (!winners || winners.length === 0) return true;  // no winner data — fall back to show-level
+      if (!nomineeName) return true;  // no person context — show chip
+      return winners.includes(nomineeName);  // disambiguate: show only for the actual winner
+    });
+  }
+
   const result: string[] = [];
-  if (matching.dramaLeague.some(c => (entry.dramaLeague?.wins ?? []).includes(c))) result.push('DL');
-  if (matching.outerCriticsCircle.some(c => (entry.outerCriticsCircle?.wins ?? []).includes(c))) result.push('OCC');
-  if (matching.dramadesk.some(c => (entry.dramadesk?.wins ?? []).includes(c))) result.push('DD');
+  if (checkCeremony(entry.dramaLeague?.wins, entry.dramaLeague?.winnerNames, matching.dramaLeague, DL_PER_PERFORMER_AWARDS)) result.push('DL');
+  if (checkCeremony(entry.outerCriticsCircle?.wins, entry.outerCriticsCircle?.winnerNames, matching.outerCriticsCircle, OCC_PER_PERFORMER_AWARDS)) result.push('OCC');
+  if (checkCeremony(entry.dramadesk?.wins, entry.dramadesk?.winnerNames, matching.dramadesk, DD_PER_PERFORMER_AWARDS)) result.push('DD');
   return result;
 }
 

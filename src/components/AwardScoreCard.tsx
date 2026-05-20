@@ -187,19 +187,9 @@ function TonyAwardsPanel({
         </div>
       )}
 
-      {/* Predictions cross-link — only while the season is in progress. After
-          the ceremony, predictions read as a retrospective and pull users off
-          the show page for less value. */}
-      {featureFlags.tonyPredictions && tony.season && inProgress && (
-        <div className="border-t border-white/5 pt-3 mt-3">
-          <Link
-            href={`/tony-awards/predictions/${toFullSeasonLabel(tony.season)}`}
-            className="text-sm text-brand hover:text-brand-hover transition-colors"
-          >
-            See {tony.season} Tony predictions &rarr;
-          </Link>
-        </div>
-      )}
+      {/* Inline 'See {season} Tony predictions' link removed 2026-05-19 —
+          the bottom-of-card 'See all award scores' link handles cross-page
+          navigation; this duplicated and pulled focus off the data. */}
     </div>
   );
 }
@@ -212,6 +202,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'obie') return awards.obie;
   if (key === 'lortel') return awards.lortel;
   if (key === 'criticsCircle') return awards.criticsCircle;
+  if (key === 'eveningStandard') return awards.eveningStandard;
   return undefined;
 }
 
@@ -361,13 +352,14 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
   const seasonForCountdown = result.inProgress && awards?.tony?.season ? awards.tony.season : null;
 
   return (
-    <div className="card p-5 sm:p-6 mb-8">
-      <div className="flex items-baseline justify-between gap-3 mb-4">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Awards Scorecard</h2>
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="awards-scorecard-heading-v2">
+      {/* Unified scorecard chrome — typography matches audience/critic/box-office/etc. */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="awards-scorecard-heading-v2" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
         {awards?.tony?.season && (
-          <span className="text-xs text-gray-500 uppercase tracking-wide whitespace-nowrap">{awards.tony.season} season</span>
+          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0 whitespace-nowrap">{awards.tony.season} season</span>
         )}
-      </div>
+      </header>
 
       <div className="flex items-center gap-4 mb-4">
         <AwardScoreBadge score={result.displayScore} badge={result.badge} inProgress={result.inProgress} size="lg" />
@@ -404,6 +396,43 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
 
       {awards && <OtherAwardsPanel awards={awards} />}
 
+      {(() => {
+        // Show breakdown fallback when the standard panels (Tony, OtherAwards) have nothing
+        // to display. OtherAwardsPanel covers Drama Desk/OCC/DramaLeague/NYDCC from shows.json —
+        // it silently renders nothing for Olivier/Obie/Lortel/etc. (OB/WE-specific ceremonies).
+        const hasStandardContent = awards?.tony || awards?.dramadesk || awards?.outerCriticsCircle
+          || awards?.dramaLeague || awards?.nyDramaCritics;
+        if (hasStandardContent || result.breakdown.length === 0) return null;
+        return (
+          <div className="mt-4 pt-4 border-t border-white/5">
+            <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-3">Award Recognition</div>
+            <div className="space-y-3">
+              {result.breakdown.map(contrib => (
+                <div key={contrib.ceremony}>
+                  <div className="text-xs text-gray-500 font-medium mb-1">{contrib.ceremony}</div>
+                  <ul className="space-y-1">
+                    {contrib.items.map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-sm">
+                        {item.result === 'win'
+                          ? <span className="text-amber-400 text-xs">★</span>
+                          : <span className="text-gray-500 text-xs">☆</span>
+                        }
+                        <span className={item.result === 'win' ? 'text-gray-200' : 'text-gray-400 italic'}>
+                          {item.category}
+                        </span>
+                        <span className={`ml-auto text-xs ${item.result === 'win' ? 'text-amber-400' : 'text-gray-500'}`}>
+                          {item.result === 'win' ? 'Won' : 'Nominated'}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
       {result.displayScore === 0 && result.inProgress && !hasTony && (
         <p className="text-sm text-gray-400">
           No awards recognition yet this season. First nominations land in late April.
@@ -411,16 +440,16 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       )}
 
       {(hasTony || hasPulitzer || result.displayScore > 0) && (
-        <div className="mt-4 pt-3 border-t border-white/5">
+        <div className="mt-1.5 -mb-1 sm:-mb-2">
           <Link
-            href="/methodology#award-score"
-            className="text-xs text-gray-500 hover:text-brand transition-colors inline-flex items-center gap-1"
+            href={awards?.tony?.season ? `/award-score/${toFullSeasonLabel(awards.tony.season)}` : '/award-score'}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
           >
-            How the Award Score works
-            <span aria-hidden>&rarr;</span>
+            <span>See all award scores</span>
+            <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
           </Link>
         </div>
       )}
-    </div>
+    </section>
   );
 }

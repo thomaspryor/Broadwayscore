@@ -192,7 +192,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
           <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
         {/* Score columns — omitted for performer/acting categories */}
-        {!isPersonLevel && (isMajor ? (
+        {!isPersonLevel && (
           <>
             <div className={`${scoreW} text-center`}>
               <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
@@ -201,16 +201,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
               <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
             </div>
           </>
-        ) : (
-          <>
-            <div className={`${scoreW} text-center`}>
-              <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
-            </div>
-            <div className={`${scoreW} text-center`}>
-              <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
-            </div>
-          </>
-        ))}
+        )}
         {!isPersonLevel && (
           <>
             <div className={`${scoreW} text-center`}>
@@ -311,7 +302,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
 
   let historyLabel: string;
   if (priorNoms === 0) {
-    historyLabel = 'First nomination';
+    historyLabel = 'First Tony nomination';
   } else if (priorWins > 0) {
     historyLabel = `${priorNoms}× nominated · ${priorWins}× winner`;
   } else {
@@ -447,8 +438,8 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
         <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
         <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
-        <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <AudienceBox grade={show.audienceGrade} size="sm" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
           badge={badgeFromScore(show.awardsScore)}
@@ -571,7 +562,20 @@ export default function TonyNomineesPage() {
         {new Date() < new Date('2026-05-23T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
             <span className="text-brand font-semibold">Predictions being released Thursday, May 22</span>
-            {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
+            {' '}— our model-based win predictions (separate from the market odds shown here) will be published on{' '}
+            <Link href="/tony-awards/predictions" className="text-brand underline underline-offset-2 hover:text-brand-hover">
+              our predictions page
+            </Link>.
+          </div>
+        )}
+
+        {/* After predictions launch: persistent link to predictions page */}
+        {new Date() >= new Date('2026-05-23T00:00:00Z') && (
+          <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm flex items-center justify-between gap-3">
+            <span className="text-gray-300">Our critic, audience &amp; awards model has ranked nominees by win probability.</span>
+            <Link href="/tony-awards/predictions" className="text-brand font-semibold whitespace-nowrap hover:text-brand-hover transition-colors">
+              See predictions →
+            </Link>
           </div>
         )}
 
@@ -581,9 +585,11 @@ export default function TonyNomineesPage() {
         ))}
 
         {/* Legend */}
-        <p className="mt-8 text-xs text-gray-600 text-center">
-          Win odds: GoldDerby (crowd predictions) · Kalshi &amp; Polymarket (real-money markets)
-        </p>
+        <div className="mt-8 text-xs text-gray-600 text-center space-y-1.5">
+          <p>Win odds: GoldDerby (crowd predictions, 26 categories) · Kalshi (real-money market, 25 categories) · Polymarket (real-money market, 3 categories)</p>
+          <p>Odds may sum to more or less than 100% — prediction markets include a house spread.</p>
+          <p>Award Score: composite of Drama League, Outer Critics Circle, and Drama Desk wins in this category (0–100). Press Picks: predicted winners from NYT (Helen Shaw), Variety (Clayton Davis), Deadline (Greg Evans).</p>
+        </div>
       </div>
     </>
   );

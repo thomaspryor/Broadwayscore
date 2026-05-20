@@ -1,7 +1,8 @@
 /**
  * Data layer for the Tony Nominees comparison page (/tony-awards/nominees).
  * Returns all 26 nominated categories with show scores and win-probability odds
- * from GoldDerby (all 17 tracked categories) and Polymarket (6 major markets).
+ * from GoldDerby (all 26 categories), Kalshi (25 categories), and Polymarket (3 categories:
+ * Best Musical, Best Play, Best Book of a Musical).
  */
 
 import fs from 'fs';
@@ -44,6 +45,15 @@ const GD_TO_TONY: Record<string, string> = {
   'Best Featured Actor (Play)':     'Best Featured Actor in a Play',
   'Best Featured Actress (Play)':   'Best Featured Actress in a Play',
   'Best Choreography':              'Best Choreography',
+  'Best Orchestrations':            'Best Orchestrations',
+  'Scenic Design (Musical)':        'Best Scenic Design of a Musical',
+  'Scenic Design (Play)':           'Best Scenic Design of a Play',
+  'Costume Design (Musical)':       'Best Costume Design of a Musical',
+  'Costume Design (Play)':          'Best Costume Design of a Play',
+  'Lighting Design (Musical)':      'Best Lighting Design of a Musical',
+  'Lighting Design (Play)':         'Best Lighting Design of a Play',
+  'Sound Design (Musical)':         'Best Sound Design of a Musical',
+  'Sound Design (Play)':            'Best Sound Design of a Play',
 };
 
 const TONY_TO_GD: Record<string, string> = Object.fromEntries(
@@ -267,7 +277,11 @@ function getPersonPastStats(name: string, currentAwardsSeason: string): { priorN
 export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] {
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
-  const gdData = gdRawData as unknown as GdData;
+  const gdRaw = gdRawData as unknown as GdData;
+  // GD persons keys have trailing spaces ("Nathan Lane ") — normalize to trimmed keys.
+  const gdData: GdData = gdRaw.persons
+    ? { ...gdRaw, persons: Object.fromEntries(Object.entries(gdRaw.persons).map(([k, v]) => [k.trim(), v])) }
+    : gdRaw;
   const pmData = loadMarketData('tony-polymarket-odds.json');
   const awardsSeason = toAwardsSeason(season.label);
 
@@ -352,7 +366,7 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
-          precursorWins: (showNomineeCount.get(nom.showId) ?? 0) > 1 ? [] : getPrecursorWins(nom.showId, catTitle),
+          precursorWins: getPrecursorWins(nom.showId, catTitle, personName),
         });
       }
     } else {

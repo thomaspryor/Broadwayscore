@@ -36,6 +36,8 @@ export interface ShowListCardProps {
   isMixedStatus?: boolean;
   /** Show ticket CTA below the card */
   showTicketLink?: boolean;
+  /** Override the default /show/[slug] href (used by opera pages for clean URLs) */
+  overrideHref?: string;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -64,6 +66,7 @@ const ShowListCard = memo(function ShowListCard({
   showFormatPill = true,
   isMixedStatus = false,
   showTicketLink = false,
+  overrideHref,
 }: ShowListCardProps) {
   const isRevival = show.isRevival === true;
   const category = show.category ?? 'broadway';
@@ -76,6 +79,7 @@ const ShowListCard = memo(function ShowListCard({
   const isOpera = isOperaShow(show);
   const marketLabel = isOpera ? OPERA_MARKET_LABEL : getMarketLabel(category);
   const durationSuffix = isOpera ? OPERA_DURATION_SUFFIX : getDurationSuffix(category);
+  const cardHref = overrideHref ?? `/show/${show.slug}`;
 
   // Score computation
   let score: number | null | undefined;
@@ -380,7 +384,7 @@ const ShowListCard = memo(function ShowListCard({
           <RankBadge rank={rank} />
         </div>
         <Link
-          href={`/show/${show.slug}`}
+          href={cardHref}
           className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group flex-1 min-w-0"
         >
           {thumbnail}
@@ -396,7 +400,7 @@ const ShowListCard = memo(function ShowListCard({
     // Browse variant without rank
     return (
       <Link
-        href={`/show/${show.slug}`}
+        href={cardHref}
         className="card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 hover:bg-surface-raised/80 transition-colors group min-w-0"
       >
         {thumbnail}
@@ -410,7 +414,7 @@ const ShowListCard = memo(function ShowListCard({
   // Default variant (Home, OB, WE)
   return (
     <Link
-      href={`/show/${show.slug}`}
+      href={cardHref}
       prefetch={false}
       role="listitem"
       data-testid="show-card"

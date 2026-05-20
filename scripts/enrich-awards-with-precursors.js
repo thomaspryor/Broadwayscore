@@ -48,6 +48,7 @@ const PRIVATE_AWARDS = process.env.PRIVATE_AWARDS_PATH
   || path.join(process.env.HOME || '', 'broadway-scorecard-data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const PRECURSORS_DIR = path.join(__dirname, '..', 'data', 'precursors');
+const TONY_NOMINATIONS_PATH = path.join(__dirname, '..', 'data', 'tony-nominations.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 // ============================================================
@@ -93,6 +94,7 @@ const NYDCCC = loadPrecursor('nydcc');
 const OBIE = loadPrecursor('obie');
 const LORTEL = loadPrecursor('lortel');
 const CRITICS_CIRCLE = loadPrecursor('critics-circle');
+const EVENING_STANDARD = loadPrecursor('evening-standard');
 const PULITZER = loadPrecursor('pulitzer');
 // Historic Pulitzer (pre-2014) uses explicit showIds — fuzzy title matching
 // fails on multiple revival history (e.g. 5 Death of a Salesman entries).
@@ -329,6 +331,40 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     }
   }
 
+  // Pass 5: OB/OWE shows.json fallback — same season-gate as Pass 4 but for
+  // off-broadway/off-west-end shows. Creates a stub WITHOUT a tony field (OB
+  // shows are not Tony-eligible). Used for Lortel, Obie, Drama Desk OB noms,
+  // and Critics' Circle that cover OB nominees.
+  if (opts.obShowsBySeason && opts.sourceYear) {
+    const targetSeason = ceremonyYearToTonySeason(opts.sourceYear);
+    if (PREDICTIONS_ERA.includes(targetSeason)) {
+      const candidates = opts.obShowsBySeason.get(targetSeason) || [];
+      const matchAndApplyOB = (sh) => {
+        if (!awardsShows[sh.id]) {
+          awardsShows[sh.id] = {}; // No tony stub — OB shows aren't Tony-eligible
+          if (opts.onCreateOB) opts.onCreateOB(sh.id);
+        }
+        titleById[sh.id] = sh.title;
+        return sh.id;
+      };
+      // Pass 5a: exact match
+      for (const sh of candidates) {
+        if (normalizeTitle(sh.title) !== norm) continue;
+        return matchAndApplyOB(sh);
+      }
+      // Pass 5b: prefix-containment match for long subtitles
+      if (norm.length >= 6 && norm.split(' ').filter(Boolean).length >= 2) {
+        for (const sh of candidates) {
+          const nT = normalizeTitle(sh.title);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return matchAndApplyOB(sh);
+          }
+        }
+      }
+    }
+  }
+
   return null;
 }
 
@@ -372,39 +408,121 @@ function migratePulitzer(sh) {
   sh.pulitzer = out;
 }
 
+// Lazy-loaded Tony nominations for person-name winner → showId lookup.
+// Acting categories (DD Lead/Featured Performance, OCC Lead/Featured Performer)
+// store person names as winners rather than show titles. We resolve their showId
+// via Tony nominations rather than the title map.
+let _tonyNominations = null;
+function getTonyNoms() {
+  if (!_tonyNominations) {
+    _tonyNominations = JSON.parse(fs.readFileSync(TONY_NOMINATIONS_PATH, 'utf8')).nominations || [];
+  }
+  return _tonyNominations;
+}
+
+/** For a person-name winner, return showIds they're Tony-nominated for in the given season. */
+function lookupWinnerShowIds(personName, season, awardsShows) {
+  const norm = normalizeTitle(personName);
+  const ids = new Set();
+  for (const n of getTonyNoms()) {
+    if (n.season === season && normalizeTitle(n.name) === norm && awardsShows[n.showId]) {
+      ids.add(n.showId);
+    }
+  }
+  return [...ids];
+}
+
 /** Apply DD/OCC/DL source data to awards.json. Adds nominatedFor (and `wins`
- *  for the matching Tony category, when scraped winner matches). */
+ *  for the matching Tony category, when scraped winner matches).
+ *
+ *  Acting categories (DD Lead/Featured Performance, OCC Lead/Featured Performer)
+ *  store person names as `winner`/`winners`. For these, we look up the winner's
+ *  showId via Tony nominations and write both `wins` and `winnerNames`. */
 function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [scrapedCategory, years] of Object.entries(source)) {
     for (const yearEntry of years) {
       const callOpts = { ...opts, sourceYear: yearEntry.year };
+
+      // Resolve winner titles — may be show titles OR person names (acting categories).
+      const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
+        ? yearEntry.winners
+        : (yearEntry.winner ? [yearEntry.winner] : []);
+
+      // Detect person-name winners: if NONE of the winner titles resolve to a show, they're people.
+      const anyWinnerIsShow = winnerTitles.some(
+        (w) => findShowIdByTitle(w, awardsShows, titleById, callOpts) != null,
+      );
+      const winnerIsPersonName = winnerTitles.length > 0 && !anyWinnerIsShow;
+
+      // For person-name winners: map each winner to their Tony-nominated show(s).
+      // e.g. "Joshua Henry" → ['ragtime-2025'], "Caissie Levy" → ['ragtime-2025']
+      const personWinnerShowMap = new Map(); // normalizedName → showId[]
+      if (winnerIsPersonName) {
+        const season = ceremonyYearToTonySeason(callOpts.sourceYear);
+        for (const w of winnerTitles) {
+          const showIds = lookupWinnerShowIds(w, season, awardsShows);
+          if (showIds.length > 0) {
+            personWinnerShowMap.set(normalizeTitle(w), showIds);
+          } else {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: person-winner "${w}" has no Tony nominations in ${season}`);
+          }
+        }
+      }
+
       for (const nomineeName of yearEntry.nominees) {
         const showId = findShowIdByTitle(nomineeName, awardsShows, titleById, callOpts);
         if (!showId) {
-          unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: ${nomineeName}`);
+          // Silently skip person names that appear in acting-category nominees lists.
+          // They're expected (DD tables list person+show on separate cells) and
+          // cause unmatched noise that isn't actionable.
+          if (!winnerIsPersonName) {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: ${nomineeName}`);
+          }
           continue;
         }
         const sh = awardsShows[showId];
-        ensurePrecursorField(sh, fieldKey, sh.tony && sh.tony.season);
+        const season = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+        ensurePrecursorField(sh, fieldKey, season);
         if (!sh[fieldKey].nominatedFor.includes(scrapedCategory)) {
           sh[fieldKey].nominatedFor.push(scrapedCategory);
           sh[fieldKey].nominatedFor = uniqSorted(sh[fieldKey].nominatedFor);
         }
-        // Resolve the set of winning shows for this category-year. Modern
-        // ceremonies can have tied winners (DD 67th+ gender-neutral
-        // performance categories); `winners` (array) takes precedence over
-        // the legacy single `winner` field.
-        const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
-          ? yearEntry.winners
-          : (yearEntry.winner ? [yearEntry.winner] : []);
+
         const normalizedNominee = normalizeTitle(nomineeName);
-        const isWinner = winnerTitles.some((w) => normalizeTitle(w) === normalizedNominee);
-        if (isWinner) {
+        // Show-title winner check (production categories).
+        const isWinner = !winnerIsPersonName &&
+          winnerTitles.some((w) => normalizeTitle(w) === normalizedNominee);
+
+        // Person-name winner check: which winners come from this show?
+        const winnerPersonsForShow = winnerIsPersonName
+          ? winnerTitles.filter((w) => {
+              const wShowIds = personWinnerShowMap.get(normalizeTitle(w));
+              return wShowIds && wShowIds.includes(showId);
+            })
+          : [];
+
+        if (isWinner || winnerPersonsForShow.length > 0) {
           if (!sh[fieldKey].wins.includes(scrapedCategory)) {
             sh[fieldKey].wins.push(scrapedCategory);
             sh[fieldKey].wins = uniqSorted(sh[fieldKey].wins);
+          }
+          // Write winnerNames for person-name winners (acting categories).
+          if (winnerPersonsForShow.length > 0) {
+            if (!sh[fieldKey].winnerNames) sh[fieldKey].winnerNames = {};
+            const existing = sh[fieldKey].winnerNames[scrapedCategory] || [];
+            for (const p of winnerPersonsForShow) {
+              if (!existing.includes(p)) existing.push(p);
+            }
+            sh[fieldKey].winnerNames[scrapedCategory] = existing.sort();
+          }
+          // Write winnerNames from OCC-style winnerPersonName (show-title winner with stored person).
+          if (isWinner && yearEntry.winnerPersonName) {
+            if (!sh[fieldKey].winnerNames) sh[fieldKey].winnerNames = {};
+            const existing = sh[fieldKey].winnerNames[scrapedCategory] || [];
+            if (!existing.includes(yearEntry.winnerPersonName)) existing.push(yearEntry.winnerPersonName);
+            sh[fieldKey].winnerNames[scrapedCategory] = existing.sort();
           }
         }
         matched++;
@@ -431,7 +549,8 @@ function applyNYDCCC(source, awardsShows, titleById, opts) {
         continue;
       }
       const sh = awardsShows[showId];
-      ensurePrecursorField(sh, 'nyDramaCritics', sh.tony && sh.tony.season);
+      const nydSeason = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+      ensurePrecursorField(sh, 'nyDramaCritics', nydSeason);
       if (!sh.nyDramaCritics.wins.includes(category)) {
         sh.nyDramaCritics.wins.push(category);
         sh.nyDramaCritics.wins = uniqSorted(sh.nyDramaCritics.wins);
@@ -457,7 +576,8 @@ function applyObie(source, awardsShows, titleById, opts) {
         continue;
       }
       const sh = awardsShows[showId];
-      ensurePrecursorField(sh, 'obie', sh.tony && sh.tony.season);
+      const obieSeason = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+      ensurePrecursorField(sh, 'obie', obieSeason);
       if (!sh.obie.wins.includes(category)) {
         sh.obie.wins.push(category);
         sh.obie.wins = uniqSorted(sh.obie.wins);
@@ -600,11 +720,36 @@ function main() {
     if (!broadwayShowsBySeason.has(season)) broadwayShowsBySeason.set(season, []);
     broadwayShowsBySeason.get(season).push(s);
   }
+
+  // OB/OWE/WE shows bucketed by season — used by matcher Pass 5 to attribute
+  // Lortel, Obie, Drama Desk OB, Critics' Circle, and Evening Standard noms
+  // to off-broadway / off-west-end / west-end shows not yet in awards.json.
+  // Olivier has its own ingestion path (scripts/enrich-olivier-awards.js)
+  // and does not flow through Pass 5. Same year-gate as Pass 4. West End
+  // added 2026-05-20 after Critics' Circle Best Actress 2026 (Inter Alia)
+  // failed to match because Pass 5 excluded west-end category.
+  // CAVEAT: bucket uses Tony season (May 1 – April 30). A WE show opening
+  // 1–31 May could theoretically land in the wrong season bucket relative
+  // to Olivier-season cutoffs, but Olivier doesn't flow through here, and
+  // CC/ES ceremonies align with calendar-year UK output in practice.
+  const obShowsBySeason = new Map();
+  for (const s of showsArr) {
+    if (!s || !s.id || !s.title) continue;
+    if (s.category !== 'off-broadway' && s.category !== 'off-west-end' && s.category !== 'west-end') continue;
+    const season = seasonForOpeningDate(s.openingDate || s.previewsStartDate);
+    if (!season) continue;
+    if (!obShowsBySeason.has(season)) obShowsBySeason.set(season, []);
+    obShowsBySeason.get(season).push(s);
+  }
+
   const createdEntries = [];
+  const createdOBEntries = [];
   const backfilledTony = [];
   const matcherOpts = {
     broadwayShowsBySeason,
+    obShowsBySeason,
     onCreate: (id) => createdEntries.push(id),
+    onCreateOB: (id) => createdOBEntries.push(id),
     onBackfillTony: (id) => backfilledTony.push(id),
   };
 
@@ -626,6 +771,7 @@ function main() {
   const obieRes = applyObie(OBIE, awardsShows, titleById, matcherOpts);
   const lortelRes = applyDDOCCDL(LORTEL, 'lortel', awardsShows, titleById, matcherOpts);
   const ccRes = applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', awardsShows, titleById, matcherOpts);
+  const esRes = applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
@@ -637,6 +783,7 @@ function main() {
   console.log(`  Obie Awards:          ${obieRes.matched} matched, ${obieRes.unmatched.length} unmatched`);
   console.log(`  Lortel Awards:        ${lortelRes.matched} matched, ${lortelRes.unmatched.length} unmatched`);
   console.log(`  Critics' Circle:      ${ccRes.matched} matched, ${ccRes.unmatched.length} unmatched`);
+  console.log(`  Evening Standard:     ${esRes.matched} matched, ${esRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
   if (histPulRes.missing.length > 0) {
@@ -645,6 +792,10 @@ function main() {
   if (createdEntries.length > 0) {
     console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for Broadway shows missing entries:`);
     for (const id of createdEntries) console.log(`  + ${id}`);
+  }
+  if (createdOBEntries.length > 0) {
+    console.log(`\nLazy-created ${createdOBEntries.length} awards.json stub(s) for OB/OWE shows:`);
+    for (const id of createdOBEntries) console.log(`  + ${id}`);
   }
   if (backfilledTony.length > 0) {
     console.log(`\nBackfilled tony.season on ${backfilledTony.length} existing entries (had non-Tony awards data only):`);
@@ -709,6 +860,7 @@ function main() {
   applyObie(OBIE, secondShows, titleById, matcherOpts);
   applyDDOCCDL(LORTEL, 'lortel', secondShows, titleById, matcherOpts);
   applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare

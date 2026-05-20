@@ -446,7 +446,7 @@ function Inner({
             <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
             <div className="min-w-0 flex-1">
               {tier && (
-                <p className="text-sm font-bold leading-tight" style={{ color: tier.color }}>
+                <p className="text-sm font-bold leading-tight break-words" style={{ color: tier.color }}>
                   {tier.label}
                 </p>
               )}
@@ -464,7 +464,7 @@ function Inner({
                 {audienceGrade.grade}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-bold leading-tight" style={{ color: audienceGrade.color }}>
+                <p className="text-sm font-bold leading-tight break-words" style={{ color: audienceGrade.color }}>
                   {audienceGrade.label}
                 </p>
                 {audienceCount > 0 && (
@@ -490,12 +490,13 @@ function Inner({
         <ScoreBreakdownBar reviews={criticReviewsForBar} category={show.category} />
       )}
 
-      {/* Critics' Take — inlined; CriticsTakeCard component lives only on the v1
-          redesign branch and isn't merged to main. Styling matches the existing
-          consensus block on the desktop side of this same page. */}
+      {/* Critics' Take — inline directly below the breakdown bar with NO
+          card chrome. Per user feedback the rounded-card border made the
+          area feel busy; the breakdown bar + take read better as one
+          continuous block. */}
       {hasEnoughCriticReviews && consensusText && (
-        <div className="card p-4">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+        <div className="mt-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">
             Critics&apos; Take
           </p>
           <p className="text-gray-300 text-sm leading-relaxed">{consensusText}</p>
@@ -600,11 +601,11 @@ function Inner({
         </div>
       )}
 
-      {/* Tickets — split-variant: primary CTA + secondary pills row.
-          Lottery/Rush pill rides the same scroll row via secondaryAfter so the
-          three secondary pills always sit on a single line (scrolls if too wide).
-          Primary CTA is full-width on mobile (standard CTA pattern), inline auto
-          width at lg+ (desktop has horizontal room — full-width feels too wide). */}
+      {/* Tickets — primary CTA + lottery/rush pill (desktop only).
+          Mobile hides the Lottery/Rush pill via `hidden lg:inline-flex` —
+          on mobile it pushed content too far down. Desktop keeps it next
+          to the Get Tickets CTA where there's horizontal room. Full info
+          for both viewports lives in the Discount Tickets card below. */}
       {!isClosed && sortedTicketLinks.length > 0 && (
         <TicketButtonsAB
           showName={show.title}
@@ -622,7 +623,7 @@ function Inner({
             featureFlags.discountTickets && lotteryRush ? (
               <a
                 href="#discount-tickets"
-                className="inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
+                className="hidden lg:inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
