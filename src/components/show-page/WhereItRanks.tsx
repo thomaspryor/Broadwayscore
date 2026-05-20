@@ -72,6 +72,20 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   const formatNoun = choice === 'own' && show.type === 'musical' ? 'musicals'
     : choice === 'own' && show.type === 'play' ? 'plays'
     : 'shows';
+  const isClosed = show.status === 'closed';
+
+  // Per-row visibility: hide any row where the show has no rank in any pool.
+  // Covers: previews shows that aren't yet scored, OB/OWE shows (no Awards
+  // pool), historic shows missing all-time data. Don't show "—" cells for
+  // metrics the show legitimately has no data on.
+  const visibleRows = ROWS.filter(row => {
+    const rs = activeRanks[row.metric];
+    return Boolean(rs.openMarket || rs.season || rs.allTime);
+  });
+
+  // Pre-2005 closed shows have no all-time rank (footnote: "shows scored
+  // 2005-present"); if no rows survive the per-row filter, hide the card.
+  if (visibleRows.length === 0) return null;
 
   // Cell-link computation. Returns the href or null (renders unlinked).
   function linkFor(metric: RankMetric, pool: 'openMarket' | 'season' | 'allTime'): string | null {
@@ -127,7 +141,9 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
             Where It Ranks
           </h2>
           <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
-            Compared against all open {marketName} {formatNoun}
+            {isClosed
+              ? `Among ${marketName} ${formatNoun} of its season and all-time`
+              : `Compared against all open ${marketName} ${formatNoun}`}
           </p>
         </div>
         {ownFormatAvailable && (
@@ -170,9 +186,11 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
             <th className="text-left text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               Metric
             </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
-              Open {marketName}
-            </th>
+            {!isClosed && (
+              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+                Open {marketName}
+              </th>
+            )}
             <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               <span className="sm:hidden">Season</span>
               <span className="hidden sm:inline">This season</span>
@@ -183,10 +201,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           </tr>
         </thead>
         <tbody>
-          {ROWS.filter(row => {
-            if (row.metric === 'boxOffice' && (market === 'off-broadway' || market === 'off-west-end')) return false;
-            return true;
-          }).map((row, idx, visibleRows) => {
+          {visibleRows.map((row, idx) => {
             const isLast = idx === visibleRows.length - 1;
             const rs = activeRanks[row.metric];
             // Denominators vary widely per-metric in the all-time column
@@ -202,9 +217,11 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                   {row.label}
                 </td>
 
-                <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
-                </td>
+                {!isClosed && (
+                  <td className={`py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                    <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
+                  </td>
+                )}
 
                 <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
