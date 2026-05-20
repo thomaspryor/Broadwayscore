@@ -33,7 +33,13 @@
     "a-delicate-balance-1996/broadwayworld--unknown.json",
     "a-delicate-balance-1996/playbill--unknown.json",
     "carrie-1988/nytg--unknown.json",
-    "animal-wisdom-2022/nytimes--ben-brantley.json"
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "celebrity-autobiography-2026/theatermania--unknown.json",
+    "celebrity-autobiography-2026/cititour--unknown.json",
+    "the-emporium-off-broadway-2025/cititour--unknown.json",
+    "the-emporium-off-broadway-2025/front-row-center--unknown.json",
+    "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "the-receptionist-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "failed": [
     "titanique-west-end-2024/times-uk--clive-davis.json",
@@ -1182,7 +1188,11 @@
     "an-ideal-husband-west-end-2026/the-recs--unknown.json",
     "an-ideal-husband-west-end-2026/thestage--unknown.json",
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
-    "after-miss-julie-2009/about-entertainment--unknown.json"
+    "after-miss-julie-2009/about-entertainment--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1201,7 +1211,10 @@
       "a-little-night-music-2009/musical-theatre-review--unknown.json",
       "a-little-night-music-2009/whatsonstage--unknown.json",
       "a-delicate-balance-1996/playbill--unknown.json",
-      "carrie-1988/nytg--unknown.json"
+      "carrie-1988/nytg--unknown.json",
+      "celebrity-autobiography-2026/theatermania--unknown.json",
+      "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/off-off-online--deirdre-donovan.json",
+      "the-receptionist-off-broadway-2026/theatre-reviews-limited--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1219,7 +1232,9 @@
       "data/review-texts/1536-west-end-2026/london-theatre--unknown.json",
       "data/review-texts/after-miss-julie-2009/about-entertainment--unknown.json",
       "data/review-texts/a-delicate-balance-1996/hollywood-reporter--unknown.json",
-      "a-delicate-balance-1996/hollywood-reporter--unknown.json"
+      "a-delicate-balance-1996/hollywood-reporter--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1229,12 +1244,15 @@
       "art-2025/broadwayworld--unknown.json",
       "company-2021/theatrely--andrew-martini.json",
       "a-delicate-balance-1996/broadwayworld--unknown.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "the-emporium-off-broadway-2025/front-row-center--unknown.json"
     ],
     "brightdata": [
       "art-2025/philadelphia-inquirer--unknown.json",
       "a-little-night-music-2009/talkinbroadway--unknown.json",
-      "a-steady-rain-2009/latimes--unknown.json"
+      "a-steady-rain-2009/latimes--unknown.json",
+      "celebrity-autobiography-2026/cititour--unknown.json",
+      "the-emporium-off-broadway-2025/cititour--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
@@ -1254,7 +1272,7 @@
     ]
   },
   "startTime": "2026-05-19T17:05:32.558Z",
-  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-19T17:12:15.211Z",
@@ -1371,6 +1389,18 @@
       "t": "2026-05-20T11:47:40.041Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-20T12:05:57.067Z",
+      "event": "bb-session",
+      "session": "e2c52aeb",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-20T12:07:19.166Z",
+      "event": "bb-session",
+      "session": "3870178e",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
