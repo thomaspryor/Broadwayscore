@@ -122,8 +122,8 @@ export default function TonyAwardsHubPage() {
 
         {/* Teaser Cards Grid */}
         <div className="grid sm:grid-cols-2 gap-4 mb-10">
-          {/* Predictions Teaser */}
-          {featureFlags.tonyPredictions && eligible.length > 0 ? (
+          {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal) */}
+          {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && eligible.length > 0 ? (
             <Link href="/tony-awards/predictions" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
@@ -137,12 +137,9 @@ export default function TonyAwardsHubPage() {
               {categoryTeasers.length > 0 && (
                 <div className="space-y-1.5">
                   {categoryTeasers.slice(0, 4).map(t => (
-                    <div key={t.label} className="flex items-center justify-between text-sm gap-2">
-                      <span className="text-gray-500 flex-shrink-0">{t.label}</span>
-                      <span className="text-white font-medium truncate">{t.showTitle}</span>
-                      {t.score !== null && (
-                        <span className="text-brand flex-shrink-0">({t.score})</span>
-                      )}
+                    <div key={t.label} className="flex items-center gap-2 text-sm">
+                      <span className="text-gray-500 flex-shrink-0 truncate">{t.label}</span>
+                      <span className="text-white font-medium truncate flex-1">{t.showTitle}</span>
                     </div>
                   ))}
                 </div>
@@ -151,13 +148,6 @@ export default function TonyAwardsHubPage() {
                 See full predictions &rarr;
               </p>
             </Link>
-          ) : featureFlags.tonyPredictions ? (
-            <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay">
-              <h2 className="text-sm font-semibold text-white uppercase tracking-wide mb-2">{season.label} Tony Predictions</h2>
-              <p className="text-sm text-gray-400">
-                Predictions for the {season.ceremonyYear} season will appear when shows begin opening.
-              </p>
-            </div>
           ) : null}
 
           {/* Nominees Teaser */}

@@ -7,8 +7,11 @@ concurrency:
 
 on:
   schedule:
-    # 3x daily: 2 AM, 10 AM, 6 PM UTC
-    - cron: '0 2,10,18 * * *'
+    # 3x daily: 4:30 AM, 10 AM, 6 PM UTC
+    # Note: 2 AM slot was moved to 4:30 AM — the 2–3 AM window collides with
+    # opening-night-poller dispatch chains + mirror-to-gitlab pushes, causing
+    # push-with-retry.sh to exhaust all 5 attempts and fail.
+    - cron: '30 4,10,18 * * *'
     # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
     # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
     - cron: '0 0 * * 0'
@@ -226,6 +229,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
@@ -589,6 +593,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
           NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
           NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
           VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}

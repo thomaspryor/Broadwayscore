@@ -247,7 +247,7 @@ export default function ShowPageRating({
 
       {/* Previous viewings */}
       {viewCount > 1 && !showPanel && (
-        <div className="mt-2 space-y-1.5">
+        <div className="mt-2 space-y-1.5" data-testid="previous-viewings">
           {reviews.filter(r => r.id !== latestReview?.id).slice(0, 3).map(review => (
             <div key={review.id} className="group/viewing">
               <div className="flex items-center gap-1.5 text-sm text-gray-500">

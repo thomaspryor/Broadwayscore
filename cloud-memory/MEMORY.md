@@ -2,6 +2,9 @@
 
 > **Note:** Aggressively pruned 2026-05-08 to fit the 180-line limit (was 345). Entries describing already-shipped bugfixes were dropped — the rule lives in the code/test, not here. Older detail moved to `archive/`. See `feedback_terse_output_default.md` for why this matters.
 
+## 🌐 External APIs & services
+- [Vercel API access](feedback_vercel_api_access.md) — VERCEL_TOKEN in .env; project prj_wmBnDUrCQCwabIAYPbnMiIP3wg15. Use API to set env vars, don't ask user to do it manually.
+
 ## 👤 User profile & session discipline
 - [Terse output default](feedback_terse_output_default.md) — Short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input. Verification evidence (rule 2) still required; cut the narration around it.
 - [No premature handoff](feedback_no_premature_handoff.md) — Never offer to hand off mid-task; banned-phrase list. /done is punctuation, not an exit.
@@ -41,6 +44,9 @@
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — Background `pull --rebase` clobbers uncommitted dirty state. Worktrees don't protect data submodules.
 - [Reset+rsync wipes CI fields](feedback_reset_rsync_wipes_ci_fields.md) — Never use reset-hard+rsync to resolve push rejections.
 - [gh api emergency single-file commit](feedback_gh_api_emergency_commit.md) — When local git is broken, `gh api PUT /contents/` commits one file without touching the working tree.
+
+## 🎭 UGC / user features
+- [UGC test failure patterns](feedback_ugc_test_patterns.md) — 6 failure categories: Sanity env, stale mock dates, mobile overflow, rating card count, visual baselines, 404 URLs.
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [vercel build env block required](feedback_vercel_env_block_required.md) — `vercel build` ignores `.vercel/.env.preview.local` for NEXT_PUBLIC_* inlining. Must pass via build step's `env:` block (same as Sanity vars do). Writing the env file alone = no-op.
@@ -90,6 +96,7 @@
 - [Tony predictions accuracy](project_tony_predictions_accuracy.md) — Recipe weights, historical accuracy (92.9%), current-season signals, market data coverage, backtest findings.
 
 ## 📊 Data pipeline & scraping
+- [Outlet poller SERP audit](project_outlet_poller_serp_audit.md) — 25 SERP-only outlets audited 2026-05-18; all are genuinely non-upgradeable (paywalls, JS SPAs, per-show structures). Don't re-investigate.
 - [Closing-date automation has 4 silent gaps](feedback_closing_date_audit_gaps.md) — update-show-status + check-closing-dates only detect LATER-than-stored extensions; both broadway.org "Through:" and TodayTix `endDate` lag the announced final performance by months; WE has zero closingDate automation.
 - [Scraper architecture](feedback_scraper_architecture.md) — New scraping scripts MUST use `fetchPage()`; CI enforces BD+SB both present.
 - [fetchPage gotchas](feedback_fetchpage_gotchas.md) — BD empty 200s, Playwright renders 404s as success, fetchPage is HTML-only.
@@ -123,6 +130,7 @@
 - [Bare X/Y regex FPs](feedback_regex_url_fragment_fps.md) — `\d/\d` patterns FP on CDN paths and date headers. Anchor + URL filter required.
 - [Content-quality regex bare-keyword FPs](feedback_content_quality_regex_fps.md) — Audit patterns against real corpus before edit.
 - [JS array > 0 is always false](feedback_js_array_gt_comparison.md) — `string[] > 0` silently returns false; use `Array.isArray(x) ? x : []` + `.length > 0` for array fields.
+- [Same-title-different-production routing](feedback_same_title_disambiguation.md) — Extend `classifyMarketRouting` at the single writer chokepoint; ≥2-signal cascade (url-year/publish-date/venue); stamp wrongProduction with humanReviewedWrongProduction guard. Don't add a new resolver.
 
 ## 🤖 LLM / evals
 - [LLM prompts must be market/type-aware](feedback_llm_prompts_market_aware.md) — Theater-tuned prompts mis-classify opera/special shows that live as type-overlays on category=off-broadway. Inject canonical context blocks from `scripts/lib/opera-prompt-context.js`; spell out WRONG criteria BEFORE leniency.

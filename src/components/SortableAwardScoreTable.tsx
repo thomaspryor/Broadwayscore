@@ -194,7 +194,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
-              <th className="text-center py-3 pl-4 pr-2 text-gray-400 font-medium w-10">#</th>
+              <th className="text-center py-3 pl-4 pr-2 text-gray-400 font-medium w-10 hidden sm:table-cell">#</th>
               <th className="text-left py-3 px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group" onClick={() => handleSort('show')}>
                 Show
                 <SortIcon active={sortColumn === 'show'} direction={sortDirection} />
@@ -225,7 +225,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
               return (
                 <tr key={show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   {/* Rank */}
-                  <td className="py-3 pl-4 pr-2 text-center align-middle">
+                  <td className="py-3 pl-4 pr-2 text-center align-middle hidden sm:table-cell">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
                     }`}>
@@ -237,7 +237,7 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                   <td className="py-3 px-4 align-middle">
                     <div className="flex items-center gap-3">
                       {/* Thumbnail */}
-                      <Link href={`/show/${show.slug}`} className="shrink-0 hidden sm:block" tabIndex={-1} aria-hidden>
+                      <Link href={`/show/${show.slug}`} className="shrink-0" tabIndex={-1} aria-hidden>
                         <div className="w-10 h-14 rounded overflow-hidden bg-surface-overlay">
                           <ShowImage
                             sources={[optimizedUrl, posterUrl]}
@@ -257,6 +257,11 @@ export function SortableAwardScoreTable({ data }: SortableAwardScoreTableProps) 
                         <Link href={`/show/${show.slug}`} className="text-white hover:text-brand transition-colors font-medium leading-tight block">
                           {show.title}
                         </Link>
+                        <div className="mt-1 sm:hidden">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold ${TIER_CHIP[awardScore.badge] ?? TIER_CHIP.eligible}`}>
+                            {AWARD_TIER_LABEL[awardScore.badge]}
+                          </span>
+                        </div>
                         <div className="flex flex-wrap items-center gap-2 mt-1">
                           {show.status && <StatusBadge status={show.status} />}
                           {awardScore.tonySeason && (

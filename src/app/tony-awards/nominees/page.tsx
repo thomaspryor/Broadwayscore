@@ -4,10 +4,12 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, AwardScoreBadge } from '@/components/show-cards';
 import type { TierBadge } from '@/lib/awards-scoring';
+import { getOutletConfig, getOutletLogoUrl } from '@/config/outlet-logos';
 import { getTonySeasonWindow } from '@/lib/data-tony-predictions';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
+import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 
 // --- Constants ---
 
@@ -36,13 +38,13 @@ const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
 // --- SEO ---
 
 export const metadata: Metadata = {
-  title: `${season.ceremonyYear} Tony Nominees Scorecard — Critic, Audience & Odds`,
+  title: `${season.ceremonyYear} Tony Nominations Center — Critic, Audience & Odds`,
   description: `Every ${season.label} Tony-nominated show and nominee ranked by critic score, audience grade, and win odds from GoldDerby, Polymarket, and Kalshi. All 26 categories.`,
   alternates: {
     canonical: `${BASE_URL}/tony-awards/nominees`,
   },
   openGraph: {
-    title: `${season.ceremonyYear} Tony Nominees Scorecard — Broadway Scorecard`,
+    title: `${season.ceremonyYear} Tony Nominations Center — Broadway Scorecard`,
     description: `All ${season.label} Tony nominees with critic scores, audience grades, and crowd-sourced win odds from GoldDerby, Polymarket, and Kalshi.`,
     url: `${BASE_URL}/tony-awards/nominees`,
     type: 'website',
@@ -91,11 +93,78 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-function OddsCol({ odds, size }: { odds: number | null | undefined; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-base font-bold text-white' : 'text-sm font-bold text-white';
+function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
+  const numClass = size === 'md' ? 'text-xl font-bold text-white' : 'text-base font-bold text-white';
+  const changeAbs = change != null ? Math.round(Math.abs(change) * 100) : 0;
   return (
-    <div className="hidden sm:flex items-center justify-center flex-shrink-0 w-12">
+    <div className="flex flex-col items-center justify-center flex-shrink-0 w-12">
       <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
+      {change != null && changeAbs > 0 && (
+        <span className={`text-[9px] font-semibold leading-none mt-0.5 ${change > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+          {change > 0 ? '▲' : '▼'}{changeAbs}%
+        </span>
+      )}
+    </div>
+  );
+}
+
+const PRECURSOR_LABELS: Record<string, string> = { DL: 'Drama League', OCC: 'Outer Critics Circle', DD: 'Drama Desk' };
+
+function PrecursorChips({ wins }: { wins?: string[] }) {
+  if (!wins || wins.length === 0) return <span className="text-xs text-gray-600">—</span>;
+  return (
+    <div className="flex flex-col items-start gap-1">
+      {wins.map(w => (
+        <span
+          key={w}
+          title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`}
+          className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none"
+        >
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
+  nyt:      { outletName: 'The New York Times', critic: 'Helen Shaw' },
+  variety:  { outletName: 'Variety',            critic: 'Clayton Davis' },
+  deadline: { outletName: 'Deadline',           critic: 'Greg Evans' },
+};
+
+function PressPicks({ picks }: { picks?: string[] }) {
+  if (!picks || picks.length === 0) return null;
+  const knownPicks = picks.filter(id => CRITIC_PICK_OUTLETS[id]);
+  if (knownPicks.length === 0) return null;
+  return (
+    <div className="flex items-center gap-0.5">
+      {knownPicks.map(id => {
+        const meta = CRITIC_PICK_OUTLETS[id];
+        const logoUrl = getOutletLogoUrl(meta.outletName);
+        const config = getOutletConfig(meta.outletName);
+        const title = `${meta.outletName} (${meta.critic}) picks this show to win`;
+        if (logoUrl) {
+          return (
+            <div key={id} className="w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0 overflow-hidden" title={title}>
+              <img src={logoUrl} alt={meta.outletName} className="w-3.5 h-3.5 object-contain" />
+            </div>
+          );
+        }
+        const abbrev = config?.abbrev || meta.outletName.charAt(0);
+        const bgColor = config?.color || '#374151';
+        const textSize = abbrev.length > 2 ? 'text-[7px]' : 'text-[9px]';
+        return (
+          <div
+            key={id}
+            className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${textSize} font-bold text-white leading-none`}
+            style={{ backgroundColor: bgColor }}
+            title={title}
+          >
+            {abbrev}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -114,15 +183,15 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
       <div className="flex-1 min-w-0" />
       {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
       <div className="flex items-end gap-2 flex-shrink-0">
-        {/* Odds columns (hidden on mobile) */}
-        <div className="hidden sm:flex flex-col items-center w-12">
+        {/* Odds columns */}
+        <div className="flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-12">
-          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
-        </div>
-        <div className="hidden sm:flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+        </div>
+        <div className="flex flex-col items-center w-12">
+          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
         {/* Score columns — omitted for performer/acting categories */}
         {!isPersonLevel && (isMajor ? (
@@ -145,9 +214,27 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
           </>
         ))}
         {!isPersonLevel && (
-          <div className={`${scoreW} text-center`}>
-            <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
-          </div>
+          <>
+            <div className={`${scoreW} text-center`}>
+              <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
+            </div>
+            <div className="hidden sm:flex flex-col items-center w-20">
+              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+            </div>
+            <div className="flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+            </div>
+          </>
+        )}
+        {isPersonLevel && (
+          <>
+            <div className="hidden sm:flex flex-col items-center w-20">
+              <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
+            </div>
+            <div className="flex flex-col items-center w-14">
+              <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
+            </div>
+          </>
         )}
       </div>
     </div>
@@ -178,18 +265,27 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title */}
+      {/* Title + mobile-only precursor chips */}
       <div className="flex-1 min-w-0">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="md" />
-        <OddsCol odds={show.polymarketOdds} size="md" />
-        <OddsCol odds={show.kalshiOdds} size="md" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
         <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
@@ -198,6 +294,12 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="md"
         />
+        <div className="hidden sm:flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </Link>
   );
@@ -221,11 +323,11 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+    <div className="flex items-start sm:items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail → show page */}
       <Link
         href={`/show/${show.slug}`}
-        className="w-11 h-11 sm:w-12 sm:h-12 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
+        className="w-10 h-10 sm:w-11 sm:h-11 rounded-md overflow-hidden bg-surface-raised flex-shrink-0 mt-0.5 sm:mt-0"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -243,33 +345,55 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Performer name + history inline, show name below */}
+      {/* Desktop: name + history inline; Mobile: stacked */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-baseline gap-1.5 min-w-0">
+        {/* Desktop layout: name + dimmer history on one line */}
+        <div className="hidden sm:flex items-baseline gap-1.5 min-w-0">
           {actorUrl ? (
-            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors truncate flex-shrink-0">
+            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors flex-shrink-0">
               {show.nomineePersonName}
             </Link>
           ) : (
-            <span className="text-sm font-bold text-white truncate flex-shrink-0">{show.nomineePersonName}</span>
+            <span className="text-sm font-bold text-white flex-shrink-0">{show.nomineePersonName}</span>
           )}
-          <span className="text-[10px] text-gray-500 truncate min-w-0">
-            {historyLabel}
-            {show.gdOdds != null && (
-              <span className="sm:hidden"> · {Math.round(show.gdOdds * 100)}%</span>
-            )}
-          </span>
+          <span className="text-[10px] text-gray-500 truncate min-w-0">{historyLabel}</span>
+        </div>
+        {/* Mobile layout */}
+        <div className="sm:hidden">
+          {actorUrl ? (
+            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors leading-tight block truncate">
+              {show.nomineePersonName}
+            </Link>
+          ) : (
+            <span className="text-sm font-bold text-white leading-tight block truncate">{show.nomineePersonName}</span>
+          )}
+          <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{historyLabel}</p>
         </div>
         <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
           {show.title}
         </Link>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
-        <OddsCol odds={show.kalshiOdds} size="sm" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
+        <div className="hidden sm:flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </div>
   );
@@ -301,11 +425,20 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Show name (bold) + credited names (dimmer) */}
+      {/* Show name (bold) + credited names (dimmer) + precursor chips */}
       <div className="flex-1 min-w-0">
         <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
           {show.title}
         </Link>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
         )}
@@ -313,9 +446,9 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} size="sm" />
-        <OddsCol odds={show.polymarketOdds} size="sm" />
-        <OddsCol odds={show.kalshiOdds} size="sm" />
+        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AwardScoreBadge
@@ -324,6 +457,12 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
           size="sm"
         />
+        <div className="hidden sm:flex w-20 items-center justify-center">
+          <PrecursorChips wins={show.precursorWins} />
+        </div>
+        <div className="flex w-14 items-center justify-center">
+          <PressPicks picks={show.criticPicks} />
+        </div>
       </div>
     </div>
   );
@@ -338,12 +477,16 @@ function CategorySection({ category }: { category: TonyCategory }) {
 
   if (nominees.length === 0) return null;
 
+  const minW = isMajor ? 'min-w-[680px]' : isPersonLevel ? 'min-w-[430px]' : 'min-w-[570px]';
+
   return (
     <section className="mb-6">
       <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-1">
         {category.title}
       </h2>
-      <div className="bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5">
+      <div className="relative">
+      <div className="overflow-x-auto">
+      <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
         <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
         {nominees.map(show => {
           const key = show.nomineePersonName
@@ -361,6 +504,10 @@ function CategorySection({ category }: { category: TonyCategory }) {
             </div>
           );
         })}
+      </div>
+      </div>
+      {/* Scroll hint: fade on right edge, mobile only */}
+      <div className="sm:hidden absolute inset-y-0 right-0 w-10 pointer-events-none bg-gradient-to-l from-[#1a1a24] to-transparent rounded-r-xl" />
       </div>
     </section>
   );
@@ -398,21 +545,37 @@ export default function TonyNomineesPage() {
         </Link>
 
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-8">
-          <div>
+        <div className="mb-6">
+          <div className="flex items-start justify-between gap-3">
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              {season.ceremonyYear} Tony Nominees Scorecard
+              {season.ceremonyYear} Tony Nominations Center
             </h1>
-            <p className="text-gray-400 mt-1 text-sm">
-              {totalCategories} categories &middot; critic scores, audience grades, and win odds
-            </p>
+            {ceremonyDate && (
+              <span className="hidden sm:inline-flex text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20 flex-shrink-0 whitespace-nowrap self-start mt-1">
+                Ceremony {formatCeremonyDate(ceremonyDate)}
+              </span>
+            )}
           </div>
+          <p className="text-gray-400 mt-1 text-sm">
+            {totalCategories} categories &middot; critic scores, audience grades, and win odds. Updated daily.
+          </p>
           {ceremonyDate && (
-            <span className="flex-shrink-0 text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20">
-              Ceremony {formatCeremonyDate(ceremonyDate)}
-            </span>
+            <div className="mt-2 flex items-center gap-2">
+              <span className="sm:hidden text-xs font-medium px-2.5 py-1 rounded-full bg-brand/10 text-brand border border-brand/20 whitespace-nowrap">
+                Ceremony {formatCeremonyDate(ceremonyDate)}
+              </span>
+              <CeremonyCountdown ceremonyDate={ceremonyDate} />
+            </div>
           )}
         </div>
+
+        {/* Announcement banner — hidden after May 22 */}
+        {new Date() < new Date('2026-05-23T00:00:00Z') && (
+          <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
+            <span className="text-brand font-semibold">Predictions being released Thursday, May 22</span>
+            {' '}— check back for per-category win probabilities ranked by our critic, audience &amp; awards model.
+          </div>
+        )}
 
         {/* Category sections */}
         {categories.map(cat => (
@@ -421,7 +584,7 @@ export default function TonyNomineesPage() {
 
         {/* Legend */}
         <p className="mt-8 text-xs text-gray-600 text-center">
-          Win odds: GoldDerby (crowd predictions) · Polymarket &amp; Kalshi (real-money markets)
+          Win odds: GoldDerby (crowd predictions) · Kalshi &amp; Polymarket (real-money markets)
         </p>
       </div>
     </>

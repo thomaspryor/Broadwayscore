@@ -10,9 +10,9 @@
  *
  * Rules (in order):
  *   1. allowCrossMarket opt-in → accept (E2E tests, manual ingestion, transfers)
- *   2. Sibling date reroute (Tier 1, full date): sibling opened ≤30 days from
- *      publishDate AND current show's opening is >90 days from publishDate →
- *      reroute to sibling.
+ *   2. Sibling date reroute (Tier 1, full date): sibling opened ≤30 days (same
+ *      market pool) or ≤60 days (cross-market pool) from publishDate AND current
+ *      show's opening is >90 days from publishDate → reroute to sibling.
  *   3. Sibling year reroute (Tier 2, fallback for shows without opening dates):
  *      pickRerouteTarget by ID year.
  *   4. WE shows only: URL has explicit Broadway marker or outlet is US-only →
@@ -27,8 +27,9 @@ const { pickRerouteTarget, urlYearFromPath } = require('./review-guards');
 const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 
 const DAY = 86400000;
-const SIBLING_CLOSE_DAYS = 30;   // sibling opening this close to review → candidate
-const CURRENT_FAR_DAYS = 90;     // current show's opening this far from review → eligible
+const SIBLING_CLOSE_DAYS = 30;         // same-market: sibling opening this close to review → candidate
+const CROSS_MARKET_SIBLING_CLOSE_DAYS = 60; // cross-market: wider window (e.g. oh-mary BW→WE at 32d)
+const CURRENT_FAR_DAYS = 90;           // current show's opening this far from review → eligible
 
 /**
  * Normalize a title for sibling grouping (same rules as review-file-writer.js).
@@ -210,10 +211,14 @@ function classifyMarketRouting(args) {
     if (reviewDate && sibData.openingDate) {
       const distToCurrent = Math.abs(reviewDate - sibData.openingDate) / DAY;
       let best = null;
+      const currentPool = getMarketPool(sibData.category || '');
       for (const sib of sibData.siblings) {
         if (!sib.openingDate || visitedSet.has(sib.id)) continue;
         const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
-        if (distToSib <= SIBLING_CLOSE_DAYS && distToCurrent > CURRENT_FAR_DAYS) {
+        const isCrossMarketSib = sibData.category != null && sib.category != null
+          && getMarketPool(sib.category) !== currentPool;
+        const threshold = isCrossMarketSib ? CROSS_MARKET_SIBLING_CLOSE_DAYS : SIBLING_CLOSE_DAYS;
+        if (distToSib <= threshold && distToCurrent > CURRENT_FAR_DAYS) {
           if (!best || distToSib < best.dist) {
             best = { id: sib.id, dist: distToSib, currentDist: distToCurrent };
           }
@@ -346,5 +351,6 @@ module.exports = {
   normalizeTitle,
   collectSameTitleSignals,
   SIBLING_CLOSE_DAYS,
+  CROSS_MARKET_SIBLING_CLOSE_DAYS,
   CURRENT_FAR_DAYS,
 };

@@ -46,8 +46,14 @@ const SHOWS_PATH = path.join(REPO_ROOT, 'data/shows.json');
 // entry with a justification comment when a future change is intentional.
 // Format: { showId, url, reason }
 const ALLOWED_DIFFS = [
-  // Example shape (do NOT uncomment without a real change):
-  // { showId: 'cats-2024', url: 'https://example.com/leona-lewis-cats/', reason: 'cats Leona Lewis flip per S4-Tx' },
+  // finding 8: oh-mary-2024 1minutecritic review published 2026-01-19 — 32d after
+  // oh-mary-west-end-2025 opening. Was accept under 30d threshold; now reroutes to
+  // oh-mary-west-end-2025 under CROSS_MARKET_SIBLING_CLOSE_DAYS=60 (intentional).
+  {
+    showId: 'oh-mary-2024',
+    url: 'https://1minutecritic.com/oh-mary-broadway-review/',
+    reason: 'cross-market threshold raised 30→60d; 32d distToSib now reroutes to oh-mary-west-end-2025',
+  },
 ];
 
 function loadBaseline() {

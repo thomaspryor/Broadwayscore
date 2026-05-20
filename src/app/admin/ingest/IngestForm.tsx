@@ -27,6 +27,7 @@ interface IngestResponse {
   workflowRunUrl?: string;
   collisionDetail?: unknown;
   error?: string;
+  failureReason?: 'malformed-url' | 'outlet-unknown' | 'no-show' | 'duplicate' | 'server-error' | 'other';
   warning?: string;
   detectionWarnings?: string[];
   pendingReason?: string;
@@ -55,6 +56,8 @@ interface LogEntry {
   // Status
   status: 'submitting' | 'saved' | 'failed';
   error?: string;
+  // Typed triage hint — distinct icon/label per failure class (Issue #1).
+  failureReason?: 'malformed-url' | 'outlet-unknown' | 'no-show' | 'duplicate' | 'server-error' | 'other';
   warningCount?: number;
   // UX hints (Lost Boys 2026-04-27 ship-check Gap 8): show the operator
   // which workflow was dispatched + ETA, plus surface byline-fail rows
@@ -146,12 +149,13 @@ function LogRow({ entry }: { entry: LogEntry }) {
       : entry.status === 'saved'
         ? 'text-status-open'
         : 'text-score-skip';
+  const failureLabel = entry.status === 'failed' ? describeFailureReason(entry.failureReason) : null;
   const summary =
     entry.status === 'saved' && entry.criticName
       ? `${entry.criticName} · ${entry.outletId} · ${entry.showId}`
       : entry.status === 'submitting'
         ? entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)
-        : entry.error || 'Failed';
+        : failureLabel || entry.error || 'Failed';
 
   // Decode the dispatched workflow into operator-friendly ETA (Lost Boys
   // 2026-04-27 ship-check Gap 8). Without this hint, "saved + rebuild
@@ -179,8 +183,10 @@ function LogRow({ entry }: { entry: LogEntry }) {
             </span>
           )}
         </div>
-        {entry.status === 'failed' && entry.error && (
-          <div className="text-[11px] text-gray-500 truncate">{entry.url}</div>
+        {entry.status === 'failed' && (
+          <div className="text-[11px] text-gray-500 truncate" title={entry.error}>
+            {entry.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 70)}
+          </div>
         )}
         {bylineWarning && (
           <div className="text-[11px] text-score-tepid mt-0.5">
@@ -221,6 +227,17 @@ function describeDispatchEta(workflow?: string): { label: string; tone: string }
     };
   }
   return { label: `Dispatched ${workflow}`, tone: 'text-gray-500' };
+}
+
+function describeFailureReason(reason?: string): string | null {
+  switch (reason) {
+    case 'outlet-unknown': return 'Outlet not in registry — add domain to outlet-registry.json';
+    case 'duplicate': return 'Stale-flag collision — existing file flagged for a different URL (set forceClearStale=true)';
+    case 'no-show': return 'Show not detected — set showId explicitly';
+    case 'malformed-url': return 'Malformed URL';
+    case 'server-error': return 'GitHub API error — retry or check token';
+    default: return null;
+  }
 }
 
 // ─── Single-paste form ──────────────────────────────────────────────
@@ -356,12 +373,13 @@ function SinglePasteForm({
         setDetected(null);
         setForceClearStale(false);
       } else {
-        onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
+        onUpdate(id, { status: 'failed', error: json.error || 'Unknown error', failureReason: json.failureReason ?? 'other' });
       }
     } catch (err) {
       onUpdate(id, {
         status: 'failed',
         error: err instanceof Error ? err.message : String(err),
+        failureReason: 'server-error',
       });
     } finally {
       setSubmitting(false);
@@ -653,13 +671,14 @@ function BatchPasteForm({
           });
         } else {
           failureCount++;
-          onUpdate(id, { status: 'failed', error: json.error || 'Unknown error' });
+          onUpdate(id, { status: 'failed', error: json.error || 'Unknown error', failureReason: json.failureReason ?? 'other' });
         }
       } catch (err) {
         failureCount++;
         onUpdate(id, {
           status: 'failed',
           error: err instanceof Error ? err.message : String(err),
+          failureReason: 'server-error',
         });
       }
       setProgress({ done: i + 1, total: validSlots.length });

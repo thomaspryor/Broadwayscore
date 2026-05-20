@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-17T13:54:13.934Z",
+  "lastRunAt": "2026-05-19T14:12:42.921Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -46,7 +46,8 @@
     "google:b17bf9614d78378b": true,
     "google:b261d59c7eb034fc": true,
     "google:64c53c456befa176": true,
-    "google:d93e06652368c5cd": true
+    "google:d93e06652368c5cd": true,
+    "google:e04619e5f3c8f566": true
   },
   "mentions": [
     {
@@ -951,10 +952,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-05-08T08:51:37.693Z"
+    },
+    {
+      "id": "google:e04619e5f3c8f566",
+      "source": "google",
+      "url": "https://the-avocado.org/2026/04/22/the-22-april-night-thread-of-souled-out-by-k-tel/",
+      "title": "The 22 April Night Thread of “Souled Out!” by K-Tel",
+      "excerpt": "Apr 22, 2026 — Items a naughty parody of Sesame Street. Euro-cados, was Sesame Street a big deal in the UK? https://broadwayscorecard.com/show/avenue-q-west- ...Read more",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-05-19T14:12:32.210Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-05-19T14:12:42.921Z"
     }
   ],
   "stats": {
-    "totalSeen": 46,
+    "totalSeen": 47,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -1003,6 +1024,7 @@
     "https://www.goldderby.com/topic/79th-tony-awards-thread/page/3": true,
     "https://showscorecard.com/": true,
     "https://showscorecard.com/critics/outlets/new-york-theatre-guide": true,
-    "https://www.threads.com/@bwayscorecard": true
+    "https://www.threads.com/@bwayscorecard": true,
+    "https://the-avocado.org/2026/04/22/the-22-april-night-thread-of-souled-out-by-k-tel": true
   }
 }

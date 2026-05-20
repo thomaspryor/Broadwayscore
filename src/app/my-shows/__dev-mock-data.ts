@@ -58,8 +58,8 @@ export const mockReviews: UserReview[] = [
 ];
 
 export const mockWatchlist: WatchlistEntry[] = [
-  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-03-20', created_at: '2026-01-01T00:00:00Z' },
-  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-04-10', created_at: '2026-02-01T00:00:00Z' },
+  { id: 'w1', user_id: USER_ID, show_id: 'gypsy-2024', planned_date: '2026-09-15', created_at: '2026-01-01T00:00:00Z' },
+  { id: 'w2', user_id: USER_ID, show_id: 'smash-2025', planned_date: '2026-10-10', created_at: '2026-02-01T00:00:00Z' },
   { id: 'w3', user_id: USER_ID, show_id: 'oh-mary-2024', planned_date: null, created_at: '2025-12-15T00:00:00Z' },
   { id: 'w4', user_id: USER_ID, show_id: 'operation-mincemeat-2025', planned_date: null, created_at: '2026-01-20T00:00:00Z' },
   // Past planned_date, no review → "To be rated"
@@ -126,8 +126,8 @@ export const mockShowMap: Record<string, ShowLookup> = {
   'smash-2025': { id: 'smash-2025', title: 'Smash', slug: 'smash-2025', venue: 'Imperial Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-04-23', closingDate: null, compositeScore: 51, posterUrl: null },
   'oh-mary-2024': { id: 'oh-mary-2024', title: 'Oh, Mary!', slug: 'oh-mary-2024', venue: 'Lyceum Theatre', type: 'play', status: 'open', category: 'broadway', previewDate: null, openingDate: '2024-07-11', closingDate: null, compositeScore: 80, posterUrl: null },
   'operation-mincemeat-2025': { id: 'operation-mincemeat-2025', title: 'Operation Mincemeat', slug: 'operation-mincemeat-2025', venue: 'Golden Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-20', closingDate: null, compositeScore: 85, posterUrl: null },
-  'chess-2025': { id: 'chess-2025', title: 'Chess', slug: 'chess-2025', venue: 'Broadhurst Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-02-13', closingDate: null, compositeScore: 72, posterUrl: null },
-  'ragtime-2025': { id: 'ragtime-2025', title: 'Ragtime', slug: 'ragtime-2025', venue: 'Todd Haimes Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-27', closingDate: null, compositeScore: 78, posterUrl: null },
+  'chess-2025': { id: 'chess-2025', title: 'Chess', slug: 'chess', venue: 'Broadhurst Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-02-13', closingDate: null, compositeScore: 72, posterUrl: null },
+  'ragtime-2025': { id: 'ragtime-2025', title: 'Ragtime', slug: 'ragtime', venue: 'Todd Haimes Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-27', closingDate: null, compositeScore: 78, posterUrl: null },
   // Diary-only shows (no show page)
   'rent-off-broadway-1996': { id: 'rent-off-broadway-1996', title: 'Rent', slug: 'rent-off-broadway-1996', venue: 'New York Theatre Workshop', type: 'musical', status: 'closed', category: 'off-broadway', previewDate: null, openingDate: '1996-02-13', closingDate: '1996-04-29', compositeScore: null, posterUrl: null, diaryOnly: true },
   'les-miserables-west-end-1985': { id: 'les-miserables-west-end-1985', title: 'Les Misérables', slug: 'les-miserables-west-end-1985', venue: 'Barbican Theatre', type: 'musical', status: 'closed', category: 'west-end', previewDate: null, openingDate: '1985-10-08', closingDate: '2019-07-13', compositeScore: null, posterUrl: null, diaryOnly: true },

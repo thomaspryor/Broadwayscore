@@ -1,7 +1,7 @@
 {
   "system": "freshness",
-  "status": "pass",
-  "lastChecked": "2026-05-18T08:22:31.360Z",
+  "status": "warn",
+  "lastChecked": "2026-05-19T08:11:06.843Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "17h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -29,52 +29,52 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "12h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "13h old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: cast-changes.json",
-      "status": "pass",
-      "message": "2d old"
+      "status": "warn",
+      "message": "3d old (warn threshold: 3d)"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "3h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: social-pulse/_budget.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "22h old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: tony-polymarket-odds.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "14h old"
     },
     {
       "name": "Freshness: tony-kalshi-odds.json",
       "status": "pass",
-      "message": "7h old"
+      "message": "15h old"
     }
   ]
 }

@@ -557,7 +557,13 @@ const ARCHIVE_FIRST_DOMAINS = [
   'wsj.com', 'newyorker.com', 'ew.com', 'latimes.com',
   'rollingstone.com', 'chicagotribune.com', 'nypost.com',
   'timeout.com', 'usatoday.com', 'ft.com', 'telegraph.co.uk',
-  'thetimes.co.uk', 'thestage.co.uk', 'standard.co.uk',
+  'thetimes.co.uk', 'thetimes.com', 'thestage.co.uk', 'standard.co.uk',
+  // UK/niche paywalls — BD/SB can't crack anyway
+  'independent.co.uk', 'nysun.com', 'spectator.co.uk', 'thejc.com',
+  // Outlets that soft-paywall or block scrapers — matched to collect-review-texts.js list
+  'nydailynews.com', 'bloomberg.com', 'northjersey.com', 'backstage.com',
+  'talkinbroadway.com', 'huffpost.com', 'broadwaynews.com', 'theatrely.com',
+  'amny.com', 'forward.com',
 ];
 
 function isArchiveFirstSite(url) {

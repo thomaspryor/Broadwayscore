@@ -56,14 +56,25 @@ test.describe('My Shows — Page Structure', () => {
 
   test('no console errors on page load', async ({ page }) => {
     const errors: string[] = [];
+    const notFoundUrls: string[] = [];
     page.on('console', msg => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
+    page.on('response', response => {
+      if (response.status() === 404) {
+        const url = response.url();
+        // Ignore expected 404s: favicon, analytics, external services
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase') && !url.includes('_vercel')) {
+          notFoundUrls.push(`404: ${url}`);
+        }
+      }
+    });
     await goToMock(page);
     const critical = errors.filter(e =>
-      !e.includes('favicon') && !e.includes('analytics') && !e.includes('DevTools')
+      !e.includes('favicon') && !e.includes('analytics') && !e.includes('DevTools') &&
+      !e.includes('Failed to load resource') // covered by notFoundUrls check below
     );
-    expect(critical).toEqual([]);
+    expect([...critical, ...notFoundUrls], 'Unexpected errors or 404s on page load').toEqual([]);
   });
 });
 
@@ -127,7 +138,7 @@ test.describe('My Shows — Diary Sections', () => {
   test('Upcoming section shows future watchlist items', async ({ page }) => {
     await goToMock(page);
     await expect(page.getByRole('heading', { name: 'Upcoming' })).toBeVisible();
-    // Gypsy (Mar 20) and Smash (Apr 10)
+    // Gypsy (Sep 15) and Smash (Oct 10)
     await expect(page.getByRole('heading', { name: 'Gypsy', level: 4 })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Smash', level: 4 })).toBeVisible();
   });
@@ -156,7 +167,7 @@ test.describe('My Shows — Diary Sections', () => {
     // Should navigate (URL will contain rate=1&stars=4)
     await page.waitForURL(/rate=1/, { timeout: 5000 }).catch(() => {});
     const url = page.url();
-    expect(url).toContain('/show/ragtime-2025');
+    expect(url).toContain('/show/ragtime');
   });
 
   test('venue is displayed in diary list view', async ({ page }) => {
@@ -214,7 +225,9 @@ test.describe('My Shows — Sorting', () => {
   test('watchlist "A-Z" sort orders alphabetically', async ({ page }) => {
     await goToMock(page, 'watchlist');
     // Switch to list view so titles are easier to extract from card headings
-    await page.getByRole('button', { name: 'List view' }).click();
+    const listBtn = page.getByRole('button', { name: 'List view' });
+    await listBtn.click();
+    await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
     await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
     // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
     const headings = page.locator('[role="tabpanel"] h4');
@@ -378,7 +391,7 @@ test.describe('My Shows — Watchlist', () => {
     await goToMock(page, 'watchlist');
     // Date picker buttons (Add date or actual dates)
     const dateButtons = page.locator('text=Add date');
-    const existingDates = page.locator('text=Mar 20');
+    const existingDates = page.locator('text=Sep 15');
     const totalDates = (await dateButtons.count()) + (await existingDates.count());
     expect(totalDates).toBeGreaterThan(0);
   });

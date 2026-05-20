@@ -1,0 +1,115 @@
+# Weekly cross-production misattribution audit.
+#
+# Runs audit-cross-production.js --dry-run, commits same-title-confusion.json
+# if findings changed, and emits a ::warning:: annotation when delta > 3.
+#
+# Schedule: Sundays 14:00 UTC — after BWW scrape (13:00) before DTLI (15:00).
+# READ-ONLY: never modifies review-texts files.
+name: Audit Cross-Production (Weekly)
+
+on:
+  schedule:
+    - cron: '0 14 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    name: Run cross-production audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Capture previous finding count
+        id: prev
+        run: |
+          if [ -f data/audit/same-title-confusion.json ]; then
+            COUNT=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
+            echo "count=$COUNT" >> $GITHUB_OUTPUT
+          else
+            echo "count=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run audit
+        run: node scripts/audit-cross-production.js --dry-run
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet data/audit/same-title-confusion.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for large files
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      - name: Commit and push
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/same-title-confusion.json
+          COUNT=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
+          git commit -m "audit: Weekly cross-production audit ($COUNT findings) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Annotate finding delta
+        if: always()
+        run: |
+          PREV=${{ steps.prev.outputs.count }}
+          CURR=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
+          DELTA=$((CURR - PREV))
+          if [ "$DELTA" -gt 3 ]; then
+            echo "::warning::cross-production audit: +${DELTA} new findings (${PREV} → ${CURR}). Check data/audit/same-title-confusion.json."
+          fi
+
+      - name: Summary
+        run: |
+          echo "## Cross-Production Audit" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const d = require('./data/audit/same-title-confusion.json');
+            const findings = d.findings || [];
+            console.log('**Total findings:** ' + findings.length);
+            if (findings.length > 0) {
+              console.log('');
+              console.log('| Review File | Filed Under | Closer To | Days Delta |');
+              console.log('|-------------|-------------|-----------|------------|');
+              for (const f of findings.slice(0, 10)) {
+                const delta = Math.round(f.signals?.find(s => s.startsWith('days-from-own:'))?.split(':')[1] || 0) - Math.round(f.signals?.find(s => s.startsWith('days-from-closer:'))?.split(':')[1] || 0);
+                console.log('| ' + (f.reviewFile || '?') + ' | ' + (f.currentShowId || '?') + ' | ' + (f.suggestedShowId || '?') + ' | ' + delta + ' |');
+              }
+              if (findings.length > 10) console.log('_…and ' + (findings.length - 10) + ' more_');
+            }
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Cross-Production Weekly Failed'
+          severity: 'warning'

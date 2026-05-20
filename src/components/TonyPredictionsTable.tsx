@@ -10,6 +10,7 @@ import { RankBadge } from '@/components/gold-list/GoldListCards';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import type { TierBadge } from '@/lib/awards-scoring';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
+import { featureFlags } from '@/config/feature-flags';
 
 // Maps outlet IDs in tony-critic-picks.json → outlet names in OUTLET_LOGOS registry
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
@@ -100,6 +101,31 @@ function OutletPickLogo({ outletId }: { outletId: string }) {
   );
 }
 
+const PRECURSOR_LABELS: Record<string, string> = {
+  DL: 'Drama League',
+  OCC: 'Outer Critics Circle',
+  DD: 'Drama Desk',
+  PULITZER: 'Pulitzer Prize for Drama',
+  NYDCC: 'NY Drama Critics Circle',
+};
+
+function PrecursorChips({ wins }: { wins?: string[] }) {
+  if (!wins || wins.length === 0) return null;
+  return (
+    <div className="flex flex-col items-start gap-1 flex-shrink-0">
+      {wins.map(w => (
+        <span
+          key={w}
+          title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`}
+          className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none"
+        >
+          {w}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function PressPicks({ picks }: { picks?: string[] }) {
   if (!picks || picks.length === 0) return null;
   return (
@@ -125,6 +151,8 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   if (score <= 84) return 'decorated';
   return 'sweeper';
 }
+
+const SHOW_OUR_PICK = featureFlags.tonyPredictionsOurPick;
 
 // Shared style tokens — mirrors nominees page
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
@@ -156,9 +184,11 @@ function CombinedColumnHeader() {
       <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
       <div className="flex-1 min-w-0" />
       <div className="flex items-end gap-2 flex-shrink-0">
-        <div className="w-14 text-center">
-          <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
-        </div>
+        {SHOW_OUR_PICK && (
+          <div className="w-14 text-center">
+            <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
+          </div>
+        )}
         <div className="hidden sm:flex flex-col items-center w-12">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
@@ -174,10 +204,13 @@ function CombinedColumnHeader() {
         <div className="hidden sm:flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Award Score: combined momentum from Drama League, Outer Critics Circle, and Drama Desk">
+          <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
+        </div>
+        <div className="hidden sm:flex flex-col items-center w-20" title="Won the matching category at Drama League (DL), Outer Critics Circle (OCC), or Drama Desk (DD)">
           <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
         </div>
-        <div className="hidden sm:flex flex-col items-center w-14">
+        <div className="hidden sm:flex flex-col items-center w-14" title="Press picks: New York Times, Variety, and Deadline predictions">
           <span className={HEADER_LINE}>Press</span><span className={HEADER_LINE}>Picks</span>
         </div>
       </div>
@@ -204,7 +237,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate w-full sm:w-auto ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
           {show.title}
         </h3>
-        {rank === 1 && mode === 'combined' && !isUpcoming && (
+        {SHOW_OUR_PICK && rank === 1 && mode === 'combined' && !isUpcoming && (
           <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
             <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
@@ -219,6 +252,7 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </span>
         )}
       </div>
+      <div className="sm:hidden"><PrecursorChips wins={show.precursorWins} /></div>
       {notYetOpen && <p className="text-xs text-gray-500 mt-1">Opening {formatDate(show.openingDate)}</p>}
     </div>
   );
@@ -254,11 +288,13 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         {titleArea}
         {/* ALL right-side columns in ONE flex group — must mirror CombinedColumnHeader inner gap-2 */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          <div className="w-14 flex items-center justify-center">
-            {ourPct != null
-              ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
-              : <span className="text-base text-gray-600">—</span>}
-          </div>
+          {SHOW_OUR_PICK && (
+            <div className="w-14 flex items-center justify-center">
+              {ourPct != null
+                ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
+                : <span className="text-base text-gray-600">—</span>}
+            </div>
+          )}
           <div className="hidden sm:flex w-12 items-center justify-center">
             <span className="text-base font-bold text-white">
               {show.gdOdds != null ? `${Math.round(show.gdOdds * 100)}%` : '—'}
@@ -276,12 +312,19 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           </div>
           <div className="hidden sm:flex"><ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} /></div>
           <div className="hidden sm:flex"><AudienceBox grade={show.audienceGrade} /></div>
-          <div className="hidden sm:flex"><AwardScoreBadge
-            score={Math.round(show.awardsScore ?? 0)}
-            badge={badgeFromScore(show.awardsScore)}
-            inProgress={true}
-            size="md"
-          /></div>
+          <div className="hidden sm:flex" title="Award Score: momentum from precursor ceremonies (Drama League, Outer Critics Circle, Drama Desk)">
+            <AwardScoreBadge
+              score={Math.round(show.awardsScore ?? 0)}
+              badge={badgeFromScore(show.awardsScore)}
+              inProgress={true}
+              size="md"
+            />
+          </div>
+          <div className="hidden sm:flex w-20 items-center justify-center">
+            {show.precursorWins && show.precursorWins.length > 0
+              ? <PrecursorChips wins={show.precursorWins} />
+              : <span className="text-xs text-gray-600">—</span>}
+          </div>
           <div className="hidden sm:flex w-14 items-center justify-center">
             <PressPicks picks={show.criticPicks} />
           </div>

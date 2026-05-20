@@ -10,7 +10,7 @@
  *      + src/lib/awards-scoring.ts (and updating the golden fixture).
  */
 
-export type OtherAwardKey = 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc' | 'obie' | 'lortel' | 'criticsCircle';
+export type OtherAwardKey = 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc' | 'obie' | 'lortel' | 'criticsCircle' | 'eveningStandard';
 
 export interface OtherAwardConfig {
   key: OtherAwardKey;
@@ -32,4 +32,5 @@ export const OTHER_CEREMONY_CONFIGS: OtherAwardConfig[] = [
   { key: 'obie',        short: 'Obie Award',       display: 'Obie Awards',                    ceremonyName: 'Obie Awards',              chip: 'bg-orange-500/10 border-orange-500/20',   text: 'text-orange-300' },
   { key: 'lortel',      short: 'Lortel Award',     display: 'Lucille Lortel Awards',          ceremonyName: 'Lortel Awards',            chip: 'bg-violet-500/10 border-violet-500/20',   text: 'text-violet-300' },
   { key: 'criticsCircle', short: 'Critics Circle', display: "Critics' Circle Theatre Awards", ceremonyName: "Critics' Circle",          chip: 'bg-yellow-500/10 border-yellow-500/20',   text: 'text-yellow-300' },
+  { key: 'eveningStandard', short: 'Evening Standard', display: 'Evening Standard Theatre Awards', ceremonyName: 'Evening Standard',     chip: 'bg-sky-500/10 border-sky-500/20',         text: 'text-sky-300' },
 ];

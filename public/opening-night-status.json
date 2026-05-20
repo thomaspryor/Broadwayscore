@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-05-18T12:47:23.301Z",
+  "generatedAt": "2026-05-19T23:41:16.913Z",
   "lookbackDays": 3,
   "shows": [
     {
-      "id": "the-emporium-off-broadway-2025",
-      "title": "The Emporium",
-      "market": "broadway",
-      "category": "off-broadway",
+      "id": "care-west-end-2026",
+      "title": "CARE",
+      "market": "west-end",
+      "category": "off-west-end",
       "type": "play",
-      "openingDate": "2026-05-18",
-      "status": "previews",
-      "slug": "the-emporium-off-broadway",
-      "thumbnail": "/images/shows/the-emporium-off-broadway-2025/thumbnail.webp",
+      "openingDate": "2026-05-19",
+      "status": "open",
+      "slug": "care-west-end",
+      "thumbnail": "/images/shows/care-west-end-2026/thumbnail.webp",
       "siteScore": null,
       "liveScore": null,
       "scoreDrift": null,
@@ -28,12 +28,91 @@
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "0/8 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:0/2",
+          "hi-conf:0/6"
         ],
         "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ]
+    },
+    {
+      "id": "the-emporium-off-broadway-2025",
+      "title": "The Emporium",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-05-18",
+      "status": "open",
+      "slug": "the-emporium-off-broadway",
+      "thumbnail": "/images/shows/the-emporium-off-broadway-2025/thumbnail.webp",
+      "siteScore": 65.05,
+      "liveScore": 65,
+      "scoreDrift": -0.04999999999999716,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 7,
+      "t1": 1,
+      "t2": 5,
+      "t3": 1,
+      "positive": 3,
+      "mixed": 2,
+      "negative": 2,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "7/12 total",
+          "T1:1/3",
+          "hi-conf:3/8"
+        ],
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -46,10 +125,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
         {
           "name": "Vulture",
           "isDualMarket": false
@@ -117,19 +192,11 @@
           "isDualMarket": false
         },
         {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
           "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
           "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
           "isDualMarket": false
         },
         {
@@ -161,10 +228,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
           "name": "New York Theater",
           "isDualMarket": false
         },
@@ -178,10 +241,6 @@
         },
         {
           "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
           "isDualMarket": false
         },
         {
@@ -222,10 +281,6 @@
         },
         {
           "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Front Row Center",
           "isDualMarket": false
         },
         {
@@ -376,6 +431,56 @@
           "name": "London Box Office",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 4,
+          "s": 60.57,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 1,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T09:26:57.400Z",
+          "rc": 5,
+          "s": 63.75,
+          "t1": 0,
+          "t2": 4,
+          "t3": 1,
+          "p": 2,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T12:56:41.319Z",
+          "rc": 6,
+          "s": 68.67,
+          "t1": 0,
+          "t2": 5,
+          "t3": 1,
+          "p": 3,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T20:15:38.309Z",
+          "rc": 7,
+          "s": 65.05,
+          "t1": 1,
+          "t2": 5,
+          "t3": 1,
+          "p": 3,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -385,28 +490,27 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-05-18",
-      "status": "previews",
+      "status": "open",
       "slug": "equus-west-end",
       "thumbnail": "/images/shows/equus-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": 65,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 79.38,
+      "liveScore": 79,
+      "scoreDrift": -0.37999999999999545,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 1,
-      "t2": 0,
+      "total": 4,
+      "t1": 3,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 3,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:1/2",
+          "4/8 total",
+          "T1:1/3",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -423,10 +527,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -436,14 +536,6 @@
         },
         {
           "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
           "isDualMarket": true
         },
         {
@@ -467,6 +559,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -481,6 +577,42 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 2,
+          "s": 70,
+          "t1": 2,
+          "t2": 0,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T09:26:57.400Z",
+          "rc": 3,
+          "s": 79.13,
+          "t1": 2,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T17:21:31.485Z",
+          "rc": 4,
+          "s": 79.38,
+          "t1": 3,
+          "t2": 1,
+          "t3": 0,
+          "p": 3,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -491,28 +623,28 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-05-18",
-      "status": "upcoming",
+      "status": "open",
       "slug": "celebrity-autobiography",
       "thumbnail": "/images/shows/celebrity-autobiography-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 64,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
+      "total": 3,
+      "t1": 1,
+      "t2": 1,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:0/3",
+          "T2:2/3",
           "hi-conf:0/8"
         ],
         "highConfidence": 0,
@@ -558,10 +690,6 @@
         },
         {
           "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
           "isDualMarket": false
         },
         {
@@ -641,10 +769,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -858,6 +982,32 @@
           "name": "London Box Office",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-19T05:25:33.048Z",
+          "rc": 2,
+          "s": 56,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-19T12:56:41.319Z",
+          "rc": 3,
+          "s": 64,
+          "t1": 1,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -867,7 +1017,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-05-17",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-maids-off-broadway",
       "thumbnail": "/images/shows/the-maids-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -995,10 +1145,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
           "name": "TheWrap",
           "isDualMarket": false
         },
@@ -1231,248 +1377,9 @@
           "isDualMarket": false
         }
       ]
-    },
-    {
-      "id": "mother-courage-and-her-children-globe-west-end-2026",
-      "title": "Mother Courage and Her Children - Globe",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-05-15",
-      "status": "open",
-      "slug": "mother-courage-and-her-children-globe-west-end",
-      "thumbnail": "/images/shows/mother-courage-and-her-children-globe-west-end-2026/thumbnail.webp",
-      "siteScore": 77.69,
-      "liveScore": 78,
-      "scoreDrift": 0.3100000000000023,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 7,
-      "t1": 1,
-      "t2": 5,
-      "t3": 1,
-      "positive": 5,
-      "mixed": 2,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "7/8 total",
-          "T1:1/3",
-          "T2:1/2",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-05-18T09:36:20.169Z",
-          "rc": 3,
-          "s": 81.09,
-          "t1": 1,
-          "t2": 1,
-          "t3": 1,
-          "p": 3,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-18T12:37:08.216Z",
-          "rc": 7,
-          "s": 77.69,
-          "t1": 1,
-          "t2": 5,
-          "t3": 1,
-          "p": 5,
-          "m": 2,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
-      "id": "end-of-the-rainbow-west-end-2026",
-      "title": "End of the Rainbow",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-05-15",
-      "status": "open",
-      "slug": "end-of-the-rainbow-west-end",
-      "thumbnail": "/images/shows/end-of-the-rainbow-west-end-2026/thumbnail.webp",
-      "siteScore": null,
-      "liveScore": null,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 5,
-      "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "0/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ]
     }
   ],
   "upcoming": [
-    {
-      "id": "care-west-end-2026",
-      "title": "CARE",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-05-19",
-      "status": "previews",
-      "slug": "care-west-end",
-      "thumbnail": "/images/shows/care-west-end-2026/thumbnail.webp",
-      "daysUntil": 1,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        }
-      },
-      "readinessSummary": {
-        "failures": 1,
-        "warnings": 0,
-        "unknowns": 2,
-        "total": 4
-      },
-      "preflight": false
-    },
     {
       "id": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026",
       "title": "Soledad Barrio & Noche Flamenca: Aqua Fresca",
@@ -1483,7 +1390,7 @@
       "status": "upcoming",
       "slug": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway",
       "thumbnail": "/images/shows/soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1522,7 +1429,7 @@
       "status": "previews",
       "slug": "can-i-be-frank-off-broadway",
       "thumbnail": "/images/shows/can-i-be-frank-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 3,
+      "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1561,7 +1468,7 @@
       "status": "upcoming",
       "slug": "olga-pericet-baile-sonoro-off-broadway",
       "thumbnail": "/images/shows/olga-pericet-baile-sonoro-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1587,6 +1494,31 @@
         "warnings": 2,
         "unknowns": 4,
         "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "dark-of-the-moon-west-end-2026",
+      "title": "Dark of the Moon",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-05-26",
+      "status": "previews",
+      "slug": "dark-of-the-moon-west-end",
+      "thumbnail": "/images/shows/dark-of-the-moon-west-end-2026/thumbnail.webp",
+      "daysUntil": 7,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
       },
       "preflight": false
     }

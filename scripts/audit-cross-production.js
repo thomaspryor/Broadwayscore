@@ -175,8 +175,9 @@ for (const group of multiProd) {
         review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       } catch { continue; }
 
-      // Skip already flagged
-      if (review.wrongProduction) {
+      // Skip already flagged or wrong-show (date proximity is meaningless for
+      // files whose content doesn't match the current show at all).
+      if (review.wrongProduction || review.wrongShow) {
         totalAlreadyFlagged++;
         continue;
       }
@@ -309,7 +310,7 @@ for (const group of multiProd) {
 issues.sort((a, b) => a.filedUnder.localeCompare(b.filedUnder));
 
 console.log(`Files scanned: ${totalFilesScanned}`);
-console.log(`Already flagged wrongProduction: ${totalAlreadyFlagged}`);
+console.log(`Already flagged (wrongProduction/wrongShow): ${totalAlreadyFlagged}`);
 console.log(`Cross-production duplicates (same filename): ${totalDuplicates}`);
 console.log(`Likely wrong-production reviews (date-based): ${totalWrongProd}`);
 console.log(`Null-date fallback cross-prod candidates: ${totalNullDateFallback}`);

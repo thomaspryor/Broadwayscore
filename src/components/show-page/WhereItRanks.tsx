@@ -46,7 +46,7 @@ interface RowDef {
 const ROWS: RowDef[] = [
   { metric: 'critic', label: 'CriticScore' },
   { metric: 'audience', label: 'AudienceGrade' },
-  { metric: 'awards', label: 'Awards Score', notApplicableHint: 'Awards Score is Broadway-only for now' },
+  { metric: 'awards', label: 'Awards Score', notApplicableHint: "Award data isn't tracked for this market" },
   { metric: 'boxOffice', label: 'Box Office', notApplicableHint: "Box-office data isn't tracked for this market" },
   { metric: 'overall', label: 'Overall' },
 ];
@@ -180,8 +180,11 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           </tr>
         </thead>
         <tbody>
-          {ROWS.map((row, idx) => {
-            const isLast = idx === ROWS.length - 1;
+          {ROWS.filter(row => {
+            if (row.metric === 'boxOffice' && (market === 'off-broadway' || market === 'off-west-end')) return false;
+            return true;
+          }).map((row, idx, visibleRows) => {
+            const isLast = idx === visibleRows.length - 1;
             const rs = activeRanks[row.metric];
             // Denominators vary widely per-metric in the all-time column
             // (CriticScore=267, AudienceGrade=251, Awards=234, Box Office=252)

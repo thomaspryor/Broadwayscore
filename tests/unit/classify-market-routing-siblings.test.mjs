@@ -216,6 +216,41 @@ test('6. venue-substring denylist — "broadway" token must NOT fire even when U
   assert.equal(decision.flag, undefined, '"broadway" venue token must be denylisted');
 });
 
+test('8. cross-market Tier 1 fires at 32 days with CROSS_MARKET_SIBLING_CLOSE_DAYS=60 (oh-mary-style)', () => {
+  // Mirrors finding 8 from same-title-confusion.json: oh-mary-2024 (BW, opened
+  // 2024-07-11) with 1minutecritic review publishDate 2026-01-19 → distToSib=32d
+  // (to oh-mary-west-end-2025 opened 2025-12-18). Was accepted under 30d threshold.
+  // With 60d cross-market threshold it should reroute to the WE sibling.
+  const shows = [
+    {
+      id: 'oh-mary-bw-2024',
+      title: 'Oh, Mary!',
+      openingDate: '2024-07-11',
+      category: 'broadway',
+      venue: 'Lyceum Theatre',
+    },
+    {
+      id: 'oh-mary-we-2025',
+      title: 'Oh, Mary!',
+      openingDate: '2025-12-18',
+      category: 'west-end',
+      venue: 'Garrick Theatre',
+    },
+  ];
+  const idx = buildSiblingIndex(shows);
+  const decision = classifyMarketRouting({
+    showId: 'oh-mary-bw-2024',
+    url: 'https://1minutecritic.com/oh-mary-broadway-review/',
+    outletId: 'one-minute-critic',
+    publishDate: '2026-01-19',   // 32d after oh-mary-we-2025 opening, 557d after oh-mary-bw-2024 opening
+    category: 'broadway',
+    siblingIndex: idx,
+  });
+  assert.equal(decision.action, 'reroute', `expected cross-market reroute at 32d, got ${JSON.stringify(decision)}`);
+  assert.equal(decision.targetShowId, 'oh-mary-we-2025');
+  assert.match(decision.reason || '', /32d/);
+});
+
 test('7. cross-market Tier 1 reroute still fires (hadestown WE-2024 review of 2019 BW opening)', () => {
   // Sanity check: the new same-market branch must NOT regress the existing
   // Tier 1 cross-market reroute. hadestown-west-end-2024 dir + 2019-04-17

@@ -95,6 +95,9 @@ const SKIP_OUTLETS = new Set(['broadwayworld', 'london-theatre', 'london-box-off
 // strategy: 'rss'          — fetch an RSS/Atom feed, optional urlFilter + titleFilter
 // strategy: 'sitemap'      — fetch an annual XML sitemap, filter by urlFilter + <lastmod>
 // strategy: 'listing-html' — fetch a known listing page via fetchPage() (BD→SB→Playwright)
+//
+// After adding new entries here, run a one-time historical backfill:
+//   gh workflow run outlet-listing-poller.yml -f lookback_days=365
 const OUTLET_STRATEGY_CONFIG = {
   // RSS strategies
   guardian:            { strategy: 'rss', url: 'https://www.theguardian.com/stage/rss' },
@@ -147,15 +150,16 @@ const OUTLET_STRATEGY_CONFIG = {
   // urlFilter: keep only individual review slugs (they all end in -review, dropping category pages)
   nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
-  thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews' },
+  // urlFilter keeps /reviews/<slug> paths; drops /review-round-ups/ multi-show roundup pages
+  thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews', urlFilter: /\/reviews\/[^/]+/ },
   // timeout (NY): SSR reviews index page — 21 individual reviews confirmed via plain fetch;
   // usePlainFetch avoids BD/SB overhead; urlFilter keeps individual review slugs (*-review,
   // *-review-*) and drops the aggregate listing page itself (*-reviews plural).
   timeout:           { strategy: 'listing-html', url: 'https://www.timeout.com/newyork/theater/new-york-theater-and-broadway-reviews', urlFilter: /\/theater\/[^/]+-review(?!s)[^/]*$/, usePlainFetch: true },
   // timeout-london: SSR reviews index, BD fetches directly (~35 links)
   'timeout-london':  { strategy: 'listing-html', url: 'https://www.timeout.com/london/theatre/london-theatre-reviews' },
-  // Evening Standard UK theatre listing — SSR, 51 links confirmed accessible
-  standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/culture/theatre' },
+  // Evening Standard UK theatre reviews topic page — SSR, reviews-only (avoids news/features on /culture/theatre)
+  standard:          { strategy: 'listing-html', url: 'https://www.standard.co.uk/topic/theatre-reviews', usePlainFetch: true },
   // WhatsOnStage: /news/?categories=reviews is a React SPA — plain fetch returns only the shell.
   // /news/feed/ is a WordPress RSS feed with reviews mixed in; urlFilter keeps -review_NNN slugs.
   whatsonstage:      { strategy: 'rss', url: 'https://www.whatsonstage.com/news/feed/', urlFilter: /-review_\d+/ },

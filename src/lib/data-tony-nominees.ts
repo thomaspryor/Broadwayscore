@@ -12,6 +12,7 @@ import {
   groupIntoCategories,
   serializeShow,
   lookupCriticPicks,
+  getPrecursorWins,
   type SerializedTonyShow,
   type TonyCategory,
   type TonySeasonWindow,
@@ -74,12 +75,17 @@ const PERSON_LEVEL_CATEGORIES = new Set([
 
 type GdShowEntry = {
   title: string;
-  categories: Record<string, { pWin: number; pNom: number; votes: number }>;
+  categories: Record<string, { pWin: number; pNom: number; votes: number; prevDayPWin?: number }>;
 };
 
-type GdData = { shows: Record<string, GdShowEntry> };
+type GdPersonEntry = Record<string, { pWin: number; votes: number }>;
 
-type PmCategoryData = { nominees: Record<string, number> };
+type GdData = {
+  shows: Record<string, GdShowEntry>;
+  persons?: Record<string, GdPersonEntry>;
+};
+
+type PmCategoryData = { nominees: Record<string, number>; prevNominees?: Record<string, number> };
 type PmData = { categories: Record<string, PmCategoryData> };
 
 type NominationEntry = {
@@ -121,16 +127,48 @@ function lookupGdOdds(
   normMap: Map<string, number>,
   showId: string,
   canonicalCatName: string,
+  personName?: string | null,
 ): number | null {
   const gdCatName = TONY_TO_GD[canonicalCatName];
   if (!gdCatName) return null;
+
+  // For acting categories, use per-person odds — avoids show-level max-pWin
+  // conflation when two performers from the same show are in the same category.
+  if (personName && gdData.persons) {
+    const personEntry = gdData.persons[personName];
+    if (personEntry?.[gdCatName]) {
+      const p = personEntry[gdCatName];
+      if (p.votes > 0 && typeof p.pWin === 'number') return p.pWin;
+    }
+  }
+
+  // Fallback to show-keyed lookup (non-acting categories, or person not found)
   const show = gdData.shows[showId];
   if (!show) return null;
   const cat = show.categories[gdCatName];
   if (!cat || cat.votes === 0 || typeof cat.pWin !== 'number') return null;
   const total = normMap.get(gdCatName) ?? 1;
-  // Normalize when the category total is < 0.5 (sparse/stale market data)
-  return total < 0.5 ? cat.pWin / total : cat.pWin;
+  // Hide GD odds when total coverage < 0.5 — sparse data produces misleading
+  // normalized values (acting categories: GD tracks per-person but show-level
+  // index is incomplete, so most votes are missing).
+  if (total < 0.5) return null;
+  return cat.pWin;
+}
+
+function lookupGdOddsChange(
+  gdData: GdData,
+  showId: string,
+  canonicalCatName: string,
+  personName?: string | null,
+): number | null {
+  const gdCatName = TONY_TO_GD[canonicalCatName];
+  if (!gdCatName) return null;
+  // Person-level: GD doesn't store prevDayPWin per-person, only per-show category
+  const show = gdData.shows[showId];
+  if (!show) return null;
+  const cat = show.categories[gdCatName];
+  if (!cat || typeof cat.pWin !== 'number' || typeof cat.prevDayPWin !== 'number') return null;
+  return cat.pWin - cat.prevDayPWin;
 }
 
 function loadMarketData(filename: string): PmData | null {
@@ -188,6 +226,15 @@ function findMarketOdds(nominees: Record<string, number>, name: string): number 
   return null;
 }
 
+/** Returns current − prev odds for a market nominee; null if prev data absent. */
+function findMarketOddsChange(catData: PmCategoryData | undefined, name: string): number | null {
+  if (!catData?.prevNominees || !catData?.nominees) return null;
+  const current = findMarketOdds(catData.nominees, name);
+  const prev = findMarketOdds(catData.prevNominees, name);
+  if (current == null || prev == null) return null;
+  return current - prev;
+}
+
 /** Finds the /cast/[slug] slug for an actor by matching their name in the show's cast file. */
 function findActorSlug(showId: string, personName: string): string | null {
   try {
@@ -233,14 +280,21 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
     const showsWithOdds = cat.shows.map(show => {
       const computedShow = eligible.find(s => s.slug === show.slug);
       const showId = computedShow?.id ?? '';
-      const pmNominees = pmData?.categories[cat.title]?.nominees ?? null;
-      const kalshiNominees = kalshiData?.categories[cat.title]?.nominees ?? null;
+      const pmCatData = pmData?.categories[cat.title];
+      const kalshiCatData = kalshiData?.categories[cat.title];
+      const pmNominees = pmCatData?.nominees ?? null;
+      const kalshiNominees = kalshiCatData?.nominees ?? null;
       return {
         ...show,
         awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
         gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
+        gdOddsChange: showId ? lookupGdOddsChange(gdData, showId, cat.title) : null,
         polymarketOdds: pmNominees ? findMarketOdds(pmNominees, show.title) : null,
+        polymarketOddsChange: findMarketOddsChange(pmCatData, show.title),
         kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
+        kalshiOddsChange: findMarketOddsChange(kalshiCatData, show.title),
+        criticPicks: showId ? lookupCriticPicks(showId, null, cat.title) : [],
+        precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
       };
     });
     showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
@@ -262,8 +316,10 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   for (const [catTitle, noms] of Array.from(nomsByCategory.entries())) {
     const shows: SerializedTonyShow[] = [];
     const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(catTitle);
-    const pmNominees = pmData?.categories[catTitle]?.nominees ?? null;
-    const kalshiNominees = kalshiData?.categories[catTitle]?.nominees ?? null;
+    const pmCatData = pmData?.categories[catTitle];
+    const kalshiCatData = kalshiData?.categories[catTitle];
+    const pmNominees = pmCatData?.nominees ?? null;
+    const kalshiNominees = kalshiCatData?.nominees ?? null;
 
     if (isPersonLevel) {
       // One row per nominated individual
@@ -279,15 +335,19 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(nom.showId).displayScore,
-          gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle),
+          gdOdds: lookupGdOdds(gdData, gdNormMap, nom.showId, catTitle, personName),
+          gdOddsChange: lookupGdOddsChange(gdData, nom.showId, catTitle),
           polymarketOdds: pmNominees ? findMarketOdds(pmNominees, pmMatchName) : null,
+          polymarketOddsChange: findMarketOddsChange(pmCatData, pmMatchName),
           kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, pmMatchName) : null,
+          kalshiOddsChange: findMarketOddsChange(kalshiCatData, pmMatchName),
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           nomineeActorSlug: actorSlug,
           nomineePriorNominations: pastStats?.priorNominations ?? 0,
           nomineePriorWins: pastStats?.priorWins ?? 0,
           criticPicks: lookupCriticPicks(nom.showId, personName, catTitle),
+          precursorWins: getPrecursorWins(nom.showId, catTitle, personName),
         });
       }
     } else {
@@ -307,22 +367,35 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
         // Kalshi craft nominees are listed by designer name, not show title — try both
         const kalshiCraftKey = names[0] ?? null;
 
+        const craftPmKey = pmNominees
+          ? (findMarketOdds(pmNominees, computedShow.title) != null ? computedShow.title : (personName ?? computedShow.title))
+          : computedShow.title;
+        const craftKalshiKey = kalshiNominees
+          ? (findMarketOdds(kalshiNominees, computedShow.title) != null ? computedShow.title
+            : (personName && findMarketOdds(kalshiNominees, personName) != null ? personName
+            : (kalshiCraftKey ?? computedShow.title)))
+          : computedShow.title;
+
         shows.push({
           ...serializeShow(computedShow),
           awardsScore: computeSiteAwardScore(showId).displayScore,
           gdOdds: lookupGdOdds(gdData, gdNormMap, showId, catTitle),
+          gdOddsChange: lookupGdOddsChange(gdData, showId, catTitle),
           polymarketOdds: pmNominees
             ? (findMarketOdds(pmNominees, computedShow.title)
                ?? (personName ? findMarketOdds(pmNominees, personName) : null))
             : null,
+          polymarketOddsChange: findMarketOddsChange(pmCatData, craftPmKey),
           kalshiOdds: kalshiNominees
             ? (findMarketOdds(kalshiNominees, computedShow.title)
                ?? (personName ? findMarketOdds(kalshiNominees, personName) : null)
                ?? (kalshiCraftKey ? findMarketOdds(kalshiNominees, kalshiCraftKey) : null))
             : null,
+          kalshiOddsChange: findMarketOddsChange(kalshiCatData, craftKalshiKey),
           nomineePersonName: personName,
           nomineeCategoryTitle: catTitle,
           criticPicks: lookupCriticPicks(showId, null, catTitle),
+          precursorWins: getPrecursorWins(showId, catTitle),
         });
       }
     }

@@ -202,6 +202,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'obie') return awards.obie;
   if (key === 'lortel') return awards.lortel;
   if (key === 'criticsCircle') return awards.criticsCircle;
+  if (key === 'eveningStandard') return awards.eveningStandard;
   return undefined;
 }
 
@@ -394,6 +395,43 @@ export default function AwardScoreCard({ showId, awards, openingDate, tonyNamesB
       )}
 
       {awards && <OtherAwardsPanel awards={awards} />}
+
+      {(() => {
+        // Show breakdown fallback when the standard panels (Tony, OtherAwards) have nothing
+        // to display. OtherAwardsPanel covers Drama Desk/OCC/DramaLeague/NYDCC from shows.json —
+        // it silently renders nothing for Olivier/Obie/Lortel/etc. (OB/WE-specific ceremonies).
+        const hasStandardContent = awards?.tony || awards?.dramadesk || awards?.outerCriticsCircle
+          || awards?.dramaLeague || awards?.nyDramaCritics;
+        if (hasStandardContent || result.breakdown.length === 0) return null;
+        return (
+          <div className="mt-4 pt-4 border-t border-white/5">
+            <div className="text-xs text-gray-500 uppercase tracking-wide font-medium mb-3">Award Recognition</div>
+            <div className="space-y-3">
+              {result.breakdown.map(contrib => (
+                <div key={contrib.ceremony}>
+                  <div className="text-xs text-gray-500 font-medium mb-1">{contrib.ceremony}</div>
+                  <ul className="space-y-1">
+                    {contrib.items.map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2 text-sm">
+                        {item.result === 'win'
+                          ? <span className="text-amber-400 text-xs">★</span>
+                          : <span className="text-gray-500 text-xs">☆</span>
+                        }
+                        <span className={item.result === 'win' ? 'text-gray-200' : 'text-gray-400 italic'}>
+                          {item.category}
+                        </span>
+                        <span className={`ml-auto text-xs ${item.result === 'win' ? 'text-amber-400' : 'text-gray-500'}`}>
+                          {item.result === 'win' ? 'Won' : 'Nominated'}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {result.displayScore === 0 && result.inProgress && !hasTony && (
         <p className="text-sm text-gray-400">

@@ -23,14 +23,15 @@ const { sendAlert } = require('./lib/discord-notify');
 
 const KNOWN_BOTS_FILE = path.join(__dirname, '..', 'data', 'audit', 'known-bot-geos.json');
 
-// Bot signature — sessions volume gate + engagement gate.
-// Engagement-rate alone is very discriminating: every real-human country
-// in the Apr 2026 audit was >40% engagement, every bot country was <15%.
-// Duration/pages-per-session are unreliable (bot waves vary; some load
-// pages slowly, some hit one URL and leave).
+// Bot signature — all three signals must align.
+// Engagement alone caused a false positive for the US (10.8% engagement but
+// 33.6s avg session + 1.52 pages/session = clear real-user behavior).
+// Real bots hit one URL and leave: <10s duration, ~1.0 pages/session.
 const BOT_THRESHOLDS = {
-  minSessions: 25,       // ignore stat-noise countries
-  maxEngagementPct: 15,  // real countries are 40-70%
+  minSessions: 25,         // ignore stat-noise countries
+  maxEngagementPct: 15,    // real countries are 40-70%
+  maxDurationSeconds: 15,  // bots don't read pages; real users average 30s+
+  maxPagesPerSession: 1.1, // bots hit one URL; real users click around
 };
 
 function getClient() {
@@ -70,7 +71,9 @@ async function fetchGeoStats(client, propertyId, days = 7) {
 function isBotGeo(stats) {
   return (
     stats.sessions >= BOT_THRESHOLDS.minSessions &&
-    stats.engagementPct < BOT_THRESHOLDS.maxEngagementPct
+    stats.engagementPct < BOT_THRESHOLDS.maxEngagementPct &&
+    stats.durationSeconds < BOT_THRESHOLDS.maxDurationSeconds &&
+    stats.pagesPerSession < BOT_THRESHOLDS.maxPagesPerSession
   );
 }
 
@@ -125,7 +128,9 @@ async function main() {
     description:
       `Weekly geo audit found ${newBots.length} new countr${newBots.length === 1 ? 'y' : 'ies'} ` +
       `matching the bot signature (≥${BOT_THRESHOLDS.minSessions} sessions, ` +
-      `<${BOT_THRESHOLDS.maxEngagementPct}% engagement). ` +
+      `<${BOT_THRESHOLDS.maxEngagementPct}% engagement, ` +
+      `<${BOT_THRESHOLDS.maxDurationSeconds}s avg session, ` +
+      `<${BOT_THRESHOLDS.maxPagesPerSession} pages/session). ` +
       `Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md ` +
       `+ the 3 PostHog Real Users insights + the GA4 Real Users comparison.`,
     severity: 'warning',

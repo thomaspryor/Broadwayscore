@@ -160,7 +160,7 @@ async function main() {
   if (!seriesEvents || seriesEvents.length === 0) {
     console.error('[info] No active Kalshi Tony events found. Markets may not exist yet for this season.');
     const output = {
-      _meta: { source: 'kalshi', lastUpdated: new Date().toISOString(), season, categoriesFetched: 0 },
+      _meta: { source: 'kalshi', lastUpdated: new Date().toISOString(), snapshotDate: new Date().toISOString().slice(0, 10), season, categoriesFetched: 0 },
       categories: {},
     };
     if (!dryRun) {
@@ -194,10 +194,31 @@ async function main() {
     await new Promise(r => setTimeout(r, 100));
   }
 
+  const outPath = path.join(__dirname, '..', 'data', 'tony-kalshi-odds.json');
+  const todayUTC = new Date().toISOString().slice(0, 10);
+  let existingData = {};
+  try { existingData = JSON.parse(fs.readFileSync(outPath, 'utf8')); } catch {}
+  // Only snapshot prevNominees once per UTC day so hourly runs don't overwrite it
+  const shouldSnapshot = existingData?._meta?.snapshotDate !== todayUTC;
+  if (shouldSnapshot) {
+    console.error(`  [snapshot] Taking day-over-day snapshot (first run today)`);
+    for (const [catName, catData] of Object.entries(categories)) {
+      const prevNominees = existingData.categories?.[catName]?.nominees;
+      if (prevNominees) catData.prevNominees = prevNominees;
+    }
+  } else {
+    console.error(`  [snapshot] Skipping prevDay snapshot (already taken today)`);
+    for (const [catName, catData] of Object.entries(categories)) {
+      const prevNominees = existingData.categories?.[catName]?.prevNominees;
+      if (prevNominees) catData.prevNominees = prevNominees;
+    }
+  }
+
   const output = {
     _meta: {
       source: 'kalshi',
       lastUpdated: new Date().toISOString(),
+      snapshotDate: shouldSnapshot ? todayUTC : (existingData._meta?.snapshotDate ?? todayUTC),
       season,
       categoriesFetched: fetchedCount,
     },
@@ -210,7 +231,6 @@ async function main() {
     console.error(`[info] ${skipped} events skipped (unknown titles or empty markets)`);
   }
 
-  const outPath = path.join(__dirname, '..', 'data', 'tony-kalshi-odds.json');
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error('--dry-run: output to stdout only');

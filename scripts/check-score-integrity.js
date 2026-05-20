@@ -58,7 +58,7 @@ for (const show of shows) {
     totalFiles++;
     try {
       const d = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
-      if (!d.originalScore || d.originalScoreCleared) continue;
+      if (!d.originalScore || d.originalScoreCleared || d.wrongProduction) continue;
 
       // Check 1: aggregator scoreSource in P0
       if (d.scoreSource && AGGREGATOR_SCORE_SOURCES.has(d.scoreSource)) {

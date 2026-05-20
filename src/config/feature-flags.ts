@@ -63,6 +63,9 @@ export const featureFlags = {
   get commercial() { return has('commercial'); },
   get awards() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   get tonyPredictions() { return has('tonyPredictions'); },
+  /** Reveals Our Pick % column and Predicted Winner badge on the predictions page.
+   *  Enable after the Tony Awards Center Reddit launch, for the follow-up predictions reveal. */
+  get tonyPredictionsOurPick() { return has('tonyPredictionsOurPick'); },
   get castPages() { return has('castPages'); },
   get westEnd() { return has('westEnd'); },
   get offBroadway() { return has('offBroadway'); },

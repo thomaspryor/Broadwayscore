@@ -29,8 +29,12 @@ jobs:
   deploy-demo:
     runs-on: ubuntu-latest
     if: true  # Simplified — workflow_run trigger removed
+    # Split concurrency by event type so user-initiated dispatches don't
+    # get evicted from the queue by rapid main-push triggers. Both groups
+    # still serialize against themselves (queued, not cancelled) — they
+    # just don't compete with each other for the single queue slot.
     concurrency:
-      group: vercel-demo-deploy
+      group: vercel-demo-deploy-${{ github.event_name == 'workflow_dispatch' && format('dispatch-{0}', github.event.inputs.ref || 'main') || 'auto' }}
       cancel-in-progress: false
     steps:
       - name: Checkout
@@ -161,13 +165,33 @@ jobs:
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "Deployed to: $URL"
 
+      - name: Check demo pin
+        id: pin
+        # Demo can be pinned to a branch via .github/demo-pin.txt (which
+        # lives on main, NOT on feature branches). The workflow fetches
+        # main here and reads the pin file directly. While pinned, only
+        # deploys of that branch alias demo; everything else builds-
+        # without-aliasing. Empty / missing file = legacy behavior (every
+        # successful deploy aliases). See .github/DEMO-PIN.md.
+        run: |
+          set +e
+          git fetch origin main --depth=1 2>/dev/null
+          PIN=$(git show origin/main:.github/demo-pin.txt 2>/dev/null | tr -d '[:space:]')
+          set -e
+          REF="${{ github.event.inputs.ref }}"
+          if [ -z "$REF" ] || [ "$REF" = "null" ]; then REF="${{ github.ref_name }}"; fi
+          echo "Pin from origin/main: '${PIN}'"
+          echo "Deployed ref:         '${REF}'"
+          if [ -n "$PIN" ] && [ "$PIN" != "$REF" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Demo pinned to '$PIN'; deploy from '$REF' — skipping alias (preview URL still accessible)."
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            [ -n "$PIN" ] && echo "::notice::Pin matches deployed ref '$REF' — aliasing as normal."
+          fi
+
       - name: Alias to demo domain
-        # Skip aliasing when a custom ref was dispatched. This prevents
-        # cron + main-push triggers from clobbering a non-main deployment
-        # that was deliberately put on demo for review. The deployment is
-        # still built — just not pointed at the demo subdomain. To restore
-        # main-on-demo: dispatch this workflow with no ref input.
-        if: github.event.inputs.ref == '' || github.event.inputs.ref == 'main' || github.event.inputs.ref == null
+        if: steps.pin.outputs.skip != 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           DEPLOY_URL: ${{ steps.deploy.outputs.url }}

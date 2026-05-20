@@ -179,8 +179,8 @@ for (const vp of VIEWPORTS) {
         const editViewingBtns = page.getByRole('button', { name: 'Edit this viewing' });
         await expect(editViewingBtns).toHaveCount(3);
       } else {
-        // Mobile: edit/trash buttons hidden (sm:flex). Verify 3 previous viewing dates instead.
-        const dates = page.locator('[data-testid="rating-card"]').locator('text=/\\w+ \\d+, \\d{4}/');
+        // Mobile: edit/trash buttons hidden (sm:flex). Count dates only in previous-viewings section.
+        const dates = page.locator('[data-testid="previous-viewings"]').locator('text=/\\w+ \\d+, \\d{4}/');
         await expect(dates).toHaveCount(3, { timeout: 3000 });
       }
     });

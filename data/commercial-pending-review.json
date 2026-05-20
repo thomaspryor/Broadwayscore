@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-10T18:50:51.786Z",
+  "generatedAt": "2026-05-19T09:18:07.968Z",
   "shows": {
     "liberation-2025": {
       "title": "Liberation",
@@ -17087,6 +17087,139 @@
       "researchedAt": "2026-05-10T18:50:51.786Z",
       "model": "o4-mini-deep-research",
       "researchTrigger": "queued"
+    },
+    "amaze-off-broadway": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": true,
+      "recoupedDate": "2026-04",
+      "recoupedSource": "Playbill: Jamie Allan Magic Show Amaze Recoups Off-Broadway",
+      "estimatedRecoupmentPct": [
+        100,
+        100
+      ],
+      "designation": "Miracle",
+      "notes": "No public data found on capitalization or weekly cost; Amaze recouped its initial investment Off-Broadway in 36 weeks.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/jamie-allan-magic-show-amaze-recoups-off-broadway",
+          "date": "2026-04-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/off-broadway/article/JAMIE-ALLANS-AMAZE-Recoups-Off-Broadway-at-New-World-Stages-20260402",
+          "date": "2026-04-02"
+        }
+      ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
+      "title": "AMAZE",
+      "slug": "amaze-off-broadway",
+      "openingDate": null,
+      "status": "open",
+      "researchedAt": "2026-05-18T14:50:20.650Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
+    },
+    "equus-west-end-2026": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "No public information found on production budget, weekly running cost, or recoupment status for the Menier Chocolate Factory production of 'Equus'.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-10"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/equus-london-menier-chocolate-factory-2026",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.thestage.co.uk/news/production-news/toby-stephens-to-star-in-equus-revival-at-menier-chocolate-factory",
+          "date": "2026-02-23"
+        }
+      ],
+      "title": "Equus",
+      "slug": "equus-west-end-2026",
+      "openingDate": "2026-05-18",
+      "status": "open",
+      "researchedAt": "2026-05-18T14:51:37.270Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
+    },
+    "the-emporium-off-broadway-2025": {
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "Off-Broadway nonprofit production by Classic Stage Company; no public financial data found; not eligible for NYC tax credit.",
+      "confidence": "low",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.investmentbroadway.com/post/broadway-s-key-tax-credit-has-run-dry-and-2025-2026-could-get-tough",
+          "date": "2025-07-19"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.classicstage.org/the-emporium/",
+          "date": null
+        }
+      ],
+      "title": "The Emporium",
+      "slug": "the-emporium-off-broadway-2025",
+      "openingDate": "2026-05-18",
+      "status": "open",
+      "researchedAt": "2026-05-18T14:52:27.320Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
+    },
+    "care-west-end-2026": {
+      "capitalization": null,
+      "capitalizationSource": "",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "Nonprofit",
+      "notes": "No public data found; nonprofit Young Vic production with undisclosed financials",
+      "confidence": "high",
+      "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.youngvic.org/whats-on/care",
+          "date": "2026-05-12"
+        }
+      ],
+      "title": "CARE",
+      "slug": "care-west-end-2026",
+      "openingDate": "2026-05-19",
+      "status": "open",
+      "researchedAt": "2026-05-19T09:18:07.968Z",
+      "model": "o4-mini",
+      "researchTrigger": "manual"
     }
   }
 }

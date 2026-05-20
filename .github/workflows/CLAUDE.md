@@ -442,7 +442,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Script:** `scripts/process-commercial-tip.js`
 
 ## `collect-review-texts.yml`
-- **Runs:** 3x daily at 2 AM, 10 AM, 6 PM UTC (150/batch + 2 chains for scheduled runs) + manual trigger
+- **Runs:** 3x daily at 4:30 AM, 10 AM, 6 PM UTC (150/batch + 2 chains for scheduled runs) + manual trigger
 - **Rebuild trigger:** Rebuild fires automatically via `workflow_run` when collection completes (no explicit dispatch needed)
 - **Does:** Fetches full review text using multi-tier fallback: Archive.org → Playwright → Browserbase → ScrapingBee → Bright Data. Supports subscription logins for paywalled sites.
 - **Manual trigger:** `gh workflow run "Collect Review Texts" --field show_filter=show-id`

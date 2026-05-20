@@ -111,8 +111,16 @@ function extractCast(castData, showStatus) {
     return null; // No usable cast data
   }
 
+  // Revue/ensemble detection: if ALL source members share the same generic role
+  // (e.g. "Performer" for Celebrity Autobiography), IBDB is using the label as
+  // the actual role name — treat all as principals instead of filtering out.
+  const roles = new Set(source.map(m => (m.role || '').trim().toLowerCase()));
+  const isUniformGenericRole = roles.size === 1 && NON_PRINCIPAL_ROLE_RE.test([...roles][0]);
+
   // Filter to principals only (pass total source size for small-cast exception)
-  const principals = source.filter(m => isPrincipalCast(m, source.length));
+  const principals = isUniformGenericRole
+    ? source
+    : source.filter(m => isPrincipalCast(m, source.length));
   if (principals.length === 0) return null;
 
   // Deduplicate by name (alternates/replacements may share a role)

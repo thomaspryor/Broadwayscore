@@ -22,6 +22,10 @@
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
 const { isIncludableForRebuild } = require('../lib/review-guards');
 
+// Outlets confirmed to not publish star ratings. Setting originalScore on these
+// triggers the weekly integrity check hard-violation gate (check-score-integrity.js).
+const NO_STAR_OUTLETS = new Set(['london-theatre']);
+
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>): boolean {
   if (!isIncludableForRebuild(data, show)) return false;
 
@@ -31,8 +35,11 @@ export function isScoreable(data: Record<string, any>, show?: Record<string, any
   //     gate but is scraper noise; LLM scoring it is meaningless.
   //   showNotMentioned without excerpt: the show isn't named in the text;
   //     no anchor for LLM to score against.
+  //   NO_STAR_OUTLETS: outlet doesn't publish numeric ratings; scoring would
+  //     create an originalScore with no ground truth, flagged by check-score-integrity.js.
   if (data.incompleteReason === 'scraper_garbage') return false;
   if (data.showNotMentioned && !hasAnyExcerpt(data)) return false;
+  if (data.outletId && NO_STAR_OUTLETS.has(data.outletId)) return false;
 
   return true;
 }

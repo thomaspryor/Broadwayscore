@@ -248,6 +248,17 @@ function isMultiProduction(newShow, existing) {
     return true;
   }
 
+  // Temporal non-overlap: a definitively closed production cannot be the same as
+  // one that is announced/upcoming (hasn't started previews yet). This fires
+  // regardless of venue data, which may be missing for newly-added shows.
+  const isDefinitelyClosed = (s) => s.status === 'closed' ||
+    (s.closingDate && new Date(s.closingDate) < new Date());
+  const isNotYetOpen = (s) => s.status === 'announced' || s.status === 'upcoming';
+  if ((isDefinitelyClosed(newShow) && isNotYetOpen(existing)) ||
+      (isDefinitelyClosed(existing) && isNotYetOpen(newShow))) {
+    return true;
+  }
+
   // Opera companies restage the same opera every season — different seasons are
   // different productions (e.g., Met's La Bohème 2025 vs 2026). Use date-based
   // comparison (>180 days) rather than year comparison to correctly handle
@@ -291,9 +302,14 @@ function isMultiProduction(newShow, existing) {
   // "The Band's Visit" (Ethel Barrymore) vs "The Visit" (Lyceum).
   // We do NOT apply this when one side is open/previews — the open-show branch
   // below handles transfer/re-listing semantics for active runs explicitly.
+  // Exception: if the OTHER show is definitively closed, there's no ambiguity —
+  // a closed show can't be the same as a current production at a different venue.
   if (newCat === existingCat && venuesKnownDifferent) {
     const isActive = (s) => s === 'open' || s === 'previews';
     if (!isActive(newShow.status) && !isActive(existing.status)) {
+      return true;
+    }
+    if (isDefinitelyClosed(newShow) || isDefinitelyClosed(existing)) {
       return true;
     }
   }
@@ -320,7 +336,13 @@ function isMultiProduction(newShow, existing) {
       }
     }
 
-    // Different or unknown venues: trust year difference from actual openingDates only.
+    // Confirmed different venues: always separate productions, regardless of year.
+    // An "open" show that moved to a new venue IS a new production, and an "open"
+    // show that was wrongly-reopened from TodayTix at a different venue can't be
+    // the same as a show currently running elsewhere.
+    if (venuesKnownDifferent) return true;
+
+    // Unknown/same venue: trust year difference from actual openingDates only.
     // ID suffixes (e.g., -2021) are often TodayTix artifacts, not production years.
     const newYearFromDate = newShow.openingDate ? new Date(newShow.openingDate).getFullYear() : null;
     const existYearFromDate = existing.openingDate ? new Date(existing.openingDate).getFullYear() : null;

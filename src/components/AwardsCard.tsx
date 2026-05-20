@@ -196,6 +196,7 @@ function PrecursorExpanded({
   totalNomCount,
   titleColor,
   iconColor,
+  winnerNames,
 }: {
   label: string;
   wins: string[];
@@ -203,6 +204,11 @@ function PrecursorExpanded({
   totalNomCount: number | null;
   titleColor: string;
   iconColor: string;
+  /** Optional per-award winner names (for performer-attributed awards like
+   *  Drama League Distinguished Performance). When provided, the win line
+   *  renders as "Award Name — Performer Name" instead of a bare show-level
+   *  win. Key = award name (must match a string in `wins`). */
+  winnerNames?: Record<string, string[]>;
 }) {
   const nomsOnly = noms.filter((n) => !wins.includes(n));
   if (wins.length === 0 && nomsOnly.length === 0) return null;
@@ -217,12 +223,18 @@ function PrecursorExpanded({
       </div>
       {wins.length > 0 && (
         <ul className="space-y-1 pl-4">
-          {wins.map((win, idx) => (
-            <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
-              <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
-              {win}
-            </li>
-          ))}
+          {wins.map((win, idx) => {
+            const performers = winnerNames?.[win] || [];
+            return (
+              <li key={`w-${idx}`} className="flex items-center gap-2 text-sm text-gray-400">
+                <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
+                {win}
+                {performers.length > 0 && (
+                  <span className="text-gray-500 font-normal">— {performers.join(' & ')}</span>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
       {nomsOnly.length > 0 && (
@@ -357,6 +369,7 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
             totalNomCount={null}
             titleColor="text-teal-400"
             iconColor="text-teal-400"
+            winnerNames={awards.dramaLeague?.winnerNames}
           />
           <PrecursorExpanded
             label={"NY Drama Critics’ Circle Awards"}

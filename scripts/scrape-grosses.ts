@@ -20,7 +20,7 @@ import * as https from 'https';
 // Use the shared show-matching utility (260+ aliases, multi-level matching)
 const { matchTitleToShow, loadShows: loadShowsFromMatching } = require('./lib/show-matching');
 
-const GROSSES_URL = 'https://www.broadwayworld.com/grosses.cfm';
+const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
@@ -303,8 +303,21 @@ function parseExtractedRow(cells: string[]): BWWRowData | null {
 }
 
 function extractWeekEndingFromTitle(title: string): string | null {
-  const match = title.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/);
-  return match ? match[1] : null;
+  // Old format: "5/10/26" or "5/10/2026"
+  const numericMatch = title.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/);
+  if (numericMatch) return numericMatch[1];
+
+  // New format (2026+): "Week of May 10, 2026"
+  const MONTHS: Record<string, string> = {
+    January: '1', February: '2', March: '3', April: '4', May: '5', June: '6',
+    July: '7', August: '8', September: '9', October: '10', November: '11', December: '12',
+  };
+  const monthMatch = title.match(/Week of (\w+) (\d{1,2}),\s*(\d{4})/);
+  if (monthMatch) {
+    const month = MONTHS[monthMatch[1]];
+    if (month) return `${month}/${monthMatch[2]}/${monthMatch[3]}`;
+  }
+  return null;
 }
 
 // ============================================================

@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-12T06:12:09.349Z",
+    "generatedAt": "2026-05-19T06:32:40.707Z",
     "threshold": 40,
-    "showsScanned": 1695,
-    "reviewsScanned": 32067,
+    "showsScanned": 1675,
+    "reviewsScanned": 32086,
     "duplicatesFound": 81,
     "byMethod": {
       "similarity": [
@@ -638,21 +638,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "peter-pan-goes-wrong-2023",
-          "method": "similarity",
-          "similarity": 69,
-          "primaryFile": "nydailynews--new-york-daily-news.json",
-          "primaryOutlet": "New York Daily News",
-          "primaryCritic": "New York Daily News",
-          "secondaryFile": "chicagotribune--chris-jones.json",
-          "secondaryOutlet": "Chicago Tribune",
-          "secondaryCritic": "Chris Jones",
-          "primaryScore": 83,
-          "secondaryScore": 84,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "present-laughter-2017",
           "method": "similarity",
           "similarity": 95,
@@ -1086,6 +1071,21 @@
           "secondaryCritic": "Broadway News",
           "primaryScore": 63,
           "secondaryScore": 64,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "peter-pan-goes-wrong-2023",
+          "method": "similarity+llm",
+          "similarity": 69,
+          "primaryFile": "nydailynews--new-york-daily-news.json",
+          "primaryOutlet": "New York Daily News",
+          "primaryCritic": "New York Daily News",
+          "secondaryFile": "chicagotribune--chris-jones.json",
+          "secondaryOutlet": "Chicago Tribune",
+          "secondaryCritic": "Chris Jones",
+          "primaryScore": 83,
+          "secondaryScore": 84,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -2027,7 +2027,7 @@
     },
     {
       "showId": "peter-pan-goes-wrong-2023",
-      "method": "similarity",
+      "method": "similarity+llm",
       "similarity": 69,
       "primaryFile": "nydailynews--new-york-daily-news.json",
       "primaryOutlet": "New York Daily News",
