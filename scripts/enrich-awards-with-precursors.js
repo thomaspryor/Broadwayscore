@@ -329,6 +329,40 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     }
   }
 
+  // Pass 5: OB/OWE shows.json fallback — same season-gate as Pass 4 but for
+  // off-broadway/off-west-end shows. Creates a stub WITHOUT a tony field (OB
+  // shows are not Tony-eligible). Used for Lortel, Obie, Drama Desk OB noms,
+  // and Critics' Circle that cover OB nominees.
+  if (opts.obShowsBySeason && opts.sourceYear) {
+    const targetSeason = ceremonyYearToTonySeason(opts.sourceYear);
+    if (PREDICTIONS_ERA.includes(targetSeason)) {
+      const candidates = opts.obShowsBySeason.get(targetSeason) || [];
+      const matchAndApplyOB = (sh) => {
+        if (!awardsShows[sh.id]) {
+          awardsShows[sh.id] = {}; // No tony stub — OB shows aren't Tony-eligible
+          if (opts.onCreateOB) opts.onCreateOB(sh.id);
+        }
+        titleById[sh.id] = sh.title;
+        return sh.id;
+      };
+      // Pass 5a: exact match
+      for (const sh of candidates) {
+        if (normalizeTitle(sh.title) !== norm) continue;
+        return matchAndApplyOB(sh);
+      }
+      // Pass 5b: prefix-containment match for long subtitles
+      if (norm.length >= 6 && norm.split(' ').filter(Boolean).length >= 2) {
+        for (const sh of candidates) {
+          const nT = normalizeTitle(sh.title);
+          if (nT.length < 6) continue;
+          if (nT.startsWith(norm + ' ') || norm.startsWith(nT + ' ')) {
+            return matchAndApplyOB(sh);
+          }
+        }
+      }
+    }
+  }
+
   return null;
 }
 
@@ -387,7 +421,8 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
           continue;
         }
         const sh = awardsShows[showId];
-        ensurePrecursorField(sh, fieldKey, sh.tony && sh.tony.season);
+        const season = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+        ensurePrecursorField(sh, fieldKey, season);
         if (!sh[fieldKey].nominatedFor.includes(scrapedCategory)) {
           sh[fieldKey].nominatedFor.push(scrapedCategory);
           sh[fieldKey].nominatedFor = uniqSorted(sh[fieldKey].nominatedFor);
@@ -431,7 +466,8 @@ function applyNYDCCC(source, awardsShows, titleById, opts) {
         continue;
       }
       const sh = awardsShows[showId];
-      ensurePrecursorField(sh, 'nyDramaCritics', sh.tony && sh.tony.season);
+      const nydSeason = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+      ensurePrecursorField(sh, 'nyDramaCritics', nydSeason);
       if (!sh.nyDramaCritics.wins.includes(category)) {
         sh.nyDramaCritics.wins.push(category);
         sh.nyDramaCritics.wins = uniqSorted(sh.nyDramaCritics.wins);
@@ -457,7 +493,8 @@ function applyObie(source, awardsShows, titleById, opts) {
         continue;
       }
       const sh = awardsShows[showId];
-      ensurePrecursorField(sh, 'obie', sh.tony && sh.tony.season);
+      const obieSeason = (sh.tony && sh.tony.season) || ceremonyYearToTonySeason(callOpts.sourceYear);
+      ensurePrecursorField(sh, 'obie', obieSeason);
       if (!sh.obie.wins.includes(category)) {
         sh.obie.wins.push(category);
         sh.obie.wins = uniqSorted(sh.obie.wins);
@@ -600,11 +637,28 @@ function main() {
     if (!broadwayShowsBySeason.has(season)) broadwayShowsBySeason.set(season, []);
     broadwayShowsBySeason.get(season).push(s);
   }
+
+  // OB/OWE shows bucketed by season — used by matcher Pass 5 to attribute
+  // Lortel, Obie, Drama Desk OB, Critics' Circle noms to off-broadway/
+  // off-west-end shows not yet in awards.json. Same year-gate as Pass 4.
+  const obShowsBySeason = new Map();
+  for (const s of showsArr) {
+    if (!s || !s.id || !s.title) continue;
+    if (s.category !== 'off-broadway' && s.category !== 'off-west-end') continue;
+    const season = seasonForOpeningDate(s.openingDate || s.previewsStartDate);
+    if (!season) continue;
+    if (!obShowsBySeason.has(season)) obShowsBySeason.set(season, []);
+    obShowsBySeason.get(season).push(s);
+  }
+
   const createdEntries = [];
+  const createdOBEntries = [];
   const backfilledTony = [];
   const matcherOpts = {
     broadwayShowsBySeason,
+    obShowsBySeason,
     onCreate: (id) => createdEntries.push(id),
+    onCreateOB: (id) => createdOBEntries.push(id),
     onBackfillTony: (id) => backfilledTony.push(id),
   };
 
@@ -645,6 +699,10 @@ function main() {
   if (createdEntries.length > 0) {
     console.log(`\nLazy-created ${createdEntries.length} awards.json stub(s) for Broadway shows missing entries:`);
     for (const id of createdEntries) console.log(`  + ${id}`);
+  }
+  if (createdOBEntries.length > 0) {
+    console.log(`\nLazy-created ${createdOBEntries.length} awards.json stub(s) for OB/OWE shows:`);
+    for (const id of createdOBEntries) console.log(`  + ${id}`);
   }
   if (backfilledTony.length > 0) {
     console.log(`\nBackfilled tony.season on ${backfilledTony.length} existing entries (had non-Tony awards data only):`);
