@@ -412,18 +412,30 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // whether the stored value is truthy or falsy. The !existing[key] guard below
   // already protects truthy values, but humanReviewedWrongProduction:false (human
   // explicitly verified it IS the right production) is falsy and must not be clobbered.
+  // Exception: manual-entry source (ingest-manual-review.js) is intentional human
+  // override and must be able to update or correct these fields.
   const HUMAN_PROTECTED = new Set([
     'humanReviewedWrongProduction',
     'humanReviewScore',
     'humanReviewedScore',
   ]);
+  const isManualEntry = input.source === 'manual-entry';
 
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
   for (const [key, val] of Object.entries(fields)) {
     if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
-    if (HUMAN_PROTECTED.has(key) && existing[key] != null) continue;
+    if (HUMAN_PROTECTED.has(key)) {
+      // Scrapers: skip once set (even if stored value is falsy — e.g. humanReviewedWrongProduction:false).
+      // Manual entry: always update (intentional human correction should win).
+      if (!isManualEntry && existing[key] != null) continue;
+      if (val != null && existing[key] !== val) {
+        existing[key] = val;
+        changed = true;
+      }
+      continue;
+    }
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
