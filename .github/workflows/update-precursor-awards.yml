@@ -37,6 +37,9 @@ on:
           - drama-league
           - nydcc
           - pulitzer
+          - critics-circle
+          - lortel
+          - obie
       min_year:
         description: 'Earliest ceremony year to scrape (default: 2014)'
         required: false
@@ -86,17 +89,23 @@ jobs:
             echo "::endgroup::"
           }
           case "$CEREMONY" in
-            drama-desk)    run_scraper scripts/scrape-drama-desk.js ;;
-            outer-critics) run_scraper scripts/scrape-outer-critics.js ;;
-            drama-league)  run_scraper scripts/scrape-drama-league.js ;;
-            nydcc)         run_scraper scripts/scrape-nydcc.js ;;
-            pulitzer)      run_scraper scripts/scrape-pulitzer.js ;;
+            drama-desk)     run_scraper scripts/scrape-drama-desk.js ;;
+            outer-critics)  run_scraper scripts/scrape-outer-critics.js ;;
+            drama-league)   run_scraper scripts/scrape-drama-league.js ;;
+            nydcc)          run_scraper scripts/scrape-nydcc.js ;;
+            pulitzer)       run_scraper scripts/scrape-pulitzer.js ;;
+            critics-circle) run_scraper scripts/scrape-critics-circle.js ;;
+            lortel)         run_scraper scripts/scrape-lortel.js ;;
+            obie)           run_scraper scripts/scrape-obie.js ;;
             all|*)
               run_scraper scripts/scrape-drama-desk.js
               run_scraper scripts/scrape-outer-critics.js
               run_scraper scripts/scrape-drama-league.js
               run_scraper scripts/scrape-nydcc.js
               run_scraper scripts/scrape-pulitzer.js
+              run_scraper scripts/scrape-critics-circle.js
+              run_scraper scripts/scrape-lortel.js
+              run_scraper scripts/scrape-obie.js
               ;;
           esac
 
