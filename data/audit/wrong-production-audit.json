@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-20T17:10:26.838Z",
+  "timestamp": "2026-05-20T20:08:00.296Z",
   "stats": {
-    "totalReviews": 37076,
+    "totalReviews": 37074,
     "alreadyFlagged": 16247,
     "dateGuardCatches": 103,
     "directorMismatch": 803,
     "tvFilmSignals": 1018,
-    "londonSignals": 576,
-    "offBroadwaySignals": 445,
+    "londonSignals": 575,
+    "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3804
+    "noPublishDate": 3803
   },
   "findings": [
     {
@@ -37105,6 +37105,20 @@
       ]
     },
     {
+      "showId": "the-emporium-off-broadway-2025",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 49,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html?m=0",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
       "showId": "the-encounter-2016",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 42,
@@ -39049,19 +39063,6 @@
       "score": 80,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/layton-williams-star-of-titanique-thinks-this-is-the-gayest-broadway-season-yet-and-hes-here-for-it",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-west-end-2024",
-      "file": "british-theatre--susan-novak.json",
-      "publishDate": "2026-05-19",
-      "url": "https://www.britishtheatre.com/posts/william-hanson-makes-west-end-debut-in-olivier-award-winning-titanique-at-the-cr",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
