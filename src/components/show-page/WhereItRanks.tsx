@@ -158,7 +158,8 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
         )}
       </header>
 
-      <table className="w-full text-sm">
+      <div className="-mx-1 sm:mx-0 overflow-x-auto scrollbar-hide">
+      <table className="w-full text-sm min-w-[280px]">
         <thead>
           <tr>
             <th className="text-left text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
@@ -214,6 +215,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           })}
         </tbody>
       </table>
+      </div>
 
       <p className="text-[10px] text-gray-500">
         <span className="text-gray-600">*</span> All-time pool: shows scored 2005–present. Ranks update daily.

@@ -35,7 +35,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
 
   const shortLabel = getShortMarketLabel(market);
   const fragments: React.ReactNode[] = [];
-  if (c.openMarket) {
+  if (c.openMarket && c.openMarket.total > 0) {
     fragments.push(
       <span key="om">
         <span className="font-bold text-brand">#{c.openMarket.rank}/{c.openMarket.total}</span>
@@ -43,7 +43,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
       </span>,
     );
   }
-  if (c.season) {
+  if (c.season && c.season.total > 0) {
     fragments.push(
       <span key="se">
         <span className="font-bold text-brand">#{c.season.rank}/{c.season.total}</span>
@@ -51,7 +51,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
       </span>,
     );
   }
-  if (c.allTime) {
+  if (c.allTime && c.allTime.total > 0) {
     fragments.push(
       <span key="at">
         <span className="font-bold text-brand">#{c.allTime.rank}/{c.allTime.total}</span>
@@ -59,6 +59,7 @@ export default function HeroRankLine({ ranks, market, className = '', metric = '
       </span>,
     );
   }
+  if (fragments.length === 0) return null;
 
   return (
     <p className={`text-[12px] sm:text-[13px] text-gray-400 mt-1 leading-snug whitespace-nowrap overflow-x-auto scrollbar-hide ${className}`}>
