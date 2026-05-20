@@ -639,13 +639,16 @@ function main() {
     broadwayShowsBySeason.get(season).push(s);
   }
 
-  // OB/OWE shows bucketed by season — used by matcher Pass 5 to attribute
-  // Lortel, Obie, Drama Desk OB, Critics' Circle noms to off-broadway/
-  // off-west-end shows not yet in awards.json. Same year-gate as Pass 4.
+  // OB/OWE/WE shows bucketed by season — used by matcher Pass 5 to attribute
+  // Lortel, Obie, Drama Desk OB, Critics' Circle, Evening Standard, and
+  // Olivier noms to off-broadway / off-west-end / west-end shows not yet in
+  // awards.json. Same year-gate as Pass 4. West End added 2026-05-20 after
+  // Critics' Circle Best Director 2026 (All My Sons) + Best Actress 2026
+  // (Inter Alia) failed to match because Pass 5 excluded west-end category.
   const obShowsBySeason = new Map();
   for (const s of showsArr) {
     if (!s || !s.id || !s.title) continue;
-    if (s.category !== 'off-broadway' && s.category !== 'off-west-end') continue;
+    if (s.category !== 'off-broadway' && s.category !== 'off-west-end' && s.category !== 'west-end') continue;
     const season = seasonForOpeningDate(s.openingDate || s.previewsStartDate);
     if (!season) continue;
     if (!obShowsBySeason.has(season)) obShowsBySeason.set(season, []);
