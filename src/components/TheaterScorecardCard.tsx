@@ -152,18 +152,25 @@ export default function TheaterScorecardCard({
   const hasExternal = !!(externalLinks && (externalLinks.seatplan || externalLinks.aviewfrommyseat));
 
   return (
-    <section className="card p-4 sm:p-5 mb-8" aria-labelledby="theater-scorecard-heading">
-      {/* Header — designation heroed */}
-      <h2 id="theater-scorecard-heading" className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">Theater Scorecard</h2>
-      <div className="flex items-center gap-2 flex-wrap mb-3">
-        <Link href={`/theater/${theaterSlug}`} className="text-white font-bold hover:text-brand transition-colors text-base leading-none">
-          {theaterName}
-        </Link>
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="theater-scorecard-heading">
+      {/* Unified scorecard chrome: eyebrow + designation pill in meta slot */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="theater-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Theater Scorecard</h2>
         {designation && (
-          <span className={`self-center inline-flex items-center px-2 py-0.5 rounded-pill text-[11px] font-semibold uppercase tracking-wide ${designation.chip}`}>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-pill text-[10px] font-bold uppercase tracking-[0.1em] shrink-0 ${designation.chip}`}>
             {designation.label}
           </span>
         )}
+      </header>
+
+      {/* Hero lockup: venue name as the hero title */}
+      <div className="mb-3">
+        <Link
+          href={`/theater/${theaterSlug}`}
+          className="inline-block text-white font-extrabold text-xl sm:text-[1.375rem] leading-[1.15] hover:text-brand transition-colors"
+        >
+          {theaterName}
+        </Link>
       </div>
 
       {/* Summary */}
@@ -260,6 +267,17 @@ export default function TheaterScorecardCard({
           </p>
         </>
       )}
+
+      {/* Footer link to the cross-show theater leaderboard */}
+      <div className="mt-1.5 -mb-1 sm:-mb-2">
+        <Link
+          href="/theater"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
+        >
+          <span>Explore all theaters</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+        </Link>
+      </div>
     </section>
   );
 }

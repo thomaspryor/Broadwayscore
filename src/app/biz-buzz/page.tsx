@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { notFound } from 'next/navigation';
+import { featureFlags } from '@/config/feature-flags';
 
 /**
  * /biz-buzz - Redirect to /biz
@@ -13,6 +15,8 @@ import { useRouter } from 'next/navigation';
  */
 export default function BizBuzzRedirect() {
   const router = useRouter();
+
+  if (!featureFlags.commercial) notFound();
 
   useEffect(() => {
     router.replace('/biz');

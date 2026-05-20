@@ -113,21 +113,21 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   return (
     <section
       data-testid="where-it-ranks"
-      className="card p-4 sm:p-5 mb-8 space-y-3"
+      className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 space-y-4"
       aria-labelledby="where-it-ranks-heading"
     >
-      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
-          <h2 id="where-it-ranks-heading" className="text-xs font-semibold uppercase tracking-[0.08em] text-gray-500">
-            Where it ranks
+      <header className="flex flex-row items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <h2 id="where-it-ranks-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
+            Where It Ranks
           </h2>
-          <p className="text-[11px] text-gray-500 mt-1">
+          <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
             Compared against all open {marketName} {formatNoun}
           </p>
         </div>
         {ownFormatAvailable && (
           <div
-            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 self-start sm:self-auto"
+            className="inline-flex bg-surface-overlay border border-white/5 rounded-lg p-0.5 gap-0.5 shrink-0"
             role="tablist"
             aria-label="Filter by format"
           >
@@ -136,18 +136,19 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
               role="tab"
               aria-selected={choice === 'all'}
               onClick={() => setChoice('all')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors ${
                 choice === 'all' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
-              All shows
+              <span className="sm:hidden">All</span>
+              <span className="hidden sm:inline">All shows</span>
             </button>
             <button
               type="button"
               role="tab"
               aria-selected={choice === 'own'}
               onClick={() => setChoice('own')}
-              className={`text-[11px] font-semibold px-3 py-1 rounded-md transition-colors capitalize ${
+              className={`text-[11px] font-semibold px-2.5 sm:px-3 py-1 rounded-md transition-colors capitalize ${
                 choice === 'own' ? 'bg-white/10 text-gray-50' : 'text-gray-400 hover:text-gray-200'
               }`}
             >
@@ -260,9 +261,12 @@ function Cell({
       </span>
     );
   }
+  // Always bold the #N rank number — denominator stays normal weight + muted.
+  // `emphasis` only changes color (brighter for primary cells, muted for
+  // secondary like All-Time) so the # always pops visually.
   const rankClass = emphasis
     ? 'font-bold text-gray-100 tabular-nums'
-    : 'text-gray-500 tabular-nums';
+    : 'font-bold text-gray-300 tabular-nums';
   const rankNode = <span className={rankClass}>#{cell.rank}</span>;
   // Inline "/M" — lighter weight than the rank, same line, no wrap.
   const denomNode = showDenominator ? (

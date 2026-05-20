@@ -288,17 +288,21 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
   ].filter((p) => p.count > 0);
 
   return (
-    <div className="card p-5 sm:p-6 mb-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
+    <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="socials-scorecard-heading">
+      {/* Unified scorecard chrome */}
+      <header className="flex items-center justify-between gap-3 mb-4">
+        <h2 id="socials-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Socials Scorecard
         </h2>
-        <span className="text-xs text-gray-500">last 7 days</span>
-      </div>
+        <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+          last 7 days
+        </span>
+      </header>
 
-      {/* Hero block: rank badge (LEFT, AudienceGrade-style) + tier label (RIGHT) */}
-      <div className={`rounded-xl p-4 sm:p-5 border mb-4 ${display.bgClass} ${display.borderClass}`}>
+      {/* Hero block: rank badge (LEFT) + tier label (RIGHT). Outer colored
+          frame dropped — the rank-badge tile and the tier-colored label
+          supply the color, matching the audience-card hero treatment. */}
+      <div className="mb-4">
         <div className="flex items-stretch gap-4">
           {/* Rank badge — the AudienceGrade-style scorecard square. Linked to
               the full /trending leaderboard so the badge itself becomes a
@@ -406,19 +410,21 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         </div>
       )}
 
-      {/* Footer — "Updated" metadata + discovery link to the full leaderboard.
-          Keeps the card self-contained for readers who see it on a single show
-          page, while surfacing the sibling /trending page for anyone curious
-          how this show ranks against everyone else. */}
-      <div className="flex items-center justify-between gap-3 text-xs text-gray-500 pt-2 border-t border-white/5">
-        <span>Updated {formatUpdatedDate(sp.u)} · refreshed weekly</span>
+      {/* Footer: discovery link to the full leaderboard + refresh metadata.
+          Anatomy matches the audience/critic/awards/boxoffice/commercial
+          family — gold link with arrow, separator, lowercase faint meta. */}
+      <div className="mt-1.5 -mb-1 sm:-mb-2 flex items-center justify-between gap-4 flex-wrap">
         <Link
           href={trendingHref}
-          className="shrink-0 text-brand hover:text-brand-hover transition-colors font-medium"
+          className="inline-flex items-center gap-1.5 text-xs font-medium text-brand hover:text-brand-hover transition-colors group"
         >
-          See all trending →
+          <span>See all trending shows</span>
+          <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
         </Link>
+        <span className="text-[11px] text-gray-500 lowercase">
+          updated {formatUpdatedDate(sp.u)} · refreshed weekly
+        </span>
       </div>
-    </div>
+    </section>
   );
 }
