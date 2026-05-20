@@ -577,7 +577,17 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "care-west-end-2026/timeout-london--unknown.json",
+    "care-west-end-2026/broadwayworld--unknown.json",
+    "care-west-end-2026/daily-echo--unknown.json",
+    "care-west-end-2026/financialtimes--unknown.json",
+    "care-west-end-2026/i-paper--unknown.json",
+    "care-west-end-2026/londontheatre1--unknown.json",
+    "care-west-end-2026/standard--unknown.json",
+    "care-west-end-2026/telegraph--dominic-cavendish.json",
+    "care-west-end-2026/thestage--unknown.json",
+    "care-west-end-2026/times-uk--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -592,7 +602,9 @@
       "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/care-west-end-2026/daily-echo--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -608,7 +620,9 @@
       "data/review-texts/the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
-      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json"
+      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/care-west-end-2026/thestage--unknown.json"
     ],
     "archive": [
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
@@ -618,6 +632,13 @@
     ]
   },
   "startTime": "2026-05-20T19:00:26.260Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "care-west-end-2026/times-uk--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-20T21:25:22.625Z",
+      "event": "bb-session",
+      "session": "38339dbe",
+      "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
+    }
+  ]
 }
