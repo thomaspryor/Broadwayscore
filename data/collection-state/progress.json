@@ -667,7 +667,11 @@
     "1536-west-end-2026/times-uk--dominic-maxwell.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
-    "an-ideal-husband-west-end-2026/the-recs--unknown.json"
+    "an-ideal-husband-west-end-2026/the-recs--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -683,7 +687,9 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/care-west-end-2026/daily-echo--unknown.json"
+      "data/review-texts/care-west-end-2026/daily-echo--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -728,13 +734,25 @@
     ]
   },
   "startTime": "2026-05-20T19:00:26.260Z",
-  "lastProcessed": "an-ideal-husband-west-end-2026/the-recs--unknown.json",
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
   "log": [
     {
       "t": "2026-05-20T21:25:22.625Z",
       "event": "bb-session",
       "session": "38339dbe",
       "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
+    },
+    {
+      "t": "2026-05-20T23:52:28.551Z",
+      "event": "bb-session",
+      "session": "f7a786f0",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-20T23:53:25.681Z",
+      "event": "bb-session",
+      "session": "4d187d4b",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
