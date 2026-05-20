@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-20T09:38:13.628Z",
+  "timestamp": "2026-05-20T11:58:39.808Z",
   "stats": {
-    "totalReviews": 37037,
-    "alreadyFlagged": 16217,
+    "totalReviews": 37055,
+    "alreadyFlagged": 16241,
     "dateGuardCatches": 103,
     "directorMismatch": 803,
     "tvFilmSignals": 1018,
-    "londonSignals": 576,
+    "londonSignals": 575,
     "offBroadwaySignals": 445,
     "yearMismatch": 78,
-    "noPublishDate": 3808
+    "noPublishDate": 3792
   },
   "findings": [
     {
@@ -26303,20 +26303,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
-      "showId": "angels-in-america-2018",
-      "file": "latimes--charles-mcnulty.json",
-      "score": 92,
-      "publishDate": "2018-03-27",
-      "url": "https://www.latimes.com/entertainment/arts/la-et-cm-angels-in-america-20180327-story.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
