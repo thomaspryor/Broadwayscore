@@ -5,6 +5,8 @@ import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import VideoReviewsShelf from '@/components/VideoReviewsShelf';
+import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import AwardsCard from '@/components/AwardsCard';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
 import BizBuzzCard from '@/components/BizBuzzCard';
@@ -29,7 +31,9 @@ import type {
   ShowCastChanges,
   ShowCommercial,
   RecoupmentTrend,
+  AudienceBuzzData,
 } from '@/lib/data-types';
+import type { VideoReview } from '@/lib/data-video-reviews';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
@@ -38,6 +42,10 @@ import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard'
 
 export interface ShowPageBelowFoldProps {
   show: ComputedShow;
+  videoReviews: VideoReview[];
+  audienceBuzz: AudienceBuzzData | undefined;
+  audienceShowScoreUrl: string | undefined;
+  audiencePlatformUrls: Record<string, string>;
   awards: ShowAwards | null;
   tonyNamesByCategory: Record<string, string[]> | null;
   grosses: ShowGrosses | null;
@@ -96,6 +104,10 @@ function MapPinIcon() {
 
 export default function ShowPageBelowFold({
   show,
+  videoReviews,
+  audienceBuzz,
+  audienceShowScoreUrl,
+  audiencePlatformUrls,
   awards,
   tonyNamesByCategory,
   grosses,
@@ -131,6 +143,47 @@ export default function ShowPageBelowFold({
 }: ShowPageBelowFoldProps) {
   return (
     <>
+      {/* Video Reviews */}
+      <div id="video-reviews" className="scroll-mt-20" />
+      {featureFlags.videoReviews && videoReviews.length > 0 && (
+        <VideoReviewsShelf reviews={videoReviews} />
+      )}
+
+      {/* Audience Scorecard */}
+      <div id="audience" className="scroll-mt-20" />
+      {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
+        const totalReviews = Object.values(audienceBuzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
+        return totalReviews >= 5;
+      })() ? (() => {
+        const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;
+        const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
+        const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
+        return (
+          <AudienceBuzzCard
+            buzz={audienceBuzz}
+            showScoreUrl={audienceShowScoreUrl}
+            limitedSources={isHistorical && sourceCount <= 1}
+            market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
+            platformUrls={audiencePlatformUrls}
+            ranks={ranks}
+          />
+        );
+      })() : show.status === 'previews' || show.status === 'upcoming' ? (
+        <section className="card p-5 sm:p-6 mb-6">
+          <h2 className="text-lg font-bold text-white mb-3">Audience Grade</h2>
+          <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
+        </section>
+      ) : show.status === 'closed' && (() => {
+        const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
+        const isPreDigital = showYear !== null && showYear < 2015;
+        return isPreDigital ? (
+          <section className="card p-5 sm:p-6 mb-6">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
+            <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
+          </section>
+        ) : null;
+      })()}
+
       {/* Awards Scorecard */}
       <div id="awards" className="scroll-mt-20" />
       {awards && <AwardsCard showId={show.id} awards={awards} openingDate={show.openingDate} tonyNamesByCategory={tonyNamesByCategory ?? undefined} />}

@@ -29,10 +29,8 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
-import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
-import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
@@ -318,6 +316,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
   // Pre-compute values that would require data-module imports in a client component.
   // These are passed as serializable props to ShowPageBelowFoldLoader.
+  const audienceShowScoreUrl = audienceBuzz?.sources.showScore ? getShowScoreUrl(show.id) : undefined;
+  const audiencePlatformUrls: Record<string, string> = audienceBuzz ? Object.fromEntries(
+    Object.keys(audienceBuzz.sources)
+      .filter(k => k !== 'showScore')
+      .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
+      .filter((entry): entry is [string, string] => entry[1] != null)
+  ) : {};
   const currentMonday = getScheduleCurrentMonday();
   const showtimeIds = getShowShowtimeIds(show.id);
   const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
@@ -778,73 +783,32 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </section>
         )}
 
-        {/* === SECTION ORDERING (updated 2026-05-17) ===
-            1. Critic Reviews  (above)
-            2. Video Reviews
-            3. Audience Scorecard
-            4. Awards Scorecard
-            5. Box Office Scorecard
-            6. Commercial Scorecard
-            7. Where it ranks
-            8. Showtimes
-            9. Socials Scorecard
-           10. Theater Scorecard
-           11. Seating Scorecard
-           12. Discount Tickets
-           13. Cast Updates
-           14. Cast
-           15. Creative Team
-           16. Quick Facts                                                    */}
-
-        {/* Video Reviews — second, right under Critic Reviews */}
-        <div id="video-reviews" className="scroll-mt-20" />
-        {featureFlags.videoReviews && videoReviews.length > 0 && (
-          <VideoReviewsShelf reviews={videoReviews} />
-        )}
-
-        {/* Audience Scorecard */}
-        <div id="audience" className="scroll-mt-20" />
-        {audienceBuzz && audienceBuzz.combinedScore != null && (() => {
-          // Minimum 5 total reviews across all sources to display
-          const totalReviews = Object.values(audienceBuzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
-          return totalReviews >= 5;
-        })() ? (() => {
-          const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;
-          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
-          const isHistorical = show.status === 'closed' && showYear !== null && showYear < 2015;
-          return (
-            <AudienceBuzzCard
-              buzz={audienceBuzz}
-              showScoreUrl={audienceBuzz.sources.showScore ? getShowScoreUrl(show.id) : undefined}
-              limitedSources={isHistorical && sourceCount <= 1}
-              market={(show.category as 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end') || 'broadway'}
-              platformUrls={Object.fromEntries(
-                Object.keys(audienceBuzz.sources)
-                  .filter(k => k !== 'showScore')
-                  .map(k => [k, getAudiencePlatformUrl(k, show.id, show.title)])
-                  .filter((entry): entry is [string, string] => entry[1] != null)
-              )}
-              ranks={ranks}
-            />
-          );
-        })() : show.status === 'previews' || show.status === 'upcoming' ? (
-          <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Audience Grade</h2>
-            <p className="text-gray-400 text-sm">Audience data will be added once the show opens and reviews come in.</p>
-          </section>
-        ) : show.status === 'closed' && (() => {
-          const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : null;
-          const isPreDigital = showYear !== null && showYear < 2015;
-          return isPreDigital ? (
-            <section className="card p-5 sm:p-6 mb-6">
-              <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Audience Grade</h2>
-              <p className="text-sm text-gray-500">This show predates most audience rating platforms. Critic reviews only.</p>
-            </section>
-          ) : null;
-        })()}
+        {/* === SECTION ORDERING ===
+            ABOVE FOLD (server component):
+              1. Critic Reviews
+            BELOW FOLD (ShowPageBelowFold lazy chunk):
+              2. Video Reviews
+              3. Audience Scorecard
+              4. Awards Scorecard
+              5. Box Office Scorecard
+              6. Commercial Scorecard
+              7. Where it ranks
+              8. Showtimes
+              9. Socials Scorecard
+             10. Theater Scorecard
+             11. Seating Scorecard
+             12. Discount Tickets
+             13. Cast Updates
+             14. Cast
+             15. Creative Team
+             16. Quick Facts                                                  */}
 
         <ShowPageBelowFoldLoader
           show={show}
+          videoReviews={videoReviews}
+          audienceBuzz={audienceBuzz}
+          audienceShowScoreUrl={audienceShowScoreUrl}
+          audiencePlatformUrls={audiencePlatformUrls}
           awards={awards ?? null}
           tonyNamesByCategory={tonyNamesByCategory}
           grosses={grosses ?? null}
