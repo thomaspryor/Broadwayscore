@@ -48,6 +48,7 @@ const PRIVATE_AWARDS = process.env.PRIVATE_AWARDS_PATH
   || path.join(process.env.HOME || '', 'broadway-scorecard-data', 'awards.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const PRECURSORS_DIR = path.join(__dirname, '..', 'data', 'precursors');
+const TONY_NOMINATIONS_PATH = path.join(__dirname, '..', 'data', 'tony-nominations.json');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 // ============================================================
@@ -407,18 +408,78 @@ function migratePulitzer(sh) {
   sh.pulitzer = out;
 }
 
+// Lazy-loaded Tony nominations for person-name winner → showId lookup.
+// Acting categories (DD Lead/Featured Performance, OCC Lead/Featured Performer)
+// store person names as winners rather than show titles. We resolve their showId
+// via Tony nominations rather than the title map.
+let _tonyNominations = null;
+function getTonyNoms() {
+  if (!_tonyNominations) {
+    _tonyNominations = JSON.parse(fs.readFileSync(TONY_NOMINATIONS_PATH, 'utf8')).nominations || [];
+  }
+  return _tonyNominations;
+}
+
+/** For a person-name winner, return showIds they're Tony-nominated for in the given season. */
+function lookupWinnerShowIds(personName, season, awardsShows) {
+  const norm = normalizeTitle(personName);
+  const ids = new Set();
+  for (const n of getTonyNoms()) {
+    if (n.season === season && normalizeTitle(n.name) === norm && awardsShows[n.showId]) {
+      ids.add(n.showId);
+    }
+  }
+  return [...ids];
+}
+
 /** Apply DD/OCC/DL source data to awards.json. Adds nominatedFor (and `wins`
- *  for the matching Tony category, when scraped winner matches). */
+ *  for the matching Tony category, when scraped winner matches).
+ *
+ *  Acting categories (DD Lead/Featured Performance, OCC Lead/Featured Performer)
+ *  store person names as `winner`/`winners`. For these, we look up the winner's
+ *  showId via Tony nominations and write both `wins` and `winnerNames`. */
 function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
   let matched = 0;
   const unmatched = [];
   for (const [scrapedCategory, years] of Object.entries(source)) {
     for (const yearEntry of years) {
       const callOpts = { ...opts, sourceYear: yearEntry.year };
+
+      // Resolve winner titles — may be show titles OR person names (acting categories).
+      const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
+        ? yearEntry.winners
+        : (yearEntry.winner ? [yearEntry.winner] : []);
+
+      // Detect person-name winners: if NONE of the winner titles resolve to a show, they're people.
+      const anyWinnerIsShow = winnerTitles.some(
+        (w) => findShowIdByTitle(w, awardsShows, titleById, callOpts) != null,
+      );
+      const winnerIsPersonName = winnerTitles.length > 0 && !anyWinnerIsShow;
+
+      // For person-name winners: map each winner to their Tony-nominated show(s).
+      // e.g. "Joshua Henry" → ['ragtime-2025'], "Caissie Levy" → ['ragtime-2025']
+      const personWinnerShowMap = new Map(); // normalizedName → showId[]
+      if (winnerIsPersonName) {
+        const season = ceremonyYearToTonySeason(callOpts.sourceYear);
+        for (const w of winnerTitles) {
+          const showIds = lookupWinnerShowIds(w, season, awardsShows);
+          if (showIds.length > 0) {
+            personWinnerShowMap.set(normalizeTitle(w), showIds);
+          } else {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: person-winner "${w}" has no Tony nominations in ${season}`);
+          }
+        }
+      }
+
       for (const nomineeName of yearEntry.nominees) {
         const showId = findShowIdByTitle(nomineeName, awardsShows, titleById, callOpts);
         if (!showId) {
-          unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: ${nomineeName}`);
+          // Silently skip person names that appear in acting-category nominees lists.
+          // They're expected (DD tables list person+show on separate cells) and
+          // cause unmatched noise that isn't actionable.
+          if (!winnerIsPersonName) {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: ${nomineeName}`);
+          }
           continue;
         }
         const sh = awardsShows[showId];
@@ -428,19 +489,40 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
           sh[fieldKey].nominatedFor.push(scrapedCategory);
           sh[fieldKey].nominatedFor = uniqSorted(sh[fieldKey].nominatedFor);
         }
-        // Resolve the set of winning shows for this category-year. Modern
-        // ceremonies can have tied winners (DD 67th+ gender-neutral
-        // performance categories); `winners` (array) takes precedence over
-        // the legacy single `winner` field.
-        const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
-          ? yearEntry.winners
-          : (yearEntry.winner ? [yearEntry.winner] : []);
+
         const normalizedNominee = normalizeTitle(nomineeName);
-        const isWinner = winnerTitles.some((w) => normalizeTitle(w) === normalizedNominee);
-        if (isWinner) {
+        // Show-title winner check (production categories).
+        const isWinner = !winnerIsPersonName &&
+          winnerTitles.some((w) => normalizeTitle(w) === normalizedNominee);
+
+        // Person-name winner check: which winners come from this show?
+        const winnerPersonsForShow = winnerIsPersonName
+          ? winnerTitles.filter((w) => {
+              const wShowIds = personWinnerShowMap.get(normalizeTitle(w));
+              return wShowIds && wShowIds.includes(showId);
+            })
+          : [];
+
+        if (isWinner || winnerPersonsForShow.length > 0) {
           if (!sh[fieldKey].wins.includes(scrapedCategory)) {
             sh[fieldKey].wins.push(scrapedCategory);
             sh[fieldKey].wins = uniqSorted(sh[fieldKey].wins);
+          }
+          // Write winnerNames for person-name winners (acting categories).
+          if (winnerPersonsForShow.length > 0) {
+            if (!sh[fieldKey].winnerNames) sh[fieldKey].winnerNames = {};
+            const existing = sh[fieldKey].winnerNames[scrapedCategory] || [];
+            for (const p of winnerPersonsForShow) {
+              if (!existing.includes(p)) existing.push(p);
+            }
+            sh[fieldKey].winnerNames[scrapedCategory] = existing.sort();
+          }
+          // Write winnerNames from OCC-style winnerPersonName (show-title winner with stored person).
+          if (isWinner && yearEntry.winnerPersonName) {
+            if (!sh[fieldKey].winnerNames) sh[fieldKey].winnerNames = {};
+            const existing = sh[fieldKey].winnerNames[scrapedCategory] || [];
+            if (!existing.includes(yearEntry.winnerPersonName)) existing.push(yearEntry.winnerPersonName);
+            sh[fieldKey].winnerNames[scrapedCategory] = existing.sort();
           }
         }
         matched++;
