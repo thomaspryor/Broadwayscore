@@ -94,15 +94,15 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
-  const numClass = size === 'md' ? 'text-lg font-bold text-white' : 'text-sm font-bold text-white';
+  const boxClass = size === 'md' ? 'w-12 h-12' : 'w-10 h-10';
+  const numClass = size === 'md' ? 'text-base font-bold text-white leading-none' : 'text-sm font-bold text-white leading-none';
   const changeRaw = change != null ? Math.abs(change) : 0;
-  // Show 1 decimal for sub-1% changes (e.g. GoldDerby which moves in fractions), whole number otherwise
   const changeDisplay = changeRaw >= 0.005
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className="flex-shrink-0 w-12 flex items-center justify-center">
-      <div className="flex flex-col items-center justify-center bg-surface-overlay rounded-xl w-12 py-2 gap-0.5">
+    <div className={`flex-shrink-0 ${size === 'md' ? 'w-12' : 'w-10'} flex items-center justify-center`}>
+      <div className={`flex flex-col items-center justify-center bg-surface-overlay rounded-xl ${boxClass} gap-0.5`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
         <span className={`text-[9px] font-semibold leading-none h-3 block ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '▲0%'}
