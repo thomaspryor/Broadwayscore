@@ -267,20 +267,18 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Title + mobile-only precursor chips */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1 min-w-0">
-          <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors min-w-0">
-            {show.title}
-          </h3>
-          {show.precursorWins && show.precursorWins.length > 0 && (
-            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
-              {show.precursorWins.map(w => (
-                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
-                  {w}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
+          {show.title}
+        </h3>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -325,11 +323,11 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <div className="flex items-center gap-2.5 px-3 py-2 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
+    <div className="flex items-start sm:items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail → show page */}
       <Link
         href={`/show/${show.slug}`}
-        className="w-10 h-10 sm:w-11 sm:h-11 rounded-md overflow-hidden bg-surface-raised flex-shrink-0"
+        className="w-10 h-10 sm:w-11 sm:h-11 rounded-md overflow-hidden bg-surface-raised flex-shrink-0 mt-0.5 sm:mt-0"
         tabIndex={-1}
         aria-hidden="true"
       >
@@ -347,7 +345,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </Link>
 
-      {/* Desktop: name + history inline; Mobile: stacked with wrapping history */}
+      {/* Desktop: name + history inline; Mobile: stacked */}
       <div className="flex-1 min-w-0">
         {/* Desktop layout: name + dimmer history on one line */}
         <div className="hidden sm:flex items-baseline gap-1.5 min-w-0">
@@ -360,31 +358,29 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
           )}
           <span className="text-[10px] text-gray-500 truncate min-w-0">{historyLabel}</span>
         </div>
-        {/* Mobile layout: stacked so history wraps instead of truncating */}
+        {/* Mobile layout */}
         <div className="sm:hidden">
           {actorUrl ? (
-            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors leading-tight block">
+            <Link href={actorUrl} className="text-sm font-bold text-white hover:text-brand transition-colors leading-tight block truncate">
               {show.nomineePersonName}
             </Link>
           ) : (
-            <span className="text-sm font-bold text-white leading-tight block">{show.nomineePersonName}</span>
+            <span className="text-sm font-bold text-white leading-tight block truncate">{show.nomineePersonName}</span>
           )}
           <p className="text-[10px] text-gray-500 leading-snug mt-0.5">{historyLabel}</p>
         </div>
-        <div className="flex items-center gap-1 mt-0.5 min-w-0">
-          <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors truncate min-w-0">
-            {show.title}
-          </Link>
-          {show.precursorWins && show.precursorWins.length > 0 && (
-            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
-              {show.precursorWins.map(w => (
-                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
-                  {w}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        <Link href={`/show/${show.slug}`} className="text-xs text-gray-400 hover:text-gray-300 transition-colors block truncate mt-0.5">
+          {show.title}
+        </Link>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
@@ -431,20 +427,18 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
       {/* Show name (bold) + credited names (dimmer) + precursor chips */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1 min-w-0">
-          <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors truncate min-w-0">
-            {show.title}
-          </Link>
-          {show.precursorWins && show.precursorWins.length > 0 && (
-            <div className="sm:hidden flex flex-row gap-0.5 flex-shrink-0">
-              {show.precursorWins.map(w => (
-                <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[9px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
-                  {w}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
+        <Link href={`/show/${show.slug}`} className="text-sm font-bold text-white hover:text-brand transition-colors block truncate">
+          {show.title}
+        </Link>
+        {show.precursorWins && show.precursorWins.length > 0 && (
+          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
+            {show.precursorWins.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+                {w}
+              </span>
+            ))}
+          </div>
+        )}
         {show.nomineePersonName && (
           <p className="text-xs text-gray-500 truncate mt-0.5">{show.nomineePersonName}</p>
         )}
@@ -490,6 +484,7 @@ function CategorySection({ category }: { category: TonyCategory }) {
       <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-1">
         {category.title}
       </h2>
+      <div className="relative">
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
         <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
@@ -510,6 +505,9 @@ function CategorySection({ category }: { category: TonyCategory }) {
           );
         })}
       </div>
+      </div>
+      {/* Scroll hint: fade on right edge, mobile only */}
+      <div className="sm:hidden absolute inset-y-0 right-0 w-10 pointer-events-none bg-gradient-to-l from-[#1a1a24] to-transparent rounded-r-xl" />
       </div>
     </section>
   );
