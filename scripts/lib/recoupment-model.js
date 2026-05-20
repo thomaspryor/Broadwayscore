@@ -153,7 +153,9 @@ const DEFAULT_STAR_PREMIUM = {
 };
 
 /** Closing costs: strike, crew buyout, contract termination.
- *  Proportional to show size. Quick flops pay these on a near-empty treasury. */
+ *  Floor amounts by category. Actual closing scales with show size — a
+ *  $30M musical's strike costs more than a $5M musical's. See
+ *  scaleClosingCost() for the cap-proportional adjustment. */
 const CLOSING_COSTS = {
   musicalSpectacle: 500000,  // Large scenic teardown
   musical: 300000,           // Standard scenic + crew
@@ -161,6 +163,27 @@ const CLOSING_COSTS = {
   playStar: 200000,          // Moderate
   special: 75000,            // Minimal
 };
+
+/** Closing costs scale roughly with capitalization. Baseline assumes a
+ *  ~$15M musical / ~$5M play; larger productions pay proportionally more. */
+const CLOSING_COST_CAP_REFS = {
+  musicalSpectacle: 30_000_000,
+  musical: 15_000_000,
+  play: 5_000_000,
+  playStar: 7_000_000,
+  special: 4_000_000,
+};
+
+function scaleClosingCost(category, capitalization) {
+  const floor = CLOSING_COSTS[category] || CLOSING_COSTS.musical;
+  const ref = CLOSING_COST_CAP_REFS[category] || CLOSING_COST_CAP_REFS.musical;
+  if (!capitalization || capitalization <= 0) return floor;
+  // Scale linearly off the reference, with a [0.7, 2.5] band so a tiny
+  // show doesn't get a trivially small closing cost and a giant show
+  // doesn't get an impossibly large one.
+  const ratio = Math.max(0.7, Math.min(2.5, capitalization / ref));
+  return Math.round(floor * ratio);
+}
 
 /** Max simulation weeks (10 years) */
 const MAX_SIMULATION_WEEKS = 520;
@@ -523,8 +546,20 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     // Closing costs for shows that closed within 2 years (strike, crew buyouts).
     // Long-running shows budget closing into their final weeks' nut.
     if (isClosed && weeklySchedule.length < 104) {
-      const closingCost = CLOSING_COSTS[category] || CLOSING_COSTS.musical;
-      cumProfit -= closingCost;
+      cumProfit -= scaleClosingCost(category, capitalization);
+    }
+
+    // Debt-service adjustment. Most Broadway shows are 100% equity, but a
+    // subset are partly debt-financed (mezzanine loans, gap financing).
+    // When commercial.debtFinancedPct is set (0..1), the model deducts
+    // weekly interest from cumulative profit. Industry-standard rates for
+    // Broadway mezzanine debt run ~8-12%/yr; default to 10% if not given.
+    if (commercial.debtFinancedPct > 0) {
+      const annualRate = commercial.debtInterestRate ?? 0.10;
+      const principal = capitalization * commercial.debtFinancedPct;
+      const weeklyInterest = (principal * annualRate) / 52;
+      // Charge interest for every week the show was running.
+      cumProfit -= weeklyInterest * weeklySchedule.length;
     }
 
     const recoupmentPct = (cumProfit / effectiveCap) * 100;

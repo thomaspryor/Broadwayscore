@@ -167,10 +167,37 @@ function main() {
       }
       tier2++;
     } else {
-      // ai-estimated passthrough
+      // ai-estimated tier: LLM-only range, with confidence-based widening.
+      //
+      // Previously the [low, high] AI pair was assigned directly to
+      // modelRecoupmentPct, which the UI reads as a 3-tuple
+      // [low, central, high]. That meant ApproachingRecoupmentCard rendered
+      // modelRecoupmentPct[1] — the LLM's *high* — as the central estimate,
+      // systematically overstating ai-estimated rows by ~20pts.
+      //
+      // Convert to a proper 3-tuple, mid-point as central. Apply a
+      // confidence haircut so low-confidence LLM rows don't claim
+      // certainty they don't have, and floor/cap to keep the audit sane.
+      if (Array.isArray(comm.estimatedRecoupmentPct) && comm.estimatedRecoupmentPct.length === 2) {
+        let [low, high] = comm.estimatedRecoupmentPct;
+        const conf = (comm.confidence || 'low').toLowerCase();
+        // Confidence-based range widening: widens uncertainty for lower-confidence
+        // estimates by pushing low further down and high further up around the mid.
+        const widen = conf === 'high' ? 1.0 : conf === 'medium' ? 1.25 : 1.6;
+        const mid = (low + high) / 2;
+        low = Math.max(-50, mid - (mid - low) * widen);
+        high = Math.min(300, mid + (high - mid) * widen);
+        comm.modelRecoupmentPct = [
+          Math.round(low * 10) / 10,
+          Math.round(mid * 10) / 10,
+          Math.round(high * 10) / 10,
+        ];
+        comm.modelRecouped = mid >= 100;
+      } else {
+        comm.modelRecoupmentPct = null;
+        comm.modelRecouped = comm.recouped != null ? comm.recouped : null;
+      }
       comm.modelMethod = 'ai-estimated';
-      comm.modelRecoupmentPct = comm.estimatedRecoupmentPct || null;
-      comm.modelRecouped = comm.recouped != null ? comm.recouped : null;
       comm.modelDataQuality = 'low';
       comm.modelLastRun = today;
       tier3++;
