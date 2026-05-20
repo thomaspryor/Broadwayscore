@@ -545,25 +545,15 @@ img {
   }
 
   /* Ensure minimum touch targets on mobile.
-     WARNING: this applies to ALL <a> tags. Any row with multiple stacked block Links
-     (e.g. person name + show title) will be 44px × N links tall.
-     Add a row-level exception class below if you add a new compact table row type. */
-  button, a, [role="button"] {
+     Real buttons (<button>, role=button) get 44px automatically.
+     Anchor tags do NOT get a global min-height — that broke compact table rows
+     with stacked block Links (each link inflating to 44px → 100px+ rows).
+     If a specific <a> needs a tap target, add Tailwind `min-h-[44px]` to it
+     explicitly. Most CTA links and filter pills already do this; small icon
+     links and standalone navigation should too. */
+  button, [role="button"] {
     min-height: 44px;
     min-width: 44px;
-  }
-
-  /* Exception for inline links */
-  p a, span a, li a {
-    min-height: auto;
-    min-width: auto;
-  }
-
-  /* Exception for compact table rows — links are text labels, not standalone tap targets.
-     If you add a new compact row type to nominees/page.tsx, add its class here too. */
-  .performer-row a, .craft-row a {
-    min-height: auto;
-    min-width: auto;
   }
 }
 
