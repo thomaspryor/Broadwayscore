@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-20T11:58:39.808Z",
+  "timestamp": "2026-05-20T13:37:21.245Z",
   "stats": {
-    "totalReviews": 37055,
-    "alreadyFlagged": 16241,
+    "totalReviews": 37070,
+    "alreadyFlagged": 16247,
     "dateGuardCatches": 103,
     "directorMismatch": 803,
     "tvFilmSignals": 1018,
-    "londonSignals": 575,
+    "londonSignals": 576,
     "offBroadwaySignals": 445,
     "yearMismatch": 78,
-    "noPublishDate": 3792
+    "noPublishDate": 3798
   },
   "findings": [
     {
@@ -27515,7 +27515,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -39049,6 +39049,19 @@
       "score": 80,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/layton-williams-star-of-titanique-thinks-this-is-the-gayest-broadway-season-yet-and-hes-here-for-it",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "titanique-west-end-2024",
+      "file": "british-theatre--susan-novak.json",
+      "publishDate": "2026-05-19",
+      "url": "https://www.britishtheatre.com/posts/william-hanson-makes-west-end-debut-in-olivier-award-winning-titanique-at-the-cr",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
