@@ -57,10 +57,10 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
   const ownFormatAvailable = ranksByFormat !== null && (show.type === 'musical' || show.type === 'play');
   const [choice, setChoice] = useState<FormatChoice>(ownFormatAvailable ? 'own' : 'all');
 
-  // Specials (concerts, magic shows, one-off events, ENO opera) don't compare
+  // Specials (concerts, magic shows, one-off events) and operas don't compare
   // meaningfully against a musical/play pool — skip the whole card. Placed
   // after useState to keep hooks-order stable on prop changes.
-  if (show.type === 'special') return null;
+  if (show.type === 'special' || show.type === 'opera') return null;
 
   if (!ranks && !ranksByFormat) return null;
 
