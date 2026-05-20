@@ -564,8 +564,8 @@ export default function TonyNomineesPage() {
         {/* Announcement banner — hidden after May 24 */}
         {new Date() < new Date('2026-05-25T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
-            <span className="text-brand font-semibold">Predictions being released Saturday, May 24</span>
-            {' '}— our model-based win predictions (separate from the market odds shown here) will be published on our predictions page.
+            <span className="text-brand font-semibold">Win predictions coming Saturday, May 24.</span>
+            {' '}Our model ranks each nominee&apos;s win probability based on all this data.
           </div>
         )}
 
