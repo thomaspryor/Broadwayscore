@@ -95,13 +95,17 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
   const numClass = size === 'md' ? 'text-lg font-bold text-white' : 'text-sm font-bold text-white';
-  const changeAbs = change != null ? Math.round(Math.abs(change) * 100) : 0;
+  const changeRaw = change != null ? Math.abs(change) : 0;
+  // Show 1 decimal for sub-1% changes (e.g. GoldDerby which moves in fractions), whole number otherwise
+  const changeDisplay = changeRaw >= 0.005
+    ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
+    : null;
   return (
     <div className="flex-shrink-0 w-12 flex items-center justify-center">
       <div className="flex flex-col items-center justify-center bg-surface-elevated border border-white/8 rounded-xl w-11 py-2 gap-0.5">
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
-        <span className={`text-[9px] font-semibold leading-none h-3 block ${change != null && changeAbs > 0 ? (change > 0 ? 'text-emerald-400' : 'text-red-400') : 'text-transparent'}`}>
-          {change != null && changeAbs > 0 ? `${change > 0 ? '▲' : '▼'}${changeAbs}%` : '▲0%'}
+        <span className={`text-[9px] font-semibold leading-none h-3 block ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
+          {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '▲0%'}
         </span>
       </div>
     </div>
