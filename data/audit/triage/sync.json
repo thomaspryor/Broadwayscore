@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "warn",
-  "lastChecked": "2026-05-19T08:11:06.844Z",
+  "status": "pass",
+  "lastChecked": "2026-05-20T08:10:59.384Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "warn",
-      "message": "3 empty cast: Aladdin, Wicked, Celebrity Autobiography"
+      "status": "pass",
+      "message": "41 active Broadway shows all have cast data"
     },
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "2580 shows, 151 open, 17738 reviews (all at or above baseline)"
+      "message": "2582 shows, 152 open, 17774 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 5/10/2026 (9d ago)"
+      "message": "weekEnding 5/10/2026 (10d ago)"
     }
   ]
 }
