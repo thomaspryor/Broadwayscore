@@ -561,14 +561,11 @@ export default function TonyNomineesPage() {
           )}
         </div>
 
-        {/* Announcement banner — hidden after May 22 */}
-        {new Date() < new Date('2026-05-23T00:00:00Z') && (
+        {/* Announcement banner — hidden after May 24 */}
+        {new Date() < new Date('2026-05-25T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
-            <span className="text-brand font-semibold">Predictions being released Thursday, May 22</span>
-            {' '}— our model-based win predictions (separate from the market odds shown here) will be published on{' '}
-            <Link href="/tony-awards/predictions" className="text-brand underline underline-offset-2 hover:text-brand-hover">
-              our predictions page
-            </Link>.
+            <span className="text-brand font-semibold">Predictions being released Saturday, May 24</span>
+            {' '}— our model-based win predictions (separate from the market odds shown here) will be published on our predictions page.
           </div>
         )}
 
