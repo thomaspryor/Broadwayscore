@@ -1,14 +1,11 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getOutletBySlug, getAllOutletSlugs } from '@/lib/data-reviews';
+import { getOutletBySlug } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateOutletSchema, generateOutletFAQSchema, BASE_URL } from '@/lib/seo';
 import OutletDetailClient from './OutletDetailClient';
 
 export const revalidate = 43200;
-
-export function generateStaticParams() {
-  return getAllOutletSlugs().map(slug => ({ slug }));
-}
+export const dynamicParams = true;
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const outlet = getOutletBySlug(params.slug);
