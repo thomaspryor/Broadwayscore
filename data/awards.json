@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-05-19T17:00:57.046Z",
+    "lastUpdated": "2026-05-20T03:49:35.885Z",
     "sources": [
       "Wikipedia",
       "Playbill",
@@ -4149,7 +4149,10 @@
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
+          "Outstanding Actor in a Play",
+          "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
+          "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
         ]
       },
@@ -4159,7 +4162,10 @@
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
+          "Outstanding Actor in a Play",
+          "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
+          "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
         ]
       },
@@ -20519,9 +20525,14 @@
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
+          "Outstanding Actor in a Musical",
           "Outstanding Choreography",
+          "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
-          "Outstanding Revival of a Musical"
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Lighting Design of a Musical",
+          "Outstanding Revival of a Musical",
+          "Outstanding Scenic Design of a Musical"
         ]
       },
       "outerCriticsCircle": {
@@ -20531,6 +20542,7 @@
         ],
         "nominatedFor": [
           "Outstanding Choreography",
+          "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Revival of a Musical"
         ]
@@ -37732,6 +37744,25 @@
           "Best Direction of a Play"
         ],
         "wins": []
+      },
+      "dramadesk": {
+        "season": "2002-03",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Actor in a Play",
+          "Outstanding Revival of a Play"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2002-03",
+        "wins": [
+          "Outstanding Revival of a Play"
+        ],
+        "nominatedFor": [
+          "Outstanding Actor in a Play",
+          "Outstanding Actress in a Play",
+          "Outstanding Revival of a Play"
+        ]
       }
     },
     "dinner-at-eight-2002": {
@@ -39194,6 +39225,13 @@
           "Best Actor in a Play"
         ],
         "wins": []
+      },
+      "outerCriticsCircle": {
+        "season": "2004-05",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Actor in a Play"
+        ]
       }
     },
     "twelve-angry-men-2004": {
@@ -45403,6 +45441,15 @@
         "wins": [
           "Best Actor"
         ]
+      },
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Music in a Play",
+          "Outstanding Solo Performance",
+          "Outstanding Sound Design of a Play"
+        ]
       }
     },
     "the-producers-west-end-2025": {
@@ -47331,13 +47378,46 @@
     },
     "little-women-the-musical-off-broadway-2026": {},
     "the-other-place-off-broadway-2026": {},
-    "the-unknown-off-broadway-2026": {},
+    "the-unknown-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Sound Design of a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lighting Design",
+          "Outstanding Solo Show",
+          "Outstanding Sound Design"
+        ]
+      }
+    },
     "the-waterfall-off-broadway-2026": {},
     "the-disappear-off-broadway-2026": {},
     "age-of-content-off-broadway-2026": {},
     "friends-the-musical-parody-off-broadway-2022": {},
     "the-infinite-wrench-off-broadway-2025": {},
-    "the-reservoir-off-broadway-2026": {},
+    "the-reservoir-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performance in a Play",
+          "Outstanding Lead Performance in a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performer in a Play"
+        ]
+      }
+    },
     "night-side-songs-off-broadway-2026": {
       "dramaLeague": {
         "season": "2025-26",
@@ -47345,13 +47425,51 @@
         "nominatedFor": [
           "Outstanding Production of a Musical"
         ]
+      },
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Music"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Musical"
+        ]
       }
     },
-    "mother-russia-off-broadway-2026": {},
+    "mother-russia-off-broadway-2026": {
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Play"
+        ]
+      }
+    },
     "los-soles-truncos-off-broadway-2025": {},
     "ulysses-off-broadway-2026": {},
-    "bloodlove-off-broadway-2026": {},
-    "silver-manhattan-off-broadway-2026": {},
+    "bloodlove-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Choreography"
+        ]
+      }
+    },
+    "silver-manhattan-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Book of a Musical"
+        ]
+      }
+    },
     "chicka-chicka-boom-boom-the-musical-off-broadway-2026": {},
     "anonymous-off-broadway-2026": {},
     "chinese-republicans-off-broadway-2026": {},
@@ -47368,6 +47486,20 @@
           "Outstanding Direction of a Play",
           "Outstanding Production of a Play"
         ]
+      },
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lighting Design of a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lighting Design"
+        ]
       }
     },
     "perfect-crime-off-broadway-1987": {},
@@ -47378,6 +47510,7 @@
         "season": "2025-26",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Orchestrations",
           "Outstanding Play"
         ]
       }
@@ -47390,6 +47523,30 @@
         "nominatedFor": [
           "Outstanding Production of a Play"
         ]
+      },
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performance in a Play"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Choreography",
+          "Outstanding Direction of a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Choreographer",
+          "Outstanding Lead Performer in a Play",
+          "Outstanding Play"
+        ]
       }
     },
     "the-dinosaurs-off-broadway-2026": {},
@@ -47400,6 +47557,13 @@
         "nominatedFor": [
           "Outstanding Direction of a Musical",
           "Outstanding Production of a Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Musical"
         ]
       }
     },
@@ -47449,6 +47613,47 @@
           "Best Actor in a Musical"
         ],
         "wins": []
+      },
+      "dramadesk": {
+        "season": "2019-20",
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
+        "nominatedFor": [
+          "Outstanding Actress in a Musical",
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Revival of a Musical",
+          "Outstanding Scenic Design of a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2019-20",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Actor in a Musical",
+          "Outstanding Direction of a Musical",
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2019-20",
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2019-20",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Featured Actress in a Musical",
+          "Outstanding Lead Actor in a Musical",
+          "Outstanding Revival"
+        ]
       }
     },
     "encores-la-cage-aux-folles-off-broadway-2026": {
@@ -47510,6 +47715,294 @@
         "wins": [],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
+        ]
+      }
+    },
+    "mexodus-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Book of a Musical",
+          "Outstanding Direction of a Musical",
+          "Outstanding Lead Performance in a Musical",
+          "Outstanding Lighting Design of a Musical",
+          "Outstanding Lyrics",
+          "Outstanding Music",
+          "Outstanding Musical",
+          "Outstanding Projection Design",
+          "Outstanding Sound Design of a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [
+          "Outstanding New Score"
+        ],
+        "nominatedFor": [
+          "Outstanding Book of a Musical",
+          "Outstanding Direction of a Musical",
+          "Outstanding New Score"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [
+          "Outstanding Production of a Musical"
+        ],
+        "nominatedFor": [
+          "Outstanding Direction of a Musical",
+          "Outstanding Production of a Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [
+          "Outstanding Musical"
+        ],
+        "nominatedFor": [
+          "Outstanding Choreographer",
+          "Outstanding Lead Performer in a Musical",
+          "Outstanding Lighting Design",
+          "Outstanding Musical",
+          "Outstanding Projection Design",
+          "Outstanding Scenic Design",
+          "Outstanding Sound Design"
+        ]
+      }
+    },
+    "cold-war-choir-practice-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performance in a Play",
+          "Outstanding Music in a Play",
+          "Outstanding Play"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Production of a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Play",
+          "Outstanding Scenic Design"
+        ]
+      }
+    },
+    "well-ill-let-you-go-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Featured Performance in a Play",
+          "Outstanding Lead Performance in a Play",
+          "Outstanding Lighting Design of a Play",
+          "Outstanding Play"
+        ]
+      }
+    },
+    "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Musical",
+          "Outstanding Featured Performance in a Musical",
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Musical",
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [
+          "Outstanding Revival"
+        ],
+        "nominatedFor": [
+          "Outstanding Revival"
+        ]
+      }
+    },
+    "titus-andronicus-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Lead Performance in a Play",
+          "Outstanding Revival of a Play"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival"
+        ]
+      }
+    },
+    "my-joy-is-heavy-off-broadway-2025": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Orchestrations",
+          "Outstanding Projection Design"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Musical",
+          "Outstanding Production of a Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performer in a Musical",
+          "Outstanding Musical",
+          "Outstanding Projection Design"
+        ]
+      }
+    },
+    "kinky-boots-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performance in a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performer in an Off-Broadway Musical"
+        ]
+      },
+      "lortel": {
+        "season": "2022-23",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Choreographer",
+          "Outstanding Lead Performer in a Musical"
+        ]
+      }
+    },
+    "heathers-the-musical-off-broadway-2025": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performance in a Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
+      }
+    },
+    "the-adding-machine-off-broadway-2026": {
+      "dramadesk": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lighting Design of a Play",
+          "Outstanding Scenic Design of a Play"
+        ]
+      }
+    },
+    "masquerade-off-broadway-2025": {
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Choreography",
+          "Outstanding Direction of a Musical",
+          "Outstanding Revival of a Musical"
+        ]
+      },
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Revival of a Musical"
+        ]
+      }
+    },
+    "rheology-off-broadway-2026": {
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Production of a Play"
+        ]
+      }
+    },
+    "spread-off-broadway-2026": {
+      "dramaLeague": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Direction of a Play",
+          "Outstanding Production of a Play"
+        ]
+      }
+    },
+    "antigone-this-play-i-read-in-high-school-off-broadway-2026": {
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lead Performer in a Play"
+        ]
+      }
+    },
+    "the-play-that-goes-wrong-off-broadway-2019": {
+      "lortel": {
+        "season": "2018-19",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Actor in a Play",
+          "Outstanding Scenic Design"
+        ]
+      }
+    },
+    "bughouse-off-broadway-2026": {
+      "lortel": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Projection Design"
         ]
       }
     }
