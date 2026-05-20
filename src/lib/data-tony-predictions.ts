@@ -226,9 +226,8 @@ const TONY_TO_PRECURSOR_CATEGORY: Record<string, { dramadesk: string[]; outerCri
 };
 
 /** Acting award categories that are given to a specific performer, not a show.
- *  When multiple Tony nominees from the same show compete in an acting category,
- *  these awards require winnerNames in awards.json to attribute chips correctly.
- *  Without winnerNames, the chip is suppressed (conservative — avoids false credit). */
+ *  When winnerNames is present in awards.json, chips are attributed only to the actual winner.
+ *  Without winnerNames, falls back to show-level (chip shows for all nominees from the show). */
 const DL_PER_PERFORMER_AWARDS = new Set(['Distinguished Performance Award']);
 const OCC_PER_PERFORMER_AWARDS = new Set([
   'Outstanding Actor in a Musical', 'Outstanding Actress in a Musical',
@@ -535,10 +534,10 @@ export function getPrecursorWins(showId: string, tonyCategory: string, nomineeNa
   const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
   if (!matching) return [];
 
-  // Generic check: a per-performer award (in perPersonSet) requires the nominee to be
-  // listed in winnerNames. Without winnerNames, the chip is suppressed (conservative —
-  // avoids attributing to the wrong person when a show has multiple acting nominees).
-  // Show-level awards (not in perPersonSet) always show the chip.
+  // Generic check: a per-performer award (in perPersonSet) uses winnerNames when
+  // populated to attribute the chip to the correct person. Without winnerNames, falls
+  // back to show-level behavior (chip shows for all nominees from the winning show).
+  // Show-level awards (not in perPersonSet) always show the chip regardless.
   function checkCeremony(
     wins: string[] | undefined,
     winnerNames: Record<string, string[]> | undefined,
@@ -548,9 +547,11 @@ export function getPrecursorWins(showId: string, tonyCategory: string, nomineeNa
     const matched = categories.filter(c => (wins ?? []).includes(c));
     if (matched.length === 0) return false;
     return matched.some(c => {
-      if (!perPersonSet.has(c)) return true;
-      if (!nomineeName) return false;
-      return (winnerNames?.[c] ?? []).includes(nomineeName);
+      if (!perPersonSet.has(c)) return true;  // show-level award — always show
+      const winners = winnerNames?.[c];
+      if (!winners || winners.length === 0) return true;  // no winner data — fall back to show-level
+      if (!nomineeName) return true;  // no person context — show chip
+      return winners.includes(nomineeName);  // disambiguate: show only for the actual winner
     });
   }
 
