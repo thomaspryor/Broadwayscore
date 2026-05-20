@@ -674,9 +674,24 @@ jobs:
             let sent = {};
             try { sent = JSON.parse(fs.readFileSync('data/opening-night-sent.json', 'utf8')).shows || {}; } catch {}
 
+            // Load reviews to check whether a show has enough scored reviews to actually send.
+            // A show with <8 scored reviews cannot broadcast yet — this is not a pipeline failure,
+            // just a show with sparse critical coverage. Don't alert until reviews exist.
+            let allReviews = [];
+            try {
+              const rv = JSON.parse(fs.readFileSync('data/reviews.json', 'utf8'));
+              allReviews = Array.isArray(rv) ? rv : (rv.reviews || []);
+            } catch {}
+            const MIN_REVIEWS_TO_ALERT = 8;
+
             const overdue = ids.filter(id => {
               const s = shows.find(x => x.id === id);
               if (!s || !s.openingDate) return false;
+              // Skip if show doesn't have enough scored reviews to send a broadcast.
+              // Alerting here would be noise — the pipeline isn't stuck, reviews just haven't
+              // accumulated yet. The broadcast will auto-send once MIN_REVIEWS_TO_ALERT is reached.
+              const scoredCount = allReviews.filter(r => r.showId === id && r.assignedScore != null).length;
+              if (scoredCount < MIN_REVIEWS_TO_ALERT) return false;
               // Reviews should be gathered/scored by 4 AM UTC the day after opening
               // (curtain ~8 PM ET, reviews ~10-11 PM ET, gather/score pipeline ~2-3h)
               const overdueAfter = new Date(s.openingDate + 'T04:00:00Z');
