@@ -167,15 +167,12 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
             <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               Open {marketName}
             </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 hidden sm:table-cell">
-              This season
+            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+              <span className="sm:hidden">Season</span>
+              <span className="hidden sm:inline">This season</span>
             </th>
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 hidden sm:table-cell">
+            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
               All-time<span className="text-gray-600 font-normal">*</span>
-            </th>
-            {/* Mobile: collapse Season + All-time into a single trailing column to fit 390px. */}
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2 sm:hidden">
-              Seas. · All<span className="text-gray-600 font-normal">*</span>
             </th>
           </tr>
         </thead>
@@ -203,25 +200,14 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
                   <Cell cell={rs.openMarket} href={linkFor(row.metric, 'openMarket')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                 </td>
 
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
                 </td>
 
                 {/* All-time column: ALWAYS show "of N" so per-metric pool
                     differences are explicit. */}
-                <td className={`hidden sm:table-cell py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
+                <td className={`py-2 pl-1 sm:pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
                   <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
-                </td>
-
-                {/* Mobile combined column — show season if present, fall back
-                    to all-time. Always render denominator (so the fallback to
-                    all-time is unambiguous). */}
-                <td className={`sm:hidden py-2 pl-2 text-right align-top ${isLast ? 'pt-3' : ''}`}>
-                  {rs.season ? (
-                    <Cell cell={rs.season} href={linkFor(row.metric, 'season')} naHint={row.notApplicableHint} emphasis showDenominator={showOverallDenom} />
-                  ) : (
-                    <Cell cell={rs.allTime} href={linkFor(row.metric, 'allTime')} naHint={row.notApplicableHint} showDenominator />
-                  )}
                 </td>
               </tr>
             );
