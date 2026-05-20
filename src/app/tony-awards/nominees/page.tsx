@@ -321,7 +321,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   const actorUrl = show.nomineeActorSlug ? `/cast/${show.nomineeActorSlug}` : null;
 
   return (
-    <div className="performer-row flex items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
+    <div className="flex items-center gap-2.5 px-3 py-1.5 sm:p-2.5 hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail → show page */}
       <Link
         href={`/show/${show.slug}`}
@@ -391,7 +391,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
 
 function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
   return (
-    <div className="craft-row flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
+    <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
       {/* Thumbnail */}
       <Link
         href={`/show/${show.slug}`}

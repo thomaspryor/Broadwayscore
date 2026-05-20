@@ -1,25 +1,7 @@
-import { NextResponse } from 'next/server';
-import { getShowBySlug, getAllShowSlugs } from '@/lib/data-core';
+import { getShowBySlug } from '@/lib/data-core';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews, isCriticalGold } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import type { ComputedShow } from '@/lib/data-types';
-
-// Pre-render one SVG per show at build time; CDN-cached until next deploy.
-// Since BWSC deploys multiple times a day, badges stay within ~24h of current.
-export const dynamic = 'force-static';
-
-export function generateStaticParams() {
-  const allSlugs = getAllShowSlugs();
-  const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
-  const shows = allSlugs.map(slug => getShowBySlug(slug)).filter(Boolean) as ComputedShow[];
-  return shows
-    .filter(s =>
-      s.status === 'open' || s.status === 'previews' ||
-      (s.closingDate != null && new Date(s.closingDate) > sixMonthsAgo)
-    )
-    .map(s => ({ slug: s.slug }));
-}
 
 // Tier hex values mirror globals.css + opengraph-image.tsx.
 const TIER_STYLE: Record<string, { bg: string; text: string; label: string }> = {
@@ -88,7 +70,6 @@ ${goldDefs}
 const CACHE_HEADERS = {
   'Content-Type': 'image/svg+xml; charset=utf-8',
   // CDN: public cache for 1 hour, stale-while-revalidate for 24h.
-  // Badges always refresh on each deploy via force-static rebuild.
   'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
   // Allow any origin to embed as <img>.
   'Access-Control-Allow-Origin': '*',

@@ -1,14 +1,11 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { getCriticBySlug, getAllCriticSlugs } from '@/lib/data-reviews';
+import { getCriticBySlug } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
 import CriticDetailClient from './CriticDetailClient';
 
 export const revalidate = 43200;
-
-export function generateStaticParams() {
-  return getAllCriticSlugs().map(slug => ({ slug }));
-}
+export const dynamicParams = true;
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const critic = getCriticBySlug(params.slug);
