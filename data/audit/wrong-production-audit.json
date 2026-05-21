@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-21T12:13:21.765Z",
+  "timestamp": "2026-05-21T12:45:30.541Z",
   "stats": {
-    "totalReviews": 37110,
-    "alreadyFlagged": 16253,
+    "totalReviews": 37107,
+    "alreadyFlagged": 16256,
     "dateGuardCatches": 103,
     "directorMismatch": 804,
-    "tvFilmSignals": 1018,
+    "tvFilmSignals": 1019,
     "londonSignals": 575,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3825
+    "noPublishDate": 3816
   },
   "findings": [
     {
@@ -3872,6 +3872,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "clybourne-park-2012",
+      "file": "playbill--robert-simonson.json",
+      "score": null,
+      "publishDate": "2012-04-20",
+      "url": "https://playbill.com/article/playbill-theatre-week-in-review-april-14-20-critics-love-starcatcher-one-man-and-clybourne-park-com-199201",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -27528,7 +27542,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
