@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-21T12:45:30.541Z",
+  "timestamp": "2026-05-21T13:39:57.988Z",
   "stats": {
-    "totalReviews": 37107,
-    "alreadyFlagged": 16256,
+    "totalReviews": 37103,
+    "alreadyFlagged": 16257,
     "dateGuardCatches": 103,
     "directorMismatch": 804,
     "tvFilmSignals": 1019,
-    "londonSignals": 575,
+    "londonSignals": 577,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3816
+    "noPublishDate": 3811
   },
   "findings": [
     {
@@ -3878,7 +3878,7 @@
     {
       "showId": "clybourne-park-2012",
       "file": "playbill--robert-simonson.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2012-04-20",
       "url": "https://playbill.com/article/playbill-theatre-week-in-review-april-14-20-critics-love-starcatcher-one-man-and-clybourne-park-com-199201",
       "findings": [
@@ -27548,6 +27548,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "london-theatre--holly-omahony.json",
+      "score": null,
+      "publishDate": "2026-05-20",
+      "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "west-end-best-friend--chris-abbott.json",
+      "score": 90,
+      "publishDate": "2026-05-20",
+      "url": "https://www.westendbestfriend.co.uk/news/review-care-young-vic-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
