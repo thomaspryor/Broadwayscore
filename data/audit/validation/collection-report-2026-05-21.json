@@ -1,112 +1,71 @@
 {
-  "runDate": "2026-05-21T07:39:21.065Z",
+  "runDate": "2026-05-21T10:32:31.087Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-emporium-off-broadway-2025,care-west-end-2026,equus-west-end-2026,celebrity-autobiography-2026",
+    "showFilter": "can-i-be-frank-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
-    "failed": 18,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "21.7%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 1
+    "archiveToday": 0,
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 12,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
-    "tier2Attempts": 7,
-    "tier2Success": 6,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 4,
-    "tier4Success": 2,
-    "totalFailed": 18,
-    "scrapingBeePageCredits": 51,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "celebrity-autobiography-2026/nydailynews--unknown.json",
-    "equus-west-end-2026/timeout--andrzej-lukowski.json",
-    "equus-west-end-2026/timeout-london--unknown.json",
-    "celebrity-autobiography-2026/nysr--unknown.json",
-    "equus-west-end-2026/standard--unknown.json"
+    "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json"
   ],
-  "failed": [
-    "care-west-end-2026/thereviewshub--unknown.json",
-    "care-west-end-2026/timeout-london--unknown.json",
-    "care-west-end-2026/broadwayworld--unknown.json",
-    "care-west-end-2026/daily-echo--unknown.json",
-    "care-west-end-2026/financialtimes--unknown.json",
-    "care-west-end-2026/i-paper--unknown.json",
-    "care-west-end-2026/londontheatre1--unknown.json",
-    "care-west-end-2026/standard--unknown.json",
-    "care-west-end-2026/telegraph--dominic-cavendish.json",
-    "care-west-end-2026/thestage--unknown.json",
-    "care-west-end-2026/times-uk--unknown.json",
-    "care-west-end-2026/whatsonstage--sarah-crompton.json",
-    "equus-west-end-2026/thereviewshub--unknown.json",
-    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "equus-west-end-2026/sunday-telegraph--unknown.json",
-    "equus-west-end-2026/telegraph--unknown.json",
-    "equus-west-end-2026/thestage--holly-o.json",
-    "equus-west-end-2026/times-uk--clive-davis.json"
-  ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
-      "equus-west-end-2026/timeout--andrzej-lukowski.json",
-      "equus-west-end-2026/timeout-london--unknown.json",
-      "celebrity-autobiography-2026/nysr--unknown.json",
-      "equus-west-end-2026/standard--unknown.json"
+      "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/equus-west-end-2026/thereviewshub--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
-      "data/review-texts/care-west-end-2026/thestage--unknown.json"
-    ],
-    "archive": [
-      "celebrity-autobiography-2026/nydailynews--unknown.json"
-    ]
+    "archiveToday": [],
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
