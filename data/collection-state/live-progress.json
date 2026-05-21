@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-21T12:29:54.075Z",
-  "processed": 27,
-  "failed": 253,
-  "successRate": "9.6%",
+  "updatedAt": "2026-05-21T12:48:00.183Z",
+  "processed": 32,
+  "failed": 258,
+  "successRate": "11.0%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 16,
     "amp": 0,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 2,
-    "archiveToday": 7,
+    "archiveToday": 9,
     "archive": 3
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-21T10:50:21.986Z",
@@ -60,6 +60,17 @@
       "t": "2026-05-21T12:29:30.824Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-21T12:43:30.747Z",
+      "event": "bb-session",
+      "session": "79d5c725",
+      "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
+    },
+    {
+      "t": "2026-05-21T12:43:33.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

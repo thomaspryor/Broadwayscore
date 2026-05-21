@@ -26,7 +26,12 @@
     "cymbeline-2007/nytg--unknown.json",
     "cymbeline-2007/ew--unknown.json",
     "animal-wisdom-2022/nytimes--ben-brantley.json",
-    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json"
+    "whos-afraid-of-virginia-woolf-2020/wsj--charles-isherwood.json",
+    "beetlejuice-west-end-2026/british-theatre--unknown.json",
+    "care-west-end-2026/london-theatre--holly-omahony.json",
+    "care-west-end-2026/west-end-best-friend--unknown.json",
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "an-ideal-husband-west-end-2026/timeout-london--unknown.json"
   ],
   "failed": [
     "the-maids-off-broadway-2026/ew--unknown.json",
@@ -281,7 +286,12 @@
     "faith-healer-2006/broadwayworld--unknown.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "beetlejuice-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "care-west-end-2026/thestage--sam-marlowe.json",
+    "romeo-and-juliet-west-end-2026/click-liverpool--jane-evans.json",
+    "pied-a-terre-off-broadway-2026/broadwayworld--unknown.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -298,7 +308,10 @@
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
       "clybourne-park-2012/playbill--unknown.json",
       "cymbeline-2007/nytg--unknown.json",
-      "cymbeline-2007/ew--unknown.json"
+      "cymbeline-2007/ew--unknown.json",
+      "beetlejuice-west-end-2026/british-theatre--unknown.json",
+      "care-west-end-2026/london-theatre--holly-omahony.json",
+      "care-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -321,7 +334,9 @@
       "company-2021/daily-mail--unknown.json",
       "company-2021/vox--unknown.json",
       "faith-healer-2006/broadwayworld--unknown.json",
-      "animal-wisdom-2022/nytimes--ben-brantley.json"
+      "animal-wisdom-2022/nytimes--ben-brantley.json",
+      "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+      "an-ideal-husband-west-end-2026/timeout-london--unknown.json"
     ],
     "brightdata": [
       "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/talkinbroadway--unknown.json",
@@ -334,6 +349,8 @@
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
       "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json",
+      "data/review-texts/pied-a-terre-off-broadway-2026/broadwayworld--unknown.json",
+      "data/review-texts/care-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/pied-a-terre-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "archive": [
@@ -343,7 +360,7 @@
     ]
   },
   "startTime": "2026-05-21T10:32:16.442Z",
-  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+  "lastProcessed": "ragtime-2025/bloomberg--chris-rovzar.json",
   "log": [
     {
       "t": "2026-05-21T10:50:21.986Z",
@@ -390,6 +407,17 @@
       "t": "2026-05-21T12:29:30.824Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-21T12:43:30.747Z",
+      "event": "bb-session",
+      "session": "79d5c725",
+      "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
+    },
+    {
+      "t": "2026-05-21T12:43:33.085Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
