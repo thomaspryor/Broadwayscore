@@ -24,6 +24,26 @@ const TIGHT_AGREEMENT_THRESHOLD = 5;
 const MODERATE_AGREEMENT_THRESHOLD = 12;
 const HIGH_DISAGREEMENT_THRESHOLD = 15;
 
+/**
+ * Majority-vs-outlier weighting for the >50% majority branch.
+ * 1.5/1.0 = current behavior. Lowering MAJORITY_WEIGHT gives outlier models more pull.
+ * Exported so re-ensemble-scores.ts and ensemble-scorer.ts share one source of truth.
+ */
+export const MAJORITY_WEIGHT = 1.5;
+export const OUTLIER_WEIGHT = 1.0;
+
+/**
+ * When the lone outlier's score is more than this many points from the mean of the
+ * majority models' scores, flag needsReview even if buckets are only 1 apart.
+ * Catches the failure mode where 2 models cluster on a higher (or lower) score and
+ * outvote the dissenting model whose calibration is correct.
+ *
+ * Real-world case: Celebrity Autobiography / Cititour shipped 87 (Rave) when
+ * Claude scored 76 (Positive) and GPT-4o/Gemini both scored 90.
+ * Positive→Rave is only 1 bucket apart so bucket-distance check missed it.
+ */
+export const NUMERIC_OUTLIER_GAP_THRESHOLD = 12;
+
 // ========================================
 // UTILITY FUNCTIONS
 // ========================================
@@ -304,10 +324,8 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
     const majorityResults = results.filter(r => r.bucket === majority.bucket);
     const outlierResults = results.filter(r => r.bucket !== majority.bucket);
 
-    // Weighted average: majority models 1.5x, outlier models 1.0x
-    // This preserves outlier signal while anchoring to majority sentiment
-    const MAJORITY_WEIGHT = 1.5;
-    const OUTLIER_WEIGHT = 1.0;
+    // Weighted average: majority weight (default 1.5) vs outlier weight (default 1.0)
+    // Constants exported at top of file so re-ensemble-scores.ts uses the same values.
     const totalWeight = majorityResults.length * MAJORITY_WEIGHT + outlierResults.length * OUTLIER_WEIGHT;
     const weightedSum = majorityResults.reduce((s, r) => s + r.score * MAJORITY_WEIGHT, 0)
                       + outlierResults.reduce((s, r) => s + r.score * OUTLIER_WEIGHT, 0);
@@ -315,9 +333,31 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
     // Derive bucket from numeric score — no clamping to voted bucket
     const derivedBucket = scoreToBucket(finalScore);
 
-    // Check if any outlier is severe (>1 bucket away)
+    // needsReview reasons — collect every cause separately so triage can filter.
+    const needsReviewReasons: string[] = [];
+
+    // Reason 1: any outlier is in a non-adjacent bucket (>1 bucket away from majority).
     const severeOutlier = outlierResults.find(r => bucketDistance(majority.bucket, r.bucket) > 1);
-    const needsReview = !!severeOutlier;
+    if (severeOutlier) {
+      needsReviewReasons.push(
+        `outlier ${severeOutlier.model} chose ${severeOutlier.bucket}, 2+ buckets from majority`
+      );
+    }
+
+    // Reason 2: a lone outlier is numerically far (>12 pts) from the majority mean,
+    // even if the bucket distance is only 1. Catches Cititour-style cases where
+    // 2 models cluster on a higher score and outvote the dissenting (correct) model.
+    if (outlierResults.length === 1) {
+      const majorityMean = majorityResults.reduce((s, r) => s + r.score, 0) / majorityResults.length;
+      const gap = Math.abs(outlierResults[0].score - majorityMean);
+      if (gap > NUMERIC_OUTLIER_GAP_THRESHOLD) {
+        needsReviewReasons.push(
+          `sole-outlier-${Math.round(gap)}pt-gap (outlier ${outlierResults[0].model} score ${outlierResults[0].score} vs majority mean ${Math.round(majorityMean)})`
+        );
+      }
+    }
+
+    const needsReview = needsReviewReasons.length > 0;
 
     // For 3 models, find the single outlier for backward compatibility
     const outlier = results.length === 3 ? findOutlier(results) : undefined;
@@ -335,9 +375,10 @@ function multiModelEnsemble(results: ModelScore[]): EnsembleResult {
       } : undefined),
       modelResults: buildModelResultsMap(results),
       needsReview,
-      reviewReason: needsReview
-        ? `Outlier ${severeOutlier?.model} chose ${severeOutlier?.bucket}, 2+ buckets from majority`
-        : undefined
+      // Keep singular reviewReason populated for backward compat with existing review files on disk;
+      // re-ensemble-scores.ts:189 already writes the plural needsReviewReasons array.
+      reviewReason: needsReview ? needsReviewReasons.join('; ') : undefined,
+      needsReviewReasons: needsReview ? needsReviewReasons : undefined
     };
   }
 
