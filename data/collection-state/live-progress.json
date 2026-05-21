@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-21T14:07:05.495Z",
-  "processed": 39,
-  "failed": 672,
-  "successRate": "5.5%",
+  "updatedAt": "2026-05-21T14:26:52.479Z",
+  "processed": 40,
+  "failed": 676,
+  "successRate": "5.6%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 19,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 12,
     "directCookies": 0,
     "scrapingbee": 12,
     "brightdata": 2,
     "archiveToday": 10,
     "archive": 7
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-21T10:50:21.986Z",
@@ -71,6 +71,18 @@
       "t": "2026-05-21T12:43:33.085Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-05-21T14:25:25.867Z",
+      "event": "bb-session",
+      "session": "43435bb7",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-21T14:26:37.661Z",
+      "event": "bb-session",
+      "session": "81236a83",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
     }
   ]
 }
