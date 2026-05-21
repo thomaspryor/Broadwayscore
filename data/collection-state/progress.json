@@ -19,7 +19,10 @@
     "company-2021/playbill--unknown.json",
     "company-2021/vox--unknown.json",
     "escape-to-margaritaville-2018/playbill--unknown.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "clybourne-park-2012/variety--unknown.json",
+    "clybourne-park-2012/philadelphia-inquirer--unknown.json",
+    "clybourne-park-2012/playbill--unknown.json"
   ],
   "failed": [
     "the-maids-off-broadway-2026/ew--unknown.json",
@@ -168,7 +171,14 @@
     "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
     "elf-2012/new-jersey-newsroom--michael-sommers.json",
     "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
-    "fela-2012/backstage--david-sheward.json"
+    "fela-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/variety--marilyn-stasio.json",
+    "dont-dress-for-dinner-2012/backstage--david-sheward.json",
+    "leap-of-faith-2012/backstage--erik-haagensen.json",
+    "the-columnist-2012/backstage--erik-haagensen.json",
+    "ghost-the-musical-2012/variety--steven-suskin.json",
+    "ghost-the-musical-2012/talkinbroadway--matthew-murray.json",
+    "the-lyons-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -182,14 +192,17 @@
       "company-2021/third-coast-review--nancy-bishop.json",
       "company-2021/playbill--unknown.json",
       "escape-to-margaritaville-2018/playbill--unknown.json",
-      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+      "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+      "clybourne-park-2012/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+      "data/review-texts/clybourne-park-2012/variety--unknown.json",
+      "clybourne-park-2012/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -202,7 +215,8 @@
       "company-2021/vox--unknown.json"
     ],
     "brightdata": [
-      "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/talkinbroadway--unknown.json"
+      "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/talkinbroadway--unknown.json",
+      "clybourne-park-2012/philadelphia-inquirer--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
@@ -220,7 +234,7 @@
     ]
   },
   "startTime": "2026-05-21T10:32:16.442Z",
-  "lastProcessed": "fela-2012/backstage--david-sheward.json",
+  "lastProcessed": "clybourne-park-2012/playbill--unknown.json",
   "log": [
     {
       "t": "2026-05-21T10:50:21.986Z",
@@ -245,6 +259,17 @@
       "event": "bb-session",
       "session": "63a348ce",
       "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    },
+    {
+      "t": "2026-05-21T12:10:42.166Z",
+      "event": "bb-session",
+      "session": "82a139e4",
+      "url": "https://variety.com/2012/legit/reviews/clybourne-park-2-1117946930/"
+    },
+    {
+      "t": "2026-05-21T12:10:44.480Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
