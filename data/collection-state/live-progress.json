@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-21T20:09:54.926Z",
+  "updatedAt": "2026-05-21T20:10:53.342Z",
   "processed": 19,
-  "failed": 287,
-  "successRate": "6.2%",
+  "failed": 297,
+  "successRate": "6.0%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 10,
     "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-21T19:29:24.575Z",
@@ -23,6 +23,17 @@
     },
     {
       "t": "2026-05-21T19:29:25.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-05-21T20:10:04.253Z",
+      "event": "bb-session",
+      "session": "72911a57",
+      "url": "https://www.newsday.com/entertainment/theater/company-patti-lupone-review-m27798"
+    },
+    {
+      "t": "2026-05-21T20:10:05.158Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
     }
