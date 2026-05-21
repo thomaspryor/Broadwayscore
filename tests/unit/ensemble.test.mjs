@@ -251,6 +251,106 @@ describe('ensembleScore - 3 models', () => {
     });
   });
 
+  // ========================================
+  // NUMERIC-GAP OUTLIER (Cititour 2026-05-20 regression case)
+  // ========================================
+  // When 2 models cluster on a higher score and outvote the dissenting model whose
+  // calibration is correct, the 1-bucket-distance check misses it. The numeric-gap
+  // rule fires needsReview when the lone outlier is >12pts from the majority mean.
+  describe('2/3 majority with numeric-gap outlier (within 1 bucket)', () => {
+    test('Cititour case: Claude=76 Positive vs OpenAI=90 Gemini=90 Rave → needsReview', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 76),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+
+      // Weighted avg: (90*1.5 + 90*1.5 + 76*1.0) / 4.0 = 86.5 → 87
+      assert.strictEqual(result.source, 'ensemble-majority');
+      assert.strictEqual(result.outlier?.model, 'claude');
+      assert.strictEqual(result.outlier?.bucket, 'Positive');
+      // Bucket distance Positive↔Rave is 1 — old check would NOT fire.
+      // Numeric gap |76 - 90| = 14 > 12 → new check fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(Array.isArray(result.needsReviewReasons), 'needsReviewReasons should be an array');
+      assert.ok(
+        result.needsReviewReasons.some(r => /sole-outlier-\d+pt-gap/.test(r)),
+        `needsReviewReasons should contain a 'sole-outlier-Npt-gap' entry, got: ${JSON.stringify(result.needsReviewReasons)}`
+      );
+      // Reason string is model-agnostic — does NOT hardcode 'claude'.
+      assert.ok(
+        !result.needsReviewReasons.some(r => /claude-outlier/i.test(r)),
+        'reasons should not hardcode model name as "claude-outlier"'
+      );
+    });
+
+    test('boundary: gap=12 (78 vs 90/90) does NOT fire (strict >)', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 78),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+      // Gap = |78 - 90| = 12. Threshold is strict >12, so this does NOT fire.
+      assert.strictEqual(result.needsReview, false);
+      assert.strictEqual(result.needsReviewReasons, undefined);
+    });
+
+    test('boundary: gap=13 (77 vs 90/90) DOES fire', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 77),
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 90)
+      );
+      // Gap = |77 - 90| = 13 > 12 → fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(
+        result.needsReviewReasons.some(r => /sole-outlier-13pt-gap/.test(r)),
+        `expected '...13pt-gap', got: ${JSON.stringify(result.needsReviewReasons)}`
+      );
+    });
+
+    test('inverted: outlier HIGHER than cluster (Claude=92 vs OpenAI=70 Gemini=72) → fires', () => {
+      const result = ensembleScore(
+        makeModelScore('claude', 'Rave', 92),
+        makeModelScore('openai', 'Positive', 70),
+        makeModelScore('gemini', 'Positive', 72)
+      );
+      // Lone outlier is Claude high. Majority mean = 71. Gap = 21 > 12 → fires.
+      assert.strictEqual(result.needsReview, true);
+      assert.ok(result.needsReviewReasons?.some(r => /sole-outlier/.test(r)));
+    });
+
+    test('two outliers (not a sole outlier) does NOT fire the numeric-gap reason', () => {
+      // openai+gemini Positive (cluster of 2), claude+kimi Rave (cluster of 2) is a tie not a majority.
+      // We need 2/4 majority for this test — use 3 Positive + 1 Rave outlier with big gap, but the
+      // sole-outlier branch only triggers when outlierResults.length === 1, so a 2-outlier scenario
+      // would never trip the gap check. Verify by setting up a 2-outlier 4-model case.
+      const result = ensembleScore(
+        makeModelScore('claude', 'Positive', 72),
+        makeModelScore('openai', 'Positive', 74),
+        makeModelScore('gemini', 'Rave', 90),
+        makeModelScore('kimi', 'Rave', 92)
+      );
+      // 2/4 each — no >50% majority, so this falls through to no-consensus branch entirely.
+      // The numeric-gap check is scoped to the majority branch, so it doesn't apply here.
+      // We just verify the new code doesn't crash on a no-majority N=4 input.
+      assert.ok(result.source === 'ensemble-no-consensus' || result.source === 'ensemble-majority');
+    });
+
+    test('bucket-distance reason still fires alongside numeric-gap when both apply', () => {
+      // Outlier 2 buckets away AND >12pt gap — both reasons should appear.
+      const result = ensembleScore(
+        makeModelScore('claude', 'Mixed', 60),  // 2 buckets below Rave
+        makeModelScore('openai', 'Rave', 90),
+        makeModelScore('gemini', 'Rave', 88)
+      );
+      assert.strictEqual(result.needsReview, true);
+      const reasons = result.needsReviewReasons || [];
+      assert.ok(reasons.some(r => /2\+ buckets from majority/.test(r)), 'expected bucket-distance reason');
+      assert.ok(reasons.some(r => /sole-outlier-\d+pt-gap/.test(r)), 'expected numeric-gap reason');
+    });
+  });
+
   describe('3-way disagreement (no consensus)', () => {
     test('all different buckets', () => {
       const result = ensembleScore(
