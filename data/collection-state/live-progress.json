@@ -1,14 +1,14 @@
 {
-  "updatedAt": "2026-05-21T20:31:00.154Z",
-  "processed": 18,
-  "failed": 290,
-  "successRate": "5.8%",
+  "updatedAt": "2026-05-21T20:37:44.721Z",
+  "processed": 19,
+  "failed": 466,
+  "successRate": "3.9%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 16,
     "archive": 5
@@ -27,10 +27,15 @@
       "domain": "newsday.com"
     },
     {
-      "t": "2026-05-21T20:19:37.328Z",
+      "t": "2026-05-21T20:10:04.253Z",
       "event": "bb-session",
-      "session": "b668aab5",
-      "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
+      "session": "72911a57",
+      "url": "https://www.newsday.com/entertainment/theater/company-patti-lupone-review-m27798"
+    },
+    {
+      "t": "2026-05-21T20:10:05.158Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
     }
   ]
 }
