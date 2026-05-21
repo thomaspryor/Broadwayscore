@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-21T10:39:19.697Z",
+  "timestamp": "2026-05-21T12:13:21.765Z",
   "stats": {
-    "totalReviews": 37097,
-    "alreadyFlagged": 16247,
+    "totalReviews": 37110,
+    "alreadyFlagged": 16253,
     "dateGuardCatches": 103,
-    "directorMismatch": 803,
+    "directorMismatch": 804,
     "tvFilmSignals": 1018,
     "londonSignals": 575,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3824
+    "noPublishDate": 3825
   },
   "findings": [
     {
@@ -5720,6 +5720,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "equus-west-end-2026",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2026-05-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dexter\" from equus-1974"
         }
       ]
     },
