@@ -150,8 +150,10 @@ export interface EnsembleResult {
   note?: string;
   /** Flag for manual review */
   needsReview?: boolean;
-  /** Reason for needing review */
+  /** Reason for needing review (singular, kept for backward compat with existing review files on disk) */
   reviewReason?: string;
+  /** All reasons the review needs human attention. Same field name used by scripts/re-ensemble-scores.ts:189. */
+  needsReviewReasons?: string[];
   /** All models failed — caller must refuse to write score=50 silently */
   allModelsFailed?: boolean;
   /** Only 1 of N≥2 started models succeeded — score is unreliable, exclude from compositeScore */
