@@ -1,16 +1,16 @@
 {
-  "updatedAt": "2026-05-21T19:54:07.758Z",
+  "updatedAt": "2026-05-21T20:31:00.154Z",
   "processed": 18,
-  "failed": 258,
-  "successRate": "6.5%",
+  "failed": 290,
+  "successRate": "5.8%",
   "tierBreakdown": {
     "playwright": 8,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 5,
     "brightdata": 1,
-    "archiveToday": 10,
+    "archiveToday": 16,
     "archive": 5
   },
   "browserbaseSessions": 1,
@@ -25,6 +25,12 @@
       "t": "2026-05-21T19:29:25.225Z",
       "event": "bb-cookie-inject",
       "domain": "newsday.com"
+    },
+    {
+      "t": "2026-05-21T20:19:37.328Z",
+      "event": "bb-session",
+      "session": "b668aab5",
+      "url": "https://www.dailyecho.co.uk/news/26100677.nhs-hampshire-isle-wight-urgent-care-r"
     }
   ]
 }
