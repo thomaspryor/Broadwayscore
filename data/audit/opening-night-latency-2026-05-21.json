@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-21T07:36:35.945Z",
+  "generatedAt": "2026-05-21T09:30:04.869Z",
   "date": "2026-05-21",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 83522,
+  "entryCount": 83532,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -2451,12 +2451,12 @@
     },
     {
       "showId": "celebrity-autobiography-2026",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
+        "collected-to-scored": 747740,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
