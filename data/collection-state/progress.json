@@ -1,5 +1,9 @@
 {
-  "processed": [],
+  "processed": [
+    "equus-west-end-2026/timeout-london--unknown.json",
+    "equus-west-end-2026/standard--unknown.json",
+    "equus-west-end-2026/sunday-telegraph--dominic-cavendish.json"
+  ],
   "failed": [
     "care-west-end-2026/thereviewshub--unknown.json",
     "care-west-end-2026/timeout-london--andrzej-lukowski.json",
@@ -10,22 +14,36 @@
     "care-west-end-2026/londontheatre1--unknown.json",
     "care-west-end-2026/standard--unknown.json",
     "care-west-end-2026/telegraph--dominic-cavendish.json",
-    "care-west-end-2026/thestage--sam-marlowe.json"
+    "care-west-end-2026/thestage--sam-marlowe.json",
+    "care-west-end-2026/times-uk--unknown.json",
+    "care-west-end-2026/whatsonstage--sarah-crompton.json",
+    "equus-west-end-2026/thereviewshub--unknown.json",
+    "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
+    "equus-west-end-2026/telegraph--unknown.json",
+    "equus-west-end-2026/thestage--holly-o.json",
+    "equus-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "equus-west-end-2026/timeout-london--unknown.json",
+      "equus-west-end-2026/standard--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json"
+      "data/review-texts/care-west-end-2026/broadwayworld--unknown.json",
+      "data/review-texts/care-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json"
     ],
-    "archive": []
+    "archive": [
+      "equus-west-end-2026/sunday-telegraph--dominic-cavendish.json"
+    ]
   },
   "startTime": "2026-05-21T17:17:46.399Z",
-  "lastProcessed": "care-west-end-2026/thestage--sam-marlowe.json",
+  "lastProcessed": "equus-west-end-2026/times-uk--clive-davis.json",
   "log": []
 }
