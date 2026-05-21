@@ -2,14 +2,23 @@
   "processed": [
     "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "lauder-scotlands-kilted-king-of-broadway-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-receptionist-off-broadway-2026/cote-notices--david-cote.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -17,6 +26,19 @@
     "archive": []
   },
   "startTime": "2026-05-21T10:32:16.442Z",
-  "lastProcessed": "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
-  "log": []
+  "lastProcessed": "the-receptionist-off-broadway-2026/cote-notices--david-cote.json",
+  "log": [
+    {
+      "t": "2026-05-21T10:50:21.986Z",
+      "event": "bb-session",
+      "session": "3fec9dd3",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-21T10:52:51.851Z",
+      "event": "bb-session",
+      "session": "a19619db",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    }
+  ]
 }

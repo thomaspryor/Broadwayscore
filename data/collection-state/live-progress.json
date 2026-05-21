@@ -1,18 +1,31 @@
 {
-  "updatedAt": "2026-05-21T10:32:27.689Z",
+  "updatedAt": "2026-05-21T10:53:07.172Z",
   "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "failed": 5,
+  "successRate": "16.7%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-05-21T10:50:21.986Z",
+      "event": "bb-session",
+      "session": "3fec9dd3",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-21T10:52:51.851Z",
+      "event": "bb-session",
+      "session": "a19619db",
+      "url": "https://davidcote1.substack.com/p/the-banality-of-evilcan-be-banal"
+    }
+  ]
 }
