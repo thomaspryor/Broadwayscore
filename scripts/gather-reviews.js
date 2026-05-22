@@ -55,6 +55,7 @@ const {
   AGGREGATOR_SCORE_SOURCES,
 } = require('./lib/review-normalization');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
+const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
@@ -2932,7 +2933,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           return _outletRegistryCache;
         })();
         const entry = reg[normalizedOutletId];
-        if (entry && entry.defaultCritic) {
+        if (shouldFillDefaultCritic(entry)) {
           console.log(`    → promoted Unknown → ${entry.defaultCritic} via outlet-registry defaultCritic (${normalizedOutletId})`);
           reviewData.criticName = entry.defaultCritic;
         }
