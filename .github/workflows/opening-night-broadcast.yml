@@ -40,6 +40,11 @@ on:
         required: false
         type: boolean
         default: false
+      draft_only:
+        description: 'Draft-only: create Resend draft for review in UI. No preview email, no owner notification, bypass readiness gate. For low-volume shows where the standard threshold blocks but operator wants a draft.'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -158,7 +163,7 @@ jobs:
           fi
 
       - name: Readiness gate — 15+ scored reviews with aggregator coverage
-        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true' && inputs.draft_only != 'true'
         id: readiness_gate
         run: |
           # Require 15+ scored reviews AND at least 1 aggregator source (BWW or DTLI).
@@ -230,7 +235,15 @@ jobs:
           # SHOWS = only shows that passed the readiness gate (per-show filter) —
           # NOT steps.find.outputs.shows (which would include not-ready shows that
           # would poison the broadcast run).
-          SHOWS="${{ steps.readiness_gate.outputs.ready_shows }}"
+          # Exception: draft_only mode bypasses the readiness gate entirely
+          # (operator explicitly accepts low review count), so use the unfiltered
+          # find output. The script's --force flag handles the per-show gating.
+          if [ "${{ inputs.draft_only }}" = "true" ]; then
+            SHOWS="${{ steps.find.outputs.shows }}"
+            echo "draft_only mode — using unfiltered shows: $SHOWS"
+          else
+            SHOWS="${{ steps.readiness_gate.outputs.ready_shows }}"
+          fi
           PENDING=$(node -e "
             const fs = require('fs');
             const { hasRecentPreviewForShow } = require('./scripts/lib/preview-dedup');
@@ -243,8 +256,11 @@ jobs:
             // 12:30 UTC daily run, skip the preview dedup check. In both cases an
             // earlier preview may have already gone out (5 AM auto-dispatch after
             // scoring), and we still want to create the owner-review draft.
+            // draft_only=true also skips preview dedup — no preview is being sent
+            // at all, so the dedup window is irrelevant.
             const sendToAll = '${{ inputs.send_to_all }}' === 'true'
-              || '${{ github.event_name }}' === 'schedule';
+              || '${{ github.event_name }}' === 'schedule'
+              || '${{ inputs.draft_only }}' === 'true';
 
             // Load reviews once for readiness pre-check
             let allReviews = [];
@@ -321,6 +337,9 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           FORCE="${{ inputs.force_broadcast }}"
+          # draft_only mode implies force — operator already accepted the risk by
+          # opting into a draft below the normal readiness floor.
+          if [ "${{ inputs.draft_only }}" = "true" ]; then FORCE="true"; fi
           BLOCKED=false
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
           for SHOW in "${SHOWS[@]}"; do
@@ -368,6 +387,7 @@ jobs:
           # Audit output is show-scoped (data/audit/review-count-drift-{show}.json) so
           # this never overwrites the daily run's audit file.
           FORCE="${{ inputs.force_broadcast }}"
+          if [ "${{ inputs.draft_only }}" = "true" ]; then FORCE="true"; fi
           BLOCKED=false
           BREACHED_SHOWS=()
           IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
@@ -427,6 +447,7 @@ jobs:
           # Wait for the next rebuild cycle (it'll re-run verify-all-scored and
           # delete the marker if all scores landed).
           FORCE="${{ inputs.force_broadcast }}"
+          if [ "${{ inputs.draft_only }}" = "true" ]; then FORCE="true"; fi
           BLOCKED=false
           BREACHED_SHOWS=()
           # Track whether at least one breach has a successful dispatch in
@@ -538,14 +559,24 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           # Modes:
+          #   - draft_only=true: create Resend draft only. No preview email render to owner,
+          #     no owner notification. Bypasses readiness gate via --force. Operator reviews
+          #     in Resend UI and clicks Send manually.
           #   - send_to=<email>: transactional preview to that address only (no draft)
           #   - send_to_all=true OR scheduled run: send preview to owner AND create Resend draft
           #   - default (workflow_run auto-retry / update-show-status dispatch): preview to owner only
           LOOKBACK=${{ inputs.lookback_days || 2 }}
           SEND_TO_FLAG=""
           CREATE_DRAFT="false"
+          DRAFT_ONLY="false"
+          EXTRA_FLAGS=""
 
-          if [ -n "${{ inputs.send_to }}" ]; then
+          if [ "${{ inputs.draft_only }}" = "true" ]; then
+            DRAFT_ONLY="true"
+            CREATE_DRAFT="true"
+            EXTRA_FLAGS="--force --no-owner-notify"
+            echo "** DRAFT-ONLY MODE — creating Resend draft, no preview email, no owner notification **"
+          elif [ -n "${{ inputs.send_to }}" ]; then
             SEND_TO_FLAG="--send-to=${{ inputs.send_to }}"
             echo "** PREVIEW MODE — sending test email to ${{ inputs.send_to }} only **"
           elif [ "${{ inputs.send_to_all }}" = "true" ] || [ "${{ github.event_name }}" = "schedule" ]; then
@@ -563,15 +594,18 @@ jobs:
           run_market() {
             local market="$1"
             local shows="$2"
-            echo "--- $market preview ---"
-            OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $SEND_TO_FLAG 2>&1) || true
-            echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
-              SENT="true"
+            # In draft-only mode, skip the preview-email pass entirely — only create the draft.
+            if [ "$DRAFT_ONLY" != "true" ]; then
+              echo "--- $market preview ---"
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $SEND_TO_FLAG 2>&1) || true
+              echo "$OUTPUT"
+              if echo "$OUTPUT" | grep -q "Draft ready\|Draft created\|Preview sent to"; then
+                SENT="true"
+              fi
             fi
             if [ "$CREATE_DRAFT" = "true" ]; then
               echo "--- $market draft ---"
-              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" 2>&1) || true
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $EXTRA_FLAGS 2>&1) || true
               echo "$OUTPUT"
               if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
                 SENT="true"
@@ -789,7 +823,7 @@ jobs:
           "
 
       - name: Send push notifications (mobile app)
-        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true'
+        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && inputs.draft_only != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}

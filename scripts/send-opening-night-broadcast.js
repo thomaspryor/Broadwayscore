@@ -48,6 +48,15 @@ const ALLOWED_SHOW_IDS = SHOWS_ARG ? new Set(SHOWS_ARG.split('=')[1].split(',').
 // Use this after fixing a bug in the email template — clears completed flag so the script
 // doesn't bail with "already broadcast". Safe: only creates a draft, never calls /send.
 const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
+// --force: bypass the script's internal readiness gates (MIN_REVIEWS / T1 / T2 / hi-conf).
+// Use when an operator has manually confirmed the show is ready despite the gate floor —
+// e.g., a low-volume play like Celebrity Autobiography where T1 coverage is naturally thin.
+// Still creates a DRAFT only — owner reviews and sends from the Resend UI. Never calls /send.
+const FORCE = process.argv.includes('--force');
+// --no-owner-notify: skip the "draft is ready" transactional email to OWNER_EMAIL.
+// Use when the operator is reviewing the draft directly in the Resend UI and explicitly
+// does not want any email (preview render OR notification) hitting their inbox.
+const NO_OWNER_NOTIFY = process.argv.includes('--no-owner-notify');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -414,6 +423,16 @@ async function main() {
     if (totalOk && t1Ok && t2Ok && confOk) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
+    } else if (FORCE) {
+      // Operator override — manual confirmation that the draft should be created despite
+      // the gate failing. Log the failing criteria for the audit trail.
+      const reasons = [];
+      if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
+      if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
+      if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
+      if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      console.log(`  ⚠️  ${show.title}: --force override (gate would block: ${reasons.join(', ')}) — proceeding with ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
     } else {
       const reasons = [];
       if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
@@ -699,7 +718,10 @@ async function main() {
 
       // Notify owner via Resend transactional (direct link to the exact draft)
       const OWNER_EMAIL = process.env.OWNER_EMAIL;
-      if (OWNER_EMAIL && RESEND_API_KEY) {
+      if (NO_OWNER_NOTIFY) {
+        console.log(`  --no-owner-notify: skipping owner notification email`);
+        console.log(`  Draft URL: ${draftUrl}`);
+      } else if (OWNER_EMAIL && RESEND_API_KEY) {
         const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
         const notificationHtml = `
 <p>An opening night email draft is ready for your review in Resend.</p>
