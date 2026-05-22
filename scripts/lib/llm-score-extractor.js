@@ -20,7 +20,26 @@
  */
 
 const https = require('https');
+const path = require('path');
+const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
+
+// Lazy-load outlet-registry for starScale lookups. Tests can avoid this by
+// passing `opts.starScale` directly to extractExplicitScore.
+let _outletRegistryStarScaleCache = null;
+function resolveStarScaleFromRegistry(outletId) {
+  if (!outletId) return null;
+  if (_outletRegistryStarScaleCache === null) {
+    try {
+      const p = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+      _outletRegistryStarScaleCache = JSON.parse(fs.readFileSync(p, 'utf-8'));
+    } catch {
+      _outletRegistryStarScaleCache = { outlets: {} };
+    }
+  }
+  const entry = _outletRegistryStarScaleCache.outlets[outletId];
+  return entry && Number.isFinite(entry.starScale) ? entry.starScale : null;
+}
 
 // ============================================================
 // LLM Prompt — battle-tested against 450+ reviews
@@ -30,9 +49,16 @@ const SYSTEM_PROMPT = `You are a data extraction assistant. Your job is to deter
 EXPLICIT ratings include:
 - Star ratings using asterisks: "***½ out of four stars", "* * * out of four", "(*** 1/2 out of four stars)"
 - Star ratings using symbols: ★★★☆☆, ★★★★½
-- Numeric star ratings: "3.5/5 stars", "3 out of 5 stars", "4/4 stars"
+- Numeric star ratings: "3.5/5 stars", "3 out of 5 stars" — denominator must be from the text, NOT inferred
 - Letter grades: "Grade: B+", "Rating: A-", "EW Grade: B"
 - Numeric scores: "7/10", "8 out of 10", "85/100"
+
+DENOMINATOR RULES — be strict:
+- If the rating text shows an explicit denominator (e.g. "/5", "out of four"), use it.
+- If the user prompt includes "starScale: N" for this outlet, that is GROUND TRUTH for bare star displays
+  (e.g. raw "★★★★" with no empty-star glyphs and no explicit "/4" or "/5"). Use starScale as the denominator.
+- DO NOT invent a denominator. If text shows just "4 stars" with no "out of" phrase AND no starScale is provided,
+  return {"found": false} rather than guess.
 
 COUNTING ASTERISK STARS — be precise:
 - Each * character = 1 star. Count them carefully.
@@ -64,18 +90,20 @@ Return ONLY a JSON object (no markdown, no explanation):
 // ============================================================
 // Text truncation — send full text for <6K, truncate for >6K
 // ============================================================
-function buildUserPrompt(text, outlet) {
+function buildUserPrompt(text, outlet, starScale) {
   let excerpt = text;
   if (text.length > 6000) {
     excerpt = text.substring(0, 2000) + '\n\n[...middle truncated...]\n\n' + text.substring(text.length - 2000);
   }
-  return `Outlet: ${outlet}\n\nReview text:\n${excerpt}`;
+  // starScale is structured (not English) so it ages better when we swap models.
+  const scaleLine = Number.isFinite(starScale) ? `starScale: ${starScale}\n` : '';
+  return `Outlet: ${outlet}\n${scaleLine}\nReview text:\n${excerpt}`;
 }
 
 // ============================================================
 // JSON-LD fast-path — machine-readable structured data, no LLM needed
 // ============================================================
-function extractFromJsonLd(html) {
+function extractFromJsonLd(html, starScale) {
   if (!html) return null;
 
   const match = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/i);
@@ -83,9 +111,13 @@ function extractFromJsonLd(html) {
 
   const rating = parseFloat(match[1]);
 
-  // Determine scale from context
+  // Determine scale: explicit bestRating from JSON-LD > outlet's starScale > heuristic fallback.
+  // The heuristic (rating <= 5 ? 5 : 100) was the bug pre-fix: it could not tell "4 out of 4"
+  // from "4 out of 5" when bestRating was missing, silently producing a 100% score on a 4/5 review.
   const scaleMatch = html.match(/"bestRating"\s*:\s*"?(\d+)"?/i);
-  const scale = scaleMatch ? parseInt(scaleMatch[1]) : (rating <= 5 ? 5 : 100);
+  const scale = scaleMatch
+    ? parseInt(scaleMatch[1])
+    : (Number.isFinite(starScale) ? starScale : (rating <= 5 ? 5 : 100));
 
   // Reject unreasonable values
   if (rating < 1 || rating > scale) return null;
@@ -452,9 +484,17 @@ async function extractExplicitScore(opts) {
   const provider = opts.provider || (process.env.GEMINI_API_KEY ? 'gemini' : 'openai');
   const currentScore = opts.currentScore || null;
 
+  // Resolve outlet's known star scale (when available) once, pass it as
+  // ground truth to JSON-LD and LLM paths. Pre-fix: Gemini guessed
+  // (The Recs ★★★★ → "4/4 stars" → 100). Post-fix: outlet says "5",
+  // bare-star rating normalizes correctly.
+  const starScale = opts.starScale != null
+    ? opts.starScale
+    : resolveStarScaleFromRegistry(outletId);
+
   // 1. JSON-LD fast-path (free, instant, no LLM)
   if (html) {
-    const jsonLdResult = extractFromJsonLd(html);
+    const jsonLdResult = extractFromJsonLd(html, starScale);
     if (jsonLdResult) {
       if (verbose) console.log(`    -> JSON-LD score: ${jsonLdResult.originalScore}`);
       return jsonLdResult;
@@ -465,7 +505,7 @@ async function extractExplicitScore(opts) {
   if (!text || text.length < 200) return null;
 
   // 3. Call LLM
-  const userPrompt = buildUserPrompt(text, outletId || '');
+  const userPrompt = buildUserPrompt(text, outletId || '', starScale);
   const responseText = await callLLMWithRetry(SYSTEM_PROMPT, userPrompt, provider);
   if (!responseText) return null;
 

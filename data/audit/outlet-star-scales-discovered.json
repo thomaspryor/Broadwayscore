@@ -1,0 +1,1241 @@
+{
+  "generatedAt": "2026-05-22T03:24:23.974Z",
+  "thresholds": {
+    "HIGH_CONFIDENCE_MIN_REVIEWS": 10,
+    "HIGH_CONFIDENCE_MAJORITY": 0.8,
+    "LOW_CONFIDENCE_MIN_REVIEWS": 3
+  },
+  "counts": {
+    "high": 28,
+    "low": 17,
+    "unknown": 48
+  },
+  "classification": {
+    "high": [
+      {
+        "outletId": "nysr",
+        "displayName": "New York Stage Review",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 717,
+        "topShare": 0.999,
+        "distribution": {
+          "4": 1,
+          "5": 716
+        }
+      },
+      {
+        "outletId": "theater-life",
+        "displayName": "Theater Life",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 654,
+        "topShare": 1,
+        "distribution": {
+          "5": 654
+        }
+      },
+      {
+        "outletId": "guardian",
+        "displayName": "The Guardian",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 592,
+        "topShare": 1,
+        "distribution": {
+          "5": 592
+        }
+      },
+      {
+        "outletId": "timeout",
+        "displayName": "Time Out New York",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 439,
+        "topShare": 1,
+        "distribution": {
+          "5": 439
+        }
+      },
+      {
+        "outletId": "thestage",
+        "displayName": "The Stage",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 232,
+        "topShare": 1,
+        "distribution": {
+          "5": 232
+        }
+      },
+      {
+        "outletId": "usatoday",
+        "displayName": "USA Today",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 4,
+        "total": 202,
+        "topShare": 1,
+        "distribution": {
+          "4": 202
+        }
+      },
+      {
+        "outletId": "telegraph",
+        "displayName": "The Telegraph",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 155,
+        "topShare": 0.994,
+        "distribution": {
+          "5": 154,
+          "10": 1
+        }
+      },
+      {
+        "outletId": "nypost",
+        "displayName": "New York Post",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 4,
+        "total": 155,
+        "topShare": 1,
+        "distribution": {
+          "4": 155
+        }
+      },
+      {
+        "outletId": "whatsonstage",
+        "displayName": "WhatsOnStage",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 126,
+        "topShare": 1,
+        "distribution": {
+          "5": 126
+        }
+      },
+      {
+        "outletId": "times-uk",
+        "displayName": "The Times (UK)",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 110,
+        "topShare": 1,
+        "distribution": {
+          "5": 110
+        }
+      },
+      {
+        "outletId": "independent",
+        "displayName": "The Independent",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 88,
+        "topShare": 1,
+        "distribution": {
+          "5": 88
+        }
+      },
+      {
+        "outletId": "standard",
+        "displayName": "Evening Standard",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 83,
+        "topShare": 1,
+        "distribution": {
+          "5": 83
+        }
+      },
+      {
+        "outletId": "one-minute-critic",
+        "displayName": "1 Minute Critic",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 83,
+        "topShare": 1,
+        "distribution": {
+          "5": 83
+        }
+      },
+      {
+        "outletId": "financialtimes",
+        "displayName": "Financial Times",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 76,
+        "topShare": 1,
+        "distribution": {
+          "5": 76
+        }
+      },
+      {
+        "outletId": "culturesauce",
+        "displayName": "Culture Sauce",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 74,
+        "topShare": 1,
+        "distribution": {
+          "5": 74
+        }
+      },
+      {
+        "outletId": "timeout-london",
+        "displayName": "Time Out London",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 62,
+        "topShare": 1,
+        "distribution": {
+          "5": 62
+        }
+      },
+      {
+        "outletId": "artsdesk",
+        "displayName": "The Arts Desk",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 60,
+        "topShare": 1,
+        "distribution": {
+          "5": 60
+        }
+      },
+      {
+        "outletId": "daily-mail",
+        "displayName": "Daily Mail",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 53,
+        "topShare": 1,
+        "distribution": {
+          "5": 53
+        }
+      },
+      {
+        "outletId": "i-paper",
+        "displayName": "The i",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 35,
+        "topShare": 1,
+        "distribution": {
+          "5": 35
+        }
+      },
+      {
+        "outletId": "theatre-weekly",
+        "displayName": "Theatre Weekly",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 35,
+        "topShare": 1,
+        "distribution": {
+          "5": 35
+        }
+      },
+      {
+        "outletId": "all-that-dazzles-uk",
+        "displayName": "All That Dazzles  (UK)",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 32,
+        "topShare": 1,
+        "distribution": {
+          "5": 32
+        }
+      },
+      {
+        "outletId": "everything-theatre",
+        "displayName": "Everything Theatre",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 30,
+        "topShare": 1,
+        "distribution": {
+          "5": 30
+        }
+      },
+      {
+        "outletId": "londontheatre1",
+        "displayName": "LondonTheatre1",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 29,
+        "topShare": 1,
+        "distribution": {
+          "5": 29
+        }
+      },
+      {
+        "outletId": "musical-theatre-review",
+        "displayName": "Musical Theatre Review",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 27,
+        "topShare": 0.963,
+        "distribution": {
+          "4": 1,
+          "5": 26
+        }
+      },
+      {
+        "outletId": "digital-journal",
+        "displayName": "Digital Journal",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 24,
+        "topShare": 1,
+        "distribution": {
+          "5": 24
+        }
+      },
+      {
+        "outletId": "amny",
+        "displayName": "amNewYork",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 4,
+        "total": 18,
+        "topShare": 1,
+        "distribution": {
+          "4": 18
+        }
+      },
+      {
+        "outletId": "express-uk",
+        "displayName": "Express  (UK)",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 13,
+        "topShare": 1,
+        "distribution": {
+          "5": 13
+        }
+      },
+      {
+        "outletId": "plays-international",
+        "displayName": "Plays International",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "high",
+        "starScale": 5,
+        "total": 12,
+        "topShare": 1,
+        "distribution": {
+          "5": 12
+        }
+      }
+    ],
+    "low": [
+      {
+        "outletId": "broadwayworld",
+        "displayName": "BroadwayWorld",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 103,
+        "topShare": 0.709,
+        "distribution": {
+          "5": 73,
+          "10": 26,
+          "100": 4
+        }
+      },
+      {
+        "outletId": "nytg",
+        "displayName": "New York Theatre Guide",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 100,
+        "total": 9,
+        "topShare": 0.667,
+        "distribution": {
+          "5": 3,
+          "100": 6
+        }
+      },
+      {
+        "outletId": "the-recs",
+        "displayName": "The Recs",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 9,
+        "topShare": 1,
+        "distribution": {
+          "5": 9
+        }
+      },
+      {
+        "outletId": "radio-times",
+        "displayName": "Radio Times",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 8,
+        "topShare": 1,
+        "distribution": {
+          "5": 8
+        }
+      },
+      {
+        "outletId": "theupcoming",
+        "displayName": "The Upcoming",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 6,
+        "topShare": 1,
+        "distribution": {
+          "5": 6
+        }
+      },
+      {
+        "outletId": "the-upcoming-uk",
+        "displayName": "The Upcoming  (UK)",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 6,
+        "topShare": 1,
+        "distribution": {
+          "5": 6
+        }
+      },
+      {
+        "outletId": "nytimes",
+        "displayName": "The New York Times",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 5,
+        "topShare": 0.6,
+        "distribution": {
+          "4": 1,
+          "5": 3,
+          "10": 1
+        }
+      },
+      {
+        "outletId": "huffpost",
+        "displayName": "HuffPost",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 4,
+        "topShare": 0.5,
+        "distribution": {
+          "4": 1,
+          "5": 2,
+          "100": 1
+        }
+      },
+      {
+        "outletId": "afridiziak-theatre-news",
+        "displayName": "Afridiziak Theatre News",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 4,
+        "topShare": 1,
+        "distribution": {
+          "5": 4
+        }
+      },
+      {
+        "outletId": "city-am",
+        "displayName": "City A.M.",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 4,
+        "topShare": 1,
+        "distribution": {
+          "5": 4
+        }
+      },
+      {
+        "outletId": "nydailynews",
+        "displayName": "New York Daily News",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 4,
+        "topShare": 1,
+        "distribution": {
+          "5": 4
+        }
+      },
+      {
+        "outletId": "west-end-best-friend",
+        "displayName": "West End Best Friend",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 1,
+        "distribution": {
+          "5": 3
+        }
+      },
+      {
+        "outletId": "theatre-bee-uk",
+        "displayName": "Theatre Bee",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 1,
+        "distribution": {
+          "5": 3
+        }
+      },
+      {
+        "outletId": "nyc-theatre-addict",
+        "displayName": "Nyc Theatre Addict",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 1,
+        "distribution": {
+          "5": 3
+        }
+      },
+      {
+        "outletId": "west-end-wilma",
+        "displayName": "West End Wilma",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 1,
+        "distribution": {
+          "5": 3
+        }
+      },
+      {
+        "outletId": "new-york-city-theatre",
+        "displayName": "New York City Theatre",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 1,
+        "distribution": {
+          "5": 3
+        }
+      },
+      {
+        "outletId": "front-row-center",
+        "displayName": "Front Row Center",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "low",
+        "starScale": 5,
+        "total": 3,
+        "topShare": 0.667,
+        "distribution": {
+          "5": 2,
+          "100": 1
+        }
+      }
+    ],
+    "unknown": [
+      {
+        "outletId": "curtainup",
+        "displayName": "CurtainUp",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "londonist",
+        "displayName": "Londonist",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "thereviewshub",
+        "displayName": "The Reviews Hub",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "the-sun",
+        "displayName": "The Sun",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "theatreandtonic",
+        "displayName": "Theatre and Tonic",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "rollingstone",
+        "displayName": "Rolling Stone",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "lost-in-theatreland",
+        "displayName": "Lost in Theatreland",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "the-jewish-voice-and-opinion",
+        "displayName": "The Jewish Voice and Opinion",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "sunday-express",
+        "displayName": "Sunday Express",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "the-jewish-chronicle",
+        "displayName": "The Jewish Chronicle",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 2,
+        "topShare": 1,
+        "distribution": {
+          "5": 2
+        }
+      },
+      {
+        "outletId": "broadway-blog",
+        "displayName": "Broadway Blog",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "nuvo",
+        "displayName": "Nuvo",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "backstage",
+        "displayName": "Backstage",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "seattle-post-intelligencer",
+        "displayName": "Seattle Post-Intelligencer",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "jks-theatre-scene",
+        "displayName": "JK's Theatre Scene",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "100": 1
+        }
+      },
+      {
+        "outletId": "indiewire",
+        "displayName": "IndieWire",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "metro",
+        "displayName": "Metro",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "newsday",
+        "displayName": "Newsday",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "staten-island-advance",
+        "displayName": "Staten Island Advance",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "dread-central",
+        "displayName": "Dread Central",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "wolf-entertainment-guide",
+        "displayName": "Wolf Entertainment Guide",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "eater",
+        "displayName": "Eater",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "act-three-the-reviews",
+        "displayName": "Act Three: The Reviews",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "10": 1
+        }
+      },
+      {
+        "outletId": "metro-uk",
+        "displayName": "Metro UK",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "mirror",
+        "displayName": "The Mirror",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "ap",
+        "displayName": "Associated Press",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "la-voce-di-new-york",
+        "displayName": "La Voce di New York",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "metro-weekly",
+        "displayName": "Metro Weekly",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "the-scotsman",
+        "displayName": "The Scotsman",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "playbill",
+        "displayName": "Playbill",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "tribune",
+        "displayName": "Tribune Magazine",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "3": 1
+        }
+      },
+      {
+        "outletId": "observer",
+        "displayName": "Observer",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "dress-circle-antics",
+        "displayName": "Dress Circle Antics",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "katzreviews",
+        "displayName": "Katzreviews",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "variety",
+        "displayName": "Variety",
+        "tier": 1,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "10": 1
+        }
+      },
+      {
+        "outletId": "collider",
+        "displayName": "Collider",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "10": 1
+        }
+      },
+      {
+        "outletId": "nyt-theater",
+        "displayName": "New York Theater",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "ew",
+        "displayName": "Entertainment Weekly",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "chicagotribune",
+        "displayName": "Chicago Tribune",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "oc-register",
+        "displayName": "OC Register",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "about-entertainment",
+        "displayName": "About Entertainment",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "show-showdown",
+        "displayName": "Show Showdown",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "100": 1
+        }
+      },
+      {
+        "outletId": "digital-spy",
+        "displayName": "Digital Spy",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "theater-news-online",
+        "displayName": "Theater News Online",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "manchester-evening-news",
+        "displayName": "Manchester Evening News",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "the-queer-review",
+        "displayName": "The Queer Review",
+        "tier": 4,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      },
+      {
+        "outletId": "theatres-leiter-side",
+        "displayName": "Theatre's Leiter Side",
+        "tier": 3,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "100": 1
+        }
+      },
+      {
+        "outletId": "bloomberg",
+        "displayName": "Bloomberg",
+        "tier": 2,
+        "currentStarScale": null,
+        "confidence": "unknown",
+        "starScale": null,
+        "total": 1,
+        "topShare": 1,
+        "distribution": {
+          "5": 1
+        }
+      }
+    ]
+  }
+}
