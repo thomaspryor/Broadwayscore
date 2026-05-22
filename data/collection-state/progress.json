@@ -11,7 +11,8 @@
     "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
     "hello-dolly-1995/village-voice--michael-feingold.json",
     "equus-west-end-2026/timeout--andrzej-lukowski.json",
-    "end-of-the-rainbow-west-end-2026/timeout-london--unknown.json"
+    "end-of-the-rainbow-west-end-2026/timeout-london--unknown.json",
+    "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json"
   ],
   "failed": [
     "end-of-the-rainbow-west-end-2026/guardian--unknown.json",
@@ -266,7 +267,10 @@
       "equus-west-end-2026/timeout--andrzej-lukowski.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
+      "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -294,6 +298,18 @@
     ]
   },
   "startTime": "2026-05-22T17:21:23.714Z",
-  "lastProcessed": "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
-  "log": []
+  "lastProcessed": "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
+  "log": [
+    {
+      "t": "2026-05-22T19:14:59.607Z",
+      "event": "bb-session",
+      "session": "deadab64",
+      "url": "https://variety.com/2026/legit/news/tom-felton-extends-broadway-harry-potter-cur"
+    },
+    {
+      "t": "2026-05-22T19:15:00.698Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    }
+  ]
 }
