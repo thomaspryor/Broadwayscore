@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-22T07:05:08.722Z",
+  "timestamp": "2026-05-22T07:51:06.044Z",
   "stats": {
-    "totalReviews": 37108,
+    "totalReviews": 37109,
     "alreadyFlagged": 16257,
     "dateGuardCatches": 103,
     "directorMismatch": 804,
-    "tvFilmSignals": 1019,
-    "londonSignals": 577,
+    "tvFilmSignals": 1020,
+    "londonSignals": 578,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3814
+    "noPublishDate": 3812
   },
   "findings": [
     {
@@ -967,6 +967,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "american-idiot-2010",
+      "file": "variety--david-rooney.json",
+      "score": 65,
+      "publishDate": "April 19, 2010",
+      "url": "https://variety.com/2010/legit/reviews/american-idiot-1117942595/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -27542,12 +27556,26 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 81,
+      "publishDate": "2026-05-21",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
