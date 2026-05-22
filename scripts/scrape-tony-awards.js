@@ -254,6 +254,22 @@ const TITLE_ALIASES = {
   "good night and good luck": "good night and good luck",
 };
 
+// Show IDs that must NEVER receive a Tony block, even if title+year heuristics
+// would otherwise match. Each entry was verified against the actual Tony archive;
+// the canonical record belongs to a different show ID (or no show ID at all).
+// Keep in sync with scripts/fix-tony-attribution.js DELETE-WRONG-PRODUCTION block
+// and tests/unit/tony-deny-list.test.mjs DELETED_TONY_BLOCKS.
+const TONY_MATCH_DENYLIST = new Set([
+  'hair-2011',                      // 2008-09 Tony belongs to hair-2009 revival, not 2011 transfer
+  'private-lives-2025',             // OB 2025; 1969-70 Tammy Grimes Tony is Broadway-only
+  'monte-cristo-the-york-theatre-company-off-broadway-2026', // OB; 1970-71 Tony is Broadway-only
+  'purlie-1972',                    // 1969-70 Tony belongs to original 1970 production
+  'harvey-2012',
+  'fiddler-on-the-roof-1976',
+  'out-cry-1973',
+  'cyrano-1973',
+]);
+
 /**
  * Match a Tony nominee to our shows.json
  */
@@ -265,8 +281,9 @@ function matchShow(showName, year) {
     normalized = TITLE_ALIASES[normalized];
   }
 
-  // Direct title match
-  const candidates = showsByTitle.get(normalized) || [];
+  // Direct title match — filter denylisted IDs out before any matching logic.
+  const candidates = (showsByTitle.get(normalized) || [])
+    .filter(s => !TONY_MATCH_DENYLIST.has(s.id));
 
   // Year-eligibility filter applied to ALL candidates, including single-match.
   // Without this, a unique-title match returns regardless of when the show
@@ -304,6 +321,7 @@ function matchShow(showName, year) {
   for (const [title, showsList] of showsByTitle) {
     if (title.includes(normalized) || normalized.includes(title)) {
       const yearMatches = showsList.filter(show => {
+        if (TONY_MATCH_DENYLIST.has(show.id)) return false;
         const openYear = new Date(show.openingDate).getFullYear();
         return openYear === year || openYear === year - 1;
       });
@@ -315,7 +333,7 @@ function matchShow(showName, year) {
 
   // Fallback: use the shared show-matching library (260+ aliases)
   const sharedMatch = matchTitleToShow(showName, shows, { market: 'broadway', year });
-  if (sharedMatch && sharedMatch.show) {
+  if (sharedMatch && sharedMatch.show && !TONY_MATCH_DENYLIST.has(sharedMatch.show.id)) {
     return sharedMatch.show;
   }
 
