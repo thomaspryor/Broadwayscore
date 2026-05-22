@@ -10,6 +10,9 @@ import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import { getNomineesByCategory } from '@/lib/data-tony-nominees';
 import type { TonyCategory } from '@/lib/data-tony-predictions';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
+import { featureFlags } from '@/config/feature-flags';
+
+const SHOW_OUR_PICK = featureFlags.tonyPredictionsOurPick;
 
 // --- Constants ---
 
@@ -58,8 +61,9 @@ function formatCeremonyDate(iso: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-// Shared style tokens
-const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+// Shared style tokens — all rendered boxes use w-11 h-11 text-lg for visual harmony
+// across odds, scores, audience, awards. ScoreBadge/AwardScoreBadge `size="sm"` matches.
+const BOX_MD = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
 // Two-span pattern: each span uses block+leading-none so line height is controlled by font
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -94,21 +98,66 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
-  const boxClass = size === 'md' ? 'w-12 h-12' : 'w-10 h-10';
-  const numClass = size === 'md' ? 'text-base font-bold text-white leading-none' : 'text-sm font-bold text-white leading-none';
+  const boxClass = size === 'md' ? 'w-11 h-11' : 'w-10 h-10';
+  const numClass = size === 'md' ? 'text-sm font-bold text-white leading-none' : 'text-sm font-bold text-white leading-none';
   const changeRaw = change != null ? Math.abs(change) : 0;
   const changeDisplay = changeRaw >= 0.005
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className={`flex-shrink-0 ${size === 'md' ? 'w-12' : 'w-10'} flex items-center justify-center`}>
-      <div className={`relative flex items-center justify-center bg-surface-overlay rounded-xl ${boxClass}`}>
+    <div className={`flex-shrink-0 ${size === 'md' ? 'w-11' : 'w-10'} flex items-center justify-center`}>
+      <div className={`relative flex items-center justify-center bg-surface-overlay rounded-lg ${boxClass}`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
-        <span className={`absolute bottom-1 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
+        <span className={`absolute bottom-0.5 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '–'}
         </span>
       </div>
     </div>
+  );
+}
+
+// Our model's win probability — matches OddsCol dimensions.
+// Gold gradient + border ONLY for the #1 pick; other ranks get a neutral box with gold text.
+function OurPickBox({ winProbability, isWinner }: { winProbability: number | null | undefined; isWinner: boolean }) {
+  const pct = winProbability != null ? Math.round(winProbability * 100) : null;
+  if (pct == null) {
+    return (
+      <div className="w-11 flex items-center justify-center flex-shrink-0">
+        <div className="w-11 h-11 rounded-lg flex items-center justify-center bg-surface-overlay text-gray-600 text-sm font-bold">—</div>
+      </div>
+    );
+  }
+  const winnerClass = 'shadow-md shadow-amber-500/20 border border-amber-400/50 text-amber-300';
+  const winnerStyle: React.CSSProperties = { background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35))' };
+  return (
+    <div className="w-11 flex items-center justify-center flex-shrink-0">
+      <div
+        className={`w-11 h-11 rounded-lg flex items-center justify-center font-bold text-sm leading-none ${isWinner ? winnerClass : 'bg-surface-overlay text-amber-300'}`}
+        style={isWinner ? winnerStyle : undefined}
+        title="Our model's win probability — critic, audience, and precursor signal."
+      >
+        {pct}%
+      </div>
+    </div>
+  );
+}
+
+// Matches precursor-chip dimensions (text-[10px], px-1 py-0.5, leading-none) so
+// it sits cleanly on the same visual row as OCC/DD/DL chips. Slightly stronger
+// amber than the precursor chips so the predicted-winner signal stays prominent.
+function PredictedWinnerPill() {
+  return (
+    <span
+      className="flex-shrink-0 inline-flex items-center gap-1 px-1 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300 bg-amber-400/15 border border-amber-400/50 rounded leading-none"
+      title="Predicted Winner — our model's #1 pick"
+    >
+      <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
+      </svg>
+      {/* "Predicted" until lg: title column is too narrow at sm/md widths and full "Predicted Winner" overflows into next col */}
+      <span className="lg:hidden">Predicted</span>
+      <span className="hidden lg:inline">Predicted Winner</span>
+    </span>
   );
 }
 
@@ -178,7 +227,7 @@ function PressPicks({ picks }: { picks?: string[] }) {
 // wrap their columns in an identical container and maintain pixel-perfect alignment at all widths.
 function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
-  const scoreW = isMajor ? 'w-14' : 'w-11';
+  const scoreW = 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
 
   // Cap title column on mobile so 3 odds columns fit in 390px viewport without scrolling.
@@ -190,14 +239,21 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
       <div className={`flex-1 min-w-0 ${titleMaxW}`} />
       {/* ALL right-side columns in ONE flex group with gap-2 — data rows must mirror this exactly */}
       <div className="flex items-end gap-2 flex-shrink-0">
+        {/* Our Pick — only on major categories where we have a model prediction */}
+        {SHOW_OUR_PICK && isMajor && (
+          <div className="flex flex-col items-center w-11">
+            <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Our</span>
+            <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Pick</span>
+          </div>
+        )}
         {/* Odds columns */}
-        <div className="flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-11">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        <div className="flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-11">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
-        <div className="flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-11">
           <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
         {/* Score columns — omitted for performer/acting categories */}
@@ -241,7 +297,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
 
 // --- Major category row (Best Musical / Play / Revival) ---
 
-function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
+function MajorNomineeRow({ show, winProbability, rank }: { show: TonyCategory['shows'][number]; winProbability?: number; rank?: number }) {
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -263,34 +319,37 @@ function MajorNomineeRow({ show }: { show: TonyCategory['shows'][number] }) {
         )}
       </div>
 
-      {/* Title + mobile-only precursor chips */}
+      {/* Title + Predicted Winner pill (rank 1) + mobile-only precursor chips */}
       <div className="flex-1 min-w-0 max-w-[100px] sm:max-w-none">
         <h3 className="text-sm sm:text-base font-bold text-white truncate group-hover:text-brand transition-colors">
           {show.title}
         </h3>
-        {show.precursorWins && show.precursorWins.length > 0 && (
-          <div className="sm:hidden flex flex-row gap-1 mt-0.5">
-            {show.precursorWins.map(w => (
-              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
+        {/* Single chip row: Predicted Winner pill + precursor chips, same dimensions, same gap */}
+        {(SHOW_OUR_PICK && rank === 1) || (show.precursorWins && show.precursorWins.length > 0) ? (
+          <div className="flex flex-wrap gap-1 mt-1">
+            {SHOW_OUR_PICK && rank === 1 && <PredictedWinnerPill />}
+            {show.precursorWins?.map(w => (
+              <span key={w} title={`Won ${PRECURSOR_LABELS[w] ?? w} in this category`} className="sm:hidden text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded px-1 py-0.5 leading-none">
                 {w}
               </span>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* ALL right-side columns in ONE flex group — must mirror SectionColumnHeader inner gap-2 */}
       <div className="flex items-center gap-2 flex-shrink-0">
+        {SHOW_OUR_PICK && <OurPickBox winProbability={winProbability} isWinner={rank === 1} />}
         <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
         <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
         <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
-        <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
           badge={badgeFromScore(show.awardsScore)}
           inProgress={!ceremonyDate || new Date() < new Date(`${ceremonyDate}T12:00:00Z`)}
-          size="md"
+          size="sm"
         />
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
@@ -458,14 +517,20 @@ function CraftRow({ show }: { show: TonyCategory['shows'][number] }) {
 
 // --- Category section ---
 
-function CategorySection({ category }: { category: TonyCategory }) {
+function CategorySection({ category, winProbs }: { category: TonyCategory; winProbs?: Map<string, number> }) {
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
-  const nominees = category.shows;
+  // When Our Pick is live, re-sort major-category nominees by win probability desc
+  // so row #1 is the actual predicted winner (not the default GoldDerby sort).
+  const nominees = (SHOW_OUR_PICK && isMajor && winProbs)
+    ? [...category.shows].sort((a, b) => (winProbs.get(b.slug) ?? 0) - (winProbs.get(a.slug) ?? 0))
+    : category.shows;
 
   if (nominees.length === 0) return null;
 
-  const minW = isMajor ? 'min-w-[780px]' : isPersonLevel ? 'min-w-[520px]' : 'min-w-[660px]';
+  // Uniform w-11 boxes — shrinks total row width. +Our Pick col adds ~52px.
+  const majorMinW = SHOW_OUR_PICK ? 'min-w-[760px]' : 'min-w-[708px]';
+  const minW = isMajor ? majorMinW : isPersonLevel ? 'min-w-[520px]' : 'min-w-[608px]';
 
   return (
     <section className="mb-6">
@@ -476,14 +541,14 @@ function CategorySection({ category }: { category: TonyCategory }) {
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
         <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
-        {nominees.map(show => {
+        {nominees.map((show, index) => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
             : show.slug;
           return (
             <div key={key}>
               {isMajor ? (
-                <MajorNomineeRow show={show} />
+                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} />
               ) : isPersonLevel ? (
                 <PerformerRow show={show} />
               ) : (
@@ -506,6 +571,21 @@ function CategorySection({ category }: { category: TonyCategory }) {
 export default function TonyNomineesPage() {
   const categories = getNomineesByCategory(season);
   const totalCategories = categories.filter(c => c.shows.length > 0).length;
+
+  // Softmax win probabilities per major category (T=7, matches TonyPredictionsTable).
+  // Only computed for the 4 top categories — performer/craft don't have a model output.
+  const T = 7;
+  const categoryWinProbs = new Map<string, Map<string, number>>();
+  for (const cat of categories) {
+    if (!SHOW_LEVEL_CATEGORIES.has(cat.title)) continue;
+    const scored = cat.shows.filter(s => s.blendedScore != null);
+    if (scored.length === 0) continue;
+    const exps = scored.map(s => Math.exp(s.blendedScore! / T));
+    const sum = exps.reduce((a, b) => a + b, 0);
+    const probs = new Map<string, number>();
+    scored.forEach((show, i) => probs.set(show.slug, exps[i] / sum));
+    categoryWinProbs.set(cat.key, probs);
+  }
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -557,8 +637,8 @@ export default function TonyNomineesPage() {
           )}
         </div>
 
-        {/* Announcement banner — hidden after May 24 */}
-        {new Date() < new Date('2026-05-25T00:00:00Z') && (
+        {/* Announcement banner — hidden once Our Pick is live (flag-gated) or after May 24 */}
+        {!SHOW_OUR_PICK && new Date() < new Date('2026-05-25T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm">
             <span className="text-brand font-semibold">Win predictions coming Saturday, May 24.</span>
             {' '}Our model ranks each nominee&apos;s win probability based on all this data.
@@ -566,7 +646,7 @@ export default function TonyNomineesPage() {
         )}
 
         {/* After predictions launch: persistent link to predictions page */}
-        {new Date() >= new Date('2026-05-23T00:00:00Z') && (
+        {!SHOW_OUR_PICK && new Date() >= new Date('2026-05-23T00:00:00Z') && (
           <div className="mb-6 px-4 py-3 rounded-xl border border-white/8 bg-surface-raised text-sm flex items-center justify-between gap-3">
             <span className="text-gray-300">Our critic, audience &amp; awards model has ranked nominees by win probability.</span>
             <Link href="/tony-awards/predictions" className="text-brand font-semibold whitespace-nowrap hover:text-brand-hover transition-colors">
@@ -577,7 +657,7 @@ export default function TonyNomineesPage() {
 
         {/* Category sections */}
         {categories.map(cat => (
-          <CategorySection key={cat.key} category={cat} />
+          <CategorySection key={cat.key} category={cat} winProbs={categoryWinProbs.get(cat.key)} />
         ))}
 
         {/* Legend */}
