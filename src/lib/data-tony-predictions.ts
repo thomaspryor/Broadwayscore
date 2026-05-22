@@ -81,7 +81,21 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
   'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
   'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
   'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
-  'best-revival-play':    { critic: 0,    audience: 1.0,  awards: 0   },
+  // best-revival-play weights changed from 0/1.0/0 to 0.20/0.60/0.20 on
+  // 2026-05-21. The previous pure-audience recipe matched 10/11 historically
+  // but produced a top-1 score gap of only 0.5pt on 2025-26: Every Brilliant
+  // Thing (aud=90, no precursor wins, aws=18) beat Death of a Salesman (aud=
+  // 89.5, full DL+OCC+DD precursor sweep, aws=100). Kalshi 84%, GoldDerby 89%,
+  // and 2 of 3 critic picks all had DoS — and EBT at the T=7 softmax sat at
+  // 24% (markets had it ~1%). The historical sample never contained a "no
+  // awards, high audience" outlier like EBT, so audience-only over-rewards
+  // it. The 0.20/0.60/0.20 mix gives DoS a 14pt scoring margin (75% vs 6%
+  // post-softmax), at a cost of 2 historical seasons (Boys in the Band
+  // 2018-19, A Raisin in the Sun 2013-14 — both genuine upsets in the
+  // historical record). Net: 8/11 (72.7%) in-sample, but the lost seasons
+  // were upset-favored already and the recipe is more robust to
+  // EBT-style outliers. Verified with scripts/audit-tony-all-seasons.ts.
+  'best-revival-play':    { critic: 0.20, audience: 0.60, awards: 0.20 },
 };
 
 /**
