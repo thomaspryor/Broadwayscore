@@ -183,7 +183,8 @@
         "new-york-post"
       ],
       "domain": "nypost.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 4
     },
     "theatermania": {
       "displayName": "TheaterMania",
@@ -240,7 +241,8 @@
         "time out"
       ],
       "domain": "timeout.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "amny": {
       "displayName": "amNewYork",
@@ -260,7 +262,8 @@
         "amnewsyork"
       ],
       "domain": "amny.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 4
     },
     "nysr": {
       "displayName": "New York Stage Review",
@@ -275,7 +278,8 @@
         "ny-stage-review"
       ],
       "domain": "nystagereview.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "chicagotribune": {
       "displayName": "Chicago Tribune",
@@ -322,7 +326,8 @@
         "USATODAY"
       ],
       "domain": "usatoday.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "starScale": 4
     },
     "nydailynews": {
       "displayName": "New York Daily News",
@@ -372,7 +377,8 @@
       "accessModel": "free",
       "domainAliases": [
         "guardian.co.uk"
-      ]
+      ],
+      "starScale": 5
     },
     "thewrap": {
       "displayName": "TheWrap",
@@ -535,7 +541,8 @@
       "domainAliases": [
         "culturesauce.com"
       ],
-      "region": "us"
+      "region": "us",
+      "starScale": 5
     },
     "slantmagazine": {
       "displayName": "Slant Magazine",
@@ -787,7 +794,8 @@
         "oneminutecritic.com"
       ],
       "accessModel": "free",
-      "region": "us"
+      "region": "us",
+      "starScale": 5
     },
     "curtainup": {
       "displayName": "CurtainUp",
@@ -920,7 +928,8 @@
       ],
       "domain": "ft.com",
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "starScale": 5
     },
     "huffpost": {
       "displayName": "HuffPost",
@@ -1180,7 +1189,8 @@
       ],
       "domain": "telegraph.co.uk",
       "region": "london",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "starScale": 5
     },
     "showbiz411": {
       "displayName": "Showbiz411",
@@ -1306,8 +1316,7 @@
       "domainAliases": [
         "jkstheatrescene.blogspot.com"
       ],
-      "defaultCritic": "Jeff Kready",
-      "multiAuthor": true
+      "defaultCritic": "Jeff Kready"
     },
     "new-jersey-newsroom": {
       "displayName": "New Jersey Newsroom",
@@ -1461,7 +1470,8 @@
       ],
       "domain": "musicaltheatrereview.com",
       "region": "dual",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "newnownextcom": {
       "displayName": "NewNowNext",
@@ -1794,7 +1804,8 @@
         "theaterlife"
       ],
       "domain": "theaterlife.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "troy-record": {
       "displayName": "Troy Record",
@@ -1897,7 +1908,8 @@
       ],
       "domain": "whatsonstage.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "theater-news-online": {
       "displayName": "Theater News Online",
@@ -2075,8 +2087,7 @@
       "accessModel": "free",
       "region": "london",
       "isDualMarket": true,
-      "defaultCritic": "Erin Muldoon",
-      "multiAuthor": true
+      "defaultCritic": "Erin Muldoon"
     },
     "splash-magazines": {
       "displayName": "Splash Magazines",
@@ -2102,7 +2113,8 @@
         "digitaljournal"
       ],
       "domain": "digitaljournal.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "av-club": {
       "displayName": "The A.V. Club",
@@ -2318,7 +2330,8 @@
       ],
       "domain": "theartsdesk.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "cbsnews": {
       "displayName": "CBS News",
@@ -2990,7 +3003,8 @@
       ],
       "domain": "theatreweekly.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "broadway-baby": {
       "displayName": "Broadway Baby",
@@ -3848,8 +3862,7 @@
       ],
       "domain": "theater.about.com",
       "accessModel": "free",
-      "defaultCritic": "Chris Caggiano",
-      "multiAuthor": true
+      "defaultCritic": "Chris Caggiano"
     },
     "clevelands-star-102": {
       "displayName": "Clevelands Star 102",
@@ -4418,8 +4431,7 @@
       ],
       "accessModel": "free",
       "region": "london",
-      "defaultCritic": "Adam Bloodworth",
-      "multiAuthor": true
+      "defaultCritic": "Adam Bloodworth"
     },
     "philly": {
       "displayName": "Philly",
@@ -5013,7 +5025,8 @@
       ],
       "region": "london",
       "accessModel": "free",
-      "domain": "express.co.uk"
+      "domain": "express.co.uk",
+      "starScale": 5
     },
     "lets-talk-off-broadway": {
       "displayName": "Lets Talk Off Broadway",
@@ -5897,7 +5910,8 @@
       ],
       "region": "london",
       "accessModel": "free",
-      "domain": "allthatdazzles.co.uk"
+      "domain": "allthatdazzles.co.uk",
+      "starScale": 5
     },
     "labor-press": {
       "displayName": "Labor Press",
@@ -7833,7 +7847,8 @@
       "accessModel": "paywalled",
       "domainAliases": [
         "thetimes.com"
-      ]
+      ],
+      "starScale": 5
     },
     "standard": {
       "displayName": "Evening Standard",
@@ -7853,7 +7868,8 @@
       "accessModel": "free",
       "domainAliases": [
         "thisislondon.co.uk"
-      ]
+      ],
+      "starScale": 5
     },
     "independent": {
       "displayName": "The Independent",
@@ -7871,7 +7887,8 @@
       "accessModel": "free",
       "domainAliases": [
         "the-independent.com"
-      ]
+      ],
+      "starScale": 5
     },
     "i-paper": {
       "displayName": "The i",
@@ -7889,7 +7906,8 @@
       ],
       "domain": "inews.co.uk",
       "region": "london",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "starScale": 5
     },
     "theatreandtonic": {
       "displayName": "Theatre and Tonic",
@@ -7919,8 +7937,7 @@
       "domain": "thereviewshub.com",
       "region": "london",
       "accessModel": "free",
-      "defaultCritic": "The Reviews Hub - London",
-      "multiAuthor": true
+      "defaultCritic": "The Reviews Hub - London"
     },
     "theupcoming": {
       "displayName": "The Upcoming",
@@ -8230,7 +8247,8 @@
       ],
       "domain": "londontheatre1.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "timeout-london": {
       "displayName": "Time Out London",
@@ -8242,7 +8260,8 @@
         "time-out-london"
       ],
       "domain": "timeout.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "daily-mail": {
       "displayName": "Daily Mail",
@@ -8260,7 +8279,8 @@
         "mail-on-sunday"
       ],
       "domain": "dailymail.co.uk",
-      "accessModel": "free"
+      "accessModel": "free",
+      "starScale": 5
     },
     "afterelton": {
       "displayName": "AfterElton",
@@ -8530,7 +8550,8 @@
       ],
       "accessModel": "paywalled",
       "displayName": "The Stage",
-      "domain": "thestage.co.uk"
+      "domain": "thestage.co.uk",
+      "starScale": 5
     },
     "everything-theatre": {
       "tier": 3,
@@ -8548,7 +8569,8 @@
       "domainAliases": [
         "everything-theatre.co.uk",
         "everythingmusicals.com"
-      ]
+      ],
+      "starScale": 5
     },
     "buzzfeed": {
       "displayName": "BuzzFeed",
@@ -9224,7 +9246,8 @@
         "plays-international"
       ],
       "domain": "playsinternational.org.uk",
-      "defaultCritic": "Maryam Philpott"
+      "defaultCritic": "Maryam Philpott",
+      "starScale": 5
     },
     "rating": {
       "displayName": "Rating",
