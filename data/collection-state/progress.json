@@ -784,7 +784,10 @@
     "1536-west-end-2026/times-uk--clive-davis.json",
     "1536-west-end-2026/times-uk--dominic-maxwell.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json"
+    "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -800,7 +803,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
-      "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json"
+      "lost-in-del-valle-off-broadway-2026/variety--rebecca-rubin.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -853,7 +857,7 @@
     ]
   },
   "startTime": "2026-05-22T17:21:23.714Z",
-  "lastProcessed": "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
   "log": [
     {
       "t": "2026-05-22T19:14:59.607Z",
@@ -865,6 +869,12 @@
       "t": "2026-05-22T19:15:00.698Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-22T23:42:14.252Z",
+      "event": "bb-session",
+      "session": "979ab816",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
     }
   ]
 }
