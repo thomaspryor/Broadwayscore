@@ -1,27 +1,18 @@
 import { ImageResponse } from 'next/og';
-import { getShowBySlug, getAllShowSlugs } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs } from '@/lib/data-core';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
-import type { ComputedShow } from '@/lib/data-types';
 
 export const alt = 'Broadway Scorecard — show score';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export function generateStaticParams() {
-  const allSlugs = getAllShowSlugs();
-  const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
-  const allShows = allSlugs
-    .map(slug => getShowBySlug(slug))
-    .filter(Boolean) as ComputedShow[];
-  return allShows
-    .filter(s =>
-      s.status === 'open' || s.status === 'previews' ||
-      (s.closingDate != null && new Date(s.closingDate) > sixMonthsAgo)
-    )
-    .map(s => ({ slug: s.slug }));
+  // Shares getRecentShowSlugs() with src/app/show/[slug]/page.tsx so the
+  // pre-render set is consistent between the page and its OG image.
+  return getRecentShowSlugs().map(slug => ({ slug }));
 }
 
 // Tier hex values + tier-colored glow — mirrors src/app/globals.css

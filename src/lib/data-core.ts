@@ -42,6 +42,17 @@ const reviews: RawReview[] = [
   ...(blogReviewsData.reviews as RawReview[]),
 ];
 
+// Pre-index reviews by showId so computeShowData skips its O(N×M) per-show filter.
+// Matches the eager pattern in src/lib/data-reviews.ts (outletReviewsMap/criticReviewsMap)
+// and the byShowId index in src/lib/data-tony-noms.ts. Node scripts like
+// scripts/compute-gold-lists.js already use this lookup; the web app is catching up.
+const reviewsByShowId = new Map<string, RawReview[]>();
+for (const r of reviews) {
+  const arr = reviewsByShowId.get(r.showId);
+  if (arr) arr.push(r);
+  else reviewsByShowId.set(r.showId, [r]);
+}
+
 // Cache for computed shows
 let computedShowsCache: ComputedShow[] | null = null;
 
@@ -53,7 +64,7 @@ export function getAllShows(): ComputedShow[] {
 
   computedShowsCache = shows
     .filter((show: any) => !show._devOnly)
-    .map(show => computeShowData(show, reviews, audience, buzz));
+    .map(show => computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz));
 
   return computedShowsCache;
 }
@@ -194,6 +205,28 @@ export function getShowById(id: string): ComputedShow | undefined {
  */
 export function getAllShowSlugs(): string[] {
   return shows.filter((show: any) => !show._devOnly).map(show => show.slug);
+}
+
+// Pinned at module init so parallel build workers agree on the cutoff.
+// Recomputed on each build (module re-evaluated per build worker).
+const BUILD_TIME_NOW = Date.now();
+
+/**
+ * Get slugs for shows worth pre-rendering: open, in previews, or closed within
+ * the recency window. Used by show/[slug] page + opengraph-image generateStaticParams.
+ * Reads raw shows.json directly — skips the expensive ComputedShow scoring graph
+ * that getShowBySlug() would trigger for every slug.
+ */
+export function getRecentShowSlugs(windowDays = 180): string[] {
+  const cutoff = BUILD_TIME_NOW - windowDays * 86400000;
+  return shows
+    .filter((s: any) =>
+      !s._devOnly && (
+        s.status === 'open' || s.status === 'previews' ||
+        (s.closingDate != null && new Date(s.closingDate).getTime() > cutoff)
+      )
+    )
+    .map(s => s.slug as string);
 }
 
 /**
