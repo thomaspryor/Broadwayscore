@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getAllShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
@@ -20,7 +20,6 @@ import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
 import { featureFlags } from '@/config/feature-flags';
-import type { ComputedShow } from '@/lib/data-types';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, generateCriticReviewsSchema, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol } from '@/lib/market-utils';
@@ -74,17 +73,9 @@ export const revalidate = 86400;
 export function generateStaticParams() {
   // Pre-render open + previews + recently closed shows (high traffic).
   // Rest generated on-demand via ISR, cached at Vercel edge until next deploy.
-  const allSlugs = getAllShowSlugs();
-  const sixMonthsAgo = new Date(Date.now() - 180 * 86400000);
-  const allShows = allSlugs
-    .map(slug => getShowBySlug(slug))
-    .filter(Boolean) as ComputedShow[];
-  return allShows
-    .filter(s =>
-      s.status === 'open' || s.status === 'previews' ||
-      (s.closingDate != null && new Date(s.closingDate) > sixMonthsAgo)
-    )
-    .map(s => ({ slug: s.slug }));
+  // Uses getRecentShowSlugs() which reads shows.json directly — skips the
+  // ComputedShow scoring graph that getShowBySlug() per slug would trigger.
+  return getRecentShowSlugs().map(slug => ({ slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
