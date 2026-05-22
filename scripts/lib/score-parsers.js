@@ -17,29 +17,50 @@ const LETTER_GRADE_OUTLETS = new Set(['ew', 'jks-theatre-scene', 'gotham-playgoe
  * Parse a star rating string to 0-100.
  * Handles: "4/5", "3.5/10", "4 out of 5", "3 stars", "★★★★☆"
  *
+ * The outlet's known `starScale` (from outlet-registry) is used ONLY as a
+ * fallback when the rating string itself omits the denominator (e.g.,
+ * bare "4 stars" or "★★★★" with no empty stars). When a denominator IS
+ * present in the string, it always wins — explicit > hint.
+ *
+ * Real-world trigger: The Recs / Celebrity Autobiography 2026-05-20.
+ * Gemini parsed the article header "★★★★" as "4/4 stars" and the score
+ * shipped as 100 (Rave) instead of 80 (Positive). The Recs rates out of 5.
+ * Pass `maxStarsHint` from outlet-registry.starScale to fix this class.
+ *
  * @param {string} rating - The rating string to parse
+ * @param {{maxStarsHint?: number}} [opts] - Outlet-derived hint for bare ratings
  * @returns {number|null} Score 0-100, or null if not a star rating
  */
-function parseStarRating(rating) {
+function parseStarRating(rating, opts) {
   if (!rating) return null;
   const r = rating.toString().trim();
+  const hint = opts && Number.isFinite(opts.maxStarsHint) ? opts.maxStarsHint : null;
 
   // "X/Y", "X out of Y", "X stars" — multi-digit value AND scale
   const starMatch = r.match(/^(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+)|out\s+of\s+(\d+)|stars?)/i);
   if (starMatch) {
     const stars = parseFloat(starMatch[1]);
-    const maxStars = parseInt(starMatch[2] || starMatch[3] || '5');
+    // Explicit denominator > outlet hint > default 5
+    const denomFromString = starMatch[2] || starMatch[3];
+    const maxStars = denomFromString ? parseInt(denomFromString, 10) : (hint || 5);
     if (maxStars > 0 && stars <= maxStars) {
       return Math.round((stars / maxStars) * 100);
     }
     return null; // value > scale is invalid
   }
 
-  // Unicode star symbols: ★★★☆☆
+  // Unicode star symbols: ★★★☆☆.
+  // Denominator preference:
+  //   1. empty-glyph count present → filled+empty is the explicit scale (e.g. ★★★☆☆ = 5)
+  //   2. otherwise → outlet hint (e.g. The Recs ★★★★ + hint=5 → 80)
+  //   3. fallback to 5
+  // The Recs canonical bug case: ★★★★ alone shows nothing about the scale.
+  // Counting only filled glyphs as the denominator would say 4/4 = 100.
   const filledStars = (r.match(/★/g) || []).length;
   const emptyStars = (r.match(/☆/g) || []).length;
   if (filledStars > 0) {
-    const total = filledStars + emptyStars || 5;
+    const total = emptyStars > 0 ? (filledStars + emptyStars) : (hint || 5);
+    if (filledStars > total) return null;
     return Math.round((filledStars / total) * 100);
   }
 
@@ -94,14 +115,45 @@ function parseNumericRating(rating) {
  * Parse any original rating to 0-100. Tries star → letter → numeric.
  * Letter grades are only accepted from outlets in LETTER_GRADE_OUTLETS.
  *
+ * The outlet-registry hook: when called from rebuild-all-reviews.js with
+ * outletId, the wrapper looks up `starScale` in outlet-registry.json once
+ * per call and threads it as the maxStarsHint to parseStarRating. This is
+ * the fix path for the The Recs / Celebrity Autobiography 2026-05-20 case.
+ *
  * @param {string} rating - The rating string
- * @param {string} [outletId] - Outlet ID for letter-grade gating
+ * @param {string} [outletId] - Outlet ID for letter-grade gating + starScale lookup
+ * @param {{outletRegistry?: object}} [opts] - Optional dependency-injected registry
+ *   (defaults to lazy-loading data/outlet-registry.json). Tests pass a fixture.
  * @returns {number|null} Score 0-100, or null if unparseable
  */
-function parseOriginalScore(rating, outletId) {
+let _outletRegistryCache = null;
+function getOutletRegistry(opts) {
+  if (opts && opts.outletRegistry) return opts.outletRegistry;
+  if (_outletRegistryCache) return _outletRegistryCache;
+  try {
+    const path = require('path');
+    const fs = require('fs');
+    const p = path.join(__dirname, '..', '..', 'data', 'outlet-registry.json');
+    _outletRegistryCache = JSON.parse(fs.readFileSync(p, 'utf-8'));
+    return _outletRegistryCache;
+  } catch {
+    return null;
+  }
+}
+
+function getStarScaleForOutlet(outletId, opts) {
+  if (!outletId) return null;
+  const reg = getOutletRegistry(opts);
+  if (!reg || !reg.outlets) return null;
+  const entry = reg.outlets[outletId];
+  return entry && Number.isFinite(entry.starScale) ? entry.starScale : null;
+}
+
+function parseOriginalScore(rating, outletId, opts) {
   if (!rating) return null;
 
-  const starScore = parseStarRating(rating);
+  const maxStarsHint = getStarScaleForOutlet(outletId, opts);
+  const starScore = parseStarRating(rating, { maxStarsHint });
   if (starScore !== null) return starScore;
 
   const letterScore = parseLetterGrade(rating);
