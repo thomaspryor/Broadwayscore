@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-22T09:22:01.479Z",
+  "timestamp": "2026-05-22T12:06:37.554Z",
   "stats": {
-    "totalReviews": 37119,
-    "alreadyFlagged": 16257,
+    "totalReviews": 37145,
+    "alreadyFlagged": 16268,
     "dateGuardCatches": 103,
     "directorMismatch": 804,
     "tvFilmSignals": 1020,
-    "londonSignals": 578,
+    "londonSignals": 580,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3820
+    "noPublishDate": 3818
   },
   "findings": [
     {
@@ -27553,6 +27553,20 @@
     },
     {
       "showId": "care-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 84,
+      "publishDate": "2026-05-21",
+      "url": "https://www.theguardian.com/stage/2026/may/21/care-review-young-vic-london-dementia",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
@@ -27585,6 +27599,20 @@
       "score": null,
       "publishDate": "2026-05-20",
       "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 93,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
