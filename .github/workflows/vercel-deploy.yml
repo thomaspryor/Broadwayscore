@@ -245,7 +245,10 @@ jobs:
           fi
 
       - name: Clear build cache
-        run: rm -rf .next/cache .vercel/output
+        # Clears .vercel/output only — keeps .next/cache restored by the Cache Next.js build
+        # step above so webpack/module compilation can be incremental.
+        # .vercel/output is cleared to prevent EEXIST symlink errors (commit 6c20768ead).
+        run: rm -rf .vercel/output
 
       - name: Build
         id: build
