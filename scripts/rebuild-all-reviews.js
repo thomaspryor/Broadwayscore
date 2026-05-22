@@ -41,6 +41,7 @@ const { shouldRejectAsReservation, isInternalNote, hasCopyrightChrome, stripLead
 const { emitStage } = require('./lib/stage-latency');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipRoundupAudit, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
+const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, isJunkExcerpt, isGenericQuote, trimToCompleteSentence, normalizeQuoteWrapping, cleanExcerpt, isContentVerificationActive, getBestScore: _getBestScoreCore, scoreToBucket, scoreToThumb, extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -2917,12 +2918,14 @@ showDirs.forEach(showId => {
       // Default-critic resolution: when critic is unknown/missing and the outlet has a
       // defaultCritic in the registry (single-author outlets), use it. This must run before
       // dedup so the resolved critic name participates in deduplication.
+      // multiAuthor=true outlets opt out of this fill-in — see scripts/lib/critic-fill-rules.js
+      // and the The Recs / Celebrity Autobiography 2026-05-20 incident.
       {
         const oid = normalizeOutletCanonical(data.outletId || data.outlet);
         const crit = (data.criticName || '').trim().toLowerCase();
         if (!crit || crit === 'unknown' || crit === 'unnamed') {
           const outletEntry = outletRegistry.outlets[oid];
-          if (outletEntry && outletEntry.defaultCritic) {
+          if (shouldFillDefaultCritic(outletEntry)) {
             data.criticName = outletEntry.defaultCritic;
             stats.resolvedDefaultCritic = (stats.resolvedDefaultCritic || 0) + 1;
           }
@@ -3137,7 +3140,11 @@ showDirs.forEach(showId => {
           const outletKey2 = normalizeOutletCanonical(data.outletId || data.outlet);
           const fpKey = `${outletKey2}|${fingerprint}`;
           const outletEntry = outletRegistry.outlets[outletKey2];
-          const defaultCritic = outletEntry && outletEntry.defaultCritic;
+          // multiAuthor=true outlets opt out of FINGERPRINT SWAP-TO-DEFAULT too —
+          // see scripts/lib/critic-fill-rules.js. Otherwise a rotating-byline outlet
+          // would still get its winner swapped to whichever incoming critic matches
+          // the registry's defaultCritic.
+          const defaultCritic = shouldFillDefaultCritic(outletEntry) ? outletEntry.defaultCritic : null;
           const defaultCriticKey = defaultCritic ? normalizeCriticCanonical(defaultCritic) : null;
           const incomingCriticKey = normalizeCriticCanonical(data.criticName || 'unknown');
 

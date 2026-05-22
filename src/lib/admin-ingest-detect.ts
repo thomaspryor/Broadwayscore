@@ -17,6 +17,11 @@ const { resolveOutletFromUrl } = cjsRequire('../../scripts/lib/review-normalizat
 const { normalizeBylineCapture } = cjsRequire('../../scripts/lib/byline-normalization') as {
   normalizeBylineCapture: (raw: string) => string;
 };
+// Shared predicate so admin-ingest, rebuild, and gather-reviews all apply the
+// same defaultCritic fill-in rule. See scripts/lib/critic-fill-rules.js.
+const { shouldFillDefaultCritic } = cjsRequire('../../scripts/lib/critic-fill-rules') as {
+  shouldFillDefaultCritic: (entry: { defaultCritic?: string; multiAuthor?: boolean } | null | undefined) => boolean;
+};
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -26,6 +31,7 @@ interface OutletRegistry {
     domain?: string;
     domainAliases?: string[];
     defaultCritic?: string;
+    multiAuthor?: boolean;
   }>;
 }
 
@@ -392,9 +398,9 @@ export function detectFromReview(opts: { url: string; fullText: string }): Detec
   let criticSource: 'byline-regex' | 'outlet-default' | 'none' = 'none';
   if (outlet.outletId) {
     const registry = loadOutletRegistry();
-    const def = registry.outlets[outlet.outletId]?.defaultCritic;
-    if (def) {
-      criticName = def;
+    const entry = registry.outlets[outlet.outletId];
+    if (shouldFillDefaultCritic(entry) && entry.defaultCritic) {
+      criticName = entry.defaultCritic;
       criticSource = 'outlet-default';
     }
   }
