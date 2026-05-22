@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-22T23:31:05.116Z",
+  "updatedAt": "2026-05-22T23:42:26.172Z",
   "processed": 17,
-  "failed": 766,
+  "failed": 769,
   "successRate": "2.2%",
   "tierBreakdown": {
     "playwright": 7,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingbee": 11,
     "brightdata": 0,
     "archiveToday": 25,
     "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-22T19:14:59.607Z",
@@ -25,6 +25,12 @@
       "t": "2026-05-22T19:15:00.698Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-22T23:42:14.252Z",
+      "event": "bb-session",
+      "session": "979ab816",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
     }
   ]
 }
