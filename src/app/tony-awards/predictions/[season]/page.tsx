@@ -8,6 +8,9 @@ import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import TonyPredictionsClient from '@/components/TonyPredictionsClient';
+import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
+import { getNomineesByCategory } from '@/lib/data-tony-nominees';
+import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
   getTonySeasonWindow,
   getTonySeasonWindowFor,
@@ -73,6 +76,13 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const accuracyStats = computeBlendedAccuracyStats(allShows);
   const blendedHits = Math.round((accuracyStats.blendedRank1WinPct / 100) * accuracyStats.categorySeasonCount);
   const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
+
+  // All 26 nominee categories (4 major + 8 performer + 14 craft) for this season.
+  // Used to render performer/craft categories below the 4-major TonyPredictionsClient.
+  const allNomineeCategories = getNomineesByCategory(season);
+  const nonMajorCategories = allNomineeCategories.filter(c => !SHOW_LEVEL_CATEGORIES.has(c.title));
+  const seasonRecord = tonySeasonForCeremonyYear(season.ceremonyYear);
+  const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
   const eligible = isCurrent
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
@@ -420,13 +430,28 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* Category Sections */}
+        {/* Category Sections — 4 major (our model has predictions for these) */}
         <TonyPredictionsClient
           categories={categories}
           outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
           categoryOutcomes={Object.keys(categoryOutcomeStatus).length > 0 ? categoryOutcomeStatus : undefined}
           ineligibleByCategory={Object.keys(ineligibleByCategory).length > 0 ? ineligibleByCategory : undefined}
         />
+
+        {/* Performer + craft categories — no model predictions, just nominee data + market odds */}
+        {nonMajorCategories.length > 0 && (
+          <section className="mt-10">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
+              <p className="text-sm text-gray-400 mt-1">
+                Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.
+              </p>
+            </div>
+            {nonMajorCategories.map(cat => (
+              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} />
+            ))}
+          </section>
+        )}
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
