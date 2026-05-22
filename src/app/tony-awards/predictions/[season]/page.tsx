@@ -20,6 +20,7 @@ import {
   getWinnersForSeason,
   hasNominationsBeenAnnounced,
   serializeShow,
+  computeBlendedAccuracyStats,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -68,6 +69,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const isCurrent = season.label === current.label;
 
   const allShows = getBroadwayShows();
+  // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
+  const accuracyStats = computeBlendedAccuracyStats(allShows);
+  const blendedHits = Math.round((accuracyStats.blendedRank1WinPct / 100) * accuracyStats.categorySeasonCount);
+  const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
   const eligible = isCurrent
     ? getEligibleShows(allShows, season)
     : getEligibleShowsForPastSeason(allShows, season);
@@ -176,7 +181,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Each Tony category has its own blend recipe, tuned against 11 years of Tony seasons. Best Musical weights 45% critic / 55% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Both Revival categories rank purely by audience grade. Across the 11-season backtest the category-specific approach correctly picked the eventual winner 39 of 42 contests — vs 28 of 42 for critics alone.',
+          text: `Each Tony category has its own blend recipe, tuned against ${accuracyStats.seasonCount} years of Tony seasons. Best Musical weights 45% critic / 55% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Best Revival of a Musical ranks purely on audience grade; Best Revival of a Play uses 20% critic / 60% audience / 20% Awards Score. Across the ${accuracyStats.seasonCount}-season backtest the category-specific approach correctly picked the eventual winner ${blendedHits} of ${accuracyStats.categorySeasonCount} contests (${accuracyStats.blendedRank1WinPct}%) — vs ${criticHits} of ${accuracyStats.categorySeasonCount} (${accuracyStats.criticsOnlyRank1WinPct}%) for critics alone.`,
         },
       },
       {
@@ -385,14 +390,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             </summary>
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
-                Each Tony category gets its own recipe, tuned against 11 years of Tony history. The model
-                correctly picked the winner in 39 of 42 contests across that backtest, vs 28 of 42 for
+                Each Tony category gets its own recipe, tuned against {accuracyStats.seasonCount} years of Tony history. The model
+                correctly picked the winner in {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%) across that backtest, vs {criticHits} of {accuracyStats.categorySeasonCount} ({accuracyStats.criticsOnlyRank1WinPct}%) for
                 critic-only:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
                 <li><span className="text-white font-medium">Best Musical:</span> 45% critic + 55% audience.</li>
                 <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor signal).</li>
-                <li><span className="text-white font-medium">Best Revival of a Musical / Play:</span> ranked purely on audience grade.</li>
+                <li><span className="text-white font-medium">Best Revival of a Musical:</span> ranked purely on audience grade.</li>
+                <li><span className="text-white font-medium">Best Revival of a Play:</span> 20% critic + 60% audience + 20% Awards Score.</li>
               </ul>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">
                 Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal,
@@ -408,7 +414,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               </Link>
               <p className="text-xs text-gray-500 leading-relaxed mt-4 pt-3 border-t border-white/5">
                 Score model updated 2026-05-16: Awards Score now weights each precursor nomination by category
-                importance (tier S/A+/A/B/C). Backtest accuracy 39 of 42 contests.
+                importance (tier S/A+/A/B/C). Backtest accuracy {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%).
               </p>
             </div>
           </details>
@@ -431,7 +437,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </p>
           <p className="mt-3 text-xs text-gray-600">
             Score model updated 2026-05-16. Awards Score now uses tier-weighted precursor nominations
-            (Drama League, OCC, Drama Desk). Backtest accuracy: 39 of 42 contests across 11 years of Tony history.
+            (Drama League, OCC, Drama Desk). Backtest accuracy: {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%) across {accuracyStats.seasonCount} years of Tony history.
           </p>
           <div className="flex flex-wrap gap-4 mt-3">
             <Link href="/tony-awards/predictions" className="text-brand hover:text-brand-hover transition-colors">
