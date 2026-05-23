@@ -28,7 +28,8 @@
     "carrie-1988/thewrap--unknown.json",
     "carrie-1988/playbill--unknown.json",
     "carrie-1988/sfgate--lily-janiak.json",
-    "carrie-1988/telegraph--unknown.json"
+    "carrie-1988/telegraph--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
@@ -1316,7 +1317,8 @@
     "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
     "carrie-1988/broadwayworld--unknown.json",
     "carrie-1988/nbcny--unknown.json",
-    "carrie-1988/thestage--unknown.json"
+    "carrie-1988/thestage--unknown.json",
+    "carrie-1988/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1337,7 +1339,9 @@
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/carrie-1988/hollywood-reporter--unknown.json",
-      "carrie-1988/hollywood-reporter--unknown.json"
+      "carrie-1988/hollywood-reporter--unknown.json",
+      "data/review-texts/animal-wisdom-2022/nytimes--ben-brantley.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1410,7 +1414,8 @@
       "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
       "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
-      "data/review-texts/1536-west-end-2026/thestage--holly-o.json"
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/carrie-1988/thestage--unknown.json"
     ],
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
@@ -1425,7 +1430,7 @@
     ]
   },
   "startTime": "2026-05-23T08:57:37.709Z",
-  "lastProcessed": "carrie-1988/thestage--unknown.json",
+  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-23T09:35:24.139Z",
@@ -1449,6 +1454,17 @@
       "t": "2026-05-23T11:11:51.870Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-23T11:19:02.264Z",
+      "event": "bb-session",
+      "session": "88f90fe1",
+      "url": "https://www.nytimes.com/2017/10/13/theater/review-animal-wisdom-heather-christia"
+    },
+    {
+      "t": "2026-05-23T11:19:03.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
