@@ -25,16 +25,27 @@ export interface ScoreParseResult {
   type: 'stars' | 'letter' | 'numeric';
 }
 
-export function parseScore(rating: string): ScoreParseResult | null {
+export function parseScore(
+  rating: string,
+  opts?: { maxStarsHint?: number }
+): ScoreParseResult | null {
   if (!rating) return null;
   const r = rating.trim();
   if (!r) return null;
+
+  // Outlet's known starScale (from caller, since this module is client-safe / no fs).
+  // Server-side callers should resolve from outlet-registry first and pass the hint.
+  const hint =
+    opts && Number.isFinite(opts.maxStarsHint) && (opts.maxStarsHint as number) > 0
+      ? (opts.maxStarsHint as number)
+      : null;
 
   // Stars: "4/5", "4 out of 5", "4 stars", "3.5/10"
   const starMatch = r.match(/^(\d+(?:\.\d+)?)\s*(?:\/\s*(\d+)|out\s+of\s+(\d+)|stars?)/i);
   if (starMatch) {
     const stars = parseFloat(starMatch[1]);
-    const maxStars = parseInt(starMatch[2] || starMatch[3] || '5');
+    const denomFromString = starMatch[2] || starMatch[3];
+    const maxStars = denomFromString ? parseInt(denomFromString) : (hint || 5);
     if (maxStars > 0 && stars <= maxStars) {
       return { score: Math.round((stars / maxStars) * 100), type: 'stars' };
     }
@@ -45,9 +56,11 @@ export function parseScore(rating: string): ScoreParseResult | null {
   const empty = (r.match(/☆/g) || []).length;
   const halfStar = /½|\.5|\bhalf\b/i.test(r) ? 0.5 : 0;
   if (filled > 0) {
-    // If no empty stars present, assume /5 (industry standard scale). ★★★★ = 4/5 = 80.
-    // If empty stars present, use the explicit total: ★★★★☆ = 4/5 = 80.
-    const total = empty > 0 ? filled + empty : 5;
+    // empty-glyph count present → that's the explicit scale (e.g. ★★★☆☆ = 5)
+    // otherwise use the caller's outlet hint, else industry-standard /5.
+    // The Recs bug case: ★★★★ alone with no empty glyphs would say 4/4 = 100 without the hint.
+    const total = empty > 0 ? filled + empty : (hint || 5);
+    if (filled > total) return null;
     return { score: Math.round(((filled + halfStar) / total) * 100), type: 'stars' };
   }
 

@@ -19,9 +19,21 @@ const { parseStarRating, parseLetterGrade, parseNumericRating } = require('./lib
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const WRITE = process.argv.includes('--write');
 
+// Lazy load outlet-registry once for starScale lookups.
+let _outletRegistry = null;
+function getOutletStarScale(outletId) {
+  if (!outletId) return null;
+  if (_outletRegistry == null) {
+    try { _outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf-8')); }
+    catch { _outletRegistry = { outlets: {} }; }
+  }
+  const e = _outletRegistry.outlets[outletId];
+  return e && Number.isFinite(e.starScale) && e.starScale > 0 ? e.starScale : null;
+}
+
 // normalizeScore — uses shared parsers. Accepts letter grades from any outlet
 // since this is a backfill tool, not a scoring filter.
-function normalizeScore(originalScore) {
+function normalizeScore(originalScore, outletId) {
   if (!originalScore) return null;
   const s = String(originalScore).trim();
 
@@ -30,7 +42,10 @@ function normalizeScore(originalScore) {
   if (letterScore !== null) return letterScore;
 
   // Star ratings: "4/5", "3.5/5", "3 stars", "4 out of 5"
-  const starScore = parseStarRating(s);
+  // Pass outlet's known starScale so bare "N stars" normalizes correctly
+  // (e.g., NY Post rates out of 4 — "4 stars" → 100, not 80).
+  const maxStarsHint = getOutletStarScale(outletId);
+  const starScore = parseStarRating(s, { maxStarsHint });
   if (starScore !== null) return starScore;
 
   // Numeric: plain number 0-100
@@ -70,7 +85,7 @@ for (const show of shows) {
 
       const oldNorm = data.originalScoreNormalized;
       const origScore = data.originalScore;
-      const newNorm = normalizeScore(origScore);
+      const newNorm = normalizeScore(origScore, data.outletId);
       const hasHuman = data.humanReviewScore != null;
 
       if (newNorm == null) {

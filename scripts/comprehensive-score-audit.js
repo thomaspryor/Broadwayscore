@@ -117,15 +117,31 @@ function extractScoreFromText(text, options = {}) {
   return null;
 }
 
+// Lazy load outlet-registry once for starScale lookups.
+let _outletRegistry = null;
+function getOutletStarScale(outletId) {
+  if (!outletId) return null;
+  if (_outletRegistry == null) {
+    try { _outletRegistry = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf-8')); }
+    catch { _outletRegistry = { outlets: {} }; }
+  }
+  const e = _outletRegistry.outlets[outletId];
+  return e && Number.isFinite(e.starScale) && e.starScale > 0 ? e.starScale : null;
+}
+
 // normalizeScore — uses shared parsers from score-parsers.js.
 // Unlike parseOriginalScore, this accepts letter grades from ANY outlet
 // since the audit needs to normalize all scores regardless of source.
-function normalizeScore(rawScore) {
+// outletId is optional but recommended: lets bare 'N stars' use the
+// outlet's known starScale instead of defaulting to /5 for everyone.
+function normalizeScore(rawScore, outletId) {
   if (!rawScore) return null;
   const raw = rawScore.toString().trim();
 
-  // Star ratings first (most specific)
-  const starScore = parseStarRating(raw);
+  // Star ratings first (most specific). Pass outlet's starScale as hint
+  // so /4 outlets (nypost, usatoday, amny) parse "4 stars" as 100, not 80.
+  const maxStarsHint = getOutletStarScale(outletId);
+  const starScore = parseStarRating(raw, { maxStarsHint });
   if (starScore !== null) return starScore;
 
   // Letter grades (no outlet gating — this is an audit tool)
@@ -190,7 +206,7 @@ function checkAggregatorConflict(review) {
     // We only look for star ratings which ARE sometimes included in excerpts.
     const found = extractScoreFromText(text, { skipLetterGrades: true });
     if (found) {
-      const normalized = normalizeScore(found.raw);
+      const normalized = normalizeScore(found.raw, review.outletId);
       if (normalized !== null && Math.abs(normalized - storedNormalized) > 10) {
         conflicts.push({
           source,
@@ -238,8 +254,8 @@ function getCriticExplicitScore(review) {
   // ALWAYS re-normalize from originalScore to catch stale originalScoreNormalized values
   // Priority: normalize(originalScore) > originalScore if numeric > originalScoreNormalized (fallback)
   if (review.originalScore !== null && review.originalScore !== undefined) {
-    // Try to normalize it fresh
-    const normalized = normalizeScore(String(review.originalScore));
+    // Try to normalize it fresh — pass outletId so outlet-specific starScale applies.
+    const normalized = normalizeScore(String(review.originalScore), review.outletId);
     if (normalized !== null) return normalized;
     // If originalScore is already a number, use it directly
     if (typeof review.originalScore === 'number') return review.originalScore;
