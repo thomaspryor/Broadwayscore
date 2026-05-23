@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-05-23T18:39:22.288Z",
+  "generatedAt": "2026-05-23T21:37:22.430Z",
   "date": "2026-05-23",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 106973,
+  "entryCount": 108037,
   "shows": [
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -1206,7 +1206,7 @@
     },
     {
       "showId": "les-liaisons-dangereuses-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1626,7 +1626,7 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -1686,7 +1686,7 @@
     },
     {
       "showId": "consumed-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -2766,7 +2766,7 @@
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3127,6 +3127,21 @@
     {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {

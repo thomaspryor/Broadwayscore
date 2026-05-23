@@ -362,20 +362,20 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     return (
       <div className="min-h-screen bg-surface relative overflow-hidden flex flex-col">
         <div className="absolute inset-0 pointer-events-none"><div className="absolute top-0 left-1/4 w-96 h-96 bg-[#ff1368]/[0.06] rounded-full blur-[120px]" /><div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-brand/[0.04] rounded-full blur-[100px]" /></div>
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-[480px] mx-auto px-6 py-12 text-center">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center max-w-[480px] mx-auto px-6 py-6 text-center">
           <div className="animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}><BtcBrand /></div>
-          <div className="animate-fade-up mt-10" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+          <div className="animate-fade-up mt-6" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#ff1368]/10 border border-[#ff1368]/20 text-[#ff1368] text-xs font-semibold tracking-widest uppercase">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Tony Awards {data.season.ceremonyYear}
             </span>
           </div>
-          <h1 className="animate-fade-up mt-6" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
+          <h1 className="animate-fade-up mt-4" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.</p>
+          <p className="animate-fade-up mt-3 text-[15px] leading-snug text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.</p>
           {timeLeft.days >= 0 && (
-            <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.75s', animationFillMode: 'both' }}>
+            <div className="animate-fade-up mt-4 flex flex-col items-center gap-1.5" style={{ animationDelay: '0.75s', animationFillMode: 'both' }}>
               <div className="flex items-center justify-center gap-5">
                 {([{ v: timeLeft.days, l: 'Days' }, { v: timeLeft.hours, l: 'Hrs' }, { v: timeLeft.minutes, l: 'Min' }, { v: timeLeft.seconds, l: 'Sec' }] as const).map(({ v, l }) => (
                   <div key={l} className="text-center">
@@ -387,7 +387,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className="text-[10px] text-gray-600 font-semibold">until the Tonys</div>
             </div>
           )}
-          <div className="animate-fade-up mt-4 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+          <div className="animate-fade-up mt-3 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold whitespace-nowrap">
               Beat a critic &mdash; win a <strong>$100 TodayTix gift card</strong>
             </div>
@@ -395,22 +395,22 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
 
           {/* Critic grid */}
-          <div className="animate-fade-up w-full mt-4" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
-            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Your Competition</div>
-            <div className="grid grid-cols-3 gap-2.5">
+          <div className="animate-fade-up w-full mt-2" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
+            <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Your Competition</div>
+            <div className="grid grid-cols-3 gap-1.5">
               {CRITICS.map((c, i) => (
-                <div key={i} className="rounded-2xl bg-surface-raised ring-1 ring-white/5 p-4 text-left">
-                  <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center text-sm font-black text-gray-300 mb-3">{c.initials}</div>
-                  <div className="text-sm font-bold leading-tight">{c.name}</div>
-                  <div className="text-[10px] text-brand font-semibold mt-0.5">{c.outlets.join(' · ')}</div>
-                  <div className="text-[11px] text-gray-500 mt-2 leading-snug">{c.bio}</div>
+                <div key={i} className="rounded-xl bg-surface-raised ring-1 ring-white/5 p-2.5 text-left">
+                  <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
+                  <div className="text-[12px] font-bold leading-tight">{c.name}</div>
+                  <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
+                  <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-2">{c.bio}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-7 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
-          <div className="animate-fade-up mt-12 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
+          <button onClick={() => { setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-4 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks <span className="transition-transform group-hover:translate-x-1">&rarr;</span></button>
+          <div className="animate-fade-up mt-6 flex gap-6" style={{ animationDelay: '1.1s', animationFillMode: 'both' }}>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.showsTracked}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Shows</div></div>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.reviewsScored >= 1000 ? `${(data.stats.reviewsScored / 1000).toFixed(data.stats.reviewsScored >= 10000 ? 0 : 1)}K` : data.stats.reviewsScored.toLocaleString()}</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Reviews</div></div>
             <div className="text-center"><div className="text-[22px] font-extrabold text-brand tracking-tight">{data.stats.criticsTracked}+</div><div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">Critics Tracked</div></div>
