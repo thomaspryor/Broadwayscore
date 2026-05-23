@@ -27,6 +27,7 @@ const {
   hasCookiesForUrl,
 } = require('./cookie-loader');
 const { fetchWithCookiesPlain } = require('./fetch-plain');
+const { recordBdCall } = require('./bd-telemetry');
 
 // --- Domain-tier-skip: skip providers known to fail for specific domains ---
 // Sourced from collect-review-texts.js empirical data (30K+ collection results).
@@ -248,9 +249,11 @@ async function fetchWithBrightData(url) {
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
           if (res.statusCode === 200) {
-            resolve(data);
+            resolve({ data, status: 200 });
           } else {
-            reject(new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+            const err = new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+            err.bdStatus = res.statusCode;
+            reject(err);
           }
         });
       });
@@ -260,13 +263,15 @@ async function fetchWithBrightData(url) {
     });
 
     _scraperStats.bdRequests++;
+    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status });
     return {
-      content: response,
+      content: response.data,
       format: 'html',
       source: 'brightdata'
     };
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
+    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error' });
     return null;
   }
 }
