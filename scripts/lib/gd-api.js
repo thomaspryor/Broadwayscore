@@ -164,6 +164,65 @@ const PERSON_LEVEL_GD_CATS = new Set([
   'Best Featured Actor (Play)', 'Best Featured Actress (Play)',
 ]);
 
+/**
+ * Big Four category mapping (GoldDerby name → Tony official name).
+ * Sourced from src/lib/data-tony-nominees.ts:30-57 (full mapping). Keep in
+ * sync if either side renames. We only need the show-level Big Four here.
+ */
+const BIG_FOUR_GD_TO_TONY = {
+  'Best Musical':         'Best Musical',
+  'Best Play':            'Best Play',
+  'Best Musical Revival': 'Best Revival of a Musical',
+  'Best Play Revival':    'Best Revival of a Play',
+};
+
+/**
+ * Enumerate every "winners" Tony league GD has published. Recognizes both the
+ * modern "Tony Awards {YEAR}" form (2015+) and the legacy "Tonys {YEAR}" form
+ * (2013–2014). Returns one entry per ceremony with the ceremonyYear extracted.
+ *
+ * Note: 2021 ceremony was COVID-merged with 2020 (one ceremony Sept 2021
+ * awarded both 2019-20 and 2020-21 seasons). GD has only "Tony Awards 2020"
+ * for this; awards.json has both seasons keyed separately. Cross-cycle
+ * mapping is the caller's concern (see S4-T1).
+ */
+async function discoverHistoricalLeagues() {
+  const all = await gdGet('/featured-leagues/tony');
+  const leagues = (all.data || []).filter(l => {
+    const n = l.featured_league_short_name || '';
+    return /^Tony Awards \d{4}$/.test(n) || /^Tonys \d{4}$/.test(n);
+  });
+  return leagues.map(l => {
+    const name = l.featured_league_short_name;
+    const m = name.match(/(\d{4})$/);
+    return {
+      ceremonyYear: m ? parseInt(m[1], 10) : null,
+      leagueId: l.featured_league_post_id,
+      leagueName: name,
+    };
+  }).sort((a, b) => a.ceremonyYear - b.ceremonyYear);
+}
+
+/**
+ * Look up the GD category IDs for the Big Four in a given league. Returns a
+ * map keyed by Tony official names (e.g. "Best Revival of a Musical") with
+ * { gdCatId, gdCatName } values.
+ *
+ * GD's category names are stable per the BIG_FOUR_GD_TO_TONY table, but the
+ * numeric IDs vary per league. Missing categories silently omit; caller must
+ * check coverage.
+ */
+async function findBigFourCategoryIds(leagueId) {
+  const titles = await gdGet(`/categories-titles/${leagueId}`);
+  const catMap = titles?.data || {};
+  const out = {};
+  for (const [gdCatId, gdCatName] of Object.entries(catMap)) {
+    const tonyName = BIG_FOUR_GD_TO_TONY[gdCatName];
+    if (tonyName) out[tonyName] = { gdCatId, gdCatName };
+  }
+  return out;
+}
+
 function mergeOdds(showsOut, personsOut, catName, oddsRows, shows, mode, unmatched) {
   const isPersonLevel = PERSON_LEVEL_GD_CATS.has(catName);
   for (const row of oddsRows) {
@@ -213,4 +272,7 @@ module.exports = {
   matchShow,
   PERSON_LEVEL_GD_CATS,
   mergeOdds,
+  BIG_FOUR_GD_TO_TONY,
+  discoverHistoricalLeagues,
+  findBigFourCategoryIds,
 };

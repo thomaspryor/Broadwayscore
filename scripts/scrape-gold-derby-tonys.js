@@ -39,6 +39,9 @@ const {
   findTonyLeagues,
   fetchLeagueOdds,
   mergeOdds,
+  discoverHistoricalLeagues,
+  findBigFourCategoryIds,
+  BIG_FOUR_GD_TO_TONY,
 } = require('./lib/gd-api');
 
 function loadShows() {
@@ -67,9 +70,75 @@ Flags:
                        [coming in S3 — currently errors]
   --no-write           Skip writing data/tony-win-probabilities.json. Useful for
                        historical mode to avoid clobbering current-cycle data.
+  --discovery-only     Enumerate every historical Tony league GD exposes and
+                       print each league's Big Four category IDs. No odds
+                       fetched. Used by S3-T1 to verify discovery coverage.
   --dry-run            Print full JSON output to stdout instead of writing file.
   --help               Print this message and exit 0.
 `);
+}
+
+// Ceremony year → awards.json season key. Tonys use the "ending year" convention:
+// ceremony 2024 honored the 2023-24 season. 2021 was COVID-merged into the 2020
+// ceremony; awards.json keeps both seasons separately (2019-20 + 2020-21).
+function seasonKeyForCeremony(ceremonyYear) {
+  const start = ceremonyYear - 1;
+  const end = String(ceremonyYear).slice(2);
+  return `${start}-${end}`;
+}
+
+// Build a map of which Big Four categories awards.json actually has winners for
+// in a given season key. Treats "no winner" as "not awarded that season".
+function bigFourAwardedInSeason(awards, seasonKey) {
+  const CATS = Object.values(BIG_FOUR_GD_TO_TONY);
+  const out = new Set();
+  for (const data of Object.values(awards)) {
+    if (data.tony?.season !== seasonKey) continue;
+    for (const cat of CATS) {
+      if (data.tony?.wins?.includes(cat)) out.add(cat);
+    }
+  }
+  return out;
+}
+
+async function discoveryMode() {
+  const fs = require('fs');
+  const path = require('path');
+  const awardsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'awards.json'), 'utf8'));
+  const awards = awardsRaw.shows || awardsRaw;
+
+  console.error('Enumerating historical Tony leagues...');
+  const leagues = await discoverHistoricalLeagues();
+  console.error(`Found ${leagues.length} winners leagues:`);
+  let unexpectedMissing = false;
+  for (const lg of leagues) {
+    const cats = await findBigFourCategoryIds(lg.leagueId);
+    const seasonKey = seasonKeyForCeremony(lg.ceremonyYear);
+    const awarded = bigFourAwardedInSeason(awards, seasonKey);
+    const missingInGd = Object.values(BIG_FOUR_GD_TO_TONY).filter(t => !cats[t]);
+    // Only flag categories that GD lacks AND awards.json says were awarded.
+    const unexpected = missingInGd.filter(t => awarded.has(t));
+    const explained = missingInGd.filter(t => !awarded.has(t));
+    if (unexpected.length) unexpectedMissing = true;
+    console.log(JSON.stringify({
+      ceremonyYear: lg.ceremonyYear,
+      seasonKey,
+      leagueId: lg.leagueId,
+      leagueName: lg.leagueName,
+      bigFour: cats,
+      missingInGd,
+      unexpectedMissing: unexpected,
+      explainedMissing: explained,
+    }));
+    await new Promise(r => setTimeout(r, 200));
+  }
+  if (unexpectedMissing) {
+    console.error('\nFAIL: some cycles are missing a Big Four category that awards.json says was awarded that season.');
+    console.error('See `unexpectedMissing` per line.');
+    process.exit(1);
+  }
+  console.error('\nDiscovery complete — every cycle covers the Big Four categories that were actually awarded.');
+  process.exit(0);
 }
 
 async function main() {
@@ -78,13 +147,18 @@ async function main() {
     printHelp();
     process.exit(0);
   }
+  if (args.includes('--discovery-only')) {
+    await discoveryMode();
+    return;
+  }
   const seasonArg = args.find(a => a.startsWith('--season='));
   const yearArg = args.find(a => a.startsWith('--year='));
   const yearRangeArg = args.find(a => a.startsWith('--year-range='));
   const allHistorical = args.includes('--all-historical');
 
   if (yearRangeArg || allHistorical) {
-    console.error('--year-range and --all-historical are wired in S3 — not yet implemented.');
+    console.error('--year-range and --all-historical are wired in S3-T2 — not yet implemented.');
+    console.error('Use --discovery-only to inspect the historical league list.');
     console.error('Run with --year=YYYY for a single historical cycle.');
     process.exit(2);
   }
