@@ -418,7 +418,7 @@ export default function TonyPredictionsOverviewPage() {
                   )}
                   {summary.hasTonyResults && categoriesWithResults > 0 && (
                     <p className="text-xs text-gray-500 mt-1">
-                      #1 score won {rank1Wins}/{categoriesWithResults} categories
+                      Our #1 pick won {rank1Wins}/{categoriesWithResults} categories
                     </p>
                   )}
                 </Link>
