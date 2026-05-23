@@ -49,6 +49,18 @@ function loadVercelToken() {
 }
 
 function preflight() {
+  // Node-version warning: CI builds on Node 20 and Next decides static-vs-function
+  // routing differently on newer Node versions. On Node 22+ the tony-awards predictions
+  // page compiles as a serverless function and trips Vercel's 300MB size limit; on
+  // Node 20 it stays static and deploys fine. Until the NFT bloat is fixed, deploys
+  // from Node ≠ 20 may fail on this page even though CI succeeds.
+  const nodeMajor = parseInt(process.versions.node.split('.')[0], 10);
+  if (nodeMajor !== 20) {
+    console.warn(`⚠️  Node v${process.versions.node} detected. CI uses Node 20.`);
+    console.warn(`   The Tony predictions page may fail Vercel's 300MB function limit.`);
+    console.warn(`   If the deploy fails, run "nvm use 20" first and retry.\n`);
+  }
+
   const branch = sh('git branch --show-current');
   if (branch !== 'main') {
     fail(`Must be on main branch (currently on "${branch}"). Merge your work to main first.`);
