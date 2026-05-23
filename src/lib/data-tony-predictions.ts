@@ -616,6 +616,53 @@ export function tonyComposite(
 }
 
 /**
+ * Structural feasibility filter for Best Musical — multiplicative penalty
+ * applied to the composite for shows whose category history says they
+ * essentially cannot win.
+ *
+ *   1. No Best Direction of a Musical nom → ×0.10
+ *      11/11 Best Musical winners 2013–2025 had a director nom. 0/14 nominees
+ *      without one ever won. The two correlate near-perfectly because Tony
+ *      voters who think a musical is the year's best also nominate its
+ *      director.
+ *   2. Jukebox musical AND not pandemic season → ×0.10
+ *      Excluding the COVID-shortened 2019–20 ceremony (where Moulin Rouge won
+ *      a 3-nominee field), zero jukebox musicals won Best Musical in the
+ *      11 tracked seasons. Tony voters consistently snub the form.
+ *
+ * Penalties stack multiplicatively. A jukebox with no director nom (e.g.
+ * Titaníque 2025–26) drops to ×0.01 — effectively zero probability in the
+ * T=7 softmax. Pandemic exception is hardcoded to season label '2019-2020'
+ * (the only ceremony where COVID materially altered the field).
+ *
+ * Returns 1.0 (no penalty) for non-Best-Musical categories.
+ */
+export function bestMusicalFeasibilityFactor(
+  showId: string,
+  tags: string[],
+  categoryKey: TonyCategoryKey,
+  seasonLabel: string,
+): number {
+  if (categoryKey !== 'best-musical') return 1.0;
+  // Pandemic exception — the 2019-20 ceremony was COVID-truncated (only 3
+  // nominees announced months late) and Moulin Rouge winning is an outlier
+  // that should not penalize future jukebox nominees.
+  const PANDEMIC_SEASONS = new Set(['2019-2020']);
+  if (PANDEMIC_SEASONS.has(seasonLabel)) return 1.0;
+
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry>;
+  const entry = shows[showId];
+  const hasDirectorNom =
+    entry?.tony?.nominatedFor?.includes('Best Direction of a Musical') ?? false;
+  const isJukebox = tags.includes('jukebox');
+
+  let factor = 1.0;
+  if (!hasDirectorNom) factor *= 0.10;
+  if (isJukebox) factor *= 0.10;
+  return factor;
+}
+
+/**
  * Serialize a show for the Tony Predictions UI.
  * Pass `categoryKey` to apply the per-category composite. Without it, falls back
  * to the legacy 50/50 critic+audience blend (used by the historical-winners
@@ -624,7 +671,7 @@ export function tonyComposite(
 export function serializeShow(
   show: ComputedShow,
   categoryKey?: TonyCategoryKey,
-  opts: { tier?: RecipeTier } = {},
+  opts: { tier?: RecipeTier; seasonLabel?: string } = {},
 ): SerializedTonyShow {
   const buzz = getAudienceBuzz(show.id);
   const enoughAudience = buzz ? hasEnoughAudienceReviews(buzz) : false;
@@ -634,9 +681,23 @@ export function serializeShow(
   const awards = categoryKey
     ? computeAwardsScore(show.id, CATEGORY_KEY_TO_TITLE[categoryKey])
     : 0;
-  const composite = categoryKey
+  let composite = categoryKey
     ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey, opts.tier ?? 1)
     : legacyBlendedScore(show.compositeScore, enoughAudience ? audScore : null);
+
+  // Apply Best Musical structural feasibility filter (no director nom / jukebox).
+  // Multiplicative penalty drops blendedScore for shows that historically have
+  // ~0% chance of winning. See bestMusicalFeasibilityFactor() for the rule and
+  // historical justification.
+  if (composite != null && categoryKey && opts.seasonLabel) {
+    const factor = bestMusicalFeasibilityFactor(
+      show.id,
+      show.tags ?? [],
+      categoryKey,
+      opts.seasonLabel,
+    );
+    composite = composite * factor;
+  }
 
   // The displayed audience grade letter (A+, B-, etc.) must derive from the
   // SAME number that drives the predictor — otherwise users see an A+ on the
@@ -877,7 +938,7 @@ export function groupIntoCategories(
 
     const scored = matching
       .filter(s => s.status !== 'previews' && s.status !== 'upcoming' && (s.criticScore?.reviewCount || 0) >= 5)
-      .map(s => serializeShow(s, cat.key, { tier: effectiveTier }))
+      .map(s => serializeShow(s, cat.key, { tier: effectiveTier, seasonLabel: options?.season?.label }))
       .sort((a, b) => (b.blendedScore ?? -Infinity) - (a.blendedScore ?? -Infinity));
 
     // In nomineesOnly mode, all nominees should be scored (they've already opened),
@@ -887,7 +948,7 @@ export function groupIntoCategories(
       : matching
           .filter(s => s.status === 'previews' || s.status === 'upcoming' || (s.criticScore?.reviewCount || 0) < 5)
           .sort((a, b) => (a.openingDate || '').localeCompare(b.openingDate || ''))
-          .map(s => serializeShow(s, cat.key, { tier: effectiveTier }));
+          .map(s => serializeShow(s, cat.key, { tier: effectiveTier, seasonLabel: options?.season?.label }));
 
     return {
       key: cat.key,
