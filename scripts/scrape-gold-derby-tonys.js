@@ -34,62 +34,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeTitle, titlesMatch } = require('./lib/title-normalization');
 const { validateTonyPredictions } = require('./lib/fantasy-helpers');
-
-const GD_BASE = 'https://www.goldderby.com/wp-json/gameplay/v1';
-const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-
-async function gdGet(pathSuffix) {
-  const url = `${GD_BASE}${pathSuffix}`;
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': UA,
-      'Accept': 'application/json, text/javascript, */*; q=0.01',
-      'X-Requested-With': 'XMLHttpRequest',
-      'Referer': 'https://www.goldderby.com/odds/combined-odds/broadway-2026-tony-awards-predictions/',
-    },
-  });
-  if (!res.ok) throw new Error(`GET ${url} → ${res.status}`);
-  return res.json();
-}
-
-async function findTonyLeagues(season) {
-  const search = await gdGet('/featured-leagues/tony');
-  if (!search?.data || !Array.isArray(search.data)) {
-    throw new Error('featured-leagues/tony returned unexpected shape');
-  }
-  const nomsName = `Tony Awards Nominations ${season}`;
-  const winsName = `Tony Awards ${season}`;
-  const nominations = search.data.find(l => l.featured_league_short_name === nomsName);
-  const winners = search.data.find(l => l.featured_league_short_name === winsName);
-  return { nominations, winners };
-}
-
-async function fetchLeagueOdds(leagueId) {
-  const titlesRes = await gdGet(`/categories-titles/${leagueId}`);
-  const categoryMap = titlesRes?.data || {};
-  const categories = Object.entries(categoryMap);
-  const results = {};
-  for (const [catId, catName] of categories) {
-    try {
-      const odds = await gdGet(`/latest-odds-v3/${leagueId}/${catId}/combined`);
-      results[catName] = Array.isArray(odds) ? odds : [];
-    } catch (err) {
-      console.error(`  [warn] category ${catId} (${catName}): ${err.message}`);
-      results[catName] = [];
-    }
-    await new Promise(r => setTimeout(r, 150));
-  }
-  return results;
-}
-
-function parsePercentage(pctStr) {
-  if (pctStr == null) return 0;
-  const n = parseFloat(String(pctStr).replace('%', '').trim());
-  if (!Number.isFinite(n)) return 0;
-  return Math.max(0, Math.min(1, n / 100));
-}
+const {
+  findTonyLeagues,
+  fetchLeagueOdds,
+  mergeOdds,
+  discoverHistoricalLeagues,
+  findBigFourCategoryIds,
+  BIG_FOUR_GD_TO_TONY,
+  gdGet,
+} = require('./lib/gd-api');
 
 function loadShows() {
   const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
@@ -97,102 +51,198 @@ function loadShows() {
   return arr.filter(s => s && s.id && s.title);
 }
 
-function matchShow(gdTitle, gdRelatedTitle, shows) {
-  // Best Musical / Play: show is in gdTitle. related_title may be empty or a
-  // subtitle ("Two Strangers" + "Carry a Cake Across New York").
-  // Acting / design: gdTitle is the person's name, related_title is the show.
-  // Try candidates in order: title, related_title alone, composite.
-  const stripBrackets = (s) => (s || '').replace(/\s*[\[\(][^\]\)]*[\]\)]\s*/g, ' ').trim();
-  const candidates = [];
-  if (gdTitle) candidates.push(gdTitle.trim());
-  if (gdRelatedTitle) {
-    candidates.push(gdRelatedTitle.trim());
-    const stripped = stripBrackets(gdRelatedTitle);
-    if (stripped && stripped !== gdRelatedTitle.trim()) candidates.push(stripped);
-  }
-  if (gdTitle && gdRelatedTitle) candidates.push(`${gdTitle.trim()} ${gdRelatedTitle.trim()}`);
+function printHelp() {
+  console.log(`scrape-gold-derby-tonys.js — Pull Tony predictions from Gold Derby REST API
 
-  let best = null;
-  for (const cand of candidates) {
-    for (const s of shows) {
-      if (titlesMatch(s.title, cand)) {
-        if (!best) best = s;
-        else if (s.openingDate && (!best.openingDate || s.openingDate > best.openingDate)) {
-          best = s;
-        }
-      }
-    }
-    if (best) return best;
-  }
-  for (const cand of candidates) {
-    const candNorm = normalizeTitle(cand);
-    for (const s of shows) {
-      if (normalizeTitle(s.title) === candNorm) return s;
-    }
-  }
-  // Last-resort: strip common show-title subtitles ("Beaches, A New Musical" → "Beaches").
-  const stripSubtitle = (t) => (t || '').replace(/[,:]\s*(a new musical|the musical|a musical|on broadway|the play)\b.*$/i, '').trim();
-  for (const cand of candidates) {
-    const candNorm = normalizeTitle(cand);
-    for (const s of shows) {
-      if (normalizeTitle(stripSubtitle(s.title)) === candNorm) return s;
-    }
-  }
-  return null;
+Usage:
+  node scripts/scrape-gold-derby-tonys.js [--season=YYYY] [--dry-run]
+  node scripts/scrape-gold-derby-tonys.js --year=YYYY [--no-write] [--dry-run]
+  node scripts/scrape-gold-derby-tonys.js --year-range=YYYY-YYYY [--no-write]
+  node scripts/scrape-gold-derby-tonys.js --all-historical [--no-write]
+
+Flags:
+  --season=YYYY        Live-cron mode: scrape current cycle (default: current).
+  --year=YYYY          Historical single-cycle mode: alias for --season for one
+                       past Tony cycle. Use with --no-write to avoid clobbering
+                       data/tony-win-probabilities.json.
+  --year-range=A-B     Historical bulk mode: scrape every cycle from A through B
+                       inclusive. [coming in S3 — currently errors]
+  --all-historical     Alias for --year-range=2013-2025 (canonical backfill set).
+                       [coming in S3 — currently errors]
+  --no-write           Skip writing data/tony-win-probabilities.json. Useful for
+                       historical mode to avoid clobbering current-cycle data.
+  --discovery-only     Enumerate every historical Tony league GD exposes and
+                       print each league's Big Four category IDs. No odds
+                       fetched. Used by S3-T1 to verify discovery coverage.
+  --dry-run            Print full JSON output to stdout instead of writing file.
+  --help               Print this message and exit 0.
+`);
 }
 
-// GD categories where row.title is a person name, not a show title.
-const PERSON_LEVEL_GD_CATS = new Set([
-  'Best Actor (Musical)', 'Best Actress (Musical)',
-  'Best Actor (Play)', 'Best Actress (Play)',
-  'Best Featured Actor (Musical)', 'Best Featured Actress (Musical)',
-  'Best Featured Actor (Play)', 'Best Featured Actress (Play)',
-]);
+// Ceremony year → awards.json season key. Tonys use the "ending year" convention:
+// ceremony 2024 honored the 2023-24 season. 2021 was COVID-merged into the 2020
+// ceremony; awards.json keeps both seasons separately (2019-20 + 2020-21).
+function seasonKeyForCeremony(ceremonyYear) {
+  const start = ceremonyYear - 1;
+  const end = String(ceremonyYear).slice(2);
+  return `${start}-${end}`;
+}
 
-function mergeOdds(showsOut, personsOut, catName, oddsRows, shows, mode, unmatched) {
-  const isPersonLevel = PERSON_LEVEL_GD_CATS.has(catName);
-  for (const row of oddsRows) {
-    const matched = matchShow(row.title, row.related_title, shows);
-    if (!matched) {
-      unmatched.push({ category: catName, title: row.title, related_title: row.related_title, percentage: row.percentage });
-      continue;
-    }
-    const showId = matched.id;
-    if (!showsOut[showId]) {
-      showsOut[showId] = { title: matched.title, goldDerbyId: row.id, categories: {} };
-    }
-    const p = parsePercentage(row.percentage);
-
-    // For person-level categories, store individual odds keyed by person name.
-    // Show-level entry gets max pWin as a fallback for unmatched lookups.
-    if (isPersonLevel && row.title && row.title !== row.related_title) {
-      if (!personsOut[row.title]) personsOut[row.title] = {};
-      personsOut[row.title][catName] = { pWin: p, votes: row.votes || 0 };
-    }
-
-    const existing = showsOut[showId].categories[catName] || {};
-    const prevPWin = existing.pWin ?? 0;
-    const prevVotes = existing.votes ?? 0;
-    if (prevPWin >= p) continue; // keep max pWin for show-level fallback
-    if (mode === 'pre-noms') {
-      showsOut[showId].categories[catName] = {
-        ...existing, pNom: p, pWin: p,
-        votes: (row.votes || 0) + prevVotes, gdNomineeId: row.id,
-      };
-    } else {
-      showsOut[showId].categories[catName] = {
-        ...existing, pNom: 1.0, pWin: p,
-        votes: (row.votes || 0) + prevVotes, gdNomineeId: row.id,
-      };
+// Build a map of which Big Four categories awards.json actually has winners for
+// in a given season key. Treats "no winner" as "not awarded that season".
+function bigFourAwardedInSeason(awards, seasonKey) {
+  const CATS = Object.values(BIG_FOUR_GD_TO_TONY);
+  const out = new Set();
+  for (const data of Object.values(awards)) {
+    if (data.tony?.season !== seasonKey) continue;
+    for (const cat of CATS) {
+      if (data.tony?.wins?.includes(cat)) out.add(cat);
     }
   }
+  return out;
+}
+
+async function discoveryMode() {
+  const fs = require('fs');
+  const path = require('path');
+  const awardsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'awards.json'), 'utf8'));
+  const awards = awardsRaw.shows || awardsRaw;
+
+  console.error('Enumerating historical Tony leagues...');
+  const leagues = await discoverHistoricalLeagues();
+  console.error(`Found ${leagues.length} winners leagues:`);
+  let unexpectedMissing = false;
+  for (const lg of leagues) {
+    const cats = await findBigFourCategoryIds(lg.leagueId);
+    const seasonKey = seasonKeyForCeremony(lg.ceremonyYear);
+    const awarded = bigFourAwardedInSeason(awards, seasonKey);
+    const missingInGd = Object.values(BIG_FOUR_GD_TO_TONY).filter(t => !cats[t]);
+    // Only flag categories that GD lacks AND awards.json says were awarded.
+    const unexpected = missingInGd.filter(t => awarded.has(t));
+    const explained = missingInGd.filter(t => !awarded.has(t));
+    if (unexpected.length) unexpectedMissing = true;
+    console.log(JSON.stringify({
+      ceremonyYear: lg.ceremonyYear,
+      seasonKey,
+      leagueId: lg.leagueId,
+      leagueName: lg.leagueName,
+      bigFour: cats,
+      missingInGd,
+      unexpectedMissing: unexpected,
+      explainedMissing: explained,
+    }));
+    await new Promise(r => setTimeout(r, 200));
+  }
+  if (unexpectedMissing) {
+    console.error('\nFAIL: some cycles are missing a Big Four category that awards.json says was awarded that season.');
+    console.error('See `unexpectedMissing` per line.');
+    process.exit(1);
+  }
+  console.error('\nDiscovery complete — every cycle covers the Big Four categories that were actually awarded.');
+  process.exit(0);
+}
+
+/**
+ * Bulk-fetch all (cycle, Big Four category) odds responses and cache them
+ * under .cache/gd/. Used by --all-historical and --year-range.
+ *
+ * Rate limit: 1 req/sec ceiling (the cache makes re-runs free). On 429 we
+ * honor the Retry-After header. Each cache file is the raw API JSON for one
+ * (leagueId, gdCatId) pair, written through gdGet's read-through cache.
+ */
+async function bulkFetchHistorical({ minYear, maxYear }) {
+  const path = require('path');
+  const cacheDir = path.join(__dirname, '..', '.cache', 'gd');
+  console.error(`Bulk historical fetch → ${cacheDir}`);
+  console.error(`  Range: ${minYear ?? '∞'}–${maxYear ?? '∞'}`);
+
+  const leagues = (await discoverHistoricalLeagues()).filter(lg => {
+    if (minYear != null && lg.ceremonyYear < minYear) return false;
+    if (maxYear != null && lg.ceremonyYear > maxYear) return false;
+    return true;
+  });
+  console.error(`  Leagues in scope: ${leagues.length}`);
+
+  const fs = require('fs');
+  const awardsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'awards.json'), 'utf8'));
+  const awards = awardsRaw.shows || awardsRaw;
+
+  let fetched = 0;
+  let skipped = 0;
+  let races = 0;
+  const emptyResponses = [];
+  for (const lg of leagues) {
+    const cats = await findBigFourCategoryIds(lg.leagueId);
+    const seasonKey = seasonKeyForCeremony(lg.ceremonyYear);
+    const awarded = bigFourAwardedInSeason(awards, seasonKey);
+    for (const [tonyName, info] of Object.entries(cats)) {
+      // Skip categories that weren't awarded that season (e.g. 2020 BRM).
+      // Allow current cycle (no winners yet) only if its season has any
+      // awards.json entries (i.e. nominees are recorded).
+      if (!awarded.has(tonyName) && awarded.size > 0) {
+        skipped++;
+        continue;
+      }
+      races++;
+      const apiPath = `/latest-odds-v3/${lg.leagueId}/${info.gdCatId}/combined`;
+      const body = await gdGet(apiPath, { cacheDir });
+      const rows = Array.isArray(body) ? body : Object.values(body || {}).filter(v => v && typeof v === 'object' && 'title' in v);
+      if (!rows.length) {
+        emptyResponses.push({ ceremonyYear: lg.ceremonyYear, category: tonyName });
+      }
+      // 1 req/sec ceiling on uncached (network) calls only
+      if (fetched < races) { await new Promise(r => setTimeout(r, 1000)); }
+      fetched = races;
+    }
+  }
+  console.error(`\nDone. ${races} races across ${leagues.length} cycles. Skipped (not awarded): ${skipped}.`);
+  if (emptyResponses.length) {
+    console.error(`\nEmpty responses (GD API returned no rows — backtest will exclude):`);
+    for (const e of emptyResponses) console.error(`  ${e.ceremonyYear} ${e.category}`);
+    console.error(`Usable races: ${races - emptyResponses.length} / ${races}`);
+  }
+  console.error(`Cache directory: ${cacheDir}`);
 }
 
 async function main() {
   const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelp();
+    process.exit(0);
+  }
+  if (args.includes('--discovery-only')) {
+    await discoveryMode();
+    return;
+  }
   const seasonArg = args.find(a => a.startsWith('--season='));
-  const season = seasonArg ? parseInt(seasonArg.split('=')[1], 10) : 2026;
+  const yearArg = args.find(a => a.startsWith('--year='));
+  const yearRangeArg = args.find(a => a.startsWith('--year-range='));
+  const allHistorical = args.includes('--all-historical');
+
+  if (yearRangeArg || allHistorical) {
+    let minYear, maxYear;
+    if (allHistorical) {
+      minYear = 2013;
+      maxYear = 2025; // canonical completed-cycles set
+    } else {
+      const m = yearRangeArg.split('=')[1].match(/^(\d{4})-(\d{4})$/);
+      if (!m) {
+        console.error('--year-range must be YYYY-YYYY (e.g. 2013-2025)');
+        process.exit(2);
+      }
+      minYear = parseInt(m[1], 10);
+      maxYear = parseInt(m[2], 10);
+    }
+    await bulkFetchHistorical({ minYear, maxYear });
+    process.exit(0);
+  }
+
+  // --year is an explicit historical alias for --season; both map to the same flow.
+  const seasonFromYear = yearArg ? parseInt(yearArg.split('=')[1], 10) : null;
+  const seasonFromSeason = seasonArg ? parseInt(seasonArg.split('=')[1], 10) : null;
+  const season = seasonFromYear ?? seasonFromSeason ?? 2026;
   const dryRun = args.includes('--dry-run');
+  const noWrite = args.includes('--no-write');
 
   console.error(`Scraping Gold Derby Tony predictions for season ${season}...`);
   const { nominations, winners } = await findTonyLeagues(season);
@@ -302,6 +352,8 @@ async function main() {
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error(`\n--dry-run: output to stdout only`);
+  } else if (noWrite) {
+    console.error(`\n--no-write: skipped writing ${outPath}`);
   } else {
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
     console.error(`\nWrote ${outPath}`);

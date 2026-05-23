@@ -95,6 +95,7 @@
 
 ## 🎭 Tony predictions model
 - [Tony predictions accuracy](project_tony_predictions_accuracy.md) — Recipe weights, historical accuracy (92.9%), current-season signals, market data coverage, backtest findings.
+- [GD historical odds backfill](feedback_gd_historical_odds_backfill.md) — `.cache/gd/` + audit script; 11 usable cycles, 43 races; GD favorite hit rate 80-89% by category, ≥90% favorites win 100%.
 
 ## 📊 Data pipeline & scraping
 - [Outlet poller SERP audit](project_outlet_poller_serp_audit.md) — 25 SERP-only outlets audited 2026-05-18; all are genuinely non-upgradeable (paywalls, JS SPAs, per-show structures). Don't re-investigate.
