@@ -308,32 +308,41 @@ export default function TonyPredictionsOverviewPage() {
           }));
           const sortedCompleted = [...completedSummaries].sort((a, b) => b.season.ceremonyYear - a.season.ceremonyYear);
           return (
-            <section className="mb-10 rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
+            <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
               <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
 
               {/* Hero stat */}
               <div className="text-center pb-5 mb-5 border-b border-white/5">
-                <div className="text-5xl sm:text-6xl font-bold text-brand leading-none mb-2">
-                  {totalHits} <span className="text-gray-500">/</span> {totalCells}
+                <div className="text-5xl sm:text-6xl font-bold text-brand leading-none mb-2 tabular-nums tracking-tight">
+                  <span>{totalHits}</span><span className="text-gray-600 font-light mx-1">/</span><span>{totalCells}</span>
                 </div>
                 <p className="text-sm text-gray-300">
                   Our #1 pick won across {stats.seasonCount} Tony seasons &middot; <span className="text-white font-semibold">{accuracyPct}% accuracy</span>
                 </p>
               </div>
 
-              {/* Per-category bars */}
-              <div className="space-y-3 mb-6">
+              {/* Per-category bars — stacked label on mobile, inline on sm+ */}
+              <div className="space-y-3 sm:space-y-2.5 mb-6">
                 {byCategory.map(({ category, hits, total, pct }) => (
-                  <div key={category} className="flex items-center gap-3">
-                    <span className="text-sm text-gray-300 w-36 sm:w-44 flex-shrink-0 truncate">{category}</span>
-                    <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${pct === 100 ? 'bg-emerald-500/80' : pct >= 80 ? 'bg-brand/80' : 'bg-blue-500/70'}`}
-                        style={{ width: `${pct}%` }}
-                      />
+                  <div key={category}>
+                    {/* Mobile: label row above bar */}
+                    <div className="flex items-baseline justify-between mb-1 sm:hidden">
+                      <span className="text-sm text-gray-300">{category}</span>
+                      <span className="text-xs text-gray-500 tabular-nums">
+                        {hits}/{total} <span className="text-white font-bold ml-1">{pct}%</span>
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-500 w-10 text-right tabular-nums">{hits}/{total}</span>
-                    <span className="text-sm font-bold text-white w-14 text-right tabular-nums">{pct}%</span>
+                    <div className="flex items-center gap-3">
+                      <span className="hidden sm:inline text-sm text-gray-300 w-44 flex-shrink-0 truncate">{category}</span>
+                      <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${pct === 100 ? 'bg-emerald-500/80' : pct >= 80 ? 'bg-brand/80' : 'bg-blue-500/70'}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="hidden sm:inline text-xs text-gray-500 w-10 text-right tabular-nums">{hits}/{total}</span>
+                      <span className="hidden sm:inline text-sm font-bold text-white w-14 text-right tabular-nums">{pct}%</span>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -344,10 +353,13 @@ export default function TonyPredictionsOverviewPage() {
                 <div className="overflow-x-auto -mx-1">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-xs text-gray-500 uppercase tracking-wide">
+                      <tr className="text-[11px] text-gray-500 uppercase tracking-wide">
                         <th className="text-left font-medium pb-2 px-1">Season</th>
                         {CAT_COLS.map(c => (
-                          <th key={c} className="text-center font-medium pb-2 px-1">{c}</th>
+                          <th key={c} className="text-center font-medium pb-2 px-1">
+                            <span className="sm:hidden">{c.replace('Revival ', 'R. ').replace('Musical', 'Mus.').replace('Play', 'Play')}</span>
+                            <span className="hidden sm:inline">{c}</span>
+                          </th>
                         ))}
                       </tr>
                     </thead>
@@ -385,16 +397,19 @@ export default function TonyPredictionsOverviewPage() {
                   <p className="text-xs text-gray-500 mb-3">
                     Our #1 didn&apos;t match the Tony winner in these category-seasons. Most are voter-sentiment upsets (cultural significance, star power) that blended scores can&apos;t fully capture.
                   </p>
-                  <div className="space-y-2">
+                  <div className="grid sm:grid-cols-2 gap-2">
                     {misses.map(m => (
                       <div key={`${m.seasonLabel}-${m.categoryLabel}`} className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
                         <div className="text-xs text-gray-500 mb-1">
                           {m.seasonLabel} &middot; Best {m.categoryLabel}
                         </div>
-                        <div className="text-sm text-gray-300">
-                          <span className="text-gray-400">Our #1:</span> <span className="text-white">{m.ourPick}</span>
-                          <span className="text-gray-600 mx-2">&rarr;</span>
-                          <span className="text-gray-400">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
+                        <div className="text-sm text-gray-300 space-y-0.5">
+                          <div>
+                            <span className="text-gray-500 text-xs">Our #1:</span> <span className="text-white">{m.ourPick}</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-500 text-xs">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
+                          </div>
                         </div>
                       </div>
                     ))}
