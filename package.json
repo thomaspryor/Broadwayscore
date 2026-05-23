@@ -24,6 +24,7 @@
     "test:ugc": "RUN_UGC_TESTS=1 TEST_BASE_URL=http://localhost:3456 npx playwright test --project=chromium tests/e2e/my-shows-mock.spec.ts tests/e2e/my-shows-functional.spec.ts tests/e2e/show-rating-functional.spec.ts tests/e2e/ugc-visual-regression.spec.ts tests/e2e/ugc-visual-baselines.spec.ts",
     "test:unit": "node --test 'tests/unit/*.test.mjs' && npx tsx --test 'tests/unit/*.test.ts'",
     "data:check": "node scripts/check-data-health.js --fix",
+    "deploy-now": "node scripts/deploy-now.js",
     "agent:update": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "agent:report": "npx ts-node --project scripts/tsconfig.json scripts/agent-update.ts",
     "reviews:fetch": "npx ts-node --project scripts/tsconfig.json scripts/critic-reviews-agent/index.ts",
