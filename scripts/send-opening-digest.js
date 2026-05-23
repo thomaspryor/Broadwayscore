@@ -49,6 +49,7 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const AUDIENCE_PATH = path.join(DATA_DIR, 'audience-buzz.json');
 const SENT_PATH = path.join(DATA_DIR, 'opening-night-sent.json');
 const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
+const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
 
 const SITE_URL = 'https://broadwayscorecard.com';
 
@@ -67,7 +68,7 @@ const TOKENS = {
   open: '#10b981',
   warn: '#d97706',
   danger: '#ef4444',
-  // Score tiers
+  // Critic score tiers (mirror src/components/show-cards/ScoreBadge.tsx)
   goldText: '#fbbf24',      // amber-400
   goldBg: 'rgba(251,191,36,0.18)',
   greatText: '#34d399',     // emerald-400
@@ -78,6 +79,12 @@ const TOKENS = {
   tepidBg: 'rgba(249,115,22,0.18)',
   skipText: '#f87171',      // red-400
   skipBg: 'rgba(248,113,113,0.18)',
+  // Audience tiers (mirror src/lib/data-audience.ts)
+  audLoving: { text: '#fb7185', bg: 'rgba(244,63,94,0.20)', border: 'rgba(244,63,94,0.30)' },     // rose-400
+  audLiking: { text: '#34d399', bg: 'rgba(16,185,129,0.18)', border: 'rgba(16,185,129,0.25)' },   // emerald
+  audShrugging: { text: '#fbbf24', bg: 'rgba(245,158,11,0.18)', border: 'rgba(245,158,11,0.25)' },// amber
+  audDisliking: { text: '#f87171', bg: 'rgba(239,68,68,0.18)', border: 'rgba(239,68,68,0.25)' },  // red
+  audLoathing: { text: '#9ca3af', bg: 'rgba(107,114,128,0.18)', border: 'rgba(255,255,255,0.10)' },// gray
 };
 
 // Publish-score thresholds (mirror send-opening-night-broadcast.js)
@@ -162,13 +169,51 @@ function isBroadcastSent(sentData, market, showId) {
   return !!(sent[showId]?.completed || sent[`${market}:${showId}`]?.completed);
 }
 
-function scoreTokens(score) {
-  if (score == null) return { text: TOKENS.textMuted, bg: 'transparent' };
-  if (score >= 83) return { text: TOKENS.goldText, bg: TOKENS.goldBg };
-  if (score >= 75) return { text: TOKENS.greatText, bg: TOKENS.greatBg };
-  if (score >= 65) return { text: TOKENS.goodText, bg: TOKENS.goodBg };
-  if (score >= 55) return { text: TOKENS.tepidText, bg: TOKENS.tepidBg };
-  return { text: TOKENS.skipText, bg: TOKENS.skipBg };
+function scoreTokens(score, market) {
+  if (score == null) return { text: TOKENS.textMuted, bg: 'transparent', label: 'No score' };
+  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
+  if (score >= goldThreshold) return { text: TOKENS.goldText, bg: TOKENS.goldBg, label: 'Critical Gold' };
+  if (score >= 75) return { text: TOKENS.greatText, bg: TOKENS.greatBg, label: 'Recommended' };
+  if (score >= 65) return { text: TOKENS.goodText, bg: TOKENS.goodBg, label: 'Worth Seeing' };
+  if (score >= 55) return { text: TOKENS.tepidText, bg: TOKENS.tepidBg, label: 'Skippable' };
+  return { text: TOKENS.skipText, bg: TOKENS.skipBg, label: 'Critical Miss' };
+}
+
+function audienceTokens(designation) {
+  switch (designation) {
+    case 'Loving': return TOKENS.audLoving;
+    case 'Liking': return TOKENS.audLiking;
+    case 'Shrugging': return TOKENS.audShrugging;
+    case 'Disliking': return TOKENS.audDisliking;
+    case 'Loathing': return TOKENS.audLoathing;
+    default: return { text: TOKENS.textMuted, bg: 'transparent', border: TOKENS.border };
+  }
+}
+
+// Site-style ScoreBadge replica: large number left, tier label right
+function scoreBadgeHtml(score, market) {
+  const t = scoreTokens(score, market);
+  if (score == null) {
+    return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${TOKENS.surfaceOverlay};color:${TOKENS.textDim};font-size:12px;font-weight:600;">— Critic score pending</span>`;
+  }
+  return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${t.bg};border:1px solid ${t.text}33;line-height:1;">
+    <span style="font-size:18px;font-weight:800;color:${t.text};letter-spacing:-0.02em;">${score}</span>
+    <span style="font-size:10px;font-weight:600;color:${t.text};margin-left:6px;letter-spacing:0.04em;text-transform:uppercase;opacity:0.85;">${esc(t.label)}</span>
+  </span>`;
+}
+
+function audienceBadgeHtml(audience) {
+  if (!audience || audience.score == null) {
+    return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${TOKENS.surfaceOverlay};color:${TOKENS.textDim};font-size:12px;font-weight:600;">— Audience pending</span>`;
+  }
+  const t = audienceTokens(audience.designation);
+  const designation = audience.designation || '—';
+  const count = audience.reviewCount ? ` · ${audience.reviewCount.toLocaleString()} ratings` : '';
+  return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${t.bg};border:1px solid ${t.border};line-height:1;">
+    <span style="font-size:13px;font-weight:700;color:${t.text};letter-spacing:0.02em;text-transform:uppercase;">${esc(designation)}</span>
+    <span style="font-size:14px;font-weight:800;color:${t.text};margin-left:8px;letter-spacing:-0.02em;">${audience.score}</span>
+    <span style="font-size:10px;color:${TOKENS.textDim};margin-left:6px;font-weight:500;">${esc(count.replace(/^ · /, ''))}</span>
+  </span>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -178,6 +223,17 @@ function scoreTokens(score) {
 function loadImportantList() {
   const data = loadJSON(IMPORTANT_PATH);
   return new Set((data && data.showIds) || []);
+}
+
+function loadExcludedMap() {
+  const data = loadJSON(EXCLUDED_PATH);
+  return new Map(Object.entries((data && data.shows) || {}));
+}
+
+function regionOf(market) {
+  if (market === 'broadway' || market === 'off-broadway') return 'nyc';
+  if (market === 'west-end' || market === 'off-west-end') return 'london';
+  return 'other';
 }
 
 function isImportant(show, importantSet) {
@@ -264,7 +320,7 @@ function getAudience(audienceBuzz, showId) {
 // Build the full row dataset, then classify into action sections
 // ---------------------------------------------------------------------------
 
-function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet) {
+function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, excludedMap) {
   const today = todayUTC();
   return shows
     .filter(s => s.openingDate)
@@ -274,9 +330,12 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet) {
       const score = computeCriticScore(reviews, market);
       const q = scoreQualifies(reviews, market);
       const audience = getAudience(audienceBuzz, s.id);
-      const prediction = predictReviewCount({ market, isRevival: s.isRevival === true });
-      const important = isImportant(s, importantSet);
-      const broadcastEligible = isBroadcastEligible(s, importantSet);
+      const excluded = excludedMap.has(s.id);
+      const prediction = excluded
+        ? { expected: null, p25: null, p75: null, cohort: null, n: 0 }
+        : predictReviewCount({ market, type: s.type, isRevival: s.isRevival === true });
+      const important = !excluded && isImportant(s, importantSet);
+      const broadcastEligible = !excluded && isBroadcastEligible(s, importantSet);
       const broadcastSent = broadcastEligible ? isBroadcastSent(sentData, market, s.id) : null;
       const daysFromToday = daysBetween(s.openingDate, today);
       return {
@@ -285,8 +344,11 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet) {
         slug: s.slug,
         date: s.openingDate,
         market,
+        region: regionOf(market),
         marketLabel: marketLabel(market),
         isRevival: s.isRevival === true,
+        excluded,
+        excludedReason: excluded ? excludedMap.get(s.id) : null,
         important,
         broadcastEligible,
         poster: posterUrl(s),
@@ -320,10 +382,15 @@ function classifyRows(rows) {
       continue;
     }
     if (r.daysFromToday >= -7 && r.daysFromToday < 0) {
-      // Opened in last 7 days
       const daysSinceOpen = -r.daysFromToday;
 
-      // Needs help predicate (only for important shows we'd actively help)
+      // Excluded shows: just appear in "other recent" without action signals
+      if (r.excluded) {
+        otherRecent.push(r);
+        continue;
+      }
+
+      // Needs help (only important shows we'd actively intervene on)
       if (r.important) {
         const underCohort = r.expected && r.reviewCount < r.expected * 0.5;
         const t1Stalled = r.t1Count < 2;
@@ -337,7 +404,7 @@ function classifyRows(rows) {
         }
       }
 
-      // Broadcast-ready predicate
+      // Broadcast-ready
       if (r.broadcastEligible && r.qualifies && !r.broadcastSent) {
         broadcastReady.push(r);
         continue;
@@ -355,6 +422,15 @@ function classifyRows(rows) {
   otherUpcoming.sort((a, b) => a.daysFromToday - b.daysFromToday);
 
   return { needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming };
+}
+
+// Split any list of rows into NYC + London (+ other) by region.
+function splitRegion(rows) {
+  return {
+    nyc: rows.filter(r => r.region === 'nyc'),
+    london: rows.filter(r => r.region === 'london'),
+    other: rows.filter(r => r.region !== 'nyc' && r.region !== 'london'),
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -389,23 +465,17 @@ function renderActionRow(row, actionChips) {
   const market = chip(row.marketLabel, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
   const revival = chip(row.isRevival ? 'Revival' : 'Original', { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
 
-  const sc = scoreTokens(row.criticScore);
-  const scoreCell = row.criticScore != null
-    ? `<span style="display:inline-block;padding:3px 8px;border-radius:6px;background:${sc.bg};color:${sc.text};font-weight:700;font-size:13px;">${row.criticScore}</span>`
-    : `<span style="color:${TOKENS.textDim};font-size:13px;">no score yet</span>`;
+  const criticBadge = scoreBadgeHtml(row.criticScore, row.market);
+  const audienceBadge = audienceBadgeHtml(row.audience);
 
   const reviewProgress = row.expected
-    ? `<span style="color:${TOKENS.textMuted};">${row.reviewCount} / ${row.expected} reviews</span>`
-    : `<span style="color:${TOKENS.textMuted};">${row.reviewCount} reviews</span>`;
-
-  const audienceCell = row.audience && row.audience.score != null
-    ? `<span style="color:${TOKENS.textMuted};">Audience <strong style="color:${TOKENS.text};">${row.audience.score}</strong> (${esc(row.audience.designation || '—')}, ${row.audience.reviewCount.toLocaleString()})</span>`
-    : '';
+    ? `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} of ~${row.expected} expected reviews</span>`
+    : `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} reviews</span>`;
 
   const broadcast = row.broadcastSent === null
     ? ''
     : row.broadcastSent
-      ? chip('✓ Broadcast sent', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })
+      ? `<div style="margin-top:6px;">${chip('✓ Broadcast sent', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })}</div>`
       : '';
 
   return `
@@ -414,8 +484,10 @@ function renderActionRow(row, actionChips) {
     <td style="padding:14px 0 14px 14px;vertical-align:top;">
       <div style="font-size:15px;font-weight:600;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
       <div style="margin:5px 0;">${market}${revival}<span style="color:${TOKENS.textDim};font-size:12px;">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</span></div>
-      <div style="margin:6px 0;">${actionChips}</div>
-      <div style="font-size:12px;line-height:1.6;">${scoreCell} <span style="color:${TOKENS.textDim};margin:0 6px;">·</span> ${reviewProgress}${audienceCell ? `<br>${audienceCell}` : ''}${broadcast ? `<br><span style="margin-top:4px;display:inline-block;">${broadcast}</span>` : ''}</div>
+      <div style="margin:8px 0;">${actionChips}</div>
+      <div style="margin:8px 0;line-height:1.9;">${criticBadge} ${audienceBadge}</div>
+      <div>${reviewProgress}</div>
+      ${broadcast}
     </td>
   </tr>`;
 }
@@ -428,8 +500,10 @@ function renderUpcomingRow(row) {
     : '';
 
   const expected = row.expected
-    ? `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(${row.expectedRange})</span></span>`
-    : `<span style="color:${TOKENS.textDim};">Expected reviews: TBD</span>`;
+    ? `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(typical range ${row.expectedRange})</span></span>`
+    : row.excluded
+      ? `<span style="color:${TOKENS.textDim};">Expected reviews: excluded — ${esc(row.excludedReason)}</span>`
+      : `<span style="color:${TOKENS.textDim};">Expected reviews: TBD (no cohort data)</span>`;
 
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
@@ -457,9 +531,16 @@ function renderBroadcastReadyRow(row) {
 }
 
 function renderOtherRecentRow(row) {
-  const status = row.qualifies
-    ? chip('Qualifies', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })
-    : chip(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+  // Only show publish-readiness status for important shows; OB context rows would
+  // mislead with BW/WE thresholds they're not actually evaluated against.
+  let status = '';
+  if (row.excluded) {
+    status = chip('Excluded from predictions', { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+  } else if (row.important) {
+    status = row.qualifies
+      ? chip('Qualifies', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })
+      : chip(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+  }
   return renderActionRow(row, status);
 }
 
@@ -481,8 +562,33 @@ function buildSubject({ needsHelp, broadcastReady, comingUp }) {
   if (broadcastReady.length) parts.push(`${broadcastReady.length} broadcast-ready`);
   const openingToday = comingUp.filter(r => r.daysFromToday === 0).length;
   if (openingToday) parts.push(`${openingToday} opening today`);
-  const lead = parts.length ? parts.join(' · ') : 'All clear';
+  const openingTomorrow = comingUp.filter(r => r.daysFromToday === 1).length;
+  if (openingTomorrow && !openingToday) parts.push(`${openingTomorrow} tomorrow`);
+  const lead = parts.length ? parts.join(' · ') : (comingUp.length ? `${comingUp.length} upcoming this week` : 'Quiet week');
   return `${lead} · ${todayHuman}`;
+}
+
+function renderRegionBlock(label, sections) {
+  const { needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming } = sections;
+  const total = needsHelp.length + broadcastReady.length + comingUp.length + otherRecent.length + otherUpcoming.length;
+  if (total === 0) {
+    return `
+      <div style="margin:36px 0 16px 0;">
+        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${TOKENS.brand};font-weight:700;border-bottom:2px solid ${TOKENS.brand}33;padding-bottom:8px;">${esc(label)}</div>
+        <div style="margin:18px 0;color:${TOKENS.textDim};font-size:13px;font-style:italic;">No activity in the last 7 days or next 7 days.</div>
+      </div>`;
+  }
+  let inner = '';
+  if (needsHelp.length) inner += renderSection('Needs help', needsHelp.length, renderTable(needsHelp, renderNeedsHelpRow));
+  if (broadcastReady.length) inner += renderSection('Broadcast ready', broadcastReady.length, renderTable(broadcastReady, renderBroadcastReadyRow));
+  if (comingUp.length) inner += renderSection('Coming up', comingUp.length, renderTable(comingUp, renderUpcomingRow));
+  if (otherRecent.length) inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderOtherRecentRow));
+  if (otherUpcoming.length) inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderUpcomingRow));
+  return `
+    <div style="margin:36px 0 16px 0;">
+      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${TOKENS.brand};font-weight:700;border-bottom:2px solid ${TOKENS.brand}33;padding-bottom:8px;">${esc(label)} <span style="color:${TOKENS.textDim};font-weight:500;">· ${total}</span></div>
+      ${inner}
+    </div>`;
 }
 
 function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming, todayHuman }) {
@@ -493,23 +599,23 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
     `${otherRecent.length + otherUpcoming.length} other`,
   ];
 
-  let body = '';
+  // Split every section into NYC vs London
+  const nycSections = {
+    needsHelp: splitRegion(needsHelp).nyc,
+    broadcastReady: splitRegion(broadcastReady).nyc,
+    comingUp: splitRegion(comingUp).nyc,
+    otherRecent: splitRegion(otherRecent).nyc,
+    otherUpcoming: splitRegion(otherUpcoming).nyc,
+  };
+  const londonSections = {
+    needsHelp: splitRegion(needsHelp).london,
+    broadcastReady: splitRegion(broadcastReady).london,
+    comingUp: splitRegion(comingUp).london,
+    otherRecent: splitRegion(otherRecent).london,
+    otherUpcoming: splitRegion(otherUpcoming).london,
+  };
 
-  if (needsHelp.length) {
-    body += renderSection('Needs help', needsHelp.length, renderTable(needsHelp, renderNeedsHelpRow));
-  }
-  if (broadcastReady.length) {
-    body += renderSection('Broadcast ready', broadcastReady.length, renderTable(broadcastReady, renderBroadcastReadyRow));
-  }
-  if (comingUp.length) {
-    body += renderSection('Coming up', comingUp.length, renderTable(comingUp, renderUpcomingRow));
-  }
-  if (otherRecent.length) {
-    body += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderOtherRecentRow));
-  }
-  if (otherUpcoming.length) {
-    body += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderUpcomingRow));
-  }
+  let body = renderRegionBlock('NYC', nycSections) + renderRegionBlock('London', londonSections);
   if (!body) {
     body = `<div style="margin:48px 0;text-align:center;color:${TOKENS.textMuted};font-size:14px;">Nothing to report — no openings in the last or next 7 days.</div>`;
   }
@@ -522,8 +628,8 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
     ${body}
     <hr style="border:none;border-top:1px solid ${TOKENS.border};margin:36px 0 14px 0;">
     <div style="color:${TOKENS.textDim};font-size:11px;line-height:1.6;">
-      Importance: Broadway + West End, plus shows in <code style="color:${TOKENS.textMuted};">data/digest-important-shows.json</code>.
-      Predictions: historical median of (market, revival) cohort, last 24 months.
+      Importance: Broadway + West End by default, plus shows in <code style="color:${TOKENS.textMuted};">data/digest-important-shows.json</code>.
+      Predictions: cohort median by (market, type, revival) over the last 24 months — not a trained model. Variety/revue shows that share a cohort with real openings are excluded via <code style="color:${TOKENS.textMuted};">data/digest-excluded-shows.json</code>.
       Needs-help triggers: opened ≥2 days with &lt;50% of expected reviews, or opened ≥3 days with &lt;2 T1.
     </div>
   </div></body></html>`;
@@ -571,12 +677,13 @@ async function main() {
   const audience = loadJSON(AUDIENCE_PATH);
   const sent = loadJSON(SENT_PATH);
   const importantSet = loadImportantList();
+  const excludedMap = loadExcludedMap();
 
   const showList = shows.shows || shows;
   const reviewList = (reviews && (reviews.reviews || reviews)) || [];
   const reviewMap = buildShowReviewMap(reviewList);
 
-  const rows = buildRows(showList, reviewMap, audience, sent, importantSet);
+  const rows = buildRows(showList, reviewMap, audience, sent, importantSet, excludedMap);
   const sections = classifyRows(rows);
 
   const todayHuman = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
