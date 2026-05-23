@@ -2280,9 +2280,24 @@ showDirs.forEach(showId => {
         if (outletRegion === 'london' || urlIsUK) {
           // CV override — symmetric with the forward guard above.
           // [GUARD:CROSS-MARKET-CV-OVERRIDE]
+          //
+          // Tighten 2026-05-23: a UK-hosted URL (.co.uk / .org.uk) on a Broadway
+          // or off-Broadway show cannot be CV-overridden. The LLM verifier reads
+          // content semantics ("is this a review of this play?") and cannot tell
+          // a London revival of the same title from the NYC production — see
+          // rock-n-roll-2007 / west-end-best-friend--erifyli-gigante (Hampstead
+          // Theatre 2023 review attached to the 2007 Broadway production). The
+          // geographic signal (UK domain reviewing a Broadway show ID) is canonical;
+          // legitimate dual-market coverage is already exempt via DUAL_MARKET_OUTLETS.
           const cv = data.contentVerification;
-          const cvSaysCorrect = cv && cv.isValid === true
+          let cvSaysCorrect = cv && cv.isValid === true
             && cv.wrongProduction === false && cv.confidence === 'high';
+          if (cvSaysCorrect && data.url) {
+            try {
+              const cvHost = new URL(data.url).hostname || '';
+              if (cvHost.endsWith('.co.uk') || cvHost.endsWith('.org.uk')) cvSaysCorrect = false;
+            } catch (e) { /* malformed URL — leave cvSaysCorrect as-is */ }
+          }
           if (cvSaysCorrect) {
             // skip the flag + skip the exclusion — let downstream pipeline use it
           } else {
