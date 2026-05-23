@@ -225,7 +225,12 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     if (!p1FallbackId) p1FallbackId = showId;
   }
   if (p1PreferredId) return p1PreferredId;
-  if (p1FallbackId) return p1FallbackId;
+  // UK ceremonies (CC/ES/WOS/Olivier) set strictSeason: a season mismatch must
+  // not silently attribute to a Broadway transfer in a different season. Let
+  // Pass 4/5 (both season-gated) route to the correct WE/OWE production.
+  // The fallback exists for non-UK ceremonies where Tony season ≠ ceremony year
+  // is normal (e.g. DD recognizing pre-season productions).
+  if (p1FallbackId && !opts.strictSeason) return p1FallbackId;
 
   // Pass 2: prefix containment — for cases like "Shuffle Along" matching the long form
   // "Shuffle Along, or, the Making of the Musical Sensation of 1921 ..."
@@ -260,7 +265,8 @@ function findShowIdByTitle(scrapedTitle, awardsShows, titleById, opts = {}) {
     if (!p2FallbackId) p2FallbackId = showId;
   }
   if (p2PreferredId) return p2PreferredId;
-  if (p2FallbackId) return p2FallbackId;
+  // Same UK-ceremony strict-season guard as Pass 1 — see the comment above.
+  if (p2FallbackId && !opts.strictSeason) return p2FallbackId;
 
   // Pass 3 (active season only): relaxed gate against awards.json — Tony noms may
   // not be published yet for the active season, so allow matching shows whose
@@ -440,11 +446,20 @@ function lookupWinnerShowIds(personName, season, awardsShows) {
  *  store person names as `winner`/`winners`. For these, we look up the winner's
  *  showId via Tony nominations and write both `wins` and `winnerNames`. */
 function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
+  // UK ceremonies must not silently fall back to a Broadway transfer in a
+  // different season than the one the ceremony recognized. e.g. WOS 2024
+  // (season 2023-24) awarded Best New Musical to Operation Mincemeat — the
+  // WE production opened May 2023 (season 2023-24) but Pass 1's cross-season
+  // fallback was attributing the win to the BW transfer (season 2024-25).
+  // strictSeason disables that fallback for UK ceremonies; Pass 4/5 then
+  // route correctly via their built-in season gate.
+  const UK_CEREMONIES = new Set(['criticsCircle', 'eveningStandard', 'whatsOnStage', 'olivier']);
+  const strictSeason = UK_CEREMONIES.has(fieldKey);
   let matched = 0;
   const unmatched = [];
   for (const [scrapedCategory, years] of Object.entries(source)) {
     for (const yearEntry of years) {
-      const callOpts = { ...opts, sourceYear: yearEntry.year };
+      const callOpts = { ...opts, sourceYear: yearEntry.year, strictSeason };
 
       // Resolve winner titles — may be show titles OR person names (acting categories).
       const winnerTitles = Array.isArray(yearEntry.winners) && yearEntry.winners.length > 0
