@@ -231,28 +231,48 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     ],
   };
 
-  // ItemList per Tony category — matches visible page structure
-  const categoryItemLists = categories.filter(cat => cat.shows.length > 0).map(cat => ({
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `${cat.title} - Tony Awards ${season.label}`,
-    itemListElement: cat.shows.slice(0, 10).map((show, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'TheaterEvent',
-        name: show.title,
-        url: `${BASE_URL}/show/${show.slug}`,
-        location: {
-          '@type': 'PerformingArtsTheater',
-          name: show.venue || 'Broadway Theater',
-          address: show.venue || 'New York, NY',
+  // ItemList per Tony category for SEO rich results.
+  // - Current season: position by predicted rank (cat.shows order = blendedScore desc).
+  // - Past season: actual winner at position 1, then rest by blendedScore desc.
+  // - Now includes non-major (performer + craft) categories so search engines
+  //   see structured data for all 26 categories, not just the top 4.
+  const majorWinnersByCategory = !isCurrent ? getWinnersForSeason(season) : null;
+  const showIdToSlug = new Map(allShows.map(s => [s.id, s.slug]));
+  function orderForItemList(shows: typeof categories[number]['shows'], winnerSlug: string | null) {
+    if (!winnerSlug) return shows.slice(0, 10);
+    const winnerIdx = shows.findIndex(s => s.slug === winnerSlug);
+    if (winnerIdx <= 0) return shows.slice(0, 10);
+    const reordered = [shows[winnerIdx], ...shows.slice(0, winnerIdx), ...shows.slice(winnerIdx + 1)];
+    return reordered.slice(0, 10);
+  }
+  const allItemListCategories = [...categories, ...nonMajorCategories];
+  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length > 0).map(cat => {
+    const winnerShowId = majorWinnersByCategory?.get(cat.title);
+    const winnerSlug = winnerShowId ? showIdToSlug.get(winnerShowId) ?? null : null;
+    const ordered = orderForItemList(cat.shows, winnerSlug);
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `${cat.title} - Tony Awards ${season.label}`,
+      numberOfItems: ordered.length,
+      itemListElement: ordered.map((show, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'TheaterEvent',
+          name: show.title,
+          url: `${BASE_URL}/show/${show.slug}`,
+          location: {
+            '@type': 'PerformingArtsTheater',
+            name: show.venue || 'Broadway Theater',
+            address: show.venue || 'New York, NY',
+          },
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         },
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      },
-    })),
-  }));
+      })),
+    };
+  });
 
   return (
     <>
@@ -466,19 +486,21 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           />
         ))}
 
-        {/* Performer + craft categories — no model predictions, just nominee data + market odds.
-            Gated to current season: GD/Kalshi/Polymarket odds files are current-season-only, so
-            past-season pages would render 22 categories of empty '—' boxes — visual noise with no value. */}
-        {isCurrent && nonMajorCategories.length > 0 && (
+        {/* Performer + craft categories — no model predictions; data depends on season:
+            - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
+            - Past seasons: critic/audience/award scores only (markets are closed) */}
+        {nonMajorCategories.length > 0 && (
           <section className="mt-10">
             <div className="mb-4">
               <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
               <p className="text-sm text-gray-400 mt-1">
-                Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.
+                {isCurrent
+                  ? <>Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.</>
+                  : <>Historical {season.label} nominees with critic scores, audience grades, and Award Score.</>}
               </p>
             </div>
             {nonMajorCategories.map(cat => (
-              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} />
+              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} hideMarketOdds={!isCurrent} />
             ))}
           </section>
         )}

@@ -178,7 +178,7 @@ function PressPicks({ picks }: { picks?: string[] }) {
   );
 }
 
-function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: boolean; isPersonLevel?: boolean }) {
+function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = false }: { isMajor: boolean; isPersonLevel?: boolean; hideMarketOdds?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
   const scoreW = 'w-11';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
@@ -195,15 +195,19 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
             <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Pick</span>
           </div>
         )}
-        <div className="flex flex-col items-center w-11">
-          <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
-        </div>
-        <div className="flex flex-col items-center w-11">
-          <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
-        </div>
-        <div className="flex flex-col items-center w-11">
-          <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
-        </div>
+        {!hideMarketOdds && (
+          <>
+            <div className="flex flex-col items-center w-11">
+              <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
+            </div>
+            <div className="flex flex-col items-center w-11">
+              <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
+            </div>
+            <div className="flex flex-col items-center w-11">
+              <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
+            </div>
+          </>
+        )}
         {!isPersonLevel && (
           <>
             <div className={`${scoreW} text-center`}>
@@ -242,7 +246,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
   );
 }
 
-function MajorNomineeRow({ show, winProbability, rank, ceremonyDate }: { show: TonyCategory['shows'][number]; winProbability?: number; rank?: number; ceremonyDate: string | null }) {
+function MajorNomineeRow({ show, winProbability, rank, ceremonyDate, hideMarketOdds = false }: { show: TonyCategory['shows'][number]; winProbability?: number; rank?: number; ceremonyDate: string | null; hideMarketOdds?: boolean }) {
   return (
     <Link
       href={`/show/${show.slug}`}
@@ -279,9 +283,13 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate }: { show: T
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
         {SHOW_OUR_PICK && <OurPickBox winProbability={winProbability} isWinner={rank === 1} />}
-        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
-        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
-        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
+        {!hideMarketOdds && (
+          <>
+            <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
+            <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
+            <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
+          </>
+        )}
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
@@ -301,7 +309,7 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate }: { show: T
   );
 }
 
-function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
+function PerformerRow({ show, hideMarketOdds = false }: { show: TonyCategory['shows'][number]; hideMarketOdds?: boolean }) {
   const priorNoms = show.nomineePriorNominations ?? 0;
   const priorWins = show.nomineePriorWins ?? 0;
 
@@ -362,9 +370,13 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         </Link>
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
-        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
-        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
+        {!hideMarketOdds && (
+          <>
+            <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+            <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+            <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
+          </>
+        )}
         <div className="hidden sm:flex w-20 items-center justify-center">
           <PrecursorChips wins={show.precursorWins} />
         </div>
@@ -376,7 +388,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
   );
 }
 
-function CraftRow({ show, ceremonyDate }: { show: TonyCategory['shows'][number]; ceremonyDate: string | null }) {
+function CraftRow({ show, ceremonyDate, hideMarketOdds = false }: { show: TonyCategory['shows'][number]; ceremonyDate: string | null; hideMarketOdds?: boolean }) {
   return (
     <div className="craft-row flex items-center gap-3 p-2.5 sm:p-3 rounded-lg hover:bg-white/[0.03] transition-colors">
       <Link
@@ -416,9 +428,13 @@ function CraftRow({ show, ceremonyDate }: { show: TonyCategory['shows'][number];
         )}
       </div>
       <div className="flex items-center gap-2 flex-shrink-0">
-        <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
-        <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
-        <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
+        {!hideMarketOdds && (
+          <>
+            <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
+            <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
+            <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
+          </>
+        )}
         <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <AwardScoreBadge
@@ -445,7 +461,7 @@ export interface CategoryOutcome {
   predictedTitle: string | null;
 }
 
-export function CategorySection({ category, winProbs, ceremonyDate, sectionId, description, categoryOutcome, ineligible }: {
+export function CategorySection({ category, winProbs, ceremonyDate, sectionId, description, categoryOutcome, ineligible, hideMarketOdds = false }: {
   category: TonyCategory;
   winProbs?: Map<string, number>;
   ceremonyDate: string | null;
@@ -453,6 +469,9 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
   description?: string;
   categoryOutcome?: CategoryOutcome;
   ineligible?: Array<{ slug: string; title: string; note: string }>;
+  /** When true, hide GD/Kalshi/Polymarket odds columns. Used by past-season Predictions
+   *  pages where the markets are closed and the columns would render all '—'. */
+  hideMarketOdds?: boolean;
 }) {
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
@@ -463,8 +482,17 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
 
   if (nominees.length === 0) return null;
 
-  const majorMinW = SHOW_OUR_PICK ? 'min-w-[760px]' : 'min-w-[708px]';
-  const minW = isMajor ? majorMinW : isPersonLevel ? 'min-w-[520px]' : 'min-w-[608px]';
+  // Min-width drops by ~156px when market odds are hidden (3 boxes × w-11 + gaps).
+  // Tailwind JIT requires literal class strings, not template-interpolated values.
+  let minW: string;
+  if (isMajor) {
+    if (SHOW_OUR_PICK) minW = hideMarketOdds ? 'min-w-[604px]' : 'min-w-[760px]';
+    else               minW = hideMarketOdds ? 'min-w-[552px]' : 'min-w-[708px]';
+  } else if (isPersonLevel) {
+    minW = hideMarketOdds ? 'min-w-[364px]' : 'min-w-[520px]';
+  } else {
+    minW = hideMarketOdds ? 'min-w-[452px]' : 'min-w-[608px]';
+  }
 
   return (
     <section className="mb-6" id={sectionId}>
@@ -510,7 +538,7 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
       <div className="relative">
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
-        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} />
+        <SectionColumnHeader isMajor={isMajor} isPersonLevel={isPersonLevel} hideMarketOdds={hideMarketOdds} />
         {nominees.map((show, index) => {
           const key = show.nomineePersonName
             ? `${show.slug}-${show.nomineePersonName}`
@@ -518,11 +546,11 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
           return (
             <div key={key}>
               {isMajor ? (
-                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} />
+                <MajorNomineeRow show={show} winProbability={winProbs?.get(show.slug)} rank={index + 1} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} />
               ) : isPersonLevel ? (
-                <PerformerRow show={show} />
+                <PerformerRow show={show} hideMarketOdds={hideMarketOdds} />
               ) : (
-                <CraftRow show={show} ceremonyDate={ceremonyDate} />
+                <CraftRow show={show} ceremonyDate={ceremonyDate} hideMarketOdds={hideMarketOdds} />
               )}
             </div>
           );
