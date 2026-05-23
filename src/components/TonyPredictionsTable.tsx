@@ -6,11 +6,9 @@ import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { AwardScoreBadge } from '@/components/show-cards/AwardScoreBadge';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getMarketLabel } from '@/lib/venue-classification';
-import { RankBadge } from '@/components/gold-list/GoldListCards';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 import type { TierBadge } from '@/lib/awards-scoring';
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
-import { featureFlags } from '@/config/feature-flags';
 
 // Maps outlet IDs in tony-critic-picks.json → outlet names in OUTLET_LOGOS registry
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
@@ -152,8 +150,6 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
   return 'sweeper';
 }
 
-const SHOW_OUR_PICK = featureFlags.tonyPredictionsOurPick;
-
 // Shared style tokens — mirrors nominees page
 const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
@@ -175,19 +171,33 @@ function AudienceBox({ grade }: { grade: SerializedTonyShow['audienceGrade'] }) 
 }
 
 // Mirrors nominees-page OddsCol: percentage with ▲/▼ change indicator in a rounded box.
+// Box dimensions match BOX_MD (w-14 h-14) so the odds visually align with critic/audience score badges.
 function OddsCol({ odds, change }: { odds: number | null | undefined; change?: number | null }) {
   const changeRaw = change != null ? Math.abs(change) : 0;
   const changeDisplay = changeRaw >= 0.005
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className="flex-shrink-0 w-12 flex items-center justify-center">
-      <div className="relative flex items-center justify-center bg-surface-overlay rounded-xl w-12 h-12">
+    <div className="flex-shrink-0 w-14 flex items-center justify-center">
+      <div className="relative flex items-center justify-center bg-surface-overlay rounded-xl w-14 h-14">
         <span className="text-base font-bold text-white leading-none">
           {odds != null ? `${Math.round(odds * 100)}%` : '—'}
         </span>
         <span className={`absolute bottom-1 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '–'}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// Our Pick % box — same dimensions as OddsCol, with golden-rim styling for the predicted winner.
+function OurPickCol({ pct, isWinner }: { pct: number | null; isWinner: boolean }) {
+  return (
+    <div className="flex-shrink-0 w-14 flex items-center justify-center">
+      <div className={`flex items-center justify-center rounded-xl w-14 h-14 ${isWinner ? 'bg-amber-500/10 border border-amber-500/40' : 'bg-surface-overlay'}`}>
+        <span className={`text-base font-bold leading-none ${isWinner ? 'text-amber-400' : pct != null ? 'text-white' : 'text-gray-500'}`}>
+          {pct != null ? `${pct}%` : '—'}
         </span>
       </div>
     </div>
@@ -200,22 +210,19 @@ function OddsCol({ odds, change }: { odds: number | null | undefined; change?: n
 function CombinedColumnHeader() {
   return (
     <div className="flex items-end gap-3 px-3 pr-5 sm:px-4 sm:pr-6 pt-2 pb-1.5 border-b border-white/5">
-      <div className="w-8 flex-shrink-0" aria-hidden="true" />
       <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
       <div className="flex-1 min-w-0 max-w-[100px] sm:max-w-none" />
       <div className="flex items-end gap-2 flex-shrink-0">
-        {SHOW_OUR_PICK && (
-          <div className="w-14 text-center">
-            <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
-          </div>
-        )}
-        <div className="flex flex-col items-center w-12">
+        <div className="w-14 text-center">
+          <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
+        </div>
+        <div className="flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        <div className="flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
-        <div className="flex flex-col items-center w-12">
+        <div className="flex flex-col items-center w-14">
           <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
         <div className="w-14 text-center">
@@ -257,12 +264,12 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         <h3 className={`font-bold text-sm sm:text-base group-hover:text-brand transition-colors truncate w-full sm:w-auto ${notYetOpen ? 'text-gray-400' : 'text-white'}`}>
           {show.title}
         </h3>
-        {SHOW_OUR_PICK && rank === 1 && mode === 'combined' && !isUpcoming && (
-          <span className="flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
-            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+        {rank === 1 && mode === 'combined' && !isUpcoming && (
+          <span className="flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-amber-500/15 text-amber-400 rounded border border-amber-500/40">
+            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
               <path d="M10 1l2.39 4.84L17.3 6.9l-3.65 3.56.86 5.03L10 13.26l-4.51 2.23.86-5.03L2.7 6.9l4.91-.96L10 1z" />
             </svg>
-            Predicted Winner
+            Predicted
           </span>
         )}
         {outcomes?.[show.slug] === 'winner' && (
@@ -302,8 +309,6 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
     </div>
   );
 
-  const rankEl = rank != null ? <RankBadge rank={rank} /> : <div className="w-8 flex-shrink-0" />;
-
   if (mode === 'combined') {
     const ourPct = winProbability != null ? Math.round(winProbability * 100) : null;
     return (
@@ -311,18 +316,11 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         href={`/show/${show.slug}`}
         className={`flex items-center gap-3 px-3 pr-5 sm:px-4 sm:pr-6 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
       >
-        {rankEl}
         {thumbnail}
         {titleArea}
         {/* ALL right-side columns in ONE flex group — must mirror CombinedColumnHeader inner gap-2 */}
         <div className="flex items-center gap-2 flex-shrink-0">
-          {SHOW_OUR_PICK && (
-            <div className="w-14 flex items-center justify-center">
-              {ourPct != null
-                ? <span className="text-xl sm:text-2xl font-bold text-amber-400">{ourPct}%</span>
-                : <span className="text-base text-gray-600">—</span>}
-            </div>
-          )}
+          <OurPickCol pct={ourPct} isWinner={rank === 1 && !isUpcoming} />
           <OddsCol odds={show.gdOdds} change={show.gdOddsChange} />
           <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} />
           <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} />
@@ -354,7 +352,6 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
         href={`/show/${show.slug}`}
         className={`flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
       >
-        {rankEl}
         {thumbnail}
         {titleArea}
         <div className="flex flex-col items-center gap-1 flex-shrink-0">
@@ -375,7 +372,6 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
       href={`/show/${show.slug}`}
       className={`flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-4 hover:bg-white/[0.03] transition-colors group ${notYetOpen ? 'opacity-60' : ''}`}
     >
-      {rankEl}
       {thumbnail}
       {titleArea}
       <div className="flex-shrink-0">
