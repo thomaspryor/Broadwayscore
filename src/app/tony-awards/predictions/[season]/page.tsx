@@ -79,8 +79,13 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
 
   // All 26 nominee categories (4 major + 8 performer + 14 craft) for this season.
   // Used to render performer/craft categories alongside the 4-major CategorySection rows.
+  // Filter to non-empty: getNomineesByCategory uses strict-window eligibility, so
+  // COVID-truncated 2020-21 (and likely 1996-97 / 1997-98) return empty arrays for
+  // most non-major categories — would render an empty "Performer & Craft" header.
   const allNomineeCategories = getNomineesByCategory(season);
-  const nonMajorCategories = allNomineeCategories.filter(c => !SHOW_LEVEL_CATEGORIES.has(c.title));
+  const nonMajorCategories = allNomineeCategories.filter(c =>
+    !SHOW_LEVEL_CATEGORIES.has(c.title) && c.shows.length > 0
+  );
   const seasonRecord = tonySeasonForCeremonyYear(season.ceremonyYear);
   const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
   const eligible = isCurrent
