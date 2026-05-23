@@ -35,9 +35,11 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes)
-**Never deploy UI changes without visual verification.** Playwright screenshots at 390px + 1440px → confirm before commit.
+**Never deploy UI changes without screenshots at THREE viewports.** Playwright at **mobile 390×844, tablet 768×1024, desktop 1440×900** — before AND after. Single- or two-viewport verification has shipped regressions repeatedly (mobile row height, 3-col layouts, WhereItRanks overflow, footer card fit). The tablet band (601–1199px) covers Tailwind's `md:` boundary where most layout transitions break.
+- For each viewport, check: layout overflow, text wrap, tap-target heights, score badge size/position, hover/click affordances.
 - **Score badges are sacred** — never change size/position/shape. Score column: `w-20 sm:w-24`.
-- **ANY change to files that render visible HTML needs before/after screenshots** — not just "UI" changes. Perf refactors, code moves, SSR migrations all change rendering.
+- **ANY change to files that render visible HTML needs before/after screenshots at all three sizes** — not just "UI" changes. Perf refactors, code moves, SSR migrations all change rendering.
+- Why these sizes (not 375/768/1280): 390 + 1440 match existing baselines and our `sm:`/`lg:` breakpoint testing infra; deviating would invalidate prior screenshots. 768 is new and exact-matches Tailwind's `md:` boundary.
 
 ### 6. Notion Brain (MANDATORY — every session)
 **Notion is the single source of truth for project state.** See `memory/notion-brain-workflow.md` for IDs, schema, and full lifecycle.
