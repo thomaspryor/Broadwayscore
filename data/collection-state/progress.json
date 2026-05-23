@@ -21,7 +21,14 @@
     "follies-2011/playbill--unknown.json",
     "a-steady-rain-2009/latimes--unknown.json",
     "frankie-and-johnny-in-the-clair-de-lune-2002/front-row-center--tulis-mccall.json",
-    "frankie-and-johnny-in-the-clair-de-lune-2002/thestage--naveen-kumar.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2002/thestage--naveen-kumar.json",
+    "carrie-1988/hollywood-reporter--unknown.json",
+    "carrie-1988/newyorker--unknown.json",
+    "carrie-1988/musical-theatre-review--unknown.json",
+    "carrie-1988/thewrap--unknown.json",
+    "carrie-1988/playbill--unknown.json",
+    "carrie-1988/sfgate--lily-janiak.json",
+    "carrie-1988/telegraph--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
@@ -1306,7 +1313,10 @@
     "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
-    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+    "carrie-1988/broadwayworld--unknown.json",
+    "carrie-1988/nbcny--unknown.json",
+    "carrie-1988/thestage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1318,12 +1328,16 @@
       "diana-the-musical-2021/musical-theatre-review--unknown.json",
       "follies-2011/musical-theatre-review--unknown.json",
       "follies-2011/theatermania--unknown.json",
-      "follies-2011/playbill--unknown.json"
+      "follies-2011/playbill--unknown.json",
+      "carrie-1988/musical-theatre-review--unknown.json",
+      "carrie-1988/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/carrie-1988/hollywood-reporter--unknown.json",
+      "carrie-1988/hollywood-reporter--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1332,11 +1346,15 @@
       "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/city-am--arifa-akbar.json",
       "dead-outlaw-2025/njcom--unknown.json",
       "company-2021/theatrely--andrew-martini.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2002/front-row-center--tulis-mccall.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2002/front-row-center--tulis-mccall.json",
+      "carrie-1988/newyorker--unknown.json",
+      "carrie-1988/broadwayworld--unknown.json",
+      "carrie-1988/nbcny--unknown.json"
     ],
     "brightdata": [
       "follies-2011/latimes--unknown.json",
-      "a-steady-rain-2009/latimes--unknown.json"
+      "a-steady-rain-2009/latimes--unknown.json",
+      "carrie-1988/thewrap--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
@@ -1401,11 +1419,13 @@
       "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
       "follies-2011/broadwayworld--unknown.json",
-      "frankie-and-johnny-in-the-clair-de-lune-2002/thestage--naveen-kumar.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2002/thestage--naveen-kumar.json",
+      "carrie-1988/sfgate--lily-janiak.json",
+      "carrie-1988/telegraph--unknown.json"
     ]
   },
   "startTime": "2026-05-23T08:57:37.709Z",
-  "lastProcessed": "frankie-and-johnny-in-the-clair-de-lune-2002/thestage--naveen-kumar.json",
+  "lastProcessed": "carrie-1988/thestage--unknown.json",
   "log": [
     {
       "t": "2026-05-23T09:35:24.139Z",
@@ -1418,6 +1438,17 @@
       "event": "bb-session",
       "session": "35f595cd",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-23T11:11:50.884Z",
+      "event": "bb-session",
+      "session": "b9a923f6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/carrie-theater-review-296385"
+    },
+    {
+      "t": "2026-05-23T11:11:51.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }

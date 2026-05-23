@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-23T11:11:49.935Z",
-  "processed": 22,
-  "failed": 1283,
-  "successRate": "1.7%",
+  "updatedAt": "2026-05-23T11:18:34.719Z",
+  "processed": 29,
+  "failed": 1286,
+  "successRate": "2.2%",
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 2,
+    "scrapingbee": 9,
+    "brightdata": 3,
     "archiveToday": 54,
-    "archive": 7
+    "archive": 9
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-23T09:35:24.139Z",
@@ -26,6 +26,17 @@
       "event": "bb-session",
       "session": "35f595cd",
       "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-23T11:11:50.884Z",
+      "event": "bb-session",
+      "session": "b9a923f6",
+      "url": "https://www.hollywoodreporter.com/news/general-news/carrie-theater-review-296385"
+    },
+    {
+      "t": "2026-05-23T11:11:51.870Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
