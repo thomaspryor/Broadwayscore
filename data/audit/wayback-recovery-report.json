@@ -1,20 +1,23 @@
 {
-  "totalCandidates": 1,
-  "cdxFound": 0,
-  "cdxNotFound": 0,
-  "recovered": 0,
+  "totalCandidates": 4,
+  "cdxFound": 2,
+  "cdxNotFound": 1,
+  "recovered": 2,
   "recoveredByTier": {
     "1": 0,
     "2": 0,
-    "3": 0
+    "3": 2
   },
-  "recoveredByDomain": {},
+  "recoveredByDomain": {
+    "lightingandsoundamerica.com": 1,
+    "pagesonstages.com": 1
+  },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
   "errors": 1,
-  "notInArchive": 0,
+  "notInArchive": 1,
   "domainSkipped": 0,
   "circuitBrokenDomains": []
 }
