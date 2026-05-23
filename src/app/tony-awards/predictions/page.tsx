@@ -97,6 +97,21 @@ export default function TonyPredictionsOverviewPage() {
     { name: 'Predictions', url: `${BASE_URL}/tony-awards/predictions` },
   ]);
 
+  // Derive accuracy from the same summaries the visible TrackRecord uses so the
+  // FAQ snippet Google indexes stays in sync with what users see on the page.
+  // stats.blendedRank1WinPct is computed via a separate stale path that doesn't
+  // reflect current recipes (e.g. shows 86% when the visible UI shows 90.7%).
+  let faqHits = 0;
+  let faqCells = 0;
+  for (const sum of summaries) {
+    if (!sum.hasTonyResults) continue;
+    for (const h of sum.categoryHighlights) {
+      if (!h.winnerTitle) continue;
+      faqCells++;
+      if (h.topShowTitle && h.winnerTitle === h.topShowTitle) faqHits++;
+    }
+  }
+  const faqPct = faqCells > 0 ? Math.round((faqHits / faqCells) * 1000) / 10 : 0;
   const faqSchema = {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -106,7 +121,7 @@ export default function TonyPredictionsOverviewPage() {
         name: 'How accurate is the per-category prediction model at predicting Tony Awards?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Over ${stats.seasonCount} Tony seasons, the per-category model (critic + audience + precursor Awards Score) predicts the Tony winner ${stats.blendedRank1WinPct}% of the time — a ${stats.improvement}-point improvement over critics alone (${stats.criticsOnlyRank1WinPct}%). Based on ${stats.categorySeasonCount} category-seasons of data.`,
+          text: `Each Tony category uses its own blend recipe tuned across ${stats.seasonCount} Tony seasons. Best Musical: 60% critic + 20% audience + 20% precursor awards. Best Play: 100% precursor awards combining Drama League/OCC/Drama Desk top-category signal with Pulitzer, NYDCC, and Tony nomination breadth. Best Revival of a Musical: 10% critic + 70% audience + 20% broad precursor signal. Best Revival of a Play: 20% critic + 60% audience + 20% Awards Score. Best Musical and Best Revival of a Musical also penalize shows without a Best Direction of a Musical Tony nomination (no winner has lacked one in 11 seasons) and jukebox musicals (no wins outside the COVID-truncated 2019-20 ceremony). Across ${stats.seasonCount} seasons the model picks the eventual winner ${faqHits} of ${faqCells} times (${faqPct}%).`,
         },
       },
     ],
