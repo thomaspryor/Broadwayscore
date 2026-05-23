@@ -41,6 +41,7 @@ on:
           - lortel
           - obie
           - evening-standard
+          - whatsonstage
       min_year:
         description: 'Earliest ceremony year to scrape (default: 2014)'
         required: false
@@ -99,6 +100,7 @@ jobs:
             lortel)           run_scraper scripts/scrape-lortel.js ;;
             obie)             run_scraper scripts/scrape-obie.js ;;
             evening-standard) run_scraper scripts/scrape-evening-standard.js ;;
+            whatsonstage)     run_scraper scripts/scrape-whatsonstage.js ;;
             all|*)
               run_scraper scripts/scrape-drama-desk.js
               run_scraper scripts/scrape-outer-critics.js
@@ -109,6 +111,7 @@ jobs:
               run_scraper scripts/scrape-lortel.js
               run_scraper scripts/scrape-obie.js
               run_scraper scripts/scrape-evening-standard.js
+              run_scraper scripts/scrape-whatsonstage.js
               ;;
           esac
 

@@ -39,6 +39,16 @@ function classifyCategory(category) {
   if (/^best (actor|actress)$/.test(c)) return { tier: 'A', revival: false };
   // Lead Performance (DD 70th+) / Lead Performer (OCC) / Lead Actor|Actress (Lortel) in a [Broadway|Off-Broadway] [play|musical]
   if (/outstanding lead (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // WhatsOnStage acting categories — "Performer" (modern, 2020+) and gender-neutral
+  // "Performer in a Female/Male Identifying Role" variants. Lead vs supporting split.
+  if (/best supporting performer in a/.test(c)) return { tier: 'B', revival: false };
+  if (/best performer in a/.test(c)) return { tier: 'A', revival: false };
+  // WhatsOnStage "Best Supporting Actor/Actress" (pre-2020 naming, before "Performer").
+  if (/best supporting (actor|actress)/.test(c)) return { tier: 'B', revival: false };
+  // WhatsOnStage "Best Off-West End Production" — only WOS award OWE shows can win.
+  if (/best off.?west.?end production/.test(c)) return { tier: 'S', revival: false };
+  if (/best original music\b/.test(c)) return { tier: 'A+', revival: false };
+  if (/video design/.test(c)) return { tier: 'C', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
   // Olivier supporting role categories (use "supporting role" instead of "featured")
   if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
@@ -73,6 +83,28 @@ function classifyCategory(category) {
 const KNOWN_UNSCORED_CATEGORIES = new Set([
   'Special Achievement Award',
   'Outstanding Body of Work',
+  // WhatsOnStage cosmetic / non-prestige categories — intentionally unscored.
+  // Regional, casting, takeover, poster, ensemble specialties, audience-vote
+  // favorites, and ceremony honoraria don't contribute to a show's Awards Score.
+  'Best New Comedy',
+  'Best Regional Production',
+  'Best Takeover in a Role',
+  'Best Takeover In A Role',
+  'Best Takeover Performance',
+  'Best Shakespearean Production',
+  'London Newcomer of the Year',
+  'Best London Newcomer of the Year',
+  'Best West End Show',
+  'Theatre Event of the Year',
+  'Best Original Cast Recording',
+  'Best Show Poster',
+  'Best Graphic Design',
+  'Best Professional Debut Performance',
+  'Best Casting',
+  'Best Concert Event',
+  'Best Wigs, Hair and Make Up Design',
+  'Special Award: Services to UK Theatre',
+  'Equity Award for Services to Theatre Society Special Award',
 ]);
 
 module.exports = { classifyCategory, KNOWN_UNSCORED_CATEGORIES };

@@ -95,6 +95,7 @@ const OBIE = loadPrecursor('obie');
 const LORTEL = loadPrecursor('lortel');
 const CRITICS_CIRCLE = loadPrecursor('critics-circle');
 const EVENING_STANDARD = loadPrecursor('evening-standard');
+const WHATSONSTAGE = loadPrecursor('whatsonstage');
 const PULITZER = loadPrecursor('pulitzer');
 // Historic Pulitzer (pre-2014) uses explicit showIds — fuzzy title matching
 // fails on multiple revival history (e.g. 5 Death of a Salesman entries).
@@ -772,6 +773,7 @@ function main() {
   const lortelRes = applyDDOCCDL(LORTEL, 'lortel', awardsShows, titleById, matcherOpts);
   const ccRes = applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', awardsShows, titleById, matcherOpts);
   const esRes = applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', awardsShows, titleById, matcherOpts);
+  const wosRes = applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', awardsShows, titleById, matcherOpts);
   const pulRes = applyPulitzer(PULITZER, awardsShows, titleById, matcherOpts);
   const histPulRes = applyHistoricPulitzerById(HISTORIC_PULITZER, awardsShows);
 
@@ -784,6 +786,7 @@ function main() {
   console.log(`  Lortel Awards:        ${lortelRes.matched} matched, ${lortelRes.unmatched.length} unmatched`);
   console.log(`  Critics' Circle:      ${ccRes.matched} matched, ${ccRes.unmatched.length} unmatched`);
   console.log(`  Evening Standard:     ${esRes.matched} matched, ${esRes.unmatched.length} unmatched`);
+  console.log(`  WhatsOnStage:         ${wosRes.matched} matched, ${wosRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer Drama:       ${pulRes.matched} matched, ${pulRes.unmatched.length} unmatched`);
   console.log(`  Pulitzer (historic):  ${histPulRes.matched} matched, ${histPulRes.missing.length} missing showIds`);
   if (histPulRes.missing.length > 0) {
@@ -861,6 +864,7 @@ function main() {
   applyDDOCCDL(LORTEL, 'lortel', secondShows, titleById, matcherOpts);
   applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', secondShows, titleById, matcherOpts);
   applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', secondShows, titleById, matcherOpts);
   applyPulitzer(PULITZER, secondShows, titleById, matcherOpts);
   applyHistoricPulitzerById(HISTORIC_PULITZER, secondShows);
   // Don't update _meta on second pass (timestamp would diverge); strip before compare
