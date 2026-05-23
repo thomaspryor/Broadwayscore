@@ -1764,15 +1764,10 @@ async function main() {
     showData.currentCast = result;
   }
 
-  backupExisting();
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(existing, null, 2) + '\n');
-  console.log(`\n[Output] Wrote cast-changes.json with ${Object.keys(existing.shows).length} shows`);
-
-  // Self-audit: detect the failure modes that produced the 2026-05-23
-  // newsletter bugs (closure-as-departure, stale absences, contradicted
-  // closures, cross-show overlaps, name-variant duplicates). If any are
-  // present, fail the scraper run so CI catches the bad data BEFORE the
-  // commit/push step, instead of after-the-fact via the test gate.
+  // Self-audit BEFORE writing to disk. The 2026-05-23 newsletter bug had
+  // bad data committed and shipped before the gate noticed. Audit the
+  // in-memory object first; if anything fails, abort without touching
+  // cast-changes.json so the CI commit step has nothing to commit.
   const {
     detectContradictions,
     detectCrossShowConflicts,
@@ -1804,13 +1799,18 @@ async function main() {
     }
   }
 
-  const elapsed = ((Date.now() - TOTAL_START_TIME) / 1000).toFixed(1);
-  console.log(`[Done] Completed in ${elapsed}s`);
-
   if (auditIssues > 0) {
-    console.error(`\n[Audit] FAILED — ${auditIssues} issue(s) detected. Run \`node scripts/audit-cast-changes.js --write\` to clean, then re-run.`);
+    console.error(`\n[Audit] FAILED — ${auditIssues} issue(s) detected. Aborting WITHOUT writing cast-changes.json. Run \`node scripts/audit-cast-changes.js --write\` to clean existing data, then re-run.`);
     process.exit(1);
   }
+
+  // Audit passed — safe to write
+  backupExisting();
+  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(existing, null, 2) + '\n');
+  console.log(`\n[Output] Wrote cast-changes.json with ${Object.keys(existing.shows).length} shows`);
+
+  const elapsed = ((Date.now() - TOTAL_START_TIME) / 1000).toFixed(1);
+  console.log(`[Done] Completed in ${elapsed}s`);
 }
 
 const { cleanup: scraperCleanup } = require('./lib/scraper');

@@ -25,15 +25,26 @@ function isAutoFlaggedEvent(event) {
  */
 function normalizeIdentifier(s) {
   if (!s || typeof s !== 'string') return '';
+  // Strip nickname quotes ONLY when balanced and adjacent to whitespace/start/end
+  // on the opening side AND whitespace/punctuation on the closing side. This
+  // prevents apostrophes inside real names (O'Brien, D'Angelo, O'Malley)
+  // from being treated as quote delimiters.
+  // Examples that strip:
+  //   Joanna "JoJo" Levesque → Joanna  Levesque  (double quote, balanced)
+  //   Mary “MK” O'Brien → Mary  O'Brien  (curly double, balanced)
+  // Examples that do NOT strip:
+  //   Sean O'Malley → Sean O'Malley  (apostrophe is intra-word)
+  //   Sean O'Malley 'Slick' Jones → Sean O'Malley  Jones (only the balanced 'Slick' is stripped)
   return s
-    // Strip nickname quotes (curly + straight, single + double) including the
-    // word inside: "JoJo", 'JoJo', “JoJo”, ‘JoJo’ → ''
-    .replace(/["'“”‘’][^"'“”‘’]+["'“”‘’]/g, '')
-    // Strip parentheticals: (the original cast) → ''
+    // Double quotes (straight + curly) — usually unambiguous
+    .replace(/(^|\s)["“]([^"”]+)["”](?=\s|$|[.,!?;])/g, '$1')
+    // Single quotes / apostrophes — require whitespace/start before AND after the closer
+    // (so 'Slick' between spaces strips, but O'Malley keeps its apostrophe)
+    .replace(/(^|\s)['‘]([^'’]+)['’](?=\s|$|[.,!?;])/g, '$1')
+    // Strip parentheticals
     .replace(/\([^)]*\)/g, '')
-    // Strip bracketed text: [understudy] → ''
+    // Strip bracketed text
     .replace(/\[[^\]]*\]/g, '')
-    // Collapse whitespace
     .replace(/\s+/g, ' ')
     .trim()
     .toLowerCase();
@@ -238,8 +249,10 @@ function detectCrossShowConflicts(showsData) {
         const aStart = parseISO(a.event.date);
         const bStart = parseISO(b.event.date);
         if (!aStart || !bStart) continue;
-        const aEnd = parseISO(a.event.endDate) || new Date(aStart.getTime() + 365 * DAY_MS);
-        const bEnd = parseISO(b.event.endDate) || new Date(bStart.getTime() + 365 * DAY_MS);
+        // Cap missing endDate at 30 days (typical short-run / benefit night)
+        // instead of a full year — avoids false positives on one-off appearances.
+        const aEnd = parseISO(a.event.endDate) || new Date(aStart.getTime() + 30 * DAY_MS);
+        const bEnd = parseISO(b.event.endDate) || new Date(bStart.getTime() + 30 * DAY_MS);
         if (aStart <= bEnd && bStart <= aEnd) {
           // Overlapping arrivals — check if there's an 'absence' or
           // 'departure' from the OTHER show covering the conflict.
