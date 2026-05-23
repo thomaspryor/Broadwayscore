@@ -442,8 +442,10 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           ineligibleByCategory={Object.keys(ineligibleByCategory).length > 0 ? ineligibleByCategory : undefined}
         />
 
-        {/* Performer + craft categories — no model predictions, just nominee data + market odds */}
-        {nonMajorCategories.length > 0 && (
+        {/* Performer + craft categories — no model predictions, just nominee data + market odds.
+            Gated to current season: GD/Kalshi/Polymarket odds files are current-season-only, so
+            past-season pages would render 22 categories of empty '—' boxes — visual noise with no value. */}
+        {isCurrent && nonMajorCategories.length > 0 && (
           <section className="mt-10">
             <div className="mb-4">
               <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
