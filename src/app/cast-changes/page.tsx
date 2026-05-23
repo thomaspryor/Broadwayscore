@@ -104,11 +104,13 @@ function getEventConfig(event: CastEvent) {
       return { colorClass: 'text-amber-400', bgClass: 'bg-amber-500/15', borderClass: 'border-amber-500/20', icon: <CalendarIcon />, label: 'Out' };
     case 'note':
       return { colorClass: 'text-blue-400', bgClass: 'bg-blue-500/15', borderClass: 'border-blue-500/20', icon: <CalendarIcon />, label: 'Update' };
+    case 'closure':
+      return { colorClass: 'text-rose-400', bgClass: 'bg-rose-500/15', borderClass: 'border-rose-500/20', icon: <CalendarIcon />, label: 'Show closes' };
   }
 }
 
 function sortEvents(events: CastEvent[]): CastEvent[] {
-  const typeOrder: Record<string, number> = { departure: 0, arrival: 1, absence: 2, note: 3 };
+  const typeOrder: Record<string, number> = { closure: -1, departure: 0, arrival: 1, absence: 2, note: 3 };
   return [...events].sort((a, b) => {
     const typeA = typeOrder[a.type] ?? 4;
     const typeB = typeOrder[b.type] ?? 4;

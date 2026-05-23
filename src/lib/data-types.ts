@@ -569,7 +569,7 @@ export interface CastMember {
 }
 
 export interface CastEvent {
-  type: 'departure' | 'arrival' | 'absence' | 'note';
+  type: 'departure' | 'arrival' | 'absence' | 'note' | 'closure';
   name: string;
   role: string;
   date?: string;
