@@ -47,11 +47,54 @@ function loadShows() {
   return arr.filter(s => s && s.id && s.title);
 }
 
+function printHelp() {
+  console.log(`scrape-gold-derby-tonys.js — Pull Tony predictions from Gold Derby REST API
+
+Usage:
+  node scripts/scrape-gold-derby-tonys.js [--season=YYYY] [--dry-run]
+  node scripts/scrape-gold-derby-tonys.js --year=YYYY [--no-write] [--dry-run]
+  node scripts/scrape-gold-derby-tonys.js --year-range=YYYY-YYYY [--no-write]
+  node scripts/scrape-gold-derby-tonys.js --all-historical [--no-write]
+
+Flags:
+  --season=YYYY        Live-cron mode: scrape current cycle (default: current).
+  --year=YYYY          Historical single-cycle mode: alias for --season for one
+                       past Tony cycle. Use with --no-write to avoid clobbering
+                       data/tony-win-probabilities.json.
+  --year-range=A-B     Historical bulk mode: scrape every cycle from A through B
+                       inclusive. [coming in S3 — currently errors]
+  --all-historical     Alias for --year-range=2013-2025 (canonical backfill set).
+                       [coming in S3 — currently errors]
+  --no-write           Skip writing data/tony-win-probabilities.json. Useful for
+                       historical mode to avoid clobbering current-cycle data.
+  --dry-run            Print full JSON output to stdout instead of writing file.
+  --help               Print this message and exit 0.
+`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelp();
+    process.exit(0);
+  }
   const seasonArg = args.find(a => a.startsWith('--season='));
-  const season = seasonArg ? parseInt(seasonArg.split('=')[1], 10) : 2026;
+  const yearArg = args.find(a => a.startsWith('--year='));
+  const yearRangeArg = args.find(a => a.startsWith('--year-range='));
+  const allHistorical = args.includes('--all-historical');
+
+  if (yearRangeArg || allHistorical) {
+    console.error('--year-range and --all-historical are wired in S3 — not yet implemented.');
+    console.error('Run with --year=YYYY for a single historical cycle.');
+    process.exit(2);
+  }
+
+  // --year is an explicit historical alias for --season; both map to the same flow.
+  const seasonFromYear = yearArg ? parseInt(yearArg.split('=')[1], 10) : null;
+  const seasonFromSeason = seasonArg ? parseInt(seasonArg.split('=')[1], 10) : null;
+  const season = seasonFromYear ?? seasonFromSeason ?? 2026;
   const dryRun = args.includes('--dry-run');
+  const noWrite = args.includes('--no-write');
 
   console.error(`Scraping Gold Derby Tony predictions for season ${season}...`);
   const { nominations, winners } = await findTonyLeagues(season);
@@ -161,6 +204,8 @@ async function main() {
   if (dryRun) {
     console.log(JSON.stringify(output, null, 2));
     console.error(`\n--dry-run: output to stdout only`);
+  } else if (noWrite) {
+    console.error(`\n--no-write: skipped writing ${outPath}`);
   } else {
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2) + '\n');
     console.error(`\nWrote ${outPath}`);
