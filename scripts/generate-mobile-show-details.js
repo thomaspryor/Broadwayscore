@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
@@ -28,10 +29,124 @@ const outputDir = path.join(__dirname, '../public/data/shows');
 const DETAIL_SCHEMA_VERSION = 1;
 
 // ===========================================
+// HASH-GATE: skip regen when inputs haven't changed
+// ===========================================
+// Saves ~30s on code-only deploys (the always-run prebuild list in
+// scripts/prebuild.sh invokes this script unconditionally). On data-changing
+// deploys (CI rebuild commits → dispatched deploy) the hash mismatches and
+// full regen runs as normal.
+//
+// Inputs that must invalidate the cache:
+//   - 12 data files this script reads (direct + transitive via lib/*)
+//   - data/cast/*.json (per-show input)
+//   - scripts/lib/*.js (transitive logic — catching compute-critic-score
+//     edits etc. is the whole reason we hash the lib dir, not just __filename)
+//   - This script's own source + DETAIL_SCHEMA_VERSION constant
+//
+// Cache file lives at data/cache/mobile-show-details/last-hash.json
+// (gitignored; persisted across CI runs via the GHA cache action — see
+// .github/workflows/vercel-deploy.yml "Cache Next.js build" step which we
+// extend to include data/cache/).
+const HASH_CACHE_DIR = path.join(__dirname, '../data/cache/mobile-show-details');
+const HASH_CACHE_FILE = path.join(HASH_CACHE_DIR, 'last-hash.json');
+
+const HASH_INPUT_FILES = [
+  'data/shows.json',
+  'data/reviews.json',
+  'data/outlet-registry.json',
+  'data/audience-buzz.json',
+  'data/tony-nominations.json',
+  'data/critic-consensus.json',
+  'data/show-schedules.json',
+  'data/grosses.json',
+  'data/lottery-rush.json',
+  'data/theater-metadata.json',
+  'data/video-reviews.json',
+  // Transitive inputs read by lib/* — flagged by 2026-05-23 second-opinion
+  // review: edits to these MUST invalidate the cache or output drifts silently.
+  'data/blog-reviews-for-scoring.json',
+  'data/curated-historical-shows.json',
+  'src/config/outlet-tiers.json',
+];
+
+function hashFileIfExists(hash, relPath) {
+  const full = path.join(__dirname, '..', relPath);
+  if (fs.existsSync(full)) {
+    hash.update(relPath);
+    hash.update(fs.readFileSync(full));
+  }
+}
+
+function computeInputHash() {
+  const hash = crypto.createHash('sha256');
+  // Schema version + script source — bumping the constant or editing the
+  // script invalidates regardless of data changes.
+  hash.update(`schema=${DETAIL_SCHEMA_VERSION}`);
+  hash.update(fs.readFileSync(__filename));
+  // Listed data inputs
+  for (const rel of HASH_INPUT_FILES) hashFileIfExists(hash, rel);
+  // Cast directory (per-show input files)
+  const castDir = path.join(dataDir, 'cast');
+  if (fs.existsSync(castDir)) {
+    const castFiles = fs.readdirSync(castDir).filter(f => f.endsWith('.json')).sort();
+    for (const f of castFiles) {
+      hash.update(`cast/${f}`);
+      hash.update(fs.readFileSync(path.join(castDir, f)));
+    }
+  }
+  // ALL scripts/lib/*.js — catches transitive logic changes
+  // (compute-critic-score.js, outlet-tiers.js, etc.) without enumerating
+  // which libs this script imports.
+  const libDir = path.join(__dirname, 'lib');
+  if (fs.existsSync(libDir)) {
+    const libFiles = fs.readdirSync(libDir).filter(f => f.endsWith('.js')).sort();
+    for (const f of libFiles) {
+      hash.update(`lib/${f}`);
+      hash.update(fs.readFileSync(path.join(libDir, f)));
+    }
+  }
+  return hash.digest('hex');
+}
+
+function readCachedHash() {
+  try { return JSON.parse(fs.readFileSync(HASH_CACHE_FILE, 'utf-8')); }
+  catch { return null; }
+}
+
+function writeCachedHash(hash, fileCount) {
+  fs.mkdirSync(HASH_CACHE_DIR, { recursive: true });
+  fs.writeFileSync(HASH_CACHE_FILE, JSON.stringify({
+    hash,
+    fileCount,
+    schemaVersion: DETAIL_SCHEMA_VERSION,
+    timestamp: new Date().toISOString(),
+  }, null, 2));
+}
+
+const FORCE_REGEN = process.argv.includes('--force') || process.env.FORCE_REGENERATE === '1' || process.env.FORCE_REGENERATE === 'true';
+
+// ===========================================
 // LOAD DATA
 // ===========================================
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
+}
+
+if (!FORCE_REGEN) {
+  const currentHash = computeInputHash();
+  const cached = readCachedHash();
+  if (cached?.hash === currentHash) {
+    // Safety: only skip if output dir actually has expected file count.
+    // Guards against silent skip when someone manually rm-rf'd public/data/shows.
+    const outputFiles = fs.existsSync(outputDir)
+      ? fs.readdirSync(outputDir).filter(f => f.endsWith('.json')).length
+      : 0;
+    if (outputFiles >= 1500) {
+      console.log(`✓ Hash unchanged (${currentHash.substring(0, 8)}…) — skipped regen. ${outputFiles} files exist from last build at ${cached.timestamp}.`);
+      process.exit(0);
+    }
+    console.warn(`⚠ Hash matched but output sparse (${outputFiles} files < 1500) — forcing regen.`);
+  }
 }
 
 let shows = [];
@@ -535,3 +650,14 @@ const totalKB = (totalSize / 1024).toFixed(0);
 
 console.log(`✓ Generated ${generated} show detail files (${totalKB}KB total, ${avgSize}KB avg)`);
 console.log(`  Output: ${outputDir}/`);
+
+// Write hash cache for next run's skip gate. Only persist on successful regen
+// (invariant check above process.exit(1)'s on failure, so reaching here means
+// output is good).
+try {
+  const finalHash = computeInputHash();
+  writeCachedHash(finalHash, generated);
+  console.log(`✓ Hash cache written (${finalHash.substring(0, 8)}…, ${generated} files)`);
+} catch (err) {
+  console.warn(`⚠ Failed to write hash cache (non-fatal): ${err.message}`);
+}
