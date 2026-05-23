@@ -270,37 +270,8 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     const reordered = [shows[winnerIdx], ...shows.slice(0, winnerIdx), ...shows.slice(winnerIdx + 1)];
     return reordered.slice(0, 10);
   }
-  // Top pick per category — drives the "Predicted Winners" TL;DR block above the fold.
-  // Includes win probability for the 4 major show categories (from categoryWinProbs).
-  // Major categories first, then performer + craft. Only categories with a #1 pick.
-  const allCategoriesForPicks = [...categories, ...nonMajorCategories];
-  const topPicks = allCategoriesForPicks
-    .filter(cat => cat.shows.length > 0 && cat.shows[0])
-    .map(cat => ({
-      key: cat.key,
-      title: cat.title,
-      shortLabel: cat.title.replace('Best ', '').replace('Revival of a ', 'Revival '),
-      show: cat.shows[0],
-      winProbability: categoryWinProbs.get(cat.key)?.get(cat.shows[0].slug) ?? null,
-      isMajor: !nonMajorCategories.some(nc => nc.key === cat.key),
-    }));
-
-  // Consolidated "predicted winners" ItemList — one row per category, ordered as displayed.
-  // Search engines love this for "tony awards 2026 predictions list" intent.
-  const topPicksItemList = topPicks.length > 0 ? {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `Tony Awards ${season.ceremonyYear} Predicted Winners — All Categories`,
-    numberOfItems: topPicks.length,
-    itemListElement: topPicks.map((pick, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      name: `${pick.title}: ${pick.show.title}`,
-      url: `${BASE_URL}/show/${pick.show.slug}`,
-    })),
-  } : null;
-
-  const categoryItemLists = allCategoriesForPicks.filter(cat => cat.shows.length > 0).map(cat => {
+  const allItemListCategories = [...categories, ...nonMajorCategories];
+  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length > 0).map(cat => {
     const winnerShowId = majorWinnersByCategory?.get(cat.title);
     const winnerSlug = winnerShowId ? showIdToSlug.get(winnerShowId) ?? null : null;
     const ordered = orderForItemList(cat.shows, winnerSlug);
@@ -332,7 +303,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema, ...(topPicksItemList ? [topPicksItemList] : []), ...categoryItemLists]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, breadcrumbSchema, ...categoryItemLists]) }}
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -398,45 +369,6 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <TrackRecord summaries={allSummaries} seasonCount={accuracyStats.seasonCount} />
           </div>
         </details>
-
-        {/* Predicted Winners TL;DR — scannable list of #1 picks for every category.
-            Captures "tony awards 2026 predictions list" search intent (26.9% CTR in GSC)
-            and gives visitors the answer above the fold before the detailed sections. */}
-        {isCurrent && topPicks.length > 0 && (
-          <section className="mb-8 rounded-xl border border-white/5 bg-surface-overlay overflow-hidden">
-            <header className="px-4 sm:px-5 py-3 border-b border-white/5 flex items-baseline justify-between gap-3">
-              <h2 className="text-sm sm:text-base font-bold text-white">
-                Tony Awards {season.ceremonyYear} Predicted Winners
-              </h2>
-              <span className="text-xs text-gray-500">#1 pick per category</span>
-            </header>
-            <ol className="divide-y divide-white/5">
-              {topPicks.map((pick) => {
-                const probPct = pick.winProbability != null ? Math.round(pick.winProbability * 100) : null;
-                return (
-                  <li key={pick.key} className="px-4 sm:px-5 py-2.5 flex items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors">
-                    <div className="min-w-0 flex-1 flex items-baseline gap-2 sm:gap-3">
-                      <span className="text-xs sm:text-sm text-gray-400 flex-shrink-0 w-24 sm:w-44 truncate" title={pick.title}>
-                        {pick.shortLabel}
-                      </span>
-                      <Link
-                        href={`/show/${pick.show.slug}`}
-                        className="text-sm sm:text-base font-medium text-white hover:text-brand transition-colors truncate"
-                      >
-                        {pick.show.title}
-                      </Link>
-                    </div>
-                    {probPct != null && (
-                      <span className="text-xs font-bold tabular-nums text-brand flex-shrink-0">
-                        {probPct}%
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </section>
-        )}
 
         {/* Report Card (past seasons only) */}
         {reportCard.length > 0 && (
