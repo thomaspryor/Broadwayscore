@@ -18,6 +18,9 @@ node scripts/validate-shows-prebuild.js
 node scripts/generate-show-lookup.js
 node scripts/generate-diary-data.js
 node scripts/build-slug-redirects.js
+# Actor slug manifest — collapses ~2400 data/cast/ files into a single ~1MB
+# JSON to keep Vercel's serverless bundle under the 300MB NFT limit.
+node scripts/build-actor-slugs-manifest.js
 # Brand tokens — regenerate public/brand-tokens.json from canonical source
 node scripts/generate-brand-tokens.js
 # Always regenerate public show JSONs — they must match the reviews.json

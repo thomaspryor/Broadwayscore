@@ -28,6 +28,11 @@ const nextConfig = {
       '**/*': [
         'data/audit/**',
         'data/review-texts/**',
+        // ~2400 cast files (~300MB total). Tony pages now consume cast data
+        // via data/actor-slugs.json (generated at prebuild). If any code path
+        // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
+        // to bundle the whole directory again — this exclude blocks that.
+        'data/cast/**',
         'data/broadway.db',
         'data/llm-scoring-runs.json',
         'data/mezzanine-productions-raw.json',
