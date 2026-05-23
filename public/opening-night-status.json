@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-22T23:40:34.912Z",
+  "generatedAt": "2026-05-23T05:19:48.890Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1139,111 +1139,6 @@
           "isDualMarket": false
         }
       ]
-    },
-    {
-      "id": "care-west-end-2026",
-      "title": "CARE",
-      "market": "west-end",
-      "category": "off-west-end",
-      "type": "play",
-      "openingDate": "2026-05-19",
-      "status": "open",
-      "slug": "care-west-end",
-      "thumbnail": "/images/shows/care-west-end-2026/thumbnail.webp",
-      "siteScore": 82.21,
-      "liveScore": 82,
-      "scoreDrift": -0.20999999999999375,
-      "belowThreshold": false,
-      "reviewsNeeded": 0,
-      "siteFileExists": true,
-      "total": 11,
-      "t1": 5,
-      "t2": 5,
-      "t3": 1,
-      "positive": 11,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": true,
-        "reasons": [],
-        "highConfidence": 9,
-        "thresholds": {
-          "minReviews": 8,
-          "minT1": 3,
-          "minT2": 2,
-          "minHiConf": 6
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
-      },
-      "missingT1": [
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-05-21T13:40:02.185Z",
-          "rc": 1,
-          "s": 90,
-          "t1": 0,
-          "t2": 0,
-          "t3": 1,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-22T07:51:11.952Z",
-          "rc": 2,
-          "s": 84,
-          "t1": 0,
-          "t2": 1,
-          "t3": 1,
-          "p": 2,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        },
-        {
-          "t": "2026-05-22T12:06:41.719Z",
-          "rc": 11,
-          "s": 82.21,
-          "t1": 5,
-          "t2": 5,
-          "t3": 1,
-          "p": 11,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
     }
   ],
   "upcoming": [
@@ -1257,7 +1152,7 @@
       "status": "previews",
       "slug": "dark-of-the-moon-west-end",
       "thumbnail": "/images/shows/dark-of-the-moon-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1282,7 +1177,7 @@
       "status": "previews",
       "slug": "beetlejuice-west-end",
       "thumbnail": "/images/shows/beetlejuice-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1307,7 +1202,7 @@
       "status": "upcoming",
       "slug": "the-p-word-off-west-end",
       "thumbnail": "/images/shows/the-p-word-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -1332,6 +1227,45 @@
       "status": "previews",
       "slug": "david-copperfield-59e59-theaters-off-broadway",
       "thumbnail": "/images/shows/david-copperfield-59e59-theaters-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "silverback-mountain-off-broadway-2026",
+      "title": "Silverback Mountain",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-05-30",
+      "status": "upcoming",
+      "slug": "silverback-mountain-off-broadway",
+      "thumbnail": "/images/shows/silverback-mountain-off-broadway-2026/thumbnail.webp",
       "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
