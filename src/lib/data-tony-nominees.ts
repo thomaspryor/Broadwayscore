@@ -274,6 +274,51 @@ function getPersonPastStats(name: string, currentAwardsSeason: string): { priorN
 
 // --- Main export ---
 
+/**
+ * Enrich the 4 major categories (Best Musical/Play/Revival) with prediction-market
+ * odds, precursor wins, and press picks. Used by both the Nominations Center
+ * (which then sorts by GD odds) and the Tony Predictions table (which keeps
+ * the blended-score ranking).
+ */
+export function enrichMajorCategoriesWithOdds(
+  majorCats: TonyCategory[],
+  season: TonySeasonWindow,
+): TonyCategory[] {
+  const allShows = getBroadwayShows();
+  const eligible = getEligibleShows(allShows, season);
+  const gdRaw = gdRawData as unknown as GdData;
+  const gdData: GdData = gdRaw.persons
+    ? { ...gdRaw, persons: Object.fromEntries(Object.entries(gdRaw.persons).map(([k, v]) => [k.trim(), v])) }
+    : gdRaw;
+  const pmData = loadMarketData('tony-polymarket-odds.json');
+  const kalshiData = loadMarketData('tony-kalshi-odds.json');
+  const gdNormMap = buildGdNormMap(gdData);
+
+  return majorCats.map(cat => {
+    const shows = cat.shows.map(show => {
+      const computedShow = eligible.find(s => s.slug === show.slug);
+      const showId = computedShow?.id ?? '';
+      const pmCatData = pmData?.categories[cat.title];
+      const kalshiCatData = kalshiData?.categories[cat.title];
+      const pmNominees = pmCatData?.nominees ?? null;
+      const kalshiNominees = kalshiCatData?.nominees ?? null;
+      return {
+        ...show,
+        awardsScore: showId ? computeSiteAwardScore(showId).displayScore : show.awardsScore,
+        gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
+        gdOddsChange: showId ? lookupGdOddsChange(gdData, showId, cat.title) : null,
+        polymarketOdds: pmNominees ? findMarketOdds(pmNominees, show.title) : null,
+        polymarketOddsChange: findMarketOddsChange(pmCatData, show.title),
+        kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
+        kalshiOddsChange: findMarketOddsChange(kalshiCatData, show.title),
+        criticPicks: showId ? lookupCriticPicks(showId, null, cat.title) : [],
+        precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
+      };
+    });
+    return { ...cat, shows };
+  });
+}
+
 export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] {
   const allShows = getBroadwayShows();
   const eligible = getEligibleShows(allShows, season);
@@ -290,28 +335,14 @@ export function getNomineesByCategory(season: TonySeasonWindow): TonyCategory[] 
   const gdNormMap = buildGdNormMap(gdData);
 
   // 4 major categories: delegate to groupIntoCategories (handles score blending)
-  const majorCats = groupIntoCategories(eligible, { nomineesOnly: true, season }).map(cat => {
-    const showsWithOdds = cat.shows.map(show => {
-      const computedShow = eligible.find(s => s.slug === show.slug);
-      const showId = computedShow?.id ?? '';
-      const pmCatData = pmData?.categories[cat.title];
-      const kalshiCatData = kalshiData?.categories[cat.title];
-      const pmNominees = pmCatData?.nominees ?? null;
-      const kalshiNominees = kalshiCatData?.nominees ?? null;
-      return {
-        ...show,
-        awardsScore: showId ? computeSiteAwardScore(showId).displayScore : 0,
-        gdOdds: lookupGdOdds(gdData, gdNormMap, showId, cat.title),
-        gdOddsChange: showId ? lookupGdOddsChange(gdData, showId, cat.title) : null,
-        polymarketOdds: pmNominees ? findMarketOdds(pmNominees, show.title) : null,
-        polymarketOddsChange: findMarketOddsChange(pmCatData, show.title),
-        kalshiOdds: kalshiNominees ? findMarketOdds(kalshiNominees, show.title) : null,
-        kalshiOddsChange: findMarketOddsChange(kalshiCatData, show.title),
-        criticPicks: showId ? lookupCriticPicks(showId, null, cat.title) : [],
-        precursorWins: showId ? getPrecursorWins(showId, cat.title) : [],
-      };
-    });
-    showsWithOdds.sort((a, b) => (b.gdOdds ?? -1) - (a.gdOdds ?? -1));
+  // then enrich with odds/precursor/picks and sort by GD odds (nominees-page convention).
+  const enrichedMajor = enrichMajorCategoriesWithOdds(
+    groupIntoCategories(eligible, { nomineesOnly: true, season }),
+    season,
+  );
+  const majorCats = enrichedMajor.map(cat => {
+    const showsWithOdds = [...cat.shows];
+    showsWithOdds.sort((a, b) => ((b.gdOdds ?? -1) - (a.gdOdds ?? -1)));
     return { ...cat, shows: showsWithOdds };
   });
 
