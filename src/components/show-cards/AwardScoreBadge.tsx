@@ -110,8 +110,8 @@ export function AwardScoreBadge({ score, badge, inProgress, size = 'lg' }: Award
       : TIER_STYLES.eligible;
   const label = inProgress && badge === 'nominated' ? 'In the Hunt' : TIER_LABEL[badge];
 
-  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : size === 'md' ? 'w-14 h-14 lg:w-[68px] lg:h-[68px]' : 'w-11 h-11';
-  const sizeText = size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl lg:text-3xl' : 'text-lg';
+  const sizeBox = size === 'lg' ? 'w-16 h-16 sm:w-20 sm:h-20' : size === 'md' ? 'w-14 h-14 lg:w-[68px] lg:h-[68px]' : 'w-11 h-11 lg:w-[68px] lg:h-[68px]';
+  const sizeText = size === 'lg' ? 'text-3xl' : size === 'md' ? 'text-2xl lg:text-3xl' : 'text-lg lg:text-3xl';
 
   // inProgress → whole badge breathes (replaces prior asterisk). Uses the
   // `award-breathe` keyframe defined in globals.css.
