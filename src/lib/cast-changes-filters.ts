@@ -15,6 +15,17 @@ export function isAutoFlaggedEvent(event: CastEvent): boolean {
   return Boolean(event && event.note && event.note.includes('[AUTO-FLAGGED]'));
 }
 
+export function normalizeIdentifier(s?: string | null): string {
+  if (!s || typeof s !== 'string') return '';
+  return s
+    .replace(/["'“”‘’][^"'“”‘’]+["'“”‘’]/g, '')
+    .replace(/\([^)]*\)/g, '')
+    .replace(/\[[^\]]*\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 export function filterAutoFlagged(events: CastEvent[]): CastEvent[] {
   return events.filter(e => !isAutoFlaggedEvent(e));
 }
@@ -59,7 +70,7 @@ export function filterStaleAddedDates(
 export function dedupeByPersonShow(events: CastEvent[]): CastEvent[] {
   const groups = new Map<string, CastEvent>();
   for (const event of events) {
-    const key = `${event.name}::${event.type}::${event.role || ''}`;
+    const key = `${normalizeIdentifier(event.name)}::${event.type}::${normalizeIdentifier(event.role)}`;
     const existing = groups.get(key);
     if (!existing) {
       groups.set(key, event);
@@ -76,15 +87,27 @@ export function dedupeByPersonShow(events: CastEvent[]): CastEvent[] {
 }
 
 export function reconcileClosure(events: CastEvent[]): CastEvent[] {
-  const closureDates = new Set(
-    events.filter(e => e.type === 'closure' && e.date).map(c => c.date as string),
-  );
-  if (closureDates.size === 0) return events;
+  const closureDates = events
+    .filter(e => e.type === 'closure' && e.date)
+    .map(e => parseISO(e.date))
+    .filter((d): d is Date => d !== null);
+  if (closureDates.length === 0) return events;
+  const SLOP_DAYS = 3;
   return events.filter(e => {
     if (e.type !== 'departure') return true;
-    if (!e.date || !closureDates.has(e.date)) return true;
     const note = (e.note || '').toLowerCase();
-    if (note.includes('production closes') || note.includes('production ends')) return false;
+    const noteMatchesClosure =
+      note.includes('production closes') ||
+      note.includes('production ends') ||
+      note.includes('show closes') ||
+      note.includes('final performance of the production');
+    const departureDate = parseISO(e.date);
+    if (!departureDate) return !noteMatchesClosure;
+    for (const cDate of closureDates) {
+      const diff = Math.abs((departureDate.getTime() - cDate.getTime()) / DAY_MS);
+      if (diff === 0) return false;
+      if (diff <= SLOP_DAYS && noteMatchesClosure) return false;
+    }
     return true;
   });
 }

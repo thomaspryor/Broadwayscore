@@ -1768,8 +1768,49 @@ async function main() {
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(existing, null, 2) + '\n');
   console.log(`\n[Output] Wrote cast-changes.json with ${Object.keys(existing.shows).length} shows`);
 
+  // Self-audit: detect the failure modes that produced the 2026-05-23
+  // newsletter bugs (closure-as-departure, stale absences, contradicted
+  // closures, cross-show overlaps, name-variant duplicates). If any are
+  // present, fail the scraper run so CI catches the bad data BEFORE the
+  // commit/push step, instead of after-the-fact via the test gate.
+  const {
+    detectContradictions,
+    detectCrossShowConflicts,
+    dedupeByPersonShow,
+  } = require('./lib/cast-changes-filters');
+  let auditIssues = 0;
+  for (const [showId, show] of Object.entries(existing.shows || {})) {
+    const ups = show.upcoming || [];
+    const c = detectContradictions(ups, show.currentCast || []);
+    const dedupDelta = ups.length - dedupeByPersonShow(ups).length;
+    if (c.length > 0 || dedupDelta > 0) {
+      auditIssues += c.length + dedupDelta;
+      console.error(`[Audit] ${showId}: ${c.length} contradiction(s), ${dedupDelta} name-variant dup(s)`);
+      for (const w of c) {
+        if (w.kind === 'closure-vs-later-arrival') {
+          console.error(`  - closure ${w.closureDate} contradicted by later arrival(s)`);
+        } else if (w.kind === 'arrival-already-in-current-cast') {
+          console.error(`  - arrival redundant: ${w.name} already in cast since ${w.sinceDate}`);
+        }
+      }
+    }
+  }
+  const crossShow = detectCrossShowConflicts(existing.shows || {});
+  if (crossShow.length > 0) {
+    auditIssues += crossShow.length;
+    console.error(`[Audit] ${crossShow.length} cross-show overlap conflict(s)`);
+    for (const w of crossShow) {
+      console.error(`  - ${w.name}: ${w.showA} vs ${w.showB}`);
+    }
+  }
+
   const elapsed = ((Date.now() - TOTAL_START_TIME) / 1000).toFixed(1);
   console.log(`[Done] Completed in ${elapsed}s`);
+
+  if (auditIssues > 0) {
+    console.error(`\n[Audit] FAILED — ${auditIssues} issue(s) detected. Run \`node scripts/audit-cast-changes.js --write\` to clean, then re-run.`);
+    process.exit(1);
+  }
 }
 
 const { cleanup: scraperCleanup } = require('./lib/scraper');
