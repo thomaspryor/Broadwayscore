@@ -59,14 +59,16 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
-  const boxClass = size === 'md' ? 'w-11 h-11' : 'w-10 h-10';
+  // Both sizes use w-11 to match ScoreBadge sm dimensions (44px) so the prediction-percent
+  // boxes visually match the critic/audience score boxes in the same row.
+  const boxClass = 'w-11 h-11';
   const numClass = 'text-sm font-bold text-white leading-none';
   const changeRaw = change != null ? Math.abs(change) : 0;
   const changeDisplay = changeRaw >= 0.005
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className={`flex-shrink-0 ${size === 'md' ? 'w-11' : 'w-10'} flex items-center justify-center`}>
+    <div className="flex-shrink-0 w-11 flex items-center justify-center">
       <div className={`relative flex items-center justify-center bg-surface-overlay rounded-lg ${boxClass}`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
         <span className={`absolute bottom-0.5 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
@@ -206,7 +208,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
         </div>
         {!isPersonLevel && (
           <>
-            <div className={`${scoreW} text-center`}>
+            <div className={`${scoreW} text-center ml-3 sm:ml-4`}>
               <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
             </div>
             <div className={`${scoreW} text-center`}>
@@ -229,7 +231,7 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false }: { isMajor: bool
         )}
         {isPersonLevel && (
           <>
-            <div className="hidden sm:flex flex-col items-center w-20">
+            <div className="hidden sm:flex flex-col items-center w-20 ml-3 sm:ml-4">
               <span className={HEADER_LINE}>Precursor</span><span className={HEADER_LINE}>Awards</span>
             </div>
             <div className="flex flex-col items-center w-14">
@@ -282,7 +284,9 @@ function MajorNomineeRow({ show, winProbability, rank, ceremonyDate }: { show: T
         <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="md" />
         <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="md" />
         <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="md" />
-        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <div className="ml-3 sm:ml-4">
+          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        </div>
         <AudienceBox grade={show.audienceGrade} size="md" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
@@ -365,7 +369,7 @@ function PerformerRow({ show }: { show: TonyCategory['shows'][number] }) {
         <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
         <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
         <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
-        <div className="hidden sm:flex w-20 items-center justify-center">
+        <div className="hidden sm:flex w-20 items-center justify-center ml-3 sm:ml-4">
           <PrecursorChips wins={show.precursorWins} />
         </div>
         <div className="flex w-14 items-center justify-center">
@@ -419,7 +423,9 @@ function CraftRow({ show, ceremonyDate }: { show: TonyCategory['shows'][number];
         <OddsCol odds={show.gdOdds} change={show.gdOddsChange} size="sm" />
         <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} size="sm" />
         <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} size="sm" />
-        <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        <div className="ml-3 sm:ml-4">
+          <ScoreBadge score={show.compositeScore} size="sm" reviewCount={show.reviewCount} status={show.status} />
+        </div>
         <AudienceBox grade={show.audienceGrade} size="sm" />
         <AwardScoreBadge
           score={Math.round(show.awardsScore ?? 0)}
@@ -452,8 +458,8 @@ export function CategorySection({ category, winProbs, ceremonyDate }: {
 
   if (nominees.length === 0) return null;
 
-  const majorMinW = SHOW_OUR_PICK ? 'min-w-[760px]' : 'min-w-[708px]';
-  const minW = isMajor ? majorMinW : isPersonLevel ? 'min-w-[520px]' : 'min-w-[608px]';
+  const majorMinW = SHOW_OUR_PICK ? 'min-w-[780px]' : 'min-w-[728px]';
+  const minW = isMajor ? majorMinW : isPersonLevel ? 'min-w-[540px]' : 'min-w-[628px]';
 
   return (
     <section className="mb-6">

@@ -151,7 +151,7 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 }
 
 // Shared style tokens — mirrors nominees page
-const BOX_MD = 'w-14 h-14 text-2xl rounded-xl flex items-center justify-center font-bold';
+const BOX_MD = 'w-14 h-14 text-2xl lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-xl flex items-center justify-center font-bold';
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
 
 function AudienceBox({ grade }: { grade: SerializedTonyShow['audienceGrade'] }) {
@@ -178,9 +178,9 @@ function OddsCol({ odds, change }: { odds: number | null | undefined; change?: n
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className="flex-shrink-0 w-14 flex items-center justify-center">
-      <div className="relative flex items-center justify-center bg-surface-overlay rounded-xl w-14 h-14">
-        <span className="text-base font-bold text-white leading-none">
+    <div className="flex-shrink-0 w-14 lg:w-[68px] flex items-center justify-center">
+      <div className="relative flex items-center justify-center bg-surface-overlay rounded-xl w-14 h-14 lg:w-[68px] lg:h-[68px]">
+        <span className="text-base lg:text-lg font-bold text-white leading-none">
           {odds != null ? `${Math.round(odds * 100)}%` : '—'}
         </span>
         <span className={`absolute bottom-1 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
@@ -194,9 +194,9 @@ function OddsCol({ odds, change }: { odds: number | null | undefined; change?: n
 // Our Pick % box — same dimensions as OddsCol, with golden-rim styling for the predicted winner.
 function OurPickCol({ pct, isWinner }: { pct: number | null; isWinner: boolean }) {
   return (
-    <div className="flex-shrink-0 w-14 flex items-center justify-center">
-      <div className={`flex items-center justify-center rounded-xl w-14 h-14 ${isWinner ? 'bg-amber-500/10 border border-amber-500/40' : 'bg-surface-overlay'}`}>
-        <span className={`text-base font-bold leading-none ${isWinner ? 'text-amber-400' : pct != null ? 'text-white' : 'text-gray-500'}`}>
+    <div className="flex-shrink-0 w-14 lg:w-[68px] flex items-center justify-center">
+      <div className={`flex items-center justify-center rounded-xl w-14 h-14 lg:w-[68px] lg:h-[68px] ${isWinner ? 'bg-amber-500/10 border border-amber-500/40' : 'bg-surface-overlay'}`}>
+        <span className={`text-base lg:text-lg font-bold leading-none ${isWinner ? 'text-amber-400' : pct != null ? 'text-white' : 'text-gray-500'}`}>
           {pct != null ? `${pct}%` : '—'}
         </span>
       </div>
@@ -213,25 +213,25 @@ function CombinedColumnHeader() {
       <div className="w-16 sm:w-20 flex-shrink-0" aria-hidden="true" />
       <div className="flex-1 min-w-0 max-w-[100px] sm:max-w-none" />
       <div className="flex items-end gap-2 flex-shrink-0">
-        <div className="w-14 text-center">
+        <div className="w-14 lg:w-[68px] text-center">
           <span className={HEADER_LINE}>Our</span><span className={HEADER_LINE}>Pick</span>
         </div>
-        <div className="flex flex-col items-center w-14">
+        <div className="flex flex-col items-center w-14 lg:w-[68px]">
           <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
         </div>
-        <div className="flex flex-col items-center w-14">
+        <div className="flex flex-col items-center w-14 lg:w-[68px]">
           <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
         </div>
-        <div className="flex flex-col items-center w-14">
+        <div className="flex flex-col items-center w-14 lg:w-[68px]">
           <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
         </div>
-        <div className="w-14 text-center">
+        <div className="w-14 lg:w-[68px] text-center ml-3 sm:ml-4">
           <span className={HEADER_LINE}>Critic</span><span className={HEADER_LINE}>Score</span>
         </div>
-        <div className="w-14 text-center">
+        <div className="w-14 lg:w-[68px] text-center">
           <span className={HEADER_LINE}>Audience</span><span className={HEADER_LINE}>Grade</span>
         </div>
-        <div className="w-14 text-center" title="Award Score: combined momentum from Drama League, Outer Critics Circle, and Drama Desk">
+        <div className="w-14 lg:w-[68px] text-center" title="Award Score: combined momentum from Drama League, Outer Critics Circle, and Drama Desk">
           <span className={HEADER_LINE}>Award</span><span className={HEADER_LINE}>Score</span>
         </div>
         <div className="hidden sm:flex flex-col items-center w-20" title="Won the matching category at Drama League (DL), Outer Critics Circle (OCC), or Drama Desk (DD)">
@@ -324,7 +324,9 @@ function ShowRow({ show, rank, isUpcoming, globalIndex, outcomes, winProbability
           <OddsCol odds={show.gdOdds} change={show.gdOddsChange} />
           <OddsCol odds={show.kalshiOdds} change={show.kalshiOddsChange} />
           <OddsCol odds={show.polymarketOdds} change={show.polymarketOddsChange} />
-          <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+          <div className="ml-3 sm:ml-4">
+            <ScoreBadge score={show.compositeScore} size="md" reviewCount={show.reviewCount} status={show.status} />
+          </div>
           <AudienceBox grade={show.audienceGrade} />
           <div title="Award Score: momentum from precursor ceremonies (Drama League, Outer Critics Circle, Drama Desk)">
             <AwardScoreBadge
@@ -449,7 +451,7 @@ export default function TonyPredictionsTable({ title, description, shows, upcomi
       {/* Unified card — horizontally scrollable on mobile to match Nominations Center */}
       <div className="relative">
         <div className="overflow-x-auto">
-          <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${mode === 'combined' ? 'min-w-[860px]' : ''}`}>
+          <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${mode === 'combined' ? 'min-w-[860px] lg:min-w-[980px]' : ''}`}>
             {mode === 'combined' && <CombinedColumnHeader />}
             {allShows.map((show, i) => {
               const isUpcoming = upcoming.some(u => u.slug === show.slug);
