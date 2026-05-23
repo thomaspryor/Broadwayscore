@@ -104,6 +104,69 @@ function getDateValue(prop) {
   return prop.date.start;
 }
 
+// Local-timezone YYYY-MM-DD. Notion `date` properties without a time are
+// timezone-agnostic strings — "today" means the user's local today, not UTC.
+function todayLocal(offsetDays = 0) {
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// Accept YYYY-MM-DD or keywords: today, tomorrow, +Nd (N days from today).
+function normalizeDueDate(raw) {
+  const v = String(raw).trim();
+  if (v === 'today') return todayLocal(0);
+  if (v === 'tomorrow') return todayLocal(1);
+  const rel = v.match(/^\+(\d+)d$/);
+  if (rel) return todayLocal(parseInt(rel[1], 10));
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    throw new Error(`Invalid --due-date "${raw}" — use YYYY-MM-DD, today, tomorrow, or +Nd`);
+  }
+  return v;
+}
+
+// Build a Notion filter from --due keyword/date. Returns null for no filter.
+function buildDueFilter(raw) {
+  if (raw === undefined || raw === null) return null;
+  const v = String(raw).trim();
+  const today = todayLocal(0);
+  if (v === 'today') {
+    return { property: 'Due Date', date: { equals: today } };
+  }
+  if (v === 'overdue') {
+    return {
+      and: [
+        { property: 'Due Date', date: { before: today } },
+        { property: 'Status', status: { does_not_equal: 'Done' } },
+      ],
+    };
+  }
+  if (v === 'this-week' || v === 'week') {
+    return {
+      and: [
+        { property: 'Due Date', date: { on_or_after: today } },
+        { property: 'Due Date', date: { on_or_before: todayLocal(7) } },
+      ],
+    };
+  }
+  if (v === 'upcoming') {
+    return { property: 'Due Date', date: { on_or_after: today } };
+  }
+  if (v === 'none' || v === 'empty') {
+    return { property: 'Due Date', date: { is_empty: true } };
+  }
+  if (v === 'any' || v === 'set') {
+    return { property: 'Due Date', date: { is_not_empty: true } };
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+    return { property: 'Due Date', date: { equals: v } };
+  }
+  throw new Error(`Invalid --due "${raw}" — use today, tomorrow, overdue, this-week, upcoming, none, any, or YYYY-MM-DD`);
+}
+
 function formatCard(page) {
   const p = page.properties;
   const lastEditedAt = page.last_edited_time || null;
@@ -123,6 +186,7 @@ function formatCard(page) {
     outcome: getRichTextValue(p.Outcome),
     keyFiles: getRichTextValue(p['Key Files']),
     completedDate: getDateValue(p['Completed Date']),
+    dueDate: getDateValue(p['Due Date']),
     createdAt: page.created_time || null,
     lastEditedAt,
     ageDays,
@@ -435,6 +499,10 @@ async function createCard(args) {
     };
   }
 
+  if (args['due-date']) {
+    properties['Due Date'] = { date: { start: normalizeDueDate(args['due-date']) } };
+  }
+
   // Collect per-field overflow so we can write body sections after create.
   const overflow = {};
   if (args.notes) {
@@ -552,6 +620,15 @@ async function updateCard(args) {
     properties['Completed Date'] = {
       date: { start: args['completed-date'] },
     };
+  }
+
+  if (args['due-date'] !== undefined) {
+    // Pass --due-date="" or --due-date=none to clear an existing due date.
+    if (args['due-date'] === '' || args['due-date'] === 'none' || args['due-date'] === 'clear') {
+      properties['Due Date'] = { date: null };
+    } else {
+      properties['Due Date'] = { date: { start: normalizeDueDate(args['due-date']) } };
+    }
   }
 
   if (Object.keys(properties).length === 0) {
@@ -714,6 +791,11 @@ async function listCards(args) {
     }
   }
 
+  if (args.due !== undefined) {
+    const dueFilter = buildDueFilter(args.due);
+    if (dueFilter) filters.push(dueFilter);
+  }
+
   const filter = filters.length === 1
     ? filters[0]
     : filters.length > 1
@@ -754,13 +836,22 @@ async function listCards(args) {
   const wantsAllPages = staleDays !== null || freshDays !== null;
   const targetPageSize = Math.min(100, Math.max(limit, 50));
 
+  // When filtering by --due, sort by Due Date asc (then Priority); otherwise
+  // keep the long-standing Priority-asc default.
+  const sorts = args.due !== undefined
+    ? [
+        { property: 'Due Date', direction: 'ascending' },
+        { property: 'Priority', direction: 'ascending' },
+      ]
+    : [{ property: 'Priority', direction: 'ascending' }];
+
   let allResults = [];
   let cursor = undefined;
   do {
     const response = await notion.dataSources.query({
       data_source_id: DATABASE_ID,
       filter,
-      sorts: [{ property: 'Priority', direction: 'ascending' }],
+      sorts,
       page_size: targetPageSize,
       start_cursor: cursor,
     });
@@ -783,6 +874,7 @@ async function listCards(args) {
     name: c.name,
     status: c.status,
     priority: c.priority,
+    dueDate: c.dueDate,
     ageDays: c.ageDays,
     tags: c.tags.join(', '),
     id: c.id,
@@ -846,6 +938,8 @@ Options (create/update):
   --outcome "## Summary"    Outcome (prepends to existing by default)
   --key-files "file.js"     Key Files field
   --completed-date DATE     Completed Date (YYYY-MM-DD)
+  --due-date DATE           Due Date — YYYY-MM-DD, today, tomorrow, or +Nd
+                            On update: "", "none", or "clear" removes the due date
   --overwrite-outcome       Overwrite outcome instead of prepending
   --force "<reason>"        Bypass notes validation (reason must be ≥10 chars, e.g. "session marker, will fill on wrap-up")
 
@@ -864,7 +958,11 @@ Options (search/list):
   --stale-days N            (list only) Only cards not edited in N+ days.
                             Paginates through all results so the age filter
                             sees the full DB, not just the first page.
-  --fresh-days N            (list only) Only cards edited within last N days.`);
+  --fresh-days N            (list only) Only cards edited within last N days.
+  --due WHEN                (list only) Filter by Due Date. WHEN is one of:
+                            today, tomorrow, overdue, this-week, upcoming,
+                            none, any, or an explicit YYYY-MM-DD.
+                            Sorts results by Due Date ascending when set.`);
     process.exit(1);
   }
 
