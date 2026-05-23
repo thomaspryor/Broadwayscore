@@ -1767,6 +1767,51 @@ function validateOutletRegistryDuplicates() {
 }
 
 /**
+ * Validate outlet-registry.json field shapes:
+ *  - starScale must be a number in {4, 5, 10, 100} when present
+ *  - multiAuthor must be boolean (true or false) when present
+ *
+ * Without this, "5" (string) or 7 (unsupported) silently accept, and
+ * shouldFillDefaultCritic / parseStarRating/extractor silently misbehave.
+ * Ship-check (2026-05-22) caught the gap before any bad data shipped.
+ */
+function validateOutletRegistryFields() {
+  info('Checking outlet-registry.json field shapes (starScale, multiAuthor)...');
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping');
+    return;
+  }
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
+  const outlets = registry.outlets || registry;
+
+  const ALLOWED_STAR_SCALES = new Set([4, 5, 10, 100]);
+  let badFields = 0;
+  for (const [id, entry] of Object.entries(outlets)) {
+    if (id === '_aliasIndex' || id === '_meta') continue;
+    if (!entry || typeof entry !== 'object') continue;
+
+    if (entry.starScale !== undefined) {
+      if (typeof entry.starScale !== 'number' || !ALLOWED_STAR_SCALES.has(entry.starScale)) {
+        error(`[registry-field] outlet "${id}": starScale=${JSON.stringify(entry.starScale)} is invalid — must be one of ${[...ALLOWED_STAR_SCALES].join(', ')}`);
+        badFields++;
+      }
+    }
+    if (entry.multiAuthor !== undefined) {
+      if (typeof entry.multiAuthor !== 'boolean') {
+        error(`[registry-field] outlet "${id}": multiAuthor=${JSON.stringify(entry.multiAuthor)} must be a boolean (true or false)`);
+        badFields++;
+      }
+    }
+  }
+  if (badFields === 0) {
+    ok('outlet-registry.json starScale + multiAuthor field shapes are valid');
+  } else {
+    error(`Found ${badFields} invalid starScale/multiAuthor fields in outlet-registry.json`);
+  }
+}
+
+/**
  * Validate outlet alias integrity in outlet-registry.json.
  * Catches: cross-outlet alias collisions, _aliasIndex conflicts with aliases arrays.
  */
@@ -4019,6 +4064,8 @@ function runValidation() {
   validateOutletFragmentation();
   console.log('');
   validateOutletRegistryDuplicates();
+  console.log('');
+  validateOutletRegistryFields();
   console.log('');
   validateCrossMarketContamination();
   console.log('');

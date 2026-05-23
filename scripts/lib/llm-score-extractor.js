@@ -38,7 +38,10 @@ function resolveStarScaleFromRegistry(outletId) {
     }
   }
   const entry = _outletRegistryStarScaleCache.outlets[outletId];
-  return entry && Number.isFinite(entry.starScale) ? entry.starScale : null;
+  // Guard against bad data: starScale must be positive finite. A 0 or string
+  // would silently propagate Infinity/NaN into normalizedScore.
+  if (!entry || !Number.isFinite(entry.starScale) || entry.starScale <= 0) return null;
+  return entry.starScale;
 }
 
 // ============================================================
@@ -114,12 +117,15 @@ function extractFromJsonLd(html, starScale) {
   // Determine scale: explicit bestRating from JSON-LD > outlet's starScale > heuristic fallback.
   // The heuristic (rating <= 5 ? 5 : 100) was the bug pre-fix: it could not tell "4 out of 4"
   // from "4 out of 5" when bestRating was missing, silently producing a 100% score on a 4/5 review.
+  // Positive-finite guard on starScale prevents 0/NaN/"5" propagating to Infinity in division.
   const scaleMatch = html.match(/"bestRating"\s*:\s*"?(\d+)"?/i);
+  const validStarScale = Number.isFinite(starScale) && starScale > 0 ? starScale : null;
   const scale = scaleMatch
     ? parseInt(scaleMatch[1])
-    : (Number.isFinite(starScale) ? starScale : (rating <= 5 ? 5 : 100));
+    : (validStarScale != null ? validStarScale : (rating <= 5 ? 5 : 100));
 
-  // Reject unreasonable values
+  // Reject unreasonable values (including scale=0 if it somehow snuck past)
+  if (!Number.isFinite(scale) || scale <= 0) return null;
   if (rating < 1 || rating > scale) return null;
   // TimeOut retired 1-2 star reviews; "1/5" from JSON-LD is typically a guide page
   if (scale === 5 && rating < 2) return null;

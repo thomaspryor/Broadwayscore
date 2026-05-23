@@ -146,7 +146,11 @@ function getStarScaleForOutlet(outletId, opts) {
   const reg = getOutletRegistry(opts);
   if (!reg || !reg.outlets) return null;
   const entry = reg.outlets[outletId];
-  return entry && Number.isFinite(entry.starScale) ? entry.starScale : null;
+  // Guard against bad data: starScale must be a positive finite number.
+  // A bare 0 or string "5" or NaN would silently produce wrong results
+  // (Infinity / NaN propagating into normalized scores).
+  if (!entry || !Number.isFinite(entry.starScale) || entry.starScale <= 0) return null;
+  return entry.starScale;
 }
 
 function parseOriginalScore(rating, outletId, opts) {
