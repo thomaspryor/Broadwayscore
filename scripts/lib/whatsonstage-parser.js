@@ -57,10 +57,21 @@ function fetchWOSPage(year) {
 }
 
 /**
- * Extract the show/work name from a <li> element. Strategy:
- *   1. Last <i> in the element wins (show is always italicized).
- *   2. Fallback to full text content, stripping any leading
- *      "Performer Name, " prefix on the comma.
+ * Extract the show/work name from a <li> element.
+ *
+ * Wikipedia WOS cells use four shapes:
+ *   A. show with article link: <a><i><b>Show</b></i></a>
+ *   B. show with article + standalone modifier:
+ *      <a><i><b>Show</b></i></a> <i><b>25th anniversary</b></i>
+ *      (the trailing italic is a non-title note, not the winner)
+ *   C. performer + show: <b>Performer, <i>Show</i></b>
+ *   D. performer + linked show: Performer for <i><a>Show</a></i>
+ *
+ * Strategy: prefer the LAST <i> that has an <a href="/wiki/..."> association
+ * (either ancestor or descendant). That captures the linked title in A/B/D
+ * and ignores trailing italicized modifiers like "25th anniversary". If no
+ * <i> has any link association (case C — performer-comma-unlinked-show),
+ * fall back to the last <i>.
  */
 function extractShow(li) {
   // Use only direct text children + immediate <i>/<b> — IGNORE nested <ul>
@@ -69,15 +80,18 @@ function extractShow(li) {
   // Strip nested ULs so we only see this li's own text.
   for (const u of clone.querySelectorAll('ul')) u.remove();
 
-  const italics = clone.querySelectorAll('i');
+  const italics = Array.from(clone.querySelectorAll('i'));
   if (italics.length > 0) {
-    const last = italics[italics.length - 1];
-    const txt = last.textContent.replace(/\[\s*\d+\s*\]/g, '').trim();
+    const hasWikiLink = (i) =>
+      !!i.querySelector('a[href^="/wiki/"]') ||
+      (i.closest && !!i.closest('a[href^="/wiki/"]'));
+    const linked = italics.filter(hasWikiLink);
+    const pick = linked.length > 0 ? linked[linked.length - 1] : italics[italics.length - 1];
+    const txt = pick.textContent.replace(/\[\s*\d+\s*\]/g, '').trim();
     if (txt) return txt;
   }
   // Fallback: full text minus citations
   const full = clone.textContent.replace(/\[\s*\d+\s*\]/g, '').trim();
-  // Drop trailing footnote markers
   return full;
 }
 
