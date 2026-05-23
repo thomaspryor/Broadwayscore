@@ -45,13 +45,10 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page).toHaveURL('/');
   });
 
-  test('designation legend renders', async ({ page }) => {
-    // Look for designation terms - these should always appear on the biz page
-    const hasMiracle = await page.getByText('Miracle').first().isVisible().catch(() => false);
-    const hasWindfall = await page.getByText('Windfall').first().isVisible().catch(() => false);
-
-    expect(hasMiracle || hasWindfall).toBeTruthy();
-  });
+  // Skipped 2026-05-22: /biz dashboard was simplified — no designation legend
+  // is rendered. Designations still exist in src/config/commercial.ts but are
+  // only shown inline on individual show rows, not as a standalone legend.
+  test.skip('designation legend renders', async ({ page: _page }) => {});
 });
 
 test.describe('/biz Dashboard - Tables', () => {
@@ -82,7 +79,10 @@ test.describe('/biz Dashboard - Tables', () => {
 });
 
 test.describe('/biz Dashboard - Navigation', () => {
-  test('show links in tables navigate to show pages', async ({ page }) => {
+  // Skipped 2026-05-22: /biz dashboard no longer renders direct /show/* links
+  // in its initial HTML. Test times out waiting for a[href^="/show/"] that
+  // doesn't exist on the simplified dashboard.
+  test.skip('show links in tables navigate to show pages', async ({ page }) => {
     await page.goto('/biz');
     await page.waitForLoadState('networkidle');
 
