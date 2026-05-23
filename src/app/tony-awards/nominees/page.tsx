@@ -46,7 +46,7 @@ export default function TonyNomineesPage() {
   const categories = getNomineesByCategory(season);
   const totalCategories = categories.filter(c => c.shows.length > 0).length;
 
-  // Softmax win probabilities per major category (T=7, matches TonyPredictionsTable).
+  // Softmax win probabilities per major category (T=7, matches predictions [season] page).
   // Only computed for the 4 top categories — performer/craft don't have a model output.
   const T = 7;
   const categoryWinProbs = new Map<string, Map<string, number>>();

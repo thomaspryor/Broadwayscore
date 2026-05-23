@@ -54,7 +54,7 @@ export default function TonyPredictionsOverviewPage() {
     nominationsAnnounced ? { nomineesOnly: true, season: currentSeason } : undefined
   );
 
-  // Softmax win probabilities per category (T=7, same logic as TonyPredictionsTable)
+  // Softmax win probabilities per category (T=7, same logic as Nominations Center + predictions [season] page).
   const T = 7;
   const categoryWinProbs = new Map<string, Map<string, number>>();
   for (const cat of currentCategories) {

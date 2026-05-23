@@ -438,10 +438,21 @@ function CraftRow({ show, ceremonyDate }: { show: TonyCategory['shows'][number];
   );
 }
 
-export function CategorySection({ category, winProbs, ceremonyDate }: {
+export interface CategoryOutcome {
+  status: 'correct' | 'missed';
+  winnerTitle: string;
+  winnerRank: number | null;
+  predictedTitle: string | null;
+}
+
+export function CategorySection({ category, winProbs, ceremonyDate, sectionId, description, categoryOutcome, ineligible }: {
   category: TonyCategory;
   winProbs?: Map<string, number>;
   ceremonyDate: string | null;
+  sectionId?: string;
+  description?: string;
+  categoryOutcome?: CategoryOutcome;
+  ineligible?: Array<{ slug: string; title: string; note: string }>;
 }) {
   const isMajor = SHOW_LEVEL_CATEGORIES.has(category.title);
   const isPersonLevel = PERSON_LEVEL_CATEGORIES.has(category.title);
@@ -456,10 +467,46 @@ export function CategorySection({ category, winProbs, ceremonyDate }: {
   const minW = isMajor ? majorMinW : isPersonLevel ? 'min-w-[520px]' : 'min-w-[608px]';
 
   return (
-    <section className="mb-6">
-      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-1">
-        {category.title}
-      </h2>
+    <section className="mb-6" id={sectionId}>
+      <div className="mb-2 px-1">
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            {category.title}
+          </h2>
+          {categoryOutcome && (
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide ${
+              categoryOutcome.status === 'correct'
+                ? 'bg-emerald-500/25 text-emerald-300 ring-1 ring-emerald-400/40'
+                : 'bg-amber-500/25 text-amber-300 ring-1 ring-amber-400/40'
+            }`}>
+              {categoryOutcome.status === 'correct' ? (
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Correct
+                </>
+              ) : (
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Missed{categoryOutcome.winnerRank ? ` (#${categoryOutcome.winnerRank})` : ''}
+                </>
+              )}
+            </span>
+          )}
+        </div>
+        {description && <p className="text-xs text-gray-500 mt-0.5">{description}</p>}
+        {categoryOutcome?.status === 'missed' && (
+          <p className="text-xs text-gray-400 mt-1">
+            Winner: <span className="text-white font-medium">{categoryOutcome.winnerTitle}</span>
+            {categoryOutcome.predictedTitle && (
+              <> · We picked <span className="text-gray-300">{categoryOutcome.predictedTitle}</span></>
+            )}
+          </p>
+        )}
+      </div>
       <div className="relative">
       <div className="overflow-x-auto">
       <div className={`bg-surface-raised rounded-xl border border-white/5 divide-y divide-white/5 ${minW}`}>
@@ -484,6 +531,23 @@ export function CategorySection({ category, winProbs, ceremonyDate }: {
       </div>
       <div className="sm:hidden absolute inset-y-0 right-0 w-10 pointer-events-none bg-gradient-to-l from-[#1a1a24] to-transparent rounded-r-xl" />
       </div>
+      {ineligible && ineligible.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-white/5">
+          <h3 className="text-xs uppercase tracking-wide text-gray-500 font-medium mb-2">
+            Ruled ineligible by the Tony Administration Committee
+          </h3>
+          <ul className="space-y-1.5">
+            {ineligible.map(item => (
+              <li key={item.slug} className="text-sm">
+                <Link href={`/show/${item.slug}`} className="text-gray-300 hover:text-white font-medium">
+                  {item.title}
+                </Link>
+                <span className="text-gray-500"> — {item.note}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

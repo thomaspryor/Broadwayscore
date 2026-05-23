@@ -7,7 +7,6 @@ import { BlendedTrioDisplay } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
-import TonyPredictionsClient from '@/components/TonyPredictionsClient';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
@@ -79,7 +78,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
 
   // All 26 nominee categories (4 major + 8 performer + 14 craft) for this season.
-  // Used to render performer/craft categories below the 4-major TonyPredictionsClient.
+  // Used to render performer/craft categories alongside the 4-major CategorySection rows.
   const allNomineeCategories = getNomineesByCategory(season);
   const nonMajorCategories = allNomineeCategories.filter(c => !SHOW_LEVEL_CATEGORIES.has(c.title));
   const seasonRecord = tonySeasonForCeremonyYear(season.ceremonyYear);
@@ -101,6 +100,20 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     season,
   );
   const outcomes = getSeasonOutcomes(allShows, season);
+
+  // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
+  // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
+  const T = 7;
+  const categoryWinProbs = new Map<string, Map<string, number>>();
+  for (const cat of categories) {
+    const scored = cat.shows.filter(s => s.blendedScore != null);
+    if (scored.length === 0) continue;
+    const exps = scored.map(s => Math.exp(s.blendedScore! / T));
+    const sumExps = exps.reduce((a, b) => a + b, 0);
+    const probs = new Map<string, number>();
+    scored.forEach((show, i) => probs.set(show.slug, exps[i] / sumExps));
+    categoryWinProbs.set(cat.key, probs);
+  }
 
   // Shows ruled ineligible by the Tony Administration Committee, grouped by
   // category. Surfaced as a footer under each category so visitors who looked
@@ -439,13 +452,19 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* Category Sections — 4 major (our model has predictions for these) */}
-        <TonyPredictionsClient
-          categories={categories}
-          outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
-          categoryOutcomes={Object.keys(categoryOutcomeStatus).length > 0 ? categoryOutcomeStatus : undefined}
-          ineligibleByCategory={Object.keys(ineligibleByCategory).length > 0 ? ineligibleByCategory : undefined}
-        />
+        {/* 4 major categories — single shared CategorySection layout for visual parity with Nominations Center */}
+        {categories.map(cat => (
+          <CategorySection
+            key={cat.key}
+            sectionId={cat.key}
+            category={cat}
+            description={cat.description}
+            winProbs={categoryWinProbs.get(cat.key)}
+            ceremonyDate={ceremonyDate}
+            categoryOutcome={categoryOutcomeStatus[cat.key]}
+            ineligible={ineligibleByCategory[cat.key]}
+          />
+        ))}
 
         {/* Performer + craft categories — no model predictions, just nominee data + market odds.
             Gated to current season: GD/Kalshi/Polymarket odds files are current-season-only, so
