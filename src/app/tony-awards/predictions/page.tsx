@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { BlendedTrioDisplay } from '@/components/show-cards';
+import { TrackRecord } from '@/components/tony/TrackRecord';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -154,271 +155,50 @@ export default function TonyPredictionsOverviewPage() {
           </div>
         )}
 
-        {/* Current Season Picks — Prominent */}
+        {/* Current Season CTA — replaces full 4-card layout. Search traffic
+            (GSC, last 90d) overwhelmingly lands on /predictions/<season>; the
+            umbrella page was duplicating that. This single prominent card
+            sends users to the season detail. */}
         {picks.length > 0 && (
           <section className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white">
-                {currentSeason.label} {nominationsAnnounced ? 'Winner Predictions' : 'Predictions'}
-              </h2>
-              <Link
-                href={`/tony-awards/predictions/${currentSeason.label}`}
-                className="text-sm text-brand hover:text-brand-hover transition-colors"
-              >
-                See all categories &rarr;
-              </Link>
-            </div>
-            {/* Context bar — upcoming shows, key dates */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 mb-4 text-xs text-gray-500">
-              {totalUpcoming > 0 && (
-                <span>{totalUpcoming} show{totalUpcoming !== 1 ? 's' : ''} still to open</span>
-              )}
-              {!nominationsAnnounced && (
-                <span>Nominations &sim; May {currentSeason.ceremonyYear}</span>
-              )}
-              <span>Ceremony &sim; June {currentSeason.ceremonyYear}</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {picks.map(pick => (
-                <Link
-                  key={pick.label}
-                  href={`/tony-awards/predictions/${currentSeason.label}#${pick.key}`}
-                  className="p-4 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group"
-                >
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">{pick.label}</p>
-                  <div className="flex items-center gap-3">
-                    {/* Thumbnail */}
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-raised flex-shrink-0">
-                      {pick.show.thumbnailPath ? (
-                        <img
-                          src={getOptimizedImageUrl(pick.show.thumbnailPath, 'thumbnail')}
-                          alt={pick.show.title}
-                          className="w-full h-full object-cover"
-                          width={80}
-                          height={80}
-                          loading="eager"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-xl">🎭</div>
-                      )}
-                    </div>
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-base font-bold text-white truncate group-hover:text-brand transition-colors">
-                        {pick.show.title}
-                      </h3>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {pick.show.venue}
-                      </p>
-                    </div>
-                    {/* Win probabilities + component scores */}
-                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                      <div className="flex items-stretch gap-2">
-                        {pick.winProbability != null && (
-                          <div className="flex flex-col items-center justify-center min-w-[44px]">
-                            <span className="text-2xl font-bold text-white leading-none">{Math.round(pick.winProbability * 100)}%</span>
-                            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Our pick</span>
-                          </div>
-                        )}
-                        {pick.show.gdOdds != null && (
-                          <div className="flex flex-col items-center justify-center min-w-[44px] border-l border-white/10 pl-2">
-                            <span className="text-2xl font-bold text-amber-400 leading-none">{Math.round(pick.show.gdOdds * 100)}%</span>
-                            <span className="text-[9px] text-gray-500 uppercase tracking-wide mt-0.5">Gold Derby</span>
-                          </div>
-                        )}
-                        {pick.winProbability == null && pick.show.gdOdds == null && (
-                          <BlendedTrioDisplay
-                            blendedScore={pick.show.blendedScore}
-                            compositeScore={pick.show.compositeScore}
-                            reviewCount={pick.show.reviewCount}
-                            status={pick.show.status}
-                            audienceGrade={pick.show.audienceGrade}
-                            awardsScore={pick.show.awardsScore}
-                            awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
-                            size="md"
-                            showCrown
-                          />
-                        )}
-                      </div>
-                      <BlendedTrioDisplay
-                        blendedScore={pick.show.blendedScore}
-                        compositeScore={pick.show.compositeScore}
-                        reviewCount={pick.show.reviewCount}
-                        status={pick.show.status}
-                        audienceGrade={pick.show.audienceGrade}
-                        awardsScore={pick.show.awardsScore}
-                        awardsWeighted={pick.show.tonyCategoryKey === 'best-play'}
-                        size="sm"
-                        hideScore
-                      />
-                    </div>
+            <Link
+              href={`/tony-awards/predictions/${currentSeason.label}`}
+              className="block p-5 sm:p-6 rounded-xl border border-brand/20 bg-gradient-to-br from-brand/[0.08] to-brand/[0.02] hover:from-brand/[0.12] hover:to-brand/[0.04] transition-colors group"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-xs font-semibold text-brand uppercase tracking-wider mb-1">
+                    {nominationsAnnounced ? 'Live · Winner Predictions' : 'Live · Predictions'}
                   </div>
-                  {pick.runnerUp && (
-                    <p className="text-xs text-gray-500 mt-2.5 truncate border-t border-white/5 pt-2">
-                      Runner-up: <span className="text-gray-400 font-medium">{pick.runnerUp.title}</span>
-                      {pick.runnerUpProbability != null ? (
-                        <span className="text-gray-600 ml-1">({Math.round(pick.runnerUpProbability * 100)}%)</span>
-                      ) : pick.runnerUp.blendedScore != null ? (
-                        <span className="text-gray-600 ml-1">({Math.round(pick.runnerUp.blendedScore)})</span>
-                      ) : null}
-                    </p>
-                  )}
-                </Link>
-              ))}
-            </div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                    {currentSeason.label} Tony Awards
+                  </h2>
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">
+                    {totalUpcoming > 0 && (
+                      <span>{totalUpcoming} show{totalUpcoming !== 1 ? 's' : ''} still to open</span>
+                    )}
+                    {!nominationsAnnounced && (
+                      <span>Nominations &sim; May {currentSeason.ceremonyYear}</span>
+                    )}
+                    <span>Ceremony &sim; June {currentSeason.ceremonyYear}</span>
+                  </div>
+                  <p className="text-sm text-gray-300 mt-3 group-hover:text-white transition-colors">
+                    See our picks for all 4 categories &rarr;
+                  </p>
+                </div>
+                <svg className="w-8 h-8 text-brand flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
           </section>
         )}
 
-        {/* Track Record — always expanded; replaces prior collapsible accuracy breakdown */}
-        {(() => {
-          const completedSummaries = summaries.filter(s => s.hasTonyResults);
-          let totalHits = 0;
-          let totalCells = 0;
-          const misses: Array<{ seasonLabel: string; categoryLabel: string; ourPick: string; tonyWinner: string }> = [];
-          // Compute per-category accuracy directly from the same data the hero
-          // stat and grid use, so all three displays stay internally consistent
-          // even if computeBlendedAccuracyStats is computed via a different path.
-          const CAT_COLS = ['Musical', 'Play', 'Revival Musical', 'Revival Play'];
-          const catTotals: Record<string, { hits: number; total: number }> = {};
-          for (const c of CAT_COLS) catTotals[c] = { hits: 0, total: 0 };
-          for (const sum of completedSummaries) {
-            for (const h of sum.categoryHighlights) {
-              if (!h.winnerTitle) continue;
-              totalCells++;
-              if (catTotals[h.category]) catTotals[h.category].total++;
-              if (h.topShowTitle && h.winnerTitle === h.topShowTitle) {
-                totalHits++;
-                if (catTotals[h.category]) catTotals[h.category].hits++;
-              } else if (h.topShowTitle) {
-                misses.push({
-                  seasonLabel: sum.season.label,
-                  categoryLabel: h.category,
-                  ourPick: h.topShowTitle,
-                  tonyWinner: h.winnerTitle,
-                });
-              }
-            }
-          }
-          const accuracyPct = totalCells > 0 ? Math.round((totalHits / totalCells) * 1000) / 10 : 0;
-          const byCategory = CAT_COLS.map(c => ({
-            category: `Best ${c}`,
-            hits: catTotals[c].hits,
-            total: catTotals[c].total,
-            pct: catTotals[c].total > 0 ? Math.round((catTotals[c].hits / catTotals[c].total) * 1000) / 10 : 0,
-          }));
-          const sortedCompleted = [...completedSummaries].sort((a, b) => b.season.ceremonyYear - a.season.ceremonyYear);
-          return (
-            <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
-              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
-
-              {/* Hero stat */}
-              <div className="text-center pb-5 mb-5 border-b border-white/5">
-                <div className="text-5xl sm:text-6xl font-bold text-brand leading-none mb-2 tabular-nums tracking-tight">
-                  <span>{totalHits}</span><span className="text-gray-600 font-light mx-1">/</span><span>{totalCells}</span>
-                </div>
-                <p className="text-sm text-gray-300">
-                  Our #1 pick won across {stats.seasonCount} Tony seasons &middot; <span className="text-white font-semibold">{accuracyPct}% accuracy</span>
-                </p>
-              </div>
-
-              {/* Per-category bars — stacked label on mobile, inline on sm+ */}
-              <div className="space-y-3 sm:space-y-2.5 mb-6">
-                {byCategory.map(({ category, hits, total, pct }) => (
-                  <div key={category}>
-                    {/* Mobile: label row above bar */}
-                    <div className="flex items-baseline justify-between mb-1 sm:hidden">
-                      <span className="text-sm text-gray-300">{category}</span>
-                      <span className="text-xs text-gray-500 tabular-nums">
-                        {hits}/{total} <span className="text-white font-bold ml-1">{pct}%</span>
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="hidden sm:inline text-sm text-gray-300 w-44 flex-shrink-0 truncate">{category}</span>
-                      <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all ${pct === 100 ? 'bg-emerald-500/80' : pct >= 80 ? 'bg-brand/80' : 'bg-blue-500/70'}`}
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                      <span className="hidden sm:inline text-xs text-gray-500 w-10 text-right tabular-nums">{hits}/{total}</span>
-                      <span className="hidden sm:inline text-sm font-bold text-white w-14 text-right tabular-nums">{pct}%</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Season-by-season grid */}
-              <div className="mb-6">
-                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Season by season</h3>
-                <div className="overflow-x-auto -mx-1">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="text-[11px] text-gray-500 uppercase tracking-wide">
-                        <th className="text-left font-medium pb-2 px-1">Season</th>
-                        {CAT_COLS.map(c => (
-                          <th key={c} className="text-center font-medium pb-2 px-1">
-                            <span className="sm:hidden">{c.replace('Revival ', 'R. ').replace('Musical', 'Mus.').replace('Play', 'Play')}</span>
-                            <span className="hidden sm:inline">{c}</span>
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedCompleted.map(sum => (
-                        <tr key={sum.season.label} className="border-t border-white/5">
-                          <td className="py-2 px-1 text-white font-medium whitespace-nowrap">{sum.season.label}</td>
-                          {CAT_COLS.map(c => {
-                            const h = sum.categoryHighlights.find(x => x.category === c);
-                            if (!h || !h.winnerTitle) {
-                              return <td key={c} className="text-center text-gray-600 py-2 px-1">&mdash;</td>;
-                            }
-                            const hit = h.topShowTitle === h.winnerTitle;
-                            return (
-                              <td key={c} className="text-center py-2 px-1">
-                                {hit ? (
-                                  <span className="text-emerald-400" aria-label="hit">✓</span>
-                                ) : (
-                                  <span className="text-amber-400" aria-label="miss">✗</span>
-                                )}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Where we missed */}
-              {misses.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Where we missed ({misses.length})</h3>
-                  <p className="text-xs text-gray-500 mb-3">
-                    Our #1 didn&apos;t match the Tony winner in these category-seasons. Most are voter-sentiment upsets (cultural significance, star power) that blended scores can&apos;t fully capture.
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-2">
-                    {misses.map(m => (
-                      <div key={`${m.seasonLabel}-${m.categoryLabel}`} className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
-                        <div className="text-xs text-gray-500 mb-1">
-                          {m.seasonLabel} &middot; Best {m.categoryLabel}
-                        </div>
-                        <div className="text-sm text-gray-300 space-y-0.5">
-                          <div>
-                            <span className="text-gray-500 text-xs">Our #1:</span> <span className="text-white">{m.ourPick}</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-500 text-xs">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </section>
-          );
-        })()}
+        {/* Track Record — always expanded on the umbrella page */}
+        <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
+          <TrackRecord summaries={summaries} seasonCount={stats.seasonCount} />
+        </section>
 
         {/* Season Grid */}
         <section className="mb-10">
