@@ -307,7 +307,7 @@ function parseClaudeJsonArray(text) {
 function validateEvent(event) {
   if (!event || typeof event !== 'object') return false;
 
-  const validTypes = ['departure', 'arrival', 'absence', 'note'];
+  const validTypes = ['departure', 'arrival', 'absence', 'note', 'closure'];
   if (!validTypes.includes(event.type)) return false;
 
   if (event.type !== 'note') {
@@ -533,19 +533,24 @@ The article is about or mentions the show "${show.title}" (show ID: "${show.id}"
 
 Extract ALL cast change events mentioned for this specific Broadway production. For each event, return:
 {
-  "type": "departure" or "arrival" or "absence" or "note",
-  "name": "Person's full name",
-  "role": "Character/role name",
+  "type": "departure" or "arrival" or "absence" or "note" or "closure",
+  "name": "Person's full name (or production name for closure)",
+  "role": "Character/role name (or 'Production' for closure)",
   "date": "YYYY-MM-DD format (best guess from article)",
   "endDate": "YYYY-MM-DD (only for limited engagements with a known end date)",
   "note": "Brief context (max 100 chars)"
 }
 
 Classification rules:
-- "departure" = actor leaving a role (final performance, stepping down, contract ending)
+- "departure" = AN INDIVIDUAL ACTOR leaving a role (final performance, stepping down, contract ending) — only when the rest of the production continues
 - "arrival" = actor joining a show in a role (new cast, replacement, celebrity guest, returning)
 - "absence" = temporary planned time off (vacation, medical, scheduled days off) — include a "dates" array of YYYY-MM-DD strings
 - "note" = general cast news (e.g., "new cast TBA", "casting search underway")
+- "closure" = THE ENTIRE PRODUCTION is closing. Emit ONE closure event with name="${show.title}", role="Production", and date=final performance date. DO NOT also emit per-actor "departure" events for this same closure date — the closure event covers the whole cast.
+
+When to use "closure" vs "departure":
+- "Chess closes June 14" → ONE closure event, no per-actor departures on June 14
+- "Lea Michele's final performance is June 21, JoJo takes over June 23" → ONE departure for Lea, ONE arrival for JoJo (production continues)
 
 Date handling:
 - If article says "March 2026" without a specific day, use "2026-03-01"
@@ -556,6 +561,7 @@ CRITICAL RULES:
 - Only extract events for the BROADWAY production, not tours, West End, or film
 - Do not include understudies, swings, or standbys unless they're being promoted to principal
 - Do not invent events not mentioned in the article
+- A "run extension" announcement is NOT a closure. Only emit closure when the article explicitly states the show is ending.
 - Return ONLY a JSON array. If no cast changes found, return []
 
 Article text:
@@ -583,12 +589,30 @@ ${truncatedText}`;
       validEvents.push(event);
     }
 
-    return validEvents;
+    return suppressClosureRedundantDepartures(validEvents);
   } catch (e) {
     if (verbose) console.log(`    [LLM Error] ${e.message}`);
     stats.errors.push(`LLM extraction for ${show.id}: ${e.message}`);
     return [];
   }
+}
+
+/**
+ * If the LLM emitted both a closure event AND per-actor departures on the
+ * same date, drop the redundant departures. The closure event covers the
+ * whole cast — surfacing per-actor "Nicholas Christopher departs" alongside
+ * "Production closes" is misleading.
+ */
+function suppressClosureRedundantDepartures(events) {
+  const closureDates = new Set(
+    events.filter(e => e.type === 'closure' && e.date).map(e => e.date),
+  );
+  if (closureDates.size === 0) return events;
+  return events.filter(e => {
+    if (e.type !== 'departure') return true;
+    if (!e.date || !closureDates.has(e.date)) return true;
+    return false;
+  });
 }
 
 // ==================== Source 2: Official Site Cast Pages ====================
