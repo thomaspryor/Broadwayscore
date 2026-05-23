@@ -42,6 +42,7 @@ const {
   discoverHistoricalLeagues,
   findBigFourCategoryIds,
   BIG_FOUR_GD_TO_TONY,
+  gdGet,
 } = require('./lib/gd-api');
 
 function loadShows() {
@@ -141,6 +142,68 @@ async function discoveryMode() {
   process.exit(0);
 }
 
+/**
+ * Bulk-fetch all (cycle, Big Four category) odds responses and cache them
+ * under .cache/gd/. Used by --all-historical and --year-range.
+ *
+ * Rate limit: 1 req/sec ceiling (the cache makes re-runs free). On 429 we
+ * honor the Retry-After header. Each cache file is the raw API JSON for one
+ * (leagueId, gdCatId) pair, written through gdGet's read-through cache.
+ */
+async function bulkFetchHistorical({ minYear, maxYear }) {
+  const path = require('path');
+  const cacheDir = path.join(__dirname, '..', '.cache', 'gd');
+  console.error(`Bulk historical fetch → ${cacheDir}`);
+  console.error(`  Range: ${minYear ?? '∞'}–${maxYear ?? '∞'}`);
+
+  const leagues = (await discoverHistoricalLeagues()).filter(lg => {
+    if (minYear != null && lg.ceremonyYear < minYear) return false;
+    if (maxYear != null && lg.ceremonyYear > maxYear) return false;
+    return true;
+  });
+  console.error(`  Leagues in scope: ${leagues.length}`);
+
+  const fs = require('fs');
+  const awardsRaw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'awards.json'), 'utf8'));
+  const awards = awardsRaw.shows || awardsRaw;
+
+  let fetched = 0;
+  let skipped = 0;
+  let races = 0;
+  const emptyResponses = [];
+  for (const lg of leagues) {
+    const cats = await findBigFourCategoryIds(lg.leagueId);
+    const seasonKey = seasonKeyForCeremony(lg.ceremonyYear);
+    const awarded = bigFourAwardedInSeason(awards, seasonKey);
+    for (const [tonyName, info] of Object.entries(cats)) {
+      // Skip categories that weren't awarded that season (e.g. 2020 BRM).
+      // Allow current cycle (no winners yet) only if its season has any
+      // awards.json entries (i.e. nominees are recorded).
+      if (!awarded.has(tonyName) && awarded.size > 0) {
+        skipped++;
+        continue;
+      }
+      races++;
+      const apiPath = `/latest-odds-v3/${lg.leagueId}/${info.gdCatId}/combined`;
+      const body = await gdGet(apiPath, { cacheDir });
+      const rows = Array.isArray(body) ? body : Object.values(body || {}).filter(v => v && typeof v === 'object' && 'title' in v);
+      if (!rows.length) {
+        emptyResponses.push({ ceremonyYear: lg.ceremonyYear, category: tonyName });
+      }
+      // 1 req/sec ceiling on uncached (network) calls only
+      if (fetched < races) { await new Promise(r => setTimeout(r, 1000)); }
+      fetched = races;
+    }
+  }
+  console.error(`\nDone. ${races} races across ${leagues.length} cycles. Skipped (not awarded): ${skipped}.`);
+  if (emptyResponses.length) {
+    console.error(`\nEmpty responses (GD API returned no rows — backtest will exclude):`);
+    for (const e of emptyResponses) console.error(`  ${e.ceremonyYear} ${e.category}`);
+    console.error(`Usable races: ${races - emptyResponses.length} / ${races}`);
+  }
+  console.error(`Cache directory: ${cacheDir}`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   if (args.includes('--help') || args.includes('-h')) {
@@ -157,10 +220,21 @@ async function main() {
   const allHistorical = args.includes('--all-historical');
 
   if (yearRangeArg || allHistorical) {
-    console.error('--year-range and --all-historical are wired in S3-T2 — not yet implemented.');
-    console.error('Use --discovery-only to inspect the historical league list.');
-    console.error('Run with --year=YYYY for a single historical cycle.');
-    process.exit(2);
+    let minYear, maxYear;
+    if (allHistorical) {
+      minYear = 2013;
+      maxYear = 2025; // canonical completed-cycles set
+    } else {
+      const m = yearRangeArg.split('=')[1].match(/^(\d{4})-(\d{4})$/);
+      if (!m) {
+        console.error('--year-range must be YYYY-YYYY (e.g. 2013-2025)');
+        process.exit(2);
+      }
+      minYear = parseInt(m[1], 10);
+      maxYear = parseInt(m[2], 10);
+    }
+    await bulkFetchHistorical({ minYear, maxYear });
+    process.exit(0);
   }
 
   // --year is an explicit historical alias for --season; both map to the same flow.
