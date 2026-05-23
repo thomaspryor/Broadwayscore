@@ -9,6 +9,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import TonyPredictionsClient from '@/components/TonyPredictionsClient';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
+import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
@@ -258,34 +259,38 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
 
         {/* Header + Season Selector */}
         <div className="mb-8">
-          <div className="flex flex-wrap items-center gap-3 mb-2">
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">
-              Tony Awards Predictions
-            </h1>
-            <SeasonSelect
-              basePath="/tony-awards/predictions"
-              seasons={allSeasonLabels}
-              currentSeason={season.label}
-            />
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-3xl sm:text-4xl font-bold text-white">
+                Tony Awards Predictions
+              </h1>
+              <SeasonSelect
+                basePath="/tony-awards/predictions"
+                seasons={allSeasonLabels}
+                currentSeason={season.label}
+              />
+            </div>
+            {ceremonyDate && (
+              <span className="hidden sm:inline-flex text-xs font-medium px-3 py-1.5 rounded-full bg-brand/10 text-brand border border-brand/20 flex-shrink-0 whitespace-nowrap self-start mt-1">
+                Ceremony {new Date(`${ceremonyDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </span>
+            )}
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? 'Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.'
+              ? 'Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score. Updated daily.'
               : winnerCount > 0
                 ? `How our per-category model would have predicted the ${season.ceremonyYear} Tony Awards.`
-                : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history.'}
+                : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
           </p>
-          <div className="flex flex-wrap gap-4 mt-3 text-sm text-gray-500">
-            <span>{eligible.length} eligible shows</span>
-            <span className="text-gray-600">&middot;</span>
-            <span>{totalScored} reviewed</span>
-            {totalUpcoming > 0 && (
-              <>
-                <span className="text-gray-600">&middot;</span>
-                <span>{totalUpcoming} upcoming</span>
-              </>
-            )}
-          </div>
+          {ceremonyDate && isCurrent && (
+            <div className="mt-2 flex items-center gap-2">
+              <span className="sm:hidden text-xs font-medium px-2.5 py-1 rounded-full bg-brand/10 text-brand border border-brand/20 whitespace-nowrap">
+                Ceremony {new Date(`${ceremonyDate}T12:00:00Z`).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </span>
+              <CeremonyCountdown ceremonyDate={ceremonyDate} />
+            </div>
+          )}
         </div>
 
         {/* Report Card (past seasons only) */}
@@ -384,15 +389,6 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                 </div>
               ))}
             </div>
-          </div>
-        )}
-
-        {/* Post-Nomination Banner */}
-        {nominationsAnnounced && (
-          <div className="mb-8 p-4 sm:p-5 rounded-xl border border-brand/20 bg-brand/5">
-            <p className="text-sm text-gray-300">
-              <span className="text-brand font-semibold">Nominations announced</span> &mdash; showing only nominees, ranked by blended score to predict winners.
-            </p>
           </div>
         )}
 
