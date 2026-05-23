@@ -95,6 +95,11 @@ public/data/show-lookup.json
 # Generated actor-slug manifest for Tony nominees page (regenerated at build time
 # from data/cast/* — replaces dynamic process.cwd() reads that bloated NFT bundle)
 data/actor-slugs.json
+# Generated cast manifest for /cast/[slug] profile pages (regenerated at build
+# time from data/cast/* — feeds data-actors.ts so it doesn't dynamically read
+# data/cast/ at runtime, which would re-bloat the NFT bundle and 404 every
+# /cast/[slug] when data/cast/** is in outputFileTracingExcludes).
+data/cast-manifest.json
 
 # LLM classification checkpoint (ephemeral, crash-recovery only)
 .classify-wp-checkpoint.json

@@ -542,6 +542,17 @@ jobs:
         # existing warnings (e.g. <img> tag advisories) don't block merges.
         if: always()
         run: npx next lint
+      - name: Audit NFT-excluded runtime reads
+        # if: always() so this runs even if tsc/lint fail above — independent gate.
+        # Why this gate exists: 2026-05-23 — commit e2154a1b23 added data/cast/**
+        # to next.config.js outputFileTracingExcludes as a belt-and-suspenders
+        # guard, but src/lib/data-actors.ts + data-cast-obc.ts still read those
+        # files dynamically at runtime. In production the directory was missing
+        # from the bundle, so every /cast/[slug] returned 404 silently (locally
+        # everything worked because data/cast/ exists on disk). This audit
+        # detects the same conflict statically before it ships.
+        if: always()
+        run: node scripts/audit-nft-excluded-runtime-reads.js
 
   unit-tests:
     name: Unit Tests

@@ -2,14 +2,28 @@
 // Builds profiles for Broadway actors from cast data files
 // Import directly — NOT through data.ts barrel (bundle protection)
 
-import * as fs from 'fs';
-import * as path from 'path';
-import type { ActorProfile, ActorShowEntry, ShowCastFile, CastMemberOBC } from './data-types';
+import type { ActorProfile, ActorShowEntry } from './data-types';
 import { getBroadwayShows, slugify } from './data-core';
 import { getAudienceBuzz } from './data-audience';
+// Static manifest: data/cast-manifest.json is built by
+// scripts/build-cast-manifest.js in prebuild. It collapses ~2400 per-show
+// cast files (~300MB) into a single static-required JSON so Vercel's NFT
+// can keep data/cast/** out of the serverless bundle. NEVER replace this
+// with fs.readdirSync('data/cast') — that re-bundles every cast file
+// (tripping Vercel's 300MB limit) AND silently 404s every /cast/[slug]
+// page when next.config.js excludes data/cast/** from NFT.
+// See memory/feedback_vercel_nft_dynamic_paths.md.
+import castManifest from '../../data/cast-manifest.json';
+import actorImagesData from '../../data/actor-images.json';
 
-const CAST_DIR = path.join(process.cwd(), 'data', 'cast');
-const ACTOR_IMAGES_FILE = path.join(process.cwd(), 'data', 'actor-images.json');
+type CastManifestEntry = {
+  showId: string;
+  castType: 'obc' | 'replacement' | 'current';
+  name: string;
+  ibdbPersonId: string;
+  role: string;
+  flags?: string[];
+};
 
 // ============================================
 // Lazy-init state
@@ -42,99 +56,79 @@ function buildAllProfiles() {
     showMap: Map<string, { entry: ActorShowEntry; flags: Set<string> }>;
   }>();
 
-  // Read all cast files
-  if (!fs.existsSync(CAST_DIR)) return;
-  const files = fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json'));
+  const buzzCache = new Map<string, ReturnType<typeof getAudienceBuzz> | null>();
+  const allEntries = (castManifest as { entries: CastManifestEntry[] }).entries;
 
-  for (const file of files) {
-    let castFile: ShowCastFile;
-    try {
-      castFile = JSON.parse(fs.readFileSync(path.join(CAST_DIR, file), 'utf-8'));
-    } catch {
-      continue;
-    }
-
-    const show = showMap.get(castFile.showId);
+  for (const member of allEntries) {
+    const show = showMap.get(member.showId);
     if (!show) continue;
 
-    const buzz = getAudienceBuzz(castFile.showId);
-
-    const processCast = (members: CastMemberOBC[], castType: ActorShowEntry['castType']) => {
-      for (const member of members) {
-        if (!member.ibdbPersonId) continue;
-
-        let actor = actorMap.get(member.ibdbPersonId);
-        if (!actor) {
-          actor = {
-            name: member.name,
-            ibdbPersonId: member.ibdbPersonId,
-            showMap: new Map(),
-          };
-          actorMap.set(member.ibdbPersonId, actor);
-        }
-
-        // Use the most recent name spelling
-        if (castType === 'current') {
-          actor.name = member.name;
-        }
-
-        // Dedup per show — keep first entry (OBC takes priority for role/flags)
-        if (!actor.showMap.has(castFile.showId)) {
-          actor.showMap.set(castFile.showId, {
-            entry: {
-              title: show.title,
-              slug: show.slug,
-              showId: castFile.showId,
-              role: member.role,
-              castType,
-              venue: show.venue,
-              openingDate: show.openingDate || null,
-              closingDate: show.closingDate || null,
-              status: show.status,
-              type: show.type,
-              thumbnail: show.images?.thumbnail || null,
-              isRevival: !!(show.tags && show.tags.includes('revival')),
-              score: show.criticScore?.score ?? null,
-              audienceScore: buzz?.combinedScore ?? null,
-              category: show.category,
-              wasObc: castType === 'obc',
-            },
-            flags: new Set(member.flags || []),
-          });
-        } else {
-          const existing = actor.showMap.get(castFile.showId)!;
-          // Upgrade castType: if actor is in currentCast, mark as 'current'
-          // even if they were originally OBC (they're still performing)
-          if (castType === 'current') {
-            existing.entry.castType = 'current';
-          }
-          // Preserve wasObc flag if they were originally in the opening night cast
-          if (castType === 'obc') {
-            existing.entry.wasObc = true;
-          }
-          if (member.flags) {
-            for (const flag of member.flags) existing.flags.add(flag);
-          }
-        }
-      }
-    };
-
-    processCast(castFile.openingNightCast || [], 'obc');
-    if (castFile.replacements) {
-      processCast(castFile.replacements, 'replacement');
+    let buzz = buzzCache.get(member.showId);
+    if (buzz === undefined) {
+      buzz = getAudienceBuzz(member.showId) ?? null;
+      buzzCache.set(member.showId, buzz);
     }
-    if (castFile.currentCast) {
-      processCast(castFile.currentCast, 'current');
+
+    const castType = member.castType;
+
+    let actor = actorMap.get(member.ibdbPersonId);
+    if (!actor) {
+      actor = {
+        name: member.name,
+        ibdbPersonId: member.ibdbPersonId,
+        showMap: new Map(),
+      };
+      actorMap.set(member.ibdbPersonId, actor);
+    }
+
+    // Use the most recent name spelling
+    if (castType === 'current') {
+      actor.name = member.name;
+    }
+
+    // Dedup per show — keep first entry (OBC takes priority for role/flags).
+    // Manifest preserves source-file order: obc → replacement → current,
+    // matching the original processCast() invocation order.
+    if (!actor.showMap.has(member.showId)) {
+      actor.showMap.set(member.showId, {
+        entry: {
+          title: show.title,
+          slug: show.slug,
+          showId: member.showId,
+          role: member.role,
+          castType,
+          venue: show.venue,
+          openingDate: show.openingDate || null,
+          closingDate: show.closingDate || null,
+          status: show.status,
+          type: show.type,
+          thumbnail: show.images?.thumbnail || null,
+          isRevival: !!(show.tags && show.tags.includes('revival')),
+          score: show.criticScore?.score ?? null,
+          audienceScore: buzz?.combinedScore ?? null,
+          category: show.category,
+          wasObc: castType === 'obc',
+        },
+        flags: new Set(member.flags || []),
+      });
+    } else {
+      const existing = actor.showMap.get(member.showId)!;
+      // Upgrade castType: if actor is in currentCast, mark as 'current'
+      // even if they were originally OBC (they're still performing)
+      if (castType === 'current') {
+        existing.entry.castType = 'current';
+      }
+      // Preserve wasObc flag if they were originally in the opening night cast
+      if (castType === 'obc') {
+        existing.entry.wasObc = true;
+      }
+      if (member.flags) {
+        for (const flag of member.flags) existing.flags.add(flag);
+      }
     }
   }
 
-  // Load actor images map
-  let actorImages: Record<string, { name: string; imageUrl: string; source: string }> = {};
-  try {
-    if (fs.existsSync(ACTOR_IMAGES_FILE)) {
-      actorImages = JSON.parse(fs.readFileSync(ACTOR_IMAGES_FILE, 'utf-8'));
-    }
-  } catch { /* no images available */ }
+  const actorImages = actorImagesData as Record<string, { name: string; imageUrl: string; source: string }>;
 
   // Build profiles from accumulated data
   for (const [, data] of Array.from(actorMap.entries())) {
