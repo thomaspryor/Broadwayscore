@@ -93,23 +93,42 @@ test('no per-actor departure on a closure date with closure note', () => {
   assert.deepEqual(offenders, [], `closure-redundant departures:\n${offenders.join('\n')}`);
 });
 
-test('chess-2025: no Nicholas Christopher departure while JoJo arrival remains', () => {
+test('regression: closure event suppresses per-actor departures with closure note', () => {
+  // Fixture-based, NOT dependent on live data. The 2026-05-23 newsletter bug
+  // was: scraper emitted "production closes" as a per-actor departure for
+  // Nicholas Christopher; UI rendered "Nicholas Christopher departs". This
+  // test pins the fix unconditionally so it can't self-delete as live data
+  // evolves.
+  const fixture = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-14', addedDate: '2026-05-02' },
+    { type: 'departure', name: 'Nicholas Christopher', role: 'Anatoly', date: '2026-06-14', addedDate: '2026-05-02', note: 'Production closes June 14, 2026 after second extension into Tony season' },
+    { type: 'departure', name: 'Lea Michele', role: 'Florence', date: '2026-06-14', addedDate: '2026-05-02', note: 'Production ends' },
+    { type: 'arrival', name: 'Joanna "JoJo" Levesque', role: 'Florence', date: '2026-06-23', endDate: '2026-09-13', addedDate: '2026-04-08' },
+  ];
+  const out = applyPublicFilters(fixture, new Date('2026-05-23'));
+  const departures = out.filter(e => e.type === 'departure');
+  assert.equal(
+    departures.length,
+    0,
+    `regression: per-actor departures with closure note must be suppressed. Got: ${JSON.stringify(departures, null, 2)}`,
+  );
+});
+
+test('chess-2025 live data: Nicholas Christopher MUST NOT appear as departure', () => {
+  // Unconditional — does NOT short-circuit when JoJo's arrival is gone. The
+  // bug class is "NC visible as departure" and must NEVER be true regardless
+  // of other shape changes.
   const chess = data.shows && data.shows['chess-2025'];
-  if (!chess) return; // OK if Chess is gone
+  if (!chess) return; // genuinely OK if Chess data is removed entirely
   const filtered = applyPublicFilters(chess.upcoming || [], TODAY);
   const ncDepartures = filtered.filter(
     e => e.type === 'departure' && normalizeIdentifier(e.name) === normalizeIdentifier('Nicholas Christopher'),
   );
-  const jojoArrivals = filtered.filter(
-    e => e.type === 'arrival' && normalizeIdentifier(e.name).includes('levesque'),
+  assert.equal(
+    ncDepartures.length,
+    0,
+    `regression: Nicholas Christopher visible as departure in chess-2025 — this is the 2026-05-23 newsletter bug class.\nDeparture: ${JSON.stringify(ncDepartures, null, 2)}`,
   );
-  if (jojoArrivals.length > 0) {
-    assert.equal(
-      ncDepartures.length,
-      0,
-      `regression: Nicholas Christopher departure event visible alongside JoJo arrival — this is exactly the 2026-05-23 newsletter bug.\nDeparture: ${JSON.stringify(ncDepartures, null, 2)}`,
-    );
-  }
 });
 
 test('no cross-show overlap conflicts (actor in two shows, no exit from either)', () => {

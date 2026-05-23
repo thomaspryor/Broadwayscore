@@ -118,6 +118,19 @@ test('normalizeIdentifier strips nickname quotes and parens', () => {
   assert.equal(normalizeIdentifier('TBD [understudy]'), 'tbd');
 });
 
+test('normalizeIdentifier preserves apostrophes in real names', () => {
+  // Regression: the old regex treated lone apostrophes in real names as
+  // quote delimiters, span-stripping characters between them.
+  assert.equal(normalizeIdentifier("Sean O'Malley"), "sean o'malley");
+  assert.equal(normalizeIdentifier("D'Angelo Brown"), "d'angelo brown");
+  assert.equal(normalizeIdentifier("Mary-Kate O'Brien"), "mary-kate o'brien");
+  // Real name + bracketed nickname: nickname strips, name keeps apostrophe
+  assert.equal(normalizeIdentifier("Mary-Kate \"MK\" O'Brien"), "mary-kate o'brien");
+  // Real name + lone-apostrophe-nickname must NOT swallow the real name
+  // ("Sean O'Malley 'Slick' Jones" — only 'Slick' is a balanced nickname)
+  assert.equal(normalizeIdentifier("Sean O'Malley 'Slick' Jones"), "sean o'malley jones");
+});
+
 test('dedupeByPersonShow collapses name variants', () => {
   const events = [
     { type: 'arrival', name: 'Joanna "JoJo" Levesque', role: 'Florence', addedDate: '2026-04-08' },
@@ -164,6 +177,31 @@ test('detectContradictions flags arrival redundant with currentCast', () => {
 });
 
 test('detectCrossShowConflicts flags overlapping arrivals without exit', () => {
+  // Two arrivals with explicit endDates that overlap, no exit from either.
+  // Realistic: same actor announced in two shows for the same week.
+  const data = {
+    'gatsby-2024': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Meyer', date: '2026-05-01', endDate: '2026-07-01' },
+      ],
+    },
+    'moulin-rouge-2020': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Zidler', date: '2026-05-19', endDate: '2026-08-01' },
+      ],
+    },
+  };
+  const out = detectCrossShowConflicts(data);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].kind, 'cross-show-overlap-without-exit');
+  assert.equal(out[0].name, 'Eric Anderson');
+});
+
+test('detectCrossShowConflicts: missing endDate is capped at 30 days (no false positives for far-apart arrivals)', () => {
+  // Two arrivals 8 months apart, no endDate on either. With the +365 day
+  // default this would falsely flag; with +30 day cap it correctly does NOT.
   const data = {
     'gatsby-2024': {
       currentCast: [],
@@ -179,9 +217,7 @@ test('detectCrossShowConflicts flags overlapping arrivals without exit', () => {
     },
   };
   const out = detectCrossShowConflicts(data);
-  assert.equal(out.length, 1);
-  assert.equal(out[0].kind, 'cross-show-overlap-without-exit');
-  assert.equal(out[0].name, 'Eric Anderson');
+  assert.equal(out.length, 0, 'two arrivals 8 months apart with no endDate must not flag as conflict');
 });
 
 test('detectCrossShowConflicts ignores conflicts when actor has absence from one show', () => {

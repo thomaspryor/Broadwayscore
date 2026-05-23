@@ -27,6 +27,7 @@ const {
   detectContradictions,
   detectCrossShowConflicts,
   dedupeByPersonShow,
+  normalizeIdentifier,
 } = require('./lib/cast-changes-filters');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
@@ -181,15 +182,24 @@ function main() {
     // implying a "new" arrival that's actually historical.
     const inCastDups = contradictions.filter(c => c.kind === 'arrival-already-in-current-cast');
     if (inCastDups.length > 0) {
+      // Key on NORMALIZED name + role + arrival date so the drop step matches
+      // the same quote/paren-variant entries that detectContradictions flagged.
+      // Without this, "Joanna 'JoJo' Levesque" gets flagged by the
+      // contradiction detector (which normalizes) but missed by the drop
+      // filter (which used raw strings).
       const dropKeys = new Set(
-        inCastDups.map(c => `${c.name}::${c.role}::${c.arrivalDate}`),
+        inCastDups.map(
+          c => `${normalizeIdentifier(c.name)}::${normalizeIdentifier(c.role)}::${c.arrivalDate}`,
+        ),
       );
       const before = upcoming.length;
       upcoming = upcoming.filter(
         e =>
           !(
             e.type === 'arrival' &&
-            dropKeys.has(`${e.name}::${e.role}::${e.date}`)
+            dropKeys.has(
+              `${normalizeIdentifier(e.name)}::${normalizeIdentifier(e.role)}::${e.date}`,
+            )
           ),
       );
       report.inCastArrivalsDropped += before - upcoming.length;
