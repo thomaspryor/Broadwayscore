@@ -29,7 +29,13 @@ function loadJSON(p) {
 
 function percentile(sortedArr, p) {
   if (sortedArr.length === 0) return null;
-  return sortedArr[Math.min(sortedArr.length - 1, Math.floor(sortedArr.length * p))];
+  if (sortedArr.length === 1) return sortedArr[0];
+  const rank = (sortedArr.length - 1) * p;
+  const lo = Math.floor(rank);
+  const hi = Math.ceil(rank);
+  if (lo === hi) return sortedArr[lo];
+  const frac = rank - lo;
+  return Math.round(sortedArr[lo] * (1 - frac) + sortedArr[hi] * frac);
 }
 
 function getMarket(show) {
@@ -95,13 +101,22 @@ function getStatsCached() {
 function predictReviewCount(input) {
   const market = input.market || getMarket(input);
   const isRevival = input.isRevival === true;
-  const key = cohortKey({ market, isRevival });
   const stats = getStatsCached();
-  const c = stats[key];
-  if (!c || c.n === 0) {
-    return { expected: null, p25: null, p75: null, cohort: key, n: 0 };
+  const primaryKey = cohortKey({ market, isRevival });
+  const primary = stats[primaryKey];
+  if (primary && primary.n >= 5) {
+    return { expected: primary.median, p25: primary.p25, p75: primary.p75, cohort: primaryKey, n: primary.n };
   }
-  return { expected: c.median, p25: c.p25, p75: c.p75, cohort: key, n: c.n };
+  // Fallback: same market, opposite revival flag
+  const altKey = cohortKey({ market, isRevival: !isRevival });
+  const alt = stats[altKey];
+  if (alt && alt.n >= 5) {
+    return { expected: alt.median, p25: alt.p25, p75: alt.p75, cohort: altKey + ' (fallback)', n: alt.n };
+  }
+  if (primary && primary.n > 0) {
+    return { expected: primary.median, p25: primary.p25, p75: primary.p75, cohort: primaryKey, n: primary.n };
+  }
+  return { expected: null, p25: null, p75: null, cohort: primaryKey, n: 0 };
 }
 
 if (require.main === module) {
