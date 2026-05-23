@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-23T11:33:48.725Z",
+  "timestamp": "2026-05-23T21:15:38.358Z",
   "stats": {
-    "totalReviews": 37179,
-    "alreadyFlagged": 16286,
+    "totalReviews": 37172,
+    "alreadyFlagged": 16275,
     "dateGuardCatches": 103,
     "directorMismatch": 805,
-    "tvFilmSignals": 1021,
+    "tvFilmSignals": 1022,
     "londonSignals": 581,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3826
+    "noPublishDate": 3817
   },
   "findings": [
     {
@@ -13561,6 +13561,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+      "file": "culturesauce--thom-geier.json",
+      "score": 64,
+      "publishDate": "August 4th, 2025",
+      "url": "https://culturesauce.com/2025/08/04/can-i-be-frank-maya-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -27603,7 +27617,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
