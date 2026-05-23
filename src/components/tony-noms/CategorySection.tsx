@@ -27,8 +27,8 @@ export const PERSON_LEVEL_CATEGORIES = new Set([
 ]);
 
 // All rendered boxes use w-11 h-11 text-lg for visual harmony. ScoreBadge/AwardScoreBadge size="sm" matches.
-const BOX_MD = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
-const BOX_SM = 'w-11 h-11 text-lg rounded-lg flex items-center justify-center font-bold';
+const BOX_MD = 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg flex items-center justify-center font-bold';
+const BOX_SM = 'w-11 h-11 text-lg lg:w-[68px] lg:h-[68px] lg:text-3xl rounded-lg flex items-center justify-center font-bold';
 const HEADER_LINE = 'text-[9px] font-semibold uppercase tracking-wide text-gray-500 block leading-none';
 
 type ShowGrade = TonyCategory['shows'][number]['audienceGrade'];
@@ -60,15 +60,16 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
   // Both sizes use w-11 to match ScoreBadge sm dimensions (44px) so the prediction-percent
-  // boxes visually match the critic/audience score boxes in the same row.
-  const boxClass = 'w-11 h-11';
-  const numClass = 'text-sm font-bold text-white leading-none';
+  // boxes visually match the critic/audience score boxes in the same row. Boxes grow to
+  // w-[68px] on lg viewports (desktop) per design.
+  const boxClass = 'w-11 h-11 lg:w-[68px] lg:h-[68px]';
+  const numClass = 'text-sm lg:text-xl font-bold text-white leading-none';
   const changeRaw = change != null ? Math.abs(change) : 0;
   const changeDisplay = changeRaw >= 0.005
     ? (changeRaw * 100 < 1 ? `${(changeRaw * 100).toFixed(1)}` : `${Math.round(changeRaw * 100)}`)
     : null;
   return (
-    <div className="flex-shrink-0 w-11 flex items-center justify-center">
+    <div className="flex-shrink-0 w-11 lg:w-[68px] flex items-center justify-center">
       <div className={`relative flex items-center justify-center bg-surface-overlay rounded-lg ${boxClass}`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
         <span className={`absolute bottom-0.5 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
@@ -87,9 +88,9 @@ function OurPickBox({ winProbability, isWinner }: { winProbability: number | nul
   const baseTintStyle: React.CSSProperties = { background: 'rgba(245, 158, 11, 0.08)' };
   if (pct == null) {
     return (
-      <div className="w-11 flex items-center justify-center flex-shrink-0">
+      <div className="w-11 lg:w-[68px] flex items-center justify-center flex-shrink-0">
         <div
-          className="w-11 h-11 rounded-lg flex items-center justify-center border border-amber-400/15 text-amber-400/40 text-sm font-bold"
+          className="w-11 h-11 lg:w-[68px] lg:h-[68px] rounded-lg flex items-center justify-center border border-amber-400/15 text-amber-400/40 text-sm lg:text-xl font-bold"
           style={baseTintStyle}
         >—</div>
       </div>
@@ -99,9 +100,9 @@ function OurPickBox({ winProbability, isWinner }: { winProbability: number | nul
   const winnerStyle: React.CSSProperties = { background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35))' };
   const nonWinnerClass = 'border border-amber-400/20 text-amber-300';
   return (
-    <div className="w-11 flex items-center justify-center flex-shrink-0">
+    <div className="w-11 lg:w-[68px] flex items-center justify-center flex-shrink-0">
       <div
-        className={`w-11 h-11 rounded-lg flex items-center justify-center font-bold text-sm leading-none ${isWinner ? winnerClass : nonWinnerClass}`}
+        className={`w-11 h-11 lg:w-[68px] lg:h-[68px] rounded-lg flex items-center justify-center font-bold text-sm lg:text-xl leading-none ${isWinner ? winnerClass : nonWinnerClass}`}
         style={isWinner ? winnerStyle : baseTintStyle}
         title="Our model's win probability — critic, audience, and precursor signal."
       >
@@ -188,7 +189,7 @@ function PressPicks({ picks }: { picks?: string[] }) {
 
 function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = false }: { isMajor: boolean; isPersonLevel?: boolean; hideMarketOdds?: boolean }) {
   const thumbnailW = isMajor ? 'w-16 sm:w-20' : 'w-11 sm:w-12';
-  const scoreW = 'w-11';
+  const scoreW = 'w-11 lg:w-[68px]';
   const padding = isMajor ? 'px-3 pr-5 sm:px-4 sm:pr-6' : 'px-2.5 sm:px-3';
   const titleMaxW = isMajor ? 'max-w-[100px] sm:max-w-none' : !isPersonLevel ? 'max-w-[90px] sm:max-w-none' : 'max-w-[80px] sm:max-w-none';
 
@@ -198,20 +199,20 @@ function SectionColumnHeader({ isMajor, isPersonLevel = false, hideMarketOdds = 
       <div className={`flex-1 min-w-0 ${titleMaxW}`} />
       <div className="flex items-end gap-2 flex-shrink-0">
         {SHOW_OUR_PICK && isMajor && (
-          <div className="flex flex-col items-center w-11">
+          <div className="flex flex-col items-center w-11 lg:w-[68px]">
             <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Our</span>
             <span className="text-[9px] font-semibold uppercase tracking-wide text-amber-400/80 block leading-none">Pick</span>
           </div>
         )}
         {!hideMarketOdds && (
           <>
-            <div className="flex flex-col items-center w-11">
+            <div className="flex flex-col items-center w-11 lg:w-[68px]">
               <span className={HEADER_LINE}>Gold</span><span className={HEADER_LINE}>Derby</span>
             </div>
-            <div className="flex flex-col items-center w-11">
+            <div className="flex flex-col items-center w-11 lg:w-[68px]">
               <span className={HEADER_LINE}>Kalshi</span><span className={HEADER_LINE}>&nbsp;</span>
             </div>
-            <div className="flex flex-col items-center w-11">
+            <div className="flex flex-col items-center w-11 lg:w-[68px]">
               <span className={HEADER_LINE}>Poly</span><span className={HEADER_LINE}>market</span>
             </div>
           </>
@@ -494,18 +495,18 @@ export function CategorySection({ category, winProbs, ceremonyDate, sectionId, d
 
   if (nominees.length === 0) return null;
 
-  // Min-width bumped by 20px from prior values to absorb the new ml-3 sm:ml-4
-  // spacer between odds columns and score columns. Drops by ~156px when market
-  // odds are hidden (3 boxes × w-11 + gaps). Tailwind JIT requires literal class
-  // strings, not template-interpolated values.
+  // Min-width: base values cover mobile (w-11 boxes), lg variant covers desktop
+  // (w-[68px] boxes). Each box grows by 24px on lg; ~24px gap added between odds
+  // and score groups. Drops by ~156px (mobile) / 228px (lg) when market odds
+  // are hidden (3 boxes × w-11 + gaps). Tailwind JIT requires literal classes.
   let minW: string;
   if (isMajor) {
-    if (SHOW_OUR_PICK) minW = hideMarketOdds ? 'min-w-[624px]' : 'min-w-[780px]';
-    else               minW = hideMarketOdds ? 'min-w-[572px]' : 'min-w-[728px]';
+    if (SHOW_OUR_PICK) minW = hideMarketOdds ? 'min-w-[624px] lg:min-w-[780px]' : 'min-w-[780px] lg:min-w-[1008px]';
+    else               minW = hideMarketOdds ? 'min-w-[572px] lg:min-w-[712px]' : 'min-w-[728px] lg:min-w-[940px]';
   } else if (isPersonLevel) {
-    minW = hideMarketOdds ? 'min-w-[384px]' : 'min-w-[540px]';
+    minW = hideMarketOdds ? 'min-w-[384px] lg:min-w-[520px]' : 'min-w-[540px] lg:min-w-[748px]';
   } else {
-    minW = hideMarketOdds ? 'min-w-[472px]' : 'min-w-[628px]';
+    minW = hideMarketOdds ? 'min-w-[472px] lg:min-w-[612px]' : 'min-w-[628px] lg:min-w-[840px]';
   }
 
   return (
