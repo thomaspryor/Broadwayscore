@@ -9,6 +9,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
+import { TrackRecord } from '@/components/tony/TrackRecord';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
@@ -24,6 +25,7 @@ import {
   hasNominationsBeenAnnounced,
   serializeShow,
   computeBlendedAccuracyStats,
+  getSeasonSummary,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -74,6 +76,24 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const allShows = getBroadwayShows();
   // Single source of truth for accuracy stats — same function as /tony-awards/predictions overview.
   const accuracyStats = computeBlendedAccuracyStats(allShows);
+  // Summaries for the collapsible Track Record block — same data used by the
+  // umbrella /tony-awards/predictions page so the two stay in sync.
+  const allSummaries = allSeasons.map(s => getSeasonSummary(allShows, s));
+  // Compute accuracy the same way the TrackRecord component does (from
+  // summaries) so the collapsed-state summary number matches the expanded
+  // breakdown. computeBlendedAccuracyStats uses a different scoring path
+  // that gets stale relative to the live recipes.
+  let trackRecordHits = 0;
+  let trackRecordCells = 0;
+  for (const sum of allSummaries) {
+    if (!sum.hasTonyResults) continue;
+    for (const h of sum.categoryHighlights) {
+      if (!h.winnerTitle) continue;
+      trackRecordCells++;
+      if (h.topShowTitle && h.winnerTitle === h.topShowTitle) trackRecordHits++;
+    }
+  }
+  const trackRecordPct = trackRecordCells > 0 ? Math.round((trackRecordHits / trackRecordCells) * 1000) / 10 : 0;
   const blendedHits = Math.round((accuracyStats.blendedRank1WinPct / 100) * accuracyStats.categorySeasonCount);
   const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
 
@@ -339,6 +359,25 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
           </p>
         </div>
+
+        {/* Track Record — collapsed by default on the season page.
+            Summary line stays inline so the credibility signal is visible
+            without expanding; full breakdown lives inside the details. */}
+        <details className="mb-8 group rounded-xl border border-white/5 bg-surface-overlay">
+          <summary className="p-4 sm:p-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors">
+            <div className="flex items-baseline gap-2 sm:gap-3 flex-wrap text-sm">
+              <span className="text-brand font-bold tabular-nums">{trackRecordPct}%</span>
+              <span className="text-gray-300">Our #1 pick wins the Tony</span>
+              <span className="text-gray-500 text-xs">across {accuracyStats.seasonCount} seasons &middot; tap to see track record</span>
+            </div>
+            <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div className="px-4 sm:px-5 pb-5 pt-2 border-t border-white/5">
+            <TrackRecord summaries={allSummaries} seasonCount={accuracyStats.seasonCount} />
+          </div>
+        </details>
 
         {/* Report Card (past seasons only) */}
         {reportCard.length > 0 && (
