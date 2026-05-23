@@ -216,10 +216,17 @@ jobs:
           fi
           echo "✓ No demo-only flags leaked to production"
 
-      - name: Cache Next.js build
+      - name: Cache Next.js build + prebuild artifacts
         uses: actions/cache@v4
         with:
-          path: .next/cache
+          # .next/cache: Next.js webpack/module incremental cache (kept across
+          # deploys after 2026-05-23 workflow fix — see 3191971fd5).
+          # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
+          # that skip ~30s regen when inputs unchanged. Same cache key so they
+          # invalidate together on dep updates.
+          path: |
+            .next/cache
+            data/cache
           key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
           restore-keys: |
             nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
