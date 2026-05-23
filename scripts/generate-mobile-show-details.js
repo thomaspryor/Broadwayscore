@@ -29,44 +29,42 @@ const outputDir = path.join(__dirname, '../public/data/shows');
 const DETAIL_SCHEMA_VERSION = 1;
 
 // ===========================================
-// HASH-GATE: skip regen when inputs haven't changed
+// HASH-GATE (two-layer, per-show)
 // ===========================================
-// Saves ~30s on code-only deploys (the always-run prebuild list in
-// scripts/prebuild.sh invokes this script unconditionally). On data-changing
-// deploys (CI rebuild commits → dispatched deploy) the hash mismatches and
-// full regen runs as normal.
+// Global Tier-2 hash-gate (one big hash, skip-everything-or-regen-everything)
+// shipped 2026-05-23 (commit 521b63c567) but didn't deliver in practice: CI
+// workflows commit data files between every deploy, so the global hash always
+// mismatched and we always regenerated all 1,345 files.
 //
-// Inputs that must invalidate the cache:
-//   - 12 data files this script reads (direct + transitive via lib/*)
-//   - data/cast/*.json (per-show input)
-//   - scripts/lib/*.js (transitive logic — catching compute-critic-score
-//     edits etc. is the whole reason we hash the lib dir, not just __filename)
-//   - This script's own source + DETAIL_SCHEMA_VERSION constant
+// This per-show variant: every show gets its own fingerprint covering the
+// specific slices of data that contribute to ITS output. CI commits that touch
+// 1-50 shows of 1,345 invalidate just those — most files skip the regen path.
 //
-// Cache file lives at data/cache/mobile-show-details/last-hash.json
-// (gitignored; persisted across CI runs via the GHA cache action — see
-// .github/workflows/vercel-deploy.yml "Cache Next.js build" step which we
-// extend to include data/cache/).
+// Two-layer structure:
+//   - globalHash: schema version, script source, scripts/lib/*.js, and global
+//     data inputs that affect EVERY show (outlet-registry, outlet-tiers,
+//     blog-reviews-for-scoring, curated-historical-shows). If globalHash
+//     changes, every per-show hash is forced to mismatch (no stale entries
+//     can survive).
+//   - perShowHash: globalHash + that show's specific slices (its row in
+//     shows.json, its reviews subset, its audience-buzz entry, etc.) +
+//     its cast/<id>.json file.
+//
+// Cache file format:
+//   { globalHash, schemaVersion, shows: { <show-id>: <hash>, ... },
+//     fileCount, timestamp }
+// Lives at data/cache/mobile-show-details/last-hash.json (gitignored;
+// persisted across CI runs via the .github/workflows/vercel-deploy.yml
+// "Cache Next.js build" step which includes data/cache/).
 const HASH_CACHE_DIR = path.join(__dirname, '../data/cache/mobile-show-details');
 const HASH_CACHE_FILE = path.join(HASH_CACHE_DIR, 'last-hash.json');
 
-const HASH_INPUT_FILES = [
-  'data/shows.json',
-  'data/reviews.json',
-  'data/outlet-registry.json',
-  'data/audience-buzz.json',
-  'data/tony-nominations.json',
-  'data/critic-consensus.json',
-  'data/show-schedules.json',
-  'data/grosses.json',
-  'data/lottery-rush.json',
-  'data/theater-metadata.json',
-  'data/video-reviews.json',
-  // Transitive inputs read by lib/* — flagged by 2026-05-23 second-opinion
-  // review: edits to these MUST invalidate the cache or output drifts silently.
-  'data/blog-reviews-for-scoring.json',
-  'data/curated-historical-shows.json',
-  'src/config/outlet-tiers.json',
+// Files that affect ALL shows (folded into globalHash, not per-show)
+const GLOBAL_INPUT_FILES = [
+  'data/outlet-registry.json',          // outlet display names + tier overrides → every review entry
+  'data/blog-reviews-for-scoring.json', // unioned with reviews.json via loadReviewsWithBlog
+  'data/curated-historical-shows.json', // affects shouldHideReviews for every show
+  'src/config/outlet-tiers.json',       // authoritative tier resolution for every outlet
 ];
 
 function hashFileIfExists(hash, relPath) {
@@ -77,26 +75,17 @@ function hashFileIfExists(hash, relPath) {
   }
 }
 
-function computeInputHash() {
+function computeGlobalHash() {
   const hash = crypto.createHash('sha256');
-  // Schema version + script source — bumping the constant or editing the
-  // script invalidates regardless of data changes.
+  // Schema version + script source: editing the script or bumping the schema
+  // version invalidates every show (correct — output format / logic changed).
   hash.update(`schema=${DETAIL_SCHEMA_VERSION}`);
   hash.update(fs.readFileSync(__filename));
-  // Listed data inputs
-  for (const rel of HASH_INPUT_FILES) hashFileIfExists(hash, rel);
-  // Cast directory (per-show input files)
-  const castDir = path.join(dataDir, 'cast');
-  if (fs.existsSync(castDir)) {
-    const castFiles = fs.readdirSync(castDir).filter(f => f.endsWith('.json')).sort();
-    for (const f of castFiles) {
-      hash.update(`cast/${f}`);
-      hash.update(fs.readFileSync(path.join(castDir, f)));
-    }
-  }
+  // Global data files
+  for (const rel of GLOBAL_INPUT_FILES) hashFileIfExists(hash, rel);
   // ALL scripts/lib/*.js — catches transitive logic changes
-  // (compute-critic-score.js, outlet-tiers.js, etc.) without enumerating
-  // which libs this script imports.
+  // (compute-critic-score.js, outlet-tiers.js, etc.). Coarse but correct:
+  // any lib edit could affect any show's output.
   const libDir = path.join(__dirname, 'lib');
   if (fs.existsSync(libDir)) {
     const libFiles = fs.readdirSync(libDir).filter(f => f.endsWith('.js')).sort();
@@ -108,17 +97,47 @@ function computeInputHash() {
   return hash.digest('hex');
 }
 
+// Per-show inputs: stable across runs because all sources come from
+// JSON.parse of files (V8 preserves insertion order). Coerce undefined → null
+// before stringify — `JSON.stringify(undefined)` returns the literal undefined,
+// not a string, which would corrupt the hash chain on shows missing a slice.
+function computePerShowHash(show, globalHash, ctx) {
+  const hash = crypto.createHash('sha256');
+  hash.update(globalHash);
+  hash.update(JSON.stringify(show ?? null));
+  hash.update(JSON.stringify(ctx.reviewsByShow[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.audienceBuzz[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.tonyByShow[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.criticConsensus[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.showSchedules[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.grossesData[show.slug] ?? null));
+  hash.update(JSON.stringify(ctx.lotteryRush[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.theaterMeta[show.venue] ?? null));
+  hash.update(JSON.stringify(ctx.videoReviewsByShow[show.id] ?? null));
+  // Cast file: hash content if present, label if absent — keeps "no cast"
+  // distinguishable from "empty cast file."
+  const castFile = path.join(dataDir, 'cast', `${show.id}.json`);
+  if (fs.existsSync(castFile)) {
+    hash.update('cast=present');
+    hash.update(fs.readFileSync(castFile));
+  } else {
+    hash.update('cast=absent');
+  }
+  return hash.digest('hex');
+}
+
 function readCachedHash() {
   try { return JSON.parse(fs.readFileSync(HASH_CACHE_FILE, 'utf-8')); }
   catch { return null; }
 }
 
-function writeCachedHash(hash, fileCount) {
+function writeCachedHash(globalHash, showHashes, fileCount) {
   fs.mkdirSync(HASH_CACHE_DIR, { recursive: true });
   fs.writeFileSync(HASH_CACHE_FILE, JSON.stringify({
-    hash,
-    fileCount,
+    globalHash,
     schemaVersion: DETAIL_SCHEMA_VERSION,
+    shows: showHashes,
+    fileCount,
     timestamp: new Date().toISOString(),
   }, null, 2));
 }
@@ -130,23 +149,6 @@ const FORCE_REGEN = process.argv.includes('--force') || process.env.FORCE_REGENE
 // ===========================================
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
-}
-
-if (!FORCE_REGEN) {
-  const currentHash = computeInputHash();
-  const cached = readCachedHash();
-  if (cached?.hash === currentHash) {
-    // Safety: only skip if output dir actually has expected file count.
-    // Guards against silent skip when someone manually rm-rf'd public/data/shows.
-    const outputFiles = fs.existsSync(outputDir)
-      ? fs.readdirSync(outputDir).filter(f => f.endsWith('.json')).length
-      : 0;
-    if (outputFiles >= 1500) {
-      console.log(`✓ Hash unchanged (${currentHash.substring(0, 8)}…) — skipped regen. ${outputFiles} files exist from last build at ${cached.timestamp}.`);
-      process.exit(0);
-    }
-    console.warn(`⚠ Hash matched but output sparse (${outputFiles} files < 1500) — forcing regen.`);
-  }
 }
 
 let shows = [];
@@ -306,11 +308,58 @@ const visibleShows = shows.filter(show =>
   showsWithScores.has(show.id) || show.status !== 'closed'
 );
 
+// Per-show hash gate setup. computePerShowHash() reads from these — bundle
+// them into a context object so the helper doesn't depend on hoisted
+// globals (and is unit-testable later if we want).
+const HASH_CTX = {
+  reviewsByShow, audienceBuzz, tonyByShow, criticConsensus,
+  showSchedules, grossesData, lotteryRush, theaterMeta, videoReviewsByShow,
+};
+
+// Always compute globalHash — needed both for skip decisions AND for writing
+// a fresh cache after --force runs (otherwise --force leaves a stale cache
+// that would skip-incorrectly on the next non-force run).
+const globalHash = computeGlobalHash();
+const cachedHashes = FORCE_REGEN ? null : readCachedHash();
+// If globalHash invalidated, ignore all per-show entries (treat as cold cache).
+// This is the "global invalidation cascade" — every show forced to regen
+// when scripts/lib, schema, or global data files change.
+const usableCache = (!FORCE_REGEN && cachedHashes?.globalHash === globalHash)
+  ? cachedHashes.shows || {}
+  : null;
+if (FORCE_REGEN) {
+  console.log('✓ Force regen requested — bypassing per-show cache');
+} else if (!cachedHashes) {
+  console.log('✓ No cache file — cold run, every show will regenerate');
+} else if (!usableCache) {
+  console.log(`✓ Global hash changed (was=${cachedHashes.globalHash?.substring(0,8)}…, now=${globalHash.substring(0,8)}…) — every show will regenerate`);
+}
+
 let generated = 0;
+let skipped = 0;
 let totalSize = 0;
+const newShowHashes = {}; // showId → perShowHash for ALL processed shows (skipped + regenerated)
 const invariantChecks = new Map(); // showId → expected reviewEntries.length at write time
 
 for (const show of visibleShows) {
+  // Per-show hash gate. If usableCache exists and this show's cached hash
+  // matches AND the output file is on disk, skip the heavy regen. Carry the
+  // hash forward into newShowHashes so the NEXT run can also skip this show
+  // (without this, skipped shows would silently drop out of cache after one
+  // run and force-regen on the run after — the bug Claude reviewer flagged).
+  if (usableCache) {
+    const cachedHash = usableCache[show.id];
+    if (cachedHash) {
+      const perShowHash = computePerShowHash(show, globalHash, HASH_CTX);
+      const filePath = path.join(outputDir, `${show.id}.json`);
+      if (cachedHash === perShowHash && fs.existsSync(filePath)) {
+        newShowHashes[show.id] = perShowHash; // carry forward
+        skipped++;
+        continue;
+      }
+    }
+  }
+
   const allShowReviews = reviewsByShow[show.id] || [];
 
   // Critic-level dedup: keep one review per (outlet, critic) pair, most recent by
@@ -620,6 +669,10 @@ for (const show of visibleShows) {
   invariantChecks.set(show.id, reviewEntries.length);
   generated++;
   totalSize += json.length;
+  // Record this show's hash so the next run can skip it if inputs unchanged.
+  // Computed AFTER write so a write failure (which throws) doesn't leave a
+  // stale "we already wrote this" entry in the cache.
+  newShowHashes[show.id] = computePerShowHash(show, globalHash, HASH_CTX);
 }
 
 // Stage-2→3 invariant: verify each written file's review count matches the
@@ -643,7 +696,7 @@ if (invariantErrors > 0) {
   console.error(`✗ Invariant check failed: ${invariantErrors} show(s) have stage-2→3 count mismatches. Aborting.`);
   process.exit(1);
 }
-console.log(`✓ Invariant: ${generated} shows, all stage-2→3 counts match.`);
+console.log(`✓ Invariant: ${generated} written shows pass stage-2→3 counts (${skipped} skipped via hash cache).`);
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;
 const totalKB = (totalSize / 1024).toFixed(0);
@@ -651,13 +704,23 @@ const totalKB = (totalSize / 1024).toFixed(0);
 console.log(`✓ Generated ${generated} show detail files (${totalKB}KB total, ${avgSize}KB avg)`);
 console.log(`  Output: ${outputDir}/`);
 
-// Write hash cache for next run's skip gate. Only persist on successful regen
-// (invariant check above process.exit(1)'s on failure, so reaching here means
-// output is good).
+// Summary line for CI observability (parseable: `cache=… globalHash=… regenerated=N skipped=M total=T`)
+const totalProcessed = generated + skipped;
+const cacheStatus = FORCE_REGEN
+  ? 'force'
+  : !cachedHashes ? 'cold'
+  : !usableCache ? 'global-invalidate'
+  : (skipped === totalProcessed ? 'hit' : (skipped > 0 ? 'partial' : 'miss'));
+console.log(`mobile-details: cache=${cacheStatus} globalHash=${(globalHash || '').substring(0, 8)} regenerated=${generated} skipped=${skipped} total=${totalProcessed}`);
+
+// Write per-show hash cache for next run's skip gate. Only persist on
+// successful regen (invariant check above process.exit(1)'s on failure, so
+// reaching here means output is good). newShowHashes carries forward skipped
+// shows' hashes too — without that, the next run would see them as missing
+// and force-regen.
 try {
-  const finalHash = computeInputHash();
-  writeCachedHash(finalHash, generated);
-  console.log(`✓ Hash cache written (${finalHash.substring(0, 8)}…, ${generated} files)`);
+  writeCachedHash(globalHash, newShowHashes, totalProcessed);
+  console.log(`✓ Hash cache written (globalHash=${globalHash.substring(0, 8)}…, ${Object.keys(newShowHashes).length} shows)`);
 } catch (err) {
   console.warn(`⚠ Failed to write hash cache (non-fatal): ${err.message}`);
 }
