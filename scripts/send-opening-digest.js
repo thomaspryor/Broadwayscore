@@ -33,6 +33,18 @@ const https = require('https');
 
 const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
+const {
+  TOKENS,
+  esc,
+  criticTier,
+  audienceGrade,
+  scoreBadge,
+  audienceChip,
+  formatPill,
+  productionPill,
+  categoryBadge,
+  sitePill,
+} = require('./lib/email-components');
 
 // ---------------------------------------------------------------------------
 // Config
@@ -52,54 +64,6 @@ const IMPORTANT_PATH = path.join(DATA_DIR, 'digest-important-shows.json');
 const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
 
 const SITE_URL = 'https://broadwayscorecard.com';
-
-// Tokens — these are NOT invented. Hex values come straight from
-//   - src/app/globals.css (.score-must-see, .score-great, .score-good, .score-tepid, .score-skip)
-//   - src/components/show-cards/ShowPills.tsx (FormatPill, ProductionPill, CategoryBadge, StatusBadge)
-//   - src/lib/audience-grade-utils.ts (getAudienceGrade)
-//   - memory/design-system.md (surfaces, brand gold)
-// If you change any of these, change the source file, not these constants.
-const TOKENS = {
-  surface: '#0f0f14',
-  surfaceRaised: '#1a1a24',
-  surfaceOverlay: '#2a2a38',
-  border: 'rgba(255,255,255,0.10)',
-  borderSubtle: 'rgba(255,255,255,0.06)',
-  text: '#f5e6d3',          // accent cream — primary text on dark
-  textMuted: '#a3a3b8',
-  textDim: '#6b6b80',
-  brand: '#d4a574',         // gold
-  brandMuted: 'rgba(212,165,116,0.18)',
-  open: '#10b981',
-  warn: '#d97706',
-};
-
-// Critic score tiers — mirror globals.css .score-{must-see,great,good,tepid,skip}
-function criticTier(score, market) {
-  if (score == null) return { bg: null, fg: '#9ca3af', label: 'TBD', glow: false };
-  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
-  if (score >= goldThreshold) return { bg: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', fg: '#1a1a1a', label: 'Critical Gold', glow: true };
-  if (score >= 75) return { bg: '#22c55e', fg: '#ffffff', label: 'Recommended', glow: false };
-  if (score >= 65) return { bg: '#14b8a6', fg: '#ffffff', label: 'Worth Seeing', glow: false };
-  if (score >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Skippable', glow: false };
-  return { bg: '#ef4444', fg: '#ffffff', label: 'Critical Miss', glow: false };
-}
-
-// Audience grade — exact copy of src/lib/audience-grade-utils.ts getAudienceGrade()
-function audienceGrade(score) {
-  if (score == null) return { grade: '—', label: 'No Data', color: '#6b7280', textColor: '#ffffff' };
-  if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff' };
-  if (score >= 88) return { grade: 'A',  label: 'Loving It', color: '#16a34a', textColor: '#ffffff' };
-  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff' };
-  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#ffffff' };
-  if (score >= 73) return { grade: 'B',  label: 'Shrugging', color: '#f59e0b', textColor: '#1a1a1a' };
-  if (score >= 68) return { grade: 'B-', label: 'Shrugging', color: '#f97316', textColor: '#1a1a1a' };
-  if (score >= 63) return { grade: 'C+', label: 'Disliking It', color: '#ef4444', textColor: '#ffffff' };
-  if (score >= 58) return { grade: 'C',  label: 'Disliking It', color: '#dc2626', textColor: '#ffffff' };
-  if (score >= 53) return { grade: 'C-', label: 'Disliking It', color: '#b91c1c', textColor: '#ffffff' };
-  if (score >= 48) return { grade: 'D',  label: 'Loathing It', color: '#991b1b', textColor: '#ffffff' };
-  return { grade: 'F', label: 'Loathing It', color: '#6b7280', textColor: '#ffffff' };
-}
 
 // Publish-score thresholds (mirror send-opening-night-broadcast.js)
 function publishThresholds(market) {
@@ -172,8 +136,10 @@ function showUrl(show) {
   return `${SITE_URL}/show/${show.slug || show.id}`;
 }
 
-function posterUrl(show) {
-  const img = show.images && (show.images.poster || show.images.thumbnail || show.images.hero);
+// The site's ShowListCard uses the square thumbnail (96×96 / 112×112), not the
+// portrait poster. Stay aligned.
+function thumbnailUrl(show) {
+  const img = show.images && (show.images.thumbnail || show.images.hero || show.images.poster);
   if (!img) return null;
   return img.startsWith('http') ? img : `${SITE_URL}${img}`;
 }
@@ -181,71 +147,6 @@ function posterUrl(show) {
 function isBroadcastSent(sentData, market, showId) {
   const sent = sentData?.shows || {};
   return !!(sent[showId]?.completed || sent[`${market}:${showId}`]?.completed);
-}
-
-// ---------------------------------------------------------------------------
-// Site component replicas — see src/components/show-cards/ for the originals
-// ---------------------------------------------------------------------------
-
-// ScoreBadge (md size) — square 56px box, big score number, colored bg.
-// Source: src/components/show-cards/ScoreBadge.tsx + globals.css .score-* classes.
-function scoreBadgeHtml(score, market) {
-  if (score == null) {
-    return `<span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid ${TOKENS.border};color:#9ca3af;font-weight:700;font-size:14px;">TBD</span>`;
-  }
-  const t = criticTier(score, market);
-  const extra = t.glow
-    ? 'box-shadow:0 0 16px rgba(218,165,32,0.45),0 2px 8px rgba(0,0,0,0.25);border:2px solid #C8960E;'
-    : 'box-shadow:0 2px 8px rgba(0,0,0,0.25);';
-  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;background:${t.bg};color:${t.fg};font-weight:800;font-size:22px;letter-spacing:-0.02em;line-height:1;${extra}">${score}</span>`;
-}
-
-// AudienceChip — tiny pill, color from grade table, alpha 0.20 bg.
-// Source: src/components/show-cards/ShowPills.tsx AudienceChip.
-function audienceChipHtml(audience) {
-  if (!audience || audience.score == null) {
-    return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:9999px;background:rgba(107,114,128,0.20);color:#9ca3af;font-size:10px;font-weight:700;line-height:1;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span><span>—</span></span>`;
-  }
-  const g = audienceGrade(audience.score);
-  return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:9999px;background:${g.color}33;color:${g.color};font-size:10px;font-weight:700;line-height:1;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span><span>${esc(g.grade)} · ${audience.score}</span></span>`;
-}
-
-// FormatPill — outline pill (musical/play/opera). src/components/show-cards/ShowPills.tsx
-function formatPillHtml(type) {
-  const cfg = {
-    musical: { label: 'MUSICAL', color: '#a78bfa' },     // purple-400
-    play:    { label: 'PLAY',    color: '#60a5fa' },     // blue-400
-    opera:   { label: 'OPERA',   color: '#818cf8' },     // indigo-400
-  }[type] || { label: 'PLAY', color: '#60a5fa' };
-  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;border:1px solid ${cfg.color}80;color:${cfg.color};background:transparent;">${esc(cfg.label)}</span>`;
-}
-
-// ProductionPill — solid muted fill (revival vs original). ShowPills.tsx
-function productionPillHtml(isRevival) {
-  const cfg = isRevival
-    ? { label: 'REVIVAL', color: '#9ca3af', bg: 'rgba(107,114,128,0.20)' }    // gray-400
-    : { label: 'ORIGINAL', color: '#fbbf24', bg: 'rgba(245,158,11,0.20)' };   // amber-400
-  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${cfg.color};background:${cfg.bg};">${esc(cfg.label)}</span>`;
-}
-
-// CategoryBadge — solid muted fill + border (off-broadway / west-end / off-WE).
-// Returns '' for Broadway (no badge). ShowPills.tsx
-function categoryBadgeHtml(market) {
-  const cfg = {
-    'off-broadway': { label: 'OFF-BROADWAY', color: '#818cf8', border: 'rgba(99,102,241,0.30)', bg: 'rgba(99,102,241,0.15)' },
-    'west-end':     { label: 'WEST END',     color: '#2dd4bf', border: 'rgba(20,184,166,0.30)', bg: 'rgba(20,184,166,0.15)' },
-    'off-west-end': { label: 'Off-WE',       color: '#9ca3af', border: 'rgba(255,255,255,0.10)', bg: 'rgba(255,255,255,0.05)' },
-  }[market];
-  if (!cfg) return '';
-  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${cfg.color};background:${cfg.bg};border:1px solid ${cfg.border};">${esc(cfg.label)}</span>`;
-}
-
-// Generic small uppercase pill in the site's style (used for tier labels
-// like "Critical Gold" and action chips like "Needs help"). Same rounding,
-// padding, and typography as ShowPills.
-function sitePillHtml(label, { color = TOKENS.textMuted, bg = TOKENS.surfaceOverlay, border = null } = {}) {
-  const borderStyle = border ? `border:1px solid ${border};` : '';
-  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${color};background:${bg};${borderStyle}">${esc(label)}</span>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -384,7 +285,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
         excludedReason: excluded ? excludedMap.get(s.id) : null,
         important,
         broadcastEligible,
-        poster: posterUrl(s),
+        thumbnail: thumbnailUrl(s),
         url: showUrl(s),
         daysFromToday,
         reviewCount: reviews.length,
@@ -467,18 +368,10 @@ function splitRegion(rows) {
 }
 
 // ---------------------------------------------------------------------------
-// HTML rendering — dark mode, brand-aligned
+// HTML rendering — all visual primitives come from ./lib/email-components.
+// Do NOT add inline hex colors or hand-rolled pills here. The CI grep gate
+// in .github/workflows/test.yml will fail the build.
 // ---------------------------------------------------------------------------
-
-function esc(s) {
-  if (s == null) return '';
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-function chip(text, opts) {
-  // Back-compat helper — defers to sitePillHtml so chips match site pills.
-  return sitePillHtml(text, opts);
-}
 
 // Tiny spacer between inline-flex pills (email clients drop CSS gap on inline-flex)
 const PILL_SEP = '<span style="display:inline-block;width:6px;">&nbsp;</span>';
@@ -491,105 +384,171 @@ function whenLabel(daysFromToday) {
   return `${-daysFromToday}d ago`;
 }
 
-function poster(row) {
-  if (row.poster) {
-    return `<img src="${esc(row.poster)}" alt="${esc(row.title)} poster" width="72" height="100" style="border-radius:8px;object-fit:cover;display:block;background:${TOKENS.surfaceOverlay};">`;
+// Square thumbnail, 96×96. Matches ShowListCard exactly.
+function thumbnailHtml(row) {
+  if (row.thumbnail) {
+    return `<img src="${esc(row.thumbnail)}" alt="${esc(row.title)}" width="96" height="96" style="display:block;width:96px;height:96px;border-radius:8px;object-fit:cover;background:${TOKENS.surfaceOverlay};">`;
   }
-  return `<div style="width:72px;height:100px;background:${TOKENS.surfaceOverlay};border-radius:8px;"></div>`;
+  return `<div style="width:96px;height:96px;background:${TOKENS.surfaceOverlay};border-radius:8px;"></div>`;
+}
+
+// Score column: tier label above, 80×80 badge in the middle, audience chip below.
+// Matches ShowListCard's right column (flex-col items-center gap-1.5 w-24).
+//
+// IMPORTANT for email rendering: Gmail strips/ignores `display:inline-flex` +
+// `align-items:center` on inline elements, which pushes the score number to
+// the top of the badge. The only reliable cross-client way to vertically
+// center a single line of text in a fixed-height box is `line-height:HEIGHTpx`
+// on a block-level div. That's what we do here.
+function scoreColumnHtml(row) {
+  const score = row.criticScore;
+  const tier = criticTier(score, row.market);
+
+  let badgeBg, badgeFg, badgeShadow, labelColor;
+  if (score == null) {
+    // Site's .score-none: bg-surface-overlay, gray-500 text, subtle border.
+    badgeBg = TOKENS.surfaceOverlay;
+    badgeFg = '#6b7280';
+    badgeShadow = `border:1px solid ${TOKENS.border};`;
+    labelColor = TOKENS.textDim;
+  } else if (tier.glow) {
+    badgeBg = tier.bg;
+    badgeFg = tier.fg;
+    badgeShadow = 'border:2px solid #C8960E;box-shadow:0 0 16px rgba(218,165,32,0.45),0 2px 8px rgba(0,0,0,0.25);';
+    labelColor = '#fbbf24'; // amber-400 — gold tier label color on site
+  } else {
+    badgeBg = tier.bg;
+    badgeFg = tier.fg;
+    // Match site's per-tier box-shadow color: same hue at 30% alpha.
+    const shadowRgb = {
+      '#22c55e': '34,197,94',     // recommended
+      '#14b8a6': '20,184,166',    // worth seeing
+      '#d97706': '217,119,6',     // skippable
+      '#ef4444': '239,68,68',     // critical miss
+    }[tier.bg] || '0,0,0';
+    badgeShadow = `box-shadow:0 2px 8px rgba(${shadowRgb},0.3);`;
+    labelColor = tier.bg; // tier label inherits tier color
+  }
+
+  const badgeNumber = score == null ? 'TBD' : score;
+  const badgeFontSize = score == null ? '14px' : '30px';
+
+  const tierLabelText = score == null ? ' ' : tier.label; // nbsp keeps height
+  const tierLabelHtml = `<div style="font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:${labelColor};white-space:nowrap;line-height:1.4;">${esc(tierLabelText)}</div>`;
+
+  // Badge: block-level div with line-height = height for vertical centering.
+  // This is the canonical email-safe centering pattern.
+  const badgeHtml = `<div style="display:block;width:80px;height:80px;margin:0 auto;border-radius:12px;background:${badgeBg};color:${badgeFg};font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:${badgeFontSize};font-weight:800;line-height:80px;text-align:center;letter-spacing:-0.02em;${badgeShadow}">${badgeNumber}</div>`;
+
+  // Audience chip — site copies the grade color into bg (12.5% alpha) and text.
+  let audienceChipHtml;
+  if (row.audience && row.audience.score != null) {
+    const g = audienceGrade(row.audience.score);
+    audienceChipHtml = `<span style="display:inline-block;padding:3px 9px;border-radius:9999px;background-color:${g.color}20;color:${g.color};font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:10px;line-height:1;font-weight:700;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span> ${esc(g.grade)}</span>`;
+  } else {
+    audienceChipHtml = `<span style="display:inline-block;padding:3px 9px;border-radius:9999px;background-color:rgba(107,114,128,0.20);color:#9ca3af;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:10px;line-height:1;font-weight:700;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span> —</span>`;
+  }
+
+  // Vertical stack via 3-row table (most reliable email layout).
+  return `<table cellpadding="0" cellspacing="0" border="0" align="center" style="border-collapse:collapse;margin:0 auto;">
+    <tr><td style="text-align:center;padding-bottom:6px;">${tierLabelHtml}</td></tr>
+    <tr><td style="text-align:center;">${badgeHtml}</td></tr>
+    <tr><td style="text-align:center;padding-top:6px;">${audienceChipHtml}</td></tr>
+  </table>`;
 }
 
 // Common metadata pills used on every row — same set/order the site uses on cards.
 function metadataPills(row) {
   const pills = [];
-  pills.push(formatPillHtml(row.type || 'play'));
-  pills.push(productionPillHtml(row.isRevival));
-  const cat = categoryBadgeHtml(row.market);
+  pills.push(formatPill(row.type || 'play'));
+  pills.push(productionPill(row.isRevival));
+  const cat = categoryBadge(row.market);
   if (cat) pills.push(cat);
   if (row.important && row.market !== 'broadway' && row.market !== 'west-end') {
-    pills.push(sitePillHtml('★ Important', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
+    pills.push(sitePill('★ Important', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
   }
   return pills.join(PILL_SEP);
 }
 
-function renderActionRow(row, actionPills) {
-  const criticBadge = scoreBadgeHtml(row.criticScore, row.market);
-  const audienceChip = audienceChipHtml(row.audience);
-  const tier = criticTier(row.criticScore, row.market);
-  const tierLabel = row.criticScore != null
-    ? `<div style="font-size:11px;color:${TOKENS.textMuted};margin-top:6px;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;">${esc(tier.label)}</div>`
-    : '';
-
-  const reviewProgress = row.expected
-    ? `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} of ~${row.expected} expected reviews</span>`
-    : `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} reviews</span>`;
-
-  const broadcastPill = row.broadcastSent === null
-    ? ''
-    : row.broadcastSent
-      ? sitePillHtml('✓ Broadcast sent', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
-      : '';
-
+// Site-faithful row: 3-column table — thumbnail | content | score column.
+// Matches src/components/show-cards/ShowListCard.tsx exactly: thumb on left,
+// title + pills + secondary line in the middle, score stack on right.
+function renderShowCardRow(row, { actionPills = '', secondaryLine = '' } = {}) {
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
-    <td style="padding:16px 0;vertical-align:top;width:88px;">${poster(row)}</td>
-    <td style="padding:16px 0 16px 16px;vertical-align:top;">
-      <div style="font-size:16px;font-weight:700;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
-      <div style="margin:6px 0;font-size:12px;color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</div>
-      <div style="margin:8px 0;">${metadataPills(row)}</div>
-      ${actionPills ? `<div style="margin:10px 0;">${actionPills}</div>` : ''}
-      <table cellpadding="0" cellspacing="0" border="0" style="margin:10px 0 4px 0;"><tr>
-        <td style="vertical-align:middle;padding-right:14px;">${criticBadge}${tierLabel}</td>
-        <td style="vertical-align:middle;">${audienceChip}</td>
-      </tr></table>
-      <div>${reviewProgress}</div>
-      ${broadcastPill ? `<div style="margin-top:8px;">${broadcastPill}</div>` : ''}
+    <td style="padding:14px 0 14px 0;vertical-align:middle;width:96px;">${thumbnailHtml(row)}</td>
+    <td style="padding:14px 16px;vertical-align:middle;">
+      <div style="font-size:17px;font-weight:700;line-height:1.25;color:${TOKENS.text};"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
+      <div style="margin-top:6px;">${metadataPills(row)}</div>
+      ${secondaryLine ? `<div style="margin-top:10px;font-size:13px;color:${TOKENS.textMuted};line-height:1.5;">${secondaryLine}</div>` : ''}
+      ${actionPills ? `<div style="margin-top:10px;">${actionPills}</div>` : ''}
     </td>
+    <td style="padding:14px 0 14px 0;vertical-align:middle;width:104px;text-align:center;">${scoreColumnHtml(row)}</td>
   </tr>`;
 }
 
-function renderUpcomingRow(row) {
-  const expected = row.expected
-    ? `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(typical ${row.expectedRange})</span></span>`
-    : row.excluded
-      ? `<span style="color:${TOKENS.textDim};">Excluded from predictions — ${esc(row.excludedReason)}</span>`
-      : `<span style="color:${TOKENS.textDim};">Expected reviews: TBD (no cohort data)</span>`;
+// Recent: secondary line shows when opened + review progress
+function renderRecentSecondary(row) {
+  const when = `<span style="color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</span>`;
+  let progress;
+  if (row.expected && row.reviewCount < row.expected) {
+    progress = `<span style="color:${TOKENS.textMuted};">${row.reviewCount} reviews (expected ~${row.expected})</span>`;
+  } else if (row.expected && row.reviewCount >= row.expected) {
+    progress = `<span style="color:${TOKENS.textMuted};">${row.reviewCount} reviews <span style="color:${TOKENS.open};">✓ on track</span></span>`;
+  } else {
+    progress = `<span style="color:${TOKENS.textMuted};">${row.reviewCount} reviews</span>`;
+  }
+  const broadcastNote = row.broadcastSent === true
+    ? `<br><span style="color:${TOKENS.open};font-weight:600;">✓ Broadcast sent</span>`
+    : '';
+  return `${when}<br>${progress}${broadcastNote}`;
+}
 
-  return `
-  <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
-    <td style="padding:14px 0;vertical-align:top;width:88px;">${poster(row)}</td>
-    <td style="padding:14px 0 14px 16px;vertical-align:top;">
-      <div style="font-size:16px;font-weight:700;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
-      <div style="margin:6px 0;font-size:12px;color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</div>
-      <div style="margin:8px 0;">${metadataPills(row)}</div>
-      <div style="font-size:13px;line-height:1.6;margin-top:8px;">${expected}</div>
-    </td>
-  </tr>`;
+// Upcoming: secondary line shows when opening + expected count
+function renderUpcomingSecondary(row) {
+  const when = `<span style="color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</span>`;
+  let expected;
+  if (row.expected) {
+    expected = `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(typical ${row.expectedRange})</span></span>`;
+  } else if (row.excluded) {
+    expected = `<span style="color:${TOKENS.textDim};">Excluded from predictions</span>`;
+  } else {
+    expected = `<span style="color:${TOKENS.textDim};">Expected reviews: TBD</span>`;
+  }
+  return `${when}<br>${expected}`;
+}
+
+function renderUpcomingRow(row) {
+  return renderShowCardRow(row, { secondaryLine: renderUpcomingSecondary(row) });
 }
 
 function renderNeedsHelpRow(row) {
   const reasons = (row.helpReasons || []).join(' · ');
   const action = [
-    sitePillHtml('⚠ Needs help', { color: TOKENS.warn, bg: 'rgba(217,119,6,0.20)' }),
+    sitePill('⚠ Needs help', { color: TOKENS.warn, bg: 'rgba(217,119,6,0.20)' }),
     PILL_SEP,
-    sitePillHtml(reasons, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay }),
+    sitePill(reasons, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay }),
   ].join('');
-  return renderActionRow(row, action);
+  return renderShowCardRow(row, { actionPills: action, secondaryLine: renderRecentSecondary(row) });
 }
 
 function renderBroadcastReadyRow(row) {
-  return renderActionRow(row, sitePillHtml('✉ Broadcast ready', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
+  return renderShowCardRow(row, {
+    actionPills: sitePill('✉ Broadcast ready', { color: TOKENS.brand, bg: TOKENS.brandMuted }),
+    secondaryLine: renderRecentSecondary(row),
+  });
 }
 
 function renderOtherRecentRow(row) {
   let action = '';
   if (row.excluded) {
-    action = sitePillHtml('Excluded from predictions', { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
+    action = sitePill('Excluded from predictions', { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
   } else if (row.important) {
     action = row.qualifies
-      ? sitePillHtml('Qualifies', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
-      : sitePillHtml(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
+      ? sitePill('Qualifies', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
+      : sitePill(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
   }
-  return renderActionRow(row, action);
+  return renderShowCardRow(row, { actionPills: action, secondaryLine: renderRecentSecondary(row) });
 }
 
 function renderSection(title, count, bodyHtml) {
@@ -616,16 +575,38 @@ function buildSubject({ needsHelp, broadcastReady, comingUp }) {
   return `${lead} · ${todayHuman}`;
 }
 
-function renderRegionBlock(label, sections) {
+// Per-region brand: NYC = Broadway gold (#d4a574), London = West End pink
+// (#f472b6). Source of truth: src/config/branding.ts MARKET_BRAND.
+const REGION_BRAND = {
+  nyc:    { label: '🗽 NYC',    color: '#d4a574', subtitle: 'Broadway · Off-Broadway' },
+  london: { label: '🇬🇧 London', color: '#f472b6', subtitle: 'West End · Off-West-End' },
+};
+
+function renderRegionBlock(regionKey, sections) {
+  const brand = REGION_BRAND[regionKey];
   const { needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming } = sections;
   const total = needsHelp.length + broadcastReady.length + comingUp.length + otherRecent.length + otherUpcoming.length;
+
+  // Header band: pill-style chip with the market's brand color as a solid
+  // background. Big enough to read at a glance — this is the "which market
+  // am I looking at" anchor for the whole section.
+  const headerHtml = `
+    <table cellpadding="0" cellspacing="0" border="0" style="width:100%;margin:0 0 14px 0;border-collapse:collapse;">
+      <tr>
+        <td style="background:${brand.color};border-radius:10px 10px 0 0;padding:14px 18px;">
+          <div style="font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:20px;font-weight:800;color:#1a1a1a;letter-spacing:-0.01em;line-height:1.1;">${esc(brand.label)}<span style="color:#1a1a1a;opacity:0.55;font-weight:600;font-size:14px;margin-left:10px;letter-spacing:0;">${esc(brand.subtitle)}</span><span style="color:#1a1a1a;opacity:0.55;font-weight:600;font-size:14px;float:right;">${total} show${total === 1 ? '' : 's'}</span></div>
+        </td>
+      </tr>
+    </table>`;
+
   if (total === 0) {
     return `
-      <div style="margin:36px 0 16px 0;">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${TOKENS.brand};font-weight:700;border-bottom:2px solid ${TOKENS.brand}33;padding-bottom:8px;">${esc(label)}</div>
+      <div style="margin:40px 0 16px 0;">
+        ${headerHtml}
         <div style="margin:18px 0;color:${TOKENS.textDim};font-size:13px;font-style:italic;">No activity in the last 7 days or next 7 days.</div>
       </div>`;
   }
+
   let inner = '';
   if (needsHelp.length) inner += renderSection('Needs help', needsHelp.length, renderTable(needsHelp, renderNeedsHelpRow));
   if (broadcastReady.length) inner += renderSection('Broadcast ready', broadcastReady.length, renderTable(broadcastReady, renderBroadcastReadyRow));
@@ -633,8 +614,8 @@ function renderRegionBlock(label, sections) {
   if (otherRecent.length) inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderOtherRecentRow));
   if (otherUpcoming.length) inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderUpcomingRow));
   return `
-    <div style="margin:36px 0 16px 0;">
-      <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${TOKENS.brand};font-weight:700;border-bottom:2px solid ${TOKENS.brand}33;padding-bottom:8px;">${esc(label)} <span style="color:${TOKENS.textDim};font-weight:500;">· ${total}</span></div>
+    <div style="margin:40px 0 16px 0;">
+      ${headerHtml}
       ${inner}
     </div>`;
 }
@@ -663,12 +644,25 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
     otherUpcoming: splitRegion(otherUpcoming).london,
   };
 
-  let body = renderRegionBlock('NYC', nycSections) + renderRegionBlock('London', londonSections);
+  let body = renderRegionBlock('nyc', nycSections) + renderRegionBlock('london', londonSections);
   if (!body) {
     body = `<div style="margin:48px 0;text-align:center;color:${TOKENS.textMuted};font-size:14px;">Nothing to report — no openings in the last or next 7 days.</div>`;
   }
 
-  return `<!DOCTYPE html><html><body style="margin:0;padding:0;background:${TOKENS.surface};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:${TOKENS.text};">
+  return `<!DOCTYPE html><html><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Inter is the site's body font. Apple Mail loads this; Gmail web sanitizes
+       it out and falls back to the SF Pro / Segoe UI stack below — those render
+       close enough that headings/badges still look like the site. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
+  <style>
+    body, table, td, span, div, a, h1, h2, h3, p {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    }
+  </style>
+  </head><body style="margin:0;padding:0;background:${TOKENS.surface};font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:${TOKENS.text};">
   <div style="max-width:640px;margin:0 auto;padding:28px 22px;background:${TOKENS.surfaceRaised};border:1px solid ${TOKENS.border};">
     <div style="font-size:11px;letter-spacing:0.10em;text-transform:uppercase;color:${TOKENS.brand};font-weight:600;">Broadway Scorecard</div>
     <h1 style="margin:4px 0 6px 0;font-size:24px;color:${TOKENS.text};letter-spacing:-0.01em;">Opening Digest</h1>
