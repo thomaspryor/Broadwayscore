@@ -1,7 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 
-test.describe('/biz Dashboard - Basic Tests', () => {
+// Skipped 2026-05-22: /biz dashboard is gated behind the `commercial` feature
+// flag (src/config/feature-flags.ts), which is not enabled on broadwayscorecard.com.
+// Every test in this describe + the Tables + Navigation blocks below renders a 404.
+// Unskip if/when commercial launches on prod.
+test.describe.skip('/biz Dashboard - Basic Tests', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
   });
@@ -51,7 +55,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
   test.skip('designation legend renders', async ({ page: _page }) => {});
 });
 
-test.describe('/biz Dashboard - Tables', () => {
+test.describe.skip('/biz Dashboard - Tables', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
     await page.waitForLoadState('networkidle');
@@ -78,7 +82,7 @@ test.describe('/biz Dashboard - Tables', () => {
   });
 });
 
-test.describe('/biz Dashboard - Navigation', () => {
+test.describe.skip('/biz Dashboard - Navigation', () => {
   // Skipped 2026-05-22: /biz dashboard no longer renders direct /show/* links
   // in its initial HTML. Test times out waiting for a[href^="/show/"] that
   // doesn't exist on the simplified dashboard.
