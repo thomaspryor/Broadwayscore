@@ -234,7 +234,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Each Tony category has its own blend recipe, tuned against ${accuracyStats.seasonCount} years of Tony seasons. Best Musical weights 45% critic / 55% audience. Best Play uses 40% critic / 40% audience / 20% Awards Score (precursor signal from Drama League, OCC, and Drama Desk). Best Revival of a Musical ranks purely on audience grade; Best Revival of a Play uses 20% critic / 60% audience / 20% Awards Score. Across the ${accuracyStats.seasonCount}-season backtest the category-specific approach correctly picked the eventual winner ${blendedHits} of ${accuracyStats.categorySeasonCount} contests (${accuracyStats.blendedRank1WinPct}%) — vs ${criticHits} of ${accuracyStats.categorySeasonCount} (${accuracyStats.criticsOnlyRank1WinPct}%) for critics alone.`,
+          text: `Each Tony category uses its own blend recipe tuned across ${accuracyStats.seasonCount} Tony seasons. Best Musical: 60% critic + 20% audience + 20% precursor awards. Best Play: 100% precursor awards combining Drama League/OCC/Drama Desk top-category signal with Pulitzer, NYDCC, and Tony nomination breadth. Best Revival of a Musical: 10% critic + 70% audience + 20% broad precursor signal. Best Revival of a Play: 20% critic + 60% audience + 20% Awards Score. Best Musical and Best Revival of a Musical also penalize shows without a Best Direction of a Musical Tony nomination (no winner has lacked one in 11 seasons) and jukebox musicals (no wins outside the COVID-truncated 2019-20 ceremony). Across ${accuracyStats.seasonCount} seasons the model picks the eventual winner ${trackRecordHits} of ${trackRecordCells} times (${trackRecordPct}%).`,
         },
       },
       {
@@ -546,30 +546,35 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
             <div className="px-4 sm:px-5 pb-4 sm:pb-5">
               <p className="text-sm text-gray-400 leading-relaxed">
                 Each Tony category gets its own recipe, tuned against {accuracyStats.seasonCount} years of Tony history. The model
-                correctly picked the winner in {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%) across that backtest, vs {criticHits} of {accuracyStats.categorySeasonCount} ({accuracyStats.criticsOnlyRank1WinPct}%) for
-                critic-only:
+                correctly picks the winner {trackRecordHits} of {trackRecordCells} times ({trackRecordPct}%) across that backtest:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
-                <li><span className="text-white font-medium">Best Musical:</span> 45% critic + 55% audience.</li>
-                <li><span className="text-white font-medium">Best Play:</span> 40% critic + 40% audience + 20% Awards Score (precursor signal).</li>
-                <li><span className="text-white font-medium">Best Revival of a Musical:</span> ranked purely on audience grade.</li>
+                <li><span className="text-white font-medium">Best Musical:</span> 60% critic + 20% audience + 20% precursor awards (Drama League/OCC/Drama Desk top-cat plus broad ceremony signal).</li>
+                <li><span className="text-white font-medium">Best Play:</span> 100% precursor awards, combining DL/OCC/DD top-category signal with Pulitzer, NYDCC, and Tony nomination breadth.</li>
+                <li><span className="text-white font-medium">Best Revival of a Musical:</span> 10% critic + 70% audience + 20% broad precursor signal.</li>
                 <li><span className="text-white font-medium">Best Revival of a Play:</span> 20% critic + 60% audience + 20% Awards Score.</li>
               </ul>
+              <p className="text-sm text-gray-400 leading-relaxed mt-3">
+                Best Musical and Best Revival of a Musical also apply a feasibility filter: shows
+                without a Best Direction of a Musical Tony nomination get a ×0.85 penalty (no winner
+                has lacked one in 11 tracked seasons), and jukebox musicals get the same penalty for
+                Best Musical (only Moulin Rouge has won, in the COVID-truncated 2019&ndash;20 ceremony).
+              </p>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">
                 Awards Score combines Drama League (weight 1.0), OCC (0.9), and Drama Desk (0.7) signal,
                 with each nomination weighted by category importance &mdash; top categories like Best Musical
                 are credited via a +30 win / +10 nom bonus, then non-top nominations are tiered (Book/Music/Lyrics
-                A+ = 2.0, Direction/Lead Acting A = 1.5, Featured/Orchestrations B = 1.0, Design C = 0.5). The
-                Awards Score is zero pre-precursor, which makes Best Play reduce to a true 50/50 critic+audience
-                composite until early May. Use the toggle above to view rankings by Combined, Critics-only, or
-                Audience-only.
+                A+ = 2.0, Direction/Lead Acting A = 1.5, Featured/Orchestrations B = 1.0, Design C = 0.5).
+                Best Play also pulls in a broader prestige signal across Pulitzer, NYDCC, Olivier, Obie, and
+                Lortel ceremonies (Tony wins themselves masked to prevent leakage), log-scaled to 0&ndash;100.
               </p>
               <Link href="/methodology" className="text-sm text-brand hover:text-brand-hover transition-colors mt-2 inline-block">
                 Learn about our scoring methodology &rarr;
               </Link>
               <p className="text-xs text-gray-500 leading-relaxed mt-4 pt-3 border-t border-white/5">
-                Score model updated 2026-05-16: Awards Score now weights each precursor nomination by category
-                importance (tier S/A+/A/B/C). Backtest accuracy {blendedHits} of {accuracyStats.categorySeasonCount} contests ({accuracyStats.blendedRank1WinPct}%).
+                Score model updated 2026-05-23: Best Play now uses a two-signal awards score (40% top-cat
+                precursor + 60% broad ceremony signal), and Best Musical/Best Revival Musical recipes were
+                rebalanced. Best Play in-sample accuracy 11/11. Total backtest accuracy {trackRecordHits} of {trackRecordCells} ({trackRecordPct}%).
               </p>
             </div>
           </details>
