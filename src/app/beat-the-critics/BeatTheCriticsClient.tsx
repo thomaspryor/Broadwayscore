@@ -22,7 +22,7 @@ interface CriticPanelist {
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
   { name: 'Dan Rubins', outlets: ['Slant Magazine'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
-  { name: 'Naveen Kumar', outlets: ['The Washington Post', 'The New York Times'], initials: 'NK', bio: 'Former theater critic for The Washington Post. Work also appears in The New York Times, Variety, and Town & Country.',
+  { name: 'Naveen Kumar', outlets: ['WaPo', 'NYTimes'], initials: 'NK', bio: 'Former theater critic for The Washington Post. Work also appears in The New York Times, Variety, and Town & Country.',
     picks: {
       'Best Musical': 'The Lost Boys',
       'Best Play': 'Liberation',
@@ -156,8 +156,8 @@ function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; s
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{show.title}</div>
         <div className="text-xs text-gray-500">{show.venue}</div>
       </div>
-      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-white/20'}`}>
-        {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
+      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368]' : 'border-white/20'}`}>
+        {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#ff1368] animate-scale-in" />}
       </div>
     </button>
   );
@@ -171,8 +171,8 @@ function ActorNomineeCard({ nominee, selected, onSelect }: { nominee: ActorNomin
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{nominee.name}</div>
         <div className="text-xs text-gray-500">{nominee.showTitle}</div>
       </div>
-      <div className={`w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368] bg-[#ff1368] animate-scale-in' : 'border-white/20'}`}>
-        {selected && (<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" strokeWidth="2.5"><path d="M2.5 6l2.5 2.5 4.5-5" /></svg>)}
+      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368]' : 'border-white/20'}`}>
+        {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#ff1368] animate-scale-in" />}
       </div>
     </button>
   );
@@ -216,6 +216,23 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState('');
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  useEffect(() => {
+    const ceremony = new Date('2026-06-08T00:00:00Z'); // 8 PM ET June 7
+    const tick = () => {
+      const diff = ceremony.getTime() - Date.now();
+      if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
+      setTimeLeft({
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000) / 60000),
+        seconds: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
   const emailRef = useRef<HTMLInputElement>(null);
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
@@ -224,6 +241,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const entriesEarned = data.tiers.filter(tier =>
     tier.categories.filter(categoryHasNominees).every(cat => picks[cat.title])
   ).length;
+  const totalCategories = data.tiers.flatMap(t => t.categories).filter(categoryHasNominees).length;
+  const totalPicksMade = data.tiers.flatMap(t => t.categories).filter(c => categoryHasNominees(c) && picks[c.title]).length;
 
   const handlePick = useCallback((category: string, title: string, slug: string) => {
     setPicks(prev => { const next = { ...prev, [category]: title }; try { localStorage.setItem('btc-picks', JSON.stringify(next)); } catch {} return next; });
@@ -354,16 +373,29 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <h1 className="animate-fade-up mt-6" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.<br />Ceremony: <strong className="text-gray-200 font-semibold">June 7, 2026</strong>.</p>
-          <div className="animate-fade-up mt-5 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold">
-              <span>🎟️</span> Beat a critic — enter the <strong>$100 TodayTix prize draw</strong>
+          <p className="animate-fade-up mt-5 text-[17px] leading-relaxed text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>.<br />Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.</p>
+          {timeLeft.days >= 0 && (
+            <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.75s', animationFillMode: 'both' }}>
+              <div className="flex items-center justify-center gap-5">
+                {([{ v: timeLeft.days, l: 'Days' }, { v: timeLeft.hours, l: 'Hrs' }, { v: timeLeft.minutes, l: 'Min' }, { v: timeLeft.seconds, l: 'Sec' }] as const).map(({ v, l }) => (
+                  <div key={l} className="text-center">
+                    <div className="text-3xl font-black text-white tabular-nums leading-none">{String(v).padStart(2, '0')}</div>
+                    <div className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1">{l}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[10px] text-gray-600 font-semibold">until the Tonys</div>
+            </div>
+          )}
+          <div className="animate-fade-up mt-4 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold whitespace-nowrap">
+              Beat a critic &mdash; win a <strong>$100 TodayTix gift card</strong>
             </div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
           {/* Critic grid */}
-          <div className="animate-fade-up w-full mt-8" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
+          <div className="animate-fade-up w-full mt-4" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">Your Competition</div>
             <div className="grid grid-cols-3 gap-2.5">
               {CRITICS.map((c, i) => (
@@ -405,7 +437,10 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => { let prevIdx: number | null = null; for (let i = currentCatIdx - 1; i >= 0; i--) { if (categoryHasNominees(currentTier.categories[i])) { prevIdx = i; break; } } if (prevIdx !== null) setCurrentCatIdx(prevIdx); else if (currentTierIdx > 0) { setCurrentTierIdx(currentTierIdx - 1); const prevTier = data.tiers[currentTierIdx - 1]; const lastCat = prevTier.categories.length - 1; setCurrentCatIdx(lastCat); setScreen('reveal'); } else goToScreen('landing'); }} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
           <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">{currentProgressIdx + 1} of {catsWithNominees.length}</div>
+          <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400">
+            <span>🏆</span>
+            <span className="tabular-nums">{totalPicksMade}<span className="text-gray-600">/{totalCategories}</span></span>
+          </div>
         </div>
         <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
@@ -418,6 +453,9 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             }
           </div>
           <div className="mt-8 pb-10">
+            <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
+              Beat a critic &mdash; win a <span className="text-amber-400/80">$100 TodayTix gift card</span>
+            </div>
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
           </div>
