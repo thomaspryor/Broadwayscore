@@ -92,6 +92,10 @@ data/archives/
 # Generated show lookup for My Shows page (regenerated at build time)
 public/data/show-lookup.json
 
+# Generated actor-slug manifest for Tony nominees page (regenerated at build time
+# from data/cast/* — replaces dynamic process.cwd() reads that bloated NFT bundle)
+data/actor-slugs.json
+
 # LLM classification checkpoint (ephemeral, crash-recovery only)
 .classify-wp-checkpoint.json
 
