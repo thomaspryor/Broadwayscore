@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { getShowBySlug, getRecentShowSlugs } from '@/lib/data-core';
+import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -9,10 +9,24 @@ export const alt = 'Broadway Scorecard — show score';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
+// Match page.tsx revalidate so score updates between deploys propagate to OG
+// scrapers (Facebook/Twitter/iMessage) within a day, not stuck on deploy-time.
+export const revalidate = 86400;
+// Explicit (Next 14 SSR default is true) — closed/historical shows whose
+// slugs aren't in getHotShowSlugs() generate their OG on first scrape via ISR
+// and then CDN-cache. See getHotShowSlugs() in data-core.ts for the trade-off.
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  // Shares getRecentShowSlugs() with src/app/show/[slug]/page.tsx so the
-  // pre-render set is consistent between the page and its OG image.
-  return getRecentShowSlugs().map(slug => ({ slug }));
+  // Pre-render OG only for open + previews shows (~80) instead of the full
+  // 180-day recent set (~474). Trade-off: closed/historical shows hit a cold
+  // ISR generation on first social-media scrape (~500ms + a self-call to
+  // /_next/image for WebP→JPEG conversion — see fetch() below), then
+  // CDN-cache. This trims ~340 MB of build artifacts and ~50-100s of
+  // build-time OG render work, at the cost of slightly slower first-scrape
+  // for rarely-shared shows. Open/previews shows (highest social-share
+  // volume) stay pre-rendered.
+  return getHotShowSlugs().map(slug => ({ slug }));
 }
 
 // Tier hex values + tier-colored glow — mirrors src/app/globals.css

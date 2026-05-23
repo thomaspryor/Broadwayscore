@@ -241,6 +241,25 @@ export function getRecentShowSlugs(windowDays = 180): string[] {
 }
 
 /**
+ * Get slugs for the "hot" pre-render set: open or previews only. Used by
+ * opengraph-image.tsx to keep high-social-share-volume shows pre-rendered
+ * while letting closed/historical shows fall through to ISR (each pre-rendered
+ * OG is ~870KB of .vercel/output artifact and ~250ms of build-time fetch +
+ * Satori render). Closed shows are scraped rarely; first cold scrape takes
+ * ~500ms then CDN-caches.
+ *
+ * BUILD-TIME ONLY: same caveat as getRecentShowSlugs() — relies on shows.json
+ * snapshot at module init.
+ */
+export function getHotShowSlugs(): string[] {
+  return shows
+    .filter((s: any) =>
+      !s._devOnly && (s.status === 'open' || s.status === 'previews')
+    )
+    .map(s => s.slug as string);
+}
+
+/**
  * Get shows sorted by composite score (excludes off-Broadway from public listings)
  */
 export function getShowsSortedByCompositeScore(ascending = false): ComputedShow[] {

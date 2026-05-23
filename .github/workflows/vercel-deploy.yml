@@ -168,7 +168,9 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        # --prefer-offline uses the restored npm cache; --no-audit/--no-fund skip
+        # post-install registry calls. Matches test.yml:508 pattern. Saves 3-8s.
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Pre-deploy data integrity check
         run: node scripts/pre-deploy-check.js
