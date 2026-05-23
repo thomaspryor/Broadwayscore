@@ -1,11 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
+import { requireFeature } from './helpers/feature-flags';
 
-// Skipped 2026-05-22: /biz dashboard is gated behind the `commercial` feature
-// flag (src/config/feature-flags.ts), which is not enabled on broadwayscorecard.com.
-// Every test in this describe + the Tables + Navigation blocks below renders a 404.
-// Unskip if/when commercial launches on prod.
-test.describe.skip('/biz Dashboard - Basic Tests', () => {
+// /biz dashboard is gated behind the `commercial` feature flag
+// (src/config/feature-flags.ts). When the flag is off (default on prod),
+// requireFeature() skips every test in the three describes below at
+// collection time. When `commercial` launches and NEXT_PUBLIC_FEATURES
+// includes it at test runtime, the tests auto-enable — no manual unskip step.
+test.describe('/biz Dashboard - Basic Tests', () => {
+  requireFeature('commercial');
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
   });
@@ -55,7 +59,9 @@ test.describe.skip('/biz Dashboard - Basic Tests', () => {
   test.skip('designation legend renders', async ({ page: _page }) => {});
 });
 
-test.describe.skip('/biz Dashboard - Tables', () => {
+test.describe('/biz Dashboard - Tables', () => {
+  requireFeature('commercial');
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
     await page.waitForLoadState('networkidle');
@@ -82,7 +88,9 @@ test.describe.skip('/biz Dashboard - Tables', () => {
   });
 });
 
-test.describe.skip('/biz Dashboard - Navigation', () => {
+test.describe('/biz Dashboard - Navigation', () => {
+  requireFeature('commercial');
+
   // Skipped 2026-05-22: /biz dashboard no longer renders direct /show/* links
   // in its initial HTML. Test times out waiting for a[href^="/show/"] that
   // doesn't exist on the simplified dashboard.
