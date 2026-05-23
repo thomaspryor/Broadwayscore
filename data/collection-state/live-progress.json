@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-05-23T08:58:40.960Z",
+  "updatedAt": "2026-05-23T09:35:35.791Z",
   "processed": 2,
-  "failed": 6,
-  "successRate": "25.0%",
+  "failed": 1251,
+  "successRate": "0.2%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 50,
-    "archive": 5
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-05-23T09:35:24.139Z",
+      "event": "bb-session",
+      "session": "a67995fc",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }

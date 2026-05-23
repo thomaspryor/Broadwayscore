@@ -1251,7 +1251,10 @@
     "1536-west-end-2026/times-uk--clive-davis.json",
     "1536-west-end-2026/times-uk--dominic-maxwell.json",
     "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
-    "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json"
+    "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1259,7 +1262,9 @@
       "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [],
     "brightdata": [],
@@ -1320,6 +1325,13 @@
     ]
   },
   "startTime": "2026-05-23T08:57:37.709Z",
-  "lastProcessed": "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
-  "log": []
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-23T09:35:24.139Z",
+      "event": "bb-session",
+      "session": "a67995fc",
+      "url": "http://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }
