@@ -9,7 +9,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
 import TonyPredictionsClient from '@/components/TonyPredictionsClient';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
-import { getNomineesByCategory } from '@/lib/data-tony-nominees';
+import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
   getTonySeasonWindow,
@@ -92,8 +92,12 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // by their actual nominated category from awards.json instead of the
   // shows.json type/isRevival flags (which are sometimes mis-set).
   const useNomineesOnly = !isCurrent || nominationsAnnounced;
-  const categories = groupIntoCategories(eligible,
-    useNomineesOnly ? { nomineesOnly: true, season } : undefined
+  // Enrich the 4 major categories with prediction-market odds (GD/Kalshi/Polymarket),
+  // precursor wins, and press picks — same enrichment the Nominations Center uses —
+  // so the predictions table renders the same columns instead of "—".
+  const categories = enrichMajorCategoriesWithOdds(
+    groupIntoCategories(eligible, useNomineesOnly ? { nomineesOnly: true, season } : undefined),
+    season,
   );
   const outcomes = getSeasonOutcomes(allShows, season);
 
