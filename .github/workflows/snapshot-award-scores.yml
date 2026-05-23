@@ -1,0 +1,71 @@
+name: Snapshot Award Scores
+
+# Weekly snapshot of the composite Site Award Score for every open show.
+# Feeds the "Award Score Movers" section of the weekly NYC newsletter, which
+# diffs the current snapshot against the prior Saturday's.
+#
+# Algorithm lives in scripts/snapshot-award-scores.js (pure-JS port of
+# src/lib/awards-scoring.ts — keep in sync).
+
+on:
+  schedule:
+    # Every Saturday at 12:00 UTC (8:00 AM EDT / 7:00 AM EST)
+    # Far enough ahead of the Sunday newsletter send for any rebuild fallout
+    # to clear, late enough that the morning's update-show-status has run.
+    - cron: '0 12 * * 6'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Snapshot date (YYYY-MM-DD). Default: today UTC.'
+        required: false
+        type: string
+      markets:
+        description: 'Comma-separated markets to snapshot. Default: broadway.'
+        required: false
+        type: string
+        default: 'broadway'
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Take award-score snapshot
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.date }}" ]; then ARGS="$ARGS --date=${{ inputs.date }}"; fi
+          if [ -n "${{ inputs.markets }}" ]; then ARGS="$ARGS --markets=${{ inputs.markets }}"; fi
+          echo "Running: node scripts/snapshot-award-scores.js $ARGS"
+          node scripts/snapshot-award-scores.js $ARGS
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/stage-data-changes.sh data/award-score-history/
+          if git diff --cached --quiet; then
+            echo "No new snapshot to commit"
+            exit 0
+          fi
+          git commit -m "snapshot: award scores $(date -u +%Y-%m-%d) [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Snapshot Award Scores Failed'
+          severity: 'warning'
