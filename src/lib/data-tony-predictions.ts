@@ -823,26 +823,32 @@ export function tonyComposite(
 }
 
 /**
- * Structural feasibility filter for Best Musical — multiplicative penalty
- * applied to the composite for shows whose category history says they
+ * Structural feasibility filter for Best Musical categories — multiplicative
+ * penalty applied to the composite for shows whose category history says they
  * essentially cannot win.
  *
+ * Applies to BOTH best-musical AND best-revival-musical:
  *   1. No Best Direction of a Musical nom → ×0.85
- *      11/11 Best Musical winners 2013–2025 had a director nom. 0/14 nominees
- *      without one ever won. The two correlate near-perfectly because Tony
- *      voters who think a musical is the year's best also nominate its
- *      director.
+ *      best-musical:         11/11 winners had a director nom (0/14 ever won
+ *                            without). best-revival-musical: 10/10 winners
+ *                            had one (0/16 ever won without). Tony voters
+ *                            who think a musical is the year's best also
+ *                            nominate its director.
+ *
+ * Applies to best-musical only:
  *   2. Jukebox musical AND not pandemic season → ×0.85
  *      Excluding the COVID-shortened 2019–20 ceremony (where Moulin Rouge won
- *      a 3-nominee field), zero jukebox musicals won Best Musical in the
- *      11 tracked seasons. Tony voters consistently snub the form.
+ *      a 3-nominee field), zero jukebox musicals won Best Musical in the 11
+ *      tracked seasons. Tony voters consistently snub the form. (Jukebox
+ *      penalty does not apply to revival musicals — limited sample size and
+ *      revival audiences differ.)
  *
  * Penalties stack multiplicatively. A jukebox with no director nom (e.g.
- * Titaníque 2025–26) drops by ~28% (×0.7225 = ×0.85 × ×0.85), landing at ~1.5% in the
- * T=7 softmax — visible as long-shot, not literal zero. Earlier ×0.10 was too harsh (read as bug). Pandemic exception is hardcoded to season label '2019-2020'
- * (the only ceremony where COVID materially altered the field).
+ * Titaníque 2025–26) drops by ~28% (×0.7225 = ×0.85 × ×0.85), landing at
+ * ~1.5% in the T=7 softmax. Earlier ×0.10 was too harsh (read as bug).
+ * Pandemic exception is hardcoded to season label '2019-2020'.
  *
- * Returns 1.0 (no penalty) for non-Best-Musical categories.
+ * Returns 1.0 (no penalty) for non-Musical categories.
  */
 export function bestMusicalFeasibilityFactor(
   showId: string,
@@ -850,7 +856,7 @@ export function bestMusicalFeasibilityFactor(
   categoryKey: TonyCategoryKey,
   seasonLabel: string,
 ): number {
-  if (categoryKey !== 'best-musical') return 1.0;
+  if (categoryKey !== 'best-musical' && categoryKey !== 'best-revival-musical') return 1.0;
   // Pandemic exception — the 2019-20 ceremony was COVID-truncated (only 3
   // nominees announced months late) and Moulin Rouge winning is an outlier
   // that should not penalize future jukebox nominees.
@@ -861,11 +867,14 @@ export function bestMusicalFeasibilityFactor(
   const entry = shows[showId];
   const hasDirectorNom =
     entry?.tony?.nominatedFor?.includes('Best Direction of a Musical') ?? false;
-  const isJukebox = tags.includes('jukebox');
 
   let factor = 1.0;
   if (!hasDirectorNom) factor *= 0.85;
-  if (isJukebox) factor *= 0.85;
+  // Jukebox penalty applies only to best-musical (new-work category).
+  if (categoryKey === 'best-musical') {
+    const isJukebox = tags.includes('jukebox');
+    if (isJukebox) factor *= 0.85;
+  }
   return factor;
 }
 
