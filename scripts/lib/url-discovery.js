@@ -18,6 +18,7 @@ const { isUrlYearOutsideWindow, hasTryoutUrlMarker } = require('./content-filter
 const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview } = require('./review-guards');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
+const { recordBdCall } = require('./bd-telemetry');
 
 // Derive outlet-to-domain mapping from outlet-registry.json (single source of truth)
 // Maps outlet IDs + aliases → primary domain for SERP URL discovery
@@ -270,12 +271,14 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
     if (!submitRes.ok) {
       _brightDataConsecutiveFailures++;
       log(`    ✗ BD SERP API submit ${submitRes.status} (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}) — trying Web Unlocker`);
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: submitRes.status });
       return null; // Fall through to Web Unlocker
     }
     const submitData = await submitRes.json();
     const responseId = submitData.response_id;
     if (!responseId) {
       _brightDataConsecutiveFailures++;
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'no_response_id' });
       return null;
     }
 
@@ -292,11 +295,13 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
       if (pollRes.status === 202) continue;
       if (!pollRes.ok) {
         _brightDataConsecutiveFailures++;
+        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: pollRes.status });
         return null;
       }
       const data = await pollRes.json();
       if (data.organic) {
         _brightDataConsecutiveFailures = 0;
+        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200 });
         return data.organic.slice(0, 10).map(r => ({
           url: r.link || r.url || '',
           title: r.title || '',
@@ -305,14 +310,17 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride) {
       }
       if (data.response_id) continue;
       _brightDataConsecutiveFailures = 0;
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 'empty' });
       return [];
     }
     _brightDataConsecutiveFailures++;
     log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'timeout' });
     return null;
   } catch (error) {
     _brightDataConsecutiveFailures++;
     log(`    ✗ BD SERP API error: ${error.message} — trying Web Unlocker`);
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: error.message?.slice(0, 80) || 'error' });
     return null;
   }
 }
@@ -341,6 +349,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
     // Structured JSON response (unlikely from Web Unlocker but handle it)
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
       _brightDataConsecutiveFailures = 0;
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
@@ -350,7 +359,10 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
 
     // Raw HTML — parse with regex
     const html = typeof data === 'string' ? data : '';
-    if (!html || html.length < 500) return [];
+    if (!html || html.length < 500) {
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: 'short_html', fallbackFrom: 'serp-api' });
+      return [];
+    }
 
     const results = [];
     const hrefRegex = /href="(https?:\/\/(?!(?:www\.)?google\.)[^"]+)"/g;
@@ -377,6 +389,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
     }
 
     _brightDataConsecutiveFailures = 0;
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
     return results.slice(0, 10);
   } catch (error) {
     _brightDataConsecutiveFailures++;
@@ -384,6 +397,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride) {
     if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
       log(`    ⚠ Bright Data SERP disabled after ${MAX_CONSECUTIVE_FAILURES} consecutive failures`);
     }
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: error.message?.slice(0, 80) || 'error', fallbackFrom: 'serp-api' });
     return null;
   }
 }
