@@ -79,23 +79,30 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
   );
 }
 
-// Our model's win probability. Gold gradient + border for #1; neutral box with gold text for others.
+// Our model's win probability. All boxes carry a subtle gold tint so the column
+// reads as "ours" vs the neutral market-odds columns (GD/Kalshi/Polymarket);
+// the #1 pick gets a stronger gradient + gold border to call it out.
 function OurPickBox({ winProbability, isWinner }: { winProbability: number | null | undefined; isWinner: boolean }) {
   const pct = winProbability != null ? Math.round(winProbability * 100) : null;
+  const baseTintStyle: React.CSSProperties = { background: 'rgba(245, 158, 11, 0.08)' };
   if (pct == null) {
     return (
       <div className="w-11 flex items-center justify-center flex-shrink-0">
-        <div className="w-11 h-11 rounded-lg flex items-center justify-center bg-surface-overlay text-gray-600 text-sm font-bold">—</div>
+        <div
+          className="w-11 h-11 rounded-lg flex items-center justify-center border border-amber-400/15 text-amber-400/40 text-sm font-bold"
+          style={baseTintStyle}
+        >—</div>
       </div>
     );
   }
   const winnerClass = 'shadow-md shadow-amber-500/20 border border-amber-400/50 text-amber-300';
   const winnerStyle: React.CSSProperties = { background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.35))' };
+  const nonWinnerClass = 'border border-amber-400/20 text-amber-300';
   return (
     <div className="w-11 flex items-center justify-center flex-shrink-0">
       <div
-        className={`w-11 h-11 rounded-lg flex items-center justify-center font-bold text-sm leading-none ${isWinner ? winnerClass : 'bg-surface-overlay text-amber-300'}`}
-        style={isWinner ? winnerStyle : undefined}
+        className={`w-11 h-11 rounded-lg flex items-center justify-center font-bold text-sm leading-none ${isWinner ? winnerClass : nonWinnerClass}`}
+        style={isWinner ? winnerStyle : baseTintStyle}
         title="Our model's win probability — critic, audience, and precursor signal."
       >
         {pct}%
