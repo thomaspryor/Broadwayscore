@@ -61,7 +61,9 @@ function badgeFromScore(score: number | null | undefined): TierBadge {
 function OddsCol({ odds, change, size }: { odds: number | null | undefined; change?: number | null; size: 'sm' | 'md' }) {
   // Both sizes use w-11 to match ScoreBadge sm dimensions (44px) so the prediction-percent
   // boxes visually match the critic/audience score boxes in the same row. Boxes grow to
-  // w-[68px] on lg viewports (desktop) per design.
+  // w-[68px] on lg viewports (desktop). Number + change indicator stack vertically and
+  // are centered together so they read as one unit (instead of the change floating at
+  // the bottom edge of the box).
   const boxClass = 'w-11 h-11 lg:w-[68px] lg:h-[68px]';
   const numClass = 'text-sm lg:text-xl font-bold text-white leading-none';
   const changeRaw = change != null ? Math.abs(change) : 0;
@@ -70,9 +72,9 @@ function OddsCol({ odds, change, size }: { odds: number | null | undefined; chan
     : null;
   return (
     <div className="flex-shrink-0 w-11 lg:w-[68px] flex items-center justify-center">
-      <div className={`relative flex items-center justify-center bg-surface-overlay rounded-lg ${boxClass}`}>
+      <div className={`flex flex-col items-center justify-center gap-0.5 bg-surface-overlay rounded-lg ${boxClass}`}>
         <span className={numClass}>{odds != null ? `${Math.round(odds * 100)}%` : '—'}</span>
-        <span className={`absolute bottom-0.5 text-[8px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
+        <span className={`text-[8px] lg:text-[10px] font-semibold leading-none ${changeDisplay != null ? (change! > 0 ? 'text-emerald-400' : 'text-red-400') : odds != null ? 'text-white/20' : 'text-transparent'}`}>
           {changeDisplay != null ? `${change! > 0 ? '▲' : '▼'}${changeDisplay}%` : odds != null ? '–' : '–'}
         </span>
       </div>
