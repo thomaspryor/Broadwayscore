@@ -128,12 +128,21 @@ export default function TonyPredictionsOverviewPage() {
         </Link>
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
               ? `${currentSeason.label} nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.`
               : `${seasons.length} seasons of data-driven Tony predictions. Each category gets its own blend of critic, audience, and precursor signal.`}
+          </p>
+        </div>
+
+        {/* Disclaimer: data-driven, not editorial */}
+        <div className="mb-6 px-4 py-3 rounded-xl border border-brand/20 bg-brand/5">
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            <span className="text-brand font-semibold">These are data-driven, not editorial.</span>{' '}
+            Rankings are what our model outputs when trained on past Tony data — not personal picks.
+            Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
           </p>
         </div>
 
