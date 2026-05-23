@@ -8,7 +8,9 @@ import {
   dedupeByPersonShow,
   reconcileClosure,
   detectContradictions,
+  detectCrossShowConflicts,
   applyPublicFilters,
+  normalizeIdentifier,
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
@@ -105,4 +107,99 @@ test('applyPublicFilters pipeline integration', () => {
   const out = applyPublicFilters(events, TODAY);
   const types = out.map(e => `${e.type}:${e.name}`).sort();
   assert.deepEqual(types, ['arrival:JoJo', 'closure:Chess']);
+});
+
+test('normalizeIdentifier strips nickname quotes and parens', () => {
+  assert.equal(normalizeIdentifier('Joanna "JoJo" Levesque'), 'joanna levesque');
+  assert.equal(normalizeIdentifier("Joanna 'JoJo' Levesque"), 'joanna levesque');
+  assert.equal(normalizeIdentifier('Joanna Levesque'), 'joanna levesque');
+  assert.equal(normalizeIdentifier('Joanna “JoJo” Levesque'), 'joanna levesque');
+  assert.equal(normalizeIdentifier('Tom Felton (Returns)'), 'tom felton');
+  assert.equal(normalizeIdentifier('TBD [understudy]'), 'tbd');
+});
+
+test('dedupeByPersonShow collapses name variants', () => {
+  const events = [
+    { type: 'arrival', name: 'Joanna "JoJo" Levesque', role: 'Florence', addedDate: '2026-04-08' },
+    { type: 'arrival', name: "Joanna 'JoJo' Levesque", role: 'Florence', addedDate: '2026-04-09' },
+    { type: 'arrival', name: 'Joanna Levesque', role: 'Florence', addedDate: '2026-04-07' },
+  ];
+  const out = dedupeByPersonShow(events);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].addedDate, '2026-04-09'); // newest wins
+});
+
+test('reconcileClosure suppresses departures within 3 days of closure with closure-note', () => {
+  const events = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-14' },
+    { type: 'departure', name: 'A', role: 'Lead', date: '2026-06-12', note: 'Production closes June 14' },
+    { type: 'departure', name: 'B', role: 'Lead', date: '2026-06-14', note: 'Final performance' },
+    { type: 'departure', name: 'C', role: 'Lead', date: '2026-06-16', note: 'Production ends' },
+    { type: 'departure', name: 'D', role: 'Lead', date: '2026-06-21', note: 'Final performance, successor TBA' },
+  ];
+  const out = reconcileClosure(events);
+  const names = out.filter(e => e.type === 'departure').map(e => e.name).sort();
+  // A (±2d w/ closure note), B (exact date), C (±2d w/ closure note) all suppressed.
+  // D survives — date >3 days away from closure (June 21 vs June 14 = 7d), genuine personal departure.
+  assert.deepEqual(names, ['D']);
+});
+
+test('reconcileClosure does NOT suppress unrelated departures near closure date', () => {
+  const events = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-14' },
+    { type: 'departure', name: 'Lea', role: 'Florence', date: '2026-06-13', note: 'stepping down for tour' },
+  ];
+  const out = reconcileClosure(events);
+  assert.equal(out.filter(e => e.type === 'departure').length, 1, 'unrelated note kept');
+});
+
+test('detectContradictions flags arrival redundant with currentCast', () => {
+  const currentCast = [{ name: 'Eric Anderson', role: 'Meyer Wolfsheim', since: '2025-09-01' }];
+  const events = [
+    { type: 'arrival', name: 'Eric Anderson', role: 'Meyer Wolfsheim', date: '2025-08-01', sourceUrl: 'x' },
+  ];
+  const warnings = detectContradictions(events, currentCast);
+  const kinds = warnings.map(w => w.kind);
+  assert.ok(kinds.includes('arrival-already-in-current-cast'));
+});
+
+test('detectCrossShowConflicts flags overlapping arrivals without exit', () => {
+  const data = {
+    'gatsby-2024': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Meyer', date: '2025-09-01' },
+      ],
+    },
+    'moulin-rouge-2020': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Zidler', date: '2026-05-19' },
+      ],
+    },
+  };
+  const out = detectCrossShowConflicts(data);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].kind, 'cross-show-overlap-without-exit');
+  assert.equal(out[0].name, 'Eric Anderson');
+});
+
+test('detectCrossShowConflicts ignores conflicts when actor has absence from one show', () => {
+  const data = {
+    'gatsby-2024': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Meyer', date: '2025-09-01' },
+        { type: 'absence', name: 'Eric Anderson', role: 'Meyer', date: '2026-05-11', note: 'leave' },
+      ],
+    },
+    'moulin-rouge-2020': {
+      currentCast: [],
+      upcoming: [
+        { type: 'arrival', name: 'Eric Anderson', role: 'Zidler', date: '2026-05-19' },
+      ],
+    },
+  };
+  const out = detectCrossShowConflicts(data);
+  assert.equal(out.length, 0);
 });

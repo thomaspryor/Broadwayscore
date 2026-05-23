@@ -16,6 +16,29 @@ function isAutoFlaggedEvent(event) {
   return Boolean(event && event.note && event.note.includes('[AUTO-FLAGGED]'));
 }
 
+/**
+ * Normalize a name or role for dedup keying.
+ * Strips parenthetical/bracketed nicknames and smart quotes so that
+ * 'Joanna "JoJo" Levesque', "Joanna 'JoJo' Levesque", 'Joanna Levesque'
+ * all collapse to 'joanna levesque'. Does NOT alter the displayed event —
+ * only the dedup key.
+ */
+function normalizeIdentifier(s) {
+  if (!s || typeof s !== 'string') return '';
+  return s
+    // Strip nickname quotes (curly + straight, single + double) including the
+    // word inside: "JoJo", 'JoJo', “JoJo”, ‘JoJo’ → ''
+    .replace(/["'“”‘’][^"'“”‘’]+["'“”‘’]/g, '')
+    // Strip parentheticals: (the original cast) → ''
+    .replace(/\([^)]*\)/g, '')
+    // Strip bracketed text: [understudy] → ''
+    .replace(/\[[^\]]*\]/g, '')
+    // Collapse whitespace
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 function filterAutoFlagged(events) {
   return events.filter(e => !isAutoFlaggedEvent(e));
 }
@@ -52,7 +75,7 @@ function filterStaleAddedDates(events, today = new Date(), maxAgeDays = 60) {
 function dedupeByPersonShow(events) {
   const groups = new Map();
   for (const event of events) {
-    const key = `${event.name}::${event.type}::${event.role || ''}`;
+    const key = `${normalizeIdentifier(event.name)}::${event.type}::${normalizeIdentifier(event.role)}`;
     const existing = groups.get(key);
     if (!existing) {
       groups.set(key, event);
@@ -86,25 +109,51 @@ function dedupeByPersonShow(events) {
   return Array.from(groups.values());
 }
 
+/**
+ * Suppress per-actor `departure` events that are really restatements of a
+ * show-wide closure. Catches three patterns:
+ *   1. Same-date departure with a "production closes" note
+ *   2. ±3-day departure with a "production closes" note (LLM date drift)
+ *   3. Same-date departure on the closure date regardless of note text
+ *
+ * The ±3-day window is the LLM-drift slop: the scraper has been seen to
+ * encode "final performance June 14" as June 13 or June 15 depending on
+ * how the article phrases the date. The closure event always carries the
+ * authoritative date from the closure announcement, so we trust that and
+ * fold nearby departures into it.
+ */
 function reconcileClosure(events) {
-  const closures = events.filter(e => e.type === 'closure');
-  if (closures.length === 0) return events;
+  const closureDates = events
+    .filter(e => e.type === 'closure' && e.date)
+    .map(e => parseISO(e.date))
+    .filter(Boolean);
+  if (closureDates.length === 0) return events;
 
-  const closureDates = new Set(closures.map(c => c.date).filter(Boolean));
+  const SLOP_DAYS = 3;
   return events.filter(e => {
     if (e.type !== 'departure') return true;
-    if (!e.date || !closureDates.has(e.date)) return true;
     const note = (e.note || '').toLowerCase();
-    if (note.includes('production closes') || note.includes('production ends')) return false;
+    const noteMatchesClosure =
+      note.includes('production closes') ||
+      note.includes('production ends') ||
+      note.includes('show closes') ||
+      note.includes('final performance of the production');
+    const departureDate = parseISO(e.date);
+    if (!departureDate) return !noteMatchesClosure;
+    for (const cDate of closureDates) {
+      const diff = Math.abs((departureDate.getTime() - cDate.getTime()) / DAY_MS);
+      if (diff === 0) return false;
+      if (diff <= SLOP_DAYS && noteMatchesClosure) return false;
+    }
     return true;
   });
 }
 
-function detectContradictions(events) {
+function detectContradictions(events, currentCast = []) {
   const warnings = [];
-  const closures = events.filter(e => e.type === 'closure' && e.date);
-  if (closures.length === 0) return warnings;
 
+  // 1. Closure date contradicted by later arrival
+  const closures = events.filter(e => e.type === 'closure' && e.date);
   const arrivals = events.filter(e => e.type === 'arrival' && e.date);
   for (const closure of closures) {
     const closureDate = parseISO(closure.date);
@@ -127,6 +176,98 @@ function detectContradictions(events) {
       });
     }
   }
+
+  // 2. Arrival redundant — actor already in currentCast in same role
+  if (Array.isArray(currentCast) && currentCast.length > 0) {
+    const castIndex = new Map();
+    for (const member of currentCast) {
+      const k = `${normalizeIdentifier(member.name)}::${normalizeIdentifier(member.role)}`;
+      castIndex.set(k, member);
+    }
+    for (const a of arrivals) {
+      const k = `${normalizeIdentifier(a.name)}::${normalizeIdentifier(a.role)}`;
+      if (!castIndex.has(k)) continue;
+      const member = castIndex.get(k);
+      const arrivalDate = parseISO(a.date);
+      const sinceDate = parseISO(member.since);
+      if (sinceDate && arrivalDate && arrivalDate <= sinceDate) {
+        warnings.push({
+          kind: 'arrival-already-in-current-cast',
+          name: a.name,
+          role: a.role,
+          arrivalDate: a.date,
+          sinceDate: member.since,
+          sourceUrl: a.sourceUrl || null,
+        });
+      }
+    }
+  }
+
+  return warnings;
+}
+
+/**
+ * Cross-show check. Given the full {shows: {showId: {currentCast, upcoming}}}
+ * data file, find actors who appear as 'arrival' in two shows whose run dates
+ * overlap, without a corresponding 'absence' or 'departure' from the first
+ * show. Eric-Anderson-Gatsby-and-Moulin-Rouge type bug.
+ */
+function detectCrossShowConflicts(showsData) {
+  const warnings = [];
+  if (!showsData || typeof showsData !== 'object') return warnings;
+
+  const byActor = new Map();
+  for (const [showId, show] of Object.entries(showsData)) {
+    const upcoming = (show && show.upcoming) || [];
+    for (const event of upcoming) {
+      if (event.type !== 'arrival' || !event.date) continue;
+      if (!byActor.has(normalizeIdentifier(event.name))) {
+        byActor.set(normalizeIdentifier(event.name), []);
+      }
+      byActor.get(normalizeIdentifier(event.name)).push({ showId, event });
+    }
+  }
+
+  for (const [normName, entries] of byActor) {
+    if (entries.length < 2) continue;
+    for (let i = 0; i < entries.length; i++) {
+      for (let j = i + 1; j < entries.length; j++) {
+        const a = entries[i];
+        const b = entries[j];
+        if (a.showId === b.showId) continue;
+        const aStart = parseISO(a.event.date);
+        const bStart = parseISO(b.event.date);
+        if (!aStart || !bStart) continue;
+        const aEnd = parseISO(a.event.endDate) || new Date(aStart.getTime() + 365 * DAY_MS);
+        const bEnd = parseISO(b.event.endDate) || new Date(bStart.getTime() + 365 * DAY_MS);
+        if (aStart <= bEnd && bStart <= aEnd) {
+          // Overlapping arrivals — check if there's an 'absence' or
+          // 'departure' from the OTHER show covering the conflict.
+          const aHasExit = (showsData[a.showId].upcoming || []).some(
+            e =>
+              (e.type === 'absence' || e.type === 'departure') &&
+              normalizeIdentifier(e.name) === normName,
+          );
+          const bHasExit = (showsData[b.showId].upcoming || []).some(
+            e =>
+              (e.type === 'absence' || e.type === 'departure') &&
+              normalizeIdentifier(e.name) === normName,
+          );
+          if (!aHasExit && !bHasExit) {
+            warnings.push({
+              kind: 'cross-show-overlap-without-exit',
+              name: a.event.name,
+              showA: a.showId,
+              showB: b.showId,
+              datesA: { start: a.event.date, end: a.event.endDate || null },
+              datesB: { start: b.event.date, end: b.event.endDate || null },
+            });
+          }
+        }
+      }
+    }
+  }
+
   return warnings;
 }
 
@@ -146,6 +287,7 @@ function applyPublicFilters(events, today = new Date(), opts = {}) {
 
 module.exports = {
   isAutoFlaggedEvent,
+  normalizeIdentifier,
   filterAutoFlagged,
   filterStaleAbsences,
   filterPastEvents,
@@ -153,5 +295,6 @@ module.exports = {
   dedupeByPersonShow,
   reconcileClosure,
   detectContradictions,
+  detectCrossShowConflicts,
   applyPublicFilters,
 };

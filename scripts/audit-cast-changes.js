@@ -23,7 +23,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const { detectContradictions } = require('./lib/cast-changes-filters');
+const {
+  detectContradictions,
+  detectCrossShowConflicts,
+  dedupeByPersonShow,
+} = require('./lib/cast-changes-filters');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
 const TODAY = new Date();
@@ -146,7 +150,10 @@ function main() {
     contradictedClosuresDropped: 0,
     endedAbsencesDropped: 0,
     staleAutoFlaggedDropped: 0,
+    nameVariantDedupes: 0,
+    inCastArrivalsDropped: 0,
     contradictionsByShow: {},
+    crossShowConflicts: [],
   };
 
   for (const [showId, show] of Object.entries(data.shows || {})) {
@@ -159,9 +166,33 @@ function main() {
     report.closuresReclassified += reclass.closureGroupCount;
     report.departuresReclassifiedAsClosure += reclass.reclassifiedCount;
 
-    const contradictions = detectContradictions(upcoming);
+    // Name-variant dedup (e.g. "Joanna 'JoJo' Levesque" + "Joanna Levesque" + smart-quote twin)
+    const beforeDedup = upcoming.length;
+    upcoming = dedupeByPersonShow(upcoming);
+    report.nameVariantDedupes += beforeDedup - upcoming.length;
+
+    const contradictions = detectContradictions(upcoming, show.currentCast || []);
     if (contradictions.length > 0) {
       report.contradictionsByShow[showId] = contradictions;
+    }
+
+    // Drop arrivals that are already covered by currentCast (same person + role,
+    // arrival date <= since date). Keeps the data tight and prevents the UI from
+    // implying a "new" arrival that's actually historical.
+    const inCastDups = contradictions.filter(c => c.kind === 'arrival-already-in-current-cast');
+    if (inCastDups.length > 0) {
+      const dropKeys = new Set(
+        inCastDups.map(c => `${c.name}::${c.role}::${c.arrivalDate}`),
+      );
+      const before = upcoming.length;
+      upcoming = upcoming.filter(
+        e =>
+          !(
+            e.type === 'arrival' &&
+            dropKeys.has(`${e.name}::${e.role}::${e.date}`)
+          ),
+      );
+      report.inCastArrivalsDropped += before - upcoming.length;
     }
 
     const dropC = dropContradictedClosures(upcoming);
@@ -179,6 +210,9 @@ function main() {
     show.upcoming = upcoming;
   }
 
+  // Cross-show conflict detection (Eric-Anderson-Gatsby-and-Moulin-Rouge type)
+  report.crossShowConflicts = detectCrossShowConflicts(data.shows);
+
   data.lastUpdated = TODAY_STR;
 
   console.log('Audit summary:');
@@ -188,15 +222,28 @@ function main() {
   console.log(`  Contradicted closures dropped:               ${report.contradictedClosuresDropped}`);
   console.log(`  Ended absences dropped:                      ${report.endedAbsencesDropped}`);
   console.log(`  Stale [AUTO-FLAGGED] entries dropped:        ${report.staleAutoFlaggedDropped}`);
+  console.log(`  Name-variant dedupes:                        ${report.nameVariantDedupes}`);
+  console.log(`  Redundant in-cast arrivals dropped:          ${report.inCastArrivalsDropped}`);
+  console.log(`  Cross-show overlap conflicts flagged:        ${report.crossShowConflicts.length}`);
   if (Object.keys(report.contradictionsByShow).length > 0) {
-    console.log('\n  Contradictions detected (closure vs later arrival):');
+    console.log('\n  Contradictions detected per show:');
     for (const [showId, warnings] of Object.entries(report.contradictionsByShow)) {
       for (const w of warnings) {
-        console.log(`    [${showId}] closure ${w.closureDate} contradicted by:`);
-        for (const a of w.laterArrivals) {
-          console.log(`      - ${a.name} arrives ${a.date}${a.endDate ? ` (through ${a.endDate})` : ''}`);
+        if (w.kind === 'closure-vs-later-arrival') {
+          console.log(`    [${showId}] closure ${w.closureDate} contradicted by:`);
+          for (const a of w.laterArrivals) {
+            console.log(`      - ${a.name} arrives ${a.date}${a.endDate ? ` (through ${a.endDate})` : ''}`);
+          }
+        } else if (w.kind === 'arrival-already-in-current-cast') {
+          console.log(`    [${showId}] arrival redundant: ${w.name} (${w.role}) already in cast since ${w.sinceDate}`);
         }
       }
+    }
+  }
+  if (report.crossShowConflicts.length > 0) {
+    console.log('\n  Cross-show conflicts (actor in two shows, overlapping dates, no exit from either):');
+    for (const w of report.crossShowConflicts) {
+      console.log(`    - ${w.name}: ${w.showA} (${w.datesA.start}..${w.datesA.end || '?'}) vs ${w.showB} (${w.datesB.start}..${w.datesB.end || '?'})`);
     }
   }
 
@@ -204,7 +251,10 @@ function main() {
     report.departuresReclassifiedAsClosure +
     report.contradictedClosuresDropped +
     report.endedAbsencesDropped +
-    report.staleAutoFlaggedDropped;
+    report.staleAutoFlaggedDropped +
+    report.nameVariantDedupes +
+    report.inCastArrivalsDropped +
+    report.crossShowConflicts.length;
 
   if (WRITE) {
     fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2) + '\n');
