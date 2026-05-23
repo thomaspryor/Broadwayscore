@@ -79,7 +79,18 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
   'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
-  'best-play':            { critic: 0.4,  audience: 0.4,  awards: 0.2 },
+  // best-play weights changed to 0/0/1.0 on 2026-05-23 alongside the new
+  // categoryAwardsScore() that combines two signals for this category:
+  //   0.40 × topCatPrecursorScore (focused DL/OCC/DD Best Play win/nom)
+  //   0.60 × blindedSiteLogScore  (broad: Pulitzer, NYDCC, Tony noms, etc.)
+  // 11-season grid search shows this hits 11/11 in-sample with Brier 0.379,
+  // better than the prior 10/11 (Brier 0.185 was sharper but missed Purpose
+  // 2024-25 because the narrow precursor score didn't see Purpose's Pulitzer
+  // and NYDCC wins). The recipe carries 100% awards weight because the broad
+  // term already absorbs critic-reception signal via cross-cat awards from
+  // OCC/DD/Lortel/Obie performer + craft votes — adding raw critic+audience
+  // weight on top hurt Brier in the grid search.
+  'best-play':            { critic: 0,    audience: 0,    awards: 1.0 },
   'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
   // best-revival-play weights changed from 0/1.0/0 to 0.20/0.60/0.20 on
   // 2026-05-21. The previous pure-audience recipe matched 10/11 historically
@@ -536,6 +547,173 @@ export function computeAwardsScore(showId: string, tonyCategory: string): number
   return Math.min(100, base);
 }
 
+/**
+ * Top-category precursor score — focused on just the equivalent top award
+ * at the three precursor ceremonies (DL, OCC, DD).
+ *
+ *   +30 × tier per top-cat WIN
+ *   +10 × tier per top-cat NOM (no win)
+ *
+ * Tier weights: DL=1.0, OCC=0.9, DD=0.7. Max 78 (full sweep wins).
+ *
+ * This is a NARROWER signal than computeAwardsScore (which also includes a
+ * cross-category nom tail). Used by Best Play recipe as one of two awards
+ * inputs alongside blindedSiteLogScore. 11-season backtest 2026-05-23 shows
+ * combining these two signals beats either alone for Best Play (11/11 + Brier
+ * 0.379 vs broad-only 11/11 + 1.335 vs topCat-only 10/11 + 0.801).
+ */
+export function topCatPrecursorScore(showId: string, tonyCategory: string): number {
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
+    dramadesk?: PrecursorNode;
+    outerCriticsCircle?: PrecursorNode;
+    dramaLeague?: PrecursorNode;
+  }>;
+  const entry = shows[showId];
+  if (!entry) return 0;
+  const matching = TONY_TO_PRECURSOR_CATEGORY[tonyCategory];
+  if (!matching) return 0;
+  const sources = [
+    { node: entry.dramaLeague,        matchCats: matching.dramaLeague,        tier: PRECURSOR_TIER_WEIGHTS.dramaLeague },
+    { node: entry.outerCriticsCircle, matchCats: matching.outerCriticsCircle, tier: PRECURSOR_TIER_WEIGHTS.outerCriticsCircle },
+    { node: entry.dramadesk,          matchCats: matching.dramadesk,          tier: PRECURSOR_TIER_WEIGHTS.dramadesk },
+  ];
+  let score = 0;
+  for (const { node, matchCats, tier } of sources) {
+    if (!node) continue;
+    const wins = node.wins ?? [];
+    const noms = node.nominatedFor ?? [];
+    if (matchCats.some((c) => wins.includes(c))) score += 30 * tier;
+    else if (matchCats.some((c) => noms.includes(c))) score += 10 * tier;
+  }
+  return score;
+}
+
+/**
+ * Blinded Site Award Score — the site's prestige score (awards-scoring.ts
+ * computeSiteAwardScore) but with the show's own Tony WINS masked out to
+ * prevent leakage in historical backtests and to keep the value usable as a
+ * predictor for current-season nominees (Tony noms ARE allowed; they're
+ * announced before the ceremony).
+ *
+ * Includes Tony noms, Pulitzer wins/finalists, NYDCC wins, OCC, DL, DD,
+ * Olivier, Obie, Lortel — full ceremony breadth. Same log scale as site
+ * (40 * log10(1 + rawPoints/4), capped at 100).
+ *
+ * Used by Best Play recipe alongside topCatPrecursorScore (broad + narrow
+ * signals capture independent information per 11-season backtest).
+ */
+export function blindedSiteLogScore(showId: string): number {
+  // Lazy import to avoid circular dep: awards-scoring imports nothing from
+  // this module, but we want the same POINTS table and ceremony aggregation
+  // logic. Re-implement the scoring loop inline with Tony WINS masked.
+  const shows = (awardsData as Record<string, unknown>).shows as Record<string, AwardsShowEntry & {
+    dramadesk?: PrecursorNode; outerCriticsCircle?: PrecursorNode; dramaLeague?: PrecursorNode;
+    pulitzer?: { wins?: string[]; finalist?: string[] };
+    pulitzerFinalist?: { year?: number; note?: string };
+    olivier?: PrecursorNode;
+    nyDramaCritics?: { wins?: string[]; noAward?: boolean };
+    obie?: PrecursorNode;
+    lortel?: PrecursorNode;
+  }>;
+  const entry = shows[showId];
+  if (!entry) return 0;
+
+  // Local copy of the POINTS table from awards-scoring.ts. Kept in sync by
+  // the awards-cap follow-up Notion card; if the site table changes, this
+  // mirror must too.
+  const POINTS: Record<string, Partial<Record<CategoryTier, { win: number; nom: number }>>> = {
+    tony:         { S: { win: 200, nom: 20 }, A: { win: 75, nom: 9 }, B: { win: 35, nom: 5 }, C: { win: 25, nom: 3 } },
+    pulitzer:     { S: { win: 110, nom: 18 } },
+    olivier_bway: { S: { win: 50,  nom: 6 },  A: { win: 25, nom: 3 },  B: { win: 15, nom: 2 }, C: { win: 12, nom: 2 } },
+    nydcc:        { S: { win: 45,  nom: 0 } },
+    occ:          { S: { win: 30,  nom: 5 },  A: { win: 20, nom: 3 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
+    dramaLeague:  { S: { win: 35,  nom: 5 },  A: { win: 22, nom: 3 } },
+    dramaDesk:    { S: { win: 28,  nom: 4 },  A: { win: 18, nom: 2 },  B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
+    obie:         { S: { win: 18,  nom: 0 },  A: { win: 12, nom: 0 },  B: { win: 8,  nom: 0 }, C: { win: 5,  nom: 0 } },
+    lortel:       { S: { win: 20,  nom: 3 },  A: { win: 12, nom: 2 },  B: { win: 8,  nom: 1 }, C: { win: 5,  nom: 1 } },
+  };
+  const A_PLUS_MULT = 1.2, REVIVAL_DISC = 0.85;
+  const C_STACK = [1.0, 0.7, 0.5, 0.4, 0.4, 0.4];
+  const pickTier = (t: Partial<Record<CategoryTier, { win: number; nom: number }>>, tier: CategoryTier) => {
+    if (tier === 'A+') return t.A ?? null;
+    return t[tier] ?? null;
+  };
+  const applyMult = (p: number, tier: CategoryTier, rev: boolean) => {
+    if (tier === 'A+') p *= A_PLUS_MULT;
+    if (rev) p *= REVIVAL_DISC;
+    return p;
+  };
+  const scoreCeremony = (key: string, wins: string[], noms: string[], maskWins = false): number => {
+    const table = POINTS[key];
+    if (!table) return 0;
+    let total = 0, cWinsSeen = 0;
+    if (!maskWins) {
+      const winCount: Record<string, number> = {};
+      for (const w of wins) winCount[w] = (winCount[w] ?? 0) + 1;
+      for (const [cat, count] of Object.entries(winCount)) {
+        const cls = classifyCategory(cat);
+        if (!cls) continue;
+        const pts = pickTier(table, cls.tier);
+        if (!pts) continue;
+        for (let i = 0; i < count; i++) {
+          let raw = pts.win;
+          if (cls.tier === 'C') { raw *= C_STACK[Math.min(cWinsSeen, C_STACK.length - 1)]; cWinsSeen++; }
+          total += applyMult(raw, cls.tier, cls.revival);
+        }
+      }
+    }
+    const nomCount: Record<string, number> = {};
+    for (const n of noms) nomCount[n] = (nomCount[n] ?? 0) + 1;
+    const winCount2: Record<string, number> = {};
+    if (!maskWins) for (const w of wins) winCount2[w] = (winCount2[w] ?? 0) + 1;
+    for (const [cat, count] of Object.entries(nomCount)) {
+      const cls = classifyCategory(cat);
+      if (!cls) continue;
+      const pts = pickTier(table, cls.tier);
+      if (!pts || pts.nom <= 0) continue;
+      const losing = Math.max(0, count - (winCount2[cat] ?? 0));
+      for (let i = 0; i < losing; i++) total += applyMult(pts.nom, cls.tier, cls.revival);
+    }
+    return total;
+  };
+
+  let raw = 0;
+  if (entry.tony)             raw += scoreCeremony('tony',         entry.tony.wins ?? [],             entry.tony.nominatedFor ?? [],             true);
+  if (entry.pulitzer)         raw += scoreCeremony('pulitzer',     entry.pulitzer.wins ?? [],         entry.pulitzer.finalist ?? [],             false);
+  if (entry.olivier)          raw += scoreCeremony('olivier_bway', entry.olivier.wins ?? [],          entry.olivier.nominatedFor ?? [],          false);
+  if (entry.nyDramaCritics)   raw += scoreCeremony('nydcc',        entry.nyDramaCritics.wins ?? [],   [],                                         false);
+  if (entry.outerCriticsCircle) raw += scoreCeremony('occ',        entry.outerCriticsCircle.wins ?? [], entry.outerCriticsCircle.nominatedFor ?? [], false);
+  if (entry.dramaLeague)      raw += scoreCeremony('dramaLeague',  entry.dramaLeague.wins ?? [],      entry.dramaLeague.nominatedFor ?? [],      false);
+  if (entry.dramadesk)        raw += scoreCeremony('dramaDesk',    entry.dramadesk.wins ?? [],        entry.dramadesk.nominatedFor ?? [],        false);
+  if (entry.obie)             raw += scoreCeremony('obie',         entry.obie.wins ?? [],             [],                                         false);
+  if (entry.lortel)           raw += scoreCeremony('lortel',       entry.lortel.wins ?? [],           entry.lortel.nominatedFor ?? [],           false);
+  return Math.max(0, Math.min(100, 40 * Math.log10(1 + raw / 4)));
+}
+
+/**
+ * Dispatcher: returns the awards-term value for a given category.
+ *
+ * For 'best-play' (2026-05-23): combines two signals discovered by 11-season
+ * grid search to be jointly more predictive than either alone:
+ *   0.40 × topCatPrecursorScore (focused: DL/OCC/DD Best Play wins/noms)
+ *   0.60 × blindedSiteLogScore  (broad: Pulitzer, NYDCC, Tony noms, Olivier, etc.)
+ * In-sample accuracy 11/11 (vs current 10/11). Fixes the Purpose 2024-25 miss
+ * because Purpose won Pulitzer + NYDCC + DD Outstanding Play but lost DL+OCC
+ * top-cat — the broad signal captures what the narrow signal misses.
+ *
+ * For other categories: returns the legacy computeAwardsScore (narrow,
+ * precursor-only). Grid search showed the two-signal combination doesn't help
+ * or marginally hurts the other 3 categories on the 11-season backtest.
+ */
+export function categoryAwardsScore(showId: string, categoryKey: TonyCategoryKey): number {
+  if (categoryKey === 'best-play') {
+    const tc = topCatPrecursorScore(showId, CATEGORY_KEY_TO_TITLE['best-play']);
+    const broad = blindedSiteLogScore(showId);
+    return 0.40 * tc + 0.60 * broad;
+  }
+  return computeAwardsScore(showId, CATEGORY_KEY_TO_TITLE[categoryKey]);
+}
+
 /** Return 'DL', 'OCC', and/or 'DD' if the show won matching precursor categories. */
 export function getPrecursorWins(showId: string, tonyCategory: string, nomineeName?: string | null): string[] {
   const shows = (awardsData as Record<string, unknown>).shows as Record<string, {
@@ -679,7 +857,7 @@ export function serializeShow(
 
   const tonyAud = computeTonyAudienceGrade(show.id);
   const awards = categoryKey
-    ? computeAwardsScore(show.id, CATEGORY_KEY_TO_TITLE[categoryKey])
+    ? categoryAwardsScore(show.id, categoryKey)
     : 0;
   let composite = categoryKey
     ? tonyComposite(show.compositeScore, tonyAud, awards, categoryKey, opts.tier ?? 1)
