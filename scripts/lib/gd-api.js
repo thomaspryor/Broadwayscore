@@ -17,13 +17,44 @@
  * console.error so stdout stays clean for JSON consumers.
  */
 
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
 const { normalizeTitle, titlesMatch } = require('./title-normalization');
 
 const GD_BASE = 'https://www.goldderby.com/wp-json/gameplay/v1';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
-async function gdGet(pathSuffix) {
+function cacheKeyFor(pathSuffix) {
+  return crypto.createHash('sha1').update(pathSuffix).digest('hex').slice(0, 16);
+}
+
+/**
+ * GET a Gold Derby JSON endpoint. Optional read-through cache.
+ *
+ * @param {string} pathSuffix — e.g. '/featured-leagues/tony'
+ * @param {object} [opts]
+ * @param {string} [opts.cacheDir] — if set, reads/writes JSON cache at `${cacheDir}/${sha1}.json`
+ * @param {number} [opts.ttlMs] — if set, cache hits older than this trigger a refetch
+ * @returns {Promise<any>}
+ */
+async function gdGet(pathSuffix, opts = {}) {
+  const { cacheDir, ttlMs } = opts;
   const url = `${GD_BASE}${pathSuffix}`;
+
+  if (cacheDir) {
+    const cachePath = path.join(cacheDir, `${cacheKeyFor(pathSuffix)}.json`);
+    try {
+      const stat = fs.statSync(cachePath);
+      const ageMs = Date.now() - stat.mtimeMs;
+      if (!ttlMs || ageMs < ttlMs) {
+        return JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+      }
+    } catch (e) {
+      if (e.code !== 'ENOENT') throw e;
+    }
+  }
+
   const res = await fetch(url, {
     headers: {
       'User-Agent': UA,
@@ -33,7 +64,15 @@ async function gdGet(pathSuffix) {
     },
   });
   if (!res.ok) throw new Error(`GET ${url} → ${res.status}`);
-  return res.json();
+  const body = await res.json();
+
+  if (cacheDir) {
+    fs.mkdirSync(cacheDir, { recursive: true });
+    const cachePath = path.join(cacheDir, `${cacheKeyFor(pathSuffix)}.json`);
+    fs.writeFileSync(cachePath, JSON.stringify(body));
+  }
+
+  return body;
 }
 
 async function findTonyLeagues(season) {
