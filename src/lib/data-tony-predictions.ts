@@ -78,7 +78,14 @@ export const TONY_BLEND_WEIGHT = 0.5;
 // while staying inside the LOOCV-optimal plateau (no overfit). See
 // scripts/search-tony-best-play-weights.ts --cat=best-musical.
 export const TONY_RECIPES: Record<string, { critic: number; audience: number; awards: number }> = {
-  'best-musical':         { critic: 0.45, audience: 0.55, awards: 0   },
+  // best-musical weights changed from 0.45/0.55/0 to 0.60/0.20/0.20 on
+  // 2026-05-23. Grid search across 4 dimensions (critic, audience, topCat,
+  // broad) found critic-heavy recipes with balanced awards hit 10/11 in-sample
+  // (vs prior 9/11). categoryAwardsScore for best-musical returns
+  // 0.5*topCat + 0.5*broad — so effective weights are 0.60c/0.20a/0.10topCat/
+  // 0.10broad. The shift toward critic also hedges against audience-grade
+  // post-Tony review bias (winners accumulate inflated audience scores).
+  'best-musical':         { critic: 0.60, audience: 0.20, awards: 0.20 },
   // best-play weights changed to 0/0/1.0 on 2026-05-23 alongside the new
   // categoryAwardsScore() that combines two signals for this category:
   //   0.40 × topCatPrecursorScore (focused DL/OCC/DD Best Play win/nom)
@@ -91,7 +98,13 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
   // OCC/DD/Lortel/Obie performer + craft votes — adding raw critic+audience
   // weight on top hurt Brier in the grid search.
   'best-play':            { critic: 0,    audience: 0,    awards: 1.0 },
-  'best-revival-musical': { critic: 0,    audience: 1.0,  awards: 0   },
+  // best-revival-musical weights changed from 0/1.0/0 to 0.10/0.70/0.20 on
+  // 2026-05-23. Adding 20% broad weight (blindedSiteLogScore) improves Brier
+  // 3.901 -> 3.417 while preserving 10/10 in-sample accuracy. Small critic
+  // weight (0.10) hedges further against the audience-grade post-Tony review
+  // bias issue raised in the same session — historical winners accumulate
+  // reviews from voters who knew they won, inflating audience grades.
+  'best-revival-musical': { critic: 0.10, audience: 0.70, awards: 0.20 },
   // best-revival-play weights changed from 0/1.0/0 to 0.20/0.60/0.20 on
   // 2026-05-21. The previous pure-audience recipe matched 10/11 historically
   // but produced a top-1 score gap of only 0.5pt on 2025-26: Every Brilliant
@@ -710,6 +723,22 @@ export function categoryAwardsScore(showId: string, categoryKey: TonyCategoryKey
     const tc = topCatPrecursorScore(showId, CATEGORY_KEY_TO_TITLE['best-play']);
     const broad = blindedSiteLogScore(showId);
     return 0.40 * tc + 0.60 * broad;
+  }
+  // best-musical (2026-05-23): grid search picked critic-heavy recipe with
+  // balanced topCat + broad. The awards term is normalized internally so the
+  // recipe awards weight (0.20) splits evenly between topCat (0.10 effective)
+  // and broad (0.10 effective).
+  if (categoryKey === 'best-musical') {
+    const tc = topCatPrecursorScore(showId, CATEGORY_KEY_TO_TITLE['best-musical']);
+    const broad = blindedSiteLogScore(showId);
+    return 0.50 * tc + 0.50 * broad;
+  }
+  // best-revival-musical (2026-05-23): adding 20% broad weight to the audience-
+  // heavy recipe improves Brier (3.901 -> 3.417) while preserving 10/10
+  // in-sample accuracy. Hedges against the audience-grade post-Tony bias
+  // (historical winners accumulated reviews from voters who knew they won).
+  if (categoryKey === 'best-revival-musical') {
+    return blindedSiteLogScore(showId);
   }
   return computeAwardsScore(showId, CATEGORY_KEY_TO_TITLE[categoryKey]);
 }
