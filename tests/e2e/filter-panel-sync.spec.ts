@@ -171,24 +171,32 @@ for (const cfg of PAGES) {
       const before = await readPanelState(page);
       expect(before.chips.length).toBeGreaterThanOrEqual(2);
 
-      // Instrument history.replaceState to detect race (regressed keys after delete)
-      const trace = await page.evaluate(() => {
-        const log: string[] = [];
-        const orig = history.replaceState;
+      // Instrument history.replaceState to detect race (regressed keys after delete).
+      // Install BEFORE the click so Next.js's router.replace writes are captured.
+      await page.evaluate(() => {
+        const w = window as unknown as { __pwWrites?: string[]; __pwOrigReplace?: typeof history.replaceState };
+        w.__pwWrites = [];
+        w.__pwOrigReplace = history.replaceState;
         history.replaceState = function (...args: unknown[]) {
-          log.push(String(args[2] ?? ''));
-          return orig.apply(this, args as Parameters<typeof history.replaceState>);
+          w.__pwWrites!.push(String(args[2] ?? ''));
+          return w.__pwOrigReplace!.apply(this, args as Parameters<typeof history.replaceState>);
         };
-        const clearAll = Array.from(document.querySelectorAll('button')).find(
-          (b) => (b.textContent || '').trim() === 'Clear all',
-        ) as HTMLButtonElement | undefined;
-        clearAll?.click();
-        return new Promise<{ writes: string[]; finalUrl: string }>((resolve) => {
-          setTimeout(() => {
-            history.replaceState = orig;
-            resolve({ writes: log, finalUrl: window.location.search });
-          }, 600);
-        });
+      });
+
+      // Use Playwright locator + click so actionability waits for hydration
+      // to attach the React onClick handler. Synthesized DOM .click() inside
+      // page.evaluate can fire before hydration on slow CI (writes log stays
+      // empty, URL doesn't change) — caught WE clear-all flake 2026-05-23.
+      await page.getByRole('button', { name: 'Clear all', exact: true }).click();
+
+      // Wait for any deferred writes (startTransition / async router.replace)
+      await page.waitForTimeout(600);
+
+      const trace = await page.evaluate(() => {
+        const w = window as unknown as { __pwWrites?: string[]; __pwOrigReplace?: typeof history.replaceState };
+        const writes = w.__pwWrites ?? [];
+        if (w.__pwOrigReplace) history.replaceState = w.__pwOrigReplace;
+        return { writes, finalUrl: window.location.search };
       });
 
       // Final URL is clean (no panel keys)
