@@ -22,7 +22,27 @@ interface CriticPanelist {
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
   { name: 'Dan Rubins', outlets: ['Slant Magazine'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
-  { name: 'Naveen Kumar', outlets: ['The Washington Post', 'The New York Times'], initials: 'NK', bio: 'Former theater critic for The Washington Post. Work also appears in The New York Times, Variety, and Town & Country.' },
+  { name: 'Naveen Kumar', outlets: ['The Washington Post', 'The New York Times'], initials: 'NK', bio: 'Former theater critic for The Washington Post. Work also appears in The New York Times, Variety, and Town & Country.',
+    picks: {
+      'Best Musical': 'The Lost Boys',
+      'Best Play': 'Liberation',
+      'Best Revival of a Musical': 'Cats: The Jellicle Ball',
+      'Best Revival of a Play': 'Oedipus',
+      'Best Actor in a Musical': 'Joshua Henry',
+      'Best Actress in a Musical': 'Caissie Levy',
+      'Best Actor in a Play': 'John Lithgow',
+      'Best Actress in a Play': 'Lesley Manville',
+      'Best Featured Actor in a Musical': 'André De Shields',
+      'Best Featured Actress in a Musical': 'Shoshana Bean',
+      'Best Featured Actor in a Play': 'Ruben Santiago-Hudson',
+      'Best Featured Actress in a Play': 'Laurie Metcalf',
+      'Best Direction of a Musical': 'The Lost Boys',
+      'Best Direction of a Play': 'Death of a Salesman',
+      'Best Original Score': 'The Lost Boys',
+      'Best Book of a Musical': 'The Lost Boys',
+      'Best Choreography': 'Cats: The Jellicle Ball',
+    },
+  },
   { name: 'Matthew Wexler', outlets: ['1 Minute Critic'], initials: 'MW', bio: 'Founder of 1 Minute Critic. Theater critic and member of the American Theatre Critics Association.' },
 ];
 
