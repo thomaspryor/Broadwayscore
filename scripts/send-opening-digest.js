@@ -53,7 +53,12 @@ const EXCLUDED_PATH = path.join(DATA_DIR, 'digest-excluded-shows.json');
 
 const SITE_URL = 'https://broadwayscorecard.com';
 
-// Brand tokens — keep in sync with memory/design-system.md
+// Tokens — these are NOT invented. Hex values come straight from
+//   - src/app/globals.css (.score-must-see, .score-great, .score-good, .score-tepid, .score-skip)
+//   - src/components/show-cards/ShowPills.tsx (FormatPill, ProductionPill, CategoryBadge, StatusBadge)
+//   - src/lib/audience-grade-utils.ts (getAudienceGrade)
+//   - memory/design-system.md (surfaces, brand gold)
+// If you change any of these, change the source file, not these constants.
 const TOKENS = {
   surface: '#0f0f14',
   surfaceRaised: '#1a1a24',
@@ -67,25 +72,34 @@ const TOKENS = {
   brandMuted: 'rgba(212,165,116,0.18)',
   open: '#10b981',
   warn: '#d97706',
-  danger: '#ef4444',
-  // Critic score tiers (mirror src/components/show-cards/ScoreBadge.tsx)
-  goldText: '#fbbf24',      // amber-400
-  goldBg: 'rgba(251,191,36,0.18)',
-  greatText: '#34d399',     // emerald-400
-  greatBg: 'rgba(52,211,153,0.18)',
-  goodText: '#38bdf8',      // sky-400
-  goodBg: 'rgba(56,189,248,0.18)',
-  tepidText: '#f97316',     // orange-500
-  tepidBg: 'rgba(249,115,22,0.18)',
-  skipText: '#f87171',      // red-400
-  skipBg: 'rgba(248,113,113,0.18)',
-  // Audience tiers (mirror src/lib/data-audience.ts)
-  audLoving: { text: '#fb7185', bg: 'rgba(244,63,94,0.20)', border: 'rgba(244,63,94,0.30)' },     // rose-400
-  audLiking: { text: '#34d399', bg: 'rgba(16,185,129,0.18)', border: 'rgba(16,185,129,0.25)' },   // emerald
-  audShrugging: { text: '#fbbf24', bg: 'rgba(245,158,11,0.18)', border: 'rgba(245,158,11,0.25)' },// amber
-  audDisliking: { text: '#f87171', bg: 'rgba(239,68,68,0.18)', border: 'rgba(239,68,68,0.25)' },  // red
-  audLoathing: { text: '#9ca3af', bg: 'rgba(107,114,128,0.18)', border: 'rgba(255,255,255,0.10)' },// gray
 };
+
+// Critic score tiers — mirror globals.css .score-{must-see,great,good,tepid,skip}
+function criticTier(score, market) {
+  if (score == null) return { bg: null, fg: '#9ca3af', label: 'TBD', glow: false };
+  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
+  if (score >= goldThreshold) return { bg: 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)', fg: '#1a1a1a', label: 'Critical Gold', glow: true };
+  if (score >= 75) return { bg: '#22c55e', fg: '#ffffff', label: 'Recommended', glow: false };
+  if (score >= 65) return { bg: '#14b8a6', fg: '#ffffff', label: 'Worth Seeing', glow: false };
+  if (score >= 55) return { bg: '#d97706', fg: '#1a1a1a', label: 'Skippable', glow: false };
+  return { bg: '#ef4444', fg: '#ffffff', label: 'Critical Miss', glow: false };
+}
+
+// Audience grade — exact copy of src/lib/audience-grade-utils.ts getAudienceGrade()
+function audienceGrade(score) {
+  if (score == null) return { grade: '—', label: 'No Data', color: '#6b7280', textColor: '#ffffff' };
+  if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff' };
+  if (score >= 88) return { grade: 'A',  label: 'Loving It', color: '#16a34a', textColor: '#ffffff' };
+  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff' };
+  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#ffffff' };
+  if (score >= 73) return { grade: 'B',  label: 'Shrugging', color: '#f59e0b', textColor: '#1a1a1a' };
+  if (score >= 68) return { grade: 'B-', label: 'Shrugging', color: '#f97316', textColor: '#1a1a1a' };
+  if (score >= 63) return { grade: 'C+', label: 'Disliking It', color: '#ef4444', textColor: '#ffffff' };
+  if (score >= 58) return { grade: 'C',  label: 'Disliking It', color: '#dc2626', textColor: '#ffffff' };
+  if (score >= 53) return { grade: 'C-', label: 'Disliking It', color: '#b91c1c', textColor: '#ffffff' };
+  if (score >= 48) return { grade: 'D',  label: 'Loathing It', color: '#991b1b', textColor: '#ffffff' };
+  return { grade: 'F', label: 'Loathing It', color: '#6b7280', textColor: '#ffffff' };
+}
 
 // Publish-score thresholds (mirror send-opening-night-broadcast.js)
 function publishThresholds(market) {
@@ -169,51 +183,69 @@ function isBroadcastSent(sentData, market, showId) {
   return !!(sent[showId]?.completed || sent[`${market}:${showId}`]?.completed);
 }
 
-function scoreTokens(score, market) {
-  if (score == null) return { text: TOKENS.textMuted, bg: 'transparent', label: 'No score' };
-  const goldThreshold = (market === 'west-end' || market === 'off-west-end') ? 85 : 83;
-  if (score >= goldThreshold) return { text: TOKENS.goldText, bg: TOKENS.goldBg, label: 'Critical Gold' };
-  if (score >= 75) return { text: TOKENS.greatText, bg: TOKENS.greatBg, label: 'Recommended' };
-  if (score >= 65) return { text: TOKENS.goodText, bg: TOKENS.goodBg, label: 'Worth Seeing' };
-  if (score >= 55) return { text: TOKENS.tepidText, bg: TOKENS.tepidBg, label: 'Skippable' };
-  return { text: TOKENS.skipText, bg: TOKENS.skipBg, label: 'Critical Miss' };
-}
+// ---------------------------------------------------------------------------
+// Site component replicas — see src/components/show-cards/ for the originals
+// ---------------------------------------------------------------------------
 
-function audienceTokens(designation) {
-  switch (designation) {
-    case 'Loving': return TOKENS.audLoving;
-    case 'Liking': return TOKENS.audLiking;
-    case 'Shrugging': return TOKENS.audShrugging;
-    case 'Disliking': return TOKENS.audDisliking;
-    case 'Loathing': return TOKENS.audLoathing;
-    default: return { text: TOKENS.textMuted, bg: 'transparent', border: TOKENS.border };
-  }
-}
-
-// Site-style ScoreBadge replica: large number left, tier label right
+// ScoreBadge (md size) — square 56px box, big score number, colored bg.
+// Source: src/components/show-cards/ScoreBadge.tsx + globals.css .score-* classes.
 function scoreBadgeHtml(score, market) {
-  const t = scoreTokens(score, market);
   if (score == null) {
-    return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${TOKENS.surfaceOverlay};color:${TOKENS.textDim};font-size:12px;font-weight:600;">— Critic score pending</span>`;
+    return `<span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid ${TOKENS.border};color:#9ca3af;font-weight:700;font-size:14px;">TBD</span>`;
   }
-  return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${t.bg};border:1px solid ${t.text}33;line-height:1;">
-    <span style="font-size:18px;font-weight:800;color:${t.text};letter-spacing:-0.02em;">${score}</span>
-    <span style="font-size:10px;font-weight:600;color:${t.text};margin-left:6px;letter-spacing:0.04em;text-transform:uppercase;opacity:0.85;">${esc(t.label)}</span>
-  </span>`;
+  const t = criticTier(score, market);
+  const extra = t.glow
+    ? 'box-shadow:0 0 16px rgba(218,165,32,0.45),0 2px 8px rgba(0,0,0,0.25);border:2px solid #C8960E;'
+    : 'box-shadow:0 2px 8px rgba(0,0,0,0.25);';
+  return `<span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:12px;background:${t.bg};color:${t.fg};font-weight:800;font-size:22px;letter-spacing:-0.02em;line-height:1;${extra}">${score}</span>`;
 }
 
-function audienceBadgeHtml(audience) {
+// AudienceChip — tiny pill, color from grade table, alpha 0.20 bg.
+// Source: src/components/show-cards/ShowPills.tsx AudienceChip.
+function audienceChipHtml(audience) {
   if (!audience || audience.score == null) {
-    return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${TOKENS.surfaceOverlay};color:${TOKENS.textDim};font-size:12px;font-weight:600;">— Audience pending</span>`;
+    return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:9999px;background:rgba(107,114,128,0.20);color:#9ca3af;font-size:10px;font-weight:700;line-height:1;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span><span>—</span></span>`;
   }
-  const t = audienceTokens(audience.designation);
-  const designation = audience.designation || '—';
-  const count = audience.reviewCount ? ` · ${audience.reviewCount.toLocaleString()} ratings` : '';
-  return `<span style="display:inline-block;padding:6px 10px;border-radius:8px;background:${t.bg};border:1px solid ${t.border};line-height:1;">
-    <span style="font-size:13px;font-weight:700;color:${t.text};letter-spacing:0.02em;text-transform:uppercase;">${esc(designation)}</span>
-    <span style="font-size:14px;font-weight:800;color:${t.text};margin-left:8px;letter-spacing:-0.02em;">${audience.score}</span>
-    <span style="font-size:10px;color:${TOKENS.textDim};margin-left:6px;font-weight:500;">${esc(count.replace(/^ · /, ''))}</span>
-  </span>`;
+  const g = audienceGrade(audience.score);
+  return `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:9999px;background:${g.color}33;color:${g.color};font-size:10px;font-weight:700;line-height:1;letter-spacing:0.02em;"><span style="opacity:0.6;font-weight:600;">Audience:</span><span>${esc(g.grade)} · ${audience.score}</span></span>`;
+}
+
+// FormatPill — outline pill (musical/play/opera). src/components/show-cards/ShowPills.tsx
+function formatPillHtml(type) {
+  const cfg = {
+    musical: { label: 'MUSICAL', color: '#a78bfa' },     // purple-400
+    play:    { label: 'PLAY',    color: '#60a5fa' },     // blue-400
+    opera:   { label: 'OPERA',   color: '#818cf8' },     // indigo-400
+  }[type] || { label: 'PLAY', color: '#60a5fa' };
+  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;border:1px solid ${cfg.color}80;color:${cfg.color};background:transparent;">${esc(cfg.label)}</span>`;
+}
+
+// ProductionPill — solid muted fill (revival vs original). ShowPills.tsx
+function productionPillHtml(isRevival) {
+  const cfg = isRevival
+    ? { label: 'REVIVAL', color: '#9ca3af', bg: 'rgba(107,114,128,0.20)' }    // gray-400
+    : { label: 'ORIGINAL', color: '#fbbf24', bg: 'rgba(245,158,11,0.20)' };   // amber-400
+  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${cfg.color};background:${cfg.bg};">${esc(cfg.label)}</span>`;
+}
+
+// CategoryBadge — solid muted fill + border (off-broadway / west-end / off-WE).
+// Returns '' for Broadway (no badge). ShowPills.tsx
+function categoryBadgeHtml(market) {
+  const cfg = {
+    'off-broadway': { label: 'OFF-BROADWAY', color: '#818cf8', border: 'rgba(99,102,241,0.30)', bg: 'rgba(99,102,241,0.15)' },
+    'west-end':     { label: 'WEST END',     color: '#2dd4bf', border: 'rgba(20,184,166,0.30)', bg: 'rgba(20,184,166,0.15)' },
+    'off-west-end': { label: 'Off-WE',       color: '#9ca3af', border: 'rgba(255,255,255,0.10)', bg: 'rgba(255,255,255,0.05)' },
+  }[market];
+  if (!cfg) return '';
+  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${cfg.color};background:${cfg.bg};border:1px solid ${cfg.border};">${esc(cfg.label)}</span>`;
+}
+
+// Generic small uppercase pill in the site's style (used for tier labels
+// like "Critical Gold" and action chips like "Needs help"). Same rounding,
+// padding, and typography as ShowPills.
+function sitePillHtml(label, { color = TOKENS.textMuted, bg = TOKENS.surfaceOverlay, border = null } = {}) {
+  const borderStyle = border ? `border:1px solid ${border};` : '';
+  return `<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:${color};background:${bg};${borderStyle}">${esc(label)}</span>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -344,6 +376,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
         slug: s.slug,
         date: s.openingDate,
         market,
+        type: s.type || 'play',
         region: regionOf(market),
         marketLabel: marketLabel(market),
         isRevival: s.isRevival === true,
@@ -442,9 +475,13 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function chip(text, { bg = TOKENS.brandMuted, color = TOKENS.brand } = {}) {
-  return `<span style="display:inline-block;padding:3px 9px;border-radius:10px;background:${bg};color:${color};font-size:11px;font-weight:600;margin-right:6px;letter-spacing:0.02em;">${esc(text)}</span>`;
+function chip(text, opts) {
+  // Back-compat helper — defers to sitePillHtml so chips match site pills.
+  return sitePillHtml(text, opts);
 }
+
+// Tiny spacer between inline-flex pills (email clients drop CSS gap on inline-flex)
+const PILL_SEP = '<span style="display:inline-block;width:6px;">&nbsp;</span>';
 
 function whenLabel(daysFromToday) {
   if (daysFromToday === 0) return 'Today';
@@ -456,92 +493,103 @@ function whenLabel(daysFromToday) {
 
 function poster(row) {
   if (row.poster) {
-    return `<img src="${esc(row.poster)}" alt="${esc(row.title)} poster" width="56" height="80" style="border-radius:6px;object-fit:cover;display:block;background:${TOKENS.surfaceOverlay};">`;
+    return `<img src="${esc(row.poster)}" alt="${esc(row.title)} poster" width="72" height="100" style="border-radius:8px;object-fit:cover;display:block;background:${TOKENS.surfaceOverlay};">`;
   }
-  return `<div style="width:56px;height:80px;background:${TOKENS.surfaceOverlay};border-radius:6px;"></div>`;
+  return `<div style="width:72px;height:100px;background:${TOKENS.surfaceOverlay};border-radius:8px;"></div>`;
 }
 
-function renderActionRow(row, actionChips) {
-  const market = chip(row.marketLabel, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
-  const revival = chip(row.isRevival ? 'Revival' : 'Original', { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+// Common metadata pills used on every row — same set/order the site uses on cards.
+function metadataPills(row) {
+  const pills = [];
+  pills.push(formatPillHtml(row.type || 'play'));
+  pills.push(productionPillHtml(row.isRevival));
+  const cat = categoryBadgeHtml(row.market);
+  if (cat) pills.push(cat);
+  if (row.important && row.market !== 'broadway' && row.market !== 'west-end') {
+    pills.push(sitePillHtml('★ Important', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
+  }
+  return pills.join(PILL_SEP);
+}
 
+function renderActionRow(row, actionPills) {
   const criticBadge = scoreBadgeHtml(row.criticScore, row.market);
-  const audienceBadge = audienceBadgeHtml(row.audience);
+  const audienceChip = audienceChipHtml(row.audience);
+  const tier = criticTier(row.criticScore, row.market);
+  const tierLabel = row.criticScore != null
+    ? `<div style="font-size:11px;color:${TOKENS.textMuted};margin-top:6px;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;">${esc(tier.label)}</div>`
+    : '';
 
   const reviewProgress = row.expected
     ? `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} of ~${row.expected} expected reviews</span>`
     : `<span style="color:${TOKENS.textMuted};font-size:12px;">${row.reviewCount} reviews</span>`;
 
-  const broadcast = row.broadcastSent === null
+  const broadcastPill = row.broadcastSent === null
     ? ''
     : row.broadcastSent
-      ? `<div style="margin-top:6px;">${chip('✓ Broadcast sent', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })}</div>`
+      ? sitePillHtml('✓ Broadcast sent', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
       : '';
 
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
-    <td style="padding:14px 0;vertical-align:top;width:72px;">${poster(row)}</td>
-    <td style="padding:14px 0 14px 14px;vertical-align:top;">
-      <div style="font-size:15px;font-weight:600;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
-      <div style="margin:5px 0;">${market}${revival}<span style="color:${TOKENS.textDim};font-size:12px;">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</span></div>
-      <div style="margin:8px 0;">${actionChips}</div>
-      <div style="margin:8px 0;line-height:1.9;">${criticBadge} ${audienceBadge}</div>
+    <td style="padding:16px 0;vertical-align:top;width:88px;">${poster(row)}</td>
+    <td style="padding:16px 0 16px 16px;vertical-align:top;">
+      <div style="font-size:16px;font-weight:700;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
+      <div style="margin:6px 0;font-size:12px;color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</div>
+      <div style="margin:8px 0;">${metadataPills(row)}</div>
+      ${actionPills ? `<div style="margin:10px 0;">${actionPills}</div>` : ''}
+      <table cellpadding="0" cellspacing="0" border="0" style="margin:10px 0 4px 0;"><tr>
+        <td style="vertical-align:middle;padding-right:14px;">${criticBadge}${tierLabel}</td>
+        <td style="vertical-align:middle;">${audienceChip}</td>
+      </tr></table>
       <div>${reviewProgress}</div>
-      ${broadcast}
+      ${broadcastPill ? `<div style="margin-top:8px;">${broadcastPill}</div>` : ''}
     </td>
   </tr>`;
 }
 
 function renderUpcomingRow(row) {
-  const market = chip(row.marketLabel, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
-  const revival = chip(row.isRevival ? 'Revival' : 'Original', { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
-  const importantChip = row.important
-    ? chip('★ Important', { bg: TOKENS.brandMuted, color: TOKENS.brand })
-    : '';
-
   const expected = row.expected
-    ? `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(typical range ${row.expectedRange})</span></span>`
+    ? `<span style="color:${TOKENS.textMuted};">Expects <strong style="color:${TOKENS.text};">${row.expected}</strong> reviews <span style="color:${TOKENS.textDim};">(typical ${row.expectedRange})</span></span>`
     : row.excluded
-      ? `<span style="color:${TOKENS.textDim};">Expected reviews: excluded — ${esc(row.excludedReason)}</span>`
+      ? `<span style="color:${TOKENS.textDim};">Excluded from predictions — ${esc(row.excludedReason)}</span>`
       : `<span style="color:${TOKENS.textDim};">Expected reviews: TBD (no cohort data)</span>`;
 
   return `
   <tr style="border-top:1px solid ${TOKENS.borderSubtle};">
-    <td style="padding:12px 0;vertical-align:top;width:72px;">${poster(row)}</td>
-    <td style="padding:12px 0 12px 14px;vertical-align:top;">
-      <div style="font-size:15px;font-weight:600;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
-      <div style="margin:5px 0;">${importantChip}${market}${revival}<span style="color:${TOKENS.textDim};font-size:12px;">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</span></div>
-      <div style="font-size:12px;line-height:1.6;">${expected}</div>
+    <td style="padding:14px 0;vertical-align:top;width:88px;">${poster(row)}</td>
+    <td style="padding:14px 0 14px 16px;vertical-align:top;">
+      <div style="font-size:16px;font-weight:700;line-height:1.3;"><a href="${esc(row.url)}" style="color:${TOKENS.text};text-decoration:none;">${esc(row.title)}</a></div>
+      <div style="margin:6px 0;font-size:12px;color:${TOKENS.textDim};">${esc(whenLabel(row.daysFromToday))} · ${esc(formatHumanDate(row.date))}</div>
+      <div style="margin:8px 0;">${metadataPills(row)}</div>
+      <div style="font-size:13px;line-height:1.6;margin-top:8px;">${expected}</div>
     </td>
   </tr>`;
 }
 
 function renderNeedsHelpRow(row) {
   const reasons = (row.helpReasons || []).join(' · ');
-  const actionChips = [
-    chip('⚠ Needs help', { bg: 'rgba(217,119,6,0.20)', color: TOKENS.warn }),
-    chip(reasons, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted }),
+  const action = [
+    sitePillHtml('⚠ Needs help', { color: TOKENS.warn, bg: 'rgba(217,119,6,0.20)' }),
+    PILL_SEP,
+    sitePillHtml(reasons, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay }),
   ].join('');
-  return renderActionRow(row, actionChips);
+  return renderActionRow(row, action);
 }
 
 function renderBroadcastReadyRow(row) {
-  const actionChips = chip('✉ Broadcast ready', { bg: 'rgba(212,165,116,0.20)', color: TOKENS.brand });
-  return renderActionRow(row, actionChips);
+  return renderActionRow(row, sitePillHtml('✉ Broadcast ready', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
 }
 
 function renderOtherRecentRow(row) {
-  // Only show publish-readiness status for important shows; OB context rows would
-  // mislead with BW/WE thresholds they're not actually evaluated against.
-  let status = '';
+  let action = '';
   if (row.excluded) {
-    status = chip('Excluded from predictions', { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+    action = sitePillHtml('Excluded from predictions', { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
   } else if (row.important) {
-    status = row.qualifies
-      ? chip('Qualifies', { bg: 'rgba(16,185,129,0.18)', color: TOKENS.open })
-      : chip(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { bg: TOKENS.surfaceOverlay, color: TOKENS.textMuted });
+    action = row.qualifies
+      ? sitePillHtml('Qualifies', { color: TOKENS.open, bg: 'rgba(16,185,129,0.18)' })
+      : sitePillHtml(`Building${row.qualifyGap ? ' — ' + row.qualifyGap : ''}`, { color: TOKENS.textMuted, bg: TOKENS.surfaceOverlay });
   }
-  return renderActionRow(row, status);
+  return renderActionRow(row, action);
 }
 
 function renderSection(title, count, bodyHtml) {
