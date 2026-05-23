@@ -293,6 +293,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           )}
         </div>
 
+        {/* Disclaimer: data-driven, not editorial */}
+        <div className="mb-6 px-4 py-3 rounded-xl border border-brand/20 bg-brand/5">
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            <span className="text-brand font-semibold">These are data-driven, not editorial.</span>{' '}
+            Rankings are what our model outputs when trained on past Tony data — not personal picks.
+            Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
+          </p>
+        </div>
+
         {/* Report Card (past seasons only) */}
         {reportCard.length > 0 && (
           <div className="mb-10">

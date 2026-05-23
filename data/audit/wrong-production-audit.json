@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-23T09:17:15.375Z",
+  "timestamp": "2026-05-23T11:33:48.725Z",
   "stats": {
-    "totalReviews": 37165,
-    "alreadyFlagged": 16269,
+    "totalReviews": 37179,
+    "alreadyFlagged": 16286,
     "dateGuardCatches": 103,
-    "directorMismatch": 804,
-    "tvFilmSignals": 1020,
-    "londonSignals": 580,
+    "directorMismatch": 805,
+    "tvFilmSignals": 1021,
+    "londonSignals": 581,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3836
+    "noPublishDate": 3826
   },
   "findings": [
     {
@@ -6796,6 +6796,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince and michael bennett\" from follies-1971"
+        }
+      ]
+    },
+    {
+      "showId": "follies-2011",
+      "file": "broadwayworld--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/reviews/Follies",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince and michael bennett\" from follies-1971"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"disney\""
         }
       ]
     },
@@ -27553,6 +27572,20 @@
     },
     {
       "showId": "care-west-end-2026",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
+      "publishDate": "2026-05-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "care-west-end-2026",
       "file": "guardian--arifa-akbar.json",
       "score": 84,
       "publishDate": "2026-05-21",
@@ -27570,7 +27603,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
