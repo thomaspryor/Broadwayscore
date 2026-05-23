@@ -531,6 +531,17 @@ jobs:
         # that no CI check caught because root tsc skips scripts/. Adding
         # this gate would have failed the merge and prevented the bug.
         run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
+      - name: next lint
+        # if: always() so lint runs even if tsc above fails — they're independent
+        # gates and either failure should surface in this job.
+        # Why this gate exists: 2026-05-23 — next.config.js sets
+        # eslint.ignoreDuringBuilds:true to skip lint inside vercel build (saves
+        # ~20s on hot-path deploys). This step is the replacement CI gate so
+        # lint regressions are still caught before merge. Default behavior
+        # (no --max-warnings) matches the prior in-build behavior: errors fail,
+        # existing warnings (e.g. <img> tag advisories) don't block merges.
+        if: always()
+        run: npx next lint
 
   unit-tests:
     name: Unit Tests
