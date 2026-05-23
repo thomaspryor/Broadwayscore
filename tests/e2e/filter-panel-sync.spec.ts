@@ -136,6 +136,14 @@ for (const cfg of PAGES) {
       expect(clicked).toBe(true);
 
       await page.waitForFunction(() => window.location.search.includes('type=musical'), null, { timeout: 5000 });
+      // URL change fires before React re-renders the panel chips. Wait for the
+      // chip to actually appear in DOM, otherwise readPanelState races.
+      await page.waitForFunction(
+        () => !!Array.from(document.querySelectorAll('button[aria-label^="Remove "]'))
+          .find((b) => b.getAttribute('aria-label') === 'Remove Type: Musicals'),
+        null,
+        { timeout: 5000 },
+      );
 
       const state = await readPanelState(page);
       expect(state.url).toContain('type=musical');
@@ -149,6 +157,15 @@ for (const cfg of PAGES) {
       // Stage URL with multiple params (multi-select + single-select)
       await page.goto(`${cfg.path}?type=musical&status=${cfg.uniqueStatusParamValue}&production=original`);
       await page.waitForLoadState('networkidle');
+
+      // Chips are client-rendered from URL params after hydration. networkidle
+      // doesn't wait for React state consumption, so poll until they appear
+      // (or fail loudly). Without this, the test races hydration and reads 0.
+      await page.waitForFunction(
+        () => document.querySelectorAll('button[aria-label^="Remove "]').length >= 2,
+        null,
+        { timeout: 5000 },
+      );
 
       // Sanity: chips render before clear
       const before = await readPanelState(page);
