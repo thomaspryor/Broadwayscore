@@ -6,7 +6,6 @@ import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
   nyt:      { outletName: 'The New York Times', critic: 'Helen Shaw' },
   variety:  { outletName: 'Variety',            critic: 'Clayton Davis' },
-  deadline: { outletName: 'Deadline',           critic: 'Greg Evans' },
 };
 
 export function OutletPickLogo({ outletId }: { outletId: string }) {

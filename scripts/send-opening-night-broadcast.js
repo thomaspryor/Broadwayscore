@@ -48,6 +48,11 @@ const ALLOWED_SHOW_IDS = SHOWS_ARG ? new Set(SHOWS_ARG.split('=')[1].split(',').
 // Use this after fixing a bug in the email template — clears completed flag so the script
 // doesn't bail with "already broadcast". Safe: only creates a draft, never calls /send.
 const RECREATE_DRAFT = process.argv.includes('--recreate-draft');
+// --force-create-draft: bypass the readiness gate (MIN_REVIEWS / MIN_T1 / MIN_T2 / MIN_HIGH_CONFIDENCE).
+// Always combine with --shows= to target a specific show. Still draft-only — never calls /send.
+// For revivals or niche shows where T1 outlets are unlikely to cover; owner manually reviews the
+// draft in Resend UI and decides whether to send.
+const FORCE_CREATE_DRAFT = process.argv.includes('--force-create-draft');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -414,6 +419,14 @@ async function main() {
     if (totalOk && t1Ok && t2Ok && confOk) {
       readyShows.push({ show, stats, t1Count, t2Count, t3Count });
       console.log(`  ✅ ${show.title}: ${stats.reviewCount} reviews (T1:${t1Count} T2:${t2Count} T3:${t3Count}, hi-conf:${highConfCount})`);
+    } else if (FORCE_CREATE_DRAFT) {
+      readyShows.push({ show, stats, t1Count, t2Count, t3Count });
+      const reasons = [];
+      if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);
+      if (!t1Ok) reasons.push(`T1:${t1Count}/${MIN_T1_REVIEWS}`);
+      if (!t2Ok) reasons.push(`T2:${t2Count}/${MIN_T2_REVIEWS}`);
+      if (!confOk) reasons.push(`hi-conf:${highConfCount}/${MIN_HIGH_CONFIDENCE}`);
+      console.log(`  ⚠️  ${show.title}: gate failed (${reasons.join(', ')}) — bypassed by --force-create-draft. Draft will be created for manual review.`);
     } else {
       const reasons = [];
       if (!totalOk) reasons.push(`${stats.reviewCount}/${MIN_REVIEWS} total`);

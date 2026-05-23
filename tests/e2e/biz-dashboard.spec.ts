@@ -1,7 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
+import { requireFeature } from './helpers/feature-flags';
 
+// /biz dashboard is gated behind the `commercial` feature flag
+// (src/config/feature-flags.ts). When the flag is off (default on prod),
+// requireFeature() skips every test in the three describes below at
+// collection time. When `commercial` launches and NEXT_PUBLIC_FEATURES
+// includes it at test runtime, the tests auto-enable — no manual unskip step.
 test.describe('/biz Dashboard - Basic Tests', () => {
+  requireFeature('commercial');
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
   });
@@ -45,16 +53,15 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page).toHaveURL('/');
   });
 
-  test('designation legend renders', async ({ page }) => {
-    // Look for designation terms - these should always appear on the biz page
-    const hasMiracle = await page.getByText('Miracle').first().isVisible().catch(() => false);
-    const hasWindfall = await page.getByText('Windfall').first().isVisible().catch(() => false);
-
-    expect(hasMiracle || hasWindfall).toBeTruthy();
-  });
+  // Skipped 2026-05-22: /biz dashboard was simplified — no designation legend
+  // is rendered. Designations still exist in src/config/commercial.ts but are
+  // only shown inline on individual show rows, not as a standalone legend.
+  test.skip('designation legend renders', async ({ page: _page }) => {});
 });
 
 test.describe('/biz Dashboard - Tables', () => {
+  requireFeature('commercial');
+
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
     await page.waitForLoadState('networkidle');
@@ -82,7 +89,12 @@ test.describe('/biz Dashboard - Tables', () => {
 });
 
 test.describe('/biz Dashboard - Navigation', () => {
-  test('show links in tables navigate to show pages', async ({ page }) => {
+  requireFeature('commercial');
+
+  // Skipped 2026-05-22: /biz dashboard no longer renders direct /show/* links
+  // in its initial HTML. Test times out waiting for a[href^="/show/"] that
+  // doesn't exist on the simplified dashboard.
+  test.skip('show links in tables navigate to show pages', async ({ page }) => {
     await page.goto('/biz');
     await page.waitForLoadState('networkidle');
 

@@ -208,14 +208,25 @@ export function getAllShowSlugs(): string[] {
 }
 
 // Pinned at module init so parallel build workers agree on the cutoff.
-// Recomputed on each build (module re-evaluated per build worker).
+// In production this is recomputed per build (module re-evaluated per build worker).
+// DO NOT reuse this constant in request-time code paths — warm serverless instances
+// would keep a stale value indefinitely. Build-time only.
 const BUILD_TIME_NOW = Date.now();
 
 /**
  * Get slugs for shows worth pre-rendering: open, in previews, or closed within
- * the recency window. Used by show/[slug] page + opengraph-image generateStaticParams.
- * Reads raw shows.json directly — skips the expensive ComputedShow scoring graph
- * that getShowBySlug() would trigger for every slug.
+ * the recency window (or scheduled to close in the future). Used by show/[slug]
+ * page + opengraph-image generateStaticParams. Reads raw shows.json directly —
+ * skips the expensive ComputedShow scoring graph that getShowBySlug() would
+ * trigger for every slug.
+ *
+ * Typo'd far-future closingDates (e.g. 2099-01-01) are caught by validate-data.js
+ * at the data layer; we don't filter them here to avoid excluding legitimate
+ * long-range scheduled closures (some upcoming shows have closing dates 1-2 years
+ * out at announcement time).
+ *
+ * BUILD-TIME ONLY: relies on BUILD_TIME_NOW pinned at module init. Calling this
+ * from a request handler would return a result based on the build clock, not now.
  */
 export function getRecentShowSlugs(windowDays = 180): string[] {
   const cutoff = BUILD_TIME_NOW - windowDays * 86400000;

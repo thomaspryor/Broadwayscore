@@ -7,7 +7,6 @@ import { BlendedTrioDisplay } from '@/components/show-cards';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { SeasonSelect } from '@/components/SeasonSelect';
-import TonyPredictionsClient from '@/components/TonyPredictionsClient';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
@@ -79,9 +78,14 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
 
   // All 26 nominee categories (4 major + 8 performer + 14 craft) for this season.
-  // Used to render performer/craft categories below the 4-major TonyPredictionsClient.
+  // Used to render performer/craft categories alongside the 4-major CategorySection rows.
+  // Filter to non-empty: getNomineesByCategory uses strict-window eligibility, so
+  // COVID-truncated 2020-21 (and likely 1996-97 / 1997-98) return empty arrays for
+  // most non-major categories — would render an empty "Performer & Craft" header.
   const allNomineeCategories = getNomineesByCategory(season);
-  const nonMajorCategories = allNomineeCategories.filter(c => !SHOW_LEVEL_CATEGORIES.has(c.title));
+  const nonMajorCategories = allNomineeCategories.filter(c =>
+    !SHOW_LEVEL_CATEGORIES.has(c.title) && c.shows.length > 0
+  );
   const seasonRecord = tonySeasonForCeremonyYear(season.ceremonyYear);
   const ceremonyDate = seasonRecord?.ceremonyDate ?? null;
   const eligible = isCurrent
@@ -101,6 +105,20 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     season,
   );
   const outcomes = getSeasonOutcomes(allShows, season);
+
+  // Softmax win probabilities per major category (T=7) — same logic as Nominations Center,
+  // so the predictions page and /tony-awards/nominees render identical Our Pick % values.
+  const T = 7;
+  const categoryWinProbs = new Map<string, Map<string, number>>();
+  for (const cat of categories) {
+    const scored = cat.shows.filter(s => s.blendedScore != null);
+    if (scored.length === 0) continue;
+    const exps = scored.map(s => Math.exp(s.blendedScore! / T));
+    const sumExps = exps.reduce((a, b) => a + b, 0);
+    const probs = new Map<string, number>();
+    scored.forEach((show, i) => probs.set(show.slug, exps[i] / sumExps));
+    categoryWinProbs.set(cat.key, probs);
+  }
 
   // Shows ruled ineligible by the Tony Administration Committee, grouped by
   // category. Surfaced as a footer under each category so visitors who looked
@@ -218,28 +236,48 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
     ],
   };
 
-  // ItemList per Tony category — matches visible page structure
-  const categoryItemLists = categories.filter(cat => cat.shows.length > 0).map(cat => ({
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `${cat.title} - Tony Awards ${season.label}`,
-    itemListElement: cat.shows.slice(0, 10).map((show, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
-      item: {
-        '@type': 'TheaterEvent',
-        name: show.title,
-        url: `${BASE_URL}/show/${show.slug}`,
-        location: {
-          '@type': 'PerformingArtsTheater',
-          name: show.venue || 'Broadway Theater',
-          address: show.venue || 'New York, NY',
+  // ItemList per Tony category for SEO rich results.
+  // - Current season: position by predicted rank (cat.shows order = blendedScore desc).
+  // - Past season: actual winner at position 1, then rest by blendedScore desc.
+  // - Now includes non-major (performer + craft) categories so search engines
+  //   see structured data for all 26 categories, not just the top 4.
+  const majorWinnersByCategory = !isCurrent ? getWinnersForSeason(season) : null;
+  const showIdToSlug = new Map(allShows.map(s => [s.id, s.slug]));
+  function orderForItemList(shows: typeof categories[number]['shows'], winnerSlug: string | null) {
+    if (!winnerSlug) return shows.slice(0, 10);
+    const winnerIdx = shows.findIndex(s => s.slug === winnerSlug);
+    if (winnerIdx <= 0) return shows.slice(0, 10);
+    const reordered = [shows[winnerIdx], ...shows.slice(0, winnerIdx), ...shows.slice(winnerIdx + 1)];
+    return reordered.slice(0, 10);
+  }
+  const allItemListCategories = [...categories, ...nonMajorCategories];
+  const categoryItemLists = allItemListCategories.filter(cat => cat.shows.length > 0).map(cat => {
+    const winnerShowId = majorWinnersByCategory?.get(cat.title);
+    const winnerSlug = winnerShowId ? showIdToSlug.get(winnerShowId) ?? null : null;
+    const ordered = orderForItemList(cat.shows, winnerSlug);
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: `${cat.title} - Tony Awards ${season.label}`,
+      numberOfItems: ordered.length,
+      itemListElement: ordered.map((show, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'TheaterEvent',
+          name: show.title,
+          url: `${BASE_URL}/show/${show.slug}`,
+          location: {
+            '@type': 'PerformingArtsTheater',
+            name: show.venue || 'Broadway Theater',
+            address: show.venue || 'New York, NY',
+          },
+          eventStatus: 'https://schema.org/EventScheduled',
+          eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         },
-        eventStatus: 'https://schema.org/EventScheduled',
-        eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      },
-    })),
-  }));
+      })),
+    };
+  });
 
   return (
     <>
@@ -291,6 +329,15 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
               <CeremonyCountdown ceremonyDate={ceremonyDate} />
             </div>
           )}
+        </div>
+
+        {/* Disclaimer: data-driven, not editorial */}
+        <div className="mb-6 px-4 py-3 rounded-xl border border-brand/20 bg-brand/5">
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            <span className="text-brand font-semibold">These are data-driven, not editorial.</span>{' '}
+            Rankings are what our model outputs when trained on past Tony data — not personal picks.
+            Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
+          </p>
         </div>
 
         {/* Report Card (past seasons only) */}
@@ -430,25 +477,35 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </details>
         )}
 
-        {/* Category Sections — 4 major (our model has predictions for these) */}
-        <TonyPredictionsClient
-          categories={categories}
-          outcomes={Object.keys(outcomes).length > 0 ? outcomes : undefined}
-          categoryOutcomes={Object.keys(categoryOutcomeStatus).length > 0 ? categoryOutcomeStatus : undefined}
-          ineligibleByCategory={Object.keys(ineligibleByCategory).length > 0 ? ineligibleByCategory : undefined}
-        />
+        {/* 4 major categories — single shared CategorySection layout for visual parity with Nominations Center */}
+        {categories.map(cat => (
+          <CategorySection
+            key={cat.key}
+            sectionId={cat.key}
+            category={cat}
+            description={cat.description}
+            winProbs={categoryWinProbs.get(cat.key)}
+            ceremonyDate={ceremonyDate}
+            categoryOutcome={categoryOutcomeStatus[cat.key]}
+            ineligible={ineligibleByCategory[cat.key]}
+          />
+        ))}
 
-        {/* Performer + craft categories — no model predictions, just nominee data + market odds */}
+        {/* Performer + craft categories — no model predictions; data depends on season:
+            - Current season: GD/Kalshi/Polymarket odds + critic/audience/award scores
+            - Past seasons: critic/audience/award scores only (markets are closed) */}
         {nonMajorCategories.length > 0 && (
           <section className="mt-10">
             <div className="mb-4">
               <h2 className="text-xl font-bold text-white">Performer &amp; Craft Categories</h2>
               <p className="text-sm text-gray-400 mt-1">
-                Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.
+                {isCurrent
+                  ? <>Our model doesn&apos;t predict these — they&apos;re shown with Gold Derby, Kalshi, and Polymarket odds plus precursor signal.</>
+                  : <>Historical {season.label} nominees with critic scores, audience grades, and Award Score.</>}
               </p>
             </div>
             {nonMajorCategories.map(cat => (
-              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} />
+              <CategorySection key={cat.key} category={cat} ceremonyDate={ceremonyDate} hideMarketOdds={!isCurrent} />
             ))}
           </section>
         )}

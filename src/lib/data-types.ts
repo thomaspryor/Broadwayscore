@@ -314,6 +314,16 @@ export interface EveningStandardAwards {
   nominations?: number;
 }
 
+/** WhatsOnStage Awards (UK, 2001–present). Audience-voted (not critic-voted)
+ *  WE/OWE award. Per-year Wikipedia pages (one wikitable per ceremony) with
+ *  paired-column category layout; see scripts/lib/whatsonstage-parser.js. */
+export interface WhatsOnStageAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 export interface ShowAwards {
   tony?: TonyAwards;
   dramadesk?: DramaDeskAwards;
@@ -324,6 +334,7 @@ export interface ShowAwards {
   lortel?: LortelAwards;
   criticsCircle?: CriticsCircleAwards;
   eveningStandard?: EveningStandardAwards;
+  whatsOnStage?: WhatsOnStageAwards;
   pulitzer?: PulitzerPrize;
   /** Legacy shape — newer entries fold finalists into pulitzer.finalist. Some
    *  pre-migration entries (e.g. Stereophonic 2024) still use this. */

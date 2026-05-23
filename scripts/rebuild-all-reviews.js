@@ -2233,18 +2233,32 @@ showDirs.forEach(showId => {
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion !== 'london' && !urlIsUK) {
-          // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
-            // [GUARD:CROSS-MARKET-US-ON-LONDON]
-            data.wrongProduction = true;
-            data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
-            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+          // Don't flag — and don't exclude — when contentVerification has already
+          // affirmatively verified the production is correct with high confidence.
+          // The cross-market heuristic ("US outlet on London show") produces false
+          // positives for US theater bloggers covering specific London productions
+          // (e.g. Jinkx Monsoon in End of the Rainbow at Soho Theatre Walthamstow).
+          // High-confidence LLM content verification is a stronger signal than the
+          // outlet-region heuristic. [GUARD:CROSS-MARKET-CV-OVERRIDE]
+          const cv = data.contentVerification;
+          const cvSaysCorrect = cv && cv.isValid === true
+            && cv.wrongProduction === false && cv.confidence === 'high';
+          if (cvSaysCorrect) {
+            // skip the flag + skip the exclusion — let downstream pipeline use it
+          } else {
+            // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+              // [GUARD:CROSS-MARKET-US-ON-LONDON]
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Cross-market: US outlet "${rawOutlet}" reviewing London show`;
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+            }
+            logExclusion("skippedCrossMarket", showId, file, data);
+            stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+            if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+            stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
+            return;
           }
-          logExclusion("skippedCrossMarket", showId, file, data);
-          stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
-          if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
-          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file });
-          return;
         }
       }
 
@@ -2264,18 +2278,27 @@ showDirs.forEach(showId => {
           } catch (e) { /* ignore malformed URLs */ }
         }
         if (outletRegion === 'london' || urlIsUK) {
-          // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
-          if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
-            // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
-            data.wrongProduction = true;
-            data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
-            try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+          // CV override — symmetric with the forward guard above.
+          // [GUARD:CROSS-MARKET-CV-OVERRIDE]
+          const cv = data.contentVerification;
+          const cvSaysCorrect = cv && cv.isValid === true
+            && cv.wrongProduction === false && cv.confidence === 'high';
+          if (cvSaysCorrect) {
+            // skip the flag + skip the exclusion — let downstream pipeline use it
+          } else {
+            // Mark file permanently so future rebuilds skip it faster (line 1507) and it's visible on disk
+            if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+              // [GUARD:CROSS-MARKET-LONDON-ON-OTHER]
+              data.wrongProduction = true;
+              data.wrongProductionNote = `Cross-market: London outlet "${rawOutlet}" reviewing ${showCategory} show`;
+              try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+            }
+            logExclusion("skippedCrossMarket", showId, file, data);
+            stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
+            if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
+            stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
+            return;
           }
-          logExclusion("skippedCrossMarket", showId, file, data);
-          stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
-          if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
-          stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: urlIsUK });
-          return;
         }
       }
 

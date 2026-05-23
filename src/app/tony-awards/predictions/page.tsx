@@ -54,7 +54,7 @@ export default function TonyPredictionsOverviewPage() {
     nominationsAnnounced ? { nomineesOnly: true, season: currentSeason } : undefined
   );
 
-  // Softmax win probabilities per category (T=7, same logic as TonyPredictionsTable)
+  // Softmax win probabilities per category (T=7, same logic as Nominations Center + predictions [season] page).
   const T = 7;
   const categoryWinProbs = new Map<string, Map<string, number>>();
   for (const cat of currentCategories) {
@@ -128,12 +128,21 @@ export default function TonyPredictionsOverviewPage() {
         </Link>
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Tony Awards Predictions</h1>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
               ? `${currentSeason.label} nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score.`
               : `${seasons.length} seasons of data-driven Tony predictions. Each category gets its own blend of critic, audience, and precursor signal.`}
+          </p>
+        </div>
+
+        {/* Disclaimer: data-driven, not editorial */}
+        <div className="mb-6 px-4 py-3 rounded-xl border border-brand/20 bg-brand/5">
+          <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+            <span className="text-brand font-semibold">These are data-driven, not editorial.</span>{' '}
+            Rankings are what our model outputs when trained on past Tony data — not personal picks.
+            Expect surprises when audience buzz or precursor signal pushes a show above conventional favorites.
           </p>
         </div>
 
@@ -260,114 +269,156 @@ export default function TonyPredictionsOverviewPage() {
           </section>
         )}
 
-        {/* Accuracy One-Liner + Expandable Details */}
-        <section className="mb-10">
-          <div className="flex items-baseline gap-2 mb-3">
-            <p className="text-sm text-gray-300">
-              Our #1 pick wins the Tony <span className="text-brand font-bold">{stats.blendedRank1WinPct}%</span> of the time &mdash; across {stats.seasonCount} seasons and {stats.categorySeasonCount} category-seasons.
-            </p>
-          </div>
+        {/* Track Record — always expanded; replaces prior collapsible accuracy breakdown */}
+        {(() => {
+          const completedSummaries = summaries.filter(s => s.hasTonyResults);
+          let totalHits = 0;
+          let totalCells = 0;
+          const misses: Array<{ seasonLabel: string; categoryLabel: string; ourPick: string; tonyWinner: string }> = [];
+          // Compute per-category accuracy directly from the same data the hero
+          // stat and grid use, so all three displays stay internally consistent
+          // even if computeBlendedAccuracyStats is computed via a different path.
+          const CAT_COLS = ['Musical', 'Play', 'Revival Musical', 'Revival Play'];
+          const catTotals: Record<string, { hits: number; total: number }> = {};
+          for (const c of CAT_COLS) catTotals[c] = { hits: 0, total: 0 };
+          for (const sum of completedSummaries) {
+            for (const h of sum.categoryHighlights) {
+              if (!h.winnerTitle) continue;
+              totalCells++;
+              if (catTotals[h.category]) catTotals[h.category].total++;
+              if (h.topShowTitle && h.winnerTitle === h.topShowTitle) {
+                totalHits++;
+                if (catTotals[h.category]) catTotals[h.category].hits++;
+              } else if (h.topShowTitle) {
+                misses.push({
+                  seasonLabel: sum.season.label,
+                  categoryLabel: h.category,
+                  ourPick: h.topShowTitle,
+                  tonyWinner: h.winnerTitle,
+                });
+              }
+            }
+          }
+          const accuracyPct = totalCells > 0 ? Math.round((totalHits / totalCells) * 1000) / 10 : 0;
+          const byCategory = CAT_COLS.map(c => ({
+            category: `Best ${c}`,
+            hits: catTotals[c].hits,
+            total: catTotals[c].total,
+            pct: catTotals[c].total > 0 ? Math.round((catTotals[c].hits / catTotals[c].total) * 1000) / 10 : 0,
+          }));
+          const sortedCompleted = [...completedSummaries].sort((a, b) => b.season.ceremonyYear - a.season.ceremonyYear);
+          return (
+            <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
+              <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
 
-          <details className="group rounded-xl border border-white/5 bg-surface-overlay">
-            <summary className="p-4 sm:p-5 cursor-pointer text-sm font-semibold text-gray-400 hover:text-white transition-colors list-none [&::-webkit-details-marker]:hidden flex items-center justify-between">
-              <span>Accuracy breakdown</span>
-              <svg className="w-4 h-4 text-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <div className="px-4 sm:px-5 pb-4 sm:pb-5 space-y-5">
-              {/* Hero stats */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {[
-                  { stat: `${stats.blendedRank1WinPct}%`, label: 'Per-category #1 wins' },
-                  { stat: `${stats.criticsOnlyRank1WinPct}%`, label: 'Critics-only #1 wins' },
-                  { stat: `${stats.improvement >= 0 ? '+' : ''}${stats.improvement}pts`, label: 'Improvement vs critics-only' },
-                  { stat: `${stats.blendedAvgWinnerRank}`, label: 'Avg winner rank' },
-                ].map(({ stat, label }) => (
-                  <div key={label} className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-center">
-                    <div className="text-xl font-bold text-brand">{stat}</div>
-                    <div className="text-xs text-gray-400 mt-1">{label}</div>
+              {/* Hero stat */}
+              <div className="text-center pb-5 mb-5 border-b border-white/5">
+                <div className="text-5xl sm:text-6xl font-bold text-brand leading-none mb-2 tabular-nums tracking-tight">
+                  <span>{totalHits}</span><span className="text-gray-600 font-light mx-1">/</span><span>{totalCells}</span>
+                </div>
+                <p className="text-sm text-gray-300">
+                  Our #1 pick won across {stats.seasonCount} Tony seasons &middot; <span className="text-white font-semibold">{accuracyPct}% accuracy</span>
+                </p>
+              </div>
+
+              {/* Per-category bars — stacked label on mobile, inline on sm+ */}
+              <div className="space-y-3 sm:space-y-2.5 mb-6">
+                {byCategory.map(({ category, hits, total, pct }) => (
+                  <div key={category}>
+                    {/* Mobile: label row above bar */}
+                    <div className="flex items-baseline justify-between mb-1 sm:hidden">
+                      <span className="text-sm text-gray-300">{category}</span>
+                      <span className="text-xs text-gray-500 tabular-nums">
+                        {hits}/{total} <span className="text-white font-bold ml-1">{pct}%</span>
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="hidden sm:inline text-sm text-gray-300 w-44 flex-shrink-0 truncate">{category}</span>
+                      <div className="flex-1 h-6 bg-white/5 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all ${pct === 100 ? 'bg-emerald-500/80' : pct >= 80 ? 'bg-brand/80' : 'bg-blue-500/70'}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                      <span className="hidden sm:inline text-xs text-gray-500 w-10 text-right tabular-nums">{hits}/{total}</span>
+                      <span className="hidden sm:inline text-sm font-bold text-white w-14 text-right tabular-nums">{pct}%</span>
+                    </div>
                   </div>
                 ))}
               </div>
 
-              {/* Field size insight */}
-              <div>
-                <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">Field Size Changes Everything</h3>
-                <div className="space-y-2.5">
-                  {stats.fieldSizeData.filter(d => d.count >= 2).map(({ label, pct, note, count }) => (
-                    <div key={label} className="flex items-center gap-3">
-                      <span className="text-sm text-gray-300 w-28 sm:w-32 flex-shrink-0">{label}</span>
-                      <div className="flex-1 h-5 bg-white/5 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-brand/70"
-                          style={{ width: `${pct}%` }}
-                        />
-                      </div>
-                      <span className="text-sm font-semibold text-white w-10 text-right">{pct}%</span>
-                      <span className="text-xs text-gray-500 hidden sm:inline w-24">{note} ({count})</span>
-                    </div>
-                  ))}
+              {/* Season-by-season grid */}
+              <div className="mb-6">
+                <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Season by season</h3>
+                <div className="overflow-x-auto -mx-1">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-[11px] text-gray-500 uppercase tracking-wide">
+                        <th className="text-left font-medium pb-2 px-1">Season</th>
+                        {CAT_COLS.map(c => (
+                          <th key={c} className="text-center font-medium pb-2 px-1">
+                            <span className="sm:hidden">{c.replace('Revival ', 'R. ').replace('Musical', 'Mus.').replace('Play', 'Play')}</span>
+                            <span className="hidden sm:inline">{c}</span>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sortedCompleted.map(sum => (
+                        <tr key={sum.season.label} className="border-t border-white/5">
+                          <td className="py-2 px-1 text-white font-medium whitespace-nowrap">{sum.season.label}</td>
+                          {CAT_COLS.map(c => {
+                            const h = sum.categoryHighlights.find(x => x.category === c);
+                            if (!h || !h.winnerTitle) {
+                              return <td key={c} className="text-center text-gray-600 py-2 px-1">&mdash;</td>;
+                            }
+                            const hit = h.topShowTitle === h.winnerTitle;
+                            return (
+                              <td key={c} className="text-center py-2 px-1">
+                                {hit ? (
+                                  <span className="text-emerald-400" aria-label="hit">✓</span>
+                                ) : (
+                                  <span className="text-amber-400" aria-label="miss">✗</span>
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
 
-              {/* Category breakdown + New vs Revival */}
-              <div className="grid sm:grid-cols-2 gap-3">
-                <div className="rounded-lg border border-white/5 bg-white/[0.02] p-4">
-                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Category</h3>
-                  <div className="space-y-2">
-                    {stats.byCategory.map(({ category, pct }) => (
-                      <div key={category} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-300">{category}</span>
-                        <span className={`text-sm font-bold ${pct >= 80 ? 'text-emerald-400' : pct >= 65 ? 'text-blue-400' : 'text-gray-400'}`}>{pct}%</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="rounded-lg border border-white/5 bg-white/[0.02] p-4">
-                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">New Works vs. Revivals</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-300">New works</span>
-                      <span className={`text-sm font-bold ${stats.newWorksAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.newWorksAccuracy}%</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-300">Revivals</span>
-                      <span className={`text-sm font-bold ${stats.revivalsAccuracy >= 70 ? 'text-emerald-400' : 'text-gray-400'}`}>{stats.revivalsAccuracy}%</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-3">
-                    Revivals carry nostalgia, star power, and cultural-moment factors that blended scores don&apos;t fully capture.
-                  </p>
-                </div>
-              </div>
-
-              {/* Upsets */}
-              {stats.upsets.length > 0 && (
+              {/* Where we missed */}
+              {misses.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-white uppercase tracking-wide mb-1">The Only Times It Failed</h3>
+                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Where we missed ({misses.length})</h3>
                   <p className="text-xs text-gray-500 mb-3">
-                    Across {stats.categorySeasonCount} category-seasons, {stats.upsets.length} winner{stats.upsets.length !== 1 ? 's' : ''} ranked below #2 among nominees by blended score.
+                    Our #1 didn&apos;t match the Tony winner in these category-seasons. Most are voter-sentiment upsets (cultural significance, star power) that blended scores can&apos;t fully capture.
                   </p>
-                  <div className="space-y-2">
-                    {stats.upsets.map((upset, i) => (
-                      <div key={`${upset.season}-${upset.category}`} className={`flex items-center justify-between py-1.5 ${i < stats.upsets.length - 1 ? 'border-b border-white/5' : ''}`}>
-                        <div>
-                          <span className="text-sm text-white font-medium">{upset.winner}</span>
-                          <span className="text-xs text-gray-500 ml-2">{upset.category} {upset.season}</span>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {misses.map(m => (
+                      <div key={`${m.seasonLabel}-${m.categoryLabel}`} className="rounded-lg border border-white/5 bg-white/[0.02] p-3">
+                        <div className="text-xs text-gray-500 mb-1">
+                          {m.seasonLabel} &middot; Best {m.categoryLabel}
                         </div>
-                        <span className="text-sm text-amber-400 font-semibold">Ranked #{upset.rank}</span>
+                        <div className="text-sm text-gray-300 space-y-0.5">
+                          <div>
+                            <span className="text-gray-500 text-xs">Our #1:</span> <span className="text-white">{m.ourPick}</span>
+                          </div>
+                          <div>
+                            <span className="text-gray-500 text-xs">Tony:</span> <span className="text-amber-400 font-medium">{m.tonyWinner}</span>
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-3">
-                    Every other &ldquo;upset&rdquo; was the #2 blended score edging out #1.
-                  </p>
                 </div>
               )}
-            </div>
-          </details>
-        </section>
+            </section>
+          );
+        })()}
 
         {/* Season Grid */}
         <section className="mb-10">
@@ -409,7 +460,7 @@ export default function TonyPredictionsOverviewPage() {
                   )}
                   {summary.hasTonyResults && categoriesWithResults > 0 && (
                     <p className="text-xs text-gray-500 mt-1">
-                      #1 score won {rank1Wins}/{categoriesWithResults} categories
+                      Our #1 pick won {rank1Wins}/{categoriesWithResults} categories
                     </p>
                   )}
                 </Link>

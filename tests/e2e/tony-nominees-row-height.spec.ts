@@ -31,20 +31,24 @@ test.describe('Tony nominees row heights @mobile', () => {
   });
 
   test('Best Musical (MajorNomineeRow) rows stay compact', async ({ page }) => {
-    // MajorNomineeRow is the outer <Link> inside the Best Musical section.
-    // Use a stable text anchor: the section heading.
-    const sectionH2 = page.getByRole('heading', { name: 'Best Musical', level: 2 });
-    await expect(sectionH2).toBeVisible();
+    // MajorNomineeRow renders as an <a href="/show/..."> inside the Best Musical
+    // section. Page restructure 2026-05-23 wrapped the section in
+    // overflow-x-auto + min-width containers, so the xpath following-sibling::div[1]
+    // approach no longer finds the table. Use querySelector on the section
+    // ancestor instead — same pattern as the performer/craft tests below.
+    const heights = await page.evaluate(() => {
+      const sections = Array.from(document.querySelectorAll('section'));
+      const bestMusical = sections.find((s) =>
+        s.querySelector('h2')?.textContent?.trim() === 'Best Musical'
+      );
+      if (!bestMusical) return null;
+      const rows = Array.from(bestMusical.querySelectorAll('a[href^="/show/"]'));
+      return rows.map((r) => Math.round((r as HTMLElement).getBoundingClientRect().height));
+    });
 
-    const sectionContainer = sectionH2.locator('xpath=following-sibling::div[1]');
-    // MajorNomineeRow renders as a Link with `flex items-center` directly inside the section.
-    const rows = sectionContainer.locator('a[href^="/show/"]');
-    const heights = await rows.evaluateAll((els) =>
-      els.map((el) => Math.round(el.getBoundingClientRect().height))
-    );
-
-    expect(heights.length, 'expected ≥1 Best Musical nominee row').toBeGreaterThan(0);
-    for (const h of heights) {
+    expect(heights, 'Best Musical section not found').not.toBeNull();
+    expect(heights!.length, 'expected ≥1 Best Musical nominee row').toBeGreaterThan(0);
+    for (const h of heights!) {
       expect(h, `MajorNomineeRow height ${h}px exceeds ${MAX_HEIGHTS.major}px limit`).toBeLessThanOrEqual(MAX_HEIGHTS.major);
     }
   });

@@ -57,6 +57,7 @@ jobs:
           node-version: '20'
 
       - name: Run Mezzanine scraper
+        id: scrape
         env:
           MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
           MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
@@ -79,7 +80,19 @@ jobs:
             ARGS="$ARGS --dry-run"
           fi
 
+          # Exit code 2 = auth failure (rotate token). Anything else nonzero =
+          # transient network / server error (retry will likely fix). Capture
+          # so the alert step branches instead of always blaming the token.
+          set +e
           node scripts/scrape-mezzanine-audience.js $ARGS
+          rc=$?
+          set -e
+          if [ "$rc" = "2" ]; then
+            echo "failure_mode=auth" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" != "0" ]; then
+            echo "failure_mode=transient" >> "$GITHUB_OUTPUT"
+          fi
+          exit $rc
 
       - name: Send alert on failure (Discord + email)
         if: failure()
@@ -88,17 +101,28 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          FAILURE_MODE: ${{ steps.scrape.outputs.failure_mode }}
         with:
           script: |
             const { sendAlert } = require('./scripts/lib/discord-notify.js');
             const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const isAuth = process.env.FAILURE_MODE === 'auth';
+            const title = isAuth
+              ? 'Mezzanine Scraper Failed — Session Token Expired'
+              : 'Mezzanine Scraper Failed — Transient API Failure';
+            const description = isAuth
+              ? 'The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.'
+              : 'The Mezzanine audience data update failed mid-run (likely ECONNRESET, timeout, or server error from theaterdiary.com). The script already retried transient errors 3× with backoff. **No token action required** — the next scheduled run usually recovers on its own. Investigate only if 2+ consecutive failures.';
+            const actionRequired = isAuth
+              ? 'Re-intercept Mezzanine iOS app via mitmproxy'
+              : 'Wait for next cron run. Investigate only if 2+ consecutive failures.';
             await sendAlert({
-              title: 'Mezzanine Scraper Failed',
-              description: 'The Mezzanine audience data update failed. **The session token may have expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.',
-              severity: 'error',
-              email: true,
+              title,
+              description,
+              severity: isAuth ? 'error' : 'warning',
+              email: isAuth,
               fields: [
-                { name: 'Action Required', value: 'Re-intercept Mezzanine iOS app via mitmproxy' },
+                { name: 'Action Required', value: actionRequired },
                 { name: 'Run', value: `[View logs](${runUrl})` }
               ],
               url: runUrl

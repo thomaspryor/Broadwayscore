@@ -34,7 +34,8 @@ type CeremonyKey =
   | 'obie'
   | 'lortel'
   | 'criticsCircle'
-  | 'eveningStandard';
+  | 'eveningStandard'
+  | 'whatsOnStage';
 
 interface TierPoints { win: number; nom: number }
 
@@ -62,6 +63,11 @@ const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
   // WE award after Olivier. Lower weight than olivier_we — popular jury award
   // with full nominee lists (winners marked by <b> in Wikipedia tables).
   eveningStandard: { S: { win: 60, nom: 8 }, A: { win: 30, nom: 4 }, B: { win: 18, nom: 2 }, C: { win: 12, nom: 2 } },
+  // WhatsOnStage Awards (UK, 2001–present). AUDIENCE-voted — weight slotted
+  // between Drama League (NY audience-voted) and Critics' Circle (critic-voted).
+  // Includes a dedicated Best Off-West End Production category, the only WOS
+  // award OWE shows can win.
+  whatsOnStage:    { S: { win: 35, nom: 5 }, A: { win: 22, nom: 3 }, B: { win: 12, nom: 2 }, C: { win: 8,  nom: 1 } },
 };
 
 const A_PLUS_MULTIPLIER = 1.2;
@@ -96,6 +102,16 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/^best (actor|actress)$/.test(c)) return { tier: 'A', revival: false };
   // Lead Performance (DD 70th+) / Lead Performer (OCC) / Lead Actor|Actress (Lortel) in a [Broadway|Off-Broadway] [play|musical]
   if (/outstanding lead (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'A', revival: false };
+  // WhatsOnStage acting categories — "Performer" (modern, 2020+) and gender-neutral
+  // "Performer in a Female/Male Identifying Role" variants. Lead vs supporting split.
+  if (/best supporting performer in a/.test(c)) return { tier: 'B', revival: false };
+  if (/best performer in a/.test(c)) return { tier: 'A', revival: false };
+  // WhatsOnStage "Best Supporting Actor/Actress" (pre-2020 naming, before "Performer").
+  if (/best supporting (actor|actress)/.test(c)) return { tier: 'B', revival: false };
+  // WhatsOnStage "Best Off-West End Production" — only WOS award OWE shows can win.
+  if (/best off.?west.?end production/.test(c)) return { tier: 'S', revival: false };
+  if (/best original music\b/.test(c)) return { tier: 'A+', revival: false };
+  if (/video design/.test(c)) return { tier: 'C', revival: false };
   if (/featured (actor|actress)/.test(c)) return { tier: 'B', revival: false };
   // Olivier supporting role categories (use "supporting role" instead of "featured")
   if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
@@ -272,6 +288,11 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.eveningStandard.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Evening Standard Theatre Awards', 'eveningStandard', wins, noms));
   }
+  if (entry.whatsOnStage) {
+    const wins = entry.whatsOnStage.wins ?? [];
+    const noms = entry.whatsOnStage.nominatedFor ?? [];
+    breakdown.push(scoreCeremony('WhatsOnStage Awards', 'whatsOnStage', wins, noms));
+  }
   const rawPoints = breakdown.reduce((s, b) => s + b.subtotal, 0);
   // Hard-cap display at 100 — UX call: scores >100 read as bugs.
   const displayScore = Math.max(0, Math.min(100, Math.round(40 * Math.log10(1 + rawPoints / 4))));
@@ -306,6 +327,7 @@ interface AwardsShowEntry {
   lortel?: PrecursorNode & { season?: string };
   criticsCircle?: PrecursorNode & { season?: string };
   eveningStandard?: PrecursorNode & { season?: string };
+  whatsOnStage?: PrecursorNode & { season?: string };
   pulitzer?: { wins?: string[]; finalist?: string[]; year?: number };
   pulitzerFinalist?: { year?: number; note?: string };
   olivier?: PrecursorNode & { season?: string };

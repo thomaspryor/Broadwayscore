@@ -4,6 +4,12 @@ const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: false,
+  // Skip in-build lint+type-check; they run separately in
+  // .github/workflows/test.yml (typescript-check job: tsc + next lint).
+  // Keeps these gates in CI but removes ~20-40s from every deploy build.
+  // If you re-enable these flags, remove the corresponding steps from test.yml.
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   ...(isGitHubPages && { basePath: '/Broadwayscore' }),
   images: {
     remotePatterns: [

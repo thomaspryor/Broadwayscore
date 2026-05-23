@@ -31,8 +31,10 @@ export default defineConfig({
   // Retry failed tests (helps with flaky network issues)
   retries: process.env.CI ? 2 : 0,
 
-  // Limit parallel workers on CI to avoid overloading
-  workers: process.env.CI ? 2 : undefined,
+  // 4 workers on CI: smoke tests are read-only against production (no shared state
+  // between tests, no dev server). retries=2 absorbs any cold-cache flake from the
+  // higher concurrency. Cuts smoke step from ~1m 45s to ~52s.
+  workers: process.env.CI ? 4 : undefined,
 
   // Reporter configuration
   reporter: process.env.CI

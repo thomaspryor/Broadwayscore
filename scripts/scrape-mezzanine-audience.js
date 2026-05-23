@@ -76,16 +76,35 @@ for (const overrideId of Object.keys(MEZZANINE_OVERRIDES)) {
   }
 }
 
-/**
- * Query Parse Server API
- */
-function queryParse(className, body) {
+// Transient network errors worth retrying. Auth failures (401/403) and parse
+// errors are NOT transient — they re-throw immediately.
+const TRANSIENT_NET_CODES = new Set(['ECONNRESET', 'ETIMEDOUT', 'EAI_AGAIN', 'ENOTFOUND', 'ECONNREFUSED', 'EPIPE']);
+const TRANSIENT_MESSAGES = /socket hang up|read ECONNRESET|connect ETIMEDOUT|request timeout/i;
+
+class AuthError extends Error {
+  constructor(statusCode) {
+    super(`Authentication failed (${statusCode}). Session token may have expired. Re-intercept via mitmproxy to get a fresh token.`);
+    this.statusCode = statusCode;
+    this.isAuth = true;
+    this.exitCode = 2; // distinct from generic failure
+  }
+}
+
+function isTransient(err) {
+  if (!err || err.isAuth) return false;
+  if (err.code && TRANSIENT_NET_CODES.has(err.code)) return true;
+  if (err.message && TRANSIENT_MESSAGES.test(err.message)) return true;
+  return false;
+}
+
+function queryParseOnce(className, body) {
   return new Promise((resolve, reject) => {
     const data = JSON.stringify(body);
     const req = https.request({
       hostname: 'api.theaterdiary.com',
       path: '/parse/classes/' + className,
       method: 'POST',
+      timeout: 60000,
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
         'X-Parse-Application-Id': APP_ID,
@@ -97,17 +116,44 @@ function queryParse(className, body) {
       res.on('data', c => body += c);
       res.on('end', () => {
         if (res.statusCode === 401 || res.statusCode === 403) {
-          reject(new Error(`Authentication failed (${res.statusCode}). Session token may have expired. Re-intercept via mitmproxy to get a fresh token.`));
+          reject(new AuthError(res.statusCode));
           return;
         }
         try { resolve(JSON.parse(body)); }
         catch (e) { reject(new Error('Parse error: ' + body.substring(0, 200))); }
       });
     });
+    req.on('timeout', () => {
+      req.destroy(new Error('request timeout'));
+    });
     req.on('error', reject);
     req.write(data);
     req.end();
   });
+}
+
+/**
+ * Query Parse Server API with retry-on-transient-error.
+ *
+ * Retries up to 3 times (4 attempts total) on ECONNRESET / ETIMEDOUT /
+ * socket hang up / request timeout with exponential backoff (1s, 3s, 9s).
+ * Auth failures (401/403) and Parse-server errors fail immediately.
+ */
+async function queryParse(className, body) {
+  const MAX_ATTEMPTS = 4;
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return await queryParseOnce(className, body);
+    } catch (e) {
+      lastErr = e;
+      if (!isTransient(e) || attempt === MAX_ATTEMPTS) throw e;
+      const delayMs = Math.pow(3, attempt - 1) * 1000;
+      console.warn(`  ⚠ Transient API error (${e.code || e.message}); retrying in ${delayMs}ms (attempt ${attempt}/${MAX_ATTEMPTS - 1})`);
+      await new Promise(r => setTimeout(r, delayMs));
+    }
+  }
+  throw lastErr;
 }
 
 /**
@@ -480,12 +526,15 @@ async function main() {
     allProductions = await fetchAllProductions();
   } catch (e) {
     console.error('Failed to fetch productions:', e.message);
-    process.exit(1);
+    // Exit code 2 = auth failure (token rotation needed). Exit code 1 = anything
+    // else (transient network, server error). The workflow alert step branches
+    // on this so we stop emailing "rotate the token" for ECONNRESETs.
+    process.exit(e && e.isAuth ? 2 : 1);
   }
   console.log(`Fetched ${allProductions.length} productions with ratings`);
   if (allProductions.length === 0) {
     console.error('⚠️  CRITICAL: Mezzanine API returned 0 productions — session token may have expired');
-    process.exit(1);
+    process.exit(2);
   }
 
   // 2. Filter productions by market

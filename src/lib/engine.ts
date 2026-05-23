@@ -665,11 +665,13 @@ export function assessConfidence(
 
 export function computeShowData(
   show: RawShow,
-  reviews: RawReview[],
+  showReviews: RawReview[],
   audienceData: RawAudience[],
   buzzThreads: RawBuzzThread[]
 ): ComputedShow {
-  const showReviews = reviews.filter(r => r.showId === show.id);
+  // Caller is expected to pass reviews already pre-filtered to this show
+  // (data-core.ts uses a Map<showId, Reviews[]> index). The inner filter was
+  // removed as a no-op once all callers were updated (only data-core.ts:getAllShows).
 
   // Pre-2005 closed shows: hide reviews entirely (unreliable data from bulk import)
   // Announced shows: never surface a composite score — any reviews present belong
