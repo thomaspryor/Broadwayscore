@@ -39,6 +39,20 @@
  *                                          median of other-source scores by >=35
  *                                          AND reviewCount >= 10
  *                                          (real platform disagreement, not contamination)
+ *   OTHER_SOURCE_STALE          (warn) — a modern audience source (theatr,
+ *                                          seatplan) has reviewCount > 0 on a
+ *                                          show that closed AND opened more
+ *                                          than STALE_YEARS_AGO years ago.
+ *                                          theatr/seatplan are post-2020
+ *                                          platforms; non-zero counts on
+ *                                          pre-pandemic-closed shows mean the
+ *                                          scraper attached modern listings
+ *                                          (touring, Encores!, regional) to
+ *                                          the wrong show. Catches the
+ *                                          contamination class with rc<10
+ *                                          that OTHER_SOURCE_DIVERGENCE
+ *                                          misses. See sibling Notion
+ *                                          36a637c5-416f-8199-baf6-ef195e30c59b.
  *
  * Thresholds chosen against live data (2026-05-24, 1,830 buzz records):
  *   - Reddit-only divergence with rc>=10 + diff>=40: 1 live hit
@@ -69,7 +83,17 @@ const WARN_SIGNALS = new Set([
   'SHOW_NOT_IN_DB',
   'BROADWAYCOM_URL_NO_TITLE',
   'OTHER_SOURCE_DIVERGENCE',
+  'OTHER_SOURCE_STALE',
 ]);
+
+// theatr.com (founded ~2021) and seatplan.com's user-rating product are both
+// post-2020 platforms — they cannot have organic users rating shows that
+// closed before they existed. Non-zero counts on long-closed shows mean the
+// scraper attached a modern same-titled listing (touring, Encores!, regional,
+// RSC) to the historical revival. 8-year cutoff keeps post-COVID closures
+// (2021-2025) safe (those CAN have legitimate modern app users).
+const MODERN_APP_SOURCES = ['theatr', 'seatplan'];
+const STALE_YEARS_AGO = 8;
 
 function loadShows() {
   try {
@@ -110,12 +134,16 @@ function median(arr) {
   return sorted[Math.floor(sorted.length / 2)];
 }
 
-function audit() {
-  const shows = loadShows();
+function audit({ shows: injectedShows, buzz: injectedBuzz, today } = {}) {
+  const shows = injectedShows !== undefined ? injectedShows : loadShows();
   const ids = shows ? new Set(shows.map(s => s.id)) : null;
-  const raw = JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8'));
+  const showById = shows ? new Map(shows.map(s => [s.id, s])) : null;
+  const raw = injectedBuzz !== undefined
+    ? injectedBuzz
+    : JSON.parse(fs.readFileSync(BUZZ_FILE, 'utf-8'));
   const showsMap = raw.shows || {};
   const issues = [];
+  const currentYear = (today ? new Date(today) : new Date()).getFullYear();
 
   for (const [id, x] of Object.entries(showsMap)) {
     if (!x || typeof x !== 'object') continue;
@@ -162,6 +190,22 @@ function audit() {
         const diff = Math.abs(src.score - m);
         if (diff >= 35) {
           flags.push(`OTHER_SOURCE_DIVERGENCE:src=${name},score=${src.score},median=${m},diff=${diff},rc=${rc}`);
+        }
+      }
+    }
+
+    // OTHER_SOURCE_STALE — modern audience apps on long-closed shows
+    if (showById) {
+      const show = showById.get(resolvedId || id);
+      if (show && show.status === 'closed' && show.openingDate) {
+        const openYear = parseInt(show.openingDate.slice(0, 4), 10);
+        if (openYear && (currentYear - openYear) > STALE_YEARS_AGO) {
+          for (const name of MODERN_APP_SOURCES) {
+            const src = sources[name];
+            if (src && typeof src.score === 'number' && (src.reviewCount || 0) > 0) {
+              flags.push(`OTHER_SOURCE_STALE:src=${name},score=${src.score},rc=${src.reviewCount},openYear=${openYear}`);
+            }
+          }
         }
       }
     }
@@ -223,4 +267,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit, FAIL_SIGNALS };
+module.exports = { audit, FAIL_SIGNALS, WARN_SIGNALS, MODERN_APP_SOURCES, STALE_YEARS_AGO };

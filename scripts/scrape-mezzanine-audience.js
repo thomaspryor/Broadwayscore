@@ -62,17 +62,20 @@ const MEZZANINE_OVERRIDES = {
 const showsPath = path.join(__dirname, '../data/shows.json');
 const audienceBuzzPath = path.join(__dirname, '../data/audience-buzz.json');
 
-// Load data
-const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
-const showMapById = {};
-for (const s of showsData.shows) showMapById[s.id] = s;
-const audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
+// Load data (skipped when required as a module — tests provide their own data)
+let showsData, showMapById, audienceBuzz;
+if (require.main === module) {
+  showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  showMapById = {};
+  for (const s of showsData.shows) showMapById[s.id] = s;
+  audienceBuzz = JSON.parse(fs.readFileSync(audienceBuzzPath, 'utf8'));
 
-// Validate override show IDs exist (catches drift when shows.json renames an
-// ID and silently leaves the override pointing at nothing — Claude review #4).
-for (const overrideId of Object.keys(MEZZANINE_OVERRIDES)) {
-  if (!showMapById[overrideId]) {
-    console.warn(`⚠ MEZZANINE_OVERRIDES key "${overrideId}" is not in shows.json — override is dead config and should be removed or updated.`);
+  // Validate override show IDs exist (catches drift when shows.json renames an
+  // ID and silently leaves the override pointing at nothing — Claude review #4).
+  for (const overrideId of Object.keys(MEZZANINE_OVERRIDES)) {
+    if (!showMapById[overrideId]) {
+      console.warn(`⚠ MEZZANINE_OVERRIDES key "${overrideId}" is not in shows.json — override is dead config and should be removed or updated.`);
+    }
   }
 }
 
@@ -389,6 +392,17 @@ function matchProductions(productions, shows) {
           });
           if (closerSibling) {
             if (verbose) console.log(`  SKIP prod ${p.objectId || mName} (year ${mYear}) for ${show.id} — closer to ${closerSibling.id}`);
+            continue;
+          }
+          // Sibling-aware year gate: when multiple of our shows share a title,
+          // the exact-title-match high-confidence path bypasses year checking
+          // and silently merges unrelated productions (RSC tours, regional)
+          // into the most-recent revival. Require year-verification when
+          // siblings exist so productions that don't match ANY of our entries
+          // get dropped, not attached to the closest revival.
+          // See feedback_dual_repo_data_files.md / audience-buzz triage 2026-05-24.
+          if (!yearVerified) {
+            if (verbose) console.log(`  SKIP prod ${p.objectId || mName} (year ${mYear}) for ${show.id} — sibling-aware year gate (no sibling within ±1)`);
             continue;
           }
         }
@@ -722,7 +736,11 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e.message);
-  process.exit(1);
-});
+if (require.main !== module) {
+  module.exports = { matchProductions, deduplicateMatches, normalize };
+} else {
+  main().catch(e => {
+    console.error('Fatal error:', e.message);
+    process.exit(1);
+  });
+}
