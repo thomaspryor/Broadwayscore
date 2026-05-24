@@ -67,9 +67,12 @@ jobs:
           # 2. What's the latest Deploy Demo Site build for the target ref?
           # Demo workflow uses `vercel deploy --prebuilt` (no --prod), so its
           # deployments have target!=production. Filter on source=cli +
-          # ref=$TARGET_REF + non-production.
+          # ref=$TARGET_REF + non-production. limit=100 so demo deploys (every 8h)
+          # aren't pushed out of the window by production deploys (every 5 min).
+          # `|| true` keeps `set -e` from killing the script when node prints
+          # nothing — empty LATEST_DEMO triggers the diagnostic branch below.
           LATEST_DEMO=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v6/deployments?projectId=$PROJECT_ID&state=READY&limit=20" \
+            "https://api.vercel.com/v6/deployments?projectId=$PROJECT_ID&state=READY&limit=100" \
             | TARGET_REF="$TARGET_REF" node -e "
               const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
               const target = process.env.TARGET_REF || 'main';
@@ -78,14 +81,13 @@ jobs:
                 x.target !== 'production' &&
                 x.meta?.githubCommitRef === target
               );
-              if (candidates.length === 0) { process.exit(2); }
+              if (candidates.length === 0) { process.exit(0); }
               console.log(candidates[0].url);
-            ")
-          FILTER_EXIT=$?
+            " || true)
 
-          if [ $FILTER_EXIT -eq 2 ]; then
+          if [ -z "$LATEST_DEMO" ]; then
             # No demo-shaped deployments — diagnose whether the demo build itself is broken
-            echo "No READY demo deployments found (filter: source=cli, target!=production, ref=main)."
+            echo "No READY demo deployments found (filter: source=cli, target!=production, ref=$TARGET_REF, last 100 deploys)."
             RECENT_RUNS=$(gh run list --workflow="vercel-demo.yml" --limit=5 \
               --json conclusion,status,displayTitle,createdAt 2>/dev/null || echo '[]')
             FAILED_COUNT=$(echo "$RECENT_RUNS" | node -e "
