@@ -93,6 +93,7 @@ const DRAMA_LEAGUE = loadPrecursor('drama-league');
 const NYDCCC = loadPrecursor('nydcc');
 const OBIE = loadPrecursor('obie');
 const LORTEL = loadPrecursor('lortel');
+const OBA = loadPrecursor('oba');
 const CRITICS_CIRCLE = loadPrecursor('critics-circle');
 const EVENING_STANDARD = loadPrecursor('evening-standard');
 const WHATSONSTAGE = loadPrecursor('whatsonstage');
@@ -786,6 +787,10 @@ function main() {
   const nydRes = applyNYDCCC(NYDCCC, awardsShows, titleById, matcherOpts);
   const obieRes = applyObie(OBIE, awardsShows, titleById, matcherOpts);
   const lortelRes = applyDDOCCDL(LORTEL, 'lortel', awardsShows, titleById, matcherOpts);
+  // OBA ceremony year Y honors productions opening (Y-1)-Y Broadway season —
+  // matches ceremonyYearToTonySeason(Y) without a source-year shift. Standard
+  // applyDDOCCDL routing through Pass 5 (obShowsBySeason) handles OB-only shows.
+  const obaRes = applyDDOCCDL(OBA, 'oba', awardsShows, titleById, matcherOpts);
   const ccRes = applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', awardsShows, titleById, matcherOpts);
   const esRes = applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', awardsShows, titleById, matcherOpts);
   const wosRes = applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', awardsShows, titleById, matcherOpts);
@@ -799,6 +804,7 @@ function main() {
   console.log(`  NY Drama Critics:     ${nydRes.matched} matched, ${nydRes.unmatched.length} unmatched`);
   console.log(`  Obie Awards:          ${obieRes.matched} matched, ${obieRes.unmatched.length} unmatched`);
   console.log(`  Lortel Awards:        ${lortelRes.matched} matched, ${lortelRes.unmatched.length} unmatched`);
+  console.log(`  OBA Awards:           ${obaRes.matched} matched, ${obaRes.unmatched.length} unmatched`);
   console.log(`  Critics' Circle:      ${ccRes.matched} matched, ${ccRes.unmatched.length} unmatched`);
   console.log(`  Evening Standard:     ${esRes.matched} matched, ${esRes.unmatched.length} unmatched`);
   console.log(`  WhatsOnStage:         ${wosRes.matched} matched, ${wosRes.unmatched.length} unmatched`);
@@ -877,6 +883,7 @@ function main() {
   applyNYDCCC(NYDCCC, secondShows, titleById, matcherOpts);
   applyObie(OBIE, secondShows, titleById, matcherOpts);
   applyDDOCCDL(LORTEL, 'lortel', secondShows, titleById, matcherOpts);
+  applyDDOCCDL(OBA, 'oba', secondShows, titleById, matcherOpts);
   applyDDOCCDL(CRITICS_CIRCLE, 'criticsCircle', secondShows, titleById, matcherOpts);
   applyDDOCCDL(EVENING_STANDARD, 'eveningStandard', secondShows, titleById, matcherOpts);
   applyDDOCCDL(WHATSONSTAGE, 'whatsOnStage', secondShows, titleById, matcherOpts);

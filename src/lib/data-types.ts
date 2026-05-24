@@ -303,6 +303,18 @@ export interface LortelAwards {
   nominations?: number;
 }
 
+/** Off Broadway Alliance Award (industry-voted, 2011–present, annual).
+ *  Categories: Best New Musical, Best New Play, Best Revival (or split into
+ *  Best Musical Revival / Best Play Revival in some years), Best Solo
+ *  Performance, Best Unique Theatrical Experience, Best Family Show.
+ *  Source: Playbill annual round-up articles; see scripts/scrape-off-broadway-alliance.js. */
+export interface OffBroadwayAllianceAwards {
+  season?: string;
+  wins: string[];
+  nominatedFor?: string[];
+  nominations?: number;
+}
+
 /** Evening Standard Theatre Awards (UK/West End, 1955–present). Second-most
  *  prestigious WE award after the Olivier. Per-category Wikipedia pages
  *  exist for Best Play, Best Actor, Best Actress (no Best Musical page).
@@ -332,6 +344,7 @@ export interface ShowAwards {
   nyDramaCritics?: NyDramaCriticsAwards;
   obie?: ObieAwards;
   lortel?: LortelAwards;
+  oba?: OffBroadwayAllianceAwards;
   criticsCircle?: CriticsCircleAwards;
   eveningStandard?: EveningStandardAwards;
   whatsOnStage?: WhatsOnStageAwards;

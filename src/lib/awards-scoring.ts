@@ -33,6 +33,7 @@ type CeremonyKey =
   | 'dramaDesk'
   | 'obie'
   | 'lortel'
+  | 'oba'
   | 'criticsCircle'
   | 'eveningStandard'
   | 'whatsOnStage';
@@ -58,6 +59,10 @@ const POINTS: Record<CeremonyKey, Partial<Record<CategoryTier, TierPoints>>> = {
   // criticsCircle: UK Critics' Circle Theatre Awards; primarily West End-relevant.
   obie:         { S: { win: 18,  nom: 0 },  A: { win: 12, nom: 0 },  B: { win: 8,  nom: 0 }, C: { win: 5,  nom: 0 } },
   lortel:       { S: { win: 20,  nom: 3 },  A: { win: 12, nom: 2 },  B: { win: 8,  nom: 1 }, C: { win: 5,  nom: 1 } },
+  // Off Broadway Alliance Awards (industry-voted alliance, 2011-present, annual).
+  // Slotted BELOW Lortel — OBA is industry-voted, Lortel is critic-voted. Above
+  // Obie in S because Obie is wins-only (no noms) and on hiatus since 2019.
+  oba:          { S: { win: 12,  nom: 2 },  A: { win: 8,  nom: 1 },  B: { win: 5,  nom: 1 }, C: { win: 3,  nom: 0 } },
   criticsCircle:{ S: { win: 30,  nom: 0 },  A: { win: 18, nom: 0 },  B: { win: 10, nom: 0 }, C: { win: 6,  nom: 0 } },
   // Evening Standard Theatre Awards (UK, 1955–present). Second-most prestigious
   // WE award after Olivier. Lower weight than olivier_we — popular jury award
@@ -132,6 +137,10 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/best new american play|outstanding new american play/.test(c)) return { tier: 'S', revival: false };
   if (/best new musical/.test(c)) return { tier: 'S', revival: false };
   if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
+  // Off Broadway Alliance Awards categories (since 2011).
+  // Family Show and Unique Theatrical Experience are niche categories — C tier.
+  if (/best family show/.test(c)) return { tier: 'C', revival: false };
+  if (/best unique theatrical experience/.test(c)) return { tier: 'C', revival: false };
   // Special/honorary career awards — recognized but intentionally worth 0 points; not a typo.
   if (/special achievement|body of work/.test(c)) return null;
   return null;
@@ -278,6 +287,11 @@ export function computeSiteAwardScore(showId: string, market: Market = 'broadway
     const noms = entry.lortel.nominatedFor ?? [];
     breakdown.push(scoreCeremony('Lucille Lortel Awards', 'lortel', wins, noms, unknownNoms(entry.lortel.nominations, wins, noms)));
   }
+  if (entry.oba) {
+    const wins = entry.oba.wins ?? [];
+    const noms = entry.oba.nominatedFor ?? [];
+    breakdown.push(scoreCeremony('Off Broadway Alliance Awards', 'oba', wins, noms));
+  }
   if (entry.criticsCircle) {
     const wins = entry.criticsCircle.wins ?? [];
     const noms = entry.criticsCircle.nominatedFor ?? [];
@@ -325,6 +339,7 @@ interface AwardsShowEntry {
   nyDramaCritics?: PrecursorNode & { season?: string; noAward?: boolean };
   obie?: PrecursorNode & { season?: string };
   lortel?: PrecursorNode & { season?: string };
+  oba?: PrecursorNode & { season?: string };
   criticsCircle?: PrecursorNode & { season?: string };
   eveningStandard?: PrecursorNode & { season?: string };
   whatsOnStage?: PrecursorNode & { season?: string };

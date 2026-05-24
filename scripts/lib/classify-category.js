@@ -70,6 +70,10 @@ function classifyCategory(category) {
   if (/best new musical/.test(c)) return { tier: 'S', revival: false };
   // Obie "Best Performance" is a generic acting award (no lead/featured distinction)
   if (/\bbest performance\b/.test(c)) return { tier: 'B', revival: false };
+  // Off Broadway Alliance Awards categories (since 2011).
+  // Family Show and Unique Theatrical Experience are niche categories — C tier.
+  if (/best family show/.test(c)) return { tier: 'C', revival: false };
+  if (/best unique theatrical experience/.test(c)) return { tier: 'C', revival: false };
   // Special/honorary career awards — recognized but intentionally worth 0 points; not a typo.
   if (/special achievement|body of work/.test(c)) return null;
   return null;
