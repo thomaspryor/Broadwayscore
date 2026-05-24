@@ -481,6 +481,57 @@ function offBroadwayOpenings() {
   return { html: sectionWrap(sectionHeading(title, pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
 }
 
+// SECTION: Coming Up — forward-looking openings + starting previews.
+// Looks 14 days ahead for openingDate, 7 days ahead for previewsStartDate.
+// Distinct from the "Opened" sections which look BACKWARD at the past week.
+// Surfaces in a single compact card for both BW + OB; opera excluded (lives
+// in its own Opera section); West End covered by the dedicated London card.
+function upcomingOpeningsSection() {
+  const today = weekEndStr; // anchor on the week's last day
+  const horizon14 = (() => { const d = new Date(today + 'T12:00:00'); d.setDate(d.getDate() + 14); return d.toISOString().slice(0, 10); })();
+  const horizon7 = (() => { const d = new Date(today + 'T12:00:00'); d.setDate(d.getDate() + 7); return d.toISOString().slice(0, 10); })();
+  const items = [];
+  for (const s of shows) {
+    if (s.category !== 'broadway' && s.category !== 'off-broadway') continue;
+    if (isOperaShow(s)) continue;
+    const opensSoon = s.openingDate && s.openingDate > today && s.openingDate <= horizon14;
+    const previewsSoon = s.previewsStartDate && s.previewsStartDate > today && s.previewsStartDate <= horizon7
+      && (!s.openingDate || s.openingDate > today);
+    if (!opensSoon && !previewsSoon) continue;
+    // Sort key: nearest event date. Opening takes precedence over previews if
+    // both fall in their respective windows — the audience cares more about
+    // "opens Monday" than "previews started Tuesday".
+    const eventDate = opensSoon ? s.openingDate : s.previewsStartDate;
+    const eventLabel = opensSoon ? 'Opens' : 'Previews start';
+    items.push({ show: s, eventDate, eventLabel, isPreview: !opensSoon });
+  }
+  if (!items.length) return null;
+  items.sort((a, b) => a.eventDate.localeCompare(b.eventDate));
+  const top = items.slice(0, 4); // cap card height — surface the closest 4
+  const remaining = items.length - top.length;
+  const rows = top.map((it, i, arr) => {
+    const isLast = i === arr.length - 1;
+    const s = it.show;
+    const formatPill = s.type ? pill(s.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
+    const revivalPill = s.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
+    const venue = (s.venue || '').split(' / ')[0];
+    return `<tr>
+      <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(s, 48)}</td>
+      <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
+        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
+        <div style="margin-top:4px;">${formatPill}${revivalPill}</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:6px;line-height:1.4;">
+          <span style="color:#d4a574;font-weight:600;">${it.eventLabel} ${dayOf(it.eventDate)} ${fmt(it.eventDate)}</span>${venue ? ` · ${venue}` : ''}
+        </div>
+      </td>
+    </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">${rows}
+    ${seeAllLink(`${SITE}/browse`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
+  </table>`;
+  return sectionWrap(sectionHeading('Coming Up', 'next 14 days'), body);
+}
+
 // SECTION: Biggest Mover — show whose critic score moved most this week from NEW reviews
 // Single source of truth for "which shows are critic-mover-worthy this week."
 // Used by BOTH biggestMoverSection (renders the cards) AND the newsworthiness
@@ -1583,6 +1634,7 @@ const obO = offBroadwayOpenings();
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
 
+const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection());
 const mover = sections.run('biggest-movers', () => biggestMoverSection());
 const clo   = sections.run('closing-this-week', () => closingSection());
 const announced = sections.run('announced-closings', () => announcedClosingsSection());
@@ -1617,7 +1669,10 @@ if (seasonStandings.length) {
 // rather than a top-of-email surprise.
 // Opera Openings sits directly after London Openings — both are the
 // "secondary market" feeds that read as siblings to NYC theatre.
-const sectionOrder = [bwO.html, obO.html, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, popular].filter(Boolean);
+// "Coming Up" follows the just-opened sections so the reader sees the past
+// week's drama, then naturally looks ahead to what's next, before pivoting
+// to score movers / box office / etc.
+const sectionOrder = [bwO.html, obO.html, upcoming, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, popular].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
