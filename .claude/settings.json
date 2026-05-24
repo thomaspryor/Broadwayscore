@@ -10,6 +10,26 @@
             "command": "bash .claude/hooks/notion-create-block.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-push-visual-gate.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/whitespace-nowrap-lint.sh"
+          }
+        ]
       }
     ],
     "SessionStart": [

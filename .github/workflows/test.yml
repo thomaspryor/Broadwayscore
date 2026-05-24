@@ -627,6 +627,17 @@ jobs:
         run: |
           node --test --test-timeout 120000 tests/unit/opening-night-checks-skeleton.test.mjs
 
+      - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
+        # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
+        # per CLAUDE.md §15 test-extraction pattern. Covered helpers:
+        #   - scripts/lib/transcript-scan.mjs (visual-qa gate helper)
+        # 25/25 pass in <100ms; safe to run on every push.
+        run: |
+          shopt -s nullglob
+          tests=(scripts/lib/*.test.mjs)
+          [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
+          node --test "${tests[@]}"
+
       - name: Run scraper-cookie-wiring tests (direct exec, no --test wrapper)
         # This file globally monkey-patches `https.get` and `https.request`
         # to capture outbound calls without making real requests. When run
