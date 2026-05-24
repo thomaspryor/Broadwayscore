@@ -6,7 +6,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { diffNewItems, matchShow, RECOUP_REGEX } = require('../../scripts/poll-trade-press-rss');
+const { diffNewItems, matchShow, RECOUP_REGEX, PER_FEED_LLM_WARN_THRESHOLD } = require('../../scripts/poll-trade-press-rss');
 
 // Helper: build a feed item with a pubDate N hours ago.
 const hoursAgo = (h) => new Date(Date.now() - h * 60 * 60 * 1000);
@@ -117,5 +117,15 @@ describe('RECOUP_REGEX', () => {
     assert.ok(!RECOUP_REGEX.test('The show paid off handsomely'));
     assert.ok(!RECOUP_REGEX.test('Profit margins tightened'));
     assert.ok(!RECOUP_REGEX.test('Non-profit theatre announces season'));
+  });
+});
+
+describe('PER_FEED_LLM_WARN_THRESHOLD', () => {
+  it('is set to a sane single-digit value', () => {
+    // Ship-check P2: alert when a film/TV title-collision spree burns LLM
+    // calls on one feed. 5 = "noticeably more than steady-state zero" while
+    // still well under the per-run cap of 20.
+    assert.equal(typeof PER_FEED_LLM_WARN_THRESHOLD, 'number');
+    assert.ok(PER_FEED_LLM_WARN_THRESHOLD >= 3 && PER_FEED_LLM_WARN_THRESHOLD <= 10);
   });
 });
