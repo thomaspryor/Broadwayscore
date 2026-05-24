@@ -69,7 +69,7 @@ const SUBSTACK_CRITIC_FEEDS = [
 const ENTERTAINMENT_FEEDS = [
   // Vulture RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://www.vulture.com/feed/rss/index.xml', outletId: 'vulture', name: 'Vulture', needsFilter: true },
-  { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true },
+  { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true, trackRecoupment: true },
   { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true, trackRecoupment: true },
   { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
