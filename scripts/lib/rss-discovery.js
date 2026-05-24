@@ -17,8 +17,14 @@ const http = require('http');
 // Guardian is handled by the Guardian Open Platform API in site-search-discovery.js (tag=stage/stage).
 // openingWindow: true — marks feeds narrow enough to use ±2-day date window when openingDate is known.
 // Only Broadway-specific feeds qualify; WE feeds (even without needsFilter) must still title-match.
+// trackRecoupment: true marks feeds the hourly recoupment poller
+// (scripts/poll-trade-press-rss.js) reads. Only set on feeds whose host is also
+// in TRUSTED_RECOUPMENT_HOSTS — see scripts/lib/trusted-recoupment-domains.js —
+// since the apply-commercial-pending auto-apply gate cross-checks sourceHost.
+// Playbill RSS is defunct (no entry here); BroadwayWorld has no RSS feed
+// registered; Broadway News Reviews is a reviews-tag feed (no recoupment news).
 const THEATER_FEEDS = [
-  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway' },
+  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway', trackRecoupment: true },
   // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
   { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
@@ -64,7 +70,7 @@ const ENTERTAINMENT_FEEDS = [
   // Vulture RSS is defunct (404 as of March 2026) — kept for future reference
   // { url: 'https://www.vulture.com/feed/rss/index.xml', outletId: 'vulture', name: 'Vulture', needsFilter: true },
   { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true },
-  { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true },
+  { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true, trackRecoupment: true },
   { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
   { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
@@ -79,6 +85,9 @@ const ENTERTAINMENT_FEEDS = [
 ];
 
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...SUBSTACK_CRITIC_FEEDS, ...ENTERTAINMENT_FEEDS];
+
+// Subset consumed by scripts/poll-trade-press-rss.js (hourly recoupment poll).
+const TRACK_RECOUPMENT_FEEDS = ALL_FEEDS.filter(f => f.trackRecoupment === true);
 
 /**
  * Fetch a URL and return the body text
@@ -130,11 +139,21 @@ function parseRSSItems(xml) {
     const title = (itemXml.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/) || [])[1] || '';
     const link = (itemXml.match(/<link[^>]*>([\s\S]*?)<\/link>/) || [])[1] || '';
     const pubDate = (itemXml.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
+    // <guid> may be a permalink or an opaque id; either works as a dedup key.
+    // Falls back to link below.
+    const guid = (itemXml.match(/<guid[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/guid>/) || [])[1] || '';
+    // <description> often carries the article dek/lede — used by the recoupment
+    // poller's pre-filter regex so a title like "Hamilton hits milestone" still
+    // qualifies if the dek says "recouped".
+    const description = (itemXml.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) || [])[1] || '';
     if (title && link) {
+      const linkTrim = link.trim();
       items.push({
         title: decodeEntities(title.trim()),
-        link: link.trim(),
+        link: linkTrim,
         pubDate: pubDate.trim() ? new Date(pubDate.trim()) : null,
+        guid: (guid.trim() || linkTrim),
+        description: decodeEntities(description.trim()),
       });
     }
   }
@@ -157,11 +176,19 @@ function parseAtomItems(xml) {
       || (entryXml.match(/<link[^>]*href=["']([^"']+)["']/) || [])[1] || '';
     const dateStr = (entryXml.match(/<updated[^>]*>([\s\S]*?)<\/updated>/) || [])[1]
       || (entryXml.match(/<published[^>]*>([\s\S]*?)<\/published>/) || [])[1] || '';
+    // Atom: <id> is the canonical permalink/identifier.
+    const id = (entryXml.match(/<id[^>]*>([\s\S]*?)<\/id>/) || [])[1] || '';
+    // Atom: <summary> or <content> carries the body excerpt.
+    const summary = (entryXml.match(/<summary[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/summary>/) || [])[1]
+      || (entryXml.match(/<content[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/content>/) || [])[1] || '';
     if (title && linkHref) {
+      const linkTrim = linkHref.trim();
       items.push({
         title: decodeEntities(title.trim()),
-        link: linkHref.trim(),
+        link: linkTrim,
         pubDate: dateStr.trim() ? new Date(dateStr.trim()) : null,
+        guid: (id.trim() || linkTrim),
+        description: decodeEntities(summary.trim()),
       });
     }
   }
@@ -328,4 +355,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems };
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
