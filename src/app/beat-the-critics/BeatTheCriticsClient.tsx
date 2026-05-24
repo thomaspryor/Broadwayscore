@@ -21,7 +21,7 @@ interface CriticPanelist {
 
 // Named critics — picks populated after they respond; shown as TBD until then.
 const CRITICS: CriticPanelist[] = [
-  { name: 'Dan Rubins', outlets: ['Slant Magazine'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
+  { name: 'Dan Rubins', outlets: ['Slant Magazine', 'TheaterMania'], initials: 'DR', bio: 'Theater critic and The Present Stage: Conversations with Theater Writers podcast host' },
   { name: 'Naveen Kumar', outlets: ['WaPo', 'NYTimes'], initials: 'NK', bio: 'Former theater critic for The Washington Post. Work also appears in The New York Times, Variety, and Town & Country.',
     picks: {
       'Best Musical': 'The Lost Boys',
