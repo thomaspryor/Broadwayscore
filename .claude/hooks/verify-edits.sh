@@ -8,6 +8,21 @@ if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi
 
+# ─── Visual-QA gate: kill switch ─────────────────────────────────────────────
+# Off-ramp consumed by the is_ui_edit branch only. Does NOT disable the
+# existing scoring/ship-check gates.
+#
+#   VISUAL_QA_DISABLE=1   user/operator emergency bypass
+#
+# Cloud sandbox detection is intentionally NOT here — autodetect via
+# `node_modules/playwright` is unreliable across worktrees/symlinks (false
+# negative in worktrees → silent skip). Cloud sessions that can't run
+# Playwright will hit the block message, which lists `NO-VERIFY: <reason>`
+# as the recoverable escape — pre-mortem concern about a 9-day deadlock
+# only materializes if NO-VERIFY is non-functional, which it is not.
+export VISUAL_QA_OK=1
+[ "${VISUAL_QA_DISABLE:-0}" = "1" ] && export VISUAL_QA_OK=0
+
 # Stop hook: blocks the session from ending if Claude edited code but never ran it.
 # Catches the "I edited the file, looks correct, done!" antipattern.
 #
@@ -226,6 +241,27 @@ SCORING_LOGIC_SUBSTRINGS = (
     '/src/lib/data-core.ts',
 )
 
+# ─── BWSC visual-QA gate (added 2026-05-24) ──────────────────────────────────
+# Edits to files producing rendered HTML require a verdict.json from
+# scripts/visual-qa.mjs whose mtime is newer than the latest UI edit. Reason:
+# the FeaturedSpot incident shipped "Live on production" with a clipped
+# "HISTORICAL ACCURA" label because the agent read full-page screenshots at
+# thumbnail size and missed the clip. The runner takes element crops at full
+# pixel resolution AND runs a structural overflow probe AND optionally runs
+# two-model LLM diff vs reference designs. See memory/feedback_local_preview_before_push.md.
+#
+# Bypass: VISUAL_QA_DISABLE=1 env (set at hook entry) → VISUAL_QA_OK=0 here,
+# or `NO-VERIFY: <reason>` in last assistant text.
+import re as _ui_re
+UI_PATH_RE = _ui_re.compile(
+    r'(/src/.*\.(?:tsx|jsx|css|scss|module\.css)$'
+    r'|/tailwind\.config\.\w+$'
+    r'|/postcss\.config\.\w+$'
+    r'|/src/app/.*\.(?:tsx|jsx|ts|js)$)'
+)
+VISUAL_QA_OK = os.environ.get('VISUAL_QA_OK', '1') == '1'
+is_ui_edit = last_edit_file is not None and bool(UI_PATH_RE.search(last_edit_file)) and VISUAL_QA_OK
+
 # ─── BWSC ship-check gate (added 2026-05-16) ─────────────────────────────────
 # Edits to scripts/lib/ or .github/workflows/ require either /ship-check or an
 # adversarial-reviewer Bash (codex exec, OpenAI gpt-4o curl, Agent tool with
@@ -354,6 +390,36 @@ if is_shipcheck_edit and not shipcheck_verified:
     print(f"UNSHIPCHECKED:{basename}")
     sys.exit(0)
 
+if is_ui_edit:
+    # Visual-QA branch: require .claude/visual-qa/<branch>/verdict.json with
+    # mtime newer than the edited file. If file's been re-edited since the
+    # last verdict, the verdict is stale.
+    import subprocess as _ui_sp
+    try:
+        branch = _ui_sp.check_output(['git', 'branch', '--show-current'],
+                                     stderr=_ui_sp.DEVNULL, text=True).strip()
+    except Exception:
+        branch = ''
+    verdict_path = f".claude/visual-qa/{branch}/verdict.json" if branch else ''
+    edit_mtime = 0
+    try:
+        edit_mtime = os.path.getmtime(last_edit_file) if last_edit_file and os.path.exists(last_edit_file) else 0
+    except Exception:
+        pass
+    verdict_ok = False
+    if verdict_path and os.path.exists(verdict_path):
+        try:
+            vm = os.path.getmtime(verdict_path)
+            if vm >= edit_mtime - 1:
+                verdict_ok = True
+        except Exception:
+            pass
+    if verdict_ok:
+        print("OK")
+        sys.exit(0)
+    print(f"UNVERIFIED_VISUAL:{basename}")
+    sys.exit(0)
+
 if generic_verified:
     print("OK")
     sys.exit(0)
@@ -404,6 +470,31 @@ if [[ "$result" == UNVERIFIED:* ]]; then
 🛑 BLOCKED — unverified edit to \`${fname}\`
   Run: npx tsc --noEmit / npm run build / node scripts/${fname} ...
   Bypass: NO-VERIFY: <why untestable>
+EOF
+  exit 2
+fi
+
+if [[ "$result" == UNVERIFIED_VISUAL:* ]]; then
+  fname="${result#UNVERIFIED_VISUAL:}"
+  cat >&2 <<EOF
+🛑 BLOCKED — UI edit (\`${fname}\`) without a fresh visual-qa verdict
+
+  The FeaturedSpot incident shipped "Live on production" with HISTORICAL ACCURA
+  clipped because the agent never ran /visual-qa and read full-page screenshots
+  at thumbnail size. Run:
+
+    npm run dev    # in another terminal
+    node scripts/visual-qa.mjs --url http://localhost:3000 \\
+      --paths "/,/affected-route" \\
+      --elements "<css-sel-of-changed-element>" \\
+      --refs <design-reference.png-if-user-provided>
+
+  Then READ every element crop the runner prints at FULL resolution, paste the
+  manifest to the user, and wait for "APPROVED: <hash>".
+
+  Bypass: NO-VERIFY: <reason — e.g., dev server can't boot, hotfix, cloud session>
+  Disable globally: export VISUAL_QA_DISABLE=1
+  See: .claude/skills/visual-qa/skill.md
 EOF
   exit 2
 fi
