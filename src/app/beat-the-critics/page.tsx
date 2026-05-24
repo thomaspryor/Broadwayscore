@@ -164,7 +164,7 @@ export default function BeatTheCriticsPage() {
   const thumbMap = new Map<string, string | null>();
   const scoreMap = new Map<string, number | null>();
   for (const s of eligible) {
-    thumbMap.set(s.id, s.images?.thumbnail ?? null);
+    thumbMap.set(s.slug, s.images?.thumbnail ?? null);
     scoreMap.set(s.slug, s.compositeScore ?? null);
   }
 

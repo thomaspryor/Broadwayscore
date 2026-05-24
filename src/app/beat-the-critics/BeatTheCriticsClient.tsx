@@ -223,11 +223,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [emailSubmitting, setEmailSubmitting] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [countdownExpired, setCountdownExpired] = useState(() => Date.now() >= new Date('2026-06-08T00:00:00Z').getTime());
   useEffect(() => {
     const ceremony = new Date('2026-06-08T00:00:00Z'); // 8 PM ET June 7
     const tick = () => {
       const diff = ceremony.getTime() - Date.now();
-      if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); return; }
+      if (diff <= 0) { setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 }); setCountdownExpired(true); return; }
       setTimeLeft({
         days: Math.floor(diff / 86400000),
         hours: Math.floor((diff % 86400000) / 3600000),
@@ -391,7 +392,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
           <p className="animate-fade-up mt-3 text-[15px] leading-snug text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.</p>
-          {timeLeft.days >= 0 && (
+          {!countdownExpired && (
             <div className="animate-fade-up mt-4 flex flex-col items-center gap-1.5" style={{ animationDelay: '0.75s', animationFillMode: 'both' }}>
               <div className="flex items-center justify-center gap-5">
                 {([{ v: timeLeft.days, l: 'Days' }, { v: timeLeft.hours, l: 'Hrs' }, { v: timeLeft.minutes, l: 'Min' }, { v: timeLeft.seconds, l: 'Sec' }] as const).map(({ v, l }) => (
