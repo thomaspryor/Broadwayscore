@@ -1,18 +1,47 @@
 {
-  "updatedAt": "2026-05-24T18:54:25.558Z",
-  "processed": 17,
-  "failed": 666,
-  "successRate": "2.5%",
+  "updatedAt": "2026-05-24T14:28:49.078Z",
+  "processed": 21,
+  "failed": 642,
+  "successRate": "3.2%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 13,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingbee": 9,
+    "scrapingbee": 11,
     "brightdata": 0,
-    "archiveToday": 4,
+    "archiveToday": 1,
     "archive": 0
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-05-24T14:23:50.298Z",
+      "event": "bb-session",
+      "session": "9feca47b",
+      "url": "https://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-24T14:28:11.582Z",
+      "event": "bb-session",
+      "session": "6a500f0c",
+      "url": "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenrei"
+    },
+    {
+      "t": "2026-05-24T14:28:12.581Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-24T14:28:31.313Z",
+      "event": "bb-session",
+      "session": "1b8fbd71",
+      "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/"
+    },
+    {
+      "t": "2026-05-24T14:28:32.328Z",
+      "event": "bb-cookie-inject",
+      "domain": "deadline.com"
+    }
+  ]
 }
