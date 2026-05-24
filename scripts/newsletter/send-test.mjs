@@ -3,19 +3,37 @@
 //
 // The generator emits {{{RESEND_UNSUBSCRIBE_URL}}} as the unsubscribe link —
 // that macro is substituted by Resend during BROADCAST sends. Transactional
-// sends don't substitute it, so we have to expand it ourselves here using the
+// sends don't substitute it, so we expand it ourselves here using the
 // canonical buildUnsubscribeUrl from scripts/lib/email-templates.js.
+//
+// Env vars:
+//   RESEND_API_KEY               required
+//   NEWSLETTER_TEST_RECIPIENT    default thomas.pryor@gmail.com
+//   NEWSLETTER_SLUG              default A-<latest>; format A-YYYY-MM-DD
+//   NEWSLETTER_OUT_DIR           where the generator wrote the HTML + meta;
+//                                defaults match generate.mjs's resolution
+//   NEWSLETTER_SUBJECT_PREFIX    optional prefix (e.g. "[DRAFT]") prepended
+//                                to the subject from meta.json — used by the
+//                                Saturday auto-draft workflow.
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repo = path.resolve(__dirname, '..', '..');
 const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl } = cjsRequire('/Users/tompryor/Broadwayscore/scripts/lib/email-templates');
+const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 
 const KEY = process.env.RESEND_API_KEY;
 if (!KEY) { console.error('No RESEND_API_KEY'); process.exit(1); }
 
 const RECIPIENT = process.env.NEWSLETTER_TEST_RECIPIENT || 'thomas.pryor@gmail.com';
 const SLUG = process.env.NEWSLETTER_SLUG || 'A-2026-05-18';
-const OUT_DIR = '/Users/tompryor/Documents/claude-outputs/newsletter-mocks';
+// Match generate.mjs's output resolution: env override > iCloud path > repo-local.
+const OUT_DIR = process.env.NEWSLETTER_OUT_DIR
+  || (fs.existsSync(path.join(process.env.HOME || '', 'Documents/claude-outputs'))
+    ? path.join(process.env.HOME, 'Documents/claude-outputs/newsletter-mocks')
+    : path.join(repo, 'data/newsletter-drafts'));
 const htmlPath = `${OUT_DIR}/${SLUG}.html`;
 const metaPath = `${OUT_DIR}/${SLUG}.meta.json`;
 
@@ -33,6 +51,11 @@ try {
 } catch {
   const subjMatch = htmlRaw.match(/<!--\s*SUBJECT:\s*(.+?)\s*-->/);
   if (subjMatch) subject = subjMatch[1];
+}
+// Optional prefix — used by the Saturday auto-draft workflow to tag the
+// preview email "[DRAFT] …" so it reads as a draft, not a real send.
+if (process.env.NEWSLETTER_SUBJECT_PREFIX) {
+  subject = `${process.env.NEWSLETTER_SUBJECT_PREFIX} ${subject}`;
 }
 
 const body = {
