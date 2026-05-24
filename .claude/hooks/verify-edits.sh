@@ -105,9 +105,15 @@ try:
                         events.append(('text', c.get('text', '') or ''))
             elif mtype == 'user':
                 # Tool results arrive as user messages with type=tool_result in their content.
+                # User-typed text appears as type=text — used by the visual-qa
+                # reference-attached and override-active-for-push checks.
                 for c in content:
                     if not isinstance(c, dict):
                         continue
+                    if c.get('type') == 'text':
+                        events.append(('user_text', c.get('text', '') or ''))
+                    elif c.get('type') == 'image':
+                        events.append(('user_image', ''))
                     if c.get('type') == 'tool_result':
                         tid = c.get('tool_use_id')
                         body = c.get('content', '')
@@ -262,6 +268,63 @@ UI_PATH_RE = _ui_re.compile(
 VISUAL_QA_OK = os.environ.get('VISUAL_QA_OK', '1') == '1'
 is_ui_edit = last_edit_file is not None and bool(UI_PATH_RE.search(last_edit_file)) and VISUAL_QA_OK
 
+# Track ANY UI edit anywhere in the session (not just most recent), so the
+# visual-claim-language and reference-attached triggers fire even when the
+# most recent edit was a non-UI file. Both triggers fire independently of
+# whether last_edit_file itself is UI.
+any_ui_edit_in_session = False
+for kind, payload in events:
+    if kind != 'tool': continue
+    nm, ip, _ = payload
+    if nm not in ('Edit', 'Write', 'NotebookEdit'): continue
+    fp = ip.get('file_path', '') or ''
+    if fp and UI_PATH_RE.search(fp):
+        any_ui_edit_in_session = True
+        break
+
+# Visual-claim-language: assistant making UI-correctness claim ("Live on production",
+# "looks correct", etc.) without a NO-VERIFY: override in the same text block.
+# Last assistant_text is checked; needs UI edit in session AND visual gate ENABLED.
+VISUAL_CLAIM_RE = _ui_re.compile(
+    r'\b(live on production|looks correct|matches the design|ready to ship|'
+    r'visually verified|looks good on (mobile|desktop|tablet)|shipped successfully|'
+    r'works as designed|renders correctly)\b',
+    _ui_re.IGNORECASE,
+)
+visual_claim_made = False
+if any_ui_edit_in_session and VISUAL_QA_OK:
+    for i in range(len(events) - 1, -1, -1):
+        k, p = events[i]
+        if k == 'text':
+            txt = p or ''
+            if VISUAL_CLAIM_RE.search(txt) and 'NO-VERIFY:' not in txt:
+                visual_claim_made = True
+            break  # only check most recent assistant_text
+
+# Reference-attached: user pasted a design image. If any UI edit happened + the
+# session has a verdict but with verdicts:null (no LLM review), block with the
+# instruction to re-run with --refs. Without an image attached, this trigger
+# does not fire — the agent isn't expected to invent a reference.
+IMAGE_MARKERS = ('[Image #', '/var/folders/', '/private/var/folders/')
+reference_attached = False
+# Walk events for image markers in user text, user image blocks, and tool_results.
+for kind, payload in events:
+    if kind == 'user_text':
+        txt = payload or ''
+        if '[Image #' in txt or 'clipboard-' in txt:
+            reference_attached = True
+            break
+    elif kind == 'user_image':
+        reference_attached = True
+        break
+    elif kind == 'tool':
+        nm, ip, tid = payload
+        # User-provided image attachments sometimes surface in tool_results
+        body = tool_results_by_id.get(tid, '') or ''
+        if any(m in body for m in IMAGE_MARKERS) and ('clipboard-' in body or '[Image #' in body):
+            reference_attached = True
+            break
+
 # ─── BWSC ship-check gate (added 2026-05-16) ─────────────────────────────────
 # Edits to scripts/lib/ or .github/workflows/ require either /ship-check or an
 # adversarial-reviewer Bash (codex exec, OpenAI gpt-4o curl, Agent tool with
@@ -390,10 +453,14 @@ if is_shipcheck_edit and not shipcheck_verified:
     print(f"UNSHIPCHECKED:{basename}")
     sys.exit(0)
 
-if is_ui_edit:
-    # Visual-QA branch: require .claude/visual-qa/<branch>/verdict.json with
-    # mtime newer than the edited file. If file's been re-edited since the
-    # last verdict, the verdict is stale.
+if is_ui_edit or visual_claim_made or reference_attached:
+    # Visual-QA branch (triggered by any of three signals):
+    #   1. is_ui_edit: most recent edit is to a UI file
+    #   2. visual_claim_made: assistant claimed visual correctness w/o NO-VERIFY
+    #   3. reference_attached: user pasted a design image and a UI edit happened
+    # Require .claude/visual-qa/<branch>/verdict.json with mtime newer than
+    # the edited file. For (3), additionally require verdict has non-null LLM
+    # verdicts (so agent actually ran the comparison).
     import subprocess as _ui_sp
     try:
         branch = _ui_sp.check_output(['git', 'branch', '--show-current'],
@@ -403,21 +470,33 @@ if is_ui_edit:
     verdict_path = f".claude/visual-qa/{branch}/verdict.json" if branch else ''
     edit_mtime = 0
     try:
-        edit_mtime = os.path.getmtime(last_edit_file) if last_edit_file and os.path.exists(last_edit_file) else 0
+        edit_mtime = os.path.getmtime(last_edit_file) if last_edit_file and UI_PATH_RE.search(last_edit_file) and os.path.exists(last_edit_file) else 0
     except Exception:
         pass
     verdict_ok = False
+    verdict_has_llm = False
     if verdict_path and os.path.exists(verdict_path):
         try:
             vm = os.path.getmtime(verdict_path)
             if vm >= edit_mtime - 1:
                 verdict_ok = True
+            with open(verdict_path) as _vf:
+                _vj = json.load(_vf)
+                if _vj.get('verdicts') is not None:
+                    verdict_has_llm = True
         except Exception:
             pass
+    # Reference-attached additionally requires LLM review actually ran.
+    if reference_attached and verdict_ok and not verdict_has_llm:
+        print(f"UNVERIFIED_VISUAL_REF:{basename or 'ui-edit'}")
+        sys.exit(0)
+    if visual_claim_made and not verdict_ok:
+        print(f"UNVERIFIED_VISUAL_CLAIM:{basename or 'ui-edit'}")
+        sys.exit(0)
     if verdict_ok:
         print("OK")
         sys.exit(0)
-    print(f"UNVERIFIED_VISUAL:{basename}")
+    print(f"UNVERIFIED_VISUAL:{basename or 'ui-edit'}")
     sys.exit(0)
 
 if generic_verified:
@@ -470,6 +549,51 @@ if [[ "$result" == UNVERIFIED:* ]]; then
 🛑 BLOCKED — unverified edit to \`${fname}\`
   Run: npx tsc --noEmit / npm run build / node scripts/${fname} ...
   Bypass: NO-VERIFY: <why untestable>
+EOF
+  exit 2
+fi
+
+if [[ "$result" == UNVERIFIED_VISUAL_CLAIM:* ]]; then
+  fname="${result#UNVERIFIED_VISUAL_CLAIM:}"
+  cat >&2 <<EOF
+🛑 BLOCKED — visual-correctness claim without a fresh visual-qa verdict
+
+  Your last assistant message used language like "live on production", "looks
+  correct", "matches the design", or "shipped successfully" — but no fresh
+  .claude/visual-qa/<branch>/verdict.json was produced after your UI edits.
+  This is exactly the FeaturedSpot failure mode: claimed visual correctness,
+  no proof, shipped with HISTORICAL ACCURA clipped.
+
+  Run /visual-qa BEFORE making the claim:
+    node scripts/visual-qa.mjs --url http://localhost:3000 \\
+      --paths "/,/affected-route" \\
+      --elements "<css-sel-of-changed-element>" \\
+      --refs <design-ref-if-user-provided>
+
+  Then READ every element crop at FULL resolution and paste the manifest.
+  Bypass: NO-VERIFY: <reason> in your last message.
+  See: .claude/skills/visual-qa/skill.md
+EOF
+  exit 2
+fi
+
+if [[ "$result" == UNVERIFIED_VISUAL_REF:* ]]; then
+  fname="${result#UNVERIFIED_VISUAL_REF:}"
+  cat >&2 <<EOF
+🛑 BLOCKED — user attached a design reference but visual-qa was run WITHOUT --refs
+
+  The session has a verdict.json but \`verdicts: null\` (no LLM diff review).
+  When the user supplies a design image, comparing implementation against it
+  via two-model LLM review is mandatory — that's the gate that catches copy
+  divergence ("ACCURACY" vs "HISTORICAL ACCURACY") and case mismatches.
+
+  Re-run with --refs pointing at the user's attached image(s):
+    node scripts/visual-qa.mjs --url http://localhost:3000 \\
+      --paths "/,/affected-route" \\
+      --elements "<css-sel>" \\
+      --refs /var/folders/.../clipboard-<timestamp>-<id>.png
+
+  Bypass: NO-VERIFY: <reason> (must explain WHY the user's reference is being skipped).
 EOF
   exit 2
 fi
