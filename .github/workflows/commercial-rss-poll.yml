@@ -1,0 +1,113 @@
+name: Commercial RSS Poll
+
+# Hourly trade-press RSS poll for recoupment announcements. Shrinks detection
+# latency from ~36h (Friday SERP → Saturday apply → Sunday newsletter) to ~1h.
+# Apply step gates on the same auto-apply contract as the Friday pipeline:
+# detectedBy in allowlist + confidence==='high' + sourceHost in
+# TRUSTED_RECOUPMENT_HOSTS (scripts/lib/trusted-recoupment-domains.js).
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # every hour, on the hour
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (poll + classify, no writes)'
+        required: false
+        type: boolean
+        default: false
+      window_hours:
+        description: 'Reject RSS items with pubDate older than this many hours'
+        required: false
+        type: number
+        default: 24
+      feed:
+        description: 'Comma-separated feed outletId filter (e.g. variety,deadline)'
+        required: false
+        type: string
+        default: ''
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  poll-and-apply:
+    runs-on: ubuntu-latest
+    # Polling 2 feeds + up to 20 LLM calls + fetchPage per match. Budget headroom.
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Poll trade-press RSS
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Pre-mortem: scraper modules require BD + SB even on cache-only paths
+          # (scripts/lib/scraper.js init asserts both present). Pass both.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: |
+          ARGS="--window-hours=${{ inputs.window_hours || '24' }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ inputs.feed }}" ]; then ARGS="$ARGS --feed=${{ inputs.feed }}"; fi
+          set -o pipefail
+          node scripts/poll-trade-press-rss.js $ARGS
+
+      - name: Auto-apply high-confidence recoupment claims
+        if: inputs.dry_run != true
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            # Reuses the Friday pipeline's auto-apply gate: detectedBy must be
+            # in this allowlist AND confidence==='high' AND sourceHost ∈
+            # TRUSTED_RECOUPMENT_HOSTS. Other entries fall through to manual review.
+            node scripts/apply-commercial-pending.js \
+              --all --min-confidence=high \
+              --auto-apply-claims-from=rss-poller,recoupment-announcement-scraper
+          else
+            echo "No pending file — nothing to apply"
+          fi
+
+      - name: Commit data changes
+        if: always() && inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json data/commercial-rss-state.json 2>/dev/null || true
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: RSS poller — recoupment scan
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: RSS poller commercial update'
+
+      - name: Dispatch deploy
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial RSS Poll Failed'
+          severity: 'warning'

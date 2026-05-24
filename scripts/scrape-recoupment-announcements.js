@@ -27,10 +27,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 const { serpQuery } = require('./lib/url-discovery');
 const { fetchPage } = require('./lib/scraper');
+const { classifyArticle } = require('./lib/recoupment-classify');
 
 // Worktrees don't ship the gitignored data files (shows.json, commercial.json
 // live in the private repo and are only symlinked in the main checkout). Fall
@@ -178,96 +178,6 @@ function filterCandidates(results, showTitle) {
     if (!TRUSTED_OUTLETS.has(host)) return false;
     return true;
   });
-}
-
-function callOpenAI(prompt) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0,
-      max_tokens: 400,
-      response_format: { type: 'json_object' },
-    });
-    const req = https.request({
-      hostname: 'api.openai.com',
-      path: '/v1/chat/completions',
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${OPENAI_KEY}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-    }, (res) => {
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.error) return reject(new Error(parsed.error.message));
-          resolve(parsed.choices[0].message.content);
-        } catch (e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.write(body); req.end();
-  });
-}
-
-function extractArticleText(html) {
-  if (!html) return '';
-  // Strip scripts/styles/comments
-  let text = html
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<!--[\s\S]*?-->/g, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text.slice(0, 6000);
-}
-
-async function classifyArticle(showTitle, url, html) {
-  const text = extractArticleText(html);
-  if (text.length < 200) {
-    return { recouped: false, confidence: 'low', reason: 'article body too short or unfetched' };
-  }
-  const prompt = `You are extracting a single fact from a trade-press article about a Broadway show.
-
-Show: "${showTitle}"
-Article URL: ${url}
-Article text (truncated):
-"""
-${text}
-"""
-
-Question: Does this article state that THIS SPECIFIC production of "${showTitle}" has recouped its capitalization (earned back its investors' money)?
-
-Important rules:
-- "Recouped" means the show paid back its full initial capital investment.
-- "Tracking to recoup", "expected to recoup", "on pace to recoup" do NOT count as recouped.
-- An article about a PRIOR production of the same title (e.g. a 2009 revival when we're asking about a 2026 production) does NOT count.
-- An article mentioning recoupment of a DIFFERENT show does NOT count.
-
-Respond with a single JSON object:
-{
-  "recouped": true | false,
-  "recoupedDate": "YYYY-MM-DD" or null,    // date the show recouped, if stated
-  "articleDate": "YYYY-MM-DD" or null,     // when the article was published
-  "productionMatch": "exact" | "same-title-different-year" | "different-show" | "unclear",
-  "confidence": "high" | "medium" | "low",
-  "evidence": "short quote from article supporting your answer"
-}`;
-  try {
-    const raw = await callOpenAI(prompt);
-    return JSON.parse(raw);
-  } catch (e) {
-    return { recouped: false, confidence: 'low', reason: `LLM error: ${e.message}` };
-  }
 }
 
 function loadPending() {
