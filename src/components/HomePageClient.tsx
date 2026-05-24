@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import type Fuse from 'fuse.js';
 import { SCORE_TIERS, ToggleBar, ScoreToggle, ShowListCard, MiniShowCard } from '@/components/show-cards';
+import FeaturedSpot from '@/components/FeaturedSpot';
 import MarketFilterBar from '@/components/MarketFilterBar';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -844,13 +845,29 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
       <LazySection fallbackHeight="800px">
         <div className="mt-8 pt-8 border-t border-white/5">
           {featuredRows.map((row) => (
-            <FeaturedRow
-              key={row.title}
-              title={row.title}
-              shows={row.shows}
-              viewAllHref={row.viewAllHref}
-              minCount={row.minCount}
-            />
+            <div key={row.title}>
+              <FeaturedRow
+                title={row.title}
+                shows={row.shows}
+                viewAllHref={row.viewAllHref}
+                minCount={row.minCount}
+              />
+              {row.title === 'Best Off-Broadway' && (
+                <FeaturedSpot
+                  eyebrow="Tony Awards 2026"
+                  title="Who will win Best Musical?"
+                  description="Our model has called 92.9% of Tony winners since 2015. See its picks before the ceremony."
+                  ctaLabel="See the predictions"
+                  href="/fantasy"
+                  accent="gold"
+                  stat={{ value: '92.9%', label: 'Historical accuracy' }}
+                  secondary={[
+                    { value: '11', label: 'seasons' },
+                    { value: '62/67', label: 'calls right' },
+                  ]}
+                />
+              )}
+            </div>
           ))}
         </div>
       </LazySection>
