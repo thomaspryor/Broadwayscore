@@ -21,8 +21,9 @@
 // See sprint-plan-visual-qa-gate.md and .claude/skills/visual-qa/skill.md.
 
 import { execSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 
 // Load .env into process.env without external dotenv dependency.
@@ -461,6 +462,49 @@ async function runLLMReview({ refPaths, screenshots, elementCrops }) {
   return { openai, gemini };
 }
 
+// ── Verdict assembly + pruning ──────────────────────────────────────────────
+function computeVerdictHash(verdict) {
+  // Hash is over the JSON-stringified content WITHOUT the hash field itself.
+  // sorted keys for determinism.
+  const { verdictHash: _, ...rest } = verdict;
+  const stable = JSON.stringify(rest, Object.keys(rest).sort());
+  return createHash('sha256').update(stable).digest('hex').slice(0, 16);
+}
+
+function pruneStaleVerdictDirs(currentBranch, baseDir = '.claude/visual-qa') {
+  if (!existsSync(baseDir)) return [];
+  const STALE_MS = 48 * 60 * 60 * 1000;
+  const now = Date.now();
+  const pruned = [];
+  for (const name of readdirSync(baseDir)) {
+    if (name === currentBranch) continue;
+    const dir = join(baseDir, name);
+    try {
+      const st = statSync(dir);
+      if (!st.isDirectory()) continue;
+      // Newest file mtime under the dir — the dir's own mtime is unreliable
+      // (touched by every mkdir during a fresh run). Fall back to dir mtime
+      // only if the dir is empty.
+      let newest = 0;
+      let sawFile = false;
+      for (const f of readdirSync(dir, { recursive: true, withFileTypes: true })) {
+        if (f.isFile()) {
+          // Node 18 used `f.path` as the relative parent; Node 20+ added
+          // `f.parentPath` as the full path. Prefer parentPath when present.
+          const fp = f.parentPath ? join(f.parentPath, f.name) : join(dir, f.path || '', f.name);
+          try { newest = Math.max(newest, statSync(fp).mtimeMs); sawFile = true; } catch { /* ignore */ }
+        }
+      }
+      if (!sawFile) newest = st.mtimeMs;
+      if (now - newest > STALE_MS) {
+        rmSync(dir, { recursive: true, force: true });
+        pruned.push(name);
+      }
+    } catch { /* skip */ }
+  }
+  return pruned;
+}
+
 function isLocalhost(url) {
   if (!url) return false;
   try {
@@ -550,11 +594,62 @@ Then re-run this command.`);
     }
   }
 
-  // Verdict.json assembly + hash + prune come in S1-T6.
   const overallPass = verdicts
     ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
     : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
-  console.error(`[visual-qa] overallPass=${overallPass}`);
+
+  const verdict = {
+    branch,
+    url: args.url,
+    paths: args.paths,
+    widths: WIDTHS,
+    elements: args.elements,
+    screenshots,
+    elementCrops,
+    refs: args.refs || [],
+    overflowReport,
+    verdicts,
+    overallPass,
+    timestamp: new Date().toISOString(),
+    verdictHash: null, // filled in next
+  };
+  verdict.verdictHash = computeVerdictHash(verdict);
+
+  const verdictPath = join(outDir, 'verdict.json');
+  writeFileSync(verdictPath, JSON.stringify(verdict, null, 2));
+  console.error(`[visual-qa] wrote ${verdictPath} (hash=${verdict.verdictHash})`);
+
+  const pruned = pruneStaleVerdictDirs(branch);
+  if (pruned.length > 0) {
+    console.error(`[visual-qa] pruned stale branch dirs: ${pruned.join(', ')}`);
+  }
+
+  // Manifest the agent should paste back to the user.
+  console.log('━'.repeat(60));
+  console.log(`VISUAL QA — branch ${branch} — overallPass=${overallPass}`);
+  console.log(`URL: ${args.url}  Paths: ${args.paths.join(', ')}`);
+  console.log(`Verdict hash: ${verdict.verdictHash}`);
+  console.log(`Screenshots: ${screenshots.length}, element crops: ${elementCrops.length}, overflow findings: ${overflowReport.length}`);
+  if (verdicts) {
+    console.log(`OpenAI: ${verdicts.openai.verdict}${verdicts.openai.issues.length ? ' — ' + verdicts.openai.issues.slice(0, 3).join(' | ') : ''}`);
+    console.log(`Gemini: ${verdicts.gemini.verdict}${verdicts.gemini.issues.length ? ' — ' + verdicts.gemini.issues.slice(0, 3).join(' | ') : ''}`);
+  }
+  console.log('');
+  console.log('AGENT INSTRUCTIONS:');
+  console.log('  1. Read element crops at FULL RESOLUTION (not the full-page thumbnails):');
+  if (elementCrops.length > 0) {
+    for (const c of elementCrops.slice(0, 6)) console.log(`     Read ${c.file}`);
+    if (elementCrops.length > 6) console.log(`     (+ ${elementCrops.length - 6} more)`);
+  } else {
+    console.log('     (none — re-run with --elements "<css-sel>" to legibility-check key UI)');
+    console.log('     Full-page screenshots:');
+    for (const s of screenshots.slice(0, 3)) console.log(`     Read ${s.file}`);
+  }
+  console.log('  2. Paste the above paths + verdict summary in your next message to the user.');
+  console.log(`  3. Wait for the user to reply with: APPROVED: ${verdict.verdictHash}`);
+  console.log(`     OR: a description of what to fix.`);
+  console.log('━'.repeat(60));
+
   process.exit(overallPass ? 0 : 2);
 }
 
