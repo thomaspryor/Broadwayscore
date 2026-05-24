@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     description: 'Pick the Tony Award winners and see how your predictions compare to top critics and the CriticScore algorithm.',
     url: `${BASE_URL}/beat-the-critics`,
     type: 'website',
-    images: [{ url: `${BASE_URL}/og/tony-predictions.png`, width: 1200, height: 630, alt: 'Beat the Critics — Tony Award Picks' }],
+    images: [{ url: `${BASE_URL}/og/beat-the-critics.png`, width: 1200, height: 630, alt: 'Beat the Critics — Tony Award Picks' }],
   },
   twitter: {
     card: 'summary_large_image',
