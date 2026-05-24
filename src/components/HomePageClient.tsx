@@ -858,9 +858,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                   title="Who will win Best Musical?"
                   description="Our model has called 92.9% of Tony winners since 2015. See its picks before the ceremony."
                   ctaLabel="See the predictions"
-                  href="/tony-awards/predictions"
+                  href="/tony-awards/predictions/2025-2026"
                   accent="gold"
-                  stat={{ value: '92.9%', label: 'Historical accuracy' }}
+                  stat={{ value: '92.9%', label: 'Historical accuracy', compactLabel: 'Accuracy' }}
                   secondary={[
                     { value: '11', label: 'seasons' },
                     { value: '62/67', label: 'calls right' },

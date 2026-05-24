@@ -5,6 +5,8 @@ type Accent = 'gold' | 'brand';
 interface FeaturedSpotStat {
   value: string;
   label: string;
+  /** Short label used in the compact mobile/tablet pill. Falls back to `label`. */
+  compactLabel?: string;
 }
 
 interface FeaturedSpotSecondary {
@@ -68,6 +70,26 @@ function GoldStatPill({ value, label }: { value: string; label: string }) {
   );
 }
 
+function GoldCompactPill({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill score-must-see text-surface whitespace-nowrap shadow-[0_0_10px_rgba(255,215,0,0.25)]">
+      <span className="text-[11px] font-extrabold leading-none">{value}</span>
+      <span className="h-2.5 w-px bg-surface/40" aria-hidden="true" />
+      <span className="text-[9px] font-bold uppercase tracking-wider leading-none">{label}</span>
+    </div>
+  );
+}
+
+function BrandCompactPill({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-brand/15 border border-brand/40 text-brand-light whitespace-nowrap">
+      <span className="text-[11px] font-extrabold leading-none">{value}</span>
+      <span className="h-2.5 w-px bg-brand/40" aria-hidden="true" />
+      <span className="text-[9px] font-bold uppercase tracking-wider leading-none">{label}</span>
+    </div>
+  );
+}
+
 function BrandStatPill({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex items-center gap-3 px-4 py-2.5 rounded-pill bg-brand/15 border border-brand/30 text-brand-light max-w-full">
@@ -89,6 +111,8 @@ export default function FeaturedSpot({
   secondary,
 }: FeaturedSpotProps) {
   const StatPill = accent === 'gold' ? GoldStatPill : BrandStatPill;
+  const CompactPill = accent === 'gold' ? GoldCompactPill : BrandCompactPill;
+  const compactLabel = stat?.compactLabel ?? stat?.label;
 
   return (
     <section aria-label={`Featured: ${title}`} className="my-6 sm:my-8">
@@ -111,11 +135,18 @@ export default function FeaturedSpot({
         >
           {/* Left / primary content */}
           <div className="p-5 sm:p-6 flex flex-col gap-2.5 sm:gap-3">
-            <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${ACCENT_DOT[accent]}`} aria-hidden="true" />
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-gray-400">
-                {eyebrow}
-              </span>
+            <div className="flex items-center justify-between gap-3 lg:justify-start">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ACCENT_DOT[accent]}`} aria-hidden="true" />
+                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-gray-400 truncate">
+                  {eyebrow}
+                </span>
+              </div>
+              {stat && compactLabel && (
+                <div className="lg:hidden flex-shrink-0">
+                  <CompactPill value={stat.value} label={compactLabel} />
+                </div>
+              )}
             </div>
 
             <h3 className="text-xl sm:text-2xl lg:text-[1.625rem] leading-tight font-extrabold text-white tracking-tight">
