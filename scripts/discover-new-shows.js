@@ -72,6 +72,17 @@ const NON_THEATER_PATTERNS = [
   'game show', 'gameshow', 'punishment game', // game shows (BATSU etc.)
   'jazz at lincoln center', // jazz concerts, not theater
   'convention', 'festival of', // festivals/conventions (Breakin' Convention etc.)
+  // Non-profit OB venue page noise: galas, fundraisers, readings, education
+  // programs. Use multi-word phrases only — a plain 'gala' substring
+  // matches "Via Galactica" (1972 Broadway show) via " gala" → " gala"-ctica.
+  // Patterns added when wiring Atlantic/Vineyard/Signature/MCC venue pages —
+  // their season pages list these alongside mainstage shows.
+  'spring gala', 'annual gala', 'gala benefit', 'gala fundraiser',
+  'benefit reading', 'benefit performance', 'annual benefit',
+  'reading series', 'staged reading',
+  'fundraiser', 'fundraising',
+  'donor event', 'donor reception',
+  'education program', 'student showcase',
 ];
 
 // West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
@@ -700,29 +711,48 @@ async function fetchShowsFromLondonTheatre() {
   return shows;
 }
 
-// ── OWE Venue Page Discovery ──
-// Fetches What's On pages from major Off-West End venues not covered by
-// TodayTix, OLT, Theatremonkey, or LondonTheatre.co.uk.
+// ── Venue Page Discovery ──
+// Fetches What's On / Shows pages from venues that don't list on TodayTix /
+// OLT / Theatremonkey / LondonTheatre.co.uk. Originally OWE-only; the
+// `category` field generalized this for Off-Broadway non-profit subscription
+// houses (Atlantic, Vineyard, Signature, MCC) which similarly don't list
+// on TodayTix.
+//
+// Adding a new venue: probe its show page, pick a `linkPattern` that
+// matches `/section/<slug>` for individual show URLs, set `category`
+// to 'off-west-end' or 'off-broadway'.
 
-const OWE_VENUE_PAGES = [
-  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
+const VENUE_LISTING_PAGES = [
+  // ── Off-West End ──
+  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Removed Soho Theatre, King's Head, Theatre503 — tiny OWE venues with near-zero review/aggregator
   // coverage. Shows that matter transfer to bigger houses and get picked up there.
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
-  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
-  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Stuart King email 2026-04-27: Marylebone Theatre is the newest major OWE venue, under new
   // management and getting strong critic coverage (Stuart's Price review 2026-04-27 was the trigger).
-  { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Premier Off-West-End venues per Stuart King 2026-04-27: A-list performers, strong critic coverage.
   // Patterns probed 2026-05-01 — only static-HTML venues added here. Donmar (JS-rendered),
   // Menier (ticketing-system-only static HTML), Regent's Park Open Air (JS-rendered) need
   // Playwright-based discovery — tracked separately.
-  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true },
-  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+
+  // ── Off-Broadway non-profit subscription houses ──
+  // These don't list on TodayTix because they sell via their own membership systems.
+  // Initial patterns probed 2026-05-24; verify with `fetchShowsFromVenueListings('off-broadway')`.
+  { name: 'Atlantic Theater', url: 'https://atlantictheater.org/shows/', linkPattern: /\/show\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
+  { name: 'Vineyard Theatre', url: 'https://www.vineyardtheatre.org/whats-on/', linkPattern: /\/showsevents\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
+  { name: 'Signature Theatre', url: 'https://www.signaturetheatre.org/shows-and-events/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
+  { name: 'MCC Theater', url: 'https://mcctheater.org/shows/', linkPattern: /\/show\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
 ];
+
+// Backward-compat alias — old name retained for any external callers/tests.
+const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west-end');
 
 // Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
@@ -731,18 +761,20 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'fundraiser', 'gala', 'in conversation', 'q&a', 'meet the',
 ];
 
-async function fetchShowsFromOweVenues() {
-  console.log('Fetching shows from Off-West End venue pages...');
+async function fetchShowsFromVenueListings(category) {
+  const venues = VENUE_LISTING_PAGES.filter(v => v.category === category);
+  const label = category === 'off-broadway' ? 'Off-Broadway' : 'Off-West End';
+  console.log(`Fetching shows from ${label} venue pages...`);
 
   const results = await Promise.allSettled(
-    OWE_VENUE_PAGES.map(venue => fetchSingleVenuePage(venue))
+    venues.map(venue => fetchSingleVenuePage(venue))
   );
 
   const allShows = [];
   let successCount = 0;
 
   for (let i = 0; i < results.length; i++) {
-    const venue = OWE_VENUE_PAGES[i];
+    const venue = venues[i];
     const result = results[i];
     if (result.status === 'fulfilled' && result.value.length > 0) {
       successCount++;
@@ -755,8 +787,13 @@ async function fetchShowsFromOweVenues() {
     }
   }
 
-  console.log(`OWE venue pages: ${successCount}/${OWE_VENUE_PAGES.length} venues responded, ${allShows.length} total shows`);
+  console.log(`${label} venue pages: ${successCount}/${venues.length} venues responded, ${allShows.length} total shows`);
   return allShows;
+}
+
+// Backward-compat shim for any caller still using the OWE-specific entrypoint.
+async function fetchShowsFromOweVenues() {
+  return fetchShowsFromVenueListings('off-west-end');
 }
 
 async function fetchSingleVenuePage(venue) {
@@ -776,8 +813,8 @@ async function fetchSingleVenuePage(venue) {
   } else {
     // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
     const result = await fetchPage(venue.url);
-    if (!result.html) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
-    html = result.html;
+    if (!result || !result.content) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
+    html = result.content;
   }
 
   if (html.length < 1000) return [];
@@ -809,7 +846,7 @@ async function fetchSingleVenuePage(venue) {
             openingDate: null,
             previewsStartDate: item.startDate || null,
             closingDate: item.endDate === 'null' ? null : item.endDate || null,
-            category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
+            category: venue.category === 'off-broadway' ? 'off-broadway' : (isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end'),
             description: (item.description || '').substring(0, 500),
           });
         }
@@ -2102,12 +2139,24 @@ async function discoverShows() {
   return { newShows, count: newShows.length };
 }
 
-discoverShows()
-  .catch(e => {
-    console.error('Discovery failed:', e);
-    process.exit(1);
-  })
-  .finally(() => {
-    // Clean up scraper resources
-    cleanup().catch(console.error);
-  });
+if (require.main === module) {
+  discoverShows()
+    .catch(e => {
+      console.error('Discovery failed:', e);
+      process.exit(1);
+    })
+    .finally(() => {
+      // Clean up scraper resources
+      cleanup().catch(console.error);
+    });
+}
+
+// Exports for unit tests — keep gate predicates next to the data arrays
+// they consult so changes stay co-located.
+module.exports = {
+  isNonTheaterContent,
+  isOneNightShow,
+  EXCLUDED_TITLES,
+  NON_THEATER_PATTERNS,
+  VENUE_LISTING_PAGES,
+};
