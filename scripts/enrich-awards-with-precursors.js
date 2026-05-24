@@ -473,17 +473,82 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       );
       const winnerIsPersonName = winnerTitles.length > 0 && !anyWinnerIsShow;
 
-      // For person-name winners: map each winner to their Tony-nominated show(s).
-      // e.g. "Joshua Henry" → ['ragtime-2025'], "Caissie Levy" → ['ragtime-2025']
+      // For person-name winners: map each winner to a showId. Resolution rules:
+      //   1. If winner IS in the nominees array (the common case): use the
+      //      ADJACENT show — Wikipedia DD/OCC/DL/Lortel tables list nominees as
+      //      [person, show, person, show, ...]. This is the scraper's own
+      //      statement of which show won. Do NOT fall back to Tony when the
+      //      paired show isn't tracked in our data — Tony can return a
+      //      DIFFERENT show the person is nominated for (e.g. Tom Gibbons
+      //      DD 2026 Sound Design won for "Initiative" but is Tony-nominated
+      //      for Oedipus — crediting Oedipus is wrong).
+      //   2. If winner is NOT in the nominees array (tie winners listed only
+      //      in `winners`, e.g. DD 2026 Lead Performance in a Play tie:
+      //      Lithgow appears in nominees, Manville does not): fall back to
+      //      Tony lookup for the season.
+      //
+      // The pair-primary rule handles off-Broadway shows (Kenrex, Mexodus,
+      // etc) that aren't Tony-nominated and were silently dropped by the
+      // prior Tony-only logic.
       const personWinnerShowMap = new Map(); // normalizedName → showId[]
       if (winnerIsPersonName) {
         const season = ceremonyYearToTonySeason(callOpts.sourceYear);
+        const noms = yearEntry.nominees || [];
         for (const w of winnerTitles) {
-          const showIds = lookupWinnerShowIds(w, season, awardsShows);
+          let showIds = [];
+          const normW = normalizeTitle(w);
+          const widx = noms.findIndex((n) => normalizeTitle(n) === normW);
+          if (widx >= 0) {
+            // Winner is in nominees — pair with the next entry. If the paired
+            // show isn't in our data, do NOT fall back to Tony.
+            if (widx + 1 < noms.length) {
+              const pairedShowId = findShowIdByTitle(noms[widx + 1], awardsShows, titleById, callOpts);
+              if (pairedShowId) showIds = [pairedShowId];
+            }
+          } else {
+            // Winner not in nominees (tie listed separately) — fall back to Tony.
+            showIds = lookupWinnerShowIds(w, season, awardsShows);
+          }
           if (showIds.length > 0) {
             personWinnerShowMap.set(normalizeTitle(w), showIds);
+          } else if (widx >= 0) {
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: person-winner "${w}" paired with show "${noms[widx + 1] || '<end of list>'}" not tracked in shows.json`);
           } else {
-            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: person-winner "${w}" has no Tony nominations in ${season}`);
+            unmatched.push(`${fieldKey}/${scrapedCategory}/${yearEntry.year}: person-winner "${w}" not in nominees and no Tony nominations in ${season}`);
+          }
+        }
+      }
+
+      // Cleanup pass: remove this scrapedCategory from wins/winnerNames on any
+      // OTHER show in the same season that previously held it. Needed because
+      // the prior Tony-only matcher could miscredit (e.g. Lithgow DD 2026
+      // Lead Performance went to giant-2026 via Tony when the actual show is
+      // well-ill-let-you-go). Without this, stale bad attributions survive
+      // across runs. Only runs when source has a non-null winner — preserves
+      // hand-curated wins for categories with null winners in source (e.g.
+      // DL Distinguished Performance Award has winner=null in precursor data
+      // but Ragtime/Joshua Henry are hand-curated in awards.json).
+      if (winnerTitles.length > 0) {
+        const targetSeason = ceremonyYearToTonySeason(callOpts.sourceYear);
+        const correctShowIds = new Set();
+        if (winnerIsPersonName) {
+          for (const ids of personWinnerShowMap.values()) for (const id of ids) correctShowIds.add(id);
+        }
+        // For show-name winners, correct shows are resolved below in the
+        // nominees loop; we can't pre-compute without duplicating that lookup.
+        // Limit cleanup to the person-winner case (where the bug originated).
+        if (winnerIsPersonName) {
+          for (const [otherId, otherSh] of Object.entries(awardsShows)) {
+            if (correctShowIds.has(otherId)) continue;
+            const otherFK = otherSh[fieldKey];
+            if (!otherFK || otherFK.season !== targetSeason) continue;
+            if (Array.isArray(otherFK.wins) && otherFK.wins.includes(scrapedCategory)) {
+              otherFK.wins = otherFK.wins.filter((c) => c !== scrapedCategory);
+            }
+            if (otherFK.winnerNames && otherFK.winnerNames[scrapedCategory]) {
+              delete otherFK.winnerNames[scrapedCategory];
+              if (Object.keys(otherFK.winnerNames).length === 0) delete otherFK.winnerNames;
+            }
           }
         }
       }
