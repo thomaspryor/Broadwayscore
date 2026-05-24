@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -105,9 +106,9 @@ async function main() {
     }
 
     // Closing date
-    if (ssData.closingDate && !show.closingDate) {
+    if (ssData.closingDate && !show.closingDate && canWriteClosingDate(show)) {
       changes.push(`closingDate: null → ${ssData.closingDate}`);
-      if (!dryRun) show.closingDate = ssData.closingDate;
+      if (!dryRun) writeClosingDate(show, ssData.closingDate, 'ShowScore "Ends" date (OB enrichment)');
       dateCorrections++;
     }
 
