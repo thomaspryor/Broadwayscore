@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -52,7 +53,11 @@ for (const fix of statusFixes) {
   show.status = fix.status;
   if (fix.openingDate !== undefined) show.openingDate = fix.openingDate;
   if (fix.previewDate) show.previewDate = fix.previewDate;
-  if (fix.closingDate) show.closingDate = fix.closingDate;
+  // Explicit-manual script: force-write through guard so audit-trail fields
+  // (closingDateSource, closingDateUpdatedAt) get populated. The force flag
+  // bypasses humanCorrectedClosingDate — appropriate for a one-time manual
+  // operator script.
+  if (fix.closingDate) writeClosingDate(show, fix.closingDate, 'fix-show-statuses (manual)', { force: true });
 
   console.log(`✓ ${fix.id}: ${oldStatus} → ${fix.status}` +
     (fix.openingDate !== undefined ? ` | opening: ${oldOpening} → ${fix.openingDate}` : '') +

@@ -23,6 +23,7 @@ const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { getTheaterAddress } = require('./lib/venue-addresses');
@@ -1653,9 +1654,10 @@ async function discoverShows() {
           show.previewsStartDate = ibdb.previewsStartDate;
         }
 
-        // Fill in closing date if available
+        // Fill in closing date if available — route through guard so any
+        // existing humanCorrectedClosingDate=true is honored.
         if (ibdb.closingDate && !show.closingDate) {
-          show.closingDate = ibdb.closingDate;
+          writeClosingDate(show, ibdb.closingDate, 'IBDB enrichment (discovery)');
         }
 
         // Store IBDB URL for reference

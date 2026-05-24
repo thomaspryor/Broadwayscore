@@ -20,6 +20,7 @@ const https = require('https');
 const { slugify, checkForDuplicate } = require('./lib/deduplication');
 const { validateVenue } = require('./lib/broadway-theaters');
 const { classifyShow } = require('./lib/classify-show');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 const { isTourProduction } = require('./lib/tour-detection');
 const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
@@ -351,9 +352,9 @@ async function enrichFromIBDB(shows) {
           show.previewsStartDate = result.previewsStartDate;
         }
 
-        // Closing date
+        // Closing date — route through guard so humanCorrectedClosingDate is honored.
         if (result.closingDate) {
-          show.closingDate = result.closingDate;
+          writeClosingDate(show, result.closingDate, 'historical-shows discovery');
         }
 
         // Creative team (director, choreographer, etc.)

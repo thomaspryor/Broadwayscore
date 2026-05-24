@@ -23,6 +23,7 @@ const path = require('path');
 const { lookupIBDBDates, batchLookupIBDBDates } = require('./lib/ibdb-dates');
 const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -318,6 +319,11 @@ async function main() {
         if (ch.field === 'creativeTeam') {
           const { result } = splitCombinedCredits(ch.new);
           showRecord.creativeTeam = result; // ch.new is the array from IBDB, split combined names
+        } else if (ch.field === 'closingDate') {
+          // Route through guard so humanCorrectedClosingDate is honored.
+          if (!writeClosingDate(showRecord, ch.new, 'IBDB enrichment')) {
+            console.log(`    🔒 ${showRecord.id}: closingDate skipped (humanCorrectedClosingDate=true)`);
+          }
         } else {
           showRecord[ch.field] = ch.new;
         }

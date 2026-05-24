@@ -59,6 +59,13 @@ const OPENING_WINDOW_DAYS = 30;
 
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const OPEN_RUN_SKIP = new Set(CONFIG.openRunSkip.ids);
+// Reuse the closing-audit's ambiguousAllowlist as a secondary skip list.
+// Shows on the allowlist are pre-verified long-runners; their opening dates
+// are also locked-in (Op Mincemeat opened years ago, etc.). No point burning
+// LLM calls on them. Drift detection still works at the closing-audit level.
+const AMBIGUOUS_ALLOWLIST_IDS = new Set(
+  Object.keys((CONFIG.ambiguousAllowlist && CONFIG.ambiguousAllowlist.entries) || {})
+);
 
 function isWithinWindow(dateStr, today, days) {
   if (!dateStr) return false;
@@ -77,12 +84,20 @@ async function notifyNotion(flagged, todayStr) {
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'notion-brain.js');
 
-  // Dedup: skip if an open opening-audit card already exists.
-  const search = spawnSync('node', [brain, 'search', '--text=Opening-date audit', '--status=In progress'], { encoding: 'utf8' });
-  if (search.status === 0 && /Opening-date audit/.test(search.stdout || '')) {
-    console.log('Notion: existing open opening-audit card found — skipping create (dedup)');
-    return;
+  // Dedup: skip create if a prior opening-date audit card exists in ANY
+  // non-Done state (In progress / Paused / Not started). Same rationale as
+  // audit-closing-dates.js — narrow "In progress" check missed Paused cards.
+  const dedupStatuses = ['In progress', 'Paused', 'Not started'];
+  let dedupHit = false;
+  for (const status of dedupStatuses) {
+    const search = spawnSync('node', [brain, 'search', '--text=Opening-date audit', `--status=${status}`], { encoding: 'utf8' });
+    if (search.status === 0 && /Opening-date audit/.test(search.stdout || '')) {
+      dedupHit = true;
+      console.log(`Notion: existing ${status} opening-audit card found — skipping create (dedup)`);
+      break;
+    }
   }
+  if (dedupHit) return;
 
   const title = `Opening-date audit: ${flagged.length} show${flagged.length > 1 ? 's' : ''} need review (${todayStr})`;
   const rows = flagged.map(f => {
@@ -150,6 +165,7 @@ async function main() {
   const candidates = data.shows.filter(s => {
     if (s.category !== 'broadway') return false;
     if (OPEN_RUN_SKIP.has(s.id)) return false;
+    if (AMBIGUOUS_ALLOWLIST_IDS.has(s.id)) return false;
     if (SHOWS_FILTER.length && !SHOWS_FILTER.includes(s.id)) return false;
     // Only audit shows that are about to open OR just opened (within ±30d
     // of stored openingDate). Outside this window, opening-date drift is
