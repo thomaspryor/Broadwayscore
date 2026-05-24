@@ -61,7 +61,16 @@ triggers=""
 # Pattern A: whitespace-nowrap on element whose tag opens AND closes on one
 # line with a long text run between (e.g. <div className="…whitespace-nowrap…">
 # HISTORICAL ACCURACY</div>).
-if echo "$content" | grep -qE '"[^"]*whitespace-nowrap[^"]*"[^>]*>[A-Za-z][A-Za-z ]{11,}<'; then
+#
+# /ship-check round 2 P1-3: extended from ASCII-only [A-Za-z] to Unicode-aware
+# matching via Python (which handles \w as Unicode by default for str regexes).
+# macOS grep doesn't reliably support \p{L} portably.
+if printf '%s' "$content" | python3 -c "
+import sys, re
+text = sys.stdin.read()
+pattern = re.compile(r'\"[^\"]*whitespace-nowrap[^\"]*\"[^>]*>(\w[\w ]{11,})<')
+sys.exit(0 if pattern.search(text) else 1)
+"; then
   triggers="${triggers}
   • <… className=\"…whitespace-nowrap…\">LONG TEXT</…> — single-line text in
     a nowrap container is the FeaturedSpot HISTORICAL ACCURA class:

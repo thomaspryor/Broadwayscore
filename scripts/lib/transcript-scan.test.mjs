@@ -221,6 +221,28 @@ test('push-ingress: matches push wrapper scripts', () => {
   assert.equal(queryPushIngress('sh scripts/push-data.sh').isPush, true);
 });
 
+test('push-ingress: absolute path git (ship-check round-2 P0-2)', () => {
+  assert.equal(queryPushIngress('/usr/bin/git push').isPush, true);
+  assert.equal(queryPushIngress('/opt/homebrew/bin/git push origin main').isPush, true);
+});
+
+test('push-ingress: node/python/ruby script wrappers (round-2 P0-2)', () => {
+  assert.equal(queryPushIngress('node scripts/push-to-private-repo.js').isPush, true);
+  assert.equal(queryPushIngress('python scripts/push-foo.py').isPush, true);
+  assert.equal(queryPushIngress('python3 scripts/push-data.py').isPush, true);
+});
+
+test('push-ingress: npm/pnpm/yarn deploy scripts (round-2 P0-2)', () => {
+  assert.equal(queryPushIngress('npm run deploy').isPush, true);
+  assert.equal(queryPushIngress('pnpm run push').isPush, true);
+  assert.equal(queryPushIngress('yarn publish').isPush, true);
+});
+
+test('push-ingress: gh pr create --auto (round-2 P0-1)', () => {
+  assert.equal(queryPushIngress('gh pr create --auto --merge --squash').isPush, true);
+  assert.equal(queryPushIngress('gh pr create --auto-merge').isPush, true);
+});
+
 test('push-ingress: rejects non-push commands', () => {
   for (const cmd of ['git status', 'ls -la', 'git commit -m x', 'gh issue list', 'echo "git push" but only echoing']) {
     const r = queryPushIngress(cmd);
@@ -298,6 +320,28 @@ test('visual-claim: rejects when NO-VERIFY present in same block', () => {
   } finally { cleanup(); }
 });
 
+test('visual-claim: SUPPRESSES non-UI false positive (round-2 P1-1)', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('The function renders correctly after the refactor.'),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path));
+    assert.equal(r.hasClaim, false, 'should NOT trip on non-UI "renders correctly"');
+    assert.equal(r.rawClaim, true, 'phrase IS present but UI context absent');
+  } finally { cleanup(); }
+});
+
+test('visual-claim: STILL fires on UI-context claim (round-2 P1-1)', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('The FeaturedSpot card renders correctly on mobile and desktop.'),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path));
+    assert.equal(r.hasClaim, true);
+    assert.equal(r.inUiContext, true);
+  } finally { cleanup(); }
+});
+
 test('visual-claim: only checks LAST assistant block', () => {
   const { path, cleanup } = writeFixture([
     makeAssistantText('shipped successfully'),
@@ -340,6 +384,62 @@ test('override: marker file blocks second use (one-shot)', () => {
     assert.ok(existsSync(marker), 'marker should be written on consume');
     const r2 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true });
     assert.equal(r2.override, false, 'second call should not match — marker consumed it');
+  } finally {
+    if (existsSync(marker)) unlinkSync(marker);
+    cleanup();
+  }
+});
+
+test('override: REJECTS negated phrase (round-2 P0-3)', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('do NOT ship immediately for: any reason — I want to see screenshots first'),
+  ]);
+  try {
+    const r = queryOverrideActiveForPush(walkTranscript(path), { sessionId: 'sess-neg-test' });
+    assert.equal(r.override, false, 'negation must defeat the override');
+  } finally { cleanup(); }
+});
+
+test('override: REJECTS quoted prose with negation', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText("please don't ship immediately for: hotfix — let's review first"),
+  ]);
+  try {
+    const r = queryOverrideActiveForPush(walkTranscript(path), { sessionId: 'sess-quoted-test' });
+    assert.equal(r.override, false);
+  } finally { cleanup(); }
+});
+
+test('override: STILL accepts line-head genuine override (round-2 P0-3 regression guard)', () => {
+  const { path, cleanup } = writeFixture([
+    makeUserText('ship immediately for: production hotfix'),
+  ]);
+  const sessionId = 'sess-genuine-test';
+  const marker = join(tmpdir(), `visual-qa-override-consumed-${sessionId}`);
+  if (existsSync(marker)) unlinkSync(marker);
+  try {
+    const r = queryOverrideActiveForPush(walkTranscript(path), { sessionId });
+    assert.equal(r.override, true);
+  } finally {
+    if (existsSync(marker)) unlinkSync(marker);
+    cleanup();
+  }
+});
+
+test('override: atomic create — second consumer on race loses (round-2 P1-3)', () => {
+  // First consumer claims marker; second sees override=false with race-lost reason.
+  const { path, cleanup } = writeFixture([
+    makeUserText('ship immediately for: testing the atomic create'),
+  ]);
+  const sessionId = 'sess-race-test';
+  const marker = join(tmpdir(), `visual-qa-override-consumed-${sessionId}`);
+  if (existsSync(marker)) unlinkSync(marker);
+  try {
+    const r1 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true });
+    assert.equal(r1.override, true);
+    assert.equal(r1.consumed, true);
+    const r2 = queryOverrideActiveForPush(walkTranscript(path), { sessionId, consume: true });
+    assert.equal(r2.override, false, 'second consume should see marker and refuse');
   } finally {
     if (existsSync(marker)) unlinkSync(marker);
     cleanup();
