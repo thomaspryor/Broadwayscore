@@ -24,6 +24,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { validateCastExtraction } = require('./lib/cast-extraction-guards');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -85,6 +86,20 @@ function httpRequest(url, options = {}) {
 // SERP search via ScrapingBee
 // ============================================================================
 
+// Stopwords excluded from title-token relevance checks
+const TITLE_STOPWORDS = new Set([
+  'the', 'and', 'with', 'from', 'into', 'over', 'this', 'that',
+  'a', 'an', 'of', 'in', 'on', 'to', 'or', 'is', 'it',
+]);
+
+function meaningfulTitleTokens(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(t => t.length >= 4 && !TITLE_STOPWORDS.has(t));
+}
+
 async function searchCast(title, year, category) {
   const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
@@ -97,6 +112,8 @@ async function searchCast(title, year, category) {
 
   // Score each result by relevance to cast data
   const titleLower = title.toLowerCase().split(':')[0].trim();
+  const titleTokens = meaningfulTitleTokens(titleLower);
+
   const scored = results.map(r => {
     const url = (r.url || r.link || '').toLowerCase();
     const t = (r.title || '').toLowerCase();
@@ -117,6 +134,18 @@ async function searchCast(title, year, category) {
     if (t.includes('cast')) score += 2;
     if (t.includes('starring') || t.includes('stars')) score += 2;
     if (t.includes(titleLower)) score += 1;
+
+    // Title-token relevance gate: if the URL+SERP-title contain NONE of the
+    // meaningful title tokens, this is almost certainly a different show.
+    // (Sting → "thelastship-musical.com", Relics → "Oliver" cast page,
+    // Loves-Labours-Lost → "Arturo Ui" — none contained any title token.)
+    // Allow titles with only stopwords (e.g. "It" or "Six") to fall through
+    // by skipping the check when there are no meaningful tokens.
+    if (titleTokens.length > 0) {
+      const haystack = url + ' ' + t;
+      const hits = titleTokens.filter(tok => haystack.includes(tok)).length;
+      if (hits === 0) score -= 6;
+    }
 
     // Penalty for review/ticket/news pages (unlikely to have full cast)
     if (url.includes('review') || url.includes('ticket') || url.includes('news')) score -= 2;
@@ -172,20 +201,38 @@ async function fetchPageText(url) {
 // LLM cast extraction
 // ============================================================================
 
-async function extractCastWithLLM(pageText, showTitle) {
+async function extractCastWithLLM(pageText, showTitle, showYear, showVenue) {
   // Try Gemini first (cheapest), then Anthropic
   const geminiKey = process.env.GEMINI_API_KEY;
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
 
-  const prompt = `Extract the cast members from this web page about the show "${showTitle}".
+  const yearLine = showYear ? `Year/season: ${showYear}` : '';
+  const venueLine = showVenue ? `Venue/market: ${showVenue}` : '';
 
-RULES:
+  // Wrong-show defense: instruct LLM to refuse when page is about a different
+  // production sharing the title. The web-search backfill has historically
+  // grabbed pages for: Met Opera productions with the same name (Kavalier &
+  // Clay), other shows by the same creative (Sting → "The Last Ship"), or
+  // older productions of a same-titled play (Pride 2009 vs Pride 2026 WE).
+  const prompt = `Extract the cast members from this web page about the show "${showTitle}".
+${yearLine}
+${venueLine}
+
+WHEN TO RETURN AN EMPTY ARRAY []:
+- The page is about a DIFFERENT show that shares the title (e.g. an opera with the same name, an older revival in a different year, a touring production at a different venue).
+- The page is about a different show ENTIRELY (e.g. a "related links" or "you might also like" page).
+- The page is an actor's biography page, news article about unrelated cast announcement, or general theatre news.
+- The page has cast for a show but the show name / year / venue clearly does not match the target.
+- You can't find named cast members, only ensemble or staff.
+
+EXTRACTION RULES (when the page IS about the right show):
 - Return ONLY a JSON array of objects with "name" and "role" fields.
 - ALWAYS include the role/character name for each actor. If roles are listed, use them.
 - Only include named PRINCIPAL roles — exclude ensemble, chorus, swings, standbys, understudies, and unnamed roles.
 - If multiple actors play the SAME role (alternates), include only the FIRST actor listed for that role.
 - Each person should appear only ONCE in the output.
-- If you cannot find cast information, return an empty array [].
+- The "role" field MUST be a character name (e.g. "Hamlet", "Pegeen Mike") — NEVER a cast-list column header ("Original", "Replacement", "Standby"), NEVER another show title (e.g. "Bridgerton", "Top Boy"), NEVER a biography snippet ("in his first professional role"). If you can't find a real character name, omit the role field.
+- "name" MUST be in natural first-last order (e.g. "Gethin Jenkins"), NEVER LASTNAME-FIRSTNAME ("Jenkins Gethin") — if the page lists names "LASTNAME, FIRSTNAME", reverse them.
 
 Example output:
 [{"name": "John Smith", "role": "Hamlet"}, {"name": "Jane Doe", "role": "Ophelia"}]
@@ -210,6 +257,14 @@ ${pageText}`;
   }
 
   throw new Error('No LLM API key available (GEMINI_API_KEY or ANTHROPIC_API_KEY)');
+}
+
+function deriveVenueLabel(category) {
+  if (!category) return null;
+  if (category === 'broadway') return 'Broadway';
+  if (category === 'off-broadway') return 'Off-Broadway, New York';
+  if (category === 'west-end' || category === 'off-west-end') return 'West End, London';
+  return category;
 }
 
 async function callGemini(prompt, apiKey) {
@@ -318,20 +373,29 @@ async function processShow(show) {
 
     let cast;
     try {
-      cast = await extractCastWithLLM(pageText, show.title);
+      cast = await extractCastWithLLM(pageText, show.title, year, deriveVenueLabel(show.category));
     } catch (e) {
       console.log(`  LLM error: ${e.message}`);
       continue;
     }
 
-    if (cast.length >= 2) {
-      console.log(`  Found ${cast.length} cast members`);
+    // Step 4: Contamination guards — reject wrong-show extractions even if
+    // the LLM dutifully returned cast. Cleaned drops safe-to-strip column-
+    // header roles (e.g. "Original" / "Standby") without failing the page.
+    const { ok, reasons, cleaned } = validateCastExtraction(cast, show.title);
+    if (!ok) {
+      console.log(`  Rejected (${reasons.join(', ')}) — trying next page...`);
+      continue;
+    }
+
+    if (cleaned.length >= 2) {
+      console.log(`  Found ${cleaned.length} cast members`);
       return {
-        cast,
+        cast: cleaned,
         sourceUrl: sr.url,
       };
     }
-    console.log(`  Only ${cast.length} members found, trying next page...`);
+    console.log(`  Only ${cleaned.length} members found, trying next page...`);
   }
 
   return null;
