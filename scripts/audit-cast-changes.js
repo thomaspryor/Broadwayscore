@@ -48,10 +48,19 @@ function parseISO(s) {
 function isClosureDeparture(event) {
   if (event.type !== 'departure') return false;
   const note = (event.note || '').toLowerCase();
+  // Keep this aligned with reconcileClosure() in scripts/lib/cast-changes-filters.js —
+  // both functions must recognise the same closure phrasings, otherwise the daily
+  // audit reclassifier silently misses closures that the runtime reconciler catches
+  // (the 2026-05-23 DBH case: notes said "show closes", audit only matched "production closes").
   return (
     note.includes('production closes') ||
     note.includes('production ends') ||
-    note.includes('production close')
+    note.includes('production close') ||
+    note.includes('show closes') ||
+    note.includes('show ends') ||
+    note.includes('final performance of the production') ||
+    note.includes('final performance as show closes') ||
+    note.includes('final performance as production closes')
   );
 }
 

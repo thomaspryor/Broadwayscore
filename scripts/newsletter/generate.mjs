@@ -13,6 +13,7 @@ import { createRequire } from 'node:module';
 // scripts/lib/email-templates.js propagate to this generator too.)
 const cjsRequire = createRequire(import.meta.url);
 const { buildUnsubscribeUrl } = cjsRequire('/Users/tompryor/Broadwayscore/scripts/lib/email-templates');
+const { reconcileClosure } = cjsRequire('/Users/tompryor/Broadwayscore/scripts/lib/cast-changes-filters');
 
 // `repo` points at the main checkout where the runtime data lives (some files
 // like reviews.json sync from a private repo and aren't present in worktrees).
@@ -913,17 +914,18 @@ function outlierSection() {
 }
 
 // SECTION: Recently Announced Closings (Broadway only)
-// Heuristic until weekly closing-date snapshots are wired in: a Broadway show
-// with 2+ departures added this week (no end date) + a future closingDate is
-// almost always a fresh closing announcement (cast leaving with the show).
+// Reads first-class `closure` cast-events: any closure added this week with a
+// future date is a fresh closing announcement. The previous "2+ departures
+// added this week" heuristic broke once audit-cast-changes.js started
+// collapsing per-actor departures into a single closure event (2026-05-24).
 function announcedClosingsSection() {
   const announcements = [];
   Object.entries(castData.shows).forEach(([showId, data]) => {
-    const departures = (data.upcoming || []).filter(e =>
-      e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr
-      && e.type === 'departure' && !e.endDate
+    const closures = (data.upcoming || []).filter(e =>
+      e.type === 'closure'
+      && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr
     );
-    if (departures.length < 2) return;
+    if (closures.length === 0) return;
     const show = shows.find(s => s.id === showId);
     if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) return;
     if (show.closingDate <= weekEndStr) return; // already passed
@@ -1069,10 +1071,25 @@ function castingSection() {
   if (!recent.length) return null;
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
+  // Per-show, collapse closure-as-N-departures into a single closure row.
+  // Without this, a show closing on date X surfaces as "Lead Actor departs · final X"
+  // which reads as a personal exit, not a show closure. reconcileClosure
+  // suppresses per-actor departures sharing the closure date.
+  Object.keys(byShow).forEach(showId => {
+    byShow[showId] = reconcileClosure(byShow[showId]);
+  });
+  // Sort shows so closures surface first within the 5-row cap — a show closing
+  // is more newsworthy than a routine ensemble swap and must never be crowded out.
+  const showEntries = Object.values(byShow).sort((a, b) => {
+    const aClose = a.some(e => e.type === 'closure') ? 0 : 1;
+    const bClose = b.some(e => e.type === 'closure') ? 0 : 1;
+    return aClose - bClose;
+  });
   // For each show, surface 1-2 events with arrival/departure icons
   const groups = [];
-  Object.values(byShow).slice(0, 5).forEach(events => {
+  showEntries.slice(0, 5).forEach(events => {
     const showTitle = events[0].showTitle;
+    const closure = events.find(e => e.type === 'closure');
     const arr = events.find(e => e.type === 'arrival');
     const dep = events.find(e => e.type === 'departure');
     const items = [];
@@ -1085,7 +1102,10 @@ function castingSection() {
       if (e && e.endDate) parts.push(`through ${fmt(e.endDate)}`);
       return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
     }
-    if (arr && dep) {
+    if (closure) {
+      const tail = closure.date ? ` <span style="color:#fbbf24;">· final ${fmt(closure.date)}</span>` : '';
+      items.push({ icon: '×', color: '#ef4444', text: `<strong style="color:#ffffff;">Show closes</strong>${tail}` });
+    } else if (arr && dep) {
       const range = rangeOf(arr);
       items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#ffffff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
     } else if (arr) {
@@ -1615,14 +1635,15 @@ const newsworthyInputs = {
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
     && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
   announcedClosings: (() => {
-    // Mirror announcedClosingsSection's heuristic: 2+ departures added this
-    // week + a future closingDate.
+    // Mirror announcedClosingsSection: closure events added this week
+    // + a future closingDate. (Switched from "2+ departures" heuristic
+    // 2026-05-24 when audit reclassifier started collapsing those.)
     const out = [];
     for (const [showId, data] of Object.entries(castData.shows)) {
-      const departures = (data.upcoming || []).filter(e =>
-        e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr
-        && e.type === 'departure' && !e.endDate);
-      if (departures.length < 2) continue;
+      const closures = (data.upcoming || []).filter(e =>
+        e.type === 'closure'
+        && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
+      if (closures.length === 0) continue;
       const show = shows.find(s => s.id === showId);
       if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) continue;
       if (show.closingDate <= weekEndStr) continue;
