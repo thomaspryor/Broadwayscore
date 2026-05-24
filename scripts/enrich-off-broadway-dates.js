@@ -66,9 +66,13 @@ const { matchTitleToShow, titleWordsMatch } = require('./lib/show-matching');
 const { isUnconfirmedDateSource } = require('./lib/date-source-confidence');
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { serpQuery } = require('./lib/url-discovery');
+const {
+  PLAYBILL_OB_URL,
+  parsePlaybillOBSchedule,
+  scrapePlaybillOBData,
+} = require('./lib/playbill-ob-schedule');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
-const PLAYBILL_OB_URL = 'https://playbill.com/article/schedule-of-upcoming-off-broadway-shows-2';
 const LORTEL_URL = 'https://lortel.org/currently-playing/';
 const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'date-enrichment-corrections.json');
 const ABORT_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'enrich-off-broadway-dates-aborted.json');
@@ -139,68 +143,15 @@ function validatePageTitle(html, expectedTitleSubstring) {
 // =========================================================
 // SOURCE 1: PLAYBILL OFF-BROADWAY SCHEDULE
 // =========================================================
-
-/**
- * Parse Playbill's OB schedule article into entries:
- *   [{ title, firstPreview, opening, source: 'playbill' }, ...]
- *
- * The article structure: each show is a paragraph or list-item containing
- * the show title (often in <strong> or <a>) followed by lines like
- * "First Preview: April 16, 2026" / "Opens: April 26, 2026".
- */
-function parsePlaybillOBSchedule(html) {
-  if (!validatePageTitle(html, 'Off-Broadway')) {
-    console.warn('  WARNING: Playbill OB schedule page title did not match — refusing to parse');
-    return [];
-  }
-
-  // Playbill's OB schedule article structure:
-  //   <strong><a href="...">SHOW TITLE</a></strong><br>
-  //   • Venue Name<br>
-  //   • First Preview: April 15, 2026<br>
-  //   • Opening: April 26, 2026<br>
-  //   ... (more bullet lines)
-  //   <strong><a href="...">NEXT SHOW TITLE</a></strong><br>
-  //
-  // The whole show block lives inside one <p>, with <br>-separated lines.
-  // Splitting on the <strong>...<a>TITLE</a>...</strong> marker lets us
-  // chunk the document into per-show segments.
-  const titleRe = /<strong>\s*<a[^>]*>([^<]{2,160})<\/a>\s*<\/strong>/g;
-  const titleMatches = [];
-  let tm;
-  while ((tm = titleRe.exec(html)) !== null) {
-    titleMatches.push({ title: tm[1].trim(), index: tm.index });
-  }
-  const entries = [];
-  for (let i = 0; i < titleMatches.length; i++) {
-    const { title, index } = titleMatches[i];
-    const nextIndex = titleMatches[i + 1]?.index ?? Math.min(index + 5000, html.length);
-    const segment = html.slice(index, nextIndex);
-    // Strip tags to plain text for the date lines.
-    const plain = segment.replace(/<br\s*\/?>(?=)/gi, '\n').replace(/<[^>]+>/g, ' ');
-    const fpMatch = plain.match(/First Preview[s]?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
-    const openMatch = plain.match(/Open(?:s|ing)?:?\s*([A-Z][a-z]+\.?\s+\d{1,2}(?:,\s*\d{4})?)/i);
-    if (!fpMatch && !openMatch) continue;
-    entries.push({
-      title,
-      firstPreview: fpMatch ? parseUSDate(fpMatch[1]) : null,
-      opening: openMatch ? parseUSDate(openMatch[1]) : null,
-      source: 'playbill',
-    });
-  }
-  return entries.filter(e => e.firstPreview || e.opening);
-}
+// Parser + scraper now live in scripts/lib/playbill-ob-schedule.js so the
+// new OB discovery path can share them without duplicating logic.
+// `scrapePlaybillOB` below is a thin wrapper that preserves this script's
+// existing log output (the lib intentionally does not log on success).
 
 async function scrapePlaybillOB() {
   console.log('--- PLAYBILL OFF-BROADWAY SCHEDULE ---');
   console.log(`Fetching: ${PLAYBILL_OB_URL}`);
-  const result = await fetchPage(PLAYBILL_OB_URL, { tier: 1 });
-  const html = result?.content || '';
-  if (!html) {
-    console.warn('WARNING: Failed to fetch Playbill OB schedule');
-    return [];
-  }
-  const entries = parsePlaybillOBSchedule(html);
+  const { entries, html } = await scrapePlaybillOBData();
   console.log(`Parsed ${entries.length} show entries from Playbill`);
   if (entries.length === 0 && html.length > 5000) {
     console.error('⚠️  WARNING: Playbill page loaded but 0 entries parsed — HTML structure may have changed');
