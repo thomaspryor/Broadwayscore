@@ -1607,20 +1607,31 @@ function operaOpeningsSection() {
 // crosses the noise floor.
 function mostReadSection(climberList) {
   if (!Array.isArray(climberList) || climberList.length === 0) return null;
+  // Trending Show Pages absolute floors (user direction 2026-05-24):
+  //   • Show must have a critic score — empty score-badge placeholder rows
+  //     ("Harry Connick Jr · ↑ 7.6× · —") read as broken to a reader. If we
+  //     can't show a score, the show doesn't belong in this card.
+  //   • Raw this-week views must be ≥ TRENDING_MIN_VIEWS. The popular-pages
+  //     lib's MIN_THIS_WEEK_VIEWS (30) is a generous noise floor; this layer
+  //     adds an editorial floor so genuinely-niche shows don't ride a small
+  //     spike into the card.
+  const TRENDING_MIN_VIEWS = 100;
   const items = [];
   for (const p of climberList) {
+    if (p.views < TRENDING_MIN_VIEWS) continue;
     const show = shows.find(s => s.slug === p.slug);
     if (!show) continue;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
     const eligible = a && a.count >= minReviews(show.category);
+    if (!eligible) continue; // no score → skip entirely (no dash placeholders)
     items.push({
       show,
       title: show.title,
       slug: show.slug,
       category: show.category,
-      score: eligible ? a.avg : null,
+      score: a.avg,
       views: p.views,
       prior: p.prior,
       growth: p.growth,
@@ -1642,7 +1653,7 @@ function mostReadSection(climberList) {
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${it.score != null ? smallBadge(it.score, 36, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:36px;height:36px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:12px;font-weight:700;line-height:36px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+      ${smallBadge(it.score, 36, it.category)}
     </td>
   </tr>`;
   }).join('');
