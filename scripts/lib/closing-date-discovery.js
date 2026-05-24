@@ -71,8 +71,57 @@ function isCredibleUrl(url) {
   return CREDIBLE_HOSTS.some(h => url.includes(h));
 }
 
-function buildExtractionPrompt(showTitle, text, url) {
-  return `You are extracting the announced final Broadway performance date from a press article.
+// Per-field configuration. fieldType determines: the SERP query phrasing,
+// the LLM prompt's date semantics, the year-sanity window, and the closure-
+// verb regex for single-source acceptance. Closing is the original behavior
+// preserved verbatim — it stays the default for discoverAnnouncedClosingDate
+// callers. Opening and previews-start were added 2026-05-24 as part of the
+// same triple-signal pattern.
+const FIELD_CONFIGS = {
+  closing: {
+    serpQuery: title => `"${title}" broadway closing OR extends final performance`,
+    promptDateRole: 'FINAL Broadway performance',
+    promptHighConfidenceCriteria: 'the article explicitly states a closing OR final-performance date for the named show on Broadway',
+    promptExclusions: 'Not opening, not previews, not a future tour stop, not a past extension if a newer date has been announced.',
+    // Closing dates can be far-future (Op Mincemeat extended to 2027). Allow
+    // up to 3 years out; allow 180 days into the past in case a show closed
+    // very recently and a press article is from after the fact.
+    sanityWindowDaysPast: 180,
+    sanityWindowDaysFuture: 1095,
+    // Phrases acceptable for single-source acceptance.
+    quoteAcceptanceRegex: /final performance|closing on|last performance|ends? its run on|ends? on|wraps? (?:its run )?on|shutters? on|will close on|to close on|last show on/,
+  },
+  opening: {
+    serpQuery: title => `"${title}" broadway opening night OR delayed OR pushed OR postponed`,
+    promptDateRole: 'OFFICIAL OPENING NIGHT (not the first preview)',
+    promptHighConfidenceCriteria: 'the article explicitly states an opening-night date for the named show on Broadway. Opening night follows previews and is typically a single performance with critics invited',
+    promptExclusions: 'Not the first preview, not the closing, not a tour opening, not a West End opening. If the article only mentions previews-start, return null.',
+    // Opening dates are near-future (within ~1 year). A 4-year-future
+    // "opening" almost certainly means a different production.
+    sanityWindowDaysPast: 30,
+    sanityWindowDaysFuture: 365,
+    quoteAcceptanceRegex: /opening night|officially opens?|opens? on|opening on|to open on|will open on/,
+  },
+  'previews-start': {
+    serpQuery: title => `"${title}" broadway previews begin OR start OR first preview`,
+    promptDateRole: 'FIRST PREVIEW PERFORMANCE (the first paid performance, before official opening)',
+    promptHighConfidenceCriteria: 'the article explicitly states a previews-start date or first-preview date for the named show on Broadway',
+    promptExclusions: 'Not opening night, not closing. If the article only mentions opening night, return null.',
+    sanityWindowDaysPast: 30,
+    sanityWindowDaysFuture: 365,
+    quoteAcceptanceRegex: /first preview|previews begin|begin previews|previews start|starts previews|previews? on/,
+  },
+};
+
+function getFieldConfig(fieldType) {
+  const cfg = FIELD_CONFIGS[fieldType];
+  if (!cfg) throw new Error(`closing-date-discovery: unknown fieldType "${fieldType}". Expected: ${Object.keys(FIELD_CONFIGS).join(', ')}`);
+  return cfg;
+}
+
+function buildExtractionPrompt(showTitle, text, url, fieldType = 'closing') {
+  const cfg = getFieldConfig(fieldType);
+  return `You are extracting the announced ${cfg.promptDateRole} date for a Broadway show from a press article.
 
 Show: ${showTitle}
 Article URL: ${url}
@@ -85,14 +134,16 @@ Return ONLY JSON in this exact form (no markdown, no commentary):
 {"date": "YYYY-MM-DD" | null, "confidence": "high" | "medium" | "low", "quote": "the exact sentence stating the date" | null}
 
 Rules:
-- date = the FINAL Broadway performance announced in this article. Not opening, not previews, not a future tour stop, not a past extension if a newer date has been announced.
-- confidence "high" ONLY if the article explicitly states a closing OR final-performance date for the named show on Broadway.
+- date = the ${cfg.promptDateRole} announced in this article. ${cfg.promptExclusions}
+- confidence "high" ONLY if ${cfg.promptHighConfidenceCriteria}.
 - If the article is about a tour, regional production, off-Broadway run, or West End run, return {"date": null, "confidence": "low", "quote": null}.
 - If the date is ambiguous, a range, conditional, or not present, return {"date": null, "confidence": "low", "quote": null}.`;
 }
 
 function parseExtraction(raw, opts = {}) {
   if (!raw) return null;
+  const fieldType = opts.fieldType || 'closing';
+  const cfg = getFieldConfig(fieldType);
   // Trim code fences if model added them
   const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '').trim();
   try {
@@ -100,16 +151,15 @@ function parseExtraction(raw, opts = {}) {
     if (!j || typeof j !== 'object') return null;
     if (j.date && !/^\d{4}-\d{2}-\d{2}$/.test(j.date)) return null;
     if (!['high', 'medium', 'low'].includes(j.confidence)) return null;
-    // Year-sanity: reject extractions outside [TODAY - 6 months, TODAY + 3 years].
-    // A 1998 revival article that says "closing 1998-10-04" would otherwise pass
-    // the regex check and could cluster with another wrong-production article.
-    // The actual future-close window for an open Broadway show is at most ~3 years
-    // (Operation Mincemeat's 9 extensions stretched to ~2 years out).
+    // Year-sanity: reject extractions outside the field's plausible window.
+    // Closing dates have a wide future window (Op Mincemeat 2027); opening
+    // and previews-start are much narrower (within ~1 year). This is the
+    // primary defense against same-title revival hallucinations.
     if (j.date) {
       const dt = new Date(j.date);
       const now = opts.now || new Date();
-      const minDate = new Date(now.getTime() - 180 * 86400000);
-      const maxDate = new Date(now.getTime() + 1095 * 86400000);
+      const minDate = new Date(now.getTime() - cfg.sanityWindowDaysPast * 86400000);
+      const maxDate = new Date(now.getTime() + cfg.sanityWindowDaysFuture * 86400000);
       if (dt < minDate || dt > maxDate) return null;
     }
     return { date: j.date || null, confidence: j.confidence, quote: j.quote || null };
@@ -155,10 +205,11 @@ function hostOf(url) {
   catch { return ''; }
 }
 
-function clusterDates(extractions) {
+function clusterDates(extractions, opts = {}) {
   if (extractions.length === 0) return null;
   const dated = extractions.filter(e => e.date && e.confidence === 'high');
   if (dated.length === 0) return null;
+  const cfg = getFieldConfig(opts.fieldType || 'closing');
 
   let best = null;
   let bestDistinctHosts = 0;
@@ -179,35 +230,34 @@ function clusterDates(extractions) {
     }
   }
   // Single-source acceptance ONLY if the extraction has both a date and a
-  // quote with "final performance" / closure-verb language. Bounds the
-  // "one hallucinated article wrong-corrects the show" failure mode. The
-  // regex is broader than the original to catch real announcement language
-  // ("ends its run", "shutters", "last show", "wraps") without admitting
-  // generic phrasing.
+  // quote with field-appropriate announcement-verb language. Bounds the
+  // "one hallucinated article wrong-corrects the show" failure mode.
   if (best.cluster.length === 1) {
     const q = (best.cluster[0].quote || '').toLowerCase();
-    if (!/final performance|closing on|last performance|ends? its run on|ends? on|wraps? (?:its run )?on|shutters? on|will close on|to close on|last show on/.test(q)) return null;
+    if (!cfg.quoteAcceptanceRegex.test(q)) return null;
   }
   return best;
 }
 
 /**
- * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...] }
+ * Generic field discovery. fieldType in {'closing','opening','previews-start'}.
+ * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...], fieldType }
  */
-async function discoverAnnouncedClosingDate(showTitle, opts = {}) {
+async function discoverAnnouncedDate(showTitle, fieldType = 'closing', opts = {}) {
   const log = opts.log || (() => {});
-  const query = `"${showTitle}" broadway closing OR extends final performance`;
-  log(`  [discovery] SERP: ${query}`);
+  const cfg = getFieldConfig(fieldType);
+  const query = cfg.serpQuery(showTitle);
+  log(`  [discovery:${fieldType}] SERP: ${query}`);
 
-  // Last 30 days — closing announcements stay relevant only briefly. Older
-  // results are mostly historical pieces.
+  // Last 30 days — announcements stay relevant only briefly. Older results
+  // are mostly historical pieces.
   const dateMax = new Date();
   const dateMin = new Date(dateMax.getTime() - 30 * 86400000);
   let results;
   try {
     results = await serpQuery(query, { nbResults: 12, dateRange: { dateMin, dateMax } });
   } catch (e) {
-    log(`  [discovery] SERP error: ${e.message}`);
+    log(`  [discovery:${fieldType}] SERP error: ${e.message}`);
     return null;
   }
   if (!results || results.length === 0) return null;
@@ -216,54 +266,61 @@ async function discoverAnnouncedClosingDate(showTitle, opts = {}) {
     .filter(r => isCredibleUrl(r.url))
     .slice(0, MAX_CANDIDATES_PER_SHOW);
   if (candidates.length === 0) {
-    log('  [discovery] no credible-host results');
+    log(`  [discovery:${fieldType}] no credible-host results`);
     return null;
   }
 
   const extractions = [];
   for (const c of candidates) {
     try {
-      const page = await fetchPage(c.url, { source: 'audit-closing-dates' });
+      const page = await fetchPage(c.url, { source: `audit-${fieldType}-dates` });
       if (!page || !page.content) continue;
-      // Use a wider window for the show-name guard than the LLM prompt — the
-      // show name often appears in the article body but past the first 4000
-      // chars on press sites with heavy nav/promo headers.
       const fullText = stripHtml(page.content);
       if (!pageMatchesShowTitle(fullText.slice(0, 12000), showTitle)) continue;
       const text = fullText.slice(0, 4000);
-      const raw = await callClaudeSonnet(buildExtractionPrompt(showTitle, text, c.url));
-      const parsed = parseExtraction(raw);
+      const raw = await callClaudeSonnet(buildExtractionPrompt(showTitle, text, c.url, fieldType));
+      const parsed = parseExtraction(raw, { fieldType });
       if (parsed) {
         extractions.push({ ...parsed, sourceUrl: c.url, sourceTitle: c.title || null });
       }
     } catch (e) {
-      log(`  [discovery] candidate ${c.url} failed: ${e.message.slice(0, 80)}`);
+      log(`  [discovery:${fieldType}] candidate ${c.url} failed: ${e.message.slice(0, 80)}`);
     }
   }
 
   if (extractions.length === 0) {
-    log('  [discovery] no extractions');
+    log(`  [discovery:${fieldType}] no extractions`);
     return null;
   }
 
-  const cluster = clusterDates(extractions);
+  const cluster = clusterDates(extractions, { fieldType });
   if (!cluster) {
-    log('  [discovery] extractions present but no high-confidence cluster');
+    log(`  [discovery:${fieldType}] extractions present but no high-confidence cluster`);
     return null;
   }
   return {
     date: cluster.centerDate,
     sources: cluster.cluster.map(c => ({ url: c.sourceUrl, title: c.sourceTitle, quote: c.quote })),
     extractions,
+    fieldType,
   };
 }
 
+// Backwards-compat wrapper preserves the original API used by
+// audit-closing-dates.js. New callers should use discoverAnnouncedDate().
+async function discoverAnnouncedClosingDate(showTitle, opts = {}) {
+  return discoverAnnouncedDate(showTitle, 'closing', opts);
+}
+
 module.exports = {
+  discoverAnnouncedDate,
   discoverAnnouncedClosingDate,
   // exported for tests
   parseExtraction,
   clusterDates,
   isCredibleUrl,
   pageMatchesShowTitle,
+  getFieldConfig,
   CREDIBLE_HOSTS,
+  FIELD_CONFIGS,
 };
