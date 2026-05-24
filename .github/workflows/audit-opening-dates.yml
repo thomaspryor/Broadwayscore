@@ -1,0 +1,99 @@
+name: Audit Opening Dates
+
+# Daily LLM press-cluster audit for openingDate + previewsStartDate drift.
+# Suggestion-only — no auto-mutation of shows.json. Findings route to a
+# Notion card; human verifies + updates the private repo.
+#
+# Why a separate workflow from audit-closing-dates: different field-types,
+# different cost profile (~$2/run vs ~$0.50), and we want to stagger the
+# cron so they don't both fire at the same minute. See
+# scripts/audit-opening-dates.js for design rationale.
+
+on:
+  schedule:
+    - cron: '0 15 * * *'  # Daily 15:00 UTC — 1h after closing-date audit (14:00 UTC)
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no Notion card)'
+        required: false
+        default: 'false'
+
+# Read-only on shows.json — no concurrency group needed, but match the
+# closing-date audit pattern so both audits share a Notion card slot.
+concurrency:
+  group: opening-date-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run opening-date audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/audit-opening-dates.js --dry-run
+          else
+            node scripts/audit-opening-dates.js
+          fi
+
+      - name: Create summary
+        if: always()
+        run: |
+          if [ -f data/audit/opening-date-discrepancies.json ]; then
+            echo "## Opening Date Audit" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const r = require('./data/audit/opening-date-discrepancies.json');
+              const s = r.summary;
+              const lines = [
+                '**Mode:** ' + r.mode,
+                '**Audited:** ' + s.audited,
+                '**Flagged:** ' + s.flagged,
+                '**Matches:** ' + s.matches,
+                '**Errors:** ' + s.errors,
+              ];
+              console.log(lines.join('\\n'));
+              if (r.flagged.length) {
+                console.log('\\n### Flagged for review');
+                r.flagged.forEach(f => console.log('- ' + f.id + ': stored ' + f.fieldType + '=' + (f.stored||'null') + ' vs press ' + f.discovered.date));
+              }
+            " >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Opening Dates Failed'
+          severity: 'warning'
