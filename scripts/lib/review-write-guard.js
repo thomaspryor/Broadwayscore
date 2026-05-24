@@ -278,9 +278,38 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] placeholder URL detected in ${path.basename(filePath)}: ${newData.url}`);
   }
 
+  // Self-heal stale `duplicateOf` whose URL no longer matches the referenced file.
+  // Triggered by Can I Be Frank case (2026-05-24): Sommers's URL was briefly
+  // corrected to Bernardo's URL, fired url-collision-detected-at-write, then the
+  // URL was restored to Sommers's actual review URL — but the duplicateOf flag
+  // persisted, silently excluding a legitimate T2 review from the rebuild.
+  // Rule: if duplicateOf points at a sibling whose URL no longer matches ours,
+  // the collision basis is gone, so clear the flag.
+  if (newData.duplicateOf && newData.url) {
+    try {
+      const siblingPath = path.join(path.dirname(filePath), newData.duplicateOf);
+      if (fs.existsSync(siblingPath)) {
+        const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf-8'));
+        if (siblingData.url) {
+          const normHere = _normalizeUrlForCollision(newData.url);
+          const normSibling = _normalizeUrlForCollision(siblingData.url);
+          if (normHere !== normSibling) {
+            console.warn(`[review-write-guard] clearing stale duplicateOf in ${path.basename(filePath)}: URL no longer matches ${newData.duplicateOf} (${newData.url} vs ${siblingData.url})`);
+            newData.duplicateClearReason = `auto-cleared at write: URL ${newData.url} no longer matches sibling ${newData.duplicateOf} URL ${siblingData.url}`;
+            newData.duplicateOf = null;
+            newData.duplicateReason = null;
+          }
+        }
+      }
+    } catch { /* silent — best-effort self-heal */ }
+  }
+
   // Pattern Card #4: URL collision detection — warn before writing a file whose URL
   // already exists in another file in the same show directory.
-  if (!force && newData.url) {
+  // Skip if the URL is currently mid-correction (urlCorrectedFrom set) — the
+  // post-correction state may differ from the URL we're comparing against, and
+  // we don't want to lock in a duplicate flag based on transient state.
+  if (!force && newData.url && !newData.urlCorrectedFrom) {
     const collider = checkUrlCollision(filePath, newData);
     if (collider) {
       console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);

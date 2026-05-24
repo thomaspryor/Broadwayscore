@@ -16,6 +16,9 @@ on:
       - 'scripts/audit-audience-buzz-contamination.js'
       - 'scripts/audit-critic-consensus-contamination.js'
       - 'scripts/audit-regex-patterns.js'
+      - 'scripts/audit-duplicate-of-url-mismatch.js'
+      - 'scripts/audit-orphan-show-ids.js'
+      - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/cast-extraction-guards.js'
       - 'scripts/backfill-cast-web.js'
       - 'data/cast/**'
@@ -926,6 +929,23 @@ jobs:
         run: node scripts/validate-mobile-shows.js
         # Catches stale build artifacts from worktree merges:
         # closed shows without scores should be filtered out by generate-mobile-data.js
+
+      - name: Audit stale duplicateOf flags
+        run: node scripts/audit-duplicate-of-url-mismatch.js
+        # Fails when A.duplicateOf=B but their URLs differ. Catches the Sommers
+        # case (2026-05-24) where a transient URL correction left a stale dupe
+        # flag suppressing a legitimate T2 review. Self-heal at write time is
+        # implemented in review-write-guard.js; this gate catches anything that
+        # bypassed it (e.g., scripts writing JSON directly). Run with --fix
+        # locally to clear stale flags. See memory/feedback_duplicate_of_url_mismatch.md.
+
+      - name: Audit orphan slim show files
+        run: node scripts/audit-orphan-show-ids.js
+        # Fails when public/data/shows/{id}.json exists for an id that isn't
+        # in shows.json. Catches drift after show renames (Can I Be Frank,
+        # 2026-05-24). Also reports show-score / audience-buzz key drift as
+        # advisory (use --strict to also fail on those). Run with --fix locally
+        # to delete orphan slim files. See memory/feedback_orphan_slim_show_files.md.
 
       - name: Audit content-quality regex FP rate
         run: node scripts/audit-regex-patterns.js --full

@@ -200,6 +200,79 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('self-heals stale duplicateOf when sibling URL no longer matches (Sommers/Bernardo case)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stale-dupe-'));
+    try {
+      // Sibling now has its real URL (different from the URL we share).
+      fs.writeFileSync(path.join(dir, 'nysr--bernardo.json'), JSON.stringify({
+        url: 'https://nystagereview.com/2025/08/04/frank-fervent-ferociously-funny/',
+        criticName: 'Melissa Rose Bernardo',
+      }, null, 2));
+
+      // Our file historically had Bernardo's URL (collision triggered),
+      // then got corrected to our actual URL — but the dupe flag stuck.
+      const ourPath = path.join(dir, 'nysr--sommers.json');
+      safeWriteReview(ourPath, {
+        url: 'https://nystagereview.com/2025/08/04/being-present-about-the-past/',
+        criticName: 'Michael Sommers',
+        duplicateOf: 'nysr--bernardo.json',
+        duplicateReason: 'url-collision-detected-at-write',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, null);
+      assert.equal(written.duplicateReason, null);
+      assert.match(written.duplicateClearReason || '', /URL .* no longer matches sibling/);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('preserves duplicateOf when sibling URL still matches ours', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'real-dupe-'));
+    try {
+      const sharedUrl = 'https://example.com/same-article';
+      fs.writeFileSync(path.join(dir, 'a.json'), JSON.stringify({ url: sharedUrl }, null, 2));
+
+      const ourPath = path.join(dir, 'b.json');
+      safeWriteReview(ourPath, {
+        url: sharedUrl,
+        duplicateOf: 'a.json',
+        duplicateReason: 'url-collision-detected-at-write',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, 'a.json');
+      assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test('skips collision check when urlCorrectedFrom is set (transient state)', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'mid-correction-'));
+    try {
+      // Sibling has the URL we used to point at.
+      fs.writeFileSync(path.join(dir, 'nysr--bernardo.json'), JSON.stringify({
+        url: 'https://nystagereview.com/old-url/',
+      }, null, 2));
+
+      // We're mid-correction: urlCorrectedFrom records the old (colliding) URL,
+      // but url is the new one. The collision check must NOT fire on the new URL
+      // matching, and must NOT compare against urlCorrectedFrom.
+      const ourPath = path.join(dir, 'nysr--sommers.json');
+      safeWriteReview(ourPath, {
+        url: 'https://nystagereview.com/old-url/',
+        urlCorrectedFrom: 'https://nystagereview.com/different-url/',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, undefined);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   test('checkUrlCollision returns null when no collision exists', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'no-coll-'));
     try {
