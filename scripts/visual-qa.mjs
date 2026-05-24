@@ -112,10 +112,110 @@ async function captureWithRetry(page, attempts, action, label) {
   throw lastErr;
 }
 
+// In-browser overflow probe: returns selectors for elements whose content
+// is clipped horizontally or vertically by their box. Catches the FeaturedSpot
+// "HISTORICAL ACCURA" silent failure (one-line pill in a constrained grid
+// column with whitespace-nowrap on long text).
+//
+// The +1 tolerance absorbs sub-pixel rounding; the parent-overflow:hidden
+// guard scopes to clipping the user would actually SEE (not internal
+// scroll-containers that are scrollable by design).
+function overflowProbeScript() {
+  const PROBE = () => {
+    const out = [];
+    const seen = new Set();
+    const all = document.querySelectorAll('*');
+    for (const el of all) {
+      const sw = el.scrollWidth, cw = el.clientWidth;
+      const sh = el.scrollHeight, ch = el.clientHeight;
+      const xClip = sw > cw + 1;
+      const yClip = sh > ch + 1;
+      if (!xClip && !yClip) continue;
+      if (el === document.body || el === document.documentElement) continue;
+
+      const cs = getComputedStyle(el);
+
+      // Skip screen-reader-only (sr-only): clientWidth/Height ≤ 4 means the
+      // element is intentionally hidden visually but kept in DOM for a11y.
+      if (cw <= 4 && ch <= 4) continue;
+      // Skip invisible / display-none
+      if (cs.display === 'none' || cs.visibility === 'hidden') continue;
+      // Skip clip-path-based sr-only (skip-to-content links and similar).
+      // The CSS `clip` property is deprecated but still used; `clip-path` is modern.
+      if (cs.clip && cs.clip !== 'auto' && cs.clip !== 'none') continue;
+      if (cs.clipPath && cs.clipPath !== 'none') continue;
+
+      // Skip intentional text-truncate (overflow content rendered as ellipsis
+      // is a design choice, not a bug). Check self AND parent — Tailwind's
+      // `truncate` puts overflow:hidden on the element + text-overflow:ellipsis.
+      const selfEllipsis = cs.textOverflow === 'ellipsis' && (cs.overflowX === 'hidden' || cs.overflowX === 'clip');
+      if (selfEllipsis) continue;
+
+      // Skip if the immediate parent is a scroll container (overflow-x:auto/scroll)
+      // — that's a carousel/scroller pattern where content > viewport is the design.
+      const parent = el.parentElement;
+      if (parent) {
+        const pcs = getComputedStyle(parent);
+        if (pcs.overflowX === 'auto' || pcs.overflowX === 'scroll') continue;
+        if (pcs.overflowY === 'auto' || pcs.overflowY === 'scroll') continue;
+      }
+
+      // Determine if the element is actually clipped (parent overflow:hidden
+      // or self overflow:hidden / clip), vs. legitimately scrollable.
+      const overflowX = cs.overflowX;
+      const overflowY = cs.overflowY;
+      const selfClips = overflowX === 'hidden' || overflowX === 'clip' || overflowY === 'hidden' || overflowY === 'clip';
+      let ancestorClips = false;
+      for (let p = el.parentElement; p; p = p.parentElement) {
+        const pcs = getComputedStyle(p);
+        if (pcs.overflowX === 'hidden' || pcs.overflowX === 'clip' || pcs.overflowY === 'hidden' || pcs.overflowY === 'clip') {
+          ancestorClips = true; break;
+        }
+      }
+      if (!selfClips && !ancestorClips) continue;
+      // Build a short selector path
+      function shortSel(node) {
+        if (!node || node.nodeType !== 1) return '';
+        let s = node.tagName.toLowerCase();
+        if (node.id) s += '#' + node.id;
+        if (node.className && typeof node.className === 'string') {
+          const cls = node.className.trim().split(/\s+/).slice(0, 2).join('.');
+          if (cls) s += '.' + cls;
+        }
+        return s;
+      }
+      const path = [];
+      let cur = el;
+      while (cur && cur !== document.body && path.length < 4) {
+        path.unshift(shortSel(cur));
+        cur = cur.parentElement;
+      }
+      const sel = path.join(' > ');
+      if (seen.has(sel)) continue;
+      seen.add(sel);
+      const text = (el.textContent || '').trim().slice(0, 60);
+      out.push({
+        selector: sel,
+        xClip,
+        yClip,
+        scrollWidth: sw,
+        clientWidth: cw,
+        scrollHeight: sh,
+        clientHeight: ch,
+        textPreview: text,
+      });
+      if (out.length >= 25) break; // cap report size
+    }
+    return out;
+  };
+  return `(${PROBE.toString()})()`;
+}
+
 async function captureScreenshots({ url, paths, branch, outDir, elements }) {
   const browser = await chromium.launch();
   const screenshots = [];
   const elementCrops = [];
+  const overflowReport = [];
   try {
     for (const path of paths) {
       const pathSlug = slugify(path);
@@ -137,6 +237,16 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
           const file = join(dir, `${width}.png`);
           await page.screenshot({ path: file, fullPage: true });
           screenshots.push({ path, width, file });
+
+          // Structural overflow probe — runs in the page, fast (<200ms typical).
+          try {
+            const clipped = await page.evaluate(overflowProbeScript());
+            for (const item of clipped) {
+              overflowReport.push({ path, viewport: width, ...item });
+            }
+          } catch (err) {
+            console.error(`[visual-qa] WARN: overflow probe failed at ${path} @ ${width}: ${err?.message}`);
+          }
 
           for (const sel of elements) {
             try {
@@ -160,7 +270,7 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
   } finally {
     await browser.close();
   }
-  return { screenshots, elementCrops };
+  return { screenshots, elementCrops, overflowReport };
 }
 
 function isLocalhost(url) {
@@ -221,12 +331,19 @@ Then re-run this command.`);
 
   mkdirSync(outDir, { recursive: true });
   const t0 = Date.now();
-  const { screenshots, elementCrops } = await captureScreenshots({
+  const { screenshots, elementCrops, overflowReport } = await captureScreenshots({
     url: args.url, paths: args.paths, branch, outDir, elements: args.elements,
   });
   const elapsed = Math.round((Date.now() - t0) / 1000);
-  console.error(`[visual-qa] captured ${screenshots.length} full-page + ${elementCrops.length} element crop(s) in ${elapsed}s`);
-  // Overflow report, LLM review, verdict.json come in S1-T3..T6.
+  console.error(`[visual-qa] captured ${screenshots.length} full-page + ${elementCrops.length} element crop(s) + ${overflowReport.length} overflow finding(s) in ${elapsed}s`);
+  if (overflowReport.length > 0) {
+    console.error('[visual-qa] OVERFLOW FINDINGS:');
+    for (const o of overflowReport.slice(0, 10)) {
+      const axes = [o.xClip ? `xClip(sw=${o.scrollWidth},cw=${o.clientWidth})` : null, o.yClip ? `yClip(sh=${o.scrollHeight},ch=${o.clientHeight})` : null].filter(Boolean).join(' ');
+      console.error(`  - ${o.viewport}px ${o.path} ${o.selector} ${axes} text="${o.textPreview}"`);
+    }
+  }
+  // LLM review + verdict.json come in S1-T5..T6.
   process.exit(0);
 }
 
