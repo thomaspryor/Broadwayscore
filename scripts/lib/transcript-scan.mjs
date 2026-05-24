@@ -19,7 +19,7 @@
 //
 // Exit: 0 + JSON to stdout on success; 1 bad args; 2 transcript not found.
 
-import { readFileSync, existsSync, writeFileSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, writeFileSync, statSync, openSync, writeSync, closeSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
@@ -32,14 +32,39 @@ const UI_PATH_PATTERNS = [
   /\/src\/app\/.*\.(tsx|jsx|ts|js)$/,
 ];
 
-const PUSH_INGRESS_RE = /(^|[\s;&|])(git\s+push|gh\s+pr\s+merge|bash\s+scripts\/[^\s]*push[^\s]*|sh\s+scripts\/[^\s]*push[^\s]*|gh\s+workflow\s+run\s+["']?[Dd]eploy)/;
+// Push-ingress: every entrypoint that can land changes on origin/main.
+// Maintained via /ship-check findings — every gap added here as it's found.
+//
+// Bypasses caught in /ship-check round 1:
+//  - direct exec: `./scripts/lib/push-with-retry.sh`
+//  - other shells: `zsh scripts/...push...`
+//  - `gh workflow run vercel-deploy.yml` (lowercase + .yml suffix)
+// Bypasses caught in /ship-check round 2 (Claude reviewer P0-2):
+//  - absolute path: `/usr/bin/git push` → match git regardless of leading path
+//  - node wrapper scripts: `node scripts/push-foo.js`
+//  - python/ruby/etc. wrappers
+const PUSH_INGRESS_RE = /(^|[\s;&|])(?:[^\s]*\/)?(?:git\s+push|gh\s+pr\s+merge|gh\s+pr\s+create\s+[^\n]*--auto|(?:bash|sh|zsh|env|python3?|ruby)\s+\.?\/?scripts\/[^\s]*push[^\s]*|node\s+\.?\/?scripts\/[^\s]*push[^\s]*|\.?\/scripts\/[^\s]*push[^\s]*|gh\s+workflow\s+run\s+["']?(?:[^\s"']*deploy|[Dd]eploy)|(?:npm|pnpm|yarn)\s+(?:run\s+)?(?:deploy|push|publish))/i;
 
-// Visual-claim-language: things the agent says when claiming UI work is done
+// Visual-claim-language: phrases the agent uses when claiming UI work is done
 // without actually proving it. Each was observed in real failure transcripts.
+//
+// /ship-check round 2 (Claude P1-1) found these matched legit non-UI prose
+// ("the function renders correctly", "looks correct after refactor"). To
+// avoid false positives, the caller (queryVisualClaimLanguage) requires a
+// UI-context noun within ±80 chars of the matched phrase OR the phrase to
+// be the LAST sentence of the assistant message.
 const VISUAL_CLAIM_RE = /\b(live on production|looks correct|matches the design|ready to ship|visually verified|looks good on (mobile|desktop|tablet)|shipped successfully|works as designed|renders correctly)\b/i;
+const UI_CONTEXT_RE = /\b(design|button|card|page|layout|component|UI|screen|viewport|mobile|tablet|desktop|pixel|css|tailwind|tsx|jsx|column|row|grid|flex|glow|pill|badge|font|color|width|height|padding|margin|overflow|click|tap|hover|render|view|modal|dropdown|nav|header|footer)\b/i;
 
 // Override phrase mechanic — user-issued one-shot bypass scoped to next push.
-const OVERRIDE_RE = /\bship immediately for:\s*\S+/i;
+//
+// /ship-check round 2 (Claude P0-3) found this matched negated/quoted prose
+// ("do NOT ship immediately for: any reason"). To prevent that, require the
+// phrase to start at a line boundary (line head, after newline, or after
+// list-marker punctuation), and reject if preceded by a negation in the
+// preceding ~30 chars of the same line.
+const OVERRIDE_RE = /(^|\n)\s*(?:[-*>]\s*)?ship immediately for:\s*\S+/i;
+const NEGATION_RE = /\b(?:not?|never|don'?t|do\s+not|avoid|please\s+do(?:n'|\s+no)t)\b[^\n]{0,30}$/i;
 
 // "APPROVED:" detection — must be followed by a hash. Strict, case-sensitive.
 function approvalRe(hash) {
@@ -179,16 +204,37 @@ export function queryReferenceAttached(events) {
 
 export function queryVisualClaimLanguage(events) {
   // Find LAST assistant_text. Check for visual-claim pattern without NO-VERIFY.
+  // Per /ship-check round 2 P1-1, ALSO require UI context near the match
+  // to suppress false positives on non-UI prose ("function renders correctly").
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind !== 'assistant_text') continue;
-    const hasClaim = VISUAL_CLAIM_RE.test(e.text);
-    const hasOverride = /NO-VERIFY:\s+\S+/.test(e.text);
+    const text = e.text || '';
+    const match = VISUAL_CLAIM_RE.exec(text);
+    const hasOverride = /NO-VERIFY:\s+\S+/.test(text);
+    let hasClaim = false;
+    let inUiContext = false;
+    if (match) {
+      // Window of ±80 chars around the match
+      const start = Math.max(0, match.index - 80);
+      const end = Math.min(text.length, match.index + match[0].length + 80);
+      const window = text.slice(start, end);
+      inUiContext = UI_CONTEXT_RE.test(window);
+      // Also: if the matched phrase is in the FINAL sentence of the message,
+      // treat it as a claim regardless (agents typically conclude with claims).
+      const lastSentenceStart = Math.max(
+        text.lastIndexOf('.'), text.lastIndexOf('!'), text.lastIndexOf('?'),
+        text.lastIndexOf('\n\n'),
+      );
+      const isFinalSentence = match.index > lastSentenceStart;
+      hasClaim = (inUiContext || isFinalSentence) && !hasOverride;
+    }
     return {
-      hasClaim: hasClaim && !hasOverride,
-      rawClaim: hasClaim,
+      hasClaim,
+      rawClaim: !!match,
+      inUiContext,
       hasNoVerify: hasOverride,
-      textPreview: e.text.slice(0, 200),
+      textPreview: text.slice(0, 200),
     };
   }
   return { hasClaim: false, reason: 'no assistant text' };
@@ -196,23 +242,48 @@ export function queryVisualClaimLanguage(events) {
 
 export function queryOverrideActiveForPush(events, { sessionId, consume = false } = {}) {
   // Find LAST user_text. Check for "ship immediately for: <reason>".
+  // Per /ship-check round 2 P0-3, reject matches that are negated in the same
+  // line ("do NOT ship immediately for: X"). The OVERRIDE_RE requires the
+  // phrase to start a line (line-head or list-marker); we additionally
+  // inspect the text preceding the match for a negation token within 30 chars.
   let matched = false;
   let preview = '';
+  let text = '';
+  let matchIndex = -1;
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind === 'user_text') {
-      matched = OVERRIDE_RE.test(e.text);
-      preview = e.text.slice(0, 200);
+      text = e.text || '';
+      const m = OVERRIDE_RE.exec(text);
+      if (m) {
+        // Examine the same line (from previous newline to the match) for negation.
+        const lineStart = text.lastIndexOf('\n', m.index - 1) + 1;
+        const beforeMatch = text.slice(lineStart, m.index);
+        if (!NEGATION_RE.test(beforeMatch)) {
+          matched = true;
+          matchIndex = m.index;
+        }
+      }
+      preview = text.slice(0, 200);
       break;
     }
   }
-  if (!matched) return { override: false, reason: 'no override phrase in last user text' };
+  if (!matched) return { override: false, reason: 'no override phrase in last user text (or matched but negated)' };
   if (!sessionId) return { override: true, reason: 'matched but no sessionId — caller must scope per-session' };
   const marker = markerPath(sessionId);
   if (existsSync(marker)) return { override: false, reason: 'override already consumed for this session', marker };
   if (consume) {
-    writeFileSync(marker, JSON.stringify({ ts: new Date().toISOString(), preview }));
-    return { override: true, consumed: true, marker };
+    // Atomic create: open with O_CREAT|O_EXCL so two simultaneous consumers
+    // can't both pass the existsSync check.
+    try {
+      const fd = openSync(marker, 'wx');
+      writeSync(fd, JSON.stringify({ ts: new Date().toISOString(), preview }));
+      closeSync(fd);
+      return { override: true, consumed: true, marker };
+    } catch (err) {
+      // EEXIST: another process won the race
+      return { override: false, reason: 'override race lost — another consumer claimed marker', marker };
+    }
   }
   return { override: true, consumed: false, marker, preview };
 }
