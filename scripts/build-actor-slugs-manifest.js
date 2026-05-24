@@ -45,6 +45,10 @@ for (const file of files) {
   fileCount++;
   for (const member of cast) {
     if (!member?.name) continue;
+    // Orphans (no ibdbPersonId) are intentionally skipped here even though
+    // build-cast-manifest.js includes them — this manifest powers the
+    // name → ibdb-id lookup for /cast/[slug] linking, which orphans don't
+    // have. The two manifests diverge by design as of 2026-05-24.
     if (!member.ibdbPersonId) { skippedNoId++; continue; }
     const key = `${showId}:${normalizeName(member.name)}`;
     // First match wins — openingNightCast preferred over currentCast (matches runtime logic)

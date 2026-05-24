@@ -239,7 +239,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const lastUpdated = getShowLastUpdated(show.id);
   const castFileForSchema = getShowCastFile(show.id);
   const performers = castFileForSchema?.openingNightCast
-    ?.filter(m => m.name && !m.flags?.includes('Standby') && !m.flags?.includes('Understudy'))
+    ?.filter(m =>
+      m.name &&
+      m.ibdbPersonId &&  // exclude orphans — UI tells users "not in our DB" via tooltip; don't contradict that in schema.org
+      !m.flags?.includes('Standby') &&
+      !m.flags?.includes('Understudy')
+    )
     .map(m => ({ name: m.name }));
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers);
   const isWestEnd = isLondonMarket(show.category);

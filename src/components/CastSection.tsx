@@ -64,7 +64,17 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: {
                   {member.name}
                 </Link>
               ) : (
-                <span className="text-white font-medium">{member.name}</span>
+                // Non-linked cast: West End / Off-Broadway performers without
+                // IBDB entries (most are UK / Irish actors with no Broadway
+                // history). Subtle italic + dotted underline signals "name is
+                // real, just not in our actor-profile database". Tooltip
+                // explains why. See memory/feedback_orphan_cast_invisible_by_design.md
+                <span
+                  className="text-gray-200 font-medium italic decoration-dotted decoration-gray-600 underline underline-offset-4"
+                  title="Actor profile not yet available"
+                >
+                  {member.name}
+                </span>
               )}
               <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">
                 {member.role}
