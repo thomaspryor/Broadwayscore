@@ -1724,7 +1724,17 @@
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
-    "harry-potter-2021/woman-around-town--alix-cohen.json"
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
+    "yoah-off-broadway-2026/variety--pat-saperstein.json",
+    "bigfoot-off-broadway-2026/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1761,7 +1771,8 @@
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/masquerade-off-broadway-2025/wsj--dominic-green.json",
       "masquerade-off-broadway-2025/wsj--dominic-green.json",
-      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json"
+      "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1865,7 +1876,7 @@
     ]
   },
   "startTime": "2026-05-23T08:57:37.709Z",
-  "lastProcessed": "harry-potter-2021/woman-around-town--alix-cohen.json",
+  "lastProcessed": "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
   "log": [
     {
       "t": "2026-05-23T09:35:24.139Z",
@@ -1934,6 +1945,17 @@
       "t": "2026-05-24T01:58:31.956Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-24T02:00:09.832Z",
+      "event": "bb-session",
+      "session": "74f75062",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c"
+    },
+    {
+      "t": "2026-05-24T02:00:10.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
