@@ -183,21 +183,27 @@ function marketLabel(category) {
 // across every section that mentions a show.
 const SITE = 'https://broadwayscorecard.com';
 function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}` : SITE; }
+
+// Opera shows (type='opera') are surfaced in their own dedicated Opera
+// Openings section and EXCLUDED from every other section. Opera coverage
+// follows different conventions: T1-flat weighting (per src/lib/engine.ts
+// isOpera path), different audience expectations, narrower critic pool.
+// Mixing them into Broadway/Off-Broadway feeds skews subjects and stats.
+function isOperaShow(s) { return !!s && s.type === 'opera'; }
 function showLink(show, inner) {
   if (!show || !show.slug) return inner;
   return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none;">${inner}</a>`;
 }
 
-// Per-section "see all" footer with a hairline separator above it so the link
-// reads as a footer to the card rather than a stranded line. Hairline matches
-// the inter-row dividers (rgba 0.05). colspan="9" is intentional over-padding
-// — every card's row layout has ≤ 9 columns and HTML clamps colspan to the
-// real count; without it the link wraps into the ~60px thumbnail gutter on
-// 3-col cards (London). NYC sections use brand gold; London uses pink.
+// Per-section "see all" footer. One <tr> with a hairline border-top — much
+// tighter than the previous two-row layout (which added a stray &nbsp; line
+// that read as a stranded blank between the last show row and the link).
+// colspan="9" is intentional over-padding so the link spans the full width
+// of 3-col cards (London / Box Office / Tony) and HTML clamps to the real
+// column count. NYC sections use brand gold; London uses pink.
 function seeAllLink(href, label, opts = {}) {
   const color = opts.color || '#d4a574';
-  return `<tr><td colspan="9" style="padding:0 16px 0;border-top:1px solid rgba(255,255,255,0.05);">&nbsp;</td></tr>
-    <tr><td colspan="9" style="padding:12px 16px 14px;">
+  return `<tr><td colspan="9" style="padding:8px 16px 10px;border-top:1px solid rgba(255,255,255,0.05);">
       <a href="${href}" style="font-size:12px;color:${color};text-decoration:none;font-weight:600;">${label} →</a>
     </td></tr>`;
 }
@@ -420,14 +426,14 @@ function sectionWrap(headingHtml, bodyHtml) {
 
 // SECTION: BW openings
 function broadwayOpenings() {
-  const list = shows.filter(s => s.category === 'broadway' && inWeek(s.openingDate));
+  const list = shows.filter(s => s.category === 'broadway' && !isOperaShow(s) && inWeek(s.openingDate));
   if (!list.length) return { html: null, list: [] };
   return { html: sectionWrap(sectionHeading('Opened on Broadway'), list.map(s => showRow(s)).join('')), list };
 }
 
 // SECTION: OB openings — only show scored, mention count of pending
 function offBroadwayOpenings() {
-  const list = shows.filter(s => s.category === 'off-broadway' && inWeek(s.openingDate));
+  const list = shows.filter(s => s.category === 'off-broadway' && !isOperaShow(s) && inWeek(s.openingDate));
   if (!list.length) return { html: null, list: [] };
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
   const pending = list.length - withScore.length;
@@ -476,6 +482,7 @@ function biggestMoverSection() {
     const show = shows.find(s => s.id === id);
     if (!show) return;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
+    if (isOperaShow(show)) return;
     // Skip if it's THIS WEEK'S opening (already covered by openings section)
     if (inWeek(show.openingDate)) return;
     candidates.push({ show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta, newCount: x.thisWeek.length });
@@ -541,6 +548,7 @@ function biggestMoverSection() {
       const show = shows.find(s => s.id === id);
       if (!show) return;
       if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
+    if (isOperaShow(show)) return;
       const minReviewsForMover = show.category === 'broadway' ? 15 : 100;
       if (bReviews < minReviewsForMover || nReviews < minReviewsForMover) return;
       const bg = grade(b.combinedScore);
@@ -836,7 +844,7 @@ function findWeekOutlier() {
       const diff = r.assignedScore - avg;
       if (!best || Math.abs(diff) > Math.abs(best.diff)) {
         const show = shows.find(s => s.id === id);
-        if (show && (show.category === 'broadway' || show.category === 'off-broadway')) {
+        if (show && (show.category === 'broadway' || show.category === 'off-broadway') && !isOperaShow(show)) {
           best = { review: r, show, diff, peerAvg: Math.round(avg), outlet: r.outlet };
         }
       }
@@ -890,7 +898,7 @@ function announcedClosingsSection() {
     );
     if (departures.length < 2) return;
     const show = shows.find(s => s.id === showId);
-    if (!show || show.category !== 'broadway' || show.status !== 'open' || !show.closingDate) return;
+    if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) return;
     if (show.closingDate <= weekEndStr) return; // already passed
     announcements.push({ show, closingDate: show.closingDate });
   });
@@ -933,7 +941,7 @@ function commercialSection() {
   const lookbackStr = lookback.toISOString().slice(0, 10);
   // Slug → show map for Broadway only
   const slugToShow = new Map();
-  shows.forEach(s => { if (s.category === 'broadway' && s.slug) slugToShow.set(s.slug, s); });
+  shows.forEach(s => { if (s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const fresh = [];
   Object.entries(comm.shows || {}).forEach(([slug, c]) => {
     if (!c.recouped || !c.recoupedDate) return;
@@ -1023,7 +1031,7 @@ function castingSection() {
   const eventsAll = [];
   Object.keys(castData.shows).forEach(showId => {
     const show = shows.find(s => s.id === showId);
-    if (!show || show.category !== 'broadway') return;
+    if (!show || show.category !== 'broadway' || isOperaShow(show)) return;
     const data = castData.shows[showId];
     (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
   });
@@ -1085,7 +1093,7 @@ function boxOfficeSection() {
   catch { return null; }
   // Grosses are keyed by SLUG, not show id. Build a slug→show map for open BW.
   const slugToShow = new Map();
-  shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && s.slug) slugToShow.set(s.slug, s); });
+  shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
   const entries = Object.entries(grosses.shows)
     .filter(([slug, g]) => slugToShow.has(slug) && g.thisWeek && g.thisWeek.gross > 0)
     .map(([slug, g]) => ({ slug, ...g.thisWeek, show: slugToShow.get(slug) }));
@@ -1192,6 +1200,7 @@ function buzziestSection() {
   shows.forEach(s => {
     if (!['open', 'previews', 'upcoming'].includes(s.status)) return;
     if (s.category !== 'broadway' && s.category !== 'off-broadway') return;
+    if (isOperaShow(s)) return;
     const f = path.join(socialDir, s.id + '.social.json');
     if (!fs.existsSync(f)) return;
     try {
@@ -1384,6 +1393,44 @@ function londonSection() {
   return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), body);
 }
 
+// SECTION: Opera Openings — mirrors London Openings (compact card, themed
+// accent color, see-all link to /opera). Opera shows are excluded from every
+// other section because their tier model (T1-flat) and audience expectations
+// differ from theatre. Indigo/violet accent picks a color distinct from
+// gold (NYC) and pink (London) so the three feeds read as siblings.
+function operaOpeningsSection() {
+  const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate));
+  if (!list.length) return null;
+  const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  if (!withScore.length) return null;
+  const marketColor = '#a78bfa'; // indigo/violet — opera's accent
+  const rows = withScore.map((x, i, arr) => {
+    const score = x.agg.avg;
+    const venueLabel = (x.s.category === 'broadway' ? 'BROADWAY OPERA'
+      : x.s.category === 'off-broadway' ? 'OFF-BROADWAY OPERA'
+      : x.s.category === 'west-end' ? 'WEST END OPERA'
+      : x.s.category === 'off-west-end' ? 'OFF WEST END OPERA'
+      : 'OPERA');
+    const isLast = i === arr.length - 1;
+    return `<tr>
+      <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(x.s, 48)}</td>
+      <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
+        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
+        <div style="font-size:10px;color:${marketColor};font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">${venueLabel}</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:4px;">Opened ${fmt(x.s.openingDate)}</div>
+      </td>
+      <td valign="middle" width="84" align="center" style="padding:${i===0?'14':'10'}px 12px ${isLast?'14':'10'}px 4px;">
+        ${tierLabel(score, x.s.category)}
+        ${smallBadge(score, 40, x.s.category)}
+      </td>
+    </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(167,139,250,0.18);">${rows}
+    ${seeAllLink(`${SITE}/opera`, 'Explore the full Opera Scorecard', { color: marketColor })}
+  </table>`;
+  return sectionWrap(sectionHeading('Opera Openings', null, { href: `${SITE}/opera` }), body);
+}
+
 // SECTION: Most Popular Pages — real GA4 page-view data, top show pages last
 // 7 days. Briefly replaced by a hand-built fallback then removed on Codex
 // review; restored on 2026-05-24 with actual data via popular-pages.mjs.
@@ -1397,6 +1444,7 @@ function mostReadSection(popularList) {
     const show = shows.find(s => s.slug === p.slug);
     if (!show) continue;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
+    if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
     const eligible = a && a.count >= minReviews(show.category);
     items.push({
@@ -1456,6 +1504,7 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
 const cas  = sections.run('casting-updates', () => castingSection());
 const lon  = sections.run('london-openings', () => londonSection());
+const opera = sections.run('opera-openings', () => operaOpeningsSection());
 const outlier = sections.run('outlier-of-the-week', () => outlierSection());
 
 // Most-read show pages — real GA4 page-view data via popular-pages.mjs.
@@ -1478,7 +1527,9 @@ if (seasonStandings.length) {
 // Outlier of the Week sits AFTER Tony Predictions per user direction
 // (2026-05-24): it's a satisfying coda to the awards-prediction storyline
 // rather than a top-of-email surprise.
-const sectionOrder = [bwO.html, obO.html, mover, clo, announced, box, commercial, bz, tony, outlier, lon, cas, ...seasonStandings, popular].filter(Boolean);
+// Opera Openings sits directly after London Openings — both are the
+// "secondary market" feeds that read as siblings to NYC theatre.
+const sectionOrder = [bwO.html, obO.html, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, popular].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
@@ -1509,7 +1560,7 @@ const newsworthyInputs = {
       for (const [slug, c] of Object.entries(comm.shows || {})) {
         if (!c.recouped || !c.recoupedDate) continue;
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
-        if (!show) continue;
+        if (!show || isOperaShow(show)) continue;
         const monthMatch = c.recoupedDate === weekMonth;
         const verifiedRecent = c.deepResearch?.verifiedDate && c.deepResearch.verifiedDate >= lookbackStr;
         if (!monthMatch && !verifiedRecent) continue;
@@ -1529,7 +1580,7 @@ const newsworthyInputs = {
   })(),
   closingsThisWeek: shows.filter(s =>
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
-    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway')),
+    && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
   announcedClosings: (() => {
     // Mirror announcedClosingsSection's heuristic: 2+ departures added this
     // week + a future closingDate.
@@ -1540,7 +1591,7 @@ const newsworthyInputs = {
         && e.type === 'departure' && !e.endDate);
       if (departures.length < 2) continue;
       const show = shows.find(s => s.id === showId);
-      if (!show || show.category !== 'broadway' || show.status !== 'open' || !show.closingDate) continue;
+      if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) continue;
       if (show.closingDate <= weekEndStr) continue;
       out.push({ show });
     }
@@ -1572,6 +1623,7 @@ const newsworthyInputs = {
       const delta = allAvg - beforeAvg;
       const show = shows.find(s => s.id === id);
       if (!show || (show.category !== 'broadway' && show.category !== 'off-broadway')) continue;
+      if (isOperaShow(show)) continue;
       // Mirror biggestMoverSection's gates so the scorer doesn't surface
       // candidates that the section itself wouldn't render:
       //   • Drop shows that OPENED this week (their "before" is previews —
