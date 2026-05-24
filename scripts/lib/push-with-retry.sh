@@ -129,6 +129,21 @@ resolve_conflicts() {
         echo "  Auto-resolving (keep local): $file"
         git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         ;;
+      data/commercial.json|data/commercial-pending-review.json)
+        # Per-slug JSON merge so concurrent writers don't lose entries. The
+        # "accept remote" default in this block previously silently dropped
+        # local writes to commercial-pending-review.json — caught by ship-check
+        # CDX-P0-1. mergeCommercialJson preserves humanReviewed* flags from the
+        # loser side; mergePendingReview unions per-slug pending entries by
+        # newest researchedAt.
+        echo "  Auto-resolving (per-slug merge): $file"
+        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
+          git add "$file" 2>/dev/null && resolved=true
+        else
+          echo "  ::warning::Commercial merge failed for $file; falling back to keep-local"
+          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
+        fi
+        ;;
       *)
         # Other data files: accept remote (other workflows' changes)
         echo "  Auto-resolving (keep remote): $file"

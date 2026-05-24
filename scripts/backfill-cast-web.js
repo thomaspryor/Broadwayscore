@@ -102,8 +102,10 @@ async function searchCast(title, year, category) {
   if (!results) return [];
 
   // Score via shared lib so tests can verify historical bad URLs would be
-  // rejected (see tests/unit/cast-extraction-guards.test.mjs).
-  const scored = results.map(r => scoreSerpResult(r, title));
+  // rejected (see tests/unit/cast-extraction-guards.test.mjs). Pass year +
+  // category so the lib's year-mismatch and market-mismatch defenses can
+  // fire (added 2026-05-24).
+  const scored = results.map(r => scoreSerpResult(r, { title, year, category }));
 
   return scored
     .filter(r => r.score >= SERP_MIN_SCORE && r.url)
