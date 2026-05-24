@@ -159,14 +159,15 @@ function showLink(show, inner) {
   return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none;">${inner}</a>`;
 }
 
-// Per-section "see all" link footer — mirrors the existing London-section
-// "Explore the full West EndScorecard →" pattern. Goes BELOW the card. NYC
-// sections use brand gold (#d4a574); London uses pink (#f472b6).
+// Per-section "see all" footer. Returns a <tr> that lives INSIDE the card
+// table (matches Tony Predictions' canonical placement). Callers append this
+// row to the same `<table>` as the card body rows instead of rendering it
+// underneath the closing tag. NYC sections use brand gold; London uses pink.
 function seeAllLink(href, label, opts = {}) {
   const color = opts.color || '#d4a574';
-  return `<div style="margin-top:12px;padding:0 4px;font-size:12px;">
-      <a href="${href}" style="color:${color};text-decoration:none;font-weight:600;">${label} →</a>
-    </div>`;
+  return `<tr><td style="padding:0 16px 14px;">
+      <a href="${href}" style="font-size:12px;color:${color};text-decoration:none;font-weight:600;">${label} →</a>
+    </td></tr>`;
 }
 
 // Critic + outlet registries — look up the slug for a critic / outlet name so
@@ -400,9 +401,23 @@ function biggestMoverSection() {
   });
   candidates.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
   if (!candidates.length) return null;
-  // Show up to 3 if there are multiple significant movers. Threshold: ≥2 pts (rounded).
-  const significant = candidates.filter(c => Math.max(1, Math.abs(c.after - c.before)) >= 2).slice(0, 3);
-  const moverList = significant.length ? significant : candidates.slice(0, 1);
+  // Newsworthiness gate: a 2pt move with only 1 new review is statistical
+  // noise, not news. Require enough signal to be worth highlighting:
+  //   • Rounded delta ≥ 3 pts (was 2), OR
+  //   • Rounded delta ≥ 2 pts AND ≥ 2 new reviews this week (real consensus shift)
+  // This filters out single-review wobbles on small-n shows like Lenny Bruce
+  // (55 → 53 with one new review) while keeping genuine multi-critic moves.
+  function isNewsworthyMove(c) {
+    const pts = Math.max(1, Math.abs(c.after - c.before));
+    if (pts >= 3) return true;
+    if (pts >= 2 && c.newCount >= 2) return true;
+    return false;
+  }
+  const significant = candidates.filter(isNewsworthyMove).slice(0, 3);
+  // No fallback to "show the top candidate anyway" — if nothing's newsworthy,
+  // critic-mover section drops out and the audience-grade movers still render
+  // below. Better than promoting noise.
+  const moverList = significant;
 
   // Audience grade movers — only surface when the LETTER GRADE changes
   // (users never see numeric audience values, so a 88.1 → 87.7 dip isn't a
@@ -675,10 +690,29 @@ function isLowQualityQuote(q) {
   return false;
 }
 
-// Pick the best quote text from a review (quote > summary > pullQuote with
-// quality filter), then truncate at the last sentence boundary within ~200 chars.
+// Pick the best quote text from a review. Preference:
+//   r.quote > r.summary > clean pullQuote > "second clause" of bad pullQuote > raw pullQuote
+// We DOWNRANK low-quality pullQuotes but never drop them entirely — even an
+// imperfect quote beats a quote-shaped void on the Outlier card. For flagged
+// pullQuotes ("Lynn and director Rob Melrose do deserve praise…, but what we
+// get is…") we try to extract the assertive second clause after a conjunction.
 function pickReviewQuote(r) {
-  const source = r.quote || r.summary || (isLowQualityQuote(r.pullQuote) ? '' : r.pullQuote) || '';
+  if (r.quote) return truncateAtSentence(r.quote);
+  if (r.summary) return truncateAtSentence(r.summary);
+  const pq = r.pullQuote || '';
+  if (!pq) return '';
+  if (!isLowQualityQuote(pq)) return truncateAtSentence(pq);
+  // Bad opener — try to extract a useful second clause after a conjunction.
+  const conjMatch = pq.match(/^[^,]+,\s+(but|and|though|yet|however|still)\s+(.+)$/i);
+  if (conjMatch && conjMatch[2].length >= 40) {
+    const tail = conjMatch[2].charAt(0).toUpperCase() + conjMatch[2].slice(1);
+    return truncateAtSentence(tail);
+  }
+  // Last resort — render the raw pullQuote. Better than nothing.
+  return truncateAtSentence(pq);
+}
+
+function truncateAtSentence(source) {
   let clean = source.replace(/['’]/g, "'").replace(/[“”]/g, '"');
   if (clean.length > 200) {
     const w = clean.slice(0, 200);
@@ -957,8 +991,8 @@ function castingSection() {
     </div>`).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
     <tr><td style="padding:4px 16px;">${rows}</td></tr>
-  </table>
-  ${seeAllLink(`${SITE}/cast-changes`, 'See all casting moves')}`;
+    ${seeAllLink(`${SITE}/cast-changes`, 'See all casting moves')}
+  </table>`;
   return sectionWrap(sectionHeading('Casting Updates', 'Broadway'), body);
 }
 
@@ -1038,8 +1072,8 @@ function boxOfficeSection() {
     <tr><td style="padding:6px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rowsClean}</table>
     </td></tr>
-  </table>
-  ${seeAllLink(`${SITE}/box-office`, 'See full box office')}`;
+    ${seeAllLink(`${SITE}/box-office`, 'See full box office')}
+  </table>`;
   const subhead = [`Week of ${grosses.weekEnding}`, marketDelta].filter(Boolean).join(' · ');
   return sectionWrap(sectionHeading('Box Office', subhead, { href: 'https://broadwayscorecard.com/box-office' }), body);
 }
@@ -1178,8 +1212,8 @@ function buzziestSection() {
     </td></tr>
     ${restRows ? `<tr><td style="padding:12px 16px 0;"><div style="border-top:1px solid rgba(255,255,255,0.1);"></div></td></tr>
     <tr><td style="padding:4px 16px 8px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${restRows}</table></td></tr>` : ''}
-  </table>
-  ${seeAllLink(`${SITE}/audience-buzz`, 'See the full Social Buzz')}`;
+    ${seeAllLink(`${SITE}/audience-buzz`, 'See the full Social Buzz')}
+  </table>`;
   return sectionWrap(sectionHeading('Social Buzz', 'last 7 days', { href: `${SITE}/audience-buzz` }), body);
 }
 
@@ -1263,8 +1297,9 @@ function londonSection() {
       </td>
     </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${rows}</table>
-    ${seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' })}`;
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${rows}
+    ${seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' })}
+  </table>`;
   return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), body);
 }
 
@@ -1359,7 +1394,10 @@ if (seasonStandings.length) {
 // Order (2026-05-24): openings → biggest movers → outlier (review news first)
 // → closings → box office → recoupment → social buzz → tony predictions →
 // casting → London → season standing → most-read pages.
-const sectionOrder = [bwO.html, obO.html, mover, outlier, clo, announced, box, commercial, bz, tony, lon, cas, ...seasonStandings, popular].filter(Boolean);
+// Outlier of the Week sits AFTER Tony Predictions per user direction
+// (2026-05-24): it's a satisfying coda to the awards-prediction storyline
+// rather than a top-of-email surprise.
+const sectionOrder = [bwO.html, obO.html, mover, clo, announced, box, commercial, bz, tony, outlier, lon, cas, ...seasonStandings, popular].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
@@ -1450,9 +1488,18 @@ const newsworthyInputs = {
       const beforeAvg = x.before.reduce((a, r) => a + r.assignedScore, 0) / x.before.length;
       const allAvg = ([...x.before, ...x.thisWeek].reduce((a, r) => a + r.assignedScore, 0)) / (x.before.length + x.thisWeek.length);
       const delta = allAvg - beforeAvg;
-      if (Math.abs(delta) < 1) continue;
       const show = shows.find(s => s.id === id);
       if (!show || (show.category !== 'broadway' && show.category !== 'off-broadway')) continue;
+      // Mirror biggestMoverSection's gates so the scorer doesn't surface
+      // candidates that the section itself wouldn't render:
+      //   • Drop shows that OPENED this week (their "before" is previews —
+      //     misleading to frame the opening as a "rise").
+      //   • Drop single-review wobbles on small-n shows.
+      if (inWeek(show.openingDate)) continue;
+      const pts = Math.max(1, Math.abs(Math.round(allAvg - beforeAvg)));
+      const newCount = x.thisWeek.length;
+      const newsworthy = pts >= 3 || (pts >= 2 && newCount >= 2);
+      if (!newsworthy) continue;
       if (!best || Math.abs(delta) > Math.abs(best.delta)) {
         best = { show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta };
       }
