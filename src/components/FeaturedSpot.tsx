@@ -34,8 +34,8 @@ const ACCENT_TOP_EDGE: Record<Accent, string> = {
 };
 
 const ACCENT_DIVIDER: Record<Accent, string> = {
-  gold: 'sm:before:bg-score-must-see/15',
-  brand: 'sm:before:bg-brand/20',
+  gold: 'lg:before:bg-score-must-see/15',
+  brand: 'lg:before:bg-brand/20',
 };
 
 const CTA_CLASS: Record<Accent, string> = {
@@ -58,54 +58,22 @@ const ArrowIcon = () => (
   </svg>
 );
 
-function GoldStatPill({ value, label, compact = false }: { value: string; label: string; compact?: boolean }) {
+function GoldStatPill({ value, label }: { value: string; label: string }) {
   return (
-    <div
-      className={
-        compact
-          ? 'inline-flex items-center gap-2 px-2.5 py-1 rounded-pill score-must-see text-surface text-xs font-bold leading-none whitespace-nowrap'
-          : 'inline-flex items-center gap-3 px-5 py-3 rounded-pill score-must-see text-surface whitespace-nowrap'
-      }
-    >
-      <span className={compact ? 'text-xs font-extrabold' : 'text-2xl sm:text-3xl font-extrabold tracking-tight'}>
-        {value}
-      </span>
-      <span className={compact ? 'h-3 w-px bg-surface/40' : 'h-7 w-px bg-surface/40'} aria-hidden="true" />
-      <span
-        className={
-          compact
-            ? 'text-[10px] font-semibold uppercase tracking-wider'
-            : 'text-[11px] font-bold uppercase tracking-wider leading-tight max-w-[6.5rem]'
-        }
-      >
-        {label}
-      </span>
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-pill score-must-see text-surface max-w-full">
+      <span className="text-2xl font-extrabold tracking-tight leading-none flex-shrink-0">{value}</span>
+      <span className="h-7 w-px bg-surface/40 flex-shrink-0" aria-hidden="true" />
+      <span className="text-[10px] font-bold uppercase tracking-wider leading-tight min-w-0">{label}</span>
     </div>
   );
 }
 
-function BrandStatPill({ value, label, compact = false }: { value: string; label: string; compact?: boolean }) {
+function BrandStatPill({ value, label }: { value: string; label: string }) {
   return (
-    <div
-      className={
-        compact
-          ? 'inline-flex items-center gap-2 px-2.5 py-1 rounded-pill bg-brand/15 border border-brand/30 text-brand-light text-xs font-bold leading-none whitespace-nowrap'
-          : 'inline-flex items-center gap-3 px-5 py-3 rounded-pill bg-brand/15 border border-brand/30 text-brand-light whitespace-nowrap'
-      }
-    >
-      <span className={compact ? 'text-xs font-extrabold' : 'text-2xl sm:text-3xl font-extrabold tracking-tight'}>
-        {value}
-      </span>
-      <span className={compact ? 'h-3 w-px bg-brand/40' : 'h-7 w-px bg-brand/40'} aria-hidden="true" />
-      <span
-        className={
-          compact
-            ? 'text-[10px] font-semibold uppercase tracking-wider'
-            : 'text-[11px] font-bold uppercase tracking-wider leading-tight max-w-[6.5rem]'
-        }
-      >
-        {label}
-      </span>
+    <div className="flex items-center gap-3 px-4 py-2.5 rounded-pill bg-brand/15 border border-brand/30 text-brand-light max-w-full">
+      <span className="text-2xl font-extrabold tracking-tight leading-none flex-shrink-0">{value}</span>
+      <span className="h-7 w-px bg-brand/40 flex-shrink-0" aria-hidden="true" />
+      <span className="text-[10px] font-bold uppercase tracking-wider leading-tight min-w-0">{label}</span>
     </div>
   );
 }
@@ -129,30 +97,22 @@ export default function FeaturedSpot({
         <div className={`absolute inset-x-0 top-0 h-px ${ACCENT_TOP_EDGE[accent]}`} aria-hidden="true" />
 
         <div
-          className={`relative grid grid-cols-1 sm:grid-cols-[1.4fr_1fr] ${ACCENT_DIVIDER[accent]} sm:before:content-[''] sm:before:absolute sm:before:top-6 sm:before:bottom-6 sm:before:left-[58.333%] sm:before:w-px`}
+          className={`relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] ${ACCENT_DIVIDER[accent]} lg:before:content-[''] lg:before:absolute lg:before:top-6 lg:before:bottom-6 lg:before:left-[58.333%] lg:before:w-px`}
         >
           {/* Left / primary content */}
           <div className="p-5 sm:p-8 flex flex-col gap-3 sm:gap-4">
-            {/* Mobile: eyebrow + compact stat in one row. Desktop: eyebrow only. */}
-            <div className="flex items-center justify-between gap-3 sm:justify-start">
-              <div className="flex items-center gap-2">
-                <span className={`w-1.5 h-1.5 rounded-full ${ACCENT_DOT[accent]}`} aria-hidden="true" />
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-gray-400">
-                  {eyebrow}
-                </span>
-              </div>
-              {stat && (
-                <div className="sm:hidden">
-                  <StatPill value={stat.value} label={stat.label} compact />
-                </div>
-              )}
+            <div className="flex items-center gap-2">
+              <span className={`w-1.5 h-1.5 rounded-full ${ACCENT_DOT[accent]}`} aria-hidden="true" />
+              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-gray-400">
+                {eyebrow}
+              </span>
             </div>
 
             <h3 className="text-xl sm:text-3xl lg:text-[2rem] leading-tight font-extrabold text-white tracking-tight">
               {title}
             </h3>
 
-            <p className="hidden sm:block text-gray-400 text-base leading-relaxed max-w-md">
+            <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-md">
               {description}
             </p>
 
@@ -170,14 +130,14 @@ export default function FeaturedSpot({
 
           {/* Right / stat panel — desktop only */}
           {stat && (
-            <div className="hidden sm:flex flex-col items-center justify-center gap-4 p-8 bg-surface-raised">
+            <div className="hidden lg:flex min-w-0 flex-col items-center justify-center gap-4 p-6 lg:p-8 bg-surface-raised">
               <StatPill value={stat.value} label={stat.label} />
               {secondary && secondary.length > 0 && (
-                <div className="flex items-baseline gap-6 mt-1">
+                <div className="flex items-baseline gap-5 mt-1">
                   {secondary.map((s) => (
                     <div key={s.label} className="text-center">
-                      <div className="text-lg font-bold text-white leading-tight">{s.value}</div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider">{s.label}</div>
+                      <div className="text-base lg:text-lg font-bold text-white leading-tight">{s.value}</div>
+                      <div className="text-[10px] lg:text-xs text-gray-500 uppercase tracking-wider">{s.label}</div>
                     </div>
                   ))}
                 </div>
