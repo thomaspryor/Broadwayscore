@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-24T14:45:25.852Z",
-  "processed": 46,
-  "failed": 667,
-  "successRate": "6.5%",
+  "updatedAt": "2026-05-24T14:48:40.458Z",
+  "processed": 52,
+  "failed": 671,
+  "successRate": "7.2%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 28,
     "amp": 0,
-    "browserbase": 15,
+    "browserbase": 17,
     "directCookies": 0,
-    "scrapingbee": 17,
-    "brightdata": 1,
+    "scrapingbee": 19,
+    "brightdata": 2,
     "archiveToday": 2,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -103,6 +103,17 @@
       "t": "2026-05-24T14:45:06.393Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-24T14:47:09.023Z",
+      "event": "bb-session",
+      "session": "b2227085",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-05-24T14:47:10.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

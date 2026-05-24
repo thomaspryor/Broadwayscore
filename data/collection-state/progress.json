@@ -45,7 +45,13 @@
     "aida-off-broadway-2027/washpost--michael-andor-brodeur.json",
     "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
     "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
-    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+    "medea-off-broadway-2026/dailybeast--tim-teeman.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+    "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json",
+    "the-comedy-about-spies-west-end-2026/sunday-telegraph--dominic-cavendish.json",
+    "to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -714,7 +720,11 @@
     "aida-off-broadway-2027/bachtrack--susan-stempleski.json",
     "aida-off-broadway-2027/metoperaorg--unknown.json",
     "tosca-off-broadway-2026/zeal-nyc--unknown.json",
-    "medea-off-broadway-2026/thewrap--thom-geier.json"
+    "medea-off-broadway-2026/thewrap--thom-geier.json",
+    "medea-off-broadway-2026/timeout--adam-feldman.json",
+    "macbeth-off-broadway-2026/ew--unknown.json",
+    "macbeth-off-broadway-2026/huffpost--unknown.json",
+    "the-comedy-about-spies-west-end-2026/guardian--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -743,7 +753,10 @@
       "aida-off-broadway-2027/operawire--david-salazar.json",
       "aida-off-broadway-2027/washpost--michael-andor-brodeur.json",
       "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
-      "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
+      "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+      "medea-off-broadway-2026/timeout--adam-feldman.json",
+      "cosi-fan-tutte-off-broadway-2026/epoch-times--barry-bassis.json",
+      "cosi-fan-tutte-off-broadway-2026/financialtimes--virginia-webb.json"
     ],
     "amp": [],
     "browserbase": [
@@ -761,7 +774,9 @@
       "data/review-texts/aida-off-broadway-2027/wsj--heidi-waleson.json",
       "aida-off-broadway-2027/wsj--heidi-waleson.json",
       "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
-      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -781,10 +796,13 @@
       "ragtime-2025/nytimes--unknown.json",
       "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
       "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
-      "aida-off-broadway-2027/times-uk--kevin-ng.json"
+      "aida-off-broadway-2027/times-uk--kevin-ng.json",
+      "tosca-off-broadway-2026/zeal-nyc--unknown.json",
+      "the-comedy-about-spies-west-end-2026/sunday-telegraph--dominic-cavendish.json"
     ],
     "brightdata": [
-      "two-strangers-bway-2025/nypost--unknown.json"
+      "two-strangers-bway-2025/nypost--unknown.json",
+      "medea-off-broadway-2026/dailybeast--tim-teeman.json"
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
@@ -794,11 +812,12 @@
       "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
       "my-neighbour-totoro-west-end-2025/standard--unknown.json",
       "aida-off-broadway-2027/nytimes--zachary-woolfe.json",
-      "aida-off-broadway-2027/new-york-classical-review--david-wright.json"
+      "aida-off-broadway-2027/new-york-classical-review--david-wright.json",
+      "to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json"
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "medea-off-broadway-2026/thewrap--thom-geier.json",
+  "lastProcessed": "to-kill-a-mockingbird-west-end-2026/theater-news-online--david-cote.json",
   "log": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -888,6 +907,17 @@
       "t": "2026-05-24T14:45:06.393Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-24T14:47:09.023Z",
+      "event": "bb-session",
+      "session": "b2227085",
+      "url": "https://www.wsj.com/articles/cosi-fan-tutte-review-a-carnival-of-deception-15214"
+    },
+    {
+      "t": "2026-05-24T14:47:10.063Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
