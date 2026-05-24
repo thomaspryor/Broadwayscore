@@ -27,10 +27,13 @@ interface CastSectionProps {
   currentCastUpdatedAt?: string | null;
   replacements?: CastMemberOBC[] | null;
   showStatus: string;
+  openingDate?: string | null;
   category?: string;
   actorSlugs?: Record<string, string>;  // ibdbPersonId → slug
   tonyMap?: Record<string, ShowTonyInfo>;  // ibdbPersonId → Tony info for this show
 }
+
+const STALE_OPENING_THRESHOLD_MS = 2 * 365 * 24 * 60 * 60 * 1000;
 
 const INITIAL_COUNT = 8;
 
@@ -97,17 +100,43 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: {
   );
 }
 
-export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, category, actorSlugs, tonyMap }: CastSectionProps) {
+export default function CastSection({ openingNightCast, currentCast, currentCastUpdatedAt, replacements, showStatus, openingDate, category, actorSlugs, tonyMap }: CastSectionProps) {
   const hasOBC = openingNightCast.length > 0;
   const hasCurrentCast = currentCast && currentCast.length > 0;
   const hasReplacements = replacements && replacements.length > 0;
   const isOpen = showStatus === 'open' || showStatus === 'previews' || showStatus === 'upcoming';
 
-  if (!hasOBC && !hasCurrentCast && !hasReplacements) return null;
+  // OBC for an actively-running show that opened >2y ago is almost certainly
+  // not the cast on stage tonight. We don't have currentCast for it (IBDB only
+  // tracks Broadway), so warn rather than silently displaying stale names.
+  const obcLikelyStale = !!(
+    isOpen &&
+    !hasCurrentCast &&
+    hasOBC &&
+    openingDate &&
+    Date.now() - new Date(openingDate).getTime() > STALE_OPENING_THRESHOLD_MS
+  );
 
   // Unified eyebrow style used for every sub-heading in this content card,
   // matching the show-card chrome family (audience/critic/awards/etc.).
   const eyebrow = "text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0";
+
+  // Empty state: open show, no cast data anywhere. Most OB/WE shows fall here
+  // because IBDB only indexes Broadway. Show an honest placeholder rather
+  // than hiding the section, so users know cast info wasn't quietly omitted.
+  if (!hasOBC && !hasCurrentCast && !hasReplacements) {
+    if (!isOpen) return null;
+    return (
+      <div className="mb-8">
+        <section className="card p-5 sm:p-6">
+          <h2 className={`${eyebrow} mb-3`}>Cast</h2>
+          <p className="text-sm text-gray-400 leading-snug">
+            Cast information is not yet available for this production.
+          </p>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="mb-8">
@@ -134,6 +163,11 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
             <h2 className={`${eyebrow} mb-4`}>
               {category === 'broadway' || !category ? 'Original Broadway Cast' : isLondonMarket(category) ? 'Original London Cast' : 'Original Cast'}
             </h2>
+            {obcLikelyStale && (
+              <p className="text-xs text-amber-500/80 mb-3 leading-snug">
+                Current cast unavailable. The list below is the original cast — performers on stage today may differ.
+              </p>
+            )}
             <CastList cast={openingNightCast} actorSlugs={actorSlugs} tonyMap={tonyMap} />
           </>
         )}
