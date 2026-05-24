@@ -217,6 +217,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [shuffleSeed] = useState(() => Math.floor(Math.random() * 1000000));
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [emailSubmitting, setEmailSubmitting] = useState(false);
+  const [ballotExpanded, setBallotExpanded] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [countdownExpired, setCountdownExpired] = useState(() => Date.now() >= new Date('2026-06-08T00:00:00Z').getTime());
@@ -626,8 +627,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 {(() => { const nextIdx = findNextNonEmptyCategory(currentCatIdx); const nextCat = nextIdx !== null ? currentTier.categories[nextIdx] : null; const catsWN = currentTier.categories.filter(categoryHasNominees); const nextP = nextCat ? catsWN.findIndex(c => c.title === nextCat.title) + 1 : 0; return nextCat ? (<span className="block text-xs font-medium opacity-80 mt-0.5">Next: {nextCat.title} ({nextP} of {catsWN.length})</span>) : null; })()}
               </button>
             ) : (
-              <button onClick={() => goToScreen('tier-complete')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
-                Complete Round &rarr;
+              <button onClick={() => goToScreen(hasNextTier ? 'tier-complete' : 'results')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
+                {hasNextTier ? 'Complete Round →' : 'See My Ballot →'}
               </button>
             )}
           </div>
@@ -690,34 +691,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   return (
     <div className="min-h-screen bg-surface flex flex-col">
       <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl"><button onClick={() => goToScreen('reveal')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button><div className="text-xs font-bold">Your Ballot</div><div /></div>
-      <div className="flex-1 px-5 py-8 max-w-[480px] mx-auto w-full flex flex-col items-center">
-        <div className="w-full max-w-[380px] rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><BtcBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
-          <div className="px-6 py-4">
-            {data.tiers.map(tier => {
-              const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
-              if (tierPicks.length === 0) return null;
-              return (
-                <div key={tier.key}>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-3 first:mt-0 mb-1">{tier.name}</div>
-                  {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-2 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-sm font-bold text-right">{picks[cat.title]}</div></div>))}
-                </div>
-              );
-            })}
-            {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
-          </div>
-          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
-        </div>
+      <div className="flex-1 px-5 py-6 max-w-[480px] mx-auto w-full flex flex-col items-center">
 
-        {/* Email / Submission */}
+        {/* Email / Submission — FIRST, above the fold */}
         {emailSubmitted ? (
-          <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+          <div className="w-full max-w-[380px] p-5 rounded-2xl bg-green-500/[0.06] border border-green-500/15 text-center animate-fade-up">
             <div className="text-3xl mb-2">🎭</div>
             <h3 className="text-base font-bold text-green-400">You&apos;re entered!</h3>
             <p className="text-sm text-gray-400 mt-1.5">After the June 7 ceremony, we&apos;ll email you with your results — showing exactly how your picks stacked up against the critics.</p>
           </div>
         ) : (
-          <div className="w-full max-w-[380px] mt-7 p-6 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+          <div className="w-full max-w-[380px] p-5 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up">
             <h3 className="text-base font-bold">Submit your picks</h3>
             <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 7, we&apos;ll automatically email you with your results.</p>
             <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$100 TodayTix prize draw</strong>.</p>
@@ -731,9 +715,9 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
         )}
 
-        {/* Share — big primary CTA after submission, row of small buttons before */}
+        {/* Share buttons */}
         {emailSubmitted ? (
-          <div className="w-full max-w-[380px] mt-6 animate-fade-up" style={{ animationDelay: '0.6s', animationFillMode: 'both' }}>
+          <div className="w-full max-w-[380px] mt-4 animate-fade-up">
             <button onClick={handleShare} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200 flex items-center justify-center gap-2.5">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /></svg>
               Share My Picks
@@ -750,10 +734,41 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             </div>
           </div>
         ) : (
-          <div className="flex gap-2.5 mt-5 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
+          <div className="flex gap-2.5 mt-4 animate-fade-up">
             {[{ label: 'Share', action: handleShare, icon: <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" /> }, { label: 'Post', action: handleShareX, icon: <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="currentColor" stroke="none" /> }, { label: 'Story', action: handleShare, icon: <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="5" /><circle cx="18" cy="6" r="1.5" fill="currentColor" /></> }].map(btn => (<button key={btn.label} onClick={btn.action} className="flex items-center gap-1.5 px-4 py-2.5 rounded-[10px] text-sm font-semibold border border-white/10 bg-surface-raised text-white hover:border-brand hover:-translate-y-0.5 transition-all"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">{btn.icon}</svg>{btn.label}</button>))}
           </div>
         )}
+
+        {/* Ballot Card — collapsed by default */}
+        <div className="w-full max-w-[380px] mt-5 rounded-[20px] overflow-hidden bg-surface-raised border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+          <div className="px-6 pt-6 pb-4 bg-gradient-to-br from-[#ff1368]/10 to-brand/[0.06] border-b border-white/5"><div className="text-center"><BtcBrand size="small" /><div className="text-[22px] font-black tracking-tight mt-4">My Tony Picks</div><div className="text-sm text-gray-400">Beat the Critics &middot; {data.season.ceremonyYear}</div></div></div>
+          <div className="relative">
+            <div className={`px-6 py-4${!ballotExpanded ? ' max-h-[220px] overflow-hidden' : ''}`}>
+              {data.tiers.map(tier => {
+                const tierPicks = tier.categories.filter(categoryHasNominees).filter(cat => picks[cat.title]);
+                if (tierPicks.length === 0) return null;
+                return (
+                  <div key={tier.key}>
+                    <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-3 first:mt-0 mb-1">{tier.name}</div>
+                    {tierPicks.map(cat => (<div key={cat.title} className="flex items-center justify-between py-2 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-sm font-bold text-right">{picks[cat.title]}</div></div>))}
+                  </div>
+                );
+              })}
+              {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
+            </div>
+            {!ballotExpanded && (
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-surface-raised to-transparent pointer-events-none" />
+            )}
+          </div>
+          <div className="px-6 py-3 border-t border-white/5 text-center">
+            <button onClick={() => setBallotExpanded(b => !b)} className="text-sm font-semibold text-[#ff1368] hover:opacity-80 transition-opacity">
+              {ballotExpanded ? 'Show less ↑' : `Show all ${allCompletedPicks.length} picks ↓`}
+            </button>
+          </div>
+          {ballotExpanded && (
+            <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
+          )}
+        </div>
       </div>
     </div>
   );
