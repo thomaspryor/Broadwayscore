@@ -7,21 +7,23 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
-// Bridge to the canonical CJS email-templates lib so we get the same
-// unsubscribe URL + footer markup every other email in this repo uses.
-// (Avoids reinventing the unsub URL format and lets a single update in
-// scripts/lib/email-templates.js propagate to this generator too.)
-const cjsRequire = createRequire(import.meta.url);
-const { buildUnsubscribeUrl } = cjsRequire('/Users/tompryor/Broadwayscore/scripts/lib/email-templates');
-const { reconcileClosure } = cjsRequire('/Users/tompryor/Broadwayscore/scripts/lib/cast-changes-filters');
-
-// `repo` points at the main checkout where the runtime data lives (some files
-// like reviews.json sync from a private repo and aren't present in worktrees).
-// `scriptDir` points at this script's own directory so we can resolve sibling
-// helpers (e.g. dump-tony-predictions.ts) without a hardcoded absolute path.
+// Path setup: `repo` resolves to the repo root via __dirname so the generator
+// runs identically on macOS local dev, Linux CI, and from a git worktree.
+// `scriptDir` is for sibling lookups (dump-tony-predictions.ts).
+//
+// Output directory defaults to ~/Documents/claude-outputs/newsletter-mocks
+// for local runs (matches the prior macOS behavior + the user's iCloud sync
+// path). CI overrides via NEWSLETTER_OUT_DIR — a Linux runner doesn't have
+// that path, but it does have $GITHUB_WORKSPACE/data/newsletter-drafts.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const scriptDir = __dirname;
-const repo = '/Users/tompryor/Broadwayscore';
+const repo = path.resolve(__dirname, '..', '..');
+
+// Bridge to the canonical CJS email-templates lib. Imports use repo-relative
+// paths now (was hardcoded /Users/tompryor/... — broke on CI).
+const cjsRequire = createRequire(import.meta.url);
+const { buildUnsubscribeUrl } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { reconcileClosure } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { reviews } = JSON.parse(fs.readFileSync(path.join(repo, 'data/reviews.json'), 'utf8'));
 const { shows } = JSON.parse(fs.readFileSync(path.join(repo, 'data/shows.json'), 'utf8'));
 const castData = JSON.parse(fs.readFileSync(path.join(repo, 'data/cast-changes.json'), 'utf8'));
@@ -1912,7 +1914,15 @@ ${sectionOrder.join('')}
 </body>
 </html>`;
 
-const outDir = '/Users/tompryor/Documents/claude-outputs/newsletter-mocks';
+// Output dir: env override > user's iCloud-synced claude-outputs > repo-local.
+// CI sets NEWSLETTER_OUT_DIR=$GITHUB_WORKSPACE/data/newsletter-drafts so the
+// runner has a writable directory. Local runs keep their existing iCloud
+// path so the user's saved drafts don't move.
+const outDir = process.env.NEWSLETTER_OUT_DIR
+  || (fs.existsSync(path.join(process.env.HOME || '', 'Documents/claude-outputs'))
+    ? path.join(process.env.HOME, 'Documents/claude-outputs/newsletter-mocks')
+    : path.join(repo, 'data/newsletter-drafts'));
+fs.mkdirSync(outDir, { recursive: true });
 const slug = `A-${argDate}`;
 fs.writeFileSync(`${outDir}/${slug}.html`, html);
 // Sidecar JSON with subject + section-by-section run report so the send

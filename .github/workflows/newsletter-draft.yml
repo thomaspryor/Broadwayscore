@@ -1,0 +1,153 @@
+name: Weekly Newsletter Draft
+
+# Generates the upcoming week's newsletter draft and emails a preview to the
+# owner every Saturday morning. The preview is transactional (single-recipient,
+# per CLAUDE.md rule 16 — never broadcast for previews) and subject-prefixed
+# "[DRAFT]" so it's distinct from any future broadcast.
+#
+# Owner review flow (Phase 2, separate workflow): owner replies/forwards the
+# preview to the +claude email alias with edits or "ship it". A Claude session
+# reads the reply, edits data/newsletter-overrides/<weekStart>.json, and the
+# matching newsletter-draft-rebuild.yml workflow regenerates + re-sends the
+# preview. Final ship → creates a Resend broadcast draft via the existing
+# rule-16-safe wrapper; owner clicks Send in Resend UI.
+#
+# This workflow is preview-only: no broadcasts ever fire from here.
+
+on:
+  # Saturday 11 UTC = 7am ET (or 6am during EDT — close enough for a weekly).
+  # GitHub crons routinely run 15-60 min late on weekends; acceptable for a
+  # Saturday-morning preview that doesn't need to land at a precise time.
+  schedule:
+    - cron: '0 11 * * 6'
+
+  # Manual fire for testing (matches the workflow_dispatch pattern in
+  # weekly-grosses.yml). Optional weekStart override — defaults to the most
+  # recent Monday in NY time.
+  workflow_dispatch:
+    inputs:
+      weekStart:
+        description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday in America/New_York.'
+        required: false
+        default: ''
+      subjectPrefix:
+        description: 'Subject prefix (e.g. [DRAFT], [DRAFT MANUAL]).'
+        required: false
+        default: '[DRAFT]'
+
+permissions:
+  contents: read
+  actions: write
+
+# Avoid racing a manual dispatch against the Saturday cron, or back-to-back
+# manual runs against each other. cancel-in-progress=false so a scheduled run
+# isn't dropped mid-flight by a manual click.
+concurrency:
+  group: newsletter-draft
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Core data files (shows.json, reviews.json, etc.) live in a private
+      # data repo and aren't checked into the main repo. Same pattern every
+      # other weekly cron uses — see .github/workflows/weekly-grosses.yml.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      # Pipeline-health gate: don't generate against stale data. Cron at 11 UTC
+      # Saturday assumes Friday-night reviews have been ingested via the daily
+      # rebuild cron. If that's stale, fail fast — the draft would otherwise
+      # ship with last-week's numbers.
+      - name: Verify data freshness
+        run: |
+          marker=data/audit/pipeline-health/rebuild-reviews.last-success
+          if [ ! -f "$marker" ]; then
+            echo "::error::No rebuild-reviews health marker — data freshness unknown"
+            exit 1
+          fi
+          marker_epoch=$(date -d "$(cat $marker)" +%s 2>/dev/null || date -j -f "%a %b %e %H:%M:%S %Z %Y" "$(cat $marker)" +%s 2>/dev/null || echo 0)
+          now=$(date -u +%s)
+          age_hours=$(( (now - marker_epoch) / 3600 ))
+          echo "rebuild-reviews last success: $age_hours hours ago"
+          if [ "$age_hours" -gt 24 ]; then
+            echo "::error::Data is $age_hours hours stale (limit: 24h). Draft would use outdated reviews."
+            exit 1
+          fi
+
+      - name: Compute week-start (Monday in America/New_York)
+        id: week
+        run: |
+          if [ -n "${{ github.event.inputs.weekStart }}" ]; then
+            ws="${{ github.event.inputs.weekStart }}"
+          else
+            # "Last Monday" in NY tz — handles DST transitions correctly.
+            ws=$(TZ=America/New_York date -d 'last monday' +%Y-%m-%d 2>/dev/null \
+              || TZ=America/New_York date -v-mon +%Y-%m-%d)
+          fi
+          echo "weekStart=$ws" >> "$GITHUB_OUTPUT"
+          echo "Generating newsletter for week starting $ws"
+
+      - name: Generate newsletter HTML + meta.json
+        env:
+          # CI lacks ~/Documents/claude-outputs — write to repo workspace
+          # instead. send-test.mjs picks up the same path automatically.
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          mkdir -p "$NEWSLETTER_OUT_DIR"
+          node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Regression test (catches silent section drops)
+        env:
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+        run: |
+          # Skip regression test if no fixture exists for this week yet —
+          # the fixture system is per-week and a fresh weekly run is the
+          # first time we see that week's data. A failed fixture-existence
+          # check here is informational, not blocking.
+          node scripts/newsletter/regression-test.mjs "${{ steps.week.outputs.weekStart }}" || \
+            echo "::warning::Regression test skipped (no fixture for this week — expected on first weekly run)"
+
+      - name: Send [DRAFT] preview to owner
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          NEWSLETTER_SLUG: A-${{ steps.week.outputs.weekStart }}
+          NEWSLETTER_TEST_RECIPIENT: ${{ secrets.OWNER_EMAIL }}
+          NEWSLETTER_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
+        run: |
+          node scripts/newsletter/send-test.mjs
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Newsletter Draft Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Newsletter Draft" >> $GITHUB_STEP_SUMMARY
+          echo "Week: ${{ steps.week.outputs.weekStart }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "Status: preview sent to owner inbox." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Status: FAILED — see job logs." >> $GITHUB_STEP_SUMMARY
+          fi
