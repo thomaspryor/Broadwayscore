@@ -235,7 +235,12 @@ export function getSeasonStats(season: string): SeasonStats {
     const showSeason = getSeason(show.openingDate);
     if (showSeason !== season) continue;
 
-    if (data.designation === 'Nonprofit' || data.designation === 'Tour Stop') continue;
+    // Pure nonprofits and tour stops have no commercial capital-at-risk so they're
+    // excluded from recoupment math. Enhancement deals (e.g. Ragtime LCT 2025) keep
+    // designation='Nonprofit' for taxonomy but carry commercial co-producer capital —
+    // include them so capital-at-risk isn't silently underreported.
+    const isPureNonprofit = data.designation === 'Nonprofit' && data.productionType !== 'enhancement';
+    if (isPureNonprofit || data.designation === 'Tour Stop') continue;
 
     totalShows++;
 

@@ -428,7 +428,7 @@ export interface ShowCommercial {
     weeklyRunningCost?: boolean;
     recouped?: boolean;
   };
-  productionType?: 'original' | 'tour-stop' | 'return-engagement';
+  productionType?: 'original' | 'tour-stop' | 'return-engagement' | 'enhancement' | 'international-transfer';
   originalProductionId?: string;
   costMethodology?: CostMethodologyType;
   profitMargin?: number | null;
