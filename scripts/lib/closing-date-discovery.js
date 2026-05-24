@@ -91,7 +91,7 @@ Rules:
 - If the date is ambiguous, a range, conditional, or not present, return {"date": null, "confidence": "low", "quote": null}.`;
 }
 
-function parseExtraction(raw) {
+function parseExtraction(raw, opts = {}) {
   if (!raw) return null;
   // Trim code fences if model added them
   const cleaned = raw.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '').trim();
@@ -100,10 +100,40 @@ function parseExtraction(raw) {
     if (!j || typeof j !== 'object') return null;
     if (j.date && !/^\d{4}-\d{2}-\d{2}$/.test(j.date)) return null;
     if (!['high', 'medium', 'low'].includes(j.confidence)) return null;
+    // Year-sanity: reject extractions outside [TODAY - 6 months, TODAY + 3 years].
+    // A 1998 revival article that says "closing 1998-10-04" would otherwise pass
+    // the regex check and could cluster with another wrong-production article.
+    // The actual future-close window for an open Broadway show is at most ~3 years
+    // (Operation Mincemeat's 9 extensions stretched to ~2 years out).
+    if (j.date) {
+      const dt = new Date(j.date);
+      const now = opts.now || new Date();
+      const minDate = new Date(now.getTime() - 180 * 86400000);
+      const maxDate = new Date(now.getTime() + 1095 * 86400000);
+      if (dt < minDate || dt > maxDate) return null;
+    }
     return { date: j.date || null, confidence: j.confidence, quote: j.quote || null };
   } catch {
     return null;
   }
+}
+
+// Stronger show-name guard against same-title revivals: the article body must
+// mention at least one ≥4-char word from the show title. Mirrors
+// pageMatchesShow() in scripts/audit-closing-dates.js. Without this, a 1998
+// "Cabaret" revival article could be matched to the 2024 production.
+function pageMatchesShowTitle(text, showTitle) {
+  if (!text || !showTitle) return false;
+  const haystack = text.toLowerCase();
+  const words = showTitle.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+  if (words.length === 0) {
+    // Single-syllable / very short title (e.g., "Job"): fall back to any
+    // alphanumeric token match — but require it to be present as a whole word,
+    // not a substring (so "Job" doesn't match "Jobs" or "jobbers").
+    const tokens = showTitle.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    return tokens.some(t => new RegExp(`\\b${t}\\b`).test(haystack));
+  }
+  return words.some(w => haystack.includes(w));
 }
 
 function stripHtml(html) {
@@ -116,29 +146,47 @@ function stripHtml(html) {
 }
 
 // Cluster dates by proximity: returns the date with the most agreements
-// within ±CLUSTER_TOLERANCE_DAYS, plus the contributing sources.
+// within ±CLUSTER_TOLERANCE_DAYS, plus the contributing sources. Tie-broken
+// by distinct-host count (more independent publishers > more agreeing
+// articles from one publisher) — without this, two stale republications
+// of one wire story would beat a single fresh primary report.
+function hostOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); }
+  catch { return ''; }
+}
+
 function clusterDates(extractions) {
   if (extractions.length === 0) return null;
   const dated = extractions.filter(e => e.date && e.confidence === 'high');
   if (dated.length === 0) return null;
 
   let best = null;
+  let bestDistinctHosts = 0;
   for (let i = 0; i < dated.length; i++) {
     const center = new Date(dated[i].date);
     const cluster = dated.filter(e => {
       const d = new Date(e.date);
       return Math.abs((d - center) / 86400000) <= CLUSTER_TOLERANCE_DAYS;
     });
-    if (!best || cluster.length > best.cluster.length) {
+    const distinctHosts = new Set(cluster.map(c => hostOf(c.sourceUrl))).size;
+    // Prefer the cluster with more members; tie-break by more distinct hosts.
+    if (!best
+      || cluster.length > best.cluster.length
+      || (cluster.length === best.cluster.length && distinctHosts > bestDistinctHosts)
+    ) {
       best = { centerDate: dated[i].date, cluster };
+      bestDistinctHosts = distinctHosts;
     }
   }
   // Single-source acceptance ONLY if the extraction has both a date and a
-  // quote with "final performance" language — bounds the
-  // "one hallucinated article wrong-corrects the show" failure mode.
+  // quote with "final performance" / closure-verb language. Bounds the
+  // "one hallucinated article wrong-corrects the show" failure mode. The
+  // regex is broader than the original to catch real announcement language
+  // ("ends its run", "shutters", "last show", "wraps") without admitting
+  // generic phrasing.
   if (best.cluster.length === 1) {
     const q = (best.cluster[0].quote || '').toLowerCase();
-    if (!/final performance|closing on|last performance/.test(q)) return null;
+    if (!/final performance|closing on|last performance|ends? its run on|ends? on|wraps? (?:its run )?on|shutters? on|will close on|to close on|last show on/.test(q)) return null;
   }
   return best;
 }
@@ -177,9 +225,12 @@ async function discoverAnnouncedClosingDate(showTitle, opts = {}) {
     try {
       const page = await fetchPage(c.url, { source: 'audit-closing-dates' });
       if (!page || !page.content) continue;
-      const text = stripHtml(page.content).slice(0, 4000);
-      // Reject if the body doesn't even mention the show name
-      if (!text.toLowerCase().includes(showTitle.toLowerCase().split(/[^a-z0-9]/i)[0])) continue;
+      // Use a wider window for the show-name guard than the LLM prompt — the
+      // show name often appears in the article body but past the first 4000
+      // chars on press sites with heavy nav/promo headers.
+      const fullText = stripHtml(page.content);
+      if (!pageMatchesShowTitle(fullText.slice(0, 12000), showTitle)) continue;
+      const text = fullText.slice(0, 4000);
       const raw = await callClaudeSonnet(buildExtractionPrompt(showTitle, text, c.url));
       const parsed = parseExtraction(raw);
       if (parsed) {
@@ -213,5 +264,6 @@ module.exports = {
   parseExtraction,
   clusterDates,
   isCredibleUrl,
+  pageMatchesShowTitle,
   CREDIBLE_HOSTS,
 };
