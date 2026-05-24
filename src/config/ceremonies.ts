@@ -10,7 +10,7 @@
  *      + src/lib/awards-scoring.ts (and updating the golden fixture).
  */
 
-export type OtherAwardKey = 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc' | 'obie' | 'lortel' | 'criticsCircle' | 'eveningStandard' | 'whatsOnStage';
+export type OtherAwardKey = 'dramaDesk' | 'occ' | 'dramaLeague' | 'nydcc' | 'obie' | 'lortel' | 'oba' | 'criticsCircle' | 'eveningStandard' | 'whatsOnStage';
 
 export interface OtherAwardConfig {
   key: OtherAwardKey;
@@ -31,6 +31,7 @@ export const OTHER_CEREMONY_CONFIGS: OtherAwardConfig[] = [
   { key: 'nydcc',       short: 'NY Drama Critics', display: "NY Drama Critics' Circle Awards", ceremonyName: "NY Drama Critics' Circle", chip: 'bg-rose-500/10 border-rose-500/20',       text: 'text-rose-300' },
   { key: 'obie',        short: 'Obie Award',       display: 'Obie Awards',                    ceremonyName: 'Obie Awards',              chip: 'bg-orange-500/10 border-orange-500/20',   text: 'text-orange-300' },
   { key: 'lortel',      short: 'Lortel Award',     display: 'Lucille Lortel Awards',          ceremonyName: 'Lortel Awards',            chip: 'bg-violet-500/10 border-violet-500/20',   text: 'text-violet-300' },
+  { key: 'oba',         short: 'OBA Award',        display: 'Off Broadway Alliance Awards',   ceremonyName: 'OBA Awards',               chip: 'bg-teal-500/10 border-teal-500/20',       text: 'text-teal-300' },
   { key: 'criticsCircle', short: 'Critics Circle', display: "Critics' Circle Theatre Awards", ceremonyName: "Critics' Circle",          chip: 'bg-yellow-500/10 border-yellow-500/20',   text: 'text-yellow-300' },
   { key: 'eveningStandard', short: 'Evening Standard', display: 'Evening Standard Theatre Awards', ceremonyName: 'Evening Standard',     chip: 'bg-sky-500/10 border-sky-500/20',         text: 'text-sky-300' },
   { key: 'whatsOnStage', short: 'WhatsOnStage',     display: 'WhatsOnStage Awards',             ceremonyName: 'WhatsOnStage',             chip: 'bg-pink-500/10 border-pink-500/20',       text: 'text-pink-300' },

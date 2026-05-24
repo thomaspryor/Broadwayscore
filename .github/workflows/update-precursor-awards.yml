@@ -40,6 +40,7 @@ on:
           - critics-circle
           - lortel
           - obie
+          - oba
           - evening-standard
           - whatsonstage
       min_year:
@@ -99,6 +100,11 @@ jobs:
             critics-circle)   run_scraper scripts/scrape-critics-circle.js ;;
             lortel)           run_scraper scripts/scrape-lortel.js ;;
             obie)             run_scraper scripts/scrape-obie.js ;;
+            # OBA: Playbill SERP-discovery; does not honor --min-year flag.
+            # Source is one Playbill round-up article per ceremony year; merge-on-write preserves history.
+            oba)              echo "::group::scripts/scrape-off-broadway-alliance.js"
+                              node scripts/scrape-off-broadway-alliance.js --write $FORCE_FLAG
+                              echo "::endgroup::" ;;
             evening-standard) run_scraper scripts/scrape-evening-standard.js ;;
             whatsonstage)     run_scraper scripts/scrape-whatsonstage.js ;;
             all|*)
@@ -110,6 +116,9 @@ jobs:
               run_scraper scripts/scrape-critics-circle.js
               run_scraper scripts/scrape-lortel.js
               run_scraper scripts/scrape-obie.js
+              echo "::group::scripts/scrape-off-broadway-alliance.js"
+              node scripts/scrape-off-broadway-alliance.js --write $FORCE_FLAG
+              echo "::endgroup::"
               run_scraper scripts/scrape-evening-standard.js
               run_scraper scripts/scrape-whatsonstage.js
               ;;
