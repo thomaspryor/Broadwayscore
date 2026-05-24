@@ -145,12 +145,7 @@ function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'x
 }
 
 function ActorPoster({ nominee }: { nominee: ActorNominee }) {
-  const [imgError, setImgError] = useState(false);
-  const imgPath = getActorImagePath(nominee);
-  if (imgError || !imgPath) {
-    return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
-  }
-  return (<img src={imgPath} alt={nominee.showTitle} className="w-11 h-11 rounded-lg object-cover flex-shrink-0 bg-surface-overlay" onError={() => setImgError(true)} />);
+  return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
 }
 
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
@@ -632,7 +627,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               </button>
             ) : (
               <button onClick={() => goToScreen('tier-complete')} className="w-full py-4 rounded-[14px] text-base font-bold bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5 transition-all">
-                {hasNextTier ? 'Complete Round \u2192' : 'See My Ballot \u2192'}
+                Complete Round &rarr;
               </button>
             )}
           </div>
