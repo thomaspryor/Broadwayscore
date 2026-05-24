@@ -127,17 +127,11 @@ export function scoreCandidates(input) {
     });
   }
 
-  // 5b. Outlier — natural phrasing focused on the show, not the critic.
-  // Reads like an editor wrote it ("one critic dissents on X") rather than
-  // a sportscaster naming the outlet.
-  if (input.topOutlier) {
-    const diff = Math.abs(Math.round(input.topOutlier.diff || 0));
-    const largeBump = diff >= 20 ? WEIGHTS.OUTLIER_LARGE_BUMP : 0;
-    const headline = (input.topOutlier.diff || 0) < 0
-      ? `one critic dissents on ${input.topOutlier.show.title}`
-      : `one critic stands out for ${input.topOutlier.show.title}`;
-    out.push({ kind: 'outlier', weight: WEIGHTS.OUTLIER_BASE + largeBump, headline, show: input.topOutlier.show, slug: input.topOutlier.show.slug });
-  }
+  // 5b. Outlier — INTENTIONALLY excluded from the subject-line / lede scorer
+  // (2026-05-24): "one critic dissents on X" reads as if everyone else loved
+  // X and one dissented; mostly-mixed shows like The Emporium misrepresent
+  // as a result. The Outlier section still renders as a body card where the
+  // single-critic context is clear; it just doesn't lead the subject anymore.
 
   // 6. Biggest mover — qualitative phrasing instead of "rises N pts".
   // The reader doesn't care about the integer; they care about the direction
