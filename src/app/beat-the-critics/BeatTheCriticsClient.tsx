@@ -212,6 +212,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     return () => document.body.classList.remove('btc-standalone');
   }, []);
   const [expandedCriticIdx, setExpandedCriticIdx] = useState<number | null>(null);
+  const [picksRevealed, setPicksRevealed] = useState(PICKS_REVEALED);
   const [screen, setScreen] = useState<Screen>('landing');
   const [currentTierIdx, setCurrentTierIdx] = useState(0);
   const [currentCatIdx, setCurrentCatIdx] = useState(0);
@@ -238,7 +239,15 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
+  useEffect(() => {
+    if (PICKS_REVEALED) return;
+    const ms = PICKS_REVEAL_DATE.getTime() - Date.now();
+    if (ms <= 0) { setPicksRevealed(true); return; }
+    const id = setTimeout(() => setPicksRevealed(true), ms);
+    return () => clearTimeout(id);
+  }, []);
   const emailRef = useRef<HTMLInputElement>(null);
+  const emailSubmittingRef = useRef(false);
   const currentTier = data.tiers[currentTierIdx];
   const currentCategory = currentTier?.categories[currentCatIdx];
   const totalCategoriesInTier = currentTier?.categories.length ?? 0;
@@ -291,12 +300,14 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   }, [currentTierIdx, data.tiers]);
 
   const handleEmailSave = useCallback(async () => {
+    if (emailSubmittingRef.current) return;
     const email = emailRef.current?.value?.trim().toLowerCase();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
       setEmailError('Please enter a valid email address.');
       return;
     }
     setEmailError('');
+    emailSubmittingRef.current = true;
     setEmailSubmitting(true);
     try {
       const res = await fetch('/api/beat-the-critics/send-picks', {
@@ -328,6 +339,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     } catch {
       setEmailError('Network error. Please try again.');
     } finally {
+      emailSubmittingRef.current = false;
       setEmailSubmitting(false);
     }
   }, [picks, data.season.ceremonyYear]);
@@ -483,7 +495,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const nominees = isActor ? [] : [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
     const actorNominees = isActor ? (currentCategory.actorNominees ?? []) : [];
     const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
-    const picksAvailable = PICKS_REVEALED && criticHasPicks();
+    const picksAvailable = picksRevealed && criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
     const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
     const actorCrowdPcts = isActor ? getActorCrowdPercentages(actorNominees) : [];
