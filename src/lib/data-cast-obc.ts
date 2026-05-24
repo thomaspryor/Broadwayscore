@@ -15,7 +15,10 @@ type CastManifestEntry = {
   showId: string;
   castType: 'obc' | 'replacement' | 'current';
   name: string;
-  ibdbPersonId: string;
+  // Optional since 2026-05-24: West End / Off-Broadway cast members
+  // without IBDB entries are included in the manifest and rendered by
+  // CastSection.tsx without a /cast/[slug] link (italic + tooltip).
+  ibdbPersonId?: string;
   role: string;
   flags?: string[];
 };
@@ -42,7 +45,7 @@ function loadAllCastFiles(): Map<string, ShowCastFile> {
     const member: CastMemberOBC = {
       name: e.name,
       role: e.role,
-      ibdbPersonId: e.ibdbPersonId,
+      ...(e.ibdbPersonId ? { ibdbPersonId: e.ibdbPersonId } : {}),
       ...(e.flags ? { flags: e.flags } : {}),
     };
     if (e.castType === 'obc') {

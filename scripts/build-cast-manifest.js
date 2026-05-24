@@ -47,15 +47,23 @@ for (const file of files) {
   const pushMembers = (members, castType) => {
     if (!Array.isArray(members)) return;
     for (const member of members) {
-      if (!member || !member.ibdbPersonId) { skippedNoId++; continue; }
-      entries.push({
+      if (!member || !member.name) { skippedNoId++; continue; }
+      // Orphans (no ibdbPersonId) ARE included now — rendered without a
+      // /cast/[slug] link by CastSection.tsx so users see real cast names
+      // for West End / Off-Broadway productions whose actors have no IBDB
+      // entry. Contamination cleanup landed 2026-05-24 (commit 5cf6b1a7c3)
+      // so historical wrong-show garbage doesn't ship through this path.
+      // Audit guard: scripts/audit-cast-contamination.js (CI gate in
+      // test.yml) blocks new contamination from re-entering.
+      const entry = {
         showId,
         castType,
-        name: String(member.name || ''),
-        ibdbPersonId: String(member.ibdbPersonId),
+        name: String(member.name),
         role: String(member.role || ''),
-        flags: Array.isArray(member.flags) && member.flags.length ? member.flags : undefined,
-      });
+      };
+      if (member.ibdbPersonId) entry.ibdbPersonId = String(member.ibdbPersonId);
+      if (Array.isArray(member.flags) && member.flags.length) entry.flags = member.flags;
+      entries.push(entry);
     }
   };
 

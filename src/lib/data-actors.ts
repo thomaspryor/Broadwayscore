@@ -20,7 +20,10 @@ type CastManifestEntry = {
   showId: string;
   castType: 'obc' | 'replacement' | 'current';
   name: string;
-  ibdbPersonId: string;
+  // Optional since 2026-05-24: orphan cast members (West End / Off-Broadway
+  // actors without IBDB entries) flow through the manifest now. This builder
+  // SKIPS them — only IBDB-tracked actors get profile pages.
+  ibdbPersonId?: string;
   role: string;
   flags?: string[];
 };
@@ -60,6 +63,12 @@ function buildAllProfiles() {
   const allEntries = (castManifest as { entries: CastManifestEntry[] }).entries;
 
   for (const member of allEntries) {
+    // Skip orphan cast members — no IBDB ID means no actor profile. The
+    // manifest includes them so CastSection.tsx can render show-page rows;
+    // here we just skip. Without this guard, `undefined` becomes a Map key
+    // and all orphans coalesce into one phantom profile that gets a slug
+    // and a broken /cast/[slug] page. Found by /ship-check on 2026-05-24.
+    if (!member.ibdbPersonId) continue;
     const show = showMap.get(member.showId);
     if (!show) continue;
 
