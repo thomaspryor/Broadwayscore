@@ -48,6 +48,82 @@ function isOperaSourceUrl(url) {
   return OPERA_SOURCE_DOMAINS.some(d => lower.includes(d));
 }
 
+// ============================================================================
+// SERP result scoring — keeps backfill-cast-web from picking pages for the
+// wrong show even when the page itself looks structured.
+// ============================================================================
+
+const TITLE_STOPWORDS = new Set([
+  'the', 'and', 'with', 'from', 'into', 'over', 'this', 'that',
+  'a', 'an', 'of', 'in', 'on', 'to', 'or', 'is', 'it',
+]);
+
+// Extract title tokens specific enough to use as relevance signals. Short
+// tokens ("the", "of") and 1-3 char words match too freely; only ≥4-char
+// non-stopword tokens carry signal.
+function meaningfulTitleTokens(title) {
+  return String(title || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(t => t.length >= 4 && !TITLE_STOPWORDS.has(t));
+}
+
+// Pure score for a single SERP result against a show title. Higher = more
+// likely the right show's cast page. Caller filters by SERP_MIN_SCORE.
+function scoreSerpResult(result, showTitle) {
+  const url = (result.url || result.link || '').toLowerCase();
+  const t = (result.title || '').toLowerCase();
+  const titleLower = String(showTitle || '').toLowerCase().split(':')[0].trim();
+  const titleTokens = meaningfulTitleTokens(titleLower);
+  let score = 0;
+
+  // Domain bonuses — sites known for structured cast pages
+  if (url.includes('broadwayworld.com') && url.includes('/show/')) score += 5;
+  if (url.includes('lortel.org')) score += 5;
+  if (url.includes('playbill.com') && url.includes('/production/')) score += 4;
+  if (url.includes('theatermania.com') && url.includes('/show/')) score += 4;
+  if (url.includes('whatsonstage.com')) score += 3;
+  if (url.includes('timeout.com')) score += 2;
+
+  // URL path signals — word-bounded so "broadcast" / "podcast" / "forecast"
+  // don't masquerade as "cast" (the parterre.com Kavalier-Clay URL was
+  // /broadcast/104032/... which the substring check used to falsely reward).
+  if (/\b(cast|credits?|people)\b/.test(url)) score += 3;
+
+  // SERP-title signals
+  if (t.includes('cast')) score += 2;
+  if (t.includes('starring') || t.includes('stars')) score += 2;
+  if (t.includes(titleLower)) score += 1;
+
+  // Title-token relevance gate — the single most effective contamination
+  // defense. If the URL and SERP title contain NONE of the meaningful title
+  // tokens, this is almost certainly a different show. Historical misroutes
+  // this catches:
+  //   Sting WE      → thelastship-musical.com/cast-and-creatives/
+  //   Relics WE     → londonboxoffice.co.uk/news/post/.../oliver
+  //   Loves Labours → rsc.org.uk/the-resistible-rise-of-arturo-ui/...
+  //   Man to Man    → londonboxoffice.co.uk/news/post/man-and-boy-...
+  //   Wedding March → broadwayworld.com/.../FANNY-at-Kings-Head
+  // Allow titles whose meaningful tokens are all stopwords ("It", "Six") to
+  // fall through by skipping when no tokens survive filtering.
+  if (titleTokens.length > 0) {
+    const haystack = url + ' ' + t;
+    const hits = titleTokens.filter(tok => haystack.includes(tok)).length;
+    if (hits === 0) score -= 6;
+  }
+
+  // Penalty for review/ticket/news pages (unlikely to have full cast)
+  if (url.includes('review') || url.includes('ticket') || url.includes('news')) score -= 2;
+
+  return { score, url: result.url || result.link || '', title: result.title || '' };
+}
+
+// Minimum score for a SERP result to count as a cast-page candidate. Set so
+// a single domain bonus + cast-path signal alone is enough (≥2), but any
+// negative-scoring result from the title-token gate is filtered out.
+const SERP_MIN_SCORE = 2;
+
 /**
  * Validate LLM-extracted cast for the wrong-show / corrupted-role patterns.
  *
@@ -103,9 +179,13 @@ function validateCastExtraction(cast, showTitle) {
 module.exports = {
   validateCastExtraction,
   isOperaSourceUrl,
+  scoreSerpResult,
+  meaningfulTitleTokens,
+  SERP_MIN_SCORE,
   OPERA_TITLES,
   TV_PATTERNS,
   COLUMN_HEADER_RE,
   KNOWN_SWAP_SURNAMES,
   OPERA_SOURCE_DOMAINS,
+  TITLE_STOPWORDS,
 };

@@ -24,7 +24,12 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { validateCastExtraction, isOperaSourceUrl } = require('./lib/cast-extraction-guards');
+const {
+  validateCastExtraction,
+  isOperaSourceUrl,
+  scoreSerpResult,
+  SERP_MIN_SCORE,
+} = require('./lib/cast-extraction-guards');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -86,20 +91,6 @@ function httpRequest(url, options = {}) {
 // SERP search via ScrapingBee
 // ============================================================================
 
-// Stopwords excluded from title-token relevance checks
-const TITLE_STOPWORDS = new Set([
-  'the', 'and', 'with', 'from', 'into', 'over', 'this', 'that',
-  'a', 'an', 'of', 'in', 'on', 'to', 'or', 'is', 'it',
-]);
-
-function meaningfulTitleTokens(title) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(t => t.length >= 4 && !TITLE_STOPWORDS.has(t));
-}
-
 async function searchCast(title, year, category) {
   const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
@@ -110,52 +101,12 @@ async function searchCast(title, year, category) {
   const results = await serpQuery(query);
   if (!results) return [];
 
-  // Score each result by relevance to cast data
-  const titleLower = title.toLowerCase().split(':')[0].trim();
-  const titleTokens = meaningfulTitleTokens(titleLower);
+  // Score via shared lib so tests can verify historical bad URLs would be
+  // rejected (see tests/unit/cast-extraction-guards.test.mjs).
+  const scored = results.map(r => scoreSerpResult(r, title));
 
-  const scored = results.map(r => {
-    const url = (r.url || r.link || '').toLowerCase();
-    const t = (r.title || '').toLowerCase();
-    let score = 0;
-
-    // Domain bonuses — sites known for structured cast pages
-    if (url.includes('broadwayworld.com') && url.includes('/show/')) score += 5;
-    if (url.includes('lortel.org')) score += 5;
-    if (url.includes('playbill.com') && url.includes('/production/')) score += 4;
-    if (url.includes('theatermania.com') && url.includes('/show/')) score += 4;
-    if (url.includes('whatsonstage.com')) score += 3;
-    if (url.includes('timeout.com')) score += 2;
-
-    // URL path signals
-    if (url.includes('cast') || url.includes('credit') || url.includes('people')) score += 3;
-
-    // Title signals
-    if (t.includes('cast')) score += 2;
-    if (t.includes('starring') || t.includes('stars')) score += 2;
-    if (t.includes(titleLower)) score += 1;
-
-    // Title-token relevance gate: if the URL+SERP-title contain NONE of the
-    // meaningful title tokens, this is almost certainly a different show.
-    // (Sting → "thelastship-musical.com", Relics → "Oliver" cast page,
-    // Loves-Labours-Lost → "Arturo Ui" — none contained any title token.)
-    // Allow titles with only stopwords (e.g. "It" or "Six") to fall through
-    // by skipping the check when there are no meaningful tokens.
-    if (titleTokens.length > 0) {
-      const haystack = url + ' ' + t;
-      const hits = titleTokens.filter(tok => haystack.includes(tok)).length;
-      if (hits === 0) score -= 6;
-    }
-
-    // Penalty for review/ticket/news pages (unlikely to have full cast)
-    if (url.includes('review') || url.includes('ticket') || url.includes('news')) score -= 2;
-
-    return { url: r.url || r.link, title: r.title || '', score };
-  });
-
-  // Return top results with minimum score threshold
   return scored
-    .filter(r => r.score >= 2 && r.url)
+    .filter(r => r.score >= SERP_MIN_SCORE && r.url)
     .sort((a, b) => b.score - a.score)
     .slice(0, 4)
     .map(r => ({ url: r.url, title: r.title }));
