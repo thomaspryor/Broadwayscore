@@ -799,22 +799,33 @@ async function fetchShowsFromOweVenues() {
 async function fetchSingleVenuePage(venue) {
   // Use fetch() instead of https.get() — CDN-protected sites TLS-fingerprint block Node's http module
   let html;
-  const resp = await fetch(venue.url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'en-GB,en;q=0.9',
-    },
-    redirect: 'follow',
-    signal: AbortSignal.timeout(15000),
-  });
-  if (resp.ok) {
-    html = await resp.text();
-  } else {
-    // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
-    const result = await fetchPage(venue.url);
-    if (!result || !result.content) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
+  // Venues that need JS rendering bypass the plain fetch() entirely and go
+  // straight to Playwright via fetchPage({preferPlaywright: true}). Before
+  // this gate the venue.preferPlaywright flag was dead code — plain fetch()
+  // ran first, returned a 200 with empty/partial content, html was used as-is,
+  // and the flag never reached scraper.js.
+  if (venue.preferPlaywright) {
+    const result = await fetchPage(venue.url, { preferPlaywright: true });
+    if (!result || !result.content) throw new Error(`Playwright fetch returned empty for ${venue.url}`);
     html = result.content;
+  } else {
+    const resp = await fetch(venue.url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(15000),
+    });
+    if (resp.ok) {
+      html = await resp.text();
+    } else {
+      // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
+      const result = await fetchPage(venue.url);
+      if (!result || !result.content) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
+      html = result.content;
+    }
   }
 
   if (html.length < 1000) return [];
@@ -1469,17 +1480,43 @@ async function discoverShows() {
   }
   console.log('');
 
-  // Off-Broadway: Playbill OB schedule article. Non-profit subscription
-  // houses (Atlantic, Vineyard, MCC) don't list on TodayTix; Playbill does.
-  // Flat-pushed into discoveredShows so the existing checkForDuplicate /
-  // findSameTitleTwinIfNoOpeningDate path (see below) adjudicates dups —
-  // no custom dedup layer.
+  // Off-Broadway: Playbill OB schedule article + non-profit venue pages.
+  // Subscription houses (Atlantic, Vineyard, Signature, MCC) don't list on
+  // TodayTix; Playbill covers most of them and each venue's own season page
+  // covers the rest. Flat-pushed into discoveredShows so the existing
+  // checkForDuplicate / findSameTitleTwinIfNoOpeningDate path adjudicates
+  // dups — no custom dedup layer.
+  //
+  // Per-source candidate cap (OB_VENUE_CAP): one bad parser regression
+  // can't flood shows.json. If a single source returns >cap candidates we
+  // abort the commit (exit 1) instead of pushing garbage.
+  const OB_VENUE_CAP = 30;
   if (includeOffBroadway) {
     try {
       const playbillOBShows = await fetchShowsFromPlaybillOB();
+      if (playbillOBShows.length > OB_VENUE_CAP) {
+        console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+        process.exitCode = 1;
+        return { newShows: [], count: 0 };
+      }
       discoveredShows.push(...playbillOBShows);
     } catch (e) {
       console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
+    }
+    try {
+      const obVenueShows = await fetchShowsFromVenueListings('off-broadway');
+      if (obVenueShows.length > OB_VENUE_CAP) {
+        console.error(`::error::OB venue listings returned ${obVenueShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+        process.exitCode = 1;
+        return { newShows: [], count: 0 };
+      }
+      // Synthesize the discovery-pipeline shape (`venue` as string; OB venue
+      // entries already carry that from fetchSingleVenuePage). Source tag
+      // makes it easy to debug per-venue origin downstream.
+      const tagged = obVenueShows.map(s => ({ ...s, source: `venue-page:${(s.venue || '').toLowerCase().replace(/\s+/g, '-')}` }));
+      discoveredShows.push(...tagged);
+    } catch (e) {
+      console.log(`⚠️  OB venue listings failed (${e.message}), continuing with other sources`);
     }
     console.log('');
   }
