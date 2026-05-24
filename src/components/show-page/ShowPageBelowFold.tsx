@@ -287,20 +287,33 @@ export default function ShowPageBelowFold({
         <CastUpdatesCard castChanges={castChangesData} showStatus={show.status} />
       )}
 
-      {/* Cast — OBC and current cast from IBDB */}
+      {/* Cast — OBC and current cast from IBDB. Also renders an empty-state
+          placeholder for open shows with no cast data (mostly OB/WE, which
+          IBDB doesn't index) so the absence is explicit rather than silent.
+          castFile is null when the manifest has no entries for the show. */}
       <div id="cast" className="scroll-mt-20" />
-      {featureFlags.castPages && castFile && (castFile.openingNightCast.length > 0 || (castFile.replacements && castFile.replacements.length > 0)) && (
-        <CastSection
-          openingNightCast={castFile.openingNightCast}
-          currentCast={castFile.currentCast}
-          currentCastUpdatedAt={castFile.currentCastUpdatedAt || null}
-          replacements={castFile.replacements}
-          showStatus={show.status}
-          category={show.category}
-          actorSlugs={castActorSlugs}
-          tonyMap={castTonyMap}
-        />
-      )}
+      {featureFlags.castPages && (() => {
+        const isOpen = show.status === 'open' || show.status === 'previews' || show.status === 'upcoming';
+        const hasAnyCast = !!castFile && (
+          castFile.openingNightCast.length > 0 ||
+          (castFile.currentCast && castFile.currentCast.length > 0) ||
+          (castFile.replacements && castFile.replacements.length > 0)
+        );
+        if (!hasAnyCast && !isOpen) return null;
+        return (
+          <CastSection
+            openingNightCast={castFile?.openingNightCast || []}
+            currentCast={castFile?.currentCast}
+            currentCastUpdatedAt={castFile?.currentCastUpdatedAt || null}
+            replacements={castFile?.replacements}
+            showStatus={show.status}
+            openingDate={show.openingDate}
+            category={show.category}
+            actorSlugs={castActorSlugs}
+            tonyMap={castTonyMap}
+          />
+        );
+      })()}
 
       {/* Creative Team — principal roles only */}
       <div id="creative-team" className="scroll-mt-20" />
