@@ -30,10 +30,10 @@ on:
         type: boolean
         default: false
       max_shows:
-        description: 'Max shows for deep research'
+        description: 'Max shows for deep research (~102 Broadway shows in scope, ~$0.09/show)'
         required: false
         type: number
-        default: 5
+        default: 80
       budget:
         description: 'Budget for deep research ($)'
         required: false
@@ -156,7 +156,10 @@ jobs:
     needs: sweep-pending
     if: always() && inputs.skip_deep_research != true
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    # 80 shows × ~50s real-time per show ≈ 67min worst case. Budget headroom
+    # for slow-SERP runs. Bumped from 90→120 alongside max_shows 10→80 so the
+    # full Broadway-open-shows scope fits in one Saturday run.
+    timeout-minutes: 120
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -177,7 +180,10 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           ARGS="--all-tbd --queue"
-          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '10' }}"
+          # Default 80 covers the typical Broadway scope (~102 shows, priority-
+          # sorted: queued > 6-month > recoup-window 56-182d > shuffled tail).
+          # At ~$0.09/show average, 80 shows ≈ $7 — well under the $50 cap.
+          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '80' }}"
           ARGS="$ARGS --budget=${{ inputs.budget || '50' }}"
           ARGS="$ARGS --model=o4-mini-deep"
           if [ "${{ inputs.dry_run }}" = "true" ]; then

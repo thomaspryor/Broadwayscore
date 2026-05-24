@@ -2393,7 +2393,12 @@ function validateCommercialJson() {
     return;
   }
 
-  const validProductionTypes = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer'];
+  // 'enhancement' = nonprofit-shell + commercial-co-producer deals (LCT, MTC,
+  // Roundabout, Second Stage, Public). These productions look "Nonprofit" by
+  // designation but have a commercial capital stack that DOES recoup. Ragtime
+  // 2025 was the canonical case — caught 2026-05-24 misclassified as pure
+  // Nonprofit even though Playbill explicitly reported recoupment.
+  const validProductionTypes = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer', 'enhancement'];
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   const showKeys = Object.keys(data.shows);
   let issues = 0;
