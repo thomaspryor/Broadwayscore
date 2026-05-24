@@ -42,7 +42,36 @@ function fmt(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T
 function fmtFull(dateStr) { const d = (typeof dateStr === 'string') ? new Date(dateStr + 'T12:00:00') : dateStr; return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' }); }
 function dayOf(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' }); }
 
+// Composite score cache, lazy-loaded from public/data/shows/{id}.json. These
+// per-show files are the SAME canonical compositeScore (tier-weighted, not
+// arithmetic) the live site renders — `cs` is compositeScore, `rc` is
+// reviewCount. Using arithmetic means here was a long-standing bug: per
+// CLAUDE.md the project uses tier-weighted averages everywhere (T1=1.0,
+// T2=0.75, T3=0.35), and the newsletter must match the site's published
+// number show-for-show.
+const _compositeCache = new Map();
+function loadCompositeScore(showId) {
+  if (_compositeCache.has(showId)) return _compositeCache.get(showId);
+  const p = path.join(repo, 'public/data/shows', `${showId}.json`);
+  let result = null;
+  try {
+    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+    if (typeof d.cs === 'number' && typeof d.rc === 'number') {
+      result = { avg: Math.round(d.cs), count: d.rc, raw: d.cs };
+    }
+  } catch {}
+  _compositeCache.set(showId, result);
+  return result;
+}
+
 function aggregateScore(showId) {
+  // Prefer the canonical compositeScore (tier-weighted). This matches every
+  // place the score is displayed on the site. Falls back to arithmetic mean
+  // only if the per-show JSON is missing — in that case the show wouldn't be
+  // renderable on the site either, so a fallback is acceptable for the
+  // newsletter to still emit something.
+  const composite = loadCompositeScore(showId);
+  if (composite) return composite;
   const rs = reviews.filter(r => r.showId === showId && r.assignedScore != null && (r.publishDate || '').slice(0, 10) <= weekEndStr);
   if (!rs.length) return null;
   return { avg: Math.round(rs.reduce((a, r) => a + r.assignedScore, 0) / rs.length), count: rs.length };
@@ -159,16 +188,16 @@ function showLink(show, inner) {
   return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none;">${inner}</a>`;
 }
 
-// Per-section "see all" footer. Returns a <tr> that lives INSIDE the card
-// table (matches Tony Predictions' canonical placement). The colspan="9" is
-// intentional over-padding — every card's row layout has ≤ 9 columns and
-// HTML clamps colspan to the real count. Without it the <td> inherits the
-// host card's first-column fixed width and the link wraps into the ~60px
-// thumbnail gutter (London card regression on 2026-05-24). NYC sections use
-// brand gold; London uses pink.
+// Per-section "see all" footer with a hairline separator above it so the link
+// reads as a footer to the card rather than a stranded line. Hairline matches
+// the inter-row dividers (rgba 0.05). colspan="9" is intentional over-padding
+// — every card's row layout has ≤ 9 columns and HTML clamps colspan to the
+// real count; without it the link wraps into the ~60px thumbnail gutter on
+// 3-col cards (London). NYC sections use brand gold; London uses pink.
 function seeAllLink(href, label, opts = {}) {
   const color = opts.color || '#d4a574';
-  return `<tr><td colspan="9" style="padding:0 16px 14px;">
+  return `<tr><td colspan="9" style="padding:0 16px 0;border-top:1px solid rgba(255,255,255,0.05);">&nbsp;</td></tr>
+    <tr><td colspan="9" style="padding:12px 16px 14px;">
       <a href="${href}" style="font-size:12px;color:${color};text-decoration:none;font-weight:600;">${label} →</a>
     </td></tr>`;
 }
@@ -200,6 +229,46 @@ function loadOutletReg() {
     _outletReg = byName;
   } catch { _outletReg = new Map(); }
   return _outletReg;
+}
+
+// Outlet → tier map, also from data/outlet-registry.json. Used by the
+// tier-weighted average helper below. Canonical weights per
+// src/config/scoring.ts: T1=1.0, T2=0.75, T3=0.40, T4=0.20.
+const TIER_WEIGHTS = { 1: 1.0, 2: 0.75, 3: 0.40, 4: 0.20 };
+const DEFAULT_TIER = 3;
+let _outletTierMap = null;
+function loadOutletTierMap() {
+  if (_outletTierMap) return _outletTierMap;
+  const m = new Map();
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(repo, 'data/outlet-registry.json'), 'utf8'));
+    for (const [slug, o] of Object.entries(raw.outlets || {})) {
+      if (o.tier) m.set(slug, o.tier);
+      if (o.displayName) m.set(o.displayName.toLowerCase(), o.tier || DEFAULT_TIER);
+      for (const alias of (o.aliases || [])) m.set(alias.toLowerCase(), o.tier || DEFAULT_TIER);
+    }
+  } catch {}
+  _outletTierMap = m;
+  return m;
+}
+
+// Tier-weighted mean — matches src/lib/scoring.ts calculateCriticScore().
+// CLAUDE.md rule: never use arithmetic means for score aggregation. Every
+// call site that compares review subsets (biggest mover before/after,
+// outlier peer-avg) routes through this.
+function tierWeightedAverage(reviewList) {
+  if (!reviewList || reviewList.length === 0) return null;
+  const tierMap = loadOutletTierMap();
+  let weightedSum = 0;
+  let totalWeight = 0;
+  for (const r of reviewList) {
+    if (r.assignedScore == null) continue;
+    const tier = tierMap.get(r.outletId) || tierMap.get((r.outlet || '').toLowerCase()) || DEFAULT_TIER;
+    const w = TIER_WEIGHTS[tier] || TIER_WEIGHTS[DEFAULT_TIER];
+    weightedSum += r.assignedScore * w;
+    totalWeight += w;
+  }
+  return totalWeight > 0 ? weightedSum / totalWeight : null;
 }
 function criticLink(name, inner) {
   if (!name || name === 'Unknown') return inner;
@@ -391,8 +460,17 @@ function biggestMoverSection() {
   Object.entries(movers).forEach(([id, x]) => {
     if (x.before.length < 4) return; // need a stable baseline
     if (x.thisWeek.length < 1) return;
-    const beforeAvg = x.before.reduce((a, r) => a + r.assignedScore, 0) / x.before.length;
-    const allAvg = ([...x.before, ...x.thisWeek].reduce((a, r) => a + r.assignedScore, 0)) / (x.before.length + x.thisWeek.length);
+    // "After" badge must match the site's published compositeScore so the
+    // reader who clicks through doesn't see a different number. The site's
+    // composite includes per-critic dedup + top-critic override + off-market
+    // multiplier — too involved to replicate exactly here, so we use the
+    // canonical value from public/data/shows/{id}.json. "Before" is the
+    // tier-weighted average of prior-week reviews — close enough that the
+    // delta represents this week's NEW reviews.
+    const beforeAvg = tierWeightedAverage(x.before);
+    const composite = loadCompositeScore(id);
+    if (beforeAvg == null || !composite) return;
+    const allAvg = composite.raw; // canonical compositeScore (matches site)
     const delta = allAvg - beforeAvg;
     if (Math.abs(delta) < 1) return; // suppress tiny moves
     const show = shows.find(s => s.id === id);
@@ -673,9 +751,7 @@ function tonyWatchSection() {
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
-    <tr><td style="padding:0 16px 14px;">
-      <a href="https://broadwayscorecard.com/tony-awards/predictions" style="font-size:12px;color:#d4a574;text-decoration:none;font-weight:600;">See all 26 Tony predictions →</a>
-    </td></tr>
+    ${seeAllLink('https://broadwayscorecard.com/tony-awards/predictions', 'See all 26 Tony predictions')}
   </table>`;
   return sectionWrap(sectionHeading('Tony Predictions', subtitle, { href: `${SITE}/tony-awards/predictions` }), body);
 }
@@ -732,7 +808,8 @@ function findDrivingReviewForShow(showId) {
   if (newRs.length === 0) return null;
   const priorRs = reviews.filter(r => r.showId === showId && r.assignedScore != null && (r.publishDate || '').slice(0, 10) < weekStartStr);
   if (priorRs.length < 2) return null;
-  const priorAvg = priorRs.reduce((a, r) => a + r.assignedScore, 0) / priorRs.length;
+  const priorAvg = tierWeightedAverage(priorRs);
+  if (priorAvg == null) return null;
   let best = null;
   for (const r of newRs) {
     const diff = r.assignedScore - priorAvg;
@@ -754,7 +831,8 @@ function findWeekOutlier() {
     if (rs.length < 4) continue;
     for (const r of rs) {
       const others = rs.filter(x => x !== r);
-      const avg = others.reduce((a, x) => a + x.assignedScore, 0) / others.length;
+      const avg = tierWeightedAverage(others);
+      if (avg == null) continue;
       const diff = r.assignedScore - avg;
       if (!best || Math.abs(diff) > Math.abs(best.diff)) {
         const show = shows.find(s => s.id === id);
@@ -1488,8 +1566,9 @@ const newsworthyInputs = {
     let best = null;
     for (const [id, x] of Object.entries(map)) {
       if (x.before.length < 4 || x.thisWeek.length < 1) continue;
-      const beforeAvg = x.before.reduce((a, r) => a + r.assignedScore, 0) / x.before.length;
-      const allAvg = ([...x.before, ...x.thisWeek].reduce((a, r) => a + r.assignedScore, 0)) / (x.before.length + x.thisWeek.length);
+      const beforeAvg = tierWeightedAverage(x.before);
+      const allAvg = tierWeightedAverage([...x.before, ...x.thisWeek]);
+      if (beforeAvg == null || allAvg == null) continue;
       const delta = allAvg - beforeAvg;
       const show = shows.find(s => s.id === id);
       if (!show || (show.category !== 'broadway' && show.category !== 'off-broadway')) continue;
