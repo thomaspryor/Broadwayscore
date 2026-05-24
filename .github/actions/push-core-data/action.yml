@@ -161,6 +161,16 @@ runs:
           # Save remote's shows.json before rebase overwrites it
           git show origin/main:shows.json > /tmp/remote-shows.json 2>/dev/null || true
 
+          # Save remote's commercial.json + commercial-pending-review.json
+          # before rebase overwrites them. With RSS poller + scraper + sweep
+          # all writing to these, multi-writer concurrency demands a real merge.
+          # Ship-check CDX-P0-2.
+          git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
+          git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
+          # Snapshot our pre-rebase copies so the merge has both sides.
+          [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
+          [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
+
           # Rebase with -X ours: our version wins on conflicts.
           # Post-rebase reconciliation below restores any remote-only changes
           # that -X ours silently dropped (manual corrections to shows.json, audience-buzz).
@@ -310,6 +320,57 @@ runs:
             git add shows.json
             git commit --amend --no-edit
             echo "Amended commit with reconciled shows.json"
+          fi
+
+          # Reconcile commercial.json + commercial-pending-review.json. Both
+          # are per-slug dictionaries written by multiple workflows (Friday
+          # scraper, Saturday orchestrator, RSS poller, closing-stale
+          # classifier). -X ours alone would silently lose slugs added on the
+          # other side. mergeCommercialJson preserves humanReviewed* flags
+          # from the loser side so manual corrections always survive.
+          if [ -f "/tmp/our-commercial.json" ] && [ -f "/tmp/remote-commercial.json" ] && [ -f "commercial.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergeCommercialJson } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial.json", "utf8"));
+                const { merged, stats } = mergeCommercialJson(ours, remote);
+                fs.writeFileSync("commercial.json", JSON.stringify(merged, null, 2) + "\n");
+                console.log("Reconciled commercial.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("commercial.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet commercial.json 2>/dev/null; then
+              git add commercial.json
+              git commit --amend --no-edit
+              echo "Amended commit with reconciled commercial.json"
+            fi
+          fi
+          if [ -f "/tmp/our-commercial-pending.json" ] && [ -f "/tmp/remote-commercial-pending.json" ] && [ -f "commercial-pending-review.json" ]; then
+            node -e '
+              const path = require("path");
+              const ws = process.env.GITHUB_WORKSPACE;
+              const fs = require("fs");
+              try {
+                const { mergePendingReview } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
+                const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial-pending.json", "utf8"));
+                const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial-pending.json", "utf8"));
+                const { merged, stats } = mergePendingReview(ours, remote);
+                fs.writeFileSync("commercial-pending-review.json", JSON.stringify(merged, null, 2) + "\n");
+                console.log("Reconciled commercial-pending-review.json: " + JSON.stringify(stats));
+              } catch (e) {
+                console.error("commercial-pending-review.json reconciliation failed (non-fatal):", e.message);
+              }
+            ' 2>&1 || true
+            if ! git diff --quiet commercial-pending-review.json 2>/dev/null; then
+              git add commercial-pending-review.json
+              git commit --amend --no-edit
+              echo "Amended commit with reconciled commercial-pending-review.json"
+            fi
           fi
 
           sleep $((RANDOM % 10 + 5))
