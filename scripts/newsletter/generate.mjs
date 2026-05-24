@@ -577,7 +577,13 @@ function biggestMoverSection() {
       if (!show) return;
       if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
     if (isOperaShow(show)) return;
-      const minReviewsForMover = show.category === 'broadway' ? 15 : 100;
+      // Off-Broadway threshold lowered 100 → 50 (Gemini final review): 100
+      // was effectively gating out every OB audience mover; many OB shows
+      // have a steady-state audience review count in the 60–90 range, so a
+      // genuine grade flip with ~10 new reviews was being suppressed. 50
+      // still requires real sample size — a 5-review-base show flipping a
+      // grade is noise, but a 50-review show flipping is signal.
+      const minReviewsForMover = show.category === 'broadway' ? 15 : 50;
       if (bReviews < minReviewsForMover || nReviews < minReviewsForMover) return;
       const bg = grade(b.combinedScore);
       const ng = grade(n.combinedScore);
@@ -779,7 +785,6 @@ function tonyWatchSection() {
       </td>
       <td valign="middle" width="56" align="center" style="padding:7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         ${ourPickBox}
-        <div style="font-size:9px;color:#9ca3af;margin-top:2px;font-weight:500;">our pick</div>
       </td>
     </tr>`;
   }).join('');
@@ -963,29 +968,29 @@ function announcedClosingsSection() {
 }
 
 // SECTION: Commercial — recoupment announcements this week (Broadway).
-// Reads data/commercial.json. recoupedDate is monthly granularity (YYYY-MM),
-// so we surface anything whose recoupedDate matches this week's month
-// AND whose verified date in deepResearch.verifiedDate is within last 14 days.
+// News-freshness gate: recoupedDate must be a valid YYYY-MM (rejects year-only
+// "2026") AND fall in this month or the previous month. Verification timestamp
+// is bookkeeping, not news — re-verifying a 2-year-old recoupment shouldn't
+// resurface it. The Gemini final review (2026-05-24) caught that the older
+// verifiedDate fallback had silently regressed through a merge.
 function commercialSection() {
   let comm;
   try { comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8')); }
   catch { return null; }
-  const weekMonth = weekEndStr.slice(0, 7); // YYYY-MM
-  const lookback = new Date(weekStartStr + 'T12:00:00'); lookback.setDate(lookback.getDate() - 14);
-  const lookbackStr = lookback.toISOString().slice(0, 10);
-  // Slug → show map for Broadway only
   const slugToShow = new Map();
   shows.forEach(s => { if (s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
+  const weekMonth = weekEndStr.slice(0, 7);
+  const prevMonth = (() => {
+    const [yy, mm] = weekMonth.split('-').map(Number);
+    return mm === 1 ? `${yy - 1}-12` : `${yy}-${String(mm - 1).padStart(2, '0')}`;
+  })();
   const fresh = [];
   Object.entries(comm.shows || {}).forEach(([slug, c]) => {
     if (!c.recouped || !c.recoupedDate) return;
+    if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) return;
+    if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) return;
     const show = slugToShow.get(slug);
     if (!show) return;
-    // Recoupment month matches current month? OR verification was fresh?
-    const monthMatch = c.recoupedDate === weekMonth || c.recoupedDate.startsWith(weekMonth.slice(0, 4) + '-' + (parseInt(weekMonth.slice(5)) - 1).toString().padStart(2, '0'));
-    const verifiedDate = c.deepResearch?.verifiedDate;
-    const verifiedRecent = verifiedDate && verifiedDate >= lookbackStr && verifiedDate <= weekEndStr;
-    if (!monthMatch && !verifiedRecent) return;
     fresh.push({ show, c });
   });
   if (!fresh.length) return null;
@@ -1639,20 +1644,20 @@ const newsworthyInputs = {
   obOpenings: obEvents,
   aggregateScore,
   recoupments: (() => {
-    // Mirror commercialSection's filter to gather recouped-this-week candidates.
+    // Mirror commercialSection's tightened gate exactly (same fix per Gemini
+    // final review): YYYY-MM strict format, this month or last month only.
     try {
       const comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8'));
       const weekMonth = weekEndStr.slice(0, 7);
-      const lookback = new Date(weekStartStr + 'T12:00:00'); lookback.setDate(lookback.getDate() - 14);
-      const lookbackStr = lookback.toISOString().slice(0, 10);
+      const [_yy, _mm] = weekMonth.split('-').map(Number);
+      const prevMonth = _mm === 1 ? `${_yy - 1}-12` : `${_yy}-${String(_mm - 1).padStart(2, '0')}`;
       const out = [];
       for (const [slug, c] of Object.entries(comm.shows || {})) {
         if (!c.recouped || !c.recoupedDate) continue;
+        if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) continue;
+        if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) continue;
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show || isOperaShow(show)) continue;
-        const monthMatch = c.recoupedDate === weekMonth;
-        const verifiedRecent = c.deepResearch?.verifiedDate && c.deepResearch.verifiedDate >= lookbackStr;
-        if (!monthMatch && !verifiedRecent) continue;
         // Same weeks-to-recoup math the section uses.
         const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
         let weeksToRecoup = null;
