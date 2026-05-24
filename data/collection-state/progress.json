@@ -20,7 +20,14 @@
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
     "the-balusters-2026/theatrely--unknown.json",
     "becky-shaw-2026/variety--unknown.json",
-    "becky-shaw-2026/deadline--unknown.json"
+    "becky-shaw-2026/deadline--unknown.json",
+    "becky-shaw-2026/wsj--unknown.json",
+    "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
+    "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+    "two-strangers-bway-2025/nypost--unknown.json",
+    "ragtime-2025/nytimes--unknown.json",
+    "masquerade-off-broadway-2025/wsj--unknown.json",
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -664,7 +671,10 @@
     "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
     "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
     "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-    "proof-2026/the-globe-and-mail--kelly-nestruck.json"
+    "proof-2026/the-globe-and-mail--kelly-nestruck.json",
+    "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+    "every-brilliant-thing-2026/timeout--adam-feldman.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -681,7 +691,9 @@
       "turandot-off-broadway-2025/parterre-box--unknown.json",
       "operation-mincemeat-2025/timeout--unknown.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "11-to-midnight-off-broadway-2026/one-minute-critic--ryan-leeds.json",
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json"
     ],
     "amp": [],
     "browserbase": [
@@ -689,7 +701,11 @@
       "data/review-texts/becky-shaw-2026/variety--unknown.json",
       "becky-shaw-2026/variety--unknown.json",
       "data/review-texts/becky-shaw-2026/deadline--unknown.json",
-      "becky-shaw-2026/deadline--unknown.json"
+      "becky-shaw-2026/deadline--unknown.json",
+      "data/review-texts/becky-shaw-2026/wsj--unknown.json",
+      "becky-shaw-2026/wsj--unknown.json",
+      "data/review-texts/masquerade-off-broadway-2025/wsj--unknown.json",
+      "masquerade-off-broadway-2025/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -703,16 +719,23 @@
       "the-great-gatsby-2024/nytimes--unknown.json",
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
       "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
-      "the-balusters-2026/theatrely--unknown.json"
+      "the-balusters-2026/theatrely--unknown.json",
+      "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
+      "every-brilliant-thing-2026/timeout--adam-feldman.json",
+      "ragtime-2025/nytimes--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "two-strangers-bway-2025/nypost--unknown.json"
+    ],
     "archiveToday": [
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json"
     ],
-    "archive": []
+    "archive": [
+      "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json"
+    ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "becky-shaw-2026/deadline--unknown.json",
+  "lastProcessed": "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
   "log": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -741,6 +764,28 @@
       "t": "2026-05-24T14:28:32.328Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-24T14:28:49.952Z",
+      "event": "bb-session",
+      "session": "f9e8ad82",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-05-24T14:28:50.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-24T14:33:59.424Z",
+      "event": "bb-session",
+      "session": "875b3f74",
+      "url": "https://www.wsj.com/arts-culture/books/the-masquerade-review-the-delights-of-dis"
+    },
+    {
+      "t": "2026-05-24T14:34:00.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-24T14:28:49.078Z",
-  "processed": 21,
-  "failed": 642,
-  "successRate": "3.2%",
+  "updatedAt": "2026-05-24T14:34:29.034Z",
+  "processed": 28,
+  "failed": 645,
+  "successRate": "4.2%",
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 15,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingbee": 11,
-    "brightdata": 0,
+    "scrapingbee": 14,
+    "brightdata": 1,
     "archiveToday": 1,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -42,6 +42,28 @@
       "t": "2026-05-24T14:28:32.328Z",
       "event": "bb-cookie-inject",
       "domain": "deadline.com"
+    },
+    {
+      "t": "2026-05-24T14:28:49.952Z",
+      "event": "bb-session",
+      "session": "f9e8ad82",
+      "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway"
+    },
+    {
+      "t": "2026-05-24T14:28:50.955Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-24T14:33:59.424Z",
+      "event": "bb-session",
+      "session": "875b3f74",
+      "url": "https://www.wsj.com/arts-culture/books/the-masquerade-review-the-delights-of-dis"
+    },
+    {
+      "t": "2026-05-24T14:34:00.510Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
