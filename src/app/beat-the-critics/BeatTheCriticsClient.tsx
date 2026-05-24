@@ -211,6 +211,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     } catch {}
     return () => document.body.classList.remove('btc-standalone');
   }, []);
+  const [expandedCriticIdx, setExpandedCriticIdx] = useState<number | null>(null);
   const [screen, setScreen] = useState<Screen>('landing');
   const [currentTierIdx, setCurrentTierIdx] = useState(0);
   const [currentCatIdx, setCurrentCatIdx] = useState(0);
@@ -402,14 +403,17 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="animate-fade-up w-full mt-2" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>
             <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Your Competition</div>
             <div className="grid grid-cols-3 gap-1.5">
-              {CRITICS.map((c, i) => (
-                <div key={i} className="rounded-xl bg-surface-raised ring-1 ring-white/5 p-2.5 text-left">
-                  <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
-                  <div className="text-[12px] font-bold leading-tight">{c.name}</div>
-                  <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
-                  <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-3">{c.bio}</div>
-                </div>
-              ))}
+              {CRITICS.map((c, i) => {
+                const expanded = expandedCriticIdx === i;
+                return (
+                  <button key={i} onClick={() => setExpandedCriticIdx(expanded ? null : i)} className="rounded-xl bg-surface-raised ring-1 ring-white/5 p-2.5 text-left w-full transition-all duration-200 hover:ring-white/10 active:scale-[0.98]">
+                    <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
+                    <div className="text-[12px] font-bold leading-tight">{c.name}</div>
+                    <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
+                    <div className={`text-[10px] text-gray-500 mt-1 leading-snug ${expanded ? '' : 'line-clamp-3'}`}>{c.bio}</div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
