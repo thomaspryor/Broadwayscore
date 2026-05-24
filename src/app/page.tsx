@@ -14,6 +14,7 @@ import path from 'path';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
+import FeaturedSpotSlim from '@/components/FeaturedSpotSlim';
 
 const homeOgImageUrl = `${BASE_URL}/og/home.png`;
 const currentYear = new Date().getFullYear();
@@ -281,6 +282,25 @@ export default function HomePage() {
             {stats.totalShows.toLocaleString('en-US')} shows. {stats.totalReviews.toLocaleString('en-US')} critic reviews. And counting.
           </p>
         </div>
+        {/* Above-fold slim promo — currently Tony predictions; swap to BTC by
+            changing the props (BTC config kept below as a comment).
+            Beat the Critics swap:
+              <FeaturedSpotSlim
+                eyebrow="Now playing"
+                title="Think you know Broadway better than the critics?"
+                ctaLabel="Make your picks"
+                href="/beat-the-critics"
+                accent="btc"
+                stat={{ icon: '★', label: 'Beat the Critics' }}
+              /> */}
+        <FeaturedSpotSlim
+          eyebrow="Tony Awards 2026"
+          title="Who will win Best Musical?"
+          ctaLabel="See the predictions"
+          href="/tony-awards/predictions/2025-2026"
+          accent="gold"
+          stat={{ value: '92.9%', label: 'Accuracy' }}
+        />
         <FeaturedRowServer shows={bestRecentShows} />
       </div>
       <Suspense>
