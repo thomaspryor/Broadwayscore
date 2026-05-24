@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-05-24T11:20:26.773Z",
+  "generatedAt": "2026-05-24T11:38:01.661Z",
   "summary": {
-    "total": 1,
+    "total": 2,
     "high": 0,
     "medium": 0,
-    "low": 1
+    "low": 2
   },
   "collisions": [
+    {
+      "url": "https://theaterlife.com/animal-wisdom-the-emporium-celebrity-autobiography/",
+      "normalizedUrl": "https://theaterlife.com/animal-wisdom-the-emporium-celebrity-autobiography",
+      "candidates": [
+        {
+          "showId": "celebrity-autobiography-2026",
+          "file": "theater-life--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-05-18",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theater-life"
+        },
+        {
+          "showId": "the-emporium-off-broadway-2025",
+          "file": "theater-life--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-05-18",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theater-life"
+        }
+      ],
+      "suggestedWinner": "celebrity-autobiography-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre/",
       "normalizedUrl": "https://thestage.co.uk/reviews/2004/the-phantom-of-the-opera-review-at-her-majestys-theatre",
