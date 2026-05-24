@@ -2381,6 +2381,15 @@ function validateCommercialJson() {
     return;
   }
 
+  // Load shows.json for venue/nonprofitOrg cross-validation. Optional —
+  // if shows.json is missing we skip the venue check rather than fail.
+  let showsData = null;
+  try {
+    showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+  } catch {
+    // skip venue/org cross-check
+  }
+
   // Validate _meta.designations exists
   if (!data._meta || !data._meta.designations || typeof data._meta.designations !== 'object') {
     error('commercial.json missing _meta.designations object');
@@ -2482,6 +2491,29 @@ function validateCommercialJson() {
     if (show.recouped === true && !show.recoupedDate) {
       error(`commercial.json: "${showId}" has recouped=true but missing recoupedDate (REQUIRED for weeks calculation)`);
       issues++;
+    }
+
+    // nonprofitOrg must match the show's venue. Catches the inverse of the
+    // purpose-2025/job-2024 trap: tagging Liberation as Roundabout when the
+    // venue was actually James Earl Jones (ATG commercial). Does NOT catch
+    // commercial-rentals-at-correct-venue — that needs season-membership
+    // verification, see memory/feedback_nonprofit_venue_vs_production.md.
+    if (show.nonprofitOrg) {
+      const showRecord = showsData?.shows?.find?.(s => s.slug === showId);
+      if (showRecord?.venue) {
+        const NP_VENUES = {
+          'Lincoln Center Theater': ['Vivian Beaumont Theater', 'Mitzi E. Newhouse Theater', 'Claire Tow Theater'],
+          'Manhattan Theatre Club': ['Samuel J. Friedman Theatre', 'New York City Center Stage I', 'New York City Center Stage II'],
+          'Roundabout Theatre Company': ['Todd Haimes Theatre', 'American Airlines Theatre', 'Stephen Sondheim Theatre', 'Studio 54', 'Laura Pels Theatre', 'Harold and Miriam Steinberg Center for Theatre'],
+          'Second Stage Theater': ['Helen Hayes Theater', 'Tony Kiser Theater'],
+          'The Public Theater': ['Newman Theater', 'Anspacher Theater', 'Martinson Hall', 'LuEsther Hall', 'Shiva Theater'],
+        };
+        const allowed = NP_VENUES[show.nonprofitOrg];
+        if (allowed && !allowed.includes(showRecord.venue)) {
+          error(`commercial.json: "${showId}" has nonprofitOrg="${show.nonprofitOrg}" but venue is "${showRecord.venue}" (expected one of: ${allowed.join(', ')}). Likely a stale tag — was this a commercial production at a non-nonprofit venue?`);
+          issues++;
+        }
+      }
     }
 
     // Validate recoupedDate format if present (YYYY-MM or YYYY)

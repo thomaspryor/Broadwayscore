@@ -154,6 +154,7 @@
 
 ## 💼 Commercial / features / video
 - [Commercial slug keys](feedback_commercial_slug_keys.md) — `commercial.json` keyed by slug not ID.
+- [nonprofitOrg = producer, NOT venue owner](feedback_nonprofit_venue_vs_production.md) — Hayes/Friedman/Beaumont/Haimes host commercial rentals (purpose-2025, job-2024 caught 2026-05-24); verify season membership before tagging. Validator now warns on venue/org mismatch.
 - [Feature launch sequence](project_feature_launch_sequence.md) — Lottery/Rush → Awards/Tony → Commercial. Don't enable yet.
 - [VideoScore](project_videoscore_feature.md) — Video critic reviews via transcript sentiment.
 
