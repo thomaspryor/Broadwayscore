@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-05-24T18:38:25.864Z",
+    "lastUpdated": "2026-05-24T22:46:06.775Z",
     "sources": [
       "Wikipedia",
       "Playbill",
@@ -67,6 +67,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Bebe Neuwirth"
+          ],
+          "Outstanding Featured Actor in a Musical": [
+            "Joel Grey"
           ]
         }
       },
@@ -98,6 +101,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Bebe Neuwirth"
+          ],
+          "Outstanding Featured Actor in a Musical": [
+            "Joel Grey"
           ]
         }
       },
@@ -276,6 +282,7 @@
         "wins": [
           "Outstanding Book of a Musical",
           "Outstanding Costume Design",
+          "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Lyrics",
           "Outstanding Musical",
@@ -307,6 +314,9 @@
           ],
           "Outstanding Scenic Design of a Musical": [
             "Eugene Lee"
+          ],
+          "Outstanding Direction of a Musical": [
+            "Joe Mantello"
           ]
         }
       },
@@ -377,12 +387,12 @@
       "dramadesk": {
         "season": "2010-11",
         "wins": [
+          "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Lyrics",
           "Outstanding Music",
           "Outstanding Musical",
-          "Outstanding Orchestrations",
-          "Outstanding Sound Design of a Musical"
+          "Outstanding Orchestrations"
         ],
         "nominations": 12,
         "nominatedFor": [
@@ -400,8 +410,17 @@
           "Outstanding Sound Design of a Musical"
         ],
         "winnerNames": {
-          "Outstanding Sound Design of a Musical": [
-            "Brian Ronan"
+          "Outstanding Direction of a Musical": [
+            "Casey Nicholaw and Trey Parker"
+          ],
+          "Outstanding Music": [
+            "Trey Parker, Robert Lopez & Matt Stone"
+          ],
+          "Outstanding Lyrics": [
+            "Trey Parker, Robert Lopez & Matt Stone"
+          ],
+          "Outstanding Orchestrations": [
+            "Larry Hochman and Stephen Oremus"
           ]
         }
       },
@@ -557,11 +576,6 @@
       "dramadesk": {
         "season": "2015-16",
         "wins": [
-          "Outstanding Book of a Musical",
-          "Outstanding Choreography",
-          "Outstanding Featured Actress in a Musical",
-          "Outstanding Lyrics",
-          "Outstanding Music",
           "Outstanding Musical",
           "Outstanding Sound Design in a Musical"
         ],
@@ -634,9 +648,7 @@
       },
       "lortel": {
         "season": "2015-16",
-        "wins": [
-          "Outstanding Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Costume Design",
@@ -689,7 +701,8 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Lighting Design for a Musical",
           "Outstanding Lighting Design of a Musical",
-          "Outstanding Sound Design"
+          "Outstanding Sound Design",
+          "Outstanding Sound Design of a Musical"
         ],
         "nominations": 7,
         "nominatedFor": [
@@ -712,6 +725,9 @@
           ],
           "Outstanding Featured Actor in a Musical": [
             "André De Shields"
+          ],
+          "Outstanding Sound Design of a Musical": [
+            "Nevin Steinberg and Jessica Paz"
           ]
         }
       },
@@ -932,6 +948,12 @@
         "winnerNames": {
           "Outstanding Costume Design of a Musical": [
             "Gabriella Slade"
+          ],
+          "Outstanding Music": [
+            "Toby Marlow and Lucy Moss"
+          ],
+          "Outstanding Lyrics": [
+            "Toby Marlow and Lucy Moss"
           ]
         }
       },
@@ -1001,6 +1023,7 @@
           "Outstanding Lighting Design for a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Music in a Play",
+          "Outstanding Projection Design",
           "Outstanding Projection Design of a Play",
           "Outstanding Sound Design of a Play"
         ],
@@ -1023,6 +1046,9 @@
           ],
           "Outstanding Sound Design of a Play": [
             "Gareth Fry"
+          ],
+          "Outstanding Projection Design": [
+            "Finn Ross and Ash J. Woodward"
           ]
         }
       },
@@ -1121,6 +1147,9 @@
           ],
           "Outstanding Sound Design of a Musical": [
             "Gareth Owen"
+          ],
+          "Outstanding Orchestrations": [
+            "Jason Michael Webb and David Holcenberg"
           ]
         }
       },
@@ -1139,7 +1168,12 @@
           "Outstanding Lighting Design",
           "Outstanding New Broadway Musical",
           "Outstanding Orchestrations"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Choreography": [
+            "Christopher Wheeldon and Rich + Tone Talauega"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2021-22",
@@ -1320,8 +1354,7 @@
         "wins": [
           "Outstanding Direction of a Musical",
           "Outstanding Fight Choreography",
-          "Outstanding Puppetry",
-          "Outstanding Sound Design of a Musical"
+          "Outstanding Puppetry"
         ],
         "nominations": 7,
         "nominatedFor": [
@@ -1392,8 +1425,7 @@
       "dramadesk": {
         "season": "2023-24",
         "wins": [
-          "Outstanding Lighting Design of a Musical",
-          "Outstanding Sound Design of a Musical"
+          "Outstanding Lighting Design of a Musical"
         ],
         "nominations": 9,
         "nominatedFor": [
@@ -1407,7 +1439,12 @@
           "Outstanding Musical",
           "Outstanding Scenic Design of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design of a Musical": [
+            "Brian MacDevitt and Hana S. Kim"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2023-24",
@@ -1551,7 +1588,6 @@
           "Outstanding Direction of a Play",
           "Outstanding Ensemble",
           "Outstanding Music in a Play",
-          "Outstanding Orchestrations",
           "Outstanding Play",
           "Outstanding Scenic Design of a Play",
           "Outstanding Sound Design of a Play"
@@ -1703,7 +1739,6 @@
         "season": "2023-24",
         "wins": [
           "Outstanding Featured Performance in a Musical",
-          "Outstanding Lead Performance in a Musical",
           "Outstanding Projection Design",
           "Outstanding Projection and Video Design"
         ],
@@ -1741,19 +1776,12 @@
       },
       "lortel": {
         "season": "2023-24",
-        "wins": [
-          "Outstanding Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Lead Performer in a Musical",
           "Outstanding Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Musical": [
-            "(pray)"
-          ]
-        }
+        ]
       }
     },
     "cabaret-2024": {
@@ -1780,6 +1808,7 @@
         "season": "2023-24",
         "wins": [
           "Outstanding Featured Performance in a Musical",
+          "Outstanding Revival of a Musical",
           "Outstanding Sound Design of a Musical"
         ],
         "nominations": 6,
@@ -1790,7 +1819,15 @@
           "Outstanding Lead Performance in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Musical": [
+            "I Can Get It for You Wholesale"
+          ],
+          "Outstanding Sound Design of a Musical": [
+            "Nick Lidster for Autograph"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2023-24",
@@ -1829,7 +1866,12 @@
         "nominations": 1,
         "nominatedFor": [
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Musical": [
+            "Paul Tate DePoo III"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2023-24",
@@ -1972,11 +2014,18 @@
       },
       "dramadesk": {
         "season": "2024-25",
-        "wins": [],
+        "wins": [
+          "Outstanding Costume Design of a Play"
+        ],
         "nominations": 1,
         "nominatedFor": [
           "Outstanding Costume Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Costume Design of a Play": [
+            "Dede Ayite"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2024-25",
@@ -1994,9 +2043,7 @@
       },
       "lortel": {
         "season": "2024-25",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Revival"
         ]
@@ -2034,7 +2081,6 @@
           "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
-          "Outstanding Lead Performance in a Musical",
           "Outstanding Lyrics",
           "Outstanding Music",
           "Outstanding Musical",
@@ -2058,6 +2104,15 @@
           ],
           "Outstanding Music": [
             "Will Aronson"
+          ],
+          "Outstanding Lyrics": [
+            "Will Aronson and Hue Park"
+          ],
+          "Outstanding Book of a Musical": [
+            "Will Aronson and Hue Park"
+          ],
+          "Outstanding Scenic Design of a Musical": [
+            "Dane Laffrey and George Reeve"
           ]
         }
       },
@@ -2220,6 +2275,9 @@
           ],
           "Outstanding Sound Design of a Play": [
             "Paul Arditti"
+          ],
+          "Outstanding Scenic Design of a Play": [
+            "Miriam Buether, Jamie Harrison and Chris Fisher"
           ]
         }
       },
@@ -2278,9 +2336,7 @@
       },
       "dramadesk": {
         "season": "2024-25",
-        "wins": [
-          "Outstanding Orchestrations"
-        ],
+        "wins": [],
         "nominations": 0,
         "note": "Not eligible - competed for Off-Broadway run",
         "nominatedFor": [
@@ -2408,8 +2464,7 @@
         "season": "2024-25",
         "wins": [
           "Outstanding Choreography",
-          "Outstanding Costume Design of a Musical",
-          "Outstanding Lead Performance in a Musical"
+          "Outstanding Costume Design of a Musical"
         ],
         "nominations": 11,
         "nominatedFor": [
@@ -2507,6 +2562,9 @@
         "winnerNames": {
           "Outstanding Sound Design of a Musical": [
             "Peter Hylenski"
+          ],
+          "Outstanding Orchestrations": [
+            "Andrew Resnick and Michael Thurber"
           ]
         }
       },
@@ -2649,8 +2707,7 @@
       "dramadesk": {
         "season": "2025-26",
         "wins": [
-          "Outstanding Lead Performance in a Play",
-          "Outstanding Sound Design of a Play"
+          "Outstanding Lead Performance in a Play"
         ],
         "nominatedFor": [
           "Outstanding Lead Performance in a Play",
@@ -2660,9 +2717,6 @@
         "winnerNames": {
           "Outstanding Lead Performance in a Play": [
             "Lesley Manville"
-          ],
-          "Outstanding Sound Design of a Play": [
-            "Tom Gibbons"
           ]
         }
       }
@@ -2686,12 +2740,19 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lyrics"
+        ],
         "nominatedFor": [
           "Outstanding Lead Performance in a Musical",
           "Outstanding Lyrics",
           "Outstanding Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lyrics": [
+            "Jim Barne and Kit Buchan"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2025-26",
@@ -2846,11 +2907,18 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performance in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Lead Performance in a Musical",
           "Outstanding Revival of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performance in a Musical": [
+            "Caissie Levy"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2025-26",
@@ -3034,7 +3102,8 @@
         "season": "2004-05",
         "wins": [
           "Outstanding Book of a Musical",
-          "Outstanding Direction of a Musical"
+          "Outstanding Direction of a Musical",
+          "Outstanding Musical"
         ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
@@ -3050,6 +3119,9 @@
           ],
           "Outstanding Book of a Musical": [
             "Rachel Sheinkin"
+          ],
+          "Outstanding Musical": [
+            "Monty Python's Spamalot"
           ]
         }
       },
@@ -3596,7 +3668,10 @@
       "dramadesk": {
         "season": "2005-06",
         "wins": [
+          "Outstanding Book of a Musical",
           "Outstanding Featured Actress in a Musical",
+          "Outstanding Lyrics",
+          "Outstanding Music",
           "Outstanding Musical",
           "Outstanding Scenic Design of a Musical"
         ],
@@ -3621,6 +3696,15 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Beth Leavel"
+          ],
+          "Outstanding Music": [
+            "Lisa Lambert & Greg Morrison"
+          ],
+          "Outstanding Lyrics": [
+            "Lisa Lambert & Greg Morrison"
+          ],
+          "Outstanding Book of a Musical": [
+            "Bob Martin and Don McKellar"
           ]
         }
       },
@@ -4154,10 +4238,17 @@
       },
       "outerCriticsCircle": {
         "season": "2005-06",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Gabriel Byrne"
+          ]
+        }
       }
     },
     "tarzan-2006": {
@@ -4359,7 +4450,8 @@
         "wins": [
           "Outstanding Actress in a Musical",
           "Outstanding Music",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -4376,6 +4468,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Montego Glover"
+          ],
+          "Outstanding Orchestrations": [
+            "Daryl Waters and David Bryan"
           ]
         }
       },
@@ -4421,13 +4516,20 @@
       },
       "dramadesk": {
         "season": "2009-10",
-        "wins": [],
+        "wins": [
+          "Outstanding Direction of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Musical",
           "Outstanding Orchestrations"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Musical": [
+            "Michael Mayer"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2009-10",
@@ -4645,9 +4747,7 @@
       },
       "outerCriticsCircle": {
         "season": "2009-10",
-        "wins": [
-          "Outstanding Featured Actress in a Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actress in a Play",
           "Outstanding Direction of a Play",
@@ -4655,12 +4755,7 @@
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
-        ],
-        "winnerNames": {
-          "Outstanding Featured Actress in a Play": [
-            "Jan Maxwell"
-          ]
-        }
+        ]
       },
       "dramadesk": {
         "season": "2009-10",
@@ -4692,6 +4787,7 @@
       "dramadesk": {
         "season": "1997-98",
         "wins": [
+          "Outstanding Actor in a Play",
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
@@ -4700,7 +4796,12 @@
           "Outstanding Director of a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Liev Schreiber"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1997-98",
@@ -4891,7 +4992,9 @@
       },
       "dramadesk": {
         "season": "2009-10",
-        "wins": [],
+        "wins": [
+          "Outstanding Sound Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Choreography",
@@ -4900,7 +5003,12 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design of a Musical": [
+            "Acme Sound Partners"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2009-10",
@@ -5378,6 +5486,7 @@
       "outerCriticsCircle": {
         "season": "2010-11",
         "wins": [
+          "Outstanding Direction of a Play",
           "Outstanding New Broadway Play"
         ],
         "nominatedFor": [
@@ -5385,7 +5494,12 @@
           "Outstanding Director of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding New Broadway Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Marianne Elliott and Tom Morris"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2010-11",
@@ -5731,13 +5845,19 @@
       "dramadesk": {
         "season": "2010-11",
         "wins": [
+          "Outstanding Direction of a Play",
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Joel Grey and George C. Wolfe"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2010-11",
@@ -6186,13 +6306,20 @@
       },
       "dramadesk": {
         "season": "2010-11",
-        "wins": [],
+        "wins": [
+          "Outstanding Sound Design of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Play",
           "Outstanding Sound Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design of a Play": [
+            "Acme Sound Partners and Cricket S. Myers"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2010-11",
@@ -6569,6 +6696,7 @@
         "season": "2011-12",
         "wins": [
           "Outstanding Direction of a Musical",
+          "Outstanding Lyrics",
           "Outstanding Musical",
           "Outstanding Orchestrations"
         ],
@@ -6587,6 +6715,9 @@
           ],
           "Outstanding Orchestrations": [
             "Martin Lowe"
+          ],
+          "Outstanding Lyrics": [
+            "Glen Hansard & Markéta Irglová"
           ]
         }
       },
@@ -8087,6 +8218,7 @@
       "dramadesk": {
         "season": "2012-13",
         "wins": [
+          "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Revival of a Musical"
@@ -8104,6 +8236,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Andrea Martin"
+          ],
+          "Outstanding Choreography": [
+            "Chet Walker and Gypsy Snider"
           ]
         }
       },
@@ -8310,7 +8445,8 @@
       "outerCriticsCircle": {
         "season": "2012-13",
         "wins": [
-          "Outstanding Actor in a Play"
+          "Outstanding Actor in a Play",
+          "Outstanding Direction of a Play"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
@@ -8323,6 +8459,9 @@
         "winnerNames": {
           "Outstanding Actor in a Play": [
             "Nathan Lane"
+          ],
+          "Outstanding Direction of a Play": [
+            "Jack O'Brien"
           ]
         }
       },
@@ -8506,7 +8645,9 @@
       },
       "dramadesk": {
         "season": "2012-13",
-        "wins": [],
+        "wins": [
+          "Outstanding Sound Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
           "Outstanding Choreography",
@@ -8517,7 +8658,12 @@
           "Outstanding Musical",
           "Outstanding Orchestrations",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design of a Musical": [
+            "Steve Canyon Kennedy"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2012-13",
@@ -8999,9 +9145,7 @@
       },
       "lortel": {
         "season": "2013-14",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Costume Design",
           "Outstanding Lead Actor in a Play",
@@ -9530,7 +9674,8 @@
       "outerCriticsCircle": {
         "season": "2013-14",
         "wins": [
-          "Outstanding Featured Actor in a Musical"
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Featured Actress in a Musical"
         ],
         "nominatedFor": [
           "Outstanding Choreography",
@@ -9540,6 +9685,9 @@
         "winnerNames": {
           "Outstanding Featured Actor in a Musical": [
             "Nick Cordero"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Marin Mazzie"
           ]
         }
       }
@@ -9630,7 +9778,8 @@
           "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Play",
-          "Outstanding Projection Design"
+          "Outstanding Projection Design",
+          "Outstanding Sound Design of a Play"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
@@ -9649,6 +9798,9 @@
           ],
           "Outstanding Actor in a Play": [
             "Alex Sharp"
+          ],
+          "Outstanding Sound Design of a Play": [
+            "Ian Dickinson"
           ]
         }
       },
@@ -9733,12 +9885,19 @@
       },
       "lortel": {
         "season": "2014-15",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding Lead Actor in a Play",
           "Outstanding Revival"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival": [
+            "Good Person of Szechwan"
+          ]
+        }
       }
     },
     "wolf-hall-parts-one-and-two-2015": {
@@ -10740,7 +10899,8 @@
         "season": "2015-16",
         "wins": [
           "Outstanding Lighting Design of a Play",
-          "Outstanding Play"
+          "Outstanding Play",
+          "Outstanding Sound Design of a Play"
         ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
@@ -10752,6 +10912,9 @@
         "winnerNames": {
           "Outstanding Lighting Design of a Play": [
             "Justin Townsend"
+          ],
+          "Outstanding Sound Design of a Play": [
+            "Fitz Patton"
           ]
         }
       },
@@ -10925,10 +11088,17 @@
       },
       "eveningStandard": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Best Play"
+        ],
         "nominatedFor": [
           "Best Play"
-        ]
+        ],
+        "winnerNames": {
+          "Best Play": [
+            "Harry Potter and the Cursed Child"
+          ]
+        }
       }
     },
     "king-charles-iii-2015": {
@@ -11023,7 +11193,9 @@
       },
       "dramadesk": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Music"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Costume Design of a Musical",
@@ -11031,7 +11203,12 @@
           "Outstanding Music",
           "Outstanding Orchestrations",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Music": [
+            "Steve Martin & Edie Brickell"
+          ]
+        }
       }
     },
     "school-of-rock-the-musical-2015": {
@@ -11189,7 +11366,8 @@
         ],
         "winnerNames": {
           "Outstanding Direction of a Play": [
-            "Ivo van Hove"
+            "Ivo van Hove",
+            "Michael Mayer"
           ]
         }
       },
@@ -11209,7 +11387,8 @@
         ],
         "winnerNames": {
           "Outstanding Direction of a Play": [
-            "Ivo van Hove"
+            "Ivo van Hove",
+            "Michael Mayer"
           ]
         }
       },
@@ -11547,12 +11726,19 @@
       },
       "lortel": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Musical",
           "Outstanding Lead Actor in a Musical",
           "Outstanding Revival"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Actor in a Musical": [
+            "Steven Skybell"
+          ]
+        }
       },
       "oba": {
         "season": "2015-16",
@@ -11586,7 +11772,10 @@
       "dramadesk": {
         "season": "2015-16",
         "wins": [
-          "Outstanding Revival of a Musical"
+          "Outstanding Featured Actress in a Musical",
+          "Outstanding Orchestrations",
+          "Outstanding Revival of a Musical",
+          "Outstanding Scenic Design of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -11597,11 +11786,23 @@
           "Outstanding Orchestrations",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Orchestrations": [
+            "Larry Hochman"
+          ],
+          "Outstanding Scenic Design of a Musical": [
+            "David Rockwell"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Jane Krakowski"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2015-16",
         "wins": [
+          "Outstanding Featured Actress in a Musical",
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
@@ -11611,7 +11812,12 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Revival of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Musical": [
+            "Jane Krakowski"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2015-16",
@@ -11763,11 +11969,18 @@
       },
       "outerCriticsCircle": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding New Broadway Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Judith Light"
+          ]
+        }
       }
     },
     "hughie-2016": {
@@ -11830,7 +12043,8 @@
         "season": "2015-16",
         "wins": [
           "Outstanding Lighting Design of a Musical",
-          "Outstanding Projection Design"
+          "Outstanding Projection Design",
+          "Outstanding Sound Design of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -11849,6 +12063,9 @@
           ],
           "Outstanding Projection Design": [
             "Finn Ross"
+          ],
+          "Outstanding Sound Design of a Musical": [
+            "Dan Moses Schreier"
           ]
         }
       }
@@ -11996,7 +12213,8 @@
           "Outstanding Direction of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play",
-          "Outstanding Play"
+          "Outstanding Play",
+          "Outstanding Sound Design of a Play"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
@@ -12016,6 +12234,9 @@
           ],
           "Outstanding Featured Actress in a Play": [
             "Lois Smith"
+          ],
+          "Outstanding Sound Design of a Play": [
+            "Paul Arditti and Christopher Reid"
           ]
         }
       },
@@ -12067,10 +12288,17 @@
       },
       "dramadesk": {
         "season": "2019-20",
-        "wins": [],
+        "wins": [
+          "Outstanding Scenic Design of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Scenic Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Play": [
+            "Clint Ramos"
+          ]
+        }
       }
     },
     "slave-play-2021": {
@@ -12617,17 +12845,26 @@
       },
       "dramaLeague": {
         "season": "2021-22",
-        "wins": [],
+        "wins": [
+          "Outstanding Direction of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Production of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Kate Whoriskey"
+          ]
+        }
       },
       "dramadesk": {
         "season": "2021-22",
         "wins": [
           "Outstanding Costume Design of a Play",
-          "Outstanding Featured Actor in a Play"
+          "Outstanding Featured Actor in a Play",
+          "Outstanding Lighting Design of a Play",
+          "Outstanding Scenic Design of a Play"
         ],
         "nominatedFor": [
           "Outstanding Costume Design of a Play",
@@ -12642,6 +12879,12 @@
           ],
           "Outstanding Featured Actor in a Play": [
             "Ron Cephas Jones"
+          ],
+          "Outstanding Scenic Design of a Play": [
+            "Takeshi Kata"
+          ],
+          "Outstanding Lighting Design of a Play": [
+            "Christopher Akerlind"
           ]
         }
       }
@@ -12838,7 +13081,8 @@
         ],
         "winnerNames": {
           "Outstanding Actor in a Musical": [
-            "Jaquel Spivey"
+            "Jaquel Spivey",
+            "Larry Owens"
           ]
         }
       },
@@ -12888,7 +13132,10 @@
       },
       "lortel": {
         "season": "2021-22",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Actor in a Musical",
+          "Outstanding Musical"
+        ],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Costume Design",
@@ -12896,7 +13143,15 @@
           "Outstanding Featured Actress in a Musical",
           "Outstanding Lead Actor in a Musical",
           "Outstanding Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Musical": [
+            "Octet"
+          ],
+          "Outstanding Lead Actor in a Musical": [
+            "Larry Owens"
+          ]
+        }
       },
       "oba": {
         "season": "2021-22",
@@ -13048,7 +13303,8 @@
       "dramadesk": {
         "season": "2021-22",
         "wins": [
-          "Outstanding Actress in a Musical"
+          "Outstanding Actress in a Musical",
+          "Outstanding Choreography"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -13058,6 +13314,9 @@
         "winnerNames": {
           "Outstanding Actress in a Musical": [
             "Joaquina Kalukango"
+          ],
+          "Outstanding Choreography": [
+            "Bill T. Jones, Garrett Coleman and Jason Oremus, Gelan Lambert and Chloe Davis"
           ]
         }
       }
@@ -13162,9 +13421,7 @@
       },
       "lortel": {
         "season": "2021-22",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Costume Design",
@@ -13233,13 +13490,23 @@
       "lortel": {
         "season": "2021-22",
         "wins": [
+          "Outstanding Lead Actor in a Play",
+          "Outstanding Lead Actress in a Play",
           "Outstanding Play"
         ],
         "nominatedFor": [
           "Outstanding Lead Actor in a Play",
           "Outstanding Lead Actress in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Actor in a Play": [
+            "David Morse"
+          ],
+          "Outstanding Lead Actress in a Play": [
+            "Mary-Louise Parker"
+          ]
+        }
       }
     },
     "trouble-in-mind-2021": {
@@ -13273,7 +13540,12 @@
           "Outstanding Costume Design",
           "Outstanding Featured Actor in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actress in a Play": [
+            "LaChanze"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2021-22",
@@ -13515,11 +13787,18 @@
       },
       "dramadesk": {
         "season": "2020-21",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Ruben Santiago-Hudson"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2020-21",
@@ -13648,12 +13927,23 @@
       },
       "dramadesk": {
         "season": "2020-21",
-        "wins": [],
+        "wins": [
+          "Outstanding Projection Design",
+          "Outstanding Scenic Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Lighting Design of a Musical",
           "Outstanding Projection Design",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Musical": [
+            "Beowulf Boritt"
+          ],
+          "Outstanding Projection Design": [
+            "59 Productions"
+          ]
+        }
       }
     },
     "funny-girl-2022": {
@@ -13836,15 +14126,27 @@
         ],
         "nominatedFor": [
           "Outstanding Costume Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Costume Design of a Play": [
+            "Emilio Sosa"
+          ]
+        }
       },
       "lortel": {
         "season": "2022-23",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Crystal Lucas-Perry"
+          ]
+        }
       },
       "oba": {
         "season": "2022-23",
@@ -13908,7 +14210,8 @@
       "lortel": {
         "season": "2022-23",
         "wins": [
-          "Outstanding Play"
+          "Outstanding Featured Actress in a Play",
+          "Outstanding Lead Actor in a Play"
         ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play",
@@ -13916,7 +14219,15 @@
           "Outstanding Lead Actor in a Play",
           "Outstanding Play",
           "Outstanding Scenic Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Actor in a Play": [
+            "Stephen McKinley Henderson"
+          ],
+          "Outstanding Featured Actress in a Play": [
+            "Liza Colón-Zayas"
+          ]
+        }
       }
     },
     "cost-of-living-2022": {
@@ -13970,13 +14281,18 @@
       "lortel": {
         "season": "2022-23",
         "wins": [
-          "Outstanding Play"
+          "Outstanding Featured Actor in a Play"
         ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Gregg Mozgala"
+          ]
+        }
       }
     },
     "fat-ham-2023": {
@@ -14098,8 +14414,7 @@
           "Outstanding Actress in a Musical",
           "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
-          "Outstanding Director of a Musical",
-          "Outstanding New Off-Broadway Musical"
+          "Outstanding Director of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -14112,7 +14427,12 @@
           "Outstanding New Off-Broadway Musical",
           "Outstanding New Score",
           "Outstanding Orchestrations"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actress in a Musical": [
+            "Victoria Clark"
+          ]
+        }
       },
       "lortel": {
         "season": "2022-23",
@@ -14240,7 +14560,12 @@
           "Outstanding Orchestrations",
           "Outstanding Scenic Design of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Music": [
+            "Brandy Clark and Shane McAnally"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2022-23",
@@ -14312,7 +14637,6 @@
           "Outstanding Choreography",
           "Outstanding Costume Design of a Musical",
           "Outstanding Featured Performance in a Musical",
-          "Outstanding Lead Performance in a Musical",
           "Outstanding Lyrics",
           "Outstanding Musical",
           "Outstanding Orchestrations"
@@ -14333,6 +14657,15 @@
           ],
           "Outstanding Costume Design of a Musical": [
             "Gregg Barnes"
+          ],
+          "Outstanding Lyrics": [
+            "Scott Wittman and Marc Shaiman"
+          ],
+          "Outstanding Book of a Musical": [
+            "Matthew López and Amber Ruffin"
+          ],
+          "Outstanding Orchestrations": [
+            "Bryan Carter and Charlie Rosen"
           ]
         }
       },
@@ -14398,7 +14731,6 @@
       "dramadesk": {
         "season": "2022-23",
         "wins": [
-          "Outstanding Lead Performance in a Play",
           "Outstanding Sound Design of a Play"
         ],
         "nominatedFor": [
@@ -14470,6 +14802,8 @@
       "lortel": {
         "season": "2022-23",
         "wins": [
+          "Outstanding Featured Actor in a Play",
+          "Outstanding Lead Actress in a Play",
           "Outstanding Revival"
         ],
         "nominatedFor": [
@@ -14478,7 +14812,15 @@
           "Outstanding Lead Actress in a Play",
           "Outstanding Lighting Design",
           "Outstanding Revival"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Actress in a Play": [
+            "Roslyn Ruff"
+          ],
+          "Outstanding Featured Actor in a Play": [
+            "Chuck Cooper"
+          ]
+        }
       }
     },
     "the-sign-in-sidney-brusteins-window-2023": {
@@ -14496,11 +14838,18 @@
       },
       "dramaLeague": {
         "season": "2022-23",
-        "wins": [],
+        "wins": [
+          "Outstanding Direction of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Anne Kauffman"
+          ]
+        }
       },
       "dramadesk": {
         "season": "2022-23",
@@ -14623,7 +14972,12 @@
           "Outstanding Lead Performance in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design of a Musical": [
+            "Scott Lehrer and Alex Neumann"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2022-23",
@@ -14712,7 +15066,12 @@
         "nominatedFor": [
           "Outstanding Featured Performance in a Play",
           "Outstanding Lead Performance in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performance in a Play": [
+            "Sean Hayes"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2022-23",
@@ -14805,7 +15164,15 @@
           "Outstanding Lighting Design of a Play",
           "Outstanding Play",
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design of a Play": [
+            "Natasha Chivers & Willie Williams"
+          ],
+          "Outstanding Solo Performance": [
+            "Jodie Comer"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2022-23",
@@ -15098,12 +15465,19 @@
       },
       "dramadesk": {
         "season": "2023-24",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Play",
           "Outstanding Lead Performance in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "Admissions"
+          ]
+        }
       },
       "nyDramaCritics": {
         "wins": [
@@ -15131,14 +15505,21 @@
       },
       "lortel": {
         "season": "2023-24",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding Lead Actress in a Play",
           "Outstanding Lighting Design",
           "Outstanding Scenic Design",
           "Outstanding Sound Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Actress in a Play": [
+            "Carrie Coon"
+          ]
+        }
       },
       "oba": {
         "season": "2023-24",
@@ -15212,13 +15593,19 @@
       "dramadesk": {
         "season": "2023-24",
         "wins": [
+          "Outstanding Featured Actress in a Play",
           "Outstanding Play"
         ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Francis Benhamou"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2023-24",
@@ -15229,9 +15616,7 @@
       },
       "outerCriticsCircle": {
         "season": "2023-24",
-        "wins": [
-          "Outstanding New Off-Broadway Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actress in a Play",
           "Outstanding Featured Actress in a Play",
@@ -15288,7 +15673,8 @@
       "outerCriticsCircle": {
         "season": "2023-24",
         "wins": [
-          "Outstanding Choreography"
+          "Outstanding Choreography",
+          "Outstanding Featured Performer in an Off-Broadway Musical"
         ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
@@ -15302,6 +15688,9 @@
         "winnerNames": {
           "Outstanding Choreography": [
             "Justin Peck"
+          ],
+          "Outstanding Featured Performer in an Off-Broadway Musical": [
+            "I Can Get It for You Wholesale"
           ]
         }
       }
@@ -15330,7 +15719,6 @@
       "dramadesk": {
         "season": "2023-24",
         "wins": [
-          "Outstanding Lead Performance in a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Revival of a Play"
         ],
@@ -15499,9 +15887,7 @@
       },
       "lortel": {
         "season": "2023-24",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Lead Performer in a Musical",
@@ -15787,11 +16173,18 @@
       },
       "outerCriticsCircle": {
         "season": "2022-23",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Featured Performer in a Broadway Musical",
           "Outstanding Revival of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Musical": [
+            "I Can Get It for You Wholesale"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2022-23",
@@ -15978,9 +16371,7 @@
       },
       "lortel": {
         "season": "2024-25",
-        "wins": [
-          "Outstanding Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Play",
           "Outstanding Scenic Design"
@@ -16030,11 +16421,18 @@
       },
       "dramadesk": {
         "season": "2024-25",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performance in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Lead Performance in a Play",
           "Outstanding Scenic Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performance in a Play": [
+            "Laura Donnelly"
+          ]
+        }
       }
     },
     "john-proctor-is-the-villain-2025": {
@@ -16063,11 +16461,17 @@
           "Outstanding Director of a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Danya Taymor"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2024-25",
         "wins": [
+          "Outstanding Direction of a Play",
           "Outstanding Director of Play",
           "Outstanding New Broadway Play"
         ],
@@ -16076,7 +16480,12 @@
           "Outstanding Director of Play",
           "Outstanding Director of a Play",
           "Outstanding New Broadway Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Danya Taymor"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2024-25",
@@ -16106,8 +16515,6 @@
       "dramadesk": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Book of a Musical",
-          "Outstanding Lyrics",
           "Outstanding Musical"
         ],
         "nominatedFor": [
@@ -16144,10 +16551,7 @@
       },
       "outerCriticsCircle": {
         "season": "2024-25",
-        "wins": [
-          "Outstanding Lead Performer in an Off-Broadway Musical",
-          "Outstanding New Off-Broadway Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Book of a Musical",
           "Outstanding Book of a Musical (Broadway or Off-Broadway)",
@@ -16264,12 +16668,18 @@
       "outerCriticsCircle": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Featured Performer in a Broadway Play"
+          "Outstanding Featured Performer in a Broadway Play",
+          "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
           "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Play": [
+            "Vanya"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2024-25",
@@ -16287,10 +16697,17 @@
       },
       "lortel": {
         "season": "2024-25",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Francis Jue"
+          ]
+        }
       }
     },
     "sunset-boulevard-2024": {
@@ -16428,9 +16845,7 @@
       },
       "lortel": {
         "season": "2024-25",
-        "wins": [
-          "Outstanding Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Musical"
         ]
@@ -16606,7 +17021,6 @@
       "dramadesk": {
         "season": "2024-25",
         "wins": [
-          "Outstanding Lead Performance in a Play",
           "Outstanding Projection Design"
         ],
         "nominatedFor": [
@@ -17036,6 +17450,11 @@
           ],
           "Outstanding Lighting Design of a Musical": [
             "Natasha Katz"
+          ],
+          "Outstanding Direction of a Musical": [
+            "Harold Prince",
+            "John Doyle",
+            "Thomas Kail"
           ]
         }
       },
@@ -17215,7 +17634,9 @@
       },
       "dramadesk": {
         "season": "2019-20",
-        "wins": [],
+        "wins": [
+          "Outstanding Projection Design"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Featured Actress in a Musical",
@@ -17223,7 +17644,12 @@
           "Outstanding Projection Design",
           "Outstanding Revival of a Musical",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Projection Design": [
+            "Luke Halls"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2019-20",
@@ -17343,13 +17769,24 @@
       },
       "lortel": {
         "season": "2018-19",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Musical"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Musical",
           "Outstanding Projection Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Musical": [
+            "Rags Parkland Sings the Songs of the Future"
+          ],
+          "Outstanding Featured Actor in a Musical": [
+            "George Salazar"
+          ]
+        }
       },
       "oba": {
         "season": "2018-19",
@@ -17749,9 +18186,7 @@
       },
       "lortel": {
         "season": "2018-19",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Revival"
         ]
@@ -18102,7 +18537,8 @@
             "Miriam Buether"
           ],
           "Outstanding Actress in a Play": [
-            "Glenda Jackson"
+            "Glenda Jackson",
+            "Myra Carter"
           ]
         }
       },
@@ -18121,7 +18557,8 @@
         ],
         "winnerNames": {
           "Outstanding Actress in a Play": [
-            "Glenda Jackson"
+            "Glenda Jackson",
+            "Myra Carter"
           ],
           "Outstanding Featured Actress in a Play": [
             "Laurie Metcalf"
@@ -18607,8 +19044,7 @@
       "lortel": {
         "season": "2016-17",
         "wins": [
-          "Outstanding Play",
-          "Outstanding Scenic Design"
+          "Outstanding Play"
         ],
         "nominatedFor": [
           "Outstanding Costume Design",
@@ -18758,6 +19194,7 @@
       "dramadesk": {
         "season": "2016-17",
         "wins": [
+          "Outstanding Book of a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Musical"
         ],
@@ -18776,6 +19213,9 @@
         "winnerNames": {
           "Outstanding Featured Actress in a Musical": [
             "Jenn Colella"
+          ],
+          "Outstanding Book of a Musical": [
+            "Irene Sankoff and David Hein"
           ]
         }
       },
@@ -19377,12 +19817,19 @@
       },
       "lortel": {
         "season": "2016-17",
-        "wins": [],
+        "wins": [
+          "Outstanding Choreographer"
+        ],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Costume Design",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Choreographer": [
+            "David Dorfman"
+          ]
+        }
       }
     },
     "the-little-foxes-2017": {
@@ -19527,6 +19974,7 @@
         "season": "2016-17",
         "wins": [
           "Outstanding Actress in a Musical",
+          "Outstanding Choreography",
           "Outstanding Featured Actor in a Musical",
           "Outstanding Revival of a Musical"
         ],
@@ -19546,6 +19994,9 @@
           ],
           "Outstanding Featured Actor in a Musical": [
             "Gavin Creel"
+          ],
+          "Outstanding Choreography": [
+            "Warren Carlyle"
           ]
         }
       },
@@ -19597,7 +20048,9 @@
       },
       "dramadesk": {
         "season": "2016-17",
-        "wins": [],
+        "wins": [
+          "Outstanding Projection Design"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Book of a Musical",
@@ -19608,7 +20061,12 @@
           "Outstanding Orchestrations",
           "Outstanding Projection Design",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Projection Design": [
+            "Aaron Rhyne"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2016-17",
@@ -19679,11 +20137,18 @@
       },
       "dramadesk": {
         "season": "2015-16",
-        "wins": [],
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Scenic Design of a Play",
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "Jesse Tyler Ferguson"
+          ]
+        }
       }
     },
     "honeymoon-in-vegas-2015": {
@@ -20162,10 +20627,17 @@
       },
       "dramadesk": {
         "season": "2010-11",
-        "wins": [],
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "John Leguizamo"
+          ]
+        }
       }
     },
     "wonderland-2011": {
@@ -20644,14 +21116,21 @@
       },
       "dramadesk": {
         "season": "2008-09",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Pablo Schreiber"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2008-09",
@@ -20989,7 +21468,8 @@
       "dramadesk": {
         "season": "2007-08",
         "wins": [
-          "Outstanding Orchestrations"
+          "Outstanding Orchestrations",
+          "Outstanding Projection Design"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -21003,6 +21483,9 @@
         "winnerNames": {
           "Outstanding Orchestrations": [
             "Jason Carr"
+          ],
+          "Outstanding Projection Design": [
+            "Timothy Bird & The Knifedge Creative Network"
           ]
         }
       },
@@ -21044,6 +21527,7 @@
         "season": "2007-08",
         "wins": [
           "Outstanding Lyrics",
+          "Outstanding Music",
           "Outstanding Musical"
         ],
         "nominatedFor": [
@@ -21058,6 +21542,9 @@
         "winnerNames": {
           "Outstanding Lyrics": [
             "Stew"
+          ],
+          "Outstanding Music": [
+            "Heidi Rodewald & Stew"
           ]
         }
       },
@@ -21095,10 +21582,17 @@
       },
       "outerCriticsCircle": {
         "season": "2007-08",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "James Earl Jones"
+          ]
+        }
       }
     },
     "in-the-heights-2008": {
@@ -21623,6 +22117,7 @@
       "dramadesk": {
         "season": "2006-07",
         "wins": [
+          "Outstanding Book of a Musical",
           "Outstanding Featured Actress in a Musical"
         ],
         "nominatedFor": [
@@ -21638,6 +22133,9 @@
         "winnerNames": {
           "Outstanding Featured Actress in a Musical": [
             "Debra Monk"
+          ],
+          "Outstanding Book of a Musical": [
+            "Rupert Holmes and Peter Stone"
           ]
         }
       },
@@ -21954,7 +22452,8 @@
       "dramadesk": {
         "season": "2017-18",
         "wins": [
-          "Outstanding Play",
+          "Outstanding Actor in a Play",
+          "Outstanding Featured Actor in a Play",
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
@@ -21965,11 +22464,23 @@
           "Outstanding Featured Actress in a Play",
           "Outstanding Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Andrew Garfield",
+            "Ron Leibman"
+          ],
+          "Outstanding Featured Actor in a Play": [
+            "Joe Mantello",
+            "Nathan Lane"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2017-18",
         "wins": [
+          "Outstanding Actor in a Play",
+          "Outstanding Featured Actor in a Play",
           "Outstanding Revival of a Play"
         ],
         "nominatedFor": [
@@ -21979,7 +22490,15 @@
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Andrew Garfield"
+          ],
+          "Outstanding Featured Actor in a Play": [
+            "Nathan Lane"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2017-18",
@@ -22015,9 +22534,7 @@
       },
       "lortel": {
         "season": "2017-18",
-        "wins": [
-          "Outstanding Revival"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Revival"
         ]
@@ -22031,7 +22548,9 @@
       },
       "whatsOnStage": {
         "season": "2017-18",
-        "wins": [],
+        "wins": [
+          "Best Supporting Actress in a Play"
+        ],
         "nominatedFor": [
           "Best Actor in a Play",
           "Best Direction",
@@ -22039,7 +22558,12 @@
           "Best Play Revival",
           "Best Supporting Actor in a Play",
           "Best Supporting Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Best Supporting Actress in a Play": [
+            "Hamlet"
+          ]
+        }
       }
     },
     "the-norman-conquests-2009": {
@@ -22442,7 +22966,9 @@
       },
       "outerCriticsCircle": {
         "season": "2007-08",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Actress in a Play",
@@ -22450,7 +22976,12 @@
           "Outstanding Director of a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Jessica Collins"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2007-08",
@@ -22631,11 +23162,18 @@
       },
       "outerCriticsCircle": {
         "season": "2007-08",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Kevin Kline"
+          ]
+        }
       },
       "dramadesk": {
         "season": "2007-08",
@@ -22755,13 +23293,20 @@
       },
       "outerCriticsCircle": {
         "season": "2008-09",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Play": [
+            "The Norman Conquests Trilogy"
+          ]
+        }
       }
     },
     "hair-2011": {
@@ -22785,9 +23330,7 @@
       },
       "dramadesk": {
         "season": "2008-09",
-        "wins": [
-          "Outstanding Revival of a Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Choreography",
@@ -22801,9 +23344,7 @@
       },
       "outerCriticsCircle": {
         "season": "2008-09",
-        "wins": [
-          "Outstanding Revival of a Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Direction of a Musical",
@@ -22813,9 +23354,7 @@
       },
       "dramaLeague": {
         "season": "2008-09",
-        "wins": [
-          "Outstanding Revival of a Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Revival of a Musical"
         ]
@@ -22836,12 +23375,19 @@
       },
       "dramadesk": {
         "season": "2008-09",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Revival of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Musical": [
+            "Hair"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2008-09",
@@ -23176,7 +23722,8 @@
         "wins": [
           "Outstanding Direction of a Musical",
           "Outstanding Lighting Design of a Musical",
-          "Outstanding Scenic Design of a Musical"
+          "Outstanding Scenic Design of a Musical",
+          "Outstanding Sound Design of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Direction of a Musical",
@@ -23196,6 +23743,9 @@
           ],
           "Outstanding Lighting Design of a Musical": [
             "Bradley King"
+          ],
+          "Outstanding Sound Design of a Musical": [
+            "Nicholas Pope"
           ]
         }
       },
@@ -23319,7 +23869,8 @@
       "dramadesk": {
         "season": "2016-17",
         "wins": [
-          "Outstanding Choreography"
+          "Outstanding Choreography",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -23333,6 +23884,9 @@
         "winnerNames": {
           "Outstanding Choreography": [
             "Andy Blankenbuehler"
+          ],
+          "Outstanding Orchestrations": [
+            "Bill Elliott and Greg Anthony Rassen"
           ]
         }
       },
@@ -23569,9 +24123,7 @@
       },
       "lortel": {
         "season": "2017-18",
-        "wins": [
-          "Outstanding Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Costume Design",
           "Outstanding Featured Actor in a Musical",
@@ -23747,7 +24299,9 @@
       },
       "dramadesk": {
         "season": "2017-18",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Costume Design of a Musical",
@@ -23756,7 +24310,12 @@
           "Outstanding Orchestrations",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design of a Musical": [
+            "Jules Fisher and Peggy Eisenhauer"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2017-18",
@@ -23859,6 +24418,7 @@
         "season": "2018-19",
         "wins": [
           "Outstanding Direction of a Play",
+          "Outstanding Featured Actor in a Play",
           "Outstanding Play",
           "Outstanding Sound Design of a Play"
         ],
@@ -23875,6 +24435,9 @@
           ],
           "Outstanding Sound Design of a Play": [
             "Nick Powell"
+          ],
+          "Outstanding Featured Actor in a Play": [
+            "Tom Glynn-Carney"
           ]
         }
       },
@@ -24022,10 +24585,17 @@
       },
       "oba": {
         "season": "2018-19",
-        "wins": [],
+        "wins": [
+          "Best Revival"
+        ],
         "nominatedFor": [
           "Best Revival"
-        ]
+        ],
+        "winnerNames": {
+          "Best Revival": [
+            "The Government Inspector"
+          ]
+        }
       }
     },
     "the-waverly-gallery-2018": {
@@ -24053,6 +24623,7 @@
         ],
         "winnerNames": {
           "Outstanding Actress in a Play": [
+            "Eileen Heckart",
             "Elaine May"
           ]
         }
@@ -24069,6 +24640,7 @@
         ],
         "winnerNames": {
           "Outstanding Actress in a Play": [
+            "Eileen Heckart",
             "Elaine May"
           ]
         }
@@ -24547,7 +25119,8 @@
         "wins": [
           "Outstanding Direction of a Play",
           "Outstanding Featured Actress in a Play",
-          "Outstanding Play"
+          "Outstanding Play",
+          "Outstanding Scenic Design of a Play"
         ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
@@ -24563,6 +25136,9 @@
           ],
           "Outstanding Featured Actress in a Play": [
             "Martha Plimpton"
+          ],
+          "Outstanding Scenic Design of a Play": [
+            "Bob Crowley and Scott Pask"
           ]
         }
       },
@@ -24746,7 +25322,8 @@
       "lortel": {
         "season": "2006-07",
         "wins": [
-          "Outstanding Lighting Design"
+          "Outstanding Lighting Design",
+          "Outstanding Musical"
         ],
         "nominatedFor": [
           "Outstanding Choreographer",
@@ -24758,6 +25335,9 @@
         "winnerNames": {
           "Outstanding Lighting Design": [
             "Kevin Adams"
+          ],
+          "Outstanding Musical": [
+            "In the Heights"
           ]
         }
       }
@@ -24897,6 +25477,7 @@
         "season": "2006-07",
         "wins": [
           "Outstanding Actor in a Musical",
+          "Outstanding Orchestrations",
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
@@ -24910,6 +25491,9 @@
         "winnerNames": {
           "Outstanding Actor in a Musical": [
             "Raúl Esparza"
+          ],
+          "Outstanding Orchestrations": [
+            "Mary Mitchell Campbell"
           ]
         }
       },
@@ -25533,7 +26117,9 @@
         "wins": [
           "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
-          "Outstanding Musical"
+          "Outstanding Lyrics",
+          "Outstanding Musical",
+          "Outstanding Projection Design"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -25554,6 +26140,12 @@
           ],
           "Outstanding Book of a Musical": [
             "Robert L. Freedman"
+          ],
+          "Outstanding Lyrics": [
+            "Robert L. Freedman & Steven Lutvak"
+          ],
+          "Outstanding Projection Design": [
+            "Aaron Rhyne"
           ]
         }
       },
@@ -25709,7 +26301,8 @@
         "wins": [
           "Outstanding Actor in a Musical",
           "Outstanding Direction of a Musical",
-          "Outstanding Music"
+          "Outstanding Music",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -25731,6 +26324,9 @@
           ],
           "Outstanding Actor in a Musical": [
             "Michael Crawford"
+          ],
+          "Outstanding Orchestrations": [
+            "David Cullen and Andrew Lloyd Webber"
           ]
         }
       },
@@ -25810,7 +26406,8 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Lyrics",
           "Outstanding Music",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -25836,6 +26433,9 @@
           ],
           "Outstanding Featured Actor in a Musical": [
             "Wilson Jermaine Heredia"
+          ],
+          "Outstanding Orchestrations": [
+            "Steve Skinner"
           ]
         }
       },
@@ -25947,7 +26547,8 @@
         "season": "1986-87",
         "wins": [
           "Outstanding Featured Actor in a Musical",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -25960,6 +26561,9 @@
         "winnerNames": {
           "Outstanding Featured Actor in a Musical": [
             "Michael Maguire"
+          ],
+          "Outstanding Orchestrations": [
+            "John Cameron"
           ]
         }
       },
@@ -26008,8 +26612,10 @@
         "season": "2002-03",
         "wins": [
           "Outstanding Actress in a Musical",
+          "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actor in a Musical",
+          "Outstanding Lyrics",
           "Outstanding Music",
           "Outstanding Musical",
           "Outstanding Orchestrations"
@@ -26044,6 +26650,12 @@
           ],
           "Outstanding Featured Actor in a Musical": [
             "Dick Latessa"
+          ],
+          "Outstanding Lyrics": [
+            "Marc Shaiman & Scott Wittman"
+          ],
+          "Outstanding Book of a Musical": [
+            "Mark O'Donnell and Thomas Meehan"
           ]
         }
       },
@@ -26145,6 +26757,7 @@
         "season": "2000-01",
         "wins": [
           "Outstanding Actor in a Musical",
+          "Outstanding Book of a Musical",
           "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actor in a Musical",
@@ -26191,6 +26804,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Cady Huffman"
+          ],
+          "Outstanding Book of a Musical": [
+            "Mel Brooks and Thomas Meehan"
           ]
         }
       },
@@ -26373,16 +26989,29 @@
       },
       "dramadesk": {
         "season": "2003-04",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Musical",
+          "Outstanding Featured Actress in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Musical": [
+            "Hugh Jackman"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Isabel Keating"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2003-04",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Choreography",
@@ -26390,7 +27019,12 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding New Broadway Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Musical": [
+            "Hugh Jackman"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2003-04",
@@ -26597,10 +27231,17 @@
       },
       "outerCriticsCircle": {
         "season": "1970-71",
-        "wins": [],
+        "wins": [
+          "Outstanding New Broadway Musical"
+        ],
         "nominatedFor": [
           "Outstanding New Broadway Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding New Broadway Musical": [
+            "Follies"
+          ]
+        }
       }
     },
     "fathers-day-1971": {
@@ -27370,6 +28011,7 @@
       "dramadesk": {
         "season": "1974-75",
         "wins": [
+          "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Play"
@@ -27387,6 +28029,9 @@
           ],
           "Outstanding Featured Actress in a Play": [
             "Frances Sternhagen"
+          ],
+          "Outstanding Actor in a Play": [
+            "Anthony Hopkins"
           ]
         }
       },
@@ -27995,10 +28640,17 @@
       },
       "dramadesk": {
         "season": "1975-76",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Judd Hirsch"
+          ]
+        }
       }
     },
     "lamppost-reunion-1975": {
@@ -28074,8 +28726,11 @@
       "dramadesk": {
         "season": "1975-76",
         "wins": [
+          "Outstanding Actress in a Musical",
+          "Outstanding Book of a Musical",
           "Outstanding Choreography",
           "Outstanding Direction of a Musical",
+          "Outstanding Lyrics",
           "Outstanding Music",
           "Outstanding Musical"
         ],
@@ -28098,6 +28753,15 @@
           ],
           "Outstanding Music": [
             "Marvin Hamlisch"
+          ],
+          "Outstanding Lyrics": [
+            "Edward Kleban & Marvin Hamlisch"
+          ],
+          "Outstanding Book of a Musical": [
+            "James Kirkwood Jr. and Nicholas Dante"
+          ],
+          "Outstanding Actress in a Musical": [
+            "Kelly Bishop"
           ]
         }
       }
@@ -28441,12 +29105,19 @@
       },
       "dramadesk": {
         "season": "1976-77",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "A Texas Trilogy"
+          ]
+        }
       },
       "nyDramaCritics": {
         "season": "1976-77",
@@ -28597,6 +29268,7 @@
         "season": "1976-77",
         "wins": [
           "Outstanding Actor in a Musical",
+          "Outstanding Featured Actor in a Musical",
           "Outstanding Music"
         ],
         "nominatedFor": [
@@ -28613,6 +29285,9 @@
           ],
           "Outstanding Actor in a Musical": [
             "Lenny Baker"
+          ],
+          "Outstanding Featured Actor in a Musical": [
+            "Ken Bichel"
           ]
         }
       }
@@ -28980,6 +29655,7 @@
       "dramadesk": {
         "season": "1977-78",
         "wins": [
+          "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
           "Outstanding Musical"
         ],
@@ -28992,6 +29668,9 @@
         "winnerNames": {
           "Outstanding Actress in a Musical": [
             "Nell Carter"
+          ],
+          "Outstanding Actor in a Musical": [
+            "Ken Page"
           ]
         }
       },
@@ -29140,11 +29819,18 @@
       },
       "dramadesk": {
         "season": "1977-78",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Featured Actress in a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Musical": [
+            "Swoosie Kurtz"
+          ]
+        }
       }
     },
     "working-1978": {
@@ -29454,6 +30140,8 @@
         "wins": [
           "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Featured Actress in a Musical",
           "Outstanding Musical"
         ],
         "nominatedFor": [
@@ -29469,6 +30157,12 @@
           ],
           "Outstanding Actress in a Musical": [
             "Angela Lansbury"
+          ],
+          "Outstanding Featured Actor in a Musical": [
+            "Ken Jennings"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Merle Louise"
           ]
         }
       }
@@ -29494,7 +30188,9 @@
       },
       "dramadesk": {
         "season": "1978-79",
-        "wins": [],
+        "wins": [
+          "Outstanding Choreography"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Choreography",
@@ -29502,7 +30198,12 @@
           "Outstanding Director of a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Music"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Choreography": [
+            "Bob Avian and Michael Bennett"
+          ]
+        }
       }
     },
     "the-best-little-whorehouse-in-texas-1978": {
@@ -29856,11 +30557,18 @@
       },
       "dramadesk": {
         "season": "1979-80",
-        "wins": [],
+        "wins": [
+          "Outstanding Choreography"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Featured Actress in a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Choreography": [
+            "Tommy Tune and Thommie Walsh"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1979-80",
@@ -31022,7 +31730,10 @@
       "dramadesk": {
         "season": "1982-83",
         "wins": [
-          "Outstanding Featured Actor in a Musical"
+          "Outstanding Choreography",
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -31034,6 +31745,15 @@
         "winnerNames": {
           "Outstanding Featured Actor in a Musical": [
             "Charles \"Honi\" Coles"
+          ],
+          "Outstanding Musical": [
+            "Little Shop of Horrors"
+          ],
+          "Outstanding Choreography": [
+            "Tommy Tune and Thommie Walsh"
+          ],
+          "Outstanding Orchestrations": [
+            "Michael Gibson"
           ]
         }
       }
@@ -31098,7 +31818,8 @@
       "dramadesk": {
         "season": "1982-83",
         "wins": [
-          "Outstanding Actress in a Musical"
+          "Outstanding Actress in a Musical",
+          "Outstanding Direction of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -31110,6 +31831,9 @@
         "winnerNames": {
           "Outstanding Actress in a Musical": [
             "Natalia Makarova"
+          ],
+          "Outstanding Direction of a Musical": [
+            "George Abbott"
           ]
         }
       }
@@ -31495,7 +32219,10 @@
       },
       "dramadesk": {
         "season": "1983-84",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical",
+          "Outstanding Featured Actress in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
@@ -31503,7 +32230,15 @@
           "Outstanding Music",
           "Outstanding Musical",
           "Outstanding Orchestrations"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Martin Vidnovic"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Catherine Cox"
+          ]
+        }
       }
     },
     "sunday-in-the-park-with-george-1984": {
@@ -31541,7 +32276,8 @@
           "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
           "Outstanding Lyrics",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -31564,6 +32300,9 @@
           ],
           "Outstanding Book of a Musical": [
             "James Lapine"
+          ],
+          "Outstanding Orchestrations": [
+            "Michael Starobin"
           ]
         }
       }
@@ -31864,7 +32603,8 @@
         "wins": [
           "Outstanding Actor in a Musical",
           "Outstanding Featured Actor in a Musical",
-          "Outstanding Lyrics"
+          "Outstanding Lyrics",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -31882,6 +32622,9 @@
           ],
           "Outstanding Featured Actor in a Musical": [
             "René Auberjonois"
+          ],
+          "Outstanding Orchestrations": [
+            "Steven Margoshes and Danny Troob"
           ]
         }
       }
@@ -32176,20 +32919,13 @@
       },
       "dramadesk": {
         "season": "1985-86",
-        "wins": [
-          "Outstanding Direction of a Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Actress in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play"
-        ],
-        "winnerNames": {
-          "Outstanding Direction of a Play": [
-            "Jerry Zaks"
-          ]
-        }
+        ]
       }
     },
     "the-mystery-of-edwin-drood-1985": {
@@ -32786,6 +33522,7 @@
         "season": "1986-87",
         "wins": [
           "Outstanding Actor in a Musical",
+          "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Music"
@@ -32814,6 +33551,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Jane Summerhays"
+          ],
+          "Outstanding Book of a Musical": [
+            "L. Arthur Rose, Douglas Furber, Stephen Fry and Mike Ockrent"
           ]
         }
       },
@@ -33890,7 +34630,8 @@
           "Outstanding Featured Actress in a Musical",
           "Outstanding Lyrics",
           "Outstanding Music",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -33919,6 +34660,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Randy Graff"
+          ],
+          "Outstanding Orchestrations": [
+            "Billy Byers"
           ]
         }
       },
@@ -34522,7 +35266,8 @@
         "season": "1990-91",
         "wins": [
           "Outstanding Actor in a Musical",
-          "Outstanding Actress in a Musical"
+          "Outstanding Actress in a Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -34535,6 +35280,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Lea Salonga"
+          ],
+          "Outstanding Orchestrations": [
+            "William David Brohn"
           ]
         }
       },
@@ -34869,10 +35617,17 @@
       },
       "dramadesk": {
         "season": "1991-92",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Laurence Fishburne"
+          ]
+        }
       }
     },
     "crazy-for-you-1992": {
@@ -35210,11 +35965,18 @@
       },
       "dramadesk": {
         "season": "1991-92",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "Marvin's Room"
+          ]
+        }
       }
     },
     "the-sisters-rosensweig-1993": {
@@ -35266,7 +36028,9 @@
       "outerCriticsCircle": {
         "season": "1992-93",
         "wins": [
+          "Outstanding Actor in a Play",
           "Outstanding Actress in a Play",
+          "Outstanding Direction of a Play",
           "Outstanding New Broadway Play"
         ],
         "nominatedFor": [
@@ -35279,6 +36043,12 @@
         "winnerNames": {
           "Outstanding Actress in a Play": [
             "Madeline Kahn"
+          ],
+          "Outstanding Actor in a Play": [
+            "Robert Klein"
+          ],
+          "Outstanding Direction of a Play": [
+            "Daniel J. Sullivan"
           ]
         }
       }
@@ -35419,11 +36189,18 @@
       },
       "dramadesk": {
         "season": "1992-93",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Featured Actor in a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Mark Michael Hutchinson"
+          ]
+        }
       }
     },
     "the-goodbye-girl-1993": {
@@ -35442,12 +36219,19 @@
       },
       "dramadesk": {
         "season": "1992-93",
-        "wins": [],
+        "wins": [
+          "Outstanding Music"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Lyrics",
           "Outstanding Music"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Music": [
+            "Marvin Hamlisch"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1992-93",
@@ -35542,10 +36326,17 @@
       },
       "outerCriticsCircle": {
         "season": "1976-77",
-        "wins": [],
+        "wins": [
+          "Outstanding Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actress in a Play": [
+            "Liv Ullmann"
+          ]
+        }
       }
     },
     "the-price-1999": {
@@ -35867,7 +36658,8 @@
           "Outstanding Book of a Musical",
           "Outstanding Lyrics",
           "Outstanding Music",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -35892,6 +36684,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Donna Murphy"
+          ],
+          "Outstanding Orchestrations": [
+            "Jonathan Tunick"
           ]
         }
       }
@@ -36149,6 +36944,7 @@
       "dramadesk": {
         "season": "1993-94",
         "wins": [
+          "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actress in a Musical"
         ],
@@ -36166,6 +36962,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Audra McDonald"
+          ],
+          "Outstanding Choreography": [
+            "Jane Elliott and Kenneth MacMillan"
           ]
         }
       },
@@ -36217,17 +37016,10 @@
       },
       "outerCriticsCircle": {
         "season": "1993-94",
-        "wins": [
-          "Outstanding Choreography"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreography"
-        ],
-        "winnerNames": {
-          "Outstanding Choreography": [
-            "Rob Marshall"
-          ]
-        }
+        ]
       }
     },
     "love-valour-compassion-1995": {
@@ -36261,6 +37053,7 @@
       "dramadesk": {
         "season": "1994-95",
         "wins": [
+          "Outstanding Featured Actor in a Play",
           "Outstanding Play"
         ],
         "nominatedFor": [
@@ -36268,11 +37061,17 @@
           "Outstanding Director of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Nathan Lane"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1994-95",
         "wins": [
+          "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding New Broadway Play"
         ],
@@ -36285,6 +37084,9 @@
         "winnerNames": {
           "Outstanding Direction of a Play": [
             "Joe Mantello"
+          ],
+          "Outstanding Actor in a Play": [
+            "Nathan Lane"
           ]
         }
       }
@@ -36578,7 +37380,8 @@
       "dramadesk": {
         "season": "1994-95",
         "wins": [
-          "Outstanding Actor in a Play"
+          "Outstanding Actor in a Play",
+          "Outstanding Featured Actress in a Play"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
@@ -36587,6 +37390,9 @@
         "winnerNames": {
           "Outstanding Actor in a Play": [
             "Ralph Fiennes"
+          ],
+          "Outstanding Featured Actress in a Play": [
+            "Tara Fitzgerald"
           ]
         }
       }
@@ -36668,7 +37474,6 @@
       "outerCriticsCircle": {
         "season": "1994-95",
         "wins": [
-          "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Revival of a Musical"
@@ -36678,12 +37483,7 @@
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Revival of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Choreography": [
-            "Susan Stroman"
-          ]
-        }
+        ]
       }
     },
     "how-to-succeed-in-business-without-really-trying-1995": {
@@ -37364,18 +38164,11 @@
       },
       "dramadesk": {
         "season": "1996-97",
-        "wins": [
-          "Outstanding Featured Actress in a Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding Play"
-        ],
-        "winnerNames": {
-          "Outstanding Featured Actress in a Play": [
-            "Dana Ivey"
-          ]
-        }
+        ]
       },
       "outerCriticsCircle": {
         "season": "1996-97",
@@ -37490,7 +38283,8 @@
       "outerCriticsCircle": {
         "season": "1996-97",
         "wins": [
-          "Outstanding Direction of a Play"
+          "Outstanding Direction of a Play",
+          "Outstanding Featured Actress in a Play"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
@@ -37502,6 +38296,9 @@
         "winnerNames": {
           "Outstanding Direction of a Play": [
             "John Caird"
+          ],
+          "Outstanding Featured Actress in a Play": [
+            "Deborah Findlay"
           ]
         }
       }
@@ -37959,7 +38756,8 @@
       "dramadesk": {
         "season": "1996-97",
         "wins": [
-          "Outstanding Actor in a Musical"
+          "Outstanding Actor in a Musical",
+          "Outstanding Scenic Design of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -37969,6 +38767,9 @@
         "winnerNames": {
           "Outstanding Actor in a Musical": [
             "Robert Cuccioli"
+          ],
+          "Outstanding Scenic Design of a Musical": [
+            "Robin Phillips"
           ]
         }
       }
@@ -38164,10 +38965,17 @@
       },
       "lortel": {
         "season": "1997-98",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "Gross Indecency: The Three Trials of Oscar Wilde"
+          ]
+        }
       }
     },
     "freak-1998": {
@@ -38594,14 +39402,21 @@
       },
       "dramadesk": {
         "season": "1998-99",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Anna Friel"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1998-99",
@@ -38786,14 +39601,21 @@
       },
       "outerCriticsCircle": {
         "season": "1998-99",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding New Broadway Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Michel Bell"
+          ]
+        }
       }
     },
     "it-aint-nothin-but-the-blues-1999": {
@@ -39670,7 +40492,9 @@
       },
       "dramadesk": {
         "season": "1999-00",
-        "wins": [],
+        "wins": [
+          "Outstanding Music"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
@@ -39683,18 +40507,30 @@
           "Outstanding Musical",
           "Outstanding Orchestrations",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Music": [
+            "Andrew Lippa"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1999-00",
-        "wins": [],
+        "wins": [
+          "Outstanding Direction of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
           "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Musical": [
+            "Contact and The Music Man"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "1999-00",
@@ -39705,12 +40541,19 @@
       },
       "lortel": {
         "season": "1999-00",
-        "wins": [],
+        "wins": [
+          "Outstanding Scenic Design"
+        ],
         "nominatedFor": [
           "Outstanding Costume Design",
           "Outstanding Lighting Design",
           "Outstanding Scenic Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design": [
+            "David Gallo"
+          ]
+        }
       }
     },
     "the-real-thing-2000": {
@@ -39842,6 +40685,7 @@
       "outerCriticsCircle": {
         "season": "1999-00",
         "wins": [
+          "Outstanding Direction of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding Revival of a Play"
         ],
@@ -39854,6 +40698,9 @@
         "winnerNames": {
           "Outstanding Featured Actor in a Play": [
             "Roy Dotrice"
+          ],
+          "Outstanding Direction of a Play": [
+            "Daniel J. Sullivan"
           ]
         }
       },
@@ -40013,9 +40860,7 @@
       },
       "dramadesk": {
         "season": "1999-00",
-        "wins": [
-          "Outstanding Choreography"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
@@ -40025,12 +40870,7 @@
           "Outstanding Orchestrations",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Choreography": [
-            "Susan Stroman"
-          ]
-        }
+        ]
       },
       "outerCriticsCircle": {
         "season": "1999-00",
@@ -40181,18 +41021,32 @@
       },
       "outerCriticsCircle": {
         "season": "1999-00",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Derek Jacobi"
+          ]
+        }
       },
       "eveningStandard": {
         "season": "1999-00",
-        "wins": [],
+        "wins": [
+          "Best Actress"
+        ],
         "nominatedFor": [
           "Best Actress"
-        ]
+        ],
+        "winnerNames": {
+          "Best Actress": [
+            "Vincent In Brixton"
+          ]
+        }
       }
     },
     "the-green-bird-2000": {
@@ -40655,11 +41509,18 @@
       },
       "dramadesk": {
         "season": "2000-01",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Play": [
+            "The Best Man"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2000-01",
@@ -41086,14 +41947,21 @@
       },
       "lortel": {
         "season": "2001-02",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design"
+        ],
         "nominatedFor": [
           "Outstanding Costume Design",
           "Outstanding Lighting Design",
           "Outstanding Play",
           "Outstanding Scenic Design",
           "Outstanding Sound Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design": [
+            "TJ Gerckens"
+          ]
+        }
       }
     },
     "topdog-underdog-2002": {
@@ -41189,7 +42057,8 @@
           "Outstanding Actress in a Musical",
           "Outstanding Direction of a Musical",
           "Outstanding Featured Actress in a Musical",
-          "Outstanding Musical"
+          "Outstanding Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -41214,6 +42083,9 @@
           ],
           "Outstanding Featured Actress in a Musical": [
             "Harriet Harris"
+          ],
+          "Outstanding Orchestrations": [
+            "Doug Besterman and Ralph Burns"
           ]
         }
       },
@@ -41659,7 +42531,8 @@
       "dramadesk": {
         "season": "2001-02",
         "wins": [
-          "Outstanding Revival of a Musical"
+          "Outstanding Revival of a Musical",
+          "Outstanding Scenic Design of a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
@@ -41669,7 +42542,12 @@
           "Outstanding Featured Actress in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Musical": [
+            "Douglas Schmidt"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2001-02",
@@ -42208,9 +43086,7 @@
       },
       "outerCriticsCircle": {
         "season": "2002-03",
-        "wins": [
-          "Outstanding Revival of a Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Actress in a Play",
@@ -42249,14 +43125,21 @@
       },
       "outerCriticsCircle": {
         "season": "2002-03",
-        "wins": [],
+        "wins": [
+          "Outstanding Revival of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Featured Actress in a Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Revival of a Play": [
+            "A Day in the Death of Joe Egg"
+          ]
+        }
       }
     },
     "frankie-and-johnny-in-the-clair-de-lune-2002": {
@@ -42595,13 +43478,19 @@
       "lortel": {
         "season": "2003-04",
         "wins": [
+          "Outstanding Scenic Design",
           "Outstanding Solo Show"
         ],
         "nominatedFor": [
           "Outstanding Lighting Design",
           "Outstanding Scenic Design",
           "Outstanding Solo Show"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design": [
+            "Derek McLane"
+          ]
+        }
       }
     },
     "anna-in-the-tropics-2003": {
@@ -42681,7 +43570,8 @@
       "lortel": {
         "season": "2003-04",
         "wins": [
-          "Outstanding Lead Actor in a Play"
+          "Outstanding Lead Actor in a Play",
+          "Outstanding Play"
         ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
@@ -42693,6 +43583,9 @@
         "winnerNames": {
           "Outstanding Lead Actor in a Play": [
             "Brían F. O'Byrne"
+          ],
+          "Outstanding Play": [
+            "Bug"
           ]
         }
       }
@@ -42811,6 +43704,7 @@
       "lortel": {
         "season": "2003-04",
         "wins": [
+          "Outstanding Choreographer",
           "Outstanding Featured Actress in a Play",
           "Outstanding Lead Actress in a Play",
           "Outstanding Musical"
@@ -42828,6 +43722,9 @@
           ],
           "Outstanding Featured Actress in a Play": [
             "Anika Noni Rose"
+          ],
+          "Outstanding Choreographer": [
+            "Hope Clarke"
           ]
         }
       }
@@ -43041,7 +43938,6 @@
       "dramadesk": {
         "season": "2003-04",
         "wins": [
-          "Outstanding Direction of a Musical",
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
@@ -43051,12 +43947,7 @@
           "Outstanding Orchestrations",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Direction of a Musical": [
-            "Joe Mantello"
-          ]
-        }
+        ]
       },
       "outerCriticsCircle": {
         "season": "2003-04",
@@ -43532,10 +44423,17 @@
       },
       "outerCriticsCircle": {
         "season": "2004-05",
-        "wins": [],
+        "wins": [
+          "Outstanding New Broadway Play"
+        ],
         "nominatedFor": [
           "Outstanding New Broadway Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding New Broadway Play": [
+            "Doubt: A Parable"
+          ]
+        }
       }
     },
     "the-pillowman-2005": {
@@ -43584,14 +44482,21 @@
       },
       "outerCriticsCircle": {
         "season": "2004-05",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
           "Outstanding Featured Actor in a Play",
           "Outstanding New Broadway Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Jeff Goldblum"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2004-05",
@@ -43720,8 +44625,7 @@
       "dramadesk": {
         "season": "2004-05",
         "wins": [
-          "Outstanding Actor in a Musical",
-          "Outstanding Choreography"
+          "Outstanding Actor in a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -43736,9 +44640,6 @@
           "Outstanding Orchestrations"
         ],
         "winnerNames": {
-          "Outstanding Choreography": [
-            "Jerry Mitchell"
-          ],
           "Outstanding Actor in a Musical": [
             "Norbert Leo Butz"
           ]
@@ -43747,8 +44648,7 @@
       "outerCriticsCircle": {
         "season": "2004-05",
         "wins": [
-          "Outstanding Actor in a Musical",
-          "Outstanding Choreography"
+          "Outstanding Actor in a Musical"
         ],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
@@ -43760,9 +44660,6 @@
           "Outstanding New Broadway Musical"
         ],
         "winnerNames": {
-          "Outstanding Choreography": [
-            "Jerry Mitchell"
-          ],
           "Outstanding Actor in a Musical": [
             "Norbert Leo Butz"
           ]
@@ -43811,6 +44708,7 @@
         "wins": [
           "Outstanding Actress in a Musical",
           "Outstanding Music",
+          "Outstanding Orchestrations",
           "Outstanding Scenic Design of a Musical"
         ],
         "nominatedFor": [
@@ -43833,6 +44731,9 @@
           ],
           "Outstanding Actress in a Musical": [
             "Victoria Clark"
+          ],
+          "Outstanding Orchestrations": [
+            "Bruce Coughlin, Adam Guettel and Ted Sperling"
           ]
         }
       },
@@ -44148,13 +45049,20 @@
       },
       "dramadesk": {
         "season": "2004-05",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Featured Actor in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Denis O'Hare"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2004-05",
@@ -45317,10 +46225,17 @@
       },
       "dramadesk": {
         "season": "1985-86",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Joanna Gleason"
+          ]
+        }
       }
     },
     "the-petition-1986": {
@@ -45373,10 +46288,17 @@
       },
       "dramadesk": {
         "season": "1998-99",
-        "wins": [],
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "David Hare"
+          ]
+        }
       }
     },
     "the-weir-1999": {
@@ -47244,10 +48166,17 @@
       },
       "dramadesk": {
         "season": "2003-04",
-        "wins": [],
+        "wins": [
+          "Outstanding Scenic Design of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Scenic Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Play": [
+            "John Lee Beatty"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2003-04",
@@ -47721,11 +48650,22 @@
       },
       "dramadesk": {
         "season": "1983-84",
-        "wins": [],
+        "wins": [
+          "Outstanding Actor in a Play",
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Actor in a Play",
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actor in a Play": [
+            "Dustin Hoffman"
+          ],
+          "Outstanding Featured Actor in a Play": [
+            "John Malkovich"
+          ]
+        }
       }
     },
     "the-human-comedy-1984": {
@@ -47786,10 +48726,17 @@
       },
       "dramadesk": {
         "season": "1982-83",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Alan Feinstein"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "1982-83",
@@ -48799,9 +49746,7 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [
-          "Outstanding Lead Performance in a Play"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Actor in a Musical",
           "Outstanding Actress in a Musical",
@@ -48813,20 +49758,22 @@
           "Outstanding Musical",
           "Outstanding Orchestrations",
           "Outstanding Sound Design of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Lead Performance in a Play": [
-            "John Lithgow"
-          ]
-        }
+        ]
       },
       "lortel": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Musical"
+        ],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Musical": [
+            "Dogfight"
+          ]
+        }
       }
     },
     "joseph-and-the-amazing-technicolor-dreamcoat-1993": {
@@ -49232,10 +50179,17 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Orchestrations"
+        ],
         "nominatedFor": [
           "Outstanding Orchestrations"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Orchestrations": [
+            "David M. Lutken, Morgan Morse, Lisa Helmi Johanson and Sherry Stregack Lutken"
+          ]
+        }
       }
     },
     "as-you-like-it-1986": {
@@ -49529,19 +50483,33 @@
       },
       "dramadesk": {
         "season": "2003-04",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Ned Beatty"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2003-04",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Play",
           "Outstanding Featured Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Play": [
+            "Ned Beatty"
+          ]
+        }
       }
     },
     "all-my-sons-west-end-2025": {
@@ -50029,7 +50997,8 @@
       "dramadesk": {
         "season": "2025-26",
         "wins": [
-          "Outstanding Featured Performance in a Play"
+          "Outstanding Featured Performance in a Play",
+          "Outstanding Play"
         ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
@@ -50041,6 +51010,9 @@
         "winnerNames": {
           "Outstanding Featured Performance in a Play": [
             "Alden Ehrenreich"
+          ],
+          "Outstanding Play": [
+            "Ruined"
           ]
         }
       },
@@ -50120,19 +51092,12 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [
-          "Outstanding Scenic Design of a Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Lighting Design of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Scenic Design of a Musical": [
-            "Dane Laffrey"
-          ]
-        }
+        ]
       }
     },
     "little-bear-ridge-road-2025": {
@@ -50506,12 +51471,23 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Music in a Play",
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Music in a Play",
           "Outstanding Solo Performance",
           "Outstanding Sound Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Music in a Play": [
+            "John Patrick Elliot"
+          ],
+          "Outstanding Solo Performance": [
+            "Jack Holden"
+          ]
+        }
       }
     },
     "the-producers-west-end-2025": {
@@ -50669,10 +51645,17 @@
       },
       "dramadesk": {
         "season": "1975-76",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actress in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actress in a Play": [
+            "Rachel Roberts"
+          ]
+        }
       }
     },
     "yentl-1975": {
@@ -50717,11 +51700,18 @@
       },
       "dramadesk": {
         "season": "1975-76",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actress in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "Streamers"
+          ]
+        }
       }
     },
     "the-belle-of-amherst-1976": {
@@ -51659,12 +52649,18 @@
       "outerCriticsCircle": {
         "season": "1995-96",
         "wins": [
+          "Outstanding Actress in a Musical",
           "Outstanding New Broadway Musical"
         ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding New Broadway Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actress in a Musical": [
+            "Julie Andrews"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "1995-96",
@@ -51675,12 +52671,23 @@
       },
       "dramadesk": {
         "season": "1995-96",
-        "wins": [],
+        "wins": [
+          "Outstanding Actress in a Musical",
+          "Outstanding Featured Actress in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Actress in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Actress in a Musical": [
+            "Julie Andrews"
+          ],
+          "Outstanding Featured Actress in a Musical": [
+            "Rachel York"
+          ]
+        }
       }
     },
     "holiday-1995": {
@@ -52500,12 +53507,19 @@
       },
       "lortel": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design"
+        ],
         "nominatedFor": [
           "Outstanding Lighting Design",
           "Outstanding Solo Show",
           "Outstanding Sound Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design": [
+            "Cha See"
+          ]
+        }
       }
     },
     "the-waterfall-off-broadway-2026": {},
@@ -52653,12 +53667,19 @@
       },
       "lortel": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performer in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Choreographer",
           "Outstanding Lead Performer in a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performer in a Play": [
+            "Aigner Mizzelle"
+          ]
+        }
       }
     },
     "the-dinosaurs-off-broadway-2026": {},
@@ -52729,6 +53750,7 @@
       "dramadesk": {
         "season": "2019-20",
         "wins": [
+          "Outstanding Featured Actor in a Musical",
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
@@ -52736,7 +53758,12 @@
           "Outstanding Featured Actor in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Christian Borle"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2019-20",
@@ -52759,13 +53786,20 @@
       },
       "lortel": {
         "season": "2019-20",
-        "wins": [],
+        "wins": [
+          "Outstanding Featured Actor in a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Featured Actor in a Musical",
           "Outstanding Featured Actress in a Musical",
           "Outstanding Lead Actor in a Musical",
           "Outstanding Revival"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Featured Actor in a Musical": [
+            "Christian Borle"
+          ]
+        }
       }
     },
     "encores-la-cage-aux-folles-off-broadway-2026": {
@@ -52798,10 +53832,17 @@
       },
       "dramadesk": {
         "season": "2016-17",
-        "wins": [],
+        "wins": [
+          "Outstanding Sound Design of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Sound Design of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design of a Play": [
+            "Gareth Fry and Pete Malkin"
+          ]
+        }
       }
     },
     "the-new-one-2018": {
@@ -52811,10 +53852,17 @@
       },
       "dramadesk": {
         "season": "2018-19",
-        "wins": [],
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "Mike Birbiglia"
+          ]
+        }
       }
     },
     "sylvia-2015": {
@@ -52833,7 +53881,10 @@
     "mexodus-off-broadway-2026": {
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design of a Musical",
+          "Outstanding Sound Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
           "Outstanding Direction of a Musical",
@@ -52844,7 +53895,15 @@
           "Outstanding Musical",
           "Outstanding Projection Design",
           "Outstanding Sound Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lighting Design of a Musical": [
+            "Jen Shriever and Michael Arden"
+          ],
+          "Outstanding Sound Design of a Musical": [
+            "Mikhail Fiksel"
+          ]
+        }
       },
       "outerCriticsCircle": {
         "season": "2025-26",
@@ -52870,7 +53929,9 @@
       "lortel": {
         "season": "2025-26",
         "wins": [
-          "Outstanding Musical"
+          "Outstanding Lead Performer in a Musical",
+          "Outstanding Musical",
+          "Outstanding Sound Design"
         ],
         "nominatedFor": [
           "Outstanding Choreographer",
@@ -52880,7 +53941,15 @@
           "Outstanding Projection Design",
           "Outstanding Scenic Design",
           "Outstanding Sound Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performer in a Musical": [
+            "Nygel D. Robinson"
+          ],
+          "Outstanding Sound Design": [
+            "Mikhail Fiksel"
+          ]
+        }
       }
     },
     "cold-war-choir-practice-off-broadway-2026": {
@@ -52903,24 +53972,38 @@
       },
       "lortel": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Play"
+        ],
         "nominatedFor": [
           "Outstanding Play",
           "Outstanding Scenic Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Play": [
+            "Prince Faggot"
+          ]
+        }
       }
     },
     "well-ill-let-you-go-off-broadway-2026": {
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performance in a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Featured Performance in a Play",
           "Outstanding Lead Performance in a Play",
           "Outstanding Lighting Design of a Play",
           "Outstanding Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Lead Performance in a Play": [
+            "John Lithgow"
+          ]
+        }
       }
     },
     "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025": {
@@ -52979,11 +54062,18 @@
     "my-joy-is-heavy-off-broadway-2025": {
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Projection Design"
+        ],
         "nominatedFor": [
           "Outstanding Orchestrations",
           "Outstanding Projection Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Projection Design": [
+            "Tal Yarden"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -53112,10 +54202,17 @@
     "bughouse-off-broadway-2026": {
       "lortel": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Projection Design"
+        ],
         "nominatedFor": [
           "Outstanding Projection Design"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Projection Design": [
+            "John Narun"
+          ]
+        }
       }
     },
     "inter-alia-west-end-2026": {
@@ -53221,10 +54318,17 @@
       },
       "dramadesk": {
         "season": "2004-05",
-        "wins": [],
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
         "nominatedFor": [
           "Outstanding Solo Performance"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "Billy Crystal"
+          ]
+        }
       }
     },
     "escape-6-ways-to-get-away-1-2004": {
