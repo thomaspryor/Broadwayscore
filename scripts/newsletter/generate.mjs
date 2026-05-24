@@ -582,7 +582,13 @@ function findRenderableCriticMovers() {
     if (!show) continue;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
+    // Don't double-surface a show that's already in an Openings section.
+    // Opens-this-week is the long-standing gate; reopens-this-week was missed,
+    // so reopening shows (e.g. Can I Be Frank with reopeningDate=2026-05-21)
+    // were appearing in BOTH OB Openings AND Biggest Movers. User-flagged
+    // 2026-05-24. Both gates use the same week window helper.
     if (inWeek(show.openingDate)) continue;
+    if (inWeek(show.reopeningDate)) continue;
     candidates.push({ show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta, newCount: x.thisWeek.length });
   }
   candidates.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
