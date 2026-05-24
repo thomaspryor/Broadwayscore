@@ -369,16 +369,20 @@ function openMarketRank(show) {
 }
 
 // SHOW ROW — uses POSTER image (2:3) on left for vertical fill; audience chip lives in score column under the critic badge
-function showRow(show) {
+function showRow(show, opts = {}) {
   const a = aggregateScore(show.id);
   const eligible = a && a.count >= minReviews(show.category);
   const score = eligible ? a.avg : null;
   const rank = score != null ? openMarketRank(show) : null;
   const formatPill = show.type ? pill(show.type.toUpperCase(), '#c084fc', 'rgba(168,85,247,0.15)') : '';
   const revivalPill = show.isRevival ? pill('REVIVAL', '#d4a574', 'rgba(212,165,116,0.15)') : '';
+  const reopenPill = opts.isReopening ? pill('REOPENED', '#a78bfa', 'rgba(167,139,250,0.18)') : '';
   const venue = (show.venue || '').split(' / ')[0];
-  // Split date and theater across two lines, each nowrap — easier to read on mobile.
-  const metaDate = `Opened ${dayOf(show.openingDate)} ${fmt(show.openingDate)}`;
+  // Date label flips for reopenings: "Reopened <day> <date>" instead of
+  // "Opened…". reopeningDate is used when present, falls back to openingDate.
+  const eventDate = opts.isReopening && show.reopeningDate ? show.reopeningDate : show.openingDate;
+  const eventVerb = opts.isReopening ? 'Reopened' : 'Opened';
+  const metaDate = `${eventVerb} ${dayOf(eventDate)} ${fmt(eventDate)}`;
   const metaVenue = venue;
   const audChip = audienceChip(show.id);
   const scoreCol = score != null
@@ -400,7 +404,7 @@ function showRow(show) {
       <td valign="top" width="96" style="padding:14px 0 14px 16px;">${posterOrThumb(show, 80, 120)}</td>
       <td valign="top" style="padding:14px 8px 14px 12px;">
         <div style="font-size:17px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(show, show.title)}</div>
-        <div style="margin-top:6px;">${formatPill}${revivalPill}</div>
+        <div style="margin-top:6px;">${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaVenue}</div>
       </td>
@@ -424,22 +428,56 @@ function sectionWrap(headingHtml, bodyHtml) {
   return `<tr><td style="padding:24px 4px 12px;">${headingHtml}</td></tr><tr><td style="padding:0 4px 4px;">${bodyHtml}</td></tr>`;
 }
 
-// SECTION: BW openings
+// "Opening event" helper — a show qualifies for an Openings section if its
+// openingDate OR its reopeningDate falls within the week window. Returns
+// `{ show, isReopening }` so downstream rendering + newsworthiness scoring
+// can use the right verbiage ("Opens on Broadway" vs "Reopens on Broadway").
+// reopeningDate is a manual data-repo field; populated when a show closes
+// and returns mid-season (e.g. Can I Be Frank, off-Broadway, May 2026).
+function openingEventsForWeek(category) {
+  const out = [];
+  for (const s of shows) {
+    if (s.category !== category) continue;
+    if (isOperaShow(s)) continue;
+    if (inWeek(s.openingDate)) {
+      out.push({ show: s, isReopening: false });
+      continue;
+    }
+    if (inWeek(s.reopeningDate)) {
+      out.push({ show: s, isReopening: true });
+    }
+  }
+  return out;
+}
+
+// SECTION: BW openings (includes reopenings — see openingEventsForWeek)
 function broadwayOpenings() {
-  const list = shows.filter(s => s.category === 'broadway' && !isOperaShow(s) && inWeek(s.openingDate));
-  if (!list.length) return { html: null, list: [] };
-  return { html: sectionWrap(sectionHeading('Opened on Broadway'), list.map(s => showRow(s)).join('')), list };
+  const events = openingEventsForWeek('broadway');
+  if (!events.length) return { html: null, list: [] };
+  const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
+  const list = events.map(e => e.show);
+  const hasOpen = events.some(e => !e.isReopening);
+  const hasReopen = events.some(e => e.isReopening);
+  const title = hasOpen && hasReopen ? 'Opened on Broadway'
+    : hasReopen && !hasOpen ? 'Reopened on Broadway'
+    : 'Opened on Broadway';
+  return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list };
 }
 
 // SECTION: OB openings — only show scored, mention count of pending
 function offBroadwayOpenings() {
-  const list = shows.filter(s => s.category === 'off-broadway' && !isOperaShow(s) && inWeek(s.openingDate));
-  if (!list.length) return { html: null, list: [] };
+  const events = openingEventsForWeek('off-broadway');
+  if (!events.length) return { html: null, list: [] };
+  const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
+  const list = events.map(e => e.show);
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
   const pending = list.length - withScore.length;
   if (!withScore.length && !pending) return { html: null, list: [] };
-  const body = withScore.map(x => showRow(x.s)).join('');
-  return { html: sectionWrap(sectionHeading('Opened Off-Broadway', pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
+  const body = withScore.map(x => showRow(x.s, { isReopening: reopeningIds.has(x.s.id) })).join('');
+  const hasOpen = events.some(e => !e.isReopening);
+  const hasReopen = events.some(e => e.isReopening);
+  const title = hasOpen ? 'Opened Off-Broadway' : (hasReopen ? 'Reopened Off-Broadway' : 'Opened Off-Broadway');
+  return { html: sectionWrap(sectionHeading(title, pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
 }
 
 // SECTION: Biggest Mover — show whose critic score moved most this week from NEW reviews
@@ -1534,9 +1572,15 @@ const { scoreCandidates, buildSubjectFromCandidates, buildLedeFromCandidates } =
 
 // Gather candidate-source data from the same feeds the sections render from.
 // Re-queries are cheap (everything is in-memory JSON already loaded).
+// Compute the opening EVENTS (with isReopening flag) for the scorer so its
+// verbiage matches the section's "Reopened" verb. broadwayOpenings()/
+// offBroadwayOpenings() return shows-only; we re-derive the flag here.
+const bwEvents = openingEventsForWeek('broadway');
+const obEvents = openingEventsForWeek('off-broadway');
+
 const newsworthyInputs = {
-  bwOpenings: bwO.list,
-  obOpenings: obO.list,
+  bwOpenings: bwEvents,
+  obOpenings: obEvents,
   aggregateScore,
   recoupments: (() => {
     // Mirror commercialSection's filter to gather recouped-this-week candidates.

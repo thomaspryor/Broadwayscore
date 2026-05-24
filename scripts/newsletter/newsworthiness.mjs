@@ -50,15 +50,36 @@ function isGoldTier(score, category) {
 
 // Translate a composite critic score into the kind of phrase a human editor
 // would write. "Rises 12 pts" is data-speak; "opens to decent reviews" reads
-// like a newsletter. Used throughout the subject + lede generators.
-function reviewVerdict(score, category) {
+// like a newsletter. Returns the tier key (not the phrase) so callers can
+// pick a variant for repetition-avoidance — see VERDICT_VARIANTS.
+function reviewVerdictTier(score, category) {
   if (score == null) return null;
   const goldMin = (category === 'west-end' || category === 'off-west-end') ? SCORE_GOLD_MIN_WE : SCORE_GOLD_MIN_NYC;
-  if (score >= goldMin) return 'rave reviews';        // Critical Gold tier
-  if (score >= 75)      return 'strong reviews';       // Recommended
-  if (score >= 65)      return 'decent reviews';       // Worth Seeing
-  if (score >= 55)      return 'mixed reviews';        // Skippable
-  return 'rough reviews';                              // Critical Miss
+  if (score >= goldMin) return 'rave';
+  if (score >= 75)      return 'strong';
+  if (score >= 65)      return 'decent';
+  if (score >= 55)      return 'mixed';
+  return 'rough';
+}
+
+// Synonym pool per tier. First entry is the "default" phrasing; later entries
+// are swaps to use when the same tier shows up twice in one lede so we don't
+// say "opens to decent reviews. … opens to decent reviews." First sentence
+// always uses the default; subsequent same-tier sentences cycle through
+// variants. Subject line always uses the default (it's only one shot).
+const VERDICT_VARIANTS = {
+  rave:   ['rave reviews', 'near-universal praise', 'glowing notices'],
+  strong: ['strong reviews', 'enthusiastic notices', 'warm critical reception'],
+  decent: ['decent reviews', 'a mostly-positive reception', 'broadly favorable notices'],
+  mixed:  ['mixed reviews', 'a divided reception', 'split notices'],
+  rough:  ['rough reviews', 'mostly-pans', 'a chilly reception'],
+};
+
+function reviewVerdict(score, category, variantIndex = 0) {
+  const tier = reviewVerdictTier(score, category);
+  if (!tier) return null;
+  const pool = VERDICT_VARIANTS[tier];
+  return pool[Math.min(variantIndex, pool.length - 1)];
 }
 
 // Each candidate is `{ kind, weight, headline, show, slug }`. `headline` is the
@@ -66,29 +87,37 @@ function reviewVerdict(score, category) {
 export function scoreCandidates(input) {
   const out = [];
 
-  // 1. Broadway openings — include review verdict when score is in (e.g.
-  // "Celebrity Autobiography opens to decent reviews"). Falls back to the
-  // plain "opens on Broadway" when reviews haven't landed yet.
-  for (const s of (input.bwOpenings || [])) {
+  // 1. Broadway openings (or reopenings). Input items are `{show, isReopening}`
+  // — the same flag the section uses, so headline verbiage matches the card.
+  for (const item of (input.bwOpenings || [])) {
+    const s = item.show || item; // backward compat if a bare show is passed
+    const isReopen = !!item.isReopening;
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
-    const verdict = reviewVerdict(score, s.category);
+    const tier = reviewVerdictTier(score, s.category);
+    const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.BW_OPENING_GOLD_BUMP : 0;
+    const verb = isReopen ? 'reopens' : 'opens';
     const headline = verdict
-      ? `${s.title} opens to ${verdict}`
-      : `${s.title} opens on Broadway`;
-    out.push({ kind: 'bw-opening', weight: WEIGHTS.BW_OPENING_BASE + goldBump, headline, show: s, slug: s.slug });
+      ? `${s.title} ${verb} to ${verdict}`
+      : `${s.title} ${verb} on Broadway`;
+    out.push({ kind: isReopen ? 'bw-reopening' : 'bw-opening', weight: WEIGHTS.BW_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
+      verdictTier: tier, verdictPrefix: `${s.title} ${verb} to `, openingVenue: 'Broadway' });
   }
 
-  // 2. Off-Broadway openings — same treatment, with the venue made explicit
-  // because "opens to decent reviews" alone hides whether it's BW or OB.
-  for (const s of (input.obOpenings || [])) {
+  // 2. Off-Broadway openings (or reopenings).
+  for (const item of (input.obOpenings || [])) {
+    const s = item.show || item;
+    const isReopen = !!item.isReopening;
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
-    const verdict = reviewVerdict(score, s.category);
+    const tier = reviewVerdictTier(score, s.category);
+    const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.OB_OPENING_GOLD_BUMP : 0;
+    const verb = isReopen ? 'reopens' : 'opens';
     const headline = verdict
-      ? `${s.title} opens off-Broadway to ${verdict}`
-      : `${s.title} opens off-Broadway`;
-    out.push({ kind: 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug });
+      ? `${s.title} ${verb} off-Broadway to ${verdict}`
+      : `${s.title} ${verb} off-Broadway`;
+    out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
+      verdictTier: tier, verdictPrefix: `${s.title} ${verb} off-Broadway to `, openingVenue: 'off-Broadway' });
   }
 
   // 3. Recoupment announcements (rarest biz news — high weight)
@@ -207,11 +236,26 @@ export function buildSubjectFromCandidates(candidates, opts = {}) {
 
 // Editorial lede — 2-3 sentence narrative from the top candidates.
 // Stronger than the subject because it can use full prose. Deduped by kind so
-// we don't get three "X recoups" sentences in a row.
+// we don't get three "X recoups" sentences in a row. Also rotates verdict
+// phrasing — two openings in the same week with the same tier shouldn't both
+// say "opens to decent reviews"; the second uses the next pool variant.
 export function buildLedeFromCandidates(candidates) {
   if (!candidates.length) return null;
   const unique = dedupeByKind(candidates).slice(0, 3);
-  return unique.map(headlineToSentence).join(' ');
+  // Per-tier counter so the Nth occurrence picks variantIndex N.
+  const tierSeen = {};
+  const sentences = unique.map((c) => {
+    let headline = c.headline;
+    if (c.verdictTier && c.verdictPrefix) {
+      const i = (tierSeen[c.verdictTier] = (tierSeen[c.verdictTier] || 0) + 1) - 1;
+      const pool = VERDICT_VARIANTS[c.verdictTier];
+      if (pool && i > 0 && pool[i]) {
+        headline = c.verdictPrefix + pool[i];
+      }
+    }
+    return headlineToSentence({ ...c, headline });
+  });
+  return sentences.join(' ');
 }
 
 function headlineToSentence(c) {
