@@ -11,6 +11,8 @@ import {
   detectCrossShowConflicts,
   applyPublicFilters,
   normalizeIdentifier,
+  CLOSURE_NOTE_PHRASES,
+  noteMatchesClosurePhrase,
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
@@ -238,4 +240,105 @@ test('detectCrossShowConflicts ignores conflicts when actor has absence from one
   };
   const out = detectCrossShowConflicts(data);
   assert.equal(out.length, 0);
+});
+
+// ---------------------------------------------------------------------------
+// Closure phrase contract — guards against the audit ↔ runtime ↔ TS drift
+// that shipped the DBH "Betsy Wolfe departs · final Jun 28" bug. CLOSURE_NOTE_PHRASES
+// is the single source of truth; every consumer must build on top of it.
+// ---------------------------------------------------------------------------
+
+test('CLOSURE_NOTE_PHRASES is non-empty, frozen, and lower-case', () => {
+  assert.ok(Array.isArray(CLOSURE_NOTE_PHRASES));
+  assert.ok(CLOSURE_NOTE_PHRASES.length >= 4);
+  assert.ok(Object.isFrozen(CLOSURE_NOTE_PHRASES));
+  for (const p of CLOSURE_NOTE_PHRASES) {
+    assert.equal(p, p.toLowerCase(), `phrase must be lower-case: ${p}`);
+  }
+});
+
+test('noteMatchesClosurePhrase: every phrase matches itself', () => {
+  for (const phrase of CLOSURE_NOTE_PHRASES) {
+    assert.ok(noteMatchesClosurePhrase(phrase), `should match: ${phrase}`);
+    assert.ok(noteMatchesClosurePhrase(phrase.toUpperCase()), `case-insensitive: ${phrase}`);
+    assert.ok(noteMatchesClosurePhrase(`Final performance — ${phrase} on June 28`), `substring: ${phrase}`);
+  }
+  assert.equal(noteMatchesClosurePhrase('leaving for a film role'), false);
+  assert.equal(noteMatchesClosurePhrase(null), false);
+  assert.equal(noteMatchesClosurePhrase(''), false);
+});
+
+test('reconcileClosure suppresses departures for every CLOSURE_NOTE_PHRASES entry', () => {
+  // Per-phrase: closure event + a same-date departure with that phrase in the
+  // note. After reconcile, only the closure should remain.
+  for (const phrase of CLOSURE_NOTE_PHRASES) {
+    const events = [
+      { type: 'closure', name: 'test-show', role: 'Production', date: '2026-06-28', note: 'Production closes' },
+      { type: 'departure', name: 'Lead Actor', role: 'Star', date: '2026-06-28', note: `Final performance — ${phrase}` },
+    ];
+    const out = reconcileClosure(events);
+    assert.equal(out.length, 1, `phrase did not suppress same-date departure: ${phrase}`);
+    assert.equal(out[0].type, 'closure', `phrase left a departure standing: ${phrase}`);
+  }
+});
+
+test('audit isClosureDeparture matches CLOSURE_NOTE_PHRASES (contract test)', async () => {
+  // The audit script is CJS — load via dynamic import + createRequire so the
+  // test can grep for symbol drift between the two callers. If audit ever
+  // imports a sibling phrase list, this test fails loudly.
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const auditPath = require.resolve('../../scripts/audit-cast-changes.js');
+  const src = (await import('node:fs')).readFileSync(auditPath, 'utf8');
+  // Audit MUST import noteMatchesClosurePhrase rather than re-list phrases.
+  assert.ok(
+    /noteMatchesClosurePhrase/.test(src),
+    'scripts/audit-cast-changes.js must import noteMatchesClosurePhrase from scripts/lib/cast-changes-filters.js',
+  );
+  // No inline phrase list (a stray "production closes" string-literal would
+  // be the failure mode). Allow comments referencing the list.
+  const codeOnly = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*/g, '');
+  for (const phrase of CLOSURE_NOTE_PHRASES) {
+    assert.ok(
+      !codeOnly.includes(`'${phrase}'`) && !codeOnly.includes(`"${phrase}"`),
+      `audit-cast-changes.js still has inline phrase literal '${phrase}' — must use shared constant`,
+    );
+  }
+});
+
+test('audit reclassifier requires group size >= 2 (no singleton-promotion)', async () => {
+  // Verify the audit logic doesn't promote a single matching departure into
+  // a fabricated show-wide closure. We test the function in isolation by
+  // requiring the module fresh (no global state).
+  const { createRequire } = await import('node:module');
+  const require = createRequire(import.meta.url);
+  const src = (await import('node:fs')).readFileSync(
+    require.resolve('../../scripts/audit-cast-changes.js'),
+    'utf8',
+  );
+  // Extract reclassifyClosureDepartures + dependencies via Function eval
+  // (the function is not exported; this mirrors the pre-existing pattern
+  // used elsewhere in this repo for testing audit internals).
+  const fn = `${src.match(/const MIN_RECLASS_GROUP_SIZE[\s\S]*?\nfunction reclassifyClosureDepartures[\s\S]*?\n\}\n/)[0]}\nreturn reclassifyClosureDepartures;`;
+  const filters = require('../../scripts/lib/cast-changes-filters.js');
+  const TODAY_STR = '2026-05-24';
+  const isClosureDeparture = e => e.type === 'departure' && filters.noteMatchesClosurePhrase(e.note);
+  const reclassify = new Function('isClosureDeparture', 'TODAY_STR', fn)(isClosureDeparture, TODAY_STR);
+
+  // Singleton: a lone "actor X — show closes" departure should NOT become
+  // a synthetic closure event.
+  const singleton = [
+    { type: 'departure', name: 'A', role: 'X', date: '2026-06-28', note: 'final performance as show closes' },
+  ];
+  const out1 = reclassify(singleton, 'test');
+  assert.equal(out1.rewritten.filter(e => e.type === 'closure').length, 0, 'singleton promoted to closure');
+  assert.equal(out1.rewritten.length, 1, 'singleton departure should be preserved');
+
+  // Cluster (>=2): should reclassify.
+  const cluster = [
+    { type: 'departure', name: 'A', role: 'X', date: '2026-06-28', note: 'production closes' },
+    { type: 'departure', name: 'B', role: 'Y', date: '2026-06-28', note: 'production closes' },
+  ];
+  const out2 = reclassify(cluster, 'test');
+  assert.equal(out2.rewritten.filter(e => e.type === 'closure').length, 1, 'cluster did not reclassify');
 });

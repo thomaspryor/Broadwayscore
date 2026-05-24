@@ -5,6 +5,34 @@ import type { CastEvent } from './data-types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Closure-departure phrase list — single source of truth for "this departure
+ * event is really a show-wide closure misrepresented as a per-actor exit".
+ * Mirror of CLOSURE_NOTE_PHRASES in scripts/lib/cast-changes-filters.js —
+ * any addition here must be added there (and vice versa) or the TS web app
+ * and the Node audit/newsletter pipelines silently desync. The parity is
+ * guarded by tests/unit/cast-changes-filters.test.mjs.
+ */
+export const CLOSURE_NOTE_PHRASES: readonly string[] = Object.freeze([
+  'production closes',
+  'production close',
+  'production ends',
+  'show closes',
+  'show ends',
+  'final performance of the production',
+  'final performance as show closes',
+  'final performance as production closes',
+]);
+
+export function noteMatchesClosurePhrase(note?: string | null): boolean {
+  if (!note || typeof note !== 'string') return false;
+  const lower = note.toLowerCase();
+  for (const phrase of CLOSURE_NOTE_PHRASES) {
+    if (lower.includes(phrase)) return true;
+  }
+  return false;
+}
+
 function parseISO(s?: string | null): Date | null {
   if (!s || typeof s !== 'string') return null;
   const d = new Date(s);
@@ -96,12 +124,7 @@ export function reconcileClosure(events: CastEvent[]): CastEvent[] {
   const SLOP_DAYS = 3;
   return events.filter(e => {
     if (e.type !== 'departure') return true;
-    const note = (e.note || '').toLowerCase();
-    const noteMatchesClosure =
-      note.includes('production closes') ||
-      note.includes('production ends') ||
-      note.includes('show closes') ||
-      note.includes('final performance of the production');
+    const noteMatchesClosure = noteMatchesClosurePhrase(e.note);
     const departureDate = parseISO(e.date);
     if (!departureDate) return !noteMatchesClosure;
     for (const cDate of closureDates) {

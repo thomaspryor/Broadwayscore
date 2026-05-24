@@ -28,6 +28,7 @@ const {
   detectCrossShowConflicts,
   dedupeByPersonShow,
   normalizeIdentifier,
+  noteMatchesClosurePhrase,
 } = require('./lib/cast-changes-filters');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
@@ -47,26 +48,24 @@ function parseISO(s) {
 
 function isClosureDeparture(event) {
   if (event.type !== 'departure') return false;
-  const note = (event.note || '').toLowerCase();
-  // Keep this aligned with reconcileClosure() in scripts/lib/cast-changes-filters.js —
-  // both functions must recognise the same closure phrasings, otherwise the daily
-  // audit reclassifier silently misses closures that the runtime reconciler catches
-  // (the 2026-05-23 DBH case: notes said "show closes", audit only matched "production closes").
-  return (
-    note.includes('production closes') ||
-    note.includes('production ends') ||
-    note.includes('production close') ||
-    note.includes('show closes') ||
-    note.includes('show ends') ||
-    note.includes('final performance of the production') ||
-    note.includes('final performance as show closes') ||
-    note.includes('final performance as production closes')
-  );
+  // Phrase list lives in scripts/lib/cast-changes-filters.js so audit + runtime
+  // + TS web app can't drift. See CLOSURE_NOTE_PHRASES doc-comment there.
+  return noteMatchesClosurePhrase(event.note);
 }
+
+// Minimum cluster size for auto-reclassification. A single departure with a
+// matching note like "final performance as show closes" could legitimately
+// be one actor's exit on the closing date, NOT a fresh show-wide closure
+// announcement that the scraper failed to emit as a `closure` event.
+// Two or more same-date matching departures is a much stronger signal that
+// the scrape collapsed a closure into per-actor rows (the original DBH bug
+// pattern). Singletons should be left to humans / a future scraper pass.
+const MIN_RECLASS_GROUP_SIZE = 2;
 
 function reclassifyClosureDepartures(events, showId) {
   const closureGroups = new Map();
   const nonClosure = [];
+  const departuresByGroupKey = new Map();
 
   for (const e of events) {
     if (isClosureDeparture(e) && e.date) {
@@ -78,30 +77,51 @@ function reclassifyClosureDepartures(events, showId) {
   }
 
   const newClosures = [];
+  const reclassifiedDates = new Set();
   for (const [date, group] of closureGroups) {
     const alreadyHasClosure = events.some(
       e => e.type === 'closure' && e.date === date,
     );
-    if (alreadyHasClosure) continue;
-    const seed = group[0];
-    newClosures.push({
-      type: 'closure',
-      name: showId,
-      role: 'Production',
-      date,
-      note: seed.note || 'Production closes',
-      sourceUrl: seed.sourceUrl,
-      sourceType: seed.sourceType,
-      addedDate: seed.addedDate || TODAY_STR,
-    });
+    // Don't promote a singleton matching departure into a show-wide closure.
+    // We still suppress it at render time via reconcileClosure() when a
+    // sibling `closure` event exists, but we won't fabricate one from a
+    // single ambiguous note.
+    if (group.length < MIN_RECLASS_GROUP_SIZE && !alreadyHasClosure) continue;
+    if (!alreadyHasClosure) {
+      const seed = group[0];
+      newClosures.push({
+        type: 'closure',
+        name: showId,
+        role: 'Production',
+        date,
+        note: seed.note || 'Production closes',
+        sourceUrl: seed.sourceUrl,
+        sourceType: seed.sourceType,
+        addedDate: seed.addedDate || TODAY_STR,
+      });
+    }
+    reclassifiedDates.add(date);
   }
 
+  // For closure dates where a closure event now exists (newly created OR
+  // pre-existing), drop the per-actor departures (they're redundant). For
+  // closure dates we DIDN'T promote (singleton with no existing closure),
+  // keep the per-actor departure rows — they may be legitimate single
+  // exits that happen to match a closure phrase.
+  const keptDepartures = [];
+  for (const [date, group] of closureGroups) {
+    if (!reclassifiedDates.has(date)) {
+      for (const e of group) keptDepartures.push(e);
+    }
+  }
+  const collapsedCount = Array.from(closureGroups.entries())
+    .filter(([date]) => reclassifiedDates.has(date))
+    .reduce((n, [, g]) => n + g.length, 0);
+
   return {
-    rewritten: [...newClosures, ...nonClosure],
-    reclassifiedCount: closureGroups.size > 0
-      ? Array.from(closureGroups.values()).reduce((n, g) => n + g.length, 0)
-      : 0,
-    closureGroupCount: closureGroups.size,
+    rewritten: [...newClosures, ...nonClosure, ...keptDepartures],
+    reclassifiedCount: collapsedCount,
+    closureGroupCount: reclassifiedDates.size,
   };
 }
 

@@ -2,6 +2,38 @@
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Closure-departure phrase list — the single source of truth for "this
+ * departure event is really a show-wide closure misrepresented as N
+ * per-actor exits". Any module that recognises closure-style notes MUST
+ * import this constant rather than maintaining its own copy:
+ *   - scripts/audit-cast-changes.js: isClosureDeparture() (mutates cast-changes.json on --write)
+ *   - this module:                   reconcileClosure() (runtime suppression)
+ *   - src/lib/cast-changes-filters.ts: same logic, TS port for the web app
+ * Phrase drift between these callers has shipped two distinct bugs:
+ *   2026-05-23: scrape-cast-changes emitted N "Production closes" departures; runtime collapsed them but audit didn't, so they re-appeared after dedup.
+ *   2026-05-24: DBH notes said "show closes" — audit's narrower list silently skipped the show. (This file's list was also narrower than the audit at one point.)
+ */
+const CLOSURE_NOTE_PHRASES = Object.freeze([
+  'production closes',
+  'production close',
+  'production ends',
+  'show closes',
+  'show ends',
+  'final performance of the production',
+  'final performance as show closes',
+  'final performance as production closes',
+]);
+
+function noteMatchesClosurePhrase(note) {
+  if (!note || typeof note !== 'string') return false;
+  const lower = note.toLowerCase();
+  for (const phrase of CLOSURE_NOTE_PHRASES) {
+    if (lower.includes(phrase)) return true;
+  }
+  return false;
+}
+
 function parseISO(s) {
   if (!s || typeof s !== 'string') return null;
   const d = new Date(s);
@@ -143,12 +175,7 @@ function reconcileClosure(events) {
   const SLOP_DAYS = 3;
   return events.filter(e => {
     if (e.type !== 'departure') return true;
-    const note = (e.note || '').toLowerCase();
-    const noteMatchesClosure =
-      note.includes('production closes') ||
-      note.includes('production ends') ||
-      note.includes('show closes') ||
-      note.includes('final performance of the production');
+    const noteMatchesClosure = noteMatchesClosurePhrase(e.note);
     const departureDate = parseISO(e.date);
     if (!departureDate) return !noteMatchesClosure;
     for (const cDate of closureDates) {
@@ -310,4 +337,6 @@ module.exports = {
   detectContradictions,
   detectCrossShowConflicts,
   applyPublicFilters,
+  CLOSURE_NOTE_PHRASES,
+  noteMatchesClosurePhrase,
 };
