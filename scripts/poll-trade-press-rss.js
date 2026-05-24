@@ -63,6 +63,12 @@ const TEST_SHOW = flags['test-show'] || null;
 const RECOUP_REGEX = /recoup(ed|ment|s)?|earned back/i;
 const SIXTY_DAYS_MS = 60 * 24 * 60 * 60 * 1000;
 const ARTICLE_DATE_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;
+// Per ship-check P2 on THR onboarding: alert when a single feed burns more than
+// this many LLM calls in one run. Signals a film/TV-franchise news cycle that
+// title-collides with a Broadway candidate (Beetlejuice, Mamma Mia,
+// Schmigadoon, plus single-word titles like Giant/Bug/Chess/Art). Costs are
+// still bounded by LLM_CALL_CAP, but persistent high rates merit a look.
+const PER_FEED_LLM_WARN_THRESHOLD = 5;
 
 // ---- paths (mirrors scrape-recoupment-announcements.js dataPath) ----
 function dataPath(filename, { writable = false } = {}) {
@@ -217,6 +223,7 @@ async function processFeed(feed, state, candidates, counters) {
       continue;
     }
     counters.llmCalls++;
+    counters.perFeed[feed.outletId] = (counters.perFeed[feed.outletId] || 0) + 1;
     const verdict = await classifyArticle(show.title, item.link, html);
     log(`      → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
     if (verdict.evidence) log(`         "${String(verdict.evidence).slice(0, 140)}"`);
@@ -273,7 +280,7 @@ async function main() {
     return;
   }
 
-  const counters = { llmCalls: 0 };
+  const counters = { llmCalls: 0, perFeed: {} };
   const allFindings = [];
   const feedResults = {};
 
@@ -285,6 +292,13 @@ async function main() {
 
   log(`\n========== SUMMARY ==========`);
   log(`LLM calls: ${counters.llmCalls} / ${LLM_CALL_CAP}`);
+  for (const [outletId, n] of Object.entries(counters.perFeed)) {
+    log(`  ${outletId}: ${n} LLM call${n === 1 ? '' : 's'}`);
+    if (n > PER_FEED_LLM_WARN_THRESHOLD) {
+      // GHA `::warning::` surfaces in the Test Summary + run notification.
+      console.log(`::warning::RSS poller burned ${n} LLM calls on feed "${outletId}" (threshold ${PER_FEED_LLM_WARN_THRESHOLD}). Likely a title collision with a film/TV franchise — audit recent classifications.`);
+    }
+  }
   log(`Promotable findings: ${allFindings.length}`);
   for (const f of allFindings) {
     log(`  ✅ ${f.show.slug}: ${f.verdict.recoupedDate || 'date?'} (${f.host})`);
@@ -341,7 +355,7 @@ async function main() {
 }
 
 // Export pure helpers for unit tests.
-module.exports = { diffNewItems, matchShow, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS };
+module.exports = { diffNewItems, matchShow, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
 
 if (require.main === module) {
   main().catch(e => { console.error('FATAL', e); process.exit(1); });
