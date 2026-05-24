@@ -134,6 +134,19 @@ jobs:
           fi
           echo "All exemptions still failing — no decay."
 
+      - name: Audit — check-cron-health max_hours vs real cron cadence
+        # Catches the 2026-05-24 class of bug where an entry's max_hours is
+        # less than the worst gap between its workflow's cron fires, guaranteeing
+        # false-positive staleness alerts. Script reads CRITICAL_CRONS entries
+        # from check-cron-health.yml, simulates 60 days of cron fires for each
+        # referenced workflow, and fails if max_hours < worst real gap.
+        run: |
+          if git log -1 --format=%B | grep -Fq "[skip-cron-audit]"; then
+            echo "::warning::cron-health coverage audit skipped via [skip-cron-audit] commit-message tag"
+            exit 0
+          fi
+          node scripts/audit-cron-health-coverage.js
+
       - name: Check checkout-core-data has matching push-core-data
         run: |
           # Workflows that checkout core data AND have write permissions
