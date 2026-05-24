@@ -301,15 +301,22 @@ async function main() {
   // the most-urgent retractions (closing soonest) get the auto-fix budget.
   const autoFixedTripleSignal = [];
   if (process.env.ANTHROPIC_API_KEY && ambiguous.length > 0) {
+    // Run discovery for BOTH earlier-than-stored (NEEDS_HUMAN_REVIEW) and
+    // suspicious-large-jump extensions (EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW) —
+    // a real 200-day extension shouldn't be locked out of the LLM rescue path.
     const byUrgency = ambiguous
-      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW')  // earlier-than-stored only; never the extension-cap path
+      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW')
       .sort((a, b) => new Date(a.stored) - new Date(b.stored))
       .slice(0, MAX_TRIPLE_SIGNAL_ATTEMPTS);
     console.log(`\nTriple-signal auto-fix: attempting ${byUrgency.length} ambiguous show(s)`);
     for (const a of byUrgency) {
       const show = candidates.find(c => c.id === a.id);
       if (!show) continue;
-      const showTitle = show.title || show.name || a.id;
+      // Title-field consistency: rest of the file uses show.name, fall through
+      // to show.title only if name is missing. shows.json schema uses `title`,
+      // but the audit script normalized to `name` earlier — use both as a
+      // safety net.
+      const showTitle = show.name || show.title || a.id;
       let discovery;
       try {
         discovery = await discoverAnnouncedClosingDate(showTitle, { log: (msg) => console.log(msg) });
@@ -336,13 +343,24 @@ async function main() {
       // is ambiguous). Auto-apply the press date — it's the authoritative
       // announcement; broadway.com schedule is just the lower-bound proof.
       const newDate = discovery.date;
-      if (!DRY_RUN) {
-        const targetShow = data.shows.find(s => s.id === a.id);
-        if (targetShow) {
-          targetShow.closingDate = newDate;
-          targetShow.closingDateSource = `triple-signal audit (${TODAY}): broadway.com + ${discovery.sources[0].url}`;
-          targetShow.closingDateUpdatedAt = TODAY;
-        }
+      const targetShow = !DRY_RUN ? data.shows.find(s => s.id === a.id) : null;
+      if (!DRY_RUN && !targetShow) {
+        // Found in `candidates` but missing in `data.shows`: this means the
+        // arrays diverged (concurrent reformat, hot-rebuild). Don't claim
+        // we fixed it; log and surface to Notion review.
+        console.warn(`  [auto-fix] ${a.id}: in candidates but not data.shows — skipping write`);
+        a.tripleSignalWriteFailed = { reason: 'target_not_in_data_shows', newDate };
+        continue;
+      }
+      if (targetShow) {
+        targetShow.closingDate = newDate;
+        // Cite ALL corroborating sources, not just the first — preserves
+        // the audit trail when reviewing a wrong auto-fix later.
+        const sourceList = discovery.sources.map(s => s.url).join(', ');
+        targetShow.closingDateSource = `triple-signal audit (${TODAY}): broadway.com + ${sourceList}`;
+        targetShow.closingDateUpdatedAt = TODAY;
+        // Record what we replaced — single field to roll back from.
+        targetShow.closingDatePrevious = a.stored;
       }
       autoFixedTripleSignal.push({
         id: a.id,

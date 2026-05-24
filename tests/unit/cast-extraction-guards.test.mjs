@@ -116,100 +116,155 @@ test('isOperaSourceUrl flags opera-publication domains', () => {
 });
 
 // ============================================================================
-// SERP-scoring parity test — proves the systematic fix actually fixes the
-// historical contamination. Each entry is a real (showTitle, sourceUrl) pair
-// from one of the 12 cast files deleted in commit 5cf6b1a7c3. Asserts the
-// score lands BELOW SERP_MIN_SCORE so the SERP filter would have rejected
-// the result before it ever reached the LLM. SERP titles aren't preserved
-// in the cast files; we pass empty title so only URL signals apply (a real
-// SERP would supply matching/non-matching title text, but the URL alone
-// drives the misroute in every case here).
+// SERP-scoring parity tests — for each of the 11 cast files deleted in
+// commit 5cf6b1a7c3, assert what the SERP scorer does today when given a
+// realistic SERP title (not an empty string — empty under-approximates
+// production scoring; an earlier version of this test missed cases that
+// pass with real titles, flagged by Codex review on commit b02f090b1d).
+//
+// **Layered defense**: the SERP scorer is one of four cast-contamination
+// defenses. When the scorer alone can't reject a URL, a downstream defense
+// owns the case. Each fixture below names which layer catches it:
+//   1. SERP scorer       (this file: score < SERP_MIN_SCORE)
+//   2. Opera-source URL  (isOperaSourceUrl, pre-fetch skip)
+//   3. validateCastExtraction (post-LLM, in scripts/lib/cast-extraction-guards.js)
+//   4. LLM prompt year/venue match (in backfill-cast-web.js, probabilistic)
+//
+// `caughtBy` = which layer actually catches this URL when given a realistic
+// SERP title. Only the SERP-scorer layer is enforced in this block; the
+// other layers have their own tests (isOperaSourceUrl, validateCastExtraction)
+// or are non-testable (LLM prompt).
 // ============================================================================
 
 const HISTORICAL_BAD_SOURCES = [
   {
     show: 'The Amazing Adventures of Kavalier & Clay',
     url: 'https://parterre.com/broadcast/104032/the-amazing-adventures-of-kavalier-clay/',
+    serpTitle: 'Met Opera Podcast: Kavalier and Clay',
     note: 'Met Opera podcast — wrong show entirely',
+    caughtBy: 'opera-source-url',  // isOperaSourceUrl(parterre.com) → skip before fetch
   },
   {
     show: 'Much Ado About Nothing',
     url: 'https://www.broadwayworld.com/westend/article/Cast-Announced-For-Shakespeares-Globes-SHAKESPEARE-IN-THE-ABBEY-20230329',
+    serpTitle: 'Cast Announced For Shakespeares Globes SHAKESPEARE IN THE ABBEY',
     note: 'BWW article for Shakespeare in the Abbey (2023, different Globe show)',
+    caughtBy: 'serp-scorer',
   },
   {
     show: 'Pride',
     url: 'https://www.broadwayworld.com/shows/Pride-335789/cast',
+    serpTitle: 'Pride - Broadway Cast & Creative Team',
     note: 'BWW /shows/ page for a different Pride production',
-    skipReason: 'Title token "pride" appears in URL — relies on validateCastExtraction name-swap detection instead',
+    caughtBy: 'validate-cast-extraction',  // name-swap pattern in extracted cast
   },
   {
     show: 'Relics',
     url: 'https://www.londonboxoffice.co.uk/news/post/cast-updated-announced-for-west-end-production-of-oliver',
+    serpTitle: 'Oliver West End cast announcement',
     note: 'Oliver cast page — wrong show',
+    caughtBy: 'serp-scorer',
   },
   {
     show: "Love's Labour's Lost",
     url: 'https://www.rsc.org.uk/the-resistible-rise-of-arturo-ui/cast-and-creatives',
+    serpTitle: 'Arturo Ui cast and creatives RSC',
     note: 'RSC Arturo Ui cast — wrong show',
+    caughtBy: 'serp-scorer',
   },
   {
     show: 'Sting',
     url: 'https://thelastship-musical.com/cast-and-creatives/',
+    serpTitle: 'The Last Ship - Cast & Creatives',
     note: 'The Last Ship musical cast — wrong show (Sting wrote it, not the same)',
+    caughtBy: 'serp-scorer',
   },
   {
     show: "Godot's To-Do List",
     url: 'https://www.londonboxoffice.co.uk/news/post/new-west-end-cast-for-six-announced',
+    serpTitle: 'New West End cast for Six announced',
     note: 'Six musical cast announcement — wrong show',
+    caughtBy: 'serp-scorer',
   },
   {
     show: 'Little Women the Musical',
     url: 'https://www.broadwayworld.com/people/John-Brooke/',
+    serpTitle: 'John Brooke - BroadwayWorld',
     note: 'Actor bio page — not a cast page',
-    skipReason: 'Title token "little" / "women" not in URL — but URL has no /show/ either, scoring already low',
+    caughtBy: 'serp-scorer',
   },
   {
     show: 'Making a Show of Myself',
     url: 'https://www.instagram.com/p/DGgqPHcPqiW/',
+    serpTitle: 'Instagram post',
     note: 'Instagram post — not a cast page',
+    caughtBy: 'serp-scorer',
   },
   {
     show: 'Man to Man',
     url: 'https://www.londonboxoffice.co.uk/news/post/man-and-boy-dorfman-theatre-cast',
+    serpTitle: 'Cast announced for Man and Boy',
     note: 'Man and Boy cast — wrong show',
+    caughtBy: 'llm-prompt',  // short title → all tokens filtered out → no SERP gate signal
   },
   {
     show: 'The Wedding March',
     url: 'https://www.broadwayworld.com/westend/article/Cast-Set-For-FANNY-at-Kings-Head-Theatre-20250911',
+    serpTitle: 'Cast Set For FANNY at Kings Head Theatre',
     note: 'BWW article for FANNY — wrong show',
+    caughtBy: 'serp-scorer',
   },
 ];
 
 for (const c of HISTORICAL_BAD_SOURCES) {
-  const label = c.expectPass
-    ? `SERP scoring passes legitimate match: "${c.show}" → ${c.url.slice(0, 60)}`
-    : `SERP scoring rejects historical bad URL: "${c.show}" → ${c.url.slice(0, 60)}`;
+  const label = c.caughtBy === 'serp-scorer'
+    ? `SERP scorer rejects historical bad URL: "${c.show}" → ${c.url.slice(0, 60)}`
+    : `SERP scorer alone cannot reject "${c.show}" (caught by ${c.caughtBy})`;
 
   test(label, () => {
-    const { score } = scoreSerpResult({ url: c.url, title: '' }, c.show);
-    if (c.expectPass) {
-      assert.ok(score >= SERP_MIN_SCORE, `expected score >= ${SERP_MIN_SCORE}, got ${score} (${c.note})`);
-    } else if (c.skipReason) {
-      // Documented edge case — the SERP scorer alone wouldn't catch this URL;
-      // a downstream defense (validateCastExtraction or audit) covers it.
-      // Test exists to document the boundary, not to enforce.
-      // Assert score is at least below the strong-positive threshold so we
-      // know the bad URL isn't winning over a good one.
-      assert.ok(score < 8, `expected score < 8 (weak signal), got ${score} — ${c.skipReason}`);
+    const { score } = scoreSerpResult({ url: c.url, title: c.serpTitle }, c.show);
+    if (c.caughtBy === 'serp-scorer') {
+      assert.ok(score < SERP_MIN_SCORE,
+        `expected score < ${SERP_MIN_SCORE}, got ${score} (${c.note})`);
     } else {
-      assert.ok(score < SERP_MIN_SCORE, `expected score < ${SERP_MIN_SCORE}, got ${score} (${c.note})`);
+      // Document the boundary: this URL DOES pass the SERP scorer with a
+      // realistic title; a different defense layer catches it. We assert
+      // score >= SERP_MIN_SCORE so the test breaks if a future SERP-scorer
+      // tightening would catch it (good news — update caughtBy then), and
+      // breaks if the URL stops passing for unrelated reasons (also worth
+      // knowing).
+      assert.ok(score >= SERP_MIN_SCORE,
+        `${c.show} URL was expected to pass SERP scorer (caughtBy=${c.caughtBy}), but score=${score} < ${SERP_MIN_SCORE}. ` +
+        `If the SERP scorer was tightened to catch this case, update caughtBy to "serp-scorer".`);
     }
   });
 }
 
+// Verify the downstream defenses named in `caughtBy` actually exist & fire.
+test('opera-source-url defense catches Kavalier-Clay URL', () => {
+  assert.equal(isOperaSourceUrl('https://parterre.com/broadcast/104032/the-amazing-adventures-of-kavalier-clay/'), true);
+});
+
+test('validate-cast-extraction defense catches Pride name-swap pattern', () => {
+  // The Pride URL went to BWW Pride-335789 which lists cast in
+  // LASTNAME-FIRSTNAME alphabetical order — the LLM extracts swapped names.
+  const cast = [
+    { name: 'Jenkins Gethin', role: 'Darren' },
+    { name: 'Williams Margaret', role: 'Matthew' },
+    { name: 'Lumsden Mark', role: 'Kirsty' },
+  ];
+  const r = validateCastExtraction(cast, 'Pride');
+  assert.equal(r.ok, false, 'validateCastExtraction must reject name-swap pattern');
+  assert.match(r.reasons.join(','), /name-swap-pattern/);
+});
+
 test('SERP scoring passes structured cast pages for the right show', () => {
-  // Positive controls — real production pages that SHOULD clear the bar.
+  // Positive controls — URLs that match the shape of real cast pages on
+  // structured aggregators. The exact slugs aren't fetched (the scorer is
+  // pure pattern-matching), so these are SYNTHETIC URLs matching the
+  // playbill.com/production/<slug> and broadwayworld.com/shows/<slug>/cast
+  // shapes. The goal: ensure the threshold isn't so high that real
+  // production pages would fail.
   const goodCases = [
     {
       show: 'Hamilton',
