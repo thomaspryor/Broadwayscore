@@ -45,6 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
@@ -62,6 +63,16 @@ const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
 // the 2027 Tony Awards date) than a real extension. Fall through to
 // ambiguous review instead of writing a fabricated date.
 const MAX_AUTO_EXTENSION_DAYS = 180;
+// Triple-signal auto-fix: when broadway.com schedule + press article + LLM
+// extraction agree within ±7 days, auto-apply the new closingDate. Bounds
+// hallucination risk: a single wrong article can't move the date unless the
+// schedule and a second source corroborate. See clusterDates() in
+// scripts/lib/closing-date-discovery.js.
+const TRIPLE_SIGNAL_TOLERANCE_DAYS = 7;
+// Cap auto-fix attempts per run. With ~$0.10 of SERP+SB+LLM per show, this
+// caps a runaway audit (e.g., 50 ambiguous after a broadway.com layout
+// change) at ~$1. Excess flows through to the Notion card path normally.
+const MAX_TRIPLE_SIGNAL_ATTEMPTS = 10;
 
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const SLUG_OVERRIDES = CONFIG.slugOverrides;
@@ -282,18 +293,93 @@ async function main() {
     }
   }
 
+  // ── Triple-signal auto-fix pass ────────────────────────────────────────
+  // For each ambiguous show, SERP credible theater press for closing
+  // announcements within the last month and LLM-extract dates. Auto-apply
+  // when the press cluster and broadway.com schedule agree within ±7 days.
+  // Cap attempts to bound cost; sort by stored-closing-date ascending so
+  // the most-urgent retractions (closing soonest) get the auto-fix budget.
+  const autoFixedTripleSignal = [];
+  if (process.env.ANTHROPIC_API_KEY && ambiguous.length > 0) {
+    const byUrgency = ambiguous
+      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW')  // earlier-than-stored only; never the extension-cap path
+      .sort((a, b) => new Date(a.stored) - new Date(b.stored))
+      .slice(0, MAX_TRIPLE_SIGNAL_ATTEMPTS);
+    console.log(`\nTriple-signal auto-fix: attempting ${byUrgency.length} ambiguous show(s)`);
+    for (const a of byUrgency) {
+      const show = candidates.find(c => c.id === a.id);
+      if (!show) continue;
+      const showTitle = show.title || show.name || a.id;
+      let discovery;
+      try {
+        discovery = await discoverAnnouncedClosingDate(showTitle, { log: (msg) => console.log(msg) });
+      } catch (e) {
+        console.warn(`  [auto-fix] ${a.id}: discovery error: ${e.message.slice(0, 120)}`);
+        continue;
+      }
+      if (!discovery) continue;
+
+      const dayDelta = Math.abs((new Date(discovery.date) - new Date(a.latestScheduled)) / 86400000);
+      if (dayDelta > TRIPLE_SIGNAL_TOLERANCE_DAYS) {
+        // Press article disagrees with broadway.com schedule. Don't apply;
+        // log for human review (the Notion card will surface it).
+        a.tripleSignalConflict = {
+          pressDate: discovery.date,
+          scheduleDate: a.latestScheduled,
+          dayDelta,
+          sources: discovery.sources,
+        };
+        continue;
+      }
+
+      // All three signals agree (stored disagrees by definition since this
+      // is ambiguous). Auto-apply the press date — it's the authoritative
+      // announcement; broadway.com schedule is just the lower-bound proof.
+      const newDate = discovery.date;
+      if (!DRY_RUN) {
+        const targetShow = data.shows.find(s => s.id === a.id);
+        if (targetShow) {
+          targetShow.closingDate = newDate;
+          targetShow.closingDateSource = `triple-signal audit (${TODAY}): broadway.com + ${discovery.sources[0].url}`;
+          targetShow.closingDateUpdatedAt = TODAY;
+        }
+      }
+      autoFixedTripleSignal.push({
+        id: a.id,
+        previousStored: a.stored,
+        newClosingDate: newDate,
+        scheduleDate: a.latestScheduled,
+        pressDate: discovery.date,
+        dayDelta,
+        sources: discovery.sources,
+      });
+    }
+    // Remove auto-fixed shows from ambiguous so they don't double-flag
+    // in the Discord/Notion path.
+    if (autoFixedTripleSignal.length > 0) {
+      const fixedIds = new Set(autoFixedTripleSignal.map(x => x.id));
+      for (let i = ambiguous.length - 1; i >= 0; i--) {
+        if (fixedIds.has(ambiguous[i].id)) ambiguous.splice(i, 1);
+      }
+    }
+  } else if (ambiguous.length > 0 && !process.env.ANTHROPIC_API_KEY) {
+    console.log('\nTriple-signal auto-fix: skipped (ANTHROPIC_API_KEY not set)');
+  }
+
   const report = {
     generatedAt: new Date().toISOString(),
     mode: DRY_RUN ? 'dry-run' : 'live',
     summary: {
       audited: candidates.length,
       extensions: extensions.length,
+      autoFixedTripleSignal: autoFixedTripleSignal.length,
       newClosings: newClosings.length,
       ambiguous: ambiguous.length,
       matches: matches.length,
       errors: errors.length,
     },
     extensions,
+    autoFixedTripleSignal,
     newClosings,
     ambiguous,
     matches,
@@ -307,15 +393,17 @@ async function main() {
   console.log('\nResults:');
   console.log(`  ✅ Matches (within ${AMBIGUOUS_DELTA_THRESHOLD_DAYS}d): ${matches.length}`);
   console.log(`  📈 Extensions auto-applied:    ${extensions.length}`);
+  console.log(`  🤖 Triple-signal auto-fixed:   ${autoFixedTripleSignal.length}`);
   console.log(`  🆕 New-closing candidates (review only): ${newClosings.length}`);
   console.log(`  ⚠️  Ambiguous (>30d earlier):  ${ambiguous.length}`);
   console.log(`  ❌ Errors:                     ${errors.length}`);
 
   for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.latestScheduled} (+${e.delta}d)`);
+  for (const f of autoFixedTripleSignal) console.log(`  AUTO ${f.id}: ${f.previousStored} → ${f.newClosingDate} (3-signal: broadway.com + ${f.sources.length} press source(s))`);
   for (const n of newClosings) console.log(`  NEW  ${n.id}: null → schedule ends ${n.latestScheduled} (review — may be open run)`);
   for (const a of ambiguous) console.log(`  AMB  ${a.id}: stored=${a.stored} schedule=${a.latestScheduled} (${a.delta}d)`);
 
-  const changed = extensions.length;
+  const changed = extensions.length + autoFixedTripleSignal.length;
   if (changed > 0 && !DRY_RUN) {
     fs.writeFileSync(SHOWS_FILE, JSON.stringify(data, null, 2) + '\n');
     console.log(`\n✅ Wrote ${changed} closingDate updates to shows.json`);
