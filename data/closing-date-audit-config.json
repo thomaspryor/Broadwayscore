@@ -1,6 +1,6 @@
 {
   "_comment": "Config for scripts/audit-closing-dates.js. Edited by hand; not auto-generated. Established pattern (cf. data/dtli-slug-map.json).",
-  "_lastUpdated": "2026-05-14",
+  "_lastUpdated": "2026-05-24",
   "slugOverrides": {
     "_comment": "show.id → broadway.com slug, when stripping the year suffix from id doesn't produce the URL broadway.com actually uses. Probe via curl https://www.broadway.com/shows/{slug}/schedule/. Verified 2026-05-14.",
     "and-juliet-2022": "juliet",
@@ -24,5 +24,25 @@
       "maybe-happy-ending-2024",
       "the-lost-boys-2026"
     ]
+  },
+  "ambiguousAllowlist": {
+    "_comment": "Shows where stored closingDate is human-verified correct but broadway.com's ~5-month schedule window cuts off earlier. Audit treats these as MATCH (not AMBIGUOUS) as long as stored matches the verifiedStored value. If the show extends/retracts, stored diverges from verifiedStored → entry auto-bypassed → normal ambiguous path resumes. Add an entry after manually confirming via Variety/Playbill/Deadline that the stored date is the announced final performance.",
+    "entries": {
+      "operation-mincemeat-2025": {
+        "verifiedStored": "2027-02-14",
+        "verifiedAt": "2026-05-24",
+        "source": "Broadway.com Buzz 2026-05-12: 9th extension through Feb 14 2027 (https://www.broadway.com/buzz/207124/)"
+      },
+      "oh-mary-2024": {
+        "verifiedStored": "2027-01-03",
+        "verifiedAt": "2026-05-24",
+        "source": "Broadway.com / IBDB / Broadway League confirm Jan 3 2027 close at Lyceum"
+      },
+      "schmigadoon-2026": {
+        "verifiedStored": "2027-01-03",
+        "verifiedAt": "2026-05-24",
+        "source": "Deadline 2026-05: 17-week extension post-12-Tony-noms to Jan 3 2027 (https://deadline.com/2026/05/schmigadoon-broadway-closing-date-1236885280/)"
+      }
+    }
   }
 }

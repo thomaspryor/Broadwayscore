@@ -77,6 +77,17 @@ const MAX_TRIPLE_SIGNAL_ATTEMPTS = 10;
 const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
 const SLUG_OVERRIDES = CONFIG.slugOverrides;
 const OPEN_RUN_SKIP = new Set(CONFIG.openRunSkip.ids);
+// Self-cleaning allowlist for known calendar-window-short false positives.
+// Entry honored only while stored closingDate still matches verifiedStored —
+// any drift (extension or retraction) bypasses the allowlist and the show
+// re-enters the normal ambiguous-flagging path.
+const AMBIGUOUS_ALLOWLIST = (CONFIG.ambiguousAllowlist && CONFIG.ambiguousAllowlist.entries) || {};
+
+function isAllowlisted(showId, storedClosingDate) {
+  const entry = AMBIGUOUS_ALLOWLIST[showId];
+  if (!entry || !storedClosingDate) return false;
+  return entry.verifiedStored === storedClosingDate;
+}
 
 function slugFor(s) {
   if (SLUG_OVERRIDES[s.id]) return SLUG_OVERRIDES[s.id];
@@ -284,7 +295,17 @@ async function main() {
         // window short, stored is the real future close; (b) show actually
         // closing earlier than announced. We can't tell from this signal
         // alone — flag for human review.
-        ambiguous.push({ ...verdict, delta, action: 'NEEDS_HUMAN_REVIEW' });
+        //
+        // Allowlist short-circuit: if the show is human-verified-correct in
+        // data/closing-date-audit-config.json AND stored still matches the
+        // verified value, treat as a silent match. Drift (extension or
+        // retraction) makes the stored date diverge from verifiedStored,
+        // which bypasses this branch and resumes ambiguous flagging.
+        if (isAllowlisted(show.id, stored)) {
+          matches.push({ ...verdict, delta, allowlistedFalsePositive: true });
+        } else {
+          ambiguous.push({ ...verdict, delta, action: 'NEEDS_HUMAN_REVIEW' });
+        }
       } else {
         matches.push({ ...verdict, delta });
       }
