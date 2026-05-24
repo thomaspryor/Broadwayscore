@@ -283,35 +283,41 @@ async function fetchShowsFromPlaybillOB() {
     return [];
   }
 
-  const preGate = entries.map(e => {
-    // Playbill encodes venue in the body text after the title. Until we
-    // mine it out the candidate uses 'TBA'; downstream enrichment fills
-    // venue from authoritative sources (Lortel, venue pages).
+  // Build gate-shape candidates (TodayTix-shape `venue: { name }`,
+  // `displayName`, `subcategories`, `description`) for filtering, then
+  // transform the survivors to discovery-pipeline shape (`venue` as
+  // string, `title` etc.) before returning.
+  const VENUE_PLACEHOLDER = 'TBA';
+  const gateShape = entries.map(e => ({
+    displayName: e.title,
+    name: e.title,
+    subcategories: [{ name: 'Off Broadway' }],
+    venue: { name: VENUE_PLACEHOLDER },
+    description: '',
+    startDate: e.firstPreview || null,
+    // carry-through for the transform:
+    _entry: e,
+  }));
+
+  const kept = gateShape.filter(c => !isNonTheaterContent(c) && !isOneNightShow(c));
+  const dropped = gateShape.length - kept.length;
+  console.log(`Playbill OB: ${gateShape.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
+
+  return kept.map(c => {
+    const e = c._entry;
     const previewsStart = e.firstPreview || null;
-    const openingDate = e.opening || null;
     return {
-      // TodayTix-shape fields the gates inspect:
-      displayName: e.title,
-      name: e.title,
-      subcategories: [{ name: 'Off Broadway' }],
-      venue: { name: 'TBA' },
-      description: '',
-      startDate: previewsStart,
-      // Discovery-pipeline fields:
       title: e.title,
+      venue: VENUE_PLACEHOLDER,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-      openingDate,
+      openingDate: e.opening || null,
       previewsStartDate: previewsStart,
       closingDate: null,
       category: 'off-broadway',
+      description: '',
       source: 'playbill-ob',
     };
   });
-
-  const kept = preGate.filter(c => !isNonTheaterContent(c) && !isOneNightShow(c));
-  const dropped = preGate.length - kept.length;
-  console.log(`Playbill OB: ${preGate.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
-  return kept;
 }
 
 // TodayTix London API - location=2 for London West End
@@ -1425,6 +1431,21 @@ async function discoverShows() {
     }
   }
   console.log('');
+
+  // Off-Broadway: Playbill OB schedule article. Non-profit subscription
+  // houses (Atlantic, Vineyard, MCC) don't list on TodayTix; Playbill does.
+  // Flat-pushed into discoveredShows so the existing checkForDuplicate /
+  // findSameTitleTwinIfNoOpeningDate path (see below) adjudicates dups —
+  // no custom dedup layer.
+  if (includeOffBroadway) {
+    try {
+      const playbillOBShows = await fetchShowsFromPlaybillOB();
+      discoveredShows.push(...playbillOBShows);
+    } catch (e) {
+      console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
+    }
+    console.log('');
+  }
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
