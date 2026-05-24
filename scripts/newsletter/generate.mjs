@@ -159,6 +159,16 @@ function showLink(show, inner) {
   return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none;">${inner}</a>`;
 }
 
+// Per-section "see all" link footer — mirrors the existing London-section
+// "Explore the full West EndScorecard →" pattern. Goes BELOW the card. NYC
+// sections use brand gold (#d4a574); London uses pink (#f472b6).
+function seeAllLink(href, label, opts = {}) {
+  const color = opts.color || '#d4a574';
+  return `<div style="margin-top:12px;padding:0 4px;font-size:12px;">
+      <a href="${href}" style="color:${color};text-decoration:none;font-weight:600;">${label} →</a>
+    </div>`;
+}
+
 // Critic + outlet registries — look up the slug for a critic / outlet name so
 // we can deep-link to /critics/{slug} and /critics/outlets/{slug}.
 let _criticReg, _outletReg;
@@ -503,21 +513,6 @@ function biggestMoverSection() {
     const dirArrow = m.delta > 0 ? '▲' : '▼';
     const dirWord = m.delta > 0 ? 'up' : 'down';
     const ptsRounded = Math.max(1, Math.abs(m.after - m.before));
-    // Fold a representative quote into the TOP mover only — the review that
-    // drove the score shift the most. Replaces the old "Outlier of the Week"
-    // section. Quality filter + sentence-boundary truncation applied.
-    let quoteBlock = '';
-    if (i === 0) {
-      const driver = findDrivingReviewForShow(m.show.id);
-      if (driver) {
-        const q = pickReviewQuote(driver.review);
-        if (q) {
-          const critic = driver.review.criticName || 'Unknown critic';
-          const outlet = driver.review.outlet || '';
-          quoteBlock = `<div style="margin-top:10px;font-size:12px;line-height:1.5;color:#9ca3af;font-style:italic;border-left:2px solid #d4a574;padding:2px 0 2px 10px;">&ldquo;${q}&rdquo;<div style="font-style:normal;color:#6b7280;margin-top:4px;font-size:11px;">— ${criticLink(critic, critic)}${outlet ? ', ' + outletLink(outlet, outlet) : ''}</div></div>`;
-        }
-      }
-    }
     // Always emit border-bottom; the strip-final-border block below removes
     // it from whichever row ends up last in the combined list.
     return `<tr>
@@ -525,7 +520,6 @@ function biggestMoverSection() {
       <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:6px;">+${m.newCount} review${m.newCount!==1?'s':''}</div>
-        ${quoteBlock}
       </td>
       <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
         <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;"><tr>
@@ -694,11 +688,8 @@ function pickReviewQuote(r) {
   return clean;
 }
 
-// For a given show, find the THIS-WEEK review that drove the score shift the
-// most (largest absolute delta vs the prior-weeks average). Used to fold a
-// representative quote into the Biggest Mover card — the "Outlier of the Week"
-// section was cut on review and its single useful artifact (the pull quote)
-// belongs inside the mover that explains WHY the score shifted.
+// Helper retained — used internally for diagnostics but no longer surfaces
+// in the rendered email. Outlier of the Week was restored as its own section.
 function findDrivingReviewForShow(showId) {
   const newRs = reviews.filter(r => r.showId === showId && r.assignedScore != null && inWeekDateOnly(r.publishDate));
   if (newRs.length === 0) return null;
@@ -711,6 +702,64 @@ function findDrivingReviewForShow(showId) {
     if (!best || Math.abs(diff) > Math.abs(best.diff)) best = { review: r, diff, priorAvg };
   }
   return best;
+}
+
+// Returns the single most-divergent reviewer of the week (across all shows
+// with ≥4 reviews this week). Threshold ≥12 pts below/above show average.
+// Used by both the rendered Outlier section and the newsworthiness scorer.
+function findWeekOutlier() {
+  const wr = reviews.filter(r => inWeekDateOnly(r.publishDate) && r.assignedScore != null);
+  const byShow = {};
+  wr.forEach(r => { (byShow[r.showId] ||= []).push(r); });
+  let best = null;
+  for (const id of Object.keys(byShow)) {
+    const rs = byShow[id];
+    if (rs.length < 4) continue;
+    for (const r of rs) {
+      const others = rs.filter(x => x !== r);
+      const avg = others.reduce((a, x) => a + x.assignedScore, 0) / others.length;
+      const diff = r.assignedScore - avg;
+      if (!best || Math.abs(diff) > Math.abs(best.diff)) {
+        const show = shows.find(s => s.id === id);
+        if (show && (show.category === 'broadway' || show.category === 'off-broadway')) {
+          best = { review: r, show, diff, peerAvg: Math.round(avg), outlet: r.outlet };
+        }
+      }
+    }
+  }
+  if (!best || Math.abs(best.diff) < 12) return null;
+  return best;
+}
+
+// SECTION: Outlier of the Week — single critic far from consensus.
+// Reads from findWeekOutlier() so the newsworthiness scorer can score the
+// same data point without re-running the loop.
+function outlierSection() {
+  const best = findWeekOutlier();
+  if (!best) return null;
+  const r = best.review;
+  const outletMap = { 'Deadline': 'deadline.com', 'New York Theatre Guide': 'newyorktheatreguide.com', 'TheaterMania': 'theatermania.com', 'New York Stage Review': 'newyorkstagereview.com', "Talkin' Broadway": 'talkinbroadway.com', "New York Daily News": 'nydailynews.com', 'The Recs': 'therecs.com', '1 Minute Critic': '1minutecritic.com', 'Cititour': 'cititour.com', 'Time Out New York': 'timeout.com', 'Vulture': 'vulture.com', 'The New York Times': 'nytimes.com', 'Variety': 'variety.com', 'New York Post': 'nypost.com', 'The Hollywood Reporter': 'hollywoodreporter.com', 'TheWrap': 'thewrap.com', 'The Times (UK)': 'thetimes.com', 'Front Row Center': 'frontrowcenter.com', 'Theater Scene': 'theaterscene.net', 'The Guardian': 'theguardian.com', 'WhatsOnStage': 'whatsonstage.com', 'TheaterScene.net': 'theaterscene.net', 'The Stage': 'thestage.co.uk', 'Stage and Cinema': 'stageandcinema.com' };
+  const domain = outletMap[r.outlet] || (r.outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '') + '.com';
+  const logoUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+  const directionWord = best.diff < 0 ? 'below' : 'above';
+  const cleanQuote = pickReviewQuote(r);
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+    <tr>
+      <td valign="middle" width="44" style="padding:14px 0 14px 14px;">${outletLink(r.outlet, `<img src="${logoUrl}" alt="${r.outlet}" width="32" height="32" style="display:block;border-radius:6px;background:#fff;">`)}</td>
+      <td valign="middle" style="padding:14px 8px 14px 10px;">
+        <div style="font-size:13px;color:#ffffff;font-weight:700;line-height:1.25;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#9ca3af;font-weight:400;">· ${outletLink(r.outlet, r.outlet)}</span></div>
+        <div style="font-size:13px;color:#d1d5db;margin-top:2px;">on <strong style="color:#ffffff;">${showLink(best.show, best.show.title)}</strong> ${marketPill(best.show.category)}</div>
+      </td>
+      <td valign="middle" width="60" align="center" style="padding:14px 14px 14px 4px;">
+        ${smallBadge(r.assignedScore, 40)}
+        <div style="font-size:10px;color:#9ca3af;margin-top:4px;font-weight:600;line-height:1.3;">${Math.abs(best.diff).toFixed(0)} ${directionWord}<br><span style="color:#6b7280;font-weight:400;">show avg ${best.peerAvg}</span></div>
+      </td>
+    </tr>
+    ${cleanQuote ? `<tr><td colspan="3" style="padding:0 14px 14px;">
+      <div style="font-size:12px;line-height:1.5;color:#9ca3af;font-style:italic;border-left:2px solid #d4a574;padding:2px 0 2px 10px;">&ldquo;${cleanQuote}&rdquo;</div>
+    </td></tr>` : ''}
+  </table>`;
+  return sectionWrap(sectionHeading('Outlier of the Week'), body);
 }
 
 // SECTION: Recently Announced Closings (Broadway only)
@@ -908,7 +957,8 @@ function castingSection() {
     </div>`).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
     <tr><td style="padding:4px 16px;">${rows}</td></tr>
-  </table>`;
+  </table>
+  ${seeAllLink(`${SITE}/cast-changes`, 'See all casting moves')}`;
   return sectionWrap(sectionHeading('Casting Updates', 'Broadway'), body);
 }
 
@@ -988,7 +1038,8 @@ function boxOfficeSection() {
     <tr><td style="padding:6px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rowsClean}</table>
     </td></tr>
-  </table>`;
+  </table>
+  ${seeAllLink(`${SITE}/box-office`, 'See full box office')}`;
   const subhead = [`Week of ${grosses.weekEnding}`, marketDelta].filter(Boolean).join(' · ');
   return sectionWrap(sectionHeading('Box Office', subhead, { href: 'https://broadwayscorecard.com/box-office' }), body);
 }
@@ -1127,7 +1178,8 @@ function buzziestSection() {
     </td></tr>
     ${restRows ? `<tr><td style="padding:12px 16px 0;"><div style="border-top:1px solid rgba(255,255,255,0.1);"></div></td></tr>
     <tr><td style="padding:4px 16px 8px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${restRows}</table></td></tr>` : ''}
-  </table>`;
+  </table>
+  ${seeAllLink(`${SITE}/audience-buzz`, 'See the full Social Buzz')}`;
   return sectionWrap(sectionHeading('Social Buzz', 'last 7 days', { href: `${SITE}/audience-buzz` }), body);
 }
 
@@ -1212,16 +1264,58 @@ function londonSection() {
     </tr>${!isLast ? '<tr><td colspan="3" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${rows}</table>
-    <div style="margin-top:12px;padding:0 4px;font-size:12px;">
-      <a href="https://broadwayscorecard.com/west-end" style="color:#f472b6;text-decoration:none;font-weight:600;">Explore the full West End<span style="background:linear-gradient(135deg,#f472b6 0%,#ec4899 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#f472b6;">Scorecard</span> →</a>
-    </div>`;
+    ${seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' })}`;
   return sectionWrap(sectionHeading('London Openings', null, { href: `${SITE}/west-end` }), body);
 }
 
-// "Most Popular Pages This Week" was removed on 2026-05-24: it claimed to be
-// popularity data but was a hand-built fallback (openings + closings padded
-// to 3 rows). See Codex review note. Replace with real Vercel Analytics data
-// when wiring is in place — Notion card P2.
+// SECTION: Most Popular Pages — real GA4 page-view data, top show pages last
+// 7 days. Briefly replaced by a hand-built fallback then removed on Codex
+// review; restored on 2026-05-24 with actual data via popular-pages.mjs.
+// Skips silently when GA4 creds are missing or the query errors.
+function mostReadSection(popularList) {
+  if (!Array.isArray(popularList) || popularList.length === 0) return null;
+  // Map slug → show object so we can render thumbs + scores. Drop slugs that
+  // don't match an open NYC show (stale URLs, redirects).
+  const items = [];
+  for (const p of popularList) {
+    const show = shows.find(s => s.slug === p.slug);
+    if (!show) continue;
+    if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
+    const a = aggregateScore(show.id);
+    const eligible = a && a.count >= minReviews(show.category);
+    items.push({
+      show,
+      title: show.title,
+      slug: show.slug,
+      category: show.category,
+      score: eligible ? a.avg : null,
+      views: p.views,
+    });
+    if (items.length >= 3) break;
+  }
+  if (!items.length) return null;
+  const rows = items.map((it, i, arr) => {
+    const border = i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
+    return `<tr>
+    <td valign="middle" width="52" style="padding:7px 10px 7px 0;${border}">${thumb(it.show, 36)}</td>
+    <td valign="middle" style="padding:7px 0;${border}">
+      <a href="${SITE}/show/${it.slug}" style="text-decoration:none;display:block;">
+        <div style="font-size:14px;font-weight:700;color:#ffffff;line-height:1.3;">${it.title} ${marketPill(it.category)}</div>
+        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${it.views.toLocaleString()} views</div>
+      </a>
+    </td>
+    <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
+      ${it.score != null ? smallBadge(it.score, 36, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:36px;height:36px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:12px;font-weight:700;line-height:36px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
+    </td>
+  </tr>`;
+  }).join('');
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+    <tr><td style="padding:4px 16px;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
+    </td></tr>
+  </table>`;
+  return sectionWrap(sectionHeading('Most-Read Show Pages', 'last 7 days'), body);
+}
 
 // ──────────────────────────────────────────
 // Section runner: every render goes through `sections.run(name, fn)` so we
@@ -1246,6 +1340,14 @@ const bz   = sections.run('social-buzz', () => buzziestSection());
 const tony = sections.run('tony-predictions', () => tonyWatchSection());
 const cas  = sections.run('casting-updates', () => castingSection());
 const lon  = sections.run('london-openings', () => londonSection());
+const outlier = sections.run('outlier-of-the-week', () => outlierSection());
+
+// Most-read show pages — real GA4 page-view data via popular-pages.mjs.
+// Async because GA4 client returns a Promise. If creds missing or API errors,
+// fetchPopularShowPages returns null and the section silently skips.
+const { fetchPopularShowPages } = await import('./popular-pages.mjs');
+const popularList = await fetchPopularShowPages({ repo, days: 7, limit: 8 });
+const popular = sections.run('most-read-pages', () => mostReadSection(popularList));
 
 // Season standing renders one card per qualifying BW opening (not strictly
 // "a section"). Recorded as a single entry with the count baked in.
@@ -1254,12 +1356,10 @@ if (seasonStandings.length) {
   sections.run('season-standing', () => seasonStandings.join(''));
 }
 
-// Final order: openings → biggest movers (with folded outlier quote) →
-// closings (this week + announced) → box office → recoupment → social buzz
-// → tony predictions → casting → London → season standing.
-// Removed: "Outlier of the Week" (folded into biggest movers), "Most Popular
-// Pages" (hand-built fallback, not real analytics — see Codex review).
-const sectionOrder = [bwO.html, obO.html, mover, clo, announced, box, commercial, bz, tony, lon, cas, ...seasonStandings].filter(Boolean);
+// Order (2026-05-24): openings → biggest movers → outlier (review news first)
+// → closings → box office → recoupment → social buzz → tony predictions →
+// casting → London → season standing → most-read pages.
+const sectionOrder = [bwO.html, obO.html, mover, outlier, clo, announced, box, commercial, bz, tony, lon, cas, ...seasonStandings, popular].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
@@ -1327,8 +1427,38 @@ const newsworthyInputs = {
     }
     return out;
   })(),
-  // topMover, topTonyPick, buzziest.changed left undefined for now — wiring
-  // them up means extracting state out of section functions (next iteration).
+  // Outlier helper is shared with the section renderer above.
+  topOutlier: findWeekOutlier(),
+  // Biggest critic-mover: derive from same data biggestMoverSection uses.
+  // Single show, single direction — small enough to recompute here.
+  topMover: (() => {
+    const map = {};
+    reviews.forEach(r => {
+      if (r.assignedScore == null) return;
+      if (!inWeekDateOnly(r.publishDate)) return;
+      (map[r.showId] ||= { thisWeek: [], before: [] }).thisWeek.push(r);
+    });
+    for (const id of Object.keys(map)) {
+      reviews.forEach(r => {
+        if (r.showId !== id || r.assignedScore == null) return;
+        if ((r.publishDate || '').slice(0, 10) < weekStartStr) map[id].before.push(r);
+      });
+    }
+    let best = null;
+    for (const [id, x] of Object.entries(map)) {
+      if (x.before.length < 4 || x.thisWeek.length < 1) continue;
+      const beforeAvg = x.before.reduce((a, r) => a + r.assignedScore, 0) / x.before.length;
+      const allAvg = ([...x.before, ...x.thisWeek].reduce((a, r) => a + r.assignedScore, 0)) / (x.before.length + x.thisWeek.length);
+      const delta = allAvg - beforeAvg;
+      if (Math.abs(delta) < 1) continue;
+      const show = shows.find(s => s.id === id);
+      if (!show || (show.category !== 'broadway' && show.category !== 'off-broadway')) continue;
+      if (!best || Math.abs(delta) > Math.abs(best.delta)) {
+        best = { show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta };
+      }
+    }
+    return best;
+  })(),
   tonyDaysOut: (() => {
     const ceremony = new Date('2026-06-08T00:00:00');
     return Math.max(0, Math.ceil((ceremony - new Date(weekEndStr + 'T12:00:00')) / 86400000));
