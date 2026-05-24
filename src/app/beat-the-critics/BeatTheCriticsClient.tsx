@@ -41,6 +41,7 @@ const CRITICS: CriticPanelist[] = [
       'Best Original Score': 'The Lost Boys',
       'Best Book of a Musical': 'The Lost Boys',
       'Best Choreography': 'Cats: The Jellicle Ball',
+      'Best Orchestrations': 'The Lost Boys',
     },
   },
   { name: 'Matthew Wexler', outlets: ['1 Minute Critic'], initials: 'MW', bio: 'Founder of 1 Minute Critic. Theater critic and member of the American Theatre Critics Association.' },
@@ -224,6 +225,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
   const [emailError, setEmailError] = useState('');
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [countdownExpired, setCountdownExpired] = useState(() => Date.now() >= new Date('2026-06-08T00:00:00Z').getTime());
+  const [pickStats, setPickStats] = useState<{ totalSubmissions: number; picks: Record<string, Record<string, number>> } | null>(null);
   useEffect(() => {
     const ceremony = new Date('2026-06-08T00:00:00Z'); // 8 PM ET June 7
     const tick = () => {
@@ -246,6 +248,12 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     if (ms <= 0) { setPicksRevealed(true); return; }
     const id = setTimeout(() => setPicksRevealed(true), ms);
     return () => clearTimeout(id);
+  }, []);
+  useEffect(() => {
+    fetch('/api/beat-the-critics/pick-stats')
+      .then(r => r.json())
+      .then(data => setPickStats(data))
+      .catch(() => {});
   }, []);
   const emailRef = useRef<HTMLInputElement>(null);
   const emailSubmittingRef = useRef(false);
@@ -498,8 +506,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
     const picksAvailable = picksRevealed && criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
-    const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
-    const actorCrowdPcts = isActor ? getActorCrowdPercentages(actorNominees) : [];
+    const categoryVotes = pickStats?.picks[currentCategory.title] ?? {};
+    const totalCategoryVotes = Object.values(categoryVotes).reduce((a, b) => a + b, 0);
+    const crowdPcts = isActor ? [] : (() => {
+      if (totalCategoryVotes === 0) return nominees.map(() => 0);
+      const counts = nominees.map(n => categoryVotes[n.title] ?? 0);
+      const pcts = counts.map(c => Math.round((c / totalCategoryVotes) * 100));
+      const diff = 100 - pcts.reduce((a, b) => a + b, 0);
+      if (pcts.length > 0) pcts[0] += diff;
+      return pcts;
+    })();
+    const actorCrowdPcts = isActor ? (() => {
+      if (totalCategoryVotes === 0) return actorNominees.map(() => 0);
+      const counts = actorNominees.map(n => categoryVotes[n.name] ?? 0);
+      const pcts = counts.map(c => Math.round((c / totalCategoryVotes) * 100));
+      const diff = 100 - pcts.reduce((a, b) => a + b, 0);
+      if (pcts.length > 0) pcts[0] += diff;
+      return pcts;
+    })() : [];
     const tonyPredictionPickShow = isActor ? undefined : nominees.find(n => n.title === tonyPredictionPick);
     const matchesTonyPrediction = isActor ? false : userPick === tonyPredictionPick;
     const criticMatches = picksAvailable ? criticPicks.filter(p => p === userPick).length : 0;
@@ -583,20 +607,20 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             })}
           </div>
 
-          {/* Show score breakdown — actor categories */}
-          {isActor && actorCrowdPcts.length > 0 && (
+          {/* How Others Voted — actor categories */}
+          {isActor && actorNominees.length > 0 && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">CriticScore Breakdown<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">Based on the show&apos;s CriticScore</div>
-              {actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={actor.showScore} />))}
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet — be the first!'}</div>
+              {totalCategoryVotes > 0 && actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
-          {/* CriticScore breakdown — show categories only */}
+          {/* How Others Voted — show categories */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">CriticScore Breakdown<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">Based on CriticScore ratings</div>
-              {nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} score={show.compositeScore} />))}
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet — be the first!'}</div>
+              {totalCategoryVotes > 0 && nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
           {/* Bottom button \u2014 inline, no fixed positioning */}
