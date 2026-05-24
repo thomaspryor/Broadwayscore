@@ -801,6 +801,7 @@ jobs:
         # systematic scan found 291 across all shows.
 
       - name: Audit cast contamination
+        if: always()
         run: node scripts/audit-cast-contamination.js
         # Catches wrong-show cast scrapes (Met Opera singers as Kavalier-Clay
         # cast, TV-show titles as character roles, LASTNAME-FIRSTNAME name
@@ -810,6 +811,9 @@ jobs:
         # a one-time backfill (2026-03-03) wrote 12 contaminated cast files
         # that stayed hidden behind the orphan-cast manifest skip until
         # surveyed during /cast/[slug] work.
+        # `if: always()` so this gate runs independently of the review-
+        # contamination step above — different concerns, shouldn't share
+        # a fail-fast.
 
       - name: Audit aggregator-archive integrity
         run: node scripts/audit-aggregator-archive-integrity.js --strict
