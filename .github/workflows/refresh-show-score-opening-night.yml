@@ -33,6 +33,7 @@ on:
 
 permissions:
   contents: write
+  actions: write  # needed for `gh workflow run "Rebuild Reviews (Fast)"` dispatch
 
 concurrency:
   group: refresh-show-score-opening-night
