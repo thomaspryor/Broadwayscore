@@ -15,6 +15,11 @@ on:
         required: false
         type: boolean
         default: false
+      skip_sweep:
+        description: 'Skip sweep + Notion surfacing step'
+        required: false
+        type: boolean
+        default: false
       dry_run:
         description: 'Dry run (no changes committed)'
         required: false
@@ -85,8 +90,66 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
-  deep-research:
+  sweep-pending:
+    # Hygiene pass — runs BEFORE deep-research so the requeued shows are picked
+    # up in the same orchestrator run. Archive ages out >180d low-conf entries
+    # to commercial-pending-archive.json (which the Friday scraper checks
+    # before re-surfacing previously rejected articles). Recouped-claim entries
+    # are reported to /tmp/sweep-report.json for the Notion step.
     needs: batch-research
+    if: always() && inputs.skip_sweep != true
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Sweep pending-review
+        run: |
+          ARGS="--report-json=/tmp/sweep-report.json"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/sweep-pending-commercial.js $ARGS
+
+      - name: Notion sweep — surface recouped claims
+        if: inputs.dry_run != true
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: |
+          if [ -f /tmp/sweep-report.json ]; then
+            node scripts/notify-pending-commercial-notion.js \
+              --report-json=/tmp/sweep-report.json --cap=25
+          fi
+        continue-on-error: true
+
+      - name: Commit sweep results
+        if: always() && inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json data/commercial-pending-archive.json data/commercial-research-queue.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No sweep changes to commit"
+          else
+            git commit -m "data: Sweep pending-review (TTL + archive + Notion surface)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+  deep-research:
+    needs: sweep-pending
     if: always() && inputs.skip_deep_research != true
     runs-on: ubuntu-latest
     timeout-minutes: 90

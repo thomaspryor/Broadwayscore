@@ -67,7 +67,13 @@ jobs:
         if: inputs.dry_run != true
         run: |
           if [ -f data/commercial-pending-review.json ]; then
-            node scripts/apply-commercial-pending.js --all --min-confidence=high
+            # --auto-apply-claims-from bypasses the recouped:true safety gate
+            # for entries whose detectedBy matches AND confidence==high AND
+            # sourceHost ∈ trusted-recoupment-domains. Without this flag, the
+            # gate at apply-commercial-pending.js:124 blocks all recoupment
+            # finds from auto-applying.
+            node scripts/apply-commercial-pending.js --all --min-confidence=high \
+              --auto-apply-claims-from=recoupment-announcement-scraper
           fi
         continue-on-error: true
 
