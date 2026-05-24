@@ -13,6 +13,8 @@ const {
   isOperaSourceUrl,
   scoreSerpResult,
   meaningfulTitleTokens,
+  parseYearFromUrl,
+  detectMarketMismatch,
   SERP_MIN_SCORE,
 } = require('../../scripts/lib/cast-extraction-guards.js');
 
@@ -292,4 +294,144 @@ test('meaningfulTitleTokens filters stopwords and short words', () => {
   assert.deepEqual(meaningfulTitleTokens('Six'), []); // ≤3 chars → empty
   assert.deepEqual(meaningfulTitleTokens(''), []);
   assert.deepEqual(meaningfulTitleTokens(null), []);
+});
+
+// ============================================================================
+// Year-mismatch + market-mismatch defenses (added 2026-05-24, Notion card
+// 36a637c5-416f-813d-ad5a-ddfa3e7fab4b). These are LATENT defenses — they
+// add value when SERP returns a URL with a parseable year or cross-market
+// path. Honest scope: they do NOT catch the 3 short-titled cases (Pride /
+// Man to Man / Six / It) — those URLs have no year and no cross-market
+// signal. caughtBy=llm-prompt is unchanged for those.
+// ============================================================================
+
+test('parseYearFromUrl handles plain years, YYYYMMDD, and no-year URLs', () => {
+  // Plain YYYY in path
+  assert.equal(parseYearFromUrl('https://example.com/show/2024-revival/cast'), 2024);
+  // YYYYMMDD suffix (BWW article URL pattern)
+  assert.equal(parseYearFromUrl('https://www.broadwayworld.com/article/Cast-Announced-20230329'), 2023);
+  // Multiple candidate years: picks the most recent
+  assert.equal(parseYearFromUrl('https://example.com/2019/article-published-20240115'), 2024);
+  // No year present
+  assert.equal(parseYearFromUrl('https://example.com/cast/main'), null);
+  // BWW internal ID (335789) not mistaken for a year — 3357 is out of range
+  assert.equal(parseYearFromUrl('https://broadwayworld.com/shows/Pride-335789/cast'), null);
+  // 5-digit run starting with a valid-year prefix must NOT false-positive
+  // (Codex ship-check 2026-05-24: earlier code sliced `19999` → `1999`).
+  assert.equal(parseYearFromUrl('https://example.com/article-19999-foo'), null);
+  assert.equal(parseYearFromUrl('https://example.com/article-20245-foo'), null);
+  // 6 / 7 digit runs also rejected
+  assert.equal(parseYearFromUrl('https://example.com/article-202301-foo'), null);
+  assert.equal(parseYearFromUrl('https://example.com/article-2023012-foo'), null);
+  // Defensive: null/empty/undefined
+  assert.equal(parseYearFromUrl(null), null);
+  assert.equal(parseYearFromUrl(''), null);
+  assert.equal(parseYearFromUrl(undefined), null);
+});
+
+test('detectMarketMismatch flags cross-market URLs', () => {
+  // West End show landing on broadway.com — mismatch
+  assert.equal(
+    detectMarketMismatch('https://www.broadway.com/shows/hamilton/cast', 'west-end'),
+    'we-show-on-bw-path'
+  );
+  // West End show landing on BWW /shows/{Slug}-Broadway/ — mismatch
+  // (handles BWW's plural /shows/ path; Codex ship-check 2026-05-24
+  // caught the singular-only regex missing real URLs)
+  assert.equal(
+    detectMarketMismatch('https://www.broadwayworld.com/shows/Hamilton-Broadway/cast', 'west-end'),
+    'we-show-on-bw-path'
+  );
+  // Broadway show landing on westendtheatre.com — mismatch
+  assert.equal(
+    detectMarketMismatch('https://www.westendtheatre.com/shows/foo/cast', 'broadway'),
+    'bw-show-on-we-path'
+  );
+  // West End show on London Box Office (correct market) — no mismatch
+  assert.equal(
+    detectMarketMismatch('https://www.londonboxoffice.co.uk/cast/foo', 'west-end'),
+    null
+  );
+  // BWW /westend/ article for a West End show — no mismatch
+  assert.equal(
+    detectMarketMismatch('https://www.broadwayworld.com/westend/article/Foo', 'west-end'),
+    null
+  );
+  // Defensive
+  assert.equal(detectMarketMismatch(null, 'broadway'), null);
+  assert.equal(detectMarketMismatch('https://example.com', null), null);
+});
+
+test('year-mismatch penalty fires when URL year is ≥2 off show year', () => {
+  // Synthetic: show is 2026, URL is from a 2023 article. With realistic
+  // SERP title and URL signals that would otherwise score above threshold,
+  // year mismatch should drag below.
+  const r1 = scoreSerpResult(
+    { url: 'https://www.broadwayworld.com/article/Cast-Announced-2023-Production-20230815', title: 'Cast Announced 2023 Production' },
+    { title: 'Some Play', year: 2026 }
+  );
+  // URL year 2023 vs show year 2026 → diff 3 → -4 penalty
+  // Even with cast+title bonus, should land below threshold or at least
+  // measurably lower than the same URL with matching year.
+  const r2 = scoreSerpResult(
+    { url: 'https://www.broadwayworld.com/article/Cast-Announced-2026-Production-20260815', title: 'Cast Announced 2026 Production' },
+    { title: 'Some Play', year: 2026 }
+  );
+  assert.ok(r2.score > r1.score,
+    `year-matching URL (${r2.score}) should outscore year-mismatched URL (${r1.score})`);
+  assert.ok(r2.score - r1.score >= 4,
+    `expected ≥4 point spread, got ${r2.score - r1.score}`);
+});
+
+test('market-mismatch penalty fires when WE show lands on BW domain', () => {
+  // Synthetic: WE show landing on broadway.com.
+  const r1 = scoreSerpResult(
+    { url: 'https://www.broadway.com/shows/some-show/cast', title: 'Some Show Cast' },
+    { title: 'Some Show', category: 'west-end' }
+  );
+  // Same URL but for an actual Broadway show — no penalty
+  const r2 = scoreSerpResult(
+    { url: 'https://www.broadway.com/shows/some-show/cast', title: 'Some Show Cast' },
+    { title: 'Some Show', category: 'broadway' }
+  );
+  assert.ok(r2.score > r1.score,
+    `category-matching URL (${r2.score}) should outscore mismatch (${r1.score})`);
+  assert.ok(r2.score - r1.score >= 3,
+    `expected ≥3 point spread, got ${r2.score - r1.score}`);
+});
+
+test('backward-compat: scoreSerpResult accepts bare title string', () => {
+  // Pre-2026-05-24 callers passed (result, title). Both forms should give
+  // identical scores when no year/category signals apply.
+  const r1 = scoreSerpResult(
+    { url: 'https://www.broadwayworld.com/shows/Hamilton-Broadway/cast', title: 'Hamilton Cast' },
+    'Hamilton'
+  );
+  const r2 = scoreSerpResult(
+    { url: 'https://www.broadwayworld.com/shows/Hamilton-Broadway/cast', title: 'Hamilton Cast' },
+    { title: 'Hamilton' }
+  );
+  assert.equal(r1.score, r2.score);
+  assert.ok(r1.score >= SERP_MIN_SCORE);
+});
+
+test('honest scope: short-titled shows STILL bypass SERP scorer (caughtBy=llm-prompt)', () => {
+  // Pride 2026 WE: bad URL for an older Pride production. Title token "pride"
+  // is in URL, gate doesn't fire. URL has no parseable year. No market
+  // mismatch (BWW /shows/ doesn't trigger). Year/venue signals don't help.
+  const pride = scoreSerpResult(
+    { url: 'https://www.broadwayworld.com/shows/Pride-335789/cast', title: 'Pride - Broadway Cast & Creative Team' },
+    { title: 'Pride', year: 2026, category: 'west-end' }
+  );
+  assert.ok(pride.score >= SERP_MIN_SCORE,
+    `Pride still expected to pass SERP scorer (downstream defense: validateCastExtraction name-swap), got ${pride.score}`);
+
+  // Man to Man WE: short title "man" filtered out (3 chars). URL has no year.
+  // Not on cross-market domain. SERP scorer remains powerless here.
+  const m2m = scoreSerpResult(
+    { url: 'https://www.londonboxoffice.co.uk/news/post/man-and-boy-dorfman-theatre-cast', title: 'Cast announced for Man and Boy' },
+    { title: 'Man to Man', year: 2026, category: 'west-end' }
+  );
+  assert.ok(m2m.score >= SERP_MIN_SCORE,
+    `Man to Man still expected to pass SERP scorer (downstream defense: LLM prompt year/venue refusal), got ${m2m.score}`);
 });

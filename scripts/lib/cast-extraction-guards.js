@@ -69,12 +69,68 @@ function meaningfulTitleTokens(title) {
     .filter(t => t.length >= 4 && !TITLE_STOPWORDS.has(t));
 }
 
-// Pure score for a single SERP result against a show title. Higher = more
+// Parse a 4-digit year from a URL. Matches ONLY exactly-4-digit runs
+// (plain years like /2024/) and exactly-8-digit YYYYMMDD stamps (BWW
+// article URLs like `Cast-Announced-...-20230329`). 5/6/7-digit runs are
+// rejected — a 5-digit non-year like `19999` would slice to `1999` and
+// false-positive (caught by Codex ship-check on 2026-05-24). Returns
+// null when no year is present.
+function parseYearFromUrl(url) {
+  const s = String(url || '');
+  const years = new Set();
+  // Plain 4-digit year (word-bounded)
+  for (const m of s.matchAll(/(?<!\d)(\d{4})(?!\d)/g)) {
+    const y = parseInt(m[1], 10);
+    if (y >= 1950 && y <= 2099) years.add(y);
+  }
+  // YYYYMMDD — exactly 8 digits, take leading 4 as year
+  for (const m of s.matchAll(/(?<!\d)(\d{4})\d{4}(?!\d)/g)) {
+    const y = parseInt(m[1], 10);
+    if (y >= 1950 && y <= 2099) years.add(y);
+  }
+  if (years.size === 0) return null;
+  // Pick the most recent year if multiple — older-year URLs are usually
+  // the contamination case (e.g., an article from 2023 about a 2023 show
+  // surfacing on a SERP for a 2026 show with the same title).
+  return Math.max(...years);
+}
+
+// Detect West-End-show URL pointing at a Broadway-only path (or vice
+// versa). Looks at category and URL structure together so that
+// /broadway/article/... pages aren't accepted for a West End show.
+function detectMarketMismatch(url, category) {
+  if (!url || !category) return null;
+  const u = String(url).toLowerCase();
+  const isWestEnd = category === 'west-end' || category === 'off-west-end';
+  const isBroadway = category === 'broadway' || category === 'off-broadway';
+  // Broadway domain paths that are Broadway-specific (not /westend/).
+  // BWW uses /shows/{Slug-Broadway}/cast (plural) — earlier draft used
+  // singular /show/ and missed real URLs (Codex ship-check 2026-05-24).
+  const hasBroadwayPath = /broadway\.com\b|\/broadway\b|\/shows?\/[^/]*-broadway\b/.test(u);
+  const hasWestEndPath = /\/westend\b|\/west-end\b|westendtheatre\.com\b|londonboxoffice\.co\.uk\b/.test(u);
+  if (isWestEnd && hasBroadwayPath && !hasWestEndPath) return 'we-show-on-bw-path';
+  if (isBroadway && hasWestEndPath && !hasBroadwayPath) return 'bw-show-on-we-path';
+  return null;
+}
+
+// Pure score for a single SERP result against a show. Higher = more
 // likely the right show's cast page. Caller filters by SERP_MIN_SCORE.
-function scoreSerpResult(result, showTitle) {
+//
+// @param {{url?:string, link?:string, title?:string}} result - SERP hit
+// @param {string|{title:string, year?:number|string, category?:string}} show
+//   Target show. Strings are accepted for backward compat (treated as title-
+//   only) but year / market signals require the object form.
+function scoreSerpResult(result, show) {
+  // Backward-compat: callers passing a bare title string get the title-only
+  // scoring path (no year/market signals).
+  const showObj = (typeof show === 'string') ? { title: show } : (show || {});
+  const showTitle = showObj.title || '';
+  const showYear = showObj.year ? Number(String(showObj.year).slice(0, 4)) : null;
+  const showCategory = showObj.category || null;
+
   const url = (result.url || result.link || '').toLowerCase();
   const t = (result.title || '').toLowerCase();
-  const titleLower = String(showTitle || '').toLowerCase().split(':')[0].trim();
+  const titleLower = String(showTitle).toLowerCase().split(':')[0].trim();
   const titleTokens = meaningfulTitleTokens(titleLower);
   let score = 0;
 
@@ -115,6 +171,24 @@ function scoreSerpResult(result, showTitle) {
 
   // Penalty for review/ticket/news pages (unlikely to have full cast)
   if (url.includes('review') || url.includes('ticket') || url.includes('news')) score -= 2;
+
+  // Year-mismatch defense — catches older productions surfacing for a
+  // current show. Historical example caught: Much Ado WE 2026 SERP picked
+  // a BWW article about "Shakespeare in the Abbey 20230329". When the URL
+  // contains a parseable year ≥2 off the show's year, penalise. Doesn't
+  // help the short-titled cases (Pride/Man to Man/Six) — their bad URLs
+  // don't contain years.
+  if (showYear) {
+    const urlYear = parseYearFromUrl(url);
+    if (urlYear && Math.abs(urlYear - showYear) >= 2) score -= 4;
+  }
+
+  // Market-mismatch defense — catches West End shows landing on Broadway-
+  // only pages (or vice versa). Latent defense; doesn't fire on any of the
+  // 11 historical bad URLs in the parity fixtures but cheap and obvious.
+  if (showCategory) {
+    if (detectMarketMismatch(url, showCategory)) score -= 3;
+  }
 
   return { score, url: result.url || result.link || '', title: result.title || '' };
 }
@@ -181,6 +255,8 @@ module.exports = {
   isOperaSourceUrl,
   scoreSerpResult,
   meaningfulTitleTokens,
+  parseYearFromUrl,
+  detectMarketMismatch,
   SERP_MIN_SCORE,
   OPERA_TITLES,
   TV_PATTERNS,
