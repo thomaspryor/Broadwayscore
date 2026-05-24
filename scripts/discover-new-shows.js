@@ -32,6 +32,7 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
+const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -259,6 +260,58 @@ async function fetchShowsFromTodayTix() {
 
   console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway-tagged, ${showsList.length} unique`);
   return showsList;
+}
+
+/**
+ * Off-Broadway discovery via Playbill's "Schedule of Upcoming Off-Broadway
+ * Shows" article. TodayTix doesn't list non-profit subscription houses
+ * (Atlantic, Vineyard, MCC); Playbill does.
+ *
+ * Each Playbill entry is mapped into a candidate object that synthesizes
+ * the TodayTix-shaped fields the existing gate predicates read
+ * (displayName, subcategories, venue.name, description). This lets
+ * isNonTheaterContent() and isOneNightShow() apply unchanged — no
+ * separate gate logic, no risk of new sources silently bypassing the
+ * exclusion rules.
+ */
+async function fetchShowsFromPlaybillOB() {
+  console.log('Fetching Off-Broadway shows from Playbill schedule article...');
+  const { entries, html } = await scrapePlaybillOBData();
+  checkSilentRot({ entries, html });
+  if (entries.length === 0) {
+    console.log('Playbill OB: 0 entries');
+    return [];
+  }
+
+  const preGate = entries.map(e => {
+    // Playbill encodes venue in the body text after the title. Until we
+    // mine it out the candidate uses 'TBA'; downstream enrichment fills
+    // venue from authoritative sources (Lortel, venue pages).
+    const previewsStart = e.firstPreview || null;
+    const openingDate = e.opening || null;
+    return {
+      // TodayTix-shape fields the gates inspect:
+      displayName: e.title,
+      name: e.title,
+      subcategories: [{ name: 'Off Broadway' }],
+      venue: { name: 'TBA' },
+      description: '',
+      startDate: previewsStart,
+      // Discovery-pipeline fields:
+      title: e.title,
+      slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate,
+      previewsStartDate: previewsStart,
+      closingDate: null,
+      category: 'off-broadway',
+      source: 'playbill-ob',
+    };
+  });
+
+  const kept = preGate.filter(c => !isNonTheaterContent(c) && !isOneNightShow(c));
+  const dropped = preGate.length - kept.length;
+  console.log(`Playbill OB: ${preGate.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
+  return kept;
 }
 
 // TodayTix London API - location=2 for London West End
