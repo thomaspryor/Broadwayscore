@@ -163,13 +163,18 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "los-soles-truncos-off-broadway-2025/broadwayworld--unknown.json",
@@ -181,6 +186,13 @@
     "archive": []
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-24T12:00:08.878Z",
+      "event": "bb-session",
+      "session": "05621aa8",
+      "url": "https://lincolncenterfestival.org/current-season/the-maids"
+    }
+  ]
 }
