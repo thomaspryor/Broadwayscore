@@ -12,6 +12,9 @@ on:
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
       - 'scripts/audit-cast-contamination.js'
+      - 'scripts/audit-commercial-contamination.js'
+      - 'scripts/audit-audience-buzz-contamination.js'
+      - 'scripts/audit-critic-consensus-contamination.js'
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/lib/cast-extraction-guards.js'
       - 'scripts/backfill-cast-web.js'
@@ -827,6 +830,42 @@ jobs:
         # `if: always()` so this gate runs independently of the review-
         # contamination step above — different concerns, shouldn't share
         # a fail-fast.
+
+      - name: Audit commercial contamination
+        if: always()
+        run: node scripts/audit-commercial-contamination.js
+        # Same SERP->LLM wrong-source class as cast contamination, applied
+        # to data/commercial.json (scripts/update-commercial-data.js feeds
+        # Reddit/trade-press text to Claude Sonnet). Hard-fails on
+        # impossible physics (weeklyRunningCost > capitalization), recouped
+        # vs designation contradictions, and capitalization/weekly outliers
+        # outside plausible Broadway ranges. Warns on shorthand keys not
+        # resolvable to shows.json (forthcoming-show case) and on
+        # musical/play modelCategory disagreement.
+        # Added 2026-05-24 alongside audience-buzz + critic-consensus
+        # audits per Notion 36a637c5-416f-81b7-a72b-f7e0dfbb24fc.
+
+      - name: Audit audience-buzz contamination
+        if: always()
+        run: node scripts/audit-audience-buzz-contamination.js
+        # scripts/scrape-reddit-sentiment.js can land on wrong-show Reddit
+        # threads for generic titles ('Six', 'It', 'Pride'). Hard-fails
+        # when reddit.score diverges >=40pts from the median of >=2 other
+        # credible (reviewCount>=10) audience sources — the signature of
+        # a misrouted Reddit search. Warns on broadwayCom URL token
+        # mismatches and platform-disagreement divergence from other
+        # sources.
+
+      - name: Audit critic-consensus contamination
+        if: always()
+        run: node scripts/audit-critic-consensus-contamination.js
+        # scripts/generate-critic-consensus.js summaries are generated
+        # against OUR reviews.json, so wrong-source contamination is lower
+        # risk; the stronger signal is staleness drift — consensus written
+        # when N reviews existed but reviews.json now has N+10+ reviews
+        # with a meaningfully different mean. Hard-fails on orphan keys
+        # and on reviewCount/meanScore drift past conservative thresholds
+        # (zero baseline hits as of 2026-05-24).
 
       - name: Audit aggregator-archive integrity
         run: node scripts/audit-aggregator-archive-integrity.js --strict
