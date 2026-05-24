@@ -499,11 +499,19 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
           const normW = normalizeTitle(w);
           const widx = noms.findIndex((n) => normalizeTitle(n) === normW);
           if (widx >= 0) {
-            // Winner is in nominees — pair with the next entry. If the paired
-            // show isn't in our data, do NOT fall back to Tony.
-            if (widx + 1 < noms.length) {
-              const pairedShowId = findShowIdByTitle(noms[widx + 1], awardsShows, titleById, callOpts);
-              if (pairedShowId) showIds = [pairedShowId];
+            // Winner is in nominees — scan forward for the next entry that
+            // resolves to a show. Usually that's immediately at idx+1, but
+            // multi-person nominees (e.g. DD 2026 Featured Play row contains
+            // "Linda Emond","David Greenspan","Prince F****t" — two leads
+            // sharing one show) and composer teams ("Stan Mathabane (composer)
+            // and Munir Zakee (musician)" can land person-name entries
+            // adjacent to the winner. Scan up to 4 positions forward. If
+            // nothing resolves, do NOT fall back to Tony — that would credit
+            // a show the person is Tony-nominated for but didn't DD-win at.
+            const scanLimit = Math.min(widx + 5, noms.length);
+            for (let i = widx + 1; i < scanLimit; i++) {
+              const candidateShowId = findShowIdByTitle(noms[i], awardsShows, titleById, callOpts);
+              if (candidateShowId) { showIds = [candidateShowId]; break; }
             }
           } else {
             // Winner not in nominees (tie listed separately) — fall back to Tony.
@@ -527,28 +535,41 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       // attributions WITHOUT wiping legitimate OB→Broadway transfer wins
       // (e.g. Hamilton's DD 2015 OB wins live on hamilton-2015 whose
       // dramadesk.season is 2015-16, the same as DD 2016 Broadway-eligible
-      // shows), we restrict cleanup to specifically the shows that the OLD
-      // Tony-only matcher would have credited but the new pair-based matcher
-      // does NOT credit. Nothing else gets touched — broad season-level
-      // sweeps wipe legitimate cross-year wins on the same show.
+      // shows), we operate PER-WINNER: for each winner W, if the OLD Tony
+      // lookup gave a different show than the NEW pair-based answer, strip
+      // W's name from the Tony-attributed show's winnerNames and remove the
+      // category from wins only if no other person remains for that category.
+      //
+      // Must be per-winner (not aggregated across all tie-winners) — a tie
+      // with two winners going to two different shows (e.g. DD 2026 Lead
+      // Performance in a Musical: Henry@ragtime + Levy@chess) means one
+      // winner's correct show may equal another winner's Tony show. A
+      // set-based correctShowIds vs tonyAttributedShowIds comparison would
+      // miss the per-winner mis-attribution.
       if (winnerIsPersonName && personWinnerShowMap.size > 0) {
         const season = ceremonyYearToTonySeason(callOpts.sourceYear);
-        const correctShowIds = new Set();
-        for (const ids of personWinnerShowMap.values()) for (const id of ids) correctShowIds.add(id);
-        const tonyAttributedShowIds = new Set();
         for (const w of winnerTitles) {
-          for (const id of lookupWinnerShowIds(w, season, awardsShows)) tonyAttributedShowIds.add(id);
-        }
-        for (const otherId of tonyAttributedShowIds) {
-          if (correctShowIds.has(otherId)) continue;
-          const otherFK = awardsShows[otherId] && awardsShows[otherId][fieldKey];
-          if (!otherFK) continue;
-          if (Array.isArray(otherFK.wins) && otherFK.wins.includes(scrapedCategory)) {
-            otherFK.wins = otherFK.wins.filter((c) => c !== scrapedCategory);
-          }
-          if (otherFK.winnerNames && otherFK.winnerNames[scrapedCategory]) {
-            delete otherFK.winnerNames[scrapedCategory];
-            if (Object.keys(otherFK.winnerNames).length === 0) delete otherFK.winnerNames;
+          const normW = normalizeTitle(w);
+          const correctIds = new Set(personWinnerShowMap.get(normW) || []);
+          const tonyIds = new Set(lookupWinnerShowIds(w, season, awardsShows));
+          for (const otherId of tonyIds) {
+            if (correctIds.has(otherId)) continue;
+            const otherFK = awardsShows[otherId] && awardsShows[otherId][fieldKey];
+            if (!otherFK) continue;
+            // Strip this winner's name from the category's winnerNames.
+            if (otherFK.winnerNames && Array.isArray(otherFK.winnerNames[scrapedCategory])) {
+              otherFK.winnerNames[scrapedCategory] = otherFK.winnerNames[scrapedCategory].filter((n) => normalizeTitle(n) !== normW);
+              if (otherFK.winnerNames[scrapedCategory].length === 0) {
+                delete otherFK.winnerNames[scrapedCategory];
+              }
+              if (Object.keys(otherFK.winnerNames).length === 0) delete otherFK.winnerNames;
+            }
+            // Remove the category from wins only if no winnerNames remain
+            // for it AND the category isn't claimed via show-name path.
+            const stillHasName = otherFK.winnerNames && Array.isArray(otherFK.winnerNames[scrapedCategory]) && otherFK.winnerNames[scrapedCategory].length > 0;
+            if (!stillHasName && Array.isArray(otherFK.wins) && otherFK.wins.includes(scrapedCategory)) {
+              otherFK.wins = otherFK.wins.filter((c) => c !== scrapedCategory);
+            }
           }
         }
       }
