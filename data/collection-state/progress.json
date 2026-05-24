@@ -804,7 +804,17 @@
     "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
     "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
     "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
-    "orphans-2013/bloomberg--jeremy-gerard.json"
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "glengarry-glen-ross-2012/washpost--ben-brantley.json",
+    "elf-2012/new-jersey-newsroom--michael-sommers.json",
+    "bring-it-on-the-musical-2012/backstage--erik-haagensen.json",
+    "fela-2012/backstage--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -890,7 +900,8 @@
     ],
     "archiveToday": [
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
-      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json"
+      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json",
+      "data/review-texts/glengarry-glen-ross-2012/washpost--ben-brantley.json"
     ],
     "archive": [
       "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
@@ -903,7 +914,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "orphans-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "fela-2012/backstage--david-sheward.json",
   "log": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -1004,6 +1015,17 @@
       "t": "2026-05-24T14:47:10.063Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-24T15:02:53.304Z",
+      "event": "bb-session",
+      "session": "d29c766b",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengar"
+    },
+    {
+      "t": "2026-05-24T15:02:54.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
