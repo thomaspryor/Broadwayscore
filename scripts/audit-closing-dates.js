@@ -177,9 +177,26 @@ async function notifyNotion(ambiguous, todayStr) {
   }
 
   const title = `Closing date audit: ${ambiguous.length} show${ambiguous.length > 1 ? 's' : ''} need review (${todayStr})`;
+  // For each row, render the basic schedule discrepancy + (if present) the
+  // triple-signal discovery result. When the audit found credible press
+  // articles but their date disagreed with broadway.com schedule by >7d
+  // (action: NEEDS_HUMAN_REVIEW with tripleSignalConflict attached), surface
+  // the discovered date AND its sources so the human reviewer doesn't repeat
+  // the same SERP search the audit just did.
   const rows = ambiguous.map(a => {
     const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
-    return `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
+    let line = `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
+    if (a.tripleSignalConflict) {
+      const c = a.tripleSignalConflict;
+      const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
+      line += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — ${c.dayDelta}d off broadway.com schedule.`;
+      if (c.sources[0] && c.sources[0].quote) {
+        line += `\n  💬 “${c.sources[0].quote.replace(/[\n\r]+/g, ' ').slice(0, 200)}”`;
+      }
+    } else if (a.tripleSignalWriteFailed) {
+      line += `\n  ⚠️ Triple-signal would have applied ${a.tripleSignalWriteFailed.newDate} but write was skipped (${a.tripleSignalWriteFailed.reason}). Apply manually.`;
+    }
+    return line;
   }).join('\n');
 
   const notes = [
@@ -190,10 +207,11 @@ async function notifyNotion(ambiguous, todayStr) {
     rows,
     '',
     '## Resolution steps',
-    '1. For each show, search Variety / Playbill / Deadline for closing or extension announcements.',
-    '2. If retraction confirmed → update closingDate in shows.json (lives in private repo `thomaspryor/broadway-scorecard-data` — symlinked at `data/shows.json`).',
-    '3. Commit + push private repo; Vercel cron picks up within ~5 min.',
-    '4. If stored date is correct (calendar window short), no action — mark Done.',
+    '1. For each show, check the 📰 Press cluster line — if present, that date is what credible theater press is announcing. Click the source URLs to verify, then update `data/shows.json`.',
+    '2. If no press cluster shown, search Variety / Playbill / Deadline for closing or extension announcements yourself.',
+    '3. If retraction confirmed → update closingDate in shows.json (lives in private repo `thomaspryor/broadway-scorecard-data` — symlinked at `data/shows.json`).',
+    '4. Commit + push private repo; Vercel cron picks up within ~5 min.',
+    '5. If stored date is correct (calendar window short), no action — add to `data/closing-date-audit-config.json` `ambiguousAllowlist` to suppress repeat alerts. Mark Done.',
     '',
     '## Acceptance criteria',
     "- Each show's stored closingDate matches the actual announced final performance, OR is confirmed as far-future with calendar-window short being the cause.",
