@@ -2,7 +2,11 @@ name: Commercial Weekly Orchestrator
 
 on:
   schedule:
-    - cron: '0 18 * * 0'  # Sunday 6 PM UTC / 1 PM ET
+    # Saturday 18:00 UTC / 1 PM ET — runs the day BEFORE the Sunday newsletter
+    # so deep-research + apply + deploy all land before the newsletter is sent.
+    # The Friday scraper (commercial-friday.yml, Fri 22:00 UTC) feeds findings
+    # into pending overnight; this Saturday run sweeps + applies them.
+    - cron: '0 18 * * 6'  # Saturday 6 PM UTC / 1 PM ET
   workflow_dispatch:
     inputs:
       skip_batch:

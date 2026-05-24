@@ -101,10 +101,27 @@ function pickCandidates(allShows, commercial) {
     }).filter(Boolean);
   }
 
+  // Nonprofit-org enhancement deals: LCT/MTC/Roundabout/Second Stage shows
+  // are technically "nonprofit" by designation but routinely carry commercial
+  // co-producers (Ragtime 2025 had Tom Kirdahy / Greenblatt / Furman on top of
+  // LCT). Those enhancement investors DO recoup, and the announcement IS
+  // trade-press news. So we include Nonprofit shows that name a recognized
+  // enhancement-friendly org. Pure non-enhancement nonprofits (NYTW, Public,
+  // Signature, etc.) still skipped — they don't transfer or recoup.
+  const ENHANCEMENT_FRIENDLY_ORGS = new Set([
+    'Lincoln Center Theater',
+    'Manhattan Theatre Club',
+    'Roundabout Theatre Company',
+    'Second Stage Theater',
+    'The Public Theater',  // can transfer to Broadway with commercial enhancement
+  ]);
+
   return shows.filter(s => {
     const c = cMap[s.slug];
     if (c?.recouped === true) return false;            // already known
-    if (c?.designation === 'Nonprofit') return false;  // LCT/MTC/Roundabout
+    // Nonprofit-org filter: only skip pure-nonprofits (no enhancement-friendly
+    // org). Enhancement deals (Ragtime, Oh Mary, etc.) must be scanned.
+    if (c?.designation === 'Nonprofit' && !ENHANCEMENT_FRIENDLY_ORGS.has(c?.nonprofitOrg)) return false;
     const opened = s.openingDate || s.previewsStartDate;
     if (!opened) return false;
     const age = daysBetween(opened);
@@ -268,14 +285,34 @@ function loadArchive() {
   try { return JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { return { shows: {} }; }
 }
 
+// Strip volatile URL bits (utm_*, fbclid, gclid, ref, hash, trailing slash) so
+// a single article shared with different tracking params still matches a prior
+// rejection. Ship-check P1: without this, the same NYT recoupment article
+// keeps re-surfacing through trivial URL variations.
+function normalizeUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    u.hash = '';
+    const drop = [];
+    for (const k of u.searchParams.keys()) {
+      if (k.startsWith('utm_') || ['fbclid', 'gclid', 'mc_eid', 'mc_cid', 'ref', 'source'].includes(k)) {
+        drop.push(k);
+      }
+    }
+    for (const k of drop) u.searchParams.delete(k);
+    return u.toString().replace(/\/$/, '');
+  } catch { return url; }
+}
+
 function isRejectedInArchive(archive, slug, finding) {
   const e = archive.shows?.[slug];
   if (!e) return false;
   // Rejected if archived for being a recouped claim that didn't pass review,
-  // and the same source URL (or same article date) reappears.
+  // and the same source URL (normalized) reappears.
   if (e.archivedReason !== 'rejected-recouped-claim') return false;
-  if (e.recoupedSource && finding.url && e.recoupedSource === finding.url) return true;
-  return false;
+  if (!e.recoupedSource || !finding.url) return false;
+  return normalizeUrl(e.recoupedSource) === normalizeUrl(finding.url);
 }
 
 function writePending(pending) {
