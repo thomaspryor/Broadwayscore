@@ -985,21 +985,19 @@ function outlierSection() {
 }
 
 // SECTION: Recently Announced Closings (Broadway only)
-// Reads first-class `closure` cast-events: any closure added in the last 28
-// days with a future date is a recent closing announcement. Originally a
-// "this week only" filter, but readers who miss a single newsletter then
-// see nothing about the closure until the final week's "Closing this Week"
-// section. 28d gives the announcement 3-4 newsletter cycles to land.
-const ANNOUNCED_CLOSINGS_LOOKBACK_DAYS = 28;
+// Reads first-class `closure` cast-events: any closure added IN THE WEEK
+// WINDOW with a future date. Earlier versions used a 28-day lookback to give
+// missed-the-newsletter readers a re-surface, but for a weekly digest that
+// re-surfaces 3-week-old closures (e.g. Ragtime, added May 5, reappearing in
+// the May 18 newsletter under "Recently Announced Closings" — user-flagged
+// 2026-05-24). The weekly is "what happened this week"; stale announcements
+// belong in the show page, not the digest.
 function announcedClosingsSection() {
-  const lookbackDate = new Date(weekEndStr + 'T12:00:00');
-  lookbackDate.setDate(lookbackDate.getDate() - ANNOUNCED_CLOSINGS_LOOKBACK_DAYS);
-  const lookbackStr = lookbackDate.toISOString().slice(0, 10);
   const announcements = [];
   Object.entries(castData.shows).forEach(([showId, data]) => {
     const closures = (data.upcoming || []).filter(e =>
       e.type === 'closure'
-      && e.addedDate && e.addedDate >= lookbackStr && e.addedDate <= weekEndStr
+      && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr
     );
     if (closures.length === 0) return;
     const show = shows.find(s => s.id === showId);
@@ -1034,27 +1032,35 @@ function announcedClosingsSection() {
 }
 
 // SECTION: Commercial — recoupment announcements this week (Broadway).
-// News-freshness gate: recoupedDate must be a valid YYYY-MM (rejects year-only
-// "2026") AND fall in this month or the previous month. Verification timestamp
-// is bookkeeping, not news — re-verifying a 2-year-old recoupment shouldn't
-// resurface it. The Gemini final review (2026-05-24) caught that the older
-// verifiedDate fallback had silently regressed through a merge.
+// News-freshness gate (revised 2026-05-24): recoupedDate must be a valid
+// YYYY-MM (rejects year-only "2026") AND firstAdded must fall in the week
+// window. Why firstAdded instead of "this/last month on recoupedDate":
+// monthly granularity surfaces Giant (recouped 2026-05) in EVERY weekly
+// newsletter sent in May AND June — 8+ repeats. firstAdded captures "we
+// just learned about this," which is what readers actually want to see
+// once. Falls back to weekStart-month match when firstAdded is missing
+// (older entries pre-2026 don't have this field).
 function commercialSection() {
   let comm;
   try { comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8')); }
   catch { return null; }
   const slugToShow = new Map();
   shows.forEach(s => { if (s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });
-  const weekMonth = weekEndStr.slice(0, 7);
-  const prevMonth = (() => {
-    const [yy, mm] = weekMonth.split('-').map(Number);
-    return mm === 1 ? `${yy - 1}-12` : `${yy}-${String(mm - 1).padStart(2, '0')}`;
-  })();
   const fresh = [];
   Object.entries(comm.shows || {}).forEach(([slug, c]) => {
     if (!c.recouped || !c.recoupedDate) return;
     if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) return;
-    if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) return;
+    // Primary gate: firstAdded falls in the week window.
+    if (c.firstAdded) {
+      const firstAddedDay = String(c.firstAdded).slice(0, 10);
+      if (firstAddedDay < weekStartStr || firstAddedDay > weekEndStr) return;
+    } else {
+      // Fallback for older entries without firstAdded: recoupedDate matches
+      // the week's month. Preserves backwards compat for legacy commercial
+      // records that lack the timestamp field.
+      const weekMonth = weekEndStr.slice(0, 7);
+      if (c.recoupedDate !== weekMonth) return;
+    }
     const show = slugToShow.get(slug);
     if (!show) return;
     fresh.push({ show, c });
@@ -1140,10 +1146,11 @@ function castingSection() {
     const data = castData.shows[showId];
     (data.upcoming || []).forEach(u => eventsAll.push({ ...u, showId, showTitle: show.title }));
   });
-  // Recent: addedDate in [weekStart - 7d, weekEnd]
-  const lookback = new Date(weekStartStr + 'T12:00:00'); lookback.setDate(lookback.getDate() - 7);
-  const lookbackStr = lookback.toISOString().slice(0, 10);
-  const recent = eventsAll.filter(e => e.addedDate && e.addedDate >= lookbackStr && e.addedDate <= weekEndStr);
+  // Recent: addedDate IN THE WEEK WINDOW. Earlier versions used a 14-day
+  // window (weekStart - 7d) but that resurfaces last-week's casting in this
+  // week's email, which contradicts the weekly-digest premise. Aligned with
+  // the announced-closings tightening per user note 2026-05-24.
+  const recent = eventsAll.filter(e => e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
   if (!recent.length) return null;
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
@@ -1720,18 +1727,20 @@ const newsworthyInputs = {
   obOpenings: obEvents,
   aggregateScore,
   recoupments: (() => {
-    // Mirror commercialSection's tightened gate exactly (same fix per Gemini
-    // final review): YYYY-MM strict format, this month or last month only.
+    // Mirror commercialSection: firstAdded must be in this week's window.
+    // (Was: this/last month on recoupedDate — caused 8+ repeats per show.)
     try {
       const comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8'));
-      const weekMonth = weekEndStr.slice(0, 7);
-      const [_yy, _mm] = weekMonth.split('-').map(Number);
-      const prevMonth = _mm === 1 ? `${_yy - 1}-12` : `${_yy}-${String(_mm - 1).padStart(2, '0')}`;
       const out = [];
       for (const [slug, c] of Object.entries(comm.shows || {})) {
         if (!c.recouped || !c.recoupedDate) continue;
         if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) continue;
-        if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) continue;
+        if (c.firstAdded) {
+          const firstAddedDay = String(c.firstAdded).slice(0, 10);
+          if (firstAddedDay < weekStartStr || firstAddedDay > weekEndStr) continue;
+        } else {
+          if (c.recoupedDate !== weekEndStr.slice(0, 7)) continue;
+        }
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show || isOperaShow(show)) continue;
         // Same weeks-to-recoup math the section uses.
@@ -1752,19 +1761,14 @@ const newsworthyInputs = {
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
     && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
   announcedClosings: (() => {
-    // Mirror announcedClosingsSection: closure events added in the last
-    // ANNOUNCED_CLOSINGS_LOOKBACK_DAYS + a future closingDate. (Lookback
-    // extended from this-week-only on 2026-05-24 after ship-check review
-    // flagged that a one-week window strands announcements for readers
-    // who miss the launch newsletter.)
-    const lookbackDate = new Date(weekEndStr + 'T12:00:00');
-    lookbackDate.setDate(lookbackDate.getDate() - ANNOUNCED_CLOSINGS_LOOKBACK_DAYS);
-    const ourLookback = lookbackDate.toISOString().slice(0, 10);
+    // Mirror announcedClosingsSection exactly: closure events added IN THE
+    // WEEK WINDOW only. The prior 28-day lookback resurfaced 3-week-old
+    // closures (Ragtime case, user-flagged 2026-05-24).
     const out = [];
     for (const [showId, data] of Object.entries(castData.shows)) {
       const closures = (data.upcoming || []).filter(e =>
         e.type === 'closure'
-        && e.addedDate && e.addedDate >= ourLookback && e.addedDate <= weekEndStr);
+        && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
       if (closures.length === 0) continue;
       const show = shows.find(s => s.id === showId);
       if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) continue;
