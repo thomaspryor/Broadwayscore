@@ -282,7 +282,13 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          URL=$(npx vercel deploy --prebuilt --prod --archive=tgz --token=$VERCEL_TOKEN)
+          # --archive=split-tgz: Vercel's split-tarball format (Jan 2025 changelog)
+          # uploads up to 30% faster than single --archive=tgz for prebuilt
+          # deployments with many files (.vercel/output has ~15k files).
+          # If this flag ever becomes unrecognized after a Vercel CLI downgrade,
+          # fall back to --archive=tgz (the previous default).
+          # Source: https://vercel.com/changelog/cli-archive-deployments-are-now-up-to-30-faster-with-split-tgz-archive
+          URL=$(npx vercel deploy --prebuilt --prod --archive=split-tgz --token=$VERCEL_TOKEN)
           echo "Deployed to production: $URL"
 
       - name: Check build duration
