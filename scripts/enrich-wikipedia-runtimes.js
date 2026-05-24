@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -320,8 +321,8 @@ async function main() {
       parts.push(`opening=${dates.openingDate}`);
       dateUpdated = true;
     }
-    if (dates.closingDate && !show.closingDate && isDatePlausible(dates.closingDate, show)) {
-      if (!DRY_RUN) show.closingDate = dates.closingDate;
+    if (dates.closingDate && !show.closingDate && isDatePlausible(dates.closingDate, show) && canWriteClosingDate(show)) {
+      if (!DRY_RUN) writeClosingDate(show, dates.closingDate, 'Wikipedia infobox');
       parts.push(`closing=${dates.closingDate}`);
       dateUpdated = true;
     }

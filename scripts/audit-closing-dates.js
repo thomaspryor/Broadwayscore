@@ -46,6 +46,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
@@ -302,11 +303,15 @@ async function main() {
         // (unrelated date on the page). Surface to human instead of auto-applying.
         ambiguous.push({ ...verdict, delta, action: 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' });
       } else if (delta > 0) {
-        extensions.push({ ...verdict, delta, action: 'EXTENSION' });
-        if (!DRY_RUN) {
-          show.closingDate = r.latest;
-          show.closingDateSource = `broadway.com schedule (audit ${TODAY})`;
-          show.closingDateUpdatedAt = TODAY;
+        if (!canWriteClosingDate(show)) {
+          // Human override in effect — log the extension finding but don't write.
+          // The audit report still records it for transparency.
+          extensions.push({ ...verdict, delta, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
+        } else {
+          extensions.push({ ...verdict, delta, action: 'EXTENSION' });
+          if (!DRY_RUN) {
+            writeClosingDate(show, r.latest, `broadway.com schedule (audit ${TODAY})`, { todayStr: TODAY });
+          }
         }
       } else if (delta < 0 && Math.abs(delta) > AMBIGUOUS_DELTA_THRESHOLD_DAYS) {
         // Schedule ends earlier than stored. Could be: (a) calendar
@@ -392,14 +397,19 @@ async function main() {
         continue;
       }
       if (targetShow) {
-        targetShow.closingDate = newDate;
+        if (!canWriteClosingDate(targetShow)) {
+          console.warn(`  [auto-fix] ${a.id}: humanCorrectedClosingDate=true — skipping triple-signal write`);
+          a.tripleSignalWriteFailed = { reason: 'humanCorrectedClosingDate', newDate };
+          continue;
+        }
+        // Record what we replaced BEFORE overwriting — single field to roll back from.
+        targetShow.closingDatePrevious = a.stored;
         // Cite ALL corroborating sources, not just the first — preserves
         // the audit trail when reviewing a wrong auto-fix later.
         const sourceList = discovery.sources.map(s => s.url).join(', ');
-        targetShow.closingDateSource = `triple-signal audit (${TODAY}): broadway.com + ${sourceList}`;
-        targetShow.closingDateUpdatedAt = TODAY;
-        // Record what we replaced — single field to roll back from.
-        targetShow.closingDatePrevious = a.stored;
+        writeClosingDate(targetShow, newDate,
+          `triple-signal audit (${TODAY}): broadway.com + ${sourceList}`,
+          { todayStr: TODAY });
       }
       autoFixedTripleSignal.push({
         id: a.id,

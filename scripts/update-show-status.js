@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const URLS_FILE = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -209,8 +210,11 @@ async function refreshTodayTixDates(data, updates) {
               console.log(`  🔄 ${closedMatch.title}: TodayTix (id=${ttShow.id}) still lists this show — reopening (was closed with closingDate=${oldClosingDate})`);
               if (!dryRun) {
                 closedMatch.status = 'open';
-                if (ttEndDate) closedMatch.closingDate = ttEndDate;
-                else delete closedMatch.closingDate;
+                if (ttEndDate) {
+                  writeClosingDate(closedMatch, ttEndDate, `update-show-status reopen (${new Date().toISOString().slice(0,10)})`);
+                } else if (canWriteClosingDate(closedMatch)) {
+                  delete closedMatch.closingDate;
+                }
               }
               reopenedIds.add(closedMatch.id);
               updates.push({
@@ -240,36 +244,46 @@ async function refreshTodayTixDates(data, updates) {
         // Compare dates: only update if TodayTix date is LATER (extension)
         if (match.closingDate && ttEndDate > match.closingDate) {
           const oldDate = match.closingDate;
-          console.log(`  📅 ${match.title}: closing date extended ${oldDate} → ${ttEndDate}`);
-          if (!dryRun) {
-            match.closingDate = ttEndDate;
-          }
-          updates.push({
-            id: match.id,
-            title: match.title,
-            changes: {
-              closingDate: { from: oldDate, to: ttEndDate },
-              note: `Extension detected via TodayTix (${loc.label})`
+          if (!canWriteClosingDate(match)) {
+            console.log(`  🔒 ${match.title}: humanCorrectedClosingDate=true — skipping TodayTix extension ${oldDate} → ${ttEndDate}`);
+          } else {
+            console.log(`  📅 ${match.title}: closing date extended ${oldDate} → ${ttEndDate}`);
+            if (!dryRun) {
+              writeClosingDate(match, ttEndDate, `TodayTix (${loc.label})`);
             }
-          });
-          dateUpdates++;
+            updates.push({
+              id: match.id,
+              title: match.title,
+              changes: {
+                closingDate: { from: oldDate, to: ttEndDate },
+                note: `Extension detected via TodayTix (${loc.label})`
+              }
+            });
+            dateUpdates++;
+          }
         }
 
         // Also set closingDate if we had none and TodayTix has one
         if (!match.closingDate && ttEndDate) {
-          console.log(`  📅 ${match.title}: closing date added ${ttEndDate} (was unknown)`);
-          if (!dryRun) {
-            match.closingDate = ttEndDate;
-          }
-          updates.push({
-            id: match.id,
-            title: match.title,
-            changes: {
-              closingDate: { from: 'none', to: ttEndDate },
-              note: `Closing date discovered via TodayTix (${loc.label})`
+          if (!canWriteClosingDate(match)) {
+            // Show has humanCorrectedClosingDate=true but no closingDate — bizarre,
+            // but respect the human flag and don't write.
+            console.log(`  🔒 ${match.title}: humanCorrectedClosingDate=true but stored closingDate is empty — skipping`);
+          } else {
+            console.log(`  📅 ${match.title}: closing date added ${ttEndDate} (was unknown)`);
+            if (!dryRun) {
+              writeClosingDate(match, ttEndDate, `TodayTix (${loc.label}) — discovered`);
             }
-          });
-          dateUpdates++;
+            updates.push({
+              id: match.id,
+              title: match.title,
+              changes: {
+                closingDate: { from: 'none', to: ttEndDate },
+                note: `Closing date discovered via TodayTix (${loc.label})`
+              }
+            });
+            dateUpdates++;
+          }
         }
       }
     } catch (err) {
@@ -504,14 +518,18 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
 
     // Fill closing date gap
     if (ssData.closingDate && !show.closingDate) {
-      changes.push({
-        field: 'closingDate',
-        from: 'null',
-        to: ssData.closingDate,
-        note: `ShowScore "Ends" date`
-      });
-      if (!dryRun) show.closingDate = ssData.closingDate;
-      dateUpdates++;
+      if (!canWriteClosingDate(show)) {
+        // Human-protected with no stored closingDate — respect the flag, don't fill.
+      } else {
+        changes.push({
+          field: 'closingDate',
+          from: 'null',
+          to: ssData.closingDate,
+          note: `ShowScore "Ends" date`
+        });
+        if (!dryRun) writeClosingDate(show, ssData.closingDate, 'ShowScore "Ends" date');
+        dateUpdates++;
+      }
     }
 
     // Fill venue gap

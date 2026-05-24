@@ -180,6 +180,11 @@ runs:
           # date corrections (e.g. enrich-west-end-dates, the new OB equivalent)
           # silently lost their work on rebase races. See KENREX 2026-04-28 root
           # cause and memory/feedback_off_broadway_opening_date_gap.md.
+          # humanCorrectedClosingDate added 2026-05-24 — when a human manually
+          # fixes a closingDate via the private repo, the flag tells all auto-
+          # writers to skip. Reconciling it here means a concurrent push by an
+          # auto-writer can't drop the flag on rebase. See
+          # scripts/lib/closing-date-guard.js.
           if [ -f "/tmp/remote-shows.json" ] && [ -f "shows.json" ]; then
             node -e '
               const fs = require("fs");
@@ -188,6 +193,7 @@ runs:
                 "venue", "synopsis", "runtime", "intermissions", "ageRecommendation",
                 "officialUrl", "wikipediaUrl", "ibdbUrl",
                 "openingDate", "previewsStartDate", "openingDateSource",
+                "humanCorrectedClosingDate",
               ]);
               try {
                 const local = JSON.parse(fs.readFileSync("shows.json", "utf8"));
