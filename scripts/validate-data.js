@@ -2628,39 +2628,6 @@ function validateCommercialJson() {
   if (issues === 0) {
     ok(`Commercial data valid for ${showKeys.length} shows`);
   }
-
-  // Backfill candidate surfacing: warn for shows at nonprofit-rentable
-  // Broadway venues that lack a commercial.json entry. Recency-gated
-  // (last 5 years) to avoid flooding the output with pre-pandemic historicals
-  // that have low /biz value. See memory/feedback_nonprofit_venue_vs_production.md.
-  // Capped at 30 to keep noise actionable.
-  if (showsData?.shows) {
-    const NP_RENTABLE_VENUES = new Set([
-      'Vivian Beaumont Theater',
-      'Samuel J. Friedman Theatre',
-      'Todd Haimes Theatre',
-      'Helen Hayes Theater',
-      'American Airlines Theatre',
-    ]);
-    const FIVE_YEARS_AGO = new Date(Date.now() - 5 * 365 * 86400000).toISOString().slice(0, 10);
-    const candidates = [];
-    for (const show of showsData.shows) {
-      if (show.market !== 'broadway') continue;
-      if (!NP_RENTABLE_VENUES.has(show.venue)) continue;
-      if (data.shows[show.slug]) continue;
-      if (!show.openingDate || show.openingDate < FIVE_YEARS_AGO) continue;
-      candidates.push({ slug: show.slug, venue: show.venue, openingDate: show.openingDate });
-    }
-    if (candidates.length > 0) {
-      candidates.sort((a, b) => b.openingDate.localeCompare(a.openingDate));
-      const capped = candidates.slice(0, 30);
-      warn(`commercial.json missing entries for ${candidates.length} show(s) at nonprofit-rentable Broadway venues (last 5 years; showing first ${capped.length}):`);
-      for (const c of capped) {
-        warn(`  ${c.slug.padEnd(48)} | ${c.venue.padEnd(28)} | opened ${c.openingDate}`);
-      }
-      warn(`  → backfill methodology: cloud-memory/feedback_nonprofit_venue_vs_production.md`);
-    }
-  }
 }
 
 // ===========================================
