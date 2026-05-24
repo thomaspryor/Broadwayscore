@@ -465,21 +465,32 @@ function broadwayOpenings() {
   return { html: sectionWrap(sectionHeading(title), list.map(s => showRow(s, { isReopening: reopeningIds.has(s.id) })).join('')), list };
 }
 
-// SECTION: OB openings — only show scored, mention count of pending
+// SECTION: OB openings — only show scored, mention count of pending.
+// Empty-shelf guard (2026-05-24): if there are NO scored shows to render, the
+// section is dropped entirely. Previously it surfaced a heading + "+N needs
+// more reviews" with an empty body — visually broken and uninformative. The
+// pending count gets promoted to the heading subtitle only when there's at
+// least one show to render alongside it.
 function offBroadwayOpenings() {
   const events = openingEventsForWeek('off-broadway');
   if (!events.length) return { html: null, list: [] };
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3);
+  if (!withScore.length) return { html: null, list: [] };
   const pending = list.length - withScore.length;
-  if (!withScore.length && !pending) return { html: null, list: [] };
   const body = withScore.map(x => showRow(x.s, { isReopening: reopeningIds.has(x.s.id) })).join('');
-  const hasOpen = events.some(e => !e.isReopening);
-  const hasReopen = events.some(e => e.isReopening);
+  const hasOpen = withScore.some(x => !reopeningIds.has(x.s.id));
+  const hasReopen = withScore.some(x => reopeningIds.has(x.s.id));
   const title = hasOpen ? 'Opened Off-Broadway' : (hasReopen ? 'Reopened Off-Broadway' : 'Opened Off-Broadway');
   return { html: sectionWrap(sectionHeading(title, pending ? `+${pending} needs more reviews` : ''), body), list: withScore.map(x => x.s) };
 }
+
+// Tracks whether the most recent Coming Up render included a Broadway show.
+// Set as a side-effect of upcomingOpeningsSection() so the assembly block
+// can decide where to place the card (top vs bottom) without re-running the
+// full filter. Reset each render via createSectionRunner.
+let _upcomingHasBroadway = false;
 
 // SECTION: Coming Up — forward-looking openings + starting previews.
 // Looks 14 days ahead for openingDate, 7 days ahead for previewsStartDate.
@@ -509,6 +520,10 @@ function upcomingOpeningsSection() {
   items.sort((a, b) => a.eventDate.localeCompare(b.eventDate));
   const top = items.slice(0, 4); // cap card height — surface the closest 4
   const remaining = items.length - top.length;
+  // Placement signal: when Coming Up has a Broadway entry it earns a slot near
+  // the top of the email (just after the openings cards). An OB-only slate is
+  // less prominent news, so the assembly block drops it toward the bottom.
+  _upcomingHasBroadway = top.some(it => it.show.category === 'broadway');
   const rows = top.map((it, i, arr) => {
     const isLast = i === arr.length - 1;
     const s = it.show;
@@ -520,14 +535,14 @@ function upcomingOpeningsSection() {
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
         <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
         <div style="margin-top:4px;">${formatPill}${revivalPill}</div>
-        <div style="font-size:12px;color:#9ca3af;margin-top:6px;line-height:1.4;">
-          <span style="color:#d4a574;font-weight:600;">${it.eventLabel} ${dayOf(it.eventDate)} ${fmt(it.eventDate)}</span>${venue ? ` · ${venue}` : ''}
+        <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.4;">
+          ${it.eventLabel} ${dayOf(it.eventDate)} ${fmt(it.eventDate)}${venue ? ` · ${venue}` : ''}
         </div>
       </td>
     </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">${rows}
-    ${seeAllLink(`${SITE}/browse`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
+    ${seeAllLink(`${SITE}/`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
   </table>`;
   return sectionWrap(sectionHeading('Coming Up', 'next 14 days'), body);
 }
@@ -1672,7 +1687,13 @@ if (seasonStandings.length) {
 // "Coming Up" follows the just-opened sections so the reader sees the past
 // week's drama, then naturally looks ahead to what's next, before pivoting
 // to score movers / box office / etc.
-const sectionOrder = [bwO.html, obO.html, upcoming, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, popular].filter(Boolean);
+// "Coming Up" placement is conditional (user direction 2026-05-24):
+//   • Has a Broadway show → top slot (right after the just-opened cards).
+//   • OB-only slate → drop to bottom, just above Most-Read Pages — still
+//     in the email for fans planning ahead, but not leading.
+const upcomingTop = upcoming && _upcomingHasBroadway ? upcoming : null;
+const upcomingBottom = upcoming && !_upcomingHasBroadway ? upcoming : null;
+const sectionOrder = [bwO.html, obO.html, upcomingTop, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, upcomingBottom, popular].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
