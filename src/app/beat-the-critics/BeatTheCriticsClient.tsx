@@ -145,7 +145,11 @@ function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'x
 }
 
 function ActorPoster({ nominee }: { nominee: ActorNominee }) {
-  return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0">{nominee.name.charAt(0)}</div>);
+  const parts = nominee.name.split(' ').filter(Boolean);
+  const initials = parts.length >= 3
+    ? parts[0][0] + parts[1][0] + parts[parts.length - 1][0]
+    : parts.map(p => p[0]).join('');
+  return (<div className="w-11 h-11 rounded-lg bg-surface-overlay flex items-center justify-center text-xs font-extrabold text-white/30 flex-shrink-0">{initials.toUpperCase()}</div>);
 }
 
 function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; selected: boolean; onSelect: () => void }) {
