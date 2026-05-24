@@ -160,12 +160,15 @@ function showLink(show, inner) {
 }
 
 // Per-section "see all" footer. Returns a <tr> that lives INSIDE the card
-// table (matches Tony Predictions' canonical placement). Callers append this
-// row to the same `<table>` as the card body rows instead of rendering it
-// underneath the closing tag. NYC sections use brand gold; London uses pink.
+// table (matches Tony Predictions' canonical placement). The colspan="9" is
+// intentional over-padding — every card's row layout has ≤ 9 columns and
+// HTML clamps colspan to the real count. Without it the <td> inherits the
+// host card's first-column fixed width and the link wraps into the ~60px
+// thumbnail gutter (London card regression on 2026-05-24). NYC sections use
+// brand gold; London uses pink.
 function seeAllLink(href, label, opts = {}) {
   const color = opts.color || '#d4a574';
-  return `<tr><td style="padding:0 16px 14px;">
+  return `<tr><td colspan="9" style="padding:0 16px 14px;">
       <a href="${href}" style="font-size:12px;color:${color};text-decoration:none;font-weight:600;">${label} →</a>
     </td></tr>`;
 }
