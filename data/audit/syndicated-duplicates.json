@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-05-24T09:25:51.666Z",
+  "generatedAt": "2026-05-24T11:22:43.868Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 100,
     "avgScoreDiff": 0
   },
   "syndicationPairs": [
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "AP wire",
+      "showId": "trouble-in-mind-2021",
+      "primaryOutlet": "ap",
+      "secondaryOutlet": "daily-herald",
+      "primaryFile": "ap--mark-kennedy.json",
+      "secondaryFile": "daily-herald--mark-kennedy.json",
+      "similarity": 100,
+      "primaryScore": null,
+      "secondaryScore": null,
+      "scoreDiff": 0
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
