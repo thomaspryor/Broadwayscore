@@ -4,85 +4,12 @@
     "scrapedAt": "2026-05-24T15:31:57.553Z",
     "sourceNote": "Categories + winners + nominees parsed from Playbill body text. WINNER marker variants normalized.",
     "minYear": 2011,
-    "maxYear": 2026
+    "maxYear": 2026,
+    "cleanedAt": "2026-05-24T15:59:47.289Z",
+    "cleanedNote": "Stripped category-header bleed + author/producer metadata lines that the Playbill parser misclassified as nominees."
   },
   "data": {
     "Best New Musical": [
-      {
-        "year": 2011,
-        "winner": null,
-        "nominees": [
-          "Nominees follow (winners names are in bold preceded by an asterisk):"
-        ]
-      },
-      {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "Brooklynite",
-          "Clinton The Musical",
-          "Disenchanted!",
-          "Hamilton",
-          "Mighty Real: A Fabulous Sylvester Musical"
-        ]
-      },
-      {
-        "year": 2016,
-        "winner": null,
-        "nominees": [
-          "Cagney",
-          "Daddy Long Legs",
-          "Dear Evan Hansen",
-          "Futurity",
-          "Who’s Your Baghdaddy?",
-          "Best New Play",
-          "Exit Strategy",
-          "Gloria",
-          "John",
-          "O, Earth",
-          "The Qualms",
-          "Best Musical Revival",
-          "Once Upon a Mattress",
-          "The Robber Bridegroom",
-          "Rothschild & Sons",
-          "Ruthless!",
-          "Sayonara",
-          "Best Play Revival",
-          "Incident at Vichy",
-          "The School for Scandal",
-          "Two Gentlemen of Verona",
-          "Widowers’ Houses",
-          "Women Without Men",
-          "Best Unique Theatrical Experience",
-          "Angel Reapers",
-          "Preludes",
-          "Sense & Sensibility",
-          "Shear Madness",
-          "Standard Time",
-          "Best Solo Performance",
-          "Thank God for Jokes",
-          "Motherstruck",
-          "The Absolute Brightness of Leonard Pelkey",
-          "Kick",
-          "Youarenowhere",
-          "Best Family Show",
-          "The Commedia Rapunzel",
-          "The Pirate La Dee Da",
-          "The Velveteen Rabbit",
-          "The Very Hungry Caterpillar Show",
-          "Young Charles Dickens",
-          "Legend of Off Broadway Honorees",
-          "Merle Debuskey",
-          "Linda Lavin",
-          "Robert Moss",
-          "Lois Smith",
-          "Hall of Fame Awards",
-          "Anne Jackson and Eli Wallach",
-          "Anne Meara",
-          "Elizabeth Swados",
-          "For more information, visit OffBroadwayAlliance.com."
-        ]
-      },
       {
         "year": 2018,
         "winner": "Desperate Measures",
@@ -110,8 +37,7 @@
         "winner": null,
         "nominees": [
           "A Strange Loop*",
-          "Book, music and lyrics by Michael R Jackson",
-          "Produced by Playwrights Horizons and Page 73"
+          "Book, music and lyrics by Michael R Jackson"
         ]
       },
       {
@@ -139,21 +65,6 @@
     ],
     "Best New Play": [
       {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "Between Riverside & Crazy",
-          "Dry Land",
-          "Father Comes From the Wars (Parts 1, 2, & 3)",
-          "The Nether",
-          "Punk Rock Best Musical Revival",
-          "Allegro",
-          "Into the Woods",
-          "John & Jen",
-          "Pageant"
-        ]
-      },
-      {
         "year": 2018,
         "winner": "Transfers",
         "nominees": [
@@ -179,9 +90,7 @@
         "year": 2020,
         "winner": null,
         "nominees": [
-          "Ain't No Mo'",
-          "By Jordan E. Cooper",
-          "Produced by The Public Theater"
+          "Ain't No Mo'"
         ]
       },
       {
@@ -209,17 +118,6 @@
     ],
     "Best Play Revival": [
       {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "Abundance",
-          "Agatha Christie’s The Unexpected Guest",
-          "Fashions for Men",
-          "Tamburlaine the Great",
-          "A Walk in the Woods"
-        ]
-      },
-      {
         "year": 2019,
         "winner": "Uncle Vanya",
         "nominees": [
@@ -234,9 +132,7 @@
         "year": 2020,
         "winner": null,
         "nominees": [
-          "For Colored Girls Who Have Considered Suicide / When the Rainbow is Enuf",
-          "By Ntozake Shange",
-          "Produced by The Public Theater"
+          "For Colored Girls Who Have Considered Suicide / When the Rainbow is Enuf"
         ]
       },
       {
@@ -252,17 +148,6 @@
       }
     ],
     "Best Unique Theatrical Experience": [
-      {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "Drunk Shakespeare",
-          "Ghost Quartet",
-          "The Pigeoning",
-          "Scenes From a Marriage",
-          "Tail! Spin!"
-        ]
-      },
       {
         "year": 2018,
         "winner": "KPOP",
@@ -289,9 +174,7 @@
         "year": 2020,
         "winner": null,
         "nominees": [
-          "Dana H.*",
-          "By Lucas Hnath",
-          "Produced by Vineyard Theatre, Goodman Theatre, and Center Theatre Group"
+          "Dana H.*"
         ]
       },
       {
@@ -327,17 +210,6 @@
     ],
     "Best Solo Performance": [
       {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "Every Brilliant Thing",
-          "Forever",
-          "Grounded",
-          "Just Jim Dale",
-          "The Other Mozart"
-        ]
-      },
-      {
         "year": 2018,
         "winner": "Harry Clarke",
         "nominees": [
@@ -363,9 +235,7 @@
         "year": 2020,
         "winner": null,
         "nominees": [
-          "A Woman of the World",
-          "By Rebecca Gilman",
-          "Produced by The Acting Company and 59E59 Theaters"
+          "A Woman of the World"
         ]
       },
       {
@@ -404,17 +274,6 @@
     ],
     "Best Family Show": [
       {
-        "year": 2015,
-        "winner": null,
-        "nominees": [
-          "A Band of Angels",
-          "Camp Kappawanna",
-          "The Lightning Thief",
-          "The Little Prince",
-          "Swamp Juice"
-        ]
-      },
-      {
         "year": 2018,
         "winner": "Polkadots: The Cool Kids Musical",
         "nominees": [
@@ -442,8 +301,7 @@
         "winner": null,
         "nominees": [
           "Dog Man: The Musical",
-          "Music by Brad Alexander, books and lyrics by Kevin DelAguila, based on the series by Dav Pilkey",
-          "Produced by TheatreWorks USA"
+          "Music by Brad Alexander, books and lyrics by Kevin DelAguila, based on the series by Dav Pilkey"
         ]
       },
       {
@@ -508,8 +366,7 @@
         "winner": null,
         "nominees": [
           "Baby",
-          "Book by Sybille Pearson, music by David Shire, and lyrics by Richard Maltby Jr",
-          "Produced by Out of the Box Theatrics"
+          "Book by Sybille Pearson, music by David Shire, and lyrics by Richard Maltby Jr"
         ]
       },
       {
