@@ -130,7 +130,9 @@ jobs:
       - name: Notion sweep — surface recouped claims
         if: inputs.dry_run != true
         env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # notion-brain.js reads NOTION_API_KEY (not NOTION_TOKEN). The GH
+          # secret is named NOTION_API_KEY — caught 2026-05-24 by dry-run.
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
           if [ -f /tmp/sweep-report.json ]; then
