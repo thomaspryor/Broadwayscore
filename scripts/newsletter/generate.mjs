@@ -1598,34 +1598,39 @@ function operaOpeningsSection() {
   return sectionWrap(sectionHeading('Opera Openings', null, { href: `${SITE}/opera` }), body);
 }
 
-// SECTION: Most Popular Pages — real GA4 page-view data, top show pages last
-// 7 days. Briefly replaced by a hand-built fallback then removed on Codex
-// review; restored on 2026-05-24 with actual data via popular-pages.mjs.
-// Skips silently when GA4 creds are missing or the query errors.
-function mostReadSection(popularList) {
-  if (!Array.isArray(popularList) || popularList.length === 0) return null;
-  // Map slug → show object so we can render thumbs + scores. Drop slugs that
-  // don't match an open NYC show (stale URLs, redirects).
+// SECTION: Trending This Week — show pages with the biggest WoW page-view
+// growth. Earlier "Most-Read" version was sorted by raw views and Hamilton +
+// Wicked won every week (evergreen blockbusters). Climbers surface MOVEMENT,
+// which is what a weekly digest is for. Source: popular-pages.mjs runs a
+// multi-range GA4 query and returns {slug, views, prior, growth} sorted by
+// growth desc. Section silently skips when GA4 creds are missing or no show
+// crosses the noise floor.
+function mostReadSection(climberList) {
+  if (!Array.isArray(climberList) || climberList.length === 0) return null;
   const items = [];
-  for (const p of popularList) {
+  for (const p of climberList) {
     const show = shows.find(s => s.slug === p.slug);
     if (!show) continue;
     if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
     if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
     const eligible = a && a.count >= minReviews(show.category);
-    if (!eligible) continue; // no score → skip entirely (no dash placeholders)
     items.push({
       show,
       title: show.title,
       slug: show.slug,
       category: show.category,
-      score: a.avg,
+      score: eligible ? a.avg : null,
       views: p.views,
+      prior: p.prior,
+      growth: p.growth,
     });
     if (items.length >= 3) break;
   }
   if (!items.length) return null;
+  // Format growth as "↑ 3.2× from last week" — multiplicative reads better
+  // than raw delta when the base is small. Round to 1 decimal.
+  const fmtGrowth = (g) => `↑ ${g.toFixed(1)}× from last week`;
   const rows = items.map((it, i, arr) => {
     const border = i < arr.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : '';
     return `<tr>
@@ -1633,11 +1638,11 @@ function mostReadSection(popularList) {
     <td valign="middle" style="padding:7px 0;${border}">
       <a href="${SITE}/show/${it.slug}" style="text-decoration:none;display:block;">
         <div style="font-size:14px;font-weight:700;color:#ffffff;line-height:1.3;">${it.title} ${marketPill(it.category)}</div>
-        <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${it.views.toLocaleString()} views</div>
+        <div style="font-size:11px;color:#22c55e;margin-top:2px;font-weight:600;">${fmtGrowth(it.growth)}</div>
       </a>
     </td>
     <td valign="middle" width="56" align="right" style="padding:7px 8px 7px 4px;${border}">
-      ${smallBadge(it.score, 36, it.category)}
+      ${it.score != null ? smallBadge(it.score, 36, it.category) : `<div style="box-sizing:border-box;display:inline-block;width:36px;height:36px;border-radius:8px;background:#2a2a38;color:#6b7280;font-size:12px;font-weight:700;line-height:36px;text-align:center;border:1px solid rgba(255,255,255,0.1);">—</div>`}
     </td>
   </tr>`;
   }).join('');
@@ -1646,7 +1651,7 @@ function mostReadSection(popularList) {
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
   </table>`;
-  return sectionWrap(sectionHeading('Most-Read Show Pages', 'last 7 days'), body);
+  return sectionWrap(sectionHeading('Trending This Week', 'biggest traffic gainers'), body);
 }
 
 // ──────────────────────────────────────────
