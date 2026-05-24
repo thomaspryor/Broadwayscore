@@ -519,36 +519,36 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
         }
       }
 
-      // Cleanup pass: remove this scrapedCategory from wins/winnerNames on any
-      // OTHER show in the same season that previously held it. Needed because
-      // the prior Tony-only matcher could miscredit (e.g. Lithgow DD 2026
-      // Lead Performance went to giant-2026 via Tony when the actual show is
-      // well-ill-let-you-go). Without this, stale bad attributions survive
-      // across runs. Only runs when source has a non-null winner — preserves
-      // hand-curated wins for categories with null winners in source (e.g.
-      // DL Distinguished Performance Award has winner=null in precursor data
-      // but Ragtime/Joshua Henry are hand-curated in awards.json).
-      if (winnerTitles.length > 0) {
-        const targetSeason = ceremonyYearToTonySeason(callOpts.sourceYear);
+      // Targeted cleanup: the prior Tony-only matcher could miscredit a
+      // person-name win to a Tony-nominated show that isn't the actual DD
+      // winner (e.g. Lithgow DD 2026 Lead Performance went to giant-2026 via
+      // Tony lookup because Lithgow is Tony-nominated for Giant; the actual
+      // DD-winning show is well-ill-let-you-go). To clean these stale
+      // attributions WITHOUT wiping legitimate OB→Broadway transfer wins
+      // (e.g. Hamilton's DD 2015 OB wins live on hamilton-2015 whose
+      // dramadesk.season is 2015-16, the same as DD 2016 Broadway-eligible
+      // shows), we restrict cleanup to specifically the shows that the OLD
+      // Tony-only matcher would have credited but the new pair-based matcher
+      // does NOT credit. Nothing else gets touched — broad season-level
+      // sweeps wipe legitimate cross-year wins on the same show.
+      if (winnerIsPersonName && personWinnerShowMap.size > 0) {
+        const season = ceremonyYearToTonySeason(callOpts.sourceYear);
         const correctShowIds = new Set();
-        if (winnerIsPersonName) {
-          for (const ids of personWinnerShowMap.values()) for (const id of ids) correctShowIds.add(id);
+        for (const ids of personWinnerShowMap.values()) for (const id of ids) correctShowIds.add(id);
+        const tonyAttributedShowIds = new Set();
+        for (const w of winnerTitles) {
+          for (const id of lookupWinnerShowIds(w, season, awardsShows)) tonyAttributedShowIds.add(id);
         }
-        // For show-name winners, correct shows are resolved below in the
-        // nominees loop; we can't pre-compute without duplicating that lookup.
-        // Limit cleanup to the person-winner case (where the bug originated).
-        if (winnerIsPersonName) {
-          for (const [otherId, otherSh] of Object.entries(awardsShows)) {
-            if (correctShowIds.has(otherId)) continue;
-            const otherFK = otherSh[fieldKey];
-            if (!otherFK || otherFK.season !== targetSeason) continue;
-            if (Array.isArray(otherFK.wins) && otherFK.wins.includes(scrapedCategory)) {
-              otherFK.wins = otherFK.wins.filter((c) => c !== scrapedCategory);
-            }
-            if (otherFK.winnerNames && otherFK.winnerNames[scrapedCategory]) {
-              delete otherFK.winnerNames[scrapedCategory];
-              if (Object.keys(otherFK.winnerNames).length === 0) delete otherFK.winnerNames;
-            }
+        for (const otherId of tonyAttributedShowIds) {
+          if (correctShowIds.has(otherId)) continue;
+          const otherFK = awardsShows[otherId] && awardsShows[otherId][fieldKey];
+          if (!otherFK) continue;
+          if (Array.isArray(otherFK.wins) && otherFK.wins.includes(scrapedCategory)) {
+            otherFK.wins = otherFK.wins.filter((c) => c !== scrapedCategory);
+          }
+          if (otherFK.winnerNames && otherFK.winnerNames[scrapedCategory]) {
+            delete otherFK.winnerNames[scrapedCategory];
+            if (Object.keys(otherFK.winnerNames).length === 0) delete otherFK.winnerNames;
           }
         }
       }
