@@ -2493,6 +2493,21 @@ function validateCommercialJson() {
       issues++;
     }
 
+    // Outcome-driven designation policy (memory/feedback_enhancement_deal_designation_policy.md):
+    // Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
+    // Flop / Fizzle imply it did not — require recouped=false (null means we don't know).
+    // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
+    const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
+    const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
+    if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true) {
+      error(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)`);
+      issues++;
+    }
+    if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
+      error(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
+      issues++;
+    }
+
     // nonprofitOrg must match the show's venue. Catches the inverse of the
     // purpose-2025/job-2024 trap: tagging Liberation as Roundabout when the
     // venue was actually James Earl Jones (ATG commercial). Does NOT catch
