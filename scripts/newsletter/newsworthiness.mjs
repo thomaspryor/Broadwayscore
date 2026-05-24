@@ -48,35 +48,47 @@ function isGoldTier(score, category) {
   return score >= min;
 }
 
+// Translate a composite critic score into the kind of phrase a human editor
+// would write. "Rises 12 pts" is data-speak; "opens to decent reviews" reads
+// like a newsletter. Used throughout the subject + lede generators.
+function reviewVerdict(score, category) {
+  if (score == null) return null;
+  const goldMin = (category === 'west-end' || category === 'off-west-end') ? SCORE_GOLD_MIN_WE : SCORE_GOLD_MIN_NYC;
+  if (score >= goldMin) return 'rave reviews';        // Critical Gold tier
+  if (score >= 75)      return 'strong reviews';       // Recommended
+  if (score >= 65)      return 'decent reviews';       // Worth Seeing
+  if (score >= 55)      return 'mixed reviews';        // Skippable
+  return 'rough reviews';                              // Critical Miss
+}
+
 // Each candidate is `{ kind, weight, headline, show, slug }`. `headline` is the
 // short imperative phrase that goes into the subject line and lede.
 export function scoreCandidates(input) {
   const out = [];
 
-  // 1. Broadway openings (with critic score known)
+  // 1. Broadway openings — include review verdict when score is in (e.g.
+  // "Celebrity Autobiography opens to decent reviews"). Falls back to the
+  // plain "opens on Broadway" when reviews haven't landed yet.
   for (const s of (input.bwOpenings || [])) {
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const verdict = reviewVerdict(score, s.category);
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.BW_OPENING_GOLD_BUMP : 0;
-    out.push({
-      kind: 'bw-opening',
-      weight: WEIGHTS.BW_OPENING_BASE + goldBump,
-      headline: `${s.title} opens on Broadway`,
-      show: s,
-      slug: s.slug,
-    });
+    const headline = verdict
+      ? `${s.title} opens to ${verdict}`
+      : `${s.title} opens on Broadway`;
+    out.push({ kind: 'bw-opening', weight: WEIGHTS.BW_OPENING_BASE + goldBump, headline, show: s, slug: s.slug });
   }
 
-  // 2. Off-Broadway openings
+  // 2. Off-Broadway openings — same treatment, with the venue made explicit
+  // because "opens to decent reviews" alone hides whether it's BW or OB.
   for (const s of (input.obOpenings || [])) {
     const score = input.aggregateScore ? input.aggregateScore(s.id)?.avg : null;
+    const verdict = reviewVerdict(score, s.category);
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.OB_OPENING_GOLD_BUMP : 0;
-    out.push({
-      kind: 'ob-opening',
-      weight: WEIGHTS.OB_OPENING_BASE + goldBump,
-      headline: `${s.title} opens off-Broadway`,
-      show: s,
-      slug: s.slug,
-    });
+    const headline = verdict
+      ? `${s.title} opens off-Broadway to ${verdict}`
+      : `${s.title} opens off-Broadway`;
+    out.push({ kind: 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug });
   }
 
   // 3. Recoupment announcements (rarest biz news — high weight)
@@ -115,36 +127,29 @@ export function scoreCandidates(input) {
     });
   }
 
-  // 5b. Outlier of the Week — a single critic who landed far from consensus.
-  // Different story from "biggest mover" (a show whose AVG moved). Both can
-  // fire in the same week and lead distinct narratives.
+  // 5b. Outlier — natural phrasing focused on the show, not the critic.
+  // Reads like an editor wrote it ("one critic dissents on X") rather than
+  // a sportscaster naming the outlet.
   if (input.topOutlier) {
     const diff = Math.abs(Math.round(input.topOutlier.diff || 0));
     const largeBump = diff >= 20 ? WEIGHTS.OUTLIER_LARGE_BUMP : 0;
-    const dir = (input.topOutlier.diff || 0) < 0 ? 'pans' : 'raves over';
-    const outletShort = input.topOutlier.outlet || 'a critic';
-    out.push({
-      kind: 'outlier',
-      weight: WEIGHTS.OUTLIER_BASE + largeBump,
-      headline: `${outletShort} ${dir} ${input.topOutlier.show.title}`,
-      show: input.topOutlier.show,
-      slug: input.topOutlier.show.slug,
-    });
+    const headline = (input.topOutlier.diff || 0) < 0
+      ? `one critic dissents on ${input.topOutlier.show.title}`
+      : `one critic stands out for ${input.topOutlier.show.title}`;
+    out.push({ kind: 'outlier', weight: WEIGHTS.OUTLIER_BASE + largeBump, headline, show: input.topOutlier.show, slug: input.topOutlier.show.slug });
   }
 
-  // 6. Biggest movers (only the top one is interesting per week)
+  // 6. Biggest mover — qualitative phrasing instead of "rises N pts".
+  // The reader doesn't care about the integer; they care about the direction
+  // and magnitude in plain language.
   if (input.topMover) {
     const m = input.topMover;
     const delta = Math.abs(Math.round(m.after - m.before));
     const largeBump = delta >= 10 ? WEIGHTS.BIGGEST_MOVER_LARGE_BUMP : 0;
-    const dir = m.delta > 0 ? 'rises' : 'drops';
-    out.push({
-      kind: 'mover',
-      weight: WEIGHTS.BIGGEST_MOVER_BASE + largeBump,
-      headline: `${m.show.title} ${dir} ${delta} pts`,
-      show: m.show,
-      slug: m.show.slug,
-    });
+    const headline = m.delta > 0
+      ? `${m.show.title} ${delta >= 8 ? 'surges with new reviews' : 'climbs with new reviews'}`
+      : `${m.show.title} ${delta >= 8 ? 'falls as reviews come in' : 'slips as reviews come in'}`;
+    out.push({ kind: 'mover', weight: WEIGHTS.BIGGEST_MOVER_BASE + largeBump, headline, show: m.show, slug: m.show.slug });
   }
 
   // 7. Tony predictions — only newsworthy when ceremony is close
