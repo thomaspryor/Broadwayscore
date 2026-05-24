@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-24T13:55:23.150Z",
+  "timestamp": "2026-05-24T16:00:56.441Z",
   "stats": {
-    "totalReviews": 37226,
-    "alreadyFlagged": 16295,
-    "dateGuardCatches": 103,
-    "directorMismatch": 805,
+    "totalReviews": 37320,
+    "alreadyFlagged": 16412,
+    "dateGuardCatches": 102,
+    "directorMismatch": 801,
     "tvFilmSignals": 1022,
     "londonSignals": 581,
     "offBroadwaySignals": 446,
     "yearMismatch": 78,
-    "noPublishDate": 3851
+    "noPublishDate": 3825
   },
   "findings": [
     {
@@ -3241,25 +3241,6 @@
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 85,
-      "publishDate": "June 20, 2024",
-      "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "newyorker--helen-shaw.json",
       "score": 90,
       "publishDate": "June 27th, 2024",
@@ -3284,25 +3265,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": 85,
-      "publishDate": "June 20, 2024",
-      "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
         }
       ]
     },
@@ -22729,7 +22691,7 @@
       "showId": "the-producers-west-end-2025",
       "file": "variety--bob-verini.json",
       "publishDate": null,
-      "url": "https://www.variety.com/review/VE1117947963?refCatId=33",
+      "url": "http://www.variety.com/review/VE1117947963?refCatId=33",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39520,20 +39482,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 359d before show (2024-09-19 vs 2025-09-13)"
-        }
-      ]
-    },
-    {
-      "showId": "waiting-for-godot-2025",
-      "file": "thestage--sam-marlowe.json",
-      "score": 85,
-      "publishDate": "2024-09-20",
-      "url": "https://www.thestage.co.uk/reviews/waiting-for-godot-review-at-theatre-royal-haymarket-london-by-samuel-beckett-and-james-macdonald-starring-ben-whishaw-and-lucian-msamati",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 358d before show (2024-09-20 vs 2025-09-13)"
         }
       ]
     },

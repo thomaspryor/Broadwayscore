@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-05-24T13:53:03.053Z",
+  "generatedAt": "2026-05-24T15:59:03.348Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Ben Brantley",
+      "showId": "pal-joey-2008",
+      "primaryOutlet": "about-entertainment",
+      "secondaryOutlet": "nytimes",
+      "primaryFile": "about-entertainment--ben-brantley.json",
+      "secondaryFile": "nytimes--ben-brantley.json",
+      "similarity": 89,
+      "primaryScore": 35,
+      "secondaryScore": 36,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
