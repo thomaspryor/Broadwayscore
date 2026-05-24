@@ -52,6 +52,18 @@ jobs:
       - name: Setup Playwright
         uses: ./.github/actions/setup-playwright
 
+      - name: Snapshot pre-audit closingDates (rollback baseline)
+        run: |
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const shows = JSON.parse(fs.readFileSync('data/shows.json','utf8')).shows;
+            const snap = Object.fromEntries(shows.map(s => [s.id, s.closingDate || null]));
+            fs.mkdirSync('data/audit', { recursive: true });
+            fs.writeFileSync('data/audit/closing-date-pre-audit.json', JSON.stringify({ takenAt: new Date().toISOString(), closingDates: snap }, null, 2));
+            console.log('Snapshot: ' + Object.keys(snap).length + ' shows');
+          "
+
       - name: Run closing-date audit
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -67,15 +79,35 @@ jobs:
             node scripts/audit-closing-dates.js
           fi
 
+      - name: Validate shows.json before push (rollback on failure)
+        id: validate
+        run: |
+          # If the audit corrupted shows.json (bad JSON, missing required
+          # fields, duplicates), restore the unmodified core-data copy from
+          # /tmp/core-data-checkout/ and exit non-zero. push step is gated
+          # on this step succeeding (see `if: success()` below), so a failed
+          # validation skips the push entirely — the next run starts from a
+          # clean baseline.
+          if ! node scripts/validate-data.js 2>&1 | tail -30; then
+            echo "::error::validate-data.js failed after audit — reverting shows.json"
+            if [ -f /tmp/core-data-checkout/shows.json ]; then
+              cp -f /tmp/core-data-checkout/shows.json data/shows.json
+              echo "Restored data/shows.json from /tmp/core-data-checkout/"
+            fi
+            exit 1
+          fi
+
+      # Push runs only when validation passed. Was `if: always()` previously,
+      # which would have pushed bad data on validation failure.
       - name: Push core data to private repo
-        if: always()
+        if: success()
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from audit-closing-dates'
 
       - name: Dispatch deploy
-        if: always()
+        if: success()
         uses: ./.github/actions/dispatch-deploy
 
       - name: Create summary
