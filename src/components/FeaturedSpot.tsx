@@ -92,7 +92,17 @@ export default function FeaturedSpot({
 
   return (
     <section aria-label={`Featured: ${title}`} className="my-6 sm:my-8">
-      <div className="relative overflow-hidden rounded-card bg-surface-raised border border-white/5 shadow-card">
+      <div className="group relative overflow-hidden rounded-card bg-surface-raised border border-white/5 shadow-card transition-all duration-200 hover:border-white/10 hover:shadow-card-hover">
+        {/* Stretched link — makes the whole card clickable, single accessible anchor */}
+        <Link
+          href={href}
+          prefetch={false}
+          aria-label={`${title} — ${ctaLabel}`}
+          className="absolute inset-0 z-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface rounded-card"
+        >
+          <span className="sr-only">{ctaLabel}</span>
+        </Link>
+
         {/* Top accent edge */}
         <div className={`absolute inset-x-0 top-0 h-px ${ACCENT_TOP_EDGE[accent]}`} aria-hidden="true" />
 
@@ -100,7 +110,7 @@ export default function FeaturedSpot({
           className={`relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] ${ACCENT_DIVIDER[accent]} lg:before:content-[''] lg:before:absolute lg:before:top-6 lg:before:bottom-6 lg:before:left-[58.333%] lg:before:w-px`}
         >
           {/* Left / primary content */}
-          <div className="p-5 sm:p-8 flex flex-col gap-3 sm:gap-4">
+          <div className="p-5 sm:p-6 flex flex-col gap-2.5 sm:gap-3">
             <div className="flex items-center gap-2">
               <span className={`w-1.5 h-1.5 rounded-full ${ACCENT_DOT[accent]}`} aria-hidden="true" />
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-gray-400">
@@ -108,29 +118,28 @@ export default function FeaturedSpot({
               </span>
             </div>
 
-            <h3 className="text-xl sm:text-3xl lg:text-[2rem] leading-tight font-extrabold text-white tracking-tight">
+            <h3 className="text-xl sm:text-2xl lg:text-[1.625rem] leading-tight font-extrabold text-white tracking-tight">
               {title}
             </h3>
 
-            <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-md">
+            <p className="text-gray-400 text-sm sm:text-[15px] leading-snug max-w-md">
               {description}
             </p>
 
-            <div className="mt-1 sm:mt-2">
-              <Link
-                href={href}
-                prefetch={false}
-                className={`inline-flex items-center gap-2 px-5 py-3 rounded-pill font-bold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] ${CTA_CLASS[accent]}`}
+            <div className="mt-1">
+              <span
+                aria-hidden="true"
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-pill font-bold text-sm sm:text-base transition-all duration-200 group-hover:shadow-glow-sm ${CTA_CLASS[accent]}`}
               >
                 <span>{ctaLabel}</span>
                 <ArrowIcon />
-              </Link>
+              </span>
             </div>
           </div>
 
           {/* Right / stat panel — desktop only */}
           {stat && (
-            <div className="hidden lg:flex min-w-0 flex-col items-center justify-center gap-4 p-6 lg:p-8 bg-surface-raised">
+            <div className="hidden lg:flex min-w-0 flex-col items-center justify-center gap-3 p-5 lg:p-6 bg-surface-raised">
               <StatPill value={stat.value} label={stat.label} />
               {secondary && secondary.length > 0 && (
                 <div className="flex items-baseline gap-5 mt-1">
