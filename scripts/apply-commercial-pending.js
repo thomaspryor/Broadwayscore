@@ -40,19 +40,17 @@ const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
 const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
+// Comma-separated list of detectedBy sources whose recouped-claim entries may
+// auto-apply without --show=SLUG, IF confidence === 'high' AND sourceHost is in
+// the trusted-recoupment-domains list. Used by the Friday scraper pipeline.
+const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
+  ? flags['auto-apply-claims-from'].split(',').map(s => s.trim()).filter(Boolean)
+  : [];
 
-const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
-
-function meetsConfidenceThreshold(entry) {
-  if (MIN_CONFIDENCE === 'all') return true;
-  const entryLevel = CONFIDENCE_ORDER[entry.confidence] || 0;
-  const threshold = CONFIDENCE_ORDER[MIN_CONFIDENCE] || 0;
-  return entryLevel >= threshold;
-}
-
-function hasRecoupedClaim(entry) {
-  return entry.recouped === true || entry._recoupedClaim === true;
-}
+const gate = require('./lib/commercial-apply-gate');
+const meetsConfidenceThreshold = (entry) => gate.meetsConfidenceThreshold(entry, MIN_CONFIDENCE);
+const hasRecoupedClaim = gate.hasRecoupedClaim;
+const isAutoApplyableClaim = (entry) => gate.isAutoApplyableClaim(entry, AUTO_APPLY_CLAIMS_FROM);
 
 function main() {
   if (!fs.existsSync(PENDING_PATH)) {
@@ -120,11 +118,16 @@ function main() {
       continue;
     }
 
-    // Safety: never auto-apply recouped:true without human review
-    if (hasRecoupedClaim(entry) && !SINGLE_SHOW) {
+    // Safety: never auto-apply recouped:true without human review, EXCEPT when
+    // a trusted scraper source + high confidence + trusted publisher domain all
+    // line up (see isAutoApplyableClaim). This is the Friday-pipeline hot path.
+    if (hasRecoupedClaim(entry) && !SINGLE_SHOW && !isAutoApplyableClaim(entry)) {
       console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
       skipped++;
       continue;
+    }
+    if (hasRecoupedClaim(entry) && isAutoApplyableClaim(entry)) {
+      console.log(`  ✅ "${showId}" — auto-applying recouped claim from trusted source ${entry.detectedBy} @ ${entry.sourceHost}`);
     }
 
     // If already exists, update rather than skip (merge new findings)

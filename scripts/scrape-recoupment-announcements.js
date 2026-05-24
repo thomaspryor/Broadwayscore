@@ -62,23 +62,9 @@ const WINDOW_DAYS = parseInt(flags['window-days'], 10) || 30;
 const TARGETED = flags['shows'] ? flags['shows'].split(',').map(s => s.trim()).filter(Boolean) : null;
 const MAX_RESULTS_PER_QUERY = 8;
 
-// Outlets we trust for recoupment announcements (preferred sources).
-// SERP results from these get priority; results from outside are kept but
-// flagged lower confidence.
-const TRUSTED_OUTLETS = new Set([
-  'playbill.com',
-  'deadline.com',
-  'variety.com',
-  'broadwayworld.com',
-  'nytimes.com',
-  'nypost.com',
-  'thewrap.com',
-  'hollywoodreporter.com',
-  'theatermania.com',
-  'broadway.com',
-  'nydailynews.com',
-  'bloomberg.com',
-]);
+// Outlets we trust for recoupment announcements (preferred sources). Shared with
+// apply-commercial-pending.js so the auto-apply gate uses the same whitelist.
+const { TRUSTED_RECOUPMENT_HOSTS: TRUSTED_OUTLETS } = require('./lib/trusted-recoupment-domains');
 
 function log(...args) { console.log(...args); }
 
@@ -272,6 +258,26 @@ function loadPending() {
   return loadJSON(PENDING_PATH);
 }
 
+// Archive of human-rejected pending entries (sweep moves things here). We read
+// the archive before writing new finds — if a slug appears there with a
+// rejected recouped:true claim, the scraper has already found and a human said
+// no. Don't re-surface the same article.
+function loadArchive() {
+  const archivePath = dataPath('commercial-pending-archive.json', { writable: true });
+  if (!fs.existsSync(archivePath)) return { shows: {} };
+  try { return JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { return { shows: {} }; }
+}
+
+function isRejectedInArchive(archive, slug, finding) {
+  const e = archive.shows?.[slug];
+  if (!e) return false;
+  // Rejected if archived for being a recouped claim that didn't pass review,
+  // and the same source URL (or same article date) reappears.
+  if (e.archivedReason !== 'rejected-recouped-claim') return false;
+  if (e.recoupedSource && finding.url && e.recoupedSource === finding.url) return true;
+  return false;
+}
+
 function writePending(pending) {
   pending.lastUpdated = new Date().toISOString();
   fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
@@ -362,23 +368,42 @@ async function main() {
   }
 
   const pending = loadPending();
+  const archive = loadArchive();
   pending.shows = pending.shows || {};
+  const now = new Date().toISOString();
+  let written = 0;
+  let skippedRejected = 0;
   for (const { show, finding } of promotable) {
+    if (isRejectedInArchive(archive, show.slug, finding)) {
+      log(`  ⏭️  ${show.slug}: same URL was archived as rejected — skipping`);
+      skippedRejected++;
+      continue;
+    }
     pending.shows[show.slug] = {
       ...(pending.shows[show.slug] || {}),
+      // Match deep-research-commercial.js:696-699 pattern: set BOTH
+      // `recouped: true` (the value flowing into commercial.json on apply, see
+      // apply-commercial-pending.js:145) AND `_recoupedClaim: true` (the
+      // safety flag the apply gate checks). The auto-apply gate
+      // (--auto-apply-claims-from + sourceHost + confidence) is what decides
+      // whether this lands in commercial.json automatically.
       recouped: true,
+      _recoupedClaim: true,
       recoupedDate: finding.verdict.recoupedDate || null,
       recoupedSource: finding.url,
       confidence: finding.verdict.confidence,
       evidence: finding.verdict.evidence || null,
       sourceHost: finding.host,
       detectedBy: 'recoupment-announcement-scraper',
-      detectedAt: new Date().toISOString(),
+      detectedAt: now,
+      researchedAt: now, // canonical age-tracking field (sweep + apply use this)
       promoteRecommended: true,
     };
+    written++;
   }
   writePending(pending);
-  log(`\nWrote ${promotable.length} promote-recommended entries to ${path.relative(process.cwd(), PENDING_PATH)}`);
+  log(`\nWrote ${written} promote-recommended entries to ${path.relative(process.cwd(), PENDING_PATH)}` +
+      (skippedRejected ? ` (skipped ${skippedRejected} previously-rejected URLs)` : ''));
 }
 
 main().catch(e => { console.error('FATAL', e); process.exit(1); });

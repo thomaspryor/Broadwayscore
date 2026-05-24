@@ -548,12 +548,43 @@ async function main() {
       console.log(`6-month re-research eligible: ${sixMonthSlugs.length} shows`);
     }
 
-    // Priority order: queued first, then 6-month, then remaining TBDs (shuffled)
+    // Tier 3 boost — recoupment window. Shows that opened 56-182 days ago
+    // (the 8-26 week recoupment window for most plays/musicals) get
+    // prioritized ahead of the shuffled tail. Hamilton + Giant both recouped
+    // at week 10 — well inside this window. Closes the gap where deep-research
+    // never gets to the shows whose recoupment news is most newsletter-worthy.
+    // Skips shows already covered by queue / six-month tiers.
+    const now = Date.now();
+    const daysSinceOpened = (show) => {
+      const dateStr = show?.openingDate || show?.previewsStartDate;
+      if (!dateStr) return null;
+      const t = new Date(dateStr).getTime();
+      if (Number.isNaN(t)) return null;
+      return (now - t) / 86_400_000;
+    };
+    const recoupWindowSlugs = tbdSlugs.filter(slug => {
+      const show = showBySlug[slug];
+      if (!show) return false;
+      const d = daysSinceOpened(show);
+      if (d === null) return false;
+      return d >= 56 && d <= 182;
+    });
+    if (recoupWindowSlugs.length > 0) {
+      console.log(`Recoupment-window boost: ${recoupWindowSlugs.length} shows (opened 8-26 weeks ago)`);
+    }
+
+    // Priority order: queued > 6-month re-research > recoupment-window boost >
+    // remaining TBDs (shuffled). Skip rules respect explicit --shows.
     const remaining = [...new Set([...tbdSlugs, ...uncoveredSlugs])];
     targetSlugs = [
       ...queuedSlugs,
       ...sixMonthSlugs.filter(s => !queuedSlugs.includes(s)),
-      ...shuffle(remaining.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s))),
+      ...recoupWindowSlugs.filter(s => !queuedSlugs.includes(s) && !sixMonthSlugs.includes(s)),
+      ...shuffle(remaining.filter(s =>
+        !queuedSlugs.includes(s) &&
+        !sixMonthSlugs.includes(s) &&
+        !recoupWindowSlugs.includes(s)
+      )),
     ];
     // Deduplicate
     targetSlugs = [...new Set(targetSlugs)];
