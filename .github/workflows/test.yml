@@ -11,7 +11,11 @@ on:
       - 'scripts/validate-market-expansion.js'
       - 'scripts/validate-mobile-shows.js'
       - 'scripts/audit-review-contamination.js'
+      - 'scripts/audit-cast-contamination.js'
       - 'scripts/audit-regex-patterns.js'
+      - 'scripts/lib/cast-extraction-guards.js'
+      - 'scripts/backfill-cast-web.js'
+      - 'data/cast/**'
       - 'scripts/lib/content-quality.js'
       - 'scripts/lib/classify-category.js'
       - 'scripts/lib/per-category-precursor.js'
@@ -795,6 +799,17 @@ jobs:
         # domain/outlet mismatches, unflagged roundup pages, and junk --unknown files.
         # Added 2026-04-11 after Oh Mary! BW audit found 18 issues in one folder,
         # systematic scan found 291 across all shows.
+
+      - name: Audit cast contamination
+        run: node scripts/audit-cast-contamination.js
+        # Catches wrong-show cast scrapes (Met Opera singers as Kavalier-Clay
+        # cast, TV-show titles as character roles, LASTNAME-FIRSTNAME name
+        # swaps, source URLs that don't match the target show). Audit lives
+        # in lockstep with the backfill-cast-web.js guards via shared
+        # scripts/lib/cast-extraction-guards.js. Added 2026-05-23 after
+        # a one-time backfill (2026-03-03) wrote 12 contaminated cast files
+        # that stayed hidden behind the orphan-cast manifest skip until
+        # surveyed during /cast/[slug] work.
 
       - name: Audit aggregator-archive integrity
         run: node scripts/audit-aggregator-archive-integrity.js --strict
