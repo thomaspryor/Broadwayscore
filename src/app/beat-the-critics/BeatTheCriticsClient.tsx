@@ -46,6 +46,10 @@ const CRITICS: CriticPanelist[] = [
   { name: 'Matthew Wexler', outlets: ['1 Minute Critic'], initials: 'MW', bio: 'Founder of 1 Minute Critic. Theater critic and member of the American Theatre Critics Association.' },
 ];
 
+// Picks are hidden until after the ceremony — critics' picks revealed June 7, 2026
+const PICKS_REVEAL_DATE = new Date('2026-06-08T00:00:00Z');
+const PICKS_REVEALED = Date.now() >= PICKS_REVEAL_DATE.getTime();
+
 function criticHasPicks(): boolean {
   return CRITICS.some(c => c.picks && Object.keys(c.picks).length > 0);
 }
@@ -403,7 +407,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                   <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
                   <div className="text-[12px] font-bold leading-tight">{c.name}</div>
                   <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
-                  <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-2">{c.bio}</div>
+                  <div className="text-[10px] text-gray-500 mt-1 leading-snug line-clamp-3">{c.bio}</div>
                 </div>
               ))}
             </div>
@@ -475,7 +479,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
     const nominees = isActor ? [] : [...currentCategory.nominees].sort((a, b) => (b.compositeScore ?? 0) - (a.compositeScore ?? 0));
     const actorNominees = isActor ? (currentCategory.actorNominees ?? []) : [];
     const tonyPredictionPick = isActor ? '' : getTonyPredictionPick(nominees);
-    const picksAvailable = criticHasPicks();
+    const picksAvailable = PICKS_REVEALED && criticHasPicks();
     const criticPicks = CRITICS.map(c => isActor ? getActorCriticPick(c, currentCategory.title) : getCriticPick(c, currentCategory.title));
     const crowdPcts = isActor ? [] : getCrowdPercentages(nominees);
     const actorCrowdPcts = isActor ? getActorCrowdPercentages(actorNominees) : [];
