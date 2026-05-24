@@ -21,7 +21,9 @@
 // See sprint-plan-visual-qa-gate.md and .claude/skills/visual-qa/skill.md.
 
 import { execSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { chromium } from 'playwright';
 
 const WIDTHS = [360, 414, 768, 1024, 1440];
 
@@ -94,6 +96,73 @@ function getCurrentBranch() {
   }
 }
 
+function slugify(s) {
+  return s.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'root';
+}
+
+async function captureWithRetry(page, attempts, action, label) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    try { return await action(); }
+    catch (err) {
+      lastErr = err;
+      console.error(`[visual-qa] ${label} attempt ${i + 1} failed: ${err?.message}`);
+    }
+  }
+  throw lastErr;
+}
+
+async function captureScreenshots({ url, paths, branch, outDir, elements }) {
+  const browser = await chromium.launch();
+  const screenshots = [];
+  const elementCrops = [];
+  try {
+    for (const path of paths) {
+      const pathSlug = slugify(path);
+      for (const width of WIDTHS) {
+        const dir = join(outDir, pathSlug);
+        mkdirSync(dir, { recursive: true });
+        const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1 });
+        const page = await context.newPage();
+        try {
+          await captureWithRetry(page, 2, async () => {
+            await page.goto(url + path, { waitUntil: 'load', timeout: 15000 });
+            // Belt-and-suspenders: 'load' fires when network requests for the
+            // initial HTML resolve, but client-side hydration may still be
+            // running. 'networkidle' is deprecated/flaky in Playwright so we
+            // use a small fixed wait instead.
+            await page.waitForTimeout(2000);
+          }, `goto ${path} @ ${width}`);
+
+          const file = join(dir, `${width}.png`);
+          await page.screenshot({ path: file, fullPage: true });
+          screenshots.push({ path, width, file });
+
+          for (const sel of elements) {
+            try {
+              const locator = page.locator(sel).first();
+              if (await locator.count() === 0) {
+                console.error(`[visual-qa] WARN: element "${sel}" not found at ${path} @ ${width}`);
+                continue;
+              }
+              const cropFile = join(dir, `${width}__${slugify(sel)}.png`);
+              await locator.screenshot({ path: cropFile });
+              elementCrops.push({ path, width, selector: sel, file: cropFile });
+            } catch (err) {
+              console.error(`[visual-qa] WARN: crop failed for "${sel}" @ ${width}: ${err?.message}`);
+            }
+          }
+        } finally {
+          await context.close();
+        }
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+  return { screenshots, elementCrops };
+}
+
 function isLocalhost(url) {
   if (!url) return false;
   try {
@@ -150,8 +219,14 @@ Then re-run this command.`);
   console.error(`[visual-qa] out=${outDir}`);
   console.error(`[visual-qa] dev server OK (${health.bytes} bytes HTML)`);
 
-  // Capture, overflow report, LLM review, verdict assembly come in S1-T2..T6.
-  console.error('[visual-qa] (skeleton — capture not yet implemented)');
+  mkdirSync(outDir, { recursive: true });
+  const t0 = Date.now();
+  const { screenshots, elementCrops } = await captureScreenshots({
+    url: args.url, paths: args.paths, branch, outDir, elements: args.elements,
+  });
+  const elapsed = Math.round((Date.now() - t0) / 1000);
+  console.error(`[visual-qa] captured ${screenshots.length} full-page + ${elementCrops.length} element crop(s) in ${elapsed}s`);
+  // Overflow report, LLM review, verdict.json come in S1-T3..T6.
   process.exit(0);
 }
 
