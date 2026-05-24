@@ -914,16 +914,21 @@ function outlierSection() {
 }
 
 // SECTION: Recently Announced Closings (Broadway only)
-// Reads first-class `closure` cast-events: any closure added this week with a
-// future date is a fresh closing announcement. The previous "2+ departures
-// added this week" heuristic broke once audit-cast-changes.js started
-// collapsing per-actor departures into a single closure event (2026-05-24).
+// Reads first-class `closure` cast-events: any closure added in the last 28
+// days with a future date is a recent closing announcement. Originally a
+// "this week only" filter, but readers who miss a single newsletter then
+// see nothing about the closure until the final week's "Closing this Week"
+// section. 28d gives the announcement 3-4 newsletter cycles to land.
+const ANNOUNCED_CLOSINGS_LOOKBACK_DAYS = 28;
 function announcedClosingsSection() {
+  const lookbackDate = new Date(weekEndStr + 'T12:00:00');
+  lookbackDate.setDate(lookbackDate.getDate() - ANNOUNCED_CLOSINGS_LOOKBACK_DAYS);
+  const lookbackStr = lookbackDate.toISOString().slice(0, 10);
   const announcements = [];
   Object.entries(castData.shows).forEach(([showId, data]) => {
     const closures = (data.upcoming || []).filter(e =>
       e.type === 'closure'
-      && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr
+      && e.addedDate && e.addedDate >= lookbackStr && e.addedDate <= weekEndStr
     );
     if (closures.length === 0) return;
     const show = shows.find(s => s.id === showId);
@@ -1072,18 +1077,45 @@ function castingSection() {
   const byShow = {};
   recent.forEach(e => { (byShow[e.showId] ||= []).push(e); });
   // Per-show, collapse closure-as-N-departures into a single closure row.
-  // Without this, a show closing on date X surfaces as "Lead Actor departs · final X"
-  // which reads as a personal exit, not a show closure. reconcileClosure
-  // suppresses per-actor departures sharing the closure date.
+  // The closure event itself may have been added BEFORE the lookback window
+  // (e.g., closure announced 3 weeks ago, one ensemble actor departure
+  // scraped fresh this week). We must reach BACK into the full upcoming
+  // events to fetch any existing closure for the show — otherwise the
+  // lookback filter strands the departure and renders "Actor departs ·
+  // final <closure date>" again, which is the exact bug this section
+  // was rewritten to prevent.
   Object.keys(byShow).forEach(showId => {
-    byShow[showId] = reconcileClosure(byShow[showId]);
+    const recentShowEvents = byShow[showId];
+    const allShowEvents = (castData.shows[showId]?.upcoming || []);
+    const existingClosure = allShowEvents.find(e => e.type === 'closure');
+    const alreadyHasClosure = recentShowEvents.some(e => e.type === 'closure');
+    // Inject the show-level closure (with the same showId/showTitle envelope
+    // the recent events carry) so reconcileClosure can suppress the stranded
+    // departures. The envelope is only used by downstream rendering loops.
+    const eventsForReconcile = existingClosure && !alreadyHasClosure
+      ? [{ ...existingClosure, showId, showTitle: recentShowEvents[0].showTitle }, ...recentShowEvents]
+      : recentShowEvents;
+    byShow[showId] = reconcileClosure(eventsForReconcile);
+    // If we injected a closure purely for suppression purposes and the show
+    // already had a closure addedDate outside the lookback (i.e. NOT fresh
+    // news), don't surface the closure row — the result is the closure was
+    // used silently to clean up the rendering, but no row is emitted.
+    if (existingClosure && !alreadyHasClosure) {
+      byShow[showId] = byShow[showId].filter(e => e.type !== 'closure');
+    }
   });
   // Sort shows so closures surface first within the 5-row cap — a show closing
-  // is more newsworthy than a routine ensemble swap and must never be crowded out.
+  // is more newsworthy than a routine ensemble swap and must never be crowded
+  // out. Within closures, sort by closure date ascending so the soonest-to-
+  // close show leads (most urgent to a reader planning attendance).
   const showEntries = Object.values(byShow).sort((a, b) => {
-    const aClose = a.some(e => e.type === 'closure') ? 0 : 1;
-    const bClose = b.some(e => e.type === 'closure') ? 0 : 1;
-    return aClose - bClose;
+    const aClose = a.find(e => e.type === 'closure');
+    const bClose = b.find(e => e.type === 'closure');
+    const aRank = aClose ? 0 : 1;
+    const bRank = bClose ? 0 : 1;
+    if (aRank !== bRank) return aRank - bRank;
+    if (aClose && bClose) return (aClose.date || '').localeCompare(bClose.date || '');
+    return 0;
   });
   // For each show, surface 1-2 events with arrival/departure icons
   const groups = [];
@@ -1103,8 +1135,12 @@ function castingSection() {
       return parts.length ? ` <span style="color:#fbbf24;">· ${parts.join(' · ')}</span>` : '';
     }
     if (closure) {
+      // Closure rows used #ef4444 (the "critical miss" red) — that misreads as
+      // a negative review badge to non-technical scanning readers. Neutral
+      // grey reads as "ended/concluded" without overloading critic-score
+      // semantics. Reviewers (GPT-4o + Claude QA + Codex) all flagged red.
       const tail = closure.date ? ` <span style="color:#fbbf24;">· final ${fmt(closure.date)}</span>` : '';
-      items.push({ icon: '×', color: '#ef4444', text: `<strong style="color:#ffffff;">Show closes</strong>${tail}` });
+      items.push({ icon: '×', color: '#9ca3af', text: `<strong style="color:#ffffff;">Show closes</strong>${tail}` });
     } else if (arr && dep) {
       const range = rangeOf(arr);
       items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#ffffff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
@@ -1635,14 +1671,19 @@ const newsworthyInputs = {
     s.closingDate && s.closingDate >= weekStartStr && s.closingDate <= weekEndStr
     && s.status === 'open' && (s.category === 'broadway' || s.category === 'off-broadway') && !isOperaShow(s)),
   announcedClosings: (() => {
-    // Mirror announcedClosingsSection: closure events added this week
-    // + a future closingDate. (Switched from "2+ departures" heuristic
-    // 2026-05-24 when audit reclassifier started collapsing those.)
+    // Mirror announcedClosingsSection: closure events added in the last
+    // ANNOUNCED_CLOSINGS_LOOKBACK_DAYS + a future closingDate. (Lookback
+    // extended from this-week-only on 2026-05-24 after ship-check review
+    // flagged that a one-week window strands announcements for readers
+    // who miss the launch newsletter.)
+    const lookbackDate = new Date(weekEndStr + 'T12:00:00');
+    lookbackDate.setDate(lookbackDate.getDate() - ANNOUNCED_CLOSINGS_LOOKBACK_DAYS);
+    const ourLookback = lookbackDate.toISOString().slice(0, 10);
     const out = [];
     for (const [showId, data] of Object.entries(castData.shows)) {
       const closures = (data.upcoming || []).filter(e =>
         e.type === 'closure'
-        && e.addedDate && e.addedDate >= weekStartStr && e.addedDate <= weekEndStr);
+        && e.addedDate && e.addedDate >= ourLookback && e.addedDate <= weekEndStr);
       if (closures.length === 0) continue;
       const show = shows.find(s => s.id === showId);
       if (!show || show.category !== 'broadway' || isOperaShow(show) || show.status !== 'open' || !show.closingDate) continue;
