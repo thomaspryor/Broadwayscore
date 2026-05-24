@@ -131,6 +131,20 @@ function main() {
       console.log(`  ✅ "${showId}" — auto-applying recouped claim from trusted source ${entry.detectedBy} @ ${entry.sourceHost}`);
     }
 
+    // Honor human review: humanReviewedDesignation:true means an operator
+    // explicitly set the designation via Notion-card review and the apply
+    // pipeline must never overwrite it. Same convention as humanCorrected-
+    // ClosingDate in scripts/lib/closing-date-guard.js. Without this guard,
+    // a manual "Ragtime is enhancement-deal recouped" correction can be
+    // clobbered the next Saturday when deep-research returns a 'low'-conf
+    // contradicting result.
+    const existing = commercial.shows[showId];
+    if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
+      console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
+      skipped++;
+      continue;
+    }
+
     // If already exists, update rather than skip (merge new findings).
     // EXCEPT: auto-apply recoupment claims MUST be allowed through here —
     // those entries only carry recoupment fields, and the show ALREADY having a
@@ -138,7 +152,6 @@ function main() {
     // deep-research already has 'TBD' bumped to something like 'Easy Winner').
     // Without this exception the Friday pipeline is a no-op for the very
     // shows it's designed to catch. Ship-check P0 finding.
-    const existing = commercial.shows[showId];
     if (existing && existing.designation && existing.designation !== 'TBD' && !SINGLE_SHOW && !isClaimAutoApply) {
       console.log(`  "${showId}" already has designation "${existing.designation}" — skipping`);
       skipped++;

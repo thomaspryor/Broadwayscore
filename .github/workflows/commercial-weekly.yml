@@ -227,19 +227,28 @@ jobs:
           configure-git: 'true'
 
       - name: Auto-apply high-confidence results
+        # NOT continue-on-error: ship-check CDX-P0-4 found a failed apply could
+        # silently progress to commit + push + deploy with a half-mutated
+        # workspace. If apply fails (validate-data error, malformed pending,
+        # whatever), we want the rest of this job to skip — the commit step
+        # below already guards with `if git diff --staged --quiet` so a hard
+        # abort here is safe; the next Saturday run picks up the same pending.
         run: |
           if [ -f data/commercial-pending-review.json ]; then
             node scripts/apply-commercial-pending.js --all --min-confidence=high
           else
             echo "No pending file — nothing to apply"
           fi
-        continue-on-error: true
 
       - name: Run commercial audit
+        # continue-on-error: true — audit is read-only/informational; a failure
+        # shouldn't block the deploy. Audit findings surface in the daily digest.
         run: node scripts/audit-commercial-data.js
         continue-on-error: true
 
       - name: Refresh recoupment model
+        # continue-on-error: true — model refresh is derived data; failure
+        # leaves the previous run's values in place, no corruption risk.
         run: node scripts/merge-model-recoupment.js
         continue-on-error: true
 
