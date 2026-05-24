@@ -123,6 +123,55 @@ jobs:
             fi
           done
 
+          # State-diff: only escalate to email+critical for NEWLY-stale workflows.
+          # Chronic stale entries (already stale yesterday) keep firing in the digest
+          # but don't re-page the user. Prevents alert fatigue that masked WET going
+          # silent for 47 days in April–May 2026.
+          STATE_FILE="data/audit/cron-health-state.json"
+          # Extract just the friendly names from the FAILURES list (one per line).
+          CURRENT_STALE=$(printf '%s' "$FAILURES" | grep -oE '❌ [^:]+:' | sed 's/^❌ //;s/:$//' | sort -u)
+          PREV_STALE=""
+          if [ -f "$STATE_FILE" ]; then
+            PREV_STALE=$(jq -r '.stale[]?' "$STATE_FILE" 2>/dev/null | sort -u)
+          fi
+          NEWLY_STALE=$(comm -23 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
+          RECOVERED=$(comm -13 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed '/^$/d')
+          NEWLY_COUNT=$(printf '%s' "$NEWLY_STALE" | grep -c . || true)
+          CHRONIC_COUNT=$(printf '%s' "$CURRENT_STALE" | grep -c . || true)
+          CHRONIC_COUNT=$(( CHRONIC_COUNT - NEWLY_COUNT ))
+
+          # Persist current state for next run's diff.
+          mkdir -p "$(dirname "$STATE_FILE")"
+          NOW_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          if [ -n "$CURRENT_STALE" ]; then
+            printf '%s\n' "$CURRENT_STALE" | jq -R . | jq -s --arg ts "$NOW_ISO" '{stale: ., updatedAt: $ts}' > "$STATE_FILE"
+          else
+            printf '{"stale":[],"updatedAt":"%s"}\n' "$NOW_ISO" > "$STATE_FILE"
+          fi
+
+          # Emit step outputs the notify-failure step reads to toggle severity/email.
+          echo "newly_stale_count=${NEWLY_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "chronic_stale_count=${CHRONIC_COUNT}" >> "$GITHUB_OUTPUT"
+          if [ "$NEWLY_COUNT" -gt 0 ]; then
+            {
+              echo "newly_stale<<EOF"
+              printf '%s\n' "$NEWLY_STALE"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          fi
+          if [ -n "$RECOVERED" ]; then
+            echo "✅ Recovered crons (no longer stale):"
+            printf '%s\n' "$RECOVERED" | sed 's/^/  /'
+          fi
+          if [ "$NEWLY_COUNT" -gt 0 ]; then
+            echo "🚨 NEWLY STALE (paging — newly-stale email + critical severity):"
+            printf '%s\n' "$NEWLY_STALE" | sed 's/^/  /'
+          fi
+          if [ "$CHRONIC_COUNT" -gt 0 ]; then
+            echo "⏳ Chronic stale ($CHRONIC_COUNT entries — Discord only, expected to keep firing until fixed):"
+            comm -12 <(printf '%s\n' "$CURRENT_STALE") <(printf '%s\n' "$PREV_STALE") | sed 's/^/  /'
+          fi
+
           if [ -n "$FAILURES" ]; then
             echo "::error::Critical cron workflows have stopped running!"
             echo ""
@@ -269,10 +318,44 @@ jobs:
               url: runUrl,
             }).catch(e => console.error('Warning alert failed:', e.message));
 
-      - name: Notify on failure
-        if: failure()
+      # State-diff dispatch: newly-stale crons page (critical+email); chronic stale
+      # falls through to digest (warning, Discord-only — and the notify-failure
+      # action is a no-op for warning per workflows/CLAUDE.md, intentionally).
+      - name: Notify — newly-stale critical crons (paging)
+        if: failure() && steps.check.outputs.newly_stale_count != '0' && steps.check.outputs.newly_stale_count != ''
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Cron Health Check Failed (stale crons or deploy regression)'
+          title: ${{ format('🚨 {0} NEWLY-stale critical cron(s) — see run log', steps.check.outputs.newly_stale_count) }}
+          severity: 'critical'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Notify — chronic stale (digest only)
+        if: failure() && (steps.check.outputs.newly_stale_count == '0' || steps.check.outputs.newly_stale_count == '')
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Cron Health Check Failed (chronic stale crons or deploy regression)'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      # Persist state file so the next run's diff can identify newly-stale entries.
+      # Always runs (even on `exit 1` above) so the state stays current even when
+      # the check reports failures.
+      - name: Persist cron-health state
+        if: always()
+        run: |
+          if [ ! -f data/audit/cron-health-state.json ]; then
+            echo "No state file written — skipping commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/cron-health-state.json
+          if git diff --staged --quiet; then
+            echo "No state change to commit."
+            exit 0
+          fi
+          git commit -m "audit: Update cron-health state [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
