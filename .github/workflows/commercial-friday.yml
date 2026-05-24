@@ -1,0 +1,145 @@
+name: Commercial Friday Refresh
+
+# Mid-week refresh so the Sunday newsletter has fresh recoupment data.
+# Sunday cron (commercial-weekly.yml) runs the heavy batch + deep-research pass.
+# This Friday run is lightweight: just the recoupment-announcement scraper,
+# which catches "X recouped" trade-press announcements that drop Mon-Fri.
+
+on:
+  schedule:
+    - cron: '0 22 * * 5'  # Friday 22:00 UTC / 6 PM ET — leaves ~36h buffer before Sunday send
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated slugs to scan (default: all in-scope shows)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no commit/push)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  recoupment-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Scan for recoupment announcements
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Running: node scripts/scrape-recoupment-announcements.js $ARGS"
+          node scripts/scrape-recoupment-announcements.js $ARGS
+
+      - name: Auto-apply high-confidence findings
+        if: inputs.dry_run != true
+        run: |
+          if [ -f data/commercial-pending-review.json ]; then
+            node scripts/apply-commercial-pending.js --all --min-confidence=high
+          fi
+        continue-on-error: true
+
+      - name: Refresh recoupment model
+        if: inputs.dry_run != true
+        run: node scripts/merge-model-recoupment.js
+        continue-on-error: true
+
+      - name: Deletion guard for commercial.json
+        if: always() && inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) { console.log('no commercial.json'); process.exit(0); }
+            const comm = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(comm.shows || {}).length;
+            console.log('Current show count: ' + count);
+            if (count < 120) {
+              console.error('::error::Commercial show count dropped below 120 (' + count + '). Aborting commit.');
+              process.exit(1);
+            }
+          "
+
+      - name: Commit applied data
+        if: inputs.dry_run != true
+        run: |
+          git add data/commercial-pending-review.json 2>/dev/null || true
+          bash scripts/lib/stage-data-changes.sh
+          if git diff --staged --quiet; then
+            echo "No changes to commit (no new recoupment announcements detected)"
+          else
+            git commit -m "data: Friday recoupment refresh
+
+          Auto-applied high-confidence recoupment-announcement scraper findings.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Commercial Friday recoupment refresh'
+
+      - name: Dispatch deploy
+        if: inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Commercial Friday Refresh" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Scoped lightweight pre-newsletter scan for recoupment trade-press announcements." >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-pending-review.json ]; then
+            node -e "
+              const p = JSON.parse(require('fs').readFileSync('./data/commercial-pending-review.json','utf8'));
+              const shows = p.shows || {};
+              const detected = Object.entries(shows).filter(([_,e]) => e.detectedBy === 'recoupment-announcement-scraper');
+              console.log('- **Newly detected recouped shows:** ' + detected.length);
+              for (const [slug, e] of detected) {
+                console.log('  - ' + slug + ' (' + (e.recoupedDate || 'date?') + ') — ' + (e.sourceHost || ''));
+              }
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Friday Refresh Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
