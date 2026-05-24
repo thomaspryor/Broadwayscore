@@ -24,36 +24,40 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
-// Fire-and-forget: append submission to private repo JSONL. Non-blocking.
+// Append submission to private repo JSONL. Retries up to 3× on SHA conflicts
+// (concurrent submissions). Throws on unrecoverable failure so the caller
+// can return a 500 and let the user retry rather than silently losing the entry.
 async function storeSubmission(record: {
   email: string;
   picks: Record<string, string>;
   ceremonyYear: number;
   submittedAt: string;
 }): Promise<void> {
-  if (!REVIEW_TEXTS_TOKEN) return;
-  try {
-    const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${SUBMISSIONS_PATH}`;
-    const headers = {
-      Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
-      'Content-Type': 'application/json',
-      Accept: 'application/vnd.github+json',
-    };
+  if (!REVIEW_TEXTS_TOKEN) throw new Error('REVIEW_TEXTS_TOKEN not configured');
+  const apiBase = `https://api.github.com/repos/${SUBMISSIONS_REPO}/contents/${SUBMISSIONS_PATH}`;
+  const headers = {
+    Authorization: `Bearer ${REVIEW_TEXTS_TOKEN}`,
+    'Content-Type': 'application/json',
+    Accept: 'application/vnd.github+json',
+  };
 
-    const existing = await fetch(apiBase, { headers }).catch(() => null);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const getRes = await fetch(apiBase, { headers });
     let currentContent = '';
     let sha: string | undefined;
 
-    if (existing?.ok) {
-      const data = await existing.json() as { content: string; sha: string };
+    if (getRes.ok) {
+      const data = await getRes.json() as { content: string; sha: string };
       currentContent = Buffer.from(data.content.replace(/\n/g, ''), 'base64').toString('utf8');
       sha = data.sha;
+    } else if (getRes.status !== 404) {
+      throw new Error(`GitHub GET failed: ${getRes.status}`);
     }
 
     const newLine = JSON.stringify(record) + '\n';
     const newContent = Buffer.from(currentContent + newLine).toString('base64');
 
-    await fetch(apiBase, {
+    const putRes = await fetch(apiBase, {
       method: 'PUT',
       headers,
       body: JSON.stringify({
@@ -62,9 +66,13 @@ async function storeSubmission(record: {
         ...(sha ? { sha } : {}),
       }),
     });
-  } catch {
-    // Non-critical — Resend email already sent
+
+    if (putRes.ok) return;
+    if (putRes.status === 409) continue; // SHA conflict from concurrent write — retry
+    const body = await putRes.text();
+    throw new Error(`GitHub PUT failed: ${putRes.status} ${body}`);
   }
+  throw new Error('storeSubmission failed after 3 retries (SHA conflicts)');
 }
 
 export async function POST(req: NextRequest) {
@@ -134,6 +142,16 @@ export async function POST(req: NextRequest) {
 </body>
 </html>`;
 
+    // Store submission first — this is the critical path for prize-draw eligibility.
+    // If it fails, return 500 so the user can retry. Email is sent after.
+    try {
+      await storeSubmission({ email, picks, ceremonyYear, submittedAt: new Date().toISOString() });
+    } catch (err) {
+      console.error('storeSubmission failed:', err);
+      return NextResponse.json({ error: 'Failed to save your picks. Please try again.' }, { status: 500 });
+    }
+
+    // Confirmation email — best-effort; entry is already stored above.
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -151,11 +169,8 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const body = await res.text();
       console.error('Resend error:', res.status, body);
-      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+      // Entry is stored — still return success. User is entered even without email.
     }
-
-    // Store submission for results email — non-blocking
-    void storeSubmission({ email, picks, ceremonyYear, submittedAt: new Date().toISOString() });
 
     return NextResponse.json({ success: true });
   } catch (err) {
