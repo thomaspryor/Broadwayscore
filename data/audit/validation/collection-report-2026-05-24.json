@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-05-24T02:26:32.043Z",
+  "runDate": "2026-05-24T05:59:09.321Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 200,
+    "maxReviews": 300,
     "priority": "all",
     "showFilter": "",
     "aggressive": false,
@@ -12,14 +12,14 @@
   },
   "summary": {
     "processed": 42,
-    "failed": 1861,
+    "failed": 1872,
     "skipped": 0,
     "successRate": "2.2%"
   },
   "tierBreakdown": {
     "playwright": 19,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 21,
     "directCookies": 0,
     "scrapingbee": 14,
     "brightdata": 3,
@@ -27,26 +27,26 @@
     "archive": 9
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 3,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 5,
-    "tier1_5Success": 4,
-    "tier2Attempts": 5,
-    "tier2Success": 3,
-    "tier3Attempts": 4,
-    "tier3Success": 1,
-    "tier3_6Attempts": 3,
-    "tier3_6Success": 3,
-    "tier4Attempts": 6,
-    "tier4Success": 1,
-    "totalFailed": 196,
-    "scrapingBeePageCredits": 12,
+    "tier1_5Attempts": 9,
+    "tier1_5Success": 9,
+    "tier2Attempts": 2,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 5,
-    "browserbaseMinutesUsed": 1.1,
-    "urlDiscoveryAttempts": 194,
+    "browserbaseSessionsUsed": 9,
+    "browserbaseMinutesUsed": 2.1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -1955,7 +1955,18 @@
     "next-to-normal-2009/neontommy--jason-kehe.json",
     "rock-of-ages-2009/theater-news-online--unknown.json",
     "exit-the-king-2009/variety--david-rooney.json",
-    "exit-the-king-2009/newsday--linda-winer.json"
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "lennon-2005/about-entertainment--ben-brantley.json",
+    "frozen-2004/about-entertainment--unknown.json",
+    "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+    "salome-2003/about-entertainment--ben-brantley.json",
+    "man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+    "say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+    "sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+    "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+    "the-crucible-2002/about-entertainment--ben-brantley.json",
+    "metamorphoses-2002/about-entertainment--ben-brantley.json",
+    "major-barbara-2001/about-entertainment--bruce-weber.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1992,7 +2003,16 @@
       "data/review-texts/masquerade-off-broadway-2025/wsj--dominic-green.json",
       "masquerade-off-broadway-2025/wsj--dominic-green.json",
       "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
-      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
+      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
+      "data/review-texts/frozen-2004/about-entertainment--unknown.json",
+      "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+      "data/review-texts/sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-crucible-2002/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2096,14 +2116,6 @@
       "carrie-1988/telegraph--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
