@@ -1,152 +1,17 @@
 {
-  "generatedAt": "2026-05-18T02:13:12.329Z",
-  "totalFindings": 11,
+  "generatedAt": "2026-05-24T14:36:03.548Z",
+  "totalFindings": 1,
   "findings": [
     {
-      "currentShowId": "death-of-a-salesman-2026",
-      "suggestedShowId": "death-of-a-salesman-2012",
-      "confidence": "high",
+      "currentShowId": "les-liaisons-dangereuses-west-end-2026",
+      "suggestedShowId": "les-liaisons-dangereuses-2016",
+      "confidence": "medium",
       "signals": [
-        "publish-date-mismatch",
-        "days-from-own:5138",
-        "days-from-closer:0"
+        "venue-slug-match"
       ],
-      "reviewFile": "data/review-texts/death-of-a-salesman-2026/latimes--unknown.json",
-      "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "glengarry-glen-ross-1984",
-      "suggestedShowId": "glengarry-glen-ross-2012",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:10486",
-        "days-from-closer:1",
-        "duplicate-in-suggested-dir"
-      ],
-      "reviewFile": "data/review-texts/glengarry-glen-ross-1984/amny--unknown.json",
-      "url": "http://www.amny.com/urbanite-1.812039/theater-review-glengarry-glen-ross-2-5-sta",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "hadestown-west-end-2024",
-      "suggestedShowId": "hadestown-2019",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:1925",
-        "days-from-closer:153"
-      ],
-      "reviewFile": "data/review-texts/hadestown-west-end-2024/variety--matt-trueman.json",
-      "url": "https://variety.com/2019/legit/reviews/hadestown-review-musical-broadway-1203191",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "lend-me-a-tenor-1989",
-      "suggestedShowId": "lend-me-a-tenor-2010",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:7703",
-        "days-from-closer:0",
-        "duplicate-in-suggested-dir"
-      ],
-      "reviewFile": "data/review-texts/lend-me-a-tenor-1989/ap--unknown.json",
-      "url": "http://www.google.com/hostednews/ap/article/ALeqM5gRuqi4htnnCPD0wgmC3WFDiiuxOAD9",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "mamma-mia-west-end-2021",
-      "suggestedShowId": "mamma-mia-2025",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:9740",
-        "days-from-closer:113"
-      ],
-      "reviewFile": "data/review-texts/mamma-mia-west-end-2021/attitude--attitude-magazine.json",
-      "url": "https://www.attitude.co.uk/culture/mamma-mia-london-best-west-end-musical-504274",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "mamma-mia-west-end-2021",
-      "suggestedShowId": "mamma-mia-2025",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:9781",
-        "days-from-closer:154"
-      ],
-      "reviewFile": "data/review-texts/mamma-mia-west-end-2021/telegraph--marianka-swain.json",
-      "url": "https://www.telegraph.co.uk/theatre/tickets/london/mamma-mia/",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "oh-mary-2024",
-      "suggestedShowId": "oh-mary-west-end-2025",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:526",
-        "days-from-closer:1",
-        "duplicate-in-suggested-dir"
-      ],
-      "reviewFile": "data/review-texts/oh-mary-2024/broadwayworld--aliya-al-hassan.json",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-2",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "oh-mary-2024",
-      "suggestedShowId": "oh-mary-west-end-2025",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:557",
-        "days-from-closer:32"
-      ],
-      "reviewFile": "data/review-texts/oh-mary-2024/one-minute-critic--matthew-wexler.json",
-      "url": "https://1minutecritic.com/oh-mary-broadway-review/",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "operation-mincemeat-west-end-2024",
-      "suggestedShowId": "operation-mincemeat-2025",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:681",
-        "days-from-closer:0"
-      ],
-      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/timeout--paul-raven.json",
-      "url": "https://www.westendtheatre.com/335071/news/reviews/american-psycho-reviews-2026/",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "stranger-things-the-first-shadow-west-end-2023",
-      "suggestedShowId": "stranger-things-2024",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:645",
-        "days-from-closer:150"
-      ],
-      "reviewFile": "data/review-texts/stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-land-of-the-living-review-na",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "the-price-2017",
-      "suggestedShowId": "the-price-off-west-end-2026",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:3302",
-        "days-from-closer:23"
-      ],
-      "reviewFile": "data/review-texts/the-price-2017/woman-around-town--alix-cohen.json",
-      "url": "https://www.womanaroundtown.com/sections/playing-around/arthur-millers-the-price",
-      "reason": "publish-date"
+      "reviewFile": "data/review-texts/les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-th",
+      "reason": "venue"
     }
   ]
 }
