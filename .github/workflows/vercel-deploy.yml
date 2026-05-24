@@ -222,12 +222,19 @@ jobs:
           # .next/cache: Next.js webpack/module incremental cache (kept across
           # deploys after 2026-05-23 workflow fix — see 3191971fd5).
           # data/cache/: prebuild hash gates (e.g. mobile-show-details/last-hash.json)
-          # that skip ~30s regen when inputs unchanged. Same cache key so they
-          # invalidate together on dep updates.
+          # that skip regen when inputs unchanged.
+          #
+          # Key includes github.run_id so every deploy gets a UNIQUE primary key.
+          # Without this, actions/cache@v4 sees a primary-key hit on restore and
+          # SKIPS the save step at job end — meaning per-deploy cache updates
+          # (like a freshly-written last-hash.json) are never persisted.
+          # The restore-keys fallback (no run_id) finds the previous deploy's
+          # cache. GHA auto-evicts old caches via LRU when the 10GB repo cap
+          # is reached. See: github.com/actions/cache#cache-version
           path: |
             .next/cache
             data/cache
-          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.run_id }}
           restore-keys: |
             nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
             nextjs-cache-${{ runner.os }}-
