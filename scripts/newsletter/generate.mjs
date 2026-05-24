@@ -443,69 +443,58 @@ function offBroadwayOpenings() {
 }
 
 // SECTION: Biggest Mover — show whose critic score moved most this week from NEW reviews
-function biggestMoverSection() {
-  // For each show, compare avg-as-of-weekEnd vs avg-as-of-before-this-week.
-  // Only consider shows that received new reviews this week.
+// Single source of truth for "which shows are critic-mover-worthy this week."
+// Used by BOTH biggestMoverSection (renders the cards) AND the newsworthiness
+// scorer (decides what goes in the subject). They MUST agree — otherwise the
+// subject can advertise a show that no card surfaces (Can I Be Frank case).
+// Memoized so neither caller pays for the recomputation.
+let _topMoversCache = null;
+function findRenderableCriticMovers() {
+  if (_topMoversCache) return _topMoversCache;
   const movers = {};
   reviews.forEach(r => {
     if (r.assignedScore == null) return;
     if (!inWeekDateOnly(r.publishDate)) return;
-    if (!movers[r.showId]) movers[r.showId] = { thisWeek: [], before: [] };
-    movers[r.showId].thisWeek.push(r);
+    (movers[r.showId] ||= { thisWeek: [], before: [] }).thisWeek.push(r);
   });
-  // Add prior reviews
   Object.keys(movers).forEach(id => {
     reviews.forEach(r => {
       if (r.showId !== id || r.assignedScore == null) return;
-      if ((r.publishDate || '').slice(0, 10) < weekStartStr) {
-        movers[id].before.push(r);
-      }
+      if ((r.publishDate || '').slice(0, 10) < weekStartStr) movers[id].before.push(r);
     });
   });
   const candidates = [];
-  Object.entries(movers).forEach(([id, x]) => {
-    if (x.before.length < 4) return; // need a stable baseline
-    if (x.thisWeek.length < 1) return;
-    // "After" badge must match the site's published compositeScore so the
-    // reader who clicks through doesn't see a different number. The site's
-    // composite includes per-critic dedup + top-critic override + off-market
-    // multiplier — too involved to replicate exactly here, so we use the
-    // canonical value from public/data/shows/{id}.json. "Before" is the
-    // tier-weighted average of prior-week reviews — close enough that the
-    // delta represents this week's NEW reviews.
+  for (const [id, x] of Object.entries(movers)) {
+    if (x.before.length < 4) continue;
+    if (x.thisWeek.length < 1) continue;
     const beforeAvg = tierWeightedAverage(x.before);
     const composite = loadCompositeScore(id);
-    if (beforeAvg == null || !composite) return;
-    const allAvg = composite.raw; // canonical compositeScore (matches site)
+    if (beforeAvg == null || !composite) continue;
+    const allAvg = composite.raw;
     const delta = allAvg - beforeAvg;
-    if (Math.abs(delta) < 1) return; // suppress tiny moves
+    if (Math.abs(delta) < 1) continue;
     const show = shows.find(s => s.id === id);
-    if (!show) return;
-    if (show.category !== 'broadway' && show.category !== 'off-broadway') return;
-    if (isOperaShow(show)) return;
-    // Skip if it's THIS WEEK'S opening (already covered by openings section)
-    if (inWeek(show.openingDate)) return;
+    if (!show) continue;
+    if (show.category !== 'broadway' && show.category !== 'off-broadway') continue;
+    if (isOperaShow(show)) continue;
+    if (inWeek(show.openingDate)) continue;
     candidates.push({ show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta, newCount: x.thisWeek.length });
-  });
+  }
   candidates.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
-  if (!candidates.length) return null;
-  // Newsworthiness gate: a 2pt move with only 1 new review is statistical
-  // noise, not news. Require enough signal to be worth highlighting:
-  //   • Rounded delta ≥ 3 pts (was 2), OR
-  //   • Rounded delta ≥ 2 pts AND ≥ 2 new reviews this week (real consensus shift)
-  // This filters out single-review wobbles on small-n shows like Lenny Bruce
-  // (55 → 53 with one new review) while keeping genuine multi-critic moves.
-  function isNewsworthyMove(c) {
+  // Newsworthiness gate: rounded delta ≥ 3 pts, OR ≥ 2 pts AND ≥ 2 new
+  // reviews. Filters single-review wobbles on small-n shows.
+  const significant = candidates.filter(c => {
     const pts = Math.max(1, Math.abs(c.after - c.before));
     if (pts >= 3) return true;
     if (pts >= 2 && c.newCount >= 2) return true;
     return false;
-  }
-  const significant = candidates.filter(isNewsworthyMove).slice(0, 3);
-  // No fallback to "show the top candidate anyway" — if nothing's newsworthy,
-  // critic-mover section drops out and the audience-grade movers still render
-  // below. Better than promoting noise.
-  const moverList = significant;
+  });
+  _topMoversCache = significant;
+  return significant;
+}
+
+function biggestMoverSection() {
+  const moverList = findRenderableCriticMovers().slice(0, 3);
 
   // Audience grade movers — only surface when the LETTER GRADE changes
   // (users never see numeric audience values, so a 88.1 → 87.7 dip isn't a
@@ -1601,45 +1590,10 @@ const newsworthyInputs = {
   topOutlier: findWeekOutlier(),
   // Biggest critic-mover: derive from same data biggestMoverSection uses.
   // Single show, single direction — small enough to recompute here.
-  topMover: (() => {
-    const map = {};
-    reviews.forEach(r => {
-      if (r.assignedScore == null) return;
-      if (!inWeekDateOnly(r.publishDate)) return;
-      (map[r.showId] ||= { thisWeek: [], before: [] }).thisWeek.push(r);
-    });
-    for (const id of Object.keys(map)) {
-      reviews.forEach(r => {
-        if (r.showId !== id || r.assignedScore == null) return;
-        if ((r.publishDate || '').slice(0, 10) < weekStartStr) map[id].before.push(r);
-      });
-    }
-    let best = null;
-    for (const [id, x] of Object.entries(map)) {
-      if (x.before.length < 4 || x.thisWeek.length < 1) continue;
-      const beforeAvg = tierWeightedAverage(x.before);
-      const allAvg = tierWeightedAverage([...x.before, ...x.thisWeek]);
-      if (beforeAvg == null || allAvg == null) continue;
-      const delta = allAvg - beforeAvg;
-      const show = shows.find(s => s.id === id);
-      if (!show || (show.category !== 'broadway' && show.category !== 'off-broadway')) continue;
-      if (isOperaShow(show)) continue;
-      // Mirror biggestMoverSection's gates so the scorer doesn't surface
-      // candidates that the section itself wouldn't render:
-      //   • Drop shows that OPENED this week (their "before" is previews —
-      //     misleading to frame the opening as a "rise").
-      //   • Drop single-review wobbles on small-n shows.
-      if (inWeek(show.openingDate)) continue;
-      const pts = Math.max(1, Math.abs(Math.round(allAvg - beforeAvg)));
-      const newCount = x.thisWeek.length;
-      const newsworthy = pts >= 3 || (pts >= 2 && newCount >= 2);
-      if (!newsworthy) continue;
-      if (!best || Math.abs(delta) > Math.abs(best.delta)) {
-        best = { show, before: Math.round(beforeAvg), after: Math.round(allAvg), delta };
-      }
-    }
-    return best;
-  })(),
+  // Same source of truth biggestMoverSection uses — the scorer can never
+  // surface a mover that the section doesn't actually render. Returns null
+  // when no candidate passes the section's newsworthy gates.
+  topMover: findRenderableCriticMovers()[0] || null,
   tonyDaysOut: (() => {
     const ceremony = new Date('2026-06-08T00:00:00');
     return Math.max(0, Math.ceil((ceremony - new Date(weekEndStr + 'T12:00:00')) / 86400000));
