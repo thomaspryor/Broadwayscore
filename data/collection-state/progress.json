@@ -1904,7 +1904,17 @@
     "next-to-normal-2009/neontommy--jason-kehe.json",
     "rock-of-ages-2009/theater-news-online--unknown.json",
     "exit-the-king-2009/variety--david-rooney.json",
-    "exit-the-king-2009/newsday--linda-winer.json"
+    "exit-the-king-2009/newsday--linda-winer.json",
+    "lennon-2005/about-entertainment--ben-brantley.json",
+    "frozen-2004/about-entertainment--unknown.json",
+    "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+    "salome-2003/about-entertainment--ben-brantley.json",
+    "man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+    "say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+    "sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+    "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+    "the-crucible-2002/about-entertainment--ben-brantley.json",
+    "metamorphoses-2002/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1942,7 +1952,16 @@
       "data/review-texts/masquerade-off-broadway-2025/wsj--dominic-green.json",
       "masquerade-off-broadway-2025/wsj--dominic-green.json",
       "data/review-texts/the-producers-west-end-2025/variety--bob-verini.json",
-      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
+      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
+      "data/review-texts/frozen-2004/about-entertainment--unknown.json",
+      "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+      "data/review-texts/sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-crucible-2002/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -2047,7 +2066,7 @@
     ]
   },
   "startTime": "2026-05-23T08:57:37.709Z",
-  "lastProcessed": "exit-the-king-2009/newsday--linda-winer.json",
+  "lastProcessed": "metamorphoses-2002/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-23T09:35:24.139Z",
@@ -2138,6 +2157,105 @@
       "t": "2026-05-24T02:12:13.059Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-24T05:56:44.408Z",
+      "event": "bb-session",
+      "session": "a76cf2ba",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9902E6DE123EF936A2575BC"
+    },
+    {
+      "t": "2026-05-24T05:56:45.420Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:56:59.635Z",
+      "event": "bb-session",
+      "session": "84abe59e",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=98"
+    },
+    {
+      "t": "2026-05-24T05:57:00.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:57:14.331Z",
+      "event": "bb-session",
+      "session": "41166513",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C"
+    },
+    {
+      "t": "2026-05-24T05:57:15.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:57:28.498Z",
+      "event": "bb-session",
+      "session": "2f7e9f63",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF9"
+    },
+    {
+      "t": "2026-05-24T05:57:29.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:57:43.317Z",
+      "event": "bb-session",
+      "session": "0668a2e8",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c"
+    },
+    {
+      "t": "2026-05-24T05:57:44.301Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:57:58.734Z",
+      "event": "bb-session",
+      "session": "8ac6aee2",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C"
+    },
+    {
+      "t": "2026-05-24T05:57:59.626Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:58:13.306Z",
+      "event": "bb-session",
+      "session": "e1df83fc",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title="
+    },
+    {
+      "t": "2026-05-24T05:58:14.273Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:58:28.611Z",
+      "event": "bb-session",
+      "session": "f2e24d72",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c"
+    },
+    {
+      "t": "2026-05-24T05:58:29.516Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-24T05:58:43.329Z",
+      "event": "bb-session",
+      "session": "271adc06",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b03e6da1330f93ba35750c"
+    },
+    {
+      "t": "2026-05-24T05:58:44.245Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
