@@ -850,25 +850,22 @@ function commercialSection() {
   let comm;
   try { comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8')); }
   catch { return null; }
-  // News-freshness gate: the prior version used `verifiedDate` (when WE
-  // confirmed the data) as a fallback. That's bookkeeping, not news — it let
-  // Appropriate (recouped 2024-03, re-verified today) and Ragtime (year-only
-  // "2026" date) leak into this week's email. Now we require a real YYYY-MM
-  // recoupedDate within the past ~6 weeks (this month or the previous one).
+  const weekMonth = weekEndStr.slice(0, 7); // YYYY-MM
+  const lookback = new Date(weekStartStr + 'T12:00:00'); lookback.setDate(lookback.getDate() - 14);
+  const lookbackStr = lookback.toISOString().slice(0, 10);
+  // Slug → show map for Broadway only
   const slugToShow = new Map();
   shows.forEach(s => { if (s.category === 'broadway' && s.slug) slugToShow.set(s.slug, s); });
-  const weekMonth = weekEndStr.slice(0, 7); // YYYY-MM
-  const prevMonth = (() => {
-    const [yy, mm] = weekMonth.split('-').map(Number);
-    return mm === 1 ? `${yy - 1}-12` : `${yy}-${String(mm - 1).padStart(2, '0')}`;
-  })();
   const fresh = [];
   Object.entries(comm.shows || {}).forEach(([slug, c]) => {
     if (!c.recouped || !c.recoupedDate) return;
-    if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) return; // reject year-only ("2026") or invalid
-    if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) return;
     const show = slugToShow.get(slug);
     if (!show) return;
+    // Recoupment month matches current month? OR verification was fresh?
+    const monthMatch = c.recoupedDate === weekMonth || c.recoupedDate.startsWith(weekMonth.slice(0, 4) + '-' + (parseInt(weekMonth.slice(5)) - 1).toString().padStart(2, '0'));
+    const verifiedDate = c.deepResearch?.verifiedDate;
+    const verifiedRecent = verifiedDate && verifiedDate >= lookbackStr && verifiedDate <= weekEndStr;
+    if (!monthMatch && !verifiedRecent) return;
     fresh.push({ show, c });
   });
   if (!fresh.length) return null;
@@ -1424,21 +1421,20 @@ const newsworthyInputs = {
   obOpenings: obO.list,
   aggregateScore,
   recoupments: (() => {
-    // Mirror commercialSection's tightened filter: only surface recoupments
-    // dated this month or last month, with valid YYYY-MM granularity. Verified-
-    // this-week is bookkeeping, not news — see commercialSection note above.
+    // Mirror commercialSection's filter to gather recouped-this-week candidates.
     try {
       const comm = JSON.parse(fs.readFileSync(path.join(repo, 'data/commercial.json'), 'utf8'));
       const weekMonth = weekEndStr.slice(0, 7);
-      const [_yy, _mm] = weekMonth.split('-').map(Number);
-      const prevMonth = _mm === 1 ? `${_yy - 1}-12` : `${_yy}-${String(_mm - 1).padStart(2, '0')}`;
+      const lookback = new Date(weekStartStr + 'T12:00:00'); lookback.setDate(lookback.getDate() - 14);
+      const lookbackStr = lookback.toISOString().slice(0, 10);
       const out = [];
       for (const [slug, c] of Object.entries(comm.shows || {})) {
         if (!c.recouped || !c.recoupedDate) continue;
-        if (!/^\d{4}-\d{2}$/.test(c.recoupedDate)) continue;
-        if (c.recoupedDate !== weekMonth && c.recoupedDate !== prevMonth) continue;
         const show = shows.find(s => s.slug === slug && s.category === 'broadway');
         if (!show) continue;
+        const monthMatch = c.recoupedDate === weekMonth;
+        const verifiedRecent = c.deepResearch?.verifiedDate && c.deepResearch.verifiedDate >= lookbackStr;
+        if (!monthMatch && !verifiedRecent) continue;
         // Same weeks-to-recoup math the section uses.
         const m = /^(\d{4})-(\d{2})$/.exec(c.recoupedDate);
         let weeksToRecoup = null;
