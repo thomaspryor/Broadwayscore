@@ -21,9 +21,29 @@
 // See sprint-plan-visual-qa-gate.md and .claude/skills/visual-qa/skill.md.
 
 import { execSync } from 'node:child_process';
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { chromium } from 'playwright';
+
+// Load .env into process.env without external dotenv dependency.
+// Only sets keys not already in env (so explicit env overrides .env).
+function loadDotenv(path = '.env') {
+  if (!existsSync(path)) return;
+  try {
+    const lines = readFileSync(path, 'utf8').split(/\r?\n/);
+    for (const line of lines) {
+      const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+      if (!m) continue;
+      const key = m[1];
+      let val = m[2];
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      if (!(key in process.env)) process.env[key] = val;
+    }
+  } catch { /* ignore */ }
+}
+loadDotenv();
 
 const WIDTHS = [360, 414, 768, 1024, 1440];
 
@@ -273,6 +293,174 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
   return { screenshots, elementCrops, overflowReport };
 }
 
+// ── LLM review ──────────────────────────────────────────────────────────────
+// Checklist baked into the prompt (was references/checklist.md in the
+// earlier draft — moved inline so the runner is the single source of truth).
+const REVIEW_CHECKLIST = `You are comparing an IMPLEMENTATION screenshot to a REFERENCE design image.
+
+CRITICAL ANTI-HALLUCINATION RULES:
+- If the two images appear IDENTICAL or near-identical, return {"verdict": "PASS", "issues": []}.
+- If you cannot identify a SPECIFIC, NAMEABLE difference with a quoted text snippet or a measurable
+  visual property (color hex/pill width/etc.), DO NOT INVENT ONE. Return PASS.
+- Vision models commonly hallucinate small numeric/text differences in show titles, scores, dates —
+  if you find yourself listing "score X in ref vs Y in impl" for many items, you are HALLUCINATING.
+  Stop and return PASS unless you can quote the exact pixel coordinates where the difference appears.
+- The reference image and the implementation may differ in dynamic content (today's date, scores
+  that change with new data). DO NOT flag dynamic content differences. Flag only LAYOUT, COPY,
+  STYLING, COLOR, and TYPOGRAPHY issues.
+- If the reference shows a single UI component (a card, a pill, a section) and the implementation
+  shows a full page, look ONLY at the implementation region that corresponds to the reference.
+
+Return ONLY a JSON object: {"verdict": "PASS" | "FAIL", "issues": ["specific issue 1", ...]}.
+No markdown wrapper, no commentary, no leading text.
+
+HARD FAILURES (auto FAIL — must be specific & quotable):
+1. Copy mismatch — STATIC text content differs (label, button text, headline).
+   Example: design says "HISTORICAL ACCURACY", implementation says "ACCURACY" → FAIL.
+   NOT a failure: show titles, scores, dates (those are dynamic data).
+2. Typography case mismatch — UPPERCASE in design rendered as lowercase (or vice versa),
+   tracked letter-spacing dropped, font weight obviously changed.
+3. Missing element — design shows a UI element implementation does not render at all.
+4. Layout overflow — content extends past viewport/container; text VISIBLY clipped/cut-off (not
+   just truncated with ellipsis); horizontal scroll where there shouldn't be one.
+5. Tap-target violation on mobile widths (≤414) — interactive element height < 44px.
+
+SOFT SIGNALS (note but only FAIL if severe):
+6. Color/glow intensity dramatically different (e.g., gold pill vs no gold pill).
+7. Proportion >25% off.
+8. Border-radius mismatch only if visually jarring.
+
+If you cannot see one of the images, return {"verdict": "FAIL", "issues": ["could not load image: <which one>"]}.`;
+
+function imageToBase64(path) {
+  return readFileSync(path).toString('base64');
+}
+
+async function reviewWithOpenAI({ refPaths, implPaths, apiKey, model = 'gpt-4o' }) {
+  const messages = [{
+    role: 'system',
+    content: REVIEW_CHECKLIST,
+  }, {
+    role: 'user',
+    content: [
+      { type: 'text', text: `REFERENCE design image(s) follow:` },
+      ...refPaths.map(p => ({ type: 'image_url', image_url: { url: `data:image/png;base64,${imageToBase64(p)}` } })),
+      { type: 'text', text: `\nIMPLEMENTATION screenshots at multiple widths follow:` },
+      ...implPaths.map(p => ({ type: 'image_url', image_url: { url: `data:image/png;base64,${imageToBase64(p)}` } })),
+      { type: 'text', text: '\nReturn the verdict JSON now.' },
+    ],
+  }];
+
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+    body: JSON.stringify({ model, messages, max_tokens: 2048, temperature: 0 }),
+    signal: AbortSignal.timeout(60000),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`OpenAI HTTP ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const body = await res.json();
+  const content = body?.choices?.[0]?.message?.content;
+  if (!content) throw new Error('OpenAI returned no content');
+  return parseVerdictJson(content);
+}
+
+async function reviewWithGemini({ refPaths, implPaths, apiKey, model = 'gemini-2.5-pro' }) {
+  const parts = [{ text: REVIEW_CHECKLIST + '\n\nREFERENCE design image(s):' }];
+  for (const p of refPaths) parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(p) } });
+  parts.push({ text: '\nIMPLEMENTATION screenshots at multiple widths:' });
+  for (const p of implPaths) parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(p) } });
+  parts.push({ text: '\nReturn the verdict JSON now.' });
+
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts }],
+      // gemini-2.5-pro REQUIRES thinking mode (thinkingBudget=0 → HTTP 400).
+      // Omit thinkingConfig to use the model's default budget.
+      generationConfig: { temperature: 0, maxOutputTokens: 2048 },
+    }),
+    signal: AbortSignal.timeout(60000),
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`Gemini HTTP ${res.status}: ${text.slice(0, 200)}`);
+  }
+  const body = await res.json();
+  const content = body?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!content) throw new Error('Gemini returned no content (' + JSON.stringify(body).slice(0, 200) + ')');
+  return parseVerdictJson(content);
+}
+
+function parseVerdictJson(content) {
+  // LLMs sometimes wrap JSON in ```json ... ``` despite instructions; strip.
+  let s = content.trim();
+  const fence = s.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+  if (fence) s = fence[1];
+  let parsed;
+  try { parsed = JSON.parse(s); }
+  catch (err) { throw new Error(`Invalid JSON in verdict: ${err.message} — content was: ${s.slice(0, 200)}`); }
+  if (!parsed || typeof parsed !== 'object') throw new Error('Verdict is not an object');
+  if (parsed.verdict !== 'PASS' && parsed.verdict !== 'FAIL') throw new Error(`Verdict must be "PASS" or "FAIL", got "${parsed.verdict}"`);
+  if (!Array.isArray(parsed.issues)) throw new Error('Issues must be an array');
+  return { verdict: parsed.verdict, issues: parsed.issues.map(String) };
+}
+
+// Wraps a single LLM call with one retry + fail-closed error capture.
+async function safeLLMReview(label, fn) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const result = await fn();
+      return { ...result, attempts: attempt };
+    } catch (err) {
+      console.error(`[visual-qa] ${label} attempt ${attempt} failed: ${err.message}`);
+      if (attempt === 2) {
+        // Fail-closed: any error → FAIL verdict, surface error so caller knows
+        return { verdict: 'FAIL', issues: [`${label} provider error: ${err.message}`], error: err.message, attempts: attempt };
+      }
+    }
+  }
+}
+
+async function runLLMReview({ refPaths, screenshots, elementCrops }) {
+  // Prefer element crops (per-viewport, tight to the changed UI) over full-page
+  // screenshots — the latter trigger hallucination on dynamic content
+  // (scores, dates, titles) that differs between ref-capture-time and now.
+  let implPaths;
+  if (elementCrops && elementCrops.length > 0) {
+    // Use crops at 3 representative widths.
+    const REVIEW_WIDTHS = new Set([360, 768, 1440]);
+    implPaths = elementCrops
+      .filter(c => REVIEW_WIDTHS.has(c.width))
+      .map(c => c.file);
+  } else {
+    const REVIEW_WIDTHS = new Set([360, 768, 1440]);
+    implPaths = screenshots
+      .filter(s => REVIEW_WIDTHS.has(s.width))
+      .map(s => s.file);
+  }
+  if (implPaths.length === 0) return null;
+
+  const openaiKey = process.env.OPENAI_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY;
+
+  const [openai, gemini] = await Promise.all([
+    openaiKey
+      ? safeLLMReview('openai', () => reviewWithOpenAI({ refPaths, implPaths, apiKey: openaiKey }))
+      : Promise.resolve({ verdict: 'FAIL', issues: ['OPENAI_API_KEY missing'], error: 'missing-key' }),
+    geminiKey
+      ? safeLLMReview('gemini', () => reviewWithGemini({ refPaths, implPaths, apiKey: geminiKey }))
+      : Promise.resolve({ verdict: 'FAIL', issues: ['GEMINI_API_KEY missing'], error: 'missing-key' }),
+  ]);
+
+  return { openai, gemini };
+}
+
 function isLocalhost(url) {
   if (!url) return false;
   try {
@@ -343,8 +531,31 @@ Then re-run this command.`);
       console.error(`  - ${o.viewport}px ${o.path} ${o.selector} ${axes} text="${o.textPreview}"`);
     }
   }
-  // LLM review + verdict.json come in S1-T5..T6.
-  process.exit(0);
+
+  let verdicts = null;
+  if (args.refs && args.refs.length > 0) {
+    const missingRefs = args.refs.filter(p => !existsSync(p));
+    if (missingRefs.length > 0) {
+      console.error(`[visual-qa] ERROR: reference image(s) not found: ${missingRefs.join(', ')}`);
+      process.exit(1);
+    }
+    console.error(`[visual-qa] running two-model review (${args.refs.length} ref(s) vs 360/768/1440 implementation)…`);
+    const tLLM = Date.now();
+    verdicts = await runLLMReview({ refPaths: args.refs, screenshots, elementCrops });
+    const llmElapsed = Math.round((Date.now() - tLLM) / 1000);
+    if (verdicts) {
+      console.error(`[visual-qa] LLM review done in ${llmElapsed}s`);
+      console.error(`  openai: ${verdicts.openai.verdict}${verdicts.openai.issues.length ? ' — ' + verdicts.openai.issues.join('; ') : ''}`);
+      console.error(`  gemini: ${verdicts.gemini.verdict}${verdicts.gemini.issues.length ? ' — ' + verdicts.gemini.issues.join('; ') : ''}`);
+    }
+  }
+
+  // Verdict.json assembly + hash + prune come in S1-T6.
+  const overallPass = verdicts
+    ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
+    : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
+  console.error(`[visual-qa] overallPass=${overallPass}`);
+  process.exit(overallPass ? 0 : 2);
 }
 
 main().catch(err => {
