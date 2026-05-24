@@ -10,22 +10,31 @@
 // Weights live at the top so tuning the policy doesn't require reading a
 // function body — same pattern as src/lib/scoring.ts / src/lib/data-tony-predictions.ts.
 // All weights are absolute (0–100). Add tier bumps inside each scorer.
+//
+// Tuning principle (2026-05-24): subscribers come for REVIEW news — what
+// opened, what's critically rising/falling, what the Tony race looks like.
+// Biz signals (recoupment, box office) are interesting context but must NOT
+// lead the subject line. The first pass had RECOUPMENT_BASE=78 and a $5.6M
+// Giant recoupment was burying the actual opening news; weights below
+// re-anchor on the review-driven content the audience actually subscribes for.
 export const WEIGHTS = {
-  BW_OPENING_BASE: 70,
-  BW_OPENING_GOLD_BUMP: 15,           // critical-gold debut is huge
-  OB_OPENING_BASE: 50,
+  BW_OPENING_BASE: 85,                // openings ARE the news — what subscribers wait for
+  BW_OPENING_GOLD_BUMP: 15,           // critical-gold debut is the biggest event of the week
+  OB_OPENING_BASE: 70,                // smaller market but still review news
   OB_OPENING_GOLD_BUMP: 15,
-  RECOUPMENT_BASE: 78,                // recouping is the rarest + most newsworthy biz signal
-  RECOUPMENT_FAST_BUMP: 7,            // <12 weeks-to-recoup
-  CLOSING_THIS_WEEK_BASE: 65,
-  CLOSING_LONG_RUN_BUMP: 8,           // closing show that ran 200+ perfs
-  ANNOUNCED_CLOSING_BASE: 60,
-  BIGGEST_MOVER_BASE: 55,
-  BIGGEST_MOVER_LARGE_BUMP: 15,       // ≥10pt swing
-  TONY_PREDICTION_BASE: 50,           // only really matters in last 3 weeks before ceremony
-  TONY_CEREMONY_NEAR_BUMP: 20,        // when ceremony is <14 days away
-  BUZZ_NEW_NUM_ONE: 55,               // dethrones prior #1
-  BUZZ_HOLD_NUM_ONE: 30,              // still #1, not "news" per se
+  OUTLIER_BASE: 70,                   // a critic out of step IS review news
+  OUTLIER_LARGE_BUMP: 10,             // ≥20pt delta from consensus
+  BIGGEST_MOVER_BASE: 72,             // score moves are the most direct review signal
+  BIGGEST_MOVER_LARGE_BUMP: 13,       // ≥10pt swing
+  TONY_PREDICTION_BASE: 55,           // matters more as ceremony nears
+  TONY_CEREMONY_NEAR_BUMP: 25,        // <14 days away — Tony week IS the news
+  CLOSING_THIS_WEEK_BASE: 65,         // closing news is genuine fan-news
+  CLOSING_LONG_RUN_BUMP: 8,
+  ANNOUNCED_CLOSING_BASE: 58,
+  RECOUPMENT_BASE: 50,                // biz news — interesting but secondary to reviews
+  RECOUPMENT_FAST_BUMP: 6,            // <12 weeks-to-recoup is genuinely notable
+  BUZZ_NEW_NUM_ONE: 48,               // social rotates fast; less stable signal
+  BUZZ_HOLD_NUM_ONE: 25,
 };
 
 const SCORE_GOLD_MIN_NYC = 83;
@@ -103,6 +112,23 @@ export function scoreCandidates(input) {
       headline: `${a.show.title} sets closing date`,
       show: a.show,
       slug: a.show.slug,
+    });
+  }
+
+  // 5b. Outlier of the Week — a single critic who landed far from consensus.
+  // Different story from "biggest mover" (a show whose AVG moved). Both can
+  // fire in the same week and lead distinct narratives.
+  if (input.topOutlier) {
+    const diff = Math.abs(Math.round(input.topOutlier.diff || 0));
+    const largeBump = diff >= 20 ? WEIGHTS.OUTLIER_LARGE_BUMP : 0;
+    const dir = (input.topOutlier.diff || 0) < 0 ? 'pans' : 'raves over';
+    const outletShort = input.topOutlier.outlet || 'a critic';
+    out.push({
+      kind: 'outlier',
+      weight: WEIGHTS.OUTLIER_BASE + largeBump,
+      headline: `${outletShort} ${dir} ${input.topOutlier.show.title}`,
+      show: input.topOutlier.show,
+      slug: input.topOutlier.show.slug,
     });
   }
 
