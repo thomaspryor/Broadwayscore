@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { validateCastExtraction } = require('../../scripts/lib/cast-extraction-guards.js');
+const { validateCastExtraction, isOperaSourceUrl } = require('../../scripts/lib/cast-extraction-guards.js');
 
 test('rejects Met Opera contamination (Kavalier-Clay case)', () => {
   const cast = [
@@ -92,4 +92,19 @@ test('single column-header role does not trigger swap/contamination', () => {
   ];
   const r = validateCastExtraction(cast, 'Test Show');
   assert.equal(r.ok, true);
+});
+
+test('isOperaSourceUrl flags opera-publication domains', () => {
+  // The historical Kavalier-Clay misroute
+  assert.equal(isOperaSourceUrl('https://parterre.com/broadcast/104032/the-amazing-adventures-of-kavalier-clay/'), true);
+  assert.equal(isOperaSourceUrl('https://www.metopera.org/season/2025-26/'), true);
+  assert.equal(isOperaSourceUrl('https://operanews.com/some/article'), true);
+  assert.equal(isOperaSourceUrl('https://www.operawire.com/anything'), true);
+  // Non-opera domains
+  assert.equal(isOperaSourceUrl('https://www.broadwayworld.com/shows/foo'), false);
+  assert.equal(isOperaSourceUrl('https://playbill.com/production/bar'), false);
+  // Defensive: null / empty / undefined
+  assert.equal(isOperaSourceUrl(null), false);
+  assert.equal(isOperaSourceUrl(''), false);
+  assert.equal(isOperaSourceUrl(undefined), false);
 });

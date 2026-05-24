@@ -36,6 +36,7 @@ const {
   TV_PATTERNS,
   COLUMN_HEADER_RE,
   KNOWN_SWAP_SURNAMES,
+  isOperaSourceUrl,
 } = require('./lib/cast-extraction-guards');
 
 const ROOT = path.join(__dirname, '..');
@@ -100,6 +101,11 @@ function audit() {
       const url = d.sourceUrl.toLowerCase();
       const hasTitle = tokens.some(t => url.includes(t));
       if (!hasTitle) flags.push('SRC_URL_NO_TITLE');
+
+      // Opera-publication source for a non-opera show. Showing this as a
+      // distinct signal lets future contamination be triaged faster.
+      const showIsOpera = /\bopera\b|the met\b/.test(showId.toLowerCase());
+      if (!showIsOpera && isOperaSourceUrl(d.sourceUrl)) flags.push('SRC_URL_OPERA_DOMAIN');
     }
 
     if (showIds && !showIds.has(showId)) flags.push('SHOW_NOT_IN_DB');

@@ -24,7 +24,7 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { validateCastExtraction } = require('./lib/cast-extraction-guards');
+const { validateCastExtraction, isOperaSourceUrl } = require('./lib/cast-extraction-guards');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -350,7 +350,18 @@ async function processShow(show) {
   }
 
   // Step 2: Fetch page text and extract cast
+  const showIsOpera = /\bopera\b|the met\b/.test(String(show.title || '').toLowerCase());
+
   for (const sr of searchResults) {
+    // Skip opera-publication domains for non-opera shows entirely — saves
+    // the ScrapingBee fetch + LLM call. Kavalier-Clay landed on parterre.com
+    // and the LLM extracted Met Opera cast; this blocks the same class of
+    // mistake at the source.
+    if (!showIsOpera && isOperaSourceUrl(sr.url)) {
+      console.log(`  Skipping opera-domain source: ${sr.url}`);
+      continue;
+    }
+
     console.log(`  Fetching: ${sr.url}`);
     await sleep(FETCH_DELAY_MS);
 
