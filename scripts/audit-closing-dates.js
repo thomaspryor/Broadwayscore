@@ -142,6 +142,71 @@ async function notifyDiscord(message) {
   }
 }
 
+// Route ambiguous flags into Notion (the user's source of truth per CLAUDE.md §6).
+// Discord alerts were silently ignored — Beaches stored=2026-09-06 was flagged
+// every day for >1 week before the actual close (2026-05-24) was caught manually.
+// One rollup card per audit run, deduped against existing open audit cards so
+// daily re-flagging of the same shows doesn't spam Notion.
+async function notifyNotion(ambiguous, todayStr) {
+  if (ambiguous.length === 0) return;
+  if (!process.env.NOTION_API_KEY) {
+    console.log('NOTION_API_KEY not set — skipping Notion card creation');
+    return;
+  }
+
+  const { spawnSync } = require('child_process');
+  const brain = path.join(__dirname, 'notion-brain.js');
+
+  // Dedup: if an "In progress" audit card already exists, skip create. The
+  // user resolves the prior card before a new one fires.
+  const search = spawnSync('node', [brain, 'search', '--text=Closing date audit', '--status=In progress'], { encoding: 'utf8' });
+  if (search.status === 0 && /Closing date audit/.test(search.stdout || '')) {
+    console.log('Notion: existing open audit card found — skipping create (dedup)');
+    return;
+  }
+
+  const title = `Closing date audit: ${ambiguous.length} show${ambiguous.length > 1 ? 's' : ''} need review (${todayStr})`;
+  const rows = ambiguous.map(a => {
+    const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
+    return `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
+  }).join('\n');
+
+  const notes = [
+    '## Problem',
+    `Closing-date audit found ${ambiguous.length} show(s) where stored closingDate disagrees with broadway.com schedule by more than ${AMBIGUOUS_DELTA_THRESHOLD_DAYS} days. Could be either (a) calendar window short and stored is correct, or (b) show actually closing earlier than stored.`,
+    '',
+    '## Shows flagged',
+    rows,
+    '',
+    '## Resolution steps',
+    '1. For each show, search Variety / Playbill / Deadline for closing or extension announcements.',
+    '2. If retraction confirmed → update closingDate in shows.json (lives in private repo `thomaspryor/broadway-scorecard-data` — symlinked at `data/shows.json`).',
+    '3. Commit + push private repo; Vercel cron picks up within ~5 min.',
+    '4. If stored date is correct (calendar window short), no action — mark Done.',
+    '',
+    '## Acceptance criteria',
+    "- Each show's stored closingDate matches the actual announced final performance, OR is confirmed as far-future with calendar-window short being the cause.",
+    '',
+    `_Auto-created by scripts/audit-closing-dates.js on ${todayStr}._`,
+  ].join('\n');
+
+  const create = spawnSync('node', [
+    brain, 'create', title,
+    '--priority', 'P1 Next',
+    '--category', 'Data',
+    '--type', 'Bug',
+    '--tags', 'closing-date,audit,data-quality',
+    '--notes', notes,
+  ], { encoding: 'utf8' });
+
+  if (create.status === 0) {
+    const match = (create.stderr || '').match(/__NOTION_CARD_ID__=([a-f0-9-]+)/);
+    console.log(`Notion: created card ${match ? match[1] : '(unknown id — check stdout)'}`);
+  } else {
+    console.warn('Notion: create failed:', (create.stderr || create.stdout || '').slice(0, 500));
+  }
+}
+
 async function main() {
   console.log('='.repeat(60));
   console.log('CLOSING DATE AUDIT (bidirectional)');
@@ -259,6 +324,7 @@ async function main() {
   if (ambiguous.length > 0) {
     const lines = ambiguous.map(a => `• ${a.id}: stored ${a.stored}, schedule cuts off at ${a.latestScheduled} (${a.delta}d earlier)`).join('\n');
     await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
+    await notifyNotion(ambiguous, TODAY);
   }
 
   await cleanup();
