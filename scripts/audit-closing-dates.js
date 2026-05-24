@@ -84,10 +84,20 @@ const OPEN_RUN_SKIP = new Set(CONFIG.openRunSkip.ids);
 // re-enters the normal ambiguous-flagging path.
 const AMBIGUOUS_ALLOWLIST = (CONFIG.ambiguousAllowlist && CONFIG.ambiguousAllowlist.entries) || {};
 
+// Normalize a date value to YYYY-MM-DD before equality. shows.json today
+// stores plain YYYY-MM-DD, but if a future writer emits ISO-with-time
+// (2027-02-14T00:00:00Z), the raw string comparison would fail and break the
+// allowlist — silently turning verified false-positives back into daily
+// Notion noise. Slicing to first 10 chars is field-format-agnostic.
+function normalizeDate(d) {
+  if (!d || typeof d !== 'string') return null;
+  return d.slice(0, 10);
+}
+
 function isAllowlisted(showId, storedClosingDate) {
   const entry = AMBIGUOUS_ALLOWLIST[showId];
   if (!entry || !storedClosingDate) return false;
-  return entry.verifiedStored === storedClosingDate;
+  return normalizeDate(entry.verifiedStored) === normalizeDate(storedClosingDate);
 }
 
 function slugFor(s) {
@@ -180,13 +190,24 @@ async function notifyNotion(ambiguous, todayStr) {
   const { spawnSync } = require('child_process');
   const brain = path.join(__dirname, 'notion-brain.js');
 
-  // Dedup: if an "In progress" audit card already exists, skip create. The
-  // user resolves the prior card before a new one fires.
-  const search = spawnSync('node', [brain, 'search', '--text=Closing date audit', '--status=In progress'], { encoding: 'utf8' });
-  if (search.status === 0 && /Closing date audit/.test(search.stdout || '')) {
-    console.log('Notion: existing open audit card found — skipping create (dedup)');
-    return;
+  // Dedup: skip create if a prior closing-date audit card exists in ANY
+  // non-Done state (In progress / Paused / Not started). Searching only
+  // "In progress" let a user-Paused card slip through and the next run
+  // created a duplicate. Done = user has actioned it, fresh card OK.
+  // We do two searches (status=In progress + status=Paused) because the
+  // CLI doesn't take a "not Done" filter; cards in "Not started" are also
+  // checked since manual triage may set that status.
+  const dedupStatuses = ['In progress', 'Paused', 'Not started'];
+  let dedupHit = false;
+  for (const status of dedupStatuses) {
+    const search = spawnSync('node', [brain, 'search', '--text=Closing date audit', `--status=${status}`], { encoding: 'utf8' });
+    if (search.status === 0 && /Closing date audit/.test(search.stdout || '')) {
+      dedupHit = true;
+      console.log(`Notion: existing ${status} audit card found — skipping create (dedup)`);
+      break;
+    }
   }
+  if (dedupHit) return;
 
   const title = `Closing date audit: ${ambiguous.length} show${ambiguous.length > 1 ? 's' : ''} need review (${todayStr})`;
   // For each row, render the basic schedule discrepancy + (if present) the

@@ -100,7 +100,10 @@ const FIELD_CONFIGS = {
     // "opening" almost certainly means a different production.
     sanityWindowDaysPast: 30,
     sanityWindowDaysFuture: 365,
-    quoteAcceptanceRegex: /opening night|officially opens?|opens? on|opening on|to open on|will open on/,
+    // Common press phrasings: opening night, officially opens, opens on,
+    // set to open, premieres on, will premiere, bows on (Playbill standard),
+    // to/will open on.
+    quoteAcceptanceRegex: /opening night|officially opens?|opens? on|opening on|(?:is )?set to open|to open on|will open on|premieres? on|will premiere|bows? on/,
   },
   'previews-start': {
     serpQuery: title => `"${title}" broadway previews begin OR start OR first preview`,
@@ -109,7 +112,10 @@ const FIELD_CONFIGS = {
     promptExclusions: 'Not opening night, not closing. If the article only mentions opening night, return null.',
     sanityWindowDaysPast: 30,
     sanityWindowDaysFuture: 365,
-    quoteAcceptanceRegex: /first preview|previews begin|begin previews|previews start|starts previews|previews? on/,
+    // Anchored to verbs — bare "previews on" was matching "no previews on
+    // Mondays". Includes Playbill/Variety "begin performances" and
+    // "first performance" phrasings.
+    quoteAcceptanceRegex: /first preview|previews begin|begin previews|previews start|starts previews|begins? performances|starts? performances|first performance|opens? for previews|first paid performance/,
   },
 };
 
@@ -243,8 +249,11 @@ function clusterDates(extractions, opts = {}) {
  * Generic field discovery. fieldType in {'closing','opening','previews-start'}.
  * @returns null OR { date: 'YYYY-MM-DD', sources: [{url, title, quote}], extractions: [...], fieldType }
  */
-async function discoverAnnouncedDate(showTitle, fieldType = 'closing', opts = {}) {
-  const log = opts.log || (() => {});
+async function discoverAnnouncedDate(showTitle, fieldType, opts = {}) {
+  // Fail fast on missing/unknown fieldType — silently defaulting to 'closing'
+  // would run a closing-date SERP/prompt on an opening-date call site and
+  // return plausibly-wrong data. Caller MUST pass an explicit fieldType.
+  const log = (opts && opts.log) || (() => {});
   const cfg = getFieldConfig(fieldType);
   const query = cfg.serpQuery(showTitle);
   log(`  [discovery:${fieldType}] SERP: ${query}`);
