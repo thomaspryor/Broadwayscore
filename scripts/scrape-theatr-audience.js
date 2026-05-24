@@ -174,6 +174,19 @@ const THEATR_OVERRIDES = {
   // 'Ben Platt: Live at the Palace' — not in shows.json (special engagement)
 };
 
+// Shows whose normalized title collides with a closed historical Broadway
+// revival in shows.json. The matcher (matchTheatrToShows below) picks the
+// most-recent-by-openingDate among same-titled candidates, so a modern
+// Theatr listing (touring / Encores! / regional / OB) silently attaches
+// to the old Broadway revival. Until the structural fix lands
+// (Notion 36a637c5-416f-8199-baf6-ef195e30c59b), we refuse to write
+// Theatr data to these IDs.
+const THEATR_SKIP_SHOWS = new Set([
+  'pal-joey-2008',
+  'show-boat-1994',
+  'the-merchant-of-venice-2010',
+]);
+
 function matchTheatrToShows(theatrShows, ourShows) {
   const matches = [];
   const today = new Date().toISOString().split('T')[0];
@@ -260,6 +273,7 @@ function matchTheatrToShows(theatrShows, ourShows) {
   const byShowId = new Map();
   for (const m of matches) {
     const id = m.show.id;
+    if (THEATR_SKIP_SHOWS.has(id)) continue;
     const watched = m.theatr.totalWatchedUsers || 0;
     if (!byShowId.has(id) || watched > (byShowId.get(id).theatr.totalWatchedUsers || 0)) {
       byShowId.set(id, m);
@@ -478,7 +492,11 @@ async function main() {
   }
 }
 
-main().catch(e => {
-  console.error('Fatal error:', e);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e);
+    process.exit(1);
+  });
+}
+
+module.exports = { matchTheatrToShows, THEATR_SKIP_SHOWS };
