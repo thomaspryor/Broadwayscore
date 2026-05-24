@@ -38,7 +38,14 @@
     "maybe-happy-ending-2024/variety--unknown.json",
     "aida-off-broadway-2027/nytimes--zachary-woolfe.json",
     "aida-off-broadway-2027/new-york-classical-review--david-wright.json",
-    "aida-off-broadway-2027/wsj--heidi-waleson.json"
+    "aida-off-broadway-2027/wsj--heidi-waleson.json",
+    "aida-off-broadway-2027/financialtimes--george-grella.json",
+    "aida-off-broadway-2027/operawire--david-salazar.json",
+    "aida-off-broadway-2027/times-uk--kevin-ng.json",
+    "aida-off-broadway-2027/washpost--michael-andor-brodeur.json",
+    "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+    "tosca-off-broadway-2026/huffpost--wilborn-hampton.json",
+    "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -704,7 +711,10 @@
     "book-of-mormon-2011/backstage--david-sheward.json",
     "the-lion-king-1997/about-entertainment--ben-brantley.json",
     "the-lion-king-1997/familyvacationcritic--unknown.json",
-    "aida-off-broadway-2027/bachtrack--susan-stempleski.json"
+    "aida-off-broadway-2027/bachtrack--susan-stempleski.json",
+    "aida-off-broadway-2027/metoperaorg--unknown.json",
+    "tosca-off-broadway-2026/zeal-nyc--unknown.json",
+    "medea-off-broadway-2026/thewrap--thom-geier.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -728,7 +738,12 @@
       "just-in-time-2025/timeout--adam-feldman.json",
       "just-in-time-2025/timeout--unknown.json",
       "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
-      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json"
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "aida-off-broadway-2027/financialtimes--george-grella.json",
+      "aida-off-broadway-2027/operawire--david-salazar.json",
+      "aida-off-broadway-2027/washpost--michael-andor-brodeur.json",
+      "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+      "tosca-off-broadway-2026/huffpost--wilborn-hampton.json"
     ],
     "amp": [],
     "browserbase": [
@@ -744,7 +759,9 @@
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
       "maybe-happy-ending-2024/variety--unknown.json",
       "data/review-texts/aida-off-broadway-2027/wsj--heidi-waleson.json",
-      "aida-off-broadway-2027/wsj--heidi-waleson.json"
+      "aida-off-broadway-2027/wsj--heidi-waleson.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -763,7 +780,8 @@
       "every-brilliant-thing-2026/timeout--adam-feldman.json",
       "ragtime-2025/nytimes--unknown.json",
       "heathers-the-musical-off-broadway-2025/theatrely--unknown.json",
-      "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json"
+      "los-soles-truncos-off-broadway-2025/broadwayworld--chloe-rabinowitz.json",
+      "aida-off-broadway-2027/times-uk--kevin-ng.json"
     ],
     "brightdata": [
       "two-strangers-bway-2025/nypost--unknown.json"
@@ -780,7 +798,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "aida-off-broadway-2027/bachtrack--susan-stempleski.json",
+  "lastProcessed": "medea-off-broadway-2026/thewrap--thom-geier.json",
   "log": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -859,6 +877,17 @@
       "event": "bb-session",
       "session": "24545d1f",
       "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
+    },
+    {
+      "t": "2026-05-24T14:45:05.412Z",
+      "event": "bb-session",
+      "session": "2f2c7ff7",
+      "url": "https://www.hollywoodreporter.com/review/medea-theater-review-1274662"
+    },
+    {
+      "t": "2026-05-24T14:45:06.393Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
