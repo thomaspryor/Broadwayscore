@@ -17,12 +17,18 @@ Never put `gh run list` in a `until`/`while` polling loop to monitor CI. Discove
 
 **Third incident 2026-05-18:** Hit rate limit via cascading cancelled runs — NOT a loop, but 3 × `gh run watch` + 3 × `gh run list` within ~5 min because each push (two repos pushed separately) cancelled the previous CI run, forcing a new ID lookup. Combined with other sessions consuming quota, hit 0.
 
+**Fourth incident 2026-05-23:** Rate limit drained to 0 again. Root cause: a **4-day-old `until gh run view <id>; do sleep 60; done`** zombie from a Tue afternoon session that never exited (its `until D=... && [ "$D" = completed ]` conditional bugged out), plus a 4-min-old `while true; do gh run list ...; sleep 120; done` from a parallel session. The old hook only matched `until gh run list` literally — `gh run view` and `while`-loops slipped through. Hook broadened to match `(until|while).*gh (run|api).*sleep`.
+
+**Two layers of prevention (added 2026-05-23):**
+1. **PreToolUse block** — `~/.claude/hooks/gh-poll-block.sh` now rejects any `(until|while) + gh (run list|view|api|watch) + sleep + do` combination at the tool-call boundary.
+2. **Zombie reaper** — `~/.claude/hooks/gh-zombie-reap.sh` finds shells > 5 min old matching the polling-loop signature and kills them. Triggered by SessionStart (every new Claude session) AND launchd (`~/Library/LaunchAgents/com.tompryor.gh-zombie-reap.plist`, every 10 min, independent of Claude). Logs to `~/.claude/gh-zombie-reap.log`.
+
 **How to apply:**
 - Get run ID once: `gh run list --limit 1 --json databaseId --jq '.[0].databaseId'`
-- Then watch it: `gh run watch <id>` — blocks, uses long-polling, rate-limit safe
+- Then watch it: `gh run watch <id>` — blocks, uses long-polling, rate-limit safe. `gh run watch` is the ONLY safe pattern for waiting on a run.
 - Or: use `gh api repos/OWNER/REPO/actions/runs` directly (doesn't hit workflow-listing endpoint)
 - Or: check once after a fixed wait, report to user, move on to other work
-- **Never** chain `sleep N && gh run list` in a background loop
-- **Never** use `until gh run list ... | grep ...` — 403s don't break the loop
+- **Never** chain `sleep N && gh run X` in a `while`/`until` loop — applies to `gh run list`, `gh run view`, AND `gh api`.
 - **When pushing multiple repos in sequence:** push all repos first, THEN get the single final run ID and watch it once. Don't watch intermediate cancelled runs.
-- If you suspect zombie loops: `ps aux | grep "gh run list" | grep -v grep`
+- If you suspect zombie loops: `ps aux | grep -E 'gh (run|api)' | grep -v grep` — also check `~/.claude/gh-zombie-reap.log` for what the reaper already killed.
+- Manually run the reaper: `~/.claude/hooks/gh-zombie-reap.sh`

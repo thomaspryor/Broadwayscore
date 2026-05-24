@@ -8,6 +8,8 @@ originSessionId: a0578512-e6e0-4e93-81e8-4bb716033bb9
 
 **Why:** The two sync via CI actions (`.github/actions/checkout-review-texts/`), not symlinks. CI clones `thomaspryor/broadway-review-texts` into `data/review-texts/` during the data-validation job. Locally, the two are independent copies kept in rough sync by manual rsync or setup-local-data.sh.
 
+**CI diagnosis gotcha:** CI clones the REMOTE private repo at run time, not your local copy. If local `~/broadway-review-texts/` has a fix that wasn't pushed, CI will still fail. Always `git fetch origin main && git -C ~/broadway-review-texts show origin/main:SHOW/FILE.json` to see what CI actually reads. A local `validate-data.js` run passes because it reads `data/review-texts/` (public repo copy), not `~/broadway-review-texts/`.
+
 **How to apply:**
 - If you need to persist changes to review-text files (contentTier, flag updates, etc.), edit in `~/broadway-review-texts/` directly and `git add/commit/push` there.
 - If you're writing from a script in the main repo, write to BOTH copies OR only to `~/broadway-review-texts/` path and skip the main repo copy (it's gitignored and irrelevant).

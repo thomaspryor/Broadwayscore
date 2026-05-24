@@ -1,20 +1,21 @@
 ---
 name: feedback_playwright_1440px_required
-description: UI screenshots must be taken at 1440px wide before committing — small viewports hide desktop misalignment
+description: UI screenshots must be taken at THREE viewports (390 + 768 + 1440) before committing — single-viewport verification ships regressions
 metadata: 
   node_type: memory
   type: feedback
   originSessionId: a41695bf-11df-44a9-bb18-74431ce60773
 ---
 
-Always resize Playwright to 1440×900 before taking the verification screenshot for any UI change.
+Verify every UI change at **all three viewports**: mobile 390×844, tablet 768×1024, desktop 1440×900. Before AND after.
 
-**Why:** The three-column odds layout (GoldDerby/Polymarket/Kalshi) shipped with columns misaligned at desktop widths because the verification screenshot was taken at the default small viewport (~600px). The flex-1 title area expands at wider widths, shifting column positions — misalignment that's invisible at 600px becomes obvious at 1440px.
+**Why:** Single-viewport verification has shipped multiple regressions: three-column odds layout misaligned at desktop (only visible at 1440px, screenshot taken at default 600px); mobile row height shrinkage and 3-col mobile layout overflow only visible at 390px; WhereItRanks overflow and footer card fit issues only visible at tablet 768px (Tailwind `md:` boundary, the band most layout transitions break in). 2026-05-23 update from CLAUDE.md §5: tablet was the silent gap — 601–1199px had zero coverage.
 
-**How to apply:** After any `Edit`/`Write` to a `.tsx` file, always call:
-1. `mcp__plugin_playwright__browser_resize` → width: 1440, height: 900
+**How to apply:** After any `Edit`/`Write` to a `.tsx` file, for EACH of the three viewports:
+1. `mcp__plugin_playwright__browser_resize` → 390×844 → 768×1024 → 1440×900
 2. `mcp__plugin_playwright__browser_navigate` to the relevant page
 3. `mcp__plugin_playwright__browser_take_screenshot`
-4. `Read` the screenshot and verify before committing
+4. `Read` each screenshot and verify before committing
+5. For each viewport, check: layout overflow, text wrap, tap-target heights, score badge size, hover/click affordances.
 
-Also test 390px (mobile) for any layout that has responsive breakpoints.
+Skipping any of the three is the regression vector. The tablet check is the newest and most-forgotten.

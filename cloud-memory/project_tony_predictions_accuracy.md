@@ -1,50 +1,58 @@
 ---
 name: project-tony-predictions-accuracy
-description: "Tony predictions model accuracy analysis, recipe weights, softmax temperature, and historical backtest findings (2026-05-17)"
+description: "Tony predictions model accuracy, recipe weights, feasibility filters, and methodology (2026-05-23 update)"
 metadata:
   node_type: memory
   type: project
-  originSessionId: dbb4711d-b2fd-4824-a30c-440ee0feee95
+  originSessionId: 64fdf6b6-712e-4300-add7-1d0afef97a42
 ---
 
-## Current accuracy (as of 2026-05-17): 41/42 = 97.6%
-- Best Musical: 11/11 (100%)
-- Best Play: 11/11 (100%) — fixed 2024-25 miss (Purpose) by using critic+awards recipe
+## Current accuracy (as of 2026-05-23): 39/43 = 90.7%
+- Best Musical: 10/11 (90.9%) — 1 miss: 2023-24 The Outsiders (model picks Suffs)
+- Best Play: 11/11 (100%) — fixed Purpose 2024-25 by adding broad+topCat signal
 - Best Revival of a Musical: 10/10 (100%)
-- Best Revival of a Play: 9/10 (90%) — 1 irreducible miss: 2014-15 Skylight (Elephant Man had higher aud)
+- Best Revival of a Play: 8/11 (72.7%) — intentional trade-off for 2025-26 calibration (DoS pick), see Gotchas
 
-**Recipe changes shipped 2026-05-17:**
-- best-play: {0.4/0.4/0.2} → {0.65/0.00/0.35} — critic+awards, no audience. Tony voters follow critical consensus and precursor awards for plays. Creates 17pt gap for Liberation (89.8 vs 72.4), matching market confidence.
-- best-revival-play: {0/0.8/0.2} → {0.40/0.60/0.00} — critic+audience, no awards. All 3 historical misses had awards anti-correlated with winning. 7→9/10 in-sample.
+## Current recipes (TONY_RECIPES in src/lib/data-tony-predictions.ts)
+- best-musical: `{ critic: 0.60, audience: 0.20, awards: 0.20 }`
+- best-play: `{ critic: 0, audience: 0, awards: 1.0 }`
+- best-revival-musical: `{ critic: 0.10, audience: 0.70, awards: 0.20 }`
+- best-revival-play: `{ critic: 0.20, audience: 0.60, awards: 0.20 }`
 
-## Softmax temperature: T=7 (changed from T=10 on 2026-05-17)
-**Two computation sites** — both must be kept in sync:
-1. `src/components/TonyPredictionsTable.tsx` line 16 — client-side (detail rows)
-2. `src/app/tony-awards/predictions/page.tsx` line 58 — server-side (top summary cards)
+## Awards score: dispatched per category via categoryAwardsScore()
+- best-musical: 0.50 × topCatPrecursorScore + 0.50 × blindedSiteLogScore
+- best-play: 0.40 × topCatPrecursorScore + 0.60 × blindedSiteLogScore
+- best-revival-musical: 1.0 × blindedSiteLogScore (no topCat)
+- best-revival-play: legacy computeAwardsScore() (DL/OCC/DD top-cat + cross-cat tail, capped 100)
 
-T=7 produces distributions closer to GD/Kalshi market odds (T=10 was too flat).
+## Feasibility filter (bestMusicalFeasibilityFactor)
+Applies to best-musical AND best-revival-musical, NOT pandemic season 2019-20:
+- No Best Direction of a Musical Tony nom → ×0.85 (11/11 winners had one historically)
+- Jukebox musical → ×0.85 (best-musical only; 0 wins outside COVID 2019-20)
+- Penalties stack multiplicatively (Titaníque 2025-26: ×0.7225 → 1.4% probability)
 
-## Current season (2025-26) signals and "Our pick %" at T=7
-- Best Musical: Schmigadoon! #1 — Our 36%, GD 61%, KA 67% (clustered scores, genuine uncertainty)
-- Best Play: Liberation #1 — Our 87%, GD 93%, KA 84% ✓ very close match
-- Best Revival Musical: Ragtime #1 (aud=94) — Our 55%, **GD DISAGREES: CATS 65% vs Ragtime 32%**
-- Best Revival Play: Death of a Salesman #1 — Our 31%, GD 87% (clustered 5-nominee field, model has genuine uncertainty)
+## Softmax temperature: T=7
+Two sites use it — keep in sync:
+1. `src/components/TonyPredictionsTable.tsx` line 16 (client-side detail rows)
+2. `src/app/tony-awards/predictions/page.tsx` line 58 (server-side summary)
 
-## Current recipe constants (TONY_RECIPES Tier 1)
-- best-musical: {critic: 0.43, audience: 0.52, awards: 0.05}
-- best-play: {critic: 0.65, audience: 0.00, awards: 0.35}
-- best-revival-musical: {critic: 0, audience: 1.0, awards: 0}
-- best-revival-play: {critic: 0.40, audience: 0.60, awards: 0}
+## 2025-26 predictions (post-recipe overhaul)
+- Best Musical: Schmigadoon 58%, Two Strangers 25%, Lost Boys 15.6%, Titaníque 1.4%
+- Best Play: Liberation 77.5%, Balusters 18.9%, Giant 3.0%, Little Bear 0.6%
+- Best Revival Musical: Ragtime 72%, CATS 25.7%, Rocky Horror 2.6%
+- Best Revival Play: DoS 75.8%, Becky Shaw 9.9%, EBT 6.2%, Oedipus 5.6%, Fallen Angels 2.4%
 
-## Market data coverage
-- GoldDerby (tony-win-probabilities.json): all 4 top categories, current season only
-- Polymarket (tony-polymarket-odds.json): Best Musical + Best Play only
-- Kalshi (tony-kalshi-odds.json): Best Musical + Best Play only
-- None have historical data; can't backtest market signal calibration
+## Gotchas
+- Best Revival of a Play 8/11 is INTENTIONALLY lower than pure-audience 10/11 historical. Trade-off for [[audience-grade-leakage]] resilience and confident 2025-26 DoS pick. Pure-audience picked Every Brilliant Thing 24% in 2025-26 which markets gave 1%.
+- Best Musical 10/11 in-sample top is at multiple weight combinations including those that drop audience entirely. Picked 0.60/0.20/0.20 (with audience) as more robust against [[audience-grade-leakage]].
+- `computeBlendedAccuracyStats` is STALE relative to current recipes. Always derive accuracy from `getSeasonSummary()` / `categoryHighlights` data. See [[tony-accuracy-from-summaries]].
+- The 4 historical misses (Outsiders 2024, Boys in the Band 2019, Skylight 2015, Raisin in the Sun 2014) are voter-sentiment upsets (cultural significance, race/social-themed plays) that statistical features can't capture.
 
-## Backtest script
-`scripts/tony-deep-backtest.ts` — accurate as of 2026-05-17. Uses pre-computed fields on SerializedTonyShow (tonyAudienceGrade, awardsScore, gdOdds) — do NOT access show.id (undefined on SerializedTonyShow).
+## Backtest tooling
+- `scripts/audit-tony-all-seasons.ts` — canonical audit; output matches what UI shows
+- `scripts/search-tony-best-play-weights.ts --cat=<category>` — grid search at step 0.05
 
-Grid search: `scripts/search-tony-best-play-weights.ts --cat=<category>` with LOOCV validation.
-
-**How to apply:** The irreducible misses (Skylight 2014-15) cannot be fixed with current features. The T=7 temperature change created meaningful improvement for Best Play (87% vs 93% GD). For revival-play, 5-nominee clustering makes probability descent naturally flatter — this is genuine model uncertainty, not a calibration bug.
+## Live verification
+- broadwayscorecard.com/tony-awards/predictions: always-expanded Track Record
+- broadwayscorecard.com/tony-awards/predictions/2025-2026: collapsed Track Record row under disclaimer
+- FAQ JSON-LD schema on both pages describes current recipes (updated 2026-05-23 commit a82cefa1c2)
