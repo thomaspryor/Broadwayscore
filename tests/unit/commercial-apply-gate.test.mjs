@@ -105,4 +105,88 @@ describe('commercial-apply-gate', () => {
       }
     });
   });
+
+  describe('buildCommercialEntry — preserves existing fields on auto-apply', () => {
+    // Regression for ship-check P0: the scraper writes only recouped fields,
+    // so a naive rebuild from scratch wipes designation/capitalization/notes —
+    // the exact data the Friday pipeline is supposed to PRESERVE while
+    // flipping recouped.
+    const existing = {
+      designation: 'Easy Winner',
+      capitalization: 5_600_000,
+      capitalizationSource: 'NYT (...): the play has now recouped...',
+      weeklyRunningCost: 450_000,
+      costMethodology: 'trade-reported',
+      recouped: false,
+      notes: 'Limited run at Music Box. Strong opening week.',
+      sources: [
+        { type: 'reddit', url: 'https://reddit.com/r/Broadway/post1', date: '2026-04-01' },
+      ],
+      lastUpdated: '2026-05-17T00:00:00.000Z',
+      firstAdded: '2026-04-01T00:00:00.000Z',
+    };
+    const scraperEntry = {
+      recouped: true,
+      _recoupedClaim: true,
+      recoupedDate: '2026-05',
+      recoupedSource: 'NYT (2026-05-19): explicit recoupment',
+      confidence: 'high',
+      detectedBy: SCRAPER,
+      sourceHost: 'nytimes.com',
+      sources: [
+        { type: 'trade', url: 'https://www.nytimes.com/2026/05/19/giant.html', date: '2026-05-19' },
+      ],
+    };
+
+    it('preserves designation when only recoupment fields are in the pending entry', () => {
+      const result = gate.buildCommercialEntry(scraperEntry, existing, { isClaimAutoApply: true });
+      assert.equal(result.designation, 'Easy Winner', 'designation must survive merge');
+      assert.equal(result.capitalization, 5_600_000, 'capitalization must survive');
+      assert.equal(result.weeklyRunningCost, 450_000, 'weeklyRunningCost must survive');
+      assert.ok(result.notes && result.notes.includes('Music Box'), 'notes must survive');
+    });
+
+    it('flips recouped state from the scraper finding', () => {
+      const result = gate.buildCommercialEntry(scraperEntry, existing, { isClaimAutoApply: true });
+      assert.equal(result.recouped, true);
+      assert.equal(result.recoupedDate, '2026-05');
+      assert.equal(result.recoupedSource, scraperEntry.recoupedSource);
+    });
+
+    it('merges sources by URL — keeps prior citations, appends new', () => {
+      const result = gate.buildCommercialEntry(scraperEntry, existing, { isClaimAutoApply: true });
+      assert.equal(result.sources.length, 2, 'should have both reddit + NYT');
+      const urls = result.sources.map(s => s.url);
+      assert.ok(urls.includes('https://reddit.com/r/Broadway/post1'));
+      assert.ok(urls.includes('https://www.nytimes.com/2026/05/19/giant.html'));
+    });
+
+    it('does NOT add the same source twice', () => {
+      const entryWithDup = { ...scraperEntry, sources: [...existing.sources] };
+      const result = gate.buildCommercialEntry(entryWithDup, existing, { isClaimAutoApply: true });
+      assert.equal(result.sources.length, 1, 'duplicate URL should not be added');
+    });
+
+    it('rebuilds from scratch (no merge) when NOT an auto-apply claim', () => {
+      // Deep-research / batch-research / manual-tip paths must continue to
+      // rebuild from scratch — the merge only applies to auto-apply claims.
+      const fullEntry = {
+        designation: 'Miracle',
+        capitalization: 12_500_000,
+        recouped: true,
+        notes: 'Long-running mega-hit',
+      };
+      const result = gate.buildCommercialEntry(fullEntry, existing, { isClaimAutoApply: false });
+      assert.equal(result.capitalizationSource, undefined, 'old field must NOT survive non-auto-apply');
+      assert.equal(result.weeklyRunningCost, undefined);
+      assert.equal(result.designation, 'Miracle');
+      assert.equal(result.capitalization, 12_500_000);
+    });
+
+    it('handles missing existing entry gracefully', () => {
+      const result = gate.buildCommercialEntry(scraperEntry, null, { isClaimAutoApply: true });
+      assert.equal(result.recouped, true);
+      assert.equal(result.designation, undefined);
+    });
+  });
 });

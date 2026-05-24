@@ -146,8 +146,16 @@ function main() {
     process.exit(1);
   }
   const report = JSON.parse(fs.readFileSync(REPORT_JSON, 'utf8'));
-  const claims = (report.recoupedClaims || []).slice(0, CAP);
+  const allClaims = report.recoupedClaims || [];
+  const claims = allClaims.slice(0, CAP);
+  const overflow = allClaims.length - claims.length;
   console.log(`Notion sweep — ${claims.length} recouped-claim entries (cap ${CAP}, dry-run=${DRY_RUN})`);
+  if (overflow > 0) {
+    // Loud warning so the overflow doesn't disappear silently — the Saturday
+    // CI log + GitHub step summary surface this. Ship-check P1 finding: with
+    // 80 claims and cap=25, the other 55 would have rotted invisibly.
+    console.log(`::warning::Notion cap=${CAP} hit — ${overflow} recouped-claim entries deferred to next run`);
+  }
   if (claims.length === 0) return;
 
   const results = { created: 0, updated: 0, error: 0, 'dry-run': 0 };
@@ -155,7 +163,8 @@ function main() {
     const { action } = notifyOne(item);
     results[action] = (results[action] || 0) + 1;
   }
-  console.log(`\nSweep summary: created=${results.created} updated=${results.updated} errors=${results.error}`);
+  console.log(`\nSweep summary: created=${results.created} updated=${results.updated} errors=${results.error}` +
+              (overflow > 0 ? ` overflow=${overflow}` : ''));
 }
 
 main();

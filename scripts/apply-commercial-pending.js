@@ -126,35 +126,33 @@ function main() {
       skipped++;
       continue;
     }
-    if (hasRecoupedClaim(entry) && isAutoApplyableClaim(entry)) {
+    const isClaimAutoApply = hasRecoupedClaim(entry) && isAutoApplyableClaim(entry);
+    if (isClaimAutoApply) {
       console.log(`  ✅ "${showId}" — auto-applying recouped claim from trusted source ${entry.detectedBy} @ ${entry.sourceHost}`);
     }
 
-    // If already exists, update rather than skip (merge new findings)
+    // If already exists, update rather than skip (merge new findings).
+    // EXCEPT: auto-apply recoupment claims MUST be allowed through here —
+    // those entries only carry recoupment fields, and the show ALREADY having a
+    // designation is the common case (every show that recouped after first
+    // deep-research already has 'TBD' bumped to something like 'Easy Winner').
+    // Without this exception the Friday pipeline is a no-op for the very
+    // shows it's designed to catch. Ship-check P0 finding.
     const existing = commercial.shows[showId];
-    if (existing && existing.designation && existing.designation !== 'TBD' && !SINGLE_SHOW) {
+    if (existing && existing.designation && existing.designation !== 'TBD' && !SINGLE_SHOW && !isClaimAutoApply) {
       console.log(`  "${showId}" already has designation "${existing.designation}" — skipping`);
       skipped++;
       continue;
     }
 
-    // Build clean commercial entry, preserving research metadata from existing
-    const commercialEntry = {};
-    if (entry.designation) commercialEntry.designation = entry.designation;
-    if (entry.capitalization != null) commercialEntry.capitalization = entry.capitalization;
-    if (entry.capitalizationSource) commercialEntry.capitalizationSource = entry.capitalizationSource;
-    if (entry.weeklyRunningCost != null) commercialEntry.weeklyRunningCost = entry.weeklyRunningCost;
-    if (entry.costMethodology) commercialEntry.costMethodology = entry.costMethodology;
-    if (entry.recouped != null) commercialEntry.recouped = entry.recouped;
-    if (entry.recoupedDate) commercialEntry.recoupedDate = entry.recoupedDate;
-    if (entry.recoupedSource) commercialEntry.recoupedSource = entry.recoupedSource;
-    if (entry.notes) commercialEntry.notes = entry.notes;
-    if (entry.sources && entry.sources.length > 0) {
-      // Normalize: coerce unknown type values (e.g. "other") to validator-allowed
-      // types and preserve null dates (validator tolerates null, not bad format).
-      const normalized = normalizeSources(entry.sources);
-      if (normalized.length > 0) commercialEntry.sources = normalized;
-    }
+    // Build entry via shared lib (tested in commercial-apply-gate.test.mjs).
+    // For auto-apply claims, the lib starts from `existing` and overlays the
+    // scraper's recoupment fields — preserving designation/cap/cost/notes
+    // that the scraper doesn't carry.
+    const commercialEntry = gate.buildCommercialEntry(entry, existing, {
+      isClaimAutoApply,
+      normalizeSources,
+    });
 
     commercialEntry.lastUpdated = new Date().toISOString();
     commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();

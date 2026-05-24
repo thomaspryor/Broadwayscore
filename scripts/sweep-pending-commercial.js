@@ -85,9 +85,9 @@ function daysAgo(isoString) {
   return (Date.now() - t) / 86_400_000;
 }
 
-function hasRecoupedClaim(entry) {
-  return entry.recouped === true || entry._recoupedClaim === true;
-}
+// Shared with apply-commercial-pending.js — same `_recoupedClaim || recouped`
+// semantics. Don't redefine inline; reuse so the rules stay in lockstep.
+const { hasRecoupedClaim } = require('./lib/commercial-apply-gate');
 
 function classifyEntry(slug, entry, showsBySlug) {
   if (hasRecoupedClaim(entry)) {
