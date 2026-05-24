@@ -201,6 +201,7 @@ function nodeFor(awards: ShowAwards, key: OtherAwardKey) {
   if (key === 'nydcc') return awards.nyDramaCritics;
   if (key === 'obie') return awards.obie;
   if (key === 'lortel') return awards.lortel;
+  if (key === 'oba') return awards.oba;
   if (key === 'criticsCircle') return awards.criticsCircle;
   if (key === 'eveningStandard') return awards.eveningStandard;
   if (key === 'whatsOnStage') return awards.whatsOnStage;
