@@ -26,6 +26,28 @@ const KNOWN_SWAP_SURNAMES = new Set([
   'lumsden', 'malpass', 'woodyatt', 'thompson', 'johnson',
 ]);
 
+// Domains that publish opera coverage. A SERP→LLM extraction landing on
+// one of these pages will return opera-singer cast even when the target
+// show is a play that shares the title (the Kavalier-Clay case: target was
+// the OB play, scraper landed on parterre.com's Met Opera podcast about
+// the 2025-26 season). The OPERA_TITLES role check is a downstream backstop;
+// blocking at the source-URL level prevents the LLM call entirely.
+const OPERA_SOURCE_DOMAINS = [
+  'parterre.com',
+  'metopera.org',
+  'metoperafamily.org',
+  'operanews.com',
+  'operawire.com',
+  'operatoday.com',
+  'opera-online.com',
+];
+
+function isOperaSourceUrl(url) {
+  if (!url) return false;
+  const lower = String(url).toLowerCase();
+  return OPERA_SOURCE_DOMAINS.some(d => lower.includes(d));
+}
+
 /**
  * Validate LLM-extracted cast for the wrong-show / corrupted-role patterns.
  *
@@ -80,8 +102,10 @@ function validateCastExtraction(cast, showTitle) {
 
 module.exports = {
   validateCastExtraction,
+  isOperaSourceUrl,
   OPERA_TITLES,
   TV_PATTERNS,
   COLUMN_HEADER_RE,
   KNOWN_SWAP_SURNAMES,
+  OPERA_SOURCE_DOMAINS,
 };
