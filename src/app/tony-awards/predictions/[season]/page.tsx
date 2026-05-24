@@ -26,6 +26,7 @@ import {
   serializeShow,
   computeBlendedAccuracyStats,
   getSeasonSummary,
+  getTonyTrackRecord,
 } from '@/lib/data-tony-predictions';
 
 const allSeasons = getAllPredictionSeasons();
@@ -79,21 +80,11 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
   // Summaries for the collapsible Track Record block — same data used by the
   // umbrella /tony-awards/predictions page so the two stay in sync.
   const allSummaries = allSeasons.map(s => getSeasonSummary(allShows, s));
-  // Compute accuracy the same way the TrackRecord component does (from
-  // summaries) so the collapsed-state summary number matches the expanded
-  // breakdown. computeBlendedAccuracyStats uses a different scoring path
-  // that gets stale relative to the live recipes.
-  let trackRecordHits = 0;
-  let trackRecordCells = 0;
-  for (const sum of allSummaries) {
-    if (!sum.hasTonyResults) continue;
-    for (const h of sum.categoryHighlights) {
-      if (!h.winnerTitle) continue;
-      trackRecordCells++;
-      if (h.topShowTitle && h.winnerTitle === h.topShowTitle) trackRecordHits++;
-    }
-  }
-  const trackRecordPct = trackRecordCells > 0 ? Math.round((trackRecordHits / trackRecordCells) * 1000) / 10 : 0;
+  // Source of truth for the headline (also consumed by the homepage promo).
+  const trackRecord = getTonyTrackRecord(allShows);
+  const trackRecordHits = trackRecord.hits;
+  const trackRecordCells = trackRecord.cells;
+  const trackRecordPct = trackRecord.pct;
   const blendedHits = Math.round((accuracyStats.blendedRank1WinPct / 100) * accuracyStats.categorySeasonCount);
   const criticHits = Math.round((accuracyStats.criticsOnlyRank1WinPct / 100) * accuracyStats.categorySeasonCount);
 

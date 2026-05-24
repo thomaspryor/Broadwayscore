@@ -71,6 +71,8 @@ interface HomePageClientProps {
   marketOpenCounts: { broadway: number; offBroadway: number };
   /** Pre-computed award winner ID arrays (avoids client-side awards.json import) */
   awardWinnerSets?: AwardWinnerSets;
+  /** Tony predictions track-record headline (server-computed for the FeaturedSpot promo) */
+  tonyTrackRecord?: { pct: number; hits: number; cells: number; seasons: number };
 }
 
 // URL parameter values
@@ -210,7 +212,7 @@ function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: strin
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord }: HomePageClientProps) {
   const initialSearchParams = useSearchParams();
 
   // Local state for instant updates (no full-page reload)
@@ -852,18 +854,18 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                 viewAllHref={row.viewAllHref}
                 minCount={row.minCount}
               />
-              {row.title === 'Best Off-Broadway' && (
+              {row.title === 'Best Off-Broadway' && tonyTrackRecord && (
                 <FeaturedSpot
                   eyebrow="Tony Awards 2026"
                   title="Who will win Best Musical?"
-                  description="Our model has called 92.9% of Tony winners since 2015. See its picks before the ceremony."
+                  description={`Our model has called ${tonyTrackRecord.pct}% of Tony winners since 2015. See its picks before the ceremony.`}
                   ctaLabel="See the predictions"
                   href="/tony-awards/predictions/2025-2026"
                   accent="gold"
-                  stat={{ value: '92.9%', label: 'Historical accuracy', compactLabel: 'Accuracy' }}
+                  stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Historical accuracy', compactLabel: 'Accuracy' }}
                   secondary={[
-                    { value: '11', label: 'seasons' },
-                    { value: '62/67', label: 'calls right' },
+                    { value: `${tonyTrackRecord.seasons}`, label: 'seasons' },
+                    { value: `${tonyTrackRecord.hits}/${tonyTrackRecord.cells}`, label: 'calls right' },
                   ]}
                 />
               )}

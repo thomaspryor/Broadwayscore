@@ -91,33 +91,57 @@ export default function FeaturedSpotSlim({
 
         <div className={`absolute inset-x-0 top-0 h-px ${ACCENT_TOP_EDGE[accent]}`} aria-hidden="true" />
 
-        <div className="relative flex items-center gap-3 sm:gap-4 px-4 py-3 sm:px-5 sm:py-3.5">
-          {/* Left: eyebrow + title */}
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 mb-0.5 sm:mb-1">
-              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ACCENT_DOT[accent]}`} aria-hidden="true" />
-              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
-                {eyebrow}
+        <div className="relative px-4 py-3 sm:px-5 sm:py-3.5">
+          {/* Desktop / tablet: single row */}
+          <div className="hidden sm:flex items-center gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ACCENT_DOT[accent]}`} aria-hidden="true" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
+                  {eyebrow}
+                </span>
+              </div>
+              <h3 className="text-lg font-extrabold text-white tracking-tight leading-tight truncate">
+                {title}
+              </h3>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <StatPill accent={accent} stat={stat} />
+              <span
+                aria-hidden="true"
+                className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill font-bold text-sm transition-all duration-200 whitespace-nowrap ${CTA_CLASS[accent]}`}
+              >
+                <span>{ctaLabel}</span>
+                <ArrowIcon />
               </span>
             </div>
-            <h3 className="text-sm sm:text-lg font-extrabold text-white tracking-tight leading-tight truncate">
-              {title}
-            </h3>
           </div>
 
-          {/* Right: pill + CTA */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            <div className="hidden sm:block">
-              <StatPill accent={accent} stat={stat} />
+          {/* Mobile: two rows — eyebrow+pill on top, title+CTA below */}
+          <div className="sm:hidden flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ACCENT_DOT[accent]}`} aria-hidden="true" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-gray-400 truncate">
+                  {eyebrow}
+                </span>
+              </div>
+              <div className="flex-shrink-0">
+                <StatPill accent={accent} stat={stat} />
+              </div>
             </div>
-            <span
-              aria-hidden="true"
-              className={`inline-flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 rounded-pill font-bold text-xs sm:text-sm transition-all duration-200 whitespace-nowrap ${CTA_CLASS[accent]}`}
-            >
-              <span className="hidden sm:inline">{ctaLabel}</span>
-              <span className="sm:hidden">{ctaLabel.split(' ').slice(0, 2).join(' ')}</span>
-              <ArrowIcon />
-            </span>
+            <div className="flex items-center justify-between gap-3">
+              <h3 className="text-sm font-extrabold text-white tracking-tight leading-tight min-w-0 [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden">
+                {title}
+              </h3>
+              <span
+                aria-hidden="true"
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-pill font-bold text-xs transition-all duration-200 whitespace-nowrap flex-shrink-0 ${CTA_CLASS[accent]}`}
+              >
+                <span>{ctaLabel}</span>
+                <ArrowIcon />
+              </span>
+            </div>
           </div>
         </div>
       </div>

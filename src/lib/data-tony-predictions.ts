@@ -1631,6 +1631,43 @@ export function getSeasonSummary(allShows: ComputedShow[], season: TonySeasonWin
   };
 }
 
+// --- Headline accuracy (single source of truth) ---
+
+export interface TonyTrackRecord {
+  /** Correct rank-1 picks across all seasons + categories with Tony results. */
+  hits: number;
+  /** Total category cells across all seasons with Tony results. */
+  cells: number;
+  /** hits / cells × 100, rounded to one decimal. Matches the season page headline. */
+  pct: number;
+  /** Number of seasons that have Tony results (denominator for "X seasons"). */
+  seasons: number;
+}
+
+/**
+ * Computes the same accuracy headline shown on /tony-awards/predictions/[season]
+ * (lines 86-96). Use this anywhere off-page (homepage promo, social cards, etc.)
+ * so the headline stays in sync with the live predictions page.
+ */
+export function getTonyTrackRecord(allShows: ComputedShow[]): TonyTrackRecord {
+  const allSeasons = getAllPredictionSeasons();
+  const summaries = allSeasons.map(s => getSeasonSummary(allShows, s));
+  let hits = 0;
+  let cells = 0;
+  let seasons = 0;
+  for (const sum of summaries) {
+    if (!sum.hasTonyResults) continue;
+    seasons++;
+    for (const h of sum.categoryHighlights) {
+      if (!h.winnerTitle) continue;
+      cells++;
+      if (h.topShowTitle && h.winnerTitle === h.topShowTitle) hits++;
+    }
+  }
+  const pct = cells > 0 ? Math.round((hits / cells) * 1000) / 10 : 0;
+  return { hits, cells, pct, seasons };
+}
+
 // --- Historical Winners ---
 
 export interface HistoricalWinner {
