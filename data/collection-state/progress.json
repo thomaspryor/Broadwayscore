@@ -35,7 +35,10 @@
     "my-neighbour-totoro-west-end-2025/london-theatre--unknown.json",
     "my-neighbour-totoro-west-end-2025/standard--unknown.json",
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
-    "maybe-happy-ending-2024/variety--unknown.json"
+    "maybe-happy-ending-2024/variety--unknown.json",
+    "aida-off-broadway-2027/nytimes--zachary-woolfe.json",
+    "aida-off-broadway-2027/new-york-classical-review--david-wright.json",
+    "aida-off-broadway-2027/wsj--heidi-waleson.json"
   ],
   "failed": [
     "im-sorry-prime-minister-west-end-2026/times-uk--clive-davis.json",
@@ -694,7 +697,14 @@
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
-    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json"
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "aida-off-broadway-2027/bachtrack--susan-stempleski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -732,7 +742,9 @@
       "data/review-texts/masquerade-off-broadway-2025/wsj--unknown.json",
       "masquerade-off-broadway-2025/wsj--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
-      "maybe-happy-ending-2024/variety--unknown.json"
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/aida-off-broadway-2027/wsj--heidi-waleson.json",
+      "aida-off-broadway-2027/wsj--heidi-waleson.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -757,15 +769,18 @@
       "two-strangers-bway-2025/nypost--unknown.json"
     ],
     "archiveToday": [
-      "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json"
+      "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
+      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json"
     ],
     "archive": [
       "les-liaisons-dangereuses-west-end-2026/sunday-telegraph--matt-wolf.json",
-      "my-neighbour-totoro-west-end-2025/standard--unknown.json"
+      "my-neighbour-totoro-west-end-2025/standard--unknown.json",
+      "aida-off-broadway-2027/nytimes--zachary-woolfe.json",
+      "aida-off-broadway-2027/new-york-classical-review--david-wright.json"
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+  "lastProcessed": "aida-off-broadway-2027/bachtrack--susan-stempleski.json",
   "log": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -827,6 +842,23 @@
       "t": "2026-05-24T14:37:45.213Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-24T14:39:58.982Z",
+      "event": "bb-session",
+      "session": "c399a248",
+      "url": "https://www.wsj.com/arts-culture/theater/aida-review-glum-grandeur-at-the-metrop"
+    },
+    {
+      "t": "2026-05-24T14:40:00.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-24T14:41:05.622Z",
+      "event": "bb-session",
+      "session": "24545d1f",
+      "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-24T14:38:36.293Z",
-  "processed": 36,
-  "failed": 657,
-  "successRate": "5.2%",
+  "updatedAt": "2026-05-24T14:41:41.382Z",
+  "processed": 39,
+  "failed": 664,
+  "successRate": "5.5%",
   "tierBreakdown": {
     "playwright": 20,
     "amp": 0,
-    "browserbase": 11,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingbee": 16,
     "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 2
+    "archiveToday": 2,
+    "archive": 4
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
       "t": "2026-05-24T14:23:50.298Z",
@@ -75,6 +75,23 @@
       "t": "2026-05-24T14:37:45.213Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-24T14:39:58.982Z",
+      "event": "bb-session",
+      "session": "c399a248",
+      "url": "https://www.wsj.com/arts-culture/theater/aida-review-glum-grandeur-at-the-metrop"
+    },
+    {
+      "t": "2026-05-24T14:40:00.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-24T14:41:05.622Z",
+      "event": "bb-session",
+      "session": "24545d1f",
+      "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
     }
   ]
 }
