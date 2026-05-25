@@ -1,0 +1,100 @@
+name: Clear Stale duplicateOf Flags
+
+# Scheduled cleanup for stale `duplicateOf` pointers in data/review-texts/.
+# Background: review files can carry duplicateOf pointing at a sibling that's
+# later deleted/renamed/URL-corrected. No code clears inbound pointers when a
+# file goes away, so stale flags accumulate and silently exclude legit reviews
+# from scoring. The audit script (`audit-duplicate-of-url-mismatch.js`) detects
+# them; this workflow runs `--fix` on a schedule so the gate in test.yml never
+# trips on slow accumulation.
+#
+# Producer of stale flags: review-write-guard.js URL-collision detection at
+# write time. Self-heal at write covers the case where the SAME file is later
+# rewritten; this workflow covers the case where the sibling vanishes.
+on:
+  schedule:
+    # Weekly on Sundays at 11 AM UTC (after the Sunday morning rebuild storm)
+    - cron: '0 11 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: clear-stale-duplicate-of
+  cancel-in-progress: false
+
+jobs:
+  clear-stale:
+    name: Clear stale duplicateOf flags
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run audit (report)
+        id: audit
+        run: |
+          set +e
+          OUT=$(node scripts/audit-duplicate-of-url-mismatch.js 2>&1)
+          STATUS=$?
+          echo "$OUT"
+          COUNT=$(echo "$OUT" | grep -oE 'Found [0-9]+' | head -1 | awk '{print $2}')
+          COUNT=${COUNT:-0}
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          # Don't fail the workflow on detection — the next step will fix.
+          exit 0
+
+      - name: Apply fix
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        run: |
+          node scripts/audit-duplicate-of-url-mismatch.js --fix
+
+      - name: Push to private repo
+        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            chore: auto-clear ${{ steps.audit.outputs.count }} stale duplicateOf flags [audit-fix]
+
+      - name: Summary
+        run: |
+          {
+            echo "## duplicateOf Stale-Flag Sweep"
+            echo ""
+            echo "**Stale flags detected:** ${{ steps.audit.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.audit.outputs.status }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** auto-fixed + pushed"
+            fi
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Clear Stale duplicateOf Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
