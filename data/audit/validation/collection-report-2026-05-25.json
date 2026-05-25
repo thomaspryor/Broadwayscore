@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-25T19:57:31.568Z",
+  "runDate": "2026-05-25T20:38:16.917Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,41 +11,41 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 53,
-    "failed": 687,
+    "processed": 56,
+    "failed": 682,
     "skipped": 0,
-    "successRate": "7.2%"
+    "successRate": "7.6%"
   },
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 31,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 17,
-    "brightdata": 4,
-    "archiveToday": 8,
+    "brightdata": 5,
+    "archiveToday": 7,
     "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 7,
+    "tier1Attempts": 11,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 2,
-    "tier2Attempts": 7,
-    "tier2Success": 5,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 3,
     "tier3Attempts": 4,
-    "tier3Success": 2,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 216,
-    "scrapingBeePageCredits": 34,
+    "tier3Success": 3,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 212,
+    "scrapingBeePageCredits": 13,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 206,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
@@ -103,7 +103,10 @@
     "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
     "turandot-off-broadway-2025/parterre-box--unknown.json",
     "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
-    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
+    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "joe-turners-come-and-gone-2009/nytg--unknown.json"
   ],
   "failed": [
     "ragtime-2025/bloomberg--chris-rovzar.json",
@@ -577,7 +580,6 @@
     "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json",
     "beetlejuice-west-end-2026/guardian--unknown.json",
     "equus-west-end-2026/artsdesk--unknown.json",
-    "grace-pervades-west-end-2026/telegraph--unknown.json",
     "ragtime-2025/bloomberg--chris-rovzar.json",
     "titanique-west-end-2024/times-uk--clive-davis.json",
     "hadestown-west-end-2024/times-uk--clive-davis.json",
@@ -757,7 +759,6 @@
     "looped-2010/ny1--roma-torre.json",
     "next-fall-2010/backstage--david-sheward.json",
     "a-behanding-in-spokane-2010/nytheatre--martin-denton.json",
-    "time-stands-still-2010/nytg--unknown.json",
     "fela-2009/guardian--michael-billington.json",
     "burn-the-floor-2009/ew--jennifer-armstrong.json",
     "burn-the-floor-2009/backstage--jo-sagolla.json",
@@ -784,14 +785,11 @@
     "les-miserables-2006/newsday--unknown.json",
     "les-miserables-2006/theatermania--unknown.json",
     "les-miserables-2006/chicago-reader--justin-hayford.json",
-    "les-miserables-2006/thestage--unknown.json",
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "taboo-2003/nytimes--ben-brantley.json",
-    "little-shop-of-horrors-2003/backstage--unknown.json",
     "kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
-    "little-shop-of-horrors-2019/about-entertainment--ben-brantley.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "tierDetails": {
@@ -824,14 +822,14 @@
       "mexodus-off-broadway-2026/nytg--unknown.json",
       "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
       "turandot-off-broadway-2025/parterre-box--unknown.json",
-      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
+      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json",
+      "equus-west-end-2026/timeout--andrzej-lukowski.json",
+      "joe-turners-come-and-gone-2009/nytg--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/les-miserables-2006/newsday--unknown.json",
-      "data/review-texts/kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json"
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -857,7 +855,8 @@
       "a-steady-rain-2009/latimes--unknown.json",
       "little-shop-of-horrors-2003/latimes--unknown.json",
       "kiss-of-the-spider-woman-1993/billboard--unknown.json",
-      "kiss-of-the-spider-woman-1993/billboard--glenn-rowley.json"
+      "kiss-of-the-spider-woman-1993/billboard--glenn-rowley.json",
+      "grace-pervades-west-end-2026/telegraph--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/les-miserables-2006/thestage--unknown.json",
@@ -866,8 +865,7 @@
       "data/review-texts/les-miserables-2006/thestage--unknown.json",
       "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json",
       "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json",
-      "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json",
-      "data/review-texts/les-miserables-2006/thestage--unknown.json"
+      "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
