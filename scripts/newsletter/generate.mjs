@@ -1617,12 +1617,13 @@ function mostReadSection(climberList) {
     if (isOperaShow(show)) continue;
     const a = aggregateScore(show.id);
     const eligible = a && a.count >= minReviews(show.category);
+    if (!eligible) continue; // Trending list: scored shows only (user 2026-05-24)
     items.push({
       show,
       title: show.title,
       slug: show.slug,
       category: show.category,
-      score: eligible ? a.avg : null,
+      score: a.avg,
       views: p.views,
       prior: p.prior,
       growth: p.growth,
