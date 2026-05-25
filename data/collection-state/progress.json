@@ -179,7 +179,17 @@
     "all-the-way-2014/ap--unknown.json",
     "the-winslow-boy-2013/bloomberg--jeremy-gerard.json",
     "the-winslow-boy-2013/bloomberg--unknown.json",
-    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json"
+    "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+    "soul-doctor-2013/new-jersey-newsroom--michael-sommers.json",
+    "jekyll-and-hyde-2013/bloomberg--philip-boroff.json",
+    "orphans-2013/bloomberg--jeremy-gerard.json",
+    "the-nance-2013/hollywood-reporter--david-rooney.json",
+    "the-nance-2013/new-jersey-newsroom--michael-sommers.json",
+    "motown-the-musical-2013/new-jersey-newsroom--michael-sommers.json",
+    "matilda-the-musical-2013/village-voice--michael-musto.json",
+    "lucky-guy-2013/backstage--erik-haagensen.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/new-jersey-newsroom--michael-sommers.json",
+    "glengarry-glen-ross-2012/washpost--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -261,7 +271,8 @@
       "data/review-texts/the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
       "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
-      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json"
+      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json",
+      "data/review-texts/glengarry-glen-ross-2012/washpost--ben-brantley.json"
     ],
     "archive": [
       "i-puritani-off-broadway-2025/new-york-classical-review--george-grella.json",
@@ -272,7 +283,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "the-glass-menagerie-2013/bloomberg--jeremy-gerard.json",
+  "lastProcessed": "glengarry-glen-ross-2012/washpost--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-25T09:23:05.785Z",
@@ -308,6 +319,17 @@
       "event": "bb-session",
       "session": "ebc31203",
       "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
+    },
+    {
+      "t": "2026-05-25T06:29:41.120Z",
+      "event": "bb-session",
+      "session": "95e9ee46",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-mamets-glengar"
+    },
+    {
+      "t": "2026-05-25T06:29:42.149Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
