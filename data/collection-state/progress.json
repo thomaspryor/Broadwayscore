@@ -289,7 +289,17 @@
     "the-story-of-my-life-2009/newsday--linda-winer.json",
     "hedda-gabler-2009/newsday--linda-winer.json",
     "title-of-show-2008/mycentraljerseycom--charles-paolino.json",
-    "south-pacific-2008/newyorker--john-lahr.json"
+    "south-pacific-2008/newyorker--john-lahr.json",
+    "the-farnsworth-invention-2007/variety--charles-isherwood.json",
+    "pygmalion-2007/variety--david-rooney.json",
+    "journeys-end-2007/variety--david-rooney.json",
+    "mary-poppins-2006/variety--charles-isherwood.json",
+    "tarzan-2006/variety--charles-isherwood.json",
+    "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
+    "lennon-2005/about-entertainment--ben-brantley.json",
+    "frozen-2004/about-entertainment--unknown.json",
+    "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+    "salome-2003/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -342,7 +352,11 @@
       "data/review-texts/cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
       "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json",
+      "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
+      "data/review-texts/frozen-2004/about-entertainment--unknown.json",
+      "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -383,7 +397,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "south-pacific-2008/newyorker--john-lahr.json",
+  "lastProcessed": "salome-2003/about-entertainment--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-25T09:23:05.785Z",
@@ -430,6 +444,50 @@
       "t": "2026-05-25T06:29:42.149Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-05-25T06:45:53.899Z",
+      "event": "bb-session",
+      "session": "89b82611",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9902E6DE123EF936A2575BC"
+    },
+    {
+      "t": "2026-05-25T06:45:54.362Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:46:07.113Z",
+      "event": "bb-session",
+      "session": "83284a2d",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&amp;res=98"
+    },
+    {
+      "t": "2026-05-25T06:46:07.675Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:46:20.730Z",
+      "event": "bb-session",
+      "session": "803cb57e",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9B00E7D8113CF934A35756C"
+    },
+    {
+      "t": "2026-05-25T06:46:21.214Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:46:33.831Z",
+      "event": "bb-session",
+      "session": "4207e0e5",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?_r=1&amp;res=9F07E7D81E3DF9"
+    },
+    {
+      "t": "2026-05-25T06:46:34.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
