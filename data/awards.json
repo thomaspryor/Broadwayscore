@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Broadway and West End show awards data - Tony Awards, Drama Desk, Outer Critics Circle, Drama League, Laurence Olivier Awards",
-    "lastUpdated": "2026-05-24T23:37:54.019Z",
+    "lastUpdated": "2026-05-25T20:19:27.744Z",
     "sources": [
       "Wikipedia",
       "Playbill",
@@ -2818,6 +2818,7 @@
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
+          "Outstanding Lead Performer in a Broadway Play",
           "Outstanding New Broadway Play"
         ]
       },
@@ -2876,8 +2877,11 @@
         "wins": [],
         "nominatedFor": [
           "Outstanding Book of a Musical",
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)",
+          "Outstanding Lead Performer in a Broadway Musical",
           "Outstanding New Broadway Musical",
-          "Outstanding New Score"
+          "Outstanding New Score",
+          "Outstanding New Score (Broadway or Off-Broadway)"
         ]
       },
       "dramaLeague": {
@@ -2903,6 +2907,7 @@
         "season": "2025-26",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Revival of a Play"
         ]
       }
@@ -2964,6 +2969,7 @@
           "Outstanding Director of a Musical",
           "Outstanding Featured Performer in a Broadway Musical",
           "Outstanding Lead Performer in a Broadway Musical",
+          "Outstanding Projection Design",
           "Outstanding Revival of a Musical"
         ],
         "nominatedFor": [
@@ -2971,11 +2977,18 @@
           "Outstanding Director of a Musical",
           "Outstanding Featured Performer in a Broadway Musical",
           "Outstanding Lead Performer in a Broadway Musical",
+          "Outstanding Projection Design",
           "Outstanding Revival of a Musical"
         ],
         "winnerNames": {
           "Outstanding Lead Performer in a Broadway Musical": [
             "Joshua Henry"
+          ],
+          "Outstanding Featured Performer in a Broadway Musical": [
+            "Ben Levi Ross"
+          ],
+          "Outstanding Direction of a Musical": [
+            "Lear deBessonet"
           ]
         }
       },
@@ -3041,6 +3054,7 @@
         "season": "2025-26",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Lead Performer in a Broadway Musical",
           "Outstanding Revival of a Musical"
         ]
       },
@@ -3118,6 +3132,20 @@
             "Josephine and I"
           ]
         }
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [
+          "Outstanding Solo Performance"
+        ],
+        "nominatedFor": [
+          "Outstanding Solo Performance"
+        ],
+        "winnerNames": {
+          "Outstanding Solo Performance": [
+            "Daniel Radcliffe"
+          ]
+        }
       }
     },
     "death-of-a-salesman-2026": {
@@ -3170,7 +3198,6 @@
       "outerCriticsCircle": {
         "season": "2025-26",
         "wins": [
-          "Outstanding Direction of a Play",
           "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Lead Performer in a Broadway Play",
           "Outstanding Revival of a Play"
@@ -3180,11 +3207,15 @@
           "Outstanding Director of a Play",
           "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Lead Performer in a Broadway Play",
+          "Outstanding Lighting Design",
           "Outstanding Revival of a Play"
         ],
         "winnerNames": {
-          "Outstanding Direction of a Play": [
-            "Joe Mantello"
+          "Outstanding Lead Performer in a Broadway Play": [
+            "Nathan Lane"
+          ],
+          "Outstanding Featured Performer in a Broadway Play": [
+            "Laurie Metcalf"
           ]
         }
       },
@@ -51009,6 +51040,7 @@
       "outerCriticsCircle": {
         "wins": [],
         "nominatedFor": [
+          "Outstanding Lead Performer in a Broadway Play",
           "Outstanding New Broadway Play"
         ],
         "season": "2025-26"
@@ -52169,17 +52201,28 @@
         "season": "2025-26",
         "wins": [
           "Outstanding Book of a Musical",
-          "Outstanding Choreography",
-          "Outstanding New Broadway Musical"
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)",
+          "Outstanding Costume Design",
+          "Outstanding New Broadway Musical",
+          "Outstanding Orchestrations"
         ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)",
           "Outstanding Choreography",
-          "Outstanding New Broadway Musical"
+          "Outstanding Costume Design",
+          "Outstanding Featured Performer in a Broadway Musical",
+          "Outstanding Lead Performer in a Broadway Musical",
+          "Outstanding New Broadway Musical",
+          "Outstanding Orchestrations",
+          "Outstanding Scenic Design"
         ],
         "winnerNames": {
-          "Outstanding Choreography": [
-            "Christopher Gattelli"
+          "Outstanding Costume Design": [
+            "Linda Cho"
+          ],
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)": [
+            "Cinco Paul"
           ]
         }
       },
@@ -52257,21 +52300,14 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [
-          "Outstanding Scenic Design of a Musical"
-        ],
+        "wins": [],
         "nominatedFor": [
           "Outstanding Costume Design of a Musical",
           "Outstanding Featured Performance in a Musical",
           "Outstanding Lead Performance in a Musical",
           "Outstanding Revival of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ],
-        "winnerNames": {
-          "Outstanding Scenic Design of a Musical": [
-            "Dane Laffrey"
-          ]
-        }
+        ]
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -52279,6 +52315,14 @@
         "nominatedFor": [
           "Outstanding Direction of a Musical",
           "Outstanding Revival of a Musical"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performer in a Broadway Musical",
+          "Outstanding Lead Performer in a Broadway Musical"
         ]
       }
     },
@@ -52379,14 +52423,33 @@
       },
       "outerCriticsCircle": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design",
+          "Outstanding Scenic Design"
+        ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)",
+          "Outstanding Costume Design",
           "Outstanding Direction of a Musical",
           "Outstanding Director of a Musical",
+          "Outstanding Featured Performer in a Broadway Musical",
+          "Outstanding Lighting Design",
           "Outstanding New Broadway Musical",
-          "Outstanding New Score"
-        ]
+          "Outstanding New Score",
+          "Outstanding New Score (Broadway or Off-Broadway)",
+          "Outstanding Orchestrations",
+          "Outstanding Scenic Design",
+          "Outstanding Sound Design"
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design": [
+            "Dane Laffrey"
+          ],
+          "Outstanding Lighting Design": [
+            "Michael Arden"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -52398,12 +52461,23 @@
       },
       "dramadesk": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lighting Design of a Musical",
+          "Outstanding Scenic Design of a Musical"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Lighting Design of a Musical",
           "Outstanding Scenic Design of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Scenic Design of a Musical": [
+            "Dane Laffrey"
+          ],
+          "Outstanding Lighting Design of a Musical": [
+            "Jen Schriever and Michael Arden"
+          ]
+        }
       }
     },
     "little-bear-ridge-road-2025": {
@@ -52452,6 +52526,7 @@
         "season": "2025-26",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Lead Performer in a Broadway Play",
           "Outstanding New Broadway Play"
         ]
       },
@@ -52489,12 +52564,20 @@
       },
       "outerCriticsCircle": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Direction of a Play"
+        ],
         "nominatedFor": [
           "Outstanding Direction of a Play",
           "Outstanding Director of a Play",
+          "Outstanding Featured Performer in a Broadway Play",
           "Outstanding Revival of a Play"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Direction of a Play": [
+            "Joe Mantello"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -52794,6 +52877,13 @@
             "Jack Holden"
           ]
         }
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Solo Performance"
+        ]
       }
     },
     "the-producers-west-end-2025": {
@@ -54533,6 +54623,14 @@
         "nominatedFor": [
           "Outstanding Revival of a Play"
         ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Costume Design",
+          "Outstanding Lead Performer in a Broadway Play"
+        ]
       }
     },
     "cats-the-jellicle-ball-2026": {
@@ -54631,6 +54729,13 @@
         "wins": [],
         "nominatedFor": [
           "Outstanding Production of a Play"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Featured Performer in a Broadway Play"
         ]
       }
     },
@@ -54889,6 +54994,14 @@
             "I'm Assuming You Know David Greenspan"
           ]
         }
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Solo Performance",
+          "Outstanding Sound Design"
+        ]
       }
     },
     "the-waterfall-off-broadway-2026": {},
@@ -54910,6 +55023,13 @@
         "wins": [],
         "nominatedFor": [
           "Outstanding Lead Performer in a Play"
+        ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding New Off-Broadway Play"
         ]
       }
     },
@@ -55009,6 +55129,13 @@
         "nominatedFor": [
           "Outstanding Lighting Design"
         ]
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Lighting Design"
+        ]
       }
     },
     "perfect-crime-off-broadway-1987": {},
@@ -55042,11 +55169,24 @@
       },
       "outerCriticsCircle": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Lead Performer in an Off-Broadway Play",
+          "Outstanding New Off-Broadway Play"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
-          "Outstanding Direction of a Play"
-        ]
+          "Outstanding Direction of a Play",
+          "Outstanding Lead Performer in an Off-Broadway Play",
+          "Outstanding New Off-Broadway Play"
+        ],
+        "winnerNames": {
+          "Outstanding New Off-Broadway Play": [
+            "Meet the Cartozians"
+          ],
+          "Outstanding Lead Performer in an Off-Broadway Play": [
+            "Quincy Tyler Bernstine,"
+          ]
+        }
       },
       "lortel": {
         "season": "2025-26",
@@ -55085,7 +55225,15 @@
     },
     "an-ark-off-broadway-2026": {},
     "kramerfauci-off-broadway-2026": {},
-    "data-off-broadway-2026": {},
+    "data-off-broadway-2026": {
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "John Gassner Award"
+        ]
+      }
+    },
     "gobstopper-off-broadway-2026": {},
     "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026": {},
     "the-tragedy-of-coriolanus-off-broadway-2026": {
@@ -55269,7 +55417,6 @@
       "dramadesk": {
         "season": "2025-26",
         "wins": [
-          "Outstanding Lighting Design of a Musical",
           "Outstanding Sound Design of a Musical"
         ],
         "nominatedFor": [
@@ -55284,9 +55431,6 @@
           "Outstanding Sound Design of a Musical"
         ],
         "winnerNames": {
-          "Outstanding Lighting Design of a Musical": [
-            "Jen Shriever and Michael Arden"
-          ],
           "Outstanding Sound Design of a Musical": [
             "Mikhail Fiksel"
           ]
@@ -55295,13 +55439,30 @@
       "outerCriticsCircle": {
         "season": "2025-26",
         "wins": [
-          "Outstanding New Score"
+          "Outstanding Lead Performer in an Off-Broadway Musical",
+          "Outstanding New Off-Broadway Musical",
+          "Outstanding New Score",
+          "Outstanding New Score (Broadway or Off-Broadway)",
+          "Outstanding Sound Design"
         ],
         "nominatedFor": [
           "Outstanding Book of a Musical",
+          "Outstanding Book of a Musical (Broadway or Off-Broadway)",
           "Outstanding Direction of a Musical",
-          "Outstanding New Score"
-        ]
+          "Outstanding Lead Performer in an Off-Broadway Musical",
+          "Outstanding Lighting Design",
+          "Outstanding New Off-Broadway Musical",
+          "Outstanding New Score",
+          "Outstanding New Score (Broadway or Off-Broadway)",
+          "Outstanding Orchestrations",
+          "Outstanding Projection Design",
+          "Outstanding Sound Design"
+        ],
+        "winnerNames": {
+          "Outstanding Sound Design": [
+            "Mikhail Fiksel"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -55379,6 +55540,21 @@
             "Miriam Buether"
           ]
         }
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [
+          "John Gassner Award"
+        ],
+        "nominatedFor": [
+          "John Gassner Award",
+          "Outstanding Lead Performer in an Off-Broadway Play"
+        ],
+        "winnerNames": {
+          "John Gassner Award": [
+            "Ro Reddick"
+          ]
+        }
       }
     },
     "well-ill-let-you-go-off-broadway-2026": {
@@ -55415,6 +55591,7 @@
         "season": "2025-26",
         "wins": [],
         "nominatedFor": [
+          "Outstanding Featured Performer in an Off-Broadway Musical",
           "Outstanding Revival of a Musical"
         ]
       },
@@ -55548,12 +55725,19 @@
     "masquerade-off-broadway-2025": {
       "outerCriticsCircle": {
         "season": "2025-26",
-        "wins": [],
+        "wins": [
+          "Outstanding Choreography"
+        ],
         "nominatedFor": [
           "Outstanding Choreography",
           "Outstanding Direction of a Musical",
           "Outstanding Revival of a Musical"
-        ]
+        ],
+        "winnerNames": {
+          "Outstanding Choreography": [
+            "Christopher Gattelli"
+          ]
+        }
       },
       "dramaLeague": {
         "season": "2025-26",
@@ -55615,6 +55799,13 @@
             "John Narun"
           ]
         }
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "Outstanding Projection Design"
+        ]
       }
     },
     "inter-alia-west-end-2026": {
@@ -55751,6 +55942,20 @@
         "nominatedFor": [],
         "wins": [],
         "shutOut": true
+      }
+    },
+    "call-me-izzy-2025": {
+      "tony": {
+        "season": "2025-26",
+        "nominatedFor": []
+      },
+      "outerCriticsCircle": {
+        "season": "2025-26",
+        "wins": [],
+        "nominatedFor": [
+          "John Gassner Award",
+          "Outstanding Solo Performance"
+        ]
       }
     }
   }
