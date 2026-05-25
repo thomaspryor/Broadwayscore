@@ -568,17 +568,17 @@ export default function MethodologyPage() {
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-violet-300">A+</td>
-                  <td className="py-2 pr-3">Best Score, Best Book (×1.2 multiplier)</td>
+                  <td className="py-2 pr-3">Best Score, Best Book, Best Lyrics (×1.2 multiplier)</td>
                   <td className="py-2 tabular-nums">+90</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-emerald-400">A</td>
-                  <td className="py-2 pr-3">Best Direction, Choreography, lead Actor / Actress</td>
+                  <td className="py-2 pr-3">Best Direction, Lead Actor / Actress</td>
                   <td className="py-2 tabular-nums">+75</td>
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-teal-400">B</td>
-                  <td className="py-2 pr-3">Featured Actor / Actress, Orchestrations, Ensemble</td>
+                  <td className="py-2 pr-3">Featured Actor / Actress, Choreography, Orchestrations, Ensemble</td>
                   <td className="py-2 tabular-nums">+35</td>
                 </tr>
                 <tr>

@@ -100,7 +100,6 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/best (original )?score|outstanding (new )?score|outstanding music\b|outstanding lyrics|outstanding music in a play/.test(c)) return { tier: 'A+', revival: false };
   if (/best book|outstanding book/.test(c)) return { tier: 'A+', revival: false };
   if (/direction|director/.test(c)) return { tier: 'A', revival: false };
-  if (/choreograph/.test(c)) return { tier: 'A', revival: false };
   if (/distinguished performance/.test(c)) return { tier: 'A', revival: false };
   if (/best (actor|actress) in a (play|musical)|outstanding (actor|actress) in a (play|musical)/.test(c)) return { tier: 'A', revival: false };
   // Olivier "Best Actor" / "Best Actress" — Olivier play acting awards have no "in a play" qualifier
@@ -122,9 +121,10 @@ export function classifyCategory(category: string): { tier: CategoryTier; reviva
   if (/best (actor|actress) in a supporting role/.test(c)) return { tier: 'B', revival: false };
   // Featured Performance (DD 70th+) / Featured Performer (OCC) / Featured Actor|Actress (Lortel) variants
   if (/outstanding featured (performance|performer|actor|actress) in an? (broadway |off-broadway )?(play|musical)/.test(c)) return { tier: 'B', revival: false };
+  if (/choreograph/.test(c)) return { tier: 'B', revival: false };
   if (/orchestration/.test(c)) return { tier: 'B', revival: false };
   if (/ensemble/.test(c)) return { tier: 'B', revival: false };
-  if (/scenic|set design/.test(c)) return { tier: 'C', revival: false };
+  if (/scenic|set design|^best design$/.test(c)) return { tier: 'C', revival: false };
   if (/costume/.test(c)) return { tier: 'C', revival: false };
   if (/lighting/.test(c)) return { tier: 'C', revival: false };
   if (/sound/.test(c)) return { tier: 'C', revival: false };
