@@ -15,7 +15,10 @@
     "scorched-earth-off-broadway-2026/variety--pat-saperstein.json",
     "yoah-off-broadway-2026/variety--pat-saperstein.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "the-maids-off-broadway-2026/nydailynews--unknown.json",
+    "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24,6 +27,7 @@
     ],
     "amp": [],
     "browserbase": [
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
     ],
     "directCookies": [],
@@ -37,7 +41,7 @@
     ]
   },
   "startTime": "2026-05-25T09:22:42.780Z",
-  "lastProcessed": "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+  "lastProcessed": "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
   "log": [
     {
       "t": "2026-05-25T09:23:05.785Z",
@@ -50,6 +54,12 @@
       "event": "bb-session",
       "session": "8510a264",
       "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
+    },
+    {
+      "t": "2026-05-25T09:52:06.217Z",
+      "event": "bb-session",
+      "session": "59b04a22",
+      "url": "https://lincolncenterfestival.org/current-season/the-maids"
     }
   ]
 }
