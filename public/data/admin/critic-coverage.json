@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-05-25T10:13:16.494Z",
+  "generatedAt": "2026-05-25T12:15:06.943Z",
   "current": {
     "totalCritics": 70,
-    "totalGaps": 871,
+    "totalGaps": 885,
     "gapsByBucket": {
-      "A": 20,
-      "B": 15,
-      "C": 829,
-      "D": 7,
+      "A": 22,
+      "B": 17,
+      "C": 837,
+      "D": 9,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 871
+      "muckrack": 885
     }
   },
   "history": [
@@ -128,6 +128,60 @@
         "Patrick Ryan": 1,
         "Marianka Swain": 1
       }
+    },
+    {
+      "date": "2026-05-25",
+      "timestamp": "2026-05-25T11:01:30.997Z",
+      "totalCritics": 70,
+      "totalGaps": 885,
+      "gapsByBucket": {
+        "A": 22,
+        "B": 17,
+        "C": 837,
+        "D": 9,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 885
+      },
+      "perCritic": {
+        "Chris Jones": 122,
+        "Elysa Gardner": 110,
+        "Jesse Green": 94,
+        "Laura Collins-Hughes": 39,
+        "David Rooney": 38,
+        "Alice Saville": 36,
+        "Steven Suskin": 34,
+        "David Finkle": 33,
+        "Dan Rubins": 31,
+        "Roma Torre": 29,
+        "Brittani Samuel": 27,
+        "Frank Scheck": 26,
+        "Melissa Rose Bernardo": 26,
+        "Juan A. Ramirez": 25,
+        "Matt Windman": 22,
+        "Sarah Hemming": 22,
+        "Bob Verini": 22,
+        "Matt Wolf": 20,
+        "Pete Hempstead": 19,
+        "Helen Shaw": 18,
+        "Patrick Marmion": 17,
+        "Hayley Levitt": 16,
+        "Jackson McHenry": 15,
+        "Joey Sims": 15,
+        "Charles Isherwood": 8,
+        "Johnny Oleksinski": 6,
+        "Mark Kennedy": 4,
+        "David Gordon": 2,
+        "Dominic Maxwell": 2,
+        "Jonathan Mandell": 1,
+        "Robert Hofler": 1,
+        "Michael Musto": 1,
+        "Charles McNulty": 1,
+        "Frank Rizzo": 1,
+        "Andrzej Lukowski": 1,
+        "Marianka Swain": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -135,43 +189,57 @@
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
-      "missingCount": 120,
-      "lastDate": "2026-04-27"
+      "missingCount": 122,
+      "lastDate": "2026-05-19"
     },
     {
       "name": "Elysa Gardner",
       "outlet": "usatoday",
       "tier": 2,
-      "missingCount": 109,
+      "missingCount": 110,
       "lastDate": "2026-05-08"
     },
     {
       "name": "Jesse Green",
       "outlet": "vulture",
       "tier": 1,
-      "missingCount": 95,
+      "missingCount": 94,
       "lastDate": "2025-06-12"
+    },
+    {
+      "name": "Laura Collins-Hughes",
+      "outlet": "nytimes",
+      "tier": 1,
+      "missingCount": 39,
+      "lastDate": "2026-05-15"
+    },
+    {
+      "name": "David Rooney",
+      "outlet": "hollywood-reporter",
+      "tier": 1,
+      "missingCount": 38,
+      "lastDate": "2026-04-15"
     },
     {
       "name": "Alice Saville",
       "outlet": "independent",
       "tier": 2,
       "missingCount": 36,
-      "lastDate": "2026-04-30"
+      "lastDate": "2026-05-19"
     },
     {
-      "name": "David Rooney",
-      "outlet": "hollywood-reporter",
-      "tier": 1,
+      "name": "Steven Suskin",
+      "outlet": "nysr",
+      "tier": 2,
       "missingCount": 34,
-      "lastDate": "2026-04-15"
+      "lastDate": "2026-05-15"
     },
     {
       "name": "David Finkle",
       "outlet": "nysr",
       "tier": 2,
-      "missingCount": 34,
-      "lastDate": "2026-04-27"
+      "missingCount": 33,
+      "lastDate": "2026-05-20"
     },
     {
       "name": "Dan Rubins",
@@ -184,22 +252,8 @@
       "name": "Roma Torre",
       "outlet": "ny1",
       "tier": 2,
-      "missingCount": 30,
+      "missingCount": 29,
       "lastDate": "2026-04-26"
-    },
-    {
-      "name": "Frank Scheck",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 28,
-      "lastDate": "2026-05-14"
-    },
-    {
-      "name": "Melissa Rose Bernardo",
-      "outlet": "nysr",
-      "tier": 2,
-      "missingCount": 26,
-      "lastDate": "2026-04-25"
     }
   ]
 }
