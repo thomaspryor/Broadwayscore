@@ -106,6 +106,10 @@ jobs:
           # CI lacks ~/Documents/claude-outputs — write to repo workspace
           # instead. send-test.mjs picks up the same path automatically.
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          # GA4 creds for the Trending This Week section. Without these,
+          # popular-pages.mjs returns null and the section silently no-ops.
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
         run: |
           mkdir -p "$NEWSLETTER_OUT_DIR"
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
