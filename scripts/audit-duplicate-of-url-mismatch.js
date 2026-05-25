@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
+const { safeWriteReview } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -95,7 +96,7 @@ function fix(mismatches) {
     data.duplicateClearReason = reason;
     data.duplicateOf = null;
     data.duplicateReason = null;
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+    safeWriteReview(filePath, data);
     cleared++;
   }
   return cleared;
