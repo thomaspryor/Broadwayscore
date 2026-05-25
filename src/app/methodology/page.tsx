@@ -568,7 +568,7 @@ export default function MethodologyPage() {
                 </tr>
                 <tr className="border-b border-white/5">
                   <td className="py-2 pr-3 font-semibold text-violet-300">A+</td>
-                  <td className="py-2 pr-3">Best Score, Best Book, Best Lyrics (×1.2 multiplier)</td>
+                  <td className="py-2 pr-3">Best Score, Best Book, Outstanding Lyrics (×1.2 multiplier)</td>
                   <td className="py-2 tabular-nums">+90</td>
                 </tr>
                 <tr className="border-b border-white/5">
