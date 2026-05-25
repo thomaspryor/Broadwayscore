@@ -1714,7 +1714,48 @@ if (seasonStandings.length) {
 //     in the email for fans planning ahead, but not leading.
 const upcomingTop = upcoming && _upcomingHasBroadway ? upcoming : null;
 const upcomingBottom = upcoming && !_upcomingHasBroadway ? upcoming : null;
-const sectionOrder = [bwO.html, obO.html, upcomingTop, mover, clo, announced, box, commercial, bz, tony, outlier, lon, opera, cas, ...seasonStandings, upcomingBottom, popular].filter(Boolean);
+
+// Tony Predictions is OPT-IN, not part of the default sectionOrder (user
+// direction 2026-05-24). Reasoning: the section is only relevant for ~6-8
+// weeks/year (nominations → ceremony), methodology + weights need manual
+// re-tuning each season, and a dedicated Tony email reads better than a
+// section buried in the weekly. Set NEWSLETTER_INCLUDE_SECTIONS=tony-predictions
+// to add it back for a specific render (e.g. the ceremony-eve weekly).
+// The tonyWatchSection() function still runs above so it's available for
+// dedicated Tony emails — only the inclusion in the weekly's sectionOrder
+// is opt-in. Drop list (NEWSLETTER_DROP_SECTIONS) is a one-off lever for
+// suppressing any other section ad hoc.
+const _dropEnv = (process.env.NEWSLETTER_DROP_SECTIONS || '').trim();
+const _dropSet = new Set(_dropEnv ? _dropEnv.split(',').map(s => s.trim()).filter(Boolean) : []);
+const _includeEnv = (process.env.NEWSLETTER_INCLUDE_SECTIONS || '').trim();
+const _includeSet = new Set(_includeEnv ? _includeEnv.split(',').map(s => s.trim()).filter(Boolean) : []);
+const OPT_IN_SECTIONS = new Set(['tony-predictions']);
+function _slot(name, html) {
+  if (_dropSet.has(name)) return null;
+  if (OPT_IN_SECTIONS.has(name) && !_includeSet.has(name)) return null;
+  return html;
+}
+if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
+if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
+const sectionOrder = [
+  _slot('broadway-openings', bwO.html),
+  _slot('offbroadway-openings', obO.html),
+  _slot('upcoming-openings', upcomingTop),
+  _slot('biggest-movers', mover),
+  _slot('closing-this-week', clo),
+  _slot('announced-closings', announced),
+  _slot('box-office', box),
+  _slot('recoupment', commercial),
+  _slot('social-buzz', bz),
+  _slot('tony-predictions', tony),
+  _slot('outlier-of-the-week', outlier),
+  _slot('london-openings', lon),
+  _slot('opera-openings', opera),
+  _slot('casting-updates', cas),
+  ...(_dropSet.has('season-standing') ? [] : seasonStandings),
+  _slot('upcoming-openings', upcomingBottom),
+  _slot('most-read-pages', popular),
+].filter(Boolean);
 
 const headerCounts = [
   bwO.list.length ? `${bwO.list.length} BW opening${bwO.list.length!==1?'s':''}` : null,
