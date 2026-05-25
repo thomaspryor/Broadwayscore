@@ -31,7 +31,12 @@
     "little-shop-of-horrors-2003/independent--unknown.json",
     "little-shop-of-horrors-2003/latimes--unknown.json",
     "little-shop-of-horrors-2003/people--dave-quinn.json",
-    "little-shop-of-horrors-2003/vox--unknown.json"
+    "little-shop-of-horrors-2003/vox--unknown.json",
+    "kiss-of-the-spider-woman-1993/billboard--unknown.json",
+    "lend-me-a-tenor-1989/newsday--unknown.json",
+    "lend-me-a-tenor-1989/whatsonstage--unknown.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "dinosaur-world-live-off-west-end-2026/whatsonstage--unknown.json"
   ],
   "failed": [
     "ragtime-2025/bloomberg--chris-rovzar.json",
@@ -261,7 +266,12 @@
     "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
     "the-crucible-2002/about-entertainment--ben-brantley.json",
     "metamorphoses-2002/about-entertainment--ben-brantley.json",
-    "major-barbara-2001/about-entertainment--bruce-weber.json"
+    "major-barbara-2001/about-entertainment--bruce-weber.json",
+    "kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
+    "lend-me-a-tenor-1989/broadwayworld--unknown.json",
+    "lend-me-a-tenor-1989/slantmagazine--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "little-shop-of-horrors-2019/about-entertainment--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -282,10 +292,14 @@
       "lucky-guy-2013/nytg--unknown.json",
       "les-miserables-2006/whatsonstage--unknown.json",
       "little-shop-of-horrors-2003/musical-theatre-review--unknown.json",
-      "little-shop-of-horrors-2003/people--dave-quinn.json"
+      "little-shop-of-horrors-2003/people--dave-quinn.json",
+      "lend-me-a-tenor-1989/whatsonstage--unknown.json",
+      "dinosaur-world-live-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "paranormal-activity-west-end-2025/times-uk--unknown.json",
@@ -293,15 +307,20 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "lucky-guy-2013/broadwayworld--unknown.json",
       "little-shop-of-horrors-2003/broadwayworld--unknown.json",
-      "little-shop-of-horrors-2003/vox--unknown.json"
+      "little-shop-of-horrors-2003/vox--unknown.json",
+      "lend-me-a-tenor-1989/newsday--unknown.json",
+      "lend-me-a-tenor-1989/broadwayworld--unknown.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "brightdata": [
       "a-steady-rain-2009/latimes--unknown.json",
-      "little-shop-of-horrors-2003/latimes--unknown.json"
+      "little-shop-of-horrors-2003/latimes--unknown.json",
+      "kiss-of-the-spider-woman-1993/billboard--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/les-miserables-2006/thestage--unknown.json",
-      "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json"
+      "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json",
+      "data/review-texts/lend-me-a-tenor-1989/slantmagazine--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -317,6 +336,18 @@
     ]
   },
   "startTime": "2026-05-25T11:10:42.387Z",
-  "lastProcessed": "major-barbara-2001/about-entertainment--bruce-weber.json",
-  "log": []
+  "lastProcessed": "little-shop-of-horrors-2019/about-entertainment--ben-brantley.json",
+  "log": [
+    {
+      "t": "2026-05-25T11:55:43.331Z",
+      "event": "bb-session",
+      "session": "2f68f2db",
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/jennifer-lopez-movie-musical"
+    },
+    {
+      "t": "2026-05-25T11:55:44.426Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
+    }
+  ]
 }
