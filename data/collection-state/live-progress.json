@@ -1,55 +1,20 @@
 {
-  "updatedAt": "2026-05-25T06:46:46.446Z",
-  "processed": 39,
-  "failed": 1550,
+  "updatedAt": "2026-05-25T06:48:45.008Z",
+  "processed": 40,
+  "failed": 1559,
   "successRate": "2.5%",
   "tierBreakdown": {
     "playwright": 27,
     "amp": 0,
-    "browserbase": 23,
+    "browserbase": 28,
     "directCookies": 0,
-    "scrapingbee": 12,
+    "scrapingbee": 13,
     "brightdata": 0,
     "archiveToday": 12,
     "archive": 5
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-05-25T09:23:05.785Z",
-      "event": "bb-session",
-      "session": "03c175a3",
-      "url": "https://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-25T09:24:34.463Z",
-      "event": "bb-session",
-      "session": "8510a264",
-      "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
-    },
-    {
-      "t": "2026-05-25T09:52:06.217Z",
-      "event": "bb-session",
-      "session": "59b04a22",
-      "url": "https://lincolncenterfestival.org/current-season/the-maids"
-    },
-    {
-      "t": "2026-05-25T06:16:07.070Z",
-      "event": "bb-session",
-      "session": "72580e1c",
-      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c"
-    },
-    {
-      "t": "2026-05-25T06:16:07.519Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-05-25T06:17:08.611Z",
-      "event": "bb-session",
-      "session": "ebc31203",
-      "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
-    },
     {
       "t": "2026-05-25T06:29:41.120Z",
       "event": "bb-session",
@@ -102,6 +67,61 @@
     },
     {
       "t": "2026-05-25T06:46:34.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:46:47.423Z",
+      "event": "bb-session",
+      "session": "ce196832",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c"
+    },
+    {
+      "t": "2026-05-25T06:46:47.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:00.517Z",
+      "event": "bb-session",
+      "session": "8a63ee94",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C"
+    },
+    {
+      "t": "2026-05-25T06:47:00.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:14.325Z",
+      "event": "bb-session",
+      "session": "2faa305e",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title="
+    },
+    {
+      "t": "2026-05-25T06:47:14.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:28.056Z",
+      "event": "bb-session",
+      "session": "7f43997b",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c"
+    },
+    {
+      "t": "2026-05-25T06:47:28.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:41.646Z",
+      "event": "bb-session",
+      "session": "737a00d6",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b03e6da1330f93ba35750c"
+    },
+    {
+      "t": "2026-05-25T06:47:42.649Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

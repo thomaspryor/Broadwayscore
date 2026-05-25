@@ -38,7 +38,8 @@
     "seagull-true-story-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "company-2021/theatrely--andrew-martini.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "animal-wisdom-2022/nytimes--ben-brantley.json"
   ],
   "failed": [
     "the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
@@ -299,7 +300,16 @@
     "lennon-2005/about-entertainment--ben-brantley.json",
     "frozen-2004/about-entertainment--unknown.json",
     "long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
-    "salome-2003/about-entertainment--ben-brantley.json"
+    "salome-2003/about-entertainment--ben-brantley.json",
+    "man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+    "say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+    "sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+    "the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+    "the-crucible-2002/about-entertainment--ben-brantley.json",
+    "metamorphoses-2002/about-entertainment--ben-brantley.json",
+    "major-barbara-2001/about-entertainment--bruce-weber.json",
+    "carrie-1988/whatsonstage--unknown.json",
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -356,7 +366,12 @@
       "data/review-texts/lennon-2005/about-entertainment--ben-brantley.json",
       "data/review-texts/frozen-2004/about-entertainment--unknown.json",
       "data/review-texts/long-days-journey-into-night-2003/about-entertainment--ben-brantley.json",
-      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json"
+      "data/review-texts/salome-2003/about-entertainment--ben-brantley.json",
+      "data/review-texts/man-of-la-mancha-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/say-goodnight-gracie-2002/about-entertainment--bruce-weber.json",
+      "data/review-texts/sweet-smell-of-success-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-goat-or-who-is-sylvia-2002/about-entertainment--ben-brantley.json",
+      "data/review-texts/the-crucible-2002/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -371,7 +386,8 @@
       "i-puritani-off-broadway-2025/nytimes--joshua-barone.json",
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "company-2021/theatrely--andrew-martini.json"
+      "company-2021/theatrely--andrew-martini.json",
+      "animal-wisdom-2022/nytimes--ben-brantley.json"
     ],
     "brightdata": [],
     "archiveToday": [
@@ -397,7 +413,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "salome-2003/about-entertainment--ben-brantley.json",
+  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-05-25T09:23:05.785Z",
@@ -486,6 +502,61 @@
     },
     {
       "t": "2026-05-25T06:46:34.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:46:47.423Z",
+      "event": "bb-session",
+      "session": "ce196832",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b05e1da123bf935a35751c"
+    },
+    {
+      "t": "2026-05-25T06:46:47.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:00.517Z",
+      "event": "bb-session",
+      "session": "8a63ee94",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9B04E1DB173AF932A25753C"
+    },
+    {
+      "t": "2026-05-25T06:47:00.958Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:14.325Z",
+      "event": "bb-session",
+      "session": "2faa305e",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?html_title=&amp;tols_title="
+    },
+    {
+      "t": "2026-05-25T06:47:14.826Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:28.056Z",
+      "event": "bb-session",
+      "session": "7f43997b",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9d00e5db1639f932a25750c"
+    },
+    {
+      "t": "2026-05-25T06:47:28.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:47:41.646Z",
+      "event": "bb-session",
+      "session": "737a00d6",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9b03e6da1330f93ba35750c"
+    },
+    {
+      "t": "2026-05-25T06:47:42.649Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
