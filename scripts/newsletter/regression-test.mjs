@@ -27,10 +27,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Resolve fixture relative to this file (works in worktree + main checkout).
 // The generator's runtime data still has to come from the main repo, so
 // generate.mjs hardcodes that path itself.
-const localRoot = path.resolve(__dirname, '..', '..');
-const repoRoot = '/Users/tompryor/Broadwayscore';
+const repoRoot = path.resolve(__dirname, '..', '..');
 const weekStart = process.argv[2] || '2026-05-18';
-const fixturePath = path.join(localRoot, 'tests/newsletter/fixtures', `${weekStart}.meta.json`);
+const fixturePath = path.join(repoRoot, 'tests/newsletter/fixtures', `${weekStart}.meta.json`);
 
 if (!fs.existsSync(fixturePath)) {
   console.error(`No fixture for week ${weekStart} at ${fixturePath}`);
@@ -40,7 +39,10 @@ if (!fs.existsSync(fixturePath)) {
 const baseline = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
 
 // Re-run the generator. Its stderr/stdout are noisy; we just need the meta.
-const outDir = '/Users/tompryor/Documents/claude-outputs/newsletter-mocks';
+// Honor NEWSLETTER_OUT_DIR so the test works in CI (workspace) and locally
+// (~/Documents/claude-outputs/newsletter-mocks).
+const outDir = process.env.NEWSLETTER_OUT_DIR
+  || path.join(process.env.HOME || '', 'Documents/claude-outputs/newsletter-mocks');
 const metaPath = path.join(outDir, `A-${weekStart}.meta.json`);
 
 execFileSync('node', [path.join(__dirname, 'generate.mjs'), weekStart], {
