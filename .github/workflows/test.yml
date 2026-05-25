@@ -536,6 +536,14 @@ jobs:
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Generate gitignored manifests
+        # data/cast-manifest.json and data/actor-slugs.json are gitignored
+        # (built in prebuild) but src/lib/data-actors.ts, data-cast-obc.ts,
+        # and data-tony-nominees.ts import them via resolveJsonModule.
+        # Without these tsc fails with TS2307. Mirror prebuild.sh.
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
       - name: tsc — root (src/, app/, tests/)
         # Catches type errors in app code. Root tsconfig excludes scripts/.
         # Currently green on main — this gate ensures it stays that way.
@@ -1072,6 +1080,7 @@ jobs:
             tests/unit/biz-data-functions.test.mjs \
             tests/unit/bww-roundup-extractor.test.mjs \
             tests/unit/bww-roundup-method2-fallthrough.test.mjs \
+            tests/unit/btc-send-picks.test.mjs \
             tests/unit/commercial-changes.test.mjs \
             tests/unit/content-verifier.test.mjs \
             tests/unit/cote-notices-registry.test.mjs \
