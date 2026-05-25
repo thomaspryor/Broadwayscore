@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-05-25T12:54:39.479Z",
+  "runDate": "2026-05-25T19:16:55.294Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 43,
-    "failed": 465,
+    "processed": 53,
+    "failed": 469,
     "skipped": 0,
-    "successRate": "8.5%"
+    "successRate": "10.2%"
   },
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 29,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 14,
+    "scrapingbee": 16,
     "brightdata": 4,
-    "archiveToday": 5,
-    "archive": 10
+    "archiveToday": 6,
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 10,
+    "tier1Attempts": 11,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 24,
-    "tier2Success": 23,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
     "tier4Attempts": 5,
-    "tier4Success": 1,
-    "totalFailed": 228,
-    "scrapingBeePageCredits": 60,
+    "tier4Success": 0,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 207,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 6,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -93,7 +93,17 @@
     "little-shop-of-horrors-2003/vox--constance-grady.json",
     "kiss-of-the-spider-woman-1993/billboard--glenn-rowley.json",
     "lend-me-a-tenor-1989/slantmagazine--unknown.json",
-    "lend-me-a-tenor-1989/whatsonstage--editorial-staff.json"
+    "lend-me-a-tenor-1989/whatsonstage--editorial-staff.json",
+    "beetlejuice-west-end-2026/british-theatre--unknown.json",
+    "grace-pervades-west-end-2026/independent--unknown.json",
+    "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
+    "giant-2026/whatsonstage--sarah-crompton.json",
+    "gotta-dance-off-broadway-2026/new-york-classical-review--unknown.json",
+    "mexodus-off-broadway-2026/nytg--unknown.json",
+    "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+    "turandot-off-broadway-2025/parterre-box--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json",
+    "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
   ],
   "failed": [
     "ragtime-2025/bloomberg--chris-rovzar.json",
@@ -560,7 +570,11 @@
     "kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
     "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
     "little-shop-of-horrors-2019/about-entertainment--ben-brantley.json",
-    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
+    "beetlejuice-west-end-2026/guardian--unknown.json",
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "grace-pervades-west-end-2026/telegraph--unknown.json",
+    "a-midsummer-nights-dream-west-end-2026/ew--reviewed-by.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -585,11 +599,19 @@
       "dinosaur-world-live-off-west-end-2026/whatsonstage--unknown.json",
       "les-miserables-2006/whatsonstage--ben-hewis.json",
       "lend-me-a-tenor-1989/slantmagazine--unknown.json",
-      "lend-me-a-tenor-1989/whatsonstage--editorial-staff.json"
+      "lend-me-a-tenor-1989/whatsonstage--editorial-staff.json",
+      "beetlejuice-west-end-2026/british-theatre--unknown.json",
+      "grace-pervades-west-end-2026/independent--unknown.json",
+      "giant-2026/whatsonstage--sarah-crompton.json",
+      "mexodus-off-broadway-2026/nytg--unknown.json",
+      "two-strangers-bway-2025/new-york-city-theatre--unknown.json",
+      "turandot-off-broadway-2025/parterre-box--unknown.json",
+      "a-midsummer-nights-dream-west-end-2026/huffpost--david-finkle.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json"
+      "data/review-texts/kiss-of-the-spider-woman-1993/hollywood-reporter--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -606,7 +628,9 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "lucky-guy-2013/broadwayworld--unknown.json",
       "little-shop-of-horrors-2003/vox--constance-grady.json",
-      "little-shop-of-horrors-2003/broadwayworld--team-bww.json"
+      "little-shop-of-horrors-2003/broadwayworld--team-bww.json",
+      "joe-turners-come-and-gone-2026/broadwaynews--unknown.json",
+      "gotta-dance-off-broadway-2026/new-york-classical-review--unknown.json"
     ],
     "brightdata": [
       "a-steady-rain-2009/latimes--unknown.json",
@@ -619,7 +643,8 @@
       "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json",
       "data/review-texts/lend-me-a-tenor-1989/slantmagazine--unknown.json",
       "data/review-texts/les-miserables-2006/thestage--unknown.json",
-      "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json"
+      "data/review-texts/little-shop-of-horrors-2003/backstage--unknown.json",
+      "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -631,9 +656,31 @@
       "the-comedy-about-spies-west-end-2026/telegraph--unknown.json",
       "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
-      "little-shop-of-horrors-2003/independent--unknown.json"
+      "little-shop-of-horrors-2003/independent--unknown.json",
+      "a-midsummer-nights-dream-west-end-2026/newsday--updated-november.json"
     ]
   },
-  "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": [
+    {
+      "reviewId": "giant-2026/whatsonstage--sarah-crompton.json",
+      "oldUrl": "https://www.whatsonstage.com/news/giant-review-john-lithgow-is-a-powerful-presence-as-a-monstrous-roald-dahl_1634668/",
+      "newUrl": "https://www.whatsonstage.com/news/giant-with-john-lithgow-to-be-shown-in-cinemas_1721213/"
+    }
+  ]
 }
