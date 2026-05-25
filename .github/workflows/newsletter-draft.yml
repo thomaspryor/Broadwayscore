@@ -117,6 +117,12 @@ jobs:
       - name: Regression test (catches silent section drops)
         env:
           NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+          # Subprocess re-runs generate.mjs — pass the same GA creds so the
+          # regenerated meta matches the just-sent draft. Without these the
+          # regression step would overwrite a Trending-less meta on top of
+          # the freshly-written one and corrupt the audit trail.
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
         run: |
           # Skip regression test if no fixture exists for this week yet —
           # the fixture system is per-week and a fresh weekly run is the
