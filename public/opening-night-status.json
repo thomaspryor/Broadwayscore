@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-24T23:35:02.587Z",
+  "generatedAt": "2026-05-25T05:35:21.168Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -390,7 +390,7 @@
       "status": "previews",
       "slug": "dark-of-the-moon-west-end",
       "thumbnail": "/images/shows/dark-of-the-moon-west-end-2026/thumbnail.webp",
-      "daysUntil": 2,
+      "daysUntil": 1,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -415,7 +415,7 @@
       "status": "previews",
       "slug": "beetlejuice-west-end",
       "thumbnail": "/images/shows/beetlejuice-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -440,7 +440,7 @@
       "status": "upcoming",
       "slug": "the-p-word-off-west-end",
       "thumbnail": "/images/shows/the-p-word-off-west-end-2026/thumbnail.webp",
-      "daysUntil": 4,
+      "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -465,7 +465,7 @@
       "status": "previews",
       "slug": "david-copperfield-59e59-theaters-off-broadway",
       "thumbnail": "/images/shows/david-copperfield-59e59-theaters-off-broadway-2026/thumbnail.jpg",
-      "daysUntil": 5,
+      "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
@@ -504,7 +504,46 @@
       "status": "upcoming",
       "slug": "silverback-mountain-off-broadway",
       "thumbnail": "/images/shows/silverback-mountain-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 6,
+      "daysUntil": 5,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "jerome-off-broadway-2025",
+      "title": "Jerome",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-06-01",
+      "status": "previews",
+      "slug": "jerome-off-broadway",
+      "thumbnail": "/images/shows/jerome-off-broadway-2025/thumbnail.jpg",
+      "daysUntil": 7,
       "readinessChecks": {
         "wrongProduction": {
           "pass": true,
