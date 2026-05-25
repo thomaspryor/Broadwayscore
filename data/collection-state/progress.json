@@ -89,7 +89,17 @@
     "mj-2022/nydailynews--karu-f-daniels.json",
     "moulin-rouge-the-musical-west-end-2021/times-uk--clive-davis.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
-    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json"
+    "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+    "harry-potter-2021/front-row-center--tulis-mccall.json",
+    "harry-potter-2021/woman-around-town--alix-cohen.json",
+    "the-book-of-mormon-west-end-2024/telegraph--claire-allfree.json",
+    "book-of-mormon-2011/variety--david-rooney.json",
+    "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "book-of-mormon-2011/backstage--david-sheward.json",
+    "the-lion-king-1997/about-entertainment--ben-brantley.json",
+    "the-lion-king-1997/familyvacationcritic--unknown.json",
+    "aida-off-broadway-2027/bachtrack--susan-stempleski.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -123,7 +133,24 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
-      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json"
+      "data/review-texts/becky-shaw-2026/variety--unknown.json",
+      "becky-shaw-2026/variety--unknown.json",
+      "data/review-texts/becky-shaw-2026/deadline--unknown.json",
+      "becky-shaw-2026/deadline--unknown.json",
+      "data/review-texts/becky-shaw-2026/wsj--unknown.json",
+      "becky-shaw-2026/wsj--unknown.json",
+      "data/review-texts/masquerade-off-broadway-2025/wsj--unknown.json",
+      "masquerade-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/maybe-happy-ending-2024/variety--unknown.json",
+      "maybe-happy-ending-2024/variety--unknown.json",
+      "data/review-texts/aida-off-broadway-2027/wsj--heidi-waleson.json",
+      "aida-off-broadway-2027/wsj--heidi-waleson.json",
+      "data/review-texts/medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "medea-off-broadway-2026/hollywood-reporter--frank-scheck.json",
+      "data/review-texts/cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+      "data/review-texts/the-maids-off-broadway-2026/lincolncenterfestivalorg--unknown.json",
+      "data/review-texts/the-lion-king-1997/about-entertainment--ben-brantley.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -150,7 +177,8 @@
       "data/review-texts/end-of-the-rainbow-west-end-2026/thestage--unknown.json",
       "data/review-texts/the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
       "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
-      "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json"
+      "data/review-texts/proof-2026/the-globe-and-mail--kelly-nestruck.json",
+      "data/review-texts/aida-off-broadway-2027/bachtrack--susan-stempleski.json"
     ],
     "archive": [
       "i-puritani-off-broadway-2025/new-york-classical-review--george-grella.json",
@@ -160,7 +188,7 @@
     ]
   },
   "startTime": "2026-05-24T11:05:24.228Z",
-  "lastProcessed": "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
+  "lastProcessed": "aida-off-broadway-2027/bachtrack--susan-stempleski.json",
   "log": [
     {
       "t": "2026-05-25T09:23:05.785Z",
@@ -179,6 +207,23 @@
       "event": "bb-session",
       "session": "59b04a22",
       "url": "https://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-25T06:16:07.070Z",
+      "event": "bb-session",
+      "session": "72580e1c",
+      "url": "https://theater.nytimes.com/mem/theater/treview.html?res=9a01efd81738f937a25752c"
+    },
+    {
+      "t": "2026-05-25T06:16:07.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-25T06:17:08.611Z",
+      "event": "bb-session",
+      "session": "ebc31203",
+      "url": "https://bachtrack.com/fr_FR/22/296/view/27986"
     }
   ]
 }
