@@ -1,14 +1,14 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-05-24T16:57:08.892Z",
+    "generatedAt": "2026-05-25T17:45:13.147Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
-    "totalEntries": 193,
-    "totalShowsInShowsJson": 2587,
+    "totalEntries": 261,
+    "totalShowsInShowsJson": 2588,
     "matchStats": {
-      "matchedBySlug": 179,
+      "matchedBySlug": 247,
       "matchedById": 14,
       "orphaned": 0
     },
@@ -16,48 +16,48 @@
       "Miracle": 9,
       "Windfall": 19,
       "Trickle": 3,
-      "Fizzle": 22,
+      "Fizzle": 24,
       "Flop": 65,
       "Easy Winner": 18,
       "TBD": 26,
-      "Nonprofit": 29,
+      "Nonprofit": 95,
       "Tour Stop": 2
     },
     "recoupmentStats": {
-      "recouped": 48,
-      "notRecouped": 107,
-      "nullOrMissing": 38
+      "recouped": 49,
+      "notRecouped": 116,
+      "nullOrMissing": 96
     },
     "dataCompleteness": {
-      "hasCapitalization": 128,
+      "hasCapitalization": 129,
       "hasWeeklyRunningCost": 83,
       "hasCostMethodology": 135,
-      "hasSources": 135,
-      "hasDeepResearch": 118
+      "hasSources": 182,
+      "hasDeepResearch": 186
     },
     "openShowCoverage": {
-      "totalOpenPreviewsShows": 189,
-      "withCommercialData": 36,
-      "withoutCommercialData": 153,
-      "coveragePct": 19
+      "totalOpenPreviewsShows": 184,
+      "withCommercialData": 41,
+      "withoutCommercialData": 143,
+      "coveragePct": 22
     },
     "issuesSummary": {
-      "total": 310,
+      "total": 328,
       "bySeverity": {
         "high": 0,
         "medium": 21,
-        "low": 289
+        "low": 307
       },
       "byType": {
         "id-mismatch": 14,
-        "source-quality": 104,
+        "source-quality": 109,
         "financial-sanity": 1,
         "methodology": 8,
         "stale-data": 7,
         "closed-show-tbd": 6,
-        "nonprofit-classification": 15,
+        "nonprofit-classification": 38,
         "recoupment-pct": 1,
-        "coverage-gap": 153,
+        "coverage-gap": 143,
         "recoupment-citation": 1
       }
     }
@@ -456,30 +456,6 @@
     {
       "type": "source-quality",
       "severity": "low",
-      "showId": "floyd-collins-2025",
-      "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "floyd-collins-2025",
-      "detail": "sources[2] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "pirates-the-penzance-musical-2025",
-      "detail": "sources[3] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "pirates-the-penzance-musical-2025",
-      "detail": "sources[4] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
       "showId": "appropriate",
       "detail": "sources[3] missing date."
     },
@@ -506,18 +482,6 @@
       "severity": "low",
       "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
       "detail": "sources[1] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "stephen-sondheims-old-friends-2025",
-      "detail": "sources[3] missing date."
-    },
-    {
-      "type": "source-quality",
-      "severity": "low",
-      "showId": "stephen-sondheims-old-friends-2025",
-      "detail": "sources[4] missing date."
     },
     {
       "type": "source-quality",
@@ -772,6 +736,72 @@
       "detail": "sources[2] missing date."
     },
     {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "torch-song-2018",
+      "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "torch-song-2018",
+      "detail": "sources[1] missing date."
+    },
+    {
       "type": "financial-sanity",
       "severity": "low",
       "showId": "call-me-izzy",
@@ -829,79 +859,79 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "death-becomes-her",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (116 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (117 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (116 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (117 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (110 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (111 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (95 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (96 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (116 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (117 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "two-strangers",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (102 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (103 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "chess",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (102 days ago)."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "liberation",
-      "detail": "Show is closed (closed 112 days ago on 2026-02-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-11\" (103 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "milo-rau-and-edouard-louis-the-interrogation-off-broadway-2026",
-      "detail": "Show is closed (closed 57 days ago on 2026-03-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 58 days ago on 2026-03-28) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "a-christmas-carol-2019",
-      "detail": "Show is closed (closed 2331 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 2332 days ago on 2020-01-05) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lyons-2012",
-      "detail": "Show is closed (closed 5075 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5076 days ago on 2012-07-01) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "jerusalem-2011",
-      "detail": "Show is closed (closed 5390 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 5391 days ago on 2011-08-21) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "job-2024",
-      "detail": "Show is closed (closed 574 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+      "detail": "Show is closed (closed 575 days ago on 2024-10-27) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
+    },
+    {
+      "type": "closed-show-tbd",
+      "severity": "medium",
+      "showId": "torch-song-2018",
+      "detail": "Show is closed (closed 2696 days ago on 2019-01-06) but still designated \"TBD\". Should be resolved to a final designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop)."
     },
     {
       "type": "nonprofit-classification",
@@ -914,18 +944,6 @@
       "severity": "low",
       "showId": "oedipus",
       "detail": "Show is at \"Studio 54\" (Roundabout Theatre venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "floyd-collins-2025",
-      "detail": "Show is at \"Vivian Beaumont Theater\" (Lincoln Center Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
-      "showId": "pirates-the-penzance-musical-2025",
-      "detail": "Show is at \"Todd Haimes Theatre\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
       "type": "nonprofit-classification",
@@ -954,12 +972,6 @@
     {
       "type": "nonprofit-classification",
       "severity": "low",
-      "showId": "stephen-sondheims-old-friends-2025",
-      "detail": "Show is at \"Samuel J. Friedman Theatre\" (Manhattan Theatre Club venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
-    },
-    {
-      "type": "nonprofit-classification",
-      "severity": "low",
       "showId": "school-girls-or-the-african-mean-girls-play",
       "detail": "Show is at \"Samuel J. Friedman Theatre\" (Manhattan Theatre Club venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
@@ -967,12 +979,42 @@
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "purpose-2025",
-      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Easy Winner\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Fizzle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "job-2024",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-cottage",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "fat-ham-2023",
+      "detail": "Show is at \"Todd Haimes Theatre\" (Roundabout Theatre venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-kite-runner-2022",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Flop\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "what-the-constitution-means-to-me-2019",
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Easy Winner\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "torch-song-2018",
       "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"TBD\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
@@ -992,6 +1034,132 @@
       "severity": "low",
       "showId": "care-west-end-2026",
       "detail": "Designated \"Nonprofit\" but venue \"Young Vic Theatre\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "public-charge-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "antigone-this-play-i-read-in-high-school-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "no-singing-in-the-navy-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "jesa-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "girl-interrupted-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-dinosaurs-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "rheology-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "jerome-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "my-joy-is-heavy-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"New York Theatre Workshop\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "age-is-a-feeling-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "girls-chance-music-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "bughouse-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Vineyard Theatre\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "this-is-my-favorite-song-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "stereophonic-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Playwrights Horizons\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "buena-vista-social-club-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"Atlantic Theater Company\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "henry-vi-a-trilogy-in-two-parts-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "good-time-charlie-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "how-shakespeare-saved-my-life-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "well-see-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-curious-case-of-benjamin-button-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
+    },
+    {
+      "type": "nonprofit-classification",
+      "severity": "low",
+      "showId": "the-verge-off-broadway",
+      "detail": "Designated \"Nonprofit\" but venue \"The Public Theater\" is not a recognized nonprofit venue. Verify this is correct."
     },
     {
       "type": "recoupment-pct",
@@ -1020,12 +1188,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "beaches",
-      "detail": "Open/previews show \"Beaches, A New Musical\" at Majestic Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "schmigadoon",
       "detail": "Open/previews show \"Schmigadoon!\" at Nederlander Theatre has no commercial data entry."
     },
@@ -1040,12 +1202,6 @@
       "severity": "low",
       "showId": "titanique",
       "detail": "Open/previews show \"Titanique\" at St. James Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "the-receptionist-off-broadway",
-      "detail": "Open/previews show \"The Receptionist\" at The Irene Diamond Stage at the Pershing Square Signature Center has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1140,20 +1296,8 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "girl-interrupted-off-broadway",
-      "detail": "Open/previews show \"Girl, Interrupted\" at The Public Theater has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "11-to-midnight-off-broadway",
       "detail": "Open/previews show \"11 to Midnight\" at Orpheum Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "what-we-did-before-our-moth-days-off-broadway",
-      "detail": "Open/previews show \"What We Did Before Our Moth Days\" at Greenwich House Theater  has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1170,18 +1314,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "rheology-off-broadway",
-      "detail": "Open/previews show \"Rheology\" at Playwrights Horizons has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "jerome-off-broadway",
-      "detail": "Open/previews show \"Jerome\" at Playwrights Horizons has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway",
       "detail": "Open/previews show \"El Último Sueño de Frida y Diego\" at Metropolitan Opera House has no commercial data entry."
     },
@@ -1190,18 +1322,6 @@
       "severity": "low",
       "showId": "burnout-paradise-off-broadway",
       "detail": "Open/previews show \"Burnout Paradise\" at Astor Place Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "my-joy-is-heavy-off-broadway",
-      "detail": "Open/previews show \"My Joy Is Heavy\" at New York Theatre Workshop has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "age-is-a-feeling-off-broadway",
-      "detail": "Open/previews show \"Age Is a Feeling\" at Vineyard Theatre has no commercial data entry."
     },
     {
       "type": "coverage-gap",
@@ -1692,12 +1812,6 @@
     {
       "type": "coverage-gap",
       "severity": "low",
-      "showId": "soledad-barrio-and-noche-flamenca-aqua-fresca-off-broadway",
-      "detail": "Open/previews show \"Soledad Barrio & Noche Flamenca: Aqua Fresca\" at Joe's Pub at The Public Theatre has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway",
       "detail": "Open/previews show \"MÁS SABE EL SAULO POR VIEJO...\" at Repertorio Español / Spanish Theatre Repertory has no commercial data entry."
     },
@@ -1754,12 +1868,6 @@
       "severity": "low",
       "showId": "david-copperfield-59e59-theaters-off-broadway",
       "detail": "Open/previews show \"David Copperfield (59E59 Theaters)\" at Midtown E has no commercial data entry."
-    },
-    {
-      "type": "coverage-gap",
-      "severity": "low",
-      "showId": "harry-connick-jr-off-broadway",
-      "detail": "Open/previews show \"Harry Connick Jr.\" at Stern Auditorium / Perelman Stage at Carnegie Hall has no commercial data entry."
     },
     {
       "type": "coverage-gap",
