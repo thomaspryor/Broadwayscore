@@ -251,6 +251,24 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // Aggregator score contamination guard (2026-05-25): when scoreSource is in
+  // AGGREGATOR_SCORE_SOURCES, the aggregator stars belong in aggregatorStars
+  // only — never in originalScore. The merge-mode above can re-introduce a
+  // stale originalScore if the previous on-disk file had one. validate-data.js
+  // validateAggregatorScoreContamination fails CI on this combination; the
+  // scrapers (gather-reviews.js, sweep-we-aggregators.js) correctly write
+  // originalScore=null but the merge restores the disk value. Strip here.
+  {
+    const { AGGREGATOR_SCORE_SOURCES } = require('./review-normalization');
+    if (newData.scoreSource && AGGREGATOR_SCORE_SOURCES.has(newData.scoreSource) && newData.originalScore != null) {
+      console.warn(`[review-write-guard] stripping originalScore (${JSON.stringify(newData.originalScore)}) from ${path.basename(filePath)}: scoreSource=${newData.scoreSource} is aggregator; canonical value lives in aggregatorStars`);
+      newData.originalScore = null;
+      newData.originalScoreSource = null;
+      newData.originalScoreType = null;
+      newData.originalScoreNormalized = null;
+    }
+  }
+
   // Pattern Card #7: schema validation — originalScore must be a string, not a bare integer.
   // A bare number like 5 is ambiguous (5/100 or 5 stars?). The canonical form is always a
   // string ("5/5", "★★★★★", "5 stars"). Log a warning but don't block the write.

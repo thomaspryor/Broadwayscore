@@ -28,6 +28,19 @@ const DRY_RUN = !process.argv.includes('--apply');
 const DAYS_BEFORE_PREVIEW = 21;
 const DAYS_AFTER_CLOSE = 7;
 
+// 2026-05-25: UK trade press routinely attends press previews 20-35 days
+// before the official opening date (esp. for WE transfers from regional runs
+// where preview/openingDate in our data reflects only the WE leg). Extend the
+// before-preview grace for these outlets on WE / off-WE shows to avoid
+// false-positive wrongProduction flags on legit early reviews (e.g. Matilda
+// 2011 TheStage review 30d before WE openingDate).
+const UK_TRUSTED_OUTLETS = new Set([
+  'thestage', 'financialtimes', 'guardian', 'times-uk', 'telegraph',
+  'standard', 'observer', 'bbc', 'whatsonstage', 'independent',
+]);
+const UK_DAYS_BEFORE_PREVIEW = 35;
+const UK_MARKETS = new Set(['west-end', 'off-west-end']);
+
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   const shows = data.shows || data;
@@ -60,8 +73,12 @@ function run() {
     const earliestStr = show.previewDate || show.previewsStartDate || show.openingDate;
     if (!earliestStr) { noWindow++; continue; }
 
-    const windowStart = new Date(earliestStr);
-    windowStart.setDate(windowStart.getDate() - DAYS_BEFORE_PREVIEW);
+    const isUkMarket = UK_MARKETS.has(show.category) || UK_MARKETS.has(show.market);
+    const showWindowStart = new Date(earliestStr);
+    // Default window uses the broader grace; per-file UK exemption applies
+    // when a UK trusted outlet authored the review.
+    showWindowStart.setDate(showWindowStart.getDate() - DAYS_BEFORE_PREVIEW);
+    const windowStart = showWindowStart;
 
     let windowEnd = null;
     if (show.closingDate) {
@@ -86,11 +103,17 @@ function run() {
       const pubDate = parseDate(data.publishDate);
       if (!pubDate) { noDate++; continue; }
 
+      // Per-outlet before-preview exemption for UK trusted critics on WE shows.
+      const isUkTrustedOutlet = data.outletId && UK_TRUSTED_OUTLETS.has(String(data.outletId).toLowerCase());
+      const effectiveDaysBefore = (isUkMarket && isUkTrustedOutlet) ? UK_DAYS_BEFORE_PREVIEW : DAYS_BEFORE_PREVIEW;
+      const effectiveWindowStart = new Date(earliestStr);
+      effectiveWindowStart.setDate(effectiveWindowStart.getDate() - effectiveDaysBefore);
+
       let issue = null;
       let diffDays = 0;
 
-      if (pubDate < windowStart) {
-        diffDays = Math.round((windowStart - pubDate) / 86400000);
+      if (pubDate < effectiveWindowStart) {
+        diffDays = Math.round((effectiveWindowStart - pubDate) / 86400000);
         issue = 'before_preview';
       } else if (windowEnd && pubDate > windowEnd) {
         diffDays = Math.round((pubDate - windowEnd) / 86400000);

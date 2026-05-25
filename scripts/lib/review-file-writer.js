@@ -203,6 +203,38 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     return { action: 'skipped', reason: 'suspicious-outlet-id' };
   }
 
+  // --- Guard: unregistered outlet + empty stub (2026-05-25) ---
+  // Reject writes where outletId isn't in outlet-registry AND the file carries
+  // no review signal (no fullText, no excerpt). This kills the contamination
+  // pattern where discovery scripts slugify an unrecognized domain (reddit,
+  // metopera.org, lincolncenterfestival.org) or a title text fragment into
+  // outletId and write an empty stub. Registered-but-stub files (e.g. NYSR
+  // pending URL resolution) still pass because their outletId resolves.
+  // Real new outlets must be added to outlet-registry.json first — that's
+  // the system of record for what counts as a valid outlet.
+  {
+    const registry = loadOutletRegistry();
+    const aliasMap = registry ? new Map() : null;
+    if (registry && registry.outlets) {
+      for (const [oid, odata] of Object.entries(registry.outlets)) {
+        if (oid.startsWith('_')) continue;
+        aliasMap.set(oid.toLowerCase(), true);
+        for (const a of (odata.aliases || [])) aliasMap.set(String(a).toLowerCase(), true);
+      }
+      if (registry._aliasIndex) {
+        for (const k of Object.keys(registry._aliasIndex)) {
+          if (k !== '_note') aliasMap.set(k.toLowerCase(), true);
+        }
+      }
+    }
+    const outletKnown = aliasMap ? aliasMap.has(String(outletId).toLowerCase()) : true;
+    const hasText = !!(input.fullText || fields.fullText || input.excerpt || fields.excerpt || input.text || fields.text);
+    if (!outletKnown && !hasText) {
+      console.warn(`  ⚠️  Skipping empty stub for unregistered outlet "${outletId}" (showId=${showId}, url=${input.url || 'null'})`);
+      return { action: 'skipped', reason: 'unregistered-outlet-empty-stub' };
+    }
+  }
+
   // --- Guard: domain validation ---
   const domainCheck = validateUrlDomain(input.url, outletId);
   if (!domainCheck.valid) {
