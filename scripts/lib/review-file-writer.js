@@ -228,7 +228,21 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       }
     }
     const outletKnown = aliasMap ? aliasMap.has(String(outletId).toLowerCase()) : true;
-    const hasText = !!(input.fullText || fields.fullText || input.excerpt || fields.excerpt || input.text || fields.text);
+    // Keep in sync with Guard F (empty-stub detection) at lines ~345-347 —
+    // aggregator scrapers can populate per-source excerpt variants instead of
+    // the generic fullText/excerpt/text fields. Treat any of them as "has text"
+    // so the guard doesn't drop legit aggregator-extracted reviews.
+    const hasText = !!(
+      input.fullText || fields.fullText ||
+      input.excerpt || fields.excerpt ||
+      input.text || fields.text ||
+      input.bwwExcerpt || fields.bwwExcerpt ||
+      input.dtliExcerpt || fields.dtliExcerpt ||
+      input.showScoreExcerpt || fields.showScoreExcerpt ||
+      input.nycTheatreExcerpt || fields.nycTheatreExcerpt ||
+      input.stagedoorExcerpt || fields.stagedoorExcerpt ||
+      input.lboRoundupExcerpt || fields.lboRoundupExcerpt
+    );
     if (!outletKnown && !hasText) {
       console.warn(`  ⚠️  Skipping empty stub for unregistered outlet "${outletId}" (showId=${showId}, url=${input.url || 'null'})`);
       return { action: 'skipped', reason: 'unregistered-outlet-empty-stub' };

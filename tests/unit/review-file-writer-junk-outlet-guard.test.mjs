@@ -58,6 +58,19 @@ describe('createOrMergeReviewFile — unregistered outlet + empty stub guard', (
     assert.notEqual(res.reason, 'unregistered-outlet-empty-stub');
   });
 
+  test('lets unregistered outlet through when it carries an aggregator excerpt (bwwExcerpt)', () => {
+    // Regression: the early version of the guard only checked fullText/excerpt/text
+    // and would drop legit BWW-roundup extractions on unregistered outlets that
+    // carry only bwwExcerpt. Mirror Guard F's text-presence fields.
+    const res = createOrMergeReviewFile('test-show', {
+      outletId: 'a-new-bww-source', outlet: 'A New BWW Source',
+      url: 'https://example.com/r',
+      criticName: 'Real Critic',
+      bwwExcerpt: 'BWW roundup excerpt with substantive content.',
+    }, { dryRun: true, reviewTextsDir: TMP_REVIEW_TEXTS });
+    assert.notEqual(res.reason, 'unregistered-outlet-empty-stub');
+  });
+
   test('lets registered outlet stub through (pending URL/text resolution)', () => {
     // nysr is a real registered outlet; aggregator may write a stub before
     // the per-outlet review URL is resolved. Guard must NOT block.
