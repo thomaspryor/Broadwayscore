@@ -3,35 +3,26 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
     ignore:
-      # Avoid major version bumps that could break things
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     groups:
-      # Group patch updates into a single PR to reduce noise
-      patch-updates:
-        update-types: ["patch"]
-      minor-updates:
-        update-types: ["minor"]
+      all-updates:
+        update-types: ["patch", "minor"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     labels:
       - "dependencies"
       - "ci"
     ignore:
-      # Mirror the npm block: avoid major-version bumps. v4→v5+ on
-      # upload-artifact/download-artifact/checkout/setup-node have shipped
-      # breaking changes that need manual review per-action, not in a batch.
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     groups:
