@@ -97,8 +97,8 @@ function isBotChallenge(html) {
  * Returns array of { title, slug, url }.
  */
 async function discoverShows() {
-  console.log('Fetching Broadway.com /shows/ listing...');
-  let { status, data: html } = await httpsGet('https://www.broadway.com/shows/');
+  console.log('Fetching Broadway.com /shows/tickets/ listing...');
+  let { status, data: html } = await httpsGet('https://www.broadway.com/shows/tickets/');
 
   if (status !== 200) {
     throw new Error(`Broadway.com /shows/ returned ${status}`);
@@ -107,7 +107,7 @@ async function discoverShows() {
   // If listing page is bot-challenged, retry via shared scraper (Playwright → Bright Data → ScrapingBee)
   if (isBotChallenge(html)) {
     console.log('  Bot challenge on listing page, trying scraper fallback chain...');
-    const result = await fetchPageWithTimeout('https://www.broadway.com/shows/', { renderJs: true });
+    const result = await fetchPageWithTimeout('https://www.broadway.com/shows/tickets/', { renderJs: true });
     const scraperHtml = result?.content || '';
     if (scraperHtml.length > 10000 && !isBotChallenge(scraperHtml)) {
       html = scraperHtml;

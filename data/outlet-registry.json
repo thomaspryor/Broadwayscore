@@ -3086,13 +3086,15 @@
       "displayName": "Metro UK",
       "tier": 3,
       "aliases": [
+        "metro",
         "metro uk",
         "metro-source"
       ],
       "domain": "metro.co.uk",
       "region": "london",
       "accessModel": "free",
-      "defaultCritic": "Brooke Ivey Johnson"
+      "defaultCritic": "Brooke Ivey Johnson",
+      "multiAuthor": true
     },
     "the-sun": {
       "displayName": "The Sun",
@@ -4426,17 +4428,6 @@
       ],
       "defaultCritic": "Peter Schrager",
       "domain": "msn.foxsports.com"
-    },
-    "metro": {
-      "displayName": "Metro",
-      "tier": 3,
-      "aliases": [
-        "metro"
-      ],
-      "accessModel": "free",
-      "region": "london",
-      "defaultCritic": "Adam Bloodworth",
-      "multiAuthor": true
     },
     "philly": {
       "displayName": "Philly",
@@ -9943,6 +9934,7 @@
     "queer review": "the-queer-review",
     "city am": "city-am",
     "cityam": "city-am",
+    "metro": "metro-uk",
     "metro uk": "metro-uk",
     "metro-source": "metro-uk",
     "the sun": "the-sun",

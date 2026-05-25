@@ -631,6 +631,12 @@ const CRITICAL_COOKIE_OUTLETS = new Set([
 
 function checkCookieExpiration() {
   const results = [];
+  // Cookies are managed on the Mac Studio (data/cookies/ is gitignored for security).
+  // In CI the directory will always be missing — that's expected, not a problem.
+  if (process.env.GITHUB_ACTIONS) {
+    results.push({ name: 'Cookies: expiration', status: 'pass', message: 'Skipped in CI (cookies managed on Mac Studio)' });
+    return results;
+  }
   if (!fs.existsSync(COOKIE_DIR)) {
     results.push({ name: 'Cookies: expiration', status: 'warn', message: 'data/cookies/ not found', hint: 'Run: python3 scripts/extract-safari-cookies.py' });
     return results;
