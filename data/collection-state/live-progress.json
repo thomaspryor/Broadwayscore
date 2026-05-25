@@ -4,9 +4,9 @@
   "failed": 263,
   "successRate": "12.3%",
   "tierBreakdown": {
-    "playwright": 19,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingbee": 9,
     "brightdata": 3,
@@ -25,6 +25,12 @@
       "t": "2026-05-25T11:55:44.426Z",
       "event": "bb-cookie-inject",
       "domain": "hollywoodreporter.com"
+    },
+    {
+      "t": "2026-05-25T12:33:29.781Z",
+      "event": "bb-session",
+      "session": "b8bfe121",
+      "url": "https://lincolncenterfestival.org/current-season/the-maids"
     }
   ]
 }
