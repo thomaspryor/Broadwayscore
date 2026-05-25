@@ -117,26 +117,24 @@ export default function FeaturedSpotSlim({
             </div>
           </div>
 
-          {/* Mobile: two rows — eyebrow+pill on top, title+CTA below */}
-          <div className="sm:hidden flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-1.5 min-w-0">
+          {/* Mobile: three rows — eyebrow+pill inline, title, CTA */}
+          <div className="sm:hidden flex flex-col gap-3">
+            <div className="flex items-center flex-wrap gap-x-3 gap-y-1.5">
+              <div className="flex items-center gap-1.5">
                 <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${ACCENT_DOT[accent]}`} aria-hidden="true" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-gray-400 truncate">
+                <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
                   {eyebrow}
                 </span>
               </div>
-              <div className="flex-shrink-0">
-                <StatPill accent={accent} stat={stat} />
-              </div>
+              <StatPill accent={accent} stat={stat} />
             </div>
-            <div className="flex items-center justify-between gap-3">
-              <h3 className="text-sm font-extrabold text-white tracking-tight leading-tight min-w-0 [display:-webkit-box] [-webkit-line-clamp:2] [-webkit-box-orient:vertical] overflow-hidden">
-                {title}
-              </h3>
+            <h3 className="text-base font-extrabold text-white tracking-tight leading-tight">
+              {title}
+            </h3>
+            <div>
               <span
                 aria-hidden="true"
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-pill font-bold text-xs transition-all duration-200 whitespace-nowrap flex-shrink-0 ${CTA_CLASS[accent]}`}
+                className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-pill font-bold text-sm transition-all duration-200 whitespace-nowrap ${CTA_CLASS[accent]}`}
               >
                 <span>{ctaLabel}</span>
                 <ArrowIcon />
