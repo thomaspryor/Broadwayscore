@@ -44,9 +44,21 @@ const EXCLUDED_DIRECTOR_ROLES = new Set([
   'Associate Director', 'Resident Director',
 ]);
 
+// Build a lowercase lookup so case-drift ("Book writer" vs "Book Writer") still maps.
+// Auto-fix-show-data.js writes whatever case the LLM emitted — data already has 37
+// entries with lowercase "Book writer" that the exact-case map silently dropped.
+const ROLE_TO_CATEGORIES_LOWER: Record<string, CreativeCategory[]> = {};
+for (const [k, v] of Object.entries(ROLE_TO_CATEGORIES)) {
+  ROLE_TO_CATEGORIES_LOWER[k.toLowerCase()] = v;
+}
+
 function getCategoriesForRole(role: string): CreativeCategory[] {
-  // Direct match first
+  // Direct match first (preserves any case-sensitive lookup callers may rely on)
   if (ROLE_TO_CATEGORIES[role]) return ROLE_TO_CATEGORIES[role];
+
+  // Case-insensitive match next
+  const lowerMatch = ROLE_TO_CATEGORIES_LOWER[role.toLowerCase()];
+  if (lowerMatch) return lowerMatch;
 
   // Fuzzy match for Director (but exclude Music Director etc.)
   if (role.toLowerCase().includes('director') && !EXCLUDED_DIRECTOR_ROLES.has(role)) {
