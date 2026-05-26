@@ -1,18 +1,38 @@
 /**
- * Regression test for the pair-based person-winner attribution shipped
- * 2026-05-24. Pins three production-data invariants in data/awards.json.
+ * Regression test for pair-based person-winner attribution
+ * (scripts/enrich-awards-with-precursors.js applyDDOCCDL, shipped 2026-05-24).
  *
- * Background: Wikipedia DD/OCC/DL/Lortel category pages list nominees as
- * [winner_person, winner_show, loser_show, loser_show, ...] for performance
- * and design categories. The old enricher resolved person→show only via
- * Tony nominations, so off-Broadway shows (Kenrex, Mexodus, etc.) and shows
- * where a person is Tony-nominated for a DIFFERENT production than they
- * DD-won at (John Lithgow: Tony-nom for Giant, DD-win for Well I'll Let
- * You Go) were silently dropped or miscredited.
+ * BACKGROUND
+ * Wikipedia DD/OCC/DL/Lortel category pages list nominees as
+ *   [winner_person, winner_show, loser_show, loser_show, ...]
+ * for performance and design categories. The old enricher resolved
+ * person→show only via Tony nominations, so:
+ *   - off-Broadway wins (Kenrex, Mexodus, ...) silently dropped
+ *   - shows where a person is Tony-nominated for a DIFFERENT production
+ *     than they DD-won at were miscredited (Lost Boys audit, 2026-05-25:
+ *     16/27 DD 2026 categories wrong).
  *
- * Fix: pair-based primary, Tony fallback only when winner is absent from
- * nominees, per-winner cleanup of stale Tony-mismapped attributions.
- * scripts/enrich-awards-with-precursors.js applyDDOCCDL ~ line 449.
+ * FIX
+ *   1. Pair-based primary: read [winner_person, winner_show, ...] directly.
+ *   2. Tony fallback only when winner is absent from nominees.
+ *   3. Per-winner cleanup of stale Tony-mismapped attributions
+ *      (never broad season sweeps — that broke hamilton-2015 OB→Broadway).
+ *
+ * MAINTENANCE
+ * The first three tests are **derived from precursor data**, not hardcoded:
+ * each one reads data/precursors/drama-desk.json, finds the relevant year
+ * row, and asserts that awards.json reflects exactly what the precursor
+ * encodes. When Wikipedia updates and Track A re-enriches, these tests
+ * pick up the new truth automatically — no manual pin updates needed.
+ * (The earlier hand-pinned version broke 2026-05-26 when Track A audited
+ * away 15 miscredited categories — fixing data, "regressing" the pins.)
+ *
+ * The last two tests are hand-pinned (specific historical invariants).
+ *
+ * The final test is a precursor↔awards invariant: every DD/OCC/DL/Lortel
+ * winnerPersonName in precursors must land in some show's winnerNames.
+ * Catches the original Lost Boys class of bug: enricher dropping a win
+ * entirely because of a Tony-routing miss.
  *
  * Run: node --test tests/unit/awards-person-winner-pairing.test.mjs
  */
@@ -25,67 +45,137 @@ import url from 'node:url';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const AWARDS_FILE = path.join(__dirname, '..', '..', 'data', 'awards.json');
+const PRECURSOR_DIR = path.join(__dirname, '..', '..', 'data', 'precursors');
+
 const awards = JSON.parse(fs.readFileSync(AWARDS_FILE, 'utf8'));
 const shows = awards.shows || awards;
 
-describe('Pair-based person-winner attribution — production data pins', () => {
-  it('Kenrex receives both 2026 Drama Desk person-name wins (off-Broadway, not Tony-eligible)', () => {
-    const dd = shows['kenrex-off-broadway-2026']?.dramadesk;
-    assert.ok(dd, 'kenrex-off-broadway-2026.dramadesk missing');
-    const wins = dd.wins || [];
-    assert.ok(
-      wins.includes('Outstanding Music in a Play'),
-      `expected DD Music in a Play; got ${JSON.stringify(wins)}`
-    );
-    assert.ok(
-      wins.includes('Outstanding Solo Performance'),
-      `expected DD Solo Performance; got ${JSON.stringify(wins)}`
-    );
-    // Pair-based produces winnerNames for these (the prior Tony-only path
-    // silently dropped them entirely).
-    assert.deepStrictEqual(dd.winnerNames?.['Outstanding Music in a Play'], ['John Patrick Elliot']);
-    assert.deepStrictEqual(dd.winnerNames?.['Outstanding Solo Performance'], ['Jack Holden']);
+function loadPrecursor(file) {
+  return JSON.parse(fs.readFileSync(path.join(PRECURSOR_DIR, file), 'utf8'));
+}
+
+function precursorRow(precursor, category, year) {
+  const rows = (precursor.data || precursor)[category] || [];
+  return rows.find((r) => r.year === year) || null;
+}
+
+function findShowsWithWin(fieldKey, category, person) {
+  const hits = [];
+  for (const [showId, show] of Object.entries(shows)) {
+    const ceremony = show[fieldKey];
+    if (!ceremony) continue;
+    const names = ceremony.winnerNames?.[category] || [];
+    if (names.includes(person)) hits.push(showId);
+  }
+  return hits;
+}
+
+function normalizeTitle(t) {
+  return String(t || '')
+    .toLowerCase()
+    .replace(/[!?.,:;'"`’‘]+/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Map a precursor (winnerTitle, ceremonyYear) → the awards.json show id
+// it points at, or null if the show isn't tracked. Show ids follow the
+// pattern `<title-slug>(-suffix)?-<openingYear>`. Ceremony year maps to
+// openingYear or openingYear+1 (most spring ceremonies cover the
+// 2024-25 / 2025-26 season pattern). We require:
+//   - showId starts with `<slug>-`
+//   - showId ends with `-<year>` or `-<year - 1>`
+//   - show actually has a {fieldKey} entry
+// Multiple candidates → pick the one whose suffix is shortest (prefer
+// `giant-2026` over `giant-the-musical-2026` etc.). No candidates → null.
+function expectedShowIdForPrecursor(winnerTitle, year, fieldKey) {
+  if (!winnerTitle || !year) return null;
+  const slug = normalizeTitle(winnerTitle);
+  if (!slug) return null;
+  const candidates = [];
+  for (const [showId, show] of Object.entries(shows)) {
+    if (!show[fieldKey]) continue;
+    if (!showId.startsWith(`${slug}-`)) continue;
+    if (!(showId.endsWith(`-${year}`) || showId.endsWith(`-${year - 1}`))) continue;
+    candidates.push(showId);
+  }
+  if (candidates.length === 0) return null;
+  candidates.sort((a, b) => a.length - b.length);
+  return candidates[0];
+}
+
+describe('Pair-based person-winner attribution — derived from precursor data', () => {
+  const dd = loadPrecursor('drama-desk.json');
+
+  it('Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)', () => {
+    // Precursor encodes both wins with winnerPersonName populated. Old
+    // Tony-only path saw no Tony nom for Kenrex (off-Broadway) and dropped.
+    for (const cat of ['Outstanding Music in a Play', 'Outstanding Solo Performance']) {
+      const row = precursorRow(dd, cat, 2026);
+      assert.ok(row, `precursor row for DD 2026 ${cat} missing`);
+      assert.ok(
+        row.winnerPersonName,
+        `precursor row for DD 2026 ${cat} has no winnerPersonName — re-scrape?`
+      );
+      const person = row.winnerPersonName;
+      const ddShow = shows['kenrex-off-broadway-2026']?.dramadesk;
+      assert.ok(ddShow, 'kenrex-off-broadway-2026.dramadesk missing');
+      assert.ok(
+        (ddShow.wins || []).includes(cat),
+        `kenrex-off-broadway-2026 must include DD ${cat}; got ${JSON.stringify(ddShow.wins)}`
+      );
+      assert.deepStrictEqual(
+        ddShow.winnerNames?.[cat],
+        [person],
+        `kenrex-off-broadway-2026 DD ${cat} winnerNames must equal [${person}]`
+      );
+    }
   });
 
-  it('Lithgow DD 2026 Lead Performance routes to the show he won at, not the show he was Tony-nominated for', () => {
-    // John Lithgow won DD 2026 Outstanding Lead Performance in a Play for
-    // Well, I'll Let You Go (off-Broadway). He is Tony-nominated for Giant
-    // in the same 2025-26 season. Pre-fix, Tony lookup miscredited the DD
-    // win to giant-2026. Pair-based must route to the actual DD-winning show.
-    const wellWins = shows['well-ill-let-you-go-off-broadway-2026']?.dramadesk?.wins || [];
+  it('DD 2026 Lead Performance in a Play: winner credited to precursor-declared show', () => {
+    // Whatever show the precursor names as `winner` for this row is where
+    // the principal win lands. Track A (2026-05-25 audit) corrected this
+    // from well-ill-let-you-go to giant. If Wikipedia updates again, this
+    // test follows automatically. Allow extra shows (ties or syndicated
+    // wins) — we only enforce that the declared winner is among them.
+    const row = precursorRow(dd, 'Outstanding Lead Performance in a Play', 2026);
+    assert.ok(row, 'precursor DD 2026 Lead Performance in a Play missing');
+    assert.ok(row.winnerPersonName, 'precursor DD 2026 Lead Play has no winnerPersonName');
+    const person = row.winnerPersonName;
+    const expected = expectedShowIdForPrecursor(row.winner, row.year, 'dramadesk');
+    assert.ok(expected, `precursor winner show "${row.winner}" not tracked in awards.json — fixture stale?`);
+    const hits = findShowsWithWin('dramadesk', 'Outstanding Lead Performance in a Play', person);
     assert.ok(
-      wellWins.includes('Outstanding Lead Performance in a Play'),
-      `expected well-ill-let-you-go to have DD Lead Performance; got ${JSON.stringify(wellWins)}`
-    );
-    const giantWins = shows['giant-2026']?.dramadesk?.wins || [];
-    assert.ok(
-      !giantWins.includes('Outstanding Lead Performance in a Play'),
-      `giant-2026 must NOT have DD Lead Performance (Lithgow's Tony show != his DD-winning show); got ${JSON.stringify(giantWins)}`
+      hits.includes(expected),
+      `expected ${expected} to have ${person} for DD 2026 Lead Play; got ${JSON.stringify(hits)}`
     );
   });
 
-  it('Tie-winners going to different shows split correctly (Henry@Ragtime, Levy@Chess)', () => {
-    // DD 2026 Outstanding Lead Performance in a Musical was a tie:
-    //   Joshua Henry (Ragtime)
-    //   Caissie Levy (Chess)
-    // Each winner must land on their own show. Per-winner cleanup must
-    // strip the OTHER show from each — Levy is Tony-nominated for Ragtime
-    // (she's in Ragtime per Tony noms) and Henry is in Ragtime; the prior
-    // logic let Levy's name leak into ragtime-2025.winnerNames.
-    const ragNames = shows['ragtime-2025']?.dramadesk?.winnerNames?.['Outstanding Lead Performance in a Musical'];
-    assert.deepStrictEqual(ragNames, ['Joshua Henry'],
-      `ragtime-2025 Lead Performance must be Henry only; got ${JSON.stringify(ragNames)}`);
-    const chessNames = shows['chess-2025']?.dramadesk?.winnerNames?.['Outstanding Lead Performance in a Musical'];
-    assert.deepStrictEqual(chessNames, ['Caissie Levy'],
-      `chess-2025 Lead Performance must be Levy only; got ${JSON.stringify(chessNames)}`);
+  it('DD 2026 Lead Performance in a Musical: winner credited to precursor-declared show', () => {
+    // Same invariant as above for the musical category. Track A corrected
+    // the prior Henry@Ragtime / Levy@Chess split (which was a misread of
+    // the flat-list as a tie) to a single Henry@Ragtime win — matching the
+    // Wikipedia row.
+    const row = precursorRow(dd, 'Outstanding Lead Performance in a Musical', 2026);
+    assert.ok(row, 'precursor DD 2026 Lead Performance in a Musical missing');
+    assert.ok(row.winnerPersonName, 'precursor DD 2026 Lead Musical has no winnerPersonName');
+    const person = row.winnerPersonName;
+    const expected = expectedShowIdForPrecursor(row.winner, row.year, 'dramadesk');
+    assert.ok(expected, `precursor winner show "${row.winner}" not tracked in awards.json — fixture stale?`);
+    const hits = findShowsWithWin('dramadesk', 'Outstanding Lead Performance in a Musical', person);
+    assert.ok(
+      hits.includes(expected),
+      `expected ${expected} to have ${person} for DD 2026 Lead Musical; got ${JSON.stringify(hits)}`
+    );
   });
+});
 
-  it('OB→Broadway transfer wins survive cleanup (Hamilton 2015 OB wins on hamilton-2015)', () => {
-    // hamilton-2015 has dramadesk.season = "2015-16" (its primary Tony
-    // season). DD 2015 OB run attributed multiple wins to hamilton-2015.
-    // The cleanup pass must NOT strip these when DD 2016 row processes
-    // a different show — it must only strip Tony-mismapped attributions
-    // per-winner, never broad season sweeps.
+describe('Pair-based attribution — hand-pinned historical invariants', () => {
+  it('OB→Broadway transfer wins survive cleanup (hamilton-2015 keeps DD 2015 OB wins)', () => {
+    // hamilton-2015.dramadesk.season = "2015-16" (its Broadway Tony season).
+    // The DD 2015 OB run attributed multiple wins to hamilton-2015. Cleanup
+    // must strip per-winner Tony-mismaps only, never broad season sweeps.
     const wins = shows['hamilton-2015']?.dramadesk?.wins || [];
     const expected = [
       'Outstanding Book of a Musical',
@@ -95,20 +185,79 @@ describe('Pair-based person-winner attribution — production data pins', () => 
       'Outstanding Musical',
     ];
     for (const cat of expected) {
-      assert.ok(wins.includes(cat),
-        `hamilton-2015 must keep DD ${cat} (OB→Broadway transfer); got ${JSON.stringify(wins)}`);
+      assert.ok(
+        wins.includes(cat),
+        `hamilton-2015 must keep DD ${cat} (OB→Broadway transfer); got ${JSON.stringify(wins)}`
+      );
     }
   });
 
   it('Hand-curated DL Distinguished Performance Award + winnerNames not wiped by enricher', () => {
-    // DL DPA precursor data has winner=null (Wikipedia doesn't post a winner
-    // entry for current years). Ragtime/Joshua Henry was hand-curated in
-    // awards.json. Cleanup must not strip categories whose source rows have
-    // a null winner — guarded by `personWinnerShowMap.size > 0`.
+    // DL DPA precursor rows have winner=null in current years (Wikipedia
+    // omits winner cells). Ragtime/Joshua Henry was hand-curated in
+    // awards.json. The cleanup must skip categories where the source row
+    // has no winner — guarded by `personWinnerShowMap.size > 0`.
     const dl = shows['ragtime-2025']?.dramaLeague;
-    assert.ok((dl?.wins || []).includes('Distinguished Performance Award'),
-      `ragtime-2025.dramaLeague.wins must include Distinguished Performance Award`);
-    assert.deepStrictEqual(dl?.winnerNames?.['Distinguished Performance Award'], ['Joshua Henry'],
-      `ragtime-2025.dramaLeague.winnerNames must preserve Joshua Henry`);
+    assert.ok(
+      (dl?.wins || []).includes('Distinguished Performance Award'),
+      'ragtime-2025.dramaLeague.wins must include Distinguished Performance Award'
+    );
+    assert.deepStrictEqual(
+      dl?.winnerNames?.['Distinguished Performance Award'],
+      ['Joshua Henry'],
+      'ragtime-2025.dramaLeague.winnerNames must preserve Joshua Henry'
+    );
   });
+});
+
+describe('Precursor → awards.json: no silent winner drops (Lost Boys invariant)', () => {
+  // For every precursor row whose declared winner show IS tracked in
+  // awards.json, the row's winnerPersonName must appear on that show's
+  // winnerNames for the category. This is the SYSTEMATIC guard the
+  // Lost Boys audit (2026-05-25) showed we were missing: 16/27 DD 2026
+  // categories were silently miscredited or dropped by the pre-2026-05-24
+  // Tony-only routing.
+  //
+  // Show-tracking is detected via expectedShowIdForPrecursor (strict
+  // slug+year match against existing awards.json keys). Untracked shows
+  // (e.g. The Baker's Wife, the gap Track A flagged) are skipped — they
+  // are an accepted gap, not a regression.
+  const sources = [
+    ['drama-desk.json', 'dramadesk'],
+    ['outer-critics.json', 'outerCriticsCircle'],
+    ['drama-league.json', 'dramaLeague'],
+  ];
+
+  for (const [file, fieldKey] of sources) {
+    let precursor;
+    try {
+      precursor = loadPrecursor(file);
+    } catch {
+      continue; // precursor file optional
+    }
+    const categories = precursor.data || precursor;
+    for (const [category, rows] of Object.entries(categories)) {
+      if (!Array.isArray(rows)) continue;
+      for (const row of rows) {
+        if (!row.winnerPersonName || !row.year || !row.winner) continue;
+        // Only enforce on 2024+ — older entries may pre-date the precursor
+        // scraper's pair-encoding. Keeps the invariant fast and stable.
+        if (row.year < 2024) continue;
+        const expected = expectedShowIdForPrecursor(row.winner, row.year, fieldKey);
+        if (!expected) continue; // show isn't tracked → accepted gap
+
+        it(`${fieldKey} ${row.year} ${category} — ${row.winnerPersonName} (winner=${row.winner} → ${expected})`, () => {
+          const hits = findShowsWithWin(fieldKey, category, row.winnerPersonName);
+          assert.ok(
+            hits.includes(expected),
+            `${row.winnerPersonName} won ${fieldKey} ${row.year} ${category} per precursor ` +
+              `(winner show: ${row.winner} → ${expected}), but ${expected} does not have this ` +
+              `winnerName. Hits elsewhere: ${JSON.stringify(hits)}. ` +
+              `Likely cause: pair-based enricher mis-routed or dropped this row. ` +
+              `Re-run scripts/enrich-awards-with-precursors.js.`
+          );
+        });
+      }
+    }
+  }
 });

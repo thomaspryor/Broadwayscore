@@ -153,6 +153,34 @@ jobs:
           fi
           node scripts/audit-cron-health-coverage.js
 
+      - name: Check workflows don't bypass npm prebuild lifecycle
+        run: |
+          # `npx next build` (or bare `next build`) in a workflow step skips
+          # the npm `prebuild` lifecycle hook (scripts/prebuild.sh), which is
+          # the only thing that generates the gitignored
+          # data/cast-manifest.json and data/actor-slugs.json files. Without
+          # those, `next build` fails with
+          #   Module not found: '../../data/cast-manifest.json'.
+          # The 2026-05-26 Test UGC Features failure was caused by exactly
+          # this in test-ugc.yml. All workflows must invoke `npm run build`,
+          # which runs prebuild → build atomically.
+          VIOLATIONS=""
+          for f in .github/workflows/*.yml; do
+            # Match `npx next build` and `npx --no-install next build`; tolerate
+            # extra flags after. Avoid matching `npm run build` (which is fine).
+            if grep -E '^[[:space:]]*(run:[[:space:]]*)?(npx([[:space:]]+--[a-z-]+)*[[:space:]]+next[[:space:]]+build|next[[:space:]]+build)([[:space:]]|$)' "$f" >/dev/null 2>&1; then
+              VIOLATIONS="$VIOLATIONS $(basename "$f")"
+            fi
+          done
+          if [ -n "$VIOLATIONS" ]; then
+            echo "::error::Workflows invoke 'next build' directly (bypasses npm prebuild):$VIOLATIONS"
+            echo "Fix: change 'npx next build' to 'npm run build'. The prebuild hook"
+            echo "generates data/cast-manifest.json + data/actor-slugs.json (both gitignored)"
+            echo "which next build imports at compile time."
+            exit 1
+          fi
+          echo "All workflows use 'npm run build' (prebuild lifecycle preserved)"
+
       - name: Check checkout-core-data has matching push-core-data
         run: |
           # Workflows that checkout core data AND have write permissions

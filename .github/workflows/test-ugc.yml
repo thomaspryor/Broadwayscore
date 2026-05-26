@@ -49,7 +49,14 @@ jobs:
         uses: ./.github/actions/setup-playwright
 
       - name: Build with userAccounts flag
-        run: npx next build
+        # Must be `npm run build`, NOT `npx next build`: the npm `prebuild`
+        # lifecycle hook runs scripts/prebuild.sh which generates the
+        # gitignored data/cast-manifest.json + data/actor-slugs.json that
+        # data-actors.ts and data-cast-obc.ts import. `npx next build` skips
+        # that step and the build fails with
+        #   Module not found: '../../data/cast-manifest.json'
+        # The lint-workflows job in test.yml rejects `npx next build`.
+        run: npm run build
         env:
           NEXT_PUBLIC_FEATURES: "criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts"
           SKIP_HEAVY_PREBUILD: "true"
