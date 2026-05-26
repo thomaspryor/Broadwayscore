@@ -1,15 +1,15 @@
 {
   "system": "cookies",
-  "status": "warn",
-  "lastChecked": "2026-05-25T08:31:51.104Z",
+  "status": "pass",
+  "lastChecked": "2026-05-26T08:13:57.155Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Cookies: expiration",
-      "status": "warn",
-      "message": "data/cookies/ not found"
+      "status": "pass",
+      "message": "Skipped in CI (cookies managed on Mac Studio)"
     }
   ]
 }
