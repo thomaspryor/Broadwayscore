@@ -590,7 +590,7 @@ function validateTheaterAddress(shows) {
     if (!show.venue || show.venue === 'TBA') continue;
     // Only autofix Broadway shows. Same-name venues exist in London (Palace
     // Theatre, Lyceum) and would otherwise get a NYC address forced onto them.
-    if (!isBroadwayCategory(show.category)) continue;
+    if (!isBroadwayCategory(show)) continue;
     const canonical = VENUE_ADDRESSES[show.venue];
     if (!canonical) continue; // venue not in Broadway registry
     if (show.theaterAddress && show.theaterAddress !== canonical) {
