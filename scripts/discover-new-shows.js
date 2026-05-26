@@ -33,6 +33,11 @@ const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendatio
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
+const {
+  OB_VENUE_CONFIGS,
+  scrapeVenueListing,
+  writeStagingCandidates,
+} = require('./lib/venue-listing-discover');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -743,12 +748,14 @@ const VENUE_LISTING_PAGES = [
   { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
 
   // ── Off-Broadway non-profit subscription houses ──
-  // These don't list on TodayTix because they sell via their own membership systems.
-  // Initial patterns probed 2026-05-24; verify with `fetchShowsFromVenueListings('off-broadway')`.
-  { name: 'Atlantic Theater', url: 'https://atlantictheater.org/shows/', linkPattern: /\/show\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
-  { name: 'Vineyard Theatre', url: 'https://www.vineyardtheatre.org/whats-on/', linkPattern: /\/showsevents\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
-  { name: 'Signature Theatre', url: 'https://www.signaturetheatre.org/shows-and-events/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
-  { name: 'MCC Theater', url: 'https://mcctheater.org/shows/', linkPattern: /\/show\/[^/]+/, titleFromSlug: true, category: 'off-broadway' },
+  // Live OB venue extraction lives in scripts/lib/venue-listing-discover.js
+  // (OB_VENUE_CONFIGS). Candidates write to data/audit/ob-venue-candidates.json
+  // and are promoted to shows.json only after cross-validation against
+  // Playbill OB / Lortel (scripts/promote-ob-venue-candidates.js, V-T6b).
+  // The link-extraction stubs that used to be here returned 0 shows because
+  // the venues are bespoke (Elementor for Atlantic, JS-rendered for
+  // Vineyard, bot-fingerprinted MCC) — see venue-listing-discover.js for the
+  // verified per-venue configs.
 ];
 
 // Backward-compat alias — old name retained for any external callers/tests.
@@ -1503,20 +1510,37 @@ async function discoverShows() {
     } catch (e) {
       console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
     }
+    // OB venue listings — fan out to scrapeVenueListing per venue, capture
+    // results to staging (NOT directly to shows.json). The promotion script
+    // (scripts/promote-ob-venue-candidates.js, V-T6b) is what eventually
+    // moves staged candidates to shows.json — gated by cross-validation
+    // against Playbill OB / Lortel within 72h. This staging gate prevents
+    // a venue-page redesign from accidentally firing premature broadcasts
+    // to real subscribers (see /plan-review v2 P0 User Impact finding).
     try {
-      const obVenueShows = await fetchShowsFromVenueListings('off-broadway');
-      if (obVenueShows.length > OB_VENUE_CAP) {
-        console.error(`::error::OB venue listings returned ${obVenueShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
-        process.exitCode = 1;
-        return { newShows: [], count: 0 };
+      const results = await Promise.allSettled(
+        OB_VENUE_CONFIGS.map(v => scrapeVenueListing(v))
+      );
+      const all = [];
+      for (let i = 0; i < results.length; i++) {
+        const v = OB_VENUE_CONFIGS[i];
+        const r = results[i];
+        if (r.status === 'fulfilled') {
+          if (r.value.length > OB_VENUE_CAP) {
+            console.error(`::error::Venue ${v.name} returned ${r.value.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+            process.exitCode = 1;
+            return { newShows: [], count: 0 };
+          }
+          console.log(`  ${v.name}: ${r.value.length} candidates → staging`);
+          all.push(...r.value);
+        } else {
+          console.log(`  ${v.name}: failed (${r.reason?.message})`);
+        }
       }
-      // Synthesize the discovery-pipeline shape (`venue` as string; OB venue
-      // entries already carry that from fetchSingleVenuePage). Source tag
-      // makes it easy to debug per-venue origin downstream.
-      const tagged = obVenueShows.map(s => ({ ...s, source: `venue-page:${(s.venue || '').toLowerCase().replace(/\s+/g, '-')}` }));
-      discoveredShows.push(...tagged);
+      if (all.length > 0 && !dryRun) writeStagingCandidates(all);
+      else if (dryRun) console.log(`  (dry-run: would stage ${all.length} candidates)`);
     } catch (e) {
-      console.log(`⚠️  OB venue listings failed (${e.message}), continuing with other sources`);
+      console.log(`⚠️  OB venue scraping failed (${e.message}), continuing with other sources`);
     }
     console.log('');
   }
