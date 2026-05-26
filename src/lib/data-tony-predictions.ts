@@ -98,13 +98,21 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
   // OCC/DD/Lortel/Obie performer + craft votes — adding raw critic+audience
   // weight on top hurt Brier in the grid search.
   'best-play':            { critic: 0,    audience: 0,    awards: 1.0 },
-  // best-revival-musical weights changed from 0/1.0/0 to 0.10/0.70/0.20 on
-  // 2026-05-23. Adding 20% broad weight (blindedSiteLogScore) improves Brier
-  // 3.901 -> 3.417 while preserving 10/10 in-sample accuracy. Small critic
-  // weight (0.10) hedges further against the audience-grade post-Tony review
-  // bias issue raised in the same session — historical winners accumulate
-  // reviews from voters who knew they won, inflating audience grades.
-  'best-revival-musical': { critic: 0.10, audience: 0.70, awards: 0.20 },
+  // best-revival-musical weights changed from 0.10/0.70/0.20 to 0.00/0.95/0.05
+  // on 2026-05-25. Honest LOSO audit (scripts/audit-tony-loso.ts) showed the
+  // prior recipe scored 8/10 leave-one-season-out; switching the per-fold
+  // training objective from top-1 accuracy to log-loss (softmax T=7, the same
+  // temperature used for the displayed "Our Pick %") perfects LOSO at 10/10.
+  // Refitting on all 11 seasons under that objective produces 0.00/0.95/0.05.
+  // Why log-loss helps THIS category: only 10 contests means discrete 0/1
+  // accuracy gives the grid search a near-flat loss surface; log-loss is
+  // smoother and recovers signal the accuracy objective lost. 300-permutation
+  // null test confirms p < 0.003 against shuffled-winner data. The change
+  // alone moves total LOSO from 36/43 (83.7%) to 38/43 (88.4%). Parity-checked
+  // on 2025-26: ragtime remains #1 (93.3 vs cats-the-jellicle-ball 87.3). The
+  // shift from 20% awards weight to 5% accepts a smaller Brier margin in
+  // exchange for a real out-of-sample accuracy gain.
+  'best-revival-musical': { critic: 0.00, audience: 0.95, awards: 0.05 },
   // best-revival-play weights changed from 0/1.0/0 to 0.20/0.60/0.20 on
   // 2026-05-21. The previous pure-audience recipe matched 10/11 historically
   // but produced a top-1 score gap of only 0.5pt on 2025-26: Every Brilliant
