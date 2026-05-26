@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-19T06:32:40.707Z",
+    "generatedAt": "2026-05-26T06:31:56.121Z",
     "threshold": 40,
-    "showsScanned": 1675,
-    "reviewsScanned": 32086,
-    "duplicatesFound": 81,
+    "showsScanned": 1693,
+    "reviewsScanned": 32556,
+    "duplicatesFound": 82,
     "byMethod": {
       "similarity": [
         {
@@ -308,6 +308,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "hadestown-west-end-2024",
+          "method": "similarity",
+          "similarity": 86,
+          "primaryFile": "timeout-london--andrzej-lukowski.json",
+          "primaryOutlet": "Time Out London",
+          "primaryCritic": "Andrzej Lukowski",
+          "secondaryFile": "timeout--adam-feldman.json",
+          "secondaryOutlet": "Time Out New York",
+          "secondaryCritic": "Adam Feldman",
+          "primaryScore": 82,
+          "secondaryScore": 81,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "harry-potter-2021",
           "method": "similarity",
           "similarity": 79,
@@ -320,21 +335,6 @@
           "primaryScore": 80,
           "secondaryScore": 76,
           "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "head-over-heels-2018",
-          "method": "similarity",
-          "similarity": 73,
-          "primaryFile": "dctheatrescene--jonathan-mandell.json",
-          "primaryOutlet": "DC Theatre Scene",
-          "primaryCritic": "Jonathan Mandell",
-          "secondaryFile": "nyt-theater--unknown.json",
-          "secondaryOutlet": "New York Theater",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 76,
-          "secondaryScore": 76,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -1225,6 +1225,21 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
+        },
+        {
+          "showId": "spring-awakening-2015",
+          "method": "fingerprint",
+          "similarity": 100,
+          "primaryFile": "ap--mark-kennedy.json",
+          "primaryOutlet": "Associated Press",
+          "primaryCritic": "Mark Kennedy",
+          "secondaryFile": "abc-news--mark-kennedy.json",
+          "secondaryOutlet": "ABC News",
+          "secondaryCritic": "Mark Kennedy",
+          "primaryScore": 89,
+          "secondaryScore": 84,
+          "scoreDiff": 5,
+          "textSource": "fullText"
         }
       ]
     }
@@ -1621,6 +1636,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "hadestown-west-end-2024",
+      "method": "similarity",
+      "similarity": 86,
+      "primaryFile": "timeout-london--andrzej-lukowski.json",
+      "primaryOutlet": "Time Out London",
+      "primaryCritic": "Andrzej Lukowski",
+      "secondaryFile": "timeout--adam-feldman.json",
+      "secondaryOutlet": "Time Out New York",
+      "secondaryCritic": "Adam Feldman",
+      "primaryScore": 82,
+      "secondaryScore": 81,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "harry-potter-2021",
       "method": "similarity",
       "similarity": 79,
@@ -1633,21 +1663,6 @@
       "primaryScore": 80,
       "secondaryScore": 76,
       "scoreDiff": 4,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "head-over-heels-2018",
-      "method": "similarity",
-      "similarity": 73,
-      "primaryFile": "dctheatrescene--jonathan-mandell.json",
-      "primaryOutlet": "DC Theatre Scene",
-      "primaryCritic": "Jonathan Mandell",
-      "secondaryFile": "nyt-theater--unknown.json",
-      "secondaryOutlet": "New York Theater",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 76,
-      "secondaryScore": 76,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -2173,6 +2188,21 @@
       "primaryScore": 76,
       "secondaryScore": 85,
       "scoreDiff": 9,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "ap--mark-kennedy.json",
+      "primaryOutlet": "Associated Press",
+      "primaryCritic": "Mark Kennedy",
+      "secondaryFile": "abc-news--mark-kennedy.json",
+      "secondaryOutlet": "ABC News",
+      "secondaryCritic": "Mark Kennedy",
+      "primaryScore": 89,
+      "secondaryScore": 84,
+      "scoreDiff": 5,
       "textSource": "fullText"
     },
     {
