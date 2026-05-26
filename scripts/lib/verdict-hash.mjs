@@ -35,21 +35,65 @@ export const VERDICT_SCHEMA_VERSION = 2;
 // During Sprint 0 we land the extraction with the v1 shape preserved so
 // behaviour is unchanged; Sprint 1 then re-shapes the inputs.
 
+// Metadata fields stripped before hashing. These are stored on the verdict
+// for human / audit consumption but do not represent the visual content.
+//
+// `branch` was originally included (the verdict belongs to a specific branch)
+// but /ship-check 2026-05-26 (Codex P1 + Claude P0-1) flagged it: same
+// screenshots on two branches should hash identically. headSha already binds
+// commit identity; the branch name is just a label.
+const HASH_EXCLUDED_TOP_LEVEL_FIELDS = [
+  'contentHash',
+  'verdictHash',      // legacy v1 field name
+  'runId',
+  'timestamp',
+  'schemaVersion',
+  'verdictSchemaVersion',
+  'branch',
+];
+
+// Per-screenshot-digest fields stripped before hashing. `path` is the route
+// string ("/about"), `width` the viewport — both are already represented in
+// the outer paths/widths arrays. Per-digest `path` would cause hash drift
+// whenever the order of file enumeration changes. `bytesSha` carries pixel
+// identity; that's what the hash needs.
+const DIGEST_HASH_FIELDS_SCREENSHOTS = ['bytesSha'];
+const DIGEST_HASH_FIELDS_CROPS = ['selector', 'geometry', 'bytesSha'];
+const DIGEST_HASH_FIELDS_REFS = ['bytesSha', 'role'];
+
+function pickStableShape(verdict) {
+  const out = {};
+  for (const [k, v] of Object.entries(verdict)) {
+    if (HASH_EXCLUDED_TOP_LEVEL_FIELDS.includes(k)) continue;
+    out[k] = v;
+  }
+  // Project digest arrays to the stable subset so per-run file-path strings
+  // can't sneak into the hash (Claude P0-1).
+  if (Array.isArray(out.screenshotsDigest)) {
+    out.screenshotsDigest = out.screenshotsDigest.map(d => pickFields(d, DIGEST_HASH_FIELDS_SCREENSHOTS));
+  }
+  if (Array.isArray(out.elementCropsDigest)) {
+    out.elementCropsDigest = out.elementCropsDigest.map(d => pickFields(d, DIGEST_HASH_FIELDS_CROPS));
+  }
+  if (Array.isArray(out.refsDigest)) {
+    out.refsDigest = out.refsDigest.map(d => pickFields(d, DIGEST_HASH_FIELDS_REFS));
+  }
+  return out;
+}
+
+function pickFields(obj, keys) {
+  const out = {};
+  for (const k of keys) {
+    if (obj && Object.prototype.hasOwnProperty.call(obj, k)) out[k] = obj[k];
+  }
+  return out;
+}
+
 export function computeContentHash(verdict) {
   if (!verdict || typeof verdict !== 'object') {
     throw new Error('computeContentHash: verdict must be an object');
   }
-  // Strip identity / metadata fields before hashing.
-  const {
-    contentHash: _ch,
-    verdictHash: _vh, // legacy field name
-    runId: _rid,
-    timestamp: _ts,
-    schemaVersion: _sv,
-    verdictSchemaVersion: _vsv,
-    ...rest
-  } = verdict;
-  const stable = stableStringify(rest);
+  const stable = stableStringify(pickStableShape(verdict));
   return createHash('sha256').update(stable).digest('hex').slice(0, 16);
 }
 
