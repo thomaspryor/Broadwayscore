@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-26T06:00:01.127Z",
+  "updatedAt": "2026-05-26T06:40:00.696Z",
   "processed": 56,
-  "failed": 887,
-  "successRate": "5.9%",
+  "failed": 1096,
+  "successRate": "4.9%",
   "tierBreakdown": {
     "playwright": 31,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingbee": 17,
+    "scrapingbee": 18,
     "brightdata": 5,
     "archiveToday": 37,
     "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-25T11:55:43.331Z",
@@ -31,6 +31,28 @@
       "event": "bb-session",
       "session": "b8bfe121",
       "url": "https://lincolncenterfestival.org/current-season/the-maids"
+    },
+    {
+      "t": "2026-05-26T06:39:05.874Z",
+      "event": "bb-session",
+      "session": "f4d9501f",
+      "url": "https://www.newsday.com/entertainment/movies/les-miserables-will-it-succeed-as-a"
+    },
+    {
+      "t": "2026-05-26T06:39:06.401Z",
+      "event": "bb-cookie-inject",
+      "domain": "newsday.com"
+    },
+    {
+      "t": "2026-05-26T06:39:44.835Z",
+      "event": "bb-session",
+      "session": "cb691cf0",
+      "url": "https://www.hollywoodreporter.com/movies/movie-news/jennifer-lopez-movie-musical"
+    },
+    {
+      "t": "2026-05-26T06:39:45.250Z",
+      "event": "bb-cookie-inject",
+      "domain": "hollywoodreporter.com"
     }
   ]
 }
