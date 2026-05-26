@@ -579,20 +579,33 @@ function validateVenueCategory(shows) {
 // from it and warn when a Broadway venue lacks any address.
 function validateTheaterAddress(shows) {
   info('Cross-checking theaterAddress against venue registry...');
+  // Hard cap: if more than 5 shows mismatch, refuse to autofix and fail loud.
+  // A stale entry in venue-addresses.js would otherwise silently rewrite every
+  // matching show on the next CI run with no diff alarm.
+  const AUTOFIX_CAP = 5;
   let mismatches = 0;
   const mismatchExamples = [];
 
   for (const show of shows) {
     if (!show.venue || show.venue === 'TBA') continue;
+    // Only autofix Broadway shows. Same-name venues exist in London (Palace
+    // Theatre, Lyceum) and would otherwise get a NYC address forced onto them.
+    if (!isBroadwayCategory(show.category)) continue;
     const canonical = VENUE_ADDRESSES[show.venue];
-    if (!canonical) continue; // venue not in Broadway registry (off-broadway / WE / etc.)
+    if (!canonical) continue; // venue not in Broadway registry
     if (show.theaterAddress && show.theaterAddress !== canonical) {
-      if (mismatchExamples.length < 5) {
+      if (mismatchExamples.length < 10) {
         mismatchExamples.push(`"${show.title}" (${show.id}): venue="${show.venue}" but theaterAddress="${show.theaterAddress}" — canonical "${canonical}"`);
       }
       show.theaterAddress = canonical;
       mismatches++;
     }
+  }
+
+  if (mismatches > AUTOFIX_CAP) {
+    mismatchExamples.forEach(m => err('  ' + m));
+    err(`${mismatches} theaterAddress/venue mismatches exceed cap ${AUTOFIX_CAP} — refusing to autofix. A wrong entry in scripts/lib/venue-addresses.js could be silently rewriting correct data; investigate before continuing.`);
+    return;
   }
 
   if (mismatches > 0) {
