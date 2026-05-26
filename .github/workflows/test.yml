@@ -153,6 +153,19 @@ jobs:
           fi
           node scripts/audit-cron-health-coverage.js
 
+      - name: Audit — tests vs derived data (no silent factual pins)
+        # Tests that read data/awards.json, data/reviews.json, or data/shows.json
+        # (derived enricher outputs) must ALSO read from data/precursors/ or
+        # data/review-texts/ (the sources that generate them), OR carry a
+        # `// TESTS-VS-DERIVED-DATA-EXEMPT: <reason>` comment near the top.
+        #
+        # Why: 2026-05-26 incident — three awards-person-winner-pairing.test.mjs
+        # pins broke because they hard-coded facts ("Lithgow won for X") that
+        # Track A's Wikipedia audit later corrected. The test was re-asserting
+        # the bug it was meant to catch. This gate forces derive-from-source
+        # (or an explicit, justified exemption).
+        run: node scripts/audit-tests-vs-derived-data.js
+
       - name: Check workflows don't bypass npm prebuild lifecycle
         run: |
           # `npx next build` (or bare `next build`) in a workflow step skips

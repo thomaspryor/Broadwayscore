@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: guard logic test — reads shows.json for slug lookups, asserts auto-flag behavior, no hardcoded facts.
 // Regression test for Guard E (BWW Review-Roundup auto-flag).
 //
 // Background: a BWW Review-Roundup file landed unflagged on 2026-04-28

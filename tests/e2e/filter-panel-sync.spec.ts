@@ -41,23 +41,35 @@ const PAGES: PageConfig[] = [
 ];
 
 /**
- * Click a button by exact text content, optionally restricted to the panel
- * dialog or to elements outside it. Avoids strict-mode violations when the
- * same label exists in both the panel and inline (e.g. "Plays").
+ * Click a button by exact text content, scoped to the panel dialog or to
+ * elements outside it. Avoids strict-mode violations when the same label
+ * exists in both the panel and inline (e.g. "Plays").
+ *
+ * MUST use Playwright actionability (waitForFunction → JSHandle.click)
+ * rather than `page.evaluate` + synthesized `.click()`. The synthesized
+ * path fires before React's onClick handler attaches on slow hydration
+ * (the West End page was the first to hit this after the 2026-05-25
+ * LOSO commit shifted homepage layout enough to delay hydration there).
+ * See memory/feedback_playwright_evaluate_click_hydration.md.
  */
 async function clickButton(page: Page, label: string, scope: 'inline' | 'panel') {
-  return await page.evaluate(({ label, scope }) => {
-    const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
-    const target = btns.find((b) => {
-      const text = (b.textContent || '').trim();
-      if (text !== label) return false;
-      const inDialog = !!b.closest('[role="dialog"]');
-      return scope === 'panel' ? inDialog : !inDialog;
-    });
-    if (!target) return false;
-    target.click();
-    return true;
-  }, { label, scope });
+  const handle = await page.waitForFunction(
+    ({ label, scope }) => {
+      const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
+      const match = btns.find((b) => {
+        if ((b.textContent || '').trim() !== label) return false;
+        const inDialog = !!b.closest('[role="dialog"]');
+        return scope === 'panel' ? inDialog : !inDialog;
+      });
+      return match ?? null;
+    },
+    { label, scope },
+    { timeout: 5000 },
+  );
+  const element = handle.asElement();
+  if (!element) return false;
+  await element.click();
+  return true;
 }
 
 async function readPanelState(page: Page) {

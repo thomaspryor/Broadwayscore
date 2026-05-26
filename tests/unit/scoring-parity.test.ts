@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: parity test — same reviews.json fed to engine.ts + compute-critic-score.js; asserts equality, no factual pins.
 /**
  * Cross-implementation parity test: engine.ts vs compute-critic-score.js
  *

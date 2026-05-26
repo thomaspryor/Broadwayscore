@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: parity test — same reviews.json/shows.json fed to old + new impl; expects 0 diffs, no factual pins.
 // Parity regression guard for scripts/lib/market-routing.js — Sprint 3 / S3-T2.
 //
 // Per feedback_refactor_parity_test.md: the same-title-disambig refactor
