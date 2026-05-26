@@ -72,6 +72,24 @@ const SHIPPED_RECIPES: Record<TonyCategoryKey, Recipe> = {
   'best-revival-play': { critic: 0.2, audience: 0.6, awards: 0.2 },
 };
 
+// The shipped FITTING PROCEDURE per category — i.e. which objective each
+// shipped recipe was derived from. This is what the audit's default LOSO
+// reports. Without it, a naive default run uses accuracy globally and
+// produces 36/43 = 83.7% — which contradicts the 88.4% figure displayed on
+// /tony-awards/predictions. The discrepancy is real (per-cat best-revival-
+// musical uses log-loss) and the default should mirror it.
+//
+//   best-musical:         accuracy (4-dim grid search, see TONY_RECIPES L81)
+//   best-play:            accuracy (categoryAwardsScore combines topCat+broad)
+//   best-revival-musical: log-loss (2026-05-25, perfects LOSO 8/10 → 10/10)
+//   best-revival-play:    accuracy (categoryAwardsScore=blindedSiteLogScore)
+const SHIPPED_PROCEDURE: Record<TonyCategoryKey, Config> = {
+  'best-musical':         { objective: 'accuracy', shrinkage: 0, ensembleK: 1 },
+  'best-play':            { objective: 'accuracy', shrinkage: 0, ensembleK: 1 },
+  'best-revival-musical': { objective: 'logloss',  shrinkage: 0, ensembleK: 1 },
+  'best-revival-play':    { objective: 'accuracy', shrinkage: 0, ensembleK: 1 },
+};
+
 // Shrinkage target: uniform (1/3, 1/3, 1/3) — maximum-entropy prior. Chosen
 // over "shipped recipe" because the shipped recipe was itself tuned on all 11
 // seasons; shrinking toward it would leak in-sample fit into LOSO eval.
@@ -596,7 +614,20 @@ function runRefitAll(perCat: Map<TonyCategoryKey, Config>): void {
 }
 
 function main(): void {
-  const perCat = parsePerCat();
+  let perCat = parsePerCat();
+  // Default: mirror the shipped per-category fitting procedure (see
+  // SHIPPED_PROCEDURE). This makes the default run reproduce the 38/43 = 88.4%
+  // LOSO figure displayed on /tony-awards/predictions. A user who overrides
+  // with --objective= or --sweep gets the global behavior instead.
+  const usingDefaults =
+    !perCat &&
+    !SWEEP &&
+    !argVal('objective') &&
+    !argVal('shrinkage') &&
+    !argVal('ensemble');
+  if (usingDefaults) {
+    perCat = new Map(Object.entries(SHIPPED_PROCEDURE)) as Map<TonyCategoryKey, Config>;
+  }
   if (perCat && process.argv.includes('--refit-all')) {
     runRefitAll(perCat);
     return;
