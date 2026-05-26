@@ -473,6 +473,16 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       );
       const winnerIsPersonName = winnerTitles.length > 0 && !anyWinnerIsShow;
 
+      // Year-page-aware short-circuit: if winnerPersonName is populated, the
+      // year-page scraper is telling us the winner field stores the SHOW NAME
+      // (not a person). When that show isn't tracked in shows.json, do NOT
+      // fall into person-winner adjacency — adjacency picks a random alphabetical
+      // neighbor and credits a wrong show (e.g. Featured Musical Kuhn/Baker's-Wife
+      // → schmigadoon-2026 because Baker's Wife isn't tracked). The correct
+      // behavior is to skip the win attribution entirely; nominees still flow
+      // into nominatedFor below.
+      const winnerShowUntracked = yearEntry.winnerPersonName && !anyWinnerIsShow;
+
       // For person-name winners: map each winner to a showId. Resolution rules:
       //   1. If winner IS in the nominees array (the common case): use the
       //      ADJACENT show — Wikipedia DD/OCC/DL/Lortel tables list nominees as
@@ -491,7 +501,7 @@ function applyDDOCCDL(source, fieldKey, awardsShows, titleById, opts) {
       // etc) that aren't Tony-nominated and were silently dropped by the
       // prior Tony-only logic.
       const personWinnerShowMap = new Map(); // normalizedName → showId[]
-      if (winnerIsPersonName) {
+      if (winnerIsPersonName && !winnerShowUntracked) {
         const season = ceremonyYearToTonySeason(callOpts.sourceYear);
         const noms = yearEntry.nominees || [];
         for (const w of winnerTitles) {
