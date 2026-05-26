@@ -365,15 +365,22 @@ Return ONLY the JSON array, no other text. Example:
 
   if (!proposed || proposed.length === 0) return null;
 
-  // Step 2: SERP-verify each proposed member
+  // Step 2: SERP-verify each proposed member.
+  // 2026-05-26: previously non-director roles were accepted without verification.
+  // Result: LLM hallucinated "Martyna Majok (Book Writer)" for Liberation (correct:
+  // Bess Wohl, Playwright) and reached production. Now ALL roles require SERP
+  // confirmation; unrecognized roles are rejected rather than silently accepted.
   const verified = [];
   for (const member of proposed) {
-    const roleVerb = member.role === 'Director' ? 'directed by' :
-                     member.role === 'Playwright' ? 'written by' :
-                     member.role === 'Choreographer' ? 'choreographed by' : null;
+    const role = String(member.role || '').toLowerCase();
+    const roleVerb = role === 'director' ? 'directed by' :
+                     role === 'playwright' ? 'written by' :
+                     role === 'choreographer' ? 'choreographed by' :
+                     (role === 'book writer' || role === 'book') ? 'book by' :
+                     role === 'composer' ? 'music by' :
+                     role === 'lyricist' ? 'lyrics by' : null;
     if (!roleVerb) {
-      // Non-director roles: accept without verification (lower hallucination risk)
-      verified.push({ ...member, _source: 'serp-verified-llm' });
+      console.log(`    ❌ Unrecognized role "${member.role}" for ${member.name} — rejecting (cannot SERP-verify)`);
       continue;
     }
 
