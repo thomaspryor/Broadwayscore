@@ -6,7 +6,7 @@ import { BASE_URL } from '@/lib/seo';
 export const metadata: Metadata = {
   title: 'Embed a CriticScore badge · Broadway Scorecard',
   description:
-    'Free embeddable CriticScore badge for any Broadway, Off-Broadway, or West End show. Paste one line of HTML — auto light/dark, links back, no tracking.',
+    'Free embeddable CriticScore badge for any Broadway, Off-Broadway, or West End show. Paste one line of HTML. Auto light/dark, links back, no tracking.',
   alternates: { canonical: `${BASE_URL}/embed` },
   robots: { index: false, follow: true },
 };
@@ -39,7 +39,7 @@ export default function EmbedDocsPage() {
         <p className="text-lg text-gray-300 mt-5 leading-relaxed">
           Free embeddable CriticScore badge for any Broadway, Off-Broadway, or West End
           show. Paste one line of HTML on a producer site, blog post, or Substack and the
-          badge stays in sync with the live score on broadwayscorecard.com — no JavaScript
+          badge stays in sync with the live score on broadwayscorecard.com. No JavaScript
           API, no tracking, no key required.
         </p>
       </header>
@@ -88,8 +88,8 @@ export default function EmbedDocsPage() {
           <Link href="/" className="text-amber-300 underline">
             broadwayscorecard.com
           </Link>{' '}
-          to find any show — if an embed returns "Show not found," reach out and we'll add
-          the alias.
+          to find any show. If an embed returns "Show not found," reach out and we'll
+          add the alias.
         </p>
       </section>
 
@@ -99,8 +99,8 @@ export default function EmbedDocsPage() {
           <div>
             <div className="text-white font-medium mb-1">Is it really free?</div>
             <div className="text-gray-300 leading-relaxed">
-              Yes. Free forever for any non-commercial or editorial use. Producers, blogs,
-              fan sites, Substacks, Reddit communities — paste away. No attribution
+              Yes. Free forever for any non-commercial or editorial use. Producers,
+              blogs, fan sites, Substacks, Reddit communities, paste away. No attribution
               required (though appreciated; the badge already links back).
             </div>
           </div>
@@ -122,16 +122,17 @@ export default function EmbedDocsPage() {
           <div>
             <div className="text-white font-medium mb-1">Can I customize the size?</div>
             <div className="text-gray-300 leading-relaxed">
-              The badge is designed at 280×120 px. You can resize the iframe within reason
-              — 240-360 wide, 100-160 tall — but smaller sizes will clip the show title.
+              The badge is designed at 280×120 px. You can resize the iframe within
+              reason (240-360 wide, 100-160 tall), but smaller sizes will clip the show
+              title.
             </div>
           </div>
           <div>
             <div className="text-white font-medium mb-1">What if I want a script-tag version?</div>
             <div className="text-gray-300 leading-relaxed">
-              The iframe is the version we support. A script-tag version that injects HTML
-              directly would require us to set CORS headers and add a JS bundle — happy to
-              build it if there's demand. Email{' '}
+              The iframe is the version we support. A script-tag version that injects
+              HTML directly would require us to set CORS headers and add a JS bundle. We
+              can build it if there's demand. Email{' '}
               <a href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
                 thomas.pryor@gmail.com
               </a>

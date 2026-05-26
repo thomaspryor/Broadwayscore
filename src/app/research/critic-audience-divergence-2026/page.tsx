@@ -52,7 +52,7 @@ function showHref(r: Row): string {
 const TITLE =
   'Critics vs. Audiences: 538 Productions, One Persistent Gap';
 const DESCRIPTION =
-  'We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher than critics on average — and disagree most on a familiar list of musicals.';
+  'We compared the CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher than critics on average, and disagree most on a familiar list of musicals.';
 const URL = `${BASE_URL}/research/critic-audience-divergence-2026`;
 
 export const metadata: Metadata = {
@@ -277,8 +277,8 @@ export default function CriticAudienceDivergencePage() {
           {summary.byCategory['broadway']?.meanGap.toFixed(1)}).
         </p>
         <p className="text-gray-200 leading-relaxed mt-4">
-          But the averages hide the interesting story. The most divisive productions are not
-          obscure flops — they're some of the most commercially successful shows of the
+          The averages hide the interesting story. The most divisive productions are not
+          obscure flops. They are some of the most commercially successful shows of the
           century.
         </p>
       </section>
@@ -294,14 +294,14 @@ export default function CriticAudienceDivergencePage() {
         </p>
         <RowTable rows={top10Audience} highlight="audience" />
         <p className="text-sm text-gray-400 mt-4 leading-relaxed">
-          The story is familiar: large-cap commercial musicals with strong brand
-          recognition, blockbuster source IP, or pop-crossover scores tend to thrill ticket
-          buyers while drawing tepid notices.{' '}
+          The pattern is familiar. Large-cap commercial musicals with strong brand
+          recognition, blockbuster source IP, or pop-crossover scores tend to thrill
+          ticket buyers while drawing tepid notices.{' '}
           <Link href={showHref(top10Audience[0])} className="text-amber-300 underline">
             {top10Audience[0]?.title}
           </Link>{' '}
-          tops the list at +{top10Audience[0]?.gap.toFixed(1)} —{' '}
-          {top10Audience[0]?.audience.toFixed(0)}/100 from audiences vs.{' '}
+          tops the list at +{top10Audience[0]?.gap.toFixed(1)} points:{' '}
+          {top10Audience[0]?.audience.toFixed(0)}/100 from audiences against{' '}
           {top10Audience[0]?.critic.toFixed(0)} from critics.
         </p>
       </section>
@@ -318,12 +318,12 @@ export default function CriticAudienceDivergencePage() {
         </p>
         <RowTable rows={top10Critic} highlight="critic" />
         <p className="text-sm text-gray-400 mt-4 leading-relaxed">
-          The pattern reverses: serious plays, formal experiments, and revivals of canonical
-          texts cluster here. These shows tend to win awards (e.g.{' '}
+          The pattern reverses. Serious plays, formal experiments, and revivals of
+          canonical texts cluster here. These shows tend to win awards (e.g.{' '}
           <Link href={showHref(top10Critic.find((r) => r.id === 'stereophonic-2024') || top10Critic[0])} className="text-amber-300 underline">
             {(top10Critic.find((r) => r.id === 'stereophonic-2024') || top10Critic[0])?.title}
           </Link>
-          ) but split mainstream audiences.
+          ) while splitting mainstream audiences.
         </p>
       </section>
 
@@ -385,12 +385,12 @@ export default function CriticAudienceDivergencePage() {
           </table>
         </div>
         <p className="text-sm text-gray-400 mt-4 leading-relaxed">
-          The West End shows the widest gap — audiences there grade productions{' '}
+          The West End shows the widest gap. Audiences there grade productions{' '}
           {summary.byCategory['west-end']?.meanGap.toFixed(1)} points above critics on
           average, against{' '}
-          {summary.byCategory['broadway']?.meanGap.toFixed(1)} on Broadway. One contributing
-          factor: the West End sample skews toward long-running commercial musicals where
-          audience self-selection is strongest.
+          {summary.byCategory['broadway']?.meanGap.toFixed(1)} on Broadway. One
+          contributing factor is that the West End sample skews toward long-running
+          commercial musicals, where audience self-selection is strongest.
         </p>
       </section>
 
@@ -401,10 +401,10 @@ export default function CriticAudienceDivergencePage() {
           <li>
             <strong className="text-white">Critics are systematically harder graders than
             audiences.</strong>{' '}
-            This is not surprising — critics see far more theater than the average
-            ticket-buyer and grade against a deeper reference set. But the magnitude (a
-            7.4-point average gap on a 100-point scale) is larger than the comparable
-            gap on Rotten Tomatoes for film.
+            Critics see far more theater than the average ticket-buyer and grade against
+            a deeper reference set. The gap (7.4 points on a 100-point scale) is large
+            enough that it changes which shows look "must-see" depending on whose number
+            you read.
           </li>
           <li>
             <strong className="text-white">The biggest commercial musicals show the
@@ -421,7 +421,7 @@ export default function CriticAudienceDivergencePage() {
             <Link href="/show/beetlejuice-2019" className="text-amber-300 underline">
               Beetlejuice
             </Link>{' '}
-            generate huge audience score databases — and those audiences are systematically
+            generate huge audience score databases, and those audiences are systematically
             more enthusiastic than the critical consensus.
           </li>
           <li>
@@ -478,7 +478,7 @@ export default function CriticAudienceDivergencePage() {
       <section className="mb-12">
         <h2 className="text-base font-semibold text-white mb-3">Use this data</h2>
         <p className="text-sm text-gray-300 leading-relaxed">
-          This study is free to cite — please link back to{' '}
+          This study is free to cite. Please link back to{' '}
           <a href={URL} className="text-amber-300 underline">
             {URL}
           </a>

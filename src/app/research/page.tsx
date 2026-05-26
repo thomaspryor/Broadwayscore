@@ -22,7 +22,7 @@ const studies = [
     title:
       'Critics vs. Audiences: 538 Productions, One Persistent Gap',
     blurb:
-      'We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher on average — and disagree most violently on a familiar list of musicals.',
+      'We compared the critic CriticScore and aggregated audience score for every Broadway, Off-Broadway, and West End production with enough data. Audiences score shows 7.4 points higher on average, and disagree most sharply on a familiar list of musicals.',
     date: '2026-05-26',
   },
 ];
@@ -61,7 +61,7 @@ export default function ResearchIndexPage() {
           Broadway Scorecard is a one-person, independent project. We aggregate
           professional critic reviews from 420+ outlets into a single CriticScore
           for every Broadway, Off-Broadway, and West End production. Studies on
-          this page are free to cite — please credit{' '}
+          this page are free to cite. Please credit{' '}
           <Link href="/" className="text-amber-300 underline">
             broadwayscorecard.com
           </Link>
