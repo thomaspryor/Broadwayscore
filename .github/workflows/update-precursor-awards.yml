@@ -91,10 +91,23 @@ jobs:
             node "$script" --write --min-year="$MIN_YEAR" $FORCE_FLAG
             echo "::endgroup::"
           }
+          # Year-page scrapers run AFTER their per-category counterparts so
+          # year-page data overrides for covered years (per-category scrapers
+          # store winner=person + adjacency-broken nominees; year-page has
+          # winner=show + winnerPersonName separately). Track B addition 2026-05-25.
+          run_year_page_scraper() {
+            local script="$1"
+            echo "::group::$script"
+            node "$script" --write $FORCE_FLAG || echo "::warning::$script failed — per-category data still applies"
+            echo "::endgroup::"
+          }
           case "$CEREMONY" in
-            drama-desk)     run_scraper scripts/scrape-drama-desk.js ;;
-            outer-critics)  run_scraper scripts/scrape-outer-critics.js ;;
-            drama-league)   run_scraper scripts/scrape-drama-league.js ;;
+            drama-desk)     run_scraper scripts/scrape-drama-desk.js
+                            run_year_page_scraper scripts/scrape-drama-desk-year-page.js ;;
+            outer-critics)  run_scraper scripts/scrape-outer-critics.js
+                            run_year_page_scraper scripts/scrape-occ-year-page.js ;;
+            drama-league)   run_scraper scripts/scrape-drama-league.js
+                            run_year_page_scraper scripts/scrape-drama-league-year-page.js ;;
             nydcc)          run_scraper scripts/scrape-nydcc.js ;;
             pulitzer)       run_scraper scripts/scrape-pulitzer.js ;;
             critics-circle)   run_scraper scripts/scrape-critics-circle.js ;;
@@ -121,6 +134,10 @@ jobs:
               echo "::endgroup::"
               run_scraper scripts/scrape-evening-standard.js
               run_scraper scripts/scrape-whatsonstage.js
+              # Year-page scrapers — authoritative for covered years (override per-category).
+              run_year_page_scraper scripts/scrape-occ-year-page.js
+              run_year_page_scraper scripts/scrape-drama-desk-year-page.js
+              run_year_page_scraper scripts/scrape-drama-league-year-page.js
               ;;
           esac
 
