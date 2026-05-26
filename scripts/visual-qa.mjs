@@ -5,7 +5,7 @@
 // (and the user) can SEE the change at multiple breakpoints + at full pixel
 // resolution. The companion hook (.claude/hooks/pre-push-visual-gate.sh)
 // requires `.claude/visual-qa/<branch>/verdict.json` newer than the latest
-// UI edit OR an explicit `APPROVED: <verdictHash>` from the user before any
+// UI edit OR an explicit `APPROVED: <contentHash>` from the user before any
 // push touching src/**/*.{tsx,jsx,css,scss} can proceed.
 //
 // CLI:
@@ -25,6 +25,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSy
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
+import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
 
 // Load .env into process.env without external dotenv dependency.
 // Only sets keys not already in env (so explicit env overrides .env).
@@ -54,6 +55,7 @@ function parseArgs(argv) {
     paths: ['/'],
     elements: [],
     refs: null,
+    refRoles: null, // null → all default to 'goal'; otherwise aligned with refs[]
     branch: null,
     out: null,
     help: false,
@@ -76,10 +78,36 @@ function parseArgs(argv) {
     else if (key === 'paths') args.paths = val.split(',').map(s => s.trim()).filter(Boolean);
     else if (key === 'elements') args.elements = val.split(',').map(s => s.trim()).filter(Boolean);
     else if (key === 'refs') args.refs = val === 'none' ? null : val.split(',').map(s => s.trim()).filter(Boolean);
+    else if (key === 'ref-roles' || key === 'ref-role') {
+      // Comma-separated per-ref roles aligned with --refs. Accepts 'goal' or 'before'.
+      //   --refs a.png,b.png --ref-roles goal,before
+      // Or a single value applies to all refs.
+      args.refRoles = val.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+    }
     else if (key === 'branch') args.branch = val;
     else if (key === 'out') args.out = val;
   }
   return args;
+}
+
+function normalizeRefRoles(refs, requestedRoles) {
+  if (!refs || refs.length === 0) return [];
+  if (!requestedRoles || requestedRoles.length === 0) {
+    return refs.map(() => 'goal');
+  }
+  // Validate values.
+  const valid = new Set(['goal', 'before']);
+  const bad = requestedRoles.find(r => !valid.has(r));
+  if (bad) {
+    throw new Error(`--ref-roles: unknown role "${bad}". Allowed: goal, before`);
+  }
+  if (requestedRoles.length === 1) {
+    return refs.map(() => requestedRoles[0]);
+  }
+  if (requestedRoles.length !== refs.length) {
+    throw new Error(`--ref-roles count (${requestedRoles.length}) must equal --refs count (${refs.length}), or be exactly 1.`);
+  }
+  return requestedRoles;
 }
 
 function printHelp() {
@@ -97,6 +125,10 @@ Options:
                             silent-PASS root cause).
   --refs <path,path|none>   reference design images for LLM diff review (GPT-4o + Gemini).
                             Omit OR pass "none" to skip LLM review (structural-only verdict).
+  --ref-roles <r1,r2,...>   per-reference role aligned with --refs. Values: goal | before.
+                            Single value applies to all refs. Default: goal (current).
+                              - goal:   impl MUST match this reference
+                              - before: impl MUST differ from this reference (requested change).
   --branch <name>           git branch (defaults to current). Used in output dir naming.
   --out <dir>               output directory (defaults to .claude/visual-qa/<branch>/)
 
@@ -278,7 +310,18 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
               }
               const cropFile = join(dir, `${width}__${slugify(sel)}.png`);
               await locator.screenshot({ path: cropFile });
-              elementCrops.push({ path, width, selector: sel, file: cropFile });
+              // Geometry digest: bounding box at capture time. Layout collapses
+              // (e.g. badge width going from 80px → 40px) always rotate the
+              // contentHash even if pixel-bytes happen to compress similarly.
+              let geometry = null;
+              try {
+                const box = await locator.boundingBox();
+                if (box) geometry = {
+                  w: Math.round(box.width), h: Math.round(box.height),
+                  x: Math.round(box.x), y: Math.round(box.y),
+                };
+              } catch { /* ignore — best-effort */ }
+              elementCrops.push({ path, width, selector: sel, file: cropFile, geometry });
             } catch (err) {
               console.error(`[visual-qa] WARN: crop failed for "${sel}" @ ${width}: ${err?.message}`);
             }
@@ -337,15 +380,38 @@ function imageToBase64(path) {
   return readFileSync(path).toString('base64');
 }
 
-async function reviewWithOpenAI({ refPaths, implPaths, apiKey, model = 'gpt-4o' }) {
+// Per-ref roles change the PASS criterion. Default ('goal') keeps current
+// behaviour: implementation MUST match the reference. The 'before' role
+// flips it: the reference is the state the user wants CHANGED, so the
+// implementation MUST differ from the reference. Mixed sets are supported —
+// each reference's role is announced inline before its image.
+function rolePromptHeader(refRoles) {
+  if (!refRoles || refRoles.length === 0) return REVIEW_CHECKLIST;
+  const hasBefore = refRoles.includes('before');
+  if (!hasBefore) return REVIEW_CHECKLIST;
+  return REVIEW_CHECKLIST + `\n\nPER-REFERENCE ROLES (override the default PASS criterion):
+- A reference labelled GOAL is the state to match — pass if impl resembles it (default).
+- A reference labelled BEFORE is the state to move AWAY from — pass if impl differs
+  from it in the intended direction. A diff against a BEFORE reference is the user's
+  requested change, not a regression. Do NOT FAIL the verdict because the impl differs
+  from a BEFORE reference; only FAIL if the impl looks identical to the BEFORE reference
+  (the change didn't land) or if there are NEW regressions unrelated to the BEFORE diff.`;
+}
+
+async function reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey, model = 'gpt-4o' }) {
+  const roles = refRoles && refRoles.length === refPaths.length ? refRoles : refPaths.map(() => 'goal');
+  const refBlocks = [];
+  for (let i = 0; i < refPaths.length; i++) {
+    refBlocks.push({ type: 'text', text: `REFERENCE #${i + 1} (role=${roles[i].toUpperCase()}):` });
+    refBlocks.push({ type: 'image_url', image_url: { url: `data:image/png;base64,${imageToBase64(refPaths[i])}` } });
+  }
   const messages = [{
     role: 'system',
-    content: REVIEW_CHECKLIST,
+    content: rolePromptHeader(roles),
   }, {
     role: 'user',
     content: [
-      { type: 'text', text: `REFERENCE design image(s) follow:` },
-      ...refPaths.map(p => ({ type: 'image_url', image_url: { url: `data:image/png;base64,${imageToBase64(p)}` } })),
+      ...refBlocks,
       { type: 'text', text: `\nIMPLEMENTATION screenshots at multiple widths follow:` },
       ...implPaths.map(p => ({ type: 'image_url', image_url: { url: `data:image/png;base64,${imageToBase64(p)}` } })),
       { type: 'text', text: '\nReturn the verdict JSON now.' },
@@ -369,9 +435,13 @@ async function reviewWithOpenAI({ refPaths, implPaths, apiKey, model = 'gpt-4o' 
   return parseVerdictJson(content);
 }
 
-async function reviewWithGemini({ refPaths, implPaths, apiKey, model = 'gemini-2.5-pro' }) {
-  const parts = [{ text: REVIEW_CHECKLIST + '\n\nREFERENCE design image(s):' }];
-  for (const p of refPaths) parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(p) } });
+async function reviewWithGemini({ refPaths, refRoles, implPaths, apiKey, model = 'gemini-2.5-pro' }) {
+  const roles = refRoles && refRoles.length === refPaths.length ? refRoles : refPaths.map(() => 'goal');
+  const parts = [{ text: rolePromptHeader(roles) }];
+  for (let i = 0; i < refPaths.length; i++) {
+    parts.push({ text: `\nREFERENCE #${i + 1} (role=${roles[i].toUpperCase()}):` });
+    parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(refPaths[i]) } });
+  }
   parts.push({ text: '\nIMPLEMENTATION screenshots at multiple widths:' });
   for (const p of implPaths) parts.push({ inlineData: { mimeType: 'image/png', data: imageToBase64(p) } });
   parts.push({ text: '\nReturn the verdict JSON now.' });
@@ -428,7 +498,7 @@ async function safeLLMReview(label, fn) {
   }
 }
 
-async function runLLMReview({ refPaths, screenshots, elementCrops }) {
+async function runLLMReview({ refPaths, refRoles, screenshots, elementCrops }) {
   // Prefer element crops (per-viewport, tight to the changed UI) over full-page
   // screenshots — the latter trigger hallucination on dynamic content
   // (scores, dates, titles) that differs between ref-capture-time and now.
@@ -452,10 +522,10 @@ async function runLLMReview({ refPaths, screenshots, elementCrops }) {
 
   const [openai, gemini] = await Promise.all([
     openaiKey
-      ? safeLLMReview('openai', () => reviewWithOpenAI({ refPaths, implPaths, apiKey: openaiKey }))
+      ? safeLLMReview('openai', () => reviewWithOpenAI({ refPaths, refRoles, implPaths, apiKey: openaiKey }))
       : Promise.resolve({ verdict: 'FAIL', issues: ['OPENAI_API_KEY missing'], error: 'missing-key' }),
     geminiKey
-      ? safeLLMReview('gemini', () => reviewWithGemini({ refPaths, implPaths, apiKey: geminiKey }))
+      ? safeLLMReview('gemini', () => reviewWithGemini({ refPaths, refRoles, implPaths, apiKey: geminiKey }))
       : Promise.resolve({ verdict: 'FAIL', issues: ['GEMINI_API_KEY missing'], error: 'missing-key' }),
   ]);
 
@@ -463,12 +533,24 @@ async function runLLMReview({ refPaths, screenshots, elementCrops }) {
 }
 
 // ── Verdict assembly + pruning ──────────────────────────────────────────────
-function computeVerdictHash(verdict) {
-  // Hash is over the JSON-stringified content WITHOUT the hash field itself.
-  // sorted keys for determinism.
-  const { verdictHash: _, ...rest } = verdict;
-  const stable = JSON.stringify(rest, Object.keys(rest).sort());
-  return createHash('sha256').update(stable).digest('hex').slice(0, 16);
+// Hash logic lives in scripts/lib/verdict-hash.mjs so both the runner and tests
+// share one implementation. See that file for the inputs that participate.
+
+function sha256OfFile(path) {
+  if (!path || !existsSync(path)) return null;
+  try {
+    return createHash('sha256').update(readFileSync(path)).digest('hex').slice(0, 16);
+  } catch { return null; }
+}
+
+function getHeadSha() {
+  try {
+    return execSync('git rev-parse HEAD', { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch { return null; }
+}
+
+function safeReadJson(path) {
+  try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return null; }
 }
 
 function pruneStaleVerdictDirs(currentBranch, baseDir = '.claude/visual-qa') {
@@ -576,6 +658,15 @@ Then re-run this command.`);
     }
   }
 
+  // Roles must be computed before LLM review so the prompt branches by role.
+  let refRoles = [];
+  try {
+    refRoles = normalizeRefRoles(args.refs, args.refRoles);
+  } catch (err) {
+    console.error(`[visual-qa] ERROR: ${err.message}`);
+    process.exit(1);
+  }
+
   let verdicts = null;
   if (args.refs && args.refs.length > 0) {
     const missingRefs = args.refs.filter(p => !existsSync(p));
@@ -583,9 +674,10 @@ Then re-run this command.`);
       console.error(`[visual-qa] ERROR: reference image(s) not found: ${missingRefs.join(', ')}`);
       process.exit(1);
     }
-    console.error(`[visual-qa] running two-model review (${args.refs.length} ref(s) vs 360/768/1440 implementation)…`);
+    const roleSummary = refRoles.length === args.refs.length ? ` roles=${refRoles.join(',')}` : '';
+    console.error(`[visual-qa] running two-model review (${args.refs.length} ref(s)${roleSummary} vs 360/768/1440 implementation)…`);
     const tLLM = Date.now();
-    verdicts = await runLLMReview({ refPaths: args.refs, screenshots, elementCrops });
+    verdicts = await runLLMReview({ refPaths: args.refs, refRoles, screenshots, elementCrops });
     const llmElapsed = Math.round((Date.now() - tLLM) / 1000);
     if (verdicts) {
       console.error(`[visual-qa] LLM review done in ${llmElapsed}s`);
@@ -598,26 +690,62 @@ Then re-run this command.`);
     ? verdicts.openai.verdict === 'PASS' && verdicts.gemini.verdict === 'PASS'
     : true; // structural-only mode (no refs) trusts the agent + user to eye the screenshots
 
+  // Build the verdict using stable inputs only — see scripts/lib/verdict-hash.mjs
+  // for the full inputs list. Anything mutable (timestamps, runIds, raw file
+  // paths) is stored on the verdict for human readability but excluded from
+  // the hash so re-runs on identical pixels yield an identical contentHash.
+  const refsDigest = (args.refs || []).map((p, idx) => ({
+    bytesSha: sha256OfFile(p),
+    role: refRoles[idx] || 'goal',
+  }));
+  const screenshotsDigest = screenshots.map(s => ({
+    path: s.path, width: s.width, bytesSha: sha256OfFile(s.file),
+  }));
+  const elementCropsDigest = elementCrops.map(c => ({
+    path: c.path,
+    width: c.width,
+    selector: c.selector,
+    geometry: c.geometry || null, // captured in S1-T2
+    bytesSha: sha256OfFile(c.file),
+  }));
+  const overflowReportForHash = overflowReport.map(({ textPreview, ...rest }) => rest);
+  const headSha = getHeadSha();
+
   const verdict = {
+    schemaVersion: VERDICT_SCHEMA_VERSION,
     branch,
+    headSha,
     url: args.url,
     paths: args.paths,
     widths: WIDTHS,
     elements: args.elements,
+    refsDigest,
+    screenshotsDigest,
+    elementCropsDigest,
+    overflowReportForHash,
+    verdicts,
+    overallPass,
+    // Metadata — NOT part of hash:
     screenshots,
     elementCrops,
     refs: args.refs || [],
     overflowReport,
-    verdicts,
-    overallPass,
     timestamp: new Date().toISOString(),
-    verdictHash: null, // filled in next
+    runId: generateRunId(),
+    contentHash: null, // filled in next
   };
-  verdict.verdictHash = computeVerdictHash(verdict);
+  verdict.contentHash = computeContentHash(verdict);
 
   const verdictPath = join(outDir, 'verdict.json');
-  writeFileSync(verdictPath, JSON.stringify(verdict, null, 2));
-  console.error(`[visual-qa] wrote ${verdictPath} (hash=${verdict.verdictHash})`);
+  // S1-T8: skip rewrite if computed contentHash matches existing file.
+  const existing = existsSync(verdictPath)
+    ? safeReadJson(verdictPath) : null;
+  if (existing && existing.contentHash === verdict.contentHash) {
+    console.error(`[visual-qa] contentHash unchanged (${verdict.contentHash}); preserving existing verdict.json`);
+  } else {
+    writeFileSync(verdictPath, JSON.stringify(verdict, null, 2));
+    console.error(`[visual-qa] wrote ${verdictPath} (contentHash=${verdict.contentHash})`);
+  }
 
   const pruned = pruneStaleVerdictDirs(branch);
   if (pruned.length > 0) {
@@ -628,7 +756,7 @@ Then re-run this command.`);
   console.log('━'.repeat(60));
   console.log(`VISUAL QA — branch ${branch} — overallPass=${overallPass}`);
   console.log(`URL: ${args.url}  Paths: ${args.paths.join(', ')}`);
-  console.log(`Verdict hash: ${verdict.verdictHash}`);
+  console.log(`Content hash: ${verdict.contentHash}`);
   console.log(`Screenshots: ${screenshots.length}, element crops: ${elementCrops.length}, overflow findings: ${overflowReport.length}`);
   if (verdicts) {
     console.log(`OpenAI: ${verdicts.openai.verdict}${verdicts.openai.issues.length ? ' — ' + verdicts.openai.issues.slice(0, 3).join(' | ') : ''}`);
@@ -646,7 +774,7 @@ Then re-run this command.`);
     for (const s of screenshots.slice(0, 3)) console.log(`     Read ${s.file}`);
   }
   console.log('  2. Paste the above paths + verdict summary in your next message to the user.');
-  console.log(`  3. Wait for the user to reply with: APPROVED: ${verdict.verdictHash}`);
+  console.log(`  3. Wait for the user to reply with: APPROVED: ${verdict.contentHash}`);
   console.log(`     OR: a description of what to fix.`);
   console.log('━'.repeat(60));
 

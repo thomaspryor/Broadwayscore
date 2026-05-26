@@ -455,3 +455,94 @@ test('override: rejects when no override phrase present', () => {
     assert.equal(r.override, false);
   } finally { cleanup(); }
 });
+
+// ── in-flight NO-VERIFY scoping (S3) ────────────────────────────────────────
+
+function makeAssistantMessageWithTextAndToolUse(messageId, text, toolName, toolInput, toolUseId) {
+  return JSON.stringify({
+    type: 'assistant',
+    timestamp: '2026-05-25T18:00:00Z',
+    uuid: messageId,
+    message: {
+      id: messageId,
+      content: [
+        { type: 'text', text },
+        { type: 'tool_use', name: toolName, input: toolInput, id: toolUseId },
+      ],
+    },
+  });
+}
+
+test('visual-claim: in-flight NO-VERIFY in SAME turn as gated tool_use bypasses', () => {
+  // First the assistant said something earlier (prior turn — irrelevant).
+  // Then the CURRENT turn contains both the NO-VERIFY text AND the Bash push.
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('Earlier reasoning, no override here.'),
+    makeAssistantMessageWithTextAndToolUse(
+      'msg-current',
+      'Pushing the data-only edit. NO-VERIFY: text-only fix to string array, no visual change.',
+      'Bash', { command: 'git push origin HEAD' }, 'tool_push_1',
+    ),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'tool_push_1' });
+    assert.equal(r.hasNoVerify, true);
+    assert.equal(r.scope, 'in-flight-turn');
+  } finally { cleanup(); }
+});
+
+test('visual-claim: in-flight scope DOES NOT see prior-turn NO-VERIFY', () => {
+  // Prior turn had NO-VERIFY, current turn does NOT — gate must fire.
+  const { path, cleanup } = writeFixture([
+    JSON.stringify({
+      type: 'assistant',
+      uuid: 'msg-prior',
+      message: { id: 'msg-prior', content: [{ type: 'text', text: 'NO-VERIFY: prior turn excuse.' }] },
+    }),
+    makeAssistantMessageWithTextAndToolUse(
+      'msg-current',
+      'Live on production and looks correct on mobile.',
+      'Bash', { command: 'git push origin HEAD' }, 'tool_push_2',
+    ),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'tool_push_2' });
+    assert.equal(r.hasNoVerify, false);
+    assert.equal(r.scope, 'in-flight-turn');
+  } finally { cleanup(); }
+});
+
+test('visual-claim: falls back to last-text when toolUseId not provided (legacy)', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('NO-VERIFY: data-only edit'),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path));
+    assert.equal(r.hasNoVerify, true);
+    assert.equal(r.scope, 'last-assistant-text');
+  } finally { cleanup(); }
+});
+
+test('visual-claim: unknown toolUseId falls back to last-text', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('NO-VERIFY: fine'),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'does-not-exist' });
+    assert.equal(r.hasNoVerify, true);
+    assert.equal(r.scope, 'last-assistant-text');
+  } finally { cleanup(); }
+});
+
+test('walkTranscript exposes messageId on events', () => {
+  const { path, cleanup } = writeFixture([
+    makeAssistantMessageWithTextAndToolUse('msg-X', 'hello', 'Bash', { command: 'ls' }, 'tool_1'),
+  ]);
+  try {
+    const events = walkTranscript(path);
+    const textEv = events.find(e => e.kind === 'assistant_text');
+    const toolEv = events.find(e => e.kind === 'assistant_tool_use');
+    assert.equal(textEv.messageId, 'msg-X');
+    assert.equal(toolEv.messageId, 'msg-X');
+  } finally { cleanup(); }
+});
