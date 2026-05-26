@@ -1668,6 +1668,24 @@ export function getTonyTrackRecord(allShows: ComputedShow[]): TonyTrackRecord {
   return { hits, cells, pct, seasons };
 }
 
+// --- Promo sunset ---
+
+/**
+ * Whether to surface the homepage Tony-predictions promo. Active until
+ * (current season's ceremonyDate + sunsetDays). After that the promo hides
+ * itself — no manual takedown needed. Vercel cron rebuilds every 5 min so the
+ * transition lands within minutes of the threshold. Falls back to "active"
+ * if the ceremony date is unknown for the current season.
+ */
+export function isTonyPromoActive(now: Date = new Date(), sunsetDays = 2): boolean {
+  const current = getTonySeasonWindow();
+  const record = tonySeasonForCeremonyYear(current.ceremonyYear);
+  const ceremonyDate = record?.ceremonyDate;
+  if (!ceremonyDate) return true;
+  const sunsetMs = new Date(`${ceremonyDate}T23:59:59Z`).getTime() + sunsetDays * 24 * 60 * 60 * 1000;
+  return now.getTime() <= sunsetMs;
+}
+
 // --- Historical Winners ---
 
 export interface HistoricalWinner {
