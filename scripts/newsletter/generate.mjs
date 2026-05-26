@@ -195,7 +195,7 @@ function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}`
 function isOperaShow(s) { return !!s && s.type === 'opera'; }
 function showLink(show, inner) {
   if (!show || !show.slug) return inner;
-  return `<a href="${showHref(show)}" class="lnk">${inner}</a>`;
+  return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
 
 // Per-section "see all" footer. One <tr> with a hairline border-top — much
@@ -283,13 +283,13 @@ function criticLink(name, inner) {
   if (!name || name === 'Unknown') return inner;
   const slug = loadCriticReg().get(name.toLowerCase());
   if (!slug) return inner;
-  return `<a href="${SITE}/critics/${slug}" class="lnk">${inner}</a>`;
+  return `<a href="${SITE}/critics/${slug}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
 function outletLink(name, inner) {
   if (!name) return inner;
   const slug = loadOutletReg().get(name.toLowerCase());
   if (!slug) return inner;
-  return `<a href="${SITE}/critics/outlets/${slug}" class="lnk">${inner}</a>`;
+  return `<a href="${SITE}/critics/outlets/${slug}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
 function castSlugify(name) {
   return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -298,7 +298,7 @@ function castLink(name, inner) {
   if (!name) return inner;
   const slug = castSlugify(name);
   if (!slug) return inner;
-  return `<a href="${SITE}/cast/${slug}" class="lnk">${inner}</a>`;
+  return `<a href="${SITE}/cast/${slug}" style="color:inherit;text-decoration:none">${inner}</a>`;
 }
 
 // Canonical market tag pill — matches the closings/announced-closings style.
@@ -535,8 +535,7 @@ function upcomingOpeningsSection() {
     return `<tr>
       <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(s, 48)}</td>
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
-        <div style="margin-top:4px;">${formatPill}${revivalPill}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)} ${formatPill}${revivalPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.4;">
           ${it.eventLabel} ${dayOf(it.eventDate)} ${fmt(it.eventDate)}${venue ? ` · ${venue}` : ''}
         </div>
@@ -1910,7 +1909,6 @@ const html = `<!DOCTYPE html>
      on Gmail clipping in newsletter-drafts. */
   .mp{display:inline-block;padding:1px 7px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
   .gp{display:inline-block;padding:2px 7px;border-radius:999px;font-weight:600;font-size:11px;letter-spacing:.04em;margin-right:4px}
-  .lnk{color:inherit;text-decoration:none}
   .tdec{text-decoration:none;display:inline-block}
   .cardbg{background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
   .showttl{margin:0;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.01em}
