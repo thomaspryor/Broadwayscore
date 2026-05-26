@@ -108,9 +108,11 @@ const OB_VENUE_CONFIGS = [
     strategy: 'selector',
     selector: '.c-col-card .c-col-card__title',
     excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
-    // The .c-col-card grid is JS-injected — static HTML has no titles. Need
-    // Playwright to capture the rendered DOM.
-    preferPlaywright: true,
+    // Direct fetch returns the .c-col-card grid in static HTML.
+    // Playwright (headless chromium) returns a stripped header-only DOM —
+    // MCC's site fingerprints headless browsers and serves an empty shell.
+    // Plain fetch + Bright Data fallback works (verified 2026-05-25).
+    preferPlaywright: false,
     category: 'off-broadway',
   },
 ];
