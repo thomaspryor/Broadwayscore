@@ -792,11 +792,10 @@ export function getPrecursorWins(showId: string, tonyCategory: string, nomineeNa
 }
 
 /**
- * Apply the per-category Tony recipe.
- *   Best Musical:               0.4 critic + 0.6 audience
- *   Best Play:                  0.4 critic + 0.4 audience + 0.2 awards
- *   Best Revival of Musical:    1.0 audience
- *   Best Revival of Play:       1.0 audience
+ * Apply the per-category Tony recipe. Current shipped recipes are in
+ * TONY_RECIPES (Tier 1) and TONY_RECIPES_TIER2 above — see those constants
+ * for the authoritative weights; this docblock used to inline them and went
+ * stale.
  *
  * Robustness: components whose value is null OR (for awards) zero are dropped
  * and the remaining weights are renormalized to sum to 1. So:
