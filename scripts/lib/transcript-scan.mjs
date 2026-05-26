@@ -107,37 +107,43 @@ export function walkTranscript(transcriptPath) {
     const mtype = r.type;
     const ts = r.timestamp || r.created_at || null;
     const msg = r.message || {};
+    // messageId groups events that belonged to the same assistant turn so
+    // queries like visual-claim-language can scan the in-flight turn (text
+    // blocks that share a messageId with the gated tool_use), not just the
+    // last-emitted assistant_text in the transcript. Required by the
+    // in-flight NO-VERIFY fix — see queryVisualClaimLanguage.
+    const messageId = msg.id || r.uuid || null;
     const content = Array.isArray(msg.content) ? msg.content : (msg.content != null ? [msg.content] : []);
     if (mtype === 'assistant') {
       for (const c of content) {
         if (!c || typeof c !== 'object') continue;
         if (c.type === 'tool_use') {
-          events.push({ kind: 'assistant_tool_use', name: c.name, input: c.input || {}, id: c.id, ts });
+          events.push({ kind: 'assistant_tool_use', name: c.name, input: c.input || {}, id: c.id, ts, messageId });
         } else if (c.type === 'text') {
-          events.push({ kind: 'assistant_text', text: c.text || '', ts });
+          events.push({ kind: 'assistant_text', text: c.text || '', ts, messageId });
         }
       }
     } else if (mtype === 'user') {
       for (const c of content) {
         if (!c || typeof c !== 'object') {
           // raw string content — treat as user text
-          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts });
+          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId });
           continue;
         }
         if (c.type === 'tool_result') {
           const body = normalizeToolResultContent(c.content);
-          events.push({ kind: 'tool_result', tool_use_id: c.tool_use_id, content: body, ts });
+          events.push({ kind: 'tool_result', tool_use_id: c.tool_use_id, content: body, ts, messageId });
           // Tool results may include image paths from attached files
           if (containsImageAttachment(body)) {
-            events.push({ kind: 'attachment', detail: 'tool_result_image', ts });
+            events.push({ kind: 'attachment', detail: 'tool_result_image', ts, messageId });
           }
         } else if (c.type === 'text') {
-          events.push({ kind: 'user_text', text: c.text || '', ts });
+          events.push({ kind: 'user_text', text: c.text || '', ts, messageId });
           if (containsImageAttachment(c.text || '')) {
-            events.push({ kind: 'attachment', detail: 'user_text_image_marker', ts });
+            events.push({ kind: 'attachment', detail: 'user_text_image_marker', ts, messageId });
           }
         } else if (c.type === 'image') {
-          events.push({ kind: 'attachment', detail: 'image_block', ts });
+          events.push({ kind: 'attachment', detail: 'image_block', ts, messageId });
         }
       }
     }
@@ -202,42 +208,73 @@ export function queryReferenceAttached(events) {
   return { attached: false };
 }
 
-export function queryVisualClaimLanguage(events) {
-  // Find LAST assistant_text. Check for visual-claim pattern without NO-VERIFY.
-  // Per /ship-check round 2 P1-1, ALSO require UI context near the match
-  // to suppress false positives on non-UI prose ("function renders correctly").
-  for (let i = events.length - 1; i >= 0; i--) {
-    const e = events[i];
-    if (e.kind !== 'assistant_text') continue;
-    const text = e.text || '';
-    const match = VISUAL_CLAIM_RE.exec(text);
-    const hasOverride = /NO-VERIFY:\s+\S+/.test(text);
-    let hasClaim = false;
-    let inUiContext = false;
-    if (match) {
-      // Window of ±80 chars around the match
-      const start = Math.max(0, match.index - 80);
-      const end = Math.min(text.length, match.index + match[0].length + 80);
-      const window = text.slice(start, end);
-      inUiContext = UI_CONTEXT_RE.test(window);
-      // Also: if the matched phrase is in the FINAL sentence of the message,
-      // treat it as a claim regardless (agents typically conclude with claims).
-      const lastSentenceStart = Math.max(
-        text.lastIndexOf('.'), text.lastIndexOf('!'), text.lastIndexOf('?'),
-        text.lastIndexOf('\n\n'),
-      );
-      const isFinalSentence = match.index > lastSentenceStart;
-      hasClaim = (inUiContext || isFinalSentence) && !hasOverride;
+// Find the assistant text block(s) belonging to a specific in-flight turn.
+// When `toolUseId` is provided, locate the tool_use event with that id and
+// scan only the text blocks that share its messageId (i.e. the SAME assistant
+// message). This is what fixes the long-standing "NO-VERIFY: in current turn
+// doesn't bypass" bug — the gate was always reading the prior turn's text.
+//
+// When `toolUseId` is omitted or no matching turn is found, fall back to the
+// last assistant_text in the transcript (legacy behaviour).
+function findRelevantAssistantTexts(events, toolUseId) {
+  if (toolUseId) {
+    // Locate the tool_use first.
+    let targetMessageId = null;
+    for (const e of events) {
+      if (e.kind === 'assistant_tool_use' && e.id === toolUseId) {
+        targetMessageId = e.messageId;
+        break;
+      }
     }
-    return {
-      hasClaim,
-      rawClaim: !!match,
-      inUiContext,
-      hasNoVerify: hasOverride,
-      textPreview: text.slice(0, 200),
-    };
+    if (targetMessageId) {
+      const turnTexts = events.filter(e =>
+        e.kind === 'assistant_text' && e.messageId === targetMessageId
+      );
+      if (turnTexts.length > 0) return { texts: turnTexts, scope: 'in-flight-turn' };
+    }
   }
-  return { hasClaim: false, reason: 'no assistant text' };
+  // Fallback: last assistant_text in the transcript.
+  for (let i = events.length - 1; i >= 0; i--) {
+    if (events[i].kind === 'assistant_text') return { texts: [events[i]], scope: 'last-assistant-text' };
+  }
+  return { texts: [], scope: 'none' };
+}
+
+export function queryVisualClaimLanguage(events, { toolUseId } = {}) {
+  // Scan the in-flight assistant turn (the message containing the gated
+  // tool_use) when toolUseId is provided AND that turn has text blocks.
+  // Otherwise scan the last assistant text. The reported `scope` reflects
+  // which path was actually taken, not just what the caller requested.
+  const { texts: relevantTexts, scope } = findRelevantAssistantTexts(events, toolUseId);
+  if (relevantTexts.length === 0) {
+    return { hasClaim: false, reason: 'no assistant text', scope };
+  }
+  // Concatenate so a NO-VERIFY in any text block of the same turn counts.
+  const concatenated = relevantTexts.map(e => e.text || '').join('\n');
+  const hasOverride = /NO-VERIFY:\s+\S+/.test(concatenated);
+  const match = VISUAL_CLAIM_RE.exec(concatenated);
+  let hasClaim = false;
+  let inUiContext = false;
+  if (match) {
+    const start = Math.max(0, match.index - 80);
+    const end = Math.min(concatenated.length, match.index + match[0].length + 80);
+    const window = concatenated.slice(start, end);
+    inUiContext = UI_CONTEXT_RE.test(window);
+    const lastSentenceStart = Math.max(
+      concatenated.lastIndexOf('.'), concatenated.lastIndexOf('!'),
+      concatenated.lastIndexOf('?'), concatenated.lastIndexOf('\n\n'),
+    );
+    const isFinalSentence = match.index > lastSentenceStart;
+    hasClaim = (inUiContext || isFinalSentence) && !hasOverride;
+  }
+  return {
+    hasClaim,
+    rawClaim: !!match,
+    inUiContext,
+    hasNoVerify: hasOverride,
+    textPreview: concatenated.slice(0, 200),
+    scope,
+  };
 }
 
 export function queryOverrideActiveForPush(events, { sessionId, consume = false } = {}) {
@@ -322,7 +359,9 @@ Queries:
   approval-of <hash>                check if last user msg contains APPROVED: <hash>
   push-ingress --command=<cmd>      check if cmd is a push-ingress
   reference-attached                check if any user msg has an image attachment
-  visual-claim-language             check if last assistant msg makes visual-correctness claim
+  visual-claim-language             check if assistant msg makes visual-correctness claim
+    --tool-use-id=<id>                scope to the in-flight turn containing this tool_use
+                                       (otherwise: last assistant_text in transcript)
   override-active-for-push          check for "ship immediately for: <reason>"
     --session-id=<id>                 required for override scoping
     --consume                         write the consume marker if matched
@@ -361,7 +400,7 @@ async function main() {
       result = queryReferenceAttached(events);
       break;
     case 'visual-claim-language':
-      result = queryVisualClaimLanguage(events);
+      result = queryVisualClaimLanguage(events, { toolUseId: args['tool-use-id'] });
       break;
     case 'override-active-for-push':
       result = queryOverrideActiveForPush(events, {
