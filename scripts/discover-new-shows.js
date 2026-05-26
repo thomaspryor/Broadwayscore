@@ -38,6 +38,7 @@ const {
   scrapeVenueListing,
   writeStagingCandidates,
 } = require('./lib/venue-listing-discover');
+const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -1531,6 +1532,9 @@ async function discoverShows() {
             process.exitCode = 1;
             return { newShows: [], count: 0 };
           }
+          // Per-venue rolling-median anomaly gate. Fail-soft (warns + sets
+          // exitCode but discovery continues for other venues).
+          checkVenueAnomaly(v.name, r.value.length);
           console.log(`  ${v.name}: ${r.value.length} candidates → staging`);
           all.push(...r.value);
         } else {
