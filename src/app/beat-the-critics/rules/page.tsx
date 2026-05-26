@@ -32,7 +32,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">3. How to Enter</h2>
-          <p className="text-sm">Visit <a href="https://broadwayscorecard.com/beat-the-critics" className="text-brand underline">broadwayscorecard.com/beat-the-critics</a>, submit your Tony Award picks for the required categories, and provide your email address on the final screen. Limit one (1) entry per person. Entries submitted by automated means are void.</p>
+          <p className="text-sm">Visit <a href="https://broadwayscorecard.com/beat-the-critics" className="text-brand underline">broadwayscorecard.com/beat-the-critics</a>, complete at minimum the Best Musical, Best Play, Best Revival of a Musical, and Best Revival of a Play categories (Round 1), and provide your email address. You may continue through additional rounds to improve your chances. Limit one (1) entry per person. Entries submitted by automated means are void.</p>
         </section>
 
         <section>
@@ -42,7 +42,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">5. Winner Selection</h2>
-          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant&apos;s total correct predictions across all categories exceeds the total correct predictions of at least one (1) of the featured critics. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
+          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant&apos;s prediction accuracy (correct picks divided by categories entered) exceeds the prediction accuracy of at least one (1) of the featured critics on those same categories. Participants who enter more categories are compared across a larger shared set. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
         </section>
 
         <section>
