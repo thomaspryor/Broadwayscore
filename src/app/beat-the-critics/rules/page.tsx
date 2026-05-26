@@ -42,7 +42,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">5. Winner Selection</h2>
-          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant's total correct predictions across all categories exceeds the total correct predictions of at least one (1) of the featured critics. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
+          <p className="text-sm">Following the Tony Award ceremony on June 7, 2026, one (1) winner will be selected at random from all eligible entries where the participant&apos;s total correct predictions across all categories exceeds the total correct predictions of at least one (1) of the featured critics. If no eligible entries meet this criterion, one (1) winner will be selected at random from all eligible entries. Odds of winning depend on the number of eligible entries received.</p>
         </section>
 
         <section>
