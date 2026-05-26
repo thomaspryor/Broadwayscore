@@ -415,7 +415,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           )}
           <div className="animate-fade-up mt-3 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold whitespace-nowrap">
-              Beat a critic &mdash; win a <strong>$100 TodayTix gift card</strong>
+              Beat a critic &mdash; win a <strong>$200 TodayTix gift card</strong>
             </div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
@@ -483,7 +483,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
           <div className="mt-8 pb-10">
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
-              Beat a critic &mdash; win a <span className="text-amber-400/80">$100 TodayTix gift card</span>
+              Beat a critic &mdash; win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
             <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + selectedTitle + ' \u2192' : 'Lock In Pick'}</button>
             <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
@@ -708,7 +708,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="w-full max-w-[380px] p-5 rounded-2xl bg-gradient-to-br from-[#ff1368]/[0.06] to-brand/[0.04] border border-[#ff1368]/10 animate-fade-up">
             <h3 className="text-base font-bold">Submit your picks</h3>
             <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 7, we&apos;ll automatically email you with your results.</p>
-            <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$100 TodayTix prize draw</strong>.</p>
+            <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$200 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
               <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
