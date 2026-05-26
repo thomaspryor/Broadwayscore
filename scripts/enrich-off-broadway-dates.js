@@ -159,6 +159,13 @@ async function scrapePlaybillOB() {
   return entries;
 }
 
+// Re-export Lortel scraper so external scripts (e.g. promote-ob-venue-candidates.js)
+// can reuse the same source-of-truth without re-implementing the parser.
+module.exports = {
+  scrapePlaybillOB,
+  scrapeLortel,
+};
+
 // =========================================================
 // SOURCE 2: LORTEL.ORG CURRENTLY-PLAYING
 // =========================================================
@@ -1006,7 +1013,9 @@ async function main() {
   console.log('Done.');
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

@@ -105,13 +105,30 @@ const OB_VENUE_CONFIGS = [
     // to 2026-27 (typically mid-2026), update to /our-2026-27-season/.
     // The anomaly gate (V-T7) will fire when this rots → 0 shows from MCC.
     url: 'https://mcctheater.org/our-2025-26-season/',
-    strategy: 'selector',
-    selector: '.c-col-card .c-col-card__title',
-    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
-    // Direct fetch returns the .c-col-card grid in static HTML.
-    // Playwright (headless chromium) returns a stripped header-only DOM —
-    // MCC's site fingerprints headless browsers and serves an empty shell.
-    // Plain fetch + Bright Data fallback works (verified 2026-05-25).
+    // Was 'selector' with .c-col-card .c-col-card__title — JSDOM silently
+    // bails on the page because MCC's HTML has a `class="...""` typo
+    // (extra closing quote on c-col-card divs). Switching to 'link' which
+    // works on raw <a href> attributes via regex+JSDOM and tolerates the
+    // malformed parent div. Show URLs: /<slug>/ and /tix/<slug>/.
+    strategy: 'regex',
+    linkPattern: /^https?:\/\/mcctheater\.org\/(?:tix\/)?[a-z0-9-]+\/?$/,
+    // MCC's Bright Data path is variable — every 1-in-3 fetch returns a
+    // stripped ~37KB cached/bot-blocked shell. Real page is ~68KB and
+    // contains the season-page slug. Retry until we see it.
+    flaky: true,
+    minHtmlBytes: 50000,
+    htmlSentinel: 'our-2025-26-season',
+    excludeTitlePatterns: [
+      ...COMMON_OB_EXCLUDE_PATTERNS,
+      // MCC-specific noise slugs (nav, account, etc.) that share the
+      // /<slug>/ shape. Match against the title (derived from slug).
+      /^tix$/i, /^donate/i, /^account$/i, /^basket$/i, /^press$/i,
+      /^sign up$/i, /^contact$/i, /^join us$/i, /^support$/i,
+      /^our /i, /^the robert w/i, /^what we do$/i, /^who we are$/i,
+      /^learning and culture$/i, /^your visit$/i, /^rent our space$/i,
+      /^work with us$/i, /^privacy policy$/i,
+      /^patron/i, /memberships?$/i,
+    ],
     preferPlaywright: false,
     category: 'off-broadway',
   },
@@ -127,22 +144,30 @@ const OB_VENUE_CONFIGS = [
  */
 function parseVenueListingHtml(venue, html) {
   if (!html || html.length < 50) return [];
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
 
   let titles;
-  switch (venue.strategy) {
-    case 'link':
-      titles = extractByLink(doc, venue);
-      break;
-    case 'selector':
-      titles = extractBySelector(doc, venue);
-      break;
-    case 'json-ld':
-      titles = extractJsonLdTheaterEvents(doc).map(e => e.name).filter(Boolean);
-      break;
-    default:
-      throw new Error(`Unknown venue.strategy: ${venue.strategy} for ${venue.name}`);
+  // `regex` strategy bypasses JSDOM entirely for sites that ship malformed
+  // HTML which silently breaks the parser (MCC Theater has a `class=""`
+  // typo on .c-col-card divs that makes JSDOM skip the whole subtree —
+  // anchors inside become invisible to querySelectorAll).
+  if (venue.strategy === 'regex') {
+    titles = extractByRegex(html, venue);
+  } else {
+    const dom = new JSDOM(html);
+    const doc = dom.window.document;
+    switch (venue.strategy) {
+      case 'link':
+        titles = extractByLink(doc, venue);
+        break;
+      case 'selector':
+        titles = extractBySelector(doc, venue);
+        break;
+      case 'json-ld':
+        titles = extractJsonLdTheaterEvents(doc).map(e => e.name).filter(Boolean);
+        break;
+      default:
+        throw new Error(`Unknown venue.strategy: ${venue.strategy} for ${venue.name}`);
+    }
   }
 
   // Apply exclusion patterns (DATA not functions) + length bounds.
@@ -201,6 +226,31 @@ function extractByLink(doc, venue) {
  * Strategy 'selector': find elements via venue.selector, take textContent.
  * If venue.scopeSelector is set, restrict to that container.
  */
+/**
+ * Strategy 'regex': bypasses JSDOM entirely. Extract hrefs matching
+ * venue.linkPattern from raw HTML via regex, derive title from the
+ * last path segment (same as link strategy). Useful when the page has
+ * malformed HTML that silently breaks JSDOM (see MCC).
+ */
+function extractByRegex(html, venue) {
+  if (!venue.linkPattern) throw new Error(`extractByRegex: venue ${venue.name} missing linkPattern`);
+  const hrefRe = /href\s*=\s*["']([^"']+)["']/gi;
+  const seen = new Set();
+  const titles = [];
+  let m;
+  while ((m = hrefRe.exec(html)) !== null) {
+    const href = m[1];
+    if (!venue.linkPattern.test(href)) continue;
+    const slug = href.split('#')[0].split('?')[0].replace(/\/$/, '').split('/').pop() || '';
+    if (!slug || slug.length < 3) continue;
+    if (seen.has(slug)) continue;
+    seen.add(slug);
+    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    titles.push(title);
+  }
+  return titles;
+}
+
 function extractBySelector(doc, venue) {
   if (!venue.selector) throw new Error(`extractBySelector: venue ${venue.name} missing selector`);
   const root = venue.scopeSelector ? doc.querySelector(venue.scopeSelector) : doc;
@@ -249,21 +299,35 @@ function extractJsonLdTheaterEvents(doc) {
 async function scrapeVenueListing(venue) {
   const opts = {};
   if (venue.preferPlaywright) opts.preferPlaywright = true;
-  // NOTE: playwrightWaitForSelector is currently a no-op — fetchWithPlaywright
-  // in scripts/lib/scraper.js does not yet consume this option. V-T3 (planned
-  // next in sprint-plan-ob-venue-extraction.md) adds the consumer. Until then,
-  // Signature relies on networkidle (which the subagent confirmed times out at
-  // 45s). Signature will return 0 candidates until V-T3 ships.
   if (venue.playwrightWaitForSelector) opts.playwrightWaitForSelector = venue.playwrightWaitForSelector;
 
-  const result = await fetchPage(venue.url, opts);
-  const html = result?.content || '';
-  if (!html) {
-    console.warn(`::warning::venue ${venue.name}: fetch returned empty content (${venue.url})`);
-    return [];
+  // Some venues (notably MCC Theater) are flaky behind Bright Data — every
+  // 1-in-3 fetch returns a stripped 37KB cached/bot-blocked shell instead
+  // of the real ~68KB page. Retry up to 3 times with backoff if either:
+  // (a) the HTML is suspiciously short (< minHtmlBytes), OR
+  // (b) parsing returns 0 candidates AND we have a sentinel string that
+  //     must appear in the real page (venue.htmlSentinel).
+  const maxAttempts = venue.flaky ? 3 : 1;
+  const minHtmlBytes = venue.minHtmlBytes || 0;
+  let html = '';
+  let candidates = [];
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const result = await fetchPage(venue.url, opts);
+    html = result?.content || '';
+    if (!html) {
+      console.warn(`::warning::venue ${venue.name}: fetch returned empty content (attempt ${attempt}/${maxAttempts})`);
+      if (attempt < maxAttempts) { await new Promise(r => setTimeout(r, 2000 * attempt)); continue; }
+      return [];
+    }
+    const tooSmall = minHtmlBytes > 0 && html.length < minHtmlBytes;
+    const sentinelMissing = venue.htmlSentinel && !html.includes(venue.htmlSentinel);
+    if (tooSmall || sentinelMissing) {
+      console.warn(`::warning::venue ${venue.name}: ${tooSmall ? `html ${html.length} < ${minHtmlBytes}` : `sentinel "${venue.htmlSentinel}" missing`} (attempt ${attempt}/${maxAttempts})`);
+      if (attempt < maxAttempts) { await new Promise(r => setTimeout(r, 2000 * attempt)); continue; }
+    }
+    candidates = parseVenueListingHtml(venue, html);
+    break;
   }
-
-  const candidates = parseVenueListingHtml(venue, html);
   return candidates;
 }
 
@@ -318,6 +382,7 @@ module.exports = {
   scrapeVenueListing,
   extractByLink,
   extractBySelector,
+  extractByRegex,
   extractJsonLdTheaterEvents,
   writeStagingCandidates,
   loadStaging,
