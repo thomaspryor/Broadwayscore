@@ -33,6 +33,8 @@ import {
   computeTonyAudienceGrade,
   categoryAwardsScore,
   bestMusicalFeasibilityFactor,
+  precursorSweepConversionScore,
+  castActingNomsScore,
   type TonyCategoryKey,
 } from '../src/lib/data-tony-predictions';
 
@@ -62,6 +64,16 @@ const SHRINKAGE = argVal('shrinkage') ? parseFloat(argVal('shrinkage')!) : 0;
 const ENSEMBLE_K = argVal('ensemble') ? parseInt(argVal('ensemble')!) : 1;
 const PERMUTATIONS = argVal('permutations') ? parseInt(argVal('permutations')!) : 0;
 const SWEEP = process.argv.includes('--sweep');
+const AWARDS_SWEEP = process.argv.includes('--awards-sweep');
+
+// --awards-cfg=baseline:sweepConv:castNoms — e.g. "1:0:0" (shipped default),
+// "0:1:0" (pure sweep-conversion), "0.5:0.5:0" (50/50 blend), etc.
+function parseAwardsCfg(): AwardsConfig | undefined {
+  const a = argVal('awards-cfg');
+  if (!a) return undefined;
+  const [b, s, c] = a.split(':').map(parseFloat);
+  return { baseline: b || 0, sweepConv: s || 0, castNoms: c || 0 };
+}
 
 type Recipe = { critic: number; audience: number; awards: number };
 
@@ -102,7 +114,31 @@ interface NomEntry {
   tags: string[];
   critic: number | null;
   audience: number | null;
-  awards: number;        // category-aware awards score (production formula)
+  awards: number;          // baseline category-aware awards score (production formula)
+  castNomsScore: number;   // 0-100 cast acting Tony noms (all historical seasons have noms data)
+  // sweepConvScore is computed per-fold (depends on held-season exclusion) and
+  // is attached at fold time, not at fixture-load time. Stored as optional so
+  // the same NomEntry can be reused across folds.
+  sweepConvScore?: number;
+}
+
+// Sub-weights of the awards-term blend. Defaults to the current shipped
+// behavior (baseline only). Audit experiments perturb these.
+interface AwardsConfig {
+  baseline: number;   // current categoryAwardsScore (existing behavior)
+  sweepConv: number;  // precursorSweepConversionScore (LOSO-safe per fold)
+  castNoms: number;   // castActingNomsScore (count of acting Tony noms, normalized)
+}
+
+const SHIPPED_AWARDS_CONFIG: AwardsConfig = { baseline: 1, sweepConv: 0, castNoms: 0 };
+
+function blendAwards(n: NomEntry, cfg: AwardsConfig): number {
+  const total = cfg.baseline + cfg.sweepConv + cfg.castNoms;
+  if (total === 0) return 0;
+  const baseline = (cfg.baseline / total) * n.awards;
+  const sweep = (cfg.sweepConv / total) * (n.sweepConvScore ?? 0);
+  const cast = (cfg.castNoms / total) * n.castNomsScore;
+  return baseline + sweep + cast;
 }
 
 interface SeasonFixture {
@@ -131,12 +167,14 @@ function loadFixtures(catKey: TonyCategoryKey): SeasonFixture[] {
     for (const s of cat.shows) {
       const show = eligible.find((e) => e.slug === s.slug);
       if (!show) continue;
+      const cast = castActingNomsScore(show.id, season);
       nominees.push({
         showId: show.id,
         tags: show.tags ?? [],
         critic: show.compositeScore,
         audience: computeTonyAudienceGrade(show.id),
         awards: categoryAwardsScore(show.id, catKey),
+        castNomsScore: cast ?? 0,
       });
     }
     // Only fold seasons where the winner is actually in the nominee fixture
@@ -147,11 +185,40 @@ function loadFixtures(catKey: TonyCategoryKey): SeasonFixture[] {
   return fixtures;
 }
 
-function compositeFor(n: NomEntry, w: Recipe): number | null {
+// Per-fold leakage protection: stamp each nominee with the precursor sweep
+// conversion score that EXCLUDES the held-out season. Call this inside the
+// LOSO fold loop before training/predicting. Reset by calling with
+// `excludeSeasonLabel=null` to clear the cache between folds.
+function stampSweepConvScores(
+  fixtures: SeasonFixture[],
+  catKey: TonyCategoryKey,
+  excludeSeasonLabel: string | null,
+): void {
+  // Translate audit's long-form season label (2025-2026) to awards.json's
+  // short form (2025-26) — that's what precursorSweepConversionScore expects.
+  const awardsSeasonLabel = excludeSeasonLabel
+    ? (() => {
+        const [a, b] = excludeSeasonLabel.split('-');
+        return a && b ? `${a}-${b.slice(-2)}` : excludeSeasonLabel;
+      })()
+    : undefined;
+  for (const f of fixtures) {
+    for (const nom of f.nominees) {
+      if (excludeSeasonLabel === null) {
+        delete nom.sweepConvScore;
+      } else {
+        nom.sweepConvScore = precursorSweepConversionScore(nom.showId, catKey, awardsSeasonLabel);
+      }
+    }
+  }
+}
+
+function compositeFor(n: NomEntry, w: Recipe, awardsCfg: AwardsConfig): number | null {
+  const awardsValue = blendAwards(n, awardsCfg);
   const components: Array<{ weight: number; value: number }> = [];
   if (w.critic > 0 && n.critic != null) components.push({ weight: w.critic, value: n.critic });
   if (w.audience > 0 && n.audience != null) components.push({ weight: w.audience, value: n.audience });
-  if (w.awards > 0 && n.awards > 0) components.push({ weight: w.awards, value: n.awards });
+  if (w.awards > 0 && awardsValue > 0) components.push({ weight: w.awards, value: awardsValue });
   if (components.length === 0) return null;
   const total = components.reduce((s, c) => s + c.weight, 0);
   return components.reduce((s, c) => s + (c.weight / total) * c.value, 0);
@@ -160,26 +227,26 @@ function compositeFor(n: NomEntry, w: Recipe): number | null {
 // Score a nominee against ONE OR MORE recipes; the prediction averages the
 // per-recipe weighted-average composites. Preserves magnitude semantics
 // (no fake Borda rescale) — averaging real composites stays in 0..100.
-function scoreFor(n: NomEntry, recipes: Recipe[], catKey: TonyCategoryKey, seasonLabel: string): number | null {
+function scoreFor(n: NomEntry, recipes: Recipe[], catKey: TonyCategoryKey, seasonLabel: string, awardsCfg: AwardsConfig): number | null {
   const factor = bestMusicalFeasibilityFactor(n.showId, n.tags, catKey, seasonLabel);
-  const scores = recipes.map((r) => compositeFor(n, r)).filter((s): s is number => s != null);
+  const scores = recipes.map((r) => compositeFor(n, r, awardsCfg)).filter((s): s is number => s != null);
   if (scores.length === 0) return null;
   const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
   return mean * factor;
 }
 
-function predictWinner(fixture: SeasonFixture, catKey: TonyCategoryKey, recipes: Recipe[]): string | null {
+function predictWinner(fixture: SeasonFixture, catKey: TonyCategoryKey, recipes: Recipe[], awardsCfg: AwardsConfig): string | null {
   const ranked = fixture.nominees
-    .map((n) => ({ showId: n.showId, score: scoreFor(n, recipes, catKey, fixture.label) }))
+    .map((n) => ({ showId: n.showId, score: scoreFor(n, recipes, catKey, fixture.label, awardsCfg) }))
     .filter((r) => r.score != null)
     .sort((a, b) => (b.score! - a.score!));
   return ranked[0]?.showId ?? null;
 }
 
-function trainingAccuracy(train: SeasonFixture[], catKey: TonyCategoryKey, recipes: Recipe[]): { hits: number; total: number } {
+function trainingAccuracy(train: SeasonFixture[], catKey: TonyCategoryKey, recipes: Recipe[], awardsCfg: AwardsConfig): { hits: number; total: number } {
   let hits = 0, total = 0;
   for (const f of train) {
-    const pick = predictWinner(f, catKey, recipes);
+    const pick = predictWinner(f, catKey, recipes, awardsCfg);
     if (pick == null) continue;
     total++;
     if (pick === f.winnerShowId) hits++;
@@ -190,12 +257,12 @@ function trainingAccuracy(train: SeasonFixture[], catKey: TonyCategoryKey, recip
 // Mean cross-entropy of the winner under softmax(scores / T) across training
 // seasons. Lower is better. Uses the same temperature T=7 as the production
 // "Our Pick %" softmax in src/app/tony-awards/predictions/page.tsx.
-function trainingLogLoss(train: SeasonFixture[], catKey: TonyCategoryKey, recipes: Recipe[], T: number): number {
+function trainingLogLoss(train: SeasonFixture[], catKey: TonyCategoryKey, recipes: Recipe[], T: number, awardsCfg: AwardsConfig): number {
   let total = 0, n = 0;
   for (const f of train) {
     const winnerIdx = f.nominees.findIndex((nm) => nm.showId === f.winnerShowId);
     if (winnerIdx < 0) continue;
-    const scores = f.nominees.map((nm) => scoreFor(nm, recipes, catKey, f.label));
+    const scores = f.nominees.map((nm) => scoreFor(nm, recipes, catKey, f.label, awardsCfg));
     if (scores[winnerIdx] == null) continue;
     const valid = scores.map((s) => (s == null ? -Infinity : s));
     const maxS = Math.max(...valid.filter((s) => isFinite(s)));
@@ -223,7 +290,7 @@ interface ScoredRecipe { w: Recipe; score: number; maxW: number }
 // Grid-search all simplex recipes; return ordered by quality (best-first).
 // `score` is "higher is better" — for log-loss objective we negate so the same
 // sort works.
-function gridSearch(train: SeasonFixture[], catKey: TonyCategoryKey, objective: 'accuracy' | 'logloss'): ScoredRecipe[] {
+function gridSearch(train: SeasonFixture[], catKey: TonyCategoryKey, objective: 'accuracy' | 'logloss', awardsCfg: AwardsConfig): ScoredRecipe[] {
   const out: ScoredRecipe[] = [];
   for (let cr = 0; cr <= 100; cr += STEP_INT) {
     for (let au = 0; au <= 100 - cr; au += STEP_INT) {
@@ -231,10 +298,10 @@ function gridSearch(train: SeasonFixture[], catKey: TonyCategoryKey, objective: 
       const w: Recipe = { critic: cr / 100, audience: au / 100, awards: aw / 100 };
       let score: number;
       if (objective === 'logloss') {
-        const ll = trainingLogLoss(train, catKey, [w], T_SOFTMAX);
+        const ll = trainingLogLoss(train, catKey, [w], T_SOFTMAX, awardsCfg);
         score = -ll;  // higher is better
       } else {
-        const { hits, total } = trainingAccuracy(train, catKey, [w]);
+        const { hits, total } = trainingAccuracy(train, catKey, [w], awardsCfg);
         score = total ? hits / total : 0;
       }
       const maxW = Math.max(w.critic, w.audience, w.awards);
@@ -250,8 +317,9 @@ function trainRecipes(
   train: SeasonFixture[],
   catKey: TonyCategoryKey,
   config: { objective: 'accuracy' | 'logloss'; shrinkage: number; ensembleK: number },
+  awardsCfg: AwardsConfig,
 ): Recipe[] {
-  const ranked = gridSearch(train, catKey, config.objective);
+  const ranked = gridSearch(train, catKey, config.objective, awardsCfg);
   const k = Math.max(1, config.ensembleK);
   return ranked.slice(0, k).map((r) => shrink(r.w, config.shrinkage));
 }
@@ -273,21 +341,36 @@ interface CategoryResult {
 
 function losoForCategory(
   catKey: TonyCategoryKey,
-  config: { objective: 'accuracy' | 'logloss'; shrinkage: number; ensembleK: number },
+  config: { objective: 'accuracy' | 'logloss'; shrinkage: number; ensembleK: number; awardsCfg?: AwardsConfig },
   fixturesOverride?: SeasonFixture[],
 ): CategoryResult {
   const fixtures = fixturesOverride ?? loadFixtures(catKey);
-  // In-sample: shipped recipe applied to every season
+  const awardsCfg = config.awardsCfg ?? SHIPPED_AWARDS_CONFIG;
+  // In-sample: shipped recipe applied to every season. Stamp all-seasons
+  // sweepConvScore (no exclusion) for in-sample diagnostic only.
+  stampSweepConvScores(fixtures, catKey, '__ALL__');  // marker; we want all-seasons rate
+  // Convention: empty string excludes nothing; use undefined-like behavior.
+  // The function uses excludeSeasonLabel for the API; for "no exclusion" we
+  // need a different path. Simpler: pre-stamp using each nominee's own season
+  // — i.e. exclude self. Same as production behavior would be using all 11.
+  // Use null marker to clear, then re-stamp with no exclusion.
+  for (const f of fixtures) {
+    for (const nom of f.nominees) {
+      nom.sweepConvScore = precursorSweepConversionScore(nom.showId, catKey);
+    }
+  }
   const shipped = SHIPPED_RECIPES[catKey];
-  const inSample = trainingAccuracy(fixtures, catKey, [shipped]);
+  const inSample = trainingAccuracy(fixtures, catKey, [shipped], awardsCfg);
 
   const folds: FoldResult[] = [];
   let losoHits = 0;
   for (let i = 0; i < fixtures.length; i++) {
     const held = fixtures[i];
     const train = fixtures.filter((_, j) => j !== i);
-    const trainedRecipes = trainRecipes(train, catKey, config);
-    const pick = predictWinner(held, catKey, trainedRecipes);
+    // Stamp the held-season-excluded sweepConvScore on all fixtures for this fold.
+    stampSweepConvScores(fixtures, catKey, held.label);
+    const trainedRecipes = trainRecipes(train, catKey, config, awardsCfg);
+    const pick = predictWinner(held, catKey, trainedRecipes, awardsCfg);
     const hit = pick === held.winnerShowId;
     if (hit) losoHits++;
     folds.push({
@@ -315,7 +398,7 @@ function fmtWeights(w: { critic: number; audience: number; awards: number }): st
   return `${w.critic.toFixed(2)}/${w.audience.toFixed(2)}/${w.awards.toFixed(2)}`;
 }
 
-type Config = { objective: 'accuracy' | 'logloss'; shrinkage: number; ensembleK: number };
+type Config = { objective: 'accuracy' | 'logloss'; shrinkage: number; ensembleK: number; awardsCfg?: AwardsConfig };
 
 function runLOSO(config: Config, verbose = false): {
   summaries: CategoryResult[];
@@ -590,11 +673,15 @@ function runParityCheck(perCat: Map<TonyCategoryKey, Config>): void {
 
     // Refit recipes on all historical fixtures
     const fixtures = loadFixtures(catKey);
-    const refitRecipes = trainRecipes(fixtures, catKey, config);
+    // Stamp sweepConvScore with no exclusion (production behavior)
+    for (const f of fixtures) for (const n of f.nominees) n.sweepConvScore = precursorSweepConversionScore(n.showId, catKey);
+    for (const n of nominees) n.sweepConvScore = precursorSweepConversionScore(n.showId, catKey);
+    const awardsCfg = (config as Config).awardsCfg ?? SHIPPED_AWARDS_CONFIG;
+    const refitRecipes = trainRecipes(fixtures, catKey, config, awardsCfg);
     const shippedRecipe = SHIPPED_RECIPES[catKey];
 
     const rank = (recipes: Recipe[]) => nominees
-      .map((n) => ({ showId: n.showId, score: scoreFor(n, recipes, catKey, currentSeason.label) }))
+      .map((n) => ({ showId: n.showId, score: scoreFor(n, recipes, catKey, currentSeason.label, awardsCfg) }))
       .filter((r) => r.score != null)
       .sort((a, b) => (b.score! - a.score!));
 
@@ -633,8 +720,10 @@ function runRefitAll(perCat: Map<TonyCategoryKey, Config>): void {
     const config = perCat.get(catKey);
     if (!config) continue;
     const fixtures = loadFixtures(catKey);
-    const recipes = trainRecipes(fixtures, catKey, config);
-    const inSample = trainingAccuracy(fixtures, catKey, recipes);
+    for (const f of fixtures) for (const n of f.nominees) n.sweepConvScore = precursorSweepConversionScore(n.showId, catKey);
+    const awardsCfg = (config as Config).awardsCfg ?? SHIPPED_AWARDS_CONFIG;
+    const recipes = trainRecipes(fixtures, catKey, config, awardsCfg);
+    const inSample = trainingAccuracy(fixtures, catKey, recipes, awardsCfg);
     console.log(`\n--- ${catKey} (${configLabel(config)}) ---`);
     console.log(`  In-sample with refit recipes: ${inSample.hits}/${inSample.total}  (${fmtPct(inSample.hits, inSample.total)})`);
     console.log(`  Recipes (${recipes.length}):`);
@@ -642,7 +731,89 @@ function runRefitAll(perCat: Map<TonyCategoryKey, Config>): void {
   }
 }
 
+// Awards-term sub-weight sweep. Holds the per-category fitting PROCEDURE
+// constant (each cat uses its SHIPPED_PROCEDURE objective). Varies the
+// awardsCfg sub-weights {baseline, sweepConv, castNoms} and reports per-cat
+// LOSO for each. Helps decide whether the new features should ship and how
+// they should be blended in categoryAwardsScore.
+async function runAwardsSweep(): Promise<void> {
+  const VARIANTS: Array<{ name: string; cfg: AwardsConfig }> = [
+    { name: 'shipped (baseline only)',     cfg: { baseline: 1.0, sweepConv: 0.0, castNoms: 0.0 } },
+    { name: 'pure sweepConv',              cfg: { baseline: 0.0, sweepConv: 1.0, castNoms: 0.0 } },
+    { name: 'pure castNoms',               cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 1.0 } },
+    { name: 'baseline+sweepConv 50/50',    cfg: { baseline: 0.5, sweepConv: 0.5, castNoms: 0.0 } },
+    { name: 'baseline+sweepConv 70/30',    cfg: { baseline: 0.7, sweepConv: 0.3, castNoms: 0.0 } },
+    { name: 'baseline+sweepConv 30/70',    cfg: { baseline: 0.3, sweepConv: 0.7, castNoms: 0.0 } },
+    { name: 'baseline+castNoms 70/30',     cfg: { baseline: 0.7, sweepConv: 0.0, castNoms: 0.3 } },
+    { name: 'baseline+castNoms 50/50',     cfg: { baseline: 0.5, sweepConv: 0.0, castNoms: 0.5 } },
+    { name: 'sweepConv+castNoms 50/50',    cfg: { baseline: 0.0, sweepConv: 0.5, castNoms: 0.5 } },
+    { name: 'all three 1/3 each',          cfg: { baseline: 1/3, sweepConv: 1/3, castNoms: 1/3 } },
+    { name: 'baseline+sweepConv+castNoms 50/30/20', cfg: { baseline: 0.5, sweepConv: 0.3, castNoms: 0.2 } },
+  ];
+
+  console.log('========================================================');
+  console.log('Awards-term sub-weight sweep');
+  console.log('========================================================');
+  console.log('Held the per-category fitting procedure constant (SHIPPED_PROCEDURE).');
+  console.log('Varied awardsCfg = {baseline, sweepConv, castNoms} sub-weights.');
+  console.log();
+
+  // Per-category table: variant name → LOSO hits
+  const perCatResults: Record<TonyCategoryKey, Array<{ variant: string; loso: number; total: number }>> = {
+    'best-musical': [],
+    'best-play': [],
+    'best-revival-musical': [],
+    'best-revival-play': [],
+  };
+
+  for (const v of VARIANTS) {
+    let totalH = 0, totalN = 0;
+    const catH: Record<string, number> = {};
+    const catN: Record<string, number> = {};
+    for (const catKey of CATEGORY_KEYS) {
+      const proc = SHIPPED_PROCEDURE[catKey];
+      const config: Config = { ...proc, awardsCfg: v.cfg };
+      const r = losoForCategory(catKey, config);
+      catH[catKey] = r.losoAcc.hits;
+      catN[catKey] = r.losoAcc.total;
+      totalH += r.losoAcc.hits;
+      totalN += r.losoAcc.total;
+      perCatResults[catKey].push({ variant: v.name, loso: r.losoAcc.hits, total: r.losoAcc.total });
+    }
+    const breakdown = CATEGORY_KEYS.map((c) => `${catH[c]}/${catN[c]}`).join(' ');
+    console.log(`${v.name.padEnd(40)}  total=${totalH}/${totalN} (${fmtPct(totalH, totalN)})  per-cat: ${breakdown}`);
+  }
+
+  // Per-category best variant
+  console.log();
+  console.log('Per-category best variant (by LOSO hits, tie-break by variant order):');
+  for (const catKey of CATEGORY_KEYS) {
+    const results = perCatResults[catKey];
+    results.sort((a, b) => b.loso - a.loso);
+    const baseline = results.find((r) => r.variant === 'shipped (baseline only)')!;
+    const top = results[0];
+    const gain = top.loso - baseline.loso;
+    const flag = gain > 0 ? `+${gain} hits over shipped` : (gain === 0 ? 'no gain' : `${gain} hits worse`);
+    console.log(`  ${catKey.padEnd(22)} best=${top.loso}/${top.total}  shipped=${baseline.loso}/${baseline.total}  (${flag})`);
+    console.log(`    winner: "${top.variant}"`);
+    if (results[1] && results[1].loso === top.loso) {
+      const tied = results.filter((r) => r.loso === top.loso).map((r) => r.variant);
+      console.log(`    tied at top: ${tied.length} variants — ${tied.join('; ')}`);
+    }
+  }
+
+  console.log();
+  console.log('Ship rule: per category, ship a non-shipped variant only if:');
+  console.log('  - LOSO gain ≥ 2 hits OR total LOSO ≥ +2 over shipped 38/43');
+  console.log('  - 2025-26 softmax delta ≤ ±5pp on all 4 races (separate --parity check)');
+  console.log('  - Permutation null Bonferroni p<0.0125 per category (separate --permutations check)');
+}
+
 function main(): void {
+  if (AWARDS_SWEEP) {
+    runAwardsSweep();
+    return;
+  }
   let perCat = parsePerCat();
   // Default: mirror the shipped per-category fitting procedure (see
   // SHIPPED_PROCEDURE). This makes the default run reproduce the 38/43 = 88.4%

@@ -887,6 +887,120 @@ export function bestMusicalFeasibilityFactor(
 }
 
 /**
+ * Cast acting Tony nominations count, normalized 0-100.
+ *
+ * For a show in a given Tony category, counts how many of its cast members
+ * received Tony nominations in the 8 acting categories (Lead / Featured ×
+ * Actor / Actress × Musical / Play). More acting noms = stronger "voters
+ * institutionally love this production" signal beyond what the show's own
+ * top-cat precursor wins capture.
+ *
+ * Returns null pre-Tony-nomination-announcement (no data yet). Returns a
+ * 0-100 score post-noms, normalized against a per-category ceiling derived
+ * from the maximum plausible acting nom count for that show type.
+ *
+ *   musicals: 4 lead + 4 featured slots = 8 ceiling, but realistic max ~4
+ *   plays:    4 lead + 4 featured slots = 8 ceiling, realistic max ~4
+ * We use ceiling = 4 for both — a show with 4+ acting noms scores 100.
+ *
+ * Pre-nom callers must check `hasNominationsBeenAnnounced(season)` first and
+ * either skip this feature or handle the null fall-back via the recipe's
+ * existing null-drop logic in tonyComposite.
+ */
+export function castActingNomsScore(
+  showId: string,
+  season: TonySeasonWindow,
+): number | null {
+  if (!hasNominationsBeenAnnounced(season)) return null;
+  const ACTING_CATEGORIES = new Set([
+    'Best Actor in a Musical', 'Best Actress in a Musical',
+    'Best Actor in a Play', 'Best Actress in a Play',
+    'Best Featured Actor in a Musical', 'Best Featured Actress in a Musical',
+    'Best Featured Actor in a Play', 'Best Featured Actress in a Play',
+  ]);
+  const entry = getAwardsShows()[showId];
+  if (!entry) return null;
+  const noms = entry.tony?.nominatedFor || [];
+  let count = 0;
+  for (const n of noms) {
+    if (ACTING_CATEGORIES.has(n)) count++;
+  }
+  const CEILING = 4;
+  return Math.min(100, (count / CEILING) * 100);
+}
+
+/**
+ * Empirical Tony-conversion-rate-by-precursor-sweep-count, smoothed.
+ *
+ * For each Tony category, compute the historical P(Tony win | precursor
+ * sweep count) using 4 cells {0, 1, 2, 3} where sweep count is the number
+ * of top-cat wins across Drama League / OCC / Drama Desk. Smoothed via a
+ * Bayesian-style prior toward the category base rate with strength α=2.
+ *
+ * Per-category LOSO-window data (audit 2026-05-26):
+ *   Best Musical:        sweep=3 → 75%, sweep=2 → 50%, sweep=1 → 25%, sweep=0 → 7%
+ *   Best Play:           sweep=3 → 100%, sweep=2 → 75%, sweep=1 → 25%, sweep=0 → 0%
+ *   Best Revival Musical: sweep=3 → 67%, sweep=2 → 33%, sweep=1 → 43%, sweep=0 → 12%
+ *   Best Revival Play:   sweep=3 → 100%, sweep=2 → 50%, sweep=1 → 13%, sweep=0 → 11%
+ *
+ * The optional `excludeSeason` parameter removes one season from the rate
+ * computation — required for LOSO-safe use inside the audit script. Production
+ * code omits it so the rate uses all 11 historical seasons.
+ *
+ * Returns 0-100 (the rate × 100).
+ */
+export function precursorSweepConversionScore(
+  showId: string,
+  categoryKey: TonyCategoryKey,
+  excludeSeason?: string,
+): number {
+  const catTitle = CATEGORY_KEY_TO_TITLE[categoryKey];
+  const matching = TONY_TO_PRECURSOR_CATEGORY[catTitle];
+  if (!matching) return 0;
+
+  const showsMap = getAwardsShows();
+  const showEntry = showsMap[showId];
+  if (!showEntry) return 0;
+
+  // Compute THIS show's sweep count.
+  function sweepFor(entry: AwardsShowEntry & {
+    dramadesk?: PrecursorNode; outerCriticsCircle?: PrecursorNode; dramaLeague?: PrecursorNode;
+  }): number {
+    let c = 0;
+    if (matching.dramaLeague.some((x) => (entry.dramaLeague?.wins || []).includes(x))) c++;
+    if (matching.outerCriticsCircle.some((x) => (entry.outerCriticsCircle?.wins || []).includes(x))) c++;
+    if (matching.dramadesk.some((x) => (entry.dramadesk?.wins || []).includes(x))) c++;
+    return c;
+  }
+  const showSweep = sweepFor(showEntry as AwardsShowEntry & { dramadesk?: PrecursorNode; outerCriticsCircle?: PrecursorNode; dramaLeague?: PrecursorNode });
+
+  // Build the conversion table from historical LOSO-window nominees.
+  const LOSO_SEASONS = new Set(['2013-14','2014-15','2015-16','2016-17','2017-18','2018-19','2019-20','2021-22','2022-23','2023-24','2024-25']);
+  const cells: Record<number, { wins: number; total: number }> = {0:{wins:0,total:0}, 1:{wins:0,total:0}, 2:{wins:0,total:0}, 3:{wins:0,total:0}};
+  let totalWins = 0, totalContests = 0;
+  for (const [, data] of Object.entries(showsMap)) {
+    const tonyData = data.tony;
+    if (!tonyData?.season || !LOSO_SEASONS.has(tonyData.season)) continue;
+    if (excludeSeason && tonyData.season === excludeSeason) continue;
+    const isNominated = (tonyData.nominatedFor || []).includes(catTitle);
+    if (!isNominated) continue;
+    const sc = sweepFor(data as AwardsShowEntry & { dramadesk?: PrecursorNode; outerCriticsCircle?: PrecursorNode; dramaLeague?: PrecursorNode });
+    const won = (tonyData.wins || []).includes(catTitle);
+    cells[sc].total++;
+    if (won) {
+      cells[sc].wins++;
+      totalWins++;
+    }
+    totalContests++;
+  }
+  const baseRate = totalContests > 0 ? totalWins / totalContests : 0.2;
+  const cell = cells[showSweep];
+  const alpha = 2;
+  const rate = (cell.wins + alpha * baseRate) / (cell.total + alpha);
+  return Math.max(0, Math.min(100, rate * 100));
+}
+
+/**
  * Serialize a show for the Tony Predictions UI.
  * Pass `categoryKey` to apply the per-category composite. Without it, falls back
  * to the legacy 50/50 critic+audience blend (used by the historical-winners
