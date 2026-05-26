@@ -437,12 +437,22 @@ async function fixCreativeTeam(show, todayTixIds) {
 
   // Step 2: IBDB (Broadway shows only — IBDB is Broadway-authoritative)
   // ibdbUrl is pre-stored on Broadway shows by discover-new-shows.js
+  // Note: lookupIBDBDates runs a production-year gate. If show.openingDate is
+  // missing, the gate trips and creativeTeam comes back empty. That's by
+  // design — same-title revivals can collide without a year anchor.
   if (show.ibdbUrl && SCRAPINGBEE_API_KEY) {
     console.log(`    Fetching from IBDB...`);
     try {
       const openingYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4)) : undefined;
       const ibdb = await lookupIBDBDates(show.title, { ibdbUrl: show.ibdbUrl, openingYear });
       if (ibdb.creativeTeam && ibdb.creativeTeam.length >= 1) {
+        // Defensive: never overwrite an existing non-empty creativeTeam from IBDB
+        // without a louder signal. The guard at line 413 already returns early if
+        // show.creativeTeam.length >= 2, so we only reach here when it's empty
+        // or has 1 entry — log the latter so regressions are auditable.
+        if (show.creativeTeam && show.creativeTeam.length > 0) {
+          console.log(`    ⚠️  IBDB replacing existing creativeTeam[${show.creativeTeam.length}] on ${show.id}`);
+        }
         show.creativeTeam = ibdb.creativeTeam;
         return `Fetched creative team from IBDB for ${show.title} (${ibdb.creativeTeam.length} members)`;
       }

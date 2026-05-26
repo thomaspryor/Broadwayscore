@@ -633,7 +633,10 @@ async function lookupIBDBDates(title, options = {}) {
 
     if (!dates.openingDate && !dates.previewsStartDate) {
       console.log(`  ❌ No dates extracted from IBDB page for "${title}"`);
-      return { ...notFound, ibdbUrl: bestMatch.url, creativeTeam: dates.creativeTeam || [] };
+      // 2026-05-26: previously returned `creativeTeam: dates.creativeTeam` here.
+      // Without a date we cannot run the production-year gate; same-title revivals
+      // collide silently. Drop the team — caller can still use ibdbUrl.
+      return { ...notFound, ibdbUrl: bestMatch.url };
     }
 
     // Step 4: PRODUCTION YEAR VALIDATION GATE
@@ -655,9 +658,12 @@ async function lookupIBDBDates(title, options = {}) {
         console.log(`  ⚠️  IBDB year (${ibdbYear}) differs from expected (${expectedYear}) by 1 year — allowing (year-boundary tolerance)`);
       }
     } else if (!options.openingYear) {
-      // No expected year — require title match on the scraped page as minimum validation
-      // (This catches discover-new-shows.js calls where openingDate may not exist yet)
-      console.log(`  ⚠️  No opening year for "${title}" — cannot validate IBDB production match`);
+      // 2026-05-26: was a soft warning; we now strip the creative team in this
+      // branch. Liberation's Martyna Majok bug originated when LLM ran in an
+      // unverified branch — same-title revivals can hit the IBDB path with no
+      // year context (discover-new-shows.js calls). Keep dates + URL, drop team.
+      console.log(`  ⚠️  No opening year for "${title}" — IBDB creative team not trusted, dropping`);
+      dates.creativeTeam = [];
     }
 
     console.log(`  ✅ IBDB dates for "${title}":`);
