@@ -80,6 +80,7 @@ const { classifyPendingGapsByAge, DEFAULT_STUCK_PENDING_DAYS } = require('./lib/
 
 // Import deduplication module for duplicate detection
 const { isLondonMarket, isWestEndVenue, isOffWestEndVenue } = require('./lib/venue-classification');
+const { VENUE_ADDRESSES } = require('./lib/venue-addresses');
 let checkForDuplicate;
 try {
   const dedup = require('./lib/deduplication');
@@ -566,6 +567,48 @@ function validateVenueCategory(shows) {
     ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
+  }
+}
+
+// ===========================================
+// VENUE / THEATER ADDRESS CONSISTENCY
+// ===========================================
+// Reddit 2026-05-26: Liberation showed Lena Horne Theatre's address (256 W 47th)
+// while venue field correctly said James Earl Jones Theatre (138 W 48th).
+// scripts/lib/venue-addresses.js is the canonical registry — autofix mismatches
+// from it and warn when a Broadway venue lacks any address.
+function validateTheaterAddress(shows) {
+  info('Cross-checking theaterAddress against venue registry...');
+  let mismatches = 0;
+  const mismatchExamples = [];
+
+  for (const show of shows) {
+    if (!show.venue || show.venue === 'TBA') continue;
+    const canonical = VENUE_ADDRESSES[show.venue];
+    if (!canonical) continue; // venue not in Broadway registry (off-broadway / WE / etc.)
+    if (show.theaterAddress && show.theaterAddress !== canonical) {
+      if (mismatchExamples.length < 5) {
+        mismatchExamples.push(`"${show.title}" (${show.id}): venue="${show.venue}" but theaterAddress="${show.theaterAddress}" — canonical "${canonical}"`);
+      }
+      show.theaterAddress = canonical;
+      mismatches++;
+    }
+  }
+
+  if (mismatches > 0) {
+    const showsPath = path.join(DATA_DIR, 'shows.json');
+    const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const show of shows) {
+      const match = showsData.shows.find(s => s.id === show.id);
+      if (match && match.theaterAddress !== show.theaterAddress) {
+        match.theaterAddress = show.theaterAddress;
+      }
+    }
+    fs.writeFileSync(showsPath, JSON.stringify(showsData, null, 2));
+    mismatchExamples.forEach(m => info('  ' + m));
+    ok(`Auto-fixed ${mismatches} theaterAddress/venue mismatches from registry`);
+  } else {
+    ok('All Broadway theaterAddress fields match venue registry');
   }
 }
 
@@ -4104,6 +4147,7 @@ function runValidation() {
   validateImageFiles(shows);
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
+  validateTheaterAddress(shows);
   console.log('');
   validateSynopsisQuality(shows);
   validateCreativeTeamQuality(shows);
