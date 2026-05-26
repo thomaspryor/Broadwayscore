@@ -37,6 +37,85 @@ const { fetchPage } = require('./scraper');
 const STAGING_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'ob-venue-candidates.json');
 
 // ============================================================
+// OB VENUE CONFIGS (V-T2)
+// ============================================================
+// URLs + selectors verified 2026-05-24 by Playwright subagent.
+// Adding/changing a venue: probe it, capture HTML fixture, write a
+// per-venue test (tests/unit/venue-extract-<name>.test.mjs) before
+// shipping the config change.
+//
+// Exclusion patterns are intentionally generic (membership/donate/etc.)
+// — site-specific banner copy gets caught by the strategy's scopeSelector
+// AND the fixture test, not by adding venue-specific regexes here.
+
+const COMMON_OB_EXCLUDE_PATTERNS = [
+  /^membership$/i, /^donate$/i, /^donate now$/i, /^login$/i, /^cart$/i,
+  /^sorry/i, /^help us/i, /^access your/i,
+  /^contact/i, /^subscribe/i, /^newsletter/i,
+  /^learn more$/i, /^read more$/i, /^buy tickets?$/i,
+  /^our (mission|team|staff|board|space|values|history)/i,
+  /education program/i, /reading series/i, /staged reading/i,
+  /spring gala/i, /annual gala/i, /gala benefit/i,
+  /^benefit\b/i, /annual benefit/i, /fundraiser/i,
+];
+
+const OB_VENUE_CONFIGS = [
+  {
+    name: 'Atlantic Theater',
+    url: 'https://atlantictheater.org/productions/',
+    strategy: 'link',
+    linkPattern: /\/production\/[a-z0-9-]+\/?$/,
+    // Atlantic puts the season as header nav items (Elementor menu). The
+    // scope is intentionally the nav container; linkPattern with trailing
+    // anchor excludes #book and #directions fragments.
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+  {
+    name: 'Vineyard Theatre',
+    // No `www` subdomain on this URL — / and /whats-on/ return different
+    // pages. /showsevents/ is the canonical season-list page.
+    url: 'https://vineyardtheatre.org/showsevents/',
+    strategy: 'link',
+    linkPattern: /\/shows\//,
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: true,
+    category: 'off-broadway',
+  },
+  {
+    name: 'Signature Theatre',
+    url: 'https://signaturetheatre.org/productions/',
+    strategy: 'selector',
+    // .type-event includes both upcoming (5) and past (9). Upcoming-only
+    // filtering happens in the fixture test via ancestor heading; for now
+    // we accept all 14 and let the cross-validation gate (V-T6b) reject
+    // past shows that don't appear in Playbill/Lortel current data.
+    selector: '.type-event .wp-block-post-title',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: true,
+    // networkidle times out at 45s on this page; must wait for the
+    // first .type-event element to appear instead.
+    playwrightWaitForSelector: '.type-event',
+    category: 'off-broadway',
+  },
+  {
+    name: 'MCC Theater',
+    // TODO: this URL embeds the season year (2025-26). When MCC switches
+    // to 2026-27 (typically mid-2026), update to /our-2026-27-season/.
+    // The anomaly gate (V-T7) will fire when this rots → 0 shows from MCC.
+    url: 'https://mcctheater.org/our-2025-26-season/',
+    strategy: 'selector',
+    selector: '.c-col-card .c-col-card__title',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    // The .c-col-card grid is JS-injected — static HTML has no titles. Need
+    // Playwright to capture the rendered DOM.
+    preferPlaywright: true,
+    category: 'off-broadway',
+  },
+];
+
+// ============================================================
 // PURE PARSING
 // ============================================================
 
@@ -145,7 +224,12 @@ function extractJsonLdTheaterEvents(doc) {
       const parsed = JSON.parse(script.textContent);
       const items = Array.isArray(parsed) ? parsed : [parsed];
       for (const item of items) {
-        if (item['@type'] === 'TheaterEvent' && !item.subEvent) events.push(item);
+        // schema.org allows @type as either a string or an array of strings —
+        // sites like LondonTheatre.co.uk emit `@type: ["Event","TheaterEvent"]`.
+        // Without array handling we'd silently drop those events.
+        const t = item['@type'];
+        const isTheaterEvent = Array.isArray(t) ? t.includes('TheaterEvent') : t === 'TheaterEvent';
+        if (isTheaterEvent && !item.subEvent) events.push(item);
       }
     } catch { /* malformed JSON-LD blocks are skipped */ }
   }
@@ -163,6 +247,11 @@ function extractJsonLdTheaterEvents(doc) {
 async function scrapeVenueListing(venue) {
   const opts = {};
   if (venue.preferPlaywright) opts.preferPlaywright = true;
+  // NOTE: playwrightWaitForSelector is currently a no-op — fetchWithPlaywright
+  // in scripts/lib/scraper.js does not yet consume this option. V-T3 (planned
+  // next in sprint-plan-ob-venue-extraction.md) adds the consumer. Until then,
+  // Signature relies on networkidle (which the subagent confirmed times out at
+  // 45s). Signature will return 0 candidates until V-T3 ships.
   if (venue.playwrightWaitForSelector) opts.playwrightWaitForSelector = venue.playwrightWaitForSelector;
 
   const result = await fetchPage(venue.url, opts);
@@ -221,6 +310,8 @@ function writeStagingCandidates(newCandidates) {
 
 module.exports = {
   STAGING_PATH,
+  OB_VENUE_CONFIGS,
+  COMMON_OB_EXCLUDE_PATTERNS,
   parseVenueListingHtml,
   scrapeVenueListing,
   extractByLink,
