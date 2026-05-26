@@ -124,30 +124,38 @@ export default function TonyAwardsHubPage() {
         <div className="grid sm:grid-cols-2 gap-4 mb-10">
           {/* Predictions Teaser — hidden until tonyPredictionsOurPick is enabled (full reveal) */}
           {featureFlags.tonyPredictions && featureFlags.tonyPredictionsOurPick && eligible.length > 0 ? (
-            <Link href="/tony-awards/predictions" className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
-                <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-              <p className="text-sm text-gray-400 mb-3">
-                {eligible.length} eligible shows &middot; {totalScored} reviewed {totalUpcoming > 0 && <>&middot; {totalUpcoming} upcoming</>}
-              </p>
-              {categoryTeasers.length > 0 && (
-                <div className="space-y-1.5">
-                  {categoryTeasers.slice(0, 4).map(t => (
-                    <div key={t.label} className="flex items-center gap-2 text-sm">
-                      <span className="text-gray-500 flex-shrink-0 truncate">{t.label}</span>
-                      <span className="text-white font-medium truncate flex-1">{t.showTitle}</span>
-                    </div>
-                  ))}
+            <div className="p-4 sm:p-5 rounded-xl border border-white/5 bg-surface-overlay hover:bg-white/[0.04] transition-colors group relative">
+              <Link href={`/tony-awards/predictions/${season.label}`} className="block">
+                <div className="flex items-center justify-between mb-2">
+                  <h2 className="text-sm font-semibold text-white uppercase tracking-wide">{season.label} Tony Predictions</h2>
+                  <svg className="w-5 h-5 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
-              )}
-              <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
-                See full predictions &rarr;
-              </p>
-            </Link>
+                <p className="text-sm text-gray-400 mb-3">
+                  {eligible.length} eligible shows &middot; {totalScored} reviewed {totalUpcoming > 0 && <>&middot; {totalUpcoming} upcoming</>}
+                </p>
+                {categoryTeasers.length > 0 && (
+                  <div className="space-y-1.5">
+                    {categoryTeasers.slice(0, 4).map(t => (
+                      <div key={t.label} className="flex items-center gap-2 text-sm">
+                        <span className="text-gray-500 flex-shrink-0 truncate">{t.label}</span>
+                        <span className="text-white font-medium truncate flex-1">{t.showTitle}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-sm text-brand mt-3 group-hover:text-brand-hover transition-colors">
+                  See full predictions &rarr;
+                </p>
+              </Link>
+              <Link
+                href="/tony-awards/predictions"
+                className="block mt-2 pt-2 border-t border-white/5 text-xs text-gray-400 hover:text-brand transition-colors"
+              >
+                Track record &amp; past seasons &rarr;
+              </Link>
+            </div>
           ) : null}
 
           {/* Nominees Teaser */}
