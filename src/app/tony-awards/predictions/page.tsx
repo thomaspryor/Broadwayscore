@@ -213,6 +213,9 @@ export default function TonyPredictionsOverviewPage() {
         <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
           <TrackRecord summaries={summaries} seasonCount={stats.seasonCount} />
+          <p className="text-xs text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
+            <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same 11 seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation &mdash; refitting the weights on the other 10 seasons and predicting the held-out one &mdash; the model matches <span className="text-white font-semibold">83.7%</span> of past winners (36 of 43). The 7-point gap reflects a mix of genuine overfitting risk and a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
+          </p>
         </section>
 
         {/* Season Grid */}
