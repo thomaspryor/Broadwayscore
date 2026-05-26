@@ -306,7 +306,18 @@ function safeWriteReview(filePath, newData, options = {}) {
   if (newData.duplicateOf && newData.url) {
     try {
       const siblingPath = path.join(path.dirname(filePath), newData.duplicateOf);
-      if (fs.existsSync(siblingPath)) {
+      if (!fs.existsSync(siblingPath)) {
+        // Sibling was deleted (typically *--unknown.json files swept as junk by
+        // collect-review-texts cleanup). The duplicateOf reference is now
+        // dangling and excludes this review from rebuild for no reason.
+        // The CI audit-duplicate-of-url-mismatch.js gate flags this; clear at
+        // write site so it self-heals on the next gather/rebuild rather than
+        // accumulating until the next manual --fix run.
+        console.warn(`[review-write-guard] clearing dangling duplicateOf in ${path.basename(filePath)}: sibling ${newData.duplicateOf} no longer exists`);
+        newData.duplicateClearReason = `auto-cleared at write: sibling ${newData.duplicateOf} no longer exists`;
+        newData.duplicateOf = null;
+        newData.duplicateReason = null;
+      } else {
         const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf-8'));
         if (siblingData.url) {
           const normHere = _normalizeUrlForCollision(newData.url);
