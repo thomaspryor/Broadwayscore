@@ -46,6 +46,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { isLondonMarket, isUkOutletUrl } = require('./lib/venue-classification');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
@@ -1186,6 +1187,10 @@ const crossShowFingerprints = new Map();
           if (merged) {
             safeWriteReview(expectedPath, existingData);
           }
+          // Clear any sibling files that point at this file via duplicateOf —
+          // otherwise the audit-duplicate-of-url-mismatch CI gate flags them
+          // as sibling-missing and Data Validation fails until --fix runs.
+          cascadeClearDuplicateRefs(sDir, f);
           fs.unlinkSync(filePath);
           mergedCount++;
         } else {
@@ -1238,6 +1243,8 @@ const crossShowFingerprints = new Map();
           if (merged) {
             safeWriteReview(expectedPath, existingData);
           }
+          // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
+          cascadeClearDuplicateRefs(sDir, f);
           fs.unlinkSync(filePath);
           mergedCount++;
         } else {
