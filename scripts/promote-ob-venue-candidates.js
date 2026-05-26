@@ -97,7 +97,16 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  const existingTitleVenue = new Set(showsData.shows.map(s => `${(s.title||'').toLowerCase()}|${(s.venue||'').toLowerCase()}`));
+  // Use normalizeTitle so "||: GIRLS :||: CHANCE :||: MUSIC :||" dedupes
+  // against "Girls Chance Music". And keep only the FIRST WORD of the venue
+  // string so "Atlantic Theater Company - Linda Gross Theater" dedupes
+  // against "Atlantic Theater" (the venue-page-scraper's shorter form).
+  // This prevents the 22-promote 3-dup bug we cleaned up post-launch.
+  const { normalizeTitle } = require('./lib/title-match');
+  function venueKey(v) { return (v || '').toLowerCase().split(/[\s\-,—]/)[0]; }
+  const existingTitleVenue = new Set(showsData.shows
+    .filter(s => s.category === 'off-broadway')
+    .map(s => `${normalizeTitle(s.title)}|${venueKey(s.venue)}`));
 
   // Fetch cross-validation sources unless --admin-promote-all
   let playbillEntries = [];
@@ -121,11 +130,14 @@ async function main() {
   const remainingStaged = [];
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
-    const venueLower = (c.venue || '').toLowerCase();
 
-    // Dedupe against existing shows
-    if (existingTitleVenue.has(`${titleLower}|${venueLower}`)) {
-      skipped.push({ candidate: c, reason: 'already in shows.json (title+venue match)' });
+    // Dedupe against existing shows using normalized title + venue-first-word.
+    // Catches cross-year duplicates (indian-princesses-2025 vs -2026) and
+    // venue-string mismatches ("Atlantic Theater Company - Linda Gross Theater"
+    // vs "Atlantic Theater") that exact string matching missed.
+    const candidateKey = `${normalizeTitle(c.title)}|${venueKey(c.venue)}`;
+    if (existingTitleVenue.has(candidateKey)) {
+      skipped.push({ candidate: c, reason: `already in shows.json (norm key: ${candidateKey})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue });
       continue;
     }
