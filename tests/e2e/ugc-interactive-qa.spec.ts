@@ -232,9 +232,9 @@ test.describe('Layout consistency — mobile (390px)', () => {
     await goToMock(page, 'diary');
 
     // Switch to grid view
-    await page.evaluate(() => {
-      document.querySelector<HTMLButtonElement>('[aria-label="Grid view"]')?.click();
-    });
+    // Use Playwright actionable click (waits for attached/visible/stable)
+    // rather than synthesized DOM .click() which can race React hydration.
+    await page.getByRole('button', { name: 'Grid view' }).click();
     await page.waitForTimeout(500);
 
     const heights = await page.evaluate(() => {
@@ -270,9 +270,9 @@ test.describe('Layout consistency — mobile (390px)', () => {
   test('grid "Add" card matches real card height', async ({ page }) => {
     await goToMock(page, 'diary');
 
-    await page.evaluate(() => {
-      document.querySelector<HTMLButtonElement>('[aria-label="Grid view"]')?.click();
-    });
+    // Use Playwright actionable click (waits for attached/visible/stable)
+    // rather than synthesized DOM .click() which can race React hydration.
+    await page.getByRole('button', { name: 'Grid view' }).click();
     await page.waitForTimeout(500);
 
     const result = await page.evaluate(() => {
@@ -307,9 +307,9 @@ test.describe('Layout consistency — mobile (390px)', () => {
   test('no delete icons visible on diary grid cards at mobile width', async ({ page }) => {
     await goToMock(page, 'diary');
 
-    await page.evaluate(() => {
-      document.querySelector<HTMLButtonElement>('[aria-label="Grid view"]')?.click();
-    });
+    // Use Playwright actionable click (waits for attached/visible/stable)
+    // rather than synthesized DOM .click() which can race React hydration.
+    await page.getByRole('button', { name: 'Grid view' }).click();
     await page.waitForTimeout(500);
 
     // In the Past Shows grid, delete buttons should be hidden on mobile
