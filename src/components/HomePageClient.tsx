@@ -860,14 +860,14 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
                 <FeaturedSpot
                   eyebrow="Tony Awards 2026"
                   title="Who will win Best Musical?"
-                  description={`Our model has called ${tonyTrackRecord.pct}% of Tony winners since 2015. See its picks before the ceremony.`}
+                  description={`Our model matches ${tonyTrackRecord.pct}% of past Tony winners since 2015. See its picks before the ceremony.`}
                   ctaLabel="See the predictions"
                   href="/tony-awards/predictions/2025-2026"
                   accent="gold"
-                  stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Historical accuracy', compactLabel: 'Accuracy' }}
+                  stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Track record', compactLabel: 'Record' }}
                   secondary={[
                     { value: `${tonyTrackRecord.seasons}`, label: 'seasons' },
-                    { value: `${tonyTrackRecord.hits}/${tonyTrackRecord.cells}`, label: 'calls right' },
+                    { value: `${tonyTrackRecord.hits}/${tonyTrackRecord.cells}`, label: 'matched' },
                   ]}
                 />
               )}

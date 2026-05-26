@@ -58,7 +58,7 @@ export function TrackRecord({ summaries, seasonCount }: Props) {
           <span>{totalHits}</span><span className="text-gray-600 font-light mx-1">/</span><span>{totalCells}</span>
         </div>
         <p className="text-sm text-gray-300">
-          Our #1 pick won across {seasonCount} Tony seasons &middot; <span className="text-white font-semibold">{accuracyPct}% accuracy</span>
+          Our #1 matches the Tony winner across {seasonCount} seasons &middot; <span className="text-white font-semibold">{accuracyPct}% match rate</span>
         </p>
       </div>
 

@@ -306,7 +306,7 @@ export default function HomePage() {
             ctaLabel="See the predictions"
             href="/tony-awards/predictions/2025-2026"
             accent="gold"
-            stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Accuracy' }}
+            stat={{ value: `${tonyTrackRecord.pct}%`, label: 'Track record' }}
           />
         )}
         <FeaturedRowServer shows={bestRecentShows} />
