@@ -1,13 +1,13 @@
 {
   "_meta": {
     "description": "Critic-outlet affinity audit report",
-    "lastUpdated": "2026-05-26T00:28:52.905Z",
+    "lastUpdated": "2026-05-26T00:46:18.897Z",
     "generatedBy": "scripts/audit-critic-outlets.js",
-    "totalFilesScanned": 38047,
+    "totalFilesScanned": 38048,
     "skippedFiles": 17309,
     "totalCritics": 1405,
     "registryCritics": 510,
-    "flaggedReviews": 22
+    "flaggedReviews": 21
   },
   "flaggedReviews": [
     {
@@ -31,17 +31,6 @@
       "primaryOutlet": "thewrap",
       "primaryShare": 100,
       "totalReviews": 338
-    },
-    {
-      "critic": "Dominic Cavendish",
-      "criticSlug": "dominic-cavendish",
-      "outlet": "timeout-london",
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "file": "timeout-london--dominic-cavendish.json",
-      "outletShare": 2,
-      "primaryOutlet": "telegraph",
-      "primaryShare": 98,
-      "totalReviews": 43
     },
     {
       "critic": "Dominic Maxwell",
@@ -503,6 +492,18 @@
         "express-uk"
       ],
       "totalReviews": 32
+    },
+    {
+      "critic": "Dominic Cavendish",
+      "slug": "dominic-cavendish",
+      "outlets": [
+        "telegraph",
+        "standard",
+        "timeout-london",
+        "sunday-telegraph",
+        "times-uk"
+      ],
+      "totalReviews": 44
     },
     {
       "critic": "Ghenet Pinderhughes Randall",
