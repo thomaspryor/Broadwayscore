@@ -96,10 +96,10 @@ function scoreTier(score, category) {
   if (score == null) return null;
   const goldMin = (category === 'west-end' || category === 'off-west-end') ? 85 : 83;
   if (score >= goldMin) return { id: 'gold', label: 'Critical Gold', bg: 'linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%)', solid: '#FFD700', text: '#1a1a1a', border: '#C8960E', glow: '0 0 24px rgba(218,165,32,0.55),0 4px 12px rgba(0,0,0,0.3)' };
-  if (score >= 75) return { id: 'rec', label: 'Recommended', bg: '#22c55e', solid: '#22c55e', text: '#ffffff', glow: '0 2px 8px rgba(34,197,94,0.3)' };
-  if (score >= 65) return { id: 'worth', label: 'Worth Seeing', bg: '#14b8a6', solid: '#14b8a6', text: '#ffffff', glow: '0 2px 8px rgba(20,184,166,0.3)' };
+  if (score >= 75) return { id: 'rec', label: 'Recommended', bg: '#22c55e', solid: '#22c55e', text: '#fff', glow: '0 2px 8px rgba(34,197,94,0.3)' };
+  if (score >= 65) return { id: 'worth', label: 'Worth Seeing', bg: '#14b8a6', solid: '#14b8a6', text: '#fff', glow: '0 2px 8px rgba(20,184,166,0.3)' };
   if (score >= 55) return { id: 'skip', label: 'Skippable', bg: '#d97706', solid: '#d97706', text: '#1a1a1a', glow: '0 2px 8px rgba(217,119,6,0.3)' };
-  return { id: 'miss', label: 'Critical Miss', bg: '#ef4444', solid: '#ef4444', text: '#ffffff', glow: '0 2px 8px rgba(239,68,68,0.3)' };
+  return { id: 'miss', label: 'Critical Miss', bg: '#ef4444', solid: '#ef4444', text: '#fff', glow: '0 2px 8px rgba(239,68,68,0.3)' };
 }
 
 // `box-sizing:border-box` is the fix — Critical Gold has a 2px border which would
@@ -145,17 +145,17 @@ function tierLabel(score, category) {
 // Audience grade — secondary, shown as small letter chip
 function getAudienceGrade(score) {
   if (score == null) return null;
-  if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#ffffff' };
-  if (score >= 88) return { grade: 'A',  label: 'Loving It', color: '#16a34a', textColor: '#ffffff' };
-  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#ffffff' };
-  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#ffffff' };
+  if (score >= 90) return { grade: 'A+', label: 'Loving It', color: '#22c55e', textColor: '#fff' };
+  if (score >= 88) return { grade: 'A',  label: 'Loving It', color: '#16a34a', textColor: '#fff' };
+  if (score >= 83) return { grade: 'A-', label: 'Liking It', color: '#14b8a6', textColor: '#fff' };
+  if (score >= 78) return { grade: 'B+', label: 'Liking It', color: '#0ea5e9', textColor: '#fff' };
   if (score >= 73) return { grade: 'B',  label: 'Shrugging', color: '#f59e0b', textColor: '#1a1a1a' };
   if (score >= 68) return { grade: 'B-', label: 'Shrugging', color: '#f97316', textColor: '#1a1a1a' };
-  if (score >= 63) return { grade: 'C+', label: 'Disliking', color: '#ef4444', textColor: '#ffffff' };
-  if (score >= 58) return { grade: 'C',  label: 'Disliking', color: '#dc2626', textColor: '#ffffff' };
-  if (score >= 53) return { grade: 'C-', label: 'Disliking', color: '#b91c1c', textColor: '#ffffff' };
-  if (score >= 48) return { grade: 'D',  label: 'Loathing',  color: '#991b1b', textColor: '#ffffff' };
-  return { grade: 'F', label: 'Loathing', color: '#6b7280', textColor: '#ffffff' };
+  if (score >= 63) return { grade: 'C+', label: 'Disliking', color: '#ef4444', textColor: '#fff' };
+  if (score >= 58) return { grade: 'C',  label: 'Disliking', color: '#dc2626', textColor: '#fff' };
+  if (score >= 53) return { grade: 'C-', label: 'Disliking', color: '#b91c1c', textColor: '#fff' };
+  if (score >= 48) return { grade: 'D',  label: 'Loathing',  color: '#991b1b', textColor: '#fff' };
+  return { grade: 'F', label: 'Loathing', color: '#6b7280', textColor: '#fff' };
 }
 
 // Canonical AudienceChip — mirrors src/components/show-cards/ShowPills.tsx
@@ -195,7 +195,7 @@ function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}`
 function isOperaShow(s) { return !!s && s.type === 'opera'; }
 function showLink(show, inner) {
   if (!show || !show.slug) return inner;
-  return `<a href="${showHref(show)}" style="color:inherit;text-decoration:none;">${inner}</a>`;
+  return `<a href="${showHref(show)}" class="lnk">${inner}</a>`;
 }
 
 // Per-section "see all" footer. One <tr> with a hairline border-top — much
@@ -283,13 +283,13 @@ function criticLink(name, inner) {
   if (!name || name === 'Unknown') return inner;
   const slug = loadCriticReg().get(name.toLowerCase());
   if (!slug) return inner;
-  return `<a href="${SITE}/critics/${slug}" style="color:inherit;text-decoration:none;">${inner}</a>`;
+  return `<a href="${SITE}/critics/${slug}" class="lnk">${inner}</a>`;
 }
 function outletLink(name, inner) {
   if (!name) return inner;
   const slug = loadOutletReg().get(name.toLowerCase());
   if (!slug) return inner;
-  return `<a href="${SITE}/critics/outlets/${slug}" style="color:inherit;text-decoration:none;">${inner}</a>`;
+  return `<a href="${SITE}/critics/outlets/${slug}" class="lnk">${inner}</a>`;
 }
 function castSlugify(name) {
   return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -298,7 +298,7 @@ function castLink(name, inner) {
   if (!name) return inner;
   const slug = castSlugify(name);
   if (!slug) return inner;
-  return `<a href="${SITE}/cast/${slug}" style="color:inherit;text-decoration:none;">${inner}</a>`;
+  return `<a href="${SITE}/cast/${slug}" class="lnk">${inner}</a>`;
 }
 
 // Canonical market tag pill — matches the closings/announced-closings style.
@@ -313,11 +313,11 @@ function marketPill(category) {
     : category === 'west-end' ? 'WEST END'
     : category === 'off-west-end' ? 'OFF WEST END'
     : (marketLabel(category) || '').toUpperCase());
-  return `<span style="display:inline-block;padding:1px 7px;border-radius:999px;background:${bg};color:${color};font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;vertical-align:2px;">${label}</span>`;
+  return `<span class="mp" style="background:${bg};color:${color}">${label}</span>`;
 }
 
 function pill(label, color = '#c084fc', bg = 'rgba(168,85,247,0.15)') {
-  return `<span style="display:inline-block;padding:2px 7px;border-radius:999px;background:${bg};color:${color};font-weight:600;font-size:11px;letter-spacing:0.04em;margin-right:4px;">${label}</span>`;
+  return `<span class="gp" style="background:${bg};color:${color}">${label}</span>`;
 }
 
 function thumb(show, size = 64) {
@@ -328,7 +328,7 @@ function thumb(show, size = 64) {
   // Wrap in an anchor so the thumbnail itself is tappable — every show
   // mention in the email leads to its show page.
   return show && show.slug
-    ? `<a href="${SITE}/show/${show.slug}" style="text-decoration:none;display:inline-block;">${inner}</a>`
+    ? `<a href="${SITE}/show/${show.slug}" class="tdec">${inner}</a>`
     : inner;
 }
 
@@ -340,7 +340,7 @@ function posterOrThumb(show, posterW = 80, posterH = 120) {
     const url = 'https://broadwayscorecard.com' + p;
     const img = `<img src="${url}" alt="${show.title}" width="${posterW}" height="${posterH}" style="display:block;width:${posterW}px;height:${posterH}px;object-fit:cover;border-radius:8px;background:#2a2a38;">`;
     return show && show.slug
-      ? `<a href="${SITE}/show/${show.slug}" style="text-decoration:none;display:inline-block;">${img}</a>`
+      ? `<a href="${SITE}/show/${show.slug}" class="tdec">${img}</a>`
       : img;
   }
   return thumb(show, posterW);
@@ -406,7 +406,7 @@ function showRow(show, opts = {}) {
     <tr>
       <td valign="top" width="96" style="padding:14px 0 14px 16px;">${posterOrThumb(show, 80, 120)}</td>
       <td valign="top" style="padding:14px 8px 14px 12px;">
-        <div style="font-size:17px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(show, show.title)}</div>
+        <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
         <div style="margin-top:6px;">${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:8px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaDate}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${metaVenue}</div>
@@ -419,10 +419,10 @@ function showRow(show, opts = {}) {
 function sectionHeading(title, countNote, opts = {}) {
   // opts.href makes the heading title a link (e.g. Box Office heading → /box-office).
   const titleHtml = opts.href
-    ? `<a href="${opts.href}" style="color:#ffffff;text-decoration:none;">${title}</a>`
+    ? `<a href="${opts.href}" style="color:#fff;text-decoration:none;">${title}</a>`
     : title;
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
-    <td><h2 style="margin:0;font-size:16px;font-weight:600;color:#ffffff;letter-spacing:-0.01em;">${titleHtml}</h2></td>
+    <td><h2 class="showttl">${titleHtml}</h2></td>
     ${countNote ? `<td align="right"><span style="font-size:12px;color:#9ca3af;font-weight:400;">${countNote}</span></td>` : ''}
   </tr></table>`;
 }
@@ -535,7 +535,7 @@ function upcomingOpeningsSection() {
     return `<tr>
       <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(s, 48)}</td>
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
         <div style="margin-top:4px;">${formatPill}${revivalPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.4;">
           ${it.eventLabel} ${dayOf(it.eventDate)} ${fmt(it.eventDate)}${venue ? ` · ${venue}` : ''}
@@ -543,7 +543,7 @@ function upcomingOpeningsSection() {
       </td>
     </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">${rows}
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${rows}
     ${seeAllLink(`${SITE}/`, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')}
   </table>`;
   return sectionWrap(sectionHeading('Coming Up', 'next 14 days'), body);
@@ -706,7 +706,7 @@ function biggestMoverSection() {
     return `<tr>
       <td valign="middle" width="80" style="padding:14px 0 14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 56)}</td>
       <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:6px;">${m.reviewDelta > 0 ? '+' : ''}${m.reviewDelta} audience review${Math.abs(m.reviewDelta) === 1 ? '' : 's'}</div>
       </td>
       <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
@@ -730,7 +730,7 @@ function biggestMoverSection() {
     return `<tr>
       <td valign="middle" width="80" style="padding:14px 0 14px 16px;border-bottom:1px solid rgba(255,255,255,0.05);">${thumb(m.show, 56)}</td>
       <td valign="middle" style="padding:14px 8px 14px 14px;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(m.show, m.show.title)} ${marketPill(m.show.category)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:6px;">+${m.newCount} review${m.newCount!==1?'s':''}</div>
       </td>
       <td valign="middle" width="120" align="center" style="padding:14px 16px 14px 4px;border-bottom:1px solid rgba(255,255,255,0.05);">
@@ -753,7 +753,7 @@ function biggestMoverSection() {
     if (last === -1) break;
     allRows = allRows.slice(0, last) + allRows.slice(last + BORDER_STR.length);
   }
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">${allRows}</table>`;
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${allRows}</table>`;
   const totalRows = moverList.length + audMovers.length;
   const title = totalRows > 1 ? 'Biggest Movers' : 'Biggest Mover';
   return sectionWrap(sectionHeading(title), body);
@@ -792,13 +792,13 @@ function awardsMoversSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:10px 10px 10px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumbHtml}</td>
       <td valign="middle" style="padding:10px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;color:#ffffff;font-weight:700;line-height:1.25;">${m.nominee}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;line-height:1.25;">${m.nominee}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${m.category}</div>
         <div style="font-size:12px;color:#d1d5db;margin-top:4px;"><span style="color:#9ca3af;">${m.prev}%</span> → <span style="font-weight:700;">${m.current}%</span> <span style="color:${dirColor};font-weight:700;margin-left:4px;">${dirArrow} ${dirWord} ${pts} pts</span></div>
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -855,14 +855,14 @@ function tonyWatchSection() {
       <td valign="middle" width="50" style="padding:7px 10px 7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumbHtml}</td>
       <td valign="middle" style="padding:7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         ${eyebrow}
-        <div style="font-size:14px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(r.show, r.show.title)}${predictedPill}</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(r.show, r.show.title)}${predictedPill}</div>
       </td>
       <td valign="middle" width="56" align="center" style="padding:7px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
         ${ourPickBox}
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -973,12 +973,12 @@ function outlierSection() {
   const logoUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
   const directionWord = best.diff < 0 ? 'below' : 'above';
   const cleanQuote = pickReviewQuote(r);
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr>
       <td valign="middle" width="44" style="padding:14px 0 14px 14px;">${outletLink(r.outlet, `<img src="${logoUrl}" alt="${r.outlet}" width="32" height="32" style="display:block;border-radius:6px;background:#fff;">`)}</td>
       <td valign="middle" style="padding:14px 8px 14px 10px;">
-        <div style="font-size:13px;color:#ffffff;font-weight:700;line-height:1.25;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#9ca3af;font-weight:400;">· ${outletLink(r.outlet, r.outlet)}</span></div>
-        <div style="font-size:13px;color:#d1d5db;margin-top:2px;">on <strong style="color:#ffffff;">${showLink(best.show, best.show.title)}</strong> ${marketPill(best.show.category)}</div>
+        <div style="font-size:13px;color:#fff;font-weight:700;line-height:1.25;">${criticLink(r.criticName, r.criticName || 'Unknown critic')} <span style="color:#9ca3af;font-weight:400;">· ${outletLink(r.outlet, r.outlet)}</span></div>
+        <div style="font-size:13px;color:#d1d5db;margin-top:2px;">on <strong style="color:#fff;">${showLink(best.show, best.show.title)}</strong> ${marketPill(best.show.category)}</div>
       </td>
       <td valign="middle" width="60" align="center" style="padding:14px 14px 14px 4px;">
         ${smallBadge(r.assignedScore, 40)}
@@ -1023,7 +1023,7 @@ function announcedClosingsSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(a.show, 40)}</td>
       <td valign="middle" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;color:#ffffff;font-weight:700;line-height:1.25;">${showLink(a.show, a.show.title)} ${marketPill(a.show.category)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;line-height:1.25;">${showLink(a.show, a.show.title)} ${marketPill(a.show.category)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:3px;">Closes <span style="color:#fbbf24;font-weight:600;">${closingFmt}</span></div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
@@ -1031,7 +1031,7 @@ function announcedClosingsSection() {
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -1094,13 +1094,13 @@ function commercialSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(f.show, 40)}</td>
       <td valign="middle" style="padding:12px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;color:#ffffff;font-weight:700;line-height:1.25;">${showLink(f.show, f.show.title)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;line-height:1.25;">${showLink(f.show, f.show.title)}</div>
         <div style="font-size:11px;color:#22c55e;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">Recouped${weeksTail}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:3px;">Capitalization: ${cap}</div>
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -1129,7 +1129,7 @@ function closingSection() {
     return `<tr>
       <td valign="middle" width="52" style="padding:12px 10px 12px 0;${borderBottom}">${thumb(s, 40)}</td>
       <td valign="middle" style="padding:12px 0;${borderBottom}">
-        <div style="font-size:14px;color:#ffffff;font-weight:700;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;">${showLink(s, s.title)} ${marketPill(s.category)}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:3px;">Closes <span style="color:#fbbf24;font-weight:600;">${dayOf(s.closingDate)} ${fmt(s.closingDate)}</span></div>
       </td>
       <td valign="middle" width="48" align="right" style="padding:12px 0;${borderBottom}">
@@ -1137,7 +1137,7 @@ function closingSection() {
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -1226,16 +1226,16 @@ function castingSection() {
       // grey reads as "ended/concluded" without overloading critic-score
       // semantics. Reviewers (GPT-4o + Claude QA + Codex) all flagged red.
       const tail = closure.date ? ` <span style="color:#fbbf24;">· final ${fmt(closure.date)}</span>` : '';
-      items.push({ icon: '×', color: '#9ca3af', text: `<strong style="color:#ffffff;">Show closes</strong>${tail}` });
+      items.push({ icon: '×', color: '#9ca3af', text: `<strong style="color:#fff;">Show closes</strong>${tail}` });
     } else if (arr && dep) {
       const range = rangeOf(arr);
-      items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#ffffff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
+      items.push({ icon: '↻', color: '#d4a574', text: `${castLink(arr.name, `<strong style="color:#fff;">${arr.name}</strong>`)} in for ${castLink(dep.name, dep.name)}${range}` });
     } else if (arr) {
       const range = rangeOf(arr);
-      items.push({ icon: '↗', color: '#22c55e', text: `${castLink(arr.name, `<strong style="color:#ffffff;">${arr.name}</strong>`)} joins${arr.role ? ' as ' + arr.role : ''}${range}` });
+      items.push({ icon: '↗', color: '#22c55e', text: `${castLink(arr.name, `<strong style="color:#fff;">${arr.name}</strong>`)} joins${arr.role ? ' as ' + arr.role : ''}${range}` });
     } else if (dep) {
       const tail = dep.date ? ` <span style="color:#fbbf24;">· final ${fmt(dep.date)}</span>` : '';
-      items.push({ icon: '↘', color: '#9ca3af', text: `${castLink(dep.name, `<strong style="color:#ffffff;">${dep.name}</strong>`)} departs${tail}` });
+      items.push({ icon: '↘', color: '#9ca3af', text: `${castLink(dep.name, `<strong style="color:#fff;">${dep.name}</strong>`)} departs${tail}` });
     } else {
       items.push({ icon: '·', color: '#9ca3af', text: `${castLink(events[0].name, events[0].name)} — ${events[0].role}` });
     }
@@ -1247,7 +1247,7 @@ function castingSection() {
       <div style="font-size:11px;color:#d4a574;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;">${g.showTitle}</div>
       ${g.items.map(it => `<div style="font-size:13px;color:#d1d5db;line-height:1.5;display:table;"><span style="display:table-cell;color:${it.color};font-weight:700;padding-right:8px;font-size:13px;width:18px;">${it.icon}</span><span style="display:table-cell;">${it.text}</span></div>`).join('')}
     </div>`).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">${rows}</td></tr>
     ${seeAllLink(`${SITE}/cast-changes`, 'See all casting moves')}
   </table>`;
@@ -1313,11 +1313,11 @@ function boxOfficeSection() {
       <td valign="middle" width="40" style="padding:7px 8px 7px 0;${borderStyle}">${showLink(entry.show, `<img src="${getImage(entry.show) || ''}" alt="${entry.show.title}" width="36" height="36" style="display:block;width:36px;height:36px;object-fit:cover;border-radius:6px;background:#2a2a38;">`)}</td>
       <td valign="middle" style="padding:7px 0;${borderStyle}">
         <div style="font-size:10px;color:#d4a574;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;">${label}</div>
-        <div style="font-size:14px;color:#ffffff;font-weight:700;margin-top:1px;">${showLink(entry.show, entry.show.title)}</div>
+        <div style="font-size:14px;color:#fff;font-weight:700;margin-top:1px;">${showLink(entry.show, entry.show.title)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:1px;">${[sublabel, vsm].filter(Boolean).join(' · ')}</div>
       </td>
       <td valign="middle" width="80" align="right" style="padding:7px 0;${borderStyle}">
-        <div style="font-size:16px;color:#ffffff;font-weight:700;">${valueStr}</div>
+        <div style="font-size:16px;color:#fff;font-weight:700;">${valueStr}</div>
       </td>
     </tr>`;
   }
@@ -1326,7 +1326,7 @@ function boxOfficeSection() {
     row('Highest Capacity', topCap,   topCap.capacity.toFixed(1) + '%', topCap.attendance.toLocaleString() + ' attendees', 'capacity'),
     row('Top Average Ticket Price', topAtp, '$' + Math.round(topAtp.atp), '', 'atp', true),
   ].join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:6px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rowsClean}</table>
     </td></tr>
@@ -1352,9 +1352,9 @@ function buzziestSection() {
     if (!total) return { bg: '#374151', text: '#9ca3af' };
     const pct = pos / total;
     if (pct <= 0.1) return { bg: '#f59e0b', text: '#1f2937' };
-    if (pct <= 0.2) return { bg: '#f97316', text: '#ffffff' };
-    if (pct <= 0.4) return { bg: '#10b981', text: '#ffffff' };
-    if (pct <= 0.6) return { bg: '#3b82f6', text: '#ffffff' };
+    if (pct <= 0.2) return { bg: '#f97316', text: '#fff' };
+    if (pct <= 0.4) return { bg: '#10b981', text: '#fff' };
+    if (pct <= 0.6) return { bg: '#3b82f6', text: '#fff' };
     return { bg: '#475569', text: '#cbd5e1' };
   }
   function parseRank(r) {
@@ -1438,7 +1438,7 @@ function buzziestSection() {
     return `<tr>
       <td valign="middle" width="56" style="padding:6px 10px 6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">${thumb(c.show, 40)}</td>
       <td valign="middle" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
-        <div style="font-size:14px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(c.show, c.show.title)}</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.25;">${showLink(c.show, c.show.title)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:2px;">${sentP}% positive · ${ment} mentions</div>
       </td>
       ${rc && c.rank ? `<td valign="middle" width="60" align="center" style="padding:6px 0;${!isLast?'border-bottom:1px solid rgba(255,255,255,0.05);':''}">
@@ -1453,7 +1453,7 @@ function buzziestSection() {
   const heroRow = `<tr>
       <td valign="middle" width="60" style="padding:10px 10px 10px 0;">${thumb(top.show, 48)}</td>
       <td valign="middle" style="padding:10px 0;">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(top.show, top.show.title)} ${marketPill(top.show.category)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(top.show, top.show.title)} ${marketPill(top.show.category)}</div>
         <div style="font-size:11px;color:#9ca3af;margin-top:3px;">${top.rank ? `in <span style="color:#d1d5db;font-weight:600;">${top.rank.market}</span> social buzz` : display.sub}</div>
       </td>
       ${rankColors && top.rank ? `<td valign="middle" width="60" align="center" style="padding:10px 0;">
@@ -1464,7 +1464,7 @@ function buzziestSection() {
         <div style="width:40px;height:40px;border-radius:8px;background:${display.color}22;text-align:center;line-height:40px;font-size:20px;">${display.emoji}</div>
       </td>`}
     </tr>`;
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:10px 16px 4px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${heroRow}</table>
       ${sentBar}
@@ -1513,7 +1513,7 @@ function seasonStandingFor(openedShow) {
         <img src="${getImage(x.s) || ''}" alt="${x.s.title}" width="44" height="44" style="display:block;width:44px;height:44px;object-fit:cover;border-radius:8px;background:#2a2a38;${isHighlight ? 'box-shadow:0 0 0 2px #d4a574;' : ''}">
       </td>
       <td valign="middle" style="padding:10px 0;${!isLast ? 'border-bottom:1px solid rgba(255,255,255,0.05);' : ''}${rowBg}">
-        <div style="font-size:14px;font-weight:${isHighlight ? '700' : '600'};color:${isHighlight ? '#ffffff' : '#f3f4f6'};line-height:1.3;">${showLink(x.s, x.s.title)}</div>
+        <div style="font-size:14px;font-weight:${isHighlight ? '700' : '600'};color:${isHighlight ? '#fff' : '#f3f4f6'};line-height:1.3;">${showLink(x.s, x.s.title)}</div>
         ${isHighlight ? '<div style="display:inline-block;margin-top:4px;padding:2px 7px;border-radius:999px;background:#d4a574;color:#0f0f14;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;">Just opened</div>' : ''}
         <div style="font-size:11px;color:#9ca3af;margin-top:${isHighlight ? '4' : '2'}px;">Opened ${fmt(x.s.openingDate)} · ${x.agg.count} reviews</div>
       </td>
@@ -1522,7 +1522,7 @@ function seasonStandingFor(openedShow) {
       </td>
     </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 4px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -1546,7 +1546,7 @@ function londonSection() {
     return `<tr>
       <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(x.s, 48)}</td>
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
         <div style="font-size:10px;color:${marketColor};font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">${market}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:4px;">Opened ${fmt(x.s.openingDate)}</div>
       </td>
@@ -1584,7 +1584,7 @@ function operaOpeningsSection() {
     return `<tr>
       <td valign="middle" width="60" style="padding:${i===0?'14':'10'}px 0 ${isLast?'14':'10'}px 16px;">${thumb(x.s, 48)}</td>
       <td valign="middle" style="padding:${i===0?'14':'10'}px 8px ${isLast?'14':'10'}px 12px;">
-        <div style="font-size:15px;font-weight:700;color:#ffffff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.25;">${showLink(x.s, x.s.title)}</div>
         <div style="font-size:10px;color:${marketColor};font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-top:3px;">${venueLabel}</div>
         <div style="font-size:12px;color:#9ca3af;margin-top:4px;">Opened ${fmt(x.s.openingDate)}</div>
       </td>
@@ -1640,7 +1640,7 @@ function mostReadSection(climberList) {
     <td valign="middle" width="52" style="padding:7px 10px 7px 0;${border}">${thumb(it.show, 36)}</td>
     <td valign="middle" style="padding:7px 0;${border}">
       <a href="${SITE}/show/${it.slug}" style="text-decoration:none;display:block;">
-        <div style="font-size:14px;font-weight:700;color:#ffffff;line-height:1.3;">${it.title} ${marketPill(it.category)}</div>
+        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">${it.title} ${marketPill(it.category)}</div>
         <div style="font-size:11px;color:#22c55e;margin-top:2px;font-weight:600;">${fmtGrowth(it.growth)}</div>
       </a>
     </td>
@@ -1649,7 +1649,7 @@ function mostReadSection(climberList) {
     </td>
   </tr>`;
   }).join('');
-  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);">
+  const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
@@ -1902,6 +1902,18 @@ const html = `<!DOCTYPE html>
   @media (prefers-color-scheme: dark) {
     body, html { background-color:#0f0f14 !important; }
   }
+
+  /* High-frequency repeated patterns. Pulled out of inline styles to keep
+     total HTML under Gmail's ~102KB clip threshold (full-message MIME, not
+     raw HTML). Background + color stay inline so they survive Outlook 2007+
+     stripping <style> blocks; structural CSS lives here. See feedback note
+     on Gmail clipping in newsletter-drafts. */
+  .mp{display:inline-block;padding:1px 7px;border-radius:999px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px}
+  .gp{display:inline-block;padding:2px 7px;border-radius:999px;font-weight:600;font-size:11px;letter-spacing:.04em;margin-right:4px}
+  .lnk{color:inherit;text-decoration:none}
+  .tdec{text-decoration:none;display:inline-block}
+  .cardbg{background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,.05)}
+  .showttl{margin:0;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.01em}
 </style>
 </head>
 <!-- The empty <u></u> immediately before <body> is the "u-tag wrapper trick":
@@ -1917,7 +1929,7 @@ const html = `<!DOCTYPE html>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#0f0f14" class="gmail-dark-bg"><tr><td align="center" bgcolor="#0f0f14" style="padding:24px 16px;background-color:#0f0f14;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px;">
 <tr><td align="left" style="padding:0 4px 8px;">
-  <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.02em;">Broadway</span><span style="font-size:22px;font-weight:700;background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
+  <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;display:inline-block;"><span style="font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em;">Broadway</span><span style="font-size:22px;font-weight:700;background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;letter-spacing:-0.02em;">Scorecard</span><span style="font-size:9px;color:#6b7280;font-weight:400;vertical-align:super;margin-left:1px;">™</span></a>
 </td></tr>
 <tr><td style="padding:0 4px 8px;">
   <div style="font-size:13px;color:#9ca3af;">Weekly Round-up · ${fmt(weekStartStr)} – ${fmt(weekEndStr)}, ${yearForFooter}</div>
@@ -1929,7 +1941,7 @@ ${sectionOrder.join('')}
 <tr><td align="center" style="padding:40px 4px 8px;">
   <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;">
     <div style="font-size:18px;font-weight:700;">
-      <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;"><span style="color:#ffffff;">Broadway</span><span style="background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;">Scorecard</span><span style="font-size:8px;color:#6b7280;font-weight:400;vertical-align:super;">™</span></a>
+      <a href="https://broadwayscorecard.com" style="text-decoration:none;color:inherit;"><span style="color:#fff;">Broadway</span><span style="background:linear-gradient(135deg,#d4a574 0%,#b8956a 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:#d4a574;">Scorecard</span><span style="font-size:8px;color:#6b7280;font-weight:400;vertical-align:super;">™</span></a>
     </div>
     <div style="font-size:13px;color:#9ca3af;margin-top:10px;">Every show. Every review. One score.</div>
     <div style="font-size:11px;color:#6b7280;margin-top:18px;">
