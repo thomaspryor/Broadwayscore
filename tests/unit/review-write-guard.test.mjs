@@ -228,6 +228,32 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
     }
   });
 
+  test('self-heals dangling duplicateOf when sibling file no longer exists', () => {
+    // The sibling-missing case: collect-review-texts cleanup deletes
+    // *--unknown.json junk files, leaving any review that pointed at one
+    // with a dangling duplicateOf. CI gate audit-duplicate-of-url-mismatch.js
+    // catches this; the write-guard must self-heal so it doesn't accumulate
+    // until the next manual --fix run.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dangling-dupe-'));
+    try {
+      // No sibling file is written — we point at one that doesn't exist.
+      const ourPath = path.join(dir, 'british-theatre--susan-novak.json');
+      safeWriteReview(ourPath, {
+        url: 'https://www.britishtheatre.com/posts/lyn-gardner-s-weekly-theatre-picks-beetlejuice-high-society-and-the-cherry-orcha',
+        criticName: 'Susan Novak',
+        duplicateOf: 'british-theatre--unknown.json',
+        duplicateReason: 'url-collision-detected-at-write',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      assert.equal(written.duplicateOf, null);
+      assert.equal(written.duplicateReason, null);
+      assert.match(written.duplicateClearReason || '', /sibling .* no longer exists/);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
   test('preserves duplicateOf when sibling URL still matches ours', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'real-dupe-'));
     try {

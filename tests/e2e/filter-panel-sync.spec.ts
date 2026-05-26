@@ -53,23 +53,32 @@ const PAGES: PageConfig[] = [
  * See memory/feedback_playwright_evaluate_click_hydration.md.
  */
 async function clickButton(page: Page, label: string, scope: 'inline' | 'panel') {
-  const handle = await page.waitForFunction(
-    ({ label, scope }) => {
-      const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
-      const match = btns.find((b) => {
-        if ((b.textContent || '').trim() !== label) return false;
-        const inDialog = !!b.closest('[role="dialog"]');
-        return scope === 'panel' ? inDialog : !inDialog;
-      });
-      return match ?? null;
-    },
-    { label, scope },
-    { timeout: 5000 },
-  );
-  const element = handle.asElement();
-  if (!element) return false;
-  await element.click();
-  return true;
+  // Contract preserved from the pre-2026-05-26 evaluate-based impl: returns
+  // false (does not throw) when no matching button exists. Callers rely on
+  // this — e.g. line 115 calls with 'Open filters' which uses aria-label,
+  // not textContent, expects false, and falls back to a direct selector.
+  try {
+    const handle = await page.waitForFunction(
+      ({ label, scope }) => {
+        const btns = Array.from(document.querySelectorAll('button')) as HTMLButtonElement[];
+        const match = btns.find((b) => {
+          if ((b.textContent || '').trim() !== label) return false;
+          const inDialog = !!b.closest('[role="dialog"]');
+          return scope === 'panel' ? inDialog : !inDialog;
+        });
+        return match ?? null;
+      },
+      { label, scope },
+      { timeout: 5000 },
+    );
+    const element = handle.asElement();
+    if (!element) return false;
+    await element.click();
+    return true;
+  } catch (err) {
+    if ((err as Error)?.name === 'TimeoutError') return false;
+    throw err;
+  }
 }
 
 async function readPanelState(page: Page) {
