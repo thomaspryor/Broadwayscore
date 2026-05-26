@@ -399,7 +399,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <h1 className="animate-fade-up mt-4" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
             <span className="block text-[52px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
           </h1>
-          <p className="animate-fade-up mt-3 text-[15px] leading-snug text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Pick Tony winners across <strong className="text-gray-200 font-semibold">4 rounds</strong>. Compete against <strong className="text-gray-200 font-semibold">top critics</strong> and the <strong className="text-gray-200 font-semibold">CriticScore algorithm</strong>.</p>
+          <p className="animate-fade-up mt-3 text-[15px] leading-snug text-gray-400 max-w-[360px]" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>Complete <strong className="text-gray-200 font-semibold">The Big Four</strong> to enter the prize draw. Do all 4 rounds for your best shot at beating the critics.</p>
           {!countdownExpired && (
             <div className="animate-fade-up mt-4 flex flex-col items-center gap-1.5" style={{ animationDelay: '0.75s', animationFillMode: 'both' }}>
               <div className="flex items-center justify-center gap-5">
@@ -415,7 +415,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           )}
           <div className="animate-fade-up mt-3 flex flex-col items-center gap-1" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-xs font-semibold whitespace-nowrap">
-              Beat a critic &mdash; win a <strong>$200 TodayTix gift card</strong>
+              Complete Round 1 to enter &mdash; <strong>$200 TodayTix prize draw</strong>
             </div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
@@ -661,6 +661,11 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <p className="text-gray-400 text-base mb-3">
             You picked all {completedCats.length} categories in {tierJustCompleted?.name}.
           </p>
+          {currentTierIdx === 0 && (
+            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-semibold mb-3">
+              🎟️ You&apos;re now eligible for the prize draw!
+            </div>
+          )}
           <div className="flex justify-center gap-2 mb-8">
             {data.tiers.map((t, i) => (
               <div key={t.key} className={`h-2.5 w-8 rounded-full transition-all ${i <= currentTierIdx ? 'bg-[#ff1368]' : 'bg-surface-overlay'}`} />
@@ -677,7 +682,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                 <span className="block text-xs font-medium opacity-80 mt-0.5">Round {tierNumber + 1} of {data.tiers.length}</span>
               </button>
               <button onClick={() => goToScreen('results')} className="w-full py-3.5 rounded-[14px] text-sm font-semibold border border-white/10 text-gray-400 hover:border-brand hover:text-brand transition-all">
-                Save &amp; Share My Ballot
+                {currentTierIdx === 0 ? 'Submit & Enter Prize Draw' : 'Save & Share My Ballot'}
               </button>
             </>
           ) : (

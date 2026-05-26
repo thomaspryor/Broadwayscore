@@ -35,6 +35,7 @@ import {
   bestMusicalFeasibilityFactor,
   precursorSweepConversionScore,
   castActingNomsScore,
+  belowTheLineNomsScore,
   type TonyCategoryKey,
 } from '../src/lib/data-tony-predictions';
 
@@ -80,7 +81,7 @@ type Recipe = { critic: number; audience: number; awards: number };
 // Mirror of src/lib/data-tony-predictions.ts TONY_RECIPES (Tier 1). Update
 // here when the shipped recipes change — used for the in-sample diagnostic.
 const SHIPPED_RECIPES: Record<TonyCategoryKey, Recipe> = {
-  'best-musical': { critic: 0.6, audience: 0.2, awards: 0.2 },
+  'best-musical': { critic: 0.45, audience: 0.45, awards: 0.10 },
   'best-play': { critic: 0, audience: 0, awards: 1.0 },
   'best-revival-musical': { critic: 0.00, audience: 0.95, awards: 0.05 },
   'best-revival-play': { critic: 0.2, audience: 0.6, awards: 0.2 },
@@ -116,6 +117,7 @@ interface NomEntry {
   audience: number | null;
   awards: number;          // baseline category-aware awards score (production formula)
   castNomsScore: number;   // 0-100 cast acting Tony noms (all historical seasons have noms data)
+  belowLineScore: number;  // 0-100 below-the-line Tony noms (design/craft/score/etc.)
   // sweepConvScore is computed per-fold (depends on held-season exclusion) and
   // is attached at fold time, not at fixture-load time. Stored as optional so
   // the same NomEntry can be reused across folds.
@@ -128,17 +130,19 @@ interface AwardsConfig {
   baseline: number;   // current categoryAwardsScore (existing behavior)
   sweepConv: number;  // precursorSweepConversionScore (LOSO-safe per fold)
   castNoms: number;   // castActingNomsScore (count of acting Tony noms, normalized)
+  belowLine: number;  // belowTheLineNomsScore (design/craft/score Tony noms, normalized)
 }
 
-const SHIPPED_AWARDS_CONFIG: AwardsConfig = { baseline: 1, sweepConv: 0, castNoms: 0 };
+const SHIPPED_AWARDS_CONFIG: AwardsConfig = { baseline: 1, sweepConv: 0, castNoms: 0, belowLine: 0 };
 
 function blendAwards(n: NomEntry, cfg: AwardsConfig): number {
-  const total = cfg.baseline + cfg.sweepConv + cfg.castNoms;
+  const total = cfg.baseline + cfg.sweepConv + cfg.castNoms + cfg.belowLine;
   if (total === 0) return 0;
   const baseline = (cfg.baseline / total) * n.awards;
   const sweep = (cfg.sweepConv / total) * (n.sweepConvScore ?? 0);
   const cast = (cfg.castNoms / total) * n.castNomsScore;
-  return baseline + sweep + cast;
+  const below = (cfg.belowLine / total) * n.belowLineScore;
+  return baseline + sweep + cast + below;
 }
 
 interface SeasonFixture {
@@ -175,6 +179,7 @@ function loadFixtures(catKey: TonyCategoryKey): SeasonFixture[] {
         audience: computeTonyAudienceGrade(show.id),
         awards: categoryAwardsScore(show.id, catKey),
         castNomsScore: cast ?? 0,
+        belowLineScore: belowTheLineNomsScore(show.id, catKey),
       });
     }
     // Only fold seasons where the winner is actually in the nominee fixture
@@ -662,12 +667,15 @@ function runParityCheck(perCat: Map<TonyCategoryKey, Config>): void {
     for (const s of cat.shows) {
       const show = eligible.find((e) => e.slug === s.slug);
       if (!show) continue;
+      const cast = castActingNomsScore(show.id, currentSeason);
       nominees.push({
         showId: show.id,
         tags: show.tags ?? [],
         critic: show.compositeScore,
         audience: computeTonyAudienceGrade(show.id),
         awards: categoryAwardsScore(show.id, catKey),
+        castNomsScore: cast ?? 0,
+        belowLineScore: belowTheLineNomsScore(show.id, catKey),
       });
     }
 
@@ -738,17 +746,19 @@ function runRefitAll(perCat: Map<TonyCategoryKey, Config>): void {
 // they should be blended in categoryAwardsScore.
 async function runAwardsSweep(): Promise<void> {
   const VARIANTS: Array<{ name: string; cfg: AwardsConfig }> = [
-    { name: 'shipped (baseline only)',     cfg: { baseline: 1.0, sweepConv: 0.0, castNoms: 0.0 } },
-    { name: 'pure sweepConv',              cfg: { baseline: 0.0, sweepConv: 1.0, castNoms: 0.0 } },
-    { name: 'pure castNoms',               cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 1.0 } },
-    { name: 'baseline+sweepConv 50/50',    cfg: { baseline: 0.5, sweepConv: 0.5, castNoms: 0.0 } },
-    { name: 'baseline+sweepConv 70/30',    cfg: { baseline: 0.7, sweepConv: 0.3, castNoms: 0.0 } },
-    { name: 'baseline+sweepConv 30/70',    cfg: { baseline: 0.3, sweepConv: 0.7, castNoms: 0.0 } },
-    { name: 'baseline+castNoms 70/30',     cfg: { baseline: 0.7, sweepConv: 0.0, castNoms: 0.3 } },
-    { name: 'baseline+castNoms 50/50',     cfg: { baseline: 0.5, sweepConv: 0.0, castNoms: 0.5 } },
-    { name: 'sweepConv+castNoms 50/50',    cfg: { baseline: 0.0, sweepConv: 0.5, castNoms: 0.5 } },
-    { name: 'all three 1/3 each',          cfg: { baseline: 1/3, sweepConv: 1/3, castNoms: 1/3 } },
-    { name: 'baseline+sweepConv+castNoms 50/30/20', cfg: { baseline: 0.5, sweepConv: 0.3, castNoms: 0.2 } },
+    { name: 'shipped (baseline only)',     cfg: { baseline: 1.0, sweepConv: 0.0, castNoms: 0.0, belowLine: 0.0 } },
+    { name: 'pure castNoms',               cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 1.0, belowLine: 0.0 } },
+    { name: 'pure belowLine',              cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 0.0, belowLine: 1.0 } },
+    { name: 'pure sweepConv',              cfg: { baseline: 0.0, sweepConv: 1.0, castNoms: 0.0, belowLine: 0.0 } },
+    { name: 'castNoms+belowLine 50/50',    cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 0.5, belowLine: 0.5 } },
+    { name: 'castNoms+belowLine 70/30',    cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 0.7, belowLine: 0.3 } },
+    { name: 'castNoms+belowLine 30/70',    cfg: { baseline: 0.0, sweepConv: 0.0, castNoms: 0.3, belowLine: 0.7 } },
+    { name: 'baseline+castNoms 70/30',     cfg: { baseline: 0.7, sweepConv: 0.0, castNoms: 0.3, belowLine: 0.0 } },
+    { name: 'baseline+castNoms 50/50',     cfg: { baseline: 0.5, sweepConv: 0.0, castNoms: 0.5, belowLine: 0.0 } },
+    { name: 'baseline+belowLine 70/30',    cfg: { baseline: 0.7, sweepConv: 0.0, castNoms: 0.0, belowLine: 0.3 } },
+    { name: 'baseline+belowLine 50/50',    cfg: { baseline: 0.5, sweepConv: 0.0, castNoms: 0.0, belowLine: 0.5 } },
+    { name: 'baseline+cast+below 50/25/25', cfg: { baseline: 0.5, sweepConv: 0.0, castNoms: 0.25, belowLine: 0.25 } },
+    { name: 'cast+below+baseline 33/33/33', cfg: { baseline: 1/3, sweepConv: 0.0, castNoms: 1/3, belowLine: 1/3 } },
   ];
 
   console.log('========================================================');

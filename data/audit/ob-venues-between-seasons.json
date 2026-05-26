@@ -1,0 +1,10 @@
+{
+  "_doc": "Per-venue between-seasons overrides for smoke-ob-discovery.js + anomaly-gate. Set expectedMinShows:0 when a venue's season-list page is genuinely empty (between productions, season transition). Add nextSeasonStart so admin reviews these periodically. Without an entry here, the smoke script asserts >=1 candidate per venue.",
+  "_example": {
+    "MCC Theater": {
+      "expectedMinShows": 0,
+      "nextSeasonStart": "2026-09-01",
+      "reason": "MCC sometimes returns stripped HTML between scheduled productions"
+    }
+  }
+}

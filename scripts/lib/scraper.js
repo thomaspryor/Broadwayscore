@@ -368,8 +368,33 @@ async function fetchWithPlaywright(url, options = {}) {
     }
 
     const page = context ? await context.newPage() : await playwright.newPage();
-    const waitUntil = options.fast ? 'domcontentloaded' : 'networkidle';
+    // When caller asks us to wait for a specific selector, use
+    // domcontentloaded (not networkidle) — pages that need selector-waiting
+    // typically have ongoing analytics/ad XHRs that never let networkidle
+    // settle (Signature Theatre being the canonical example — networkidle
+    // times out at 45s; domcontentloaded + waitForSelector('.type-event')
+    // returns in ~3s).
+    const waitUntil = options.playwrightWaitForSelector
+      ? 'domcontentloaded'
+      : (options.fast ? 'domcontentloaded' : 'networkidle');
     await page.goto(url, { waitUntil, timeout: 30000 });
+    // Optional: wait for a specific selector to appear before reading content.
+    // Required when networkidle times out (e.g. Signature Theatre's
+    // /productions/ — see scripts/lib/venue-listing-discover.js for the
+    // venue that needs this). If the selector never appears within 15s,
+    // log a warning and proceed with whatever rendered — partial content
+    // is still useful for selector-tolerant parsers.
+    if (options.playwrightWaitForSelector) {
+      try {
+        await page.waitForSelector(options.playwrightWaitForSelector, { timeout: 15000 });
+      } catch (e) {
+        // Only swallow TimeoutError — real Playwright failures (Target closed,
+        // navigation crash, invalid selector) bubble up so the outer catch
+        // can fall back to Bright Data / ScrapingBee / last-resort path.
+        if (e?.name !== 'TimeoutError') throw e;
+        console.warn(`  ⚠️  Playwright waitForSelector "${options.playwrightWaitForSelector}" timed out at ${url} — proceeding with partial content`);
+      }
+    }
     const content = await page.content();
     await page.close();
     if (context) {
@@ -466,7 +491,10 @@ async function fetchPage(url, options = {}) {
     } else {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
-      const raw = await fetchWithPlaywright(url, { fast: isPublicSite });
+      const raw = await fetchWithPlaywright(url, {
+        fast: isPublicSite,
+        playwrightWaitForSelector: options.playwrightWaitForSelector,
+      });
       if (raw) {
         const checked = _checkAndReturn(raw, 'Playwright');
         if (checked) return checked;
@@ -510,6 +538,9 @@ async function fetchPage(url, options = {}) {
 
   // Last resort: Playwright (only if not already tried above)
   if (!preferPlaywright && !isPublicSite && !url.includes('broadwayworld.com') && !skips.has('playwright')) {
+    // (Last-resort Playwright path. playwrightWaitForSelector pass-through:
+    // only needed for caller-explicit Playwright via preferPlaywright above;
+    // this branch is "everything else failed" fallback, no specific selector.)
     console.log('  → Trying Playwright (last resort)...');
     const raw = await fetchWithPlaywright(url);
     if (raw) {

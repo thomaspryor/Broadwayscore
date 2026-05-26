@@ -32,6 +32,13 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
+const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
+const {
+  OB_VENUE_CONFIGS,
+  scrapeVenueListing,
+  writeStagingCandidates,
+} = require('./lib/venue-listing-discover');
+const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_FILE = path.join(__dirname, '..', 'data', 'new-shows-pending.json');
@@ -71,6 +78,17 @@ const NON_THEATER_PATTERNS = [
   'game show', 'gameshow', 'punishment game', // game shows (BATSU etc.)
   'jazz at lincoln center', // jazz concerts, not theater
   'convention', 'festival of', // festivals/conventions (Breakin' Convention etc.)
+  // Non-profit OB venue page noise: galas, fundraisers, readings, education
+  // programs. Use multi-word phrases only — a plain 'gala' substring
+  // matches "Via Galactica" (1972 Broadway show) via " gala" → " gala"-ctica.
+  // Patterns added when wiring Atlantic/Vineyard/Signature/MCC venue pages —
+  // their season pages list these alongside mainstage shows.
+  'spring gala', 'annual gala', 'gala benefit', 'gala fundraiser',
+  'benefit reading', 'benefit performance', 'annual benefit',
+  'reading series', 'staged reading',
+  'fundraiser', 'fundraising',
+  'donor event', 'donor reception',
+  'education program', 'student showcase',
 ];
 
 // West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
@@ -259,6 +277,64 @@ async function fetchShowsFromTodayTix() {
 
   console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway-tagged, ${showsList.length} unique`);
   return showsList;
+}
+
+/**
+ * Off-Broadway discovery via Playbill's "Schedule of Upcoming Off-Broadway
+ * Shows" article. TodayTix doesn't list non-profit subscription houses
+ * (Atlantic, Vineyard, MCC); Playbill does.
+ *
+ * Each Playbill entry is mapped into a candidate object that synthesizes
+ * the TodayTix-shaped fields the existing gate predicates read
+ * (displayName, subcategories, venue.name, description). This lets
+ * isNonTheaterContent() and isOneNightShow() apply unchanged — no
+ * separate gate logic, no risk of new sources silently bypassing the
+ * exclusion rules.
+ */
+async function fetchShowsFromPlaybillOB() {
+  console.log('Fetching Off-Broadway shows from Playbill schedule article...');
+  const { entries, html } = await scrapePlaybillOBData();
+  checkSilentRot({ entries, html });
+  if (entries.length === 0) {
+    console.log('Playbill OB: 0 entries');
+    return [];
+  }
+
+  // Build gate-shape candidates (TodayTix-shape `venue: { name }`,
+  // `displayName`, `subcategories`, `description`) for filtering, then
+  // transform the survivors to discovery-pipeline shape (`venue` as
+  // string, `title` etc.) before returning.
+  const VENUE_PLACEHOLDER = 'TBA';
+  const gateShape = entries.map(e => ({
+    displayName: e.title,
+    name: e.title,
+    subcategories: [{ name: 'Off Broadway' }],
+    venue: { name: VENUE_PLACEHOLDER },
+    description: '',
+    startDate: e.firstPreview || null,
+    // carry-through for the transform:
+    _entry: e,
+  }));
+
+  const kept = gateShape.filter(c => !isNonTheaterContent(c) && !isOneNightShow(c));
+  const dropped = gateShape.length - kept.length;
+  console.log(`Playbill OB: ${gateShape.length} candidates, ${kept.length} after gates${dropped > 0 ? ` (${dropped} filtered)` : ''}`);
+
+  return kept.map(c => {
+    const e = c._entry;
+    const previewsStart = e.firstPreview || null;
+    return {
+      title: e.title,
+      venue: VENUE_PLACEHOLDER,
+      slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: e.opening || null,
+      previewsStartDate: previewsStart,
+      closingDate: null,
+      category: 'off-broadway',
+      description: '',
+      source: 'playbill-ob',
+    };
+  });
 }
 
 // TodayTix London API - location=2 for London West End
@@ -641,29 +717,50 @@ async function fetchShowsFromLondonTheatre() {
   return shows;
 }
 
-// ── OWE Venue Page Discovery ──
-// Fetches What's On pages from major Off-West End venues not covered by
-// TodayTix, OLT, Theatremonkey, or LondonTheatre.co.uk.
+// ── Venue Page Discovery ──
+// Fetches What's On / Shows pages from venues that don't list on TodayTix /
+// OLT / Theatremonkey / LondonTheatre.co.uk. Originally OWE-only; the
+// `category` field generalized this for Off-Broadway non-profit subscription
+// houses (Atlantic, Vineyard, Signature, MCC) which similarly don't list
+// on TodayTix.
+//
+// Adding a new venue: probe its show page, pick a `linkPattern` that
+// matches `/section/<slug>` for individual show URLs, set `category`
+// to 'off-west-end' or 'off-broadway'.
 
-const OWE_VENUE_PAGES = [
-  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
+const VENUE_LISTING_PAGES = [
+  // ── Off-West End ──
+  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Removed Soho Theatre, King's Head, Theatre503 — tiny OWE venues with near-zero review/aggregator
   // coverage. Shows that matter transfer to bigger houses and get picked up there.
   // Arcola: shows rendered in-page without individual links — needs Playwright (v2)
-  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true },
-  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', linkPattern: /\/whats-on\/all-shows\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Stuart King email 2026-04-27: Marylebone Theatre is the newest major OWE venue, under new
   // management and getting strong critic coverage (Stuart's Price review 2026-04-27 was the trigger).
-  { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Marylebone Theatre', url: 'https://marylebonetheatre.com/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Premier Off-West-End venues per Stuart King 2026-04-27: A-list performers, strong critic coverage.
   // Patterns probed 2026-05-01 — only static-HTML venues added here. Donmar (JS-rendered),
   // Menier (ticketing-system-only static HTML), Regent's Park Open Air (JS-rendered) need
   // Playwright-based discovery — tracked separately.
-  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true },
-  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true },
-  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true },
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+
+  // ── Off-Broadway non-profit subscription houses ──
+  // Live OB venue extraction lives in scripts/lib/venue-listing-discover.js
+  // (OB_VENUE_CONFIGS). Candidates write to data/audit/ob-venue-candidates.json
+  // and are promoted to shows.json only after cross-validation against
+  // Playbill OB / Lortel (scripts/promote-ob-venue-candidates.js, V-T6b).
+  // The link-extraction stubs that used to be here returned 0 shows because
+  // the venues are bespoke (Elementor for Atlantic, JS-rendered for
+  // Vineyard, bot-fingerprinted MCC) — see venue-listing-discover.js for the
+  // verified per-venue configs.
 ];
+
+// Backward-compat alias — old name retained for any external callers/tests.
+const OWE_VENUE_PAGES = VENUE_LISTING_PAGES.filter(v => v.category === 'off-west-end');
 
 // Patterns to exclude from venue page scraping (workshops, masterclasses, tours, etc.)
 const VENUE_PAGE_EXCLUDE_PATTERNS = [
@@ -672,18 +769,20 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'fundraiser', 'gala', 'in conversation', 'q&a', 'meet the',
 ];
 
-async function fetchShowsFromOweVenues() {
-  console.log('Fetching shows from Off-West End venue pages...');
+async function fetchShowsFromVenueListings(category) {
+  const venues = VENUE_LISTING_PAGES.filter(v => v.category === category);
+  const label = category === 'off-broadway' ? 'Off-Broadway' : 'Off-West End';
+  console.log(`Fetching shows from ${label} venue pages...`);
 
   const results = await Promise.allSettled(
-    OWE_VENUE_PAGES.map(venue => fetchSingleVenuePage(venue))
+    venues.map(venue => fetchSingleVenuePage(venue))
   );
 
   const allShows = [];
   let successCount = 0;
 
   for (let i = 0; i < results.length; i++) {
-    const venue = OWE_VENUE_PAGES[i];
+    const venue = venues[i];
     const result = results[i];
     if (result.status === 'fulfilled' && result.value.length > 0) {
       successCount++;
@@ -696,29 +795,45 @@ async function fetchShowsFromOweVenues() {
     }
   }
 
-  console.log(`OWE venue pages: ${successCount}/${OWE_VENUE_PAGES.length} venues responded, ${allShows.length} total shows`);
+  console.log(`${label} venue pages: ${successCount}/${venues.length} venues responded, ${allShows.length} total shows`);
   return allShows;
+}
+
+// Backward-compat shim for any caller still using the OWE-specific entrypoint.
+async function fetchShowsFromOweVenues() {
+  return fetchShowsFromVenueListings('off-west-end');
 }
 
 async function fetchSingleVenuePage(venue) {
   // Use fetch() instead of https.get() — CDN-protected sites TLS-fingerprint block Node's http module
   let html;
-  const resp = await fetch(venue.url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml',
-      'Accept-Language': 'en-GB,en;q=0.9',
-    },
-    redirect: 'follow',
-    signal: AbortSignal.timeout(15000),
-  });
-  if (resp.ok) {
-    html = await resp.text();
+  // Venues that need JS rendering bypass the plain fetch() entirely and go
+  // straight to Playwright via fetchPage({preferPlaywright: true}). Before
+  // this gate the venue.preferPlaywright flag was dead code — plain fetch()
+  // ran first, returned a 200 with empty/partial content, html was used as-is,
+  // and the flag never reached scraper.js.
+  if (venue.preferPlaywright) {
+    const result = await fetchPage(venue.url, { preferPlaywright: true });
+    if (!result || !result.content) throw new Error(`Playwright fetch returned empty for ${venue.url}`);
+    html = result.content;
   } else {
-    // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
-    const result = await fetchPage(venue.url);
-    if (!result.html) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
-    html = result.html;
+    const resp = await fetch(venue.url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml',
+        'Accept-Language': 'en-GB,en;q=0.9',
+      },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(15000),
+    });
+    if (resp.ok) {
+      html = await resp.text();
+    } else {
+      // Fallback to fetchPage (Bright Data / ScrapingBee proxy) for CDN-blocked sites
+      const result = await fetchPage(venue.url);
+      if (!result || !result.content) throw new Error(`HTTP ${resp.status} (proxy also failed)`);
+      html = result.content;
+    }
   }
 
   if (html.length < 1000) return [];
@@ -750,7 +865,7 @@ async function fetchSingleVenuePage(venue) {
             openingDate: null,
             previewsStartDate: item.startDate || null,
             closingDate: item.endDate === 'null' ? null : item.endDate || null,
-            category: isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end',
+            category: venue.category === 'off-broadway' ? 'off-broadway' : (isWestEndVenue(venue.name) ? 'west-end' : 'off-west-end'),
             description: (item.description || '').substring(0, 500),
           });
         }
@@ -1372,6 +1487,67 @@ async function discoverShows() {
     }
   }
   console.log('');
+
+  // Off-Broadway: Playbill OB schedule article + non-profit venue pages.
+  // Subscription houses (Atlantic, Vineyard, Signature, MCC) don't list on
+  // TodayTix; Playbill covers most of them and each venue's own season page
+  // covers the rest. Flat-pushed into discoveredShows so the existing
+  // checkForDuplicate / findSameTitleTwinIfNoOpeningDate path adjudicates
+  // dups — no custom dedup layer.
+  //
+  // Per-source candidate cap (OB_VENUE_CAP): one bad parser regression
+  // can't flood shows.json. If a single source returns >cap candidates we
+  // abort the commit (exit 1) instead of pushing garbage.
+  const OB_VENUE_CAP = 30;
+  if (includeOffBroadway) {
+    try {
+      const playbillOBShows = await fetchShowsFromPlaybillOB();
+      if (playbillOBShows.length > OB_VENUE_CAP) {
+        console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+        process.exitCode = 1;
+        return { newShows: [], count: 0 };
+      }
+      discoveredShows.push(...playbillOBShows);
+    } catch (e) {
+      console.log(`⚠️  Playbill OB schedule failed (${e.message}), continuing with other sources`);
+    }
+    // OB venue listings — fan out to scrapeVenueListing per venue, capture
+    // results to staging (NOT directly to shows.json). The promotion script
+    // (scripts/promote-ob-venue-candidates.js, V-T6b) is what eventually
+    // moves staged candidates to shows.json — gated by cross-validation
+    // against Playbill OB / Lortel within 72h. This staging gate prevents
+    // a venue-page redesign from accidentally firing premature broadcasts
+    // to real subscribers (see /plan-review v2 P0 User Impact finding).
+    try {
+      const results = await Promise.allSettled(
+        OB_VENUE_CONFIGS.map(v => scrapeVenueListing(v))
+      );
+      const all = [];
+      for (let i = 0; i < results.length; i++) {
+        const v = OB_VENUE_CONFIGS[i];
+        const r = results[i];
+        if (r.status === 'fulfilled') {
+          if (r.value.length > OB_VENUE_CAP) {
+            console.error(`::error::Venue ${v.name} returned ${r.value.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Aborting.`);
+            process.exitCode = 1;
+            return { newShows: [], count: 0 };
+          }
+          // Per-venue rolling-median anomaly gate. Fail-soft (warns + sets
+          // exitCode but discovery continues for other venues).
+          checkVenueAnomaly(v.name, r.value.length);
+          console.log(`  ${v.name}: ${r.value.length} candidates → staging`);
+          all.push(...r.value);
+        } else {
+          console.log(`  ${v.name}: failed (${r.reason?.message})`);
+        }
+      }
+      if (all.length > 0 && !dryRun) writeStagingCandidates(all);
+      else if (dryRun) console.log(`  (dry-run: would stage ${all.length} candidates)`);
+    } catch (e) {
+      console.log(`⚠️  OB venue scraping failed (${e.message}), continuing with other sources`);
+    }
+    console.log('');
+  }
 
   // West End discovery via TodayTix London API + Official London Theatre (SOLT)
   if (includeWestEnd) {
@@ -2035,12 +2211,24 @@ async function discoverShows() {
   return { newShows, count: newShows.length };
 }
 
-discoverShows()
-  .catch(e => {
-    console.error('Discovery failed:', e);
-    process.exit(1);
-  })
-  .finally(() => {
-    // Clean up scraper resources
-    cleanup().catch(console.error);
-  });
+if (require.main === module) {
+  discoverShows()
+    .catch(e => {
+      console.error('Discovery failed:', e);
+      process.exit(1);
+    })
+    .finally(() => {
+      // Clean up scraper resources
+      cleanup().catch(console.error);
+    });
+}
+
+// Exports for unit tests — keep gate predicates next to the data arrays
+// they consult so changes stay co-located.
+module.exports = {
+  isNonTheaterContent,
+  isOneNightShow,
+  EXCLUDED_TITLES,
+  NON_THEATER_PATTERNS,
+  VENUE_LISTING_PAGES,
+};
