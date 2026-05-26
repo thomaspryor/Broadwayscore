@@ -1623,7 +1623,10 @@ async function discoverShows() {
     try {
       const lookupList = broadwayNewShows.map(s => ({
         title: s.title,
-        openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : new Date().getFullYear(),
+        // 2026-05-26: was `|| new Date().getFullYear()` — a fabricated year
+        // could partially pass the IBDB year-gate against a wrong production.
+        // Better to pass undefined so lookupIBDBDates clears creativeTeam.
+        openingYear: s.openingDate ? parseInt(s.openingDate.split('-')[0]) : undefined,
         venue: s.venue
       }));
 
@@ -1665,8 +1668,12 @@ async function discoverShows() {
           show.ibdbUrl = ibdb.ibdbUrl;
         }
 
-        // Populate creative team if IBDB returned it
-        if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0) {
+        // Populate creative team only when show has none. 2026-05-26: was
+        // unconditional — could silently overwrite a manual or SERP-verified
+        // team on rediscovery. Mirror the auto-fix Step 1 "skip if non-empty"
+        // pattern.
+        if (ibdb.creativeTeam && ibdb.creativeTeam.length > 0
+            && (!show.creativeTeam || show.creativeTeam.length === 0)) {
           const { result } = splitCombinedCredits(ibdb.creativeTeam);
           show.creativeTeam = result;
         }

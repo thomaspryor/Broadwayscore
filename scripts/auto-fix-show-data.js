@@ -370,6 +370,14 @@ Return ONLY the JSON array, no other text. Example:
   // Result: LLM hallucinated "Martyna Majok (Book Writer)" for Liberation (correct:
   // Bess Wohl, Playwright) and reached production. Now ALL roles require SERP
   // confirmation; unrecognized roles are rejected rather than silently accepted.
+  // Canonical role label written into show.creativeTeam. src/lib/data-creative.ts
+  // ROLE_TO_CATEGORIES is exact-case — writing "playwright" or "Book writer"
+  // (lowercase from LLM) silently drops the entry from /playwrights pages.
+  const ROLE_CANON = {
+    director: 'Director', playwright: 'Playwright', choreographer: 'Choreographer',
+    'book writer': 'Book Writer', book: 'Book',
+    composer: 'Composer', lyricist: 'Lyricist',
+  };
   const verified = [];
   for (const member of proposed) {
     const role = String(member.role || '').toLowerCase();
@@ -383,6 +391,7 @@ Return ONLY the JSON array, no other text. Example:
       console.log(`    ❌ Unrecognized role "${member.role}" for ${member.name} — rejecting (cannot SERP-verify)`);
       continue;
     }
+    const canonRole = ROLE_CANON[role];
 
     const query = `"${show.title}" ${year} "${roleVerb} ${member.name}"`;
     console.log(`    🔍 Verifying: ${member.name} (${member.role}) via SERP...`);
@@ -400,7 +409,7 @@ Return ONLY the JSON array, no other text. Example:
         });
         if (confirmed) {
           console.log(`    ✅ SERP confirmed: ${member.name} (${member.role})`);
-          verified.push({ ...member, _source: 'serp-verified-llm' });
+          verified.push({ ...member, role: canonRole, _source: 'serp-verified-llm' });
         } else {
           console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
         }

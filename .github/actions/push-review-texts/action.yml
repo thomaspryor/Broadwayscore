@@ -104,6 +104,35 @@ runs:
             } catch (e) { /* new file or parse error — skip */ }
           }
           if (restored > 0) console.log('Protected ' + restored + ' review(s) from data loss (' + scoreSaves + ' scores saved)');
+
+          // Aggregator-score contamination strip (defense-in-depth at push time).
+          // Catches the case where a rebase or merge leaves a file in the
+          // (scoreSource ∈ AGGREGATOR_SCORE_SOURCES) ∧ (originalScore != null)
+          // state — which fails validate-data's validateAggregatorScoreContamination
+          // CI gate and turns main red. The same strip lives in
+          // scripts/lib/review-write-guard.js:263 (per-write) and
+          // scripts/rebuild-all-reviews.js:1574 (per-rebuild). Belt-and-braces here
+          // so a post-rebuild rebase/conflict-resolve can't re-introduce it.
+          const normPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/review-normalization.js')
+            : path.resolve('scripts/lib/review-normalization.js');
+          const { AGGREGATOR_SCORE_SOURCES } = require(normPath);
+          let stripped = 0;
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const data = JSON.parse(fs.readFileSync(f, 'utf8'));
+              if (data.scoreSource && AGGREGATOR_SCORE_SOURCES.has(data.scoreSource) && data.originalScore != null) {
+                data.originalScore = null;
+                data.originalScoreSource = null;
+                data.originalScoreNormalized = null;
+                fs.writeFileSync(f, JSON.stringify(data, null, 2) + '\n');
+                stripped++;
+                console.log('  Stripped contaminated originalScore: ' + f + ' (scoreSource=' + data.scoreSource + ')');
+              }
+            } catch (e) { /* parse error — skip */ }
+          }
+          if (stripped > 0) console.log('Stripped aggregator-contamination from ' + stripped + ' review(s)');
         " || true
 
         # Re-stage after protection pass
