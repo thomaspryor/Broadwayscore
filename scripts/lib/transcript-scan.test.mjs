@@ -491,14 +491,18 @@ test('visual-claim: in-flight NO-VERIFY in SAME turn as gated tool_use bypasses'
   } finally { cleanup(); }
 });
 
-test('visual-claim: in-flight scope DOES NOT see prior-turn NO-VERIFY', () => {
-  // Prior turn had NO-VERIFY, current turn does NOT — gate must fire.
+test('visual-claim: in-flight scope DOES NOT see prior-turn NO-VERIFY (separated by user msg)', () => {
+  // Prior turn had NO-VERIFY. Then user spoke. Then current turn lacks
+  // NO-VERIFY. Gate must fire — the prior NO-VERIFY is stale.
+  // /ship-check 2026-05-26 widened in-flight scope to "from last user_text
+  // to gated tool_use", so the user message marks the turn boundary.
   const { path, cleanup } = writeFixture([
     JSON.stringify({
       type: 'assistant',
       uuid: 'msg-prior',
       message: { id: 'msg-prior', content: [{ type: 'text', text: 'NO-VERIFY: prior turn excuse.' }] },
     }),
+    makeUserText('OK, now push the new thing'),
     makeAssistantMessageWithTextAndToolUse(
       'msg-current',
       'Live on production and looks correct on mobile.',
@@ -544,5 +548,59 @@ test('walkTranscript exposes messageId on events', () => {
     const toolEv = events.find(e => e.kind === 'assistant_tool_use');
     assert.equal(textEv.messageId, 'msg-X');
     assert.equal(toolEv.messageId, 'msg-X');
+  } finally { cleanup(); }
+});
+
+test('in-flight: NO-VERIFY in PRIOR ASSISTANT message (same logical turn, split records) — still bypasses', () => {
+  // CC split one logical turn across two assistant records (different
+  // message_ids) with no intervening user message. The first carries the
+  // NO-VERIFY rationale; the second carries the bash call. Codex P1 + Claude
+  // P2-3 (/ship-check 2026-05-26) flagged this as silent-fail under the
+  // original strict-messageId logic.
+  const { path, cleanup } = writeFixture([
+    makeUserText('Please push the fix.'),
+    JSON.stringify({
+      type: 'assistant',
+      uuid: 'msg-current-1',
+      message: { id: 'msg-current-1', content: [{ type: 'text', text: 'NO-VERIFY: data-only fix to a string array.' }] },
+    }),
+    JSON.stringify({
+      type: 'assistant',
+      uuid: 'msg-current-2',
+      message: {
+        id: 'msg-current-2',
+        content: [{ type: 'tool_use', name: 'Bash', input: { command: 'git push origin HEAD' }, id: 'tool_split' }],
+      },
+    }),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'tool_split' });
+    assert.equal(r.hasNoVerify, true, 'NO-VERIFY in split assistant message should still bypass');
+    assert.equal(r.scope, 'in-flight-turn');
+  } finally { cleanup(); }
+});
+
+test('in-flight: NO-VERIFY before LAST user msg does NOT bypass (stale)', () => {
+  // Assistant said NO-VERIFY two turns ago. Then user said something. Then
+  // assistant is now pushing. The NO-VERIFY is stale — different conversation.
+  const { path, cleanup } = writeFixture([
+    makeAssistantText('NO-VERIFY: stale prior turn'),
+    makeUserText('OK, now ship the other thing'),
+    JSON.stringify({
+      type: 'assistant',
+      uuid: 'msg-cur',
+      message: {
+        id: 'msg-cur',
+        content: [
+          { type: 'text', text: 'Pushing now.' },
+          { type: 'tool_use', name: 'Bash', input: { command: 'git push origin HEAD' }, id: 'tool_stale' },
+        ],
+      },
+    }),
+  ]);
+  try {
+    const r = queryVisualClaimLanguage(walkTranscript(path), { toolUseId: 'tool_stale' });
+    assert.equal(r.hasNoVerify, false, 'NO-VERIFY from before last user msg must not bypass');
+    assert.equal(r.scope, 'in-flight-turn');
   } finally { cleanup(); }
 });

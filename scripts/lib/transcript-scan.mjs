@@ -208,29 +208,46 @@ export function queryReferenceAttached(events) {
   return { attached: false };
 }
 
-// Find the assistant text block(s) belonging to a specific in-flight turn.
-// When `toolUseId` is provided, locate the tool_use event with that id and
-// scan only the text blocks that share its messageId (i.e. the SAME assistant
-// message). This is what fixes the long-standing "NO-VERIFY: in current turn
-// doesn't bypass" bug — the gate was always reading the prior turn's text.
+// Find the assistant text block(s) belonging to the in-flight turn — the
+// stretch of assistant activity that started after the most recent user
+// message and includes the gated tool_use.
+//
+// /ship-check 2026-05-26 (Codex P1, Claude P2-3) flagged the strict-messageId
+// version: when CC splits one logical turn across two assistant messages
+// (long output streamed in multiple records), the earlier message's text was
+// classified as prior-turn and missed. Result: NO-VERIFY in message 1, Bash
+// in message 2 → gate fired despite the in-flight bypass intent.
+//
+// Fix: walk forward from the LAST user_text/user attachment, collecting all
+// assistant_text events until we hit the gated tool_use. That's the logical
+// "current turn" regardless of how many message records it spans.
 //
 // When `toolUseId` is omitted or no matching turn is found, fall back to the
 // last assistant_text in the transcript (legacy behaviour).
 function findRelevantAssistantTexts(events, toolUseId) {
   if (toolUseId) {
-    // Locate the tool_use first.
-    let targetMessageId = null;
-    for (const e of events) {
+    // Locate the tool_use event index.
+    let toolUseIdx = -1;
+    for (let i = 0; i < events.length; i++) {
+      const e = events[i];
       if (e.kind === 'assistant_tool_use' && e.id === toolUseId) {
-        targetMessageId = e.messageId;
+        toolUseIdx = i;
         break;
       }
     }
-    if (targetMessageId) {
-      const turnTexts = events.filter(e =>
-        e.kind === 'assistant_text' && e.messageId === targetMessageId
-      );
-      if (turnTexts.length > 0) return { texts: turnTexts, scope: 'in-flight-turn' };
+    if (toolUseIdx >= 0) {
+      // Find the most recent user_text BEFORE the tool_use; the in-flight
+      // turn is everything between (exclusive) and the tool_use (exclusive).
+      let lastUserIdx = -1;
+      for (let i = toolUseIdx - 1; i >= 0; i--) {
+        if (events[i].kind === 'user_text' || events[i].kind === 'attachment') {
+          lastUserIdx = i;
+          break;
+        }
+      }
+      const inFlight = events.slice(lastUserIdx + 1, toolUseIdx)
+        .filter(e => e.kind === 'assistant_text');
+      if (inFlight.length > 0) return { texts: inFlight, scope: 'in-flight-turn' };
     }
   }
   // Fallback: last assistant_text in the transcript.

@@ -102,3 +102,28 @@ test('push-allowed: mix of UI and non-UI commits — only UI need entries', () =
     assert.equal(r.allowed, true);
   } finally { cleanup(); }
 });
+
+test('push-allowed: stale SHA but matching contentHash → ALLOWED (rebase/squash tolerant)', () => {
+  const { dir, cleanup } = initRepo();
+  try {
+    // Approval was recorded against a now-stale commit SHA (simulating
+    // pre-rebase). The CURRENT push has a different commit SHA but the same
+    // visual content (same contentHash).
+    const staleSha = '0000000000000000000000000000000000000000';
+    recordApproval(dir, { branch: 'feat/x', commitSha: staleSha, contentHash: 'visual-h-abc' });
+    // Make a UI commit with a different SHA but same contentHash will be passed.
+    commit(dir, 'src/components/N.tsx', '<div/>', 'feat: n');
+    const r = queryPushAllowed(dir, { currentContentHash: 'visual-h-abc' });
+    assert.equal(r.allowed, true);
+    assert.match(r.reason, /rebase\/squash-tolerant/);
+  } finally { cleanup(); }
+});
+
+test('push-allowed: non-matching contentHash + no SHA match → still blocked', () => {
+  const { dir, cleanup } = initRepo();
+  try {
+    commit(dir, 'src/components/Q.tsx', '<div/>', 'feat: q');
+    const r = queryPushAllowed(dir, { currentContentHash: 'never-recorded' });
+    assert.equal(r.allowed, false);
+  } finally { cleanup(); }
+});

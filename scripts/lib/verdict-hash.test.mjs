@@ -57,6 +57,29 @@ test('different timestamp → SAME contentHash (timestamp is metadata)', () => {
   assert.equal(computeContentHash(a), computeContentHash(b));
 });
 
+test('different branch → SAME contentHash (branch is metadata, /ship-check P0-1)', () => {
+  const a = baseVerdict();
+  const b = baseVerdict();
+  b.branch = 'feat/other-branch';
+  assert.equal(computeContentHash(a), computeContentHash(b));
+});
+
+test('per-screenshot path metadata change → SAME contentHash (only bytesSha matters)', () => {
+  const a = baseVerdict();
+  const b = baseVerdict();
+  b.screenshotsDigest[0].path = '/different-route';
+  b.screenshotsDigest[0].width = 9999;
+  // bytesSha unchanged → still the same image content
+  assert.equal(computeContentHash(a), computeContentHash(b));
+});
+
+test('per-crop selector change → DIFFERENT contentHash (selector is part of identity)', () => {
+  const a = baseVerdict();
+  const b = baseVerdict();
+  b.elementCropsDigest[0].selector = '.different-selector';
+  assert.notEqual(computeContentHash(a), computeContentHash(b));
+});
+
 test('different element geometry → DIFFERENT contentHash', () => {
   const a = baseVerdict();
   const b = baseVerdict();
