@@ -1,7 +1,7 @@
 ---
 name: visual-qa
 version: "1.0.0"
-description: "MANDATORY for any UI change before push. Sweeps localhost at 5 widths (360-1440), takes element-cropped legibility shots (full pixel resolution — NOT thumbnail), runs structural overflow probe (scrollWidth > clientWidth), and (optionally) runs two-model LLM diff review against reference designs. Writes verdict.json with verdictHash. ALWAYS run + Read every element crop at full size + share manifest with user BEFORE pushing UI changes. The pre-push hook blocks deploys without APPROVED: <verdictHash> from the user in the most recent message."
+description: "MANDATORY for any UI change before push. Sweeps localhost at 5 widths (360-1440), takes element-cropped legibility shots (full pixel resolution — NOT thumbnail), runs structural overflow probe (scrollWidth > clientWidth), and (optionally) runs two-model LLM diff review against reference designs. Writes verdict.json with contentHash. ALWAYS run + Read every element crop at full size + share manifest with user BEFORE pushing UI changes. The pre-push hook blocks deploys without APPROVED: <contentHash> from the user in the most recent message."
 allowed-tools: Bash, Read, Write
 user-invocable: true
 ---
@@ -41,6 +41,7 @@ node scripts/visual-qa.mjs \
 - `--paths` — comma-separated routes you touched. Defaults to `/`.
 - `--elements` — comma-separated CSS selectors. **PASS THIS.** Without it, the runner only takes full-page screenshots, which render as thumbnails when you Read them and silently hide clipping/overflow ("HISTORICAL ACCURA" class of bug). Element crops are tight, viewport-sized images per breakpoint that you can actually legibility-check at full pixel resolution.
 - `--refs` — comma-separated paths to reference design images the user provided. When set, both GPT-4o and Gemini 2.5 Pro diff the implementation against the reference. Both must PASS for `overallPass=true`. If the user did NOT supply a reference, omit; the runner still captures + runs overflow probe.
+- `--ref-roles` — per-reference role aligned with `--refs`. Values: `goal` (default; impl MUST match this reference) or `before` (impl MUST differ from this reference; the diff IS the user's requested change). **If the user attaches a screenshot and asks for a change away from it (e.g. "move Choreography from A tier to B tier"), the attached image is a `before` reference. ASK the user once if the role is not obvious from context; passing the wrong role will mark the requested change as a regression.**
 
 ### 3. Read every element crop at FULL RESOLUTION
 
@@ -78,10 +79,10 @@ The pre-push hook will block `git push` / `gh pr merge` / wrapped push scripts u
 
 ## What the user can say to unlock
 
-- `APPROVED: <hash>` — match the verdictHash exactly, lower-case hex, no extra characters. Pre-push hook unlocks for this verdict.
+- `APPROVED: <hash>` — match the contentHash exactly, lower-case hex, no extra characters. Pre-push hook unlocks for this verdict AND records the approval in the local ledger (`.claude/visual-qa/approvals.jsonl`) so a subsequent merge of this commit into main is auto-allowed (no re-run needed).
 - `ship immediately for: <reason>` — one-shot override. Use when user wants to skip preview entirely (hotfix, etc.). Consumed after one push; subsequent pushes require fresh approval.
 
-Otherwise the gate is firm. If you genuinely cannot run /visual-qa (cloud sandbox with no Playwright, dev server can't boot due to data issue, etc.), put `NO-VERIFY: <specific reason>` in your final message text — the Stop hook will pass. **Expect the user to ask why.**
+Otherwise the gate is firm. If you genuinely cannot run /visual-qa (cloud sandbox with no Playwright, dev server can't boot due to data issue, etc.), put `NO-VERIFY: <specific reason>` in **the same assistant message** as the `git push` Bash call — the pre-push hook scans the in-flight turn (the message containing the gated tool_use), not the prior turn. **Expect the user to ask why.** Stale NO-VERIFY from earlier turns no longer bypasses the push gate.
 
 ## Exit codes
 
