@@ -71,8 +71,10 @@ test.describe('landing page', () => {
     await expect(page.getByText(/Min/i).first()).toBeVisible();
     await expect(page.getByText(/Sec/i).first()).toBeVisible();
 
-    // Prize pill
-    await expect(page.getByText(/\$100 TodayTix/i).first()).toBeVisible();
+    // Prize pill — match any $N TodayTix mention so the test survives prize
+    // amount tweaks (2026-05-26: prize bumped from $100 to $200 in ec149566f6
+    // without updating this assertion, broke E2E across all PRs).
+    await expect(page.getByText(/\$\d+ TodayTix/i).first()).toBeVisible();
 
     // CTA button
     await expect(page.getByRole('button', { name: /Make Your Picks/i })).toBeVisible();
@@ -362,7 +364,7 @@ test.describe('rules page', () => {
 
     // Prize info is on the page
     const visibleText = await page.locator('body').innerText();
-    expect(visibleText).toMatch(/\$100|prize|TodayTix/i);
+    expect(visibleText).toMatch(/\$\d+|prize|TodayTix/i);
 
     // No rendering bugs
     expect(visibleText).not.toMatch(/\bundefined\b/);

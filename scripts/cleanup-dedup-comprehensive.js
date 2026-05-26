@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -189,7 +190,14 @@ function cleanupCriticTypos() {
         if (!fs.existsSync(cPath)) {
           console.log(`  ${showId}: ${file} → rename to ${cFile}`);
           const data = readJsonFile(dPath);
-          if (data && !DRY_RUN) { writeJsonFile(cPath, data); fs.unlinkSync(dPath); }
+          if (data && !DRY_RUN) {
+            writeJsonFile(cPath, data);
+            // Cascade-clear any sibling that points at the to-be-deleted file
+            // via duplicateOf, so the audit-duplicate-of-url-mismatch CI gate
+            // doesn't flag them as sibling-missing later.
+            cascadeClearDuplicateRefs(showDir, file);
+            fs.unlinkSync(dPath);
+          }
           total++; stats.criticTypoFixed++;
         } else {
           console.log(`  ${showId}: ${file} → merge into ${cFile}`);

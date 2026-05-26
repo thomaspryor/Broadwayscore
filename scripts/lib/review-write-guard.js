@@ -764,6 +764,18 @@ function safeUnlinkReview(filePath, options = {}) {
     return { wrote: false, skipped: 'locked', lockedSkipped: true };
   }
 
+  // Cascade-clear: any sibling in the same directory whose `duplicateOf`
+  // points at this file becomes a dangling reference once we unlink. Clear
+  // those references before the unlink so the audit-duplicate-of-url-
+  // mismatch gate doesn't flag them later. Lazy-require to avoid a circular
+  // import (cascade-clear-duplicate-refs is a leaf, but defensive here).
+  const dir = path.dirname(filePath);
+  const basename = path.basename(filePath);
+  try {
+    const { cascadeClearDuplicateRefs } = require('./cascade-clear-duplicate-refs');
+    cascadeClearDuplicateRefs(dir, basename);
+  } catch { /* best-effort */ }
+
   fs.unlinkSync(filePath);
   return { wrote: true, unlinked: true };
 }
