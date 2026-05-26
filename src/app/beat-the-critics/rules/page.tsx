@@ -13,7 +13,7 @@ export default function BeatTheCriticsRulesPage() {
       <div className="mb-8">
         <div className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Beat the Critics</div>
         <h1 className="text-2xl font-extrabold tracking-tight mb-1">Official Rules — Prize Draw</h1>
-        <p className="text-sm text-gray-500">$100 TodayTix Gift Card · Tony Awards 2026</p>
+        <p className="text-sm text-gray-500">$200 TodayTix Gift Card · Tony Awards 2026</p>
       </div>
 
       <div className="prose prose-invert prose-sm max-w-none space-y-6 text-gray-300 leading-relaxed">
@@ -37,7 +37,7 @@ export default function BeatTheCriticsRulesPage() {
 
         <section>
           <h2 className="text-sm font-bold uppercase tracking-wider text-gray-400 mb-2">4. Prize</h2>
-          <p className="text-sm">One (1) winner will receive a TodayTix gift card with an approximate retail value of $100 USD. Prize is non-transferable. No cash equivalent or substitution, except at the sole discretion of Broadway Scorecard. Any gift card terms, expiration, and conditions are governed solely by TodayTix.</p>
+          <p className="text-sm">One (1) winner will receive a TodayTix gift card with an approximate retail value of $200 USD. Prize is non-transferable. No cash equivalent or substitution, except at the sole discretion of Broadway Scorecard. Any gift card terms, expiration, and conditions are governed solely by TodayTix.</p>
         </section>
 
         <section>
