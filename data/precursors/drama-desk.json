@@ -42,6 +42,28 @@
         "date": "2026-05-25T20:17:34.982Z",
         "reason": "2026 design winners stored as person names in per-category pages; year-page Wikipedia URL (70th_Drama_Desk_Awards) not auto-scraped yet. Patched Lost Boys Scenic+Lighting wins.",
         "source": "https://en.wikipedia.org/wiki/70th_Drama_Desk_Awards"
+      },
+      {
+        "date": "2026-05-26T02:52:58.448Z",
+        "reason": "Track A: hand-patch 14 broken DD 2026 categories (Lost Boys Reddit complaint follow-up). Wikipedia 70th_Drama_Desk_Awards is truth. Per-category scrapers store winner=person + nominees flat-list; enrich adjacency picks wrong show. Year-page scraper for DD is Track B post-Tony.",
+        "source": "https://en.wikipedia.org/wiki/70th_Drama_Desk_Awards",
+        "categoriesPatched": [
+          "Outstanding Play",
+          "Outstanding Revival of a Musical",
+          "Outstanding Direction of a Musical",
+          "Outstanding Music",
+          "Outstanding Lyrics",
+          "Outstanding Book of a Musical",
+          "Outstanding Orchestrations",
+          "Outstanding Music in a Play",
+          "Outstanding Solo Performance",
+          "Outstanding Sound Design of a Play",
+          "Outstanding Projection Design",
+          "Outstanding Lead Performance in a Play",
+          "Outstanding Lead Performance in a Musical",
+          "Outstanding Featured Performance in a Musical",
+          "Outstanding Choreography"
+        ]
       }
     ]
   },
@@ -1212,7 +1234,8 @@
           "The Balusters",
           "The Porch on Windy Hill",
           "Well, I’ll Let You Go"
-        ]
+        ],
+        "winnerPersonName": "David Hornsby and Chris Hoch"
       }
     ],
     "Outstanding Revival of a Musical": [
@@ -2531,7 +2554,7 @@
       },
       {
         "year": 2026,
-        "winner": "Lear deBessonet",
+        "winner": "Ragtime",
         "nominees": [
           "Lear deBessonet",
           "Ragtime",
@@ -2540,7 +2563,8 @@
           "Mexodus",
           "Beau the Musical",
           "The Seat of Our Pants"
-        ]
+        ],
+        "winnerPersonName": "Lear deBessonet"
       }
     ],
     "Outstanding Direction of a Play": [
@@ -3749,7 +3773,7 @@
       },
       {
         "year": 2026,
-        "winner": "Christopher Gattelli",
+        "winner": "Schmigadoon!",
         "nominees": [
           "Christopher Gattelli",
           "Schmigadoon!",
@@ -3757,12 +3781,14 @@
           "Blood/Love",
           "Try/Step/Trip",
           "Cats: The Jellicle Ball",
-          "The Lost Boys"
+          "The Lost Boys",
+          "CATS: The Jellicle Ball"
         ],
         "winners": [
-          "Christopher Gattelli",
-          "Omari Wiles and Arturo Lyons"
-        ]
+          "Schmigadoon!",
+          "CATS: The Jellicle Ball"
+        ],
+        "winnerPersonName": "Christopher Gattelli"
       }
     ],
     "Outstanding Music": [
@@ -4347,7 +4373,7 @@
       },
       {
         "year": 2026,
-        "winner": "Brian Quijada and Nygel D. Robinson",
+        "winner": "Mexodus",
         "nominees": [
           "Brian Quijada and Nygel D. Robinson",
           "The Seat of Our Pants",
@@ -4355,7 +4381,8 @@
           "Beau the Musical",
           "Goddess",
           "Mexodus"
-        ]
+        ],
+        "winnerPersonName": "Brian Quijada and Nygel D. Robinson"
       }
     ],
     "Outstanding Lyrics": [
@@ -4905,7 +4932,7 @@
       },
       {
         "year": 2026,
-        "winner": "Jim Barne and Kit Buchan",
+        "winner": "Two Strangers (Carry a Cake Across New York)",
         "nominees": [
           "Jim Barne and Kit Buchan",
           "Two Strangers (Carry a Cake Across New York)",
@@ -4913,7 +4940,8 @@
           "The Seat of Our Pants",
           "Beau the Musical",
           "Mexodus"
-        ]
+        ],
+        "winnerPersonName": "Jim Barne and Kit Buchan"
       }
     ],
     "Outstanding Book of a Musical": [
@@ -5390,7 +5418,7 @@
       },
       {
         "year": 2026,
-        "winner": "Brian Quijada and Nygel D. Robinson",
+        "winner": "Mexodus",
         "nominees": [
           "Brian Quijada and Nygel D. Robinson",
           "Try/Step/Trip",
@@ -5398,7 +5426,8 @@
           "Beau the Musical",
           "Silver Manhattan",
           "Mexodus"
-        ]
+        ],
+        "winnerPersonName": "Brian Quijada and Nygel D. Robinson"
       }
     ],
     "Outstanding Orchestrations": [
@@ -5891,7 +5920,7 @@
       },
       {
         "year": 2026,
-        "winner": "David M. Lutken, Morgan Morse, Lisa Helmi Johanson and Sherry Stregack Lutken",
+        "winner": "The Porch on Windy Hill",
         "nominees": [
           "David M. Lutken, Morgan Morse, Lisa Helmi Johanson and Sherry Stregack Lutken",
           "The Fear of 13",
@@ -5899,7 +5928,8 @@
           "The Porch on Windy Hill",
           "Lights Out: Nat “King” Cole",
           "My Joy is Heavy"
-        ]
+        ],
+        "winnerPersonName": "David M. Lutken, Morgan Morse, Lisa Helmi Johanson and Sherry Stregack Lutken"
       }
     ],
     "Outstanding Lead Performance in a Musical": [
@@ -5960,7 +5990,7 @@
       },
       {
         "year": 2026,
-        "winner": "Joshua Henry",
+        "winner": "Ragtime",
         "nominees": [
           "Joshua Henry",
           "Ragtime",
@@ -5974,10 +6004,7 @@
           "Beau the Musical",
           "Two Strangers (Carry a Cake Across New York)"
         ],
-        "winners": [
-          "Joshua Henry",
-          "Caissie Levy"
-        ]
+        "winnerPersonName": "Joshua Henry"
       }
     ],
     "Outstanding Lead Performance in a Play": [
@@ -6039,7 +6066,7 @@
       },
       {
         "year": 2026,
-        "winner": "John Lithgow",
+        "winner": "Giant",
         "nominees": [
           "John Lithgow",
           "Well, I'll Let You Go",
@@ -6055,9 +6082,10 @@
           "Gruesome Playground Injuries"
         ],
         "winners": [
-          "John Lithgow",
-          "Lesley Manville"
-        ]
+          "Giant",
+          "Oedipus"
+        ],
+        "winnerPersonName": "John Lithgow"
       }
     ],
     "Outstanding Featured Performance in a Play": [
@@ -6190,10 +6218,10 @@
       },
       {
         "year": 2026,
-        "winner": "Judy Kuhn",
+        "winner": "The Baker's Wife",
         "winners": [
-          "Judy Kuhn",
-          "Ben Levi Ross"
+          "The Baker's Wife",
+          "Ragtime"
         ],
         "nominees": [
           "Judy Kuhn",
@@ -6216,7 +6244,8 @@
           "Jackson Kanawha Perry",
           "Saturday Church",
           "Jasmine Amy Rogers"
-        ]
+        ],
+        "winnerPersonName": "Judy Kuhn"
       }
     ],
     "Outstanding Music in a Play": [
@@ -6244,7 +6273,7 @@
       },
       {
         "year": 2026,
-        "winner": "John Patrick Elliot",
+        "winner": "KENREX",
         "nominees": [
           "John Patrick Elliot",
           "Kenrex",
@@ -6257,8 +6286,10 @@
           "Ro Reddick",
           "Cold War Choir Practice",
           "Darron L. West and Alexander Sovronsky",
-          "The Wild Duck"
-        ]
+          "The Wild Duck",
+          "KENREX"
+        ],
+        "winnerPersonName": "John Patrick Elliott"
       }
     ],
     "Outstanding Scenic Design of a Play": [
@@ -7649,7 +7680,7 @@
       },
       {
         "year": 2026,
-        "winner": "Tom Gibbons",
+        "winner": "Oedipus",
         "nominees": [
           "Tom Gibbons",
           "Initiative",
@@ -7658,7 +7689,8 @@
           "Weather Girl",
           "Anna Christie",
           "Kenrex"
-        ]
+        ],
+        "winnerPersonName": "Tom Gibbons"
       }
     ],
     "Outstanding Sound Design of a Musical": [
@@ -8053,14 +8085,15 @@
       },
       {
         "year": 2026,
-        "winner": "Tal Yarden",
+        "winner": "Oedipus",
         "nominees": [
           "Tal Yarden",
           "My Joy is Heavy",
           "Kyoto",
           "Mexodus",
           "Oedipus"
-        ]
+        ],
+        "winnerPersonName": "Tal Yarden"
       }
     ],
     "Outstanding Solo Performance": [
@@ -8544,7 +8577,7 @@
       },
       {
         "year": 2026,
-        "winner": "Jack Holden",
+        "winner": "KENREX",
         "nominees": [
           "Jack Holden",
           "Kenrex",
@@ -8552,8 +8585,10 @@
           "and her Children",
           "Weer",
           "Weather Girl",
-          "ta-da!"
-        ]
+          "ta-da!",
+          "KENREX"
+        ],
+        "winnerPersonName": "Jack Holden"
       }
     ],
     "Outstanding Ensemble": [
@@ -13171,6 +13206,16 @@
           "Out of Time",
           "for colored girls who have considered suicide / when the rainbow is enuf",
           "Clyde's"
+        ]
+      }
+    ],
+    "Outstanding Wig and Hair": [
+      {
+        "year": 2026,
+        "winner": "CATS: The Jellicle Ball",
+        "winnerPersonName": "Nikiya Mathis",
+        "nominees": [
+          "CATS: The Jellicle Ball"
         ]
       }
     ]
