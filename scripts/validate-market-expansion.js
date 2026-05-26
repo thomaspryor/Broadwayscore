@@ -166,10 +166,18 @@ for (const market of marketsToCheck) {
     ok(`No ${market} shows with open status and past closingDate`);
   }
 
-  // Required fields
-  const missingFields = marketShows.filter(s => !s.title || !s.category || !s.status || !s.type);
+  // Required fields. Shows with status='announced' are exempt from the `type`
+  // requirement: production type (musical/play) is often unknown until previews
+  // are dated. update-show-status.yml's discovery path adds new shows with
+  // status='announced' and no type yet; an enrichment pass fills it later.
+  // 2026-05-26: this gate spuriously failed for 15 OB shows discovered the
+  // morning of opening-night season because the discovery path doesn't yet
+  // pull production type.
+  const missingFields = marketShows.filter(
+    (s) => !s.title || !s.category || !s.status || (s.status !== 'announced' && !s.type),
+  );
   if (missingFields.length > 0) {
-    error(`${missingFields.length} ${market} shows missing required fields (title/category/status/type)`);
+    error(`${missingFields.length} ${market} shows missing required fields (title/category/status, or type once status≠announced)`);
   } else {
     ok(`All ${market} shows have required fields`);
   }
