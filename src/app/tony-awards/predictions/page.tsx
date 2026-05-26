@@ -14,6 +14,7 @@ import {
   groupIntoCategories,
   computeBlendedAccuracyStats,
   getSeasonSummary,
+  getTonyLosoStats,
   hasNominationsBeenAnnounced,
 } from '@/lib/data-tony-predictions';
 
@@ -47,6 +48,7 @@ export default function TonyPredictionsOverviewPage() {
   const allShows = getBroadwayShows();
   const seasons = getAllPredictionSeasons();
   const stats = computeBlendedAccuracyStats(allShows);
+  const losoStats = getTonyLosoStats();
 
   // Current season data — nomination-aware
   const currentEligible = getEligibleShows(allShows, currentSeason);
@@ -214,7 +216,7 @@ export default function TonyPredictionsOverviewPage() {
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
           <TrackRecord summaries={summaries} seasonCount={stats.seasonCount} />
           <p className="text-xs text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
-            <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same 11 seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation &mdash; refitting the weights on the other 10 seasons and predicting the held-out one &mdash; the model matches <span className="text-white font-semibold">88.4%</span> of past winners (38 of 43). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
+            <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same {stats.seasonCount} seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation &mdash; refitting the weights on the other {stats.seasonCount - 1} seasons and predicting the held-out one &mdash; the model matches <span className="text-white font-semibold">{losoStats.totalLoso.pct}%</span> of past winners ({losoStats.totalLoso.hits} of {losoStats.totalLoso.total}). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
           </p>
         </section>
 
