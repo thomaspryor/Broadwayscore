@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: tests scoring library on reviews.json as input fixture; no hardcoded show/critic facts.
 /**
  * Unit tests for scripts/lib/compute-critic-score.js — the SINGLE SOURCE OF TRUTH
  * for tier-weighted composite scoring in build-time scripts.

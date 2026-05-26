@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: tests preflight library logic against shows.json as input fixture; no hardcoded facts about specific shows.
 /**
  * Unit tests for scripts/lib/bulk-import-preflight.js.
  *

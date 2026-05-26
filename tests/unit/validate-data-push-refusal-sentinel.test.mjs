@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: tests validate-data.js exit-code + sentinel-file behavior using shows.json as fixture input; no factual pins.
 /**
  * validate-data.js must write /tmp/.skip-push-core-data when it exits with errors,
  * and clear it when it exits 0. This sentinel gates .github/actions/push-core-data.

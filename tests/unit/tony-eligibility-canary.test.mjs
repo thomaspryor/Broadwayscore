@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: pins the just-for-us-2023 eligible:false flag — a deliberate ineligibility marker, not a fact derivable from a precursor source.
 /**
  * Regression test for the Tony eligibility canary fix.
  *
