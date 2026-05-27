@@ -225,7 +225,7 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
         name: 'How are Tony predictions calculated on Broadway Scorecard?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `Each Tony category uses its own blend recipe tuned across ${accuracyStats.seasonCount} Tony seasons. Best Musical: 60% critic + 20% audience + 20% precursor awards. Best Play: 100% precursor awards combining Drama League/OCC/Drama Desk top-category signal with Pulitzer, NYDCC, and Tony nomination breadth. Best Revival of a Musical: 10% critic + 70% audience + 20% broad precursor signal. Best Revival of a Play: 20% critic + 60% audience + 20% Awards Score. Best Musical and Best Revival of a Musical also penalize shows without a Best Direction of a Musical Tony nomination (no winner has lacked one in 11 seasons) and jukebox musicals (no wins outside the COVID-truncated 2019-20 ceremony). Across ${accuracyStats.seasonCount} seasons the model picks the eventual winner ${trackRecordHits} of ${trackRecordCells} times (${trackRecordPct}%).`,
+          text: `Each Tony category uses its own blend recipe tuned across ${accuracyStats.seasonCount} Tony seasons. Best Musical: 45% critic + 45% audience + 10% cast acting Tony nominations count (a same-ballot voter-sentiment signal that activates after Tony nominations are announced). Best Play: 100% precursor awards combining Drama League/OCC/Drama Desk top-category signal with Pulitzer, NYDCC, and Tony nomination breadth. Best Revival of a Musical: 95% audience + 5% broad precursor signal, with weights fit by log-loss on the displayed softmax. Best Revival of a Play: 20% critic + 60% audience + 20% Awards Score. Best Musical and Best Revival of a Musical also penalize shows without a Best Direction of a Musical Tony nomination (no winner has lacked one in 11 seasons) and jukebox musicals (no wins outside the COVID-truncated 2019-20 ceremony). Across ${accuracyStats.seasonCount} seasons the model picks the eventual winner ${trackRecordHits} of ${trackRecordCells} times (${trackRecordPct}%).`,
         },
       },
       {
@@ -472,9 +472,9 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
                 correctly picks the winner {trackRecordHits} of {trackRecordCells} times ({trackRecordPct}%) across that backtest:
               </p>
               <ul className="text-sm text-gray-400 leading-relaxed mt-3 space-y-1.5 list-disc pl-5">
-                <li><span className="text-white font-medium">Best Musical:</span> 60% critic + 20% audience + 20% precursor awards (Drama League/OCC/Drama Desk top-cat plus broad ceremony signal).</li>
+                <li><span className="text-white font-medium">Best Musical:</span> 45% critic + 45% audience + 10% cast acting Tony nominations count (a same-ballot voter-sentiment signal that activates after Tony nominations are announced; pre-noms, the model falls back to the prior precursor blend).</li>
                 <li><span className="text-white font-medium">Best Play:</span> 100% precursor awards, combining DL/OCC/DD top-category signal with Pulitzer, NYDCC, and Tony nomination breadth.</li>
-                <li><span className="text-white font-medium">Best Revival of a Musical:</span> 10% critic + 70% audience + 20% broad precursor signal.</li>
+                <li><span className="text-white font-medium">Best Revival of a Musical:</span> 95% audience + 5% broad precursor signal, with weights fit by log-loss on the displayed softmax.</li>
                 <li><span className="text-white font-medium">Best Revival of a Play:</span> 20% critic + 60% audience + 20% Awards Score.</li>
               </ul>
               <p className="text-sm text-gray-400 leading-relaxed mt-3">

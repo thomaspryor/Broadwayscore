@@ -82,15 +82,32 @@ export const TONY_RECIPES: Record<string, { critic: number; audience: number; aw
   // best-musical weights changed from 0.60/0.20/0.20 to 0.45/0.45/0.10 on
   // 2026-05-26 alongside the new categoryAwardsScore() for best-musical that
   // returns cast acting Tony noms count (normalized 0-100) instead of the
-  // prior 50/50 topCat+broad precursor blend. Audit (--awards-sweep) showed
-  // cast-acting-noms lifts LOSO 9/11 → 11/11 on the historical sample (the
-  // two prior misses — Outsiders 2024 over Suffs, Dear Evan Hansen 2017 over
-  // Come From Away — were both shows with significantly more cast acting noms
-  // than our pick). All-11-season refit picks 0.45/0.45/0.10 (vs prior
-  // 0.60/0.20/0.20) for in-sample 11/11. Net total LOSO: 38/43 → 40/43 (93.0%).
-  // Parity impact on 2025-26: Schmigadoon top-1 stable but softmax compresses
-  // (~58% → ~41%) since all 4 nominees have exactly 2 acting noms; relative
-  // weighting shifts from awards toward critic+audience.
+  // prior 50/50 topCat+broad precursor blend. Audit (--awards-sweep) reported
+  // 11/11 LOSO on the historical sample with this recipe (vs 9/11 prior).
+  //
+  // Important nuance the ship-check audit surfaced: the cast-acting-noms
+  // feature ALONE does not predict winners — 4 of 11 historical seasons had
+  // a non-winner with the most acting noms (Jagged Little Pill 2019-20,
+  // Some Like It Hot 2022-23, Hell's Kitchen 2023-24, Dead Outlaw 2024-25).
+  // The 11/11 LOSO comes from the COMBINATION of cast-noms + the pre-existing
+  // bestMusicalFeasibilityFactor (×0.85 penalty for shows without a Best
+  // Direction of a Musical Tony nomination + same penalty for jukebox
+  // musicals). Hell's Kitchen 2024 illustrates: raw composite 81.89 >
+  // Outsiders 80.76, but no director nom → ×0.85 → 69.6 < Outsiders. The
+  // director-nom penalty is what closes the prior 9/11 misses; the
+  // cast-noms term contributes by providing a same-ballot voter-sentiment
+  // re-anchor that activates after Tony nominations are announced.
+  //
+  // Honest framing: cast acting noms is a NOMINATION-DAY signal, not an
+  // independent precursor. The Tony nominators and Tony voters are the same
+  // body, so this feature partly re-uses the signal it's trying to predict.
+  // Pre-Tony-nom-announcement, we fall back to the prior 50/50 topCat+broad
+  // blend so year-round predictions stay sensible.
+  //
+  // All-11-season refit picks 0.45/0.45/0.10. Net total LOSO: 38/43 → 40/43
+  // (93.0%). Parity impact on 2025-26: Schmigadoon top-1 stable but softmax
+  // compresses (~58% → ~41%) since all 4 nominees have exactly 2 acting noms
+  // (castNomsScore=50 for everyone); ranking power shifts to critic+audience.
   'best-musical':         { critic: 0.45, audience: 0.45, awards: 0.10 },
   // best-play weights changed to 0/0/1.0 on 2026-05-23 alongside the new
   // categoryAwardsScore() that combines two signals for this category:
