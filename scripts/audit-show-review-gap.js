@@ -50,6 +50,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
+const OUTLET_REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
 // REVIEW_TEXTS_DIR can be overridden via env so local runs can point at the
 // user's master ~/broadway-review-texts checkout (which is fresher than a
 // worktree's stale copy). CI's checkout-core-data action populates
@@ -57,6 +58,7 @@ const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
   || path.join(ROOT, 'data', 'review-texts');
 const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'show-review-gap.json');
+const UNKNOWN_OUTLETS_PATH = path.join(ROOT, 'data', 'audit', 'unknown-aggregator-outlets.json');
 
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -114,6 +116,36 @@ function isReviewUrl(href) {
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.shows || []);
+}
+
+// Domain → outletId map from outlet-registry.json. Used to detect aggregator-
+// listed URLs whose outlet isn't in our registry (the gay-city-news /
+// theknockturnal class — gather rejects them with "Could not resolve outlet"
+// and the review never lands). Surfacing these in data/audit/unknown-
+// aggregator-outlets.json closes the loop between gap detection and outlet
+// onboarding.
+let _knownDomainMap = null;
+function getKnownDomainMap() {
+  if (_knownDomainMap) return _knownDomainMap;
+  const map = new Map();
+  try {
+    const raw = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+    const outlets = raw.outlets || raw;
+    for (const [id, o] of Object.entries(outlets || {})) {
+      if (!o || typeof o !== 'object') continue;
+      const domains = [];
+      if (typeof o.domain === 'string') domains.push(o.domain);
+      if (Array.isArray(o.domains)) domains.push(...o.domains);
+      if (Array.isArray(o.alternateDomains)) domains.push(...o.alternateDomains);
+      for (const d of domains) {
+        if (typeof d === 'string' && d) map.set(d.replace(/^www\./, '').toLowerCase(), id);
+      }
+    }
+  } catch (e) {
+    if (verbose) console.error(`  outlet-registry load failed: ${e.message}`);
+  }
+  _knownDomainMap = map;
+  return map;
 }
 
 function loadReviews() {
@@ -263,12 +295,14 @@ async function auditShow(show) {
   result.inReviewsJson = reviewsJson.filter(r => r.showId === show.id).length;
 
   // For each aggregator-listed URL: is it covered locally?
+  const knownDomains = getKnownDomainMap();
   for (const aggUrl of aggUrls) {
     const aggHost = hostOf(aggUrl);
     if (!aggHost) continue;
+    const knownOutletId = knownDomains.get(aggHost) || null;
     const dirFiles = dirByHost.get(aggHost) || [];
     if (dirFiles.length === 0) {
-      result.missing.push({ url: aggUrl, host: aggHost });
+      result.missing.push({ url: aggUrl, host: aggHost, knownOutletId });
     } else {
       const clean = dirFiles.filter(d => classifyShowFile(d) === 'clean');
       if (clean.length === 0) {
@@ -355,12 +389,46 @@ async function dispatchGatherFor(showId) {
     results,
   };
 
+  // Roll up unknown outlet hosts: hosts that aggregator articles linked to
+  // but our outlet-registry.json doesn't recognize. These are the gather
+  // chain's blind spots — gather rejects them with "Could not resolve outlet
+  // from URL" and the review never lands. (gaycitynews.com and theknockturnal.com
+  // on 2026-05-27 — both registered after this audit surfaced them.)
+  const unknownOutletHosts = new Map();
+  for (const r of results) {
+    for (const m of r.missing) {
+      if (m.knownOutletId) continue;
+      if (!unknownOutletHosts.has(m.host)) {
+        unknownOutletHosts.set(m.host, { host: m.host, occurrences: 0, sampleUrls: [], shows: new Set() });
+      }
+      const e = unknownOutletHosts.get(m.host);
+      e.occurrences++;
+      if (e.sampleUrls.length < 3) e.sampleUrls.push(m.url);
+      e.shows.add(r.showId);
+    }
+  }
+  const unknownOutlets = [...unknownOutletHosts.values()]
+    .map(e => ({ ...e, shows: [...e.shows] }))
+    .sort((a, b) => b.occurrences - a.occurrences);
+
   if (!dryRun) {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
     fs.writeFileSync(AUDIT_PATH, JSON.stringify(audit, null, 2));
     console.log(`\nWrote audit: ${AUDIT_PATH}`);
+    fs.writeFileSync(UNKNOWN_OUTLETS_PATH, JSON.stringify({
+      generatedAt: audit.generatedAt,
+      count: unknownOutlets.length,
+      outlets: unknownOutlets,
+    }, null, 2));
+    console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${unknownOutlets.length} hosts)`);
   }
-  console.log(`Summary: ${audit.counts.withGap}/${targets.length} shows with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out`);
+  console.log(`Summary: ${audit.counts.withGap}/${targets.length} shows with gaps | ${audit.counts.totalMissing} URLs not in dir | ${audit.counts.totalFlaggedMisses} URLs in dir but flagged out | ${unknownOutlets.length} unknown outlets`);
+  if (verbose && unknownOutlets.length > 0) {
+    console.log('\nUnknown outlets (not in outlet-registry.json):');
+    for (const u of unknownOutlets) {
+      console.log(`  ${u.host} — ${u.occurrences} occurrence(s) across ${u.shows.length} show(s): ${u.sampleUrls[0]}`);
+    }
+  }
 
   if (failOnGap && audit.counts.withGap > 0) {
     for (const r of results) {
