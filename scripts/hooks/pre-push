@@ -22,9 +22,15 @@
 
 set -uo pipefail
 
-# ── 1. CLAUDE.md critical-section protection ──────────────────────────
-# Prevents concurrent sessions from overwriting each other's CLAUDE.md
-# changes. Same logic as the previous .git/hooks/pre-push.
+# Read stdin ONCE into an array — git invokes pre-push with push specs on
+# stdin and you only get to consume them once. Two separate `while read`
+# loops would silently make the second one a no-op (first attempt at this
+# hook had exactly that bug — 2026-05-26).
+PUSH_SPECS=()
+while read line; do
+  PUSH_SPECS+=("$line")
+done
+
 CRITICAL_PATTERNS=(
   "Notion Brain"
   "Test Extraction Pattern"
@@ -32,42 +38,57 @@ CRITICAL_PATTERNS=(
   "Opening Night Readiness"
 )
 
-while read local_ref local_oid remote_ref remote_oid; do
-  # Skip deletions
-  [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
-  # Skip new branches (no remote_oid to diff against)
-  [ "$remote_oid" = "0000000000000000000000000000000000000000" ] && continue
-
-  if git diff --name-only "$remote_oid..$local_oid" | grep -q "^CLAUDE.md$"; then
-    remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
-    local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
-    [ -z "$remote_content" ] && continue
-
-    for pattern in "${CRITICAL_PATTERNS[@]}"; do
-      if echo "$remote_content" | grep -q "$pattern" && \
-         ! echo "$local_content" | grep -q "$pattern"; then
-        echo ""
-        echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
-        echo ""
-        echo "  The remote CLAUDE.md contains '$pattern'"
-        echo "  but your version removes it. Concurrent session conflict?"
-        echo "  Pull, re-apply, ensure both sections are present."
-        echo ""
-        echo "  Inspect: git diff $remote_oid..$local_oid -- CLAUDE.md"
-        echo ""
-        exit 1
-      fi
-    done
-  fi
-done
-
-# ── 2. CI lint gates ──────────────────────────────────────────────────
-# Run each audit. Exit non-zero on first failure with a clear message
-# pointing the developer to the audit script's own error output (which
-# already explains the violation in detail).
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
+
+# Aggregate all changed paths across the push range, plus run the
+# CLAUDE.md guard in the same pass.
+ALL_CHANGED_FILES=""
+
+for spec in "${PUSH_SPECS[@]}"; do
+  read local_ref local_oid remote_ref remote_oid <<<"$spec"
+  # Skip deletions
+  [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
+
+  if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
+    # New branch — diff against the merge-base with origin/main if possible.
+    base=$(git merge-base "$local_oid" origin/main 2>/dev/null || true)
+    if [ -n "$base" ]; then
+      range_files=$(git diff --name-only "$base..$local_oid" 2>/dev/null || true)
+    else
+      # No upstream we can compare against — fall back to listing this commit's tree
+      range_files=$(git show --name-only --pretty=format: "$local_oid" 2>/dev/null || true)
+    fi
+  else
+    range_files=$(git diff --name-only "$remote_oid..$local_oid" 2>/dev/null || true)
+  fi
+  ALL_CHANGED_FILES="$ALL_CHANGED_FILES
+$range_files"
+
+  # CLAUDE.md guard (only meaningful when there's a remote_oid to compare).
+  if [ "$remote_oid" != "0000000000000000000000000000000000000000" ] && \
+     echo "$range_files" | grep -q "^CLAUDE.md$"; then
+    remote_content=$(git show "$remote_oid:CLAUDE.md" 2>/dev/null)
+    local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
+    if [ -n "$remote_content" ]; then
+      for pattern in "${CRITICAL_PATTERNS[@]}"; do
+        if echo "$remote_content" | grep -q "$pattern" && \
+           ! echo "$local_content" | grep -q "$pattern"; then
+          echo ""
+          echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
+          echo ""
+          echo "  The remote CLAUDE.md contains '$pattern'"
+          echo "  but your version removes it. Concurrent session conflict?"
+          echo "  Pull, re-apply, ensure both sections are present."
+          echo ""
+          echo "  Inspect: git diff $remote_oid..$local_oid -- CLAUDE.md"
+          echo ""
+          exit 1
+        fi
+      done
+    fi
+  fi
+done
 
 run_audit() {
   local label="$1"
@@ -85,37 +106,22 @@ run_audit() {
   rm -f /tmp/pre-push-audit.out
 }
 
-# Only run audits if the relevant files were changed in the push range.
-# Avoids running them on doc-only pushes / unrelated branches.
-# Determine the range we're pushing.
-local_range_files=""
-while read local_ref local_oid remote_ref remote_oid; do
-  [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
-  if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
-    range_files=$(git diff --name-only "$(git merge-base HEAD origin/main 2>/dev/null || echo HEAD)..$local_oid" 2>/dev/null || true)
-  else
-    range_files=$(git diff --name-only "$remote_oid..$local_oid" 2>/dev/null || true)
-  fi
-  local_range_files="$local_range_files
-$range_files"
-done <<EOF
-$(cat)
-EOF
-
-# If we couldn't determine the range (rare; first push, no upstream),
+# If we have no change list at all (truly first push, no upstream),
 # default to running all audits — safer than skipping.
-if [ -z "$(echo "$local_range_files" | tr -d '[:space:]')" ]; then
-  local_range_files="tests/ scripts/ .github/workflows/"
+if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
+  run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"
+  run_audit "orphan-tests" "scripts/audit-orphan-tests.js"
+  run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js"
+  exit 0
 fi
 
-# tests/unit/*.test.{mjs,ts,js} or scripts touching derived data → derived-data audit
-if echo "$local_range_files" | grep -qE "^tests/unit/.*\.(test\.mjs|test\.ts|test\.js)$|^\.github/workflows/test\.yml$"; then
+# Range-scoped: only run the audit when its target paths changed.
+if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/unit/.*\.test\.(mjs|ts|js)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests)\.js$"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"
   run_audit "orphan-tests" "scripts/audit-orphan-tests.js"
 fi
 
-# tests/e2e/*.{ts,mjs,js} → evaluate-click audit
-if echo "$local_range_files" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$"; then
+if echo "$ALL_CHANGED_FILES" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^scripts/audit-playwright-evaluate-click\.js$"; then
   run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js"
 fi
 
