@@ -932,6 +932,174 @@ function validateRoundupPageTitle(html, showTitle) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Playbill-Verdict slug helpers
+//
+// Playbill's review-roundup article URLs encode the show title in the slug,
+// but wrap it in arbitrary verb phrases:
+//   /article/reviews-what-do-the-critics-think-of-beaches-on-broadway
+//   /article/read-reviews-for-heather-christians-animal-wisdom
+//   /article/did-the-olivier-winning-kenrex-make-a-big-splash-with-new-york-critics
+// The wrapper words defeat fuzzy title matching, so the existing Pattern-3
+// fallback (slug → title-case → matchTitleToShow) silently dropped every
+// OB roundup with these patterns. The "Animal Wisdom" article was visible in
+// the May 24, 2026 category-page cache but matchTitleToShow returned NULL.
+//
+// Strategy: strip known leading verb phrases, then substring-match against
+// shows.json slugs (with year/market suffix variants). The longest match wins.
+// This handles middle-title slugs (Kenrex, Rocky Horror, Celebrity
+// Autobiography) that pure head/tail stripping can't.
+// ---------------------------------------------------------------------------
+
+const PV_HEAD_PATTERNS = [
+  /^reviews-what-(do-the|did)-critics-think-of-/,
+  /^reviews-(did|do)-(the-)?critics-(feel-at-home-on|find|think)-/,
+  /^reviews-are-out-for-/,
+  /^read-the-reviews-for-/,
+  /^read-reviews-for-/,
+  /^what-(are|do|did)-(the-)?(reviews|critics)-(think-of-|for-)?/,
+  /^did-the-olivier-winning-/,
+  /^did-(reviewers|critics)-(find-magic-in-|think-of-|find-)?/,
+  /^how-did-/,
+];
+
+const PV_TAIL_PATTERNS = [
+  /-in-londons-west-end$/,
+  /-on-broadway$/,
+  /-off-broadway$/,
+  /-at-(brooklyn-academy-of-music|met-opera|studio-seaview|linda-gross|atlantic-theater|signature(-theatre)?|new-york-theatre-workshop|classic-stage-company|second-stage|playwrights-horizons|the-public-theater|theatre-row|audible|bam)$/,
+];
+
+function _stripPvHead(slug) {
+  for (const p of PV_HEAD_PATTERNS) {
+    const next = slug.replace(p, '');
+    if (next !== slug) return next;
+  }
+  return slug;
+}
+
+function _stripPvTail(slug) {
+  let s = slug;
+  for (const p of PV_TAIL_PATTERNS) s = s.replace(p, '');
+  return s;
+}
+
+/**
+ * Clean a Playbill-Verdict article slug into a plausible show-title string.
+ * Used for the audit log entry; not the primary match path (substring-match
+ * via matchSlugToShow is more reliable for middle-title cases).
+ * @param {string} slug - raw slug like "read-reviews-for-heather-christians-animal-wisdom"
+ * @returns {string} title-cased best-guess, e.g. "Animal Wisdom" or "Heather Christians Animal Wisdom"
+ */
+function cleanSlugTitle(slug) {
+  if (!slug || typeof slug !== 'string') return '';
+  let s = slug.toLowerCase().replace(/^\/?article\//, '');
+  s = _stripPvHead(s);
+  s = _stripPvTail(s);
+  return s.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()).trim();
+}
+
+/**
+ * Match a Playbill-Verdict article URL slug to a show in shows.json by
+ * looking for the longest show slug that appears as a token-boundary substring
+ * after stripping Playbill's known head verbs.
+ *
+ * @param {string} rawSlug - article slug like "reviews-what-do-the-critics-think-of-beaches-on-broadway"
+ * @param {Object[]} shows - shows.json array
+ * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
+ */
+/**
+ * Token-boundary substring search against shows.json slugs. The cleanedSlug
+ * is the article URL slug with all aggregator-specific verb wrappers + market
+ * suffixes ALREADY stripped — this function is source-agnostic.
+ * Used by matchSlugToShow (Playbill) and matchBwwRoundupSlug (BWW).
+ */
+function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
+  if (!cleanedSlug || !shows || shows.length === 0) return null;
+  const candidates = [];
+  for (const show of shows) {
+    const fullSlug = (show.slug || show.id || '').toLowerCase();
+    if (!fullSlug) continue;
+    const variants = new Set([fullSlug]);
+    variants.add(fullSlug.replace(/-(19|20)\d{2}$/, ''));
+    variants.add(fullSlug.replace(/-off-broadway(-(19|20)\d{2})?$/, ''));
+    variants.add(fullSlug.replace(/-west-end(-(19|20)\d{2})?$/, ''));
+    variants.add(fullSlug.replace(/-broadway(-(19|20)\d{2})?$/, ''));
+    for (const v of variants) {
+      if (!v || v.length < 4) continue;
+      const idx = cleanedSlug.indexOf(v);
+      if (idx === -1) continue;
+      const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
+      const endIdx = idx + v.length;
+      const endOk = endIdx === cleanedSlug.length || cleanedSlug[endIdx] === '-';
+      if (startOk && endOk) candidates.push({ show, len: v.length, idx });
+    }
+  }
+  if (candidates.length === 0) return null;
+  // Sort by match length desc, then prefer non-closed shows (the article is
+  // likely about a current production, not a 30-year-old closed one).
+  candidates.sort((a, b) => {
+    if (b.len !== a.len) return b.len - a.len;
+    const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
+    const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
+    if (aClosed !== bClosed) return aClosed - bClosed;
+    return a.idx - b.idx;
+  });
+  return { show: candidates[0].show, confidence: 'high', via: 'slug-substring' };
+}
+
+function matchSlugToShow(rawSlug, shows) {
+  if (!rawSlug || !shows || shows.length === 0) return null;
+  let stripped = _stripPvHead(String(rawSlug).toLowerCase().replace(/^\/?article\//, ''));
+  stripped = _stripPvTail(stripped);
+  return _matchCleanedSlugAgainstShows(stripped, shows);
+}
+
+// ---------------------------------------------------------------------------
+// BroadwayWorld Review-Roundup slug helpers
+//
+// BWW roundup URLs:
+//   /article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526
+//   /article/Review-Roundup-INDIAN-PRINCESSES-Opens-at-Atlantic-Theater-Company
+//   /article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway
+//   /article/Review-Roundup-THE-PEOPLE-VERSUS-LENNY-BRUCE-Off-Broadway
+//
+// Always SHOUTY-CAPS with hyphens. Prefix `Review-Roundup-`. Tail patterns:
+// `-Opens-(Off-)?Broadway-YYYYMMDD`, `-(Off-)?Broadway`, `-Opens-at-VENUE`.
+// Lowercasing first means we can reuse the same substring-match infrastructure.
+// ---------------------------------------------------------------------------
+
+const BWW_HEAD_PATTERNS = [
+  /^review-roundup-/,
+];
+
+const BWW_TAIL_PATTERNS = [
+  /-opens-(off-)?broadway-?\d{0,8}$/,
+  /-opens-on-broadway-?\d{0,8}$/,
+  /-on-broadway-?\d{0,8}$/,
+  /-off-broadway-?\d{0,8}$/,
+  /-opens-at-.*$/,
+  /-broadway-?\d{0,8}$/,
+  /-\d{8}$/,  // bare trailing YYYYMMDD
+];
+
+/**
+ * Match a BWW Review-Roundup article URL slug to a show in shows.json.
+ * @param {string} rawSlug - either full URL or just the slug part after /article/
+ * @param {Object[]} shows - shows.json array
+ * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
+ */
+function matchBwwRoundupSlugToShow(rawSlug, shows) {
+  if (!rawSlug || !shows || shows.length === 0) return null;
+  // Accept either /article/Review-Roundup-... or just the slug
+  let s = String(rawSlug).toLowerCase()
+    .replace(/^https?:\/\/[^/]+/, '')
+    .replace(/^\/?article\//, '');
+  for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
+  for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
+  return _matchCleanedSlugAgainstShows(s, shows);
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
@@ -942,6 +1110,9 @@ module.exports = {
   titleWordsMatch,
   titleWordsMatchWithConfidence,
   validateRoundupPageTitle,
+  cleanSlugTitle,
+  matchSlugToShow,
+  matchBwwRoundupSlugToShow,
   TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };
