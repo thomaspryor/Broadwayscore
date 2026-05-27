@@ -67,6 +67,20 @@ const FIXTURES = [
   ['reviews-what-do-the-critics-think-of-heated-rivalry-the-unauthorized-musical-parody', 'heated-rivalry', 'verified live on category page 2026-05-27'],
 ];
 
+// BWW Review-Roundup slug fixtures keyed by the slug-only path (without
+// the /article/ prefix matchBwwRoundupSlugToShow strips). Includes the
+// HOLIDAY INN regression: shows with subtitled IDs (full title is
+// "Holiday Inn, The New Irving Berlin Musical") must match on pre-comma
+// title tokens [holiday, inn], not all id tokens including subtitle.
+const BWW_TITLE_FIXTURES = [
+  // HOLIDAY INN 2016 — pre-2026-05-27 matcher used id-based tokens
+  // [holiday, inn, new, irving, berlin] and rejected this show because
+  // the slug only has [holiday, inn]; fell back to closed `holiday-1995`
+  // (single token [holiday] matches everything). Caused 10 misrouted
+  // files I had to revert. Title-based tokens fix this.
+  ['Review-Roundup-HOLIDAY-INN-Opens-on-Broadway-20161006', 'holiday-inn-the-new-irving-berlin-musical-2016', 'subtitled ID — must match on pre-comma title not full id tokens'],
+];
+
 test('cleanSlugTitle strips head and tail patterns', () => {
   assert.equal(cleanSlugTitle('read-reviews-for-heather-christians-animal-wisdom'),
     'Heather Christians Animal Wisdom');
@@ -115,6 +129,26 @@ test('matchBwwRoundupSlugToShow finds the right show for BWW roundup URLs', () =
   const bugs = failures.filter(f => !f.gap);
   assert.equal(bugs.length, 0,
     `matchBwwRoundupSlugToShow returned WRONG show for ${bugs.length} slug(s)`);
+});
+
+test('matchBwwRoundupSlugToShow handles subtitled-ID shows via title tokens', () => {
+  const failures = [];
+  for (const [slug, expectedId, comment] of BWW_TITLE_FIXTURES) {
+    const result = matchBwwRoundupSlugToShow(slug, shows);
+    if (!result || result.show.id !== expectedId) {
+      failures.push({ slug, expected: expectedId, got: result ? result.show.id : 'NULL', comment });
+    }
+  }
+  if (failures.length > 0) {
+    console.log('\n=== matchBwwRoundupSlugToShow title-token failures ===');
+    for (const f of failures) {
+      console.log(`[BUG] ${f.slug}`);
+      console.log(`        expected:  ${f.expected}`);
+      console.log(`        got:       ${f.got}`);
+      if (f.comment) console.log(`        comment:   ${f.comment}`);
+    }
+  }
+  assert.equal(failures.length, 0, `${failures.length} title-token regression(s)`);
 });
 
 test('matchSlugToShow finds the right show for all 20 real fixtures', () => {

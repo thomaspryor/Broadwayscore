@@ -1018,19 +1018,55 @@ const _SLUG_STOPWORDS = new Set([
   'revival', 'tour', 'starring', 'opens', 'review', 'reviews', 'critics',
 ]);
 
+/**
+ * Distinctive tokens from a show's TITLE (not its id/slug).
+ *
+ * Why title and not id: show IDs encode the full subtitle for uniqueness
+ * (e.g. `holiday-inn-the-new-irving-berlin-musical-2016`) but slugs in
+ * aggregator articles use the common title only (e.g. `HOLIDAY-INN-...`).
+ * Pre-2026-05-27 the matcher used id-based tokens and rejected the
+ * Holiday Inn 2016 show because [new, irving, berlin] weren't in the
+ * slug — silently routing reviews to closed `holiday-1995` (single token
+ * `holiday` matches everything). Discovered 2026-05-27 after manual move.
+ *
+ * Strategy:
+ *  - Source from show.title.
+ *  - Strip after first comma or colon (subtitle separators) — keeps
+ *    "Holiday Inn" from "Holiday Inn, The New Irving Berlin Musical",
+ *    "Heated Rivalry" from "Heated Rivalry: The Unauthorized Musical
+ *    Parody". Titles without these separators (e.g. "Cabaret at the Kit
+ *    Kat Club") are used in full.
+ *  - Normalize apostrophes/punctuation, lowercase, dedupe.
+ *  - Filter out stopwords + tokens <3 chars.
+ */
+function _tokenizeTitleText(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/'/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(t => t.length >= 3 && !_SLUG_STOPWORDS.has(t));
+}
+
 function _showDistinctiveTokens(show) {
-  const slug = (show.slug || show.id || '').toLowerCase();
-  if (!slug) return [];
-  const stripped = slug
-    .replace(/-(19|20)\d{2}$/, '')
-    .replace(/-off-broadway(-(19|20)\d{2})?$/, '')
-    .replace(/-west-end(-(19|20)\d{2})?$/, '')
-    .replace(/-bway$/, '')
-    .replace(/-broadway(-(19|20)\d{2})?$/, '');
-  // Dedupe: `new-york-new-york-2023` would yield [new, york, new, york],
-  // letting that show beat single-token shows on squared-length scoring
-  // because of the repeats. Distinct token SET is what we want.
-  return [...new Set(stripped.split('-').filter(t => t.length >= 3 && !_SLUG_STOPWORDS.has(t)))];
+  const titleRaw = show.title || show.slug || show.id || '';
+  if (!titleRaw) return [];
+  // Strip subtitle (after first comma or colon). "Heated Rivalry: The
+  // Unauthorized Musical Parody" → "Heated Rivalry". "Holiday Inn, The
+  // New Irving Berlin Musical" → "Holiday Inn". Aggregator slugs almost
+  // always use the primary title.
+  const primary = String(titleRaw).split(/[,:]/)[0];
+  let tokens = [...new Set(_tokenizeTitleText(primary))];
+  // Fall back to FULL title when the comma/colon split was too aggressive
+  // — e.g. "Well, I'll Let You Go" pre-comma yields [well] which is too
+  // weak. Use the full title's tokens in that case.
+  if (tokens.length === 1 && tokens[0].length < 5) {
+    const full = [...new Set(_tokenizeTitleText(String(titleRaw)))];
+    if (full.length > tokens.length) tokens = full;
+  }
+  return tokens;
 }
 
 function _tokenAppearsInSlug(token, cleanedSlug) {
@@ -1068,9 +1104,12 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   for (const show of shows) {
     const tokens = _showDistinctiveTokens(show);
     if (tokens.length === 0) continue;
-    // Single-token shows: require the token be 5+ chars (otherwise it's
-    // noise — any 3-char token would match too many slugs).
-    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    // Single-token gate: require ≥4 char token (lowered from 5 to admit
+    // legit short-title shows like "Oliver!" / "Cabaret"). 3-char tokens
+    // (e.g. [ark] from "An Ark") would match too many slugs without a
+    // second supporting token, so they need at least a 4-char distinctive
+    // token to qualify alone.
+    if (tokens.length === 1 && tokens[0].length < 4) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;
