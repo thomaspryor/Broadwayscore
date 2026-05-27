@@ -50,6 +50,7 @@ const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json'
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const allProvisional = args.includes('--all-provisional');
+const candidatesFile = args.find(a => a.startsWith('--candidates-file='))?.split('=')[1];
 const failOnMismatch = args.includes('--fail-on-mismatch');
 const dryRun = args.includes('--dry-run');
 const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '0', 10);
@@ -100,10 +101,11 @@ function scorePlaybillUrl(url, show) {
   const titleSegment = m ? m[1] : null;
   const showSlug = shortTitleSlug(show.title);
   if (!titleSegment || !showSlug) return null;
-  // Strict equality — Playbill slug for the title portion must exactly match
-  // the show's title slug. Avoids "the-comeuppance" mistakenly matching
-  // "the-comeuppance-regional-..." while still allowing the right OB URL.
-  if (titleSegment !== showSlug) return null;
+  // Compare via canonical normalizer so "Urinetown" matches Playbill's
+  // "urinetown-the-musical" (trailing " musical" / leading "the " stripped)
+  // and accent variants align ("Les Misérables" ≡ "les-miserables").
+  const norm = (s) => normalizeTitle(s.replace(/-/g, ' ')).replace(/\s+/g, '-');
+  if (norm(titleSegment) !== norm(show.title)) return null;
 
   let s = 10; // title match earned
   const isOB = show.category === 'off-broadway';
@@ -309,18 +311,33 @@ async function validateOne(show, log) {
 }
 
 async function main() {
-  const shows = loadShows();
   let targets;
-  if (showFilter) {
+  if (candidatesFile) {
+    // Validate candidates from an external JSON file (no shows.json entry
+    // required). Used by discover-ob-historical.js to surface authoritative
+    // Playbill dates before promotion.
+    const data = JSON.parse(fs.readFileSync(candidatesFile, 'utf8'));
+    const list = Array.isArray(data) ? data : (data.candidates || []);
+    targets = list.map(c => ({
+      id: c.id || (c.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-off-broadway-pending',
+      title: c.title,
+      venue: c.venue,
+      category: 'off-broadway',
+      openingDate: c.openingDate || c.firstDateSeen || null,
+      closingDate: c.closingDate || c.lastDateSeen || null,
+    }));
+  } else if (showFilter) {
+    const shows = loadShows();
     targets = shows.filter(s => s.id === showFilter || s.slug === showFilter);
     if (!targets.length) {
       console.error(`Show not found: ${showFilter}`);
       process.exit(2);
     }
   } else if (allProvisional) {
+    const shows = loadShows();
     targets = shows.filter(isProvisional);
   } else {
-    console.error('Pass either --show=ID or --all-provisional');
+    console.error('Pass --show=ID, --all-provisional, or --candidates-file=PATH');
     process.exit(2);
   }
   if (limit > 0) targets = targets.slice(0, limit);

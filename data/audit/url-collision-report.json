@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-05-26T21:14:42.308Z",
+  "generatedAt": "2026-05-27T18:51:15.295Z",
   "summary": {
-    "total": 2,
-    "high": 1,
+    "total": 3,
+    "high": 2,
     "medium": 0,
     "low": 1
   },
   "collisions": [
+    {
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+      "normalizedUrl": "https://nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+      "candidates": [
+        {
+          "showId": "bedlams-othello-off-broadway-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": null,
+          "openingDate": "2026-05-10",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytimes"
+        },
+        {
+          "showId": "hamlet-off-broadway-2026",
+          "file": "nytimes--helen-shaw.json",
+          "publishDate": "2026-05-06",
+          "openingDate": "2026-05-04",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytimes"
+        }
+      ],
+      "suggestedWinner": "hamlet-off-broadway-2026",
+      "reason": "publishDate 2026-05-06 is 2 days from hamlet-off-broadway-2026 opening (2026-05-04)",
+      "confidence": "high"
+    },
     {
       "url": "https://culturesauce.com/2026/01/15/the-disappear-off-broadway-review/",
       "normalizedUrl": "https://culturesauce.com/2026/01/15/the-disappear-off-broadway-review",

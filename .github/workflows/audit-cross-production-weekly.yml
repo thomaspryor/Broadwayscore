@@ -40,23 +40,38 @@ jobs:
 
       - uses: ./.github/actions/setup-node
 
-      - name: Capture previous finding count
+      - name: Capture previous finding counts
         id: prev
         run: |
           if [ -f data/audit/same-title-confusion.json ]; then
-            COUNT=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
-            echo "count=$COUNT" >> $GITHUB_OUTPUT
+            CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
+            echo "cp_count=$CP" >> $GITHUB_OUTPUT
           else
-            echo "count=0" >> $GITHUB_OUTPUT
+            echo "cp_count=0" >> $GITHUB_OUTPUT
+          fi
+          if [ -f data/audit/slug-misroute-audit.json ]; then
+            SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)")
+            echo "sm_count=$SM" >> $GITHUB_OUTPUT
+          else
+            echo "sm_count=0" >> $GITHUB_OUTPUT
           fi
 
-      - name: Run audit
+      - name: Run cross-production audit
         run: node scripts/audit-cross-production.js --dry-run
+
+      - name: Run slug-routing audit
+        # Catches Class-A slug misroutes (e.g. FUN-HOME article routed to
+        # closed home-1970). Initial audit found 228 historical cases
+        # 2026-05-27. This step warns if >5 new ones appear week-over-week,
+        # signaling matcher/data drift. Read-only — never moves files.
+        run: node scripts/audit-slug-match-routing.js
+        env:
+          REVIEW_TEXTS_DIR: ${{ github.workspace }}/data/review-texts
 
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/audit/same-title-confusion.json 2>/dev/null; then
+          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json 2>/dev/null; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -71,21 +86,28 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/audit/same-title-confusion.json
-          COUNT=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)")
-          git commit -m "audit: Weekly cross-production audit ($COUNT findings) [skip ci]
+          git add data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json
+          CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
+          SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
+          git commit -m "audit: Weekly cross-production ($CP) + slug-routing ($SM) [skip ci]
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh
 
-      - name: Annotate finding delta
+      - name: Annotate finding deltas
         if: always()
         run: |
-          PREV=${{ steps.prev.outputs.count }}
-          CURR=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
-          DELTA=$((CURR - PREV))
-          if [ "$DELTA" -gt 3 ]; then
-            echo "::warning::cross-production audit: +${DELTA} new findings (${PREV} → ${CURR}). Check data/audit/same-title-confusion.json."
+          CP_PREV=${{ steps.prev.outputs.cp_count }}
+          CP_CURR=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
+          CP_DELTA=$((CP_CURR - CP_PREV))
+          if [ "$CP_DELTA" -gt 3 ]; then
+            echo "::warning::cross-production audit: +${CP_DELTA} new findings (${CP_PREV} → ${CP_CURR}). Check data/audit/same-title-confusion.json."
+          fi
+          SM_PREV=${{ steps.prev.outputs.sm_count }}
+          SM_CURR=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "0")
+          SM_DELTA=$((SM_CURR - SM_PREV))
+          if [ "$SM_DELTA" -gt 5 ]; then
+            echo "::warning::slug-routing audit: +${SM_DELTA} new misroutes (${SM_PREV} → ${SM_CURR}). Check data/audit/slug-misroute-audit.json."
           fi
 
       - name: Summary

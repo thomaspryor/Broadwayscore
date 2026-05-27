@@ -1008,44 +1008,157 @@ function cleanSlugTitle(slug) {
  * @param {Object[]} shows - shows.json array
  * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
  */
+// Tokens that appear in slugs but don't distinguish shows. Stripped from
+// each show's "distinctive token set" before token-overlap scoring so that
+// `the-balusters-on-broadway` doesn't have "broadway" as a token a slug must
+// hit, and `the-rocky-horror-show` doesn't gate on the noise word "show".
+const _SLUG_STOPWORDS = new Set([
+  'the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'for', 'to', 'by',
+  'broadway', 'off-broadway', 'west-end', 'musical', 'play', 'show',
+  'revival', 'tour', 'starring', 'opens', 'review', 'reviews', 'critics',
+]);
+
 /**
- * Token-boundary substring search against shows.json slugs. The cleanedSlug
- * is the article URL slug with all aggregator-specific verb wrappers + market
- * suffixes ALREADY stripped — this function is source-agnostic.
- * Used by matchSlugToShow (Playbill) and matchBwwRoundupSlug (BWW).
+ * Distinctive tokens from a show's TITLE (not its id/slug).
+ *
+ * Why title and not id: show IDs encode the full subtitle for uniqueness
+ * (e.g. `holiday-inn-the-new-irving-berlin-musical-2016`) but slugs in
+ * aggregator articles use the common title only (e.g. `HOLIDAY-INN-...`).
+ * Pre-2026-05-27 the matcher used id-based tokens and rejected the
+ * Holiday Inn 2016 show because [new, irving, berlin] weren't in the
+ * slug — silently routing reviews to closed `holiday-1995` (single token
+ * `holiday` matches everything). Discovered 2026-05-27 after manual move.
+ *
+ * Strategy:
+ *  - Source from show.title.
+ *  - Strip after first comma or colon (subtitle separators) — keeps
+ *    "Holiday Inn" from "Holiday Inn, The New Irving Berlin Musical",
+ *    "Heated Rivalry" from "Heated Rivalry: The Unauthorized Musical
+ *    Parody". Titles without these separators (e.g. "Cabaret at the Kit
+ *    Kat Club") are used in full.
+ *  - Normalize apostrophes/punctuation, lowercase, dedupe.
+ *  - Filter out stopwords + tokens <3 chars.
+ */
+function _tokenizeTitleText(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/'/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(t => t.length >= 3 && !_SLUG_STOPWORDS.has(t));
+}
+
+function _showDistinctiveTokens(show) {
+  const titleRaw = show.title || show.slug || show.id || '';
+  if (!titleRaw) return [];
+  // Strip subtitle (after first comma or colon). "Heated Rivalry: The
+  // Unauthorized Musical Parody" → "Heated Rivalry". "Holiday Inn, The
+  // New Irving Berlin Musical" → "Holiday Inn". Aggregator slugs almost
+  // always use the primary title.
+  const primary = String(titleRaw).split(/[,:]/)[0];
+  let tokens = [...new Set(_tokenizeTitleText(primary))];
+  // Fall back to FULL title when the comma/colon split was too aggressive
+  // — e.g. "Well, I'll Let You Go" pre-comma yields [well] which is too
+  // weak. Use the full title's tokens in that case.
+  if (tokens.length === 1 && tokens[0].length < 5) {
+    const full = [...new Set(_tokenizeTitleText(String(titleRaw)))];
+    if (full.length > tokens.length) tokens = full;
+  }
+  return tokens;
+}
+
+function _tokenAppearsInSlug(token, cleanedSlug) {
+  let idx = -1;
+  while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
+    const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
+    const endOk = idx + token.length === cleanedSlug.length || cleanedSlug[idx + token.length] === '-';
+    if (startOk && endOk) return true;
+  }
+  return false;
+}
+
+/**
+ * Match an article URL slug to a show in shows.json by counting how many of
+ * the show's distinctive title tokens appear (as token-boundary substrings)
+ * in the cleaned slug. The cleanedSlug has all aggregator-specific verb
+ * wrappers + market suffixes ALREADY stripped — this function is
+ * source-agnostic. Used by matchSlugToShow (PV) and matchBwwRoundupSlug (BWW).
+ *
+ * Why token-set instead of longest-substring (the previous strategy):
+ *   For slug `bedlams-4-person-version-of-shakespeares-othello` and the open
+ *   show `bedlams-othello-off-broadway-2026`, the show's distinctive tokens
+ *   are [bedlams, othello] — both appear in the slug, but NOT adjacent, so
+ *   no substring of the show slug appears verbatim. The longest-substring
+ *   match against `othello-2025` (closed) wins on length but loses on
+ *   token-set count (1 vs 2). The Bedlam's Othello 2026 reviews shipped to
+ *   the wrong show on 2026-05-27 because of this. Token-set scoring also
+ *   incidentally handles Schmigadoon-on-Kennedy-Center, Hamlet-at-BAM, and
+ *   other multi-word show titles where intervening venue tokens previously
+ *   prevented the show's full slug from appearing as a single substring.
  */
 function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   if (!cleanedSlug || !shows || shows.length === 0) return null;
   const candidates = [];
   for (const show of shows) {
-    const fullSlug = (show.slug || show.id || '').toLowerCase();
-    if (!fullSlug) continue;
-    const variants = new Set([fullSlug]);
-    variants.add(fullSlug.replace(/-(19|20)\d{2}$/, ''));
-    variants.add(fullSlug.replace(/-off-broadway(-(19|20)\d{2})?$/, ''));
-    variants.add(fullSlug.replace(/-west-end(-(19|20)\d{2})?$/, ''));
-    variants.add(fullSlug.replace(/-broadway(-(19|20)\d{2})?$/, ''));
-    for (const v of variants) {
-      if (!v || v.length < 4) continue;
-      const idx = cleanedSlug.indexOf(v);
-      if (idx === -1) continue;
-      const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
-      const endIdx = idx + v.length;
-      const endOk = endIdx === cleanedSlug.length || cleanedSlug[endIdx] === '-';
-      if (startOk && endOk) candidates.push({ show, len: v.length, idx });
+    const tokens = _showDistinctiveTokens(show);
+    if (tokens.length === 0) continue;
+    // Single-token gate: require ≥5 char token. Lower thresholds admit
+    // common 4-char English words as "distinctive tokens" — `home`, `life`,
+    // `data`, `cats`, `fish`, `rent`, `fame`, `town`, `news`, etc. — and
+    // every aggregator slug containing those words gets matched to the
+    // wrong show via the squared-length tiebreaker. Discovered 2026-05-27
+    // ship-check (Codex): a 4-char gate produced 241 NEW misroutes in the
+    // 38K-file audit. Shows with single 3-4 char title tokens (e.g. "An
+    // Ark") are intentionally rejected — too noisy without a second
+    // supporting token. The HOLIDAY INN regression that motivated the
+    // title-token switch is fixed without lowering this gate because
+    // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
+    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    let matchedTokens = 0;
+    let score = 0;       // sum of matched-token-length squared
+    let totalLen = 0;
+    for (const t of tokens) {
+      if (_tokenAppearsInSlug(t, cleanedSlug)) {
+        matchedTokens++;
+        score += t.length * t.length;
+        totalLen += t.length;
+      }
     }
+    if (matchedTokens === 0) continue;
+    // Require ALL show-distinctive tokens to appear in the slug. This is the
+    // critical gate that prevents `shakespeares-cabaret-1981` (1 of 2 tokens
+    // matched: "shakespeares") from beating `bedlams-othello-off-broadway-
+    // 2026` (2 of 2 matched) on a Bedlam Othello slug. Also stops
+    // `monte-cristo-the-york-theatre-company-off-broadway` (1 of 5 tokens:
+    // "theatre") from matching a "Dad Don't Read This At St Luke's Theatre"
+    // slug. The matcher's job is to recognize when a show's title appears
+    // in a slug — partial matches are not recognition, they're noise.
+    if (matchedTokens < tokens.length) continue;
+    candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen });
   }
   if (candidates.length === 0) return null;
-  // Sort by match length desc, then prefer non-closed shows (the article is
-  // likely about a current production, not a 30-year-old closed one).
+  // Sort by:
+  //   1. squared-length score desc (longer + more distinctive tokens win;
+  //      naturally favors all-tokens-match for multi-word shows like
+  //      Bedlam's Othello, while letting Kenrex beat New-York-New-York)
+  //   2. total token length desc
+  //   3. non-closed shows preferred (article likely about a current prod)
+  //   4. more recent openingDate (a 2026 production beats a 2009 production
+  //      with the same single-word title — without this, Hamlet@BAM-2026
+  //      tied with Hamlet-2009 on every other axis and picked arbitrarily)
   candidates.sort((a, b) => {
-    if (b.len !== a.len) return b.len - a.len;
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;
     const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     if (aClosed !== bClosed) return aClosed - bClosed;
-    return a.idx - b.idx;
+    const aYear = parseInt((a.show.openingDate || '').slice(0, 4), 10) || 0;
+    const bYear = parseInt((b.show.openingDate || '').slice(0, 4), 10) || 0;
+    return bYear - aYear;
   });
-  return { show: candidates[0].show, confidence: 'high', via: 'slug-substring' };
+  return { show: candidates[0].show, confidence: 'high', via: 'slug-token-set' };
 }
 
 function matchSlugToShow(rawSlug, shows) {
@@ -1100,6 +1213,28 @@ function matchBwwRoundupSlugToShow(rawSlug, shows) {
   return _matchCleanedSlugAgainstShows(s, shows);
 }
 
+/**
+ * Apply the matcher's source-specific head/tail strip to a raw article
+ * slug. Audit + apply scripts use this to mirror exactly what the matcher
+ * sees — keeping the strip patterns canonical in this file.
+ * @param {string} rawSlug
+ * @param {'pv'|'bww'} source
+ */
+function cleanSlugForMatcher(rawSlug, source) {
+  if (!rawSlug || typeof rawSlug !== 'string') return '';
+  let s = rawSlug.toLowerCase()
+    .replace(/^https?:\/\/[^/]+/, '')
+    .replace(/^\/?article\//, '');
+  if (source === 'bww') {
+    for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
+    for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
+  } else {
+    s = _stripPvHead(s);
+    s = _stripPvTail(s);
+  }
+  return s;
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
@@ -1113,6 +1248,13 @@ module.exports = {
   cleanSlugTitle,
   matchSlugToShow,
   matchBwwRoundupSlugToShow,
+  // Matcher internals — exported so audit/apply scripts share one source
+  // of truth with the matcher. Duplicating these in audit-* scripts was
+  // a documented bug (post-2026-05-27 code-design review).
+  cleanSlugForMatcher,
+  _showDistinctiveTokens,
+  _tokenAppearsInSlug,
+  _SLUG_STOPWORDS,
   TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };

@@ -370,6 +370,48 @@ function validateDates(shows) {
       info(`Auto-fixed "${show.title}": previews → open (openingDate ${show.openingDate} has passed)`);
     }
 
+    // Status drift class: a show stuck in 'upcoming' after its openingDate has
+    // passed will be excluded from the opening-night orchestrator's filter
+    // (orchestrator gates on status open|upcoming|previews + openingDate>=cutoff
+    // AND <=lookAhead). Indian Princesses sat in 'upcoming' with null openingDate
+    // for >1 week post-opening, blocking all review discovery for that show.
+    // Treat as auto-fix (same as previews→open) when the openingDate is in the
+    // past, since 'upcoming' is only legitimate before opening.
+    if (show.status === 'upcoming' && show.openingDate && show.openingDate < today) {
+      show.status = 'open';
+      staleStatusFixes++;
+      info(`Auto-fixed "${show.title}": upcoming → open (openingDate ${show.openingDate} has passed)`);
+    }
+
+    // Missing-images surfacing: manual stubs (Broken Snow, Bedlam Othello, IP
+    // on 2026-05-27) bypass the discover-new-shows → fetch-show-images auto-
+    // trigger chain in update-show-status.yml (which only fires on previews→
+    // open transitions). Such stubs render image-less on the site until the
+    // twice-weekly Mon/Thu fetch-all-image-formats cron runs. Surface as warn
+    // so the human sees the gap; force with:
+    //   gh workflow run "Fetch Show Images" -f show_id=<id> -f only_missing=false
+    if (['open', 'previews', 'upcoming'].includes(show.status)) {
+      const hasImage = show.images && (show.images.poster || show.images.thumbnail || show.images.hero);
+      if (!hasImage) {
+        warn(`Show "${show.title}" (${show.id}, status=${show.status}) has no images — Mon/Thu fetch-show-images cron will pick it up; force now: gh workflow run "Fetch Show Images" -f show_id=${show.id} -f only_missing=false`);
+      }
+    }
+
+    // Soft check: status='upcoming' with null openingDate is a stuck-state
+    // anti-pattern. Indian Princesses sat in 'upcoming' for >1 week post-
+    // opening (Notion 36d637c5-416f-81d4-9ead-e8b69574a25b), blocking the
+    // orchestrator from ever picking it up. We warn loudly so the daily
+    // audit-aggregator-gap workflow can prioritize Playbill cross-check.
+    // Not a hard error (yet) because ~27 legitimate future-announced shows
+    // are in this state — auto-fix requires per-show Playbill verification
+    // which the validate-show-venue.js audit handles separately.
+    if (show.status === 'upcoming' && !show.openingDate && !show.provisional) {
+      const discoveredAt = show.discoveredAt ? new Date(show.discoveredAt) : null;
+      const ninetyDaysAgo = new Date(Date.now() - 90 * 86400000);
+      const stale = discoveredAt && discoveredAt < ninetyDaysAgo;
+      warn(`Show "${show.title}" (${show.id}) is status:upcoming with null openingDate${stale ? ' AND stale discoveredAt (>90d)' : ''} — orchestrator/gather will never fire for it. Backfill openingDate from Playbill or mark closed/announced.`);
+    }
+
     // Previews with no opening date AND old previewsStartDate = likely stale/bogus entry
     if (show.status === 'previews' && !show.openingDate && show.previewsStartDate) {
       const previewYear = new Date(show.previewsStartDate).getFullYear();

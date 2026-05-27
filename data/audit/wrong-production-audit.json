@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T15:13:26.995Z",
+  "timestamp": "2026-05-27T19:00:51.589Z",
   "stats": {
-    "totalReviews": 37657,
-    "alreadyFlagged": 16575,
+    "totalReviews": 37689,
+    "alreadyFlagged": 16589,
     "dateGuardCatches": 102,
-    "directorMismatch": 801,
-    "tvFilmSignals": 1027,
+    "directorMismatch": 800,
+    "tvFilmSignals": 1030,
     "londonSignals": 581,
     "offBroadwaySignals": 450,
     "yearMismatch": 78,
-    "noPublishDate": 3955
+    "noPublishDate": 3943
   },
   "findings": [
     {
@@ -1294,6 +1294,20 @@
       ]
     },
     {
+      "showId": "animal-wisdom-off-broadway-2022",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 91,
+      "publishDate": "2026-05-20",
+      "url": "https://t2conline.com/heather-christians-animal-wisdom-turns-signature-theatre-into-something-holy/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "annie-2012",
       "file": "about-entertainment--ben-brantley.json",
       "score": 64,
@@ -1564,7 +1578,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8574,10 +8588,10 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
+      "file": "gay-city-news--david-kennerley.json",
+      "score": 79,
+      "publishDate": "2026-05-27",
+      "url": "https://gaycitynews.com/heated-rivalry-musical-parody-slap-shots-slapstick/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8588,7 +8602,7 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "nyt-theater--unknown.json",
+      "file": "nyt-theater--jonathan-mandell.json",
       "score": 73,
       "publishDate": "2026-05-26",
       "url": "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
@@ -8602,8 +8616,37 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": 84,
+      "publishDate": "2026-05-26",
+      "url": "https://theaterscene.org/2026/05/heated-rivalry-the-unauthorized-musical-parody/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "score": 81,
+      "publishDate": "2026-05-27",
+      "url": "https://www.theatermania.com/news/review-a-heated-rivalry-musical-parody-comes-hard-for-the-worlds-wine-moms_1838355/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
-      "publishDate": null,
+      "score": 81,
+      "publishDate": "2026-05-27",
       "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
       "findings": [
         {
@@ -23598,20 +23641,6 @@
       "score": 50,
       "publishDate": "August 5, 2022",
       "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "file": "nytg--gillian-russo.json",
-      "score": 81,
-      "publishDate": "2022-09-29",
-      "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",

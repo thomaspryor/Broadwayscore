@@ -1,0 +1,161 @@
+#!/usr/bin/env node
+/**
+ * Audit existing review-texts/{showId}/ for files that the current slug
+ * matcher would re-route to a different show.
+ *
+ * Filters to TRUE misroutes — cases where the FROM show's distinctive
+ * tokens are NOT all in the article slug, but the TO show's are. These
+ * are the routings that the pre-2026-05-27 longest-substring matcher got
+ * wrong (e.g. Bedlam's Othello article routed to closed `othello-2025`
+ * because "othello" beat "bedlams-othello" on length).
+ *
+ * Output: writes /tmp/true-misroutes.json with full details + prints a
+ * grouped summary by (from, to) showId pair.
+ *
+ * Use: node scripts/audit-slug-match-routing.js
+ *      node scripts/audit-slug-match-routing.js --apply  (NOT YET IMPLEMENTED)
+ *
+ * The --apply path would move files, but is intentionally not built —
+ * the audit produces false positives for shows with venue-suffixed IDs
+ * (e.g. `cabaret-at-the-kit-kat-club-west-end-2021` for a 2021 "Cabaret"
+ * article) where the slug has no venue mention but the article truly
+ * refers to that specific production. Manual review of the audit is
+ * required before moving files.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const {
+  matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
+  cleanSlugForMatcher, _showDistinctiveTokens, _tokenAppearsInSlug,
+} = require('./lib/show-matching');
+
+// Accept either an explicit override, a $HOME/broadway-review-texts checkout
+// (local), or data/review-texts (CI checkout via checkout-review-texts
+// action). Prior version was hardcoded to $HOME → CI failed every run.
+function resolveReviewTextsDir() {
+  const candidates = [
+    process.env.REVIEW_TEXTS_DIR,
+    process.env.HOME ? path.join(process.env.HOME, 'broadway-review-texts') : null,
+    path.resolve(__dirname, '..', 'data', 'review-texts'),
+  ].filter(Boolean);
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  console.error(`review-texts dir not found. Tried:\n  ${candidates.join('\n  ')}`);
+  console.error('Set REVIEW_TEXTS_DIR env var to override.');
+  process.exit(1);
+}
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
+
+// Helpers are now canonical in scripts/lib/show-matching.js — re-export
+// here as local names to keep audit logic readable. Single source of truth.
+const distinctiveTokens = _showDistinctiveTokens;
+const tokenAppears = _tokenAppearsInSlug;
+const cleanSlug = cleanSlugForMatcher;
+// (Old duplicated PV_HEAD/PV_TAIL/BWW_HEAD/BWW_TAIL/SLUG_STOPWORDS
+// constants and inline cleanSlug() were removed — they drifted from
+// show-matching.js on the first matcher edit.)
+
+function main() {
+  const shows = loadShows();
+  const showById = new Map(shows.map(s => [s.id, s]));
+
+  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+    .filter(d => !d.startsWith('.') && !d.startsWith('_'))
+    .filter(d => {
+      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
+      catch { return false; }
+    });
+
+  console.log(`Scanning ${showDirs.length} show directories in ${REVIEW_TEXTS_DIR}...`);
+
+  const trueMisroutes = [];
+  let scanned = 0;
+
+  for (const showId of showDirs) {
+    const files = fs.readdirSync(path.join(REVIEW_TEXTS_DIR, showId)).filter(f => f.endsWith('.json'));
+    for (const f of files) {
+      let r;
+      try { r = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, showId, f), 'utf8')); }
+      catch { continue; }
+      scanned++;
+
+      // Identify aggregator-discovery URLs we can re-evaluate
+      let slug = null, source = null, matcher = null;
+      if (r.playbillVerdictUrl && r.playbillVerdictUrl.includes('playbill.com/article/')) {
+        slug = (r.playbillVerdictUrl.split('/article/')[1] || '').replace(/[?#].*$/, '');
+        source = 'pv';
+        matcher = matchSlugToShow;
+      } else if (r.bwwRoundupUrl && r.bwwRoundupUrl.includes('Review-Roundup')) {
+        slug = r.bwwRoundupUrl.split('/article/')[1] || '';
+        source = 'bww';
+        matcher = matchBwwRoundupSlugToShow;
+      }
+      if (!slug || !matcher) continue;
+
+      const m = matcher(slug, shows);
+      if (!m || m.show.id === showId) continue;
+
+      // Filter to TRUE misroutes — FROM's distinctive tokens are NOT all in
+      // the cleaned slug, but TO's are. Skip false-positive shuffles
+      // (e.g. recency-tiebreak moves where both shows fully match).
+      const fromShow = showById.get(showId);
+      const toShow = m.show;
+      if (!fromShow || !toShow) continue;
+
+      const cleanedSlug = cleanSlug(slug, source);
+      const fromTokens = distinctiveTokens(fromShow);
+      const toTokens = distinctiveTokens(toShow);
+      const fromMatched = fromTokens.filter(t => tokenAppears(t, cleanedSlug)).length;
+      const toMatched = toTokens.filter(t => tokenAppears(t, cleanedSlug)).length;
+
+      const isTrueMisroute = (toMatched > fromMatched)
+        || (fromMatched < fromTokens.length && toMatched === toTokens.length);
+      if (!isTrueMisroute) continue;
+
+      trueMisroutes.push({
+        from: showId, to: m.show.id, file: f, slug, source,
+        url: r.playbillVerdictUrl || r.bwwRoundupUrl,
+        fromTokens: fromTokens.join('|'),
+        toTokens: toTokens.join('|'),
+      });
+    }
+  }
+
+  console.log(`Scanned files: ${scanned}`);
+  console.log(`TRUE misroutes: ${trueMisroutes.length}`);
+  console.log();
+
+  const byKey = {};
+  for (const m of trueMisroutes) {
+    const k = `${m.from} → ${m.to}`;
+    byKey[k] = (byKey[k] || 0) + 1;
+  }
+  const sorted = Object.entries(byKey).sort((a, b) => b[1] - a[1]).slice(0, 50);
+  for (const [k, n] of sorted) console.log(' ', String(n).padStart(3), '|', k);
+
+  // Persist to data/audit/ following the audit-cross-production-weekly
+  // pattern: { generatedAt, totalScanned, findings: [...] }. The committed
+  // file is the input to the weekly workflow's delta-based alerting.
+  const repoRoot = path.resolve(__dirname, '..');
+  const auditDir = path.join(repoRoot, 'data', 'audit');
+  if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+  const outPath = process.env.AUDIT_OUT_PATH
+    || path.join(auditDir, 'slug-misroute-audit.json');
+  const output = {
+    generatedAt: new Date().toISOString(),
+    totalScanned: scanned,
+    findings: trueMisroutes,
+  };
+  fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+  console.log();
+  console.log(`Full audit: ${outPath}`);
+
+  // Also write /tmp copy for backwards compat with ad-hoc local use.
+  try {
+    fs.writeFileSync('/tmp/true-misroutes.json', JSON.stringify(trueMisroutes, null, 2));
+  } catch { /* /tmp may not be writable in some sandboxes */ }
+}
+
+if (require.main === module) main();

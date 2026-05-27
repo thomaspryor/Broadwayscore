@@ -1854,7 +1854,7 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
-function isIncludableForRebuild(data, show) {
+function isIncludableForRebuild(data, show, filePath) {
   if (!data) return false;
 
   // S3-T6: CV-promotion-deferred reviews are explicitly includable.
@@ -1907,7 +1907,57 @@ function isIncludableForRebuild(data, show) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return false;
   }
   if (data.wrongAttribution === true) return false;
-  if (data.duplicateOf) return false;
+  // duplicateOf: when filePath is provided, mirror rebuild-all-reviews.js's
+  // circular-duplicate-recovery logic (BUG F / Heated Rivalry nyt-theater--*
+  // pair, 2026-05-27). The rebuild keeps the lexically-LOWER filename when
+  // two files mutually point at each other with the same fullText fingerprint;
+  // pre-fix the LLM scorer skipped both, leaving the kept file unscored and
+  // absent from reviews.json. When filePath is undefined we fall back to the
+  // historical "skip on any duplicateOf" behavior — recovery is opt-in.
+  // Matching rebuild logic: scripts/rebuild-all-reviews.js ~lines 1685-1730.
+  if (data.duplicateOf) {
+    if (!filePath) return false;
+    const pathMod = require('path');
+    const fsMod = require('fs');
+    const showDir = pathMod.dirname(filePath);
+    const thisFile = pathMod.basename(filePath);
+    const refPath = pathMod.join(showDir, data.duplicateOf);
+    let refData = null;
+    try {
+      refData = JSON.parse(fsMod.readFileSync(refPath, 'utf8'));
+    } catch {
+      // Stale pointer — rebuild keeps this file in that case (refAlsoDupe=true
+      // branch on read failure means we drop out of the skip path).
+      // Don't return — fall through to the remaining guards below.
+      refData = undefined;
+    }
+    if (refData !== undefined) {
+      const refDupOf = refData && (refData.duplicateOf || refData.duplicateTextOf);
+      const isCircular = refDupOf === thisFile;
+      if (isCircular && data.fullText && refData.fullText) {
+        const { computeContentFingerprint } = require('./content-quality');
+        const a = computeContentFingerprint(data.fullText);
+        const b = computeContentFingerprint(refData.fullText);
+        const circularSameText = !!(a && b && a === b);
+        if (circularSameText) {
+          // Tiebreak: keep lexicographically-LOWER filename. Matches rebuild's
+          // `file > data.duplicateOf` skip condition (we skip when greater).
+          if (thisFile > data.duplicateOf) return false;
+          // else: lexically lower → ALLOW (fall through to remaining guards).
+        } else {
+          // Circular with DIFFERENT text — rebuild treats these as legitimate
+          // separate reviews (duplicateOf wrongly set). Both sides kept.
+          // Fall through.
+        }
+      } else if (refDupOf) {
+        // Reference also a dupe but pointing elsewhere (not back at us) —
+        // rebuild's `refAlsoDupe` branch lets this through. Fall through.
+      } else {
+        // Reference exists and is NOT also flagged → legitimate dup, skip.
+        return false;
+      }
+    }
+  }
   if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return false;
   if (
     data.isNonReview === true ||

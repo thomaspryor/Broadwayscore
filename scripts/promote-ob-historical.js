@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+/**
+ * promote-ob-historical.js
+ *
+ * Promote Playbill-validated OB historical candidates into shows.json with
+ * proper closed-show metadata. Different write-path from
+ * scripts/promote-ob-venue-candidates.js, which assumes a provisional stub
+ * (status:'announced', openingDate:null) for current-season discoveries.
+ *
+ * Historical shows have known dates from Playbill, so we write:
+ *   status: 'closed'
+ *   openingDate: <Playbill firstPreview if no openingDate else openingDate>
+ *   closingDate: <Playbill closingDate>
+ *   venue: <Playbill venue, normalized via canonicalVenue>
+ *
+ * Input: data/audit/venue-date-mismatches.json — only results with
+ *   result==='match' AND playbillUrl + parsed.dates present.
+ *
+ * Usage:
+ *   node scripts/promote-ob-historical.js --dry-run   (default)
+ *   node scripts/promote-ob-historical.js --apply     (writes shows.json)
+ *
+ * Skip rule: if normalizeTitle(title)+canonicalVenue(venue) already exists in
+ * shows.json, skip (dedup against cross-source entries).
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const { atomicWriteShowsJson, AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
+const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
+
+const ROOT = path.join(__dirname, '..');
+const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
+const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'venue-date-mismatches.json');
+const LOG_PATH = path.join(ROOT, 'data', 'audit', 'ob-historical-promotion-log.jsonl');
+
+const args = process.argv.slice(2);
+const apply = args.includes('--apply');
+
+function slugify(s) {
+  return String(s || '').toLowerCase()
+    .replace(/[''""‘’“”]/g, '')
+    .replace(/[&]/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function buildShowEntry(r) {
+  const titleSlug = slugify(r.title);
+  const year = String((r.parsed?.titleParse?.year) || new Date().getFullYear());
+  const id = `${titleSlug}-off-broadway-${year}`;
+  const opening = r.parsed?.dates?.openingDate || r.parsed?.dates?.firstPreview || null;
+  const closing = r.parsed?.dates?.closingDate || null;
+  return {
+    id,
+    title: r.title,
+    // validate-data.js requires OB slugs to contain "off-broadway". Use the
+    // full id so the slug is unique even across cross-year revivals.
+    slug: id,
+    venue: r.parsed?.titleParse?.venue || r.venue,
+    openingDate: opening,
+    previewsStartDate: r.parsed?.dates?.firstPreview || null,
+    closingDate: closing,
+    status: 'closed',
+    category: 'off-broadway',
+    market: 'broadway',
+    type: null,
+    discoverySource: 'historical-backfill',
+    discoveredAt: new Date().toISOString(),
+    playbillUrl: r.playbillUrl || null,
+  };
+}
+
+function logEntry(entry) {
+  try {
+    fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
+    fs.appendFileSync(LOG_PATH, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
+  } catch (e) {
+    console.warn(`Failed to append promotion log: ${e.message}`);
+  }
+}
+
+function main() {
+  const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+  const matches = (audit.results || []).filter(r => r.result === 'match' && r.playbillUrl);
+  console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
+
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const existingKeys = new Set(showsData.shows.map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
+  const existingIds = new Set(showsData.shows.map(s => s.id));
+
+  const toPromote = [];
+  const skipped = [];
+  for (const r of matches) {
+    const entry = buildShowEntry(r);
+    const key = `${normalizeTitle(entry.title)}|${canonicalVenue(entry.venue)}`;
+    if (existingKeys.has(key)) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
+    if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
+    if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
+    toPromote.push(entry);
+    existingKeys.add(key);
+    existingIds.add(entry.id);
+  }
+
+  console.log('');
+  console.log(`Will promote: ${toPromote.length}`);
+  for (const e of toPromote) {
+    console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.openingDate || '(no opening)'} → ${e.closingDate || '(no closing)'}`);
+  }
+  if (skipped.length) {
+    console.log(`Skipped: ${skipped.length}`);
+    for (const s of skipped) console.log(`  - ${s.entry.title} (${s.reason})`);
+  }
+
+  if (!apply) {
+    console.log('');
+    console.log('[DRY RUN — pass --apply to write shows.json]');
+    return;
+  }
+
+  if (toPromote.length === 0) {
+    console.log('Nothing to promote.');
+    return;
+  }
+
+  for (const entry of toPromote) {
+    showsData.shows.push(entry);
+    logEntry({ kind: 'promote-historical', id: entry.id, title: entry.title, venue: entry.venue });
+  }
+  try {
+    const r = atomicWriteShowsJson(SHOWS_PATH, showsData);
+    console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
+  } catch (e) {
+    if (e instanceof AtomicWriteShrinkError) {
+      console.error(`::error::${e.message}`);
+      process.exit(1);
+    }
+    throw e;
+  }
+}
+
+main();

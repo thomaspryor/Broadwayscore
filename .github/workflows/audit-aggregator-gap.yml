@@ -1,0 +1,133 @@
+name: Audit Aggregator Review Gap
+
+on:
+  schedule:
+    # Hourly during opening-night window. Each run takes <5 min (one SERP per
+    # show + one fetch per aggregator article) and tagged shows are usually
+    # under 15. Detect aggregator-listed URLs missing from our review-texts and
+    # auto-dispatch gather-reviews for the affected shows so the next poller
+    # cron finds them.
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      window_days:
+        description: 'How many days post-opening to audit (default 21)'
+        required: false
+        default: '21'
+      dispatch_gather:
+        description: 'Auto-dispatch gather-reviews for shows with gaps (default false — gather already ran; prefer --ingest-missing)'
+        required: false
+        default: 'false'
+      ingest_missing:
+        description: 'Directly ingest aggregator-listed URLs whose outlets are in the registry (default true)'
+        required: false
+        default: 'true'
+      fail_on_gap:
+        description: 'Exit non-zero when any in-window show has gaps (default false — advisory)'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: audit-aggregator-gap
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run gap audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          WINDOW="${{ github.event.inputs.window_days || '21' }}"
+          DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
+          INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
+          FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
+          ARGS="--window=$WINDOW"
+          if [ "$DISPATCH" = "true" ]; then
+            ARGS="$ARGS --dispatch-gather"
+          fi
+          if [ "$INGEST" = "true" ]; then
+            ARGS="$ARGS --ingest-missing"
+          fi
+          if [ "$FAIL" = "true" ]; then
+            ARGS="$ARGS --fail-on-gap"
+          fi
+          node scripts/audit-show-review-gap.js $ARGS
+
+      - name: Commit audit + push ingested review-texts
+        if: always()
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Audit JSON lives in the public repo
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json || true
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "audit: show-review-gap [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+          # Any new review-text files written by --ingest-missing land in
+          # data/review-texts/ (the private review-texts checkout). Push them
+          # back so the next rebuild picks them up.
+          # P0 fix 2026-05-27 (ship-check): use credential helper via stdin so
+          # REVIEW_TEXTS_TOKEN never appears in the push URL. The previous
+          # inline `https://x-access-token:${REVIEW_TEXTS_TOKEN}@...` pattern
+          # leaks an empty `x-access-token:@github.com` URL to GitHub Actions
+          # logs when the secret is unset/rotated (GitHub Actions only masks
+          # NON-EMPTY values).
+          if [ -d data/review-texts ]; then
+            (
+              cd data/review-texts
+              if [ -n "$(git status --porcelain)" ]; then
+                git add -A
+                git commit -m "ingest: audit-aggregator-gap auto-ingested $(git status --porcelain | wc -l | tr -d ' ') file(s)" || true
+                # Configure once via extraheader; tokenless URL stays in logs.
+                git config --local http.https://github.com/.extraheader "AUTHORIZATION: basic $(printf "x-access-token:${REVIEW_TEXTS_TOKEN}" | base64 -w0)"
+                git remote set-url origin https://github.com/thomaspryor/broadway-review-texts.git
+                git push origin HEAD:main \
+                  || (git pull --rebase origin main && git push origin HEAD:main) \
+                  || echo "::warning::review-texts push failed; next cron will retry"
+                # Unset header so it doesn't persist if the workspace is cached
+                git config --local --unset-all http.https://github.com/.extraheader || true
+              fi
+            )
+          fi
+          # Trigger rebuild so newly-ingested reviews land in reviews.json
+          if [ -d data/review-texts ] && [ -n "$(cd data/review-texts && git log -1 --format=%s | grep -F 'audit-aggregator-gap auto-ingested')" ]; then
+            gh workflow run "Rebuild Reviews Data" -f reason="audit-aggregator-gap ingested new reviews" || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Aggregator Review Gap Audit Failed'
+          severity: 'warning'

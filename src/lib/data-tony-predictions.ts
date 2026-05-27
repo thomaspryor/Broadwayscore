@@ -1964,52 +1964,91 @@ const CATEGORY_LABEL_MAP: Record<string, string> = {
  * does the model actually beat a panel of theatre experts making real-time
  * pre-ceremony predictions?"
  */
+// Empty-shape fallback used when the artifact is missing fields. The
+// predictions page calls `getGoldDerbyComparison()` at render time; if the
+// JSON is partial or malformed, returning a safe zero-shape lets the page
+// continue rendering with the section showing all zeros rather than throwing
+// at runtime. Caller can also check `total === 0` to hide the section
+// entirely if desired.
+const EMPTY_GD_COMPARISON: GoldDerbyComparison = {
+  asOf: '',
+  sample: { races: 0, cycles: 0 },
+  ours: { hits: 0, total: 0, pct: 0 },
+  goldDerby: { hits: 0, total: 0, pct: 0 },
+  weBeatThemCount: 0,
+  theyBeatUsCount: 0,
+  bothRight: 0,
+  bothWrong: 0,
+  perCategory: [],
+  weHitTheyMissed: [],
+  theyHitWeMissed: [],
+};
+
 export function getGoldDerbyComparison(): GoldDerbyComparison {
-  const raw = gdComparisonData as unknown as {
-    _meta: {
+  const raw = gdComparisonData as unknown as Partial<{
+    _meta: Partial<{
       generatedAt: string;
-      sample: { races: number; cycles: number };
-      ourSummary: { hits: number; total: number; pct: number };
-      gdSummary: { hits: number; total: number; pct: number };
+      sample: Partial<{ races: number; cycles: number }>;
+      ourSummary: Partial<{ hits: number; total: number; pct: number }>;
+      gdSummary: Partial<{ hits: number; total: number; pct: number }>;
       weBeatThemCount: number;
       theyBeatUsCount: number;
       bothRight: number;
       bothWrong: number;
-    };
-    catStats: Record<string, { ours: number; theirs: number; total: number }>;
-    weHitTheyMissed: Array<{ cycle: string; category: string; ourPickTitle: string; gdPickTitle: string; winnerTitle: string }>;
-    theyHitWeMissed: Array<{ cycle: string; category: string; ourPickTitle: string; gdPickTitle: string; winnerTitle: string }>;
-  };
-  const round1 = (n: number) => Math.round(n * 1000) / 10;
+    }>;
+    catStats: Record<string, Partial<{ ours: number; theirs: number; total: number }>>;
+    weHitTheyMissed: Array<Partial<{ cycle: string; category: string; ourPickTitle: string; gdPickTitle: string; winnerTitle: string }>>;
+    theyHitWeMissed: Array<Partial<{ cycle: string; category: string; ourPickTitle: string; gdPickTitle: string; winnerTitle: string }>>;
+  }>;
+
+  // Shape-check the artifact. If any of the top-level structural fields
+  // are missing, fall back to the empty shape so the page render survives.
+  // This protects against JSON corruption, partial generator output, or
+  // a future schema change in compare-gd-vs-broadwayscore.ts.
+  if (!raw || !raw._meta || !raw._meta.sample || !raw._meta.ourSummary || !raw._meta.gdSummary) {
+    return EMPTY_GD_COMPARISON;
+  }
+
+  const round1 = (n: number | undefined) => (typeof n === 'number' ? Math.round(n * 1000) / 10 : 0);
+  const num = (n: number | undefined) => (typeof n === 'number' ? n : 0);
+
   return {
-    asOf: raw._meta.generatedAt,
-    sample: raw._meta.sample,
-    ours: { hits: raw._meta.ourSummary.hits, total: raw._meta.ourSummary.total, pct: round1(raw._meta.ourSummary.pct) },
-    goldDerby: { hits: raw._meta.gdSummary.hits, total: raw._meta.gdSummary.total, pct: round1(raw._meta.gdSummary.pct) },
-    weBeatThemCount: raw._meta.weBeatThemCount,
-    theyBeatUsCount: raw._meta.theyBeatUsCount,
-    bothRight: raw._meta.bothRight,
-    bothWrong: raw._meta.bothWrong,
-    perCategory: Object.entries(raw.catStats).map(([key, stats]) => ({
+    asOf: raw._meta.generatedAt ?? '',
+    sample: { races: num(raw._meta.sample.races), cycles: num(raw._meta.sample.cycles) },
+    ours: {
+      hits: num(raw._meta.ourSummary.hits),
+      total: num(raw._meta.ourSummary.total),
+      pct: round1(raw._meta.ourSummary.pct),
+    },
+    goldDerby: {
+      hits: num(raw._meta.gdSummary.hits),
+      total: num(raw._meta.gdSummary.total),
+      pct: round1(raw._meta.gdSummary.pct),
+    },
+    weBeatThemCount: num(raw._meta.weBeatThemCount),
+    theyBeatUsCount: num(raw._meta.theyBeatUsCount),
+    bothRight: num(raw._meta.bothRight),
+    bothWrong: num(raw._meta.bothWrong),
+    perCategory: Object.entries(raw.catStats ?? {}).map(([key, stats]) => ({
       key,
       label: CATEGORY_LABEL_MAP[key] ?? key,
-      ours: stats.ours,
-      theirs: stats.theirs,
-      total: stats.total,
+      ours: num(stats?.ours),
+      theirs: num(stats?.theirs),
+      total: num(stats?.total),
     })),
-    weHitTheyMissed: raw.weHitTheyMissed.map(r => ({
-      cycle: r.cycle,
-      category: r.category,
-      ourPick: r.ourPickTitle,
-      gdPick: r.gdPickTitle,
-      winner: r.winnerTitle,
+    weHitTheyMissed: (raw.weHitTheyMissed ?? []).map(r => ({
+      cycle: r?.cycle ?? '',
+      category: r?.category ?? '',
+      ourPick: r?.ourPickTitle ?? '',
+      gdPick: r?.gdPickTitle ?? '',
+      winner: r?.winnerTitle ?? '',
     })),
-    theyHitWeMissed: raw.theyHitWeMissed.map(r => ({
-      cycle: r.cycle,
-      category: r.category,
-      ourPick: r.ourPickTitle,
-      gdPick: r.gdPickTitle,
-      winner: r.winnerTitle,
+    theyHitWeMissed: (raw.theyHitWeMissed ?? []).map(r => ({
+      cycle: r?.cycle ?? '',
+      category: r?.category ?? '',
+      ourPick: r?.ourPickTitle ?? '',
+      gdPick: r?.gdPickTitle ?? '',
+      winner: r?.winnerTitle ?? '',
     })),
   };
 }

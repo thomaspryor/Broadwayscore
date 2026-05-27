@@ -2,9 +2,9 @@
   "runDate": "2026-05-27T16:55:26.496Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 300,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "",
+    "showFilter": "animal-wisdom-off-broadway-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -19,7 +19,7 @@
   "tierBreakdown": {
     "playwright": 94,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 32,
     "brightdata": 17,
@@ -1277,6 +1277,7 @@
     "the-loved-ones-off-broadway-2026/broadwayworld--unknown.json",
     "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
+  "failed": [],
   "tierDetails": {
     "playwright": [
       "equus-west-end-2026/timeout--andrzej-lukowski.json",
@@ -1375,18 +1376,7 @@
       "indian-princesses-off-broadway-2025/nytg--amelia-merrill.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/lets-love-off-broadway-2026/wsj--unknown.json",
-      "lets-love-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/caroline-off-broadway-2026/wsj--unknown.json",
-      "caroline-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/grangeville-off-broadway-2026/wsj--unknown.json",
-      "grangeville-off-broadway-2026/wsj--unknown.json",
-      "data/review-texts/msblackforpresident-off-broadway-2026/variety--unknown.json",
-      "msblackforpresident-off-broadway-2026/variety--unknown.json",
-      "data/review-texts/msblackforpresident-off-broadway-2026/variety--brent-lang.json",
-      "msblackforpresident-off-broadway-2026/variety--brent-lang.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingbee": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
