@@ -57,7 +57,9 @@ function buildShowEntry(r) {
   return {
     id,
     title: r.title,
-    slug: titleSlug,
+    // validate-data.js requires OB slugs to contain "off-broadway". Use the
+    // full id so the slug is unique even across cross-year revivals.
+    slug: id,
     venue: r.parsed?.titleParse?.venue || r.venue,
     openingDate: opening,
     previewsStartDate: r.parsed?.dates?.firstPreview || null,

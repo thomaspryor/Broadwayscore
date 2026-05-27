@@ -101,10 +101,11 @@ function scorePlaybillUrl(url, show) {
   const titleSegment = m ? m[1] : null;
   const showSlug = shortTitleSlug(show.title);
   if (!titleSegment || !showSlug) return null;
-  // Strict equality — Playbill slug for the title portion must exactly match
-  // the show's title slug. Avoids "the-comeuppance" mistakenly matching
-  // "the-comeuppance-regional-..." while still allowing the right OB URL.
-  if (titleSegment !== showSlug) return null;
+  // Compare via canonical normalizer so "Urinetown" matches Playbill's
+  // "urinetown-the-musical" (trailing " musical" / leading "the " stripped)
+  // and accent variants align ("Les Misérables" ≡ "les-miserables").
+  const norm = (s) => normalizeTitle(s.replace(/-/g, ' ')).replace(/\s+/g, '-');
+  if (norm(titleSegment) !== norm(show.title)) return null;
 
   let s = 10; // title match earned
   const isOB = show.category === 'off-broadway';
