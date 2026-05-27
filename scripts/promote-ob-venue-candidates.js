@@ -97,15 +97,48 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  // Use normalizeTitle + canonicalVenue so cross-source dedup catches
-  // both the "||: GIRLS :||: CHANCE :||: MUSIC :||" punctuation drift AND
-  // cross-venue collisions (The New Group's shows that play at Pershing
-  // Square Signature Center share a canonical key with Signature's scrape).
-  // Alias table lives in scripts/lib/title-match.js (single source of truth).
-  const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
-  const existingTitleVenue = new Set(showsData.shows
-    .filter(s => s.category === 'off-broadway')
-    .map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
+  // Build a per-venue index of existing OB shows so cross-source dedup can
+  // do TOKEN-SET (jaccard) comparison instead of exact normalized-string.
+  // Exact-string match misses word-order variants:
+  //   "Heated Rivalry: The Unauthorized Musical Parody" (TodayTix)
+  //   "HEATED RIVALRY: THE UNAUTHORIZED PARODY MUSICAL" (Playbill)
+  // → same tokens, different word order, different normalized strings.
+  // The bug: this exact pair shipped a duplicate to production on 2026-05-27.
+  // Fix: jaccard >= DEDUP_JACCARD_THRESHOLD on titleTokens collapses them.
+  const { normalizeTitle, canonicalVenue, titleTokens, jaccard } = require('./lib/title-match');
+  // 0.80 (not 0.85) because normalizeTitle's trailing-"musical" strip can
+  // unbalance token sets — "Heated Rivalry: The Unauthorized Musical Parody"
+  // keeps "musical" + "parody" but "...PARODY MUSICAL" loses trailing
+  // "musical" → jaccard 0.8, not 1.0. 0.8 still requires 80% token overlap.
+  const DEDUP_JACCARD_THRESHOLD = 0.80;
+  const existingByVenue = new Map(); // canonicalVenue → [{ id, title, tokens, normalized }]
+  for (const s of showsData.shows.filter(s => s.category === 'off-broadway')) {
+    const venueKey = canonicalVenue(s.venue);
+    if (!existingByVenue.has(venueKey)) existingByVenue.set(venueKey, []);
+    existingByVenue.get(venueKey).push({
+      id: s.id, title: s.title,
+      tokens: titleTokens(s.title),
+      normalized: normalizeTitle(s.title),
+    });
+  }
+
+  /** Return the existing show that matches `c` by canonical venue +
+   *  (normalized title OR jaccard ≥ threshold). Else null. */
+  function findExistingMatch(c) {
+    const venueKey = canonicalVenue(c.venue);
+    const cands = existingByVenue.get(venueKey) || [];
+    if (cands.length === 0) return null;
+    const cNorm = normalizeTitle(c.title);
+    const cTokens = titleTokens(c.title);
+    for (const e of cands) {
+      if (e.normalized === cNorm) return { match: e, reason: 'normalized-equal' };
+      if (cTokens.size > 0 && e.tokens.size > 0) {
+        const sim = jaccard(cTokens, e.tokens);
+        if (sim >= DEDUP_JACCARD_THRESHOLD) return { match: e, reason: `jaccard=${sim.toFixed(2)}` };
+      }
+    }
+    return null;
+  }
 
   // Fetch cross-validation sources unless --admin-promote-all
   let playbillEntries = [];
@@ -130,15 +163,14 @@ async function main() {
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
 
-    // Dedupe against existing shows using normalized title + canonical venue.
-    // Catches cross-year duplicates (indian-princesses-2025 vs -2026),
-    // venue-string mismatches ("Atlantic Theater Company - Linda Gross Theater"
-    // vs "Atlantic Theater"), AND cross-source same-venue (The New Group
-    // emits "The New Group" but the show plays at the Signature Center).
-    const candidateKey = `${normalizeTitle(c.title)}|${canonicalVenue(c.venue)}`;
-    if (existingTitleVenue.has(candidateKey)) {
-      skipped.push({ candidate: c, reason: `already in shows.json (norm key: ${candidateKey})` });
-      logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue });
+    // Dedupe via per-venue jaccard match. Catches: cross-year duplicates,
+    // venue-string variants ("Atlantic Theater Company - Linda Gross" vs
+    // "Atlantic Theater"), cross-source same-venue (TNG → Signature Center),
+    // AND word-order variants ("Musical Parody" vs "Parody Musical").
+    const existingMatch = findExistingMatch(c);
+    if (existingMatch) {
+      skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
+      logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
       continue;
     }
 
