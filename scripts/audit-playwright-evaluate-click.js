@@ -35,11 +35,15 @@ const path = require('node:path');
 const ROOT = path.join(__dirname, '..', 'tests', 'e2e');
 const EXEMPT_MARKER = /\/\/\s*EVALUATE-CLICK-EXEMPT:\s*\S+/;
 
-// Match a synthesized click: any `document.querySelector*(...).click(`
-// or `document.getElementBy*(...).click(`, possibly with optional-chain
-// (`?.click(`) and possibly with `as HTMLButtonElement` style casts in
-// the middle. Captures the whole call expression for the error message.
-const SYNTHESIZED_CLICK = /document\s*\.\s*(?:querySelector(?:All)?|getElementBy(?:Id|ClassName|TagName|Name))\b[\s\S]*?[?]?\.click\s*\(/;
+// Match any synthesized event firing on a `document.*` query result.
+// Three variants caught:
+//   1. .click()                — synthesized DOM click (the original bug)
+//   2. .dispatchEvent(...)     — manual event dispatch, same race risk
+//   3. (el as HTMLElement).onclick?.()  — direct handler invocation
+// Each bypasses Playwright actionability the same way. Optional chain
+// (`?.click(`), TypeScript casts (`as HTMLButtonElement`), and inline
+// queries (`document.querySelector('x')?.click()`) all match.
+const SYNTHESIZED_CLICK = /document\s*\.\s*(?:querySelector(?:All)?|getElementBy(?:Id|ClassName|TagName|Name))\b[\s\S]*?[?]?\.(?:click|dispatchEvent)\s*\(/;
 
 function walk(dir) {
   const out = [];
@@ -80,7 +84,11 @@ function findViolations(source, file) {
     // Find which line the .click() actually lives on, accept exemption on either.
     let clickLineNum = i;
     for (let j = 0; j < 3; j++) {
-      if ((lines[i + j] || '').includes('.click(')) { clickLineNum = i + j; break; }
+      const line = lines[i + j] || '';
+      if (line.includes('.click(') || line.includes('.dispatchEvent(')) {
+        clickLineNum = i + j;
+        break;
+      }
     }
     const clickLine = lines[clickLineNum] || '';
     const clickPrev = clickLineNum > 0 ? lines[clickLineNum - 1] : '';
@@ -102,7 +110,7 @@ function main() {
   for (const fp of files) {
     const src = fs.readFileSync(fp, 'utf8');
     if (!src.includes('document.')) continue;
-    if (!src.includes('.click(')) continue;
+    if (!src.includes('.click(') && !src.includes('.dispatchEvent(')) continue;
     all.push(...findViolations(src, fp));
   }
   if (all.length === 0) {
