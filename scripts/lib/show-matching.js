@@ -1168,6 +1168,28 @@ function matchBwwRoundupSlugToShow(rawSlug, shows) {
   return _matchCleanedSlugAgainstShows(s, shows);
 }
 
+/**
+ * Apply the matcher's source-specific head/tail strip to a raw article
+ * slug. Audit + apply scripts use this to mirror exactly what the matcher
+ * sees — keeping the strip patterns canonical in this file.
+ * @param {string} rawSlug
+ * @param {'pv'|'bww'} source
+ */
+function cleanSlugForMatcher(rawSlug, source) {
+  if (!rawSlug || typeof rawSlug !== 'string') return '';
+  let s = rawSlug.toLowerCase()
+    .replace(/^https?:\/\/[^/]+/, '')
+    .replace(/^\/?article\//, '');
+  if (source === 'bww') {
+    for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
+    for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
+  } else {
+    s = _stripPvHead(s);
+    s = _stripPvTail(s);
+  }
+  return s;
+}
+
 module.exports = {
   matchTitleToShow,
   loadShows,
@@ -1181,6 +1203,13 @@ module.exports = {
   cleanSlugTitle,
   matchSlugToShow,
   matchBwwRoundupSlugToShow,
+  // Matcher internals — exported so audit/apply scripts share one source
+  // of truth with the matcher. Duplicating these in audit-* scripts was
+  // a documented bug (post-2026-05-27 code-design review).
+  cleanSlugForMatcher,
+  _showDistinctiveTokens,
+  _tokenAppearsInSlug,
+  _SLUG_STOPWORDS,
   TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };

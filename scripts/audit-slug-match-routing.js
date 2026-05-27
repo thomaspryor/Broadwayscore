@@ -25,75 +25,37 @@
 
 const fs = require('fs');
 const path = require('path');
-const { matchSlugToShow, matchBwwRoundupSlugToShow, loadShows } = require('./lib/show-matching');
+const {
+  matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
+  cleanSlugForMatcher, _showDistinctiveTokens, _tokenAppearsInSlug,
+} = require('./lib/show-matching');
 
-const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
-  || path.join(process.env.HOME || '/tmp', 'broadway-review-texts');
-
-if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
-  console.error(`review-texts dir not found: ${REVIEW_TEXTS_DIR}`);
-  console.error('Set REVIEW_TEXTS_DIR env var if running outside the local clone.');
+// Accept either an explicit override, a $HOME/broadway-review-texts checkout
+// (local), or data/review-texts (CI checkout via checkout-review-texts
+// action). Prior version was hardcoded to $HOME → CI failed every run.
+function resolveReviewTextsDir() {
+  const candidates = [
+    process.env.REVIEW_TEXTS_DIR,
+    process.env.HOME ? path.join(process.env.HOME, 'broadway-review-texts') : null,
+    path.resolve(__dirname, '..', 'data', 'review-texts'),
+  ].filter(Boolean);
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  console.error(`review-texts dir not found. Tried:\n  ${candidates.join('\n  ')}`);
+  console.error('Set REVIEW_TEXTS_DIR env var to override.');
   process.exit(1);
 }
+const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 
-const SLUG_STOPWORDS = new Set([
-  'the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'for', 'to', 'by',
-  'broadway', 'off-broadway', 'west-end', 'musical', 'play', 'show',
-  'revival', 'tour', 'starring', 'opens', 'review', 'reviews', 'critics',
-]);
-
-function distinctiveTokens(show) {
-  const slug = (show.slug || show.id || '').toLowerCase();
-  if (!slug) return [];
-  const stripped = slug
-    .replace(/-(19|20)\d{2}$/, '')
-    .replace(/-off-broadway(-(19|20)\d{2})?$/, '')
-    .replace(/-west-end(-(19|20)\d{2})?$/, '')
-    .replace(/-bway$/, '')
-    .replace(/-broadway(-(19|20)\d{2})?$/, '');
-  return [...new Set(stripped.split('-').filter(t => t.length >= 3 && !SLUG_STOPWORDS.has(t)))];
-}
-
-function tokenAppears(tok, slug) {
-  let idx = -1;
-  while ((idx = slug.indexOf(tok, idx + 1)) !== -1) {
-    if ((idx === 0 || slug[idx - 1] === '-')
-      && (idx + tok.length === slug.length || slug[idx + tok.length] === '-')) return true;
-  }
-  return false;
-}
-
-// Mirror the matcher's head/tail strip so we audit against the same input
-// the matcher would see.
-const PV_HEAD = [
-  /^reviews-what-(do-the|did)-critics-think-of-/,
-  /^reviews-(did|do)-(the-)?critics-(feel-at-home-on|find|think)-/,
-  /^reviews-are-out-for-/, /^read-the-reviews-for-/, /^read-reviews-for-/,
-  /^what-(are|do|did)-(the-)?(reviews|critics)-(think-of-|for-)?/,
-  /^did-the-olivier-winning-/,
-  /^did-(reviewers|critics)-(find-magic-in-|think-of-|find-)?/, /^how-did-/,
-];
-const PV_TAIL = [
-  /-in-londons-west-end$/, /-on-broadway$/, /-off-broadway$/,
-  /-at-(brooklyn-academy-of-music|met-opera|studio-seaview|linda-gross|atlantic-theater|signature(-theatre)?|new-york-theatre-workshop|classic-stage-company|second-stage|playwrights-horizons|the-public-theater|theatre-row|audible|bam)$/,
-];
-const BWW_HEAD = [/^review-roundup-/];
-const BWW_TAIL = [
-  /-opens-(off-)?broadway-?\d{0,8}$/, /-opens-on-broadway-?\d{0,8}$/,
-  /-on-broadway-?\d{0,8}$/, /-off-broadway-?\d{0,8}$/,
-  /-opens-at-.*$/, /-broadway-?\d{0,8}$/, /-\d{8}$/,
-];
-
-function cleanSlug(rawSlug, source) {
-  let s = String(rawSlug).toLowerCase()
-    .replace(/^https?:\/\/[^/]+/, '')
-    .replace(/^\/?article\//, '');
-  const HEAD = source === 'bww' ? BWW_HEAD : PV_HEAD;
-  const TAIL = source === 'bww' ? BWW_TAIL : PV_TAIL;
-  for (const p of HEAD) s = s.replace(p, '');
-  for (const p of TAIL) s = s.replace(p, '');
-  return s;
-}
+// Helpers are now canonical in scripts/lib/show-matching.js — re-export
+// here as local names to keep audit logic readable. Single source of truth.
+const distinctiveTokens = _showDistinctiveTokens;
+const tokenAppears = _tokenAppearsInSlug;
+const cleanSlug = cleanSlugForMatcher;
+// (Old duplicated PV_HEAD/PV_TAIL/BWW_HEAD/BWW_TAIL/SLUG_STOPWORDS
+// constants and inline cleanSlug() were removed — they drifted from
+// show-matching.js on the first matcher edit.)
 
 function main() {
   const shows = loadShows();
@@ -173,10 +135,27 @@ function main() {
   const sorted = Object.entries(byKey).sort((a, b) => b[1] - a[1]).slice(0, 50);
   for (const [k, n] of sorted) console.log(' ', String(n).padStart(3), '|', k);
 
-  const outPath = '/tmp/true-misroutes.json';
-  fs.writeFileSync(outPath, JSON.stringify(trueMisroutes, null, 2));
+  // Persist to data/audit/ following the audit-cross-production-weekly
+  // pattern: { generatedAt, totalScanned, findings: [...] }. The committed
+  // file is the input to the weekly workflow's delta-based alerting.
+  const repoRoot = path.resolve(__dirname, '..');
+  const auditDir = path.join(repoRoot, 'data', 'audit');
+  if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+  const outPath = process.env.AUDIT_OUT_PATH
+    || path.join(auditDir, 'slug-misroute-audit.json');
+  const output = {
+    generatedAt: new Date().toISOString(),
+    totalScanned: scanned,
+    findings: trueMisroutes,
+  };
+  fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
   console.log();
   console.log(`Full audit: ${outPath}`);
+
+  // Also write /tmp copy for backwards compat with ad-hoc local use.
+  try {
+    fs.writeFileSync('/tmp/true-misroutes.json', JSON.stringify(trueMisroutes, null, 2));
+  } catch { /* /tmp may not be writable in some sandboxes */ }
 }
 
 if (require.main === module) main();
