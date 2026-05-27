@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-27T06:13:01.804Z",
-  "processed": 30,
-  "failed": 602,
-  "successRate": "4.7%",
+  "updatedAt": "2026-05-27T06:18:03.185Z",
+  "processed": 38,
+  "failed": 604,
+  "successRate": "5.9%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingbee": 9,
-    "brightdata": 2,
+    "scrapingbee": 13,
+    "brightdata": 3,
     "archiveToday": 33,
     "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -68,6 +68,17 @@
       "event": "bb-session",
       "session": "cdc60ac6",
       "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
+    },
+    {
+      "t": "2026-05-27T06:13:33.897Z",
+      "event": "bb-session",
+      "session": "164d46cc",
+      "url": "https://www.wsj.com/articles/lets-love-review-ethan-coens-disenchanted-evening-5"
+    },
+    {
+      "t": "2026-05-27T06:13:34.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

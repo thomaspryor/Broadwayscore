@@ -29,7 +29,15 @@
     "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
     "king-of-the-yees-off-broadway-2026/theatermania--unknown.json",
-    "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+    "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+    "lets-love-off-broadway-2026/thewrap--robert-hofler.json",
+    "lets-love-off-broadway-2026/timeout--unknown.json",
+    "lets-love-off-broadway-2026/wsj--unknown.json",
+    "lets-love-off-broadway-2026/front-row-center--tulis-mccall.json",
+    "caroline-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "caroline-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "caroline-off-broadway-2026/nytg--unknown.json",
+    "caroline-off-broadway-2026/broadwaynews--unknown.json"
   ],
   "failed": [
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -633,7 +641,9 @@
     "the-guy-who-didnt-like-musicals-west-end-2026/thestage--unknown.json",
     "angela-s-mixtape-off-broadway-2026/theatermania--unknown.json",
     "miles-for-mary-off-broadway-2026/broadway-blog--matthew-wexler.json",
-    "miles-for-mary-off-broadway-2026/broadwayselect--peter-filichia.json"
+    "miles-for-mary-off-broadway-2026/broadwayselect--peter-filichia.json",
+    "lets-love-off-broadway-2026/broadwayworld--unknown.json",
+    "caroline-off-broadway-2026/indiewire--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -655,10 +665,16 @@
       "miles-for-mary-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
       "miles-for-mary-off-broadway-2026/village-voice--david-cote.json",
       "king-of-the-yees-off-broadway-2026/theatermania--unknown.json",
-      "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json"
+      "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+      "caroline-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "caroline-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "caroline-off-broadway-2026/nytg--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/lets-love-off-broadway-2026/wsj--unknown.json",
+      "lets-love-off-broadway-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -669,11 +685,16 @@
       "trouble-in-mind-2021/broadwayworld--unknown.json",
       "miles-for-mary-off-broadway-2026/nytimes--ben-brantley.json",
       "miles-for-mary-off-broadway-2026/timeout--helen-shaw.json",
-      "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json"
+      "miles-for-mary-off-broadway-2026/front-row-center--tulis-mccall.json",
+      "lets-love-off-broadway-2026/timeout--unknown.json",
+      "lets-love-off-broadway-2026/front-row-center--tulis-mccall.json",
+      "lets-love-off-broadway-2026/broadwayworld--unknown.json",
+      "caroline-off-broadway-2026/broadwaynews--unknown.json"
     ],
     "brightdata": [
       "miles-for-mary-off-broadway-2026/vulture--sara-holdren.json",
-      "miles-for-mary-off-broadway-2026/thewrap--robert-hofler.json"
+      "miles-for-mary-off-broadway-2026/thewrap--robert-hofler.json",
+      "lets-love-off-broadway-2026/thewrap--robert-hofler.json"
     ],
     "archiveToday": [
       "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
@@ -720,7 +741,7 @@
     ]
   },
   "startTime": "2026-05-26T16:49:30.221Z",
-  "lastProcessed": "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
+  "lastProcessed": "caroline-off-broadway-2026/indiewire--unknown.json",
   "log": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -775,6 +796,17 @@
       "event": "bb-session",
       "session": "cdc60ac6",
       "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
+    },
+    {
+      "t": "2026-05-27T06:13:33.897Z",
+      "event": "bb-session",
+      "session": "164d46cc",
+      "url": "https://www.wsj.com/articles/lets-love-review-ethan-coens-disenchanted-evening-5"
+    },
+    {
+      "t": "2026-05-27T06:13:34.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
