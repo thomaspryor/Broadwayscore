@@ -1,0 +1,1320 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-27T02:32:04.388Z",
+    "source": "kalshi-api",
+    "endpointBase": "https://api.elections.kalshi.com/trade-api/v2",
+    "seasonsCovered": [
+      "2025-26"
+    ],
+    "seriesProbed": [
+      "KXTONYAWARDS",
+      "KXBESTMUSICAL",
+      "KXBESTPLAY",
+      "KXBESTREVIVAL",
+      "KXBESTREVIVALMUS",
+      "KXBESTACTORMUS",
+      "KXBESTACTORTONYAWARDS",
+      "KXBESTACRESSTONYS"
+    ],
+    "noData": true,
+    "findings": "Kalshi has no settled Tony Awards markets. KXTONYAWARDS currently lists only 2026 active markets; legacy single-category tickers (KXBESTMUSICAL, KXBESTPLAY, etc.) have placeholder 2025 events with zero markets attached."
+  },
+  "races": [
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Sound Design of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BSODOAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Lee Kinney",
+          "marketTicker": "KXTONYAWARDS-26BSODOAP-LEE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Tom Gibbons",
+          "marketTicker": "KXTONYAWARDS-26BSODOAP-TOM",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Josh Schmidt",
+          "marketTicker": "KXTONYAWARDS-26BSODOAP-JOS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Mikaal Sulaiman",
+          "marketTicker": "KXTONYAWARDS-26BSODOAP-MIK",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Justin Ellington",
+          "marketTicker": "KXTONYAWARDS-26BSODOAP-JUS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Scenic Design of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BSDOAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "David Rockwell",
+          "marketTicker": "KXTONYAWARDS-26BSDOAP-DAVI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Takeshi Kata",
+          "marketTicker": "KXTONYAWARDS-26BSDOAP-TAK",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "David Korins",
+          "marketTicker": "KXTONYAWARDS-26BSDOAP-DAV",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Hildegard Bechtler",
+          "marketTicker": "KXTONYAWARDS-26BSDOAP-HIL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Chloe Lamford",
+          "marketTicker": "KXTONYAWARDS-26BSDOAP-CHL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Scenic Design of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BSDOAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "dots",
+          "marketTicker": "KXTONYAWARDS-26BSDOAM-DOT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Dane Laffrey",
+          "marketTicker": "KXTONYAWARDS-26BSDOAM-DAN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Scott Pask",
+          "marketTicker": "KXTONYAWARDS-26BSDOAM-SCO",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Rachel Hauck",
+          "marketTicker": "KXTONYAWARDS-26BSDOAM-RAC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Soutra Gilmour",
+          "marketTicker": "KXTONYAWARDS-26BSDOAM-SOU",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Sound Design of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BSCDOAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Brian Ronan",
+          "marketTicker": "KXTONYAWARDS-26BSCDOAM-BRIA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Walter Trarbach",
+          "marketTicker": "KXTONYAWARDS-26BSCDOAM-WAL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Adam Fisher",
+          "marketTicker": "KXTONYAWARDS-26BSCDOAM-ADA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Kai Harada",
+          "marketTicker": "KXTONYAWARDS-26BSCDOAM-KAI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Revival of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BROAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Arthur Miller's Death of a Salesman",
+          "marketTicker": "KXTONYAWARDS-26BROAP-ART",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Every Brilliant Thing",
+          "marketTicker": "KXTONYAWARDS-26BROAP-EVE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Oedipus",
+          "marketTicker": "KXTONYAWARDS-26BROAP-OED",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Fallen Angels",
+          "marketTicker": "KXTONYAWARDS-26BROAP-FAL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Becky Shaw",
+          "marketTicker": "KXTONYAWARDS-26BROAP-BEC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Revival of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BROAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Richard O'Brien's The Rocky Horror Show",
+          "marketTicker": "KXTONYAWARDS-26BROAM-RIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Cats: The Jellicle Ball",
+          "marketTicker": "KXTONYAWARDS-26BROAM-CAT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ragtime",
+          "marketTicker": "KXTONYAWARDS-26BROAM-RAG",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actress in a Leading Role in a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BPBAAC",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Carrie Coon",
+          "marketTicker": "KXTONYAWARDS-26BPBAAC-CAR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Lesley Manville",
+          "marketTicker": "KXTONYAWARDS-26BPBAAC-LES",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Rose Byrne",
+          "marketTicker": "KXTONYAWARDS-26BPBAAC-ROS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Susannah Flood",
+          "marketTicker": "KXTONYAWARDS-26BPBAAC-SUS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Kelli O'Hara",
+          "marketTicker": "KXTONYAWARDS-26BPBAAC-KEL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actor in a Leading Role in a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BPBAA",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Will Harrison",
+          "marketTicker": "KXTONYAWARDS-26BPBAA-WIL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Nathan Lane",
+          "marketTicker": "KXTONYAWARDS-26BPBAA-NAT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Daniel Radcliffe",
+          "marketTicker": "KXTONYAWARDS-26BPBAA-DAN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "John Lithgow",
+          "marketTicker": "KXTONYAWARDS-26BPBAA-JOH",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Mark Strong",
+          "marketTicker": "KXTONYAWARDS-26BPBAA-MAR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actress in a Featured Role in a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BPACTRFRM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Ana Gasteyer",
+          "marketTicker": "KXTONYAWARDS-26BPACTRFRM-ANA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Hannah Cruz",
+          "marketTicker": "KXTONYAWARDS-26BPACTRFRM-HAN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Shoshana Bean",
+          "marketTicker": "KXTONYAWARDS-26BPACTRFRM-SHO",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Rachel Dratch",
+          "marketTicker": "KXTONYAWARDS-26BPACTRFRM-RAC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Nichelle Lewis",
+          "marketTicker": "KXTONYAWARDS-26BPACTRFRM-NIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actor in a Featured Role in a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BPACTFRM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Ali Louis Bourzgui",
+          "marketTicker": "KXTONYAWARDS-26BPACTFRM-ALI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "André De Shields",
+          "marketTicker": "KXTONYAWARDS-26BPACTFRM-AND",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Layton Williams",
+          "marketTicker": "KXTONYAWARDS-26BPACTFRM-LAY",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ben Levi Ross",
+          "marketTicker": "KXTONYAWARDS-26BPACTFRM-BEN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Bryce Pinkham",
+          "marketTicker": "KXTONYAWARDS-26BPACTFRM-BRY",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Little Bear Ridge Road",
+          "marketTicker": "KXTONYAWARDS-26BP-LIT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Giant",
+          "marketTicker": "KXTONYAWARDS-26BP-GIA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Liberation",
+          "marketTicker": "KXTONYAWARDS-26BP-LIB",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "The Balusters",
+          "marketTicker": "KXTONYAWARDS-26BP-BAL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Original Score",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BOS",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "August Wilson's Joe Turner's Come and Gone",
+          "marketTicker": "KXTONYAWARDS-26BOS-AUG",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Arthur Miller's Death of a Salesman",
+          "marketTicker": "KXTONYAWARDS-26BOS-ART",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "The Lost Boys",
+          "marketTicker": "KXTONYAWARDS-26BOS-LOS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Schmigadoon!",
+          "marketTicker": "KXTONYAWARDS-26BOS-SCH",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Two Strangers (Carry a Cake Across New York)",
+          "marketTicker": "KXTONYAWARDS-26BOS-TWO",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Orchestrations",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BO",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Andrew Lloyd Webber, David Wilson, Trevor Holder and Doug Schadt",
+          "marketTicker": "KXTONYAWARDS-26BO-AND",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ethan Popp, Kyler England, Adrianne \"AG\" Gonzalez and Gabriel Mann",
+          "marketTicker": "KXTONYAWARDS-26BO-ETH",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Lux Pyramid",
+          "marketTicker": "KXTONYAWARDS-26BO-LUX",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Doug Besterman and Mike Morris",
+          "marketTicker": "KXTONYAWARDS-26BO-DOU",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Brian Usifer",
+          "marketTicker": "KXTONYAWARDS-26BO-BRIA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Two Strangers (Carry a Cake Across New York)",
+          "marketTicker": "KXTONYAWARDS-26BM-TWO",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Titaníque",
+          "marketTicker": "KXTONYAWARDS-26BM-TIT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Schmigadoon!",
+          "marketTicker": "KXTONYAWARDS-26BM-SHM",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "The Lost Boys",
+          "marketTicker": "KXTONYAWARDS-26BM-LOS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Lighting Design of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BLDOAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Natasha Chivers",
+          "marketTicker": "KXTONYAWARDS-26BLDOAP-NAT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Heather Gilbert",
+          "marketTicker": "KXTONYAWARDS-26BLDOAP-HEA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Jack Knowles",
+          "marketTicker": "KXTONYAWARDS-26BLDOAP-JAC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Stacey Derosier",
+          "marketTicker": "KXTONYAWARDS-26BLDOAP-STA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Isabella Byrd",
+          "marketTicker": "KXTONYAWARDS-26BLDOAP-ISA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Direction of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BDOAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Robert Icke",
+          "marketTicker": "KXTONYAWARDS-26BDOAP-ROB",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Nicholas Hytner",
+          "marketTicker": "KXTONYAWARDS-26BDOAP-NIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Joe Mantello",
+          "marketTicker": "KXTONYAWARDS-26BDOAP-JOE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Whitney White",
+          "marketTicker": "KXTONYAWARDS-26BDOAP-WHI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Kenny Leon",
+          "marketTicker": "KXTONYAWARDS-26BDOAP-KEN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Direction of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BDOAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Lear deBessonet",
+          "marketTicker": "KXTONYAWARDS-26BDOAM-LEA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Christopher Gattelli",
+          "marketTicker": "KXTONYAWARDS-26BDOAM-CHR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Michael Arden",
+          "marketTicker": "KXTONYAWARDS-26BDOAM-MIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Tim Jackson",
+          "marketTicker": "KXTONYAWARDS-26BDOAM-TIM",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Zhailon Levingston and Bill Rauch",
+          "marketTicker": "KXTONYAWARDS-26BDOAM-ZHA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Costume Design of a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BCDOAP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Brenda Abbandandolo",
+          "marketTicker": "KXTONYAWARDS-26BCDOAP-BRE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Paul Tazewell",
+          "marketTicker": "KXTONYAWARDS-26BCDOAP-PAU",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Jeff Mahshie",
+          "marketTicker": "KXTONYAWARDS-26BCDOAP-JEF",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Emilio Sosa",
+          "marketTicker": "KXTONYAWARDS-26BCDOAP-EMI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Qween Jean",
+          "marketTicker": "KXTONYAWARDS-26BCDOAP-QWE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Costume Design of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BCDOAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "David I. Reynoso",
+          "marketTicker": "KXTONYAWARDS-26BCDOAM-DAV",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Linda Cho",
+          "marketTicker": "KXTONYAWARDS-26BCDOAM-LIN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Qween Jean",
+          "marketTicker": "KXTONYAWARDS-26BCDOAM-QWE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ryan Park",
+          "marketTicker": "KXTONYAWARDS-26BCDOAM-RYA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Choreography",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BC",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Christopher Gattelli",
+          "marketTicker": "KXTONYAWARDS-26BC-CHR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ani Taj",
+          "marketTicker": "KXTONYAWARDS-26BC-ANI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ellenore Scott",
+          "marketTicker": "KXTONYAWARDS-26BC-ELL",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Omari Wiles and Arturo Lyons",
+          "marketTicker": "KXTONYAWARDS-26BC-OMA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Lauren Yalango-Grant and Christopher Cree Grant",
+          "marketTicker": "KXTONYAWARDS-26BC-LAU",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Book of a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BBOAM",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Schmigadoon!",
+          "marketTicker": "KXTONYAWARDS-26BBOAM-SCH",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Titaníque",
+          "marketTicker": "KXTONYAWARDS-26BBOAM-TIT",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "The Lost Boys",
+          "marketTicker": "KXTONYAWARDS-26BBOAM-LOS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Two Strangers (Carry a Cake Across New York)",
+          "marketTicker": "KXTONYAWARDS-26BBOAM-TWO",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actress in a Featured Role in a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BACTRFP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Laurie Metcalf",
+          "marketTicker": "KXTONYAWARDS-26BACTRFP-LAU",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "June Squibb",
+          "marketTicker": "KXTONYAWARDS-26BACTRFP-JUN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Aya Cash",
+          "marketTicker": "KXTONYAWARDS-26BACTRFP-AYE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Marylouise Burke",
+          "marketTicker": "KXTONYAWARDS-26BACTRFP-MAR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Betsy Aidem",
+          "marketTicker": "KXTONYAWARDS-26BACTRFP-BET",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actress in a Leading Role in a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BACTR",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Caissie Levy",
+          "marketTicker": "KXTONYAWARDS-26BACTR-CAI",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Christiani Pitts",
+          "marketTicker": "KXTONYAWARDS-26BACTR-CHR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Sara Chase",
+          "marketTicker": "KXTONYAWARDS-26BACTR-SAR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Marla Mindelle",
+          "marketTicker": "KXTONYAWARDS-26BACTR-MAR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Stephanie Hsu",
+          "marketTicker": "KXTONYAWARDS-26BACTR-STE",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actor in a Featured Role in a Play",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BACTFP",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Richard Thomas",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-RIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Christopher Abbott",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-CHR",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Danny Burstein",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-DAN",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Ruben Santiago-Hudson",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-RUB",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Brandon J. Dirden",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-BRA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Alden Ehrenreich",
+          "marketTicker": "KXTONYAWARDS-26BACTFP-ALD",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    },
+    {
+      "season": "2025-26",
+      "tonyCategory": "Best Performance by an Actor in a Leading Role in a Musical",
+      "kalshiSeriesTicker": "KXTONYAWARDS",
+      "kalshiEventTicker": "KXTONYAWARDS-26BACT",
+      "kalshiCloseTime": "2026-12-31T15:00:00Z",
+      "closingPrices": [
+        {
+          "showTitle": "Joshua Henry",
+          "marketTicker": "KXTONYAWARDS-26BACT-JOS",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Luke Evans",
+          "marketTicker": "KXTONYAWARDS-26BACT-LUK",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Nicholas Christopher",
+          "marketTicker": "KXTONYAWARDS-26BACT-NIC",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Brandon Uranowitz",
+          "marketTicker": "KXTONYAWARDS-26BACT-BRA",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        },
+        {
+          "showTitle": "Sam Tutty",
+          "marketTicker": "KXTONYAWARDS-26BACT-SAM",
+          "impliedProb": null,
+          "wonMarket": false,
+          "status": "active"
+        }
+      ],
+      "winnerShowTitle": null,
+      "winnerShowId": null,
+      "kalshiTopPick": null,
+      "kalshiTopPickProb": null,
+      "kalshiHit": null,
+      "notes": "all markets have null prices (no trades yet)"
+    }
+  ],
+  "diagnostics": {
+    "seriesProbed": [
+      {
+        "ticker": "KXTONYAWARDS",
+        "title": "Tony Award for Best Sound Design of a Play?",
+        "eventCount": 25,
+        "eventsWithMarkets": 25,
+        "totalMarketsAcrossEvents": 119,
+        "sampleEventTickers": [
+          "KXTONYAWARDS-26BSODOAP",
+          "KXTONYAWARDS-26BSDOAP",
+          "KXTONYAWARDS-26BSDOAM",
+          "KXTONYAWARDS-26BSCDOAM",
+          "KXTONYAWARDS-26BROAP"
+        ]
+      },
+      {
+        "ticker": "KXBESTMUSICAL",
+        "title": "2025 Tony for Best Musical?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTMUSICAL-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTPLAY",
+        "title": "2025 Tony for Best Play?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTPLAY-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTREVIVAL",
+        "title": "2025 Tony for Best Play Revival?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTREVIVAL-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTREVIVALMUS",
+        "title": "2025 Tony for Best Musical Revival?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTREVIVALMUS-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTACTORMUS",
+        "title": "2025 Tony for Best Performance by an Actor in a Leading Role in a Musical?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTACTORMUS-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTACTORTONYAWARDS",
+        "title": "2025 Tony for Best Performance by an Actor in a Leading Role in a Play?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTACTORTONYAWARDS-25"
+        ]
+      },
+      {
+        "ticker": "KXBESTACRESSTONYS",
+        "title": "2025 Tony for Best Performance by an Actress in a Leading Role in a Play?",
+        "eventCount": 1,
+        "eventsWithMarkets": 0,
+        "totalMarketsAcrossEvents": 0,
+        "sampleEventTickers": [
+          "KXBESTACRESSTONYS-25"
+        ]
+      }
+    ]
+  }
+}
