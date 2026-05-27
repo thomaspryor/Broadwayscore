@@ -32,6 +32,12 @@ const EXPECTED = {
   'Vineyard Theatre':  { min: 1,  max: 6,  mustInclude: ['girls', 'msblackforpresident'] },
   'Signature Theatre': { min: 5,  max: 20, mustInclude: ['animal-wisdom', 'king-of-the-yees', 'miles-for-mary'] },
   'MCC Theater':       { min: 3,  max: 12, mustInclude: ['birthright', 'cold-war-choir-practice'] },
+  // Tier A additions (2026-05-26 — Soho Rep, The New Group, Irish Rep).
+  // TFANA + Second Stage Uptown deferred — TFANA site 526 SSL errored,
+  // 2st Uptown stream is currently dormant (Hayes B'way only).
+  'Soho Rep':          { min: 0,  max: 2,  mustInclude: [] },   // 1 current show typical; sometimes between productions
+  'The New Group':     { min: 1,  max: 5,  mustInclude: [] },   // hero + obj-title cards; verifies cross-venue dedup with Signature
+  'Irish Rep':         { min: 1,  max: 4,  mustInclude: [] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {
@@ -39,7 +45,16 @@ for (const venue of OB_VENUE_CONFIGS) {
   const fixturePath = join(FIXTURE_DIR, slug + '.html');
   const expected = EXPECTED[venue.name];
 
-  test(`${venue.name}: fixture parses to band ${expected.min}..${expected.max}`, () => {
+  // P0 from /second-opinion: silent test skip if EXPECTED[venue.name] is
+  // missing. assert.ok(len >= undefined) silently passes. Fail loud.
+  test(`${venue.name}: EXPECTED entry must exist`, () => {
+    assert.ok(expected, `EXPECTED[${JSON.stringify(venue.name)}] missing — add band to EXPECTED map in this file`);
+    assert.ok(typeof expected.min === 'number', `EXPECTED[${venue.name}].min must be number`);
+    assert.ok(typeof expected.max === 'number', `EXPECTED[${venue.name}].max must be number`);
+  });
+
+  test(`${venue.name}: fixture parses to band ${expected?.min ?? '?'}..${expected?.max ?? '?'}`, () => {
+    if (!expected) { assert.fail(`EXPECTED missing — see prior test`); }
     if (!existsSync(fixturePath)) {
       assert.fail(`fixture missing: ${fixturePath} — capture via scripts/smoke-ob-discovery.js`);
     }
