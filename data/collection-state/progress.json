@@ -37,7 +37,17 @@
     "caroline-off-broadway-2026/nyt-theater--jonathan-mandell.json",
     "caroline-off-broadway-2026/nytg--joe-dziemianowicz.json",
     "caroline-off-broadway-2026/nytg--unknown.json",
-    "caroline-off-broadway-2026/broadwaynews--unknown.json"
+    "caroline-off-broadway-2026/broadwaynews--unknown.json",
+    "caroline-off-broadway-2026/musical-theatre-review--unknown.json",
+    "caroline-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+    "caroline-off-broadway-2026/wsj--unknown.json",
+    "caroline-off-broadway-2026/amny--unknown.json",
+    "caroline-off-broadway-2026/artsfuse--unknown.json",
+    "caroline-off-broadway-2026/billboard--unknown.json",
+    "caroline-off-broadway-2026/broadwayworld--unknown.json",
+    "caroline-off-broadway-2026/chicagotribune--unknown.json",
+    "caroline-off-broadway-2026/daily-mail--unknown.json",
+    "caroline-off-broadway-2026/frontmezzjunkies--unknown.json"
   ],
   "failed": [
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -668,12 +678,19 @@
       "lets-love-off-broadway-2026/theatre-reviews-limited--joseph-verlezza.json",
       "caroline-off-broadway-2026/nyt-theater--jonathan-mandell.json",
       "caroline-off-broadway-2026/nytg--joe-dziemianowicz.json",
-      "caroline-off-broadway-2026/nytg--unknown.json"
+      "caroline-off-broadway-2026/nytg--unknown.json",
+      "caroline-off-broadway-2026/musical-theatre-review--unknown.json",
+      "caroline-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+      "caroline-off-broadway-2026/artsfuse--unknown.json",
+      "caroline-off-broadway-2026/broadwayworld--unknown.json",
+      "caroline-off-broadway-2026/frontmezzjunkies--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/lets-love-off-broadway-2026/wsj--unknown.json",
-      "lets-love-off-broadway-2026/wsj--unknown.json"
+      "lets-love-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/caroline-off-broadway-2026/wsj--unknown.json",
+      "caroline-off-broadway-2026/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -689,7 +706,9 @@
       "lets-love-off-broadway-2026/timeout--unknown.json",
       "lets-love-off-broadway-2026/front-row-center--tulis-mccall.json",
       "lets-love-off-broadway-2026/broadwayworld--unknown.json",
-      "caroline-off-broadway-2026/broadwaynews--unknown.json"
+      "caroline-off-broadway-2026/broadwaynews--unknown.json",
+      "caroline-off-broadway-2026/chicagotribune--unknown.json",
+      "caroline-off-broadway-2026/daily-mail--unknown.json"
     ],
     "brightdata": [
       "miles-for-mary-off-broadway-2026/vulture--sara-holdren.json",
@@ -737,11 +756,13 @@
       "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
       "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
-      "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json"
+      "miles-for-mary-off-broadway-2026/theatre-arts-daily--mark-johnson.json",
+      "caroline-off-broadway-2026/amny--unknown.json",
+      "caroline-off-broadway-2026/billboard--unknown.json"
     ]
   },
   "startTime": "2026-05-26T16:49:30.221Z",
-  "lastProcessed": "caroline-off-broadway-2026/indiewire--unknown.json",
+  "lastProcessed": "caroline-off-broadway-2026/frontmezzjunkies--unknown.json",
   "log": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -805,6 +826,17 @@
     },
     {
       "t": "2026-05-27T06:13:34.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:18:43.285Z",
+      "event": "bb-session",
+      "session": "ffa49693",
+      "url": "https://www.wsj.com/arts-culture/books/lady-caroline-lamb-review-flirting-with-t"
+    },
+    {
+      "t": "2026-05-27T06:18:44.260Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
