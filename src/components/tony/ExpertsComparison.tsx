@@ -21,6 +21,13 @@ interface Props {
 export function ExpertsComparison({ data }: Props) {
   const { ours, goldDerby, sample, perCategory, weHitTheyMissed, theyHitWeMissed, weBeatThemCount, theyBeatUsCount } = data;
 
+  // Hide the section entirely if the artifact had no usable data. The getter
+  // returns an empty-shape fallback on malformed/missing JSON; rendering it
+  // would show a confusing "0/0" panel. Better to omit silently.
+  if (ours.total === 0 || goldDerby.total === 0 || sample.races === 0) {
+    return null;
+  }
+
   return (
     <section className="rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
       <div className="flex items-baseline justify-between gap-3 mb-3">

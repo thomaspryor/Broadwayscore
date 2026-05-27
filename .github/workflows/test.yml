@@ -198,12 +198,25 @@ jobs:
         # Comment-only diffs to the Tony predictions module are ignored so
         # docblock edits don't force unrelated audit reruns.
         run: |
-          BASE_REF="${{ github.base_ref || 'main' }}"
-          # Fetch the base ref if we don't have it (PR runs typically do; main
-          # pushes get a shallow clone where origin/main may not be set up).
-          git fetch origin "$BASE_REF" --depth=2 2>/dev/null || true
-          BASE="origin/$BASE_REF"
-          if ! git rev-parse "$BASE" >/dev/null 2>&1; then BASE=HEAD~1; fi
+          # Base-ref selection:
+          # - PR event: github.base_ref is set (e.g. "main"). Compare against origin/<base>.
+          # - Push-to-main / schedule / dispatch: github.base_ref is empty. The
+          #   checked-out HEAD IS origin/main (they point at the same commit),
+          #   so diffing against origin/main shows nothing and the gate silently
+          #   no-ops. Fall back to HEAD~1 to detect the change that just landed.
+          if [ -n "${{ github.base_ref }}" ]; then
+            BASE_REF="${{ github.base_ref }}"
+            git fetch origin "$BASE_REF" --depth=2 2>/dev/null || true
+            BASE="origin/$BASE_REF"
+            if ! git rev-parse "$BASE" >/dev/null 2>&1; then BASE=HEAD~1; fi
+          else
+            # Push / schedule / dispatch — compare to parent commit.
+            BASE=HEAD~1
+            if ! git rev-parse "$BASE" >/dev/null 2>&1; then
+              echo "No parent commit available — skipping LOSO snapshot gate"
+              exit 0
+            fi
+          fi
 
           # Did the predictions module change at all in this diff?
           if ! git diff "$BASE" --name-only -- src/lib/data-tony-predictions.ts | grep -q .; then
