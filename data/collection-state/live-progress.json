@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-27T06:50:19.667Z",
-  "processed": 107,
-  "failed": 625,
-  "successRate": "14.6%",
+  "updatedAt": "2026-05-27T06:54:02.048Z",
+  "processed": 110,
+  "failed": 627,
+  "successRate": "14.9%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 67,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingbee": 28,
     "brightdata": 9,
     "archiveToday": 38,
     "archive": 12
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -101,6 +101,17 @@
       "t": "2026-05-27T06:37:43.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:50:20.732Z",
+      "event": "bb-session",
+      "session": "782204e0",
+      "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvi"
+    },
+    {
+      "t": "2026-05-27T06:50:21.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

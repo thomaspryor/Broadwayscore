@@ -106,7 +106,10 @@
     "sunset-baby-off-broadway-2026/culturesauce--thom-geier.json",
     "sunset-baby-off-broadway-2026/exeunt-magazine--patrick-maley.json",
     "jackals-off-broadway-2026/nytimes--unknown.json",
-    "msblackforpresident-off-broadway-2026/nytimes--unknown.json"
+    "msblackforpresident-off-broadway-2026/nytimes--unknown.json",
+    "msblackforpresident-off-broadway-2026/variety--unknown.json",
+    "the-loved-ones-off-broadway-2026/theatermania--unknown.json",
+    "bocking-off-broadway-2026/playbill--unknown.json"
   ],
   "failed": [
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -733,7 +736,9 @@
     "grangeville-off-broadway-2026/broadwayworld--unknown.json",
     "grangeville-off-broadway-2026/culturesauce--thom-geier.json",
     "grangeville-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "the-comeuppance-off-broadway-2026/thestage--unknown.json"
+    "the-comeuppance-off-broadway-2026/thestage--unknown.json",
+    "msblackforpresident-off-broadway-2026/broadwayworld--unknown.json",
+    "the-loved-ones-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -802,7 +807,9 @@
       "oratorio-for-living-things-off-broadway-2026/nysr--unknown.json",
       "sunset-baby-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
       "sunset-baby-off-broadway-2026/culturesauce--thom-geier.json",
-      "sunset-baby-off-broadway-2026/exeunt-magazine--patrick-maley.json"
+      "sunset-baby-off-broadway-2026/exeunt-magazine--patrick-maley.json",
+      "the-loved-ones-off-broadway-2026/theatermania--unknown.json",
+      "bocking-off-broadway-2026/playbill--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -811,7 +818,9 @@
       "data/review-texts/caroline-off-broadway-2026/wsj--unknown.json",
       "caroline-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/grangeville-off-broadway-2026/wsj--unknown.json",
-      "grangeville-off-broadway-2026/wsj--unknown.json"
+      "grangeville-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/msblackforpresident-off-broadway-2026/variety--unknown.json",
+      "msblackforpresident-off-broadway-2026/variety--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -911,7 +920,7 @@
     ]
   },
   "startTime": "2026-05-26T16:49:30.221Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/nytimes--unknown.json",
+  "lastProcessed": "the-loved-ones-off-broadway-2026/broadwayworld--unknown.json",
   "log": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -999,6 +1008,17 @@
       "t": "2026-05-27T06:37:43.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:50:20.732Z",
+      "event": "bb-session",
+      "session": "782204e0",
+      "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvi"
+    },
+    {
+      "t": "2026-05-27T06:50:21.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
