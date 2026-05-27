@@ -48,7 +48,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
@@ -222,15 +222,38 @@ function urlMatchesShow(href, tokens) {
   if (tokens.length === 0) return true; // no tokens → accept everything
   try {
     const p = new URL(href).pathname.toLowerCase();
-    // Match if ANY significant token appears in the URL path
-    return tokens.some(t => p.includes(t));
+    // Token must match a full path SEGMENT (split on / - _ . space), not a
+    // substring. P1 fix 2026-05-27 (ship-check): substring matching let
+    // `maids` slip into `/the-handmaids-tale-revival` because "maids"
+    // appears inside "handmaids". Segment match catches the actual show
+    // slug while rejecting accidental substring overlap.
+    const segments = p.split(/[\/\-_.\s]+/).filter(Boolean);
+    return tokens.some(t => segments.includes(t));
   } catch { return false; }
 }
 
+// Within-run cache of fetched aggregator articles. Playbill Verdict often
+// covers multiple shows in one article (e.g. a "Best of Off-Broadway" recap
+// linked from 3-5 different shows' Verdict permalinks). Without this cache,
+// the hourly cron fetches the same URL N times. P1 fix 2026-05-27
+// (ship-check): cap BD credit burn at ~1 fetch per unique article per run.
+const _articleCache = new Map();
+
 async function extractAggregatorReviewUrls(articleUrl, show) {
-  const r = await fetchPage(articleUrl);
-  if (!r?.content) return null;
-  const $ = cheerio.load(r.content);
+  let html;
+  if (_articleCache.has(articleUrl)) {
+    html = _articleCache.get(articleUrl);
+  } else {
+    const r = await fetchPage(articleUrl);
+    if (!r?.content) {
+      _articleCache.set(articleUrl, null);
+      return null;
+    }
+    html = r.content;
+    _articleCache.set(articleUrl, html);
+  }
+  if (html == null) return null;
+  const $ = cheerio.load(html);
   const tokens = titleTokens(show.title);
   const urls = new Set();
   $('a[href]').each((_, el) => {
@@ -339,9 +362,49 @@ async function auditShow(show) {
   return result;
 }
 
-async function dispatchGatherFor(showId) {
+// Use execFileSync (no shell) so attacker-controllable URLs from aggregator
+// pages can't smuggle backticks/$()/$VAR/newlines into a shell. P0 fix
+// 2026-05-27 (ship-check). The earlier execSync apostrophe-only escape was
+// insufficient — aggregator pages are third-party HTML that can include
+// arbitrary anchor href values.
+//
+// P1 fix 2026-05-27 (ship-check): skip dispatch if gather-reviews already ran
+// for this show within the last 2 hours. Without this, the hourly cron would
+// re-dispatch the same failing-to-find show indefinitely (gather can't find
+// what gather couldn't find an hour ago). Two-hour cooldown matches the
+// orchestrator's poll cadence so we don't fight it.
+const GATHER_DISPATCH_COOLDOWN_MS = 2 * 60 * 60 * 1000;
+function recentlyDispatched(showId) {
   try {
-    execSync(`gh workflow run gather-reviews.yml -f shows=${showId}`, { stdio: 'pipe' });
+    const out = execFileSync('gh', [
+      'run', 'list',
+      '--workflow=gather-reviews.yml',
+      '--limit=20',
+      '--json=createdAt,displayTitle,event',
+    ], { stdio: ['ignore', 'pipe', 'pipe'], timeout: 30000 }).toString();
+    const runs = JSON.parse(out);
+    const now = Date.now();
+    for (const run of runs) {
+      const title = (run.displayTitle || '').toLowerCase();
+      // gather-reviews dispatches with `shows=<id>` show up in displayTitle.
+      // Fall through to any workflow_dispatch within window as a fail-safe.
+      if (title.includes(showId.toLowerCase()) || run.event === 'workflow_dispatch') {
+        const age = now - Date.parse(run.createdAt);
+        if (age < GATHER_DISPATCH_COOLDOWN_MS && title.includes(showId.toLowerCase())) {
+          return true;
+        }
+      }
+    }
+  } catch { /* fail-open: better to dispatch on uncertain history than block */ }
+  return false;
+}
+async function dispatchGatherFor(showId) {
+  if (recentlyDispatched(showId)) {
+    console.log(`  ⏸  gather-reviews dispatched within last 2h for ${showId} — skipping`);
+    return false;
+  }
+  try {
+    execFileSync('gh', ['workflow', 'run', 'gather-reviews.yml', '-f', `shows=${showId}`], { stdio: 'pipe' });
     return true;
   } catch (e) {
     console.error(`  dispatch failed for ${showId}: ${e.message}`);
@@ -363,8 +426,9 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     return { ok: false, reason: 'unknown-outlet' };
   }
   try {
-    execSync(
-      `node scripts/ingest-review-from-url.js --show=${showId} --url='${url.replace(/'/g, "'\\''")}' --outlet=${knownOutletId}`,
+    execFileSync(
+      'node',
+      ['scripts/ingest-review-from-url.js', `--show=${showId}`, `--url=${url}`, `--outlet=${knownOutletId}`],
       { stdio: 'pipe', timeout: 120000 }
     );
     return { ok: true, reason: null };
@@ -416,14 +480,23 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
     // registry-onboarding queue).
     if (ingestMissing && r.missing.length > 0) {
-      const ingestable = r.missing.filter(m => m.knownOutletId).slice(0, INGEST_PER_SHOW_CAP);
+      const knownMissing = r.missing.filter(m => m.knownOutletId);
+      const ingestable = knownMissing.slice(0, INGEST_PER_SHOW_CAP);
+      // P1 fix 2026-05-27 (ship-check): record cap-skipped URLs in the audit
+      // so future runs (and operators) can see they exist and weren't silently
+      // dropped. Without this, the cap created an invisible backlog.
+      const cappedSkipped = knownMissing.slice(INGEST_PER_SHOW_CAP);
       const skipped = r.missing.filter(m => !m.knownOutletId);
       r.ingestResults = [];
+      r.ingestSkippedByCap = cappedSkipped.map(m => ({ url: m.url, host: m.host, outletId: m.knownOutletId }));
       for (const m of ingestable) {
         const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
         r.ingestResults.push({ url: m.url, host: m.host, outletId: m.knownOutletId, ok: res.ok, reason: res.reason });
         const tag = res.ok ? '✅ ingested' : `✗ ingest failed (${res.reason || 'unknown'})`;
         console.log(`  ${tag}: ${m.url}`);
+      }
+      if (cappedSkipped.length > 0) {
+        console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);
       }
       if (skipped.length > 0) {
         console.log(`  ⏸  skipped ${skipped.length} URL(s) with unknown outlets (see unknown-aggregator-outlets.json): ${skipped.map(s => s.host).join(', ')}`);
