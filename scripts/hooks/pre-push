@@ -42,13 +42,16 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
 
 # Aggregate all changed paths across the push range, plus run the
-# CLAUDE.md guard in the same pass.
+# CLAUDE.md guard in the same pass. Track whether ANY spec is a real
+# (non-deletion) push — if every spec is a delete, skip audits entirely.
 ALL_CHANGED_FILES=""
+HAVE_NON_DELETE_SPEC=0
 
 for spec in "${PUSH_SPECS[@]}"; do
   read local_ref local_oid remote_ref remote_oid <<<"$spec"
-  # Skip deletions
+  # Skip deletions (local_oid is all zeros for `git push --delete`)
   [ "$local_oid" = "0000000000000000000000000000000000000000" ] && continue
+  HAVE_NON_DELETE_SPEC=1
 
   if [ "$remote_oid" = "0000000000000000000000000000000000000000" ]; then
     # New branch — diff against the merge-base with origin/main if possible.
@@ -106,8 +109,14 @@ run_audit() {
   rm -f /tmp/pre-push-audit.out
 }
 
-# If we have no change list at all (truly first push, no upstream),
-# default to running all audits — safer than skipping.
+# Pure-deletion push (every spec was a delete) — nothing to audit.
+if [ "$HAVE_NON_DELETE_SPEC" = "0" ]; then
+  exit 0
+fi
+
+# Non-delete specs exist but we couldn't determine the file list (rare:
+# truly first push, no upstream to diff against). Run all audits as a
+# safe default rather than skipping.
 if [ -z "$(echo "$ALL_CHANGED_FILES" | tr -d '[:space:]')" ]; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js"
   run_audit "orphan-tests" "scripts/audit-orphan-tests.js"
