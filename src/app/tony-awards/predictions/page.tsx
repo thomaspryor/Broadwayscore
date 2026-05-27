@@ -5,6 +5,7 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { BlendedTrioDisplay } from '@/components/show-cards';
 import { TrackRecord } from '@/components/tony/TrackRecord';
+import { ExpertsComparison } from '@/components/tony/ExpertsComparison';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -15,6 +16,7 @@ import {
   computeBlendedAccuracyStats,
   getSeasonSummary,
   getTonyLosoStats,
+  getGoldDerbyComparison,
   hasNominationsBeenAnnounced,
 } from '@/lib/data-tony-predictions';
 
@@ -49,6 +51,7 @@ export default function TonyPredictionsOverviewPage() {
   const seasons = getAllPredictionSeasons();
   const stats = computeBlendedAccuracyStats(allShows);
   const losoStats = getTonyLosoStats();
+  const gdComparison = getGoldDerbyComparison();
 
   // Current season data — nomination-aware
   const currentEligible = getEligibleShows(allShows, currentSeason);
@@ -218,6 +221,11 @@ export default function TonyPredictionsOverviewPage() {
           <p className="text-xs text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
             <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same {stats.seasonCount} seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation &mdash; refitting the weights on the other {stats.seasonCount - 1} seasons and predicting the held-out one &mdash; the model matches <span className="text-white font-semibold">{losoStats.totalLoso.pct}%</span> of past winners ({losoStats.totalLoso.hits} of {losoStats.totalLoso.total}). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
           </p>
+        </section>
+
+        {/* Experts comparison: head-to-head against GoldDerby's pundit consensus */}
+        <section className="mb-10 max-w-3xl mx-auto">
+          <ExpertsComparison data={gdComparison} />
         </section>
 
         {/* Season Grid */}
