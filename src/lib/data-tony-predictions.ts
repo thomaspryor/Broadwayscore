@@ -853,6 +853,25 @@ export function tonyComposite(
   const r = getRecipe(categoryKey, tier);
   if (!r) return null;
 
+  // Dominant-audience-null fallback. For categories where the recipe puts
+  // more than half the weight on audience (currently best-revival-musical
+  // at 0.95), a show with no Show Score + Mezzanine coverage would have
+  // audience dropped and the remaining 5% awards renormalized to 100% —
+  // a degenerate "judged on a single precursor signal" score that doesn't
+  // reflect the show's actual reception. When audience is the dominant
+  // signal and missing, fall back to a 50/50 critic + awards blend so the
+  // score is at least anchored to two independent inputs. Today this is
+  // latent (all 2025-26 revival musical nominees have audience data); the
+  // guard exists for the next revival musical without audience coverage.
+  if (r.audience > 0.5 && audienceGrade == null) {
+    const fallback: Array<{ weight: number; value: number }> = [];
+    if (criticScore != null) fallback.push({ weight: 0.5, value: criticScore });
+    if (awardsScore > 0) fallback.push({ weight: 0.5, value: awardsScore });
+    if (fallback.length === 0) return null;
+    const ft = fallback.reduce((s, c) => s + c.weight, 0);
+    return fallback.reduce((s, c) => s + (c.weight / ft) * c.value, 0);
+  }
+
   const components: Array<{ weight: number; value: number }> = [];
   if (r.critic > 0 && criticScore != null) components.push({ weight: r.critic, value: criticScore });
   if (r.audience > 0 && audienceGrade != null) components.push({ weight: r.audience, value: audienceGrade });
