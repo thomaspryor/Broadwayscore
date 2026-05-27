@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T17:39:34.505Z",
+  "timestamp": "2026-05-27T18:19:43.736Z",
   "stats": {
-    "totalReviews": 37694,
-    "alreadyFlagged": 16583,
+    "totalReviews": 37692,
+    "alreadyFlagged": 16581,
     "dateGuardCatches": 102,
     "directorMismatch": 800,
-    "tvFilmSignals": 1029,
+    "tvFilmSignals": 1028,
     "londonSignals": 581,
     "offBroadwaySignals": 450,
     "yearMismatch": 78,
-    "noPublishDate": 3971
+    "noPublishDate": 3972
   },
   "findings": [
     {
@@ -8589,20 +8589,6 @@
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
-      "publishDate": "2026-05-27",
-      "url": "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "nyt-theater--unknown.json",
       "score": 73,
       "publishDate": "2026-05-26",
       "url": "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
