@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T14:39:43.600Z",
+  "timestamp": "2026-05-27T14:55:25.683Z",
   "stats": {
-    "totalReviews": 37640,
+    "totalReviews": 37655,
     "alreadyFlagged": 16575,
     "dateGuardCatches": 102,
     "directorMismatch": 801,
-    "tvFilmSignals": 1025,
+    "tvFilmSignals": 1027,
     "londonSignals": 581,
     "offBroadwaySignals": 450,
     "yearMismatch": 78,
-    "noPublishDate": 3938
+    "noPublishDate": 3953
   },
   "findings": [
     {
@@ -8574,6 +8574,20 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2026/05/26/heated-rivalry-the-unauthorized-musical-parody-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "nyt-theater--unknown.json",
       "score": 73,
       "publishDate": "2026-05-26",
@@ -8583,6 +8597,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
