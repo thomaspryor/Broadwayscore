@@ -133,7 +133,10 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 ### 15. Test Extraction Pattern (MANDATORY for new logic tests)
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
-### 16. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
+### 16. Propose Memory Entries Inline (at session end)
+During `/wrap-up` / `/done`, propose a full `memory/feedback_*.md` entry (frontmatter + Why + How-to-apply, quality of `feedback_404_not_terminal.md`) if you saw: 2+ corrections on same topic, 10+ re-reads of same file, or explicit "remember this / always do X / never do Y." Show the proposed entry; user replies `y` to commit. **Why:** post-hoc cron miners ship templated slop; in-session you saw the incident. Teardown rationale: 2026-05-27.
+
+### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full incident history.
 - **NEVER call `POST /broadcasts/{id}/send` directly** — all sends via `send-opening-night-broadcast.js` only
 - **NEVER broadcast to test or validate anything** — use `--send-to=your@email.com` (transactional, never broadcast)
