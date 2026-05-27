@@ -1,25 +1,25 @@
 {
   "_meta": {
-    "generatedAt": "2026-05-23T21:39:48.093Z",
+    "generatedAt": "2026-05-27T02:28:36.430Z",
     "sample": {
       "races": 39,
       "cycles": 10
     },
     "ourSummary": {
-      "hits": 36,
+      "hits": 37,
       "total": 39,
-      "pct": 0.9230769230769231
+      "pct": 0.9487179487179487
     },
     "gdSummary": {
       "hits": 32,
       "total": 39,
       "pct": 0.8205128205128205
     },
-    "deltaInRaces": 4,
-    "weBeatThemCount": 5,
+    "deltaInRaces": 5,
+    "weBeatThemCount": 6,
     "theyBeatUsCount": 1,
     "bothRight": 31,
-    "bothWrong": 2,
+    "bothWrong": 1,
     "caveats": [
       "Our recipe weights are grid-search-tuned on historical Tony outcomes; the 91% is in-sample-fit.",
       "LOOCV (leave-one-out cross-validation) would land a few pp lower for us.",
@@ -30,7 +30,7 @@
   },
   "catStats": {
     "best-musical": {
-      "ours": 9,
+      "ours": 10,
       "theirs": 9,
       "total": 10
     },
@@ -120,15 +120,15 @@
       "category": "Best Musical",
       "winnerShowId": "the-outsiders-2024",
       "winnerTitle": "The Outsiders",
-      "ourPickShowId": "suffs",
-      "ourPickTitle": "Suffs",
-      "ourHit": false,
+      "ourPickShowId": "the-outsiders",
+      "ourPickTitle": "The Outsiders",
+      "ourHit": true,
       "gdPickTitle": "Hell's Kitchen ",
       "gdPickPct": 36.6,
       "gdHit": false,
       "bothRight": false,
-      "bothWrong": true,
-      "weBeatThem": false,
+      "bothWrong": false,
+      "weBeatThem": true,
       "theyBeatUs": false
     },
     {
@@ -767,6 +767,22 @@
       "ourHit": true,
       "gdPickTitle": "Yellow Face",
       "gdPickPct": 64.8,
+      "gdHit": false,
+      "bothRight": false,
+      "bothWrong": false,
+      "weBeatThem": true,
+      "theyBeatUs": false
+    },
+    {
+      "cycle": "2023-24",
+      "category": "Best Musical",
+      "winnerShowId": "the-outsiders-2024",
+      "winnerTitle": "The Outsiders",
+      "ourPickShowId": "the-outsiders",
+      "ourPickTitle": "The Outsiders",
+      "ourHit": true,
+      "gdPickTitle": "Hell's Kitchen ",
+      "gdPickPct": 36.6,
       "gdHit": false,
       "bothRight": false,
       "bothWrong": false,

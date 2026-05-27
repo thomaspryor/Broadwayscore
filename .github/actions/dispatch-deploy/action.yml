@@ -10,7 +10,9 @@ runs:
         GH_TOKEN: ${{ github.token }}
       run: |
         # Skip deploy dispatch if one was triggered in the last 15 min (avoids spam)
-        RECENT=$(gh run list --workflow="Deploy to Vercel" --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+        # Use the file path — display name resolution returns the workflow
+        # twice across paginated workflow listings (2026-05-27 outage).
+        RECENT=$(gh run list --workflow=vercel-deploy.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
         if [ -n "$RECENT" ]; then
           RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
           NOW_TS=$(date +%s)
