@@ -54,8 +54,13 @@ jobs:
         run: |
           # All paths: fetch HEAD and last-successful-deploy SHA first.
           MAIN_HEAD=$(git rev-parse origin/main)
+          # Use the workflow file path, not the display name — the
+          # Workflows API returns this workflow twice (across pages) and
+          # `--workflow="Deploy to Vercel"` then errors with
+          # `could not resolve to a unique workflow; found: vercel-deploy.yml
+          # vercel-deploy.yml`, which broke every deploy on 2026-05-27.
           LAST_DEPLOYED=$(gh run list \
-            --workflow="Deploy to Vercel" \
+            --workflow=vercel-deploy.yml \
             --limit=30 \
             --json headSha,conclusion \
             --jq '[.[] | select(.conclusion == "success")][0].headSha // ""')
