@@ -1038,7 +1038,10 @@ jobs:
         #
         # Skips silently when SERP/scrape secrets are absent (Dependabot,
         # forks). The cron freshness job catches drift outside this window.
-        if: env.HAS_SCRAPE_SECRETS == 'true'
+        # `always()` keeps this gate independent of upstream audit failures
+        # (cast-changes, regex FP rate, etc.) since they cover different
+        # concerns and shouldn't share a fail-fast.
+        if: always() && env.HAS_SCRAPE_SECRETS == 'true'
         env:
           HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
