@@ -1042,7 +1042,7 @@ const _SLUG_STOPWORDS = new Set([
 function _tokenizeTitleText(text) {
   return text
     .toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/'/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
@@ -1104,12 +1104,18 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   for (const show of shows) {
     const tokens = _showDistinctiveTokens(show);
     if (tokens.length === 0) continue;
-    // Single-token gate: require ≥4 char token (lowered from 5 to admit
-    // legit short-title shows like "Oliver!" / "Cabaret"). 3-char tokens
-    // (e.g. [ark] from "An Ark") would match too many slugs without a
-    // second supporting token, so they need at least a 4-char distinctive
-    // token to qualify alone.
-    if (tokens.length === 1 && tokens[0].length < 4) continue;
+    // Single-token gate: require ≥5 char token. Lower thresholds admit
+    // common 4-char English words as "distinctive tokens" — `home`, `life`,
+    // `data`, `cats`, `fish`, `rent`, `fame`, `town`, `news`, etc. — and
+    // every aggregator slug containing those words gets matched to the
+    // wrong show via the squared-length tiebreaker. Discovered 2026-05-27
+    // ship-check (Codex): a 4-char gate produced 241 NEW misroutes in the
+    // 38K-file audit. Shows with single 3-4 char title tokens (e.g. "An
+    // Ark") are intentionally rejected — too noisy without a second
+    // supporting token. The HOLIDAY INN regression that motivated the
+    // title-token switch is fixed without lowering this gate because
+    // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
+    if (tokens.length === 1 && tokens[0].length < 5) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;
