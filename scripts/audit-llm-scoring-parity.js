@@ -176,8 +176,8 @@ for (const dirent of showDirs) {
     }
     scanned++;
 
-    const rebuildIncludes = isIncludableForRebuild(data, show);
-    const llmIncludes = isScoreable(data, show);
+    const rebuildIncludes = isIncludableForRebuild(data, show, filePath);
+    const llmIncludes = isScoreable(data, show, filePath);
 
     if (rebuildIncludes === llmIncludes) {
       agree++;

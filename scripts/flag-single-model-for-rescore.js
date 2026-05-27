@@ -64,7 +64,7 @@ function main() {
       if (!data.llmScore || data.ensembleData) continue;
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (!isScoreable(data, showFor(data))) continue;
+      if (!isScoreable(data, showFor(data), filePath)) continue;
 
       singleModelTotal++;
       const tier = data.contentTier || 'unknown';
