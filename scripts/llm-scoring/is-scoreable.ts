@@ -26,8 +26,8 @@ const { isIncludableForRebuild } = require('../lib/review-guards');
 // triggers the weekly integrity check hard-violation gate (check-score-integrity.js).
 const NO_STAR_OUTLETS = new Set(['london-theatre']);
 
-export function isScoreable(data: Record<string, any>, show?: Record<string, any>): boolean {
-  if (!isIncludableForRebuild(data, show)) return false;
+export function isScoreable(data: Record<string, any>, show?: Record<string, any>, filePath?: string): boolean {
+  if (!isIncludableForRebuild(data, show, filePath)) return false;
 
   // LLM-only extras — files rebuild includes (because aggregator/originalScore
   // signal exists) but LLM cannot score (because LLM scores from text):

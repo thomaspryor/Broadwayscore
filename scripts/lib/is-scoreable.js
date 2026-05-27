@@ -8,8 +8,8 @@
 const { hasExcerpt } = require('./excerpt-fields');
 const { isIncludableForRebuild } = require('./review-guards');
 
-function isScoreable(data, show) {
-  if (!isIncludableForRebuild(data, show)) return false;
+function isScoreable(data, show, filePath) {
+  if (!isIncludableForRebuild(data, show, filePath)) return false;
   if (data.incompleteReason === 'scraper_garbage') return false;
   if (data.showNotMentioned && !hasExcerpt(data)) return false;
   return true;
