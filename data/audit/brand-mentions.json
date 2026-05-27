@@ -1,5 +1,5 @@
 {
-  "lastRunAt": "2026-05-26T14:14:21.321Z",
+  "lastRunAt": "2026-05-27T14:28:45.943Z",
   "seenIds": {
     "hn:47523414": true,
     "google:eafa90cb9c27e2e6": true,
@@ -47,7 +47,8 @@
     "google:b261d59c7eb034fc": true,
     "google:64c53c456befa176": true,
     "google:d93e06652368c5cd": true,
-    "google:e04619e5f3c8f566": true
+    "google:e04619e5f3c8f566": true,
+    "google:0eb0f0a05821edc9": true
   },
   "mentions": [
     {
@@ -972,10 +973,30 @@
       "draftReason": "google is a no-reply source (article or search result)",
       "draftResponse": null,
       "dispatched": "2026-05-19T14:12:42.921Z"
+    },
+    {
+      "id": "google:0eb0f0a05821edc9",
+      "source": "google",
+      "url": "https://www.amazon.co.uk/Broadway-Breakdown/dp/B08K5ZJNBJ",
+      "title": "Matt Koplik - Broadway Breakdown",
+      "excerpt": "BroadwayScoreCard.Com. This is a public episode. If you would like to discuss this with other subscribers or get access to bonus episodes, visit ...",
+      "author": null,
+      "publishedAt": null,
+      "detectedAt": "2026-05-27T14:28:37.641Z",
+      "raw": {
+        "matchedKeyword": "broadwayscorecard.com"
+      },
+      "status": "new",
+      "sentiment": "neutral",
+      "shouldRespond": false,
+      "confidence": "high",
+      "draftReason": "google is a no-reply source (article or search result)",
+      "draftResponse": null,
+      "dispatched": "2026-05-27T14:28:45.943Z"
     }
   ],
   "stats": {
-    "totalSeen": 47,
+    "totalSeen": 48,
     "totalDispatched": 0,
     "lastCalibration": null
   },
@@ -1025,6 +1046,7 @@
     "https://showscorecard.com/": true,
     "https://showscorecard.com/critics/outlets/new-york-theatre-guide": true,
     "https://www.threads.com/@bwayscorecard": true,
-    "https://the-avocado.org/2026/04/22/the-22-april-night-thread-of-souled-out-by-k-tel": true
+    "https://the-avocado.org/2026/04/22/the-22-april-night-thread-of-souled-out-by-k-tel": true,
+    "https://www.amazon.co.uk/Broadway-Breakdown/dp/B08K5ZJNBJ": true
   }
 }
