@@ -6,7 +6,7 @@
     "scoringEnd": "2026-06-15",
     "budget": 100,
     "teamSize": 8,
-    "generatedAt": "2026-05-20T18:58:33.143Z",
+    "generatedAt": "2026-05-27T18:58:11.715Z",
     "pricing": {
       "source": "frozen",
       "frozenAt": "2026-04-21T00:22:26.919Z",
@@ -80,7 +80,7 @@
       "title": "Beaches, A New Musical",
       "type": "musical",
       "category": "broadway",
-      "status": "open",
+      "status": "closed",
       "openingDate": "2026-04-22",
       "criticScore": 45.01,
       "audienceGrade": "C+",
@@ -190,8 +190,8 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-12",
-      "criticScore": 77.9,
-      "audienceGrade": "A",
+      "criticScore": 76.88,
+      "audienceGrade": "A-",
       "slug": "titanique",
       "image": "/images/shows/titanique-2026/thumbnail.webp"
     },
@@ -226,7 +226,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2026-04-07",
-      "criticScore": 85.22,
+      "criticScore": 84.04,
       "audienceGrade": "A",
       "slug": "cats-the-jellicle-ball",
       "image": "/images/shows/cats-the-jellicle-ball-2026/thumbnail.webp"
@@ -478,7 +478,7 @@
       "category": "broadway",
       "status": "open",
       "openingDate": "2025-10-16",
-      "criticScore": 83.35,
+      "criticScore": 83.31,
       "audienceGrade": "A+",
       "slug": "ragtime",
       "image": "/images/shows/ragtime-2025/thumbnail.webp"
@@ -640,8 +640,8 @@
       "category": "off-broadway",
       "status": "open",
       "openingDate": "2026-04-14",
-      "criticScore": 80.98,
-      "audienceGrade": "A-",
+      "criticScore": 82.43,
+      "audienceGrade": "B+",
       "slug": "rheology-off-broadway",
       "image": "/images/shows/rheology-off-broadway-2026/thumbnail.webp"
     },
@@ -735,24 +735,6 @@
       "slug": "my-joy-is-heavy-off-broadway",
       "image": "/images/shows/my-joy-is-heavy-off-broadway-2025/thumbnail.webp"
     },
-    "masquerade-off-broadway-2025": {
-      "price": 8,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "Masquerade",
-      "type": "musical",
-      "category": "off-broadway",
-      "status": "open",
-      "openingDate": "2025-09-29",
-      "criticScore": 73.58,
-      "audienceGrade": "A+",
-      "slug": "masquerade-off-broadway",
-      "image": "/images/shows/masquerade-off-broadway-2025/thumbnail.webp"
-    },
     "la-traviata-off-broadway-2026": {
       "price": 8,
       "eligible": {
@@ -770,6 +752,42 @@
       "audienceGrade": "A+",
       "slug": "la-traviata-off-broadway",
       "image": "/images/shows/la-traviata-off-broadway-2026/thumbnail.webp"
+    },
+    "morgan-bassichis-can-i-be-frank-off-broadway-2026": {
+      "price": 8,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Morgan Bassichis: Can I Be Frank?",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "open",
+      "openingDate": "2025-08-04",
+      "criticScore": 73.02,
+      "audienceGrade": null,
+      "slug": "morgan-bassichis-can-i-be-frank-off-broadway",
+      "image": "/images/shows/morgan-bassichis-can-i-be-frank-off-broadway-2026/thumbnail.webp"
+    },
+    "caroline-off-broadway-2026": {
+      "price": 10,
+      "eligible": {
+        "criticScore": true,
+        "audienceGrade": true,
+        "boxOffice": false,
+        "tonys": false
+      },
+      "title": "Caroline",
+      "type": "play",
+      "category": "off-broadway",
+      "status": "closed",
+      "openingDate": "2025-10-01",
+      "criticScore": 81.76,
+      "audienceGrade": null,
+      "slug": "caroline",
+      "image": null
     },
     "innocence-off-broadway-2026": {
       "price": 6,
@@ -842,24 +860,6 @@
       "audienceGrade": null,
       "slug": "going-bacharach-the-songs-of-an-icon-off-broadway",
       "image": "/images/shows/going-bacharach-the-songs-of-an-icon-off-broadway-2026/thumbnail.webp"
-    },
-    "data-off-broadway-2026": {
-      "price": 8,
-      "eligible": {
-        "criticScore": true,
-        "audienceGrade": true,
-        "boxOffice": false,
-        "tonys": false
-      },
-      "title": "Data",
-      "type": "play",
-      "category": "off-broadway",
-      "status": "closed",
-      "openingDate": "2026-01-09",
-      "criticScore": 79.2,
-      "audienceGrade": "B+",
-      "slug": "data-off-broadway",
-      "image": "/images/shows/data-off-broadway-2026/thumbnail.webp"
     }
   },
   "scoring": {
