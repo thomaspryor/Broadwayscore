@@ -38,6 +38,10 @@ const EXPECTED = {
   'Soho Rep':          { min: 0,  max: 2,  mustInclude: [] },   // 1 current show typical; sometimes between productions
   'The New Group':     { min: 1,  max: 5,  mustInclude: [] },   // hero + obj-title cards; verifies cross-venue dedup with Signature
   'Irish Rep':         { min: 1,  max: 4,  mustInclude: [] },
+  // Added 2026-05-27. Fixture captured live; current season had 6 shows
+  // (the-maids, weather-girl, flaming-september, anna-christie, hate-radio,
+  // scorched-earth) + 1 gala excluded by pattern.
+  "St. Ann's Warehouse": { min: 4, max: 10, mustInclude: ['the-maids', 'weather-girl'] },
 };
 
 for (const venue of OB_VENUE_CONFIGS) {
