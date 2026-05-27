@@ -278,6 +278,21 @@ function getPersonPastStats(name: string, currentAwardsSeason: string): { priorN
 // --- Main export ---
 
 /**
+ * Most recent `_meta.lastUpdated` across the three odds sources (GD / Kalshi /
+ * Polymarket). Returns an ISO string, or null if no meta is present. Used by
+ * the Predictions page to surface scrape freshness next to "Updated frequently".
+ */
+export function getOddsLastUpdated(): string | null {
+  const metas = [
+    (gdRawData as { _meta?: { lastUpdated?: string } })._meta?.lastUpdated,
+    (kalshiOddsRaw as { _meta?: { lastUpdated?: string } })._meta?.lastUpdated,
+    (polymarketOddsRaw as { _meta?: { lastUpdated?: string } })._meta?.lastUpdated,
+  ].filter((s): s is string => typeof s === 'string' && s.length > 0);
+  if (metas.length === 0) return null;
+  return metas.sort().pop() || null;
+}
+
+/**
  * Enrich the 4 major categories (Best Musical/Play/Revival) with prediction-market
  * odds, precursor wins, and press picks. Used by both the Nominations Center
  * (which then sorts by GD odds) and the Tony Predictions table (which keeps
