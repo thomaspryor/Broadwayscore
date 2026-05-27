@@ -55,7 +55,12 @@ const FIXTURES = [
   ['reviews-what-do-the-critics-think-of-the-lost-boys-on-broadway', 'lost-boys', null],
   ['what-are-reviews-for-broken-snow-starring-tom-cavanagh-tony-danza-and-michael-longfellow', 'broken-snow', 'long arbitrary tail'],
   ['what-are-reviews-for-eliana-theologides-rodriguezs-indian-princesses-off-broadway', 'indian-princesses', 'long possessive author chain + -off-broadway tail'],
-  ['what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello', 'othello', 'company prefix + classical author prefix'],
+  // Regression: pre-2026-05-27 matcher routed this to closed `othello-2025`
+  // (1 token match) because longest-substring beat token-set. New token-set
+  // matcher requires ALL show-tokens to hit, so 2-token `bedlams-othello-off-
+  // broadway-2026` wins over single-token `othello-2025`. Reviews for the
+  // 2026 Bedlam revival shipped to the closed 2025 row on 2026-05-27.
+  ['what-are-the-reviews-for-bedlams-4-person-version-of-shakespeares-othello', 'bedlams-othello', 'must route to 2026 Bedlam revival not closed 2025 Othello'],
   ['what-do-reviews-think-of-bubba-weilers-well-ill-let-you-go-at-studio-seaview', 'well-ill-let-you-go', 'possessive author + venue suffix'],
   // Bug-trigger slugs (articles that appeared AFTER the May 24 cached page):
   ['read-the-reviews-for-the-maids-off-broadway', 'the-maids', 'verified live on category page 2026-05-27'],
