@@ -1,0 +1,91 @@
+name: Audit Aggregator Review Gap
+
+on:
+  schedule:
+    # Hourly during opening-night window. Each run takes <5 min (one SERP per
+    # show + one fetch per aggregator article) and tagged shows are usually
+    # under 15. Detect aggregator-listed URLs missing from our review-texts and
+    # auto-dispatch gather-reviews for the affected shows so the next poller
+    # cron finds them.
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      window_days:
+        description: 'How many days post-opening to audit (default 21)'
+        required: false
+        default: '21'
+      dispatch_gather:
+        description: 'Auto-dispatch gather-reviews for shows with gaps (default true)'
+        required: false
+        default: 'true'
+      fail_on_gap:
+        description: 'Exit non-zero when any in-window show has gaps (default false — advisory)'
+        required: false
+        default: 'false'
+
+concurrency:
+  group: audit-aggregator-gap
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run gap audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          WINDOW="${{ github.event.inputs.window_days || '21' }}"
+          DISPATCH="${{ github.event.inputs.dispatch_gather || 'true' }}"
+          FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
+          ARGS="--window=$WINDOW"
+          if [ "$DISPATCH" = "true" ]; then
+            ARGS="$ARGS --dispatch-gather"
+          fi
+          if [ "$FAIL" = "true" ]; then
+            ARGS="$ARGS --fail-on-gap"
+          fi
+          node scripts/audit-show-review-gap.js $ARGS
+
+      - name: Commit audit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/show-review-gap.json || true
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "audit: show-review-gap [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Aggregator Review Gap Audit Failed'
+          severity: 'warning'
