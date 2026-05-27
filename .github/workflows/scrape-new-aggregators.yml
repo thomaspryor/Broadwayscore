@@ -3,7 +3,11 @@ name: Scrape New Aggregators
 
 on:
   schedule:
-    - cron: '0 11 * * 0'  # Weekly on Sundays at 11 AM UTC (after NYSR)
+    # 14:00 UTC daily (10am ET). PV roundups for OB shows publish mid-week
+    # (e.g. The Maids 2026-05-25, Heated Rivalry 2026-05-26 both landed
+    # between Sunday runs). Daily catches them inside 24h instead of waiting
+    # up to 6 days. PV-only fetch is cheap (~1 SB credit/run).
+    - cron: '0 14 * * *'
   workflow_dispatch:
     inputs:
       aggregator:
@@ -15,6 +19,7 @@ on:
           - playbill-verdict
           - nyc-theatre
           - lbo-roundups
+          - bww-landing
       shows:
         description: 'Comma-separated show IDs to target (empty = all shows)'
         required: false
@@ -86,6 +91,23 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Playbill Verdict aggregator archive"
+
+      # Commit the unmatched-articles audit log to the public repo. The
+      # downstream rebuild job re-checks out main and would lose this file
+      # otherwise. data/audit/ is the established public-repo audit location
+      # (see audit-aggregator-coverage.yml for the same pattern).
+      - name: Commit Playbill Verdict unmatched-articles audit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/playbill-verdict-unmatched.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Playbill Verdict unmatched articles audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No unmatched-articles changes to commit"
+          fi
 
   scrape-nyc-theatre:
     runs-on: ubuntu-latest
@@ -209,10 +231,81 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LBO roundup aggregator archive"
 
+  # BWW /reviews/ landing-page discovery: scrape the visible REVIEW ROUNDUPS
+  # section, match URLs to shows.json, dispatch matched shows through the
+  # existing per-show BWW roundup pipeline. Catches roundups the per-show
+  # Google search misses (e.g., Heated Rivalry 2026-05-26).
+  scrape-bww-landing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: [scrape-lbo-roundups]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'bww-landing') }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: BWW landing-page roundup discovery
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/scrape-bww-reviews.js --landing-discover
+
+      - name: Push review-texts to private repo (BWW landing)
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: BWW landing-page roundup scrape"
+      - name: Push aggregator-archive to private repo (BWW landing)
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: BWW landing-page roundup archive"
+
+      - name: Commit BWW unmatched-roundups audit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/bww-roundup-unmatched.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: BWW landing-page unmatched roundups audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No BWW unmatched-roundups changes to commit"
+          fi
+
   # Rebuild reviews.json after aggregator data is committed
   rebuild:
-    needs: [scrape-playbill-verdict, scrape-nyc-theatre, scrape-lbo-roundups]
-    if: always() && (needs.scrape-playbill-verdict.result == 'success' || needs.scrape-nyc-theatre.result == 'success' || needs.scrape-lbo-roundups.result == 'success')
+    needs: [scrape-playbill-verdict, scrape-nyc-theatre, scrape-lbo-roundups, scrape-bww-landing]
+    if: always() && (needs.scrape-playbill-verdict.result == 'success' || needs.scrape-nyc-theatre.result == 'success' || needs.scrape-lbo-roundups.result == 'success' || needs.scrape-bww-landing.result == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
