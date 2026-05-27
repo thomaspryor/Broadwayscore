@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T18:19:43.736Z",
+  "timestamp": "2026-05-27T18:38:08.975Z",
   "stats": {
-    "totalReviews": 37692,
-    "alreadyFlagged": 16581,
+    "totalReviews": 37690,
+    "alreadyFlagged": 16584,
     "dateGuardCatches": 102,
     "directorMismatch": 800,
-    "tvFilmSignals": 1028,
+    "tvFilmSignals": 1030,
     "londonSignals": 581,
     "offBroadwaySignals": 450,
     "yearMismatch": 78,
-    "noPublishDate": 3972
+    "noPublishDate": 3949
   },
   "findings": [
     {
@@ -8588,6 +8588,20 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "gay-city-news--david-kennerley.json",
+      "score": 79,
+      "publishDate": "2026-05-27",
+      "url": "https://gaycitynews.com/heated-rivalry-musical-parody-slap-shots-slapstick/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 73,
       "publishDate": "2026-05-26",
@@ -8616,8 +8630,21 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": "2026-05-27",
+      "url": "https://www.theatermania.com/news/review-a-heated-rivalry-musical-parody-comes-hard-for-the-worlds-wine-moms_1838355/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
-      "publishDate": null,
+      "publishDate": "2026-05-27",
       "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
       "findings": [
         {
