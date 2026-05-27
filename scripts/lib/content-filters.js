@@ -252,12 +252,26 @@ const PREVIEW_HEAVY_OUTLETS = new Set([
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 /**
- * Default: allow publishDate up to 2 days before openingDate (matches the
- * post-broadcast audit check at scripts/lib/opening-night-checks/
+ * Default: allow publishDate up to 2 days before openingDate for Broadway/WE
+ * (matches the post-broadcast audit check at scripts/lib/opening-night-checks/
  * publish-date-pre-opening.check.js). Press embargoes routinely lift 24–48h
  * early, so this grace is load-bearing for T1 outlets.
  */
 const DEFAULT_GRACE_DAYS_BEFORE_OPENING = 2;
+
+/**
+ * Off-Broadway grace: bumped from 2 → 14 days 2026-05-27 after Bedlam's Othello
+ * incident (Notion 36d637c5-416f-81d4-9ead-e8b69574a25b). OB shows don't have
+ * press embargoes — critics legitimately review during the 14-21 day preview
+ * window. Example: Bedlam's Othello previews 2026-04-19, opens 2026-05-10;
+ * Helen Shaw's NYT review landed 2026-05-06 (4 days before opening), 17 days
+ * into previews — that's standard OB cadence and the 2-day default was
+ * silently flagging it as anticipatory. Same for off-west-end.
+ *
+ * Selection is by show category — see isAnticipatoryPreviewPost() for the
+ * dispatch.
+ */
+const OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING = 14;
 
 /**
  * Preview-heavy outlets publish pre-opening feature pieces that read like
@@ -300,9 +314,22 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
   }
 
   const isPreviewHeavy = !!(outletId && PREVIEW_HEAVY_OUTLETS.has(String(outletId).toLowerCase()));
-  const graceDays = isPreviewHeavy
-    ? (opts.gracePreviewHeavyOutlet != null ? opts.gracePreviewHeavyOutlet : PREVIEW_HEAVY_GRACE_DAYS)
-    : (opts.graceDays != null ? opts.graceDays : DEFAULT_GRACE_DAYS_BEFORE_OPENING);
+  const isOffBroadway = opts.category === 'off-broadway' || opts.category === 'off-west-end';
+  // Selection precedence (most specific wins):
+  //   1. Explicit opts.graceDays override (used by tests + callers that know)
+  //   2. Preview-heavy outlet → 0-day grace (always tight, regardless of category)
+  //   3. Off-Broadway / Off-West-End → 14-day grace (no embargo cadence)
+  //   4. Broadway / West-End default → 2-day grace (embargo lift)
+  let graceDays;
+  if (opts.graceDays != null) {
+    graceDays = opts.graceDays;
+  } else if (isPreviewHeavy) {
+    graceDays = opts.gracePreviewHeavyOutlet != null ? opts.gracePreviewHeavyOutlet : PREVIEW_HEAVY_GRACE_DAYS;
+  } else if (isOffBroadway) {
+    graceDays = OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING;
+  } else {
+    graceDays = DEFAULT_GRACE_DAYS_BEFORE_OPENING;
+  }
 
   const cutoff = new Date(opening.getTime() - graceDays * MS_PER_DAY);
   if (publish >= cutoff) {
@@ -321,6 +348,7 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
 }
 
 module.exports = {
+  OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING,
   isNotBroadway,
   isUrlYearOutsideWindow,
   TRYOUT_URL_MARKERS,

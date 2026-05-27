@@ -1008,44 +1008,112 @@ function cleanSlugTitle(slug) {
  * @param {Object[]} shows - shows.json array
  * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
  */
+// Tokens that appear in slugs but don't distinguish shows. Stripped from
+// each show's "distinctive token set" before token-overlap scoring so that
+// `the-balusters-on-broadway` doesn't have "broadway" as a token a slug must
+// hit, and `the-rocky-horror-show` doesn't gate on the noise word "show".
+const _SLUG_STOPWORDS = new Set([
+  'the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'for', 'to', 'by',
+  'broadway', 'off-broadway', 'west-end', 'musical', 'play', 'show',
+  'revival', 'tour', 'starring', 'opens', 'review', 'reviews', 'critics',
+]);
+
+function _showDistinctiveTokens(show) {
+  const slug = (show.slug || show.id || '').toLowerCase();
+  if (!slug) return [];
+  const stripped = slug
+    .replace(/-(19|20)\d{2}$/, '')
+    .replace(/-off-broadway(-(19|20)\d{2})?$/, '')
+    .replace(/-west-end(-(19|20)\d{2})?$/, '')
+    .replace(/-bway$/, '')
+    .replace(/-broadway(-(19|20)\d{2})?$/, '');
+  // Dedupe: `new-york-new-york-2023` would yield [new, york, new, york],
+  // letting that show beat single-token shows on squared-length scoring
+  // because of the repeats. Distinct token SET is what we want.
+  return [...new Set(stripped.split('-').filter(t => t.length >= 3 && !_SLUG_STOPWORDS.has(t)))];
+}
+
+function _tokenAppearsInSlug(token, cleanedSlug) {
+  let idx = -1;
+  while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
+    const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
+    const endOk = idx + token.length === cleanedSlug.length || cleanedSlug[idx + token.length] === '-';
+    if (startOk && endOk) return true;
+  }
+  return false;
+}
+
 /**
- * Token-boundary substring search against shows.json slugs. The cleanedSlug
- * is the article URL slug with all aggregator-specific verb wrappers + market
- * suffixes ALREADY stripped — this function is source-agnostic.
- * Used by matchSlugToShow (Playbill) and matchBwwRoundupSlug (BWW).
+ * Match an article URL slug to a show in shows.json by counting how many of
+ * the show's distinctive title tokens appear (as token-boundary substrings)
+ * in the cleaned slug. The cleanedSlug has all aggregator-specific verb
+ * wrappers + market suffixes ALREADY stripped — this function is
+ * source-agnostic. Used by matchSlugToShow (PV) and matchBwwRoundupSlug (BWW).
+ *
+ * Why token-set instead of longest-substring (the previous strategy):
+ *   For slug `bedlams-4-person-version-of-shakespeares-othello` and the open
+ *   show `bedlams-othello-off-broadway-2026`, the show's distinctive tokens
+ *   are [bedlams, othello] — both appear in the slug, but NOT adjacent, so
+ *   no substring of the show slug appears verbatim. The longest-substring
+ *   match against `othello-2025` (closed) wins on length but loses on
+ *   token-set count (1 vs 2). The Bedlam's Othello 2026 reviews shipped to
+ *   the wrong show on 2026-05-27 because of this. Token-set scoring also
+ *   incidentally handles Schmigadoon-on-Kennedy-Center, Hamlet-at-BAM, and
+ *   other multi-word show titles where intervening venue tokens previously
+ *   prevented the show's full slug from appearing as a single substring.
  */
 function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   if (!cleanedSlug || !shows || shows.length === 0) return null;
   const candidates = [];
   for (const show of shows) {
-    const fullSlug = (show.slug || show.id || '').toLowerCase();
-    if (!fullSlug) continue;
-    const variants = new Set([fullSlug]);
-    variants.add(fullSlug.replace(/-(19|20)\d{2}$/, ''));
-    variants.add(fullSlug.replace(/-off-broadway(-(19|20)\d{2})?$/, ''));
-    variants.add(fullSlug.replace(/-west-end(-(19|20)\d{2})?$/, ''));
-    variants.add(fullSlug.replace(/-broadway(-(19|20)\d{2})?$/, ''));
-    for (const v of variants) {
-      if (!v || v.length < 4) continue;
-      const idx = cleanedSlug.indexOf(v);
-      if (idx === -1) continue;
-      const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
-      const endIdx = idx + v.length;
-      const endOk = endIdx === cleanedSlug.length || cleanedSlug[endIdx] === '-';
-      if (startOk && endOk) candidates.push({ show, len: v.length, idx });
+    const tokens = _showDistinctiveTokens(show);
+    if (tokens.length === 0) continue;
+    // Single-token shows: require the token be 5+ chars (otherwise it's
+    // noise — any 3-char token would match too many slugs).
+    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    let matchedTokens = 0;
+    let score = 0;       // sum of matched-token-length squared
+    let totalLen = 0;
+    for (const t of tokens) {
+      if (_tokenAppearsInSlug(t, cleanedSlug)) {
+        matchedTokens++;
+        score += t.length * t.length;
+        totalLen += t.length;
+      }
     }
+    if (matchedTokens === 0) continue;
+    // Require ALL show-distinctive tokens to appear in the slug. This is the
+    // critical gate that prevents `shakespeares-cabaret-1981` (1 of 2 tokens
+    // matched: "shakespeares") from beating `bedlams-othello-off-broadway-
+    // 2026` (2 of 2 matched) on a Bedlam Othello slug. Also stops
+    // `monte-cristo-the-york-theatre-company-off-broadway` (1 of 5 tokens:
+    // "theatre") from matching a "Dad Don't Read This At St Luke's Theatre"
+    // slug. The matcher's job is to recognize when a show's title appears
+    // in a slug — partial matches are not recognition, they're noise.
+    if (matchedTokens < tokens.length) continue;
+    candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen });
   }
   if (candidates.length === 0) return null;
-  // Sort by match length desc, then prefer non-closed shows (the article is
-  // likely about a current production, not a 30-year-old closed one).
+  // Sort by:
+  //   1. squared-length score desc (longer + more distinctive tokens win;
+  //      naturally favors all-tokens-match for multi-word shows like
+  //      Bedlam's Othello, while letting Kenrex beat New-York-New-York)
+  //   2. total token length desc
+  //   3. non-closed shows preferred (article likely about a current prod)
+  //   4. more recent openingDate (a 2026 production beats a 2009 production
+  //      with the same single-word title — without this, Hamlet@BAM-2026
+  //      tied with Hamlet-2009 on every other axis and picked arbitrarily)
   candidates.sort((a, b) => {
-    if (b.len !== a.len) return b.len - a.len;
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;
     const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     if (aClosed !== bClosed) return aClosed - bClosed;
-    return a.idx - b.idx;
+    const aYear = parseInt((a.show.openingDate || '').slice(0, 4), 10) || 0;
+    const bYear = parseInt((b.show.openingDate || '').slice(0, 4), 10) || 0;
+    return bYear - aYear;
   });
-  return { show: candidates[0].show, confidence: 'high', via: 'slug-substring' };
+  return { show: candidates[0].show, confidence: 'high', via: 'slug-token-set' };
 }
 
 function matchSlugToShow(rawSlug, shows) {

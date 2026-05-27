@@ -383,6 +383,20 @@ function validateDates(shows) {
       info(`Auto-fixed "${show.title}": upcoming → open (openingDate ${show.openingDate} has passed)`);
     }
 
+    // Missing-images surfacing: manual stubs (Broken Snow, Bedlam Othello, IP
+    // on 2026-05-27) bypass the discover-new-shows → fetch-show-images auto-
+    // trigger chain in update-show-status.yml (which only fires on previews→
+    // open transitions). Such stubs render image-less on the site until the
+    // twice-weekly Mon/Thu fetch-all-image-formats cron runs. Surface as warn
+    // so the human sees the gap; force with:
+    //   gh workflow run "Fetch Show Images" -f show_id=<id> -f only_missing=false
+    if (['open', 'previews', 'upcoming'].includes(show.status)) {
+      const hasImage = show.images && (show.images.poster || show.images.thumbnail || show.images.hero);
+      if (!hasImage) {
+        warn(`Show "${show.title}" (${show.id}, status=${show.status}) has no images — Mon/Thu fetch-show-images cron will pick it up; force now: gh workflow run "Fetch Show Images" -f show_id=${show.id} -f only_missing=false`);
+      }
+    }
+
     // Soft check: status='upcoming' with null openingDate is a stuck-state
     // anti-pattern. Indian Princesses sat in 'upcoming' for >1 week post-
     // opening (Notion 36d637c5-416f-81d4-9ead-e8b69574a25b), blocking the

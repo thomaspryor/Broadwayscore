@@ -26,6 +26,12 @@
  *   --fail-on-gap         exit 1 when any in-window show has missing URLs
  *   --dispatch-gather     gh workflow run gather-reviews.yml for each show
  *                         that has a gap > 0 (rate-limited at 1 dispatch/show)
+ *   --ingest-missing      run scripts/ingest-review-from-url.js directly for
+ *                         each missing aggregator URL whose outlet is in the
+ *                         registry. Targets the specific URL rather than re-
+ *                         running gather's SERP+RSS discovery (which already
+ *                         failed). Cap of 5 URLs/show via --ingest-cap=N.
+ *   --ingest-cap=N        per-show ingest cap (default 5)
  *   --dry-run             don't write audit file
  *   --verbose             log per-show details to stdout
  *
@@ -65,8 +71,13 @@ const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const windowDays = parseInt(args.find(a => a.startsWith('--window='))?.split('=')[1] || '21', 10);
 const failOnGap = args.includes('--fail-on-gap');
 const dispatchGather = args.includes('--dispatch-gather');
+const ingestMissing = args.includes('--ingest-missing');
 const dryRun = args.includes('--dry-run');
 const verbose = args.includes('--verbose');
+// Cap how many URLs we ingest per show to avoid runaway loops on a noisy
+// aggregator article. Each missing URL hits fetchPage which costs Bright Data
+// credits — 5 per show per cron run is a sane budget.
+const INGEST_PER_SHOW_CAP = parseInt(args.find(a => a.startsWith('--ingest-cap='))?.split('=')[1] || '5', 10);
 
 // Non-review domains we ignore inside aggregator articles (platform widgets,
 // social, navigation, store links, internal Playbill/BWW article navigation).
@@ -338,6 +349,30 @@ async function dispatchGatherFor(showId) {
   }
 }
 
+// Direct ingest of a missing URL via scripts/ingest-review-from-url.js. Unlike
+// dispatchGatherFor (which re-runs SERP discovery — the same pipeline that
+// already failed to find this URL), this targets the specific aggregator-
+// listed URL. Closes the systemic gap where Playbill Verdict / BWW RR lists a
+// review URL but our outlet-registry or SERP cadence misses it.
+//
+// Returns { ok, reason } so the caller can log per-URL outcomes. Skips URLs
+// whose host is unknown to the registry (those should be added to the registry
+// first via the unknown-aggregator-outlets audit).
+function ingestMissingUrl(showId, url, knownOutletId) {
+  if (!knownOutletId) {
+    return { ok: false, reason: 'unknown-outlet' };
+  }
+  try {
+    execSync(
+      `node scripts/ingest-review-from-url.js --show=${showId} --url='${url.replace(/'/g, "'\\''")}' --outlet=${knownOutletId}`,
+      { stdio: 'pipe', timeout: 120000 }
+    );
+    return { ok: true, reason: null };
+  } catch (e) {
+    return { ok: false, reason: e.message.split('\n')[0].slice(0, 100) };
+  }
+}
+
 (async () => {
   const allShows = loadShows();
   let targets;
@@ -373,6 +408,25 @@ async function dispatchGatherFor(showId) {
       if (ok) {
         dispatched.add(r.showId);
         console.log(`  ⤳ dispatched gather-reviews for ${r.showId}`);
+      }
+    }
+    // --ingest-missing: directly ingest each missing aggregator URL whose host
+    // is in our outlet-registry. Targets the specific URL rather than re-
+    // running gather's SERP+RSS discovery (which already failed). Unknown
+    // outlets are skipped (see data/audit/unknown-aggregator-outlets.json for
+    // registry-onboarding queue).
+    if (ingestMissing && r.missing.length > 0) {
+      const ingestable = r.missing.filter(m => m.knownOutletId).slice(0, INGEST_PER_SHOW_CAP);
+      const skipped = r.missing.filter(m => !m.knownOutletId);
+      r.ingestResults = [];
+      for (const m of ingestable) {
+        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId);
+        r.ingestResults.push({ url: m.url, host: m.host, outletId: m.knownOutletId, ok: res.ok, reason: res.reason });
+        const tag = res.ok ? '✅ ingested' : `✗ ingest failed (${res.reason || 'unknown'})`;
+        console.log(`  ${tag}: ${m.url}`);
+      }
+      if (skipped.length > 0) {
+        console.log(`  ⏸  skipped ${skipped.length} URL(s) with unknown outlets (see unknown-aggregator-outlets.json): ${skipped.map(s => s.host).join(', ')}`);
       }
     }
   }
