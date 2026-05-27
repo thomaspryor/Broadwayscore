@@ -432,6 +432,45 @@ async function discoverBwwRoundup(show, showId, options = {}) {
     }
   }
 
+  // forceRoundupUrl: caller already matched this URL to the show via a
+  // stronger signal (matchBwwRoundupSlugToShow + landing-page provenance).
+  // Skip Google search + titleWordsMatch gate — that gate is tuned for SERP
+  // noise and rejects valid landing URLs whose slug contains "Opens" or an
+  // 8-digit date as "extra distinctive words". Heated Rivalry + Indian
+  // Princesses both hit this rejection on the 2026-05-27 live test run
+  // (run 26517879346, scrape-bww-landing job). Still validates via
+  // validatePageMatchesShow so a stale or wrong-show URL won't slip through.
+  if (options.forceRoundupUrl) {
+    try {
+      console.log(`  [FORCE-URL] ${options.forceRoundupUrl.split('/article/')[1]?.slice(0, 70)}`);
+      const html = await fetchHtml(options.forceRoundupUrl);
+      if (!html || !isBWWRoundupContent(html)) {
+        console.log(`  [WARN] forceRoundupUrl returned no roundup content`);
+        return null;
+      }
+      const searchTitleForVal = show.title
+        .replace(/\s+at\s+the\s+.+$/i, '').replace(/:\s+.+$/, '').replace(/\s+[–—]\s+.+$/, '');
+      const validation = await validatePageMatchesShow(html, searchTitleForVal, {
+        openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
+        pageUrl: options.forceRoundupUrl,
+        productionType: show.type,
+      });
+      if (!validation.valid) {
+        console.log(`  [SKIP] forced URL doesn't match "${searchTitleForVal}": ${validation.reason}`);
+        return null;
+      }
+      if (!options.dryRun) {
+        if (!fs.existsSync(roundupArchiveDir)) fs.mkdirSync(roundupArchiveDir, { recursive: true });
+        fs.writeFileSync(archivePath, html);
+      }
+      stats.roundupsHit++;
+      return html;
+    } catch (err) {
+      console.log(`  [WARN] forceRoundupUrl fetch failed: ${err.message.slice(0, 80)}`);
+      return null;
+    }
+  }
+
   // Search for roundup article via Google + BWW internal search
   const year = show.openingDate ? new Date(show.openingDate).getFullYear() : '';
   let searchTitle = show.title
@@ -1166,6 +1205,9 @@ async function landingDiscoverMode(shows, options = {}) {
 
   // Dispatch matched shows through the existing processShow pipeline so
   // roundup fetch, archiving, extraction, and dedup all work identically.
+  // Pass forceRoundupUrl so discoverBwwRoundup skips its Google +
+  // titleWordsMatch gate (which rejects valid landing URLs whose slug has
+  // "Opens"/8-digit-date as "extra distinctive words").
   console.log(`\nDispatching ${matched.length} matched show(s) through processShow...\n`);
   const results = [];
   let count = 0;
@@ -1175,7 +1217,7 @@ async function landingDiscoverMode(shows, options = {}) {
     count++;
     console.log(`[${count}/${matched.length}] ${m.showId} (${show.title})`);
     try {
-      const r = await processShow(show, m.showId, { ...options, type: 'roundup' });
+      const r = await processShow(show, m.showId, { ...options, type: 'roundup', forceRoundupUrl: m.url });
       results.push({ ...m, ...r });
     } catch (err) {
       console.error(`  [ERROR] ${m.showId}: ${err.message}`);
