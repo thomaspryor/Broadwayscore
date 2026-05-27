@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-27T00:56:09.895Z",
-  "processed": 13,
-  "failed": 599,
-  "successRate": "2.1%",
+  "updatedAt": "2026-05-27T06:54:02.048Z",
+  "processed": 110,
+  "failed": 627,
+  "successRate": "14.9%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 67,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingbee": 6,
-    "brightdata": 0,
-    "archiveToday": 31,
-    "archive": 5
+    "scrapingbee": 28,
+    "brightdata": 9,
+    "archiveToday": 38,
+    "archive": 12
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -68,6 +68,50 @@
       "event": "bb-session",
       "session": "cdc60ac6",
       "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
+    },
+    {
+      "t": "2026-05-27T06:13:33.897Z",
+      "event": "bb-session",
+      "session": "164d46cc",
+      "url": "https://www.wsj.com/articles/lets-love-review-ethan-coens-disenchanted-evening-5"
+    },
+    {
+      "t": "2026-05-27T06:13:34.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:18:43.285Z",
+      "event": "bb-session",
+      "session": "ffa49693",
+      "url": "https://www.wsj.com/arts-culture/books/lady-caroline-lamb-review-flirting-with-t"
+    },
+    {
+      "t": "2026-05-27T06:18:44.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:37:42.313Z",
+      "event": "bb-session",
+      "session": "c924de43",
+      "url": "https://www.wsj.com/articles/grangeville-review-samuel-d-hunters-play-of-quiet-p"
+    },
+    {
+      "t": "2026-05-27T06:37:43.278Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:50:20.732Z",
+      "event": "bb-session",
+      "session": "782204e0",
+      "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvi"
+    },
+    {
+      "t": "2026-05-27T06:50:21.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }

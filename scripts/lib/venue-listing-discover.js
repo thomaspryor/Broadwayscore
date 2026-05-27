@@ -99,6 +99,56 @@ const OB_VENUE_CONFIGS = [
     playwrightWaitForSelector: '.type-event',
     category: 'off-broadway',
   },
+  // ── Tier A (added 2026-05-26): SERP-verified 100% NYT review hit rate ──
+  {
+    name: 'Soho Rep',
+    // Soho Rep features ONE current show prominently. The hero card uses
+    // h1.show--title for the title and h3.show--date for the date range.
+    // Some weeks they have nothing playing → 0 candidates is OK (anomaly
+    // gate handles it once baseline exists).
+    url: 'https://www.sohorep.org/',
+    strategy: 'selector',
+    selector: 'h1.show--title',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+  {
+    name: 'The New Group',
+    // h2.obj-title appears multiple times per show (hero + list card).
+    // Per-page dedup in parseVenueListingHtml collapses these.
+    // IMPORTANT: TNG often plays at the Pershing Square Signature Center,
+    // so canonicalVenue() in lib/title-match.js aliases "The New Group"
+    // → "signature center" — same key as Signature's scrape → cross-source
+    // dedupe in promote-script catches the overlap.
+    url: 'https://www.thenewgroup.org/',
+    strategy: 'selector',
+    selector: 'h2.obj-title',
+    excludeTitlePatterns: COMMON_OB_EXCLUDE_PATTERNS,
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+  {
+    name: 'Irish Rep',
+    // Root page features h1 = current show (e.g. "The Loved Ones") and
+    // h2.event-card__title = upcoming/recent productions.
+    // Use combined selectors; exclude_patterns filters out "GALA 2026 |..."
+    // and any "raising her voice" speakers.
+    url: 'https://irishrep.org/',
+    strategy: 'selector',
+    selector: 'h1, h2.event-card__title',
+    excludeTitlePatterns: [
+      ...COMMON_OB_EXCLUDE_PATTERNS,
+      /^gala\b/i,                     // "GALA 2026 | ..."
+      /^page not found$/i, /^home$/i, /^our mission$/i, /^box office$/i,
+      /^find us$/i, /^explore$/i, /^become a member$/i, /^support /i,
+      /^suggested shows$/i, /^frequently/i, /your visit$/i, /what.?s on$/i,
+      /raising her voice/i, // talks/lectures, not shows
+    ],
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+
   {
     name: 'MCC Theater',
     // TODO: this URL embeds the season year (2025-26). When MCC switches

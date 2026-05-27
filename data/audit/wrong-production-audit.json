@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T00:39:43.509Z",
+  "timestamp": "2026-05-27T13:12:13.155Z",
   "stats": {
-    "totalReviews": 37564,
-    "alreadyFlagged": 16445,
+    "totalReviews": 37632,
+    "alreadyFlagged": 16574,
     "dateGuardCatches": 102,
     "directorMismatch": 801,
-    "tvFilmSignals": 1023,
+    "tvFilmSignals": 1024,
     "londonSignals": 581,
     "offBroadwaySignals": 449,
     "yearMismatch": 78,
-    "noPublishDate": 4027
+    "noPublishDate": 3931
   },
   "findings": [
     {
@@ -2683,6 +2683,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "caroline-off-broadway-2026",
+      "file": "off-off-online--adrienne-onofri.json",
+      "score": 75,
+      "publishDate": "2025-10-02",
+      "url": "https://www.offoffonline.com/offoffonline/2025/9/29/caroline",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming series\""
         }
       ]
     },
@@ -12229,8 +12243,8 @@
     {
       "showId": "lets-love-off-broadway-2026",
       "file": "theater-scene--victor-gluck.json",
-      "score": null,
-      "publishDate": null,
+      "score": 65,
+      "publishDate": "2025-10-26",
       "url": "https://www.theaterscene.net/plays/offbway-plays/lets-love/victor-gluck/",
       "findings": [
         {
@@ -27593,7 +27607,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -28548,7 +28562,7 @@
     {
       "showId": "eurydice-off-broadway-2026",
       "file": "vulture--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://www.vulture.com/article/theater-review-sarah-ruhl-eurydice-nazareth-hassan-bowl-ep.html",
       "findings": [
@@ -33728,7 +33742,7 @@
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
       "file": "nytimes--jesse-green.json",
-      "score": null,
+      "score": 90,
       "publishDate": null,
       "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
       "findings": [
