@@ -97,16 +97,15 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
-  // Use normalizeTitle so "||: GIRLS :||: CHANCE :||: MUSIC :||" dedupes
-  // against "Girls Chance Music". And keep only the FIRST WORD of the venue
-  // string so "Atlantic Theater Company - Linda Gross Theater" dedupes
-  // against "Atlantic Theater" (the venue-page-scraper's shorter form).
-  // This prevents the 22-promote 3-dup bug we cleaned up post-launch.
-  const { normalizeTitle } = require('./lib/title-match');
-  function venueKey(v) { return (v || '').toLowerCase().split(/[\s\-,—]/)[0]; }
+  // Use normalizeTitle + canonicalVenue so cross-source dedup catches
+  // both the "||: GIRLS :||: CHANCE :||: MUSIC :||" punctuation drift AND
+  // cross-venue collisions (The New Group's shows that play at Pershing
+  // Square Signature Center share a canonical key with Signature's scrape).
+  // Alias table lives in scripts/lib/title-match.js (single source of truth).
+  const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
   const existingTitleVenue = new Set(showsData.shows
     .filter(s => s.category === 'off-broadway')
-    .map(s => `${normalizeTitle(s.title)}|${venueKey(s.venue)}`));
+    .map(s => `${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`));
 
   // Fetch cross-validation sources unless --admin-promote-all
   let playbillEntries = [];
@@ -131,11 +130,12 @@ async function main() {
   for (const c of staged) {
     const titleLower = (c.title || '').toLowerCase();
 
-    // Dedupe against existing shows using normalized title + venue-first-word.
-    // Catches cross-year duplicates (indian-princesses-2025 vs -2026) and
+    // Dedupe against existing shows using normalized title + canonical venue.
+    // Catches cross-year duplicates (indian-princesses-2025 vs -2026),
     // venue-string mismatches ("Atlantic Theater Company - Linda Gross Theater"
-    // vs "Atlantic Theater") that exact string matching missed.
-    const candidateKey = `${normalizeTitle(c.title)}|${venueKey(c.venue)}`;
+    // vs "Atlantic Theater"), AND cross-source same-venue (The New Group
+    // emits "The New Group" but the show plays at the Signature Center).
+    const candidateKey = `${normalizeTitle(c.title)}|${canonicalVenue(c.venue)}`;
     if (existingTitleVenue.has(candidateKey)) {
       skipped.push({ candidate: c, reason: `already in shows.json (norm key: ${candidateKey})` });
       logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue });
