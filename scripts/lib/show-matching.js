@@ -1008,15 +1008,14 @@ function cleanSlugTitle(slug) {
  * @param {Object[]} shows - shows.json array
  * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
  */
-function matchSlugToShow(rawSlug, shows) {
-  if (!rawSlug || !shows || shows.length === 0) return null;
-  // Strip BOTH head verbs and tail market/venue suffix before substring search.
-  // Tail-strip is essential: without it, "...beaches-on-broadway" leaves
-  // "broadway" as a token and matches the closed "Broadway" (1987).
-  let stripped = _stripPvHead(String(rawSlug).toLowerCase().replace(/^\/?article\//, ''));
-  stripped = _stripPvTail(stripped);
-  if (!stripped) return null;
-
+/**
+ * Token-boundary substring search against shows.json slugs. The cleanedSlug
+ * is the article URL slug with all aggregator-specific verb wrappers + market
+ * suffixes ALREADY stripped — this function is source-agnostic.
+ * Used by matchSlugToShow (Playbill) and matchBwwRoundupSlug (BWW).
+ */
+function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
+  if (!cleanedSlug || !shows || shows.length === 0) return null;
   const candidates = [];
   for (const show of shows) {
     const fullSlug = (show.slug || show.id || '').toLowerCase();
@@ -1028,18 +1027,17 @@ function matchSlugToShow(rawSlug, shows) {
     variants.add(fullSlug.replace(/-broadway(-(19|20)\d{2})?$/, ''));
     for (const v of variants) {
       if (!v || v.length < 4) continue;
-      const idx = stripped.indexOf(v);
+      const idx = cleanedSlug.indexOf(v);
       if (idx === -1) continue;
-      const startOk = idx === 0 || stripped[idx - 1] === '-';
+      const startOk = idx === 0 || cleanedSlug[idx - 1] === '-';
       const endIdx = idx + v.length;
-      const endOk = endIdx === stripped.length || stripped[endIdx] === '-';
+      const endOk = endIdx === cleanedSlug.length || cleanedSlug[endIdx] === '-';
       if (startOk && endOk) candidates.push({ show, len: v.length, idx });
     }
   }
   if (candidates.length === 0) return null;
-  // Sort by length desc, then prefer non-closed shows (open/previews/upcoming
-  // beat closed when slug strings tie — the article is likely about a current
-  // production, not a 30-year-old closed one with the same name).
+  // Sort by match length desc, then prefer non-closed shows (the article is
+  // likely about a current production, not a 30-year-old closed one).
   candidates.sort((a, b) => {
     if (b.len !== a.len) return b.len - a.len;
     const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
@@ -1048,6 +1046,58 @@ function matchSlugToShow(rawSlug, shows) {
     return a.idx - b.idx;
   });
   return { show: candidates[0].show, confidence: 'high', via: 'slug-substring' };
+}
+
+function matchSlugToShow(rawSlug, shows) {
+  if (!rawSlug || !shows || shows.length === 0) return null;
+  let stripped = _stripPvHead(String(rawSlug).toLowerCase().replace(/^\/?article\//, ''));
+  stripped = _stripPvTail(stripped);
+  return _matchCleanedSlugAgainstShows(stripped, shows);
+}
+
+// ---------------------------------------------------------------------------
+// BroadwayWorld Review-Roundup slug helpers
+//
+// BWW roundup URLs:
+//   /article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526
+//   /article/Review-Roundup-INDIAN-PRINCESSES-Opens-at-Atlantic-Theater-Company
+//   /article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway
+//   /article/Review-Roundup-THE-PEOPLE-VERSUS-LENNY-BRUCE-Off-Broadway
+//
+// Always SHOUTY-CAPS with hyphens. Prefix `Review-Roundup-`. Tail patterns:
+// `-Opens-(Off-)?Broadway-YYYYMMDD`, `-(Off-)?Broadway`, `-Opens-at-VENUE`.
+// Lowercasing first means we can reuse the same substring-match infrastructure.
+// ---------------------------------------------------------------------------
+
+const BWW_HEAD_PATTERNS = [
+  /^review-roundup-/,
+];
+
+const BWW_TAIL_PATTERNS = [
+  /-opens-(off-)?broadway-?\d{0,8}$/,
+  /-opens-on-broadway-?\d{0,8}$/,
+  /-on-broadway-?\d{0,8}$/,
+  /-off-broadway-?\d{0,8}$/,
+  /-opens-at-.*$/,
+  /-broadway-?\d{0,8}$/,
+  /-\d{8}$/,  // bare trailing YYYYMMDD
+];
+
+/**
+ * Match a BWW Review-Roundup article URL slug to a show in shows.json.
+ * @param {string} rawSlug - either full URL or just the slug part after /article/
+ * @param {Object[]} shows - shows.json array
+ * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
+ */
+function matchBwwRoundupSlugToShow(rawSlug, shows) {
+  if (!rawSlug || !shows || shows.length === 0) return null;
+  // Accept either /article/Review-Roundup-... or just the slug
+  let s = String(rawSlug).toLowerCase()
+    .replace(/^https?:\/\/[^/]+/, '')
+    .replace(/^\/?article\//, '');
+  for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
+  for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
+  return _matchCleanedSlugAgainstShows(s, shows);
 }
 
 module.exports = {
@@ -1062,6 +1112,7 @@ module.exports = {
   validateRoundupPageTitle,
   cleanSlugTitle,
   matchSlugToShow,
+  matchBwwRoundupSlugToShow,
   TITLE_GENERIC_WORDS,
   KNOWN_ALIASES,
 };

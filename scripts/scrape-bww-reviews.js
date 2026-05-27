@@ -29,7 +29,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
-const { matchTitleToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -1086,6 +1086,106 @@ function gitCheckpoint(count, total, label) {
 }
 
 // ---------------------------------------------------------------------------
+// BWW /reviews/ landing-page roundup discovery
+//
+// broadwayworld.com/reviews/ has a "REVIEW ROUNDUPS" section at the bottom
+// listing the 6-9 most recent Review-Roundup articles. The existing
+// per-show discovery (Google + BWW internal search) needs a show.id to
+// search for; this landing-page sweep flips it: scrape the page, find URLs,
+// match each to shows.json. Surfaces roundups the per-show path would miss
+// when:
+//   - show's openingDate is outside the >=2023 default filter
+//   - show is in 'previews' or 'upcoming' status (per-show path skips
+//     batch matrix)
+//   - per-show Google query fails (Heated Rivalry 2026-05-26 was missing
+//     until manual gather, but the landing page had it the whole time)
+// ---------------------------------------------------------------------------
+
+const BWW_REVIEWS_LANDING_URL = 'https://www.broadwayworld.com/reviews/';
+
+async function discoverRoundupsFromBwwLanding() {
+  const html = await fetchHtml(BWW_REVIEWS_LANDING_URL);
+  if (!html || html.length < 1000) {
+    console.log('  [LANDING] empty or blocked response from BWW /reviews/');
+    return [];
+  }
+  const $ = cheerio.load(html);
+  const urls = new Set();
+  // Roundup section uses links with "Review-Roundup" in href (verified
+  // against bwwInternalSearch() selector at line 224 — same shape).
+  $('a[href*="Review-Roundup"], a[href*="review-roundup"]').each((_, el) => {
+    const href = $(el).attr('href');
+    if (!href || !href.includes('/article/')) return;
+    const full = href.startsWith('http') ? href : `https://www.broadwayworld.com${href}`;
+    urls.add(full);
+  });
+  return [...urls];
+}
+
+async function landingDiscoverMode(shows, options = {}) {
+  console.log(`\n=== BWW /reviews/ landing-page discovery ===`);
+  const roundupUrls = await discoverRoundupsFromBwwLanding();
+  console.log(`Found ${roundupUrls.length} roundup URLs on landing page\n`);
+  if (roundupUrls.length === 0) return [];
+
+  const matched = [];
+  const unmatched = [];
+  for (const url of roundupUrls) {
+    const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
+    const match = matchBwwRoundupSlugToShow(slug, shows);
+    if (match) {
+      matched.push({ url, showId: match.show.id, slug });
+      console.log(`  [MATCH] ${match.show.id} ← ${slug.slice(0, 70)}`);
+    } else {
+      unmatched.push({ url, slug });
+      console.log(`  [MISS]  ${slug.slice(0, 70)}`);
+    }
+  }
+
+  // Audit-log unmatched roundups for OB discovery (parallel to PV audit).
+  try {
+    const auditDir = path.join(__dirname, '../data/audit');
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    const auditPath = path.join(auditDir, 'bww-roundup-unmatched.json');
+    const now = new Date().toISOString();
+    let existing = [];
+    if (fs.existsSync(auditPath)) {
+      try { existing = JSON.parse(fs.readFileSync(auditPath, 'utf8')); } catch { existing = []; }
+      if (!Array.isArray(existing)) existing = [];
+    }
+    const byUrl = new Map(existing.map(e => [e.url, e]));
+    for (const u of unmatched) {
+      const prev = byUrl.get(u.url);
+      byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
+    }
+    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
+    console.log(`\nWrote ${unmatched.length} unmatched roundups to ${auditPath} (total tracked: ${byUrl.size})`);
+  } catch (auditErr) {
+    console.log(`  [WARN] Could not write BWW unmatched audit: ${auditErr.message}`);
+  }
+
+  // Dispatch matched shows through the existing processShow pipeline so
+  // roundup fetch, archiving, extraction, and dedup all work identically.
+  console.log(`\nDispatching ${matched.length} matched show(s) through processShow...\n`);
+  const results = [];
+  let count = 0;
+  for (const m of matched) {
+    const show = shows.find(s => s.id === m.showId);
+    if (!show) continue;
+    count++;
+    console.log(`[${count}/${matched.length}] ${m.showId} (${show.title})`);
+    try {
+      const r = await processShow(show, m.showId, { ...options, type: 'roundup' });
+      results.push({ ...m, ...r });
+    } catch (err) {
+      console.error(`  [ERROR] ${m.showId}: ${err.message}`);
+      stats.errors.push(`${m.showId}: ${err.message}`);
+    }
+  }
+  return results;
+}
+
+// ---------------------------------------------------------------------------
 // Main
 // ---------------------------------------------------------------------------
 
@@ -1100,6 +1200,7 @@ async function main() {
   const force = args.includes('--force');
   const dryRun = args.includes('--dry-run');
   const verify = args.includes('--verify');
+  const landingDiscover = args.includes('--landing-discover');
 
   const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
   const limit = limitArg ? parseInt(limitArg.replace('--limit=', '')) : null;
@@ -1119,6 +1220,16 @@ async function main() {
   // Load shows
   const shows = loadShows();
   console.log(`Loaded ${shows.length} shows\n`);
+
+  // Landing-discover mode: pull the BWW /reviews/ landing page once, match
+  // the visible Review Roundups to shows.json, run those through processShow.
+  // Doesn't iterate the shows.json corpus — covers recency, not breadth.
+  if (landingDiscover) {
+    options.tokenOverlapSet = buildTokenOverlapSiblingSet(shows);
+    await landingDiscoverMode(shows, options);
+    await cleanupScraper();
+    return;
+  }
 
   // Build title-token overlap sibling set once for the whole run.
   // Used in processShow to detect reviews that can't be attributed to the

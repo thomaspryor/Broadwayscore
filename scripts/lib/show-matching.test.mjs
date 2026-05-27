@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fs = require('node:fs');
-const { matchSlugToShow, cleanSlugTitle, loadShows } = require('./show-matching.js');
+const { matchSlugToShow, matchBwwRoundupSlugToShow, cleanSlugTitle, loadShows } = require('./show-matching.js');
 
 // shows.json lives in a private repo and is checked out into data/ by CI.
 // Locally, fall back to the user's private-repo clone if data/shows.json isn't
@@ -69,6 +69,47 @@ test('cleanSlugTitle strips head and tail patterns', () => {
     'Beaches');
   assert.equal(cleanSlugTitle('read-the-reviews-for-the-maids-off-broadway'),
     'The Maids');
+});
+
+// BWW Review-Roundup slug fixtures (from broadwayworld.com/reviews/
+// landing page, 2026-05-27). Same shape — `expected contains` against
+// matched show id.
+const BWW_FIXTURES = [
+  ['/article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526', 'heated-rivalry', 'shouty-caps + date suffix'],
+  ['/article/Review-Roundup-INDIAN-PRINCESSES-Opens-at-Atlantic-Theater-Company', 'indian-princesses', 'Opens-at-VENUE suffix'],
+  ['/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway', 'celebrity-autobiography', 'BWW has typo "AUTOPBIOGRAPHY" (sic) — should NOT match'],
+  ['/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre', 'dad-dont-read', 'GAP: not in shows.json'],
+  ['/article/Review-Roundup-THE-PEOPLE-VERSUS-LENNY-BRUCE-Off-Broadway', 'lenny-bruce', 'simple -Off-Broadway tail'],
+  ['/article/Review-Roundup-NEW-BORN-Starring-Hugh-Jackman-Sepideh-Moafi-Marianna-Gailus', 'new-born', 'arbitrary Starring tail'],
+  ['https://www.broadwayworld.com/off-broadway/article/Review-Roundup-Thornton-Wilders-THE-EMPORIUM-at-Classic-Stage-Company-20260518', 'emporium', 'GAP: not in shows.json'],
+];
+
+test('matchBwwRoundupSlugToShow finds the right show for BWW roundup URLs', () => {
+  const failures = [];
+  for (const [slug, expectedFragment, comment] of BWW_FIXTURES) {
+    const result = matchBwwRoundupSlugToShow(slug, shows);
+    if (!result) {
+      failures.push({ slug, expected: expectedFragment, got: 'NULL', comment, gap: true });
+      continue;
+    }
+    const matchedSlug = (result.show.slug || result.show.id || '').toLowerCase();
+    if (!matchedSlug.includes(expectedFragment)) {
+      failures.push({ slug, expected: expectedFragment, got: matchedSlug, comment });
+    }
+  }
+  if (failures.length > 0) {
+    console.log('\n=== matchBwwRoundupSlugToShow fixture failures ===');
+    for (const f of failures) {
+      const tag = f.gap ? '[GAP — show not in shows.json]' : '[BUG]';
+      console.log(`${tag} ${f.slug}`);
+      console.log(`        expected:  ${f.expected}`);
+      console.log(`        got:       ${f.got}`);
+      if (f.comment) console.log(`        comment:   ${f.comment}`);
+    }
+  }
+  const bugs = failures.filter(f => !f.gap);
+  assert.equal(bugs.length, 0,
+    `matchBwwRoundupSlugToShow returned WRONG show for ${bugs.length} slug(s)`);
 });
 
 test('matchSlugToShow finds the right show for all 20 real fixtures', () => {
