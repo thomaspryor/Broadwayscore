@@ -72,7 +72,12 @@
     "orlando-off-broadway-2026/boston-herald--marilyn-stasio.json",
     "orlando-off-broadway-2026/chicagotribune--unknown.json",
     "orlando-off-broadway-2026/playbill--unknown.json",
-    "orlando-off-broadway-2026/telegraph--dominic-cavendish.json"
+    "orlando-off-broadway-2026/telegraph--dominic-cavendish.json",
+    "grangeville-off-broadway-2026/nytg--joe-dziemianowicz.json",
+    "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "grangeville-off-broadway-2026/wsj--unknown.json",
+    "grangeville-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+    "grangeville-off-broadway-2026/off-off-online--edward-karam.json"
   ],
   "failed": [
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -693,7 +698,12 @@
     "shit-meet-fan-off-broadway-2024/theatre-reviews-limited--joseph-verlezza.json",
     "orlando-off-broadway-2026/guardian--david-jays.json",
     "orlando-off-broadway-2026/guardian--unknown.json",
-    "orlando-off-broadway-2026/thestage--unknown.json"
+    "orlando-off-broadway-2026/thestage--unknown.json",
+    "orlando-off-broadway-2026/times-uk--clive-davis.json",
+    "grangeville-off-broadway-2026/newyorker--unknown.json",
+    "grangeville-off-broadway-2026/broadwayworld--unknown.json",
+    "grangeville-off-broadway-2026/culturesauce--thom-geier.json",
+    "grangeville-off-broadway-2026/pages-on-stages--mason-pilevsky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -740,14 +750,21 @@
       "orlando-off-broadway-2026/ew--unknown.json",
       "orlando-off-broadway-2026/artsfuse--unknown.json",
       "orlando-off-broadway-2026/boston-herald--marilyn-stasio.json",
-      "orlando-off-broadway-2026/playbill--unknown.json"
+      "orlando-off-broadway-2026/playbill--unknown.json",
+      "grangeville-off-broadway-2026/nytg--joe-dziemianowicz.json",
+      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "grangeville-off-broadway-2026/culturesauce--thom-geier.json",
+      "grangeville-off-broadway-2026/exeunt-magazine--lane-williamson.json",
+      "grangeville-off-broadway-2026/off-off-online--edward-karam.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/lets-love-off-broadway-2026/wsj--unknown.json",
       "lets-love-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/caroline-off-broadway-2026/wsj--unknown.json",
-      "caroline-off-broadway-2026/wsj--unknown.json"
+      "caroline-off-broadway-2026/wsj--unknown.json",
+      "data/review-texts/grangeville-off-broadway-2026/wsj--unknown.json",
+      "grangeville-off-broadway-2026/wsj--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -770,7 +787,8 @@
       "eurydice-off-broadway-2026/broadwayworld--cindy-marcolina.json",
       "eurydice-off-broadway-2026/chicago-sun-times--unknown.json",
       "orlando-off-broadway-2026/theatrely--unknown.json",
-      "orlando-off-broadway-2026/chicagotribune--unknown.json"
+      "orlando-off-broadway-2026/chicagotribune--unknown.json",
+      "grangeville-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "miles-for-mary-off-broadway-2026/vulture--sara-holdren.json",
@@ -815,7 +833,8 @@
       "data/review-texts/miles-for-mary-off-broadway-2026/broadwayselect--peter-filichia.json",
       "data/review-texts/caroline-off-broadway-2026/thestage--unknown.json",
       "data/review-texts/eurydice-off-broadway-2026/curtainup--unknown.json",
-      "data/review-texts/trophy-boys-off-broadway-2024/theater-scene--deirdre-donovan.json"
+      "data/review-texts/trophy-boys-off-broadway-2024/theater-scene--deirdre-donovan.json",
+      "data/review-texts/orlando-off-broadway-2026/thestage--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -832,7 +851,7 @@
     ]
   },
   "startTime": "2026-05-26T16:49:30.221Z",
-  "lastProcessed": "orlando-off-broadway-2026/thestage--unknown.json",
+  "lastProcessed": "grangeville-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
   "log": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -907,6 +926,17 @@
     },
     {
       "t": "2026-05-27T06:18:44.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:37:42.313Z",
+      "event": "bb-session",
+      "session": "c924de43",
+      "url": "https://www.wsj.com/articles/grangeville-review-samuel-d-hunters-play-of-quiet-p"
+    },
+    {
+      "t": "2026-05-27T06:37:43.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

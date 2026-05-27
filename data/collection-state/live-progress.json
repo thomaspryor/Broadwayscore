@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-27T06:36:51.358Z",
-  "processed": 73,
-  "failed": 619,
-  "successRate": "10.5%",
+  "updatedAt": "2026-05-27T06:41:56.723Z",
+  "processed": 78,
+  "failed": 624,
+  "successRate": "11.1%",
   "tierBreakdown": {
-    "playwright": 43,
+    "playwright": 48,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingbee": 20,
+    "scrapingbee": 21,
     "brightdata": 5,
-    "archiveToday": 36,
+    "archiveToday": 37,
     "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -88,6 +88,17 @@
     },
     {
       "t": "2026-05-27T06:18:44.260Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-27T06:37:42.313Z",
+      "event": "bb-session",
+      "session": "c924de43",
+      "url": "https://www.wsj.com/articles/grangeville-review-samuel-d-hunters-play-of-quiet-p"
+    },
+    {
+      "t": "2026-05-27T06:37:43.278Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
