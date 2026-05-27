@@ -814,7 +814,7 @@ async function main(): Promise<void> {
     // Filter to reviews flagged for rescoring (had excerpt-based score, now have fullText)
     filesToProcess = allFiles.filter(f => {
       if ((f.data as any).needsRescore !== true) return false;
-      if (!isScoreable(f.data as any, showFor(f.data as any))) return false;
+      if (!isScoreable(f.data as any, showFor(f.data as any), f.path)) return false;
       // Optional: filter by specific rescoreReason (enables parallel runs for different reasons)
       if (options.rescoreReason) {
         const reason = (f.data as any).rescoreReason || '';
@@ -857,7 +857,7 @@ async function main(): Promise<void> {
     filesToProcess = allFiles.filter(f => {
       const d = f.data as any;
       if (!d.llmScore || d.ensembleData) return false;
-      if (!isScoreable(d, showFor(d))) return false;
+      if (!isScoreable(d, showFor(d), f.path)) return false;
       return true;
     });
     console.log(`Filtering to single-model reviews needing ensemble upgrade: ${filesToProcess.length} reviews\n`);
@@ -872,7 +872,7 @@ async function main(): Promise<void> {
       const ed = d.ensembleData;
       if (!ed || !ed.singleModelEmergency) return false;
       if ((ed.singleModelEmergencyRetryCount || 0) >= 1) return false;
-      if (!isScoreable(d, showFor(d))) return false;
+      if (!isScoreable(d, showFor(d), f.path)) return false;
       return true;
     });
     console.log(`Filtering to stuck-emergency reviews for one-shot retry: ${filesToProcess.length} reviews\n`);
@@ -1001,7 +1001,7 @@ async function main(): Promise<void> {
       starRatingSkipped++;
       return false;
     }
-    if (!isScoreable(d, showFor(d))) {
+    if (!isScoreable(d, showFor(d), f.path)) {
       dataQualitySkipped++;
       // Log the specific reason for rejection
       const reasons: string[] = [];
