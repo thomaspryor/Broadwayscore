@@ -150,6 +150,23 @@ const OB_VENUE_CONFIGS = [
   },
 
   {
+    name: "St. Ann's Warehouse",
+    // Homepage links each current/upcoming production at /show/<slug>/.
+    // WordPress + Tribe Events — plain fetch works (verified 2026-05-27,
+    // ~59KB HTML). Past productions live elsewhere; the homepage shows
+    // current season only, which is exactly what we want.
+    url: 'https://stannswarehouse.org/',
+    strategy: 'link',
+    linkPattern: /\/show\/[a-z0-9-]+\/?$/,
+    excludeTitlePatterns: [
+      ...COMMON_OB_EXCLUDE_PATTERNS,
+      /^\d{4} gala$/i, // "2026 Gala" etc. — non-show fundraisers
+    ],
+    preferPlaywright: false,
+    category: 'off-broadway',
+  },
+
+  {
     name: 'MCC Theater',
     // TODO: this URL embeds the season year (2025-26). When MCC switches
     // to 2026-27 (typically mid-2026), update to /our-2026-27-season/.
