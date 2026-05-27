@@ -9,12 +9,25 @@
  */
 
 const cheerio = require('cheerio');
+const { cleanSlugTitle } = require('./show-matching');
 
 const VERDICT_CATEGORY_URL = 'https://playbill.com/category/the-verdict';
 
-// Extract `{ url, title }` pairs for every Playbill Verdict article linked on
+function _urlToSlug(url) {
+  return (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
+}
+
+// Extract `{ url, title, slug }` for every Playbill Verdict article linked on
 // the category-page HTML. Tolerates three encodings Playbill has used over
 // time: HTML anchors, Markdown links (rendered API output), and bare URLs.
+//
+// `slug` is the raw URL slug; consumers should prefer matchSlugToShow against
+// it (substring search) before falling back to matchTitleToShow against
+// `title`. The Pattern-3 title is derived from `cleanSlugTitle`, which strips
+// Playbill's recurring verb wrappers (`read-the-reviews-for-`,
+// `reviews-what-do-the-critics-think-of-`, etc.). The raw slug→title-case
+// fallback used to silently lose every OB roundup whose wrapper defeated
+// fuzzy matching (e.g. Animal Wisdom, 2026-05-24 cached page).
 function extractArticlesFromCategoryPage(content) {
   const articles = [];
   const seen = new Set();
@@ -28,7 +41,7 @@ function extractArticlesFromCategoryPage(content) {
     const title = match[2].trim();
     if (seen.has(url) || title.length < 5 || title.length > 200) continue;
     seen.add(url);
-    articles.push({ url, title });
+    articles.push({ url, title, slug: _urlToSlug(url) });
   }
 
   // Pattern 2: Markdown links - [Title](https://playbill.com/article/...)
@@ -38,7 +51,7 @@ function extractArticlesFromCategoryPage(content) {
     const url = match[2].trim();
     if (seen.has(url) || title.length < 5 || title.length > 200) continue;
     seen.add(url);
-    articles.push({ url, title });
+    articles.push({ url, title, slug: _urlToSlug(url) });
   }
 
   // Pattern 3: Bare Playbill article URLs
@@ -47,9 +60,8 @@ function extractArticlesFromCategoryPage(content) {
     const url = match[1];
     if (seen.has(url)) continue;
     seen.add(url);
-    const slug = url.split('/article/')[1] || '';
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    articles.push({ url, title });
+    const slug = _urlToSlug(url);
+    articles.push({ url, title: cleanSlugTitle(slug) || slug, slug });
   }
 
   return articles;
@@ -180,7 +192,7 @@ function extractReviewLinksFromArticle(html, showId) {
 async function searchPlaybillVerdict(show, opts = {}) {
   if (!show || !show.title) return null;
 
-  const { matchTitleToShow } = require('./show-matching');
+  const { matchTitleToShow, matchSlugToShow } = require('./show-matching');
 
   let fetchHtml = opts.fetchHtml;
   if (!fetchHtml) {
@@ -210,6 +222,13 @@ async function searchPlaybillVerdict(show, opts = {}) {
   // Downstream extractReviewLinksFromArticle validates further by producing
   // zero links if the article doesn't actually cover this show.
   for (const article of articles) {
+    // Try slug-substring match first. Catches OB roundup slugs (e.g.
+    // `read-reviews-for-heather-christians-animal-wisdom`) whose Playbill verb
+    // wrappers defeat fuzzy title matching even at single-show fan-out.
+    const slugMatch = article.slug ? matchSlugToShow(article.slug, [show]) : null;
+    if (slugMatch) {
+      return { articleUrl: article.url, articleTitle: article.title };
+    }
     const match = matchTitleToShow(article.title, [show]);
     if (match && (match.confidence === 'high' || match.confidence === 'medium')) {
       return { articleUrl: article.url, articleTitle: article.title };

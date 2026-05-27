@@ -18,6 +18,7 @@ on:
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       - 'scripts/audit-orphan-show-ids.js'
+      - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/cast-extraction-guards.js'
       - 'scripts/backfill-cast-web.js'
@@ -180,6 +181,57 @@ jobs:
         # The fix shipped here uses Playwright actionable clicks; this audit
         # prevents the next test from reintroducing the pattern.
         run: node scripts/audit-playwright-evaluate-click.js
+
+      - name: Audit — Tony LOSO snapshot co-change
+        # If TONY_RECIPES, TONY_RECIPES_TIER2, or categoryAwardsScore changes
+        # in src/lib/data-tony-predictions.ts, data/tony-loso-stats.json MUST
+        # also change in the same PR. The disclosure on /tony-awards/predictions
+        # reads its accuracy figure live from tony-loso-stats.json — if a recipe
+        # edit lands without re-running the audit, the live "X% of past winners"
+        # number silently desyncs from what the model actually produces.
+        #
+        # The fix when this gate fires:
+        #   npx tsx scripts/audit-tony-loso.ts && git add data/tony-loso-stats.json
+        # The audit re-runs leave-one-season-out cross-validation against the
+        # new recipe and rewrites the JSON with current numbers.
+        #
+        # Comment-only diffs to the Tony predictions module are ignored so
+        # docblock edits don't force unrelated audit reruns.
+        run: |
+          BASE_REF="${{ github.base_ref || 'main' }}"
+          # Fetch the base ref if we don't have it (PR runs typically do; main
+          # pushes get a shallow clone where origin/main may not be set up).
+          git fetch origin "$BASE_REF" --depth=2 2>/dev/null || true
+          BASE="origin/$BASE_REF"
+          if ! git rev-parse "$BASE" >/dev/null 2>&1; then BASE=HEAD~1; fi
+
+          # Did the predictions module change at all in this diff?
+          if ! git diff "$BASE" --name-only -- src/lib/data-tony-predictions.ts | grep -q .; then
+            echo "data-tony-predictions.ts unchanged — skipping LOSO snapshot gate"
+            exit 0
+          fi
+
+          # Did the change touch the recipe constants or awards-term function
+          # (i.e. anything that would shift LOSO numbers), or is it comment-only?
+          # Look for added/removed non-comment lines mentioning the watched names.
+          if ! git diff "$BASE" -- src/lib/data-tony-predictions.ts \
+                | grep -E '^[+-][^+-]' \
+                | grep -vE '^[+-][[:space:]]*(//|\*)' \
+                | grep -qE 'TONY_RECIPES|categoryAwardsScore'; then
+            echo "Only comments / unrelated lines changed — skipping LOSO snapshot gate"
+            exit 0
+          fi
+
+          # Did data/tony-loso-stats.json change alongside?
+          if git diff "$BASE" --name-only -- data/tony-loso-stats.json | grep -q .; then
+            echo "Recipe changed AND snapshot updated — OK"
+            exit 0
+          fi
+
+          echo "::error::TONY_RECIPES, TONY_RECIPES_TIER2, or categoryAwardsScore changed in src/lib/data-tony-predictions.ts but data/tony-loso-stats.json was not updated in this PR."
+          echo "::error::Run locally: npx tsx scripts/audit-tony-loso.ts && git add data/tony-loso-stats.json && git commit --amend --no-edit"
+          echo "::error::This keeps the live disclosure number on /tony-awards/predictions consistent with the shipped model. Without this gate, recipe edits silently desync the public accuracy claim."
+          exit 1
 
       - name: Check workflows don't bypass npm prebuild lifecycle
         run: |
@@ -1021,6 +1073,36 @@ jobs:
         # 2026-05-24). Also reports show-score / audience-buzz key drift as
         # advisory (use --strict to also fail on those). Run with --fix locally
         # to delete orphan slim files. See memory/feedback_orphan_slim_show_files.md.
+
+      - name: Validate provisional show venue+dates against Playbill
+        # Cross-checks every provisional:true (or manual-user-request /
+        # venue-page) entry in shows.json against its Playbill production page.
+        # Catches the class of bug surfaced 2026-05-26 where OB venue-page
+        # scrapers wrote stub entries with wrong years (Sunset Baby 2014
+        # confused with the 2024 Signature revival; multiple Signature past-
+        # productions captured with publication-year as opening-year).
+        #
+        # Behavior here is STRICT — flipped from advisory 2026-05-27 after the
+        # 6 mismatches surfaced in data/audit/venue-date-mismatches.json were
+        # remediated (sunset-baby, three-houses, grangeville, eurydice,
+        # oratorio-for-living-things, shit-meet-fan). The job writes the audit
+        # file via the script and exits non-zero when any provisional entry
+        # mismatches its Playbill production page. Fix locally by editing
+        # shows.json to match Playbill (the authoritative source per
+        # CLAUDE.md §3) before pushing.
+        #
+        # Skips silently when SERP/scrape secrets are absent (Dependabot,
+        # forks). The cron freshness job catches drift outside this window.
+        # `always()` keeps this gate independent of upstream audit failures
+        # (cast-changes, regex FP rate, etc.) since they cover different
+        # concerns and shouldn't share a fail-fast.
+        if: always() && env.HAS_SCRAPE_SECRETS == 'true'
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
 
       - name: Audit content-quality regex FP rate
         run: node scripts/audit-regex-patterns.js --full

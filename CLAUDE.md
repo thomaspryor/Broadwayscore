@@ -23,6 +23,7 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
+- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request` or `venue-page:*`, or `provisional: true`) must be cross-validated against Playbill before commit. Run `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals (Sunset Baby 2014 vs 2024 Signature, 2026-05-26) and stub-from-memory dates. Audit log: `data/audit/venue-date-mismatches.json`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
