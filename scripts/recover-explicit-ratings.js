@@ -825,7 +825,7 @@ function findMissingRatings() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (!isScoreable(data, showFor(data))) continue;
+        if (!isScoreable(data, showFor(data), filePath)) continue;
         if (data.originalScore) continue;
 
         const outletId = data.outletId || '';

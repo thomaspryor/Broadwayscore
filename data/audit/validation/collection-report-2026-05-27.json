@@ -14,15 +14,15 @@
     "processed": 0,
     "failed": 1,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 0
   },
@@ -33,37 +33,51 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 2,
     "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [],
+  "processed": [
+    "the-maids-off-broadway-2026/thewrap--unknown.json"
+  ],
   "failed": [
     "broken-snow-off-broadway-2026/playbill--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "indian-princesses-off-broadway-2025/theatre-reviews-limited--david-roberts.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "the-maids-off-broadway-2026/thewrap--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Entertainment Weekly": {
+      "count": 1,
+      "domain": "ew.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }

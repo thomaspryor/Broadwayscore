@@ -80,7 +80,7 @@ if (cleanupMode) {
         scanned++;
         if (!data.needsRescore) continue;
         // Check if unscorable
-        if (!isScoreable(data, showFor(data))) {
+        if (!isScoreable(data, showFor(data), filePath)) {
           cleaned++;
           cleanedFiles.push(`${show}/${file}`);
           if (!dryRun) {
@@ -134,7 +134,7 @@ for (const show of shows) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Skip unscorable reviews — don't flag files that the scorer will skip anyway
-      if (!isScoreable(data, showFor(data))) continue;
+      if (!isScoreable(data, showFor(data), filePath)) continue;
 
       // Skip if already flagged for rescore
       if (data.needsRescore) {
