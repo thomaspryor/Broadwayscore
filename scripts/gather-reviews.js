@@ -324,7 +324,9 @@ function getShowSlugIndex() {
 
 /**
  * Detect if a URL's path clearly belongs to a different show.
- * Returns { matchedTitle, showTitle } if mismatch found, null otherwise.
+ * Returns { matchedShowId, matchedTitle, showTitle } if mismatch found, null otherwise.
+ * matchedShowId enables the caller to re-route the file to the correct show
+ * instead of discarding it (see BUG 2 fix at the cross-show guard call site).
  */
 function detectCrossShowUrlMismatch(showId, url) {
   if (!url) return null;
@@ -360,7 +362,7 @@ function detectCrossShowUrlMismatch(showId, url) {
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
       if (urlPath.includes(other.slug)) {
-        return { matchedTitle: other.title, showTitle: thisShow.title };
+        return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
       // Also check a base-title slug (first significant words of the title, without
       // parentheticals or subtitles). Catches shows with long qualified slugs like
@@ -375,7 +377,7 @@ function detectCrossShowUrlMismatch(showId, url) {
           && baseTitle !== idSlug
           && !idSlug.startsWith(baseTitle) && !baseTitle.startsWith(idSlug)
           && urlPath.includes(baseTitle)) {
-        return { matchedTitle: other.title, showTitle: thisShow.title };
+        return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };
       }
     }
   } catch {}
@@ -3102,12 +3104,33 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'profileUrl';
   }
 
-  // CROSS-SHOW URL SLUG GUARD: reject URLs whose path clearly belongs to a different show.
-  // Catches misattributions where SERP/aggregator returns a review for Show B but it's
-  // being filed under Show A (e.g., Into the Woods review filed under Phantom).
+  // CROSS-SHOW URL SLUG GUARD: reject or re-route URLs whose path clearly
+  // belongs to a different show. Catches misattributions where SERP/aggregator
+  // returns a review for Show B but it's being filed under Show A (e.g., Into
+  // the Woods review filed under Phantom), AND the RSS-leakage class where a
+  // poll for Show A surfaces a review for Show B via a global feed (NYT Theater
+  // RSS, etc.).
+  //
+  // Before BUG 2 fix (2026-05-27): the file was discarded entirely. That
+  // dropped real reviews on the floor — e.g., NYT Maids URL surfaced during a
+  // Poet On A String poll and was lost because the Maids' own poll cycle
+  // never re-fetched the same RSS. Now: if the matched show is in shows.json
+  // with an eligible status, re-route to its review-texts dir via recursive
+  // createReviewFile (same pattern as the cross-market reroute above).
   if (reviewData.url) {
     const mismatch = detectCrossShowUrlMismatch(showId, reviewData.url);
     if (mismatch) {
+      const matchedShow = mismatch.matchedShowId ? getShowData(mismatch.matchedShowId) : null;
+      const eligibleStatuses = new Set(['open', 'upcoming', 'previews']);
+      const visited = options._crossShowVisited instanceof Set ? options._crossShowVisited : new Set();
+      const canReroute = matchedShow
+        && eligibleStatuses.has(matchedShow.status)
+        && !visited.has(mismatch.matchedShowId);
+      if (canReroute) {
+        visited.add(showId);
+        console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${mismatch.matchedShowId} (URL belongs to "${mismatch.matchedTitle}")`);
+        return createReviewFile(mismatch.matchedShowId, reviewData, { ...options, _crossShowVisited: visited });
+      }
       console.log(`    ✗ Skipping ${filename}: URL belongs to "${mismatch.matchedTitle}" not "${mismatch.showTitle}" — ${reviewData.url}`);
       return 'crossShowUrl';
     }
@@ -5237,5 +5260,6 @@ module.exports = {
   getGlobalUrlIndex,
   shouldValidateUrl,
   ROUNDUP_URL_SOURCES,
+  detectCrossShowUrlMismatch,
   __test__loadOutlets: loadOutlets,
 };
