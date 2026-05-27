@@ -4227,11 +4227,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   {
     let showOpeningDate = null;
     let showPriorRuns = null;
+    let showCategory = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
       const showMeta = _showsJsonCache.shows.find(s => s.id === (data.showId || review.showId));
       showOpeningDate = showMeta?.openingDate || null;
       showPriorRuns = showMeta?.priorRuns || null;
+      showCategory = showMeta?.category || null;
     } catch (e) { /* shows.json unavailable — skip gate (fail-open) */ }
 
     const inPriorRun = isWithinPriorRun(data.publishDate, showPriorRuns);
@@ -4241,7 +4243,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.publishDate,
           showOpeningDate,
           data.outletId || review.outletId,
-          { humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true }
+          {
+            humanReviewedEarlyPublish: data.humanReviewedEarlyPublish === true,
+            category: showCategory,
+          }
         );
     if (anticip.rejected && !shouldSkipWrongProductionAudit(data)) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);

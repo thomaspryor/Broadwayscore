@@ -134,6 +134,74 @@ describe('isAnticipatoryPreviewPost — non-preview outlets (2-day grace)', () =
   });
 });
 
+describe('isAnticipatoryPreviewPost — Off-Broadway 14-day grace (Bedlam Othello incident)', () => {
+  // OB shows have 14–21 day preview windows and no embargo cadence. Critics
+  // routinely publish 4-10 days pre-opening. The 2-day default falsely flagged
+  // 5 of Bedlam's Othello's 6 outlet reviews on 2026-05-27.
+
+  test('NYT 4 days before OB opening → passes (within 14-day OB grace)', () => {
+    // Helen Shaw / NYT for Bedlam's Othello: publish 2026-05-06, open 2026-05-10
+    const r = isAnticipatoryPreviewPost('2026-05-06', '2026-05-10', 'nytimes', {
+      category: 'off-broadway',
+    });
+    assert.strictEqual(r.rejected, false);
+  });
+
+  test('TheaterMania 5 days before OB opening → passes', () => {
+    const r = isAnticipatoryPreviewPost('2026-05-05', '2026-05-10', 'theatermania', {
+      category: 'off-broadway',
+    });
+    assert.strictEqual(r.rejected, false);
+  });
+
+  test('off-broadway 14 days before opening → passes (at grace boundary)', () => {
+    const r = isAnticipatoryPreviewPost('2026-05-01', '2026-05-15', 'culturesauce', {
+      category: 'off-broadway',
+    });
+    assert.strictEqual(r.rejected, false);
+  });
+
+  test('off-broadway 15 days before opening → rejected (exceeds 14-day grace)', () => {
+    const r = isAnticipatoryPreviewPost('2026-04-30', '2026-05-15', 'culturesauce', {
+      category: 'off-broadway',
+    });
+    assert.strictEqual(r.rejected, true);
+    assert.strictEqual(r.daysBeforeOpening, 15);
+  });
+
+  test('off-west-end gets the same 14-day grace', () => {
+    const r = isAnticipatoryPreviewPost('2026-05-04', '2026-05-10', 'thestage', {
+      category: 'off-west-end',
+    });
+    assert.strictEqual(r.rejected, false);
+  });
+
+  test('Broadway category still uses 2-day grace (no leak from OB rule)', () => {
+    const r = isAnticipatoryPreviewPost('2026-05-04', '2026-05-10', 'nytimes', {
+      category: 'broadway',
+    });
+    assert.strictEqual(r.rejected, true);
+    assert.strictEqual(r.daysBeforeOpening, 6);
+  });
+
+  test('preview-heavy outlet on OB show still uses 0-day grace (precedence)', () => {
+    // Even on an OB show, frontmezzjunkies pre-opening posts are anticipatory.
+    const r = isAnticipatoryPreviewPost('2026-05-09', '2026-05-10', 'frontmezzjunkies', {
+      category: 'off-broadway',
+    });
+    assert.strictEqual(r.rejected, true);
+    assert.strictEqual(r.outletCategory, 'preview-heavy');
+  });
+
+  test('opts.graceDays still wins over category default', () => {
+    const r = isAnticipatoryPreviewPost('2026-04-25', '2026-05-10', 'nytimes', {
+      category: 'off-broadway',
+      graceDays: 10, // tighter than OB default; should reject 15-day-old review
+    });
+    assert.strictEqual(r.rejected, true);
+  });
+});
+
 describe('isAnticipatoryPreviewPost — opts.graceDays overrides', () => {
   test('opts.graceDays overrides default for non-preview outlet', () => {
     // With graceDays=7, a 5-day-before review passes that would otherwise be rejected

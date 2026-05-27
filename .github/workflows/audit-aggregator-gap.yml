@@ -15,7 +15,11 @@ on:
         required: false
         default: '21'
       dispatch_gather:
-        description: 'Auto-dispatch gather-reviews for shows with gaps (default true)'
+        description: 'Auto-dispatch gather-reviews for shows with gaps (default false — gather already ran; prefer --ingest-missing)'
+        required: false
+        default: 'false'
+      ingest_missing:
+        description: 'Directly ingest aggregator-listed URLs whose outlets are in the registry (default true)'
         required: false
         default: 'true'
       fail_on_gap:
@@ -59,28 +63,54 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           WINDOW="${{ github.event.inputs.window_days || '21' }}"
-          DISPATCH="${{ github.event.inputs.dispatch_gather || 'true' }}"
+          DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
+          INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
           FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
           ARGS="--window=$WINDOW"
           if [ "$DISPATCH" = "true" ]; then
             ARGS="$ARGS --dispatch-gather"
+          fi
+          if [ "$INGEST" = "true" ]; then
+            ARGS="$ARGS --ingest-missing"
           fi
           if [ "$FAIL" = "true" ]; then
             ARGS="$ARGS --fail-on-gap"
           fi
           node scripts/audit-show-review-gap.js $ARGS
 
-      - name: Commit audit
+      - name: Commit audit + push ingested review-texts
         if: always()
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/show-review-gap.json || true
+          # Audit JSON lives in the public repo
+          git add data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json || true
           if git diff --cached --quiet; then
             echo "No audit changes to commit"
           else
             git commit -m "audit: show-review-gap [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main
+          fi
+          # Any new review-text files written by --ingest-missing land in
+          # data/review-texts/ (the private review-texts checkout). Push them
+          # back so the next rebuild picks them up.
+          if [ -d data/review-texts ]; then
+            cd data/review-texts
+            if [ -n "$(git status --porcelain)" ]; then
+              git add -A
+              git commit -m "ingest: audit-aggregator-gap auto-ingested $(git status --porcelain | wc -l | tr -d ' ') file(s)" || true
+              git push https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git HEAD:main || \
+                (git pull --rebase origin main && git push https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git HEAD:main) || \
+                echo "::warning::review-texts push failed; next cron will retry"
+            fi
+            cd -
+          fi
+          # Trigger rebuild so newly-ingested reviews land in reviews.json
+          if [ -d data/review-texts ] && [ -n "$(cd data/review-texts && git log -1 --format=%s | grep -F 'audit-aggregator-gap auto-ingested')" ]; then
+            gh workflow run "Rebuild Reviews Data" -f reason="audit-aggregator-gap ingested new reviews" || true
           fi
 
       - name: Notify on failure
