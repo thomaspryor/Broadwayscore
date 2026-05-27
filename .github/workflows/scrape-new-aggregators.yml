@@ -3,7 +3,11 @@ name: Scrape New Aggregators
 
 on:
   schedule:
-    - cron: '0 11 * * 0'  # Weekly on Sundays at 11 AM UTC (after NYSR)
+    # 14:00 UTC daily (10am ET). PV roundups for OB shows publish mid-week
+    # (e.g. The Maids 2026-05-25, Heated Rivalry 2026-05-26 both landed
+    # between Sunday runs). Daily catches them inside 24h instead of waiting
+    # up to 6 days. PV-only fetch is cheap (~1 SB credit/run).
+    - cron: '0 14 * * *'
   workflow_dispatch:
     inputs:
       aggregator:
@@ -86,6 +90,23 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Playbill Verdict aggregator archive"
+
+      # Commit the unmatched-articles audit log to the public repo. The
+      # downstream rebuild job re-checks out main and would lose this file
+      # otherwise. data/audit/ is the established public-repo audit location
+      # (see audit-aggregator-coverage.yml for the same pattern).
+      - name: Commit Playbill Verdict unmatched-articles audit
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/playbill-verdict-unmatched.json 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: Playbill Verdict unmatched articles audit [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No unmatched-articles changes to commit"
+          fi
 
   scrape-nyc-theatre:
     runs-on: ubuntu-latest

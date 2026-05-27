@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { matchTitleToShow, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -118,9 +118,21 @@ async function googleSearch(query) {
 // Parse Playbill Verdict category page (HTML or markdown format)
 // ---------------------------------------------------------------------------
 
+// IMPORTANT: this is duplicated in scripts/lib/playbill-verdict-discover.js
+// (same source-of-truth comment lives there). Keep both copies in sync. The
+// batch scraper does NOT import from the lib because the lib's
+// searchPlaybillVerdict() runs against a single show; this scraper iterates
+// the full shows.json corpus and needs the raw article list.
+//
+// Returns `{ url, title, slug }`. Pattern 3 (bare URLs) uses cleanSlugTitle
+// to strip Playbill's recurring verb wrappers; consumers should prefer
+// matchSlugToShow(slug, shows) over matchTitleToShow(title, shows) — substring
+// matching against shows.json slugs handles middle-title slugs that fuzzy
+// title matching cannot (Kenrex, Rocky Horror, Celebrity Autobiography).
 function extractArticlesFromCategoryPage(content) {
   const articles = [];
   const seen = new Set();
+  const urlToSlug = (u) => (u.split('/article/')[1] || '').replace(/[?#].*$/, '');
 
   // Pattern 1: HTML links - <a href="/article/...">Title</a>
   const htmlPattern = /<a[^>]*href="((?:https:\/\/playbill\.com)?\/article\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
@@ -131,7 +143,7 @@ function extractArticlesFromCategoryPage(content) {
     const title = match[2].trim();
     if (seen.has(url) || title.length < 5 || title.length > 200) continue;
     seen.add(url);
-    articles.push({ url, title });
+    articles.push({ url, title, slug: urlToSlug(url) });
   }
 
   // Pattern 2: Markdown links - [Title](https://playbill.com/article/...)
@@ -141,7 +153,7 @@ function extractArticlesFromCategoryPage(content) {
     const url = match[2].trim();
     if (seen.has(url) || title.length < 5 || title.length > 200) continue;
     seen.add(url);
-    articles.push({ url, title });
+    articles.push({ url, title, slug: urlToSlug(url) });
   }
 
   // Pattern 3: Bare Playbill article URLs
@@ -150,10 +162,8 @@ function extractArticlesFromCategoryPage(content) {
     const url = match[1];
     if (seen.has(url)) continue;
     seen.add(url);
-    // Extract title from URL slug
-    const slug = url.split('/article/')[1] || '';
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    articles.push({ url, title });
+    const slug = urlToSlug(url);
+    articles.push({ url, title: cleanSlugTitle(slug) || slug, slug });
   }
 
   return articles;
@@ -646,6 +656,7 @@ async function scrapePlaybillVerdict() {
 
   // Step 2: Match articles to shows
   const matchedArticles = [];
+  const unmatchedArticles = [];  // dumped to data/audit/playbill-verdict-unmatched.json
   const unmatchedShows = new Set(shows.map(s => s.id));
 
   for (const article of uniqueArticles) {
@@ -656,13 +667,18 @@ async function scrapePlaybillVerdict() {
       continue;
     }
 
-    // Extract year from article date for multi-production disambiguation
+    // Match strategy: slug-substring first (handles Playbill's verb-wrapper
+    // slugs that defeat fuzzy title matching), then fuzzy title fallback.
     const articleYear = article.publishDate ? new Date(article.publishDate).getFullYear() : null;
-    const match = matchTitleToShow(article.title, shows, { market: 'broadway', ...(articleYear ? { year: articleYear } : {}) });
-    if (match && match.confidence !== 'high') {
-      stats.skippedNoMatch++;
-      console.log(`  [LOW CONFIDENCE] "${article.title}" → ${match.show.title} (${match.confidence}) — skipped`);
-      continue;
+    let match = article.slug ? matchSlugToShow(article.slug, shows) : null;
+    if (!match) {
+      match = matchTitleToShow(article.title, shows, { market: 'broadway', ...(articleYear ? { year: articleYear } : {}) });
+      if (match && match.confidence !== 'high') {
+        stats.skippedNoMatch = (stats.skippedNoMatch || 0) + 1;
+        console.log(`  [LOW CONFIDENCE] "${article.title}" → ${match.show.title} (${match.confidence}) — skipped`);
+        unmatchedArticles.push({ url: article.url, title: article.title, slug: article.slug, reason: 'low-confidence', candidate: match.show.id });
+        continue;
+      }
     }
     if (match) {
       const showId = match.show.id;
@@ -676,7 +692,34 @@ async function scrapePlaybillVerdict() {
       matchedArticles.push({ ...article, showId, confidence: match.confidence });
       unmatchedShows.delete(showId);
       stats.matchedShows++;
+    } else {
+      // No match — likely a show we don't have in shows.json yet. Surface to
+      // the OB discovery pipeline via the audit log instead of dropping silently.
+      unmatchedArticles.push({ url: article.url, title: article.title, slug: article.slug, reason: 'no-match' });
     }
+  }
+
+  // Dump unmatched articles to audit log for OB discovery pipeline.
+  // Append + dedup-by-url so the file accumulates across daily runs.
+  try {
+    const auditDir = path.join(__dirname, '../data/audit');
+    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    const auditPath = path.join(auditDir, 'playbill-verdict-unmatched.json');
+    const now = new Date().toISOString();
+    let existing = [];
+    if (fs.existsSync(auditPath)) {
+      try { existing = JSON.parse(fs.readFileSync(auditPath, 'utf8')); } catch { existing = []; }
+      if (!Array.isArray(existing)) existing = [];
+    }
+    const byUrl = new Map(existing.map(e => [e.url, e]));
+    for (const u of unmatchedArticles) {
+      const prev = byUrl.get(u.url);
+      byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
+    }
+    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
+    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${byUrl.size})`);
+  } catch (auditErr) {
+    console.log(`  [WARN] Could not write unmatched-articles audit: ${auditErr.message}`);
   }
 
   console.log(`Matched ${matchedArticles.length} articles to shows`);
