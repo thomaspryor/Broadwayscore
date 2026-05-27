@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-05-26T23:28:30.445Z",
+  "timestamp": "2026-05-27T00:39:43.509Z",
   "stats": {
     "totalReviews": 37564,
     "alreadyFlagged": 16445,
     "dateGuardCatches": 102,
     "directorMismatch": 801,
-    "tvFilmSignals": 1022,
+    "tvFilmSignals": 1023,
     "londonSignals": 581,
-    "offBroadwaySignals": 446,
+    "offBroadwaySignals": 449,
     "yearMismatch": 78,
     "noPublishDate": 4027
   },
@@ -12223,6 +12223,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "lets-love-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theaterscene.net/plays/offbway-plays/lets-love/victor-gluck/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -27579,7 +27593,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -28528,6 +28542,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "eurydice-off-broadway-2026",
+      "file": "vulture--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-sarah-ruhl-eurydice-nazareth-hassan-bowl-ep.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
@@ -31944,6 +31972,20 @@
       ]
     },
     {
+      "showId": "lets-love-off-broadway-2026",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playbill.com/article/what-do-the-critics-think-of-ethan-coens-lets-love-with-aubrey-plaza",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
       "showId": "liberation-2025",
       "file": "front-row-center--tulis-mccall.json",
       "score": 82,
@@ -33680,6 +33722,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oratorio-for-living-things-off-broadway-2026",
+      "file": "nytimes--jesse-green.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"ars nova\""
         }
       ]
     },
