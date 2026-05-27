@@ -136,15 +136,15 @@ jobs:
 
           # Lookback window for shows the orchestrator queues. Tier-3 outlets
           # (Front Mezz Junkies, StageZine, Newsnotes, etc.) routinely publish
-          # 7-14 days after opening, so a 2-day window misses them entirely
-          # (FMJ/Schmigadoon review at +11d, issue #309 on 2026-05-03 traced
-          # the discovery gap to this constant). Cadence within the window
+          # 7-14 days after opening, and BWW Review Roundups have been seen at
+          # +14d (Heated Rivalry, opened 2026-05-12, BWW RR dropped 2026-05-26,
+          # missed by the previous 14-day cutoff). Cadence within the window
           # is gated by pollMode in opening-night-poller.js:
           #   - days 0-2: 'aggressive' (every cron fire)
           #   - days 3-13: 'daily' (only morning-cron slot — once/day per show)
           #   - days 14-59: 'every-3d' (~once every 3 mornings)
           # The 30-shows/cycle SERP_BUDGET cap limits total cost.
-          LOOKBACK=14
+          LOOKBACK=21
           echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT
 
           SHOWS=$(node -e "
@@ -154,9 +154,10 @@ jobs:
             // midnight) still discovers shows opening the next calendar day.
             const lookAhead = new Date(now.getTime() + 6 * 60 * 60 * 1000);
             const cutoff = new Date(now);
-            // 14-day lookback for both markets — pollMode in the poller gates
+            // 21-day lookback for both markets — pollMode in the poller gates
             // SERP cadence per show (aggressive → daily → every-3d → weekly).
-            cutoff.setDate(cutoff.getDate() - 14);
+            // Bumped from 14 → 21 after Heated Rivalry BWW RR missed by 1 day.
+            cutoff.setDate(cutoff.getDate() - 21);
             cutoff.setHours(0,0,0,0);
             const market = '$MARKET';
             // Trusted sources for WE press night dates — only fire orchestrator
