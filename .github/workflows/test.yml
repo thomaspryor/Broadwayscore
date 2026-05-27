@@ -18,6 +18,7 @@ on:
       - 'scripts/audit-regex-patterns.js'
       - 'scripts/audit-duplicate-of-url-mismatch.js'
       - 'scripts/audit-orphan-show-ids.js'
+      - 'scripts/validate-show-venue.js'
       - 'scripts/lib/review-write-guard.js'
       - 'scripts/lib/cast-extraction-guards.js'
       - 'scripts/backfill-cast-web.js'
@@ -1021,6 +1022,41 @@ jobs:
         # 2026-05-24). Also reports show-score / audience-buzz key drift as
         # advisory (use --strict to also fail on those). Run with --fix locally
         # to delete orphan slim files. See memory/feedback_orphan_slim_show_files.md.
+
+      - name: Validate provisional show venue+dates against Playbill
+        # Cross-checks every provisional:true (or manual-user-request /
+        # venue-page) entry in shows.json against its Playbill production page.
+        # Catches the class of bug surfaced 2026-05-26 where OB venue-page
+        # scrapers wrote stub entries with wrong years (Sunset Baby 2014
+        # confused with the 2024 Signature revival; multiple Signature past-
+        # productions captured with publication-year as opening-year).
+        #
+        # Behavior here is ADVISORY — we always write data/audit/venue-date-
+        # mismatches.json and surface mismatches as ::warning::, but the step
+        # never fails CI. Switch to strict by running locally with
+        # --fail-on-mismatch and remediating before pushing.
+        #
+        # Skips silently when SERP/scrape secrets are absent (Dependabot,
+        # forks). The cron freshness job catches drift outside this window.
+        if: env.HAS_SCRAPE_SECRETS == 'true'
+        env:
+          HAS_SCRAPE_SECRETS: ${{ (secrets.SCRAPINGBEE_API_KEY != '' && secrets.BRIGHTDATA_TOKEN != '') && 'true' || 'false' }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          node scripts/validate-show-venue.js --all-provisional || true
+          if [ -f data/audit/venue-date-mismatches.json ]; then
+            node -e "
+              const a = JSON.parse(require('fs').readFileSync('data/audit/venue-date-mismatches.json','utf8'));
+              console.log('Provisional show venue audit: ' + a.counts.match + ' match / ' + a.counts.mismatch + ' mismatch / ' + a.counts.unresolved + ' unresolved');
+              for (const r of (a.results || []).filter(x => x.result === 'mismatch')) {
+                for (const m of r.mismatches) {
+                  console.log('::warning::' + r.id + ': ' + m.field + ' shows=' + (m.shows ?? m.showsCanonical) + ' playbill=' + (m.playbill ?? m.playbillCanonical));
+                }
+              }
+            "
+          fi
 
       - name: Audit content-quality regex FP rate
         run: node scripts/audit-regex-patterns.js --full
