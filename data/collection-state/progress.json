@@ -120,7 +120,9 @@
     "jellys-last-jam-1992/backstage--unknown.json",
     "deathtrap-1978/latimes--unknown.json",
     "dracula-1977/latimes--unknown.json",
-    "animal-wisdom-2022/nytimes--ben-brantley.json"
+    "animal-wisdom-2022/nytimes--ben-brantley.json",
+    "msblackforpresident-off-broadway-2026/variety--brent-lang.json",
+    "bocking-off-broadway-2026/playbill--meg-masseron.json"
   ],
   "failed": [
     "dark-of-the-moon-west-end-2026/guardian-uk--unknown.json",
@@ -968,7 +970,10 @@
     "tarzan-2006/variety--charles-isherwood.json",
     "chita-rivera-the-dancers-life-2005/ct-now--unknown.json",
     "jellys-last-jam-1992/nytg--unknown.json",
-    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json"
+    "the-phantom-of-the-opera-1988/manila-bulletin--yap-daza.json",
+    "msblackforpresident-off-broadway-2026/broadwayworld--unknown.json",
+    "the-loved-ones-off-broadway-2026/broadwayworld--unknown.json",
+    "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1042,7 +1047,8 @@
       "bocking-off-broadway-2026/playbill--unknown.json",
       "blood-of-my-blood-west-end-2026/radio-times--unknown.json",
       "blood-of-my-blood-west-end-2026/the-scotsman--unknown.json",
-      "little-women-2005/timeout--unknown.json"
+      "little-women-2005/timeout--unknown.json",
+      "bocking-off-broadway-2026/playbill--meg-masseron.json"
     ],
     "amp": [],
     "browserbase": [
@@ -1053,7 +1059,9 @@
       "data/review-texts/grangeville-off-broadway-2026/wsj--unknown.json",
       "grangeville-off-broadway-2026/wsj--unknown.json",
       "data/review-texts/msblackforpresident-off-broadway-2026/variety--unknown.json",
-      "msblackforpresident-off-broadway-2026/variety--unknown.json"
+      "msblackforpresident-off-broadway-2026/variety--unknown.json",
+      "data/review-texts/msblackforpresident-off-broadway-2026/variety--brent-lang.json",
+      "msblackforpresident-off-broadway-2026/variety--brent-lang.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -1167,7 +1175,7 @@
     ]
   },
   "startTime": "2026-05-26T16:49:30.221Z",
-  "lastProcessed": "animal-wisdom-2022/nytimes--ben-brantley.json",
+  "lastProcessed": "this-is-not-about-me-off-west-end-2026/telegraph--dominic-cavendish.json",
   "log": [
     {
       "t": "2026-05-26T16:51:38.933Z",
@@ -1264,6 +1272,17 @@
     },
     {
       "t": "2026-05-27T06:50:21.665Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-05-27T11:42:17.193Z",
+      "event": "bb-session",
+      "session": "67772161",
+      "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvi"
+    },
+    {
+      "t": "2026-05-27T11:42:18.001Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     }
