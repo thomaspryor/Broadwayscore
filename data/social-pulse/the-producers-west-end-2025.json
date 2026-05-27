@@ -3,49 +3,54 @@
   "showId": "the-producers-west-end-2025",
   "showTitle": "The Producers",
   "market": "West End",
-  "fetchedAt": "2026-05-18T10:05:30.459Z",
+  "fetchedAt": "2026-05-27T11:18:54.138Z",
   "tier": "Steady",
-  "volume": 132,
-  "positivePct": 78,
-  "weekOverWeekPct": 6,
-  "baselineMultiple": 1.21,
+  "volume": 108,
+  "positivePct": 80,
+  "weekOverWeekPct": -18,
+  "baselineMultiple": 0.97,
   "platformBreakdown": {
-    "x": 99,
-    "tiktok": 20,
-    "instagram": 9,
-    "reddit": 4
+    "x": 101,
+    "tiktok": 0,
+    "instagram": 7,
+    "reddit": 0
   },
   "topQuotes": [
     {
-      "text": "We open \"The Producers\" at @thegrandtheatre a week from today. I'm having a blast playing Max Bialystock and the cast…",
+      "text": "This weekend I watched The Producers at Maidenhead Arts Centre. I'm no theatre critic but I have never enjoyed a…",
       "platform": "instagram",
-      "author": "@whimpeybj",
-      "url": "https://www.instagram.com/p/DYV2wlKtkhL/"
+      "author": "@seanbwparker7",
+      "url": "https://www.instagram.com/p/DYxoppCkWty/"
     },
     {
-      "text": "A fablas afternoon at The Garrick watching The Producers! #westend #musicaltheatre #theproducers",
-      "platform": "tiktok",
-      "author": "@angelaruthbutler",
-      "url": "https://www.tiktok.com/@angelaruthbutler/video/7639837659208109334"
+      "text": "As part of my ongoing 60th Birthday celebrations, tonight I'm taking my 16 year old son to see The Producers in the…",
+      "platform": "x",
+      "author": "@MorrisBrightMBE",
+      "url": "https://x.com/MorrisBrightMBE/status/2027357476257955933"
     }
   ],
-  "xTrueVolume": 1,
+  "xTrueVolume": 3,
   "baseline": {
-    "mean": 111.75,
+    "mean": 111.28125,
     "weeksOfHistory": 8
   },
-  "costUsd": 0.1355,
+  "costUsd": 0.1305,
   "rawCounts": {
-    "reddit": 11,
+    "reddit": 4,
     "twitter": 160,
-    "tiktok": 20,
+    "tiktok": 0,
     "instagram": 15
   },
-  "errors": [],
+  "errors": [
+    {
+      "platform": "tiktok",
+      "error": "Apify run failed (clockworks~tiktok-scraper): 502 <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n</body>\r\n</html>\r\n"
+    }
+  ],
   "rank": {
-    "position": 43,
-    "total": 58,
-    "text": "43/58 West End"
+    "position": 52,
+    "total": 60,
+    "text": "52/60 West End"
   },
-  "compositeScore": 102.96
+  "compositeScore": 86.4
 }
