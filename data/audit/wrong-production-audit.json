@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T16:49:10.076Z",
+  "timestamp": "2026-05-27T16:59:47.467Z",
   "stats": {
-    "totalReviews": 37668,
-    "alreadyFlagged": 16579,
+    "totalReviews": 37689,
+    "alreadyFlagged": 16583,
     "dateGuardCatches": 102,
-    "directorMismatch": 801,
+    "directorMismatch": 800,
     "tvFilmSignals": 1029,
     "londonSignals": 581,
     "offBroadwaySignals": 450,
     "yearMismatch": 78,
-    "noPublishDate": 3946
+    "noPublishDate": 3966
   },
   "findings": [
     {
@@ -1577,7 +1577,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8616,7 +8616,7 @@
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "theater-scene--darryl-reilly.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2026-05-26",
       "url": "https://theaterscene.org/2026/05/heated-rivalry-the-unauthorized-musical-parody/",
       "findings": [
@@ -8630,7 +8630,7 @@
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "timeout--adam-feldman.json",
-      "publishDate": "2026-05-27",
+      "publishDate": null,
       "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
       "findings": [
         {
@@ -23625,20 +23625,6 @@
       "score": 50,
       "publishDate": "August 5, 2022",
       "url": "https://nypost.com/2022/08/05/titanique-the-musical-review-titanic-parody-hits-the-mark/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tye blue\" from titanique-2026"
-        }
-      ]
-    },
-    {
-      "showId": "titanique-off-broadway-2022",
-      "file": "nytg--gillian-russo.json",
-      "score": 81,
-      "publishDate": "2022-09-29",
-      "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
