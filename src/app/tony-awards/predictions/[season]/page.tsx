@@ -10,7 +10,7 @@ import { SeasonSelect } from '@/components/SeasonSelect';
 import { CategorySection, SHOW_LEVEL_CATEGORIES } from '@/components/tony-noms/CategorySection';
 import { CeremonyCountdown } from '@/components/tony/CeremonyCountdown';
 import { TrackRecord } from '@/components/tony/TrackRecord';
-import { getNomineesByCategory, enrichMajorCategoriesWithOdds } from '@/lib/data-tony-nominees';
+import { getNomineesByCategory, enrichMajorCategoriesWithOdds, getOddsLastUpdated } from '@/lib/data-tony-nominees';
 import { tonySeasonForCeremonyYear } from '@/lib/tony-cutoffs';
 import {
   getTonySeasonWindow,
@@ -327,7 +327,20 @@ export default function TonySeasonPredictionsPage({ params }: { params: { season
           </div>
           <p className="text-gray-400 mt-2 max-w-2xl">
             {nominationsAnnounced
-              ? 'Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score. Updated daily.'
+              ? <>Tony nominees ranked by our per-category model — critic, audience, and (for Best Play) precursor Awards Score. {(() => {
+                  const iso = getOddsLastUpdated();
+                  if (!iso) return 'Updated daily.';
+                  const d = new Date(iso);
+                  const stamp = d.toLocaleString('en-US', {
+                    timeZone: 'America/New_York',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true,
+                  });
+                  return `Updated frequently during the day · last update ${stamp} ET.`;
+                })()}</>
               : winnerCount > 0
                 ? `How our per-category model would have predicted the ${season.ceremonyYear} Tony Awards.`
                 : 'Data-driven predictions powered by per-category blends of critic, audience, and precursor-award signal — tuned on 11 years of Tony history. Updated daily.'}
