@@ -96,4 +96,105 @@ function jaccard(a, b) {
   return inter / new Set([...a, ...b]).size;
 }
 
-module.exports = { normalizeTitle, titleTokens, jaccard, TYPE_DESIGNATOR_RE, STOP_WORDS };
+// ─────────────────────────────────────────────────────────────────────────
+// canonicalVenue — collapses venue strings that refer to the same physical
+// theater so cross-venue dedupe works.
+//
+// Why: a producing company (The New Group, Ars Nova) often rents space at
+// another venue (Pershing Square Signature Center). Their season pages
+// emit `venue: "The New Group"`; the host's season page emits
+// `venue: "Signature Theatre"`. Without canonicalization, dedupe sees two
+// different keys for the same show.
+//
+// Approach: alias table → canonical key. Match by lowercased full string OR
+// any prefix/substring in the aliases. Unknown venues fall back to the
+// first word (legacy behavior).
+//
+// Add new aliases here (NOT in promote scripts) — single source of truth.
+// ─────────────────────────────────────────────────────────────────────────
+
+const VENUE_ALIASES = [
+  // The Signature Center on 42nd St — multiple stages, multiple companies rent
+  {
+    canonical: 'signature center',
+    matches: [
+      /signature\s*(theatre|theater|center)/i,
+      /pershing\s*square/i,
+      /irene\s*diamond\s*stage/i,
+      /romulus\s*linney/i,
+      /alice\s*griffin/i,
+      /ford\s*foundation/i,
+      // Companies that frequently rent the Signature Center
+      /^the\s*new\s*group$/i,
+    ],
+  },
+  // Second Stage operates two stages — the Hayes is Broadway, Uptown is OB
+  {
+    canonical: 'second stage uptown',
+    matches: [/second\s*stage\s*uptown/i, /mcginn[\s\/]*cazale/i],
+  },
+  {
+    canonical: 'second stage hayes',
+    matches: [/hayes\s*theater/i, /second\s*stage.*hayes/i],
+  },
+  // Atlantic Theater Company — two stages
+  {
+    canonical: 'atlantic theater',
+    matches: [/atlantic\s*theater(?!\s*stage\s*2)/i, /linda\s*gross/i],
+  },
+  {
+    canonical: 'atlantic stage 2',
+    matches: [/atlantic\s*stage\s*2/i],
+  },
+  // MCC at 511 W 52nd St — multiple sub-stages
+  {
+    canonical: 'mcc theater',
+    matches: [/mcc\s*theater/i, /newman\s*mills/i, /susan.*frankel/i, /robert\s*w\.?\s*wilson\s*mcc/i],
+  },
+  // Other major OB venues — canonical alias = lowercase venue name
+  {
+    canonical: 'vineyard theatre',
+    matches: [/vineyard\s*theatre/i],
+  },
+  {
+    canonical: 'soho rep',
+    matches: [/^soho\s*rep/i],
+  },
+  {
+    canonical: 'tfana',
+    matches: [/theatre?\s*for\s*a\s*new\s*audience/i, /polonsky\s*shakespeare/i, /^tfana/i],
+  },
+  {
+    canonical: 'irish rep',
+    matches: [/irish\s*repertory/i, /^irish\s*rep/i],
+  },
+];
+
+/**
+ * Canonicalize a venue string for cross-source dedupe.
+ *
+ * @param {string} venue
+ * @returns {string} canonical key (lowercased) or first-word fallback
+ */
+function canonicalVenue(venue) {
+  if (!venue || typeof venue !== 'string') return '';
+  const trimmed = venue.trim();
+  if (!trimmed) return '';
+  for (const { canonical, matches } of VENUE_ALIASES) {
+    for (const re of matches) {
+      if (re.test(trimmed)) return canonical;
+    }
+  }
+  // Fallback: first space/dash/comma-separated word lowercased (legacy)
+  return trimmed.toLowerCase().split(/[\s\-,—]/)[0];
+}
+
+module.exports = {
+  normalizeTitle,
+  titleTokens,
+  jaccard,
+  canonicalVenue,
+  VENUE_ALIASES,
+  TYPE_DESIGNATOR_RE,
+  STOP_WORDS,
+};
