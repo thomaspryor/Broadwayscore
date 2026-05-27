@@ -1082,10 +1082,14 @@ jobs:
         # confused with the 2024 Signature revival; multiple Signature past-
         # productions captured with publication-year as opening-year).
         #
-        # Behavior here is ADVISORY — we always write data/audit/venue-date-
-        # mismatches.json and surface mismatches as ::warning::, but the step
-        # never fails CI. Switch to strict by running locally with
-        # --fail-on-mismatch and remediating before pushing.
+        # Behavior here is STRICT — flipped from advisory 2026-05-27 after the
+        # 6 mismatches surfaced in data/audit/venue-date-mismatches.json were
+        # remediated (sunset-baby, three-houses, grangeville, eurydice,
+        # oratorio-for-living-things, shit-meet-fan). The job writes the audit
+        # file via the script and exits non-zero when any provisional entry
+        # mismatches its Playbill production page. Fix locally by editing
+        # shows.json to match Playbill (the authoritative source per
+        # CLAUDE.md §3) before pushing.
         #
         # Skips silently when SERP/scrape secrets are absent (Dependabot,
         # forks). The cron freshness job catches drift outside this window.
@@ -1098,19 +1102,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: |
-          node scripts/validate-show-venue.js --all-provisional || true
-          if [ -f data/audit/venue-date-mismatches.json ]; then
-            node -e "
-              const a = JSON.parse(require('fs').readFileSync('data/audit/venue-date-mismatches.json','utf8'));
-              console.log('Provisional show venue audit: ' + a.counts.match + ' match / ' + a.counts.mismatch + ' mismatch / ' + a.counts.unresolved + ' unresolved');
-              for (const r of (a.results || []).filter(x => x.result === 'mismatch')) {
-                for (const m of r.mismatches) {
-                  console.log('::warning::' + r.id + ': ' + m.field + ' shows=' + (m.shows ?? m.showsCanonical) + ' playbill=' + (m.playbill ?? m.playbillCanonical));
-                }
-              }
-            "
-          fi
+        run: node scripts/validate-show-venue.js --all-provisional --fail-on-mismatch
 
       - name: Audit content-quality regex FP rate
         run: node scripts/audit-regex-patterns.js --full
