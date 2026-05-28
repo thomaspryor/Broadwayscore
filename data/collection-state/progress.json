@@ -25,7 +25,10 @@
     "company-2021/theatrely--andrew-martini.json",
     "trouble-in-mind-2021/broadwayworld--unknown.json",
     "escape-to-margaritaville-2018/playbill--gabriel-agosto.json",
-    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json"
+    "an-american-in-paris-2015/the-komisar-scoop--lucy-komisar.json",
+    "equus-west-end-2026/timeout--andrzej-lukowski.json",
+    "the-p-word-off-west-end-2026/guardian--arifa-akbar.json",
+    "the-p-word-off-west-end-2026/artsdesk--aleks-sierz.json"
   ],
   "failed": [
     "animal-wisdom-off-broadway-2022/talkinbroadway--james-wilson.json",
@@ -197,7 +200,15 @@
     "1536-west-end-2026/artsdesk--rachel-halliburton.json",
     "1536-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
     "1536-west-end-2026/london-theatre--unknown.json",
-    "1536-west-end-2026/the-recs--the-recs-jdh.json"
+    "1536-west-end-2026/the-recs--the-recs-jdh.json",
+    "1536-west-end-2026/thestage--holly-o.json",
+    "1536-west-end-2026/times-uk--clive-davis.json",
+    "1536-west-end-2026/times-uk--dominic-maxwell.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
+    "an-ideal-husband-west-end-2026/the-recs--unknown.json",
+    "the-p-word-off-west-end-2026/guardian--chris-wiegand.json",
+    "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -220,7 +231,9 @@
       "three-houses-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
       "three-houses-off-broadway-2026/forward--miranda-jackel.json",
       "three-houses-off-broadway-2026/nysr--david-finkle.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "equus-west-end-2026/timeout--andrzej-lukowski.json",
+      "the-p-word-off-west-end-2026/artsdesk--aleks-sierz.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -229,12 +242,20 @@
       "company-2021/theatrely--andrew-martini.json"
     ],
     "brightdata": [
-      "broken-snow-off-broadway-2026/talkinbroadway--moshe-a-bloxenheim.json"
+      "broken-snow-off-broadway-2026/talkinbroadway--moshe-a-bloxenheim.json",
+      "the-p-word-off-west-end-2026/guardian--arifa-akbar.json"
     ],
     "archiveToday": [
       "data/review-texts/animal-wisdom-off-broadway-2022/talkinbroadway--james-wilson.json",
       "data/review-texts/blood-of-my-blood-west-end-2026/sunday-express--unknown.json",
-      "data/review-texts/trophy-boys-off-broadway-2025/theater-scene--deirdre-donovan.json"
+      "data/review-texts/trophy-boys-off-broadway-2025/theater-scene--deirdre-donovan.json",
+      "data/review-texts/beetlejuice-west-end-2026/guardian--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/cambridge--unknown.json",
+      "data/review-texts/dark-of-the-moon-west-end-2026/thestage--unknown.json",
+      "data/review-texts/equus-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/1536-west-end-2026/thestage--holly-o.json",
+      "data/review-texts/krapps-last-tape-godots-todo-list-west-end-2026/thestage--unknown.json",
+      "data/review-texts/an-ideal-husband-west-end-2026/the-recs--unknown.json"
     ],
     "archive": [
       "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
@@ -245,7 +266,7 @@
     ]
   },
   "startTime": "2026-05-28T05:38:46.965Z",
-  "lastProcessed": "1536-west-end-2026/the-recs--the-recs-jdh.json",
+  "lastProcessed": "the-p-word-off-west-end-2026/broadwayworld--aliya-al-hassan.json",
   "log": [
     {
       "t": "2026-05-28T05:41:01.580Z",
@@ -257,6 +278,12 @@
       "t": "2026-05-28T05:41:02.456Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-05-28T07:26:29.084Z",
+      "event": "bb-session",
+      "session": "91662f75",
+      "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
     }
   ]
 }
