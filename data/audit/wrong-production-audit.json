@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T13:27:38.536Z",
+  "timestamp": "2026-05-28T17:40:24.942Z",
   "stats": {
-    "totalReviews": 37755,
-    "alreadyFlagged": 16620,
+    "totalReviews": 37775,
+    "alreadyFlagged": 16622,
     "dateGuardCatches": 106,
-    "directorMismatch": 800,
-    "tvFilmSignals": 1031,
+    "directorMismatch": 797,
+    "tvFilmSignals": 1030,
     "londonSignals": 582,
     "offBroadwaySignals": 452,
     "yearMismatch": 78,
-    "noPublishDate": 3949
+    "noPublishDate": 3968
   },
   "findings": [
     {
@@ -1578,7 +1578,7 @@
       "file": "independent--louis-chilton.json",
       "score": 40,
       "publishDate": "2026-04-17",
-      "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/avenue-q-review-shaftesbury-theatre-b2959638.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3293,35 +3293,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "cats-the-jellicle-ball-off-broadway-2024",
-      "file": "nysr--melissa-rose-bernardo.json",
-      "score": 88,
-      "publishDate": "June 20, 2024",
-      "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"zhailon levingston\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trevor nunn\" from cats-2016"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
