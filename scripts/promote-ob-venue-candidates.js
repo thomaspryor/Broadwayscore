@@ -207,13 +207,17 @@ async function main() {
 
   console.log('');
   console.log(`Promotion summary: ${promoted.length} promote / ${skipped.length} skip (of ${staged.length} staged).`);
+  // Tag each line with the candidate's discovery source (venue-page:* vs
+  // playbill-verdict / bww-roundup) so the operator knows whether a row came
+  // from a direct venue scrape or an aggregator-article extraction (the latter
+  // warrants extra scrutiny — venue was parsed from prose). See plan-review.
   if (promoted.length > 0) {
     console.log('Promoting:');
-    for (const p of promoted) console.log(`  + ${p.entry.id} (via ${p.confirmationSource}: ${p.confirmationReason})`);
+    for (const p of promoted) console.log(`  + [${p.candidate.source || 'unknown'}] ${p.entry.id} (via ${p.confirmationSource}: ${p.confirmationReason})`);
   }
   if (skipped.length > 0) {
     console.log('Skipping:');
-    for (const s of skipped.slice(0, 20)) console.log(`  - ${s.candidate.title} (${s.candidate.venue}): ${s.reason}`);
+    for (const s of skipped.slice(0, 20)) console.log(`  - [${s.candidate.source || 'unknown'}] ${s.candidate.title} (${s.candidate.venue}): ${s.reason}`);
     if (skipped.length > 20) console.log(`  ... +${skipped.length - 20} more`);
   }
 

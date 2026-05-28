@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-27T19:00:51.589Z",
+  "timestamp": "2026-05-28T03:19:17.731Z",
   "stats": {
-    "totalReviews": 37689,
-    "alreadyFlagged": 16589,
-    "dateGuardCatches": 102,
+    "totalReviews": 37690,
+    "alreadyFlagged": 16581,
+    "dateGuardCatches": 106,
     "directorMismatch": 800,
     "tvFilmSignals": 1030,
     "londonSignals": 581,
-    "offBroadwaySignals": 450,
+    "offBroadwaySignals": 451,
     "yearMismatch": 78,
-    "noPublishDate": 3943
+    "noPublishDate": 3941
   },
   "findings": [
     {
@@ -11042,7 +11042,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "telegraph--claire-allfree.json",
-      "score": null,
+      "score": 78,
       "publishDate": "March 27th, 2026",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
       "findings": [
@@ -16360,6 +16360,7 @@
     {
       "showId": "proof-2026",
       "file": "nysr--charles-isherwood.json",
+      "score": 94,
       "publishDate": "2026-04-17",
       "url": "https://nystagereview.com/2026/04/16/proof-25-year-old-pulitzer-winner-proves-to-be-even-better-than-before/",
       "findings": [
@@ -16387,7 +16388,7 @@
     {
       "showId": "proof-2026",
       "file": "thewrap--robert-hofler.json",
-      "score": 88,
+      "score": 51,
       "publishDate": "April 16, 2026",
       "url": "https://www.thewrap.com/creative-content/reviews/proof-broadway-review-obama-ayo-edebiri-don-cheadle/",
       "findings": [
@@ -26903,6 +26904,20 @@
       ]
     },
     {
+      "showId": "bedlams-othello-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2026/05/06/theater/othello-bedlam-hamlet-bam.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
       "showId": "beetlejuice-2025",
       "file": "guardian--xan-brooks.json",
       "score": 63,
@@ -33561,6 +33576,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
+      "score": 97,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -33882,6 +33898,7 @@
     {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martlandbr.json",
+      "score": 96,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
       "findings": [
@@ -35036,7 +35053,7 @@
     {
       "showId": "skylight-2015",
       "file": "nbcny--robert-kahn.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "April 2, 2015",
       "url": "http://www.nbcnewyork.com/entertainment/the-scene/skylight-mulligan-review-298149311.html",
       "findings": [
@@ -39232,6 +39249,58 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "three-houses-off-broadway-2026",
+      "file": "forward--miranda-jackel.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 190d before show (2024-05-28 vs 2024-12-04)"
+        }
+      ]
+    },
+    {
+      "showId": "three-houses-off-broadway-2026",
+      "file": "nysr--david-finkle.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
+        }
+      ]
+    },
+    {
+      "showId": "three-houses-off-broadway-2026",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2024-05-21",
+      "url": "https://newyorktheater.me/2024/05/20/three-houses-theater-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
+        }
+      ]
+    },
+    {
+      "showId": "three-houses-off-broadway-2026",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": null,
+      "publishDate": "2024-05-21",
+      "url": "https://www.theatrereviews.com/off-broadway-review-three-houses-at-signature-theatres-linney-theatre-through-sunday-june-9-2024/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 197d before show (2024-05-21 vs 2024-12-04)"
         }
       ]
     },
