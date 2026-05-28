@@ -33,6 +33,25 @@ runs:
         git pull --rebase origin main -q 2>/dev/null || true
 
         # Stage all changes
+        # ROOT-CAUSE GUARD (2026-05-27): the review-texts data repo contains
+        # ONLY JSON review files — never symlinks. A stray symlink
+        # (broadway-review-texts -> /Users/tompryor/broadway-review-texts,
+        # absolute local path) was committed via `git add -A` from a local
+        # session, dangled in CI, and crashed the collection pipeline for
+        # ~8h. Delete any symlinks in the tree before staging so one can
+        # never be committed again. -print surfaces them in the log.
+        STRAY_LINKS=$(find . -type l -not -path './.git/*')
+        if [ -n "$STRAY_LINKS" ]; then
+          echo "::warning::push-review-texts: removing stray symlink(s) before commit:"
+          echo "$STRAY_LINKS"
+          # -delete removes the symlink entry from the working tree. The
+          # `git add -A` below then stages that removal automatically —
+          # including for an already-tracked symlink — so no separate
+          # `git rm --cached` is needed (and the unquoted-var form of it was
+          # unsafe under whitespace in paths).
+          find . -type l -not -path './.git/*' -delete
+        fi
+
         git add -A
 
         # Check if there are changes to commit
