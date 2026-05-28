@@ -15,6 +15,14 @@ on:
 permissions:
   contents: write
 
+# Share `shows-json-writer` with update-show-status + enrich-off-broadway-dates:
+# the aggregator-candidate extract step below does a read-mutate-write on
+# data/audit/ob-venue-candidates.json via writeStagingCandidates(), same as
+# discover-new-shows.js. Serializing prevents a lost-update race on that file.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   audit:
     name: Run cross-production audit
@@ -68,10 +76,27 @@ jobs:
         env:
           REVIEW_TEXTS_DIR: ${{ github.workspace }}/data/review-texts
 
+      - name: Extract aggregator candidates
+        # Turns the unmatched-article audit (written by the PV + BWW scrapers
+        # earlier on Sunday) into OB-discovery candidates staged in
+        # ob-venue-candidates.json. Human-gated promotion stays in
+        # promote-ob-venue-candidates.js (CLAUDE.md §3 — no auto-add).
+        # --limit caps fetches; abort gate inside the script stops runaway
+        # parser regressions from mass-staging.
+        run: |
+          if [ -z "$BRIGHTDATA_TOKEN" ] && [ -z "$SCRAPINGBEE_API_KEY" ]; then
+            echo "::warning::No scraper credentials present — aggregator candidate extraction will fetch nothing."
+          fi
+          node scripts/extract-aggregator-candidates.js --limit=20
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+
       - name: Check for changes
         id: changes
         run: |
-          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json 2>/dev/null; then
+          if git diff --quiet data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
@@ -87,9 +112,11 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/same-title-confusion.json data/audit/slug-misroute-audit.json
+          git add data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json 2>/dev/null || true
           CP=$(node -e "const d=require('./data/audit/same-title-confusion.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
           SM=$(node -e "const d=require('./data/audit/slug-misroute-audit.json'); console.log(d.findings ? d.findings.length : 0)" 2>/dev/null || echo "?")
-          git commit -m "audit: Weekly cross-production ($CP) + slug-routing ($SM) [skip ci]
+          AGG=$(node -e "const d=require('./data/audit/ob-aggregator-rejections.json'); console.log((d.counts&&d.counts.accepted||0)+' new, '+(d.counts&&d.counts.rejected||0)+' rejected')" 2>/dev/null || echo "0 new")
+          git commit -m "audit: Weekly cross-production ($CP) + slug-routing ($SM) + aggregator ($AGG) [skip ci]
 
           Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           bash scripts/lib/push-with-retry.sh

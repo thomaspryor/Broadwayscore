@@ -50,6 +50,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_DOMAIN_MAP } = require('./lib/cookie-loader');
 const https = require('https');
 // const { HttpsProxyAgent } = require('https-proxy-agent'); // Not used - Bright Data needs zone setup
@@ -5460,8 +5461,9 @@ function findReviewsToProcess() {
     console.log(`  🎯 FAST PATH: Only processing ${CONFIG.reviewFilter.size} specific file(s): ${[...CONFIG.reviewFilter].join(', ')}`);
   }
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
-    .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
+  // listShowDirs tolerates dangling symlinks / stray files (one bad entry
+  // crashed the whole 3×-daily pipeline for ~8h on 2026-05-27).
+  const shows = listShowDirs(CONFIG.reviewTextsDir);
 
   // Load failed fetches — skip permanently failed URLs (5+ failures, or 3+ confirmed dead)
   const failedFetches = new Set();  // For retry mode: IDs to include
