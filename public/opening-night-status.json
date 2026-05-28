@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-28T17:40:30.532Z",
+  "generatedAt": "2026-05-28T23:25:07.351Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -90,6 +90,10 @@
         },
         {
           "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ]
@@ -578,27 +582,25 @@
       "status": "open",
       "slug": "dark-of-the-moon-west-end",
       "thumbnail": "/images/shows/dark-of-the-moon-west-end-2026/thumbnail.webp",
-      "siteScore": 58.12,
-      "liveScore": 58,
-      "scoreDrift": -0.11999999999999744,
+      "siteScore": 59.13,
+      "liveScore": 59,
+      "scoreDrift": -0.13000000000000256,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 11,
       "t1": 2,
-      "t2": 4,
-      "t3": 0,
-      "positive": 1,
-      "mixed": 3,
-      "negative": 2,
+      "t2": 6,
+      "t3": 3,
+      "positive": 2,
+      "mixed": 5,
+      "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/8 total",
-          "T1:1/3",
-          "hi-conf:4/6"
+          "T1:1/3"
         ],
-        "highConfidence": 4,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -697,6 +699,18 @@
           "p": 1,
           "m": 3,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-05-28T23:25:07.351Z",
+          "rc": 11,
+          "s": 59.13,
+          "t1": 2,
+          "t2": 6,
+          "t3": 3,
+          "p": 2,
+          "m": 5,
+          "n": 4,
           "bc": "waiting"
         }
       ]
