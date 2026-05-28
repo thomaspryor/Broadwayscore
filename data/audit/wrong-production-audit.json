@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T12:47:31.446Z",
+  "timestamp": "2026-05-28T12:57:17.619Z",
   "stats": {
-    "totalReviews": 37759,
+    "totalReviews": 37760,
     "alreadyFlagged": 16617,
     "dateGuardCatches": 106,
     "directorMismatch": 800,
-    "tvFilmSignals": 1030,
+    "tvFilmSignals": 1031,
     "londonSignals": 582,
     "offBroadwaySignals": 451,
     "yearMismatch": 78,
-    "noPublishDate": 3954
+    "noPublishDate": 3955
   },
   "findings": [
     {
@@ -8611,6 +8611,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": null,
+      "url": "https://1minutecritic.com/heated-rivalry-parody-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
