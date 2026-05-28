@@ -1,0 +1,44 @@
+{
+  "processed": [
+    "indian-princesses-off-broadway-2025/playbill--unknown.json",
+    "celebrity-autobiography-2026/nitelifeexchange-com--marilyn-lester.json"
+  ],
+  "failed": [
+    "animal-wisdom-off-broadway-2022/talkinbroadway--james-wilson.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "indian-princesses-off-broadway-2025/playbill--unknown.json",
+      "celebrity-autobiography-2026/nitelifeexchange-com--marilyn-lester.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/animal-wisdom-off-broadway-2022/talkinbroadway--james-wilson.json"
+    ],
+    "archive": []
+  },
+  "startTime": "2026-05-28T05:38:46.965Z",
+  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json",
+  "log": [
+    {
+      "t": "2026-05-28T05:41:01.580Z",
+      "event": "bb-session",
+      "session": "82e524b6",
+      "url": "https://www.talkinbroadway.com/page/ob/05_19_26b.html"
+    },
+    {
+      "t": "2026-05-28T05:41:02.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
+}
