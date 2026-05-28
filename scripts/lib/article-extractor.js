@@ -82,7 +82,15 @@ const PATTERNS = [
   // Hollywood Reporter
   ['hollywoodreporter.com', /<div[^>]+class="[^"]*lrv-a-wrapper[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/section>/, 500],
 
-  // TheaterMania (Drupal-ish)
+  // TheaterMania — current Bootstrap layout (2026): review body lives in
+  // <div class="news-content">, ending at <section class="featured-in-this-story">.
+  // The old Drupal `article-body` pattern (kept below as fallback) stopped
+  // matching after a site redesign — returned 0 chars and silently left
+  // reviews as stubs (Bedlam's Othello 2026-05-27 incident, 6 OB reviews
+  // stranded). Verified against /news/review-bedlam-gives-its-trademark-
+  // innovative-touch-to-a-top-notch-othello_1835344 → 4386 chars clean.
+  ['theatermania.com', /<div[^>]+class="[^"]*news-content[^"]*"[^>]*>([\s\S]*?)<section[^>]+class="[^"]*featured-in-this-story/, 300],
+  // Fallback: pre-2026 Drupal-ish layout
   ['theatermania.com', /<div[^>]+class="[^"]*article-body[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
   // Vulture — article-body
