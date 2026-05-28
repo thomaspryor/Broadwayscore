@@ -93,6 +93,16 @@ const PATTERNS = [
   // Fallback: pre-2026 Drupal-ish layout
   ['theatermania.com', /<div[^>]+class="[^"]*article-body[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/article>/, 300],
 
+  // 1minutecritic.com — WordPress, entry-content. Body is followed (still
+  // inside entry-content) by inline "related article" teasers shaped like
+  // <p><strong>Category &#8211; </strong><a href="https://1minutecritic.com/…">
+  // and then the AddToAny share block. Stop at the first related-teaser OR
+  // share block. Without this pattern the generic fallback returned ~112 chars
+  // (meta description) → every 1minutecritic review saved as a stub and was
+  // never scored — missed for Heated Rivalry AND The Maids (2026-05-28).
+  // Verified against /heated-rivalry-parody-review → 3110 chars clean.
+  ['1minutecritic.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)(?:<p><strong>[^<]*(?:&#8211;|–|-)\s*<\/strong>\s*<a href="https:\/\/1minutecritic\.com|<div[^>]+class="[^"]*(?:addtoany_share|related-posts)|<article[^>]+class="[^"]*post-author-area)/, 300],
+
   // Vulture — article-body
   ['vulture.com', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<aside/, 300],
 
