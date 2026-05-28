@@ -133,7 +133,15 @@ function parseBwwSlugTitle(rawSlug) {
   // Drop trailing date, then drop a venue/placeholder tail to isolate title.
   s = s.replace(/-\d{8}$/, '');
   s = s.replace(BWW_PLACEHOLDER_TAIL_RE, '');
-  s = s.replace(/-(?:opens-)?at-.*$/i, '');
+  // Strip the venue tail at the LAST "-(opens-)?at-" — NOT the first. A title
+  // that itself contains "at" ("DINNER-AT-EIGHT-At-St-Lukes-Theatre") must keep
+  // its internal "at"; the venue is always the final "at <theater>" clause.
+  // (ship-check: greedy-from-first-at truncated "Dinner at Eight" → "Dinner",
+  // which then false-rejected the candidate as title-mismatch.)
+  const atRe = /-(?:opens-)?at-/ig;
+  let lastAt = -1, am;
+  while ((am = atRe.exec(s)) !== null) lastAt = am.index;
+  if (lastAt >= 0) s = s.slice(0, lastAt);
   const title = titleCaseShout(s.replace(/-/g, ' '));
   return { title, placeholder };
 }
