@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T06:46:00.784Z",
+  "timestamp": "2026-05-28T09:33:40.050Z",
   "stats": {
-    "totalReviews": 37690,
-    "alreadyFlagged": 16584,
+    "totalReviews": 37729,
+    "alreadyFlagged": 16604,
     "dateGuardCatches": 106,
     "directorMismatch": 800,
     "tvFilmSignals": 1030,
-    "londonSignals": 580,
+    "londonSignals": 581,
     "offBroadwaySignals": 451,
     "yearMismatch": 78,
-    "noPublishDate": 3936
+    "noPublishDate": 3955
   },
   "findings": [
     {
@@ -27692,7 +27692,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
+      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -29420,6 +29420,20 @@
       "score": 61,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/grace-pervades-theatre-royal-haymarket-review-ralph-fiennes-starrer-seems-old-times",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "grace-pervades-west-end-2026",
+      "file": "broadwayworld--team-bww.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/shows/Grace-Pervades-335731.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -39241,7 +39255,7 @@
     {
       "showId": "three-houses-off-broadway-2026",
       "file": "forward--miranda-jackel.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-05-28",
       "url": "https://forward.com/culture/theater/616879/dave-malloy-three-houses-covid-isolation-sondheim-into-the-wood-pigs/",
       "findings": [
@@ -39255,7 +39269,7 @@
     {
       "showId": "three-houses-off-broadway-2026",
       "file": "nysr--david-finkle.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2024-05-21",
       "url": "https://nystagereview.com/2024/05/20/three-houses-dave-malloys-new-sometimes-haunting-musical/",
       "findings": [
@@ -39269,7 +39283,7 @@
     {
       "showId": "three-houses-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2024-05-21",
       "url": "https://newyorktheater.me/2024/05/20/three-houses-theater-review/",
       "findings": [
@@ -39283,7 +39297,7 @@
     {
       "showId": "three-houses-off-broadway-2026",
       "file": "theatre-reviews-limited--david-roberts.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2024-05-21",
       "url": "https://www.theatrereviews.com/off-broadway-review-three-houses-at-signature-theatres-linney-theatre-through-sunday-june-9-2024/",
       "findings": [
