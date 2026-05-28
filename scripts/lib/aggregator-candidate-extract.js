@@ -1,0 +1,397 @@
+'use strict';
+
+/**
+ * Pure extraction logic for turning aggregator (Playbill Verdict + BWW
+ * Review-Roundup) unmatched-article audit entries into OB-discovery
+ * candidates.
+ *
+ * This module does NO IO — the driver (scripts/extract-aggregator-candidates.js)
+ * fetches article HTML via scripts/lib/scraper.js and feeds it here. Keeping
+ * the logic pure makes it fixture-testable (CLAUDE.md §15 / the
+ * test-extraction pattern) — the test passes captured BWW/PV HTML and asserts
+ * the classification, with zero network.
+ *
+ * The shape that comes OUT (an "accept") is a staging-candidate object
+ * compatible with venue-listing-discover.js#writeStagingCandidates — so the
+ * promoter (promote-ob-venue-candidates.js) reads ONE staging file and never
+ * learns aggregator-specific shapes. See plan-review 2026-05-28.
+ *
+ * Design notes (from the 6-reviewer plan review):
+ *  - Bot-shell detection is THREE independent signals (size + h1 + date),
+ *    because fetchPage() returns HTTP 200 with a Cloudflare/Bright-Data
+ *    interstitial shell when blocked, and a greedy venue regex would mint
+ *    garbage {title,venue,date} triples out of footer text. (pre-mortem P0)
+ *  - BWW slugs use `-On-Broadway` / `-Off-Broadway` PLACEHOLDER tails where a
+ *    venue would otherwise be. Those are NOT venues and NOT typos — the venue
+ *    must come from the article body. (structure-review P0)
+ *  - Typo detection is Levenshtein 1..3 on the NORMALIZED title (apostrophes
+ *    and punctuation stripped first) so "Dad Don't Read This" vs slug
+ *    "Dad Dont Read This" is a MATCH (0 edits), while "Autopbiography" vs
+ *    "Autobiography" is a TYPO (1 edit). (pre-mortem secondary)
+ */
+
+const { JSDOM } = require('jsdom');
+const { slugify, levenshteinDistance } = require('./deduplication');
+const { normalizeTitle } = require('./title-match');
+
+// Aggregator-infrastructure URLs that land in the unmatched audit but are not
+// shows (site nav, legal, feeds). Matched against the article slug.
+const INFRASTRUCTURE_SLUG_RE = new RegExp(
+  '(?:^|[-/])(?:' +
+  'site-?map|privacy-?policy|terms-of-(?:use|service)|cookie-policy|' +
+  'rss-?feeds?|upcoming-cast-recordings|cast-recordings|advertise|' +
+  'contact-us|about-us|newsletter|subscribe|sign-?up|sweepstakes' +
+  ')(?:[-/]|$)',
+  'i'
+);
+
+// Words that terminate a venue name in a headline ("... at St. Luke's Theatre").
+const VENUE_TYPE_WORD =
+  'Theatres?|Theaters?|Halls?|Houses?|Centers?|Centres?|Warehouses?|' +
+  'Playhouses?|Stages?|Studios?|Clubs?|Auditoriums?|Workshops?|Rooms?|' +
+  'Factory|Armory|Public|Rep';
+
+// "at <Venue>" — used to split a BWW/PV headline into show title + venue.
+// Two venue shapes: a LEADING type word + number/qualifier ("Theatre 71",
+// "Stage 42", "Theatre Row") OR a trailing type word ("St. Luke's Theatre",
+// "6th Floor Theater"). The trailing-type capture is TEMPERED — it can't span
+// the word "at" — so "Dinner at Eight at the Todd Haimes Theatre" matches only
+// "the Todd Haimes Theatre" (not "Eight at the Todd Haimes Theatre"), and the
+// caller takes the LAST match so the title keeps its internal "at". Global so
+// the caller can iterate matches. (ship-check P1)
+const HEADLINE_VENUE_RE = new RegExp(
+  '\\bat\\s+(?:the\\s+)?' +
+  '(' +
+    '(?:Theatres?|Theaters?|Stages?)\\s+(?:\\d+|Row|East|West)' +        // "Theatre 71", "Stage 42"
+    '|' +
+    '[A-Z0-9](?:(?!\\bat\\b)[\\w\'.&\\- ])*?(?:' + VENUE_TYPE_WORD + ')' + // "St. Luke's Theatre"
+  ')(?=[\\s,.;:—–-]|$)',
+  'ig'
+);
+
+/** Find the venue in `text`. For a headline, pass preferLast=true so the
+ *  title (which may itself contain "at") keeps everything before the venue
+ *  clause. Returns { venue, index } or null. */
+function findVenueMatch(text, preferLast) {
+  const re = new RegExp(HEADLINE_VENUE_RE.source, 'ig');
+  let m, chosen = null;
+  while ((m = re.exec(text)) !== null) {
+    if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };
+    if (!preferLast) break;
+  }
+  return chosen;
+}
+
+// BWW placeholder tails: the slug names no theater, just the market.
+const BWW_PLACEHOLDER_TAIL_RE =
+  /-(?:opens-)?(?:on|off)-broadway(?:-\d{0,8})?$|-broadway-?\d{0,8}$|-in-nyc(?:-\d{0,8})?$/i;
+
+function isInfrastructureSlug(slug) {
+  return INFRASTRUCTURE_SLUG_RE.test(String(slug || ''));
+}
+
+/**
+ * THREE-signal bot-shell / block-page detector. Returns true (== "this is not
+ * a real article, reject it") if ANY signal is missing. fetchPage() returns
+ * 200 with a stripped interstitial when Bright Data / Cloudflare blocks it;
+ * trusting such a page is how garbage candidates reach shows.json.
+ */
+function isBotShell(html) {
+  if (!html || html.length < 5000) return true;
+  let doc;
+  try {
+    doc = new JSDOM(html).window.document;
+  } catch {
+    return true;
+  }
+  const h1 = doc.querySelector('h1');
+  if (!h1 || !h1.textContent.trim()) return true;
+  // Date signal: <meta article:published_time> OR any JSON-LD datePublished.
+  const meta = doc.querySelector('meta[property="article:published_time"]');
+  if (meta && meta.getAttribute('content')) return false;
+  if (extractDateFromJsonLd(doc)) return false;
+  return true; // no date anywhere → treat as shell
+}
+
+/** Properly title-case a SHOUTY BWW show name without breaking apostrophes:
+ *  "DAD DON'T READ THIS" → "Dad Don't Read This" (not "Don'T"). */
+function titleCaseShout(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/(^|\s)([a-z])/g, (_, pre, c) => pre + c.toUpperCase())
+    .trim();
+}
+
+/** Strip BWW head/tail and return the show-title portion of a roundup slug,
+ *  plus whether the slug used a market placeholder instead of a venue. */
+function parseBwwSlugTitle(rawSlug) {
+  let s = String(rawSlug || '')
+    .replace(/^https?:\/\/[^/]+/, '')
+    .replace(/^\/?article\//, '')
+    .replace(/^Review-Roundup-/i, '');
+  const placeholder = BWW_PLACEHOLDER_TAIL_RE.test(s);
+  // Drop trailing date, then drop a venue/placeholder tail to isolate title.
+  s = s.replace(/-\d{8}$/, '');
+  s = s.replace(BWW_PLACEHOLDER_TAIL_RE, '');
+  s = s.replace(/-(?:opens-)?at-.*$/i, '');
+  const title = titleCaseShout(s.replace(/-/g, ' '));
+  return { title, placeholder };
+}
+
+function extractDateFromJsonLd(doc) {
+  for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
+    let parsed;
+    try { parsed = JSON.parse(script.textContent); } catch { continue; }
+    const items = Array.isArray(parsed) ? parsed : [parsed];
+    const dates = [];
+    for (const item of items) {
+      if (!item || typeof item !== 'object') continue;
+      if (item.datePublished) dates.push(item.datePublished);
+      if (item.dateCreated) dates.push(item.dateCreated);
+      // BWW LiveBlogPosting: per-critic dates under liveBlogUpdate[].
+      const updates = item.liveBlogUpdate || item.liveBlogUpdates || [];
+      for (const u of Array.isArray(updates) ? updates : []) {
+        if (u && u.datePublished) dates.push(u.datePublished);
+      }
+    }
+    if (dates.length) {
+      // Earliest = the article's first publish moment (≈ opening coverage).
+      dates.sort();
+      return dates[0];
+    }
+  }
+  return null;
+}
+
+function extractHeadline(doc) {
+  // Prefer JSON-LD headline (clean, no site-name suffix), then h1, then <title>.
+  for (const script of doc.querySelectorAll('script[type="application/ld+json"]')) {
+    let parsed;
+    try { parsed = JSON.parse(script.textContent); } catch { continue; }
+    const items = Array.isArray(parsed) ? parsed : [parsed];
+    for (const item of items) {
+      if (item && typeof item.headline === 'string' && item.headline.trim()) {
+        return item.headline.trim();
+      }
+    }
+  }
+  const h1 = doc.querySelector('h1');
+  if (h1 && h1.textContent.trim()) return h1.textContent.trim();
+  const title = doc.querySelector('title');
+  return title ? title.textContent.trim() : '';
+}
+
+/**
+ * Pull {title, venue, date} out of an article's HTML. Returns nulls for any
+ * field that couldn't be extracted — the caller decides accept vs reject.
+ * Title/venue both come from the headline ("Review Roundup: SHOW at VENUE");
+ * venue falls back to first-paragraph prose if the headline names no theater.
+ */
+function extractArticleFields(html) {
+  let doc;
+  try { doc = new JSDOM(html).window.document; } catch { return { title: null, venue: null, date: null }; }
+
+  let headline = extractHeadline(doc);
+  // Drop the "Review Roundup:" / "Reviews:" lead-in.
+  headline = headline.replace(/^\s*(?:review\s+roundup|reviews?|first\s+look)\s*:\s*/i, '');
+
+  const date = extractMetaDate(doc) || extractDateFromJsonLd(doc);
+
+  // Venue: from the headline "… at VENUE" (last such clause), else the lede.
+  const hv = findVenueMatch(headline, /* preferLast */ true);
+  let venue;
+  let title;
+  if (hv) {
+    venue = hv.venue;
+    // Title is everything before the venue clause — keeps an internal "at"
+    // (e.g. "Dinner at Eight"). Strip the trailing verb ("Opens"/"Arrives") +
+    // any "the" that introduced the venue.
+    title = headline.slice(0, hv.index)
+      .replace(/\s+(?:opens?|arrives?|returns?|begins?|premieres?|comes\s+to|now\s+playing)\s*$/i, '')
+      .replace(/[,—–\-:\s]+$/, '')
+      .trim();
+  } else {
+    venue = extractVenueFromBody(doc);
+    title = extractTitleFromHeadline(headline);
+  }
+
+  if (title) title = titleCaseIfShout(title);
+  return {
+    title: title || null,
+    venue: venue || null,
+    date: date || null,
+  };
+}
+
+// Boundary markers for the NO-venue-in-headline case (placeholder slugs like
+// "… Opens Off-Broadway"). Deliberately does NOT include a bare " at " — when
+// there is no venue clause, an "at" is part of the title (e.g. "Dinner at
+// Eight") and must not cut it. (ship-check P1)
+const TITLE_BOUNDARY_RE =
+  /\s+(?:opens?|arrives?|returns?|begins?|comes\s+to|now\s+playing|premieres?)\b|\s+(?:on|off)[-\s]broadway\b|\s*[—–]\s*|,\s+(?:starring|featuring|with)\b/i;
+
+function extractTitleFromHeadline(headline) {
+  const h = String(headline || '').trim();
+  const m = h.match(TITLE_BOUNDARY_RE);
+  const cut = m ? h.slice(0, m.index) : h;
+  return cut.replace(/[,—–\-:\s]+$/, '').trim();
+}
+
+function extractMetaDate(doc) {
+  const meta = doc.querySelector('meta[property="article:published_time"]');
+  const c = meta && meta.getAttribute('content');
+  return c && c.trim() ? c.trim() : null;
+}
+
+/**
+ * Scan only the LEDE for "at (the) <Venue>". A review-roundup lede is about
+ * the subject show ("SHOW … opened at VENUE"); scanning deeper risks grabbing
+ * a different production's theater from a "fresh off her run at the Booth"
+ * aside. First <p> only, first 400 chars, FIRST match. (ship-check P1)
+ */
+function extractVenueFromBody(doc) {
+  const firstP = doc.querySelector('article p, p');
+  if (!firstP) return null;
+  const text = (firstP.textContent || '').replace(/\s+/g, ' ').slice(0, 400);
+  const hv = findVenueMatch(text, /* preferLast */ false);
+  return hv ? hv.venue : null;
+}
+
+function cleanVenue(raw) {
+  const v = String(raw || '').replace(/\s+/g, ' ').replace(/^the\s+/i, '').trim();
+  return v || null;
+}
+
+function titleCaseIfShout(s) {
+  // If the title is mostly uppercase (BWW SHOUT), title-case it; otherwise
+  // leave the publisher's casing (Playbill uses normal case).
+  const letters = s.replace(/[^A-Za-z]/g, '');
+  if (letters && letters === letters.toUpperCase()) return titleCaseShout(s);
+  return s;
+}
+
+/**
+ * A typo iff the normalized reference title and body title differ by a SMALL
+ * edit distance (1..3). 0 == clean match. >3 == genuinely different strings
+ * (slug abbreviation, wrong article) — that's a 'title-mismatch', not a typo.
+ */
+function classifyTitleDelta(refTitle, bodyTitle) {
+  const a = normalizeTitle(refTitle || '');
+  const b = normalizeTitle(bodyTitle || '');
+  if (!a || !b) return 'unknown';
+  if (a === b) return 'match';
+  const d = levenshteinDistance(a, b);
+  if (d >= 1 && d <= 3) return 'typo';
+  return 'mismatch';
+}
+
+function slugCollidesWith(title, existingSlugs) {
+  if (!title) return false;
+  return existingSlugs.has(slugify(title));
+}
+
+/**
+ * The best title we can name BEFORE fetching: PV ships a `title` on the audit
+ * record; BWW only a slug (parse it). Lets the driver skip a fetch when the
+ * show is already in shows.json — which is the common case for an unmatched
+ * URL that lingers in the audit file after the show was manually promoted.
+ * (ship-check P0 — without this, every promoted show re-fetches weekly.)
+ */
+function referenceTitle(source, record) {
+  if (record && record.title) return record.title;
+  if (source === 'bww-roundup') return parseBwwSlugTitle(record.slug || '').title;
+  return null;
+}
+
+/**
+ * Classify ONE unmatched audit record into accept (a staging candidate) or
+ * reject (with a reason). Pure: `html` is supplied by the driver.
+ *
+ * @param {object} args
+ * @param {'playbill-verdict'|'bww-roundup'} args.source
+ * @param {object} args.record  the raw audit entry {url, slug, title?, reason?, firstSeen?}
+ * @param {string|null} args.html  fetched article HTML (null if fetch skipped/failed)
+ * @param {Set<string>} args.existingSlugs  slugs already in shows.json
+ * @returns {{status:'accept', candidate:object} | {status:'reject', reason:string, detail?:string}}
+ */
+function classifyCandidate({ source, record, html, existingSlugs }) {
+  const slug = record.slug || '';
+  if (isInfrastructureSlug(slug) || isInfrastructureSlug(record.url || '')) {
+    return { status: 'reject', reason: 'infrastructure' };
+  }
+  // PV low-confidence entries already matched a show — not a new candidate.
+  if (record.reason === 'low-confidence') {
+    return { status: 'reject', reason: 'low-confidence-existing-match' };
+  }
+
+  // Reference title for typo detection: PV ships a `title`; BWW only a slug.
+  let refTitle = record.title || null;
+  let slugPlaceholder = false;
+  if (source === 'bww-roundup') {
+    const parsed = parseBwwSlugTitle(slug);
+    refTitle = refTitle || parsed.title;
+    slugPlaceholder = parsed.placeholder;
+  }
+
+  if (!html) {
+    return { status: 'reject', reason: 'fetch-failed' };
+  }
+  if (isBotShell(html)) {
+    return { status: 'reject', reason: 'bot-shell' };
+  }
+
+  const fields = extractArticleFields(html);
+  if (!fields.title) {
+    return { status: 'reject', reason: 'no-title' };
+  }
+
+  // Typo check BEFORE venue check so a typo'd slug (CELEBRITY-AUTOPBIOGRAPHY)
+  // surfaces as 'typo-detected' for a human to fix the scraper, rather than
+  // hiding behind a 'no-venue' rejection. (acceptance #2)
+  const delta = classifyTitleDelta(refTitle, fields.title);
+  if (delta === 'typo') {
+    return { status: 'reject', reason: 'typo-detected', detail: `slug="${refTitle}" body="${fields.title}"` };
+  }
+  if (delta === 'mismatch') {
+    return { status: 'reject', reason: 'title-mismatch', detail: `slug="${refTitle}" body="${fields.title}"` };
+  }
+
+  if (!fields.venue) {
+    return { status: 'reject', reason: slugPlaceholder ? 'placeholder-venue-no-theater' : 'no-venue' };
+  }
+  if (!fields.date) {
+    return { status: 'reject', reason: 'no-date' };
+  }
+
+  // Guard against a slug collision overwriting an existing show.
+  if (slugCollidesWith(fields.title, existingSlugs)) {
+    return { status: 'reject', reason: 'slug-collision', detail: slugify(fields.title) };
+  }
+
+  // Shape matches a venue-listing-discover staging entry. The promoter recomputes
+  // canonicalVenue(venue) itself, so we don't carry a (would-go-stale) copy.
+  const candidate = {
+    title: fields.title,
+    venue: fields.venue,
+    slug: slugify(fields.title),
+    source,
+    sourceUrl: record.url || null,
+    articlePublishedAt: fields.date,
+    discoveredAt: record.firstSeen || fields.date || new Date().toISOString(),
+    category: 'off-broadway',
+  };
+  return { status: 'accept', candidate };
+}
+
+module.exports = {
+  INFRASTRUCTURE_SLUG_RE,
+  isInfrastructureSlug,
+  isBotShell,
+  parseBwwSlugTitle,
+  extractArticleFields,
+  classifyTitleDelta,
+  slugCollidesWith,
+  referenceTitle,
+  classifyCandidate,
+  titleCaseShout,
+};

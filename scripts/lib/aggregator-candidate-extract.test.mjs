@@ -1,0 +1,180 @@
+// Fixture-driven tests for aggregator-candidate extraction. No network —
+// fixtures live in tests/fixtures/aggregator-candidates/ (regenerate with
+// node tests/fixtures/aggregator-candidates/_generate.js).
+//
+// Covers the 6 plan-review acceptance cases plus the bot-shell guard.
+
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const require = createRequire(import.meta.url);
+const fs = require('node:fs');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const FIX = path.join(__dirname, '../../tests/fixtures/aggregator-candidates');
+
+const {
+  isInfrastructureSlug,
+  isBotShell,
+  parseBwwSlugTitle,
+  extractArticleFields,
+  classifyTitleDelta,
+  classifyCandidate,
+  slugCollidesWith,
+  referenceTitle,
+} = require('./aggregator-candidate-extract.js');
+
+const html = (name) => fs.readFileSync(path.join(FIX, name), 'utf8');
+const NO_SLUGS = new Set();
+
+test('infrastructure slugs are rejected', () => {
+  assert.ok(isInfrastructureSlug('site-map'));
+  assert.ok(isInfrastructureSlug('privacy-policy'));
+  assert.ok(isInfrastructureSlug('upcoming-cast-recordings-com-171219'));
+  assert.ok(isInfrastructureSlug('playbill-rss-feeds'));
+  assert.ok(!isInfrastructureSlug('Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515'));
+});
+
+test('bot-shell detection: 3 independent signals', () => {
+  assert.equal(isBotShell(html('bot-shell-cloudflare.html')), true, 'tiny interstitial');
+  assert.equal(isBotShell(html('bot-shell-no-date.html')), true, 'no date signal');
+  assert.equal(isBotShell(html('bww-dad-dont-read-this.html')), false, 'real article');
+  assert.equal(isBotShell(''), true);
+  assert.equal(isBotShell(null), true);
+});
+
+test('BWW slug parsing: placeholder vs venue tails', () => {
+  const dad = parseBwwSlugTitle('Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515');
+  assert.equal(dad.title, "Dad Dont Read This");
+  assert.equal(dad.placeholder, false);
+
+  const celeb = parseBwwSlugTitle('Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway');
+  assert.equal(celeb.title, 'Celebrity Autopbiography');
+  assert.equal(celeb.placeholder, true);
+
+  const heated = parseBwwSlugTitle('Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526');
+  assert.equal(heated.placeholder, true);
+  assert.match(heated.title, /^Heated Rivalry The Unauthorized Musical Parody$/);
+});
+
+test('classifyTitleDelta: match / typo / mismatch', () => {
+  assert.equal(classifyTitleDelta("Dad Dont Read This", "Dad Don't Read This"), 'match');
+  assert.equal(classifyTitleDelta('Celebrity Autopbiography', 'Celebrity Autobiography'), 'typo');
+  assert.equal(classifyTitleDelta('Broken Snow', 'A Completely Different Show'), 'mismatch');
+});
+
+test('acceptance #1: Dad Dont Read This → accept w/ St. Luke\'s Theatre', () => {
+  const r = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', firstSeen: '2026-05-16T00:00:00Z' },
+    html: html('bww-dad-dont-read-this.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(r.status, 'accept');
+  assert.equal(r.candidate.title, "Dad Don't Read This");
+  assert.equal(r.candidate.venue, "St. Luke's Theatre");
+  assert.equal(r.candidate.source, 'bww-roundup');
+  assert.ok(r.candidate.articlePublishedAt, 'date populated');
+  assert.equal(r.candidate.category, 'off-broadway');
+});
+
+test('acceptance #2: CELEBRITY AUTOPBIOGRAPHY → typo bucket (not silent drop)', () => {
+  const r = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway', slug: 'Review-Roundup-CELEBRITY-AUTOPBIOGRAPHY-On-Broadway' },
+    html: html('bww-celebrity-autopbiography.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(r.status, 'reject');
+  assert.equal(r.reason, 'typo-detected');
+});
+
+test('acceptance #6: historical backtest — Broken Snow / Bedlam / Heated Rivalry', () => {
+  const brokenSnow = classifyCandidate({
+    source: 'playbill-verdict',
+    record: { url: 'https://playbill.com/article/broken-snow', slug: 'broken-snow', title: 'Broken Snow' },
+    html: html('pv-broken-snow.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(brokenSnow.status, 'accept');
+  assert.equal(brokenSnow.candidate.venue, 'Theatre 71');
+
+  const bedlam = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-BEDLAMS-OTHELLO-At-The-West-End-Theatre-20260520', slug: 'Review-Roundup-BEDLAMS-OTHELLO-At-The-West-End-Theatre-20260520' },
+    html: html('bww-bedlam-othello.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(bedlam.status, 'accept');
+  assert.equal(bedlam.candidate.title, "Bedlam's Othello");
+  assert.equal(bedlam.candidate.venue, 'West End Theatre');
+
+  const heated = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526', slug: 'Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526' },
+    html: html('bww-heated-rivalry.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(heated.status, 'accept', 'venue from body prose');
+  assert.equal(heated.candidate.venue, '6th Floor Theater');
+});
+
+test('bot-shell article is rejected even with a venue-shaped headline', () => {
+  const r = classifyCandidate({
+    source: 'playbill-verdict',
+    record: { url: 'https://playbill.com/article/some-show', slug: 'some-show', title: 'Some Show' },
+    html: html('bot-shell-no-date.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(r.status, 'reject');
+  assert.equal(r.reason, 'bot-shell');
+});
+
+test('slug-collision guard rejects a title already in shows.json', () => {
+  const r = classifyCandidate({
+    source: 'bww-roundup',
+    record: { url: 'https://www.broadwayworld.com/article/Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515', slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' },
+    html: html('bww-dad-dont-read-this.html'),
+    existingSlugs: new Set(['dad-dont-read-this']),
+  });
+  assert.equal(r.status, 'reject');
+  assert.equal(r.reason, 'slug-collision');
+});
+
+test('title containing " at " is not truncated (ship-check P1)', () => {
+  const f = extractArticleFields(
+    '<html><head><title>x</title></head><body><h1>Review Roundup: DINNER AT EIGHT Opens at the Todd Haimes Theatre</h1></body></html>'
+  );
+  assert.match(f.title, /^Dinner At Eight$/i);
+  assert.equal(f.venue, 'Todd Haimes Theatre');
+});
+
+test('leading-type venue "Stage 42" is extracted (ship-check P2)', () => {
+  const f = extractArticleFields(
+    '<html><head><title>x</title></head><body><h1>Little Shop of Horrors Opens at Stage 42</h1></body></html>'
+  );
+  assert.equal(f.venue, 'Stage 42');
+  assert.match(f.title, /^Little Shop Of Horrors$/i);
+});
+
+test('referenceTitle + slugCollidesWith pre-fetch guard (ship-check P0)', () => {
+  // PV ships a title; BWW derives from slug.
+  assert.equal(referenceTitle('playbill-verdict', { title: 'Broken Snow' }), 'Broken Snow');
+  assert.equal(referenceTitle('bww-roundup', { slug: 'Review-Roundup-DAD-DONT-READ-THIS-At-St-Lukes-Theatre-20260515' }), 'Dad Dont Read This');
+  // A title already in shows.json → driver skips the fetch.
+  assert.equal(slugCollidesWith('Dad Dont Read This', new Set(['dad-dont-read-this'])), true);
+  assert.equal(slugCollidesWith('Brand New Show', new Set(['dad-dont-read-this'])), false);
+});
+
+test('low-confidence PV entries are not new candidates', () => {
+  const r = classifyCandidate({
+    source: 'playbill-verdict',
+    record: { url: 'https://playbill.com/article/x', slug: 'x', title: 'X', reason: 'low-confidence' },
+    html: html('pv-broken-snow.html'),
+    existingSlugs: NO_SLUGS,
+  });
+  assert.equal(r.status, 'reject');
+  assert.equal(r.reason, 'low-confidence-existing-match');
+});
