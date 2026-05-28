@@ -57,6 +57,11 @@ test('BWW slug parsing: placeholder vs venue tails', () => {
   const heated = parseBwwSlugTitle('Review-Roundup-HEATED-RIVALRY-THE-UNAUTHORIZED-MUSICAL-PARODY-Opens-Off-Broadway-20260526');
   assert.equal(heated.placeholder, true);
   assert.match(heated.title, /^Heated Rivalry The Unauthorized Musical Parody$/);
+
+  // ship-check High: a title containing "at" must keep its internal "at" —
+  // the venue tail is the LAST "at <theater>", not the first.
+  const dinner = parseBwwSlugTitle('Review-Roundup-DINNER-AT-EIGHT-At-St-Lukes-Theatre-20260101');
+  assert.equal(dinner.title, 'Dinner At Eight');
 });
 
 test('classifyTitleDelta: match / typo / mismatch', () => {

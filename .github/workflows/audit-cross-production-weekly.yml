@@ -83,6 +83,12 @@ jobs:
         # promote-ob-venue-candidates.js (CLAUDE.md §3 — no auto-add).
         # --limit caps fetches; abort gate inside the script stops runaway
         # parser regressions from mass-staging.
+        #
+        # continue-on-error: the MAX_ACCEPT abort (exit 1) must NOT fail the
+        # whole job — that would skip the non-if:always() "Check for changes"
+        # step and suppress the UNRELATED cross-production + slug-routing audit
+        # commits. The ::error:: annotation still surfaces the abort. (ship-check)
+        continue-on-error: true
         run: |
           if [ -z "$BRIGHTDATA_TOKEN" ] && [ -z "$SCRAPINGBEE_API_KEY" ]; then
             echo "::warning::No scraper credentials present — aggregator candidate extraction will fetch nothing."

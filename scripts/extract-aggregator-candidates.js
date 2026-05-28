@@ -88,7 +88,7 @@ async function main() {
 
   if (records.length === 0) {
     console.log('No unmatched audit entries to process.');
-    return finish([], [], existingSlugs);
+    return finish([], []);
   }
   console.log(`Loaded ${records.length} unmatched audit entries (PV + BWW).`);
 
