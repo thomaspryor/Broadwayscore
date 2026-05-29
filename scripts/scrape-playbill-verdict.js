@@ -584,6 +584,13 @@ async function scrapePlaybillVerdict() {
   const showsArg = args.find(a => a.startsWith('--shows='));
   const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
   const noDateFilter = args.includes('--no-date-filter');
+  // Step 4 (per-show Google fallback) is the expensive part: ~135 SERP
+  // calls + ~35min on a full run. The daily cron only needs Steps 1-3
+  // (category-page discovery) to catch new mid-week articles fast; the
+  // long-tail Google fallback can run weekly. --skip-google-fallback lets
+  // the daily cron skip Step 4. Targeted runs (--shows=) are unaffected —
+  // they go straight to Google by design and ignore this flag.
+  const skipGoogleFallback = args.includes('--skip-google-fallback');
 
   if (targetShowIds) {
     console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
@@ -796,6 +803,12 @@ async function scrapePlaybillVerdict() {
   }
 
   // Step 4: Google fallback for unmatched shows (recent shows only)
+  if (skipGoogleFallback) {
+    console.log('\n--- Google Fallback SKIPPED (--skip-google-fallback) ---');
+    console.log('Steps 1-3 (category-page discovery) ran; per-show SERP fallback deferred to the weekly deep run.');
+    printSummary();
+    return stats;
+  }
   console.log('\n--- Google Fallback ---');
   const recentShows = shows.filter(s => {
     if (s.status === 'closed') return false; // Skip closed shows — they won't get new reviews
