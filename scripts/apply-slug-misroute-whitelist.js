@@ -60,13 +60,22 @@ const whitelistPath = (args.find(a => a.startsWith('--whitelist=')) || '').repla
   || '/tmp/move-whitelist.json';
 
 // A move is eligible only when the operator explicitly confirmed it and the
-// harness raised no blocking flags. Legacy hand-picked lists ({from,to,file}
-// with no `confirm` field) keep the historical opt-in behavior. The
-// 2026-05-27 incident (10 wrong HOLIDAY-INN moves) is why outOfScope/warnings
-// hard-block regardless of a stray confirm:true.
-function isConfirmed(m) {
+// harness raised no blocking flags. The 2026-05-27 incident (10 wrong
+// HOLIDAY-INN moves) is why outOfScope/warnings hard-block regardless of a
+// stray confirm:true.
+//
+// `enriched` = the whitelist came from the audit's {findings:[...]} object.
+// Enriched rows MUST carry an explicit confirm===true AND a `warnings` array;
+// a row that dropped either field (hand-edit / bad transform) is treated as
+// unconfirmed rather than silently auto-moving. Only a genuinely legacy flat
+// array of {from,to,file} (no enrichment) keeps the historical opt-in default.
+function isConfirmed(m, enriched) {
   if (m.outOfScope === true) return false;
   if (Array.isArray(m.warnings) && m.warnings.length > 0) return false;
+  if (enriched) {
+    if (!Array.isArray(m.warnings)) return false;      // dropped safety field
+    return m.confirm === true;
+  }
   if (Object.prototype.hasOwnProperty.call(m, 'confirm')) return m.confirm === true;
   return true; // legacy {from,to,file} entry
 }
@@ -83,14 +92,18 @@ function currentRouting(reviewPath, shows) {
   if (r.playbillVerdictUrl && r.playbillVerdictUrl.includes('playbill.com/article/')) {
     slug = (r.playbillVerdictUrl.split('/article/')[1] || '').replace(/[?#].*$/, '');
     source = 'pv'; matcher = matchSlugToShow;
-  } else if (r.bwwRoundupUrl && r.bwwRoundupUrl.includes('Review-Roundup')) {
+  } else if (r.bwwRoundupUrl && /review-roundup/i.test(r.bwwRoundupUrl)) {
     slug = r.bwwRoundupUrl.split('/article/')[1] || '';
     source = 'bww'; matcher = matchBwwRoundupSlugToShow;
   }
   if (!slug || !matcher) return null;
+  // Match the PRODUCTION matcher's year derivation EXACTLY so the stale guard
+  // reproduces live routing: BWW derives the year only from the slug tail (it
+  // never sees publishDate); only PV (no date in slug) falls back to
+  // publishDate. An undated BWW slug stays year-less here too.
   let year = null;
   if (source === 'bww') { const m = String(slug).match(/-(\d{8})$/); if (m) { const y = parseInt(m[1].slice(0, 4), 10); if (y >= 1900 && y <= 2100) year = y; } }
-  if (!year && r.publishDate) { const y = parseInt(String(r.publishDate).slice(0, 4), 10); if (y >= 1900 && y <= 2100) year = y; }
+  else if (r.publishDate) { const y = parseInt(String(r.publishDate).slice(0, 4), 10); if (y >= 1900 && y <= 2100) year = y; }
   const res = matcher(slug, shows, year ? { year } : {});
   return { showId: res ? res.show.id : null, url: r.playbillVerdictUrl || r.bwwRoundupUrl || null };
 }
@@ -117,13 +130,14 @@ if (!fs.existsSync(whitelistPath)) {
 
 const raw = JSON.parse(fs.readFileSync(whitelistPath, 'utf8'));
 // Accept the enriched audit object ({findings:[...]}) OR a legacy flat array.
-const allEntries = Array.isArray(raw) ? raw : (Array.isArray(raw.findings) ? raw.findings : null);
+const enriched = !Array.isArray(raw) && Array.isArray(raw.findings);
+const allEntries = Array.isArray(raw) ? raw : (enriched ? raw.findings : null);
 if (!allEntries || allEntries.length === 0) {
   console.error('Whitelist is empty, or not an array / {findings:[...]} object.');
   process.exit(1);
 }
 
-const moves = allEntries.filter(isConfirmed);
+const moves = allEntries.filter(m => isConfirmed(m, enriched));
 const blockedCount = allEntries.length - moves.length;
 
 const shows = loadShows();

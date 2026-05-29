@@ -1181,7 +1181,15 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
       const aIn = aGap <= 2 ? 0 : 1;
       const bIn = bGap <= 2 ? 0 : 1;
       if (aIn !== bIn) return aIn - bIn;       // in-window candidates first
-      if (aGap !== bGap) return aGap - bGap;   // then closest opening year
+      // Closest opening year — but ONLY among in-window candidates. When NO
+      // candidate is within ±2 years (aIn === bIn === 1), the article date is
+      // not a reliable disambiguator (e.g. a 2023 West End "Les Misérables"
+      // roundup vs the open WE production whose openingDate is the 1985
+      // original — gap 38 — and a closed 2014 Broadway revival — gap 9).
+      // Falling through to the closed/recency heuristics below correctly
+      // prefers the OPEN current production instead of the year-nearest closed
+      // one. Using closest-year here would wrongly route to the 2014 revival.
+      if (aIn === 0 && aGap !== bGap) return aGap - bGap;
     }
     const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;

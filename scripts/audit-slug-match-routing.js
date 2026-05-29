@@ -70,9 +70,15 @@ const showYear = (show) => parseInt((show && show.openingDate || '').slice(0, 4)
 // year-aware matcher derives so the audit's routing == production routing.
 function extractArticleYear(slug, source, review) {
   if (source === 'bww') {
+    // Mirror matchBwwRoundupSlugToShow EXACTLY: BWW year comes only from the
+    // slug tail (the production matcher never sees publishDate). No
+    // publishDate fallback here, or the audit would route differently than
+    // production for undated BWW slugs. Undated BWW → null → no-date warning.
     const m = String(slug).match(/-(\d{8})$/);
     if (m) { const y = parseInt(m[1].slice(0, 4), 10); if (y >= 1900 && y <= 2100) return y; }
+    return null;
   }
+  // PV slugs carry no date; the production PV path derives it from publishDate.
   if (review && review.publishDate) {
     const y = parseInt(String(review.publishDate).slice(0, 4), 10);
     if (y >= 1900 && y <= 2100) return y;
@@ -119,7 +125,7 @@ function main() {
         slug = (r.playbillVerdictUrl.split('/article/')[1] || '').replace(/[?#].*$/, '');
         source = 'pv';
         matcher = matchSlugToShow;
-      } else if (r.bwwRoundupUrl && r.bwwRoundupUrl.includes('Review-Roundup')) {
+      } else if (r.bwwRoundupUrl && /review-roundup/i.test(r.bwwRoundupUrl)) {
         slug = r.bwwRoundupUrl.split('/article/')[1] || '';
         source = 'bww';
         matcher = matchBwwRoundupSlugToShow;

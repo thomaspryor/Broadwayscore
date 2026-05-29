@@ -200,6 +200,9 @@ test('matchSlugToShow finds the right show for all 20 real fixtures', () => {
 const DATE_CTX_SHOWS = [
   { id: 'pippin-1972', title: 'Pippin', openingDate: '1972-10-23', status: 'closed', category: 'broadway' },
   { id: 'pippin-2013', title: 'Pippin', openingDate: '2013-04-25', status: 'closed', category: 'broadway' },
+  // Open long-runner whose openingDate is the original (not a recent revival).
+  // Models the Les Misérables West End record (openingDate 1985, status open).
+  { id: 'pippin-open-1985', title: 'Pippin', openingDate: '1985-12-04', status: 'open', category: 'west-end' },
   { id: 'nodate-revue', title: 'Pippin', openingDate: '', status: 'closed', category: 'broadway' },
 ];
 
@@ -213,12 +216,14 @@ test('date-context: BWW slug year picks the era-correct same-title production', 
   assert.equal(r2013 && r2013.show.id, 'pippin-2013', 'a 2013-dated slug must route to pippin-2013');
 });
 
-test('date-context: no year hint reproduces the pre-change recency pick', () => {
-  // matchSlugToShow carries no slug date and gets no options → recency wins
-  // (most recent = pippin-2013). This is the golden regression: the date axis
-  // is inert when options.year is absent.
+test('date-context: no year hint is inert — defers to existing non-date heuristics', () => {
+  // matchSlugToShow carries no slug date and gets no options → the date axis is
+  // skipped entirely, so the result is whatever the pre-change closed/recency
+  // logic produces. With an open production present that is pippin-open-1985
+  // (open beats closed before recency even applies). Golden regression: the
+  // date axis must not change the year=null outcome.
   const r = matchSlugToShow('reviews-what-do-the-critics-think-of-pippin-on-broadway', DATE_CTX_SHOWS);
-  assert.equal(r && r.show.id, 'pippin-2013', 'no year hint must fall through to the existing recency tiebreaker');
+  assert.equal(r && r.show.id, 'pippin-open-1985', 'no year hint must fall through to the existing closed/recency tiebreakers');
 });
 
 test('date-context: explicit options.year overrides slug-derived year', () => {
@@ -232,4 +237,14 @@ test('date-context: a candidate with no openingDate never wins the date axis', (
   // For a 1972 article it must lose to pippin-1972, never win on the date axis.
   const r = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-19721023', DATE_CTX_SHOWS);
   assert.notEqual(r && r.show.id, 'nodate-revue', 'a dateless production must not win the date-proximity axis');
+});
+
+test('date-context: when NO candidate is in-window the date axis is inert (open production wins, not closest year)', () => {
+  // Regression for the Les Misérables flip (ship-check Codex, 2026-05-28): a
+  // 2040 article is far from ALL productions (1972/1985/2013). The date axis
+  // must NOT pick the year-closest (pippin-2013, gap 27) over the OPEN current
+  // production (pippin-open-1985, gap 55). With no in-window candidate the axis
+  // falls through to the closed/recency heuristics, which prefer the open one.
+  const r = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-20400101', DATE_CTX_SHOWS);
+  assert.equal(r && r.show.id, 'pippin-open-1985', 'no in-window candidate → defer to open-production preference, not closest year');
 });
