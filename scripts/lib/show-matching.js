@@ -1098,8 +1098,23 @@ function _tokenAppearsInSlug(token, cleanedSlug) {
  *   other multi-word show titles where intervening venue tokens previously
  *   prevented the show's full slug from appearing as a single substring.
  */
-function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
+/**
+ * Absolute year distance between a show's opening and a target article year.
+ * Returns Infinity when the article year is unknown or the show has no
+ * parseable openingDate, so a dateless production never registers as
+ * "in window" and never wins the date-proximity axis. Mirrors
+ * pickBestProduction's Math.abs nearest-year logic (line ~560).
+ */
+function _yearGap(show, articleYear) {
+  if (!articleYear) return Infinity;
+  const y = parseInt((show.openingDate || '').slice(0, 4), 10);
+  if (!y) return Infinity;
+  return Math.abs(y - articleYear);
+}
+
+function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   if (!cleanedSlug || !shows || shows.length === 0) return null;
+  const articleYear = options && options.year ? options.year : null;
   const candidates = [];
   for (const show of shows) {
     const tokens = _showDistinctiveTokens(show);
@@ -1151,6 +1166,23 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   candidates.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;
+    // Date-context axis (only when an article year is supplied via
+    // options.year). Prefer a production whose opening is within ±2 years of
+    // the article date, then closest by year. Inserted BELOW token-match but
+    // ABOVE the closed/recency heuristics: for same-token-set productions
+    // (e.g. a bare "Cabaret" slug matching both cabaret-2014 and cabaret-1987)
+    // the article date is the only signal that separates them, and it is a
+    // stronger signal than "prefer the newer/open one". A missing openingDate
+    // yields gap Infinity → never in-window, never wins this axis, so the
+    // matcher falls through to the existing recency behavior unchanged.
+    if (articleYear) {
+      const aGap = _yearGap(a.show, articleYear);
+      const bGap = _yearGap(b.show, articleYear);
+      const aIn = aGap <= 2 ? 0 : 1;
+      const bIn = bGap <= 2 ? 0 : 1;
+      if (aIn !== bIn) return aIn - bIn;       // in-window candidates first
+      if (aGap !== bGap) return aGap - bGap;   // then closest opening year
+    }
     const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
     if (aClosed !== bClosed) return aClosed - bClosed;
@@ -1161,11 +1193,18 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows) {
   return { show: candidates[0].show, confidence: 'high', via: 'slug-token-set' };
 }
 
-function matchSlugToShow(rawSlug, shows) {
+/**
+ * @param {string} rawSlug
+ * @param {Object[]} shows
+ * @param {Object} [options] - { year } article publish year for same-title
+ *   disambiguation. PV slugs carry no date, so the caller supplies it (e.g.
+ *   scrape-playbill-verdict.js derives it from article.publishDate).
+ */
+function matchSlugToShow(rawSlug, shows, options = {}) {
   if (!rawSlug || !shows || shows.length === 0) return null;
   let stripped = _stripPvHead(String(rawSlug).toLowerCase().replace(/^\/?article\//, ''));
   stripped = _stripPvTail(stripped);
-  return _matchCleanedSlugAgainstShows(stripped, shows);
+  return _matchCleanedSlugAgainstShows(stripped, shows, options);
 }
 
 // ---------------------------------------------------------------------------
@@ -1200,17 +1239,32 @@ const BWW_TAIL_PATTERNS = [
  * Match a BWW Review-Roundup article URL slug to a show in shows.json.
  * @param {string} rawSlug - either full URL or just the slug part after /article/
  * @param {Object[]} shows - shows.json array
+ * @param {Object} [options] - { year } overrides the slug-derived article year.
  * @returns {{ show: Object, confidence: 'high', via: 'slug-substring' } | null}
  */
-function matchBwwRoundupSlugToShow(rawSlug, shows) {
+function matchBwwRoundupSlugToShow(rawSlug, shows, options = {}) {
   if (!rawSlug || !shows || shows.length === 0) return null;
   // Accept either /article/Review-Roundup-... or just the slug
   let s = String(rawSlug).toLowerCase()
     .replace(/^https?:\/\/[^/]+/, '')
     .replace(/^\/?article\//, '');
+  // Extract the article date from the raw slug tail BEFORE the tail patterns
+  // strip it. BWW roundup slugs end in -YYYYMMDD (e.g. ...-20211213). This is
+  // the only signal that separates same-title productions (a 2021 West End
+  // "Cabaret" review vs the 2014/1987 Broadway revivals) and lets the misroute
+  // audit flag findings whose matched show is years from the article date. An
+  // explicit options.year overrides the slug-derived year.
+  let articleYear = options && options.year ? options.year : null;
+  if (!articleYear) {
+    const m = s.match(/-(\d{8})$/);
+    if (m) {
+      const y = parseInt(m[1].slice(0, 4), 10);
+      if (y >= 1900 && y <= 2100) articleYear = y;
+    }
+  }
   for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
   for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
-  return _matchCleanedSlugAgainstShows(s, shows);
+  return _matchCleanedSlugAgainstShows(s, shows, { ...options, year: articleYear });
 }
 
 /**

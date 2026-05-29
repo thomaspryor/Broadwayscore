@@ -186,3 +186,50 @@ test('matchSlugToShow finds the right show for all 20 real fixtures', () => {
   assert.equal(bugs.length, 0,
     `matchSlugToShow returned WRONG show for ${bugs.length} slug(s) (see log above)`);
 });
+
+// ---------------------------------------------------------------------------
+// Date-context disambiguation (2026-05-28). BWW roundup slugs end in
+// -YYYYMMDD; matchBwwRoundupSlugToShow extracts that year and prefers a
+// production within ±2 years of it (then closest year) ABOVE the
+// closed/recency tiebreakers. Synthetic shows are used because the real
+// audit has zero same-token-set productions where date and recency disagree
+// — the value of this axis is preventive (future same-title shows) and as a
+// safety flag for the misroute audit (a far-year match is a likely wrong-to).
+// Single-token titles must be ≥5 chars to clear the distinctive-token gate,
+// so "Pippin" (6) is used, not a 3-char stub.
+const DATE_CTX_SHOWS = [
+  { id: 'pippin-1972', title: 'Pippin', openingDate: '1972-10-23', status: 'closed', category: 'broadway' },
+  { id: 'pippin-2013', title: 'Pippin', openingDate: '2013-04-25', status: 'closed', category: 'broadway' },
+  { id: 'nodate-revue', title: 'Pippin', openingDate: '', status: 'closed', category: 'broadway' },
+];
+
+test('date-context: BWW slug year picks the era-correct same-title production', () => {
+  // 1972 article → 1972 production, even though recency alone would pick 2013.
+  const r1972 = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-19721023', DATE_CTX_SHOWS);
+  assert.equal(r1972 && r1972.show.id, 'pippin-1972', 'a 1972-dated slug must route to pippin-1972, not the more recent pippin-2013');
+
+  // 2013 article → 2013 production.
+  const r2013 = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-20130425', DATE_CTX_SHOWS);
+  assert.equal(r2013 && r2013.show.id, 'pippin-2013', 'a 2013-dated slug must route to pippin-2013');
+});
+
+test('date-context: no year hint reproduces the pre-change recency pick', () => {
+  // matchSlugToShow carries no slug date and gets no options → recency wins
+  // (most recent = pippin-2013). This is the golden regression: the date axis
+  // is inert when options.year is absent.
+  const r = matchSlugToShow('reviews-what-do-the-critics-think-of-pippin-on-broadway', DATE_CTX_SHOWS);
+  assert.equal(r && r.show.id, 'pippin-2013', 'no year hint must fall through to the existing recency tiebreaker');
+});
+
+test('date-context: explicit options.year overrides slug-derived year', () => {
+  // Slug says 2013 but caller forces 1972 → 1972 wins.
+  const r = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-20130425', DATE_CTX_SHOWS, { year: 1972 });
+  assert.equal(r && r.show.id, 'pippin-1972', 'options.year must override the YYYYMMDD parsed from the slug');
+});
+
+test('date-context: a candidate with no openingDate never wins the date axis', () => {
+  // nodate-revue shares the [pippin] token but has no openingDate (gap=∞).
+  // For a 1972 article it must lose to pippin-1972, never win on the date axis.
+  const r = matchBwwRoundupSlugToShow('/article/Review-Roundup-PIPPIN-Opens-on-Broadway-19721023', DATE_CTX_SHOWS);
+  assert.notEqual(r && r.show.id, 'nodate-revue', 'a dateless production must not win the date-proximity axis');
+});
