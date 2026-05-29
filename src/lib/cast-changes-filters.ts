@@ -262,9 +262,11 @@ export function resolveClosureArrivalContradictions(
       }
     }
 
-    const closureWins = closureAdded
-      ? !newestArrivalAdded || closureAdded >= newestArrivalAdded
-      : !newestArrivalAdded;
+    // Closure only unseated when a contradicting arrival was added STRICTLY
+    // more recently (both sides dated). Tie / missing on either side keeps the
+    // closure — never discard a show-closure on one-sided metadata.
+    const closureWins =
+      !closureAdded || !newestArrivalAdded || closureAdded >= newestArrivalAdded;
 
     if (closureWins) {
       for (const a of laterArrivals) arrivalsToDrop.add(a);
