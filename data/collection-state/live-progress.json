@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-29T12:14:02.529Z",
-  "processed": 16,
-  "failed": 508,
-  "successRate": "3.1%",
+  "updatedAt": "2026-05-29T12:40:58.521Z",
+  "processed": 19,
+  "failed": 511,
+  "successRate": "3.6%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 1,
     "brightdata": 1,
     "archiveToday": 20,
     "archive": 9
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-05-29T09:26:26.403Z",
@@ -32,6 +32,28 @@
       "event": "bb-session",
       "session": "9805ef15",
       "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
+    },
+    {
+      "t": "2026-05-29T12:39:24.886Z",
+      "event": "bb-session",
+      "session": "8efafd9c",
+      "url": "https://www.nytimes.com/2026/05/21/theater/review-indian-princesses-atlantic-the"
+    },
+    {
+      "t": "2026-05-29T12:39:25.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-29T12:40:17.561Z",
+      "event": "bb-session",
+      "session": "9add5f52",
+      "url": "https://www.wsj.com/arts-culture/theater/the-maids-review-jean-genet-for-the-inf"
+    },
+    {
+      "t": "2026-05-29T12:40:18.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

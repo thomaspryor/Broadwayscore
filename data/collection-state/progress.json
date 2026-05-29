@@ -15,7 +15,10 @@
     "after-miss-julie-2009/wsj--unknown.json",
     "a-steady-rain-2009/latimes--unknown.json",
     "animal-wisdom-2022/nytimes--ben-brantley.json",
-    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+    "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+    "indian-princesses-off-broadway-2025/nytimes--unknown.json",
+    "the-maids-off-broadway-2026/wsj--unknown.json",
+    "the-maids-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
@@ -525,7 +528,10 @@
     "equus-west-end-2026/the-jewish-chronicle--unknown.json",
     "equus-west-end-2026/thereviewshub--unknown.json",
     "equus-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "equus-west-end-2026/artsdesk--unknown.json"
+    "equus-west-end-2026/artsdesk--unknown.json",
+    "indian-princesses-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
+    "the-maids-off-broadway-2026/ew--unknown.json",
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -539,10 +545,16 @@
       "titanique-2026/nytg--unknown.json",
       "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
-      "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json"
+      "the-loved-ones-off-broadway-2026/broadwayworld--team-bww.json",
+      "the-maids-off-broadway-2026/exeunt-magazine--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/indian-princesses-off-broadway-2025/nytimes--unknown.json",
+      "indian-princesses-off-broadway-2025/nytimes--unknown.json",
+      "data/review-texts/the-maids-off-broadway-2026/wsj--unknown.json",
+      "the-maids-off-broadway-2026/wsj--unknown.json"
+    ],
     "directCookies": [],
     "scrapingbee": [
       "animal-wisdom-2022/nytimes--ben-brantley.json"
@@ -585,7 +597,7 @@
     ]
   },
   "startTime": "2026-05-29T06:04:08.331Z",
-  "lastProcessed": "equus-west-end-2026/artsdesk--unknown.json",
+  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/playbill--unknown.json",
   "log": [
     {
       "t": "2026-05-29T09:26:26.403Z",
@@ -604,6 +616,28 @@
       "event": "bb-session",
       "session": "9805ef15",
       "url": "https://www.facebook.com/whatsonstage/posts/dark-of-the-moon-is-a-spellbinding-n"
+    },
+    {
+      "t": "2026-05-29T12:39:24.886Z",
+      "event": "bb-session",
+      "session": "8efafd9c",
+      "url": "https://www.nytimes.com/2026/05/21/theater/review-indian-princesses-atlantic-the"
+    },
+    {
+      "t": "2026-05-29T12:39:25.438Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-05-29T12:40:17.561Z",
+      "event": "bb-session",
+      "session": "9add5f52",
+      "url": "https://www.wsj.com/arts-culture/theater/the-maids-review-jean-genet-for-the-inf"
+    },
+    {
+      "t": "2026-05-29T12:40:18.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
