@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function main() {
   const dir = fs.existsSync('data/review-texts')
@@ -57,7 +58,6 @@ function main() {
   // Now test the guard logic against a synthetic example.
   // This is the logic from opening-night-poller.js processDiscoveredReviews:
   const { normalizeOutlet } = require('./lib/review-normalization');
-const { listShowDirs } = require('./lib/list-show-dirs');
   function wouldSkipUnknown(review, existingFiles) {
     const criticName = review.criticName || '';
     const isUnknownCritic = !criticName || criticName.toLowerCase() === 'unknown';

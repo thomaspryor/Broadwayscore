@@ -20,6 +20,7 @@ const {
   isKnownOffBroadwayVenue,
   OFF_BROADWAY_VENUES,
 } = require('../../scripts/lib/venue-classification.js');
+const { obFallbackFlags } = require('../../scripts/discover-new-shows.js');
 
 test('Theatre 71 (the show that slipped through) is now a known OB venue', () => {
   assert.equal(isKnownOffBroadwayVenue('Theatre 71'), true);
@@ -60,4 +61,21 @@ test('venue list is non-empty and all entries are normalized', () => {
     assert.equal(v, v.toLowerCase(), `entry "${v}" must be lowercase`);
     assert.ok(!/ theatre$| theater$/.test(v), `entry "${v}" must have trailing Theatre/Theater stripped`);
   }
+});
+
+// obFallbackFlags: venue-rescued OB shows must be marked provisional so
+// validate-show-venue.js cross-checks them against Playbill (CLAUDE.md §3).
+test('venue-fallback show (no OB subcat) is flagged provisional for cross-validation', () => {
+  const flags = obFallbackFlags({ subcategories: [], venue: { name: 'Theatre 71' } });
+  assert.equal(flags.provisional, true);
+  assert.equal(flags.discoverySource, 'todaytix-venue-fallback');
+});
+
+test('subcat-tagged OB show gets no extra flags (TodayTix tag is authoritative)', () => {
+  const flags = obFallbackFlags({ subcategories: [{ name: 'Off Broadway' }], venue: { name: 'Theatre 71' } });
+  assert.deepEqual(flags, {});
+});
+
+test('obFallbackFlags handles a show with no subcategories array', () => {
+  assert.deepEqual(obFallbackFlags({ venue: { name: 'Theatre 71' } }), { provisional: true, discoverySource: 'todaytix-venue-fallback' });
 });
