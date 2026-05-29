@@ -6,9 +6,11 @@
  *   1. "Production closes …" stored as per-actor `departure` (Chess case).
  *      → reclassify ONE of them into a show-level `closure` event,
  *        drop the rest.
- *   2. Closure event contradicted by a later `arrival` event
- *      (Chess closure 2026-06-14 vs JoJo arrival through 2026-09-13).
- *      → drop the closure; the production isn't actually closing.
+ *   2. Closure event contradicted by a later `arrival` event.
+ *      → resolve by recency of addedDate (resolveClosureArrivalContradictions):
+ *        a newer arrival means the show extended (drop the stale closure); a
+ *        newer/tied closure means the show is closing early (drop the stale
+ *        arrival, e.g. chess-2025 early-close June 21 vs JoJo June 23).
  *   3. Ended `absence` events still in upcoming (Alison Luff Wonder leave).
  *      → drop where endDate < today.
  *   4. Stale [AUTO-FLAGGED] entries (> 30 days).
@@ -262,8 +264,8 @@ function main() {
   console.log(`  Shows examined:                              ${report.showsExamined}`);
   console.log(`  Closure groups reclassified:                 ${report.closuresReclassified}`);
   console.log(`  Per-actor departures collapsed into closure: ${report.departuresReclassifiedAsClosure}`);
-  console.log(`  Contradicted closures dropped:               ${report.contradictedClosuresDropped}`);
-  console.log(`  Stale arrivals dropped (closure won):        ${report.contradictedArrivalsDropped}`);
+  console.log(`  Contradicted closures dropped (stale):       ${report.contradictedClosuresDropped}`);
+  console.log(`  Contradicting arrivals dropped (stale):      ${report.contradictedArrivalsDropped}`);
   console.log(`  Ended absences dropped:                      ${report.endedAbsencesDropped}`);
   console.log(`  Stale [AUTO-FLAGGED] entries dropped:        ${report.staleAutoFlaggedDropped}`);
   console.log(`  Name-variant dedupes:                        ${report.nameVariantDedupes}`);
@@ -294,6 +296,7 @@ function main() {
   const totalIssues =
     report.departuresReclassifiedAsClosure +
     report.contradictedClosuresDropped +
+    report.contradictedArrivalsDropped +
     report.endedAbsencesDropped +
     report.staleAutoFlaggedDropped +
     report.nameVariantDedupes +

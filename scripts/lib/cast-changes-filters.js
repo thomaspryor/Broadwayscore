@@ -291,13 +291,14 @@ function resolveClosureArrivalContradictions(events) {
       }
     }
 
-    // Closure wins (keep closure, drop the later arrivals) when it is at least
-    // as recently added as the newest contradicting arrival, OR when recency is
-    // undecidable (missing arrival addedDate). Only a strictly-newer arrival
-    // unseats the closure.
-    const closureWins = closureAdded
-      ? !newestArrivalAdded || closureAdded >= newestArrivalAdded
-      : !newestArrivalAdded;
+    // A closure is high-stakes (the show ends), so it is only unseated when a
+    // contradicting arrival was added STRICTLY more recently — i.e. BOTH sides
+    // carry an addedDate and the arrival's is newer (the show extended past the
+    // old close date). Any other case keeps the closure and drops the stale
+    // later arrival(s): tie, missing arrival addedDate, OR missing closure
+    // addedDate. We never discard a closure on one-sided metadata.
+    const closureWins =
+      !closureAdded || !newestArrivalAdded || closureAdded >= newestArrivalAdded;
 
     if (closureWins) {
       for (const a of laterArrivals) arrivalsToDrop.add(a);
