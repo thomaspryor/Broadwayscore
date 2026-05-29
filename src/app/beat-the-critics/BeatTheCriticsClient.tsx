@@ -406,7 +406,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <div className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold whitespace-nowrap">
               🎁 Beat a critic &mdash; win a <strong>$200 TodayTix gift card</strong>
             </div>
-            <div className="text-[11px] text-gray-600 font-semibold">Prize sponsored by <span className="text-red-500/70">TodayTix</span></div>
+            <div className="text-[14px] text-gray-600 font-semibold">Prize sponsored by <span className="text-red-500/70">TodayTix</span></div>
             <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
