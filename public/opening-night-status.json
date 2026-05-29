@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-29T07:17:20.503Z",
+  "generatedAt": "2026-05-29T11:11:36.132Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-05-29",
-      "status": "previews",
+      "status": "open",
       "slug": "david-copperfield-59e59-theaters-off-broadway",
       "thumbnail": "/images/shows/david-copperfield-59e59-theaters-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -389,27 +389,27 @@
       "slug": "beetlejuice-west-end",
       "thumbnail": "/images/shows/beetlejuice-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 57,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 6,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
+      "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -471,6 +471,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-05-29T11:11:36.132Z",
+          "rc": 1,
+          "s": 57,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1279,7 +1293,7 @@
       "category": "west-end",
       "type": "play",
       "openingDate": "2026-06-04",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "are-you-watching-west-end",
       "thumbnail": "/images/shows/are-you-watching-west-end-2026/thumbnail.webp",
       "daysUntil": 6,
