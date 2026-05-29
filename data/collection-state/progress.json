@@ -22,7 +22,13 @@
     "joe-turners-come-and-gone-2026/talkinbroadway--unknown.json",
     "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
     "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
-    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+    "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+    "avenue-q-west-end-2026/thereviewshub--unknown.json",
+    "mexodus-off-broadway-2026/chicagotribune--chris-jones.json",
+    "chess-2025/the-contending--unknown.json",
+    "masquerade-off-broadway-2025/nytimes--unknown.json",
+    "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+    "operation-mincemeat-west-end-2024/londontheatre1--unknown.json"
   ],
   "failed": [
     "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
@@ -46,7 +52,11 @@
     "beetlejuice-west-end-2026/sunday-telegraph--dominic-cavendish.json",
     "beetlejuice-west-end-2026/thestage--unknown.json",
     "dark-of-the-moon-west-end-2026/artsdesk--unknown.json",
-    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json"
+    "end-of-the-rainbow-west-end-2026/broadwayworld--adam-bloodworth.json",
+    "romeo-and-juliet-west-end-2026/sunday-telegraph--claire-allfree.json",
+    "ragtime-2025/bloomberg--chris-rovzar.json",
+    "titanique-west-end-2024/times-uk--clive-davis.json",
+    "hadestown-west-end-2024/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -66,12 +76,18 @@
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "the-rocky-horror-show-2026/nyt-theater--jonathan-mandell.json",
       "the-rocky-horror-show-2026/musical-theatre-review--unknown.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "avenue-q-west-end-2026/thereviewshub--unknown.json",
+      "chess-2025/the-contending--unknown.json",
+      "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
+      "operation-mincemeat-west-end-2024/londontheatre1--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/masquerade-off-broadway-2025/wsj--unknown.json",
-      "masquerade-off-broadway-2025/wsj--unknown.json"
+      "masquerade-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/masquerade-off-broadway-2025/nytimes--unknown.json",
+      "masquerade-off-broadway-2025/nytimes--unknown.json"
     ],
     "directCookies": [],
     "scrapingbee": [
@@ -88,11 +104,12 @@
     "archive": [
       "gotta-dance-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "mexodus-off-broadway-2026/chicagotribune--unknown.json",
-      "grace-pervades-west-end-2026/broadwayworld--team-bww.json"
+      "grace-pervades-west-end-2026/broadwayworld--team-bww.json",
+      "mexodus-off-broadway-2026/chicagotribune--chris-jones.json"
     ]
   },
   "startTime": "2026-05-29T13:13:47.171Z",
-  "lastProcessed": "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "operation-mincemeat-west-end-2024/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-05-29T13:15:33.661Z",
@@ -104,6 +121,17 @@
       "t": "2026-05-29T13:15:34.078Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-29T16:02:00.739Z",
+      "event": "bb-session",
+      "session": "aef02c1e",
+      "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-oper"
+    },
+    {
+      "t": "2026-05-29T16:02:01.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }

@@ -1,19 +1,19 @@
 {
-  "updatedAt": "2026-05-29T16:00:24.551Z",
-  "processed": 23,
-  "failed": 22,
-  "successRate": "51.1%",
+  "updatedAt": "2026-05-29T16:02:58.724Z",
+  "processed": 29,
+  "failed": 26,
+  "successRate": "52.7%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 20,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingbee": 2,
     "brightdata": 2,
     "archiveToday": 1,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-05-29T13:15:33.661Z",
@@ -25,6 +25,17 @@
       "t": "2026-05-29T13:15:34.078Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-05-29T16:02:00.739Z",
+      "event": "bb-session",
+      "session": "aef02c1e",
+      "url": "https://www.nytimes.com/2025/09/29/theater/masquerade-review-phantom-of-the-oper"
+    },
+    {
+      "t": "2026-05-29T16:02:01.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
