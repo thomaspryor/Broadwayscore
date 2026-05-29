@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-29T15:13:55.819Z",
+  "timestamp": "2026-05-29T17:13:37.617Z",
   "stats": {
-    "totalReviews": 37781,
-    "alreadyFlagged": 16597,
+    "totalReviews": 37790,
+    "alreadyFlagged": 16602,
     "dateGuardCatches": 106,
-    "directorMismatch": 797,
+    "directorMismatch": 800,
     "tvFilmSignals": 1033,
     "londonSignals": 582,
     "offBroadwaySignals": 454,
     "yearMismatch": 78,
-    "noPublishDate": 3951
+    "noPublishDate": 3955
   },
   "findings": [
     {
@@ -1752,6 +1752,47 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 59,
+      "publishDate": "2026-05-29",
+      "url": "https://www.ft.com/content/1db58024-21e9-435a-b297-9c0ce52e588c?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 83,
+      "publishDate": "2026-05-29",
+      "url": "https://standard.co.uk/culture/theatre/beetlejuice-the-musical-review-prince-edward-b1284074.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-05-28",
+      "url": "https://www.whatsonstage.com/news/beetlejuice-in-the-west-end-review_1722801/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from beetlejuice-2025"
         }
       ]
     },
