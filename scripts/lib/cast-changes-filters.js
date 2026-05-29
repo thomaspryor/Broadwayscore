@@ -245,6 +245,80 @@ function detectContradictions(events, currentCast = []) {
 }
 
 /**
+ * Resolve closure-vs-later-arrival contradictions by RECENCY of addedDate.
+ *
+ * A closure dated before an arrival is a genuine contradiction (a show can't
+ * gain a cast member after it closes). Which side is stale depends on which
+ * was scraped most recently:
+ *   - Closure added on/after the newest contradicting arrival → the closure is
+ *     the latest announcement (show is closing early); drop the stale arrival.
+ *     (chess-2025: early-close June 21 added 2026-05-27 beats JoJo arrival
+ *     June 23 added 2026-04-18.)
+ *   - An arrival added after the closure → the show extended past the old
+ *     closure date; the closure is stale; drop it. (Original Chess June-14 bug.)
+ *
+ * Tie / missing-addedDate fallback keeps the closure (drops the impossible
+ * later arrival) — the historical default before recency was wired in.
+ *
+ * This is a WRITE-time correctness fix (audit + scraper), NOT a read-time view
+ * filter, so it is intentionally NOT part of applyPublicFilters.
+ */
+function resolveClosureArrivalContradictions(events) {
+  const closures = events.filter(e => e.type === 'closure' && e.date);
+  if (closures.length === 0) {
+    return { events, droppedClosures: 0, droppedArrivals: 0 };
+  }
+  const arrivals = events.filter(e => e.type === 'arrival' && e.date);
+
+  const closuresToDrop = new Set();
+  const arrivalsToDrop = new Set();
+
+  for (const closure of closures) {
+    const closureDate = parseISO(closure.date);
+    if (!closureDate) continue;
+    const laterArrivals = arrivals.filter(a => {
+      const aDate = parseISO(a.date);
+      return aDate && aDate > closureDate;
+    });
+    if (laterArrivals.length === 0) continue;
+
+    const closureAdded = parseISO(closure.addedDate);
+    let newestArrivalAdded = null;
+    for (const a of laterArrivals) {
+      const aAdded = parseISO(a.addedDate);
+      if (aAdded && (!newestArrivalAdded || aAdded > newestArrivalAdded)) {
+        newestArrivalAdded = aAdded;
+      }
+    }
+
+    // Closure wins (keep closure, drop the later arrivals) when it is at least
+    // as recently added as the newest contradicting arrival, OR when recency is
+    // undecidable (missing arrival addedDate). Only a strictly-newer arrival
+    // unseats the closure.
+    const closureWins = closureAdded
+      ? !newestArrivalAdded || closureAdded >= newestArrivalAdded
+      : !newestArrivalAdded;
+
+    if (closureWins) {
+      for (const a of laterArrivals) arrivalsToDrop.add(a);
+    } else {
+      closuresToDrop.add(closure);
+    }
+  }
+
+  if (closuresToDrop.size === 0 && arrivalsToDrop.size === 0) {
+    return { events, droppedClosures: 0, droppedArrivals: 0 };
+  }
+
+  const filtered = events.filter(e => !closuresToDrop.has(e) && !arrivalsToDrop.has(e));
+  return {
+    events: filtered,
+    droppedClosures: closuresToDrop.size,
+    droppedArrivals: arrivalsToDrop.size,
+  };
+}
+
+/**
  * Cross-show check. Given the full {shows: {showId: {currentCast, upcoming}}}
  * data file, find actors who appear as 'arrival' in two shows whose run dates
  * overlap, without a corresponding 'absence' or 'departure' from the first
@@ -335,6 +409,7 @@ module.exports = {
   dedupeByPersonShow,
   reconcileClosure,
   detectContradictions,
+  resolveClosureArrivalContradictions,
   detectCrossShowConflicts,
   applyPublicFilters,
   CLOSURE_NOTE_PHRASES,

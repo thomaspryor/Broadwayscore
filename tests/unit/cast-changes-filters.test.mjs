@@ -13,6 +13,7 @@ import {
   normalizeIdentifier,
   CLOSURE_NOTE_PHRASES,
   noteMatchesClosurePhrase,
+  resolveClosureArrivalContradictions,
 } from '../../scripts/lib/cast-changes-filters.js';
 
 const TODAY = new Date('2026-05-23');
@@ -341,4 +342,42 @@ test('audit reclassifier requires group size >= 2 (no singleton-promotion)', asy
   ];
   const out2 = reclassify(cluster, 'test');
   assert.equal(out2.rewritten.filter(e => e.type === 'closure').length, 1, 'cluster did not reclassify');
+});
+
+test('resolveClosureArrivalContradictions: newer closure keeps closure, drops stale arrival (chess-2025)', () => {
+  // chess-2025: early-close closure announced 2026-05-27 supersedes the
+  // planned-succession arrival added 2026-04-18. The blanket "always drop the
+  // closure" rule shipped a phantom JoJo arrival here; recency must keep the
+  // closure and drop the cancelled arrival.
+  const events = [
+    { type: 'arrival', name: 'Joanna Levesque', role: 'Florence Vassy', date: '2026-06-23', addedDate: '2026-04-18' },
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-21', addedDate: '2026-05-27' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 0, 'closure should survive');
+  assert.equal(res.droppedArrivals, 1, 'stale arrival should be dropped');
+  assert.ok(res.events.some(e => e.type === 'closure'), 'closure missing from result');
+  assert.ok(!res.events.some(e => e.type === 'arrival'), 'stale arrival not dropped');
+});
+
+test('resolveClosureArrivalContradictions: newer arrival unseats stale closure (extension)', () => {
+  // Inverse case: an arrival added AFTER the closure means the show extended
+  // past the old close date — the closure is stale and must be dropped.
+  const events = [
+    { type: 'closure', name: 'Show', role: 'Production', date: '2026-05-03', addedDate: '2026-03-01' },
+    { type: 'arrival', name: 'New Lead', role: 'Star', date: '2026-06-23', addedDate: '2026-04-29' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 1, 'stale closure should be dropped');
+  assert.equal(res.droppedArrivals, 0, 'arrival should survive');
+});
+
+test('resolveClosureArrivalContradictions: tie / missing addedDate keeps closure', () => {
+  const events = [
+    { type: 'closure', name: 'Show', role: 'Production', date: '2026-06-21' },
+    { type: 'arrival', name: 'X', role: 'Y', date: '2026-06-23' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 0, 'closure should survive on undecidable recency');
+  assert.equal(res.droppedArrivals, 1, 'impossible later arrival should be dropped');
 });
