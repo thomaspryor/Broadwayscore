@@ -30,6 +30,7 @@ const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch } = require('./lib/show-matching');
+const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -1197,8 +1198,13 @@ async function landingDiscoverMode(shows, options = {}) {
       const prev = byUrl.get(u.url);
       byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
     }
-    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
-    console.log(`\nWrote ${unmatched.length} unmatched roundups to ${auditPath} (total tracked: ${byUrl.size})`);
+    // Prune entries that no longer belong (already-in-shows by exact slug +
+    // infrastructure) so the file doesn't grow unbounded across weekly runs.
+    // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
+    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'bww-roundup', existingSlugs });
+    fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
+    console.log(`\nWrote ${unmatched.length} unmatched roundups to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
   } catch (auditErr) {
     console.log(`  [WARN] Could not write BWW unmatched audit: ${auditErr.message}`);
   }
