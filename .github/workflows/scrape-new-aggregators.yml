@@ -35,6 +35,16 @@ permissions:
   contents: write
   actions: write
 
+# Serialize runs of this workflow. GitHub occasionally double-fires a
+# heavily-delayed cron (observed 2026-05-29: '0 14 * * 1-6' produced two
+# runs 1 min apart). Two concurrent runs each scrape + commit + rebuild,
+# racing on the same private-repo pushes. Queue the duplicate behind the
+# first instead of cancelling — cancel-in-progress would kill a run
+# mid-commit and leave partial state (same reasoning as vercel-demo.yml).
+concurrency:
+  group: scrape-new-aggregators
+  cancel-in-progress: false
+
 jobs:
   scrape-playbill-verdict:
     if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'playbill-verdict' }}

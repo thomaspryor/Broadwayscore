@@ -9,6 +9,10 @@
  *
  * Run: node --test tests/unit/build-ob-venues.test.mjs
  */
+// TESTS-VS-DERIVED-DATA-EXEMPT: asserts the SHAPE of the committed
+// off-broadway-venues.json (sorted/normalized/no-blocklist-leak), not factual
+// content — the source-of-truth (shows.json) sync is verified by
+// `node scripts/build-ob-venues.js --check`, which runs where core data exists.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
