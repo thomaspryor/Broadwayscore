@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DELAY_MS = 1500; // Be polite to archive.org
@@ -151,7 +152,7 @@ async function processReview(filePath) {
 
 async function main() {
   // Find all review files that need full text
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
   const stubs = [];
 
   for (const show of shows) {

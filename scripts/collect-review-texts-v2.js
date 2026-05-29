@@ -17,6 +17,7 @@ const path = require('path');
 const { extractScore } = require('./lib/score-extractors');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Configuration
 const CONFIG = {
@@ -114,7 +115,7 @@ function findReviewsNeedingText() {
     return reviews;
   }
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
+  const shows = listShowDirs(CONFIG.reviewTextsDir)
     .filter(f => {
       const p = path.join(CONFIG.reviewTextsDir, f);
       return fs.statSync(p).isDirectory();

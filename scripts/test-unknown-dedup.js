@@ -16,7 +16,7 @@ function main() {
   let totalCollisions = 0;
   const examples = [];
 
-  for (const showDir of fs.readdirSync(dir)) {
+  for (const showDir of listShowDirs(dir)) {
     const fullDir = path.join(dir, showDir);
     if (!fs.statSync(fullDir).isDirectory()) continue;
     const files = fs.readdirSync(fullDir).filter(f => f.endsWith('.json'));
@@ -57,6 +57,7 @@ function main() {
   // Now test the guard logic against a synthetic example.
   // This is the logic from opening-night-poller.js processDiscoveredReviews:
   const { normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
   function wouldSkipUnknown(review, existingFiles) {
     const criticName = review.criticName || '';
     const isUnknownCritic = !criticName || criticName.toLowerCase() === 'unknown';

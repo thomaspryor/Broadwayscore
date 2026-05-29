@@ -28,6 +28,7 @@ const path = require('path');
 const { ROUNDUP_URL_SOURCES } = require('./gather-reviews');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { fetchPage, getScraperStats } = require('./lib/scraper');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -155,7 +156,7 @@ async function main() {
   console.log('\nScanning review-text files...');
   const candidates = [];
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(d => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, d);
       return fs.statSync(fullPath).isDirectory();

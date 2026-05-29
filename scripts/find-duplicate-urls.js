@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Support running from a worktree where data/ isn't present
 const _candidates = [
@@ -46,7 +47,7 @@ let showsScanned = 0;
 
 let showDirs;
 try {
-  showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
     if (d.startsWith('_')) return false; // skip _pending, _archive etc.
     if (filterShow && d !== filterShow) return false;
     const full = path.join(REVIEW_TEXTS_DIR, d);

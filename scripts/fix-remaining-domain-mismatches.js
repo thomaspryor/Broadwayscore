@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const registryPath = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -329,7 +330,7 @@ function main() {
   ];
   const allWrongUrlPatterns = [...GROUP_D_URL_PATTERNS, ...extraWrongUrlPatterns];
 
-  const shows = fs.readdirSync(reviewTextsDir);
+  const shows = listShowDirs(reviewTextsDir);
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);
     if (!fs.statSync(showDir).isDirectory()) continue;

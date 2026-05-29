@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const BASE = path.join(__dirname, '..', 'data', 'review-texts');
 const args = process.argv.slice(2);
@@ -64,7 +65,7 @@ const issues = {
 let totalFiles = 0;
 let fixedFiles = 0;
 
-for (const showDir of fs.readdirSync(BASE)) {
+for (const showDir of listShowDirs(BASE)) {
   const showPath = path.join(BASE, showDir);
   if (!fs.statSync(showPath).isDirectory()) continue;
 

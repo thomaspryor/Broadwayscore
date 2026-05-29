@@ -1,15 +1,22 @@
 /**
- * Venue classification for London theatres.
- * Single source of truth: data/west-end-venues.json
+ * Venue classification for NYC + London theatres.
  *
- * West End = SOLT member theatres / Theatreland.
+ * West End = SOLT member theatres / Theatreland. Source: data/west-end-venues.json
  * Off-West End = everything else in London.
+ * Known Off-Broadway venues: data/off-broadway-venues.json — used as a fallback
+ *   when TodayTix omits the "Off Broadway" subcategory tag (it mis-tags shows;
+ *   Broken Snow at Theatre 71 slipped through and needed a manual add, 2026-05-27).
+ *
+ * Both venue lists store ALREADY-NORMALIZED names (lowercase, trailing
+ * "theatre"/"theater" + parentheticals stripped per normalizeVenueName).
  */
 
 const path = require('path');
 const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
+const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
 
 const WEST_END_VENUES = new Set(venueList);
+const OFF_BROADWAY_VENUES = new Set(obVenueList);
 
 function normalizeVenueName(venue) {
   if (!venue) return '';
@@ -27,6 +34,18 @@ function isOffWestEndVenue(venue) {
 function isWestEndVenue(venue) {
   if (!venue || venue === 'TBA') return false;
   return WEST_END_VENUES.has(normalizeVenueName(venue));
+}
+
+/**
+ * True when a venue name matches a theatre we already classify as
+ * Off-Broadway. Lets discovery rescue OB shows that TodayTix lists without
+ * the "Off Broadway" subcategory tag. Accepts a string venue name or a
+ * TodayTix-shape `{ name }` object.
+ */
+function isKnownOffBroadwayVenue(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return OFF_BROADWAY_VENUES.has(normalizeVenueName(name));
 }
 
 /**
@@ -163,4 +182,4 @@ const GENERIC_VENUE_SLUGS = new Set([
   'piccadilly', 'savoy', 'vaudeville', 'victoria-palace',
 ]);
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, GENERIC_VENUE_SLUGS };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isLondonMarket, getMarketPool, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS };

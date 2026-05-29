@@ -57,6 +57,7 @@ require('ts-node').register({
   transpileOnly: true
 });
 const { SYSTEM_PROMPT_V5, buildPromptV5, PROMPT_VERSION, BUCKET_RANGES, clampScoreToBucket } = require('./llm-scoring/config');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 console.log(`Prompt version: ${PROMPT_VERSION}`);
 
@@ -175,7 +176,7 @@ async function scoreWithKimi(reviewText, context) {
 function findGroundTruthReviews() {
   const reviews = [];
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+  const shows = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
     const fp = path.join(REVIEW_TEXTS_DIR, f);
     if (fs.lstatSync(fp).isSymbolicLink()) return false;
     return fs.statSync(fp).isDirectory();

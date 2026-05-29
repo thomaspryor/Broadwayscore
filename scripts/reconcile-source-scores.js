@@ -25,6 +25,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
@@ -48,7 +49,7 @@ function convertStarRating(originalScore) {
 
 let stats = { bugA: 0, bugB: 0, skipped: 0, total: 0 };
 
-for (const show of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showDir = path.join(REVIEW_TEXTS_DIR, show);
   if (!fs.statSync(showDir).isDirectory()) continue;
 

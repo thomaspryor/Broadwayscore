@@ -217,6 +217,76 @@ export function detectContradictions(
   return warnings;
 }
 
+export interface ClosureArrivalResolution {
+  events: CastEvent[];
+  droppedClosures: number;
+  droppedArrivals: number;
+}
+
+/**
+ * Resolve closure-vs-later-arrival contradictions by RECENCY of addedDate.
+ * Mirror of scripts/lib/cast-changes-filters.js — keep in lockstep.
+ *
+ * Closure added on/after the newest contradicting arrival → keep closure, drop
+ * the stale arrival (show closing early). A strictly-newer arrival unseats the
+ * closure (show extended past the old close date). Tie / missing addedDate
+ * keeps the closure. WRITE-time correctness fix — NOT part of applyPublicFilters.
+ */
+export function resolveClosureArrivalContradictions(
+  events: CastEvent[],
+): ClosureArrivalResolution {
+  const closures = events.filter(e => e.type === 'closure' && e.date);
+  if (closures.length === 0) {
+    return { events, droppedClosures: 0, droppedArrivals: 0 };
+  }
+  const arrivals = events.filter(e => e.type === 'arrival' && e.date);
+
+  const closuresToDrop = new Set<CastEvent>();
+  const arrivalsToDrop = new Set<CastEvent>();
+
+  for (const closure of closures) {
+    const closureDate = parseISO(closure.date);
+    if (!closureDate) continue;
+    const laterArrivals = arrivals.filter(a => {
+      const aDate = parseISO(a.date);
+      return aDate && aDate > closureDate;
+    });
+    if (laterArrivals.length === 0) continue;
+
+    const closureAdded = parseISO(closure.addedDate);
+    let newestArrivalAdded: Date | null = null;
+    for (const a of laterArrivals) {
+      const aAdded = parseISO(a.addedDate);
+      if (aAdded && (!newestArrivalAdded || aAdded > newestArrivalAdded)) {
+        newestArrivalAdded = aAdded;
+      }
+    }
+
+    // Closure only unseated when a contradicting arrival was added STRICTLY
+    // more recently (both sides dated). Tie / missing on either side keeps the
+    // closure — never discard a show-closure on one-sided metadata.
+    const closureWins =
+      !closureAdded || !newestArrivalAdded || closureAdded >= newestArrivalAdded;
+
+    if (closureWins) {
+      for (const a of laterArrivals) arrivalsToDrop.add(a);
+    } else {
+      closuresToDrop.add(closure);
+    }
+  }
+
+  if (closuresToDrop.size === 0 && arrivalsToDrop.size === 0) {
+    return { events, droppedClosures: 0, droppedArrivals: 0 };
+  }
+
+  const filtered = events.filter(e => !closuresToDrop.has(e) && !arrivalsToDrop.has(e));
+  return {
+    events: filtered,
+    droppedClosures: closuresToDrop.size,
+    droppedArrivals: arrivalsToDrop.size,
+  };
+}
+
 export interface CrossShowConflict {
   kind: 'cross-show-overlap-without-exit';
   name: string;

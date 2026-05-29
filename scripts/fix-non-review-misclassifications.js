@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dryRun = !process.argv.includes('--fix');
 const verbose = process.argv.includes('--verbose');
@@ -65,7 +66,7 @@ const REVIEW_OUTLETS = new Set([
 const results = { fixed: [], skipped: [], errors: [] };
 
 // Walk all show directories
-const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
+const showDirs = listShowDirs(reviewTextsDir).filter(d => {
   const fullPath = path.join(reviewTextsDir, d);
   return fs.statSync(fullPath).isDirectory();
 });

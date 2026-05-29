@@ -1105,6 +1105,40 @@ function purgeOldExclusionLogs(retentionDays = 30) {
   }
 }
 
+/**
+ * Render the "OB Discovery — Action Needed" digest section. Pure (no IO) so it
+ * can be unit-tested: returns '' when there's nothing to surface (silent zero
+ * weeks), otherwise an HTML block naming the staged count + promoter command.
+ */
+function buildObCandidatesHtml(staged, typoCount) {
+  const list = Array.isArray(staged) ? staged : [];
+  const typos = Number(typoCount) || 0;
+  const stagedCount = list.length;
+  if (stagedCount === 0 && typos === 0) return '';
+
+  const color = stagedCount >= 5 ? '#f39c12' : '#aaa';
+  const parts = [];
+  if (stagedCount > 0) {
+    parts.push(`<p style="color:#ccc;margin:4px 0;font-size:13px;">
+        ${stagedCount} OB candidate${stagedCount === 1 ? '' : 's'} staged for review — promotion is human-gated.
+        Run <code style="color:#fff;">node scripts/promote-ob-venue-candidates.js --dry-run</code> to review, then drop <code>--dry-run</code> to add.
+      </p>`);
+    const top = list.slice(0, 5).map(c =>
+      `<li style="color:#ccc;margin-bottom:4px;font-size:13px;">${c.title || '?'} <span style="color:#666;">@ ${c.venue || '?'}</span> <span style="color:#666;">· ${c.source || 'venue-scan'}</span></li>`
+    ).join('');
+    if (top) parts.push(`<ul style="padding-left:20px;margin:4px 0;">${top}</ul>`);
+  }
+  if (typos > 0) {
+    parts.push(`<p style="color:#f39c12;margin:4px 0;font-size:13px;">
+        ${typos} aggregator slug typo${typos === 1 ? '' : 's'} need${typos === 1 ? 's' : ''} a source fix (e.g. a BWW Review-Roundup slug) — see data/audit/ob-aggregator-rejections.json.
+      </p>`);
+  }
+  return `
+        <h3 style="color:${color};margin:24px 0 8px;">OB Discovery — Action Needed</h3>
+        ${parts.join('')}
+      `;
+}
+
 function buildExclusionSummaryHtml() {
   try {
     const now = Date.now();
@@ -1394,6 +1428,31 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     console.log(`[Mezzanine Coverage] Skipped — ${e.message}`);
   }
 
+  // OB-discovery candidates awaiting human promotion. extract-aggregator-
+  // candidates.js + the venue-listing scrapers stage candidates into
+  // ob-venue-candidates.json weekly, but promotion to shows.json is human-gated
+  // (CLAUDE.md §3) — the whole bridge is inert if nobody runs the promoter.
+  // Surface the backlog (+ any aggregator slug typos that need a source fix)
+  // until it's acted on. Silent when both counts are zero.
+  let obCandidatesHtml = '';
+  try {
+    const stagingPath = path.join(__dirname, '..', 'data', 'audit', 'ob-venue-candidates.json');
+    const rejectionsPath = path.join(__dirname, '..', 'data', 'audit', 'ob-aggregator-rejections.json');
+    let staged = [];
+    if (fs.existsSync(stagingPath)) {
+      const d = JSON.parse(fs.readFileSync(stagingPath, 'utf8'));
+      if (Array.isArray(d)) staged = d;
+    }
+    let typoCount = 0;
+    if (fs.existsSync(rejectionsPath)) {
+      const rj = JSON.parse(fs.readFileSync(rejectionsPath, 'utf8'));
+      typoCount = (rj.counts && rj.counts.byReason && rj.counts.byReason['typo-detected']) || 0;
+    }
+    obCandidatesHtml = buildObCandidatesHtml(staged, typoCount);
+  } catch (e) {
+    console.log(`[OB Candidates] Skipped — ${e.message}`);
+  }
+
   // Workflow runs section
   let workflowHtml = '';
   if (workflowSummary && !workflowSummary.skipped) {
@@ -1465,6 +1524,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
 
     ${actionHtml}
     ${mezzanineCoverageHtml}
+    ${obCandidatesHtml}
     ${workflowHtml}
     ${buildExclusionSummaryHtml()}
 
@@ -1746,7 +1806,11 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Health check crashed:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Health check crashed:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { buildObCandidatesHtml };

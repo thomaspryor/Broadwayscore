@@ -21,6 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ============================================
 // CONFIGURATION
@@ -311,7 +312,7 @@ async function main() {
     process.exit(1);
   }
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
+  const shows = listShowDirs(CONFIG.reviewTextsDir)
     .filter(f => {
       const p = path.join(CONFIG.reviewTextsDir, f);
       return fs.statSync(p).isDirectory();

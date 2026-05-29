@@ -1770,9 +1770,27 @@ async function main() {
   // cast-changes.json so the CI commit step has nothing to commit.
   const {
     detectContradictions,
+    resolveClosureArrivalContradictions,
     detectCrossShowConflicts,
     dedupeByPersonShow,
   } = require('./lib/cast-changes-filters');
+  // Self-heal recency-decidable closure-vs-arrival contradictions before the
+  // gate so a newly-announced early closure (or a fresh extension) doesn't
+  // permanently block writes. The stale side is dropped by addedDate recency;
+  // only genuinely ambiguous contradictions (redundant-arrival, cross-show)
+  // still abort below.
+  for (const [showId, show] of Object.entries(existing.shows || {})) {
+    if (!show.upcoming || show.upcoming.length === 0) continue;
+    const resolved = resolveClosureArrivalContradictions(show.upcoming);
+    if (resolved.droppedClosures > 0 || resolved.droppedArrivals > 0) {
+      // Observable, not silent: surface every recency-based drop so a wrong
+      // resolution shows up in the scrape log instead of vanishing into a diff.
+      console.warn(
+        `[self-heal] ${showId}: dropped ${resolved.droppedClosures} stale closure(s) + ${resolved.droppedArrivals} stale arrival(s) by addedDate recency`,
+      );
+      show.upcoming = resolved.events;
+    }
+  }
   let auditIssues = 0;
   for (const [showId, show] of Object.entries(existing.shows || {})) {
     const ups = show.upcoming || [];

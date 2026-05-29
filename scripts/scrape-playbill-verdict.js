@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { matchTitleToShow, matchSlugToShow, cleanSlugTitle, loadShows, cleanExternalTitle, titleWordsMatch } = require('./lib/show-matching');
+const { pruneUnmatchedAudit } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -584,6 +585,13 @@ async function scrapePlaybillVerdict() {
   const showsArg = args.find(a => a.startsWith('--shows='));
   const targetShowIds = showsArg ? showsArg.replace('--shows=', '').split(',').map(s => s.trim()).filter(Boolean) : null;
   const noDateFilter = args.includes('--no-date-filter');
+  // Step 4 (per-show Google fallback) is the expensive part: ~135 SERP
+  // calls + ~35min on a full run. The daily cron only needs Steps 1-3
+  // (category-page discovery) to catch new mid-week articles fast; the
+  // long-tail Google fallback can run weekly. --skip-google-fallback lets
+  // the daily cron skip Step 4. Targeted runs (--shows=) are unaffected —
+  // they go straight to Google by design and ignore this flag.
+  const skipGoogleFallback = args.includes('--skip-google-fallback');
 
   if (targetShowIds) {
     console.log(`Targeted mode: ${targetShowIds.length} show(s): ${targetShowIds.join(', ')}`);
@@ -716,8 +724,13 @@ async function scrapePlaybillVerdict() {
       const prev = byUrl.get(u.url);
       byUrl.set(u.url, { ...u, firstSeen: prev?.firstSeen || now, lastSeen: now });
     }
-    fs.writeFileSync(auditPath, JSON.stringify([...byUrl.values()], null, 2));
-    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${byUrl.size})`);
+    // Prune entries that no longer belong (already-in-shows by exact slug +
+    // infrastructure) so the file doesn't grow unbounded across daily runs.
+    // Gate matches extract-aggregator-candidates.js exactly — see pruneUnmatchedAudit.
+    const existingSlugs = new Set(shows.map(s => s.slug).filter(Boolean));
+    const { kept, pruned } = pruneUnmatchedAudit([...byUrl.values()], { source: 'playbill-verdict', existingSlugs });
+    fs.writeFileSync(auditPath, JSON.stringify(kept, null, 2));
+    console.log(`Wrote ${unmatchedArticles.length} unmatched articles to ${auditPath} (total tracked: ${kept.length}, pruned ${pruned})`);
   } catch (auditErr) {
     console.log(`  [WARN] Could not write unmatched-articles audit: ${auditErr.message}`);
   }
@@ -796,6 +809,12 @@ async function scrapePlaybillVerdict() {
   }
 
   // Step 4: Google fallback for unmatched shows (recent shows only)
+  if (skipGoogleFallback) {
+    console.log('\n--- Google Fallback SKIPPED (--skip-google-fallback) ---');
+    console.log('Steps 1-3 (category-page discovery) ran; per-show SERP fallback deferred to the weekly deep run.');
+    printSummary();
+    return stats;
+  }
   console.log('\n--- Google Fallback ---');
   const recentShows = shows.filter(s => {
     if (s.status === 'closed') return false; // Skip closed shows — they won't get new reviews

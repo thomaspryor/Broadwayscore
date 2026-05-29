@@ -18,13 +18,14 @@ const {
   areCriticsSimilar,
   levenshteinDistance
 } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const OUTPUT_DIR = path.join(__dirname, '../data/audit');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'duplicates-found.json');
 
 function getShowDirectories() {
-  return fs.readdirSync(REVIEW_TEXTS_DIR)
+  return listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-05-28T23:33:12.808Z",
+  "timestamp": "2026-05-29T03:44:29.320Z",
   "stats": {
     "totalReviews": 37768,
     "alreadyFlagged": 16626,
     "dateGuardCatches": 106,
     "directorMismatch": 797,
-    "tvFilmSignals": 1030,
+    "tvFilmSignals": 1031,
     "londonSignals": 582,
     "offBroadwaySignals": 452,
     "yearMismatch": 78,
-    "noPublishDate": 3955
+    "noPublishDate": 3954
   },
   "findings": [
     {
@@ -1612,6 +1612,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "bad-krey-l-off-broadway-2026",
+      "file": "philadelphia-edge--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.manhattantheatreclub.com/shows/24-25-season/bad-kreyol/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -8589,7 +8603,7 @@
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 84,
-      "publishDate": null,
+      "publishDate": "2026-05-27",
       "url": "https://1minutecritic.com/heated-rivalry-parody-review/",
       "findings": [
         {
@@ -27704,7 +27718,7 @@
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
-      "url": "https://www.theguardian.com/stage/2026/may/15/linda-bassett-call-the-midwife-caryl-churchill-alexander-zeldin-care",
+      "url": "https://www.theguardian.com/books/2024/nov/02/alan-bennett-at-90-what-will-people-think-i-dont-care-any-more",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

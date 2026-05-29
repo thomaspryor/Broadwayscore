@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 const data = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8'));
@@ -34,7 +35,7 @@ const reviewTextsMap = new Map();
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
 if (fs.existsSync(reviewTextsDir)) {
-  const shows = fs.readdirSync(reviewTextsDir);
+  const shows = listShowDirs(reviewTextsDir);
   shows.forEach(showId => {
     const showDir = path.join(reviewTextsDir, showId);
     if (fs.statSync(showDir).isDirectory()) {

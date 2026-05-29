@@ -2,9 +2,10 @@
 const fs = require('fs');
 const path = require('path');
 const { assessTextQuality } = require('./lib/content-quality');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dir = path.join(__dirname, '../data/review-texts');
-const shows = fs.readdirSync(dir);
+const shows = listShowDirs(dir);
 let garbage = 0, valid = 0, suspicious = 0;
 let garbageList = [];
 

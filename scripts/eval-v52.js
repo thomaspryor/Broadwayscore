@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Load .env file manually (source .env doesn't work in all environments)
 const envPath = path.join(__dirname, '../.env');
@@ -86,7 +87,7 @@ console.log(`System prompt length: ${SYSTEM_PROMPT_V5.length} chars\n`);
 function findGroundTruthReviews() {
   const reviews = [];
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+  const shows = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
     const fp = path.join(REVIEW_TEXTS_DIR, f);
     if (fs.lstatSync(fp).isSymbolicLink()) return false;
     return fs.statSync(fp).isDirectory();

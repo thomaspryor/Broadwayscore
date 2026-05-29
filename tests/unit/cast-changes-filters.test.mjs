@@ -8,6 +8,7 @@ import {
   dedupeByPersonShow,
   reconcileClosure,
   detectContradictions,
+  resolveClosureArrivalContradictions,
   detectCrossShowConflicts,
   applyPublicFilters,
   normalizeIdentifier,
@@ -96,6 +97,69 @@ test('detectContradictions flags arrival after closure', () => {
   assert.equal(warnings.length, 1);
   assert.equal(warnings[0].kind, 'closure-vs-later-arrival');
   assert.equal(warnings[0].laterArrivals[0].name, 'JoJo');
+});
+
+test('resolveClosureArrivalContradictions: newer closure (early-close) drops stale arrival', () => {
+  // chess-2025 real case: early-close announced 2026-05-27 (newest) beats a
+  // planned-succession arrival added 2026-04-18.
+  const events = [
+    { type: 'arrival', name: 'Joanna Levesque', role: 'Florence', date: '2026-06-23', addedDate: '2026-04-18' },
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-21', addedDate: '2026-05-27' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 0);
+  assert.equal(res.droppedArrivals, 1);
+  const types = res.events.map(e => e.type).sort();
+  assert.deepEqual(types, ['closure']);
+});
+
+test('resolveClosureArrivalContradictions: newer arrival (extension) drops stale closure', () => {
+  // Original Chess bug: a stale "closes June 14" loses to a later-added arrival
+  // showing the run extended through September.
+  const events = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-14', addedDate: '2026-04-01' },
+    { type: 'arrival', name: 'JoJo', role: 'Florence', date: '2026-06-23', endDate: '2026-09-13', addedDate: '2026-05-02' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 1);
+  assert.equal(res.droppedArrivals, 0);
+  const types = res.events.map(e => e.type).sort();
+  assert.deepEqual(types, ['arrival']);
+});
+
+test('resolveClosureArrivalContradictions: missing/tied addedDate keeps the closure', () => {
+  const events = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-14' },
+    { type: 'arrival', name: 'JoJo', role: 'Florence', date: '2026-06-23' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 0);
+  assert.equal(res.droppedArrivals, 1);
+  assert.deepEqual(res.events.map(e => e.type), ['closure']);
+});
+
+test('resolveClosureArrivalContradictions: closure missing addedDate keeps closure (one-sided metadata never unseats a closure)', () => {
+  const events = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-21' },
+    { type: 'arrival', name: 'JoJo', role: 'Florence', date: '2026-06-23', addedDate: '2026-04-18' },
+  ];
+  const res = resolveClosureArrivalContradictions(events);
+  assert.equal(res.droppedClosures, 0);
+  assert.equal(res.droppedArrivals, 1);
+  assert.deepEqual(res.events.map(e => e.type), ['closure']);
+});
+
+test('resolveClosureArrivalContradictions: no closure or no later arrival is a no-op', () => {
+  const noClosure = [{ type: 'arrival', name: 'X', role: 'Y', date: '2026-06-23' }];
+  assert.equal(resolveClosureArrivalContradictions(noClosure).events.length, 1);
+  // Arrival BEFORE the closure is not a contradiction — keep both.
+  const arrivalBefore = [
+    { type: 'closure', name: 'Chess', role: 'Production', date: '2026-06-21', addedDate: '2026-05-27' },
+    { type: 'arrival', name: 'JoJo', role: 'Florence', date: '2026-06-10', addedDate: '2026-04-18' },
+  ];
+  const res = resolveClosureArrivalContradictions(arrivalBefore);
+  assert.equal(res.droppedClosures + res.droppedArrivals, 0);
+  assert.equal(res.events.length, 2);
 });
 
 test('applyPublicFilters pipeline integration', () => {

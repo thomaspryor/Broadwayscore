@@ -27,6 +27,7 @@ const path = require('path');
 const https = require('https');
 const { shouldRejectAsReservation } = require('./lib/pull-quote-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -295,7 +296,7 @@ function cleanResponse(response) {
 // ============================================================
 function scanReviewFiles() {
   const files = [];
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     if (SHOW_FILTER && show !== SHOW_FILTER) continue;

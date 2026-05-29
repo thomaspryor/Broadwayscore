@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
@@ -65,7 +66,7 @@ function contentMatchesShow(data, showId) {
 
 function findJunkFiles() {
   const results = [];
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);

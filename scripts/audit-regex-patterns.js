@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CONTENT_QUALITY = require('./lib/content-quality.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Pattern families we gate. Keys must match exported names from content-quality.js.
 // Add new families here when they land in content-quality.js — the gate will pick them up.
@@ -222,7 +223,7 @@ function findReviewTextsDir() {
 
 function scanCorpus({ full, families }) {
   const dir = findReviewTextsDir();
-  const showDirs = fs.readdirSync(dir).filter(d => {
+  const showDirs = listShowDirs(dir).filter(d => {
     const p = path.join(dir, d);
     try { return fs.statSync(p).isDirectory() && d !== '_pending'; } catch { return false; }
   });

@@ -30,7 +30,7 @@ const { getTheaterAddress } = require('./lib/venue-addresses');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue } = require('./lib/venue-classification');
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const {
@@ -213,8 +213,12 @@ async function fetchShowsFromTodayTix() {
     s.subcategories?.some(sc => sc.name === 'Broadway') && !isNonTheaterContent(s) && !isOneNightShow(s)
   );
   const offBroadwayShows = includeOffBroadway ? allShows.filter(s => {
-    if (!s.subcategories?.some(sc => sc.name === 'Off Broadway')) return false;
     if (s.subcategories?.some(sc => sc.name === 'Broadway')) return false; // exclude shows tagged as both
+    // TodayTix mis-tags some OB shows (no "Off Broadway" subcat). Fall back to
+    // venue name: if it plays a theatre we already classify as Off-Broadway,
+    // include it. Broken Snow (Theatre 71) slipped through on subcat alone.
+    const taggedOB = s.subcategories?.some(sc => sc.name === 'Off Broadway');
+    if (!taggedOB && !isKnownOffBroadwayVenue(s.venue)) return false;
     return !isNonTheaterContent(s) && !isOneNightShow(s);
   }) : [];
 
@@ -275,7 +279,7 @@ async function fetchShowsFromTodayTix() {
     });
   }
 
-  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway-tagged, ${showsList.length} unique`);
+  console.log(`TodayTix API: ${allShows.length} total NYC shows, ${broadwayShows.length} Broadway-tagged, ${offBroadwayShows.length} Off-Broadway (subcat or known venue), ${showsList.length} unique`);
   return showsList;
 }
 

@@ -50,6 +50,7 @@ function loadRegistry() {
 function loadNormalization() {
   try {
     return require(NORMALIZATION_PATH);
+const { listShowDirs } = require('./lib/list-show-dirs');
   } catch (e) {
     if (!JSON_OUTPUT) {
       console.warn('Warning: Could not load review-normalization.js, some checks will be limited');
@@ -95,7 +96,7 @@ function getAllReviewFiles() {
     process.exit(1);
   }
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
     const fullPath = path.join(REVIEW_TEXTS_DIR, f);
     return fs.statSync(fullPath).isDirectory();
   });

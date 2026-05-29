@@ -19,6 +19,7 @@ const https = require('https');
 const http = require('http');
 const { sendAlert } = require('./lib/discord-notify');
 const { getDomain } = require('./lib/url-utils');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -181,7 +182,7 @@ function getReviewUrlSample() {
 
   // Collect all review file paths
   const allFiles = [];
-  for (const showDir of fs.readdirSync(reviewDir)) {
+  for (const showDir of listShowDirs(reviewDir)) {
     const showPath = path.join(reviewDir, showDir);
     if (!fs.statSync(showPath).isDirectory()) continue;
     for (const file of fs.readdirSync(showPath)) {

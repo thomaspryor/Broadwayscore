@@ -17,6 +17,7 @@ const path = require('path');
 const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -57,7 +58,7 @@ async function main() {
 
   // Find all wrongUrl reviews at T1/T2 outlets
   const candidates = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
     const p = path.join(REVIEW_TEXTS_DIR, d);
     return fs.statSync(p).isDirectory();
   });

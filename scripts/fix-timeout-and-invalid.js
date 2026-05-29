@@ -12,6 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyContentTier } = require('./lib/content-quality');
 const { cleanText } = require('./lib/text-cleaning');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -77,7 +78,7 @@ async function main() {
   // ── Fix Time Out reviews ──
   console.log('=== Fixing Time Out newsletter junk (29 invalid reviews) ===');
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
     const p = path.join(REVIEW_TEXTS_DIR, d);
     return fs.statSync(p).isDirectory();
   });

@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -81,7 +82,7 @@ function countReviewTexts() {
   const unknownOutletsList = [];
   const duplicatesList = [];
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

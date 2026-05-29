@@ -6,9 +6,11 @@
  *   1. "Production closes …" stored as per-actor `departure` (Chess case).
  *      → reclassify ONE of them into a show-level `closure` event,
  *        drop the rest.
- *   2. Closure event contradicted by a later `arrival` event
- *      (Chess closure 2026-06-14 vs JoJo arrival through 2026-09-13).
- *      → drop the closure; the production isn't actually closing.
+ *   2. Closure event contradicted by a later `arrival` event.
+ *      → resolve by recency of addedDate (resolveClosureArrivalContradictions):
+ *        a newer arrival means the show extended (drop the stale closure); a
+ *        newer/tied closure means the show is closing early (drop the stale
+ *        arrival, e.g. chess-2025 early-close June 21 vs JoJo June 23).
  *   3. Ended `absence` events still in upcoming (Alison Luff Wonder leave).
  *      → drop where endDate < today.
  *   4. Stale [AUTO-FLAGGED] entries (> 30 days).
@@ -25,6 +27,7 @@ const fs = require('fs');
 const path = require('path');
 const {
   detectContradictions,
+  resolveClosureArrivalContradictions,
   detectCrossShowConflicts,
   dedupeByPersonShow,
   normalizeIdentifier,
@@ -126,16 +129,17 @@ function reclassifyClosureDepartures(events, showId) {
 }
 
 function dropContradictedClosures(events) {
-  const warnings = detectContradictions(events);
-  if (warnings.length === 0) return { events, dropped: 0 };
-
-  const badClosureDates = new Set(warnings.map(w => w.closureDate));
-  const filtered = events.filter(e => {
-    if (e.type === 'closure' && badClosureDates.has(e.date)) return false;
-    return true;
-  });
-
-  return { events: filtered, dropped: events.length - filtered.length };
+  // Recency-aware: keep whichever of {closure, contradicting later arrival} was
+  // added most recently and drop the stale side. A blanket "always drop the
+  // closure" rule shipped a phantom arrival once chess-2025 announced an early
+  // close (closure newer than the planned-succession arrival).
+  const res = resolveClosureArrivalContradictions(events);
+  return {
+    events: res.events,
+    dropped: res.droppedClosures + res.droppedArrivals,
+    droppedClosures: res.droppedClosures,
+    droppedArrivals: res.droppedArrivals,
+  };
 }
 
 function dropEndedAbsences(events) {
@@ -178,6 +182,7 @@ function main() {
     closuresReclassified: 0,
     departuresReclassifiedAsClosure: 0,
     contradictedClosuresDropped: 0,
+    contradictedArrivalsDropped: 0,
     endedAbsencesDropped: 0,
     staleAutoFlaggedDropped: 0,
     nameVariantDedupes: 0,
@@ -236,7 +241,8 @@ function main() {
 
     const dropC = dropContradictedClosures(upcoming);
     upcoming = dropC.events;
-    report.contradictedClosuresDropped += dropC.dropped;
+    report.contradictedClosuresDropped += dropC.droppedClosures;
+    report.contradictedArrivalsDropped += dropC.droppedArrivals;
 
     const dropA = dropEndedAbsences(upcoming);
     upcoming = dropA.events;
@@ -258,7 +264,8 @@ function main() {
   console.log(`  Shows examined:                              ${report.showsExamined}`);
   console.log(`  Closure groups reclassified:                 ${report.closuresReclassified}`);
   console.log(`  Per-actor departures collapsed into closure: ${report.departuresReclassifiedAsClosure}`);
-  console.log(`  Contradicted closures dropped:               ${report.contradictedClosuresDropped}`);
+  console.log(`  Contradicted closures dropped (stale):       ${report.contradictedClosuresDropped}`);
+  console.log(`  Contradicting arrivals dropped (stale):      ${report.contradictedArrivalsDropped}`);
   console.log(`  Ended absences dropped:                      ${report.endedAbsencesDropped}`);
   console.log(`  Stale [AUTO-FLAGGED] entries dropped:        ${report.staleAutoFlaggedDropped}`);
   console.log(`  Name-variant dedupes:                        ${report.nameVariantDedupes}`);
@@ -289,6 +296,7 @@ function main() {
   const totalIssues =
     report.departuresReclassifiedAsClosure +
     report.contradictedClosuresDropped +
+    report.contradictedArrivalsDropped +
     report.endedAbsencesDropped +
     report.staleAutoFlaggedDropped +
     report.nameVariantDedupes +

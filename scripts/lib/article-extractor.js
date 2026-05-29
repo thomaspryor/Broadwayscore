@@ -101,7 +101,11 @@ const PATTERNS = [
   // (meta description) → every 1minutecritic review saved as a stub and was
   // never scored — missed for Heated Rivalry AND The Maids (2026-05-28).
   // Verified against /heated-rivalry-parody-review → 3110 chars clean.
-  ['1minutecritic.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)(?:<p><strong>[^<]*(?:&#8211;|–|-)\s*<\/strong>\s*<a href="https:\/\/1minutecritic\.com|<div[^>]+class="[^"]*(?:addtoany_share|related-posts)|<article[^>]+class="[^"]*post-author-area)/, 300],
+  // Boundary uses en-dash ONLY (&#8211; / –) — the related-teaser category
+  // labels are always en-dash separated. A bare hyphen-minus would over-match
+  // a legitimate review paragraph like "<strong>Cast - </strong><a 1mc-link>"
+  // and truncate the body to 0 chars (code-review 2026-05-28).
+  ['1minutecritic.com', /<div[^>]+class="[^"]*entry-content[^"]*"[^>]*>([\s\S]*?)(?:<p><strong>[^<]*(?:&#8211;|–)\s*<\/strong>\s*<a href="https:\/\/1minutecritic\.com|<div[^>]+class="[^"]*(?:addtoany_share|related-posts)|<article[^>]+class="[^"]*post-author-area)/, 300],
 
   // Vulture — article-body
   ['vulture.com', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<aside/, 300],

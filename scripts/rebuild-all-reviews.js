@@ -58,6 +58,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Authoritative NYT Critic's Pick set — union of two sources:
 //   1. data/nyt-critics-picks.json — scraped from nytimes.com/spotlight/theater-critics-picks
@@ -894,7 +895,7 @@ const multiProdDirectorGuard = {};
 
 // Get all show directories (filter out orphan dirs that don't match any show in shows.json)
 const validShowIds = new Set(showsData.shows.map(s => s.id));
-const showDirs = fs.readdirSync(reviewTextsDir)
+const showDirs = listShowDirs(reviewTextsDir)
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice

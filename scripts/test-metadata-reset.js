@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const BLOCKING_FIELDS = [
   'wrongProduction', 'wrongProductionReason', 'wrongProductionNote',
@@ -23,7 +24,7 @@ function findCandidates(limit) {
     ? 'data/review-texts'
     : '/Users/tompryor/Broadwayscore/data/review-texts';
   const candidates = [];
-  for (const showDir of fs.readdirSync(dir)) {
+  for (const showDir of listShowDirs(dir)) {
     if (candidates.length >= limit) break;
     const fullDir = path.join(dir, showDir);
     if (!fs.statSync(fullDir).isDirectory()) continue;

@@ -17,6 +17,7 @@ const fs = require("fs");
 const path = require("path");
 const { verifyContent, contentHash } = require("./lib/content-verifier");
 const { isLondonMarket } = require("./lib/venue-classification");
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dir = path.join(__dirname, "..", "data", "review-texts");
 const showsData = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "shows.json"), "utf8"));
@@ -34,7 +35,7 @@ for (const s of showsData.shows) {
 async function main() {
   const candidates = [];
 
-  for (const show of fs.readdirSync(dir)) {
+  for (const show of listShowDirs(dir)) {
     const showPath = path.join(dir, show);
     if (!fs.statSync(showPath).isDirectory()) continue;
 
