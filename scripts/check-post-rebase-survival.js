@@ -62,6 +62,40 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
   }
 }
 
+// Best-effort, never-throws git helper for diagnostics only.
+function gitTry(args) {
+  try {
+    return execFileSync('git', args, { encoding: 'utf8', timeout: 30_000 }).trim();
+  } catch {
+    return null;
+  }
+}
+
+// Diagnose WHY a dropped file is missing, so the next real failure tells us
+// whether it was a genuine data loss or a legitimate remote rename/promotion
+// (e.g. a concurrent run moved a _pending/ file out of staging). Logging only —
+// does NOT change the exit code. Instrument-then-fix: pin the mechanism before
+// touching the shared resolution logic.
+function classifyMissing(file, remoteRef) {
+  // Does the remote currently track this exact path?
+  if (remoteRef && gitTry(['cat-file', '-e', `${remoteRef}:${file}`]) !== null) {
+    return 'PRESENT-ON-REMOTE (remote kept its own version; our copy lost during conflict resolution)';
+  }
+  // Did the remote DELETE/rename it relative to our pre-rebase base? Rename
+  // detection (-M) tells us if the content moved to a new path on the remote.
+  if (remoteRef) {
+    const renames = gitTry([
+      'diff', '--diff-filter=R', '--name-status', '-M90%',
+      `${remoteRef}`, 'HEAD', '--', // limited; informational
+    ]);
+    if (renames && renames.includes(file)) {
+      return 'RENAMED-ON-REMOTE (likely legitimate promotion/rename — not a data loss)';
+    }
+    return 'ABSENT-EVERYWHERE (genuine loss: not on remote under this path; verify it was not renamed)';
+  }
+  return 'UNKNOWN (no remote ref passed for diagnosis)';
+}
+
 (function main() {
   const beforeSha = arg('before-sha');
   if (!beforeSha) {
@@ -73,6 +107,8 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
   // shows.json edits invisible. Callers can still pass a narrow prefix to
   // scope the check.
   const pathPrefix = arg('path-prefix') || '';
+  // Optional: remote ref (e.g. origin/main) enables per-file drop diagnosis.
+  const remoteRef = arg('remote-ref') || '';
 
   // Files added between beforeSha~1 and beforeSha (i.e. in our pre-rebase commit).
   const expected = new Set(gitDiffAddedFiles(`${beforeSha}~1`, beforeSha, pathPrefix));
@@ -91,9 +127,14 @@ function gitDiffAddedFiles(fromSha, toRef, pathPrefix) {
   }
 
   console.error(`[post-rebase-check] FAILED — ${missing.length} of ${expected.size} files silently dropped during rebase:`);
-  for (const f of missing) console.error('  - ' + f);
+  for (const f of missing) {
+    console.error(`  - ${f}`);
+    console.error(`      diagnosis: ${classifyMissing(f, remoteRef)}`);
+  }
   console.error('');
   console.error('Likely cause: auto-conflict-resolution (-X theirs) discarded local additions.');
-  console.error('Inspect the merge in the workflow log and recover the dropped files before push.');
+  console.error('If diagnosis says RENAMED/PRESENT-ON-REMOTE, the drop may be a legitimate concurrent');
+  console.error('promotion (e.g. a _pending/ file moved out of staging) rather than data loss.');
+  console.error('Inspect the merge in the workflow log and recover genuinely-lost files before push.');
   process.exit(1);
 })();

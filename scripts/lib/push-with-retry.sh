@@ -198,9 +198,14 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # rebase path.
   rebase_ok=false
   history_changed=false
+  # RESOLUTION_PATH records which strategy produced the new HEAD, so the
+  # survival-check failure log pinpoints the exact path that dropped a file
+  # (rebase-clean vs rebase-resolved vs merge vs cherry-pick). Diagnostics only.
+  RESOLUTION_PATH=none
   if git rebase -X theirs "origin/$PULL_BRANCH" 2>/dev/null; then
     rebase_ok=true
     history_changed=true
+    RESOLUTION_PATH="rebase-clean(-X theirs)"
     restore_protected_fields
   else
     echo "  Rebase had conflicts, attempting auto-resolution..."
@@ -210,6 +215,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if GIT_EDITOR=true git rebase --continue 2>/dev/null; then
           rebase_ok=true
           history_changed=true
+          RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
           break
@@ -232,10 +238,12 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     if git merge "origin/$PULL_BRANCH" -X ours --no-edit 2>/dev/null; then
       echo "  Merge succeeded"
       history_changed=true
+      RESOLUTION_PATH="merge(-X ours)"
       restore_protected_fields
     elif resolve_conflicts merge && git commit --no-edit 2>/dev/null; then
       echo "  Merge succeeded after auto-resolving conflicts"
       history_changed=true
+      RESOLUTION_PATH="merge-resolved"
       restore_protected_fields
     else
       echo "  Merge also failed, aborting..."
@@ -249,6 +257,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if git cherry-pick "$OUR_HEAD" --strategy-option=theirs 2>/dev/null; then
           echo "  Cherry-pick succeeded (our changes on top of remote)"
           history_changed=true
+          RESOLUTION_PATH="reset+cherry-pick(-X theirs)"
           restore_protected_fields
         else
           git cherry-pick --abort 2>/dev/null || true
@@ -268,8 +277,9 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # check-post-rebase-survival requires beforeSha~1 to be an ancestor of
     # HEAD. Reset+cherry-pick may have broken that invariant — verify first.
     if git merge-base --is-ancestor "${PRE_REBASE_SHA}~1" HEAD 2>/dev/null; then
-      if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA"; then
-        echo "::error::Post-rebase survival check failed — aborting push to avoid shipping a corrupt state"
+      if ! node "$SCRIPT_DIR/../check-post-rebase-survival.js" --before-sha="$PRE_REBASE_SHA" --remote-ref="origin/$PULL_BRANCH"; then
+        echo "::error::Post-rebase survival check failed (resolution path: ${RESOLUTION_PATH:-unknown}) — aborting push to avoid shipping a corrupt state"
+        echo "::error::See per-file diagnosis above: PRESENT-ON-REMOTE/RENAMED = likely legitimate concurrent change; ABSENT-EVERYWHERE = genuine loss."
         exit 1
       fi
     else
