@@ -712,4 +712,10 @@ module.exports = {
   quickValidityCheck,
   contentHash,
   shouldDeferCvWrongShow,
+  // Generic prompt→text providers, exported so other verifiers (e.g. the
+  // slug-misroute content check) can run multi-model agreement without
+  // duplicating the HTTPS plumbing. Each takes a prompt string, returns a
+  // Promise<string>, and throws if its API key is unset.
+  callGemini,
+  callOpenAI,
 };
