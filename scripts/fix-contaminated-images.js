@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const IMAGE_SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
@@ -74,7 +75,7 @@ function main() {
     return;
   }
 
-  const showDirs = fs.readdirSync(IMAGES_DIR);
+  const showDirs = listShowDirs(IMAGES_DIR);
   for (const dir of showDirs) {
     const dirPath = path.join(IMAGES_DIR, dir);
     if (!fs.statSync(dirPath).isDirectory()) continue;

@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { normalizeCritic, normalizeOutlet, generateReviewFilename } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -51,7 +52,7 @@ const reviewsDir = path.join(__dirname, '..', 'data', 'review-texts');
 
 // Scan for candidates
 const candidates = [];
-for (const sid of fs.readdirSync(reviewsDir)) {
+for (const sid of listShowDirs(reviewsDir)) {
   const sDir = path.join(reviewsDir, sid);
   try {
     if (fs.lstatSync(sDir).isSymbolicLink()) continue;

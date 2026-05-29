@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Paths
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -393,7 +394,7 @@ async function runAudit() {
 
   // Collect all reviews
   const allReviews = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
     const fullPath = path.join(REVIEW_TEXTS_DIR, f);
     return fs.statSync(fullPath).isDirectory();
   });

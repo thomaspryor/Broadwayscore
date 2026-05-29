@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REPO_ROOT = '/Users/tompryor/Broadwayscore';
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -51,7 +52,7 @@ const stats = {
 const reroutesByPair = new Map();
 const samples = [];
 
-const showDirs = fs.readdirSync(reviewTextsDir).filter(f => {
+const showDirs = listShowDirs(reviewTextsDir).filter(f => {
   const fp = path.join(reviewTextsDir, f);
   try {
     if (fs.lstatSync(fp).isSymbolicLink()) return false;

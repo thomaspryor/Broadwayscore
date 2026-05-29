@@ -23,6 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -69,7 +70,7 @@ let total = 0;
 const bySource = {};
 const recoveredBySource = {};
 
-for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
   const sdir = path.join(REVIEW_TEXTS_DIR, sid);
   if (!fs.statSync(sdir).isDirectory()) continue;
 

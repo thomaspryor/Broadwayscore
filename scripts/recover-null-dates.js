@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = !process.argv.includes('--write');
@@ -31,7 +32,7 @@ let stats = {
   notRecovered: 0,
 };
 
-for (const sid of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
   const sdir = path.join(REVIEW_TEXTS_DIR, sid);
   if (!fs.statSync(sdir).isDirectory()) continue;
   for (const f of fs.readdirSync(sdir).filter(x => x.endsWith('.json') && x !== 'failed-fetches.json')) {

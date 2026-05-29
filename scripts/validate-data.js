@@ -30,6 +30,7 @@ const { VALID_TIERS } = require('./lib/outlet-tiers');
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Notion 362637c5-416f-8174 — sentinel file consumed by .github/actions/push-core-data
 // to refuse pushing when validation failed. The composite action used `if: always()`
@@ -730,7 +731,7 @@ function validatePlaceholderImageHashes(shows) {
     return;
   }
 
-  for (const showDir of fs.readdirSync(IMAGES_DIR)) {
+  for (const showDir of listShowDirs(IMAGES_DIR)) {
     const dirPath = path.join(IMAGES_DIR, showDir);
     if (!fs.statSync(dirPath).isDirectory()) continue;
     const status = showStatusMap.get(showDir);

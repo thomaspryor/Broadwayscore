@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -53,7 +54,7 @@ if (tierFilter) {
 }
 
 const reviewDir = 'data/review-texts';
-const shows = fs.readdirSync(reviewDir).filter(f => {
+const shows = listShowDirs(reviewDir).filter(f => {
   const fullPath = path.join(reviewDir, f);
   // Skip symlinks to avoid processing the same directory twice
   if (fs.lstatSync(fullPath).isSymbolicLink()) return false;

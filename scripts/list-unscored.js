@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const dir = path.join(__dirname, '../data/review-texts');
-const shows = fs.readdirSync(dir);
+const shows = listShowDirs(dir);
 let unscored = [];
 for (const s of shows) {
   const sd = path.join(dir, s);

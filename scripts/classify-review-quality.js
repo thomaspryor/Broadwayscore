@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -182,7 +183,7 @@ function determineSourceMethod(review) {
 function getAllReviewFiles() {
   const files = [];
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(item => {
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(item => {
     const fullPath = path.join(REVIEW_TEXTS_DIR, item);
     return fs.statSync(fullPath).isDirectory();
   });

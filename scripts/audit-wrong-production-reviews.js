@@ -20,6 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -542,7 +543,7 @@ function runWrongProductionAudit() {
   const revivalMetadata = extractRevivalMetadata(shows);
 
   // Get all show directories
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

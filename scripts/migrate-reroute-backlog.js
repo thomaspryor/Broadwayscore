@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REPO_ROOT = '/Users/tompryor/Broadwayscore';
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -226,7 +227,7 @@ if (MODE === 'dryrun') {
   const scanIds = CROSS_MARKET
     ? new Set([...guardedShowIds, ...crossMarketScanIds])
     : guardedShowIds;
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(f => {
+  const showDirs = listShowDirs(reviewTextsDir).filter(f => {
     if (SHOW_FILTER && f !== SHOW_FILTER) return false;
     const fp = path.join(reviewTextsDir, f);
     try {

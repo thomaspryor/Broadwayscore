@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 const REVIEWS_JSON = 'data/reviews.json';
@@ -33,7 +34,7 @@ function getOutletTier(outletId) {
 function run() {
   // Load all review-text files
   const reviews = [];
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const shows = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const sp = path.join(REVIEW_TEXTS_DIR, f);
       try { return fs.statSync(sp).isDirectory(); } catch { return false; }

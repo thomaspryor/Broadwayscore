@@ -31,6 +31,7 @@ const fs = require('fs');
 const path = require('path');
 const { extractScore, OUTLET_EXTRACTORS, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // REVIEW_TEXTS_DIR resolution:
 //   1. --review-texts=PATH CLI flag (explicit)
@@ -177,7 +178,7 @@ const patches = [];
 const skipped = { noExtractor: 0, scoreOk: 0, noFullText: 0, noResult: 0, guarded: 0, sameScore: 0 };
 let examined = 0;
 
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(entry => {
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(entry => {
   const fp = path.join(REVIEW_TEXTS_DIR, entry);
   try {
     if (fs.lstatSync(fp).isSymbolicLink()) return false;

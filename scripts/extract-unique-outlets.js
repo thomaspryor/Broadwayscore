@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTPUT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -18,7 +19,7 @@ function main() {
   let reviewsWithBadDisplayName = 0;
 
   // Get all show directories
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

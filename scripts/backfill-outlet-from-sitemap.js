@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { slugify, normalizeOutlet } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ── arg parsing ──────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
@@ -302,7 +303,7 @@ function matchUrlToShow(urlSlug, urlYear, showIndex, opts) {
 function loadExistingForOutlet(outletId, reviewTextsRoot) {
   const existing = new Map(); // showId → { file, url }
   if (!fs.existsSync(reviewTextsRoot)) return existing;
-  const showDirs = fs.readdirSync(reviewTextsRoot).filter(d => {
+  const showDirs = listShowDirs(reviewTextsRoot).filter(d => {
     const p = path.join(reviewTextsRoot, d);
     return fs.statSync(p).isDirectory() && !d.startsWith('_');
   });

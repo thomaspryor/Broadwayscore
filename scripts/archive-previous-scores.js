@@ -15,11 +15,12 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dryRun = process.argv.includes('--dry-run');
 const reviewDir = 'data/review-texts';
 
-const shows = fs.readdirSync(reviewDir).filter(f => {
+const shows = listShowDirs(reviewDir).filter(f => {
   const fullPath = path.join(reviewDir, f);
   if (fs.lstatSync(fullPath).isSymbolicLink()) return false;
   return fs.statSync(fullPath).isDirectory();

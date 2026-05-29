@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -113,7 +114,7 @@ function collectMetrics() {
   const badDisplayNamesByOutlet = {};
 
   if (fs.existsSync(reviewTextsDir)) {
-    const showDirs = fs.readdirSync(reviewTextsDir)
+    const showDirs = listShowDirs(reviewTextsDir)
       .filter(f => {
         const fullPath = path.join(reviewTextsDir, f);
         return fs.statSync(fullPath).isDirectory();

@@ -25,6 +25,7 @@ const {
 } = require('./lib/review-normalization');
 const { OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
 const { domainMatchesExpected, setRegistryDomainAliases } = require('./lib/scraper');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Inject registry domain aliases for domain matching
 setRegistryDomainAliases(REGISTRY_DOMAIN_ALIASES);
@@ -135,7 +136,7 @@ function auditReviewDuplicates() {
   const allReviews = [];                // All review data for analysis
 
   // Get all show directories
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(f => {
       const fullPath = path.join(REVIEW_TEXTS_DIR, f);
       return fs.statSync(fullPath).isDirectory();

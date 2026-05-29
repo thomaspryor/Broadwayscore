@@ -29,6 +29,7 @@ const https = require('https');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { normalizeLlmResult, LETTER_GRADES } = require('./lib/score-parsers');
 const { setExtractedScore } = require('./lib/score-routing');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
@@ -481,7 +482,7 @@ function postValidate(result) {
 // ============================================================
 function scanReviewFiles() {
   const files = [];
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     if (SHOW_FILTER && show !== SHOW_FILTER) continue;

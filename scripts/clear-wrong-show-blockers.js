@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -24,7 +25,7 @@ let kept = 0;
 let total = 0;
 const deletedByShow = {};
 
-for (const showDir of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+for (const showDir of listShowDirs(REVIEW_TEXTS_DIR)) {
   const showPath = path.join(REVIEW_TEXTS_DIR, showDir);
   if (!fs.statSync(showPath).isDirectory()) continue;
 

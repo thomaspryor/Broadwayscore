@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, shouldSkipRoundupAudit } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -281,7 +282,7 @@ function fixInterestedBystander() {
   console.log('\n=== Issue 4: Tag Interested Bystander as roundup articles ===');
 
   // Scan all review-text directories for interested-bystander files
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showDir of showDirs) {
     const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);

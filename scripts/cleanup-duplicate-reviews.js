@@ -32,6 +32,7 @@ const {
   mergeReviews,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const AUDIT_DIR = path.join(__dirname, '..', 'data', 'audit');
@@ -389,7 +390,7 @@ function main() {
       shows = [showFilter];
       console.log(`Processing single show: ${showFilter}\n`);
     } else {
-      shows = fs.readdirSync(REVIEW_TEXTS_DIR)
+      shows = listShowDirs(REVIEW_TEXTS_DIR)
         .filter(f => {
           const fullPath = path.join(REVIEW_TEXTS_DIR, f);
           return fs.statSync(fullPath).isDirectory();

@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTPUT_DIR = path.join(__dirname, '..', 'data', 'calibration');
@@ -22,7 +23,7 @@ const STAR_RANGES = {
 
 function getAllReviewFiles() {
   const files = [];
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR);
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showDir of shows) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);

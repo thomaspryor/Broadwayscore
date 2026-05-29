@@ -11,6 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -77,7 +78,7 @@ if (fs.existsSync(showsPath)) {
   }
 }
 
-const shows = fs.readdirSync(reviewsDir).filter(f => {
+const shows = listShowDirs(reviewsDir).filter(f => {
   const fp = path.join(reviewsDir, f);
   if (!fs.statSync(fp).isDirectory()) return false;
   // Market filter

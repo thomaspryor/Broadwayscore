@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseStarRating, parseLetterGrade, parseNumericRating } = require('./lib/score-parsers');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const WRITE = process.argv.includes('--write');
@@ -67,7 +68,7 @@ const changes = [];
 const noChange = [];
 const errors = [];
 
-const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
+const shows = listShowDirs(REVIEW_TEXTS_DIR).filter(f => {
   const fp = path.join(REVIEW_TEXTS_DIR, f);
   if (fs.lstatSync(fp).isSymbolicLink()) return false;
   return fs.statSync(fp).isDirectory();

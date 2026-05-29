@@ -7,11 +7,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('../lib/list-show-dirs');
 const dir = 'data/review-texts';
 
 const showCounts = {};
 
-fs.readdirSync(dir).forEach(showDir => {
+listShowDirs(dir).forEach(showDir => {
   const showPath = path.join(dir, showDir);
   if (!fs.statSync(showPath).isDirectory()) return;
 
